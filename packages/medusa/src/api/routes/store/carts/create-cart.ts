@@ -22,7 +22,6 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartCreateProps } from "../../../../types/cart"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
  * @oas [post] /carts
@@ -125,21 +124,18 @@ export default async (req, res) => {
     }
   }
 
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    if (
-      !toCreate.sales_channel_id &&
-      req.publishableApiKeyScopes?.sales_channel_id.length
-    ) {
-      if (req.publishableApiKeyScopes.sales_channel_id.length > 1) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The PublishableApiKey provided in the request header has multiple associated sales channels."
-        )
-      }
-
-      toCreate.sales_channel_id =
-        req.publishableApiKeyScopes.sales_channel_id[0]
+  if (
+    !toCreate.sales_channel_id &&
+    req.publishableApiKeyScopes?.sales_channel_ids.length
+  ) {
+    if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "The PublishableApiKey provided in the request header has multiple associated sales channels."
+      )
     }
+
+    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   let cart: Cart
