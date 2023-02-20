@@ -5,7 +5,7 @@ import {
   Logger,
   MODULE_RESOURCE_TYPE
 } from "@medusajs/medusa"
-import { ConnectionOptions, Queue, Worker } from "bullmq"
+import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { MedusaError } from "medusa-core-utils"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
@@ -13,6 +13,7 @@ import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 type InjectedDependencies = {
   logger: Logger
   configModule: ConfigModule
+  redisConnection: Redis
 }
 
 /**
@@ -28,7 +29,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected queue_: Queue
 
   constructor(
-    { configModule, logger }: InjectedDependencies,
+    { configModule, logger, redisConnection }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
     moduleDeclaration: ConfigurableModuleDeclaration,
   ) {
@@ -47,30 +48,18 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     this.config_ = configModule
     this.logger_ = logger
 
-    const connection = this.connect()
-
-    // Register our worker to handle emit calls
-    new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
-      connection,
-      prefix: `${this.constructor.name}`,
-      ...(this.moduleOptions_.workerOptions ?? {}),
-    })
-  }
-
-  connect(): ConnectionOptions {
-    const connection = new Redis(this.moduleOptions_?.redisUrl!, {
-      // Required config. See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
-      maxRetriesPerRequest: null,
-      ...(this.moduleOptions_.redisOptions ?? {}),
-    })
-
     this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
-      connection,
+      connection: redisConnection,
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.queueOptions ?? {}),
     })
 
-    return connection
+    // Register our worker to handle emit calls
+    new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
+      connection: redisConnection,
+      prefix: `${this.constructor.name}`,
+      ...(this.moduleOptions_.workerOptions ?? {}),
+    })
   }
 
   /**
