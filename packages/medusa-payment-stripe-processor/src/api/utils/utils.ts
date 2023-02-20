@@ -24,7 +24,7 @@ export function isPaymentCollection(id) {
 
 export function buildHandleCartPaymentErrorMessage(
   event: string,
-  err: Stripe.errors.StripeError
+  err: Stripe.StripeRawError
 ): string {
   let message = `Stripe webhook ${event} handling failed\n${
     err?.detail ?? err?.message
