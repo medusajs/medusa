@@ -17,7 +17,7 @@ type InjectedDependencies = {}
 class InMemoryCacheService implements ICacheService {
   protected TTL: number
 
-  protected readonly timoutRefs = {}
+  protected readonly timoutRefs = new Map<string, number>()
   protected readonly store = new Map<string, CacheRecord<any>>()
 
   constructor(
@@ -40,9 +40,10 @@ class InMemoryCacheService implements ICacheService {
    * @param key - cache key
    */
   async get<T>(key: string): Promise<T | null> {
+    const now = Date.now()
     const record: CacheRecord<T> | undefined = this.store.get(key)
 
-    if (!record || (record.expire && record.expire < Date.now())) {
+    if (!record || (record.expire && record.expire < now)) {
       return null
     }
 
@@ -61,8 +62,8 @@ class InMemoryCacheService implements ICacheService {
     const oldRecord = this.store.get(key)
 
     if (oldRecord) {
-      clearTimeout(this.timoutRefs[key])
-      delete this.timoutRefs[key]
+      clearTimeout(this.timoutRefs.get(key))
+      this.timoutRefs.delete(key)
     }
 
     setTimeout(() => {
@@ -77,9 +78,10 @@ class InMemoryCacheService implements ICacheService {
    * @param key - cache key
    */
   async invalidate(key: string): Promise<void> {
-    if (this.timoutRefs[key]) {
-      clearTimeout(this.timoutRefs[key])
-      delete this.timoutRefs[key]
+    const timeoutRef = this.timoutRefs.get(key)
+    if (timeoutRef) {
+      clearTimeout(timeoutRef)
+      this.timoutRefs.delete(key)
     }
     this.store.delete(key)
   }
@@ -88,7 +90,7 @@ class InMemoryCacheService implements ICacheService {
    * Delete the entire cache.
    */
   async clear() {
-    Object.keys(this.timoutRefs).map((k) => delete this.timoutRefs[k])
+    this.timoutRefs.clear()
     this.store.clear()
   }
 }
