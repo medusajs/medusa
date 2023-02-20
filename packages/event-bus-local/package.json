@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "Local Event Bus Module for Medusa",
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",

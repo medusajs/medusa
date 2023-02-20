@@ -5,38 +5,14 @@ import {
   Logger,
   MODULE_RESOURCE_TYPE
 } from "@medusajs/medusa"
-import { Job, Queue, Worker } from "bullmq"
+import { ConnectionOptions, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
+import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 
 type InjectedDependencies = {
   logger: Logger
   configModule: ConfigModule
-}
-
-type EventBusRedisModuleOptions = {
-  queueName?: string
-  workerName?: string
-  queuePrefix?: string
-  workerPrefix?: string
-  redisUrl?: string
-}
-
-type BullJob<T> = {
-  data: {
-    eventName: string
-    data: T
-    completedSubscriberIds: string[] | undefined
-  }
-} & Job
-
-type EmitOptions = {
-  delay?: number
-  attempts: number
-  backoff?: {
-    type: "fixed" | "exponential"
-    delay: number
-  }
 }
 
 /**
@@ -45,16 +21,16 @@ type EmitOptions = {
  */
 export default class RedisEventBusService extends AbstractEventBusModuleService {
   protected readonly config_: ConfigModule
+  protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   protected readonly moduleDeclaration_: ConfigurableModuleDeclaration
-  protected readonly logger_: Logger
 
   protected queue_: Queue
 
   constructor(
-    { logger, configModule }: InjectedDependencies,
+    { configModule, logger }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
-    moduleDeclaration: ConfigurableModuleDeclaration
+    moduleDeclaration: ConfigurableModuleDeclaration,
   ) {
     // @ts-ignore
     super(...arguments)
@@ -71,26 +47,30 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     this.config_ = configModule
     this.logger_ = logger
 
-    this.connect()
-  }
-
-  connect(): void {
-    // Required config
-    // See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
-    const connection = new Redis(this.moduleOptions_?.redisUrl!, {
-      maxRetriesPerRequest: null,
-    })
-
-    this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
-      connection,
-      prefix: this.moduleOptions_.queuePrefix ?? `${this.constructor.name}`,
-    })
+    const connection = this.connect()
 
     // Register our worker to handle emit calls
     new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
       connection,
-      prefix: this.moduleOptions_.workerPrefix ?? `${this.constructor.name}`,
+      prefix: `${this.constructor.name}`,
+      ...(this.moduleOptions_.workerOptions ?? {}),
     })
+  }
+
+  connect(): ConnectionOptions {
+    const connection = new Redis(this.moduleOptions_?.redisUrl!, {
+      // Required config. See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
+      maxRetriesPerRequest: null,
+      ...(this.moduleOptions_.redisOptions ?? {}),
+    })
+
+    this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
+      connection,
+      prefix: `${this.constructor.name}`,
+      ...(this.moduleOptions_.queueOptions ?? {}),
+    })
+
+    return connection
   }
 
   /**
@@ -105,21 +85,11 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     data: T,
     options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<void> {
-    const opts: { removeOnComplete: boolean } & EmitOptions = {
-      removeOnComplete: true,
-      attempts: 1,
-    }
-    if (typeof options.attempts === "number") {
-      opts.attempts = options.attempts
-      if (isDefined(options.backoff)) {
-        opts.backoff = options.backoff
-      }
-    }
-    if (typeof options.delay === "number") {
-      opts.delay = options.delay
-    }
+    await this.queue_.add(eventName, { eventName, data }, options)
+  }
 
-    await this.queue_.add(eventName, { eventName, data }, opts)
+  async defaultRemoveJobStrategy<T = unknown>(job: BullJob<T>): Promise<void> {
+    setTimeout(async () => await job.remove(), 10000)
   }
 
   /**
@@ -147,7 +117,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const isRetry = currentAttempt > 1
     const configuredAttempts = job.opts.attempts
 
-    const isFinalAttempt =  currentAttempt === configuredAttempts
+    const isFinalAttempt = currentAttempt === configuredAttempts
 
     if (isRetry) {
       if (isFinalAttempt) {
@@ -168,9 +138,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
         return await subscriber(data, eventName)
-          .then((data) => {
+          .then(async (data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
+
+            await (this.moduleOptions_.removeJobStrategy?.(job) ?? this.defaultRemoveJobStrategy(job)).catch(() => void 0)
+
             return data
           })
           .catch((err) => {
@@ -182,18 +155,17 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       })
     )
 
-    
     // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
     const didSubscribersFail =
-    completedSubscribersInCurrentAttempt.length !==
-    subscribersInCurrentAttempt.length
-    
+      completedSubscribersInCurrentAttempt.length !==
+      subscribersInCurrentAttempt.length
+
     const isRetriesConfigured = configuredAttempts! > 1
-    
+
     // Therefore, if retrying is configured, we try again
     const shouldRetry =
-    didSubscribersFail && isRetriesConfigured && !isFinalAttempt
-    
+      didSubscribersFail && isRetriesConfigured && !isFinalAttempt
+
     if (shouldRetry) {
       const updatedCompletedSubscribers = [
         ...completedSubscribers,

@@ -162,7 +162,7 @@ export default class EventBusService
       await Promise.all(
         jobs.map(async (job) => {
           return await this.eventBusModuleService_
-            .emit(job.event_name, job.data, job.options)
+            .emit(job.event_name, job.data, { jobId: job.id, ...job.options })
             .then(async () => await this.stagedJobService_.remove(job))
         })
       )
