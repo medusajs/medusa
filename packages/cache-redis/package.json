@@ -10,7 +10,9 @@
   },
   "publishConfig": {
     "access": "public",
-    "files": ["dist"]
+    "files": [
+      "dist"
+    ]
   },
   "author": "Medusa",
   "license": "MIT",
