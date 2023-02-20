@@ -113,8 +113,17 @@ class ProductCategoryService extends TransactionBaseService {
 
     // Returns the productCategory with all of its descendants until the last child node
     const productCategoryTree = await productCategoryRepo.findDescendantsTree(
+      // @ts-ignore
       productCategory
     )
+    //
+    // throw new MedusaError(
+    //   MedusaError.Types.INVALID_DATA,
+    //   JSON.stringify({
+    //     productCategory,
+    //     tree: productCategoryTree,
+    //   })
+    // )
 
     return productCategoryTree
   }

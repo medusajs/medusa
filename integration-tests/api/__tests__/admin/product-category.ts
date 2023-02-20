@@ -33,6 +33,7 @@ describe("/admin/product-categories", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -106,11 +107,11 @@ describe("/admin/product-categories", () => {
                   id: productCategoryChild2.id,
                   name: productCategoryChild2.name,
                   handle: productCategoryChild2.handle,
-                  category_children: []
-                })
-              ]
-            })
-          ]
+                  category_children: [],
+                }),
+              ],
+            }),
+          ],
         })
       )
 
@@ -149,10 +150,7 @@ describe("/admin/product-categories", () => {
     it("gets list of product category with immediate children and parents", async () => {
       const api = useApi()
 
-      const response = await api.get(
-        `/admin/product-categories`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/product-categories`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(3)
@@ -166,7 +164,7 @@ describe("/admin/product-categories", () => {
             category_children: [
               expect.objectContaining({
                 id: productCategory.id,
-              })
+              }),
             ],
           }),
           expect.objectContaining({
@@ -177,7 +175,7 @@ describe("/admin/product-categories", () => {
             category_children: [
               expect.objectContaining({
                 id: productCategoryChild.id,
-              })
+              }),
             ],
           }),
           expect.objectContaining({
@@ -196,7 +194,7 @@ describe("/admin/product-categories", () => {
 
       const response = await api.get(
         `/admin/product-categories?is_internal=true`,
-        adminHeaders,
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
@@ -209,12 +207,14 @@ describe("/admin/product-categories", () => {
 
       const response = await api.get(
         `/admin/product-categories?q=men`,
-        adminHeaders,
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.product_categories[0].id).toEqual(productCategoryParent.id)
+      expect(response.data.product_categories[0].id).toEqual(
+        productCategoryParent.id
+      )
     })
 
     it("filters based on parent category", async () => {
@@ -222,21 +222,22 @@ describe("/admin/product-categories", () => {
 
       const response = await api.get(
         `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
-        adminHeaders,
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.product_categories[0].id).toEqual(productCategory.id)
 
-      const nullCategoryResponse = await api.get(
-        `/admin/product-categories?parent_category_id=null`,
-        adminHeaders,
-      ).catch(e => e)
+      const nullCategoryResponse = await api
+        .get(`/admin/product-categories?parent_category_id=null`, adminHeaders)
+        .catch((e) => e)
 
       expect(nullCategoryResponse.status).toEqual(200)
       expect(nullCategoryResponse.data.count).toEqual(1)
-      expect(nullCategoryResponse.data.product_categories[0].id).toEqual(productCategoryParent.id)
+      expect(nullCategoryResponse.data.product_categories[0].id).toEqual(
+        productCategoryParent.id
+      )
     })
   })
 
@@ -253,11 +254,9 @@ describe("/admin/product-categories", () => {
     it("throws an error if required fields are missing", async () => {
       const api = useApi()
 
-      const error = await api.post(
-        `/admin/product-categories`,
-        {},
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .post(`/admin/product-categories`, {}, adminHeaders)
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("invalid_data")
@@ -296,9 +295,9 @@ describe("/admin/product-categories", () => {
             created_at: expect.any(String),
             updated_at: expect.any(String),
             parent_category: expect.objectContaining({
-              id: productCategoryParent.id
+              id: productCategoryParent.id,
             }),
-            category_children: []
+            category_children: [],
           }),
         })
       )
@@ -343,10 +342,12 @@ describe("/admin/product-categories", () => {
     it("throws a not allowed error for a category with children", async () => {
       const api = useApi()
 
-      const error = await api.delete(
-        `/admin/product-categories/${productCategoryParent.id}`,
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .delete(
+          `/admin/product-categories/${productCategoryParent.id}`,
+          adminHeaders
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("not_allowed")
@@ -358,26 +359,25 @@ describe("/admin/product-categories", () => {
     it("deletes a product category with no children successfully", async () => {
       const api = useApi()
 
-      const deleteResponse = await api.delete(
-        `/admin/product-categories/${productCategory.id}`,
-        adminHeaders
-      ).catch(e => e)
+      const deleteResponse = await api
+        .delete(`/admin/product-categories/${productCategory.id}`, adminHeaders)
+        .catch((e) => e)
 
       expect(deleteResponse.status).toEqual(200)
       expect(deleteResponse.data.id).toEqual(productCategory.id)
       expect(deleteResponse.data.deleted).toBeTruthy()
       expect(deleteResponse.data.object).toEqual("product-category")
 
-      const errorFetchingDeleted = await api.get(
-        `/admin/product-categories/${productCategory.id}`,
-        adminHeaders
-      ).catch(e => e)
+      const errorFetchingDeleted = await api
+        .get(`/admin/product-categories/${productCategory.id}`, adminHeaders)
+        .catch((e) => e)
 
       expect(errorFetchingDeleted.response.status).toEqual(404)
     })
   })
 
   describe("POST /admin/product-categories/:id", () => {
+    let categoryWithChildren
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
@@ -390,6 +390,12 @@ describe("/admin/product-categories", () => {
         name: "sweater",
         handle: "sweater",
       })
+
+      categoryWithChildren = await simpleProductCategoryFactory(dbConnection, {
+        name: "parent",
+        handle: "parent-category",
+        category_children: [productCategory, productCategory2],
+      })
     })
 
     afterEach(async () => {
@@ -400,13 +406,15 @@ describe("/admin/product-categories", () => {
     it("throws an error if invalid ID is sent", async () => {
       const api = useApi()
 
-      const error = await api.post(
-        `/admin/product-categories/not-found-id`,
-        {
-          name: 'testing'
-        },
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .post(
+          `/admin/product-categories/not-found-id`,
+          {
+            name: "testing",
+          },
+          adminHeaders
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(404)
       expect(error.response.data.type).toEqual("not_found")
@@ -418,13 +426,15 @@ describe("/admin/product-categories", () => {
     it("throws an error if invalid attribute is sent", async () => {
       const api = useApi()
 
-      const error = await api.post(
-        `/admin/product-categories/${productCategory.id}`,
-        {
-          invalid_property: 'string'
-        },
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .post(
+          `/admin/product-categories/${productCategory.id}`,
+          {
+            invalid_property: "string",
+          },
+          adminHeaders
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("invalid_data")
@@ -461,7 +471,81 @@ describe("/admin/product-categories", () => {
             parent_category: expect.objectContaining({
               id: productCategory2.id,
             }),
-            category_children: []
+            category_children: [],
+          }),
+        })
+      )
+    })
+
+    it("successfully updates a product category with children", async () => {
+      const api = useApi()
+
+      // const response = await api.post(
+      //   `/admin/product-categories/${categoryWithChildren.id}`,
+      //   {
+      //     name: "parent name 2",
+      //     handle: categoryWithChildren.handle,
+      //     is_internal: true,
+      //     is_active: false,
+      //   },
+      //   adminHeaders
+      // )
+
+      let parent = await api.post(
+        `/admin/product-categories/`,
+        {
+          name: "parent",
+        },
+        adminHeaders
+      )
+
+      const child1 = await api.post(
+        `/admin/product-categories/`,
+        {
+          name: "child1",
+          parent_category_id: parent.data.product_category.id,
+        },
+        adminHeaders
+      )
+
+      const child2 = await api.post(
+        `/admin/product-categories/`,
+        {
+          name: "child2",
+          parent_category_id: parent.data.product_category.id,
+        },
+        adminHeaders
+      )
+
+      let response = await api.get(
+        `/admin/product-categories/${child1.data.product_category.id}`,
+        adminHeaders
+      )
+
+      console.log(response.data)
+
+      response = await api.get(
+        `/admin/product-categories/${response.data.product_category.parent_category_id}`,
+        adminHeaders
+      )
+
+      console.log(response.data)
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            name: "parent name 2",
+            is_internal: true,
+            is_active: false,
+            category_children: expect.arrayContaining([
+              expect.objectContaining({
+                handle: child1.data.product_category.handle,
+              }),
+              expect.objectContaining({
+                handle: child2.data.product_category.handle,
+              }),
+            ]),
           }),
         })
       )
@@ -521,14 +605,14 @@ describe("/admin/product-categories", () => {
 
       expect(products[0].categories).toEqual([
         expect.objectContaining({
-          id: productCategory.id
-        })
+          id: productCategory.id,
+        }),
       ])
 
       expect(products[1].categories).toEqual([
         expect.objectContaining({
-          id: productCategory.id
-        })
+          id: productCategory.id,
+        }),
       ])
     })
 
@@ -539,16 +623,19 @@ describe("/admin/product-categories", () => {
         product_ids: [{ id: "product-id-invalid" }],
       }
 
-      const error = await api.post(
-        `/admin/product-categories/${productCategory.id}/products/batch`,
-        payload,
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .post(
+          `/admin/product-categories/${productCategory.id}/products/batch`,
+          payload,
+          adminHeaders
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toEqual({
         errors: ["Products product-id-invalid do not exist"],
-        message: "Provided request body contains errors. Please check the data and retry the request"
+        message:
+          "Provided request body contains errors. Please check the data and retry the request",
       })
     })
 
@@ -556,11 +643,13 @@ describe("/admin/product-categories", () => {
       const api = useApi()
       const payload = { product_ids: [] }
 
-      const error = await api.post(
-        `/admin/product-categories/invalid-category-id/products/batch`,
-        payload,
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .post(
+          `/admin/product-categories/invalid-category-id/products/batch`,
+          payload,
+          adminHeaders
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(404)
       expect(error.response.data).toEqual({
@@ -573,11 +662,13 @@ describe("/admin/product-categories", () => {
       const api = useApi()
       const payload = { product_ids: [] }
 
-      const error = await api.post(
-        `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
-        payload,
-        adminHeaders
-      ).catch(e => e)
+      const error = await api
+        .post(
+          `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
+          payload,
+          adminHeaders
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toEqual({
@@ -606,7 +697,7 @@ describe("/admin/product-categories", () => {
       productCategory = await simpleProductCategoryFactory(dbConnection, {
         id: "test-category",
         name: "test category",
-        products: [testProduct1, testProduct2]
+        products: [testProduct1, testProduct2],
       })
     })
 
@@ -646,8 +737,8 @@ describe("/admin/product-categories", () => {
 
       expect(products[0].categories).toEqual([
         expect.objectContaining({
-          id: productCategory.id
-        })
+          id: productCategory.id,
+        }),
       ])
 
       expect(products[1].categories).toEqual([])
@@ -660,18 +751,21 @@ describe("/admin/product-categories", () => {
         product_ids: [{ id: "product-id-invalid" }],
       }
 
-      const error = await api.delete(
-        `/admin/product-categories/${productCategory.id}/products/batch`,
-        {
-          ...adminHeaders,
-          data: payload,
-        }
-      ).catch(e => e)
+      const error = await api
+        .delete(
+          `/admin/product-categories/${productCategory.id}/products/batch`,
+          {
+            ...adminHeaders,
+            data: payload,
+          }
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toEqual({
         errors: ["Products product-id-invalid do not exist"],
-        message: "Provided request body contains errors. Please check the data and retry the request"
+        message:
+          "Provided request body contains errors. Please check the data and retry the request",
       })
     })
 
@@ -679,13 +773,15 @@ describe("/admin/product-categories", () => {
       const api = useApi()
       const payload = { product_ids: [] }
 
-      const error = await api.delete(
-        `/admin/product-categories/invalid-category-id/products/batch`,
-        {
-          ...adminHeaders,
-          data: payload,
-        }
-      ).catch(e => e)
+      const error = await api
+        .delete(
+          `/admin/product-categories/invalid-category-id/products/batch`,
+          {
+            ...adminHeaders,
+            data: payload,
+          }
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(404)
       expect(error.response.data).toEqual({
@@ -698,13 +794,15 @@ describe("/admin/product-categories", () => {
       const api = useApi()
       const payload = { product_ids: [] }
 
-      const error = await api.delete(
-        `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
-        {
-          ...adminHeaders,
-          data: payload,
-        }
-      ).catch(e => e)
+      const error = await api
+        .delete(
+          `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
+          {
+            ...adminHeaders,
+            data: payload,
+          }
+        )
+        .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data).toEqual({
