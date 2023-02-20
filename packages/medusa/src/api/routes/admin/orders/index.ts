@@ -91,12 +91,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/",
+    transformIncludesOptions(),
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       isList: true,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./list-orders").default)
   )
 
@@ -105,12 +105,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/:id",
+    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
     transformQuery(AdminPostOrdersOrderParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
     middlewares.wrap(require("./get-order").default)
   )
 
@@ -119,13 +119,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderReq),
     transformQuery(FindParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./update-order").default)
   )
 
@@ -134,12 +134,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/complete",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderCompleteParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./complete-order").default)
   )
 
@@ -148,13 +148,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/refund",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderRefundsReq),
     transformQuery(AdminPostOrdersOrderRefundsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./refund-payment").default)
   )
 
@@ -163,12 +163,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/capture",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderCaptureParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./capture-payment").default)
   )
 
@@ -177,13 +177,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillment",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderFulfillmentsReq),
     transformQuery(AdminPostOrdersOrderFulfillmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./create-fulfillment").default)
   )
 
@@ -192,12 +192,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillments/:fulfillment_id/cancel",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderFulfillementsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-fulfillment").default)
   )
 
@@ -206,12 +206,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderSwapFulfillementsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-fulfillment-swap").default)
   )
 
@@ -220,12 +220,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersClaimFulfillmentsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-fulfillment-claim").default)
   )
 
@@ -234,13 +234,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/shipment",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderShipmentReq),
     transformQuery(AdminPostOrdersOrderShipmentParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./create-shipment").default)
   )
 
@@ -249,13 +249,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/return",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderReturnsReq),
     transformQuery(AdminPostOrdersOrderReturnsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./request-return").default)
   )
 
@@ -264,12 +264,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/cancel",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderCancel, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-order").default)
   )
 
@@ -278,13 +278,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/shipping-methods",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderShippingMethodsReq),
     transformQuery(AdminPostOrdersOrderShippingMethodsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./add-shipping-method").default)
   )
 
@@ -293,12 +293,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/archive",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderArchiveParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./archive-order").default)
   )
 
@@ -307,13 +307,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps",
+    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
     transformBody(AdminPostOrdersOrderSwapsReq),
     transformQuery(AdminPostOrdersOrderSwapsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
     middlewares.wrap(require("./create-swap").default)
   )
 
@@ -322,12 +322,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/cancel",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersSwapCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-swap").default)
   )
 
@@ -336,12 +336,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderSwapsSwapFulfillmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./fulfill-swap").default)
   )
 
@@ -350,13 +350,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/shipments",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderSwapsSwapShipmentsReq),
     transformQuery(AdminPostOrdersOrderSwapsSwapShipmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./create-swap-shipment").default)
   )
 
@@ -365,12 +365,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/process-payment",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersOrderSwapsSwapProcessPaymentParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./process-swap-payment").default)
   )
 
@@ -379,13 +379,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderClaimsReq),
     transformQuery(AdminPostOrdersOrderClaimsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./create-claim").default)
   )
 
@@ -394,12 +394,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/cancel",
+    transformIncludesOptions(),
     transformQuery(AdminPostOrdersClaimCancel, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-claim").default)
   )
 
@@ -408,13 +408,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderClaimsClaimReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./update-claim").default)
   )
 
@@ -423,13 +423,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderClaimsClaimFulfillmentsReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimFulfillmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./fulfill-claim").default)
   )
 
@@ -438,13 +438,13 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/shipments",
+    transformIncludesOptions(),
     transformBody(AdminPostOrdersOrderClaimsClaimShipmentsReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimShipmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
     middlewares.wrap(require("./create-claim-shipment").default)
   )
 
