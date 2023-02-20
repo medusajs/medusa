@@ -12,6 +12,7 @@
  *   - sidebar_icon: `back-arrow`
  * - To add a sidebar title, add in customProps sidebar_is_title: true
  * - To add a group headline, add in customProps sidebar_is_group_headline: true
+ * - To add a coming soon link (with a badge), add in customProps sidebar_is_soon: true
  */
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
@@ -22,7 +23,7 @@ module.exports = {
       id: 'homepage',
       label: 'Overview',
       customProps: {
-        sidebar_icon: 'book-open'
+        sidebar_icon: 'book-open',
       },
       className: 'homepage-sidebar-item'
     },
@@ -424,7 +425,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -441,7 +445,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Currencies'
+          label: 'Currencies',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -458,7 +465,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Currencies'
+          label: 'Admin: Manage Currencies',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -478,7 +488,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -507,7 +520,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Server: Send SignUp Email'
+          label: 'Server: Send SignUp Email',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -537,7 +553,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -549,12 +568,18 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Products'
+          label: 'Products',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Collections'
+          label: 'Collections',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -566,12 +591,18 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Products'
+          label: 'Admin: Manage Products',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Collections'
+          label: 'Admin: Manage Collections',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -581,12 +612,18 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Storefront: Show Products'
+          label: 'Storefront: Show Products',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Storefront: Show Collections'
+          label: 'Storefront: Show Collections',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
       ]
     },
@@ -601,7 +638,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -613,7 +653,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Cart'
+          label: 'Cart',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -665,7 +708,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -677,32 +723,50 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Orders'
+          label: 'Orders',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Swaps'
+          label: 'Swaps',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Returns'
+          label: 'Returns',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Claims'
+          label: 'Claims',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Draft Orders'
+          label: 'Draft Orders',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Fulfillment'
+          label: 'Fulfillment',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -714,7 +778,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Server: Send Confirmation Email'
+          label: 'Server: Send Confirmation Email',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -724,7 +791,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Orders'
+          label: 'Admin: Manage Orders',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -734,42 +804,66 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Swaps'
+          label: 'Admin: Manage Swaps',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Returns'
+          label: 'Admin: Manage Returns',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Claims'
+          label: 'Admin: Manage Claims',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Order Drafts'
+          label: 'Admin: Manage Order Drafts',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Return Reasons'
+          label: 'Admin: Manage Return Reasons',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Storefront: Manage Customer Orders'
+          label: 'Storefront: Manage Customer Orders',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Storefront: Create a Swap'
+          label: 'Storefront: Create a Swap',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Storefront: Create a Return'
+          label: 'Storefront: Create a Return',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -794,7 +888,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -806,7 +903,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Taxes'
+          label: 'Taxes',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -823,22 +923,34 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Server: Create Tax Provider'
+          label: 'Server: Create Tax Provider',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Taxes'
+          label: 'Admin: Manage Taxes',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Tax Rates'
+          label: 'Admin: Manage Tax Rates',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Tax Overrides'
+          label: 'Admin: Manage Tax Overrides',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'doc',
@@ -858,7 +970,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -902,7 +1017,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -951,7 +1069,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1005,7 +1126,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1049,7 +1173,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1061,7 +1188,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Users'
+          label: 'Users',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1073,12 +1203,18 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Users'
+          label: 'Admin: Manage Users',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Invites'
+          label: 'Admin: Manage Invites',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
       ]
     },
@@ -1180,7 +1316,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1281,7 +1420,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1335,7 +1477,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1347,7 +1492,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Create a File Service'
+          label: 'Create a File Service',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
       ]
     },
@@ -1394,7 +1542,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
@@ -1406,7 +1557,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Create a Strategy'
+          label: 'Create a Strategy',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
       ]
     },
@@ -1421,7 +1575,10 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Overview'
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
         },
         {
           type: 'html',
