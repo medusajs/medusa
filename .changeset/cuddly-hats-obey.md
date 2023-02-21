@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-Chores(medusa): Remove payment service deprecation temporarely
+chore(medusa): Remove payment service deprecation temporarely
