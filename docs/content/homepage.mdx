@@ -9,8 +9,7 @@ hide_footer: true
 
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
-import IconBolt from '@theme/Icon/Bolt';
-import RocketLaunch from '@theme/Icon/RocketLaunch';
+import Icons from '@theme/Icon';
 
 # Medusa Documentation
 
@@ -21,7 +20,7 @@ Get an overview of Medusa's features, integrations, and how to use them.
   href: '/usage/create-medusa-app',
   label: 'Quickstart Guide',
   customProps: {
-    icon: RocketLaunch,
+    icon: Icons['bolt-solid'],
     html: 'In this document, you’ll learn how to use create-medusa-app to create a Medusa project with the three main components of Medusa.',
     className: 'card-highlighted'
   }
@@ -37,7 +36,7 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/usage/create-medusa-app',
     label: 'Quickstart Guide',
     customProps: {
-      icon: IconBolt,
+      icon: Icons['bolt-solid'],
       description: 'Create your first Medusa server.'
     }
   },
@@ -46,10 +45,7 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/introduction#features',
     label: 'Features',
     customProps: {
-      themedImage: {
-        light: '/img/dev-env-icon.svg',
-        dark: '/img/dev-env-icon-dark.svg'
-      },
+      icon: Icons['sparkles-solid'],
       description: 'Learn about Medusa\'s features'
     }
   },
@@ -58,10 +54,7 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/starters/nextjs-medusa-starter',
     label: 'Next.js Storefront',
     customProps: {
-      themedImage: {
-        light: '/img/nextjs-icon.svg',
-        dark: '/img/nextjs-icon-dark.svg'
-      },
+      icon: Icons['nextjs'],
       description: 'Install Medusa\'s Next.js storefront.'
     },
   },
@@ -70,10 +63,7 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/starters/gatsby-medusa-starter',
     label: 'Gatsby Storefront',
     customProps: {
-      themedImage: {
-        light: '/img/gatsby-icon.svg',
-        dark: '/img/gatsby-icon-dark.svg'
-      },
+      icon: Icons['gatsby'],
       description: 'Install Medusa\'s Gatsby storefront.'
     }
   },
@@ -82,10 +72,7 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/admin/quickstart',
     label: 'Admin Quickstart',
     customProps: {
-      themedImage: {
-        light: '/img/admin-icon.svg',
-        dark: '/img/admin-icon-dark.svg'
-      },
+      icon: Icons['computer-desktop-solid'],
       description: 'Install Medusa\'s Admin to manage your store.'
     }
   },
@@ -94,10 +81,7 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/user-guide',
     label: 'User Guide',
     customProps: {
-      themedImage: {
-        light: '/img/user-guide.svg',
-        dark: '/img/user-guide-dark.svg'
-      },
+      icon: Icons['users-solid'],
       description: 'Take a look at the features available in Medusa Admin'
     }
   }
@@ -113,10 +97,7 @@ Best of the greatest.
     href: '/advanced/backend/plugins/create',
     label: 'Create a Plugin',
     customProps: {
-      themedImage: {
-        light: '/img/terminal-icon.svg',
-        dark: '/img/terminal-icon-dark.svg'
-      },
+      icon: Icons['squares-plus-solid'],
       description: 'Create, test, and publish a plugins.'
     }
   },
@@ -125,10 +106,7 @@ Best of the greatest.
     href: '/add-plugins/stripe',
     label: 'Integrate Stripe',
     customProps: {
-      themedImage: {
-        light: '/img/stripe-icon.svg',
-        dark: '/img/stripe-icon-dark.svg'
-      },
+      icon: Icons['stripe'],
       description: 'Install Stripe on your Medusa server.'
     }
   },
@@ -137,10 +115,7 @@ Best of the greatest.
     href: '/advanced/storefront/how-to-implement-checkout-flow',
     label: 'Implement Checkout',
     customProps: {
-      themedImage: {
-        light: '/img/cart-icon.svg',
-        dark: '/img/cart-icon-dark.svg'
-      },
+      icon: Icons['shopping-cart-solid'],
       description: 'Implement the checkout flow in your storefront.'
     }
   },
@@ -149,10 +124,7 @@ Best of the greatest.
     href: '/advanced/admin/import-products',
     label: 'Import Products',
     customProps: {
-      themedImage: {
-        light: '/img/tee-icon.svg',
-        dark: '/img/tee-icon-dark.svg'
-      },
+      icon: Icons['tag-solid'],
       description: 'Bulk import products into Medusa.'
     },
   },
@@ -161,10 +133,7 @@ Best of the greatest.
     href: '/advanced/backend/shipping/overview',
     label: 'Shipping Overview',
     customProps: {
-      themedImage: {
-        light: '/img/fast-delivery-icon.svg',
-        dark: '/img/fast-delivery-icon-dark.svg'
-      },
+      icon: Icons['globe-europe-solid'],
       description: 'Learn how shipping works in Medusa.'
     }
   },
@@ -173,10 +142,7 @@ Best of the greatest.
     href: '/advanced/backend/payment/overview',
     label: 'Payment Overview',
     customProps: {
-      themedImage: {
-        light: '/img/payment-accepted-icon.svg',
-        dark: '/img/payment-accepted-icon-dark.svg'
-      },
+      icon: Icons['credit-card-solid'],
       description: 'Learn how payment works in Medusa'
     }
   }
