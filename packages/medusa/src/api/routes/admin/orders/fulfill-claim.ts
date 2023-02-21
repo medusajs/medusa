@@ -1,9 +1,8 @@
 import { ClaimService, OrderService } from "../../../../services"
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments
@@ -14,6 +13,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -21,6 +22,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimFulfillmentsReq"
  * x-codegen:
  *   method: fulfillClaim
+ *   params: AdminPostOrdersOrderClaimsClaimFulfillmentsReq
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -65,10 +67,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id, claim_id } = req.params
 
-  const validated = await validator(
-    AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
   const claimService: ClaimService = req.scope.resolve("claimService")
@@ -81,9 +80,8 @@ export default async (req, res) => {
     })
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.status(200).json({ order })
@@ -109,3 +107,6 @@ export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+// eslint-disable-next-line max-len
+export class AdminPostOrdersOrderClaimsClaimFulfillmentsParams extends FindParams {}
