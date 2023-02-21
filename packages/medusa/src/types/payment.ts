@@ -18,11 +18,13 @@ export type PaymentSessionInput = {
         email: string
         shipping_address: Address | null
         shipping_methods: ShippingMethod[]
+        billing_address?: Address | null
       }
   customer?: Customer | null
   currency_code: string
   amount: number
   resource_id?: string
+  paymentSessionData?: Record<string, unknown>
 }
 
 export type CreatePaymentInput = {
