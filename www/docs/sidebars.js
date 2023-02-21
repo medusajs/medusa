@@ -80,7 +80,7 @@ module.exports = {
       id: 'admin/quickstart',
       label: 'Medusa Admin',
       customProps: {
-        sidebar_icon: 'computer-desktop-solid'
+        sidebar_icon: 'computer-desktop'
       },
       className: 'homepage-sidebar-item'
     },
@@ -89,7 +89,7 @@ module.exports = {
       id: 'plugins/overview',
       label: 'Plugins',
       customProps: {
-        sidebar_icon: 'bolt'
+        sidebar_icon: 'squares-plus'
       },
       className: 'homepage-sidebar-item'
     },
@@ -182,7 +182,7 @@ module.exports = {
       id: 'cli/reference',
       label: 'Medusa CLI',
       customProps: {
-        sidebar_icon: 'command-line-solid'
+        sidebar_icon: 'command-line'
       },
       className: 'homepage-sidebar-item'
     },
@@ -191,7 +191,7 @@ module.exports = {
       id: 'usage/local-development',
       label: 'Medusa Dev CLI',
       customProps: {
-        sidebar_icon: 'tools-solid'
+        sidebar_icon: 'tools'
       },
       className: 'homepage-sidebar-item'
     },
@@ -315,7 +315,7 @@ module.exports = {
       type: 'category',
       label: 'Troubleshooting',
       customProps: {
-        sidebar_icon: 'bug-ant-solid'
+        sidebar_icon: 'bug'
       },
       items: [
         {
@@ -390,7 +390,7 @@ module.exports = {
       id: "usage",
       label: "Usage",
       customProps: {
-        sidebar_icon: 'light-solid-bulb'
+        sidebar_icon: 'light-bulb'
       },
       className: 'homepage-sidebar-item',
     },
