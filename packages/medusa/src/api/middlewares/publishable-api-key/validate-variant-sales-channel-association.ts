@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../services/publishable-api-key"
-import { ProductService, ProductVariantService } from "../../../services"
+import { ProductVariantService } from "../../../services"
 
 /**
  * The middleware check if requested product is assigned to a SC associated with PK in the header.
@@ -25,7 +25,7 @@ async function validateProductVariantSalesChannelAssociation(
       "publishableApiKeyService"
     )
 
-    const { sales_channel_id: salesChannelIds } =
+    const { sales_channel_ids: salesChannelIds } =
       await publishableKeyService.getResourceScopes(pubKey)
 
     if (

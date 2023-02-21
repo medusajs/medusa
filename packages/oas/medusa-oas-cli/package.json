@@ -32,8 +32,11 @@
   },
   "dependencies": {
     "@medusajs/medusa": "*",
+    "@medusajs/openapi-typescript-codegen": "*",
     "@readme/openapi-parser": "^2.4.0",
+    "@types/lodash": "^4.14.191",
     "commander": "^10.0.0",
+    "lodash": "^4.17.21",
     "openapi3-ts": "^3.1.2",
     "swagger-inline": "^6.1.0"
   }

@@ -1,7 +1,5 @@
 import { Router } from "express"
 
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -18,11 +16,7 @@ import { GetPublishableApiKeySalesChannelsParams } from "./list-publishable-api-
 const route = Router()
 
 export default (app) => {
-  app.use(
-    "/publishable-api-keys",
-    isFeatureFlagEnabled(PublishableAPIKeysFeatureFlag.key),
-    route
-  )
+  app.use("/publishable-api-keys", route)
 
   route.post(
     "/",
