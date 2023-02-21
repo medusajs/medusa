@@ -29,12 +29,10 @@ code {
 
 .code-header {
   padding: 12px var(--ifm-base-spacing);
-}
-
-.code-header {
   background-color: var(--medusa-code-tabs-bg);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: var(--ifm-code-border-radius) var(--ifm-code-border-radius) 0px 0px;
 }
 

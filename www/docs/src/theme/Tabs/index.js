@@ -71,7 +71,6 @@ function TabList({className, block, selectedValue, selectValue, tabValues, isCod
   //ADDED: code tab selector
   return (
     <div  className={`tablist-wrapper ${isCodeTabs ? 'code-header' : ''}`}>
-      {isCodeTabs && <span className='code-title'>{codeTitle}</span>}
       <div className={`tabs-ul-wrapper ${isCodeTabs ? 'code-tabs-ul-wrapper' : ''}`} ref={codeTabsWrapperRef}>
         {isCodeTabs && <span className='code-tab-selector' ref={codeTabSelectorRef}></span>}
         <ul
@@ -103,6 +102,7 @@ function TabList({className, block, selectedValue, selectValue, tabValues, isCod
           ))}
         </ul>
       </div>
+      {isCodeTabs && <span className='code-title'>{codeTitle}</span>}
     </div>
   );
 }
