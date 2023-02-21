@@ -36,7 +36,6 @@
   },
   "peerDependencies": {
     "@medusajs/medusa": "1.7.7",
-    "@medusajs/modules-sdk": "*",
     "typeorm": "^0.3.11"
   }
 }

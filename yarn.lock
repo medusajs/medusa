@@ -5227,7 +5227,6 @@ __metadata:
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": 1.7.7
-    "@medusajs/modules-sdk": "*"
     typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
@@ -5381,7 +5380,6 @@ __metadata:
     uuid: ^8.3.2
     winston: ^3.8.2
   peerDependencies:
-    "@medusajs/modules-sdk": "*"
     medusa-interfaces: 1.3.6
     typeorm: ^0.3.11
   bin:
@@ -5453,7 +5451,6 @@ __metadata:
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.7.7
-    "@medusajs/modules-sdk": "*"
     typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
