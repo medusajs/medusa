@@ -99,7 +99,11 @@ html:not([data-theme="dark"]) .DocSearch-Prefill:after {
 .markdown p + .alert,
 .markdown p + section,
 video {
-  margin-top: var(--ifm-base-margin-vertical)
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+.markdown p + .card {
+  margin-top: 24px;
 }
 
 .markdown {

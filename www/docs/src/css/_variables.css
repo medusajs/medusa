@@ -156,7 +156,7 @@
   --docsearch-searchbox-background: var(--medusa-bg-field) !important;
   --docsearch-searchbox-focus-background: var(--medusa-bg-field-hover) !important;
   --docsearch-searchbox-border-color: var(--medusa-border-base);
-  --docsearch-searchbox-shadow: var(--medusa-shadow-field-focused) !important;
+  --docsearch-searchbox-shadow: none !important;
   --docsearch-modal-height: 472px !important;
   --docsearch-modal-background: var(--medusa-bg-base) !important;
   --docsearch-modal-border-color: var(--medusa-border-base);
@@ -212,14 +212,16 @@
   --large-card-bg-image: url('/img/squares-bg-light.svg');
   --large-card-fade-effect: linear-gradient(transparent, var(--large-card-bg));
   --large-card-fade-effect-hover: linear-gradient(transparent, var(--large-card-bg-hover));
-  --large-card-icon-size: 32px;
-  --large-card-icon-wrapper-size: 40px;
+  --large-card-icon-size: 20px;
+  --large-card-icon-inside-padding: 6px;
+  --large-card-icon-wrapper-padding: var(--bordered-padding);
   --large-card-icon-wrapper-border-color: var(--ifm-strong-border-color);
   --large-card-title-color: var(--ifm-color-primary);
 
   /* Bordered Element */
   --bordered-border-color: var(--medusa-border-strong);
-  --bordered-padding: 2px;
+  --bordered-padding: 4px;
+  --bordered-inside-padding: 2px;
   --bordered-margin-right: calc(var(--ifm-base-margin-vertical) / 2);
 }
 

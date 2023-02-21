@@ -272,7 +272,7 @@ html:not([data-theme="dark"]) .DocSearch-NoResults .DocSearch-Screen-Icon::befor
   height: 100% !important;
   border-radius: var(--ifm-global-radius) !important;
   border: 1px solid var(--docsearch-searchbox-border-color) !important;
-  padding: 8px !important;
+  padding: 6px 6px 6px 8px !important;
 }
 
 span.DocSearch-Button-Key {
@@ -305,9 +305,14 @@ span.DocSearch-Button-Key {
 .DocSearch-Button-Placeholder {
   color: var(--docsearch-placeholder-color);
   padding-left: calc(var(--ifm-base-spacing) / 2) !important;
-  font-size: var(--medusa-label-small-plus-size) !important;
-  line-height: var(--medusa-label-small-plus-line-height) !important;
-  font-weight: var(--medusa-label-small-plus-font-weight) !important;
+  font-size: var(--medusa-label-small-size) !important;
+  line-height: var(--medusa-label-small-line-height) !important;
+  font-weight: var(--medusa-label-small-font-weight) !important;
+}
+
+.DocSearch-Button-Keys {
+  width: fit-content;
+  min-width: unset !important;
 }
 
 .DocSearch-Button-Key {
@@ -320,6 +325,14 @@ span.DocSearch-Button-Key {
   vertical-align: middle;
   padding: 2px !important;
   border: 1px solid var(--medusa-border-strong) !important;
+}
+
+.DocSearch-Button-Key:not(:last-child) {
+  margin-right: 4px !important;
+}
+
+.DocSearch-Button-Key:last-child {
+  margin-right: 0 !important;
 }
 
 .DocSearch-Button:active, .DocSearch-Button:focus, .DocSearch-Button:hover,

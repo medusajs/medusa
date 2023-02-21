@@ -2,6 +2,7 @@ import React from "react"
 import ThemedImage from '@theme/ThemedImage'
 import Bordered from '../Bordered'
 import './index.css'
+import BorderedIcon from "../BorderedIcon"
 
 export default function LargeCard ({
   Icon,
@@ -17,13 +18,13 @@ export default function LargeCard ({
     <article className="large-card">
       <div>
         {(Icon || image) && (
-          <Bordered wrapperClassName={'large-card-icon-wrapper'}>
-            {image && <ThemedImage alt={title} sources={{
-                light: image.light,
-                dark: image.dark || image.light
-              }} className="large-card-icon" />}
-            {Icon && <Icon  className="large-card-icon" />}
-          </Bordered>
+          <BorderedIcon
+            IconComponent={Icon}
+            icon={image}
+            iconClassName='large-card-icon'
+            wrapperClassName='large-card-bordered-icon-wrapper'
+            iconWrapperClassName='large-card-icon-wrapper'
+          />
         )}
         <div className="large-card-heading">
           <span className="large-card-title">{title}</span>
