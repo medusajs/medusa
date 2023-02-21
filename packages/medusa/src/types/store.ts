@@ -14,6 +14,23 @@ export type UpdateStoreInput = {
 }
 
 /**
+ * @schema ModulesResponse
+ * type: array
+ * items:
+ *   type: object
+ *   required:
+ *     - module
+ *     - resolution
+ *   properties:
+ *     module:
+ *       description: The key of the module.
+ *       type: string
+ *     resolution:
+ *       description: The resolution path of the module or false if module is not installed.
+ *       type: string
+ */
+
+/**
  * @schema ExtendedStoreDTO
  * allOf:
  *   - $ref: "#/components/schemas/Store"
