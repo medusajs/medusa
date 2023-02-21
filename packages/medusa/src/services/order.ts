@@ -1712,7 +1712,10 @@ class OrderService extends TransactionBaseService {
     totalsFieldsOrContext?: string[] | TotalsContext
   ): Promise<Order> {
     if (Array.isArray(totalsFieldsOrContext)) {
-      return await this.decorateTotalsLegacy(order, totalsFieldsOrContext)
+      if (totalsFieldsOrContext.length) {
+        return await this.decorateTotalsLegacy(order, totalsFieldsOrContext)
+      }
+      totalsFieldsOrContext = {}
     }
 
     const manager = this.transactionManager_ ?? this.manager_

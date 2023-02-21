@@ -91,7 +91,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
@@ -105,7 +105,9 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/:id",
-    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
+    transformIncludesOptions(allowedOrderIncludesFields, [
+      AvailableOrderIncludesFields.RETURNABLE_ITEMS,
+    ]),
     transformQuery(AdminPostOrdersOrderParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -119,7 +121,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderReq),
     transformQuery(FindParams, {
       defaultRelations: relations,
@@ -134,7 +136,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/complete",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderCompleteParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -148,7 +150,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/refund",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderRefundsReq),
     transformQuery(AdminPostOrdersOrderRefundsParams, {
       defaultRelations: relations,
@@ -163,7 +165,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/capture",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderCaptureParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -177,7 +179,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillment",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderFulfillmentsReq),
     transformQuery(AdminPostOrdersOrderFulfillmentsParams, {
       defaultRelations: relations,
@@ -192,7 +194,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillments/:fulfillment_id/cancel",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderFulfillementsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -206,7 +208,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderSwapFulfillementsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -220,7 +222,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersClaimFulfillmentsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -234,7 +236,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/shipment",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderShipmentReq),
     transformQuery(AdminPostOrdersOrderShipmentParams, {
       defaultRelations: relations,
@@ -249,7 +251,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/return",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderReturnsReq),
     transformQuery(AdminPostOrdersOrderReturnsParams, {
       defaultRelations: relations,
@@ -264,7 +266,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/cancel",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderCancel, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -278,7 +280,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/shipping-methods",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderShippingMethodsReq),
     transformQuery(AdminPostOrdersOrderShippingMethodsParams, {
       defaultRelations: relations,
@@ -293,7 +295,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/archive",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderArchiveParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -307,7 +309,9 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps",
-    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
+    transformIncludesOptions(allowedOrderIncludesFields, [
+      AvailableOrderIncludesFields.RETURNABLE_ITEMS,
+    ]),
     transformBody(AdminPostOrdersOrderSwapsReq),
     transformQuery(AdminPostOrdersOrderSwapsParams, {
       defaultRelations: relations,
@@ -322,7 +326,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/cancel",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersSwapCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -336,7 +340,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderSwapsSwapFulfillmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -350,7 +354,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/shipments",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderSwapsSwapShipmentsReq),
     transformQuery(AdminPostOrdersOrderSwapsSwapShipmentsParams, {
       defaultRelations: relations,
@@ -365,7 +369,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/process-payment",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersOrderSwapsSwapProcessPaymentParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -379,7 +383,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderClaimsReq),
     transformQuery(AdminPostOrdersOrderClaimsParams, {
       defaultRelations: relations,
@@ -394,7 +398,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/cancel",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformQuery(AdminPostOrdersClaimCancel, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -408,7 +412,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderClaimsClaimReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimParams, {
       defaultRelations: relations,
@@ -423,7 +427,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderClaimsClaimFulfillmentsReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimFulfillmentsParams, {
       defaultRelations: relations,
@@ -438,7 +442,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/shipments",
-    transformIncludesOptions(),
+    transformIncludesOptions(allowedOrderIncludesFields),
     transformBody(AdminPostOrdersOrderClaimsClaimShipmentsReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimShipmentsParams, {
       defaultRelations: relations,
@@ -590,9 +594,13 @@ export const filterableAdminOrdersFields = [
   "updated_at",
 ]
 
-export const AllowedOrderIncludesFields = {
+export const AvailableOrderIncludesFields = {
   RETURNABLE_ITEMS: "returnable_items",
 }
+
+export const allowedOrderIncludesFields = [
+  AvailableOrderIncludesFields.RETURNABLE_ITEMS,
+]
 
 export * from "./add-shipping-method"
 export * from "./archive-order"
