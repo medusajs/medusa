@@ -26,6 +26,7 @@ describe("RedisEventBusService", () => {
         {
           manager: MockManager,
           logger: loggerMock,
+          redisConnection: {},
         },
         {
           redisUrl: "test-url",
@@ -103,6 +104,9 @@ describe("RedisEventBusService", () => {
           { eventName: "eventName", data: { hi: "1234" } },
           {
             attempts: 1,
+            removeOnComplete: {
+              age: 10000,
+            },
           }
         )
       })
@@ -123,6 +127,9 @@ describe("RedisEventBusService", () => {
             attempts: 3,
             backoff: 5000,
             delay: 1000,
+            removeOnComplete: {
+              age: 10000,
+            },
           }
         )
       })
