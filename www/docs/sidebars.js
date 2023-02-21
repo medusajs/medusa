@@ -1153,7 +1153,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'advanced/backend/sales-channels/manage-admin',
-          label: 'Manage Sales Channels'
+          label: 'Admin: Manage Sales Channels'
         },
         {
           type: 'doc',

@@ -35,6 +35,7 @@ import IconGitHub from './GitHub';
 import IconGlobeEurope from './GlobeEurope';
 import IconGlobeEuropeSolid from './GlobeEuropeSolid';
 import IconJavaScript from './JavaScript';
+import IconKey from './Key';
 import IconLightBulb from './LightBulb';
 import IconLightBulbSolid from './LightBulbSolid';
 import IconLightMode from './LightMode';
@@ -97,6 +98,7 @@ export default {
   'globe-europe': IconGlobeEurope,
   'globe-europe-solid': IconGlobeEuropeSolid,
   'javascript': IconJavaScript,
+  'key': IconKey,
   'light-bulb': IconLightBulb,
   'light-bulb-solid': IconLightBulbSolid,
   'light-mode': IconLightMode,
