@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments
  * operationId: "PostOrdersOrderSwapsSwapFulfillments"
  * summary: "Create Swap Fulfillment"
  * description: "Creates a Fulfillment for a Swap."

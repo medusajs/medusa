@@ -2,7 +2,7 @@ import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/archive
+ * @oas [post] /admin/orders/{id}/archive
  * operationId: "PostOrdersOrderArchive"
  * summary: "Archive Order"
  * description: "Archives the order with the given id."

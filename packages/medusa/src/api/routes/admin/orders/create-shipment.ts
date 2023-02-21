@@ -13,7 +13,7 @@ import { TrackingLink } from "../../../../models"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}/shipment
+ * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Create a Shipment"
  * description: "Registers a Fulfillment as shipped."

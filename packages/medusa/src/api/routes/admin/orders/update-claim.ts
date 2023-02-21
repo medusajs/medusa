@@ -16,7 +16,7 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /order/{id}/claims/{claim_id}
+ * @oas [post] /admin/order/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
  * description: "Updates a Claim."

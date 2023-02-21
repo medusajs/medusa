@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions
+ * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."

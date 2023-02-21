@@ -8,7 +8,7 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /product-categories/{id}/products/batch
+ * @oas [delete] /admin/product-categories/{id}/products/batch
  * operationId: "DeleteProductCategoriesCategoryProductsBatch"
  * summary: "Delete Products"
  * description: "Remove a list of products from a product category."

@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import { SalesChannelService } from "../../../../services"
 
 /**
- * @oas [get] /sales-channels/{id}
+ * @oas [get] /admin/sales-channels/{id}
  * operationId: "GetSalesChannelsSalesChannel"
  * summary: "Get a Sales Channel"
  * description: "Retrieves the sales channel."

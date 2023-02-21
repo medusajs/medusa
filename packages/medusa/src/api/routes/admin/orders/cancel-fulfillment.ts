@@ -11,7 +11,7 @@ import { Fulfillment } from "../../../../models"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersOrderFulfillmentsCancel"
  * summary: "Cancels a Fulfilmment"
  * description: "Registers a Fulfillment as canceled."

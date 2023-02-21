@@ -21,7 +21,7 @@ import { OrdersReturnItem } from "../../../../types/orders"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}/return
+ * @oas [post] /admin/orders/{id}/return
  * operationId: "PostOrdersOrderReturns"
  * summary: "Request a Return"
  * description: "Requests a Return. If applicable a return label will be created and other plugins notified."

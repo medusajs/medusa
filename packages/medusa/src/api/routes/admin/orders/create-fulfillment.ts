@@ -21,7 +21,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
 
 /**
- * @oas [post] /orders/{id}/fulfillment
+ * @oas [post] /admin/orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."

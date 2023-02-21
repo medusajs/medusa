@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [get] /order-edits/{id}
+ * @oas [get] /store/order-edits/{id}
  * operationId: "GetOrderEditsOrderEdit"
  * summary: "Retrieve an OrderEdit"
  * description: "Retrieves a OrderEdit."

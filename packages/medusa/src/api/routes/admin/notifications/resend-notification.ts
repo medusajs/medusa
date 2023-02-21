@@ -10,7 +10,7 @@ import { NotificationService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /notifications/{id}/resend
+ * @oas [post] /admin/notifications/{id}/resend
  * operationId: "PostNotificationsNotificationResend"
  * summary: "Resend Notification"
  * description: "Resends a previously sent notifications, with the same data but optionally to a different address"

@@ -21,7 +21,7 @@ import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
- * @oas [post] /price-lists
+ * @oas [post] /admin/price-lists
  * operationId: "PostPriceListsPriceList"
  * summary: "Create a Price List"
  * description: "Creates a Price List"

@@ -10,7 +10,7 @@ import ProductTagService from "../../../../services/product-tag"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /product-tags
+ * @oas [get] /store/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
  * description: "Retrieve a list of Product Tags."

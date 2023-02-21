@@ -3,7 +3,7 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { OrderService } from "../../../../services"
 
 /**
- * @oas [get] /orders/cart/{cart_id}
+ * @oas [get] /store/orders/cart/{cart_id}
  * operationId: GetOrdersOrderCartId
  * summary: Get by Cart ID
  * description: "Retrieves an Order by the id of the Cart that was used to create the Order."

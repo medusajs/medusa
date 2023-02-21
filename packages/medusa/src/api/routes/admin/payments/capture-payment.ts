@@ -1,7 +1,7 @@
 import { PaymentService } from "../../../../services"
 
 /**
- * @oas [post] /payments/{id}/capture
+ * @oas [post] /admin/payments/{id}/capture
  * operationId: "PostPaymentsPaymentCapture"
  * summary: "Capture a Payment"
  * description: "Captures a Payment."

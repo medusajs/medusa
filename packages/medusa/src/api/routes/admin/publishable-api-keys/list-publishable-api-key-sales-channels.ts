@@ -5,7 +5,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
- * @oas [get] /publishable-api-keys/{id}/sales-channels
+ * @oas [get] /admin/publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
  * summary: "List SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"

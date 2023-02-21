@@ -7,7 +7,7 @@ import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
 
 /**
- * @oas [get] /products
+ * @oas [get] /admin/products
  * operationId: "GetProducts"
  * summary: "List Products"
  * description: "Retrieves a list of Product"

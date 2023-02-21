@@ -1,7 +1,7 @@
 import InviteService from "../../../../services/invite"
 
 /**
- * @oas [get] /invites
+ * @oas [get] /admin/invites
  * operationId: "GetInvites"
  * summary: "Lists Invites"
  * description: "Lists all Invites"

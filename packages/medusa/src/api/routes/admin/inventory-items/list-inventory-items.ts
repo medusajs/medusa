@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IsString, IsBoolean, IsOptional } from "class-validator"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Transform } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { getLevelsByInventoryItemId } from "./utils/join-levels"
@@ -14,13 +14,13 @@ import {
 import { IInventoryService } from "../../../../interfaces"
 import {
   extendedFindParamsMixin,
-  StringComparisonOperator,
   NumericalComparisonOperator,
+  StringComparisonOperator,
 } from "../../../../types/common"
 import { AdminInventoryItemsListWithVariantsAndLocationLevelsRes } from "."
 
 /**
- * @oas [get] /inventory-items
+ * @oas [get] /admin/inventory-items
  * operationId: "GetInventoryItems"
  * summary: "List inventory items."
  * description: "Lists inventory items."

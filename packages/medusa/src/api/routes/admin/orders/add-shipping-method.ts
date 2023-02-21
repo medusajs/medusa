@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/shipping-methods
+ * @oas [post] /admin/orders/{id}/shipping-methods
  * operationId: "PostOrdersOrderShippingMethods"
  * summary: "Add a Shipping Method"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."

@@ -6,7 +6,7 @@ import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
- * @oas [get] /product-categories
+ * @oas [get] /admin/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories."
