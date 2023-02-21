@@ -1,3 +1,3 @@
-export * from "./module"
+export * from "./module-loader"
 
-export * from "./module-definitions"
+export * from "./module-definition"

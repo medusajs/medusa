@@ -14,7 +14,7 @@ import {
   MODULE_SCOPE,
 } from "../../types"
 
-import { moduleLoader } from "../module"
+import { moduleLoader } from "../module-loader"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
 
 function asArray(

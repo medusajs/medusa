@@ -10,7 +10,7 @@ import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import {
   moduleLoader,
   moduleHelper,
-  registerModuleDefinitions,
+  registerModules,
 } from "@medusajs/modules-sdk"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
@@ -28,7 +28,7 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const moduleResolutions = registerModuleDefinitions({})
+const moduleResolutions = registerModules({})
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",
