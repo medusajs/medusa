@@ -204,6 +204,7 @@
   --ifm-card-bg: var(--ifm-background-surface-color);
   --ifm-card-bg-hover: var(--medusa-bg-subtle-hover);
   --ifm-card-border-color: var(--ifm-background-surface-color);
+  --ifm-card-icon-size: 20px;
 
   /* Large Card */
   --large-card-bg: var(--ifm-background-surface-color);
