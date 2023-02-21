@@ -627,8 +627,17 @@ function resolvePlugin(pluginName: string): {
     )
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
+    const resolvedPathToDist = path.dirname(
+      requireSource.resolve(`${pluginName}/dist`)
+    )
+    const computedResolvedPath =
+      resolvedPath + (process.env.DEV_MODE ? "/src" : "")
+
+    // Allow a plugin to choose to output the build to dist, only if not in dev mode
+    const isDistExist = !process.env.DEV_MODE && existsSync(resolvedPathToDist)
+
     return {
-      resolve: resolvedPath + (process.env.DEV_MODE ? "/src" : ""),
+      resolve: isDistExist ? resolvedPathToDist : computedResolvedPath,
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
       options: {},
