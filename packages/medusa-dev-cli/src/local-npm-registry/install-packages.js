@@ -24,9 +24,16 @@ const installPackages = async ({
     // in workspaces which should preserve node_modules structure
     // (packages being mostly hoisted to top-level node_modules)
 
+    const { stdout: yarnVersion } = await promisifiedSpawn([
+      `yarn`,
+      [`--version`],
+      { stdio: `pipe` },
+    ])
+    const workspaceCommand = !yarnVersion.startsWith("1") ? "list" : "info"
+
     const { stdout } = await promisifiedSpawn([
       `yarn`,
-      [`workspaces`, `info`, `--json`],
+      [`workspaces`, workspaceCommand, `--json`],
       { stdio: `pipe` },
     ])
 
