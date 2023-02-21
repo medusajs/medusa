@@ -14,7 +14,7 @@ import {
   MODULE_SCOPE,
 } from "../../types"
 
-import registerModules from "../module"
+import { moduleLoader } from "../module"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
 
 function asArray(
@@ -103,7 +103,7 @@ describe("modules loader", () => {
     const configModule = buildConfigModule({
       moduleResolutions,
     })
-    await registerModules({ container, configModule, logger })
+    await moduleLoader({ container, configModule, logger })
 
     const testService = container.resolve(
       moduleResolutions.testService.definition.key
@@ -136,7 +136,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
 
-    await registerModules({ container, configModule, logger })
+    await moduleLoader({ container, configModule, logger })
 
     const testService = container.resolve(
       moduleResolutions.testService.definition.key,
@@ -179,7 +179,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
 
-    await registerModules({ container, configModule, logger })
+    await moduleLoader({ container, configModule, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
       "Could not resolve module: TestService. Error: Loaders for module TestService failed: loader"
@@ -211,7 +211,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
 
-    await registerModules({ container, configModule, logger })
+    await moduleLoader({ container, configModule, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
       "Could not resolve module: TestService. Error: No service found in module. Make sure that your module exports a service."
@@ -245,7 +245,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
     try {
-      await registerModules({ container, configModule, logger })
+      await moduleLoader({ container, configModule, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "No service found in module. Make sure that your module exports a service."
@@ -280,7 +280,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
     try {
-      await registerModules({ container, configModule, logger })
+      await moduleLoader({ container, configModule, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService has to define its scope (internal | external)"
@@ -315,7 +315,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
     try {
-      await registerModules({ container, configModule, logger })
+      await moduleLoader({ container, configModule, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService is missing its resources config"
