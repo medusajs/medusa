@@ -21,11 +21,11 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   useEffect(() => {
     if (isBrowser && sidebarRef.current) {
       function handleScroll () {
-        if (!sidebarRef.current.classList.contains('scrolling')) {
-          sidebarRef.current.classList.add('scrolling');
+        if (!sidebarRef.current?.classList.contains('scrolling')) {
+          sidebarRef.current?.classList.add('scrolling');
           const intervalId = setInterval(() => {
             if (!sidebarRef.current?.matches(':hover')) {
-              sidebarRef.current.classList.remove('scrolling');
+              sidebarRef.current?.classList.remove('scrolling');
               clearInterval(intervalId);
             }
           }, 300)

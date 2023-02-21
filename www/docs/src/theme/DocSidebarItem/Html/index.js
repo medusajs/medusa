@@ -18,7 +18,8 @@ export default function DocSidebarItemHtml({item, level, index}) {
         customProps?.sidebar_is_group_headline && 'sidebar-group-headline',
         customProps?.sidebar_is_group_divider && 'sidebar-group-divider',
         customProps?.sidebar_is_divider_line && 'sidebar-divider-line',
-        customProps?.sidebar_is_back_link && 'sidebar-back-link'
+        customProps?.sidebar_is_back_link && 'sidebar-back-link',
+        customProps?.sidebar_is_soon && 'sidebar-soon-link sidebar-badge-wrapper',
       )}
 
       key={index}
@@ -32,6 +33,9 @@ export default function DocSidebarItemHtml({item, level, index}) {
       >
 
       </span>
+    {customProps?.sidebar_is_soon && (
+      <span className={`sidebar-badge sidebar-soon-badge`}>Soon</span>
+    )}
     </li>
   );
 }
