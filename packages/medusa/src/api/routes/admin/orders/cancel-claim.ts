@@ -35,7 +35,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Claims
  * responses:
  *   200:
  *     description: OK

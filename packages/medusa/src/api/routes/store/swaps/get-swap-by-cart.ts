@@ -24,7 +24,7 @@ import SwapService from "../../../../services/swap"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/swaps/{cart_id}'
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK

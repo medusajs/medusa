@@ -27,7 +27,7 @@ import { CartService } from "../../../../services"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

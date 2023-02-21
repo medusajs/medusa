@@ -71,7 +71,7 @@ import { Fulfillment, LineItem } from "../../../../models"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Fulfillments
  * responses:
  *   200:
  *     description: OK

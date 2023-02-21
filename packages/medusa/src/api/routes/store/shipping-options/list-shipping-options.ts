@@ -25,7 +25,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

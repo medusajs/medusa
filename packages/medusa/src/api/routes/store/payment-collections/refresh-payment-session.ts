@@ -27,7 +27,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}'
  * tags:
- *   - PaymentCollection
+ *   - PaymentCollections
  * responses:
  *   200:
  *     description: OK

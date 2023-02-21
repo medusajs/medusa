@@ -34,7 +34,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PaymentCollection
+ *   - PaymentCollections
  * responses:
  *   200:
  *     description: OK

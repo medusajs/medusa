@@ -44,7 +44,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK

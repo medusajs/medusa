@@ -40,7 +40,7 @@ import { validator } from "../../../../utils/validator"
  *           "provider_id": "manual"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

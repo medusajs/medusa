@@ -45,7 +45,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

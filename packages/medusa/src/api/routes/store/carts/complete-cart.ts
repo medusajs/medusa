@@ -32,7 +32,7 @@ import { IdempotencyKeyService } from "../../../../services"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/complete'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "If a cart was successfully authorized, but requires further

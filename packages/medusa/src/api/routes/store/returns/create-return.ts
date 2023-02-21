@@ -61,7 +61,7 @@ import { validator } from "../../../../utils/validator"
  *           ]
  *       }'
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK

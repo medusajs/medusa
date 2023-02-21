@@ -46,7 +46,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *   201:
  *     description: OK

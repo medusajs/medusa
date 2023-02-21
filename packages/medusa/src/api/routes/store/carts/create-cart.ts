@@ -53,7 +53,7 @@ import { CartCreateProps } from "../../../../types/cart"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "Successfully created a new Cart"

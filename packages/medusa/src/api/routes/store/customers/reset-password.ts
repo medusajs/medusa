@@ -42,7 +42,7 @@ import { EntityManager } from "typeorm"
  *           "token": "supersecrettoken"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Fulfillments
  * responses:
  *   200:
  *     description: OK

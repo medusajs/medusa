@@ -159,7 +159,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

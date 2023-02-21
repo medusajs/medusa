@@ -105,7 +105,7 @@ import ProductTypeService from "../../../../services/product-type"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Type
+ *   - Product Types
  * responses:
  *  "200":
  *    description: OK

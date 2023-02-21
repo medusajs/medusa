@@ -33,7 +33,7 @@ import { SalesChannelService } from "../../../../services/"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK

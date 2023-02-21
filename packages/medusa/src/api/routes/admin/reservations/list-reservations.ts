@@ -73,7 +73,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK

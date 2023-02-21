@@ -35,7 +35,7 @@ import { ReturnReasonService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

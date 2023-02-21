@@ -74,7 +74,7 @@ import { Type } from "class-transformer"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/collections'
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK

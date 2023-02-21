@@ -44,7 +44,7 @@ import { EntityManager } from "typeorm"
  *           "includes_tax": true
  *       }'
  * tags:
- *   - Currency
+ *   - Currencies
  * responses:
  *   200:
  *     description: OK
@@ -59,13 +59,11 @@ export default async (req: ExtendedRequest<Currency>, res) => {
   const currencyService: CurrencyService = req.scope.resolve("currencyService")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const currency = await manager.transaction(
-    async (transactionManager) => {
-      return await currencyService
-        .withTransaction(transactionManager)
-        .update(code, data)
-    }
-  )
+  const currency = await manager.transaction(async (transactionManager) => {
+    return await currencyService
+      .withTransaction(transactionManager)
+      .update(code, data)
+  })
 
   res.json({ currency })
 }

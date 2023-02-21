@@ -35,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/products/search?q=Shirt'
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

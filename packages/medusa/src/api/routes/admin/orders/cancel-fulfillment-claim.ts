@@ -40,7 +40,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Fulfillments
  * responses:
  *   200:
  *     description: OK

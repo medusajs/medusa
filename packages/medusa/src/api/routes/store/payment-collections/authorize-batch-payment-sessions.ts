@@ -35,7 +35,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PaymentCollection
+ *   - PaymentCollections
  * responses:
  *   200:
  *     description: OK

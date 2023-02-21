@@ -30,7 +30,7 @@ import UserService from "../../../../services/user"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK

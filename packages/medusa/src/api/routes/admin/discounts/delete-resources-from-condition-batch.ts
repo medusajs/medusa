@@ -52,7 +52,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount Condition
+ *   - Discount Conditions
  * responses:
  *   200:
  *     description: OK
