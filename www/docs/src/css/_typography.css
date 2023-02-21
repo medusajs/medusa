@@ -97,7 +97,8 @@ html:not([data-theme="dark"]) .DocSearch-Prefill:after {
 .markdown p + .code-wrapper,
 .markdown p + .tabs-wrapper,
 .markdown p + .alert,
-.markdown p + section {
+.markdown p + section,
+video {
   margin-top: var(--ifm-base-margin-vertical)
 }
 

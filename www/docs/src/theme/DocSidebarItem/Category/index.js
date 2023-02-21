@@ -4,7 +4,6 @@ import {
   ThemeClassNames,
   useThemeConfig,
   usePrevious,
-  Collapsible,
   useCollapsible,
 } from '@docusaurus/theme-common';
 import {
@@ -18,6 +17,7 @@ import {translate} from '@docusaurus/Translate';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import DocSidebarItems from '@theme/DocSidebarItems';
 import DocSidebarItemIcon from '../Icon';
+import { Collapsible } from '@site/src/components/SidebarCollapsible'
 
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
@@ -128,7 +128,8 @@ export default function DocSidebarItemCategory({
         customProps?.sidebar_is_group_headline && 'sidebar-group-headline',
         customProps?.sidebar_is_group_divider && 'sidebar-group-divider',
         customProps?.sidebar_is_divider_line && 'sidebar-divider-line',
-        customProps?.sidebar_is_back_link && 'sidebar-back-link'
+        customProps?.sidebar_is_back_link && 'sidebar-back-link',
+        customProps?.sidebar_is_soon && 'sidebar-soon-link sidebar-badge-wrapper',
       )}>
       <div
         className={clsx('menu__list-item-collapsible', {
@@ -173,9 +174,12 @@ export default function DocSidebarItemCategory({
             }}
           />
         )}
+        {customProps?.sidebar_is_soon && (
+          <span className={`sidebar-badge sidebar-soon-badge`}>Soon</span>
+        )}
       </div>
 
-      <Collapsible lazy as="ul" className="menu__list" collapsed={collapsed}>
+      <Collapsible as="ul" className="menu__list" collapsed={collapsed}>
         <DocSidebarItems
           items={items}
           tabIndex={collapsed ? -1 : 0}

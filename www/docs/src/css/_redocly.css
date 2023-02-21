@@ -97,9 +97,14 @@
 }
 
 .redocusaurus ul > li.react-tabs__tab--selected.tab-error {
-  background-color: var(--medusa-button-error) !important;
-  border-color: var(--medusa-button-error) !important;
-  color: var(--medusa-button-error-text) !important;
+  background-color: var(--medusa-button-danger) !important;
+  border-color: var(--medusa-button-danger) !important;
+  color: var(--medusa-button-danger-text) !important;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected.tab-error:hover {
+  background-color: var(--medusa-button-danger-hover) !important;
+  border-color: var(--medusa-button-danger-hover) !important;
 }
 
 .redocusaurus .tab-error:not(.react-tabs__tab--selected) {

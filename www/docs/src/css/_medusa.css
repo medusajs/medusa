@@ -2,8 +2,8 @@
 :root {
   /** Backgrounds **/
   --medusa-bg-subtle: #F8F9FA;
-  --medusa-bg-subtle-hover: #ECEEF0;
-  --medusa-bg-subtle-pressed: #E6E8EB;
+  --medusa-bg-subtle-hover: #F1F3F5;
+  --medusa-bg-subtle-pressed: #ECEEF0;
   --medusa-bg-base: #FFFFFF;
   --medusa-bg-base-hover: #F8F9FA;
   --medusa-bg-base-pressed: #F1F3F5;
@@ -23,7 +23,7 @@
   --medusa-border-interactive: #6E56CF;
 
   /** Text **/
-  --medusa-text-primary: #1C1C1F;
+  --medusa-text-primary: #11181C;
   --medusa-text-secondary: #687076;
   --medusa-text-placeholder: #889096;
   --medusa-text-disabled: #C1C8CD;
@@ -39,8 +39,10 @@
   --medusa-button-secondary: #FFFFFF;
   --medusa-button-secondary-hover: #F8F9FA;
   --medusa-button-secondary-pressed: #F1F3F5;
-  --medusa-button-error: #E5484D;
-  --medusa-button-error-text: var(--medusa-text-on-color);
+  --medusa-button-danger: #E5484D;
+  --medusa-button-danger-hover: #DC3D43;
+  --medusa-button-danger-pressed: #CD2B31;
+  --medusa-button-danger-text: var(--medusa-text-on-color);
   --medusa-button-success: #30A46C;
   --medusa-button-success-text: var(--medusa-text-on-color);
 
@@ -117,17 +119,24 @@
   --medusa-label-x-small-plus-size: 12px;
   --medusa-label-x-small-plus-line-height: 20px;
   --medusa-label-x-small-plus-font-weight: 500;
+
+  /** Tags **/
+  --medusa-tag-purple-bg: #EDE9FE;
+  --medusa-tag-purple-bg-hover: #E4DEFC;
+  --medusa-tag-purple-text: #5746AF;
+  --medusa-tag-purple-dot: #6E56CF;
+  --medusa-tag-purple-border: #D7CFF9;
 }
 
 /** Dark theme **/
 html[data-theme="dark"] {
   /** Backgrounds **/
   --medusa-bg-subtle: #161618;
-  --medusa-bg-subtle-hover: #232326;
-  --medusa-bg-subtle-pressed: #28282C;
+  --medusa-bg-subtle-hover: #1C1C1F;
+  --medusa-bg-subtle-pressed: #232326;
   --medusa-bg-base: #1C1C1F;
-  --medusa-bg-base-hover: #28282C;
-  --medusa-bg-base-pressed: #2E2E32;
+  --medusa-bg-base-hover: #232326;
+  --medusa-bg-base-pressed: #28282C;
   --medusa-bg-component: #2E2E32;
   --medusa-bg-field: #232326;
   --medusa-bg-field-hover: #28282C;
@@ -149,8 +158,8 @@ html[data-theme="dark"] {
   --medusa-text-placeholder: #706F78;
   --medusa-text-disabled: #504F57;
   --medusa-text-on-color: #FFFFFF;
-  --medusa-text-interactive: #6E56CF;
-  --medusa-text-interactive-hover: #7C66DC;
+  --medusa-text-interactive: #7C66DC;
+  --medusa-text-interactive-hover: #9E8CFC;
   --medusa-text-error: #E5484D;
 
   /** Buttons **/
@@ -167,12 +176,19 @@ html[data-theme="dark"] {
   --medusa-icon-placeholder: #706F78;
   --medusa-icon-disabled: #504F57;
   --medusa-icon-on-color: #FFFFFF;
-  --medusa-icon-interactive: #6E56CF;
-  --medusa-icon-interactive-hover: #7C66DC;
+  --medusa-icon-interactive: #7C66DC;
+  --medusa-icon-interactive-hover: #9E8CFC;
   --medusa-icon-error: #E5484D;
 
   /** Shadow **/
   --medusa-shadow-overlay: 0px 2px 16px rgba(0, 0, 0, 0.32);
   --medusa-shadow-field-focused: 0px 0px 0px 4px #2C2250;
   --medusa-shadow-button-focused: 0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF;
+
+  /** Tags **/
+  --medusa-tag-purple-bg: #2C2250;
+  --medusa-tag-purple-bg-hover: #32275F;
+  --medusa-tag-purple-text: #9E8CFC;
+  --medusa-tag-purple-dot: #6E56CF;
+  --medusa-tag-purple-border: #392C72;
 }
