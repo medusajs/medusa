@@ -66,6 +66,7 @@
 .menu__list:not(.theme-doc-sidebar-menu) > .theme-doc-sidebar-item-link.theme-doc-sidebar-item-link-level-2 > .menu__link--active::before {
   background-color: var(--medusa-icon-interactive);
   z-index: 2;
+  top: var(--ifm-menu-link-padding-vertical);
 }
 
 .menu__list-item-collapsible .menu__caret {
@@ -193,6 +194,11 @@
 .sidebar-group-headline > .menu__list-item-collapsible > .menu__link:hover,
 .sidebar-group-headline .menu__list-item-collapsible:hover {
   background-color: transparent !important;
+}
+
+.sidebar-group-headline > .menu__link,
+.sidebar-group-headline > .menu__list-item-collapsible > .menu__link {
+  --medusa-label-small-plus-font-weight: 600;
 }
 
 /** Divider Line Item **/
