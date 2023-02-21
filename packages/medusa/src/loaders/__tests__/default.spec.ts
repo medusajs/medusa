@@ -1,12 +1,16 @@
 import { asValue, createContainer } from "awilix"
 import { MockManager, MockRepository } from "medusa-test-utils"
 import { StoreServiceMock } from "../../services/__mocks__/store"
-import { ShippingProfileServiceMock } from "../../services/__mocks__/shipping-profile"
+import {
+  ShippingProfileServiceMock
+} from "../../services/__mocks__/shipping-profile"
 import Logger from "../logger"
 import featureFlagsLoader from "../feature-flags"
 import { default as defaultLoader } from "../defaults"
 import { SalesChannelServiceMock } from "../../services/__mocks__/sales-channel"
-import { PaymentProviderServiceMock } from "../../services/__mocks__/payment-provider"
+import {
+  PaymentProviderServiceMock
+} from "../../services/__mocks__/payment-provider"
 
 describe("default", () => {
   describe("sales channel default", () => {
@@ -40,14 +44,23 @@ describe("default", () => {
         paymentProviderService: asValue(PaymentProviderServiceMock),
         notificationProviders: asValue([]),
         notificationService: asValue({
+          withTransaction: function () {
+            return this
+          },
           registerInstalledProviders: jest.fn(),
         }),
         fulfillmentProviders: asValue([]),
         fulfillmentProviderService: asValue({
+          withTransaction: function () {
+            return this
+          },
           registerInstalledProviders: jest.fn(),
         }),
         taxProviders: asValue([]),
         taxProviderService: asValue({
+          withTransaction: function () {
+            return this
+          },
           registerInstalledProviders: jest.fn(),
         }),
       })

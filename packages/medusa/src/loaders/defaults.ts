@@ -21,7 +21,11 @@ import {
 import { CurrencyRepository } from "../repositories/currency"
 import { FlagRouter } from "../utils/flag-router"
 import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
-import { AbstractPaymentService, AbstractTaxService } from "../interfaces"
+import {
+  AbstractPaymentProcessor,
+  AbstractPaymentService,
+  AbstractTaxService,
+} from "../interfaces"
 
 const silentResolution = <T>(
   container: AwilixContainer,
@@ -122,66 +126,167 @@ export default async ({
 
   await entityManager.transaction(async (manager: EntityManager) => {
     await storeService.withTransaction(manager).create()
+    const profileServiceTx = profileService.withTransaction(manager)
 
-    const payProviders =
-      silentResolution<(typeof BasePaymentService | AbstractPaymentService)[]>(
-        container,
-        "paymentProviders",
-        logger
-      ) || []
-    const payIds = payProviders.map((p) => p.getIdentifier())
+    const context = { container, manager, logger }
 
-    const pProviderService = container.resolve<PaymentProviderService>(
-      "paymentProviderService"
-    )
-    await pProviderService.registerInstalledProviders(payIds)
+    await Promise.all([
+      registerPaymentProvider(context),
+      registerPaymentProcessor(context),
+      registerNotificationProvider(context),
+      registerFulfillmentProvider(context),
+      registerTaxProvider(context),
+      profileServiceTx.createDefault(),
+      profileServiceTx.createGiftCardDefault(),
+      (async () => {
+        const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
+          SalesChannelFeatureFlag.key
+        )
+        if (isSalesChannelEnabled) {
+          return await salesChannelService
+            .withTransaction(manager)
+            .createDefault()
+        }
 
-    const notiProviders =
-      silentResolution<typeof BaseNotificationService[]>(
-        container,
-        "notificationProviders",
-        logger
-      ) || []
-    const notiIds = notiProviders.map((p) => p.getIdentifier())
-
-    const nProviderService = container.resolve<NotificationService>(
-      "notificationService"
-    )
-    await nProviderService.registerInstalledProviders(notiIds)
-
-    const fulfilProviders =
-      silentResolution<typeof BaseFulfillmentService[]>(
-        container,
-        "fulfillmentProviders",
-        logger
-      ) || []
-    const fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
-
-    const fProviderService = container.resolve<FulfillmentProviderService>(
-      "fulfillmentProviderService"
-    )
-    await fProviderService.registerInstalledProviders(fulfilIds)
-
-    const taxProviders =
-      silentResolution<AbstractTaxService[]>(
-        container,
-        "taxProviders",
-        logger
-      ) || []
-    const taxIds = taxProviders.map((p) => p.getIdentifier())
-
-    const tProviderService =
-      container.resolve<TaxProviderService>("taxProviderService")
-    await tProviderService.registerInstalledProviders(taxIds)
-
-    await profileService.withTransaction(manager).createDefault()
-    await profileService.withTransaction(manager).createGiftCardDefault()
-
-    const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
-      SalesChannelFeatureFlag.key
-    )
-    if (isSalesChannelEnabled) {
-      await salesChannelService.withTransaction(manager).createDefault()
-    }
+        return
+      })(),
+    ])
   })
+}
+
+async function registerPaymentProvider({
+  manager,
+  container,
+  logger,
+}: {
+  container: AwilixContainer
+  manager: EntityManager
+  logger: Logger
+}): Promise<void> {
+  const payProviders = (
+    silentResolution<
+      (
+        | typeof BasePaymentService
+        | AbstractPaymentService
+        | AbstractPaymentProcessor
+      )[]
+    >(container, "paymentProviders", logger) || []
+  ).filter((provider) => !(provider instanceof AbstractPaymentProcessor))
+
+  const payIds = payProviders.map((paymentProvider) => {
+    return paymentProvider.getIdentifier()
+  })
+
+  const pProviderService = container.resolve<PaymentProviderService>(
+    "paymentProviderService"
+  )
+  await pProviderService
+    .withTransaction(manager)
+    .registerInstalledProviders(payIds)
+}
+
+async function registerPaymentProcessor({
+  manager,
+  container,
+  logger,
+}: {
+  container: AwilixContainer
+  manager: EntityManager
+  logger: Logger
+}): Promise<void> {
+  const payProviders = (
+    silentResolution<
+      (
+        | typeof BasePaymentService
+        | AbstractPaymentService
+        | AbstractPaymentProcessor
+      )[]
+    >(container, "paymentProviders", logger) || []
+  ).filter((provider) => provider instanceof AbstractPaymentProcessor)
+
+  const payIds: string[] = []
+  await Promise.all(
+    payProviders.map((paymentProvider) => {
+      payIds.push(paymentProvider.getIdentifier())
+      return paymentProvider.init()
+    })
+  )
+
+  const pProviderService = container.resolve<PaymentProviderService>(
+    "paymentProviderService"
+  )
+  await pProviderService
+    .withTransaction(manager)
+    .registerInstalledProviders(payIds)
+}
+
+async function registerNotificationProvider({
+  manager,
+  container,
+  logger,
+}: {
+  container: AwilixContainer
+  manager: EntityManager
+  logger: Logger
+}): Promise<void> {
+  const notiProviders =
+    silentResolution<typeof BaseNotificationService[]>(
+      container,
+      "notificationProviders",
+      logger
+    ) || []
+  const notiIds = notiProviders.map((p) => p.getIdentifier())
+
+  const nProviderService = container.resolve<NotificationService>(
+    "notificationService"
+  )
+  await nProviderService
+    .withTransaction(manager)
+    .registerInstalledProviders(notiIds)
+}
+
+async function registerFulfillmentProvider({
+  manager,
+  container,
+  logger,
+}: {
+  container: AwilixContainer
+  manager: EntityManager
+  logger: Logger
+}): Promise<void> {
+  const fulfilProviders =
+    silentResolution<typeof BaseFulfillmentService[]>(
+      container,
+      "fulfillmentProviders",
+      logger
+    ) || []
+  const fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
+
+  const fProviderService = container.resolve<FulfillmentProviderService>(
+    "fulfillmentProviderService"
+  )
+  await fProviderService
+    .withTransaction(manager)
+    .registerInstalledProviders(fulfilIds)
+}
+
+async function registerTaxProvider({
+  manager,
+  container,
+  logger,
+}: {
+  container: AwilixContainer
+  manager: EntityManager
+  logger: Logger
+}): Promise<void> {
+  const taxProviders =
+    silentResolution<AbstractTaxService[]>(container, "taxProviders", logger) ||
+    []
+  const taxIds = taxProviders.map((p) => p.getIdentifier())
+
+  const tProviderService =
+    container.resolve<TaxProviderService>("taxProviderService")
+  await tProviderService
+    .withTransaction(manager)
+    .registerInstalledProviders(taxIds)
 }

@@ -21,11 +21,13 @@ export type PaymentContext = {
     email: string
     shipping_address: Address | null
     shipping_methods: ShippingMethod[]
+    billing_address?: Address | null
   }
   currency_code: string
   amount: number
-  resource_id?: string
+  resource_id: string
   customer?: Customer
+  paymentSessionData: Record<string, unknown>
 }
 
 export type PaymentSessionResponse = {
@@ -148,7 +150,7 @@ export abstract class AbstractPaymentService
     super(container, config)
   }
 
-  protected static identifier: string
+  public static identifier: string
 
   public getIdentifier(): string {
     if (!(this.constructor as typeof AbstractPaymentService).identifier) {
