@@ -4,15 +4,7 @@ hide_table_of_contents: true
 ---
 
 import DocCardList from '@theme/DocCardList'
-import IconFlyingBox from '@theme/Icon/FlyingBox'
-import IconShoppingCart from '@theme/Icon/ShoppingCart'
-import IconUsersSolid from '@theme/Icon/UsersSolid'
-import IconTagSolid from '@theme/Icon/TagSolid'
-import IconGiftSolid from '@theme/Icon/GiftSolid'
-import IconCurrencyDollar from '@theme/Icon/CurrencyDollar'
-import IconGlobeEurope from '@theme/Icon/GlobeEurope'
-import IconBuildingTax from '@theme/Icon/BuildingTax'
-import IconChannels from '@theme/Icon/Channels'
+import Icons from '@theme/Icon'
 import LargeCardList from '@site/src/components/LargeCardList'
 import LargeCard from '@site/src/components/LargeCard'
 
@@ -32,7 +24,7 @@ Medusa provides the necessary features to build a customizable shopping experien
 
 <LargeCardList>
   <LargeCard
-    Icon={IconFlyingBox}
+    Icon={Icons['check-circle-solid']}
     title='Orders'
     action={{
       label: 'Learn more',
@@ -49,7 +41,7 @@ Medusa provides the necessary features to build a customizable shopping experien
 
   </LargeCard>
   <LargeCard
-    Icon={IconShoppingCart}
+    Icon={Icons['shopping-cart-solid']}
     title='Cart and Checkout'
     action={{
       label: 'Learn more',
@@ -65,7 +57,7 @@ Medusa provides the necessary features to build a customizable shopping experien
 
   </LargeCard>
   <LargeCard
-    Icon={IconUsersSolid}
+    Icon={Icons['users-solid']}
     title='Customers'
     action={{
       label: 'Learn more',
@@ -87,7 +79,7 @@ Medusa's products configuration allows managing products of different types incl
 
 <LargeCardList>
   <LargeCard
-    Icon={IconTagSolid}
+    Icon={Icons['tag-solid']}
     title='Products'
     action={{
       label: 'Learn more',
@@ -104,7 +96,7 @@ Medusa's products configuration allows managing products of different types incl
 
   </LargeCard>
   <LargeCard
-    Icon={IconGiftSolid}
+    Icon={Icons['gift-solid']}
     title='Gift Cards'
     action={{
       label: 'Learn more',
@@ -120,7 +112,7 @@ Medusa's products configuration allows managing products of different types incl
 
   </LargeCard>
   <LargeCard
-    Icon={IconCurrencyDollar}
+    Icon={Icons['currency-dollar-solid']}
     title='Price Lists and Promotions'
     action={{
       label: 'Learn more',
@@ -143,7 +135,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 
 <LargeCardList>
   <LargeCard
-    Icon={IconGlobeEurope}
+    Icon={Icons['globe-europe-solid']}
     title='Multi-Region'
     action={{
       label: 'Learn more',
@@ -158,7 +150,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 
   </LargeCard>
   <LargeCard
-    Icon={IconBuildingTax}
+    Icon={Icons['cash-solid']}
     title='Taxes'
     action={{
       label: 'Learn more',
@@ -174,7 +166,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 
   </LargeCard>
   <LargeCard
-    Icon={IconChannels}
+    Icon={Icons['channels-solid']}
     title='Sales Channels'
     action={{
       label: 'Learn more',
@@ -203,7 +195,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Implement Accounts',
     customProps: {
-      icon: IconUsersSolid,
+      icon: Icons['users-solid'],
       description: 'Add customer profiles to the storefront.'
     }
   },
@@ -212,10 +204,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Implement Cart',
     customProps: {
-      themedImage: {
-        light: '/img/dev-env-icon.svg',
-        dark: '/img/dev-env-icon-dark.svg'
-      },
+      icon: Icons['shopping-cart-solid'],
       description: 'Add cart functionality to the storefront.'
     }
   },
@@ -224,10 +213,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Create a Payment Provider',
     customProps: {
-      themedImage: {
-        light: '/img/nextjs-icon.svg',
-        dark: '/img/nextjs-icon-dark.svg'
-      },
+      icon: Icons['credit-card-solid'],
       description: 'Create a payment provider.'
     },
   },
@@ -236,10 +222,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Edit an Order',
     customProps: {
-      themedImage: {
-        light: '/img/gatsby-icon.svg',
-        dark: '/img/gatsby-icon-dark.svg'
-      },
+      icon: Icons['pencil-square-solid'],
       description: 'Edit an order with the Admin APIs.'
     }
   },
@@ -248,10 +231,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Import Prices',
     customProps: {
-      themedImage: {
-        light: '/img/admin-icon.svg',
-        dark: '/img/admin-icon-dark.svg'
-      },
+      icon: Icons['currency-dollar-solid'],
       description: 'Import prices to Medusa.'
     }
   },
@@ -260,10 +240,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Manage Sales Channels',
     customProps: {
-      themedImage: {
-        light: '/img/user-guide.svg',
-        dark: '/img/user-guide-dark.svg'
-      },
+      icon: Icons['channels-solid'],
       description: 'Manage sales channels.'
     }
   }
