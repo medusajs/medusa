@@ -19150,7 +19150,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.3":
+"glob@npm:^8.0.3, glob@npm:^8.1.0":
   version: 8.1.0
   resolution: "glob@npm:8.1.0"
   dependencies:
@@ -25415,6 +25415,7 @@ __metadata:
     execa: ^4.1.0
     find-yarn-workspace-root: ^2.0.0
     fs-extra: ^9.0.1
+    glob: ^8.1.0
     got: ^11.8.6
     is-absolute: ^1.0.0
     jest: ^25.5.4
