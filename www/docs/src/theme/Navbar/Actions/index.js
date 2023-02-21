@@ -1,5 +1,6 @@
 import React from 'react';
 import IconReport from '../../Icon/Report';
+import Tooltip from '../../Tooltip';
 
 export default function NavbarActions ({items = []}) {
 
@@ -18,11 +19,13 @@ export default function NavbarActions ({items = []}) {
         switch(item.type) {
           case 'link':
             return (
-              <a key={index} href={item.href} title={item.title} 
-                className={`navbar-action ${item.icon ? 'navbar-link-icon' : ''} ${item.className || ''}`}>
-                {item.label}
-                {item.icon && findIcon(item.icon)}
-              </a>
+              <Tooltip text='Report an issue'>
+                <a key={index} href={item.href} title={item.title} 
+                  className={`navbar-action ${item.icon ? 'navbar-link-icon' : ''} ${item.className || ''}`}>
+                  {item.label}
+                  {item.icon && findIcon(item.icon)}
+                </a>
+              </Tooltip>
             )
           default:
             return (<></>)

@@ -11,6 +11,7 @@ import NavbarLogo from '@theme/Navbar/Logo';
 import styles from './styles.module.css';
 import {useWindowSize} from '@docusaurus/theme-common';
 import NavbarActions from '../Actions';
+import Tooltip from '../../Tooltip';
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -37,7 +38,6 @@ export default function NavbarContent() {
   const mobileSidebar = useNavbarMobileSidebar();
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
-  const windowSize = useWindowSize();
   const { navbarActions } = useThemeConfig()
 
   return (
@@ -56,7 +56,9 @@ export default function NavbarContent() {
         <>
           <NavbarItems items={rightItems} />
           <span className='divider'></span>
-          <NavbarColorModeToggle className={styles.colorModeToggle} />
+          <Tooltip text='Switch theme'>
+            <NavbarColorModeToggle className={styles.colorModeToggle} />
+          </Tooltip>
           <NavbarActions items={navbarActions} />
         </>
       }

@@ -156,7 +156,7 @@
   --docsearch-searchbox-background: var(--medusa-bg-field) !important;
   --docsearch-searchbox-focus-background: var(--medusa-bg-field-hover) !important;
   --docsearch-searchbox-border-color: var(--medusa-border-base);
-  --docsearch-searchbox-shadow: var(--medusa-shadow-field-focused) !important;
+  --docsearch-searchbox-shadow: none !important;
   --docsearch-modal-height: 472px !important;
   --docsearch-modal-background: var(--medusa-bg-base) !important;
   --docsearch-modal-border-color: var(--medusa-border-base);

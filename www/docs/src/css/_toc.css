@@ -1,3 +1,7 @@
+.theme-doc-toc-desktop {
+  padding-top: calc(var(--ifm-base-margin-vertical) * 1.5);
+}
+
 .theme-doc-toc-desktop .table-of-contents {
   border-left: none !important;
   padding: 0;
