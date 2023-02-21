@@ -1,7 +1,8 @@
-.icon {
-  background-color: var(--medusa-bg-component);
-  height: 24px;
-  width: 24px;
-  padding: 2px;
+.borderedIconWrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border-radius: var(--ifm-global-radius);
+  padding: var(--bordered-inside-padding);
+  background-color: var(--medusa-bg-component);
 }

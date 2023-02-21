@@ -98,7 +98,11 @@ html:not([data-theme="dark"]) .DocSearch-Prefill:after {
 .markdown p + .tabs-wrapper,
 .markdown p + .alert,
 .markdown p + section {
-  margin-top: var(--ifm-base-margin-vertical)
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+.markdown p + .card {
+  margin-top: 24px;
 }
 
 .markdown {

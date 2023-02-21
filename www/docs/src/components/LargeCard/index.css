@@ -66,8 +66,14 @@
   z-index: 3;
 }
 
-.large-card-icon-wrapper {
+.large-card-bordered-icon-wrapper {
+  --bordered-padding: var(--large-card-icon-wrapper-padding);
+
   margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
+}
+
+.large-card-icon-wrapper {
+  --bordered-inside-padding: var(--large-card-icon-inside-padding);
 }
 
 .large-card-icon {

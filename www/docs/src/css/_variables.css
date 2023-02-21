@@ -212,14 +212,16 @@
   --large-card-bg-image: url('/img/squares-bg-light.svg');
   --large-card-fade-effect: linear-gradient(transparent, var(--large-card-bg));
   --large-card-fade-effect-hover: linear-gradient(transparent, var(--large-card-bg-hover));
-  --large-card-icon-size: 32px;
-  --large-card-icon-wrapper-size: 40px;
+  --large-card-icon-size: 20px;
+  --large-card-icon-inside-padding: 6px;
+  --large-card-icon-wrapper-padding: var(--bordered-padding);
   --large-card-icon-wrapper-border-color: var(--ifm-strong-border-color);
   --large-card-title-color: var(--ifm-color-primary);
 
   /* Bordered Element */
   --bordered-border-color: var(--medusa-border-strong);
-  --bordered-padding: 2px;
+  --bordered-padding: 4px;
+  --bordered-inside-padding: 2px;
   --bordered-margin-right: calc(var(--ifm-base-margin-vertical) / 2);
 }
 

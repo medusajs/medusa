@@ -2,7 +2,7 @@
   box-shadow: none !important;
   transition: all var(--ifm-transition-fast) ease;
   display: flex;
-  padding: 24px;
+  padding: var(--ifm-base-spacing);
   height: 100%;
 }
 
