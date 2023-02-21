@@ -5394,6 +5394,7 @@ __metadata:
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
     awilix: ^8.0.0
+    cross-env: ^7.0.3
     jest: ^25.5.4
     medusa-telemetry: ^0.0.16
     resolve-cwd: ^3.0.0
