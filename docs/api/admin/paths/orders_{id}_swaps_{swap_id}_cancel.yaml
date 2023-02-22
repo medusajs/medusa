@@ -16,8 +16,19 @@ post:
       description: The ID of the Swap.
       schema:
         type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the result.
+      schema:
+        type: string
   x-codegen:
     method: cancelSwap
+    params: AdminPostOrdersSwapCancelParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
