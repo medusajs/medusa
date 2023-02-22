@@ -12,7 +12,7 @@ import { checkRegisteredModules } from "../../../middlewares/check-registered-mo
 import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
 import { AdminGetOrdersOrderReservationsParams } from "./get-reservations"
 import { AdminGetOrdersParams } from "./list-orders"
-
+import { AdminPostOrdersOrderFulfillmentsReq } from "./create-fulfillment"
 const route = Router()
 
 export default (app, featureFlagRouter: FlagRouter) => {
@@ -98,6 +98,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillment",
+    transformBody(AdminPostOrdersOrderFulfillmentsReq),
     middlewares.wrap(require("./create-fulfillment").default)
   )
 

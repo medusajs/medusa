@@ -16,7 +16,6 @@ import {
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
 
@@ -95,10 +94,9 @@ import { Fulfillment, LineItem } from "../../../../models"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    AdminPostOrdersOrderFulfillmentsReq,
-    req.body
-  )
+  const { validatedBody } = req as {
+    validatedBody: AdminPostOrdersOrderFulfillmentsReq
+  }
 
   const orderService: OrderService = req.scope.resolve("orderService")
   const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
@@ -117,12 +115,12 @@ export default async (req, res) => {
       existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
     )
 
-    await orderServiceTx.createFulfillment(id, validated.items, {
-      metadata: validated.metadata,
-      no_notification: validated.no_notification,
+    await orderServiceTx.createFulfillment(id, validatedBody.items, {
+      metadata: validatedBody.metadata,
+      no_notification: validatedBody.no_notification,
     })
 
-    if (validated.location_id) {
+    if (validatedBody.location_id) {
       const { fulfillments } = await orderServiceTx.retrieve(id, {
         relations: [
           "fulfillments",
@@ -138,7 +136,7 @@ export default async (req, res) => {
         fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
         {
           inventoryService: pvInventoryServiceTx,
-          locationId: validated.location_id,
+          locationId: validatedBody.location_id,
         }
       )
     }
