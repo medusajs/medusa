@@ -18,7 +18,7 @@ import { OauthService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - App
+ *   - Apps
  * responses:
  *  "200":
  *    description: OK

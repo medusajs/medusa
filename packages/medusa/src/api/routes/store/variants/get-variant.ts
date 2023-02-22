@@ -40,7 +40,7 @@ import { IsOptional, IsString } from "class-validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/variants/{id}'
  * tags:
- *   - Product Variants
+ *   - Variants
  * responses:
  *   200:
  *     description: OK

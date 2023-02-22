@@ -73,7 +73,7 @@ import { AddressPayload, FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claims
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

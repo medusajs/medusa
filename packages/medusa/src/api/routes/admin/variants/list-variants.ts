@@ -87,7 +87,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Variants
+ *   - Variants
  * responses:
  *   200:
  *     description: OK

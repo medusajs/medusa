@@ -54,7 +54,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount Conditions
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
