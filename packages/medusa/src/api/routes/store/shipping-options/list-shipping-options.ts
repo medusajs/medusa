@@ -2,7 +2,7 @@ import { CartService, PricingService } from "../../../../services"
 import ShippingProfileService from "../../../../services/shipping-profile"
 
 /**
- * @oas [get] /shipping-options/{cart_id}
+ * @oas [get] /store/shipping-options/{cart_id}
  * operationId: GetShippingOptionsCartId
  * summary: List for Cart
  * description: "Retrieves a list of Shipping Options available to a cart."

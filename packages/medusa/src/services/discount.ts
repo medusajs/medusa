@@ -48,9 +48,6 @@ import { CalculationContextData } from "../types/totals"
  * @implements {BaseService}
  */
 class DiscountService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly discountRepository_: typeof DiscountRepository
   protected readonly customerService_: CustomerService
   protected readonly discountRuleRepository_: typeof DiscountRuleRepository
@@ -66,7 +63,6 @@ class DiscountService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     discountRepository,
     discountRuleRepository,
     giftCardRepository,
@@ -83,7 +79,6 @@ class DiscountService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.discountRepository_ = discountRepository
     this.discountRuleRepository_ = discountRuleRepository
     this.giftCardRepository_ = giftCardRepository
@@ -125,8 +120,9 @@ class DiscountService extends TransactionBaseService {
     selector: FilterableDiscountProps = {},
     config: FindConfig<Discount> = { relations: [], skip: 0, take: 10 }
   ): Promise<Discount[]> {
-    const manager = this.manager_
-    const discountRepo = manager.withRepository(this.discountRepository_)
+    const discountRepo = this.activeManager_.withRepository(
+      this.discountRepository_
+    )
 
     const query = buildQuery(selector as Selector<Discount>, config)
     return await discountRepo.find(query)
@@ -145,8 +141,9 @@ class DiscountService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Discount[], number]> {
-    const manager = this.manager_
-    const discountRepo = manager.withRepository(this.discountRepository_)
+    const discountRepo = this.activeManager_.withRepository(
+      this.discountRepository_
+    )
 
     let q
     if ("q" in selector) {
@@ -249,8 +246,9 @@ class DiscountService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const discountRepo = manager.withRepository(this.discountRepository_)
+    const discountRepo = this.activeManager_.withRepository(
+      this.discountRepository_
+    )
 
     const query = buildQuery({ id: discountId }, config)
     const discount = await discountRepo.findOne(query)
@@ -275,8 +273,9 @@ class DiscountService extends TransactionBaseService {
     discountCode: string,
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
-    const manager = this.manager_
-    const discountRepo = manager.withRepository(this.discountRepository_)
+    const discountRepo = this.activeManager_.withRepository(
+      this.discountRepository_
+    )
 
     const normalizedCode = discountCode.toUpperCase().trim()
 
@@ -303,8 +302,9 @@ class DiscountService extends TransactionBaseService {
     discountCodes: string[],
     config: FindConfig<Discount> = {}
   ): Promise<Discount[]> {
-    const manager = this.manager_
-    const discountRepo = manager.withRepository(this.discountRepository_)
+    const discountRepo = this.activeManager_.withRepository(
+      this.discountRepository_
+    )
 
     const normalizedCodes = discountCodes.map((code) =>
       code.toUpperCase().trim()

@@ -60,7 +60,7 @@ describe("Sales channels", () => {
       await salesChannelLocationService.associateLocation(sc.id, loc2.id)
 
       expect(
-        await salesChannelLocationService.listLocations(sc.id)
+        await salesChannelLocationService.listLocationIds(sc.id)
       ).toHaveLength(2)
 
       const [channels] = await salesChannelService.listAndCount(

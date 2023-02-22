@@ -23,7 +23,7 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{id}
+ * @oas [post] /admin/discounts/{id}
  * operationId: "PostDiscountsDiscount"
  * summary: "Update a Discount"
  * description: "Updates a Discount with a given set of rules that define how the Discount behaves."

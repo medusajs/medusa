@@ -2,7 +2,7 @@ import { PaymentCollectionService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /payment-collections/{id}
+ * @oas [get] /admin/payment-collections/{id}
  * operationId: "GetPaymentCollectionsPaymentCollection"
  * summary: "Get a PaymentCollection"
  * description: "Retrieves a PaymentCollection."
@@ -13,7 +13,7 @@ import { FindParams } from "../../../../types/common"
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codegen:
  *   method: retrieve
- *   queryParams: GetPaymentCollectionsParams
+ *   queryParams: AdminGetPaymentCollectionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -71,4 +71,4 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class GetPaymentCollectionsParams extends FindParams {}
+export class AdminGetPaymentCollectionsParams extends FindParams {}

@@ -36,8 +36,6 @@ export default class InventoryService
   implements IInventoryService
 {
   protected readonly eventBusService_: IEventBusService
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService
@@ -58,8 +56,6 @@ export default class InventoryService
     }
 
     this.eventBusService_ = eventBusService
-    this.manager_ = manager
-
     this.inventoryItemService_ = new InventoryItemService({
       eventBusService,
       manager,
@@ -75,10 +71,6 @@ export default class InventoryService
     })
   }
 
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
-  }
-
   /**
    * Lists inventory items that match the given selector
    * @param selector - the selector to filter inventory items by
@@ -90,7 +82,7 @@ export default class InventoryService
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryItemDTO[], number]> {
     return await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .listAndCount(selector, config)
   }
 
@@ -105,7 +97,7 @@ export default class InventoryService
     config: FindConfig<InventoryLevelDTO> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryLevelDTO[], number]> {
     return await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .listAndCount(selector, config)
   }
 
@@ -124,7 +116,7 @@ export default class InventoryService
     }
   ): Promise<[ReservationItemDTO[], number]> {
     return await this.reservationItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .listAndCount(selector, config)
   }
 
@@ -139,7 +131,7 @@ export default class InventoryService
     config?: FindConfig<InventoryItemDTO>
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .retrieve(inventoryItemId, config)
     return { ...inventoryItem }
   }
@@ -155,7 +147,7 @@ export default class InventoryService
     locationId: string
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .list(
         { inventory_item_id: inventoryItemId, location_id: locationId },
         { take: 1 }
@@ -179,7 +171,7 @@ export default class InventoryService
   ): Promise<ReservationItemDTO> {
     // Verify that the item is stocked at the location
     const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .list(
         {
           inventory_item_id: input.inventory_item_id,
@@ -196,7 +188,7 @@ export default class InventoryService
     }
 
     const reservationItem = await this.reservationItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .create(input)
 
     return { ...reservationItem }
@@ -211,7 +203,7 @@ export default class InventoryService
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .create(input)
     return { ...inventoryItem }
   }
@@ -225,7 +217,7 @@ export default class InventoryService
     input: CreateInventoryLevelInput
   ): Promise<InventoryLevelDTO> {
     return await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .create(input)
   }
 
@@ -240,7 +232,7 @@ export default class InventoryService
     input: Partial<CreateInventoryItemInput>
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .update(inventoryItemId, input)
     return { ...inventoryItem }
   }
@@ -251,7 +243,7 @@ export default class InventoryService
    */
   async deleteInventoryItem(inventoryItemId: string): Promise<void> {
     return await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .delete(inventoryItemId)
   }
 
@@ -265,7 +257,7 @@ export default class InventoryService
     locationId: string
   ): Promise<void> {
     const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .list(
         { inventory_item_id: inventoryItemId, location_id: locationId },
         { take: 1 }
@@ -276,7 +268,7 @@ export default class InventoryService
     }
 
     return await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .delete(inventoryLevel.id)
   }
 
@@ -293,7 +285,7 @@ export default class InventoryService
     input: UpdateInventoryLevelInput
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .list(
         { inventory_item_id: inventoryItemId, location_id: locationId },
         { take: 1 }
@@ -307,7 +299,7 @@ export default class InventoryService
     }
 
     return await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .update(inventoryLevel.id, input)
   }
 
@@ -322,7 +314,7 @@ export default class InventoryService
     input: UpdateReservationItemInput
   ): Promise<ReservationItemDTO> {
     return await this.reservationItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .update(reservationItemId, input)
   }
 
@@ -332,7 +324,7 @@ export default class InventoryService
    */
   async deleteReservationItemsByLineItem(lineItemId: string): Promise<void> {
     return await this.reservationItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .deleteByLineItem(lineItemId)
   }
 
@@ -342,7 +334,7 @@ export default class InventoryService
    */
   async deleteReservationItem(reservationItemId: string): Promise<void> {
     return await this.reservationItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .delete(reservationItemId)
   }
 
@@ -360,7 +352,7 @@ export default class InventoryService
     adjustment: number
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .list(
         { inventory_item_id: inventoryItemId, location_id: locationId },
         { take: 1 }
@@ -373,7 +365,7 @@ export default class InventoryService
     }
 
     const updatedInventoryLevel = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .update(inventoryLevel.id, {
         stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
       })
@@ -394,13 +386,13 @@ export default class InventoryService
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .retrieve(inventoryItemId, {
         select: ["id"],
       })
 
     const availableQuantity = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .getAvailableQuantity(inventoryItemId, locationIds)
 
     return availableQuantity
@@ -419,13 +411,13 @@ export default class InventoryService
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .retrieve(inventoryItemId, {
         select: ["id"],
       })
 
     const stockedQuantity = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .getStockedQuantity(inventoryItemId, locationIds)
 
     return stockedQuantity
@@ -444,13 +436,13 @@ export default class InventoryService
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .retrieve(inventoryItemId, {
         select: ["id"],
       })
 
     const reservedQuantity = await this.inventoryLevelService_
-      .withTransaction(this.getManager())
+      .withTransaction(this.activeManager_)
       .getReservedQuantity(inventoryItemId, locationIds)
 
     return reservedQuantity

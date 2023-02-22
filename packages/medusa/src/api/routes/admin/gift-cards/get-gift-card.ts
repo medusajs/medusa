@@ -1,7 +1,7 @@
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
 
 /**
- * @oas [get] /gift-cards/{id}
+ * @oas [get] /admin/gift-cards/{id}
  * operationId: "GetGiftCardsGiftCard"
  * summary: "Get a Gift Card"
  * description: "Retrieves a Gift Card."

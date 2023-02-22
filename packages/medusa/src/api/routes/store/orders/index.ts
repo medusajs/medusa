@@ -129,6 +129,8 @@ export const allowedStoreOrdersFields = [
 /**
  * @schema StoreOrdersRes
  * type: object
+ * required:
+ *   - order
  * properties:
  *   order:
  *     $ref: "#/components/schemas/Order"

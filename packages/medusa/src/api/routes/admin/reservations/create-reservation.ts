@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [post] /reservations
+ * @oas [post] /admin/reservations
  * operationId: "PostReservations"
  * summary: "Creates a Reservation"
  * description: "Creates a Reservation which can be associated with any resource as required."
@@ -82,7 +82,6 @@ export default async (req, res) => {
  * @schema AdminPostReservationsReq
  * type: object
  * required:
- *   - line_item_id
  *   - location_id
  *   - inventory_item_id
  *   - quantity

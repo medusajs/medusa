@@ -7,7 +7,7 @@ import { ReturnReasonService } from "../../../../services"
 import { Selector } from "../../../../types/common"
 
 /**
- * @oas [get] /return-reasons
+ * @oas [get] /admin/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
  * description: "Retrieves a list of Return Reasons."

@@ -37,6 +37,11 @@ export const allowedFields = [
 /**
  * @schema StoreCollectionsListRes
  * type: object
+ * required:
+ *   - collections
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   collections:
  *      type: array
@@ -59,6 +64,8 @@ export type StoreCollectionsListRes = PaginatedResponse & {
 /**
  * @schema StoreCollectionsRes
  * type: object
+ * required:
+ *   - collection
  * properties:
  *   collection:
  *     $ref: "#/components/schemas/ProductCollection"

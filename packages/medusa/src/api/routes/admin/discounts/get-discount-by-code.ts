@@ -3,7 +3,7 @@ import DiscountService from "../../../../services/discount"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /discounts/code/{code}
+ * @oas [get] /admin/discounts/code/{code}
  * operationId: "GetDiscountsDiscountCode"
  * summary: "Get Discount by Code"
  * description: "Retrieves a Discount by its discount code"

@@ -250,6 +250,8 @@ export class Order extends BaseEntity {
   gift_card_total: number
   gift_card_tax_total: number
 
+  returnable_items?: LineItem[]
+
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
     this.id = generateEntityId(this.id, "order")
@@ -540,6 +542,11 @@ export class Order extends BaseEntity {
  *     description: The total of gift cards with taxes
  *     type: integer
  *     example: 0
+ *   returnable_items:
+ *     description: The items that are returnable as part of the order, order swaps or order claims
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/LineItem"
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string

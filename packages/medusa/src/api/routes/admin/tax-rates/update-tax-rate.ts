@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
 import { isDefined } from "medusa-core-utils"
 
 /**
- * @oas [post] /tax-rates/{id}
+ * @oas [post] /admin/tax-rates/{id}
  * operationId: "PostTaxRatesTaxRate"
  * summary: "Update a Tax Rate"
  * description: "Updates a Tax Rate"

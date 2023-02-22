@@ -2,7 +2,7 @@ import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
+ * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}/refresh
  * operationId: PostCartsCartPaymentSessionsSession
  * summary: Refresh a Payment Session
  * description: "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary."

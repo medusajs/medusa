@@ -6,7 +6,7 @@ import { IStockLocationService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /stock-locations/{id}
+ * @oas [post] /admin/stock-locations/{id}
  * operationId: "PostStockLocationsStockLocation"
  * summary: "Update a Stock Location"
  * description: "Updates a Stock Location."
