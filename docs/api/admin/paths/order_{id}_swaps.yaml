@@ -12,6 +12,20 @@ post:
       description: The ID of the Order.
       schema:
         type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded the order of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included the order of the
+        result.
+      schema:
+        type: string
   requestBody:
     content:
       application/json:
@@ -19,6 +33,7 @@ post:
           $ref: ../components/schemas/AdminPostOrdersOrderSwapsReq.yaml
   x-codegen:
     method: createSwap
+    queryParams: AdminPostOrdersOrderSwapsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
