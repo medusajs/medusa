@@ -142,6 +142,7 @@ describe("/store/carts", () => {
     })
 
     describe("Fulfillments", () => {
+      const lineItemId = "line-item-id"
       it("Adjusts reservations on successful fulfillment with reservation", async () => {
         const api = useApi()
 
@@ -166,7 +167,7 @@ describe("/store/carts", () => {
         const fulfillmentRes = await api.post(
           `/admin/orders/${order.id}/fulfillment`,
           {
-            items: [{ item_id: "line-item-id", quantity: 1 }],
+            items: [{ item_id: lineItemId, quantity: 1 }],
             location_id: locationId,
           },
           adminHeaders
@@ -197,13 +198,13 @@ describe("/store/carts", () => {
         )
       })
 
-      it("it adjusts inventory levels on successful fulfillment without reservation", async () => {
+      it("adjusts inventory levels on successful fulfillment without reservation", async () => {
         const api = useApi()
 
         const fulfillmentRes = await api.post(
           `/admin/orders/${order.id}/fulfillment`,
           {
-            items: [{ item_id: "line-item-id", quantity: 1 }],
+            items: [{ item_id: lineItemId, quantity: 1 }],
             location_id: locationId,
           },
           adminHeaders
@@ -228,26 +229,24 @@ describe("/store/carts", () => {
       })
 
       it("Fails to create fulfillment if there is not enough inventory at the fulfillment location", async () => {
-        // 3 here plus one in the setup
-        expect.assertions(4)
         const api = useApi()
 
-        try {
-          const fulfillmentRes = await api.post(
+        const err = await api
+          .post(
             `/admin/orders/${order.id}/fulfillment`,
             {
-              items: [{ item_id: "line-item-id", quantity: 2 }],
+              items: [{ item_id: lineItemId, quantity: 2 }],
               location_id: locationId,
             },
             adminHeaders
           )
-        } catch (err) {
-          expect(err.response.status).toBe(400)
-          expect(err.response.data).toEqual({
-            type: "not_allowed",
-            message: `Insufficient stock for item: ${order.items[0].title}`,
-          })
-        }
+          .catch((e) => e)
+
+        expect(err.response.status).toBe(400)
+        expect(err.response.data).toEqual({
+          type: "not_allowed",
+          message: `Insufficient stock for item: ${order.items[0].title}`,
+        })
 
         const inventoryItem = await api.get(
           `/admin/inventory-items/${invItemId}`,

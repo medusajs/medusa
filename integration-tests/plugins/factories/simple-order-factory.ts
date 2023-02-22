@@ -7,6 +7,7 @@ import {
   FulfillmentStatus,
   SalesChannel,
   Discount,
+  isString,
 } from "@medusajs/medusa"
 
 import {
@@ -30,6 +31,7 @@ import {
   SalesChannelFactoryData,
   simpleSalesChannelFactory,
 } from "../../api/factories"
+import { isDefined } from "medusa-core-utils"
 
 export type OrderFactoryData = {
   id?: string
@@ -86,7 +88,7 @@ export const simpleOrderFactory = async (
     )
   }
   const id = data.id || `simple-order-${Math.random() * 1000}`
-  const toCreate = {
+  const toCreate: Partial<Order> = {
     id,
     discounts,
     payment_status: data.payment_status ?? PaymentStatus.AWAITING,
@@ -101,10 +103,10 @@ export const simpleOrderFactory = async (
   }
 
   let sc_id
-  if (typeof data.sales_channel !== "undefined") {
+  if (isDefined(data.sales_channel)) {
     let sc
     
-    if (typeof data.sales_channel === "string") {
+    if (isString(data.sales_channel)) {
       sc = await manager.findOne(SalesChannel, {
         where: { id: data.sales_channel },
       })
@@ -113,7 +115,7 @@ export const simpleOrderFactory = async (
     if (!sc) {
       sc = await simpleSalesChannelFactory(
         connection,
-        typeof data.sales_channel === "string"
+        isString(data.sales_channel)
           ? { id: data.sales_channel }
           : data.sales_channel
       )
@@ -123,12 +125,12 @@ export const simpleOrderFactory = async (
   }
 
   if (sc_id) {
-    toCreate["sales_channel_id"] = sc_id
+    toCreate.sales_channel_id = sc_id
   }
 
   const toSave = manager.create(Order, toCreate)
 
-  const order = await manager.save(toSave)
+  const order = await manager.save(Order, toSave)
 
   const shippingMethods = data.shipping_methods || []
   for (const sm of shippingMethods) {

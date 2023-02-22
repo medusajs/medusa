@@ -104,34 +104,32 @@ export default async (req, res) => {
   const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
     "productVariantInventoryService"
   )
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    const { fulfillments: existingFulfillments } = await orderService
-      .withTransaction(transactionManager)
-      .retrieve(id, {
+    const orderServiceTx = orderService.withTransaction(transactionManager)
+
+    const { fulfillments: existingFulfillments } =
+      await orderServiceTx.retrieve(id, {
         relations: ["fulfillments"],
       })
     const existingFulfillmentMap = new Map(
       existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
     )
 
-    await orderService
-      .withTransaction(transactionManager)
-      .createFulfillment(id, validated.items, {
-        metadata: validated.metadata,
-        no_notification: validated.no_notification,
-      })
+    await orderServiceTx.createFulfillment(id, validated.items, {
+      metadata: validated.metadata,
+      no_notification: validated.no_notification,
+    })
 
     if (validated.location_id) {
-      const { fulfillments } = await orderService
-        .withTransaction(transactionManager)
-        .retrieve(id, {
-          relations: [
-            "fulfillments",
-            "fulfillments.items",
-            "fulfillments.items.item",
-          ],
-        })
+      const { fulfillments } = await orderServiceTx.retrieve(id, {
+        relations: [
+          "fulfillments",
+          "fulfillments.items",
+          "fulfillments.items.item",
+        ],
+      })
 
       const pvInventoryServiceTx =
         pvInventoryService.withTransaction(transactionManager)
