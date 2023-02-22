@@ -8,13 +8,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
-import { AddressPayload } from "../../../../types/common"
+import { AddressPayload, FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/orders/{id}
@@ -24,6 +22,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,6 +31,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderReq"
  * x-codegen:
  *   method: update
+ *   params: AdminPostOrdersOrderParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -82,20 +83,17 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = await validator(AdminPostOrdersOrderReq, req.body)
-
   const orderService: OrderService = req.scope.resolve("orderService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await orderService
       .withTransaction(transactionManager)
-      .update(id, value)
+      .update(id, req.validatedBody)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.status(200).json({ order })
@@ -244,3 +242,5 @@ class ShippingMethod {
   @IsOptional()
   items?: Record<string, unknown>[]
 }
+
+export class AdminPostOrdersOrderParams extends FindParams {}

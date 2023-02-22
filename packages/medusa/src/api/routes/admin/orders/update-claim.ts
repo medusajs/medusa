@@ -8,12 +8,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { ClaimService, OrderService } from "../../../../services"
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/order/{id}/claims/{claim_id}
@@ -24,6 +24,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,6 +33,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimReq"
  * x-codegen:
  *   method: updateClaim
+ *   params: AdminPostOrdersOrderClaimsClaimParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -96,9 +99,8 @@ export default async (req, res) => {
       .update(claim_id, validated)
   })
 
-  const data = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const data = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order: data })
@@ -277,3 +279,5 @@ class Tag {
   @IsOptional()
   value?: string
 }
+
+export class AdminPostOrdersOrderClaimsClaimParams extends FindParams {}

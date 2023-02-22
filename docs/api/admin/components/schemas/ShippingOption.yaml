@@ -8,15 +8,24 @@ description: >-
   additional information.
 type: object
 required:
+  - admin_only
+  - amount
+  - created_at
+  - data
+  - deleted_at
+  - id
+  - is_return
+  - metadata
   - name
-  - region_id
+  - price_type
   - profile_id
   - provider_id
-  - price_type
+  - region_id
+  - updated_at
 properties:
   id:
-    type: string
     description: The shipping option's ID
+    type: string
     example: so_01G1G5V27GYX4QXNARRQCW1N8T
   name:
     description: >-
@@ -25,11 +34,12 @@ properties:
     type: string
     example: PostFake Standard
   region_id:
-    type: string
     description: The region's ID
+    type: string
     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
   region:
     description: A region object. Available if the relation `region` is expanded.
+    nullable: true
     type: object
   profile_id:
     description: >-
@@ -40,6 +50,7 @@ properties:
     example: sp_01G1G5V239ENSZ5MV4JAR737BM
   profile:
     description: Available if the relation `profile` is expanded.
+    nullable: true
     $ref: ./ShippingProfile.yaml
   provider_id:
     description: >-
@@ -49,6 +60,7 @@ properties:
     example: manual
   provider:
     description: Available if the relation `provider` is expanded.
+    nullable: true
     $ref: ./FulfillmentProvider.yaml
   price_type:
     description: >-
@@ -64,10 +76,17 @@ properties:
     description: >-
       The amount to charge for shipping when the Shipping Option price type is
       `flat_rate`.
+    nullable: true
     type: integer
     example: 200
   is_return:
     description: Flag to indicate if the Shipping Option can be used for Return shipments.
+    type: boolean
+    default: false
+  admin_only:
+    description: >-
+      Flag to indicate if the Shipping Option usage is restricted to admin
+      users.
     type: boolean
     default: false
   requirements:
@@ -87,20 +106,23 @@ properties:
   includes_tax:
     description: '[EXPERIMENTAL] Does the shipping option price include tax'
     type: boolean
+    default: false
   created_at:
-    type: string
     description: The date with timezone at which the resource was created.
+    type: string
     format: date-time
   updated_at:
-    type: string
     description: The date with timezone at which the resource was updated.
+    type: string
     format: date-time
   deleted_at:
-    type: string
     description: The date with timezone at which the resource was deleted.
+    nullable: true
+    type: string
     format: date-time
   metadata:
-    type: object
     description: An optional key-value map with additional details
+    nullable: true
+    type: object
     example:
       car: white

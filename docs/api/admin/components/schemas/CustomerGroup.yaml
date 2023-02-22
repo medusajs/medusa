@@ -23,14 +23,14 @@ properties:
       `customers` is expanded.
     type: array
     items:
-      $ref: ./Customer.yaml
+      type: object
   price_lists:
     description: >-
       The price lists that are associated with the customer group. Available if
       the relation `price_lists` is expanded.
     type: array
     items:
-      $ref: ./PriceList.yaml
+      type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

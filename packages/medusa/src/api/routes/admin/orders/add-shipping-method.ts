@@ -5,11 +5,10 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/orders/{id}/shipping-methods
@@ -18,6 +17,8 @@ import { EntityManager } from "typeorm"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,6 +27,7 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * x-codegen:
  *   method: addShippingMethod
+ *   params: AdminPostOrdersOrderShippingMethodsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -78,10 +80,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    AdminPostOrdersOrderShippingMethodsReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -94,9 +93,8 @@ export default async (req, res) => {
       })
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.status(200).json({ order })
@@ -132,3 +130,5 @@ export class AdminPostOrdersOrderShippingMethodsReq {
   @IsOptional()
   data?: Record<string, unknown> = {}
 }
+
+export class AdminPostOrdersOrderShippingMethodsParams extends FindParams {}

@@ -3,10 +3,10 @@ import {
   FulfillmentService,
   OrderService,
 } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
@@ -18,8 +18,11 @@ import { MedusaError } from "medusa-core-utils"
  *   - (path) id=* {string} The ID of the Order which the Claim relates to.
  *   - (path) claim_id=* {string} The ID of the Claim which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * x-codegen:
  *   method: cancelClaimFulfillment
+ *   params: AdminPostOrdersClaimFulfillmentsCancelParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -94,9 +97,11 @@ export default async (req, res) => {
       .cancelFulfillment(fulfillment_id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
+
   res.json({ order })
 }
+
+export class AdminPostOrdersClaimFulfillmentsCancelParams extends FindParams {}

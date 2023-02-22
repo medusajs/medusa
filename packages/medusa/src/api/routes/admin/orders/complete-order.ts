@@ -1,5 +1,6 @@
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/orders/{id}/complete
@@ -9,8 +10,11 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * x-codegen:
  *   method: complete
+ *   params: AdminPostOrdersOrderCompleteParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -64,9 +68,11 @@ export default async (req, res) => {
       .completeOrder(id)
   })
 
-  const order = await orderService.retrieve(id, {
-    relations: ["region", "customer", "swaps"],
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order })
 }
+
+export class AdminPostOrdersOrderCompleteParams extends FindParams {}

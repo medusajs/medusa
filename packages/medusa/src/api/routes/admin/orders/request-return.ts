@@ -6,7 +6,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import {
   EventBusService,
   OrderService,
@@ -18,7 +17,7 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { Order, Return } from "../../../../models"
 import { OrdersReturnItem } from "../../../../types/orders"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/orders/{id}/return
@@ -28,6 +27,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -35,6 +36,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderReturnsReq"
  * x-codegen:
  *   method: requestReturn
+ *   params: AdminPostOrdersOrderReturnsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -96,7 +98,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = await validator(AdminPostOrdersOrderReturnsReq, req.body)
+  const value = req.validatedBody
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
   const manager: EntityManager = req.scope.resolve("manager")
@@ -152,14 +154,16 @@ export default async (req, res) => {
                     }
                   }
 
-                  const order = await orderService
-                    .withTransaction(manager)
-                    .retrieve(id)
+                  let evaluatedNoNotification = value.no_notification
 
-                  const evaluatedNoNotification =
-                    value.no_notification !== undefined
-                      ? value.no_notification
-                      : order.no_notification
+                  if (!isDefined(evaluatedNoNotification)) {
+                    const order = await orderService
+                      .withTransaction(manager)
+                      .retrieve(id)
+
+                    evaluatedNoNotification = order.no_notification
+                  }
+
                   returnObj.no_notification = evaluatedNoNotification
 
                   const createdReturn = await returnService
@@ -174,7 +178,7 @@ export default async (req, res) => {
 
                   await eventBus
                     .withTransaction(manager)
-                    .emit("order.return_requested", {
+                    .emit(OrderService.Events.RETURN_REQUESTED, {
                       id,
                       return_id: createdReturn.id,
                       no_notification: evaluatedNoNotification,
@@ -198,9 +202,7 @@ export default async (req, res) => {
               idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  let order: Order | Return = await orderService
-                    .withTransaction(manager)
-                    .retrieve(id, { relations: ["returns"] })
+                  let order: Order | Return
 
                   /**
                    * If we are ready to receive immediately, we find the newly created return
@@ -229,9 +231,8 @@ export default async (req, res) => {
 
                   order = await orderService
                     .withTransaction(manager)
-                    .retrieve(id, {
-                      select: defaultAdminOrdersFields,
-                      relations: defaultAdminOrdersRelations,
+                    .retrieveWithTotals(id, req.retrieveConfig, {
+                      includes: req.includes,
                     })
 
                   return {
@@ -374,3 +375,5 @@ class ReturnShipping {
   @IsOptional()
   price?: number
 }
+
+export class AdminPostOrdersOrderReturnsParams extends FindParams {}
