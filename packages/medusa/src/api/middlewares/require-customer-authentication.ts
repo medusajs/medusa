@@ -7,10 +7,20 @@ export default (): RequestHandler => {
       return next()
     }
 
-    passport.authenticate(["store-jwt", "bearer"], { session: false })(
-      req,
-      res,
-      next
-    )
+    passport.authenticate(
+      ["store-jwt", "bearer"],
+      { session: false },
+      (err, user) => {
+        if (err) {
+          return next(err)
+        }
+
+        if (user) {
+          req.user = user
+        }
+
+        return next()
+      }
+    )(req, res, next)
   }
 }
