@@ -130,7 +130,7 @@ class ProductCategoryService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const pcRepo = manager.withRepository(this.productCategoryRepo_)
 
-      await this.transformParentIdToEntity_(productCategoryInput, pcRepo)
+      await this.transformParentIdToEntity(productCategoryInput)
 
       let productCategory = pcRepo.create(productCategoryInput)
       productCategory = await pcRepo.save(productCategory)
@@ -160,10 +160,7 @@ class ProductCategoryService extends TransactionBaseService {
         this.productCategoryRepo_
       )
 
-      await this.transformParentIdToEntity_(
-        productCategoryInput,
-        productCategoryRepo
-      )
+      await this.transformParentIdToEntity(productCategoryInput)
 
       let productCategory = await this.retrieve(productCategoryId)
 
@@ -266,14 +263,12 @@ class ProductCategoryService extends TransactionBaseService {
    * Accepts an input object and transforms product_category_id
    * into product_category entity.
    * @param productCategoryInput - params used to create/update
-   * @param {repository} A repository to query entity from
    * @return transformed productCategoryInput
    */
-  protected async transformParentIdToEntity_(
+  protected async transformParentIdToEntity(
     productCategoryInput:
       | CreateProductCategoryInput
-      | UpdateProductCategoryInput,
-    repository: typeof ProductCategoryRepository
+      | UpdateProductCategoryInput
   ): Promise<CreateProductCategoryInput | UpdateProductCategoryInput> {
     // Typeorm only updates mpath when the category entity of the parent
     // is passed into create/save. For this reason, everytime we create a
@@ -284,9 +279,7 @@ class ProductCategoryService extends TransactionBaseService {
       return productCategoryInput
     }
 
-    const parentCategory = await repository.findOne(
-      buildQuery({ id: parentCategoryId }, {})
-    )
+    const parentCategory = await this.retrieve(parentCategoryId)
 
     productCategoryInput.parent_category = parentCategory
     delete productCategoryInput.parent_category_id
