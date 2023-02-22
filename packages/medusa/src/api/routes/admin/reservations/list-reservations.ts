@@ -63,6 +63,9 @@ import {
  *   - (query) limit=20 {integer} Limit the number of Reservations returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetReservationsParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -80,7 +83,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminGetReservationReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

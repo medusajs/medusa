@@ -51,6 +51,9 @@ import { AdminInventoryItemsListWithVariantsAndLocationLevelsRes } from "."
  *   - (query) height {string} height to search for.
  *   - (query) width {string} width to search for.
  *   - (query) requires_shipping {string} requires_shipping to search for.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetInventoryItemsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
