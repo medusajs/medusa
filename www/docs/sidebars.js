@@ -1231,7 +1231,7 @@ module.exports = {
       label: 'Core Concepts',
       customProps: {
         sidebar_is_title: true,
-        sidebar_icon: 'server-stack'
+        sidebar_icon: 'star'
       }
     },
     {
