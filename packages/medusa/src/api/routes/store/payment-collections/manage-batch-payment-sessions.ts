@@ -63,7 +63,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PaymentCollections
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK

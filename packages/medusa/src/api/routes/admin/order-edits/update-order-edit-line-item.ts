@@ -47,7 +47,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - OrderEdits
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

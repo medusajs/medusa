@@ -25,7 +25,7 @@ import { OrderEditService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/order-edits/{id}'
  * tags:
- *   - OrderEdits
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

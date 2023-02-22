@@ -36,7 +36,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKeys
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK
