@@ -368,3 +368,16 @@ span.DocSearch-Button-Key {
     box-shadow: none !important;
   }
 }
+
+@media screen and (min-width: 768px) {
+  .DocSearch-Modal {
+    margin: unset !important;
+    width: var(--docsearch-modal-width);
+  }
+
+  .DocSearch-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

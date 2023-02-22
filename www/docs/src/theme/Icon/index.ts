@@ -52,6 +52,7 @@ import IconSparkles from './Sparkles';
 import IconSparklesSolid from './SparklesSolid';
 import IconSquaresPlus from './SquaresPlus';
 import IconSquaresPlusSolid from './SquaresPlusSolid';
+import IconStar from './Star';
 import IconStripe from './Stripe';
 import IconTagSolid from './TagSolid';
 import IconTools from './Tools';
@@ -115,6 +116,7 @@ export default {
   'sparkles-solid': IconSparklesSolid,
   'squares-plus': IconSquaresPlus,
   'squares-plus-solid': IconSquaresPlusSolid,
+  'star': IconStar,
   'stripe': IconStripe,
   'tag-solid': IconTagSolid,
   'tools': IconTools,

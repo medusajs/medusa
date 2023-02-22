@@ -5,7 +5,7 @@
   line-height: var(--medusa-label-x-small-plus-line-height) !important;
   font-weight: var(--medusa-label-x-small-plus-font-weight) !important;
   box-shadow: var(--ifm-tooltip-box-shadow-color) !important;
-  padding: calc(var(--ifm-base-margin-vertical) / 4) var(--ifm-base-spacing) !important;
+  padding: calc(var(--ifm-base-margin-vertical) / 4 - 1px) var(--ifm-base-spacing) !important;
 }
 
 .react-tooltip-arrow {
