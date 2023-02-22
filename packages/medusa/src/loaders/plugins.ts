@@ -6,7 +6,6 @@ import glob from "glob"
 import _ from "lodash"
 import { createRequireFromPath } from "medusa-core-utils"
 import {
-  BaseService as LegacyBaseService,
   FileService,
   FulfillmentService,
   OauthService,
@@ -23,7 +22,6 @@ import {
   isPriceSelectionStrategy,
   isSearchService,
   isTaxCalculationStrategy,
-  TransactionBaseService as BaseService,
 } from "../interfaces"
 import { MiddlewareService } from "../services"
 import {
@@ -364,16 +362,6 @@ export async function registerServices(
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
-      if (
-        !(loaded.prototype instanceof LegacyBaseService) &&
-        !(loaded.prototype instanceof BaseService)
-      ) {
-        const logger = container.resolve<Logger>("logger")
-        const message = `The class must be a valid service implementation, please check ${fn}`
-        logger.error(message)
-        throw new Error(message)
-      }
-
       const context = { container, pluginDetails, registrationName: name }
 
       registerPaymentServiceFromClass(loaded, context)
@@ -627,14 +615,22 @@ function resolvePlugin(pluginName: string): {
     )
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
-    const resolvedPathToDist = path.dirname(
-      requireSource.resolve(`${pluginName}/dist`)
-    )
     const computedResolvedPath =
       resolvedPath + (process.env.DEV_MODE ? "/src" : "")
 
-    // Allow a plugin to choose to output the build to dist, only if not in dev mode
-    const isDistExist = !process.env.DEV_MODE && existsSync(resolvedPathToDist)
+    let resolvedPathToDist = ""
+    let isDistExist = false
+
+    try {
+      resolvedPathToDist = resolvedPath + "/dist"
+      // Allow a plugin to choose to output the build to dist, only if not in dev mode
+      isDistExist =
+        resolvedPathToDist &&
+        !process.env.DEV_MODE &&
+        existsSync(resolvedPath + "/dist")
+    } catch (e) {
+      // noop
+    }
 
     return {
       resolve: isDistExist ? resolvedPathToDist : computedResolvedPath,

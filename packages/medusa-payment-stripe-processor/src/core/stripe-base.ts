@@ -16,21 +16,25 @@ import {
 } from "../types"
 
 abstract class StripeBase extends AbstractPaymentProcessor {
-  static identifier = ""
+  static identifier = "stripe"
 
   protected readonly options_: StripeOptions
-  private stripe_: Stripe
+  protected stripe_: Stripe
 
   protected constructor(_, options) {
     super(_, options)
 
     this.options_ = options
+
+    this.init()
   }
 
-  async init(): Promise<void> {
-    this.stripe_ = new Stripe(this.options_.api_key, {
-      apiVersion: "2022-11-15",
-    })
+  init(): void {
+    this.stripe_ =
+      this.stripe_ ||
+      new Stripe(this.options_.api_key, {
+        apiVersion: "2022-11-15",
+      })
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
@@ -306,14 +310,16 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
   protected buildError(
     message: string,
-    e: Stripe.StripeRawError | PaymentProcessorError
+    e: Stripe.StripeRawError | PaymentProcessorError | Error
   ): PaymentProcessorError {
     return {
       error: message,
-      code: e.code,
+      code: "code" in e ? e.code : "",
       detail: isPaymentProcessorError(e)
         ? `${e.error}${EOL}${e.detail ?? ""}`
-        : e.detail,
+        : "detail" in e
+        ? e.detail
+        : e.message ?? "",
     }
   }
 }

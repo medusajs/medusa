@@ -11,8 +11,6 @@ import {
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
 
-export const RETRY_STATUS_CODE = 409
-
 export default async (req: Request, res: Response) => {
   let event
   try {
@@ -77,7 +75,7 @@ async function handleCartPayments(event, req, res, cartId) {
       } catch (err) {
         const message = buildHandleCartPaymentErrorMessage(event, err)
         logger.warn(message)
-        return res.sendStatus(RETRY_STATUS_CODE)
+        return res.sendStatus(409)
       }
       break
     default:
