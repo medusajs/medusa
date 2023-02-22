@@ -15,6 +15,9 @@ import { FindParams } from "../../../../types/common"
  *   - (query) limit=20 {integer} Limit the number of stock locations levels returned.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: listLocationLevels
+ *   queryParams: AdminGetInventoryItemsItemLocationLevelsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
