@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /return-reasons
+ * @oas [post] /admin/return-reasons
  * operationId: "PostReturnReasons"
  * summary: "Create a Return Reason"
  * description: "Creates a Return Reason"

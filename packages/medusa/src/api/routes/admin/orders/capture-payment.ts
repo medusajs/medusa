@@ -4,7 +4,7 @@ import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/capture
+ * @oas [post] /admin/orders/{id}/capture
  * operationId: "PostOrdersOrderCapture"
  * summary: "Capture Order's Payment"
  * description: "Captures all the Payments associated with an Order."

@@ -2,7 +2,7 @@ import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders/{id}
+ * @oas [get] /admin/orders/{id}
  * operationId: "GetOrdersOrder"
  * summary: "Get an Order"
  * description: "Retrieves an Order"

@@ -7,7 +7,7 @@ import { ExtendedRequest } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
- * @oas [get] /currencies
+ * @oas [get] /admin/currencies
  * operationId: "GetCurrencies"
  * summary: "List Currency"
  * description: "Retrieves a list of Currency"

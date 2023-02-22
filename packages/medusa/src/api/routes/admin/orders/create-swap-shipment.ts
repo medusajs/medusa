@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Create Swap Shipment"
  * description: "Registers a Swap Fulfillment as shipped."

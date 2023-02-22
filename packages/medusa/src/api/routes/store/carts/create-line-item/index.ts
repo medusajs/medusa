@@ -13,7 +13,7 @@ import {
 } from "../../../../../utils/idempotency"
 
 /**
- * @oas [post] /carts/{id}/line-items
+ * @oas [post] /store/carts/{id}/line-items
  * operationId: PostCartsCartLineItems
  * summary: "Add a Line Item"
  * description: "Generates a Line Item with a given Product Variant and adds it

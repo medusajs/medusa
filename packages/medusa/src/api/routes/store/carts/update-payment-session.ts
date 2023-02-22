@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: PostCartsCartPaymentSessionUpdate
  * summary: Update a Payment Session
  * description: "Updates a Payment Session with additional data."

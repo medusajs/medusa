@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [delete] /price-lists/{id}
+ * @oas [delete] /admin/price-lists/{id}
  * operationId: "DeletePriceListsPriceList"
  * summary: "Delete a Price List"
  * description: "Deletes a Price List"

@@ -4,7 +4,7 @@ import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
 
 /**
- * @oas [post] /carts/{id}/complete
+ * @oas [post] /store/carts/{id}/complete
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: "Completes a cart. The following steps will be performed. Payment

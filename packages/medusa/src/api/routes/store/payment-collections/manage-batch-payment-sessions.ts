@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/batch
+ * @oas [post] /store/payment-collections/{id}/sessions/batch
  * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
  * summary: "Manage Payment Sessions"
  * description: "Manages Multiple Payment Sessions from Payment Collections."

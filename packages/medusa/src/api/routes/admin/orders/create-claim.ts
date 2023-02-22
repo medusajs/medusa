@@ -20,7 +20,7 @@ import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /order/{id}/claims
+ * @oas [post] /admin/order/{id}/claims
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
  * description: "Creates a Claim."

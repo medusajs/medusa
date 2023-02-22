@@ -8,7 +8,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [post] /sales-channels/{id}/stock-locations
+ * @oas [post] /admin/sales-channels/{id}/stock-locations
  * operationId: "PostSalesChannelsSalesChannelStockLocation"
  * summary: "Associate a stock location to a Sales Channel"
  * description: "Associates a stock location to a Sales Channel."

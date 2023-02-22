@@ -292,7 +292,7 @@ tags:
   - name: User
     description: User endpoints that allow handling users in Medusa.
 servers:
-  - url: https://api.medusa-commerce.com/admin
+  - url: https://api.medusa-commerce.com
 paths: { }
 components:
   responses:

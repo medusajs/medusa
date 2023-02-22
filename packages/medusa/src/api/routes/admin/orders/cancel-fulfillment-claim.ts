@@ -9,7 +9,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
  * summary: "Cancel Claim Fulfillment"
  * description: "Registers a claim's fulfillment as canceled."

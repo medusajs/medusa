@@ -10,7 +10,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /tax-rates
+ * @oas [get] /admin/tax-rates
  * operationId: "GetTaxRates"
  * summary: "List Tax Rates"
  * description: "Retrieves a list of TaxRates"

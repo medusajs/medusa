@@ -4,7 +4,7 @@ import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /inventory-items/{id}/location-levels
+ * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
  * summary: "List stock levels of a given location."
  * description: "Lists stock levels of a given location."

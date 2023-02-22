@@ -15,7 +15,7 @@ import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /draft-orders/{id}/line-items
+ * @oas [post] /admin/draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
  * summary: "Create a Line Item"
  * description: "Creates a Line Item for the Draft Order"

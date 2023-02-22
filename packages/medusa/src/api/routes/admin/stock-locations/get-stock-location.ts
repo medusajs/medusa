@@ -8,7 +8,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [get] /stock-locations/{id}
+ * @oas [get] /admin/stock-locations/{id}
  * operationId: "GetStockLocationsStockLocation"
  * summary: "Get a Stock Location"
  * description: "Retrieves the Stock Location."

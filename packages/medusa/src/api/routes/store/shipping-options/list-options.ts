@@ -4,7 +4,7 @@ import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: Get Shipping Options
  * description: "Retrieves a list of Shipping Options."

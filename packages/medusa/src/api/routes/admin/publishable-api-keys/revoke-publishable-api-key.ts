@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys/{id}/revoke
+ * @oas [post] /admin/publishable-api-keys/{id}/revoke
  * operationId: "PostPublishableApiKeysPublishableApiKeyRevoke"
  * summary: "Revoke PublishableApiKey"
  * description: "Revokes a PublishableApiKey."

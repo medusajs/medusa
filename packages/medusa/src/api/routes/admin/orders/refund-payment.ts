@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/refund
+ * @oas [post] /admin/orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."

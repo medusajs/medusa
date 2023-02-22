@@ -12,7 +12,7 @@ import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /shipping-profiles/{id}
+ * @oas [post] /admin/shipping-profiles/{id}
  * operationId: "PostShippingProfilesProfile"
  * summary: "Update a Shipping Profile"
  * description: "Updates a Shipping Profile"

@@ -6,7 +6,7 @@ import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /auth
+ * @oas [post] /store/auth
  * operationId: "PostAuth"
  * summary: "Customer Login"
  * description: "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser."

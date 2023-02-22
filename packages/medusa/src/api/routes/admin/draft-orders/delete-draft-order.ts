@@ -2,7 +2,7 @@ import { DraftOrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /draft-orders/{id}
+ * @oas [delete] /admin/draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
  * summary: Delete a Draft Order
  * description: "Deletes a Draft Order"

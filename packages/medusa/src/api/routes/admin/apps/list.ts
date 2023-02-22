@@ -1,7 +1,7 @@
 import { OauthService } from "../../../../services"
 
 /**
- * @oas [get] /apps
+ * @oas [get] /admin/apps
  * operationId: "GetApps"
  * summary: "List Applications"
  * description: "Retrieve a list of applications."

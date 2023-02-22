@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/cancel
  * operationId: "PostOrdersClaimCancel"
  * summary: "Cancel a Claim"
  * description: "Cancels a Claim"

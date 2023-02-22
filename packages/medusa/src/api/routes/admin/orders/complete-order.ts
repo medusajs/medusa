@@ -2,7 +2,7 @@ import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/complete
+ * @oas [post] /admin/orders/{id}/complete
  * operationId: "PostOrdersOrderComplete"
  * summary: "Complete an Order"
  * description: "Completes an Order"

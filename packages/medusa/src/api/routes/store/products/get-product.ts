@@ -11,7 +11,7 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /products/{id}
+ * @oas [get] /store/products/{id}
  * operationId: GetProductsProduct
  * summary: Get a Product
  * description: "Retrieves a Product."
