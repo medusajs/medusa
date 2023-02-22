@@ -1,7 +1,6 @@
 import { AwilixContainer } from "awilix"
 import Stripe from "stripe"
 import { PostgresError } from "@medusajs/medusa"
-import { RETRY_STATUS_CODE } from "../hooks/stripe"
 
 const PAYMENT_PROVIDER_KEY = "pp_stripe"
 
@@ -34,7 +33,7 @@ export function buildHandleCartPaymentErrorMessage(
       err?.detail ?? err?.message
     }`
   }
-  if (err?.code === RETRY_STATUS_CODE.toString()) {
+  if (err?.code === "409") {
     message = `Stripe webhook ${event} handle failed.\n${
       err?.detail ?? err?.message
     }`
