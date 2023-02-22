@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [delete] /customers/me/addresses/{address_id}
+ * @oas [delete] /store/customers/me/addresses/{address_id}
  * operationId: DeleteCustomersCustomerAddressesAddress
  * summary: Delete an Address
  * description: "Removes an Address from the Customer's saved addresses."

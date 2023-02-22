@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 
 /**
- * @oas [post] /carts/{id}/taxes
+ * @oas [post] /store/carts/{id}/taxes
  * summary: "Calculate Cart Taxes"
  * operationId: "PostCartsCartTaxes"
  * description: "Calculates taxes for a cart. Depending on the cart's region

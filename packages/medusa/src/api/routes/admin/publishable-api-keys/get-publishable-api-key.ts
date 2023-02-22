@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [get] /publishable-api-keys/{id}
+ * @oas [get] /admin/publishable-api-keys/{id}
  * operationId: "GetPublishableApiKeysPublishableApiKey"
  * summary: "Get a PublishableApiKey"
  * description: "Retrieve the Publishable Api Key."

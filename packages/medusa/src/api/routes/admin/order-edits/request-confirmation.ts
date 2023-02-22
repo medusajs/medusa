@@ -12,7 +12,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/request
+ * @oas [post] /admin/order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
  * summary: "Request Confirmation"
  * description: "Request customer confirmation of an Order Edit"

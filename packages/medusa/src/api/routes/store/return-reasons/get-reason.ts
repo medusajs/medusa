@@ -5,7 +5,7 @@ import {
 import ReturnReasonService from "../../../../services/return-reason"
 
 /**
- * @oas [get] /return-reasons/{id}
+ * @oas [get] /store/return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Get a Return Reason"
  * description: "Retrieves a Return Reason."

@@ -7,7 +7,7 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/shipping-options/batch
+ * @oas [post] /admin/tax-rates/{id}/shipping-options/batch
  * operationId: "PostTaxRatesTaxRateShippingOptions"
  * summary: "Add to Shipping Options"
  * description: "Associates a Tax Rate with a list of Shipping Options"

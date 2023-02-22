@@ -12,7 +12,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /draft-orders
+ * @oas [get] /admin/draft-orders
  * operationId: "GetDraftOrders"
  * summary: "List Draft Orders"
  * description: "Retrieves an list of Draft Orders"

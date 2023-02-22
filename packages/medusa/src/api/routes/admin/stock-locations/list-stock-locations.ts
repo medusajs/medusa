@@ -11,7 +11,7 @@ import {
 import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
- * @oas [get] /stock-locations
+ * @oas [get] /admin/stock-locations
  * operationId: "GetStockLocations"
  * summary: "List Stock Locations"
  * description: "Retrieves a list of stock locations"

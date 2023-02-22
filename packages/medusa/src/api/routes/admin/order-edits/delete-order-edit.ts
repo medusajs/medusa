@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [delete] /order-edits/{id}
+ * @oas [delete] /admin/order-edits/{id}
  * operationId: "DeleteOrderEditsOrderEdit"
  * summary: "Delete an Order Edit"
  * description: "Delete an Order Edit"

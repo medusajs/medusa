@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /products/{id}/options
+ * @oas [post] /admin/products/{id}/options
  * operationId: "PostProductsProductOptions"
  * summary: "Add an Option"
  * x-authenticated: true

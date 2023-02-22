@@ -15,7 +15,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions
+ * @oas [post] /admin/regions
  * operationId: "PostRegions"
  * summary: "Create a Region"
  * description: "Creates a Region"

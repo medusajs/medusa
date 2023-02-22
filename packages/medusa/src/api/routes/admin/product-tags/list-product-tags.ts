@@ -10,7 +10,7 @@ import { Type } from "class-transformer"
 import { Request, Response } from "express"
 
 /**
- * @oas [get] /product-tags
+ * @oas [get] /admin/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
  * description: "Retrieve a list of Product Tags."

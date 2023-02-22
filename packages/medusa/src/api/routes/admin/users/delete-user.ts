@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import UserService from "../../../../services/user"
 
 /**
- * @oas [delete] /users/{id}
+ * @oas [delete] /admin/users/{id}
  * operationId: "DeleteUsersUser"
  * summary: "Delete a User"
  * description: "Deletes a User"

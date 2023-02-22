@@ -2,7 +2,7 @@ import InviteService from "../../../../services/invite"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /invites/{invite_id}/resend
+ * @oas [post] /admin/invites/{invite_id}/resend
  * operationId: "PostInvitesInviteResend"
  * summary: "Resend an Invite"
  * description: "Resends an Invite by triggering the 'invite' created event again"

@@ -2,7 +2,7 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}
+ * @oas [delete] /admin/discounts/{id}
  * operationId: "DeleteDiscountsDiscount"
  * summary: "Delete a Discount"
  * description: "Deletes a Discount."

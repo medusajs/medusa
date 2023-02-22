@@ -1,5 +1,5 @@
 /**
- * @oas [get] /shipping-options/{id}
+ * @oas [get] /admin/shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
  * summary: "Get a Shipping Option"
  * description: "Retrieves a Shipping Option."

@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /customers/password-reset
+ * @oas [post] /store/customers/password-reset
  * operationId: PostCustomersResetPassword
  * summary: Reset Password
  * description: "Resets a Customer's password using a password token created by a previous /password-token request."

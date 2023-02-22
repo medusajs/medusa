@@ -18,7 +18,7 @@ import { ShippingOptionService } from "../../../../services"
 import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
 
 /**
- * @oas [post] /shipping-options/{id}
+ * @oas [post] /admin/shipping-options/{id}
  * operationId: "PostShippingOptionsOption"
  * summary: "Update Shipping Option"
  * description: "Updates a Shipping Option"

@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /carts/{id}/shipping-methods
+ * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: "PostCartsCartShippingMethod"
  * description: "Adds a Shipping Method to the Cart."
  * summary: "Add a Shipping Method"

@@ -9,7 +9,7 @@ import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /products/{id}/variants
+ * @oas [get] /admin/products/{id}/variants
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Variants"
  * description: "Retrieves a list of the Product Variants associated with a Product."

@@ -7,7 +7,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 import { defaultStoreScope } from "."
 
 /**
- * @oas [get] /product-categories
+ * @oas [get] /store/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories."

@@ -3,7 +3,7 @@ import DiscountConditionService from "../../../../services/discount-condition"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /discounts/{discount_id}/conditions/{condition_id}
+ * @oas [get] /admin/discounts/{discount_id}/conditions/{condition_id}
  * operationId: "GetDiscountsDiscountConditionsCondition"
  * summary: "Get a Condition"
  * description: "Gets a DiscountCondition"

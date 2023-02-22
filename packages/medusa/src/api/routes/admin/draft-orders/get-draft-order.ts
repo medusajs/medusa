@@ -9,7 +9,7 @@ import {
 import { DraftOrder } from "../../../.."
 
 /**
- * @oas [get] /draft-orders/{id}
+ * @oas [get] /admin/draft-orders/{id}
  * operationId: "GetDraftOrdersDraftOrder"
  * summary: "Get a Draft Order"
  * description: "Retrieves a Draft Order."

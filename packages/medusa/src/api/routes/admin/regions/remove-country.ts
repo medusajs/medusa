@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}/countries/{country_code}
+ * @oas [delete] /admin/regions/{id}/countries/{country_code}
  * operationId: "PostRegionsRegionCountriesCountry"
  * summary: "Delete Country"
  * x-authenticated: true

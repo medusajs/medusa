@@ -5,7 +5,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [get] /publishable-api-keys
+ * @oas [get] /admin/publishable-api-keys
  * operationId: "GetPublishableApiKeys"
  * summary: "List PublishableApiKeys"
  * description: "List PublishableApiKeys."

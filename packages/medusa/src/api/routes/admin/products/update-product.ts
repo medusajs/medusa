@@ -19,16 +19,16 @@ import {
   ProductVariantService,
 } from "../../../../services"
 import {
+  ProductProductCategoryReq,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
-  ProductProductCategoryReq,
 } from "../../../../types/product"
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus, ProductVariant } from "../../../../models"
+import { ProductStatus } from "../../../../models"
 import {
   CreateProductVariantInput,
   ProductVariantPricesUpdateReq,
@@ -45,7 +45,7 @@ import { IInventoryService } from "../../../../interfaces"
 import { Logger } from "../../../../types/global"
 
 /**
- * @oas [post] /products/{id}
+ * @oas [post] /admin/products/{id}
  * operationId: "PostProductsProduct"
  * summary: "Update a Product"
  * description: "Updates a Product"

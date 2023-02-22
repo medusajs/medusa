@@ -2,7 +2,7 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [get] /customers/me
+ * @oas [get] /store/customers/me
  * operationId: GetCustomersCustomer
  * summary: Get a Customer
  * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."

@@ -7,7 +7,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /currencies/{code}
+ * @oas [post] /admin/currencies/{code}
  * operationId: "PostCurrenciesCurrency"
  * summary: "Update a Currency"
  * description: "Update a Currency"

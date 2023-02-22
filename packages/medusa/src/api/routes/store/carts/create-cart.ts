@@ -24,7 +24,7 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { CartCreateProps } from "../../../../types/cart"
 
 /**
- * @oas [post] /carts
+ * @oas [post] /store/carts
  * summary: "Create a Cart"
  * operationId: "PostCart"
  * description: "Creates a Cart within the given region and with the initial items. If no

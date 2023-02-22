@@ -4,7 +4,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /notes/{id}
+ * @oas [post] /admin/notes/{id}
  * operationId: "PostNotesNote"
  * summary: "Update a Note"
  * x-authenticated: true

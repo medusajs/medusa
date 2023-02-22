@@ -8,7 +8,7 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}/products/batch
+ * @oas [post] /admin/product-categories/{id}/products/batch
  * operationId: "PostProductCategoriesCategoryProductsBatch"
  * summary: "Add Products to a category"
  * description: "Assign a batch of products to a product category."

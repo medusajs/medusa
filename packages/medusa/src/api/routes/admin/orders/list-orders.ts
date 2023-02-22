@@ -7,7 +7,7 @@ import { Type } from "class-transformer"
 import { pick } from "lodash"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /admin/orders
  * operationId: "GetOrders"
  * summary: "List Orders"
  * description: "Retrieves a list of Orders"

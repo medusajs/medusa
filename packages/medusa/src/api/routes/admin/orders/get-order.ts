@@ -2,7 +2,7 @@ import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders/{id}
+ * @oas [get] /admin/orders/{id}
  * operationId: "GetOrdersOrder"
  * summary: "Get an Order"
  * description: "Retrieves an Order"
@@ -60,9 +60,11 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
+  })
 
-  res.json({ order })
+  res.json({ order: order })
 }
 
 export class AdminGetOrdersOrderParams extends FindParams {}

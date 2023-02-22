@@ -7,7 +7,7 @@ import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}/fulfillment-providers
+ * @oas [post] /admin/regions/{id}/fulfillment-providers
  * operationId: "PostRegionsRegionFulfillmentProviders"
  * summary: "Add Fulfillment Provider"
  * description: "Adds a Fulfillment Provider to a Region"

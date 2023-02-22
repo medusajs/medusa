@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { Cart, Product } from "../../../../models"
 
 /**
- * @oas [get] /products
+ * @oas [get] /store/products
  * operationId: GetProducts
  * summary: List Products
  * description: "Retrieves a list of Products."

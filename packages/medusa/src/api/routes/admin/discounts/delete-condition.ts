@@ -5,7 +5,7 @@ import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}
+ * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}
  * operationId: "DeleteDiscountsDiscountConditionsCondition"
  * summary: "Delete a Condition"
  * description: "Deletes a DiscountCondition"

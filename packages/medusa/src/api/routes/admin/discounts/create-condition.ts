@@ -9,7 +9,7 @@ import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{discount_id}/conditions
+ * @oas [post] /admin/discounts/{discount_id}/conditions
  * operationId: "PostDiscountsDiscountConditions"
  * summary: "Create a Condition"
  * description: "Creates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."

@@ -6,7 +6,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /products/search
+ * @oas [post] /store/products/search
  * operationId: PostProductsSearch
  * summary: Search Products
  * description: "Run a search query on products using the search engine installed on Medusa"

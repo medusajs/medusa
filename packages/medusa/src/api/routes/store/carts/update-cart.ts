@@ -16,7 +16,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [post] /carts/{id}
+ * @oas [post] /store/carts/{id}
  * operationId: PostCartsCart
  * summary: Update a Cart
  * description: "Updates a Cart."

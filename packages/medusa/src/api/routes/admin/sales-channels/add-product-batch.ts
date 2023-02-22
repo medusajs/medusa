@@ -7,7 +7,7 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [post] /sales-channels/{id}/products/batch
+ * @oas [post] /admin/sales-channels/{id}/products/batch
  * operationId: "PostSalesChannelsChannelProductsBatch"
  * summary: "Add Products"
  * description: "Assign a batch of product to a sales channel."

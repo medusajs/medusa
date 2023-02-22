@@ -9,7 +9,7 @@ import TokenService from "../../../../services/token"
 import { TokenEvents } from "../../../../types/token"
 
 /**
- * @oas [post] /orders/batch/customer/token
+ * @oas [post] /store/orders/batch/customer/token
  * operationId: "PostOrdersCustomerOrderClaim"
  * summary: "Claim an Order"
  * description: "Sends an email to emails registered to orders provided with link to transfer order ownership"

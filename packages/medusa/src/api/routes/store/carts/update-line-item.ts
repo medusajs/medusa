@@ -6,7 +6,7 @@ import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /carts/{id}/line-items/{line_id}
+ * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
  * description: "Updates a Line Item if the desired quantity can be fulfilled."

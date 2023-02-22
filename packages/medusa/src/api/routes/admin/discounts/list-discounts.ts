@@ -13,7 +13,7 @@ import { DiscountService } from "../../../../services"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
- * @oas [get] /discounts
+ * @oas [get] /admin/discounts
  * operationId: "GetDiscounts"
  * summary: "List Discounts"
  * x-authenticated: true

@@ -3,7 +3,7 @@ import FulfillmentProviderService from "../../../../services/fulfillment-provide
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [get] /regions/{id}/fulfillment-options
+ * @oas [get] /admin/regions/{id}/fulfillment-options
  * operationId: "GetRegionsRegionFulfillmentOptions"
  * summary: "List Fulfillment Options"
  * description: "Gathers all the fulfillment options available to in the Region."

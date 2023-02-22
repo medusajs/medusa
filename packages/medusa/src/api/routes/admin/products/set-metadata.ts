@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /products/{id}/metadata
+ * @oas [post] /admin/products/{id}/metadata
  * operationId: "PostProductsProductMetadata"
  * summary: "Set Product Metadata"
  * description: "Set metadata key/value pair for Product"

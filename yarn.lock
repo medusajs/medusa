@@ -5225,7 +5225,7 @@ __metadata:
     typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.7.7
+    "@medusajs/medusa": 1.7.8
     typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
@@ -5279,7 +5279,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.7
+    "@medusajs/medusa": ^1.7.8
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
@@ -5291,7 +5291,7 @@ __metadata:
     typescript: ^4.9.5
     uuid: ^9.0.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.7
+    "@medusajs/medusa": ^1.7.8
   languageName: unknown
   linkType: soft
 
@@ -5314,7 +5314,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:

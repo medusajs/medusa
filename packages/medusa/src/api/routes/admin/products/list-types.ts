@@ -1,7 +1,7 @@
 import { ProductService } from "../../../../services"
 
 /**
- * @oas [get] /products/types
+ * @oas [get] /admin/products/types
  * deprecated: true
  * operationId: "GetProductsTypes"
  * summary: "List Product Types"

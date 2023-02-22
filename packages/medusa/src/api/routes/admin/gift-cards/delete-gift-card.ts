@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /gift-cards/{id}
+ * @oas [delete] /admin/gift-cards/{id}
  * operationId: "DeleteGiftCardsGiftCard"
  * summary: "Delete a Gift Card"
  * description: "Deletes a Gift Card"

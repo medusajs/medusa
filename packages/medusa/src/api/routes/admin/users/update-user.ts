@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/{id}
+ * @oas [post] /admin/users/{id}
  * operationId: "PostUsersUser"
  * summary: "Update a User"
  * description: "Updates a User"

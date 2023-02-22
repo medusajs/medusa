@@ -7,7 +7,7 @@ import { validator } from "../../../../utils/validator"
 import { isDefined } from "medusa-core-utils"
 
 /**
- * @oas [get] /gift-cards
+ * @oas [get] /admin/gift-cards
  * operationId: "GetGiftCards"
  * summary: "List Gift Cards"
  * description: "Retrieves a list of Gift Cards."

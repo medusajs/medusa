@@ -10,7 +10,7 @@ import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates
+ * @oas [post] /admin/tax-rates
  * operationId: "PostTaxRates"
  * summary: "Create a Tax Rate"
  * description: "Creates a Tax Rate"

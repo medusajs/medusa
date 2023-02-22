@@ -3,7 +3,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 
 /**
- * @oas [delete] /carts/{id}/discounts/{code}
+ * @oas [delete] /store/carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
  * description: "Removes a Discount from a Cart."
  * summary: "Remove Discount"

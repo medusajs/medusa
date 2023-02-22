@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}
+ * @oas [post] /admin/payment-collections/{id}
  * operationId: "PostPaymentCollectionsPaymentCollection"
  * summary: "Update PaymentCollection"
  * description: "Updates a PaymentCollection."

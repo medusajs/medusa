@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /batch-jobs
+ * @oas [post] /admin/batch-jobs
  * operationId: "PostBatchJobs"
  * summary: "Create a Batch Job"
  * description: "Creates a Batch Job."

@@ -10,8 +10,8 @@ import {
 import { Type } from "class-transformer"
 import {
   ProductService,
-  ProductVariantService,
   ProductVariantInventoryService,
+  ProductVariantService,
 } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
@@ -27,7 +27,7 @@ import { EntityManager } from "typeorm"
 import { createVariantTransaction } from "./transaction/create-product-variant"
 
 /**
- * @oas [post] /products/{id}/variants
+ * @oas [post] /admin/products/{id}/variants
  * operationId: "PostProductsProductVariants"
  * summary: "Create a Product Variant"
  * description: "Creates a Product Variant. Each Product Variant must have a unique combination of Product Option Values."

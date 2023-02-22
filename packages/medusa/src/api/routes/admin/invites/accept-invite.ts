@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /invites/accept
+ * @oas [post] /admin/invites/accept
  * operationId: "PostInvitesInviteAccept"
  * summary: "Accept an Invite"
  * description: "Accepts an Invite and creates a corresponding user"

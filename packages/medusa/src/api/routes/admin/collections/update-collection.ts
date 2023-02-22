@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
- * @oas [post] /collections/{id}
+ * @oas [post] /admin/collections/{id}
  * operationId: "PostCollectionsCollection"
  * summary: "Update a Collection"
  * description: "Updates a Product Collection."

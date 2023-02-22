@@ -17,7 +17,7 @@ import OrderService from "../../../../services/order"
 import { DateComparisonOperator } from "../../../../types/common"
 
 /**
- * @oas [get] /customers/me/orders
+ * @oas [get] /store/customers/me/orders
  * operationId: GetCustomersCustomerOrders
  * summary: List Orders
  * description: "Retrieves a list of a Customer's Orders."

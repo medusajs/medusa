@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import InviteService from "../../../../services/invite"
 
 /**
- * @oas [delete] /invites/{invite_id}
+ * @oas [delete] /admin/invites/{invite_id}
  * operationId: "DeleteInvitesInvite"
  * summary: "Delete an Invite"
  * description: "Deletes an Invite"

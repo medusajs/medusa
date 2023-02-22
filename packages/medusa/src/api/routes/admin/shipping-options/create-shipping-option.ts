@@ -16,7 +16,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /shipping-options
+ * @oas [post] /admin/shipping-options
  * operationId: "PostShippingOptions"
  * summary: "Create Shipping Option"
  * description: "Creates a Shipping Option"

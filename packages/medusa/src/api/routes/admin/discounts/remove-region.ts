@@ -4,7 +4,7 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}/regions/{region_id}
+ * @oas [delete] /admin/discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
  * summary: "Remove Region"
  * x-authenticated: true

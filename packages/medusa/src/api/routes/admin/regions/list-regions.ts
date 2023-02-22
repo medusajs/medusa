@@ -9,7 +9,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /regions
+ * @oas [get] /admin/regions
  * operationId: "GetRegions"
  * summary: "List Regions"
  * description: "Retrieves a list of Regions."

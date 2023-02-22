@@ -7,7 +7,7 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/products/batch
+ * @oas [post] /admin/tax-rates/{id}/products/batch
  * operationId: "PostTaxRatesTaxRateProducts"
  * summary: "Add to Products"
  * description: "Associates a Tax Rate with a list of Products"

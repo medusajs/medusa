@@ -3,7 +3,7 @@ import { PaymentSessionStatus } from "../../../../models"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/{session_id}/authorize
+ * @oas [post] /store/payment-collections/{id}/sessions/{session_id}/authorize
  * operationId: "PostPaymentCollectionsSessionsSessionAuthorize"
  * summary: "Authorize Payment Session"
  * description: "Authorizes a Payment Session of a Payment Collection."

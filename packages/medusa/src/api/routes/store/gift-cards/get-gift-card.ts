@@ -3,7 +3,7 @@ import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
 import GiftCardService from "../../../../services/gift-card"
 
 /**
- * @oas [get] /gift-cards/{code}
+ * @oas [get] /store/gift-cards/{code}
  * operationId: "GetGiftCardsCode"
  * summary: "Get Gift Card by Code"
  * description: "Retrieves a Gift Card by its associated unique code."

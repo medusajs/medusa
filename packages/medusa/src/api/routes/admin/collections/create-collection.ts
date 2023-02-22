@@ -4,7 +4,7 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /collections
+ * @oas [post] /admin/collections
  * operationId: "PostCollections"
  * summary: "Create a Collection"
  * description: "Creates a Product Collection."

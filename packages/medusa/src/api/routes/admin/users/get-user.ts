@@ -1,7 +1,7 @@
 import UserService from "../../../../services/user"
 
 /**
- * @oas [get] /users/{id}
+ * @oas [get] /admin/users/{id}
  * operationId: "GetUsersUser"
  * summary: "Get a User"
  * description: "Retrieves a User."

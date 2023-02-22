@@ -6,7 +6,7 @@ import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /customer-groups
+ * @oas [get] /admin/customer-groups
  * operationId: "GetCustomerGroups"
  * summary: "List Customer Groups"
  * description: "Retrieve a list of customer groups."

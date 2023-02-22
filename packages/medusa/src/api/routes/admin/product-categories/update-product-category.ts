@@ -7,7 +7,7 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}
+ * @oas [post] /admin/product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
  * summary: "Update a Product Category"
  * description: "Updates a Product Category."

@@ -7,7 +7,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /gift-cards/{id}
+ * @oas [post] /admin/gift-cards/{id}
  * operationId: "PostGiftCardsGiftCard"
  * summary: "Update a Gift Card"
  * description: "Update a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."

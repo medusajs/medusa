@@ -2,7 +2,7 @@ import { IsArray, IsString } from "class-validator"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/batch/authorize
+ * @oas [post] /store/payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
  * summary: "Authorize PaymentSessions"
  * description: "Authorizes Payment Sessions of a Payment Collection."

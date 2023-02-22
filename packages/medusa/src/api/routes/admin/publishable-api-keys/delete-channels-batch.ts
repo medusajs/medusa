@@ -7,7 +7,7 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [delete] /publishable-api-keys/{id}/sales-channels/batch
+ * @oas [delete] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "DeletePublishableApiKeySalesChannelsChannelsBatch"
  * summary: "Delete SalesChannels"
  * description: "Remove a batch of sales channels from a publishable api key."

@@ -9,7 +9,7 @@ import { IsType } from "../../../../utils/validators/is-type"
 import ProductTypeService from "../../../../services/product-type"
 
 /**
- * @oas [get] /product-types
+ * @oas [get] /admin/product-types
  * operationId: "GetProductTypes"
  * summary: "List Product Types"
  * description: "Retrieve a list of Product Types."
