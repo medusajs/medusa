@@ -17,7 +17,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}
+ * @oas [post] /admin/orders/{id}
  * operationId: "PostOrdersOrder"
  * summary: "Update an Order"
  * description: "Updates and order"

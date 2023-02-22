@@ -4,7 +4,7 @@ import { CustomerGroupService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /customer-groups/{id}
+ * @oas [delete] /admin/customer-groups/{id}
  * operationId: "DeleteCustomerGroupsCustomerGroup"
  * summary: "Delete a Customer Group"
  * description: "Deletes a CustomerGroup."

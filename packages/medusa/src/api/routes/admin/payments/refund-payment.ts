@@ -10,7 +10,7 @@ import { RefundReason } from "../../../../models"
 import { PaymentService } from "../../../../services"
 
 /**
- * @oas [post] /payments/{id}/refund
+ * @oas [post] /admin/payments/{id}/refund
  * operationId: "PostPaymentsPaymentRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."

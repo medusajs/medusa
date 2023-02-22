@@ -14,7 +14,7 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /store/orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
  * description: "Look up an order using filters."

@@ -9,7 +9,7 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /sales-channels
+ * @oas [get] /admin/sales-channels
  * operationId: "GetSalesChannels"
  * summary: "List Sales Channels"
  * description: "Retrieves a list of sales channels"

@@ -19,7 +19,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /swaps
+ * @oas [post] /store/swaps
  * operationId: PostSwaps
  * summary: Create a Swap
  * description: "Creates a Swap on an Order by providing some items to return along with some items to send back"

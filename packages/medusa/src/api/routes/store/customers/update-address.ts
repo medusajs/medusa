@@ -6,7 +6,7 @@ import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers/me/addresses/{address_id}
+ * @oas [post] /store/customers/me/addresses/{address_id}
  * operationId: PostCustomersCustomerAddressesAddress
  * summary: "Update a Shipping Address"
  * description: "Updates a Customer's saved Shipping Address."

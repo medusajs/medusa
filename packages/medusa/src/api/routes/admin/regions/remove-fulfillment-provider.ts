@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}/fulfillment-providers/{provider_id}
+ * @oas [delete] /admin/regions/{id}/fulfillment-providers/{provider_id}
  * operationId: "PostRegionsRegionFulfillmentProvidersProvider"
  * summary: "Del. Fulfillment Provider"
  * description: "Removes a Fulfillment Provider."

@@ -8,7 +8,7 @@ import {
 } from "../../../../types/common"
 
 /**
- * @oas [get] /reservations
+ * @oas [get] /admin/reservations
  * operationId: "GetReservations"
  * summary: "List Reservations"
  * description: "Retrieve a list of Reservations."

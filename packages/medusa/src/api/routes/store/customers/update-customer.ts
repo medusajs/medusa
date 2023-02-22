@@ -8,7 +8,7 @@ import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [post] /customers/me
+ * @oas [post] /store/customers/me
  * operationId: PostCustomersCustomer
  * summary: Update Customer
  * description: "Updates a Customer's saved details."

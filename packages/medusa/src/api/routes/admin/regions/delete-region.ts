@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}
+ * @oas [delete] /admin/regions/{id}
  * operationId: "DeleteRegionsRegion"
  * summary: "Delete a Region"
  * description: "Deletes a Region."

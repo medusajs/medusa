@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [delete] /reservations/{id}
+ * @oas [delete] /admin/reservations/{id}
  * operationId: "DeleteReservationsReservation"
  * summary: "Delete a Reservation"
  * description: "Deletes a Reservation."

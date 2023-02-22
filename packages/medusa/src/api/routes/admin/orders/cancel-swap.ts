@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/cancel
  * operationId: "PostOrdersSwapCancel"
  * summary: "Cancels a Swap"
  * description: "Cancels a Swap"

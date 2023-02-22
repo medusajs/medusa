@@ -2,7 +2,7 @@ import { BatchJobService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /batch-jobs/{id}/cancel
+ * @oas [post] /admin/batch-jobs/{id}/cancel
  * operationId: "PostBatchJobsBatchJobCancel"
  * summary: "Cancel a Batch Job"
  * description: "Marks a batch job as canceled"

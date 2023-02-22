@@ -3,7 +3,7 @@ import { IStockLocationService } from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**
- * @oas [delete] /stock-locations/{id}
+ * @oas [delete] /admin/stock-locations/{id}
  * operationId: "DeleteStockLocationsStockLocation"
  * summary: "Delete a Stock Location"
  * description: "Delete a Stock Location"

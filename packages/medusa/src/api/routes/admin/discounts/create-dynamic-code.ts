@@ -12,7 +12,7 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /discounts/{id}/dynamic-codes
+ * @oas [post] /admin/discounts/{id}/dynamic-codes
  * operationId: "PostDiscountsDiscountDynamicCodes"
  * summary: "Create a Dynamic Code"
  * description: "Creates a dynamic unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour."

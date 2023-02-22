@@ -5,7 +5,7 @@ import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /shipping-profiles
+ * @oas [post] /admin/shipping-profiles
  * operationId: "PostShippingProfiles"
  * summary: "Create a Shipping Profile"
  * description: "Creates a Shipping Profile"

@@ -13,7 +13,7 @@ import { AdminPriceSelectionParams } from "../../../../types/price-selection"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /variants
+ * @oas [get] /admin/variants
  * operationId: "GetVariants"
  * summary: "List Product Variants"
  * description: "Retrieves a list of Product Variants"

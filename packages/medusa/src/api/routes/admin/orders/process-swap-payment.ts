@@ -4,7 +4,7 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/process-payment
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/process-payment
  * operationId: "PostOrdersOrderSwapsSwapProcessPayment"
  * summary: "Process Swap Payment"
  * description: "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured."

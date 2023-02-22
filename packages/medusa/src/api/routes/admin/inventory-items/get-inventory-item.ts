@@ -4,7 +4,7 @@ import { FindParams } from "../../../../types/common"
 import { joinLevels } from "./utils/join-levels"
 
 /**
- * @oas [get] /inventory-items/{id}
+ * @oas [get] /admin/inventory-items/{id}
  * operationId: "GetInventoryItemsInventoryItem"
  * summary: "Retrive an Inventory Item."
  * description: "Retrives an Inventory Item."

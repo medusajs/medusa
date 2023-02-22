@@ -8,7 +8,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}
+ * @oas [post] /admin/customer-groups/{id}
  * operationId: "PostCustomerGroupsGroup"
  * summary: "Update a Customer Group"
  * description: "Update a CustomerGroup."

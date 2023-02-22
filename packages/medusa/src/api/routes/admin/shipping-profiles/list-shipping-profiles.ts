@@ -1,7 +1,7 @@
 import { ShippingProfileService } from "../../../../services"
 
 /**
- * @oas [get] /shipping-profiles
+ * @oas [get] /admin/shipping-profiles
  * operationId: "GetShippingProfiles"
  * summary: "List Shipping Profiles"
  * description: "Retrieves a list of Shipping Profile."

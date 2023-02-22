@@ -4,7 +4,7 @@ import { OrderService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
- * @oas [get] /orders/{id}/reservations
+ * @oas [get] /admin/orders/{id}/reservations
  * operationId: "GetOrdersOrderReservations"
  * summary: "Get reservations for an Order"
  * description: "Retrieves reservations for an Order"

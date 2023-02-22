@@ -15,7 +15,7 @@ import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /draft-orders/{id}/pay
+ * @oas [post] /admin/draft-orders/{id}/pay
  * summary: "Registers a Payment"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
  * description: "Registers a payment for a Draft Order."

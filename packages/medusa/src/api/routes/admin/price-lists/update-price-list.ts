@@ -22,7 +22,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /price-lists/{id}
+ * @oas [post] /admin/price-lists/{id}
  * operationId: "PostPriceListsPriceListPriceList"
  * summary: "Update a Price List"
  * description: "Updates a Price List"
