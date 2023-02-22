@@ -65,7 +65,9 @@ export function getListQuery(
     const toSelect: string[] = []
     const parsed = Object.entries(query.order).reduce((acc, [k, v]) => {
       const key = `inv_item.${k}`
-      toSelect.push(key)
+      if((query.select && !query.select[k] ) || !query.select){
+        toSelect.push(key)
+      }
       acc[key] = v
       return acc
     }, {})
