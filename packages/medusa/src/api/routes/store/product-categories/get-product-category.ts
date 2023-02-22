@@ -38,7 +38,7 @@ import { defaultStoreScope } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Categorys
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK
