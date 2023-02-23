@@ -618,19 +618,12 @@ function resolvePlugin(pluginName: string): {
     const computedResolvedPath =
       resolvedPath + (process.env.DEV_MODE ? "/src" : "")
 
-    let resolvedPathToDist = ""
-    let isDistExist = false
-
-    try {
-      resolvedPathToDist = resolvedPath + "/dist"
-      // Allow a plugin to choose to output the build to dist, only if not in dev mode
-      isDistExist =
-        resolvedPathToDist &&
-        !process.env.DEV_MODE &&
-        existsSync(resolvedPath + "/dist")
-    } catch (e) {
-      // noop
-    }
+    // Add support for a plugin to output the build into a dist directory
+    const resolvedPathToDist = resolvedPath + "/dist"
+    const isDistExist =
+      resolvedPathToDist &&
+      !process.env.DEV_MODE &&
+      existsSync(resolvedPath + "/dist")
 
     return {
       resolve: isDistExist ? resolvedPathToDist : computedResolvedPath,
