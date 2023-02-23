@@ -1,21 +1,28 @@
+import IconAdjustments from './Adjustments';
 import IconAlert from './Alert';
+import IconArrowDownTray from './ArrowDownTray';
 import IconBackArrow from './BackArrow';
 import IconBell from './Bell';
+import IconBellAlertSolid from './BellAlertSolid';
 import IconBolt from './Bolt';
 import IconBoltSolid from './BoltSolid';
 import IconBookOpen from './BookOpen';
 import IconBug from './Bug';
 import IconBugAntSolid from './BugAntSolid';
 import IconBuildingTax from './BuildingTax';
+import IconCalendar from './Calendar';
 import IconCashSolid from './CashSolid';
 import IconChannels from './Channels';
 import IconChannelsSolid from './ChannelsSolid';
 import IconCheckCircleSolid from './CheckCircleSolid';
+import IconCircleStack from './CircleStack';
+import IconClockSolidMini from './ClockSolidMini';
 import IconClose from './Close';
 import IconCloudArrowUp from './CloudArrowUp';
 import IconCogSixTooth from './CogSixTooth';
 import IconCommandLine from './CommandLine';
 import IconCommandLineSolid from './CommandLineSolid';
+import IconComponentSolid from './ComponentSolid';
 import IconComputerDesktop from './ComputerDesktop';
 import IconComputerDesktopSolid from './ComputerDesktopSolid';
 import IconCopy from './Copy';
@@ -28,6 +35,7 @@ import IconDiscord from './Discord';
 import IconDocumentText from './DocumentText';
 import IconExternalLink from './ExternalLink';
 import IconFlyingBox from './FlyingBox';
+import IconFolder from './Folder';
 import IconFolderOpen from './FolderOpen';
 import IconGatsby from './Gatsby';
 import IconGiftSolid from './GiftSolid';
@@ -45,6 +53,7 @@ import IconPencilSquareSolid from './PencilSquareSolid';
 import IconReact from './React';
 import IconReport from './Report';
 import IconRocketLaunch from './RocketLaunch';
+import IconServer from './Server';
 import IconServerStack from './ServerStack';
 import IconShoppingCart from './ShoppingCart';
 import IconShoppingCartSolid from './ShoppingCartSolid';
@@ -62,24 +71,31 @@ import IconUser from './User';
 import IconUsersSolid from './UsersSolid';
 
 export default {
+  'adjustments': IconAdjustments,
   'alert': IconAlert,
+  'arrow-down-tray': IconArrowDownTray,
   'back-arrow': IconBackArrow,
   'bell': IconBell,
+  'bell-alert-solid': IconBellAlertSolid,
   'bolt': IconBolt,
   'bolt-solid': IconBoltSolid,
   'book-open': IconBookOpen,
   'bug': IconBug,
   'bug-ant-solid': IconBugAntSolid,
   'building-tax': IconBuildingTax,
+  'calendar': IconCalendar,
   'cash-solid': IconCashSolid,
   'channels-solid': IconChannelsSolid,
   'channels': IconChannels,
   'check-circle-solid': IconCheckCircleSolid,
+  'circle-stack': IconCircleStack,
+  'clock-solid-mini': IconClockSolidMini,
   'close': IconClose,
   'cloud-arrow-up': IconCloudArrowUp,
   'cog-six-tooth': IconCogSixTooth,
   'command-line': IconCommandLine,
   'command-line-solid': IconCommandLineSolid,
+  'component-solid': IconComponentSolid,
   'computer-desktop': IconComputerDesktop,
   'computer-desktop-solid': IconComputerDesktopSolid,
   'copy': IconCopy,
@@ -92,6 +108,7 @@ export default {
   'document-text': IconDocumentText,
   'external-link': IconExternalLink,
   'flying-box': IconFlyingBox,
+  'folder': IconFolder,
   'folder-open': IconFolderOpen,
   'gatsby': IconGatsby,
   'gift-solid': IconGiftSolid,
@@ -109,6 +126,7 @@ export default {
   'react': IconReact,
   'report': IconReport,
   'rocket-launch': IconRocketLaunch,
+  'server': IconServer,
   'server-stack': IconServerStack,
   'shopping-cart': IconShoppingCart,
   'shopping-cart-solid': IconShoppingCartSolid,

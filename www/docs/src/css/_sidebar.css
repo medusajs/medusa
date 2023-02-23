@@ -107,6 +107,10 @@
   margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
 }
 
+.theme-doc-sidebar-item-link-level-1:not(.sidebar-title):not(.homepage-sidebar-item):not(.sidebar-back-link) .menu__link {
+  padding-left: 0 !important;
+}
+
 .menu__list .menu__list {
   margin-top: 0 !important;
 }
