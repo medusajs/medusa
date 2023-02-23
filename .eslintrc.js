@@ -82,7 +82,7 @@ module.exports = {
       parserOptions: {
         project: [
           "./packages/medusa/tsconfig.json",
-          "./packages/medusa-payment-stripe/tsconfig.json",
+          "./packages/medusa-payment-stripe/tsconfig.spec.json",
         ]
       },
       rules: {
