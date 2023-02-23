@@ -4,7 +4,7 @@ import { pick } from "lodash"
 // We will be able to only compute the totals if one of the total fields is present
 // and therefore avoid totals computation if the user don't want them to appear in the response
 // and therefore the below const will be removed
-const EXLCUDED_FIELDS = [
+const EXCLUDED_FIELDS = [
   "shipping_total",
   "discount_total",
   "tax_total",
@@ -38,7 +38,7 @@ function cleanResponseData<T extends unknown | unknown[]>(
   }
 
   const isDataArray = Array.isArray(data)
-  const fieldsSet = new Set([...fields, ...EXLCUDED_FIELDS])
+  const fieldsSet = new Set([...fields, ...EXCLUDED_FIELDS])
 
   fields = [...fieldsSet]
 
