@@ -1,6 +1,5 @@
-import { asClass, asFunction, asValue } from "awilix"
+import { asFunction, asValue } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
-import { EntitySchema } from "typeorm"
 import {
   ClassConstructor,
   ConfigModule,
@@ -11,8 +10,9 @@ import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../types/global"
-import { ModulesHelper } from "../utils/module-helper"
+} from "../types/module"
+
+import { ModulesHelper } from "../module-helper"
 
 export const moduleHelper = new ModulesHelper()
 
@@ -118,7 +118,7 @@ const registerModule = async (
   )
 }
 
-export default async ({
+export const moduleLoader = async ({
   container,
   configModule,
   logger,
