@@ -6,6 +6,16 @@ description: 'Learn about what Regions are and how they are used in a Medusa ser
 
 In this document, you’ll learn about the Region entity and its architecture.
 
+## Introduction
+
+Regions represent at least one country on your Medusa server. They're used to define different business logic and configurations for a set of countries.
+
+For example, you can enable one payment provider for region A, and a different payment provider for region B. Customers can then use the payment provider enabled in their region.
+
+This applies to other relations and entities in your store such as different currencies, fulfillment providers, and tax providers.
+
+---
+
 ## Region Configurations
 
 The following configurations can be set for each region:
