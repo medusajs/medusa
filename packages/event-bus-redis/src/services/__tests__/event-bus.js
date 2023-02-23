@@ -84,6 +84,7 @@ describe("RedisEventBusService", () => {
           {
             manager: MockManager,
             logger: loggerMock,
+            redisConnection: {},
           },
           {
             redisUrl: "test-url",
@@ -147,6 +148,7 @@ describe("RedisEventBusService", () => {
           {
             manager: MockManager,
             logger: loggerMock,
+            redisConnection: {},
           },
           {
             redisUrl: "test-url",

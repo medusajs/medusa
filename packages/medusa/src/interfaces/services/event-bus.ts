@@ -1,6 +1,6 @@
-import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import { StagedJob } from "../../models"
+import { TransactionBaseService } from "../transaction-base-service"
 
 export type Subscriber<T = unknown> = (
   data: T,
@@ -21,14 +21,12 @@ export type EventHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
-export interface IEventBusService {
+export interface IEventBusService extends TransactionBaseService {
   emit<T>(
     eventName: string,
     data: T,
     options?: unknown
   ): Promise<StagedJob | void>
-
-  withTransaction(manager: EntityManager): this
 }
 
 export interface IEventBusModuleService {
@@ -54,8 +52,17 @@ export interface IEventBusModuleService {
 export abstract class AbstractEventBusModuleService
   implements IEventBusModuleService
 {
-  public eventToSubscribersMap_: Map<string | symbol, SubscriberDescriptor[]> =
-    new Map()
+  protected eventToSubscribersMap_: Map<
+    string | symbol,
+    SubscriberDescriptor[]
+  > = new Map()
+
+  protected get eventToSubscribersMap(): Map<
+    string | symbol,
+    SubscriberDescriptor[]
+  > {
+    return this.eventToSubscribersMap_
+  }
 
   abstract emit<T>(eventName: string, data: T, options?: unknown): Promise<void>
 

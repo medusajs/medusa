@@ -1,6 +1,7 @@
 import { LoaderOptions } from "@medusajs/medusa"
 import { asValue } from "awilix"
 import Redis from "ioredis"
+import { EOL } from "os"
 import { EventBusRedisModuleOptions } from "../types"
 
 export default async ({
@@ -29,7 +30,7 @@ export default async ({
     await connection.connect()
     logger?.info(`Connection to Redis in module 'event-bus-redis' established`)
   } catch (err) {
-    logger?.error(`An error occurred while connecting to Redis in module 'event-bus-redis': ${err}`)
+    logger?.error(`An error occurred while connecting to Redis in module 'event-bus-redis':${EOL} ${err}`)
   }
 
   container.register({

@@ -1,6 +1,7 @@
 import { asValue } from "awilix"
 import Redis from "ioredis"
 import FakeRedis from "ioredis-mock"
+import { EOL } from "os"
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
@@ -25,7 +26,7 @@ async function redisLoader({
       await redisClient.connect()
       logger?.info(`Connection to Redis established`)
     } catch (err) {
-      logger?.error(`An error occurred while connecting to Redis: ${err}`)
+      logger?.error(`An error occurred while connecting to Redis:${EOL} ${err}`)
     }
 
     container.register({

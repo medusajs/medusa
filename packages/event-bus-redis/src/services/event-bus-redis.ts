@@ -6,7 +6,7 @@ import {
   MODULE_RESOURCE_TYPE
 } from "@medusajs/medusa"
 import { Queue, Worker } from "bullmq"
-import Redis from "ioredis"
+import { Redis } from "ioredis"
 import { MedusaError } from "medusa-core-utils"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 
@@ -54,8 +54,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.queueOptions ?? {}),
       connection: redisConnection,
-    }).on("error", (e: any) => {
-      logger.error(`An error occurred with the BullMQ Queue: ${e.message}`)
     })
 
     // Register our worker to handle emit calls
@@ -63,8 +61,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.workerOptions ?? {}),
       connection: redisConnection,
-    }).on("error", (e: any) => {
-      logger.error(`An error occurred with the BullMQ Worker: ${e.message}`)
     })
   }
 
@@ -98,8 +94,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    */
   worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
     const { eventName, data } = job.data
-    const eventSubscribers = this.eventToSubscribersMap_.get(eventName) || []
-    const wildcardSubscribers = this.eventToSubscribersMap_.get("*") || []
+    const eventSubscribers = this.eventToSubscribersMap.get(eventName) || []
+    const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
 
     const allSubscribers = eventSubscribers.concat(wildcardSubscribers)
 
@@ -170,7 +166,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       job.data.completedSubscriberIds = updatedCompletedSubscribers
 
-      job.update(job.data)
+      await job.update(job.data)
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 

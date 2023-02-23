@@ -40,17 +40,17 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async remove(stagedJob: StagedJob) {
-    const stagedJobRepo = this.activeManager_.withRepository(
-      this.stagedJobRepository_
-    )
+    return this.atomicPhase_(async (manager) => {
+      const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
 
-    const [job] = await stagedJobRepo.find({ where: { id: stagedJob.id } })
+      const [job] = await stagedJobRepo.find({ where: { id: stagedJob.id } })
 
-    if (!job) {
-      return
-    }
+      if (!job) {
+        return
+      }
 
-    return await stagedJobRepo.remove(job)
+      return await stagedJobRepo.remove(job)
+    })
   }
 }
 
