@@ -51,7 +51,7 @@ export type ModuleResolution = {
   resolutionPath: string | false
   definition: ModuleDefinition
   options?: Record<string, unknown>
-  dependencies: string[]
+  dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
 }
 

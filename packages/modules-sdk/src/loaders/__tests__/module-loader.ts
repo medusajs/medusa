@@ -243,7 +243,7 @@ describe("modules loader", () => {
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
         },
-      },
+      } as any,
     }
 
     try {
