@@ -39,24 +39,22 @@ export function transformQuery<
       ])
       req.filterableFields = removeUndefinedProperties(req.filterableFields)
 
-      if (
-        (queryConfig?.defaultFields || validated.fields) &&
-        (queryConfig?.defaultRelations || validated.expand)
-      ) {
-        req.allowedProperties = [
-          ...(validated.fields
-            ? validated.fields.split(",")
-            : queryConfig?.allowedFields || [])!,
-          ...(validated.expand
-            ? validated.expand.split(",")
-            : queryConfig?.allowedRelations || [])!,
-        ] as unknown as string[]
-      }
+      req.storeAllowedProperties = getStoreAllowedProperties(
+        validated,
+        Object.keys(req["includes"] ?? {}),
+        queryConfig
+      )
+
+      req.adminAllowedProperties = getAdminAllowedProperties(
+        validated,
+        Object.keys(req["includes"] ?? {}),
+        queryConfig
+      )
 
       const includesFields = Object.keys(req["includes"] ?? {})
       if (includesFields.length) {
-        req.allowedProperties = req.allowedProperties ?? []
-        req.allowedProperties.push(...includesFields)
+        req.storeAllowedProperties = req.storeAllowedProperties ?? []
+        req.storeAllowedProperties.push(...includesFields)
       }
 
       if (queryConfig?.isList) {
@@ -76,4 +74,66 @@ export function transformQuery<
       next(e)
     }
   }
+}
+
+/**
+ * Build the store allowed props based on the custom fields query params, the defaults and the includes options.
+ * This can be used later with `cleanResponseData` in order to clean up the returned objects to the client.
+ * @param queryConfig
+ * @param validated
+ * @param includesOptions
+ */
+function getStoreAllowedProperties<TEntity extends BaseEntity>(
+  validated: RequestQueryFields,
+  includesOptions: string[],
+  queryConfig?: QueryConfig<TEntity>
+): string[] {
+  const allowed: string[] = []
+  if (
+    (queryConfig?.defaultFields || validated.fields) &&
+    (queryConfig?.defaultRelations || validated.expand)
+  ) {
+    allowed.push(
+      ...(validated.fields
+        ? validated.fields.split(",")
+        : queryConfig?.allowedFields || []),
+      ...(validated.expand
+        ? validated.expand.split(",")
+        : queryConfig?.allowedRelations || [])
+    )
+  }
+
+  if (includesOptions.length) {
+    allowed.push(...includesOptions)
+  }
+
+  return allowed
+}
+
+/**
+ * Build the admin allowed props based on the custom fields query params, the defaults and the includes options.
+ * Since admin can access everything, it is only in order to return what the user asked for through fields and expand query params.
+ * This can be used later with `cleanResponseData` in order to clean up the returned objects to the client.
+ * @param queryConfig
+ * @param validated
+ * @param includesOptions
+ */
+function getAdminAllowedProperties<TEntity extends BaseEntity>(
+  validated: RequestQueryFields,
+  includesOptions: string[],
+  queryConfig?: QueryConfig<TEntity>
+): string[] {
+  const allowed: string[] = []
+  if (validated.fields || validated.expand) {
+    allowed.push(
+      ...(validated.fields?.split(",") ?? []),
+      ...(validated.expand?.split(",") ?? [])
+    )
+  }
+
+  if (includesOptions.length) {
+    allowed.push(...includesOptions)
+  }
+
+  return allowed
 }

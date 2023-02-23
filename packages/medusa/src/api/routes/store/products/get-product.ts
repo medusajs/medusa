@@ -118,7 +118,7 @@ export default async (req, res) => {
   )
 
   res.json({
-    product: cleanResponseData(product, req.allowedProperties || []),
+    product: cleanResponseData(product, req.storeAllowedProperties || []),
   })
 }
 

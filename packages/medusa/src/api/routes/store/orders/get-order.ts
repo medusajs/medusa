@@ -54,7 +54,7 @@ export default async (req, res) => {
   const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
 
   res.json({
-    order: cleanResponseData(order, req.allowedProperties || []),
+    order: cleanResponseData(order, req.storeAllowedProperties || []),
   })
 }
 
