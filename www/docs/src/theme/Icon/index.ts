@@ -35,6 +35,7 @@ import IconGitHub from './GitHub';
 import IconGlobeEurope from './GlobeEurope';
 import IconGlobeEuropeSolid from './GlobeEuropeSolid';
 import IconJavaScript from './JavaScript';
+import IconKey from './Key';
 import IconLightBulb from './LightBulb';
 import IconLightBulbSolid from './LightBulbSolid';
 import IconLightMode from './LightMode';
@@ -51,6 +52,7 @@ import IconSparkles from './Sparkles';
 import IconSparklesSolid from './SparklesSolid';
 import IconSquaresPlus from './SquaresPlus';
 import IconSquaresPlusSolid from './SquaresPlusSolid';
+import IconStar from './Star';
 import IconStripe from './Stripe';
 import IconTagSolid from './TagSolid';
 import IconTools from './Tools';
@@ -97,6 +99,7 @@ export default {
   'globe-europe': IconGlobeEurope,
   'globe-europe-solid': IconGlobeEuropeSolid,
   'javascript': IconJavaScript,
+  'key': IconKey,
   'light-bulb': IconLightBulb,
   'light-bulb-solid': IconLightBulbSolid,
   'light-mode': IconLightMode,
@@ -113,6 +116,7 @@ export default {
   'sparkles-solid': IconSparklesSolid,
   'squares-plus': IconSquaresPlus,
   'squares-plus-solid': IconSquaresPlusSolid,
+  'star': IconStar,
   'stripe': IconStripe,
   'tag-solid': IconTagSolid,
   'tools': IconTools,

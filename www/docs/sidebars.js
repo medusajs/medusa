@@ -28,26 +28,22 @@ module.exports = {
       className: 'homepage-sidebar-item'
     },
     {
-      type: 'category',
-      className: 'homepage-sidebar-item',
-      label: 'Get Started',
+      type: 'doc',
+      id: 'usage/create-medusa-app',
+      label: 'Create Medusa App',
       customProps: {
-        sidebar_icon: 'rocket-launch'
+        sidebar_icon: 'rocket-launch',
       },
-      collapsed: false,
-      collapsible: false,
-      items: [
-        {
-          type: 'doc',
-          id: 'usage/create-medusa-app',
-          label: 'create-medusa-app',
-        },
-        {
-          type: 'doc',
-          id: 'quickstart/quick-start',
-          label: 'Server Quickstart'
-        }
-      ],
+      className: 'homepage-sidebar-item',
+    },
+    {
+      type: 'doc',
+      id: 'quickstart/quick-start',
+      label: 'Server Quickstart',
+      customProps: {
+        sidebar_icon: 'server-stack',
+      },
+      className: 'homepage-sidebar-item'
     },
     {
       type: 'html',
@@ -71,7 +67,7 @@ module.exports = {
       id: 'core-concepts/overview',
       label: 'Core Concepts',
       customProps: {
-        sidebar_icon: 'server-stack'
+        sidebar_icon: 'star'
       },
       className: 'homepage-sidebar-item'
     },
@@ -1153,7 +1149,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'advanced/backend/sales-channels/manage-admin',
-          label: 'Manage Sales Channels'
+          label: 'Admin: Manage Sales Channels'
         },
         {
           type: 'doc',
@@ -1235,7 +1231,7 @@ module.exports = {
       label: 'Core Concepts',
       customProps: {
         sidebar_is_title: true,
-        sidebar_icon: 'server-stack'
+        sidebar_icon: 'star'
       }
     },
     {

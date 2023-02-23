@@ -1,6 +1,16 @@
 code {
   border: 1px solid var(--ifm-code-border-color);
   color: var(--ifm-code-color);
+  line-height: var(--medusa-body-regular-line-height);
+}
+
+[data-tooltip-content]:hover code {
+  background-color: var(--ifm-code-background-hover);
+}
+
+[data-tooltip-content] > span:active > code,
+[data-tooltip-content] > span:focus > code {
+  background-color: var(--ifm-code-background-pressed);
 }
 
 .inline-code-copy {
@@ -133,10 +143,12 @@ a.code-action {
 
 .theme-code-block.no-header-block .thin-code {
   padding: calc(var(--ifm-pre-padding) / 2);
+  padding-left: var(--ifm-pre-padding);
 }
 
 [class*=codeLineNumber] {
   color: var(--ifm-code-line-number-color);
+  padding-left: 0 !important;
 }
 
 @media screen and (min-width: 568px) {

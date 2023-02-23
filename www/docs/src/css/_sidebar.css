@@ -282,6 +282,7 @@
 
 .sidebar-back-link .menu__link:hover {
   background-color: transparent !important;
+  color: var(--ifm-menu-color-active);
 }
 
 .sidebar-back-link .sidebar-item-icon {
@@ -298,8 +299,9 @@
 }
 
 .sidebar-soon-link * {
-  color: var(--medusa-text-disabled);
   --ifm-icon-color: var(--medusa-icon-disabled);
+
+  color: var(--medusa-text-disabled);
 }
 
 /** Sidebar Badge **/
@@ -313,7 +315,7 @@
   font-size: var(--medusa-label-x-small-plus-size);
   line-height: var(--medusa-label-x-small-plus-line-height);
   font-weight: var(--medusa-label-x-small-plus-font-weight);
-  padding: 2px 8px;
+  padding: 1px 7px;
   border-radius: var(--ifm-global-radius);
   border: 1px solid;
 }

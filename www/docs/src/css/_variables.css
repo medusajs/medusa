@@ -58,8 +58,9 @@
   --ifm-menu-link-padding-vertical: 6px;
   --ifm-menu-link-padding-horizontal: 16px;
   --ifm-menu-color: var(--medusa-text-secondary);
-  --ifm-menu-color-background-hover: var(--medusa-bg-subtle-hover);
-  --ifm-menu-color-background-active: var(--medusa-bg-subtle-pressed);
+  --ifm-menu-color-active: var(--medusa-text-primary);
+  --ifm-menu-color-background-hover: var(--medusa-bg-base-hover);
+  --ifm-menu-color-background-active: var(--medusa-bg-base-pressed);
 
   /* Docs Page */
   --ifm-docs-page-max-width: var(--ifm-container-width-xl);
@@ -102,7 +103,9 @@
   --ifm-code-border-radius: 8px;
   --ifm-code-padding-horizontal: 8px;
   --ifm-code-border-color: var(--medusa-border-base);
-  --ifm-code-background: var(--medusa-bg-base) !important;
+  --ifm-code-background: var(--medusa-bg-subtle) !important;
+  --ifm-code-background-hover: var(--medusa-bg-subtle-hover);
+  --ifm-code-background-pressed: var(--medusa-bg-subtle-pressed);
   --ifm-code-color: var(--medusa-text-secondary);
 
   /* Code Blocks */
@@ -195,7 +198,6 @@
   --ifm-announcement-bar-hover-bg: var(--medusa-bg-subtle-hover);
   --ifm-announcement-bar-icon-bg: url('/img/announcement-bg.svg');
   --ifm-announcement-bar-icon-color: var(--medusa-icon-on-color);
-  --ifm-announcement-bar-icon-border-color: var(--medusa-border-strong);
   --ifm-announcement-bar-title-color: var(--ifm-color-primary);
   --ifm-announcement-bar-text-color: var(--ifm-color-content);
   --ifm-announcement-bar-close-icon-color: var(--medusa-icon-placeholder);
@@ -221,16 +223,25 @@
 
   /* Bordered Element */
   --bordered-border-color: var(--medusa-border-strong);
-  --bordered-padding: 4px;
+  --bordered-padding: 3px;
   --bordered-inside-padding: 2px;
   --bordered-margin-right: calc(var(--ifm-base-margin-vertical) / 2);
 }
 
 html[data-theme="dark"] {
 
+  /* Sidebar */
+  --ifm-menu-color-background-hover: var(--medusa-bg-subtle-hover);
+  --ifm-menu-color-background-active: var(--medusa-bg-subtle-pressed);
+
   /* Colors */
   --ifm-background-color: var(--medusa-bg-subtle);
   --ifm-background-surface-color: var(--medusa-bg-base);
+
+  /* Inline Code */
+  --ifm-code-background: var(--medusa-bg-base) !important;
+  --ifm-code-background-hover: var(--medusa-bg-base-hover);
+  --ifm-code-background-pressed: var(--medusa-bg-base-pressed);
 
   /* Cards */
   --ifm-card-bg-hover: var(--medusa-bg-base-hover);

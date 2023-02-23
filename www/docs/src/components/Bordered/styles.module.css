@@ -7,4 +7,5 @@
   border: 1px solid var(--bordered-border-color);
   margin-right: var(--bordered-margin-right);
   width: fit-content;
+  background-color: var(--ifm-background-color);
 }
