@@ -287,7 +287,7 @@ You can also disable specific rules. For example:
 ```md
 <!-- vale docs.Numbers = NO -->
 
-Medusa supports Node versions 14 and 16.
+Medusa supports Node version 16.
 
 <!-- vale docs.Numbers = YES -->
 ```
