@@ -13,7 +13,7 @@ jest.setTimeout(30000)
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
-describe("/store/carts", () => {
+describe("Distributed Locking", () => {
   let express
   let appContainer
   let dbConnection
@@ -21,6 +21,7 @@ describe("/store/carts", () => {
   let variantId
   let inventoryItemId
   let locationId
+  const salesChannelId = "sales-channel-test"
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -51,21 +52,21 @@ describe("/store/carts", () => {
     return await db.teardown()
   })
 
-  describe("POST /store/carts/:id", () => {
+  describe("Check inventory and reserve items", () => {
     beforeEach(async () => {
       await simpleSalesChannelFactory(dbConnection, {
-        id: "test-channel",
+        id: salesChannelId,
         is_default: true,
       })
 
       await adminSeeder(dbConnection)
-      await cartSeeder(dbConnection, { sales_channel_id: "test-channel" })
+      await cartSeeder(dbConnection, { sales_channel_id: salesChannelId })
 
       await simpleProductFactory(
         dbConnection,
         {
-          id: "product1",
-          sales_channels: [{ id: "test-channel" }],
+          id: "product123",
+          sales_channels: [{ id: salesChannelId }],
           variants: [],
         },
         100
@@ -87,21 +88,13 @@ describe("/store/carts", () => {
       )
 
       const response = await api.post(
-        `/admin/products/product1/variants`,
+        `/admin/products/product123/variants`,
         {
           title: "Test Variant w. inventory",
-          sku: "MY_SKU",
-          material: "material",
-          origin_country: "UK",
-          hs_code: "hs001",
-          mid_code: "mids",
-          weight: 300,
-          length: 100,
-          height: 200,
-          width: 150,
+          sku: "MY_SKU123",
           options: [
             {
-              option_id: "product1-option",
+              option_id: "product123-option",
               value: "SS",
             },
           ],
@@ -142,7 +135,7 @@ describe("/store/carts", () => {
 
       // Associate Stock Location with sales channel
       await api.post(
-        `/admin/sales-channels/test-channel/stock-locations`,
+        `/admin/sales-channels/sales-channel-test/stock-locations`,
         {
           location_id: locationId,
         },
@@ -154,106 +147,85 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it("reserve quantity when completing the cart", async () => {
-      const api = useApi()
-
-      const cartId = "test-cart"
-
-      // Add standard line item to cart
-      await api.post(
-        `/store/carts/${cartId}/line-items`,
-        {
-          variant_id: variantId,
-          quantity: 3,
-        },
-        { withCredentials: true }
+    it("Concurrent calls to confirm and reserve stock leads to over selling", async () => {
+      const inventoryService = appContainer.resolve("inventoryService")
+      const prodVarInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
       )
 
-      await api.post(`/store/carts/${cartId}/payment-sessions`)
-      await api.post(`/store/carts/${cartId}/payment-session`, {
-        provider_id: "test-pay",
-      })
+      const confirmAndReserve = async (quantity) => {
+        const inventoryConfirmed =
+          await prodVarInventoryService.confirmInventory(variantId, quantity, {
+            salesChannelId,
+          })
 
-      const getRes = await api.post(`/store/carts/${cartId}/complete`)
+        if (inventoryConfirmed) {
+          await prodVarInventoryService.reserveQuantity(variantId, quantity, {
+            lineItemId: "line_item_123",
+            salesChannelId,
+          })
+        }
+      }
 
-      expect(getRes.status).toEqual(200)
-      expect(getRes.data.type).toEqual("order")
+      const quantities = [2, 3, 4, 1, 3, 2, 1] // 16
+      await Promise.all(
+        quantities.map(async (quantity) => {
+          await confirmAndReserve(quantity)
+        })
+      )
 
-      const inventoryService = appContainer.resolve("inventoryService")
       const stockLevel = await inventoryService.retrieveInventoryLevel(
         inventoryItemId,
         locationId
       )
 
-      expect(stockLevel.location_id).toEqual(locationId)
-      expect(stockLevel.inventory_item_id).toEqual(inventoryItemId)
-      expect(stockLevel.reserved_quantity).toEqual(3)
       expect(stockLevel.stocked_quantity).toEqual(5)
+      expect(stockLevel.reserved_quantity).toBeGreaterThan(
+        stockLevel.stocked_quantity
+      )
     })
 
-    it("fails to add a item on the cart if the inventory isn't enough", async () => {
-      const api = useApi()
+    it("Concurrent calls using locking to confirm and reserve stock won't reserve more the available quantity", async () => {
+      const distributedLockingService = appContainer.resolve(
+        "distributedLockingService"
+      )
+      const inventoryService = appContainer.resolve("inventoryService")
+      const prodVarInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
 
-      const cartId = "test-cart"
+      const confirmAndReserve = async (quantity) => {
+        await distributedLockingService.execute(
+          `variantReserve:${variantId}`,
+          async () => {
+            const inventoryConfirmed =
+              await prodVarInventoryService.confirmInventory(
+                variantId,
+                quantity,
+                {
+                  salesChannelId,
+                }
+              )
 
-      // Add standard line item to cart
-      const addCart = await api
-        .post(
-          `/store/carts/${cartId}/line-items`,
-          {
-            variant_id: variantId,
-            quantity: 6,
-          },
-          { withCredentials: true }
+            if (inventoryConfirmed) {
+              await prodVarInventoryService.reserveQuantity(
+                variantId,
+                quantity,
+                {
+                  lineItemId: "line_item_123",
+                  salesChannelId,
+                }
+              )
+            }
+          }
         )
-        .catch((e) => e)
+      }
 
-      expect(addCart.response.status).toEqual(400)
-      expect(addCart.response.data.code).toEqual("insufficient_inventory")
-      expect(addCart.response.data.message).toEqual(
-        `Variant with id: ${variantId} does not have the required inventory`
-      )
-    })
-
-    it("fails to complete cart with items inventory not covered", async () => {
-      const api = useApi()
-
-      const cartId = "test-cart"
-
-      // Add standard line item to cart
-      await api.post(
-        `/store/carts/${cartId}/line-items`,
-        {
-          variant_id: variantId,
-          quantity: 5,
-        },
-        { withCredentials: true }
-      )
-
-      await api.post(`/store/carts/${cartId}/payment-sessions`)
-      await api.post(`/store/carts/${cartId}/payment-session`, {
-        provider_id: "test-pay",
-      })
-
-      // Another proccess reserves items before the cart is completed
-      const inventoryService = appContainer.resolve("inventoryService")
-      await inventoryService.createReservationItem({
-        line_item_id: "line_item_123",
-        inventory_item_id: inventoryItemId,
-        location_id: locationId,
-        quantity: 2,
-      })
-
-      const completeCartRes = await api
-        .post(`/store/carts/${cartId}/complete`)
-        .catch((e) => e)
-
-      expect(completeCartRes.response.status).toEqual(409)
-      expect(completeCartRes.response.data.code).toEqual(
-        "insufficient_inventory"
-      )
-      expect(completeCartRes.response.data.message).toEqual(
-        `Variant with id: ${variantId} does not have the required inventory`
+      const quantities = [2, 3, 4, 1, 3, 2, 1] // 16
+      await Promise.all(
+        quantities.map(async (quantity) => {
+          await confirmAndReserve(quantity)
+        })
       )
 
       const stockLevel = await inventoryService.retrieveInventoryLevel(
@@ -261,10 +233,8 @@ describe("/store/carts", () => {
         locationId
       )
 
-      expect(stockLevel.location_id).toEqual(locationId)
-      expect(stockLevel.inventory_item_id).toEqual(inventoryItemId)
-      expect(stockLevel.reserved_quantity).toEqual(2)
       expect(stockLevel.stocked_quantity).toEqual(5)
+      expect(stockLevel.reserved_quantity).toEqual(stockLevel.stocked_quantity)
     })
   })
 })

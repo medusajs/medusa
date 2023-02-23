@@ -16,6 +16,7 @@ export default ({ modules }: ConfigModule) => {
       if (!moduleConfiguration && definition.isRequired) {
         throw new Error(`Module: ${definition.label} is required`)
       }
+
       if (!moduleConfiguration) {
         moduleResolutions[definition.key] = {
           resolutionPath: false,

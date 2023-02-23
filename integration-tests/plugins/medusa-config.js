@@ -39,5 +39,8 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/inventory",
     },
+    distributedLockingService: {
+      resolve: "@medusajs/distributed-locking-postgres",
+    },
   },
 }

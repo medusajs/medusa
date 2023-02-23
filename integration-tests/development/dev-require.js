@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "development") {
-  return
+  //  return
 }
 const path = require("path")
 
@@ -9,13 +9,17 @@ const medusaCore = path.resolve(path.join(__dirname, "../../packages"))
 
 function replacePath(requirePath, pack, concatPackage = true) {
   const idx = requirePath.indexOf(pack)
-  const packPath = requirePath.substring(idx + pack.length).replace(/\\/g, "/")
+  let packPath = requirePath.substring(idx + pack.length).replace(/\\/g, "/")
+
+  if (packPath.endsWith("/dist")) {
+    packPath += "/"
+  }
 
   let newPath =
     medusaCore +
     "/" +
     (concatPackage ? pack + "/" : "") +
-    packPath.replace("/dist", "/src").replace(".js", "")
+    packPath.replace("/dist/", "/src/").replace(".js", "")
 
   if (!newPath.includes("/src")) {
     newPath += "/src"
