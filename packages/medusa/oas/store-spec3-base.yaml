@@ -237,7 +237,7 @@ tags:
   - name: Swap
     description: Swap endpoints that allow handling swaps in Medusa.
 servers:
-  - url: https://api.medusa-commerce.com/store
+  - url: https://api.medusa-commerce.com
 paths: { }
 components:
   responses:

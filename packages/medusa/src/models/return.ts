@@ -11,12 +11,12 @@ import {
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { ClaimOrder } from "./claim-order"
 import { Order } from "./order"
 import { ReturnItem } from "./return-item"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ReturnStatus {
   REQUESTED = "requested",
@@ -36,7 +36,7 @@ export class Return extends BaseEntity {
 
   @OneToMany(() => ReturnItem, (item) => item.return_order, {
     eager: true,
-    cascade: ["insert"],
+    cascade: ["insert", "update"],
   })
   items: ReturnItem[]
 

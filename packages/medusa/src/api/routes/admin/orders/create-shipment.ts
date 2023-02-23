@@ -5,21 +5,22 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { TrackingLink } from "../../../../models"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/shipment
+ * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Create a Shipment"
  * description: "Registers a Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,6 +28,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderShipmentReq"
  * x-codegen:
  *   method: createShipment
+ *   params: AdminPostOrdersOrderShipmentParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -77,7 +79,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderShipmentReq, req.body)
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -98,9 +100,8 @@ export default async (req, res) => {
       )
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order })
@@ -138,3 +139,5 @@ export class AdminPostOrdersOrderShipmentReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderShipmentParams extends FindParams {}

@@ -4,7 +4,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/password-token
+ * @oas [post] /admin/users/password-token
  * operationId: "PostUsersUserPasswordToken"
  * summary: "Request Password Reset"
  * description: "Generates a password token for a User with a given email."

@@ -9,7 +9,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/complete
+ * @oas [post] /store/order-edits/{id}/complete
  * operationId: "PostOrderEditsOrderEditComplete"
  * summary: "Completes an OrderEdit"
  * description: "Completes an OrderEdit."

@@ -243,6 +243,32 @@ For both of the Admin and the Storefront CORS configurations, the value is expec
 1. The accepted origin as is. For example, `http://localhost:8000`.
 2. A regular expression pattern that can match more than one origin. For example, `*.example.com`. The regex pattern that the server tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
 
+Here are some examples of common use cases:
+
+```bash
+# Allow different ports locally starting with 700
+ADMIN_CORS=/http:\/\/localhost:700\d+$/
+
+# Allow any origin ending with vercel.app. For example, storefront.vercel.app
+STORE_CORS=/vercel\.app$/
+
+# Allow all HTTP requests
+ADMIN_CORS=/http:\/\/*/
+```
+
+Although this is not recommended, but when setting these values directly in `medusa-config.json`, make sure to add an extra escaping `backslash` for every backslash in the pattern. For example:
+
+```js
+const ADMIN_CORS = process.env.ADMIN_CORS || 
+  "/http:\\/\\/localhost:700\\d+$/"
+```
+
+:::tip
+
+The examples above apply to both Admin and Store CORS.
+
+:::
+
 ### Admin CORS
 
 To make sure your Admin dashboard can access the Medusa server’s admin endpoints, set this configuration:

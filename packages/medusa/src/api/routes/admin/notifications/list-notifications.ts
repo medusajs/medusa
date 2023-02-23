@@ -12,7 +12,7 @@ import { pick } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /notifications
+ * @oas [get] /admin/notifications
  * operationId: "GetNotifications"
  * summary: "List Notifications"
  * description: "Retrieves a list of Notifications."

@@ -9,7 +9,7 @@ import { pickBy } from "lodash"
 import { isDefined } from "medusa-core-utils"
 
 /**
- * @oas [get] /batch-jobs
+ * @oas [get] /admin/batch-jobs
  * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
  * description: "Retrieve a list of Batch Jobs."

@@ -8,7 +8,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 import { ModulesHelper } from "../../../../utils/module-helper"
 
 /**
- * @oas [get] /store
+ * @oas [get] /admin/store
  * operationId: "GetStore"
  * summary: "Get Store details"
  * description: "Retrieves the Store details"

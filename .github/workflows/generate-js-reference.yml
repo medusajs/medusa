@@ -1,17 +1,9 @@
 name: Generate JS Client Reference
 on: 
-  push:
-    branches:
-      - "master"
-    paths:
-      - packages/medusa-js/src/resources/**
-  pull_request:
-    types:
-      - closed
-    branches:
-      - "master"
-    paths:
-      - packages/medusa-js/src/resources/**
+  workflow_dispatch:
+  release:
+    types: [published]
+
 jobs:
   services:
     runs-on: ubuntu-latest

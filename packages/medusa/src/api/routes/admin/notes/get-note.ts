@@ -1,7 +1,7 @@
 import NoteService from "../../../../services/note"
 
 /**
- * @oas [get] /notes/{id}
+ * @oas [get] /admin/notes/{id}
  * operationId: "GetNotesNote"
  * summary: "Get a Note"
  * description: "Retrieves a single note using its id"

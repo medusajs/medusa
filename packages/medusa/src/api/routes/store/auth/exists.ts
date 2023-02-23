@@ -1,7 +1,7 @@
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [get] /auth/{email}
+ * @oas [get] /store/auth/{email}
  * operationId: "GetAuthEmail"
  * summary: "Check if email exists"
  * description: "Checks if a Customer with the given email has signed up."

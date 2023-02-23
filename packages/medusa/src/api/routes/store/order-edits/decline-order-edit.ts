@@ -8,7 +8,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/decline
+ * @oas [post] /store/order-edits/{id}/decline
  * operationId: "PostOrderEditsOrderEditDecline"
  * summary: "Decline an OrderEdit"
  * description: "Declines an OrderEdit."

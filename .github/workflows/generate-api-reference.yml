@@ -1,21 +1,9 @@
 name: Generate API Reference
 on: 
-  push:
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/api/routes/**
-      - '!packages/medusa/src/api/routes/**/index.ts'
-      - '!packages/medusa/src/api/routes/**/index.js'
-  pull_request:
-    types:
-      - closed
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/api/routes/**
-      - '!packages/medusa/src/api/routes/**/index.ts'
-      - '!packages/medusa/src/api/routes/**/index.js'
+  workflow_dispatch:
+  release:
+    types: [published]
+
 jobs:
   api:
     runs-on: ubuntu-latest

@@ -5,7 +5,7 @@ import { IsString } from "class-validator"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys
+ * @oas [post] /admin/publishable-api-keys
  * operationId: "PostPublishableApiKeys"
  * summary: "Create PublishableApiKey"
  * description: "Creates a PublishableApiKey."
