@@ -8,6 +8,11 @@
   margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
 }
 
+img.card-icon {
+  width: var(--ifm-card-icon-size);
+  height: var(--ifm-card-icon-size);
+}
+
 .card:hover {
   background-color: var(--ifm-card-bg-hover);
 }
