@@ -63,7 +63,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

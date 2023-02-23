@@ -39,7 +39,7 @@ import customerController from "../../../../controllers/customers"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

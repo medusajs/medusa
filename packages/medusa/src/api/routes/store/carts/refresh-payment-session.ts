@@ -26,7 +26,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual/refresh'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

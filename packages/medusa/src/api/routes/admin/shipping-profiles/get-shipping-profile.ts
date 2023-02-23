@@ -35,7 +35,7 @@ import { ShippingProfileService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK

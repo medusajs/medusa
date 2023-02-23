@@ -160,7 +160,7 @@ import { Cart, Product } from "../../../../models"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/products'
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
