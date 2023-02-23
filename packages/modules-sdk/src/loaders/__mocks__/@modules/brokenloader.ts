@@ -2,12 +2,12 @@ const loader = ({}) => {
   throw new Error("loader")
 }
 
-const service = class TestService {}
+const services = [class TestService {}]
 const migrations = []
 const loaders = [loader]
 
 export default {
-  service,
+  services,
   migrations,
   loaders,
 }

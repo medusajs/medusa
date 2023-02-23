@@ -1,17 +1,17 @@
-import ConnectionLoader from "./loaders/connection"
+import loadConnection from "./loaders/connection"
+
 import StockLocationService from "./services/stock-location"
-import * as SchemaMigration from "./migrations/schema-migrations/1665749860179-setup"
 import * as StockLocationModels from "./models"
+import migrations from "./migrations"
+
 import { ModuleExports } from "@medusajs/modules-sdk"
 
-const service = StockLocationService
-const migrations = [SchemaMigration]
-const loaders = [ConnectionLoader]
-
+const services = [StockLocationService]
+const loaders = [loadConnection]
 const models = Object.values(StockLocationModels)
 
 const moduleDefinition: ModuleExports = {
-  service,
+  services,
   migrations,
   loaders,
   models,

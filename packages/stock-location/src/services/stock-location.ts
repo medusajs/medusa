@@ -10,10 +10,7 @@ import {
   UpdateStockLocationInput,
 } from "@medusajs/medusa"
 
-import {
-  ConfigurableModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-} from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -41,17 +38,10 @@ export default class StockLocationService extends TransactionBaseService {
   constructor(
     { eventBusService }: InjectedDependencies,
     options?: unknown,
-    moduleDeclaration?: ConfigurableModuleDeclaration
+    moduleDeclaration?: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
-
-    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "At the moment this module can only be used with shared resources"
-      )
-    }
 
     this.eventBusService_ = eventBusService
   }

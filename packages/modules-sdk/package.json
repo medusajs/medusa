@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "awilix": "^8.0.0",
+    "medusa-core-utils": "^1.1.39",
     "medusa-telemetry": "^0.0.16",
     "resolve-cwd": "^3.0.0"
   },

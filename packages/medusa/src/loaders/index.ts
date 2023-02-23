@@ -1,11 +1,4 @@
-import {
-  asFunction,
-  asValue,
-  AwilixContainer,
-  createContainer,
-  Resolver,
-} from "awilix"
-import { ClassOrFunctionReturning } from "awilix/lib/container"
+import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
@@ -30,7 +23,8 @@ import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 
-import { moduleLoader } from "@medusajs/modules-sdk"
+import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
+import { createMedusaContainer } from "medusa-core-utils"
 
 type Options = {
   directory: string
@@ -49,31 +43,8 @@ export default async ({
 }> => {
   const configModule = loadConfig(rootDirectory)
 
-  const container = createContainer() as MedusaContainer
+  const container = createMedusaContainer()
   container.register("configModule", asValue(configModule))
-
-  container.registerAdd = function (
-    this: MedusaContainer,
-    name: string,
-    registration: typeof asFunction | typeof asValue
-  ) {
-    const storeKey = name + "_STORE"
-
-    if (this.registrations[storeKey] === undefined) {
-      this.register(storeKey, asValue([] as Resolver<unknown>[]))
-    }
-    const store = this.resolve(storeKey) as (
-      | ClassOrFunctionReturning<unknown>
-      | Resolver<unknown>
-    )[]
-
-    if (this.registrations[name] === undefined) {
-      this.register(name, asArray(store))
-    }
-    store.unshift(registration)
-
-    return this
-  }.bind(container)
 
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -118,7 +89,11 @@ export default async ({
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
-  await moduleLoader({ container, configModule, logger: Logger })
+  await moduleLoader({
+    container,
+    moduleResolutions: registerModules(configModule),
+    logger: Logger,
+  })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
@@ -199,13 +174,4 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }
-}
-
-function asArray(
-  resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
-): { resolve: (container: AwilixContainer) => unknown[] } {
-  return {
-    resolve: (container: AwilixContainer) =>
-      resolvers.map((resolver) => container.build(resolver)),
-  }
 }

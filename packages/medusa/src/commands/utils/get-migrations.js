@@ -104,7 +104,7 @@ export function getInternalModules(configModule) {
 
     let loadedModule = null
     try {
-      loadedModule = require(moduleResolution.moduleDeclaration.resolve).default
+      loadedModule = require(moduleResolution.resolutionPath).default
     } catch (error) {
       console.log("Error loading Module", error)
       continue
@@ -183,12 +183,12 @@ export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {
         typeof loaded.featureFlag === "undefined" ||
         isFlagEnabled(loaded.featureFlag)
       ) {
-        return file
+        delete loaded.featureFlag
+        return Object.values(loaded)
       }
-
-      return false
     })
     .filter(Boolean)
+    .flat()
 }
 
 export const getModuleMigrations = (configModule, isFlagEnabled) => {
@@ -201,21 +201,16 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
 
     const isolatedMigrations = {}
     const moduleMigrations = (mod.migrations ?? [])
-      .map((migrations) => {
-        const all = []
-        for (const migration of Object.values(migrations)) {
-          // TODO: revisit how Modules export their migration entrypoints up/down
-          if (["up", "down"].includes(migration.name)) {
-            isolatedMigrations[migration.name] = migration
-          } else if (
-            typeof migration.featureFlag === "undefined" ||
-            isFlagEnabled(migration.featureFlag)
-          ) {
-            all.push(migration)
-          }
+      .map((migration) => {
+        if (
+          typeof migration.featureFlag === "undefined" ||
+          isFlagEnabled(migration.featureFlag)
+        ) {
+          delete migration.featureFlag
+          return Object.values(migration)
         }
-        return all
       })
+      .filter(Boolean)
       .flat()
 
     allModules.push({

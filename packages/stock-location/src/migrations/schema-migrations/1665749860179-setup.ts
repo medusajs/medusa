@@ -1,46 +1,4 @@
-import { ConfigModule } from "@medusajs/medusa"
-import {
-  createConnection,
-  ConnectionOptions,
-  MigrationInterface,
-  QueryRunner,
-} from "typeorm"
-
-import { CONNECTION_NAME } from "../../config"
-
-export const up = async ({ configModule }: { configModule: ConfigModule }) => {
-  const connection = await createConnection({
-    name: CONNECTION_NAME,
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    database: configModule.projectConfig.database_database,
-    schema: configModule.projectConfig.database_schema,
-    extra: configModule.projectConfig.database_extra || {},
-    migrations: [setup1665749860179],
-    logging: true,
-  } as ConnectionOptions)
-
-  await connection.runMigrations()
-}
-
-export const down = async ({
-  configModule,
-}: {
-  configModule: ConfigModule
-}) => {
-  const connection = await createConnection({
-    name: CONNECTION_NAME,
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    database: configModule.projectConfig.database_database,
-    schema: configModule.projectConfig.database_schema,
-    extra: configModule.projectConfig.database_extra || {},
-    migrations: [setup1665749860179],
-    logging: true,
-  } as ConnectionOptions)
-
-  await connection.undoLastMigration({ transaction: "all" })
-}
+import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class setup1665749860179 implements MigrationInterface {
   name = "setup1665749860179"

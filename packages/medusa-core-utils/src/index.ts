@@ -8,7 +8,6 @@ export { default as humanizeAmount } from "./humanize-amount"
 export { indexTypes } from "./index-types"
 export { parseCorsOrigins } from "./parse-cors-origins"
 export { transformIdableFields } from "./transform-idable-fields"
-export { default as Validator } from "./validator"
 export { default as zeroDecimalCurrencies } from "./zero-decimal-currencies"
 export * from "./is-defined"
-
+export * from "./medusa-container"

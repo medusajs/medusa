@@ -4,7 +4,7 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "../../types"
-import { registerModules } from "../module-definition"
+import { registerModules } from "../register-modules"
 import MODULE_DEFINITIONS from "../../definitions"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
