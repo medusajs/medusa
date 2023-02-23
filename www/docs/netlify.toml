@@ -113,3 +113,15 @@
 [[redirects]]
   from="/advanced/backend/upgrade-guides/1-3-0"
   to="/advanced/backend/upgrade-guides/medusa-core/1-3-0"
+
+[[redirects]]
+  from="/advanced/backend/regions/overview"
+  to="/features-and-guides/regions-and-currencies/regions"
+
+[[redirects]]
+  from="/advanced/admin/manage-regions"
+  to="features-and-guides/regions-and-currencies/admin/manage-regions"
+
+[[redirects]]
+  from="advanced/storefront/use-regions"
+  to="features-and-guides/regions-and-currencies/storefront/use-regions"
