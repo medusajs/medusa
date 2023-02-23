@@ -104,11 +104,7 @@ export function getInternalModules(configModule) {
 
     let loadedModule = null
     try {
-      const resolutionPath =
-        moduleResolution.moduleDeclaration?.resolve ??
-        moduleResolution.resolutionPath
-
-      loadedModule = require(resolutionPath).default
+      loadedModule = require(moduleResolution.resolutionPath).default
     } catch (error) {
       console.log("Error loading Module", error)
       continue
