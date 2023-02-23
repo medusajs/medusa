@@ -146,11 +146,9 @@ async function paymentIntentAmountCapturableEventHandler({
       .withTransaction(transactionManager)
       .retrieve(cartId, { select: ["context"] })
 
-    const { response_code, response_body } = await completionStrat.complete(
-      cartId,
-      idempotencyKey,
-      { ip: cart.context?.ip as string }
-    )
+    const { response_code, response_body } = await completionStrat
+      .withTransaction(transactionManager)
+      .complete(cartId, idempotencyKey, { ip: cart.context?.ip as string })
 
     if (response_code !== 200) {
       throw new MedusaError(

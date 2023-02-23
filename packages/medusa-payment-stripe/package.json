@@ -8,7 +8,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-payment-stripe"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "author": "Medusa",
   "license": "MIT",
   "scripts": {

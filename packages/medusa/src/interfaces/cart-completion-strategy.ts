@@ -27,6 +27,7 @@ export interface ICartCompletionStrategy {
 }
 
 export abstract class AbstractCartCompletionStrategy
+  extends TransactionBaseService
   implements ICartCompletionStrategy
 {
   abstract complete(
