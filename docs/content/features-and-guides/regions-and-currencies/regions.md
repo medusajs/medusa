@@ -4,7 +4,7 @@ description: 'Learn about what Regions are and how they are used in a Medusa ser
 
 # Regions Architecture
 
-In this document, you’ll learn about Regions and their importance in your Medusa server.
+In this document, you’ll learn about the Region entity and its architecture.
 
 ## Region Configurations
 
