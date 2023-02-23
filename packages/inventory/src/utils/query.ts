@@ -16,12 +16,16 @@ export function getListQuery(
   const inventoryItemRepository = manager.getRepository(InventoryItem)
 
   const { q, ...selectorRest } = selector
-  const query = buildQuery(selectorRest, config) as ExtendedFindConfig<InventoryItem> & {
-    where: FindOptionsWhere<InventoryItem & {
-      location_id?: string
-    }>
+  const query = buildQuery(
+    selectorRest,
+    config
+  ) as ExtendedFindConfig<InventoryItem> & {
+    where: FindOptionsWhere<
+      InventoryItem & {
+        location_id?: string
+      }
+    >
   }
-
 
   const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
 
@@ -65,7 +69,7 @@ export function getListQuery(
     const toSelect: string[] = []
     const parsed = Object.entries(query.order).reduce((acc, [k, v]) => {
       const key = `inv_item.${k}`
-      if((query.select && !query.select[k] ) || !query.select){
+      if (!query.select?.[k]) {
         toSelect.push(key)
       }
       acc[key] = v
