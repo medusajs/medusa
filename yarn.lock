@@ -23488,14 +23488,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi-objectid@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "joi-objectid@npm:3.0.1"
-  checksum: 4820534ddff8779a7128661b8ed21bc7d552d53a8def60095db6e38f410c5893da21d7b91211d3af5dd5f6e4eda90a2f11b24a2e69efcef74c1a8249240ad83d
-  languageName: node
-  linkType: hard
-
-"joi@npm:^17.3.0, joi@npm:^17.4.2":
+"joi@npm:^17.4.2":
   version: 17.6.0
   resolution: "joi@npm:17.6.0"
   dependencies:
