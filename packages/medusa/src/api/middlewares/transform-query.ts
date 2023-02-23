@@ -41,21 +41,15 @@ export function transformQuery<
 
       req.storeAllowedProperties = getStoreAllowedProperties(
         validated,
-        Object.keys(req["includes"] ?? {}),
+        req.includes ?? {},
         queryConfig
       )
 
       req.adminAllowedProperties = getAdminAllowedProperties(
         validated,
-        Object.keys(req["includes"] ?? {}),
+        req.includes ?? {},
         queryConfig
       )
-
-      const includesFields = Object.keys(req["includes"] ?? {})
-      if (includesFields.length) {
-        req.storeAllowedProperties = req.storeAllowedProperties ?? []
-        req.storeAllowedProperties.push(...includesFields)
-      }
 
       if (queryConfig?.isList) {
         req.listConfig = prepareListQuery(
@@ -85,7 +79,7 @@ export function transformQuery<
  */
 function getStoreAllowedProperties<TEntity extends BaseEntity>(
   validated: RequestQueryFields,
-  includesOptions: string[],
+  includesOptions: Record<string, boolean>,
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
   const allowed: string[] = []
@@ -103,8 +97,9 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
     )
   }
 
-  if (includesOptions.length) {
-    allowed.push(...includesOptions)
+  const includeKeys = Object.keys(includesOptions)
+  if (includeKeys) {
+    allowed.push(...includeKeys)
   }
 
   return allowed
@@ -120,7 +115,7 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
  */
 function getAdminAllowedProperties<TEntity extends BaseEntity>(
   validated: RequestQueryFields,
-  includesOptions: string[],
+  includesOptions: Record<string, boolean>,
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
   const allowed: string[] = []
@@ -131,8 +126,9 @@ function getAdminAllowedProperties<TEntity extends BaseEntity>(
     )
   }
 
-  if (includesOptions.length) {
-    allowed.push(...includesOptions)
+  const includeKeys = Object.keys(includesOptions)
+  if (includeKeys) {
+    allowed.push(...includeKeys)
   }
 
   return allowed

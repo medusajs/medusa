@@ -18,6 +18,7 @@ declare global {
       filterableFields: Record<string, unknown>
       storeAllowedProperties: string[]
       adminAllowedProperties: string[]
+      includes?: Record<string, boolean>
       errors: string[]
     }
   }
