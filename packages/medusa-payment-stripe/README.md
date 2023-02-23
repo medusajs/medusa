@@ -17,3 +17,7 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
 ## Automatic Payment Methods
 
 If you wish to use [Stripe's automatic payment methods](https://stripe.com/docs/connect/automatic-payment-methods) set the `automatic_payment_methods` flag to true.
+
+## Deprecation
+
+The stripe plugin version `>=1.2.x` requires medusa `>=1.8.x`
