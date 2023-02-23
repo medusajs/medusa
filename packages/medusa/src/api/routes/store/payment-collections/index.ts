@@ -7,7 +7,7 @@ import middlewares, {
 
 import { PaymentCollection, PaymentSession } from "../../../../models"
 import { StorePostPaymentCollectionsBatchSessionsAuthorizeReq } from "./authorize-batch-payment-sessions"
-import { GetPaymentCollectionsParams } from "./get-payment-collection"
+import { StoreGetPaymentCollectionsParams } from "./get-payment-collection"
 import { StorePostPaymentCollectionsBatchSessionsReq } from "./manage-batch-payment-sessions"
 import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
 
@@ -18,9 +18,9 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(GetPaymentCollectionsParams, {
+    transformQuery(StoreGetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
-      defaultRelations: defaulPaymentCollectionRelations,
+      defaultRelations: defaultPaymentCollectionRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-payment-collection").default)
@@ -69,11 +69,13 @@ export const defaultPaymentCollectionFields = [
   "metadata",
 ]
 
-export const defaulPaymentCollectionRelations = ["region", "payment_sessions"]
+export const defaultPaymentCollectionRelations = ["region", "payment_sessions"]
 
 /**
  * @schema StorePaymentCollectionsRes
  * type: object
+ * required:
+ *   - payment_collection
  * properties:
  *   payment_collection:
  *     $ref: "#/components/schemas/PaymentCollection"
@@ -85,6 +87,8 @@ export type StorePaymentCollectionsRes = {
 /**
  * @schema StorePaymentCollectionsSessionRes
  * type: object
+ * required:
+ *   - payment_session
  * properties:
  *   payment_session:
  *     $ref: "#/components/schemas/PaymentSession"

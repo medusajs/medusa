@@ -32,6 +32,7 @@ export const defaultAdminSwapRelations = [
   "shipping_methods",
   "cart",
   "cart.items",
+  "cart.items.variant",
   "cart.items.adjustments",
 ]
 
@@ -56,6 +57,11 @@ export const defaultAdminSwapFields = [
 /**
  * @schema AdminSwapsListRes
  * type: object
+ * required:
+ *   - swaps
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   swaps:
  *     type: array
@@ -78,6 +84,8 @@ export type AdminSwapsListRes = PaginatedResponse & {
 /**
  * @schema AdminSwapsRes
  * type: object
+ * required:
+ *   - swap
  * properties:
  *   swap:
  *     $ref: "#/components/schemas/Swap"

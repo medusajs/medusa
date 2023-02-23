@@ -1,5 +1,9 @@
 const path = require("path")
-const { ShippingProfile, ShippingOption } = require("@medusajs/medusa")
+const {
+  ShippingProfile,
+  ShippingOption,
+  ShippingProfileType,
+} = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -38,7 +42,9 @@ describe("/store/carts", () => {
       )
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: ShippingProfileType.DEFAULT,
+        },
       })
       await manager.insert(ShippingOption, {
         id: "return-option",

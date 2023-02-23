@@ -1,9 +1,9 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, DeepPartial } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, Selector, QuerySelector } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import { buildQuery } from "../utils"
 import { EventBusService } from "."
 import {
@@ -23,8 +23,6 @@ type InjectedDependencies = {
 class ProductCategoryService extends TransactionBaseService {
   protected readonly productCategoryRepo_: typeof ProductCategoryRepository
   protected readonly eventBusService_: EventBusService
-  protected transactionManager_: EntityManager | undefined
-  protected manager_: EntityManager
 
   static Events = {
     CREATED: "product-category.created",
@@ -33,14 +31,12 @@ class ProductCategoryService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     productCategoryRepository,
     eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.productCategoryRepo_ = productCategoryRepository
   }
@@ -59,10 +55,9 @@ class ProductCategoryService extends TransactionBaseService {
       take: 100,
       order: { created_at: "DESC" },
     },
-    treeSelector: QuerySelector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const productCategoryRepo = manager.getCustomRepository(
+    const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
 
@@ -103,7 +98,7 @@ class ProductCategoryService extends TransactionBaseService {
 
     const selectors = Object.assign({ id: productCategoryId }, selector)
     const query = buildQuery(selectors, config)
-    const productCategoryRepo = this.manager_.getCustomRepository(
+    const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
 
@@ -126,14 +121,17 @@ class ProductCategoryService extends TransactionBaseService {
 
   /**
    * Creates a product category
-   * @param productCategory - params used to create
+   * @param productCategoryInput - parameters to create a product category
    * @return created product category
    */
   async create(
     productCategoryInput: CreateProductCategoryInput
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
-      const pcRepo = manager.getCustomRepository(this.productCategoryRepo_)
+      const pcRepo = manager.withRepository(this.productCategoryRepo_)
+
+      await this.transformParentIdToEntity(productCategoryInput)
+
       let productCategory = pcRepo.create(productCategoryInput)
       productCategory = await pcRepo.save(productCategory)
 
@@ -158,9 +156,11 @@ class ProductCategoryService extends TransactionBaseService {
     productCategoryInput: UpdateProductCategoryInput
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
-      const productCategoryRepo = manager.getCustomRepository(
+      const productCategoryRepo = manager.withRepository(
         this.productCategoryRepo_
       )
+
+      await this.transformParentIdToEntity(productCategoryInput)
 
       let productCategory = await this.retrieve(productCategoryId)
 
@@ -190,8 +190,8 @@ class ProductCategoryService extends TransactionBaseService {
    */
   async delete(productCategoryId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCategoryRepository: ProductCategoryRepository =
-        manager.getCustomRepository(this.productCategoryRepo_)
+      const productCategoryRepository: typeof ProductCategoryRepository =
+        manager.withRepository(this.productCategoryRepo_)
 
       const productCategory = await this.retrieve(productCategoryId, {
         relations: ["category_children"],
@@ -216,6 +216,75 @@ class ProductCategoryService extends TransactionBaseService {
           id: productCategory.id,
         })
     })
+  }
+
+  /**
+   * Add a batch of product to a product category
+   * @param productCategoryId - The id of the product category on which to add the products
+   * @param productIds - The products ids to attach to the product category
+   * @return the product category on which the products have been added
+   */
+  async addProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository = manager.withRepository(
+        this.productCategoryRepo_
+      )
+
+      await productCategoryRepository.addProducts(productCategoryId, productIds)
+    })
+  }
+
+  /**
+   * Remove a batch of product from a product category
+   * @param productCategoryId - The id of the product category on which to remove the products
+   * @param productIds - The products ids to remove from the product category
+   * @return the product category on which the products have been removed
+   */
+  async removeProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository = manager.withRepository(
+        this.productCategoryRepo_
+      )
+
+      await productCategoryRepository.removeProducts(
+        productCategoryId,
+        productIds
+      )
+    })
+  }
+
+  /**
+   * Accepts an input object and transforms product_category_id
+   * into product_category entity.
+   * @param productCategoryInput - params used to create/update
+   * @return transformed productCategoryInput
+   */
+  protected async transformParentIdToEntity(
+    productCategoryInput:
+      | CreateProductCategoryInput
+      | UpdateProductCategoryInput
+  ): Promise<CreateProductCategoryInput | UpdateProductCategoryInput> {
+    // Typeorm only updates mpath when the category entity of the parent
+    // is passed into create/save. For this reason, everytime we create a
+    // category, we must fetch the entity and push to create
+    const parentCategoryId = productCategoryInput.parent_category_id
+
+    if (!parentCategoryId) {
+      return productCategoryInput
+    }
+
+    const parentCategory = await this.retrieve(parentCategoryId)
+
+    productCategoryInput.parent_category = parentCategory
+    delete productCategoryInput.parent_category_id
+
+    return productCategoryInput
   }
 }
 

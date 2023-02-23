@@ -1,7 +1,10 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import { StockLocationDTO } from "../../../../types/stock-location"
+import {
+  StockLocationDTO,
+  StockLocationExpandedDTO,
+} from "../../../../types/stock-location"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -93,6 +96,10 @@ export const defaultAdminStockLocationRelations = []
 /**
  * @schema AdminStockLocationsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -111,22 +118,29 @@ export type AdminStockLocationsDeleteRes = DeleteResponse
 /**
  * @schema AdminStockLocationsRes
  * type: object
+ * required:
+ *   - stock_location
  * properties:
  *   stock_location:
- *     $ref: "#/components/schemas/StockLocationDTO"
+ *     $ref: "#/components/schemas/StockLocationExpandedDTO"
  */
 export type AdminStockLocationsRes = {
-  stock_location: StockLocationDTO
+  stock_location: StockLocationExpandedDTO
 }
 
 /**
  * @schema AdminStockLocationsListRes
  * type: object
+ * required:
+ *   - stock_locations
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   stock_locations:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/StockLocationDTO"
+ *       $ref: "#/components/schemas/StockLocationExpandedDTO"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -138,7 +152,7 @@ export type AdminStockLocationsRes = {
  *     description: The number of items per page
  */
 export type AdminStockLocationsListRes = PaginatedResponse & {
-  stock_locations: StockLocationDTO[]
+  stock_locations: StockLocationExpandedDTO[]
 }
 
 export * from "./list-stock-locations"

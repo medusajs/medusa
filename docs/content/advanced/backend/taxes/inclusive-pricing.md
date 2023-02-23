@@ -1,3 +1,7 @@
+---
+description: 'Learn what tax-inclusive pricing is and how it works in Medusa. Tax-inclusive pricing allows merchants to set the final prices for products and shipping options regardless of what tax rate is applicable for the customer.'
+---
+
 # Tax Inclusive Pricing
 
 In this document, you’ll learn how tax-inclusive pricing works in Medusa.

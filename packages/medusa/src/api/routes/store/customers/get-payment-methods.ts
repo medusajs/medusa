@@ -4,7 +4,7 @@ import PaymentProviderService from "../../../../services/payment-provider"
 import { PaymentProvider } from "../../../../models"
 
 /**
- * @oas [get] /customers/me/payment-methods
+ * @oas [get] /store/customers/me/payment-methods
  * operationId: GetCustomersCustomerPaymentMethods
  * summary: Get Payment Methods
  * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."

@@ -57,15 +57,18 @@ get:
         notifications or not
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetNotificationsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/notifications/getundefined
+        $ref: ../code_samples/JavaScript/notifications/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/notifications/getundefined
+        $ref: ../code_samples/Shell/notifications/get.sh
   security:
     - api_token: []
     - cookie_auth: []

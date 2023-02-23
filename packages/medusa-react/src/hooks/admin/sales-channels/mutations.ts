@@ -16,6 +16,7 @@ import {
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminProductKeys } from "../products"
+import { adminStockLocationsKeys } from "../stock-locations"
 import { adminSalesChannelsKeys } from "./queries"
 
 /**
@@ -159,6 +160,76 @@ export const useAdminAddProductsToSalesChannel = (
         adminProductKeys.list({ sales_channel_id: [id] }),
       ],
       options
+    )
+  )
+}
+
+/**
+ * Add a location to a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please install the stock location in your medusa backend project.
+ * @description Add a location to a sales channel
+ * @param options
+ */
+export const useAdminAddLocationToSalesChannel = (
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    {
+      sales_channel_id: string
+      location_id: string
+    }
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(({ sales_channel_id, location_id }) => {
+    return client.admin.salesChannels.addLocation(sales_channel_id, {
+      location_id,
+    })
+  }, buildOptions(
+    queryClient, 
+    [
+      adminSalesChannelsKeys.lists(), 
+      adminSalesChannelsKeys.details(), 
+      adminStockLocationsKeys.all
+    ], 
+    options
+    )
+  )
+}
+
+/**
+ * Remove a location from a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please install the stock location in your medusa backend project.
+ * @description Remove a location from a sales channel
+ * @param options
+ */
+export const useAdminRemoveLocationFromSalesChannel = (
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    {
+      sales_channel_id: string
+      location_id: string
+    }
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(({ sales_channel_id, location_id }) => {
+    return client.admin.salesChannels.removeLocation(sales_channel_id, {
+      location_id,
+    })
+  }, buildOptions(
+    queryClient, 
+    [
+      adminSalesChannelsKeys.lists(), 
+      adminSalesChannelsKeys.details(), 
+      adminStockLocationsKeys.all
+    ], 
+    options
     )
   )
 }

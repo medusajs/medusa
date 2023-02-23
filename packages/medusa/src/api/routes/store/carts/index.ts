@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { RequestHandler, Router } from "express"
 
 import { Cart, Order, Swap } from "../../../../"
-import { DeleteResponse, FindParams } from "../../../../types/common"
+import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -10,7 +10,6 @@ import middlewares, {
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 
@@ -45,14 +44,9 @@ export default (app, container) => {
   const createMiddlewares = [
     middlewareService.usePreCartCreation(),
     transformBody(StorePostCartReq),
+    extendRequestParams,
+    validateSalesChannelParam,
   ]
-
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    createMiddlewares.push(
-      extendRequestParams as unknown as RequestHandler,
-      validateSalesChannelParam as unknown as RequestHandler
-    )
-  }
 
   route.post(
     "/",
@@ -143,6 +137,7 @@ export const defaultStoreCartRelations = [
   "gift_cards",
   "region",
   "items",
+  "items.variant",
   "items.adjustments",
   "payment",
   "shipping_address",
@@ -159,6 +154,8 @@ export const defaultStoreCartRelations = [
 /**
  * @schema StoreCartsRes
  * type: object
+ * required:
+ *   - cart
  * properties:
  *   cart:
  *     $ref: "#/components/schemas/Cart"
@@ -170,6 +167,9 @@ export type StoreCartsRes = {
 /**
  * @schema StoreCompleteCartRes
  * type: object
+ * required:
+ *   - type
+ *   - data
  * properties:
  *   type:
  *     type: string
@@ -205,8 +205,6 @@ export type StoreCompleteCartRes =
       type: "swap"
       data: Swap
     }
-
-export type StoreCartsDeleteRes = DeleteResponse
 
 export * from "./add-shipping-method"
 export * from "./create-cart"

@@ -3,9 +3,10 @@ const express = require("express")
 const importFrom = require("import-from")
 const chokidar = require("chokidar")
 
-require("dotenv").config({ path: path.join(__dirname, ".env.development") })
-
 process.env.DEV_MODE = !!process[Symbol.for("ts-node.register.instance")]
+process.env.NODE_ENV = process.env.DEV_MODE && "development"
+
+require("dotenv").config({ path: path.join(__dirname, ".env.development") })
 
 require("./dev-require")
 

@@ -1,11 +1,12 @@
-import { MedusaError } from "medusa-core-utils"
-import { FindOperator, In, Raw } from "typeorm"
+// Import from dist to avoid circular deps which result in the base service to be undefined
+import { buildQuery, setMetadata, validateId } from "@medusajs/medusa/dist/utils"
 
 /**
  * Common functionality for Services
  * @interface
+ * @deprecated use TransactionBaseService from @medusajs/medusa instead
  */
-class BaseService {
+export default class BaseService {
   constructor() {
     this.decorators_ = []
   }
@@ -19,93 +20,7 @@ class BaseService {
    * Used to build TypeORM queries.
    */
   buildQuery_(selector, config = {}) {
-    const build = (obj) => {
-      const where = Object.entries(obj).reduce((acc, [key, value]) => {
-        // Undefined values indicate that they have no significance to the query.
-        // If the query is looking for rows where a column is not set it should use null instead of undefined
-        if (typeof value === "undefined") {
-          return acc
-        }
-        switch (true) {
-          case value instanceof FindOperator:
-            acc[key] = value
-            break
-          case Array.isArray(value):
-            acc[key] = In([...value])
-            break
-          case value !== null && typeof value === "object":
-            const subquery = []
-
-            Object.entries(value).map(([modifier, val]) => {
-              switch (modifier) {
-                case "lt":
-                  subquery.push({ operator: "<", value: val })
-                  break
-                case "gt":
-                  subquery.push({ operator: ">", value: val })
-                  break
-                case "lte":
-                  subquery.push({ operator: "<=", value: val })
-                  break
-                case "gte":
-                  subquery.push({ operator: ">=", value: val })
-                  break
-                default:
-                  acc[key] = value
-                  break
-              }
-            })
-
-            if (subquery.length) {
-              acc[key] = Raw(
-                (a) =>
-                  subquery
-                    .map((s, index) => `${a} ${s.operator} :${index}`)
-                    .join(" AND "),
-                subquery.map((s) => s.value)
-              )
-            }
-            break
-          default:
-            acc[key] = value
-            break
-        }
-
-        return acc
-      }, {})
-
-      return where
-    }
-
-    const query = {
-      where: build(selector),
-    }
-
-    if ("deleted_at" in selector) {
-      query.withDeleted = true
-    }
-
-    if ("skip" in config) {
-      query.skip = config.skip
-    }
-
-    if ("take" in config) {
-      query.take = config.take
-    }
-
-    if ("relations" in config) {
-      query.relations = config.relations
-    }
-
-    if ("select" in config) {
-      query.select = config.select
-    }
-
-    if ("order" in config) {
-      query.order = config.order
-    }
-
-    return query
+    return buildQuery(selector, config)
   }
 
   /**
@@ -117,32 +32,7 @@ class BaseService {
    * @returns {string} the rawId given that nothing failed
    */
   validateId_(rawId, config = {}) {
-    const { prefix, length } = config
-    if (!rawId) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Failed to validate id: ${rawId}`
-      )
-    }
-
-    if (prefix || length) {
-      const [pre, rand] = rawId.split("_")
-      if (prefix && pre !== prefix) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `The provided id: ${rawId} does not adhere to prefix constraint: ${prefix}`
-        )
-      }
-
-      if (length && length !== rand.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `The provided id: ${rawId} does not adhere to length constraint: ${length}`
-        )
-      }
-    }
-
-    return rawId
+    return validateId(rawId, config)
   }
 
   shouldRetryTransaction(err) {
@@ -249,24 +139,7 @@ class BaseService {
    * @return {Promise} resolves to the updated result.
    */
   setMetadata_(obj, metadata) {
-    const existing = obj.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
-      if (typeof key !== "string") {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Key type is invalid. Metadata keys must be strings"
-        )
-      }
-      newData[key] = value
-    }
-
-    const updated = {
-      ...existing,
-      ...newData,
-    }
-
-    return updated
+    return setMetadata(obj, metadata)
   }
 
   /**
@@ -295,4 +168,3 @@ class BaseService {
     }, Promise.resolve(obj))
   }
 }
-export default BaseService

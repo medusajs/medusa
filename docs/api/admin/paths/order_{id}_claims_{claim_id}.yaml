@@ -16,20 +16,33 @@ post:
       description: The ID of the Claim.
       schema:
         type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the result.
+      schema:
+        type: string
   requestBody:
     content:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostOrdersOrderClaimsClaimReq.yaml
+  x-codegen:
+    method: updateClaim
+    params: AdminPostOrdersOrderClaimsClaimParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order_{id}_claims_{claim_id}/postundefined
+        $ref: ../code_samples/JavaScript/order_{id}_claims_{claim_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order_{id}_claims_{claim_id}/postundefined
+        $ref: ../code_samples/Shell/order_{id}_claims_{claim_id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []

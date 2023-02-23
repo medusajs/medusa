@@ -6,21 +6,21 @@ export type PaymentProcessorContext = {
   email: string
   currency_code: string
   amount: number
-  resource_id?: string
+  resource_id: string
   customer?: Customer
   context: Record<string, unknown>
   paymentSessionData: Record<string, unknown>
 }
 
 export type PaymentProcessorSessionResponse = {
-  update_requests: { customer_metadata: Record<string, unknown> }
+  update_requests?: { customer_metadata?: Record<string, unknown> }
   session_data: Record<string, unknown>
 }
 
 export interface PaymentProcessorError {
   error: string
-  code: number
-  details: any
+  code?: string
+  detail?: any
 }
 
 /**
@@ -51,42 +51,60 @@ export interface PaymentProcessor {
    */
   updatePayment(
     context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void>
 
   /**
    * Refund an existing session
-   * @param context
+   * @param paymentSessionData
+   * @param refundAmount
    */
   refundPayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>,
+    refundAmount: number
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Authorize an existing session if it is not already authorized
+   * @param paymentSessionData
    * @param context
    */
   authorizePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<
+    | PaymentProcessorError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProcessorSessionResponse["session_data"]
+      }
+  >
 
   /**
    * Capture an existing session
-   * @param context
+   * @param paymentSessionData
    */
   capturePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Delete an existing session
    */
-  deletePayment(paymentId: string): Promise<PaymentProcessorError | void>
+  deletePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Retrieve an existing session
    */
   retrievePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
@@ -94,12 +112,18 @@ export interface PaymentProcessor {
   /**
    * Cancel an existing session
    */
-  cancelPayment(paymentId: string): Promise<PaymentProcessorError | void>
+  cancelPayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Return the status of the session
    */
-  getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus>
+  getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus>
 }
 
 /**
@@ -111,7 +135,7 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
-  protected static identifier: string
+  public static identifier: string
 
   public getIdentifier(): string {
     const ctr = this.constructor as typeof AbstractPaymentProcessor
@@ -126,40 +150,58 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   abstract init(): Promise<void>
 
   abstract capturePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   abstract authorizePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<
+    | PaymentProcessorError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProcessorSessionResponse["session_data"]
+      }
+  >
 
   abstract cancelPayment(
-    paymentId: string
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   abstract initiatePayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse>
 
   abstract deletePayment(
-    paymentId: string
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
-  abstract getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus>
+  abstract getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus>
 
   abstract refundPayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>,
+    refundAmount: number
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   abstract retrievePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
 
   abstract updatePayment(
     context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void>
 }
 
 /**
@@ -168,4 +210,14 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
  */
 export function isPaymentProcessor(obj: unknown): boolean {
   return obj instanceof AbstractPaymentProcessor
+}
+
+/**
+ * Utility function to determine if an object is a processor error
+ * @param obj
+ */
+export function isPaymentProcessorError(
+  obj: any
+): obj is PaymentProcessorError {
+  return obj && typeof obj === "object" && (obj.error || obj.code || obj.detail)
 }

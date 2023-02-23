@@ -13,7 +13,7 @@ import ProductVariantService from "../../../../services/product-variant"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
- * @oas [get] /variants/{id}/inventory
+ * @oas [get] /admin/variants/{id}/inventory
  * operationId: "GetVariantsVariantInventory"
  * summary: "Get inventory of Variant."
  * description: "Returns the available inventory of a Variant."
@@ -96,10 +96,12 @@ export default async (req, res) => {
   const [rawChannels] = await channelService.listAndCount({})
   const channels: SalesChannelDTO[] = await Promise.all(
     rawChannels.map(async (channel) => {
-      const locations = await channelLocationService.listLocations(channel.id)
+      const locationIds = await channelLocationService.listLocationIds(
+        channel.id
+      )
       return {
         ...channel,
-        locations,
+        locations: locationIds,
       }
     })
   )
@@ -139,7 +141,7 @@ export default async (req, res) => {
   })
 }
 
-type SalesChannelDTO = Omit<SalesChannel, "beforeInsert"> & {
+type SalesChannelDTO = Omit<SalesChannel, "beforeInsert" | "locations"> & {
   locations: string[]
 }
 

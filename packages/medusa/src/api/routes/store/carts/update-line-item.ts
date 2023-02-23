@@ -6,7 +6,7 @@ import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /carts/{id}/line-items/{line_id}
+ * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
  * description: "Updates a Line Item if the desired quantity can be fulfilled."
@@ -78,7 +78,7 @@ export default async (req, res) => {
     } else {
       const cart = await cartService
         .withTransaction(m)
-        .retrieve(id, { relations: ["items"] })
+        .retrieve(id, { relations: ["items", "items.variant"] })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {

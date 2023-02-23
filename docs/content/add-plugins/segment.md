@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate Segment with the Medusa server. Learn how to add custom tracking with Segment and Medusa.'
+addHowToData: true
+---
+
 # Segment
 
 In this document, you’ll learn about the [Segment plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-segment), what it does, and how to install and use it.

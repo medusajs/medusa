@@ -34,9 +34,6 @@ type InjectedDependencies = {
  * Handles Fulfillments
  */
 class FulfillmentService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly shippingProfileService_: ShippingProfileService
@@ -48,7 +45,6 @@ class FulfillmentService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     totalsService,
     fulfillmentRepository,
     trackingLinkRepository,
@@ -60,8 +56,6 @@ class FulfillmentService extends TransactionBaseService {
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.lineItemRepository_ = lineItemRepository
     this.totalsService_ = totalsService
@@ -141,8 +135,9 @@ class FulfillmentService extends TransactionBaseService {
     item: LineItem | undefined,
     quantity: number
   ): LineItem | null {
-    const manager = this.transactionManager_ ?? this.manager_
-    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
+    const lineItemRepo = this.activeManager_.withRepository(
+      this.lineItemRepository_
+    )
 
     if (!item) {
       // This will in most cases be called by a webhook so to ensure that
@@ -180,8 +175,7 @@ class FulfillmentService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const fulfillmentRepository = manager.getCustomRepository(
+    const fulfillmentRepository = this.activeManager_.withRepository(
       this.fulfillmentRepository_
     )
 
@@ -216,7 +210,7 @@ class FulfillmentService extends TransactionBaseService {
   ): Promise<Fulfillment[]> {
     const { locationId } = context
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentRepository = manager.getCustomRepository(
+      const fulfillmentRepository = manager.withRepository(
         this.fulfillmentRepository_
       )
 
@@ -302,7 +296,7 @@ class FulfillmentService extends TransactionBaseService {
         })
       )
 
-      const fulfillmentRepo = manager.getCustomRepository(
+      const fulfillmentRepo = manager.withRepository(
         this.fulfillmentRepository_
       )
       const canceled = await fulfillmentRepo.save(fulfillment)
@@ -329,10 +323,10 @@ class FulfillmentService extends TransactionBaseService {
     const { metadata, no_notification } = config
 
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentRepository = manager.getCustomRepository(
+      const fulfillmentRepository = manager.withRepository(
         this.fulfillmentRepository_
       )
-      const trackingLinkRepo = manager.getCustomRepository(
+      const trackingLinkRepo = manager.withRepository(
         this.trackingLinkRepository_
       )
 

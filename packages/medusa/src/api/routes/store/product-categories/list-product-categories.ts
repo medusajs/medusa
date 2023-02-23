@@ -7,13 +7,13 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 import { defaultStoreScope } from "."
 
 /**
- * @oas [get] /product-categories
+ * @oas [get] /store/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories."
  * x-authenticated: false
  * parameters:
- *   - (query) q {string} Query used for searching product category names orhandles.
+ *   - (query) q {string} Query used for searching product category names or handles.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
@@ -21,6 +21,15 @@ import { defaultStoreScope } from "."
  *   method: list
  *   queryParams: StoreGetProductCategoriesParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.productCategories.list()
+ *       .then(({ product_categories, limit, offset, count }) => {
+ *         console.log(product_categories.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -32,26 +41,12 @@ import { defaultStoreScope } from "."
  * tags:
  *   - Product Category
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             product_categories:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/ProductCategory"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/StoreProductCategoriesListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

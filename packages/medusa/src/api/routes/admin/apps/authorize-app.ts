@@ -4,7 +4,7 @@ import { OauthService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /apps/authorizations
+ * @oas [post] /admin/apps/authorizations
  * operationId: "PostApps"
  * summary: "Generate Token for App"
  * description: "Generates a token for an application."

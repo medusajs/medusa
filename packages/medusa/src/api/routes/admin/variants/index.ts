@@ -57,11 +57,18 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
   "created_at",
   "updated_at",
   "metadata",
+  "deleted_at",
+  "manage_inventory",
 ]
 
 /**
  * @schema AdminVariantsListRes
  * type: object
+ * required:
+ *   - variants
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   variants:
  *     type: array

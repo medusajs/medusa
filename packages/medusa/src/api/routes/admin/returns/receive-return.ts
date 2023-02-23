@@ -7,13 +7,13 @@ import {
 } from "class-validator"
 import { OrderService, ReturnService, SwapService } from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { isDefined } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /returns/{id}/receive
+ * @oas [post] /admin/returns/{id}/receive
  * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
  * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
@@ -147,6 +147,7 @@ class Item {
  *     description: The Line Items that have been received.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

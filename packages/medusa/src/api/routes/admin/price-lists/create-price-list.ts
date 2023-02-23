@@ -21,7 +21,7 @@ import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
- * @oas [post] /price-lists
+ * @oas [post] /admin/price-lists
  * operationId: "PostPriceListsPriceList"
  * summary: "Create a Price List"
  * description: "Creates a Price List"
@@ -157,6 +157,7 @@ class CustomerGroup {
  *      description: The prices of the Price List.
  *      type: array
  *      items:
+ *        type: object
  *        required:
  *          - amount
  *          - variant_id
@@ -186,6 +187,7 @@ class CustomerGroup {
  *     type: array
  *     description: A list of customer groups that the Price List applies to.
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

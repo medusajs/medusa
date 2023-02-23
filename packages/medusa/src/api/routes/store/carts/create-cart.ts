@@ -22,10 +22,9 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartCreateProps } from "../../../../types/cart"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
- * @oas [post] /carts
+ * @oas [post] /store/carts
  * summary: "Create a Cart"
  * operationId: "PostCart"
  * description: "Creates a Cart within the given region and with the initial items. If no
@@ -125,21 +124,18 @@ export default async (req, res) => {
     }
   }
 
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    if (
-      !toCreate.sales_channel_id &&
-      req.publishableApiKeyScopes?.sales_channel_id.length
-    ) {
-      if (req.publishableApiKeyScopes.sales_channel_id.length > 1) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The PublishableApiKey provided in the request header has multiple associated sales channels."
-        )
-      }
-
-      toCreate.sales_channel_id =
-        req.publishableApiKeyScopes.sales_channel_id[0]
+  if (
+    !toCreate.sales_channel_id &&
+    req.publishableApiKeyScopes?.sales_channel_ids.length
+  ) {
+    if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "The PublishableApiKey provided in the request header has multiple associated sales channels."
+      )
     }
+
+    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   let cart: Cart
@@ -209,6 +205,7 @@ export class Item {
  *     description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

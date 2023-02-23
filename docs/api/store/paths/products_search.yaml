@@ -19,15 +19,18 @@ post:
       description: Limit the number of products returned.
       schema:
         type: integer
+  x-codegen:
+    method: search
+    queryParams: StorePostSearchReq
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/products_search/postundefined
+        $ref: ../code_samples/JavaScript/products_search/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/products_search/postundefined
+        $ref: ../code_samples/Shell/products_search/post.sh
   tags:
     - Product
   responses:

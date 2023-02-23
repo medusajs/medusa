@@ -97,15 +97,15 @@ describe("useAdminDeleteProductsFromSalesChannel hook", () => {
       { wrapper: createWrapper() }
     )
 
-    result.current.mutate({ product_ids: [
-      { id: productId }
-    ]})
+    result.current.mutate({ product_ids: [{ id: productId }] })
 
     await waitFor(() => result.current.isSuccess)
 
-    expect(result.current.data).toEqual(expect.objectContaining({
-      sales_channel: fixtures.get("sales_channel"),
-    }))
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        sales_channel: fixtures.get("sales_channel"),
+      })
+    )
   })
 })
 
@@ -119,14 +119,14 @@ describe("useAdminAddProductsToSalesChannel hook", () => {
       { wrapper: createWrapper() }
     )
 
-    result.current.mutate({ product_ids: [
-      { id: productId }
-    ]})
+    result.current.mutate({ product_ids: [{ id: productId }] })
 
     await waitFor(() => result.current.isSuccess)
 
-    expect(result.current.data).toEqual(expect.objectContaining({
-      sales_channel: fixtures.get("sales_channel"),
-    }))
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        sales_channel: fixtures.get("sales_channel"),
+      })
+    )
   })
 })

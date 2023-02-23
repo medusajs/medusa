@@ -38,6 +38,8 @@ export default (app) => {
 /**
  * @schema AdminUserRes
  * type: object
+ * required:
+ *   - user
  * properties:
  *   user:
  *     $ref: "#/components/schemas/User"
@@ -49,6 +51,8 @@ export type AdminUserRes = {
 /**
  * @schema AdminUsersListRes
  * type: object
+ * required:
+ *   - users
  * properties:
  *   users:
  *     type: array
@@ -62,6 +66,10 @@ export type AdminUsersListRes = {
 /**
  * @schema AdminDeleteUserRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string

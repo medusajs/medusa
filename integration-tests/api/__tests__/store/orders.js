@@ -67,7 +67,9 @@ describe("/store/carts", () => {
       })
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: ShippingProfile.default,
+        },
       })
       await manager.insert(Product, {
         id: "test-product",
@@ -153,6 +155,64 @@ describe("/store/carts", () => {
           paid_total: 100,
         })
       )
+    })
+
+    it("lookup order response contains only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/orders?display_id=111&email=test@email.com&fields=status,email"
+      )
+
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        "email",
+        // relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+      ])
+    })
+
+    it("get order response contains only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/orders/order_test?fields=status")
+
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        // default relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+      ])
+    })
+
+    it("get order response contains only fields defined with `fields` and `expand` param", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/orders/order_test?fields=status&expand=billing_address"
+      )
+
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        // selected relations
+        "billing_address",
+      ])
     })
 
     it("looks up order", async () => {
@@ -255,7 +315,7 @@ describe("/store/carts", () => {
         MedusaError.Codes.INSUFFICIENT_INVENTORY
       )
 
-      let payments = await manager.find(Payment, { cart_id: cartId })
+      let payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({
@@ -280,7 +340,7 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      payments = await manager.find(Payment, { cart_id: cartId })
+      payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(2)
       expect(payments).toEqual(
         expect.arrayContaining([
@@ -333,7 +393,9 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      const payments = await manager.find(Payment, { cart_id: cartId })
+      const payments = await manager.find(Payment, {
+        where: { cart_id: cartId },
+      })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({

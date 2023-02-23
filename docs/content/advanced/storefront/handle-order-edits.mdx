@@ -1,7 +1,12 @@
+---
+description: 'Learn how to implement order-edit related features in the storefront using REST APIs. This includes showing the customer order-edit requests, authorizing additional payments, and confirming or declining order edits.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Handle an Order Edit
+# How to Handle an Order Edit in Storefront
 
 In this document, you’ll learn how to allow a customer to confirm or decline an Order Edit.
 
@@ -51,6 +56,12 @@ This guide includes code snippets to send requests to your Medusa server using M
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
 
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
 ### Previous Steps
 
 You must have an existing order edit in the “request” state.
@@ -70,6 +81,21 @@ medusa.orderEdits.retrieve(orderEditId)
   console.log(order_edit.changes)
   // show changed items to the customer
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useOrderEdit } from "medusa-react"
+
+const OrderEdit = () => {
+  const { order_edit, isLoading } = useOrderEdit(orderEditId)
+
+  // ...
+}
+
+export default OrderEdit
 ```
 
 </TabItem>
@@ -123,7 +149,7 @@ All data about changes to the original order’s items can be found in `order_ed
 
 Here’s an example of how you can use this data to show the customer the requested edits to the order:
 
-```jsx
+```tsx
 <ul>
   {orderEdit.changes.map((itemChange) => (
     <li key={itemChange.id}>
@@ -185,6 +211,28 @@ medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useManagePaymentSession } from "medusa-react"
+
+const OrderEditPayment = () => {
+  const managePaymentSession = useManagePaymentSession(paymentCollectionId)
+  // ...
+
+  const handleAdditionalPayment = (provider_id: string) => {
+    managePaymentSession.mutate({
+      provider_id,
+    })
+  }
+
+  // ...
+}
+
+export default OrderEditPayment
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -225,6 +273,28 @@ medusa.paymentCollection
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useAuthorizePaymentSession } from "medusa-react"
+
+const OrderEditPayment = () => {
+  const authorizePaymentSession = useAuthorizePaymentSession(
+    paymentCollectionId
+  )
+  // ...
+
+  const handleAuthorizePayment = (paymentSessionId: string) => {
+    authorizePaymentSession.mutate(paymentSessionId)
+  }
+
+  // ...
+}
+
+export default OrderEditPayment
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -261,6 +331,26 @@ medusa.orderEdits.complete(orderEditId)
 .then(({ order_edit }) => {
   console.log(order_edit.confirmed_at)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useCompleteOrderEdit } from "medusa-react"
+
+const OrderEdit = () => {
+  const completeOrderEdit = useCompleteOrderEdit(orderEditId)
+  // ...
+
+  const handleCompleteOrderEdit = () => {
+    completeOrderEdit.mutate()
+  }
+
+  // ...
+}
+
+export default OrderEdit
 ```
 
 </TabItem>
@@ -308,6 +398,28 @@ medusa.orderEdits.decline(orderEditId, {
 .then(({ order_edit }) => {
   console.log(order_edit.declined_at)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useDeclineOrderEdit } from "medusa-react"
+
+const OrderEdit = () => {
+  const declineOrderEdit = useDeclineOrderEdit(orderEditId)
+  // ...
+
+  const handleDeclineOrderEdit = () => {
+    declineOrderEdit.mutate({
+      declined_reason: "I am not satisfied",
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
 ```
 
 </TabItem>

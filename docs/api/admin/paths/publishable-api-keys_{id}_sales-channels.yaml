@@ -15,17 +15,19 @@ get:
       description: Query used for searching sales channels' names and descriptions.
       schema:
         type: string
+  x-codegen:
+    method: listSalesChannels
+    queryParams: GetPublishableApiKeySalesChannelsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels/getundefined
+          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels/getundefined
+        $ref: ../code_samples/Shell/publishable-api-keys_{id}_sales-channels/get.sh
   security:
     - api_token: []
     - cookie_auth: []

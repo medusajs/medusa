@@ -21,19 +21,13 @@ class NoteService extends TransactionBaseService {
     DELETED: "note.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly noteRepository_: typeof NoteRepository
   protected readonly eventBus_: EventBusService
 
-  constructor({
-    manager,
-    noteRepository,
-    eventBusService,
-  }: InjectedDependencies) {
+  constructor({ noteRepository, eventBusService }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.noteRepository_ = noteRepository
     this.eventBus_ = eventBusService
   }
@@ -55,7 +49,7 @@ class NoteService extends TransactionBaseService {
       )
     }
 
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+    const noteRepo = this.activeManager_.withRepository(this.noteRepository_)
 
     const query = buildQuery({ id: noteId }, config)
 
@@ -87,7 +81,7 @@ class NoteService extends TransactionBaseService {
       relations: [],
     }
   ): Promise<Note[]> {
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+    const noteRepo = this.activeManager_.withRepository(this.noteRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -109,7 +103,7 @@ class NoteService extends TransactionBaseService {
     const { resource_id, resource_type, value, author_id } = data
 
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const toCreate = {
         resource_id,
@@ -138,7 +132,7 @@ class NoteService extends TransactionBaseService {
    */
   async update(noteId: string, value: string): Promise<Note> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId, { relations: ["author"] })
 
@@ -160,7 +154,7 @@ class NoteService extends TransactionBaseService {
    */
   async delete(noteId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId)
 

@@ -19,7 +19,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /swaps
+ * @oas [post] /store/swaps
  * operationId: PostSwaps
  * summary: Create a Swap
  * description: "Creates a Swap on an Order by providing some items to return along with some items to send back"
@@ -140,9 +140,11 @@ export default async (req, res) => {
                     select: ["refunded_total", "total"],
                     relations: [
                       "items",
+                      "items.variant",
                       "items.tax_lines",
                       "swaps",
                       "swaps.additional_items",
+                      "swaps.additional_items.variant",
                       "swaps.additional_items.tax_lines",
                     ],
                   })
@@ -296,6 +298,7 @@ class AdditionalItem {
  *     description: "The items to include in the Return."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -319,6 +322,7 @@ class AdditionalItem {
  *     description: "The items to exchange the returned items to."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

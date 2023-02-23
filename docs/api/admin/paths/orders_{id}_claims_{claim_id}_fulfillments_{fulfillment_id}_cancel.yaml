@@ -22,17 +22,30 @@ post:
       description: The ID of the Fulfillment.
       schema:
         type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the result.
+      schema:
+        type: string
+  x-codegen:
+    method: cancelClaimFulfillment
+    params: AdminPostOrdersClaimFulfillmentsCancelParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/postundefined
+          ../code_samples/JavaScript/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/postundefined
+          ../code_samples/Shell/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/post.sh
   security:
     - api_token: []
     - cookie_auth: []

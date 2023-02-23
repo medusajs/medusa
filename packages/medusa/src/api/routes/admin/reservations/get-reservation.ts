@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [get] /reservations/{id}
+ * @oas [get] /admin/reservations/{id}
  * operationId: "GetReservationsReservation"
  * summary: "Get a Reservation"
  * description: "Retrieves a single reservation using its id"

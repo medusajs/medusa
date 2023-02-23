@@ -12,7 +12,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/request
+ * @oas [post] /admin/order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
  * summary: "Request Confirmation"
  * description: "Request customer confirmation of an Order Edit"
@@ -84,7 +84,7 @@ export default async (req, res) => {
       requestedBy: loggedInUser,
     })
 
-    const total = await orderEditServiceTx.getTotals(orderEdit.id)
+    const total = await orderEditServiceTx.decorateTotals(orderEdit)
 
     if (total.difference_due > 0) {
       const order = await orderService

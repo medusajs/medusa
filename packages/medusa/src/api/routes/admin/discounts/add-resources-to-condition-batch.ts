@@ -10,7 +10,7 @@ import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
+ * @oas [post] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
  * summary: "Add Batch Resources"
  * description: "Add a batch of resources to a discount condition."
@@ -121,6 +121,7 @@ export default async (req: Request, res: Response) => {
  *     description: The resources to be added to the discount condition
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

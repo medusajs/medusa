@@ -9,15 +9,22 @@ post:
       description: The id of the Cart to add the Line Item to.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartLineItemsReq.yaml
+  x-codegen:
+    method: createLineItem
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/carts_{id}_line-items/postundefined
+        $ref: ../code_samples/JavaScript/carts_{id}_line-items/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_line-items/postundefined
+        $ref: ../code_samples/Shell/carts_{id}_line-items/post.sh
   tags:
     - Cart
   responses:
@@ -37,23 +44,3 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - variant_id
-            - quantity
-          properties:
-            variant_id:
-              type: string
-              description: The id of the Product Variant to generate the Line Item from.
-            quantity:
-              type: integer
-              description: The quantity of the Product Variant to add to the Line Item.
-            metadata:
-              type: object
-              description: >-
-                An optional key-value map with additional details about the Line
-                Item.

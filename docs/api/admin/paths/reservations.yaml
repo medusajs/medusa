@@ -12,11 +12,11 @@ post:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/reservations/postundefined
+        $ref: ../code_samples/JavaScript/reservations/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/reservations/postundefined
+        $ref: ../code_samples/Shell/reservations/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -124,7 +124,7 @@ get:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/reservations/getundefined
+        $ref: ../code_samples/Shell/reservations/get.sh
   security:
     - api_token: []
     - cookie_auth: []

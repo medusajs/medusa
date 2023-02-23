@@ -16,7 +16,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [post] /carts/{id}
+ * @oas [post] /store/carts/{id}
  * operationId: PostCartsCart
  * summary: Update a Cart
  * description: "Updates a Cart."
@@ -151,6 +151,7 @@ class Discount {
  *     description: "An array of Gift Card codes to add to the Cart."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - code
  *       properties:
@@ -161,6 +162,7 @@ class Discount {
  *     description: "An array of Discount codes to add to the Cart."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - code
  *       properties:

@@ -1,143 +1,109 @@
 #!/usr/bin/env node
 
-const fs = require("fs")
-const OAS = require("oas-normalize")
-const swaggerInline = require("swagger-inline")
-const { exec } = require("child_process")
+const fs = require("fs/promises")
+const os = require("os")
+const path = require("path")
+const execa = require("execa")
+const yaml = require("js-yaml")
+const OpenAPIParser = require("@readme/openapi-parser")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
+const basePath = path.resolve(__dirname, `../`)
+const docsApiPath = path.resolve(basePath, "docs/api/")
 
-// Storefront API
-swaggerInline(
-  [
-    "./packages/medusa/src/models",
-    "./packages/medusa/src/types",
-    "./packages/medusa/src/api/middlewares",
-    "./packages/medusa/src/api/routes/store",
-  ],
-  {
-    base: "./docs/api/store-spec3-base.yaml",
-  }
-)
-  .then((gen) => {
-    const oas = new OAS(gen)
-    oas
-      .validate(true)
-      .then(() => {
-        if (!isDryRun) {
-          fs.writeFileSync("./docs/api/store-spec3.json", gen)
-        }
-      })
-      .catch((err) => {
-        console.log("Error in store")
-        console.error(err)
-        process.exit(1)
-      })
-  })
-  .catch((err) => {
-    console.log("Error in store")
-    console.error(err)
-    process.exit(1)
-  })
+const run = async () => {
+  const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
 
-swaggerInline(
-  [
-    "./packages/medusa/src/models",
-    "./packages/medusa/src/types",
-    "./packages/medusa/src/api/middlewares",
-    "./packages/medusa/src/api/routes/store",
-  ],
-  {
-    base: "./docs/api/store-spec3-base.yaml",
-    format: "yaml",
-  }
-)
-  .then((gen) => {
+  await generateOASSources(outputPath)
+
+  for (const apiType of ["store", "admin"]) {
+    const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
+    const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
+
+    await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
+    await sanitizeOAS(outputYamlFile)
+    await circularReferenceCheck(outputYamlFile)
     if (!isDryRun) {
-      fs.writeFileSync("./docs/api/store-spec3.yaml", gen)
-      exec(
-        "rm -rf docs/api/store/ && yarn run -- redocly split docs/api/store-spec3.yaml --outDir=docs/api/store/",
-        (error, stdout, stderr) => {
-          if (error) {
-            throw new Error(`error: ${error.message}`)
-          }
-          console.log(`${stderr || stdout}`)
-        }
-      )
-    } else {
-      console.log("No errors occurred while generating Store API Reference")
+      await generateReference(outputYamlFile, apiType)
     }
-  })
-  .catch((err) => {
-    console.log("Error in store")
-    console.error(err)
-    process.exit(1)
-  })
-
-// Admin API
-swaggerInline(
-  [
-    "./packages/medusa/src/models",
-    "./packages/medusa/src/types",
-    "./packages/medusa/src/api/middlewares",
-    "./packages/medusa/src/api/routes/admin",
-  ],
-  {
-    base: "./docs/api/admin-spec3-base.yaml",
   }
-)
-  .then((gen) => {
-    const oas = new OAS(gen)
-    oas
-      .validate(true)
-      .then(() => {
-        if (!isDryRun) {
-          fs.writeFileSync("./docs/api/admin-spec3.json", gen)
-        }
-      })
-      .catch((err) => {
-        console.log("Error in admin")
-        console.error(err)
-        process.exit(1)
-      })
-  })
-  .catch((err) => {
-    console.log("Error in admin")
-    console.error(err)
-    process.exit(1)
-  })
+}
 
-swaggerInline(
-  [
-    "./packages/medusa/src/models",
-    "./packages/medusa/src/types",
-    "./packages/medusa/src/api/middlewares",
-    "./packages/medusa/src/api/routes/admin",
-  ],
-  {
-    base: "./docs/api/admin-spec3-base.yaml",
-    format: "yaml",
+const generateOASSources = async (outDir, isDryRun) => {
+  const params = ["oas", `--out-dir=${outDir}`]
+  if (isDryRun) {
+    params.push("--dry-run")
   }
-)
-  .then((gen) => {
-    if (!isDryRun) {
-      fs.writeFileSync("./docs/api/admin-spec3.yaml", gen)
-      exec(
-        "rm -rf docs/api/admin/ && yarn run -- redocly split docs/api/admin-spec3.yaml --outDir=docs/api/admin/",
-        (error, stdout, stderr) => {
-          if (error) {
-            throw new Error(`error: ${error.message}`)
-          }
-          console.log(`${stderr || stdout}`)
-          return
-        }
-      )
-    } else {
-      console.log("No errors occurred while generating Admin API Reference")
-    }
+  const { all: logs } = await execa("medusa-oas", params, {
+    cwd: basePath,
+    all: true,
   })
-  .catch((err) => {
-    console.log("Error in admin")
-    console.error(err)
+  console.log(logs)
+}
+
+const jsonFileToYamlFile = async (inputJsonFile, outputYamlFile) => {
+  const jsonString = await fs.readFile(inputJsonFile, "utf8")
+  const jsonObject = JSON.parse(jsonString)
+  const yamlString = yaml.dump(jsonObject)
+  await fs.writeFile(outputYamlFile, yamlString, "utf8")
+}
+
+const sanitizeOAS = async (srcFile) => {
+  const { all: logs } = await execa(
+    "redocly",
+    [
+      "bundle",
+      srcFile,
+      `--output=${srcFile}`,
+      "--config=docs-util/redocly/config.yaml",
+    ],
+    { cwd: basePath, all: true }
+  )
+  console.log(logs)
+}
+
+const circularReferenceCheck = async (srcFile) => {
+  const parser = new OpenAPIParser()
+  await parser.validate(srcFile, {
+    dereference: {
+      circular: "ignore",
+    },
+  })
+  if (parser.$refs.circular) {
+    const fileName = path.basename(srcFile)
+    const circularRefs = [...parser.$refs.circularRefs]
+    circularRefs.sort()
+    console.log(circularRefs)
+    throw new Error(
+      `🔴 Unhandled circular references - ${fileName} - Please patch in docs-util/redocly/config.yaml`
+    )
+  }
+}
+
+const generateReference = async (srcFile, apiType) => {
+  const outDir = path.resolve(docsApiPath, `${apiType}`)
+  await fs.rm(outDir, { recursive: true, force: true })
+  const { all: logs } = await execa(
+    "redocly",
+    ["split", srcFile, `--outDir=${outDir}`],
+    { cwd: basePath, all: true }
+  )
+  console.log(logs)
+}
+
+const getTmpDirectory = async () => {
+  /**
+   * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
+   */
+  const tmpDir = process.env["RUNNER_TEMP"] ?? os.tmpdir()
+  return await fs.mkdtemp(tmpDir)
+}
+
+void (async () => {
+  try {
+    await run()
+  } catch (err) {
+    console.log(err)
     process.exit(1)
-  })
+  }
+})()

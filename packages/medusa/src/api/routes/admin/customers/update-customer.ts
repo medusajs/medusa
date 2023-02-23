@@ -16,7 +16,7 @@ import { defaultAdminCustomersRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers/{id}
+ * @oas [post] /admin/customers/{id}
  * operationId: "PostCustomersCustomer"
  * summary: "Update a Customer"
  * description: "Updates a Customer."
@@ -148,6 +148,7 @@ class Group {
  *   groups:
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

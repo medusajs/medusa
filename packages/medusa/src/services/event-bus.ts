@@ -7,7 +7,7 @@ import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
-import JobSchedulerService from "./job-scheduler"
+import JobSchedulerService, { CreateJobOptions } from "./job-scheduler"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -249,7 +249,7 @@ export default class EventBusService {
      * as part of the rollback.
      */
     if (this.transactionManager_) {
-      const stagedJobRepository = this.transactionManager_.getCustomRepository(
+      const stagedJobRepository = this.transactionManager_.withRepository(
         this.stagedJobRepository_
       )
 
@@ -285,7 +285,7 @@ export default class EventBusService {
         take: 1000,
       }
 
-      const stagedJobRepo = this.manager_.getCustomRepository(
+      const stagedJobRepo = this.manager_.withRepository(
         this.stagedJobRepository_
       )
       const jobs = await stagedJobRepo.find(listConfig)
@@ -413,12 +413,19 @@ export default class EventBusService {
    * @param handler - the handler to call on each cron job
    * @return void
    */
-  createCronJob<T>(
+  async createCronJob<T>(
     eventName: string,
     data: T,
     cron: string,
-    handler: Subscriber
-  ): void {
-    this.jobSchedulerService_.create(eventName, data, cron, handler)
+    handler: Subscriber,
+    options?: CreateJobOptions
+  ): Promise<void> {
+    await this.jobSchedulerService_.create(
+      eventName,
+      data,
+      cron,
+      handler,
+      options ?? {}
+    )
   }
 }

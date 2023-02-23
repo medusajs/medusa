@@ -31,17 +31,13 @@ class DiscountConditionService extends TransactionBaseService {
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     discountConditionRepository,
     eventBusService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.discountConditionRepository_ = discountConditionRepository
     this.eventBus_ = eventBusService
   }
@@ -57,8 +53,7 @@ class DiscountConditionService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const conditionRepo = manager.getCustomRepository(
+    const conditionRepo = this.activeManager_.withRepository(
       this.discountConditionRepository_
     )
 
@@ -139,8 +134,9 @@ class DiscountConditionService extends TransactionBaseService {
           )
         }
 
-        const discountConditionRepo: DiscountConditionRepository =
-          manager.getCustomRepository(this.discountConditionRepository_)
+        const discountConditionRepo = manager.withRepository(
+          this.discountConditionRepository_
+        )
 
         if (data.id) {
           const resolvedCondition = await this.retrieve(data.id)
@@ -199,8 +195,9 @@ class DiscountConditionService extends TransactionBaseService {
         )
       }
 
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
 
       const resolvedCondition = await this.retrieve(data.id)
 
@@ -219,7 +216,7 @@ class DiscountConditionService extends TransactionBaseService {
 
   async delete(discountConditionId: string): Promise<DiscountCondition | void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const conditionRepo = manager.getCustomRepository(
+      const conditionRepo = manager.withRepository(
         this.discountConditionRepository_
       )
 

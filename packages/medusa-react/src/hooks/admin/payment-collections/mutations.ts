@@ -11,9 +11,9 @@ import {
   AdminUpdatePaymentCollectionsReq,
 } from "@medusajs/medusa"
 
-import { adminPaymentCollectionQueryKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminPaymentCollectionQueryKeys } from "./queries"
 
 export const useAdminDeletePaymentCollection = (
   id: string,

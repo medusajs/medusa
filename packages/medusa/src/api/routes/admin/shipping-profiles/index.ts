@@ -47,6 +47,10 @@ export const defaultAdminShippingProfilesRelations: (keyof ShippingProfile)[] =
 /**
  * @schema AdminDeleteShippingProfileRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -65,6 +69,8 @@ export type AdminDeleteShippingProfileRes = DeleteResponse
 /**
  * @schema AdminShippingProfilesRes
  * type: object
+ * required:
+ *   - shipping_profile
  * properties:
  *   shipping_profile:
  *     $ref: "#/components/schemas/ShippingProfile"
@@ -76,6 +82,8 @@ export type AdminShippingProfilesRes = {
 /**
  * @schema AdminShippingProfilesListRes
  * type: object
+ * required:
+ *   - shipping_profiles
  * properties:
  *   shipping_profiles:
  *     type: array

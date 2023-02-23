@@ -17,16 +17,12 @@ type InjectedDependencies = {
 }
 
 class IdempotencyKeyService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly idempotencyKeyRepository_: typeof IdempotencyKeyRepository
 
-  constructor({ manager, idempotencyKeyRepository }: InjectedDependencies) {
+  constructor({ idempotencyKeyRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.idempotencyKeyRepository_ = idempotencyKeyRepository
   }
 
@@ -66,7 +62,7 @@ class IdempotencyKeyService extends TransactionBaseService {
    */
   async create(payload: CreateIdempotencyKeyInput): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async (manager) => {
-      const idempotencyKeyRepo = manager.getCustomRepository(
+      const idempotencyKeyRepo = manager.withRepository(
         this.idempotencyKeyRepository_
       )
 
@@ -90,7 +86,7 @@ class IdempotencyKeyService extends TransactionBaseService {
       )
     }
 
-    const idempotencyKeyRepo = this.manager_.getCustomRepository(
+    const idempotencyKeyRepo = this.activeManager_.withRepository(
       this.idempotencyKeyRepository_
     )
 
@@ -115,7 +111,7 @@ class IdempotencyKeyService extends TransactionBaseService {
    */
   async lock(idempotencyKey: string): Promise<IdempotencyKey | never> {
     return await this.atomicPhase_(async (manager) => {
-      const idempotencyKeyRepo = manager.getCustomRepository(
+      const idempotencyKeyRepo = manager.withRepository(
         this.idempotencyKeyRepository_
       )
 
@@ -147,7 +143,7 @@ class IdempotencyKeyService extends TransactionBaseService {
     update: DeepPartial<IdempotencyKey>
   ): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async (manager) => {
-      const idempotencyKeyRepo = manager.getCustomRepository(
+      const idempotencyKeyRepo = manager.withRepository(
         this.idempotencyKeyRepository_
       )
 

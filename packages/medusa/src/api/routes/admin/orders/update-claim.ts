@@ -1,4 +1,3 @@
-import { ClaimService, OrderService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -9,14 +8,15 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { ClaimService, OrderService } from "../../../../services"
 
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /order/{id}/claims/{claim_id}
+ * @oas [post] /admin/order/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
  * description: "Updates a Claim."
@@ -24,6 +24,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,6 +33,7 @@ import { EntityManager } from "typeorm"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimReq"
  * x-codegen:
  *   method: updateClaim
+ *   params: AdminPostOrdersOrderClaimsClaimParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -96,9 +99,8 @@ export default async (req, res) => {
       .update(claim_id, validated)
   })
 
-  const data = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const data = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order: data })
@@ -112,6 +114,7 @@ export default async (req, res) => {
  *     description: The Claim Items that the Claim will consist of.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *         - images
@@ -168,6 +171,7 @@ export default async (req, res) => {
  *     description: The Shipping Methods to send the additional Line Items with.
  *     type: array
  *     items:
+ *        type: object
  *        properties:
  *          id:
  *            description: The ID of an existing Shipping Method
@@ -178,6 +182,9 @@ export default async (req, res) => {
  *          price:
  *            description: The price to charge for the Shipping Method
  *            type: integer
+ *          data:
+ *            description: An optional set of key-value pairs to hold additional information.
+ *            type: object
  *   no_notification:
  *     description: If set to true no notification will be send related to this Swap.
  *     type: boolean
@@ -219,6 +226,10 @@ class ShippingMethod {
   @IsInt()
   @IsOptional()
   price?: number
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
 }
 
 class Item {
@@ -268,3 +279,5 @@ class Tag {
   @IsOptional()
   value?: string
 }
+
+export class AdminPostOrdersOrderClaimsClaimParams extends FindParams {}

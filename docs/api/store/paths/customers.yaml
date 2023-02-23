@@ -7,15 +7,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostCustomersReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers/postundefined
+        $ref: ../code_samples/JavaScript/customers/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers/postundefined
+        $ref: ../code_samples/Shell/customers/post.sh
   tags:
     - Customer
   responses:

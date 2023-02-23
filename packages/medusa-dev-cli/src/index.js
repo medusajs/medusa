@@ -7,6 +7,7 @@ const yargs = require(`yargs/yargs`)
 const path = require(`path`)
 const os = require(`os`)
 const fs = require(`fs-extra`)
+const glob = require("glob")
 const watch = require(`./watch`)
 const { getVersionInfo } = require(`./utils/version`)
 const { buildFFCli } = require("./feature-flags")
@@ -94,35 +95,50 @@ medusa-dev --set-path-to-repo /path/to/my/cloned/version/medusa
       process.exit()
     }
 
+    // get list of directories to crawl for package declarations
+    const monoRepoPackagesDirs = []
+    try {
+      const monoRepoPkg = JSON.parse(
+        fs.readFileSync(path.join(medusaLocation, "package.json"))
+      )
+      for (const workspace of monoRepoPkg.workspaces.packages) {
+        if (!workspace.startsWith("packages")) {
+          continue
+        }
+        const workspacePackageDirs = glob.sync(workspace, {
+          cwd: medusaLocation.toString(),
+        })
+        monoRepoPackagesDirs.push(...workspacePackageDirs)
+      }
+    } catch (err) {
+      console.error(
+        `Unable to read and parse the workspace definition from medusa package.json`
+      )
+      process.exit(1)
+    }
+
     // get list of packages from monorepo
     const packageNameToPath = new Map()
-    const monoRepoPackages = fs
-      .readdirSync(path.join(medusaLocation, `packages`))
-      .map((dirName) => {
-        try {
-          const localPkg = JSON.parse(
-            fs.readFileSync(
-              path.join(medusaLocation, `packages`, dirName, `package.json`)
-            )
-          )
-
-          if (localPkg?.name) {
-            packageNameToPath.set(
-              localPkg.name,
-              path.join(medusaLocation, `packages`, dirName)
-            )
-            return localPkg.name
-          }
-        } catch (error) {
-          // fallback to generic one
-        }
-
-        packageNameToPath.set(
-          dirName,
-          path.join(medusaLocation, `packages`, dirName)
+    const monoRepoPackages = monoRepoPackagesDirs.map((dirName) => {
+      try {
+        const localPkg = JSON.parse(
+          fs.readFileSync(path.join(medusaLocation, dirName, `package.json`))
         )
-        return dirName
-      })
+
+        if (localPkg?.name) {
+          packageNameToPath.set(
+            localPkg.name,
+            path.join(medusaLocation, dirName)
+          )
+          return localPkg.name
+        }
+      } catch (error) {
+        // fallback to generic one
+      }
+
+      packageNameToPath.set(dirName, path.join(medusaLocation, dirName))
+      return dirName
+    })
 
     const localPkg = JSON.parse(fs.readFileSync(`package.json`))
     // intersect dependencies with monoRepoPackages to get list of packages that are used

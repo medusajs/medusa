@@ -1,5 +1,6 @@
 import { Transform } from "class-transformer"
 import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
+import { ProductCategory } from "../models"
 
 export type CreateProductCategoryInput = {
   name: string
@@ -7,6 +8,7 @@ export type CreateProductCategoryInput = {
   is_internal?: boolean
   is_active?: boolean
   parent_category_id?: string | null
+  parent_category?: ProductCategory | null
 }
 
 export type UpdateProductCategoryInput = {
@@ -15,6 +17,7 @@ export type UpdateProductCategoryInput = {
   is_internal?: boolean
   is_active?: boolean
   parent_category_id?: string | null
+  parent_category?: ProductCategory | null
 }
 
 export class AdminProductCategoriesReqBase {
@@ -37,4 +40,9 @@ export class AdminProductCategoriesReqBase {
     return value === "null" ? null : value
   })
   parent_category_id?: string | null
+}
+
+export class ProductBatchProductCategory {
+  @IsString()
+  id: string
 }

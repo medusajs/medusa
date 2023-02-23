@@ -6,7 +6,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [post] /orders/{id}/line-items/{line_item_id}/reserve
+ * @oas [post] /admin/orders/{id}/line-items/{line_item_id}/reserve
  * operationId: "PostOrdersOrderLineItemReservations"
  * summary: "Create a Reservation for a line item"
  * description: "Creates a Reservation for a line item at a specified location, optionally for a partial quantity."

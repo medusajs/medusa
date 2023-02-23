@@ -1,24 +1,29 @@
 import BaseResource from "../base"
 import AdminAuthResource from "./auth"
 import AdminBatchJobsResource from "./batch-jobs"
-import CollectionsResource from "./collections"
+import AdminCollectionsResource from "./collections"
 import AdminCurrenciesResource from "./currencies"
 import AdminCustomerGroupsResource from "./customer-groups"
 import AdminCustomersResource from "./customers"
 import AdminDiscountsResource from "./discounts"
 import AdminDraftOrdersResource from "./draft-orders"
 import AdminGiftCardsResource from "./gift-cards"
+import AdminInventoryItemsResource from "./inventory-item"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
 import AdminNotificationsResource from "./notifications"
-import AdminOrdersResource from "./orders"
 import AdminOrderEditsResource from "./order-edits"
+import AdminOrdersResource from "./orders"
+import AdminPaymentCollectionsResource from "./payment-collections"
+import AdminPaymentsResource from "./payments"
 import AdminPriceListResource from "./price-lists"
+import AdminProductCategoriesResource from "./product-categories"
 import AdminProductTagsResource from "./product-tags"
 import AdminProductTypesResource from "./product-types"
 import AdminProductsResource from "./products"
 import AdminPublishableApiKeyResource from "./publishable-api-keys"
 import AdminRegionsResource from "./regions"
+import AdminReservationsResource from "./reservations"
 import AdminReturnReasonsResource from "./return-reasons"
 import AdminReturnsResource from "./returns"
 import AdminSalesChannelsResource from "./sales-channels"
@@ -31,8 +36,6 @@ import AdminTaxRatesResource from "./tax-rates"
 import AdminUploadsResource from "./uploads"
 import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
-import AdminPaymentCollectionsResource from "./payment-collections"
-import AdminPaymentsResource from "./payments"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -41,10 +44,11 @@ class Admin extends BaseResource {
   public customerGroups = new AdminCustomerGroupsResource(this.client)
   public discounts = new AdminDiscountsResource(this.client)
   public currencies = new AdminCurrenciesResource(this.client)
-  public collections = new CollectionsResource(this.client)
+  public collections = new AdminCollectionsResource(this.client)
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
+  public inventoryItems = new AdminInventoryItemsResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public priceLists = new AdminPriceListResource(this.client)
   public products = new AdminProductsResource(this.client)
@@ -64,11 +68,50 @@ class Admin extends BaseResource {
   public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
+  public reservations = new AdminReservationsResource(this.client)
   public notifications = new AdminNotificationsResource(this.client)
   public taxRates = new AdminTaxRatesResource(this.client)
   public uploads = new AdminUploadsResource(this.client)
   public paymentCollections = new AdminPaymentCollectionsResource(this.client)
   public payments = new AdminPaymentsResource(this.client)
+  public productCategories = new AdminProductCategoriesResource(this.client)
 }
 
-export default Admin
+export {
+  Admin,
+  AdminAuthResource,
+  AdminBatchJobsResource,
+  AdminCollectionsResource,
+  AdminCurrenciesResource,
+  AdminCustomerGroupsResource,
+  AdminCustomersResource,
+  AdminDiscountsResource,
+  AdminDraftOrdersResource,
+  AdminGiftCardsResource,
+  AdminInvitesResource,
+  AdminNotesResource,
+  AdminNotificationsResource,
+  AdminOrdersResource,
+  AdminOrderEditsResource,
+  AdminPriceListResource,
+  AdminProductTagsResource,
+  AdminProductTypesResource,
+  AdminProductsResource,
+  AdminPublishableApiKeyResource,
+  AdminRegionsResource,
+  AdminReturnReasonsResource,
+  AdminReturnsResource,
+  AdminSalesChannelsResource,
+  AdminShippingOptionsResource,
+  AdminShippingProfilesResource,
+  AdminStockLocationsResource,
+  AdminStoresResource,
+  AdminSwapsResource,
+  AdminTaxRatesResource,
+  AdminUploadsResource,
+  AdminUsersResource,
+  AdminVariantsResource,
+  AdminPaymentCollectionsResource,
+  AdminPaymentsResource,
+  AdminProductCategoriesResource,
+}

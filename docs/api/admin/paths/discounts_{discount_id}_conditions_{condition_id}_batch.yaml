@@ -36,17 +36,20 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq.yaml
+  x-codegen:
+    method: addConditionResourceBatch
+    queryParams: AdminPostDiscountsDiscountConditionsConditionBatchParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/postundefined
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/postundefined
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -109,17 +112,19 @@ delete:
         schema:
           $ref: >-
             ../components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq.yaml
+  x-codegen:
+    method: deleteConditionResourceBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/deleteundefined
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/deleteundefined
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

@@ -1,17 +1,16 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, FindManyOptions } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  IEventBusService,
-  FilterableReservationItemProps,
   CreateReservationItemInput,
+  FilterableReservationItemProps,
+  FindConfig,
+  IEventBusService,
   TransactionBaseService,
   UpdateReservationItemInput,
 } from "@medusajs/medusa"
 
 import { ReservationItem } from "../models"
-import { CONNECTION_NAME } from "../config"
 import { InventoryLevelService } from "."
 
 type InjectedDependencies = {
@@ -28,25 +27,17 @@ export default class ReservationItemService extends TransactionBaseService {
     DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: IEventBusService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({
     eventBusService,
-    manager,
     inventoryLevelService,
   }: InjectedDependencies) {
     super(arguments[0])
 
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryLevelService_ = inventoryLevelService
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -59,10 +50,10 @@ export default class ReservationItemService extends TransactionBaseService {
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<ReservationItem[]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await itemRepository.find(query)
   }
 
@@ -76,10 +67,10 @@ export default class ReservationItemService extends TransactionBaseService {
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<[ReservationItem[], number]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await itemRepository.findAndCount(query)
   }
 
@@ -101,10 +92,10 @@ export default class ReservationItemService extends TransactionBaseService {
       )
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery({ id: reservationItemId }, config)
+    const query = buildQuery({ id: reservationItemId }, config) as FindManyOptions
     const [reservationItem] = await reservationItemRepository.find(query)
 
     if (!reservationItem) {
@@ -173,8 +164,31 @@ export default class ReservationItemService extends TransactionBaseService {
       const shouldUpdateQuantity =
         isDefined(data.quantity) && data.quantity !== item.quantity
 
+      const shouldUpdateLocation =
+        isDefined(data.location_id) &&
+        isDefined(data.quantity) &&
+        data.location_id !== item.location_id
+
       const ops: Promise<unknown>[] = []
-      if (shouldUpdateQuantity) {
+
+      if (shouldUpdateLocation) {
+        ops.push(
+          this.inventoryLevelService_
+            .withTransaction(manager)
+            .adjustReservedQuantity(
+              item.inventory_item_id,
+              item.location_id,
+              item.quantity * -1
+            ),
+          this.inventoryLevelService_
+            .withTransaction(manager)
+            .adjustReservedQuantity(
+              item.inventory_item_id,
+              data.location_id!,
+              data.quantity!
+            )
+        )
+      } else if (shouldUpdateQuantity) {
         const quantityDiff = data.quantity! - item.quantity
         ops.push(
           this.inventoryLevelService_

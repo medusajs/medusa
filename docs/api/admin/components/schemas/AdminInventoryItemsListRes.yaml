@@ -1,0 +1,15 @@
+type: object
+properties:
+  inventory_items:
+    type: array
+    items:
+      $ref: ./InventoryItemDTO.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of items skipped before these items
+  limit:
+    type: integer
+    description: The number of items per page

@@ -19,9 +19,9 @@ import { buildQuery, setMetadata } from "../utils"
 
 import {
   FulfillmentProviderService,
-  ProductVariantInventoryService,
   LineItemService,
   OrderService,
+  ProductVariantInventoryService,
   ReturnReasonService,
   ShippingOptionService,
   TaxProviderService,
@@ -49,9 +49,6 @@ type Transformer = (
 ) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
 
 class ReturnService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly totalsService_: TotalsService
   protected readonly returnRepository_: typeof ReturnRepository
   protected readonly returnItemRepository_: typeof ReturnItemRepository
@@ -65,7 +62,6 @@ class ReturnService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     totalsService,
     lineItemService,
     returnRepository,
@@ -80,7 +76,6 @@ class ReturnService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.totalsService_ = totalsService
     this.returnRepository_ = returnRepository
     this.returnItemRepository_ = returnItemRepository
@@ -151,7 +146,9 @@ class ReturnService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Return[]> {
-    const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
+    const returnRepo = this.activeManager_.withRepository(
+      this.returnRepository_
+    )
     const query = buildQuery(selector, config)
     return returnRepo.find(query)
   }
@@ -172,7 +169,7 @@ class ReturnService extends TransactionBaseService {
         )
       }
 
-      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const retRepo = manager.withRepository(this.returnRepository_)
 
       ret.status = ReturnStatus.CANCELED
 
@@ -270,7 +267,7 @@ class ReturnService extends TransactionBaseService {
       )
     }
 
-    const returnRepository = this.manager_.getCustomRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
@@ -291,7 +288,7 @@ class ReturnService extends TransactionBaseService {
     swapId: string,
     relations: string[] = []
   ): Promise<Return | never> {
-    const returnRepository = this.manager_.getCustomRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
@@ -333,7 +330,7 @@ class ReturnService extends TransactionBaseService {
         ret[key] = value
       }
 
-      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const retRepo = manager.withRepository(this.returnRepository_)
       return await retRepo.save(ret)
     })
   }
@@ -348,9 +345,7 @@ class ReturnService extends TransactionBaseService {
    */
   async create(data: CreateReturnInput): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const orderId = data.order_id
       if (data.swap_id) {
@@ -440,7 +435,7 @@ class ReturnService extends TransactionBaseService {
         )
       }
 
-      const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
+      const rItemRepo = manager.withRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map((i) =>
         rItemRepo.create({
           item_id: i.id,
@@ -543,7 +538,7 @@ class ReturnService extends TransactionBaseService {
       returnOrder.shipping_data =
         await this.fulfillmentProviderService_.createReturn(returnData)
 
-      const returnRepo = manager.getCustomRepository(this.returnRepository_)
+      const returnRepo = manager.withRepository(this.returnRepository_)
       return await returnRepo.save(returnOrder)
     })
   }
@@ -571,9 +566,7 @@ class ReturnService extends TransactionBaseService {
     context: { locationId?: string } = {}
   ): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -653,7 +646,7 @@ class ReturnService extends TransactionBaseService {
         returnStatus = ReturnStatus.REQUIRES_ACTION
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount = refundAmount ?? returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {

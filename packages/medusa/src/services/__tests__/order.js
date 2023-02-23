@@ -510,7 +510,7 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.retrieve(IdMap.getId("test-order"))
       expect(orderRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith(undefined, {
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith({}, {
         where: { id: IdMap.getId("test-order") },
       })
     })

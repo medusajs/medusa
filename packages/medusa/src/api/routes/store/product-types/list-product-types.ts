@@ -9,7 +9,7 @@ import { IsType } from "../../../../utils/validators/is-type"
 import ProductTypeService from "../../../../services/product-type"
 
 /**
- * @oas [get] /product-types
+ * @oas [get] /store/product-types
  * operationId: "GetProductTypes"
  * summary: "List Product Types"
  * description: "Retrieve a list of Product Types."
@@ -92,7 +92,7 @@ import ProductTypeService from "../../../../services/product-type"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.store.productTypes.list()
+ *       medusa.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
  *       });

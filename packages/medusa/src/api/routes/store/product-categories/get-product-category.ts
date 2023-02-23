@@ -6,7 +6,7 @@ import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tre
 import { defaultStoreScope } from "."
 
 /**
- * @oas [get] /product-categories/{id}
+ * @oas [get] /store/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
  * description: "Retrieves a Product Category."
@@ -25,10 +25,10 @@ import { defaultStoreScope } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.productCategories.retrieve("pcat-id")
- *       .then(({ productCategory }) => {
- *         console.log(productCategory.id);
- *       });
+ *       medusa.productCategories.retrieve(product_category_id)
+ *         .then(({ product_category }) => {
+ *           console.log(product_category.id);
+ *         });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -45,7 +45,7 @@ import { defaultStoreScope } from "."
  *    content:
  *      application/json:
  *        schema:
- *          $ref: "#/components/schemas/StoreGetProductCategoryRes"
+ *          $ref: "#/components/schemas/StoreGetProductCategoriesCategoryRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

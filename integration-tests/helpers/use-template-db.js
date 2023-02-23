@@ -2,13 +2,16 @@ const path = require("path")
 
 require("dotenv").config({ path: path.join(__dirname, "../.env.test") })
 
+const { getConfigFile } = require("medusa-core-utils")
 const { createDatabase, dropDatabase } = require("pg-god")
-const { createConnection, getConnection } = require("typeorm")
+const { DataSource } = require("typeorm")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}`
+
+let masterDataSource
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -18,14 +21,14 @@ const pgGodCredentials = {
 
 class DatabaseFactory {
   constructor() {
-    this.connection_ = null
-    this.masterConnectionName = "master"
+    this.dataSource_ = null
+    this.masterDataSourceName = "master"
     this.templateDbName = "medusa-integration-template"
   }
 
   async createTemplateDb_({ cwd }) {
-    // const cwd = path.resolve(path.join(__dirname, ".."))
-    const connection = await this.getMasterConnection()
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const dataSource = await this.getMasterDataSource()
     const migrationDir = path.resolve(
       path.join(
         __dirname,
@@ -41,13 +44,17 @@ class DatabaseFactory {
 
     const {
       getEnabledMigrations,
+      getModuleSharedResources,
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
     // filter migrations to only include those that don't have feature flags
-    const enabledMigrations = await getEnabledMigrations(
+    const enabledMigrations = getEnabledMigrations(
       [migrationDir],
       (flag) => false
     )
+
+    const { migrations: moduleMigrations } =
+      getModuleSharedResources(configModule)
 
     await dropDatabase(
       {
@@ -61,51 +68,52 @@ class DatabaseFactory {
       pgGodCredentials
     )
 
-    const templateDbConnection = await createConnection({
+    const templateDbDataSource = new DataSource({
       type: "postgres",
-      name: "templateConnection",
+      name: "templateDataSource",
       url: `${DB_URL}/${this.templateDbName}`,
-      migrations: enabledMigrations,
+      migrations: enabledMigrations.concat(moduleMigrations),
     })
 
-    await templateDbConnection.runMigrations()
-    await templateDbConnection.close()
+    await templateDbDataSource.initialize()
 
-    return connection
+    await templateDbDataSource.runMigrations()
+
+    await templateDbDataSource.destroy()
+
+    return dataSource
   }
 
-  async getMasterConnection() {
-    try {
-      return await getConnection(this.masterConnectionName)
-    } catch (err) {
-      return await this.createMasterConnection()
-    }
+  async getMasterDataSource() {
+    masterDataSource = masterDataSource || (await this.createMasterDataSource())
+    return masterDataSource
   }
 
-  async createMasterConnection() {
-    const connection = await createConnection({
+  async createMasterDataSource() {
+    const dataSource = new DataSource({
       type: "postgres",
-      name: this.masterConnectionName,
+      name: this.masterDataSourceName,
       url: `${DB_URL}`,
     })
+    await dataSource.initialize()
 
-    return connection
+    return dataSource
   }
 
   async createFromTemplate(dbName) {
-    const connection = await this.getMasterConnection()
+    const dataSource = await this.getMasterDataSource()
 
-    await connection.query(`DROP DATABASE IF EXISTS "${dbName}";`)
-    await connection.query(
+    await dataSource.query(`DROP DATABASE IF EXISTS "${dbName}";`)
+    await dataSource.query(
       `CREATE DATABASE "${dbName}" TEMPLATE "${this.templateDbName}";`
     )
   }
 
   async destroy() {
-    const connection = await this.getMasterConnection()
+    const dataSource = await this.getMasterDataSource()
 
-    await connection.query(`DROP DATABASE IF EXISTS "${this.templateDbName}";`)
-    await connection.close()
+    await dataSource.query(`DROP DATABASE IF EXISTS "${this.templateDbName}";`)
+    await dataSource.destroy()
   }
 }
 

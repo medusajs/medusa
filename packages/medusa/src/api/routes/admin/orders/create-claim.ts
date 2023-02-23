@@ -9,24 +9,24 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { ClaimReason, ClaimType } from "../../../../models"
 
 import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ClaimTypeValue } from "../../../../types/claim"
-import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
+import { AddressPayload, FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /order/{id}/claims
+ * @oas [post] /admin/order/{id}/claims
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
  * description: "Creates a Claim."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,6 +34,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsReq"
  * x-codegen:
  *   method: createClaim
+ *   params: AdminPostOrdersOrderClaimsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -97,7 +98,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)
+  const value = req.validatedBody
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
   const manager: EntityManager = req.scope.resolve("manager")
@@ -157,14 +158,7 @@ export default async (req, res) => {
                 await claimService.withTransaction(manager).create({
                   idempotency_key: idempotencyKey.idempotency_key,
                   order,
-                  type: value.type,
-                  shipping_address: value.shipping_address,
-                  claim_items: value.claim_items,
-                  return_shipping: value.return_shipping,
-                  additional_items: value.additional_items,
-                  shipping_methods: value.shipping_methods,
-                  no_notification: value.no_notification,
-                  metadata: value.metadata,
+                  ...value,
                 })
 
                 return {
@@ -254,9 +248,8 @@ export default async (req, res) => {
 
                 order = await orderService
                   .withTransaction(manager)
-                  .retrieve(id, {
-                    select: defaultAdminOrdersFields,
-                    relations: defaultAdminOrdersRelations,
+                  .retrieveWithTotals(id, req.retrieveConfig, {
+                    includes: req.includes,
                   })
 
                 return {
@@ -315,6 +308,7 @@ export default async (req, res) => {
  *     description: The Claim Items that the Claim will consist of.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -359,6 +353,7 @@ export default async (req, res) => {
  *      description: The new items to send to the Customer when the Claim type is Replace.
  *      type: array
  *      items:
+ *        type: object
  *        required:
  *          - variant_id
  *          - quantity
@@ -373,6 +368,7 @@ export default async (req, res) => {
  *      description: The Shipping Methods to send the additional Line Items with.
  *      type: array
  *      items:
+ *         type: object
  *         properties:
  *           id:
  *             description: The ID of an existing Shipping Method
@@ -383,6 +379,9 @@ export default async (req, res) => {
  *           price:
  *             description: The price to charge for the Shipping Method
  *             type: integer
+ *           data:
+ *             description: An optional set of key-value pairs to hold additional information.
+ *             type: object
  *   shipping_address:
  *      type: object
  *      description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
@@ -466,6 +465,10 @@ class ShippingMethod {
   @IsInt()
   @IsOptional()
   price?: number
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
 }
 
 class Item {
@@ -505,3 +508,5 @@ class AdditionalItem {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderClaimsParams extends FindParams {}

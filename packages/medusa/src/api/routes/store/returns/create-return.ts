@@ -17,7 +17,7 @@ import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /returns
+ * @oas [post] /store/returns
  * operationId: "PostReturns"
  * summary: "Create Return"
  * description: "Creates a Return for an Order."
@@ -264,6 +264,7 @@ class Item {
  *     description: "The items to include in the Return."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

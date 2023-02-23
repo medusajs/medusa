@@ -8,7 +8,7 @@ import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}/customers/batch
+ * @oas [post] /admin/customer-groups/{id}/customers/batch
  * operationId: "PostCustomerGroupsGroupCustomersBatch"
  * summary: "Add Customers"
  * description: "Adds a list of customers, represented by id's, to a customer group."
@@ -114,6 +114,7 @@ export default async (req: Request, res: Response) => {
  *     description: "The ids of the customers to add"
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

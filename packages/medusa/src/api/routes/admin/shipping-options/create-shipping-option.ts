@@ -16,7 +16,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /shipping-options
+ * @oas [post] /admin/shipping-options
  * operationId: "PostShippingOptions"
  * summary: "Create Shipping Option"
  * description: "Creates a Shipping Option"
@@ -156,6 +156,7 @@ class OptionRequirement {
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - type
  *         - amount

@@ -9,7 +9,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/items
+ * @oas [post] /admin/order-edits/{id}/items
  * operationId: "PostOrderEditsEditLineItems"
  * summary: "Add a Line Item"
  * description: "Create an OrderEdit LineItem."

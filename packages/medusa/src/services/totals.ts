@@ -102,34 +102,29 @@ type CalculationContextOptions = {
  * @implements {BaseService}
  */
 class TotalsService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly taxProviderService_: TaxProviderService
   protected readonly newTotalsService_: NewTotalsService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     taxProviderService,
     newTotalsService,
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
 
-    this.manager_ = manager
     this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
-   * Calculates subtotal of a given cart or order.
+   * Calculates total of a given cart or order.
    * @param cartOrOrder - object to calculate total for
    * @param options - options to calculate by
    * @return the calculated subtotal
@@ -223,7 +218,7 @@ class TotalsService extends TransactionBaseService {
         )
       } else if (totals.tax_lines.length === 0) {
         const orderLines = await this.taxProviderService_
-          .withTransaction(this.manager_)
+          .withTransaction(this.activeManager_)
           .getTaxLines(cartOrOrder.items, calculationContext)
 
         totals.tax_lines = orderLines.filter((ol) => {
@@ -392,7 +387,7 @@ class TotalsService extends TransactionBaseService {
       }
     } else {
       taxLines = await this.taxProviderService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .getTaxLines(cartOrOrder.items, calculationContext)
 
       if (cartOrOrder.type === "swap") {
@@ -447,26 +442,34 @@ class TotalsService extends TransactionBaseService {
     const allocationMap: LineAllocationsMap = {}
 
     if (!options.exclude_discounts) {
-      let lineDiscounts: LineDiscountAmount[] = []
-
       const discount = orderOrCart.discounts?.find(
         ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
-      if (discount) {
-        lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
-      }
+
+      const lineDiscounts: LineDiscountAmount[] = this.getLineDiscounts(
+        orderOrCart,
+        discount
+      )
 
       for (const ld of lineDiscounts) {
+        const adjustmentAmount = ld.amount + ld.customAdjustmentsAmount
+
         if (allocationMap[ld.item.id]) {
           allocationMap[ld.item.id].discount = {
-            amount: ld.amount,
-            unit_amount: Math.round(ld.amount / ld.item.quantity),
+            amount: adjustmentAmount,
+            /**
+             * Used for the refund computation
+             */
+            unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
           }
         } else {
           allocationMap[ld.item.id] = {
             discount: {
-              amount: ld.amount,
-              unit_amount: Math.round(ld.amount / ld.item.quantity),
+              amount: adjustmentAmount,
+              /**
+               * Used for the refund computation
+               */
+              unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
             },
           }
         }
@@ -717,7 +720,7 @@ class TotalsService extends TransactionBaseService {
       swaps?: Swap[]
       claims?: ClaimOrder[]
     },
-    discount: Discount
+    discount?: Discount
   ): LineDiscountAmount[] {
     let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
@@ -736,18 +739,24 @@ class TotalsService extends TransactionBaseService {
 
     return merged.map((item) => {
       const adjustments = item?.adjustments || []
-      const discountAdjustments = adjustments.filter(
-        (adjustment) => adjustment.discount_id === discount.id
+      const discountAdjustments = discount
+        ? adjustments.filter(
+            (adjustment) => adjustment.discount_id === discount.id
+          )
+        : []
+
+      const customAdjustments = adjustments.filter(
+        (adjustment) => adjustment.discount_id === null
       )
+
+      const sumAdjustments = (total, adjustment) => total + adjustment.amount
 
       return {
         item,
         amount: item.allow_discounts
-          ? discountAdjustments.reduce(
-              (total, adjustment) => total + adjustment.amount,
-              0
-            )
+          ? discountAdjustments.reduce(sumAdjustments, 0)
           : 0,
+        customAdjustmentsAmount: customAdjustments.reduce(sumAdjustments, 0),
       }
     })
   }
@@ -786,8 +795,7 @@ class TotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total =
-      (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
+    const discount_total = lineItemAllocation.discount?.amount ?? 0
 
     const lineItemTotals: LineItemTotals = {
       unit_price: lineItem.unit_price,
@@ -859,7 +867,7 @@ class TotalsService extends TransactionBaseService {
             taxLines = lineItem.tax_lines
           } else {
             taxLines = (await this.taxProviderService_
-              .withTransaction(this.manager_)
+              .withTransaction(this.activeManager_)
               .getTaxLines([lineItem], calculationContext)) as LineItemTaxLine[]
           }
         }
@@ -993,16 +1001,6 @@ class TotalsService extends TransactionBaseService {
     const subtotal = await this.getSubtotal(cartOrOrder, {
       excludeNonDiscounts: true,
     })
-
-    // we only support having free shipping and one other discount, so first
-    // find the discount, which is not free shipping.
-    const discount = cartOrOrder.discounts?.find(
-      ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
-    )
-
-    if (!discount) {
-      return 0
-    }
 
     const discountTotal = this.getLineItemAdjustmentsTotal(cartOrOrder)
 

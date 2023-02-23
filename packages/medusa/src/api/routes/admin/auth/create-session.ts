@@ -8,7 +8,7 @@ import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /auth
+ * @oas [post] /admin/auth
  * operationId: "PostAuth"
  * summary: "User Login"
  * x-authenticated: false
