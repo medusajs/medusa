@@ -17,7 +17,7 @@ import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /returns
+ * @oas [post] /store/returns
  * operationId: "PostReturns"
  * summary: "Create Return"
  * description: "Creates a Return for an Order."
@@ -61,7 +61,7 @@ import { validator } from "../../../../utils/validator"
  *           ]
  *       }'
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK

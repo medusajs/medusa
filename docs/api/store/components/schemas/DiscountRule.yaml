@@ -54,7 +54,7 @@ properties:
       used. Available if the relation `conditions` is expanded.
     type: array
     items:
-      $ref: ./DiscountCondition.yaml
+      type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

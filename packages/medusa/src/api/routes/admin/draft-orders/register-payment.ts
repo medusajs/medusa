@@ -15,7 +15,7 @@ import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /draft-orders/{id}/pay
+ * @oas [post] /admin/draft-orders/{id}/pay
  * summary: "Registers a Payment"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
  * description: "Registers a payment for a Draft Order."
@@ -44,7 +44,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK

@@ -7,7 +7,7 @@ import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
 
 /**
- * @oas [get] /products
+ * @oas [get] /admin/products
  * operationId: "GetProducts"
  * summary: "List Products"
  * description: "Retrieves a list of Product"
@@ -191,7 +191,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

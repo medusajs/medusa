@@ -36,19 +36,19 @@ export type PaymentSessionResponse = {
 }
 
 /**
- * @deprecated use the new PaymentProcessor interface instead
+ * This will be @deprecated in the near future use the new PaymentProcessor interface instead
  */
 export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
 
   /**
-   * @deprecated use PaymentProcessor.retrievePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.retrievePayment instead
    * @param paymentSession
    */
   getPaymentData(paymentSession: PaymentSession): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentProcessor.updatePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.updatePayment instead
    * @param paymentSessionData
    * @param data
    */
@@ -58,20 +58,20 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentProcessor.initiatePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.initiatePayment instead
    * @param context The type of this argument is meant to be temporary and once the previous method signature
    * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
    */
   createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>
 
   /**
-   * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
    * @param cart
    */
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentProcessor.retrievePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.retrievePayment instead
    * @param paymentData
    */
   retrievePayment(paymentData: PaymentData): Promise<Data>
@@ -82,7 +82,7 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData | PaymentSessionResponse>
 
   /**
-   * @deprecated use PaymentProcessor.updatePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.updatePayment instead
    * @param paymentSessionData
    * @param cart
    */
@@ -92,7 +92,7 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentProcessor.authorizePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.authorizePayment instead
    * @param paymentSession
    * @param context
    */
@@ -102,45 +102,45 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }>
 
   /**
-   * @deprecated use PaymentProcessor.capturePayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.capturePayment instead
    * @param payment
    */
   capturePayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentProcessor.refundPayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.refundPayment instead
    * @param payment
    * @param refundAmount
    */
   refundPayment(payment: Payment, refundAmount: number): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentProcessor.cancelPayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.cancelPayment instead
    * @param payment
    */
   cancelPayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentProcessor.cancelPayment instead
+   * This will be @deprecated in the near future use PaymentProcessor.cancelPayment instead
    * @param paymentSession
    */
   deletePayment(paymentSession: PaymentSession): Promise<void>
 
   /**
-   * @deprecated use PaymentProcessor.getSavedMethods instead
+   * This will be @deprecated in the near future use PaymentProcessor.getSavedMethods instead
    * @param customer
    */
   retrieveSavedMethods(customer: Customer): Promise<Data[]>
 
   /**
-   * @deprecated use PaymentProcessor.getPaymentStatus instead
+   * This will be @deprecated in the near future use PaymentProcessor.getPaymentStatus instead
    * @param data
    */
   getStatus(data: Data): Promise<PaymentSessionStatus>
 }
 
 /**
- * @deprecated use the AbstractPaymentProcessor instead
+ * This will be @deprecated in the near future use the AbstractPaymentProcessor instead
  */
 export abstract class AbstractPaymentService
   extends TransactionBaseService
@@ -183,7 +183,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse>
 
   /**
-   * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
    * @param cart
    */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
@@ -205,7 +205,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse | PaymentSessionResponse["session_data"]>
 
   /**
-   * @deprecated use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
    * @param paymentSessionData
    * @param cart
    */
@@ -223,12 +223,12 @@ export abstract class AbstractPaymentService
   ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }>
 
   /**
-   * @deprecated
+   * This will be @deprecated in the near future
    */
   public abstract capturePayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated
+   * This will be @deprecated in the near future
    */
   public abstract refundPayment(
     payment: Payment,
@@ -236,17 +236,17 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentData>
 
   /**
-   * @deprecated
+   * This will be @deprecated in the near future
    */
   public abstract cancelPayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated
+   * This will be @deprecated in the near future
    */
   public abstract deletePayment(paymentSession: PaymentSession): Promise<void>
 
   /**
-   * @deprecated
+   * This will be @deprecated in the near future
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async retrieveSavedMethods(customer: Customer): Promise<Data[]> {
@@ -254,7 +254,7 @@ export abstract class AbstractPaymentService
   }
 
   /**
-   * @deprecated
+   * This will be @deprecated in the near future
    */
   public abstract getStatus(data: Data): Promise<PaymentSessionStatus>
 }

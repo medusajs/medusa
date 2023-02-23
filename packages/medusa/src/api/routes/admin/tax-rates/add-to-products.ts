@@ -7,7 +7,7 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/products/batch
+ * @oas [post] /admin/tax-rates/{id}/products/batch
  * operationId: "PostTaxRatesTaxRateProducts"
  * summary: "Add to Products"
  * description: "Associates a Tax Rate with a list of Products"
@@ -70,7 +70,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK

@@ -4,7 +4,7 @@ import { IInventoryService } from "../../../../interfaces"
 import { ProductVariantInventoryService } from "../../../../services"
 
 /**
- * @oas [delete] /inventory-items/{id}
+ * @oas [delete] /admin/inventory-items/{id}
  * operationId: "DeleteInventoryItemsInventoryItem"
  * summary: "Delete an Inventory Item"
  * description: "Delete an Inventory Item"
@@ -31,7 +31,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - InventoryItem
+ *   - Inventory Items
  * responses:
  *   200:
  *     description: OK

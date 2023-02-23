@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { TaxRateService } from "../../../../services"
 
 /**
- * @oas [delete] /tax-rates/{id}
+ * @oas [delete] /admin/tax-rates/{id}
  * operationId: "DeleteTaxRatesTaxRate"
  * summary: "Delete a Tax Rate"
  * description: "Deletes a Tax Rate"
@@ -31,7 +31,7 @@ import { TaxRateService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK

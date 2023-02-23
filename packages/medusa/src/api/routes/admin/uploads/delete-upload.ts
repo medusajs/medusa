@@ -1,7 +1,7 @@
 import { IsString } from "class-validator"
 
 /**
- * @oas [delete] /uploads
+ * @oas [delete] /admin/uploads
  * operationId: "DeleteUploads"
  * summary: "Delete an Uploaded File"
  * description: "Removes an uploaded file using the installed fileservice"
@@ -37,7 +37,7 @@ import { IsString } from "class-validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK

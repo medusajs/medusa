@@ -7,7 +7,7 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [delete] /sales-channels/{id}/products/batch
+ * @oas [delete] /admin/sales-channels/{id}/products/batch
  * operationId: "DeleteSalesChannelsChannelProductsBatch"
  * summary: "Delete Products"
  * description: "Remove a list of products from a sales channel."
@@ -55,7 +55,7 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK

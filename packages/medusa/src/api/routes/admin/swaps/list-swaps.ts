@@ -7,7 +7,7 @@ import { FindConfig } from "../../../../types/common"
 import { Swap } from "../../../../models"
 
 /**
- * @oas [get] /swaps
+ * @oas [get] /admin/swaps
  * operationId: "GetSwaps"
  * summary: "List Swaps"
  * description: "Retrieves a list of Swaps."
@@ -38,7 +38,7 @@ import { Swap } from "../../../../models"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK

@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [delete] /publishable-api-keys/{id}
+ * @oas [delete] /admin/publishable-api-keys/{id}
  * operationId: "DeletePublishableApiKeysPublishableApiKey"
  * summary: "Delete PublishableApiKey"
  * description: "Deletes a PublishableApiKeys"
@@ -32,7 +32,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

@@ -18,8 +18,8 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import {
-  ProductSalesChannelReq,
   ProductProductCategoryReq,
+  ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
@@ -44,7 +44,7 @@ import { DistributedTransaction } from "../../../../utils/transaction"
 import { Logger } from "../../../../types/global"
 
 /**
- * @oas [post] /products
+ * @oas [post] /admin/products
  * operationId: "PostProducts"
  * summary: "Create a Product"
  * x-authenticated: true
@@ -84,7 +84,7 @@ import { Logger } from "../../../../types/global"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

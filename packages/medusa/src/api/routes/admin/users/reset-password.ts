@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/reset-password
+ * @oas [post] /admin/users/reset-password
  * operationId: "PostUsersUserPassword"
  * summary: "Reset Password"
  * description: "Sets the password for a User given the correct token."
@@ -49,7 +49,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK

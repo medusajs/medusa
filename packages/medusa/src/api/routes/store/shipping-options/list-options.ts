@@ -4,7 +4,7 @@ import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: Get Shipping Options
  * description: "Retrieves a list of Shipping Options."
@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

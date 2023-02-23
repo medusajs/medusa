@@ -1,5 +1,5 @@
 /**
- * @oas [get] /shipping-options/{id}
+ * @oas [get] /admin/shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
  * summary: "Get a Shipping Option"
  * description: "Retrieves a Shipping Option."
@@ -28,7 +28,7 @@
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

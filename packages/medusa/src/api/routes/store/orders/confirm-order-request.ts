@@ -7,7 +7,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [post] /orders/customer/confirm
+ * @oas [post] /store/orders/customer/confirm
  * operationId: "PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept"
  * summary: "Verify an Order Claim"
  * description: "Verifies the claim order token provided to the customer upon request of order ownership"
@@ -46,7 +46,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
 import { IsOptional, IsString } from "class-validator"
 
 /**
- * @oas [get] /variants/{variant_id}
+ * @oas [get] /store/variants/{variant_id}
  * operationId: GetVariantsVariant
  * summary: Get a Product Variant
  * description: "Retrieves a Product Variant by id"
@@ -40,7 +40,7 @@ import { IsOptional, IsString } from "class-validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/variants/{id}'
  * tags:
- *   - Product Variant
+ *   - Variants
  * responses:
  *   200:
  *     description: OK

@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [delete] /inventory-items/{id}/location-levels/{location_id}
+ * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "DeleteInventoryItemsInventoryIteLocationLevelsLocation"
  * summary: "Delete a location level of an Inventory Item."
  * description: "Delete a location level of an Inventory Item."

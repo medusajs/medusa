@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/authorize
+ * @oas [post] /admin/payment-collections/{id}/authorize
  * operationId: "PostPaymentCollectionsPaymentCollectionAuthorize"
  * summary: "Mark Authorized"
  * description: "Sets the status of PaymentCollection as Authorized."
@@ -31,7 +31,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK
