@@ -46,7 +46,7 @@ import { validator } from "../../../../utils/validator"
  *           "password": "supersecret"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

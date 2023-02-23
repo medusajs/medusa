@@ -92,7 +92,7 @@ import { createVariantTransaction } from "./transaction/create-product-variant"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
