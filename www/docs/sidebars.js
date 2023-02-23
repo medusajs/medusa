@@ -419,12 +419,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'features-and-guides/regions-and-currencies/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
