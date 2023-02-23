@@ -27,9 +27,9 @@ export default async ({
 
   try {
     await connection.connect()
-    logger?.info(`Connection to Redis established`)
+    logger?.info(`Connection to Redis in module 'event-bus-redis' established`)
   } catch (err) {
-    logger?.error(`An error occurred while connecting to Redis: ${err}`)
+    logger?.error(`An error occurred while connecting to Redis in module 'event-bus-redis': ${err}`)
   }
 
   container.register({

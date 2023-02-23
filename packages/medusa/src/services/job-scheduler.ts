@@ -33,9 +33,7 @@ export default class JobSchedulerService {
     if (singleton && config?.projectConfig?.redis_url) {
       // Required config
       // See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
-      const connection = new Redis(config.projectConfig.redis_url, {
-        maxRetriesPerRequest: null,
-      })
+      const connection = new Redis(config.projectConfig.redis_url)
 
       this.queue_ = new Queue(`scheduled-jobs:queue`, {
         connection,

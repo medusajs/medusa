@@ -1,9 +1,9 @@
-import glob from "glob"
-import path from "path"
 import fs from "fs"
-import { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import glob from "glob"
+import { isString } from "lodash"
+import { createRequireFromPath, getConfigFile } from "medusa-core-utils"
+import path from "path"
 import { handleConfigError } from "../../loaders/config"
 import registerModuleDefinitions from "../../loaders/module-definitions"
 
@@ -104,7 +104,11 @@ export function getInternalModules(configModule) {
 
     let loadedModule = null
     try {
-      loadedModule = require(moduleResolution.moduleDeclaration.resolve).default
+      const resolutionPath =
+        moduleResolution.moduleDeclaration?.resolve ??
+        moduleResolution.resolutionPath
+
+      loadedModule = require(resolutionPath).default
     } catch (error) {
       console.log("Error loading Module", error)
       continue

@@ -26,5 +26,4 @@ export type EventBusRedisModuleOptions = {
   workerOptions?: WorkerOptions
   redisUrl?: string
   redisOptions?: RedisOptions
-  removeJobStrategy?: <T = unknown>(job: BullJob<T>) => Promise<void>
 }

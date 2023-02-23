@@ -33,7 +33,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   constructor(
     { configModule, logger, redisConnection }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
-    moduleDeclaration: ConfigurableModuleDeclaration,
+    moduleDeclaration: ConfigurableModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
@@ -51,16 +51,20 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     this.logger_ = logger
 
     this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
-      connection: redisConnection,
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.queueOptions ?? {}),
+      connection: redisConnection,
+    }).on("error", (e: any) => {
+      logger.error(`An error occurred with the BullMQ Queue: ${e.message}`)
     })
 
     // Register our worker to handle emit calls
     new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
-      connection: redisConnection,
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.workerOptions ?? {}),
+      connection: redisConnection,
+    }).on("error", (e: any) => {
+      logger.error(`An error occurred with the BullMQ Worker: ${e.message}`)
     })
   }
 
@@ -76,13 +80,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     data: T,
     options: EmitOptions = { attempts: 1 }
   ): Promise<void> {
-
     const opts = {
       removeOnComplete: {
         // We will keep the job for 10 seconds to ensure BullMQ has enough time to match against potential duplicates
-        age: COMPLETED_JOB_TTL
+        age: COMPLETED_JOB_TTL,
       },
-      ...options
+      ...options,
     } as EmitOptions
 
     await this.queue_.add(eventName, { eventName, data }, opts)

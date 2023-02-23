@@ -37,6 +37,18 @@ export interface IEventBusModuleService {
     data: T,
     options?: unknown
   ): Promise<StagedJob | void>
+
+  subscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: SubscriberContext
+  ): this
+
+  unsubscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: SubscriberContext
+  ): this
 }
 
 export abstract class AbstractEventBusModuleService
