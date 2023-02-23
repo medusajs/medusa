@@ -27,7 +27,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

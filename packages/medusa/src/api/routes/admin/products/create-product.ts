@@ -84,7 +84,7 @@ import { Logger } from "../../../../types/global"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

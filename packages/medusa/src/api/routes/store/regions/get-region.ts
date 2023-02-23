@@ -24,7 +24,7 @@ import RegionService from "../../../../services/region"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions/{id}'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
