@@ -15,6 +15,7 @@ import IconCashSolid from './CashSolid';
 import IconChannels from './Channels';
 import IconChannelsSolid from './ChannelsSolid';
 import IconCheckCircleSolid from './CheckCircleSolid';
+import IconCircleStack from './CircleStack';
 import IconClockSolidMini from './ClockSolidMini';
 import IconClose from './Close';
 import IconCloudArrowUp from './CloudArrowUp';
@@ -87,6 +88,7 @@ export default {
   'channels-solid': IconChannelsSolid,
   'channels': IconChannels,
   'check-circle-solid': IconCheckCircleSolid,
+  'circle-stack': IconCircleStack,
   'clock-solid-mini': IconClockSolidMini,
   'close': IconClose,
   'cloud-arrow-up': IconCloudArrowUp,

@@ -1255,6 +1255,11 @@ module.exports = {
       ]
     },
     {
+      type: 'link',
+      href: '#',
+      label: 'Architecture'
+    },
+    {
       type: 'doc',
       id: 'advanced/backend/dependency-container/index',
       label: 'Dependency Injection'
