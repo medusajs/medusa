@@ -282,26 +282,24 @@ describe("Inventory Items endpoints", () => {
       it("Lists inventory items with location", async () => {
         const api = useApi()
 
-        await api
-          .post(
-            `/admin/products/test-product/variants`,
-            {
-              title: "Test Variant w. inventory 2",
-              sku: "MY_SKU1",
-              material: "material",
-              origin_country: "UK",
-              manage_inventory: true,
-              options: [
-                {
-                  option_id: "test-product-option",
-                  value: "M",
-                },
-              ],
-              prices: [{ currency_code: "usd", amount: 200 }],
-            },
-            adminHeaders
-          )
-          .catch(console.log)
+        await api.post(
+          `/admin/products/test-product/variants`,
+          {
+            title: "Test Variant w. inventory 2",
+            sku: "MY_SKU1",
+            material: "material",
+            origin_country: "UK",
+            manage_inventory: true,
+            options: [
+              {
+                option_id: "test-product-option",
+                value: "M",
+              },
+            ],
+            prices: [{ currency_code: "usd", amount: 200 }],
+          },
+          adminHeaders
+        )
 
         const inventoryItemId = inventoryItems[0].id
 
