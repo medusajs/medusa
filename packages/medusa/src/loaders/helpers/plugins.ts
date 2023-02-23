@@ -32,10 +32,7 @@ export function registerPaymentServiceFromClass(
 
   container.register({
     [registrationName]: asFunction(
-      (cradle) => new klass(cradle, pluginDetails.options),
-      {
-        lifetime: Lifetime.SINGLETON,
-      }
+      (cradle) => new klass(cradle, pluginDetails.options)
     ),
     [`pp_${(klass as unknown as typeof AbstractPaymentService).identifier}`]:
       aliasTo(registrationName),
@@ -61,10 +58,7 @@ export function registerPaymentProcessorFromClass(
 
   container.register({
     [registrationName]: asFunction(
-      (cradle) => new klass(cradle, pluginDetails.options),
-      {
-        lifetime: Lifetime.SINGLETON,
-      }
+      (cradle) => new klass(cradle, pluginDetails.options)
     ),
     [`pp_${(klass as unknown as typeof AbstractPaymentProcessor).identifier}`]:
       aliasTo(registrationName),

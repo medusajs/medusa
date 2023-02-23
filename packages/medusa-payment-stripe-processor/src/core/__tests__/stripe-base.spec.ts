@@ -175,8 +175,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in InitiatePayment during the creation of the stripe customer",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
 
@@ -201,8 +201,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in InitiatePayment during the creation of the stripe payment intent",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
   })
@@ -265,8 +265,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in cancelPayment during the cancellation of the payment",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
   })
@@ -306,8 +306,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in deletePayment during the capture of the payment",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
   })
@@ -347,8 +347,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in cancelPayment during the cancellation of the payment",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
   })
@@ -380,8 +380,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in refundPayment during the refundPayment",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
   })
@@ -413,8 +413,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in retrievePayment",
-        code: undefined,
-        detail: undefined
+        code: "",
+        detail: "Error"
       })
     })
   })
@@ -475,8 +475,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in updatePayment during the initiate of the new payment for the new customer",
-        code: undefined,
-        detail: "An error occurred in InitiatePayment during the creation of the stripe customer" + EOL
+        code: "",
+        detail: "An error occurred in InitiatePayment during the creation of the stripe customer" + EOL + "Error"
       })
     })
 
@@ -519,8 +519,8 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in updatePayment during the update of the payment",
-        code: undefined,
-        detail: undefined,
+        code: "",
+        detail: "Error"
       })
     })
   })
