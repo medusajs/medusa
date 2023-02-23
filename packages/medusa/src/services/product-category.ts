@@ -80,7 +80,11 @@ class ProductCategoryService extends TransactionBaseService {
     const query = buildQuery(selector_, config)
 
     let [productCategories, count] =
-      await productCategoryRepo.getFreeTextSearchResultsAndCount(query, q)
+      await productCategoryRepo.getFreeTextSearchResultsAndCount(
+        query,
+        q,
+        treeSelector
+      )
 
     if (includeDescendantsTree) {
       productCategories = await Promise.all(
@@ -89,7 +93,6 @@ class ProductCategoryService extends TransactionBaseService {
         )
       )
     }
-    console.log("productCategories - ", productCategories)
 
     return [productCategories, count]
   }
