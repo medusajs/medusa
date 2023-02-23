@@ -5,7 +5,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /collections
+ * @oas [get] /store/collections
  * operationId: "GetCollections"
  * summary: "List Collections"
  * description: "Retrieve a list of Product Collection."

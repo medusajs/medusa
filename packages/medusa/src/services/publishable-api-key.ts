@@ -326,7 +326,7 @@ class PublishableApiKeyService extends TransactionBaseService {
    */
   async getResourceScopes(
     publishableApiKeyId: string
-  ): Promise<{ sales_channel_id: string[] }> {
+  ): Promise<{ sales_channel_ids: string[] }> {
     const pubKeySalesChannelRepo = this.activeManager_.withRepository(
       this.publishableApiKeySalesChannelRepository_
     )
@@ -337,7 +337,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     })
 
     return {
-      sales_channel_id: salesChannels.map(
+      sales_channel_ids: salesChannels.map(
         ({ sales_channel_id }) => sales_channel_id
       ),
     }

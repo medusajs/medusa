@@ -8,7 +8,7 @@ import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers
+ * @oas [post] /store/customers
  * operationId: PostCustomers
  * summary: Create a Customer
  * description: "Creates a Customer account."

@@ -26,7 +26,7 @@ import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts
+ * @oas [post] /admin/discounts
  * operationId: "PostDiscounts"
  * summary: "Creates a Discount"
  * x-authenticated: true

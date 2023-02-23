@@ -5,7 +5,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders/{id}
+ * @oas [get] /store/orders/{id}
  * operationId: GetOrdersOrder
  * summary: Get an Order
  * description: "Retrieves an Order"

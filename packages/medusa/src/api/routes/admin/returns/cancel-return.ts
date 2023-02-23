@@ -6,7 +6,7 @@ import {
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /returns/{id}/cancel
+ * @oas [post] /admin/returns/{id}/cancel
  * operationId: "PostReturnsReturnCancel"
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."

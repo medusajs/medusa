@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /discounts/{id}
+ * @oas [get] /admin/discounts/{id}
  * operationId: "GetDiscountsDiscount"
  * summary: "Get a Discount"
  * description: "Retrieves a Discount"

@@ -8,7 +8,7 @@ import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /customer-groups/{id}/customers/batch
+ * @oas [delete] /admin/customer-groups/{id}/customers/batch
  * operationId: "DeleteCustomerGroupsGroupCustomerBatch"
  * summary: "Remove Customers"
  * description: "Removes a list of customers, represented by id's, from a customer group."

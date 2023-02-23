@@ -5,7 +5,7 @@ import { Type } from "class-transformer"
 import customerController from "../../../../controllers/customers"
 
 /**
- * @oas [get] /customers
+ * @oas [get] /admin/customers
  * operationId: "GetCustomers"
  * summary: "List Customers"
  * description: "Retrieves a list of Customers."

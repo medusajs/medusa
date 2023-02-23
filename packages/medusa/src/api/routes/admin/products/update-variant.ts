@@ -21,7 +21,7 @@ import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /products/{id}/variants/{variant_id}
+ * @oas [post] /admin/products/{id}/variants/{variant_id}
  * operationId: "PostProductsProductVariantsVariant"
  * summary: "Update a Product Variant"
  * description: "Update a Product Variant."

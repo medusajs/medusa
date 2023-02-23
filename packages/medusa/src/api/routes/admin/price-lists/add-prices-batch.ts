@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /price-lists/{id}/prices/batch
+ * @oas [post] /admin/price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
  * summary: "Update Prices"
  * description: "Batch update prices for a Price List"

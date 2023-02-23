@@ -4,7 +4,7 @@ import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [get] /price-lists/{id}
+ * @oas [get] /admin/price-lists/{id}
  * operationId: "GetPriceListsPriceList"
  * summary: "Get a Price List"
  * description: "Retrieves a Price List."

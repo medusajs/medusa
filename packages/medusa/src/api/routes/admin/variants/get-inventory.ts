@@ -13,7 +13,7 @@ import ProductVariantService from "../../../../services/product-variant"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
- * @oas [get] /variants/{id}/inventory
+ * @oas [get] /admin/variants/{id}/inventory
  * operationId: "GetVariantsVariantInventory"
  * summary: "Get inventory of Variant."
  * description: "Returns the available inventory of a Variant."

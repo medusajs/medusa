@@ -1,18 +1,20 @@
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/capture
+ * @oas [post] /admin/orders/{id}/capture
  * operationId: "PostOrdersOrderCapture"
  * summary: "Capture Order's Payment"
  * description: "Captures all the Payments associated with an Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * x-codegen:
  *   method: capturePayment
+ *   params: AdminPostOrdersOrderCaptureParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,10 +68,11 @@ export default async (req, res) => {
       .capturePayment(id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order })
 }
+
+export class AdminPostOrdersOrderCaptureParams extends FindParams {}
