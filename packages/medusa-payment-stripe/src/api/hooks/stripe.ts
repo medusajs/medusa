@@ -138,7 +138,7 @@ async function paymentIntentAmountCapturableEventHandler({
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
         "Failed to create idempotency key",
-        "409"
+        "400"
       )
     }
 
