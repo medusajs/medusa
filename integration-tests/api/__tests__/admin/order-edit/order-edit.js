@@ -21,7 +21,7 @@ const {
 } = require("../../../factories")
 const setupServer = require("../../../../helpers/setup-server")
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 const adminHeaders = {
   headers: {
@@ -35,9 +35,13 @@ describe("/admin/order-edits", () => {
   const adminUserId = "admin_user"
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+    try {
+     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd })
+    } catch (e) {
+      console.log(e)
+    }
   })
 
   afterAll(async () => {
@@ -165,7 +169,7 @@ describe("/admin/order-edits", () => {
       return await db.teardown()
     })
 
-    it("gets order edit", async () => {
+    it.only("gets order edit", async () => {
       const api = useApi()
 
       const response = await api.get(

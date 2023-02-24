@@ -141,7 +141,6 @@ export default async (req, res) => {
     const product = await productService
       .withTransaction(transactionManager)
       .retrieve(id, {
-        select: ["id"],
         relations: ["variants"],
       })
 
@@ -193,7 +192,7 @@ export default async (req, res) => {
     if (variantNotBelongingToProductIds.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Variant with id: ${variantNotBelongingToProductIds.join(", ")} is not associated with this product`
+        `Variants with id: ${variantNotBelongingToProductIds.join(", ")} are not associated with this product`
       )
     }
 
@@ -206,12 +205,12 @@ export default async (req, res) => {
       }),
       variantsToCreate.map(async data => {
         try {
-          const varTransation = await createVariantTransaction(
+          const varTransaction = await createVariantTransaction(
             transactionDependencies,
             product.id,
             data as CreateProductVariantInput
           )
-          allVariantTransactions.push(varTransation)
+          allVariantTransactions.push(varTransaction)
         } catch (e) {
           await Promise.all(
             allVariantTransactions.map(async (transaction) => {
