@@ -24,25 +24,25 @@ This guide covers how to use these APIs to perform these tasks.
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.mdx) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
 
 ### Medusa React
 
 This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
 
-If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
 
 ---
 
@@ -199,7 +199,7 @@ curl -L -X GET '<SERVER_URL>/admin/customer-groups' \
 
 This request returns an array of customer groups, as well as pagination fields.
 
-You can also pass filters and other selection query parameters to the request. Check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Customer-Group/operation/GetCustomerGroups) for more details on available query parameters.
+You can also pass filters and other selection query parameters to the request. Check out the [API reference](/api/admin/#tag/Customer-Group/operation/GetCustomerGroups) for more details on available query parameters.
 
 ---
 
@@ -694,11 +694,11 @@ This request returns the customer group.
 
 ## Use Customer Groups as Conditions in a Price List
 
-When you create or update a price list, you can specify one or more customer groups as conditions for the price list. You can learn how to do that in the [PriceList API documentation](../backend/price-lists/use-api.mdx).
+When you create or update a price list, you can specify one or more customer groups as conditions for the price list. You can learn how to do that in the [PriceList API documentation](../../../advanced/backend/price-lists/use-api.mdx).
 
 ---
 
 ## See Also
 
-- [Customer Groups Overview](../backend/customer-groups/index.md).
-- [Use Sales Channels Admin APIs](../backend/sales-channels/manage-admin.mdx).
+- [Customer Groups Overview](../customer-groups.md).
+- [Use Sales Channels Admin APIs](../../../advanced/backend/sales-channels/manage-admin.mdx).

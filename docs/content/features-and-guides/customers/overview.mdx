@@ -1,0 +1,155 @@
+---
+description: "Customers are individuals that make purchases in your store. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Customers
+
+Customers are individuals that make purchases in your store. This overview introduces the available features related to customers.
+
+:::note
+
+Not a developer? Check out the [Customers user guide](../../user-guide/customers/index.md).
+
+:::
+
+## Features
+
+### Customer Accounts
+
+Customers can make purchases as guests, or they can create an account.
+
+When a customer creates an account, they can manage their details and review their order history.
+
+An admin can manage all customers and their details.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Storefront: Add Customer Profiles',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to implement customer accounts in a storefront.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Customers',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage customers as an admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/customers/manage',
+    label: 'User Guide: Manage Customers',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage customers in Medusa Admin.'
+    }
+  },
+]} />
+
+### Customer Groups
+
+Customers can be segmented or assigned to different customer groups. This can be useful for marketing purposes.
+
+For example, you can specify a different pricing or special discounts for specific customer groups.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Customer Groups',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage customer groups as an admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'User Guide: Customer Groups',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage customer groups in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/admin#tag/Customer-Group',
+    label: 'Admin APIs: Customer Groups',
+    customProps: {
+      icon: Icons['server'],
+      description: 'Check available Admin REST APIs for Customer Groups.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how Customer-related entities are built, their relation to other components in your Medusa server, and more.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Customer',
+    customProps: {
+      icon: Icons['circle-stack'],
+      description: 'Learn about the Customer Architecture.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Customer Group',
+    customProps: {
+      icon: Icons['circle-stack'],
+      description: 'Learn about the Customer Group Architecture.'
+    }
+  },
+]} />
+
+---
+
+## Related Components
+
+Discover Customers’ relation to other components in Medusa.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Orders',
+    customProps: {
+      icon: Icons['check-circle-solid'],
+      description: 'Customers can place orders, request returns and exchanges, and more.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Discounts',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Discounts can be associated with a specific customer group.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Price Lists',
+    customProps: {
+      icon: Icons['server'],
+      description: 'Set special prices for specific customer groups.'
+    }
+  },
+]} />
