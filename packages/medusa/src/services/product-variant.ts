@@ -30,7 +30,7 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import { FindConfig } from "../types/common"
+import { FindConfig, WithRequiredProperty } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
@@ -460,32 +460,49 @@ class ProductVariantService extends TransactionBaseService {
 
       const regionsMap = new Map(regions.map((r) => [r.id, r]))
 
-      const regionPriceToUpdate = data
-        .map((data_) =>
-          data_.prices
-            .map((price) => {
-              return price.region_id
-                ? {
-                    variantId: data_.variantId,
-                    price: price,
-                    currency_code: regionsMap.get(price.region_id)!
-                      .currency_code,
-                  }
-                : null
+      const dataRegionPrices: {
+        variantId: string
+        price: {
+          currency_code: string
+          region_id: string
+          amount: number
+        }
+      }[] = []
+      const dataCurrencyPrices: {
+        variantId: string
+        price: WithRequiredProperty<ProductVariantPrice, "currency_code">
+      }[] = []
+
+      data.forEach((data_) => {
+        data_.prices.forEach((price) => {
+          if (price.region_id) {
+            const region = regionsMap.get(price.region_id)!
+            dataRegionPrices.push({
+              variantId: data_.variantId,
+              price: {
+                currency_code: region.currency_code,
+                region_id: price.region_id,
+                amount: price.amount,
+              },
             })
-            .filter((val): val is any => !!val)
-        )
-        .flat()
-
-      await this.addOrUpdateRegionPrice(regionPriceToUpdate)
-
-      const promises = data.map(async (data_) => {
-        /* for (const price of data_.prices) {
-          if (!price.region_id) {
-            await this.setCurrencyPrice(data_.variantId, price)
+          } else {
+            dataCurrencyPrices.push({
+              variantId: data_.variantId,
+              price: { ...price, currency_code: price.currency_code! },
+            })
           }
-        }*/
+        })
       })
+
+      const promises: Promise<any>[] = []
+
+      if (dataRegionPrices.length) {
+        promises.push(this.addOrUpdateRegionPrices(dataRegionPrices))
+      }
+
+      if (dataCurrencyPrices.length) {
+        promises.push(this.addOrUpdateCurrencyPrices(dataCurrencyPrices))
+      }
 
       await Promise.all(promises)
     })
@@ -558,11 +575,14 @@ class ProductVariantService extends TransactionBaseService {
     })
   }
 
-  async addOrUpdateRegionPrice(
+  async addOrUpdateRegionPrices(
     data: {
       variantId: string
-      currency_code: string
-      price: ProductVariantPrice
+      price: {
+        currency_code: string
+        region_id: string
+        amount: number
+      }
     }[]
   ): Promise<MoneyAmount[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
@@ -570,12 +590,78 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
+      const where = data.map((data_) => ({
+        variant_id: data_.variantId,
+        region_id: data_.price.region_id,
+        price_list_id: IsNull(),
+      }))
+
       const moneyAmounts = await moneyAmountRepo.find({
-        where: data.map((data_) => ({
-          variant_id: data_.variantId,
-          region_id: data_.price.region_id,
-          price_list_id: IsNull(),
-        })),
+        where,
+      })
+
+      const moneyAmountsMapToVariantId = new Map()
+      moneyAmounts.map((d) => {
+        const moneyAmounts = moneyAmountsMapToVariantId.get(d.variant_id) ?? []
+        moneyAmounts.push(d)
+        moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
+      })
+
+      const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
+      const dataToUpdate: MoneyAmount[] = []
+
+      data.forEach((data_) => {
+        const variantMoneyAmounts =
+          moneyAmountsMapToVariantId.get(data_.variantId) ?? []
+
+        const moneyAmount = variantMoneyAmounts.find(
+          (ma) => ma.region_id === data_.price.region_id
+        )
+
+        if (moneyAmount) {
+          dataToUpdate.push({
+            ...moneyAmount,
+            amount: data_.price.amount,
+          })
+        } else {
+          dataToCreate.push({
+            ...data_.price,
+            variant_id: data_.variantId,
+          })
+        }
+      })
+
+      const queryBuilder = moneyAmountRepo.createQueryBuilder()
+
+      return (
+        await Promise.all([
+          queryBuilder.insert().values(dataToCreate).returning("*").execute(),
+          moneyAmountRepo.save(dataToUpdate),
+        ])
+      ).flat() as MoneyAmount[]
+    })
+  }
+
+  async addOrUpdateCurrencyPrices(
+    data: {
+      variantId: string
+      price: WithRequiredProperty<ProductVariantPrice, "currency_code">
+    }[]
+  ): Promise<MoneyAmount[]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.withRepository(
+        this.moneyAmountRepository_
+      )
+
+      const where = data.map((data_) => ({
+        variant_id: data_.variantId,
+        currency_code: data_.price.currency_code,
+        region_id: IsNull(),
+        price_list_id: IsNull(),
+      }))
+
+      const moneyAmounts = await moneyAmountRepo.find({
+        where,
       })
 
       const moneyAmountsMapToVariantId = new Map()
@@ -593,7 +679,7 @@ class ProductVariantService extends TransactionBaseService {
           moneyAmountsMapToVariantId.get(data_.variantId) ?? []
 
         const hasMoneyAmount = variantMoneyAmounts.find(
-          (ma) => ma.region_id === data_.price.region_id
+          (ma) => ma.currency_code === data_.price.currency_code
         )
 
         if (hasMoneyAmount) {
@@ -603,23 +689,27 @@ class ProductVariantService extends TransactionBaseService {
           })
         } else {
           dataToCreate.push({
-            variant_id: data_.variantId,
-            currency_code: data_.currency_code,
             ...data_.price,
+            variant_id: data_.variantId,
+            currency_code: data_.price.currency_code,
           })
         }
       })
 
-      const queryBuilder = moneyAmountRepo.createQueryBuilder()
+      const promises: Promise<any>[] = []
 
-      const resultMoneyAmounts = (
-        await Promise.all([
-          queryBuilder.insert().values(dataToCreate).returning("*").execute(),
-          moneyAmountRepo.save(dataToUpdate),
-        ])
-      ).flat() as MoneyAmount[]
+      if (dataToCreate.length) {
+        const queryBuilder = moneyAmountRepo.createQueryBuilder()
+        promises.push(
+          queryBuilder.insert().values(dataToCreate).returning("*").execute()
+        )
+      }
 
-      return resultMoneyAmounts
+      if (dataToUpdate.length) {
+        promises.push(moneyAmountRepo.save(dataToUpdate))
+      }
+
+      return (await Promise.all(promises)).flat() as MoneyAmount[]
     })
   }
 

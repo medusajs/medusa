@@ -115,7 +115,7 @@ export const MoneyAmountRepository = dataSource
       const queryBuilder = this.createQueryBuilder().delete()
 
       for (const data_ of data) {
-        const where_ = {
+        const where = {
           variant_id: data_.variantId,
           price_list_id: IsNull(),
         }
@@ -146,7 +146,7 @@ export const MoneyAmountRepository = dataSource
 
         queryBuilder.orWhere(
           new Brackets((localQueryBuild) => {
-            localQueryBuild.where(where_).andWhere(orWhere)
+            localQueryBuild.where(where).andWhere(orWhere)
           })
         )
       }
