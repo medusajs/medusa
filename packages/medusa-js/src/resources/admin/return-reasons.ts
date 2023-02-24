@@ -1,10 +1,10 @@
 import {
+  AdminPostReturnReasonsReasonReq,
   AdminPostReturnReasonsReq,
-  AdminReturnReasonsRes,
   AdminReturnReasonsDeleteRes,
   AdminReturnReasonsListRes,
-  AdminPostReturnReasonsReasonReq,
-} from "@medusajs/medusa"
+  AdminReturnReasonsRes,
+} from "@medusajs/client-types"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 

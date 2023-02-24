@@ -1,17 +1,17 @@
 import qs from "qs"
 
 import {
-  AdminPublishableApiKeyDeleteRes,
-  AdminPublishableApiKeysRes,
-  GetPublishableApiKeysParams,
-  AdminPublishableApiKeysListRes,
-  AdminPostPublishableApiKeysReq,
-  AdminPostPublishableApiKeysPublishableApiKeyReq,
-  AdminPostPublishableApiKeySalesChannelsBatchReq,
   AdminDeletePublishableApiKeySalesChannelsBatchReq,
-  GetPublishableApiKeySalesChannelsParams,
+  AdminPostPublishableApiKeySalesChannelsBatchReq,
+  AdminPostPublishableApiKeysPublishableApiKeyReq,
+  AdminPostPublishableApiKeysReq,
+  AdminPublishableApiKeyDeleteRes,
+  AdminPublishableApiKeysListRes,
+  AdminPublishableApiKeysRes,
   AdminSalesChannelsListRes,
-} from "@medusajs/medusa"
+  GetPublishableApiKeySalesChannelsParams,
+  GetPublishableApiKeysParams,
+} from "@medusajs/client-types"
 
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

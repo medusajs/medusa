@@ -3,7 +3,7 @@ import {
   AdminProductsListRes,
   AdminProductsListTagsRes,
   AdminProductsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -22,13 +22,13 @@ export const useAdminProducts = (
     Response<AdminProductsListRes>,
     Error,
     ReturnType<ProductQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductKeys.list(query),
     () => client.admin.products.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -39,13 +39,13 @@ export const useAdminProduct = (
     Response<AdminProductsRes>,
     Error,
     ReturnType<ProductQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductKeys.detail(id),
     () => client.admin.products.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -55,13 +55,13 @@ export const useAdminProductTagUsage = (
     Response<AdminProductsListTagsRes>,
     Error,
     ReturnType<ProductQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductKeys.detail("tags"),
     () => client.admin.products.listTags(),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

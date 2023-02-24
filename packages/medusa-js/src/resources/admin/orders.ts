@@ -1,4 +1,5 @@
 import {
+  AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
   AdminOrdersListRes,
   AdminOrdersRes,
@@ -15,8 +16,7 @@ import {
   AdminPostOrdersOrderSwapsReq,
   AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
   AdminPostOrdersOrderSwapsSwapShipmentsReq,
-} from "@medusajs/medusa"
-import { FindParams } from "@medusajs/medusa/dist/types/common"
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -33,7 +33,7 @@ class AdminOrdersResource extends BaseResource {
 
   retrieve(
     id: string,
-    query?: FindParams,
+    query?: AdminGetOrdersOrderParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrdersRes> {
     let path = `/admin/orders/${id}`

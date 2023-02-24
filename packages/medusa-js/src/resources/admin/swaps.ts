@@ -1,8 +1,8 @@
 import {
-  AdminSwapsRes,
-  AdminSwapsListRes,
   AdminGetSwapsParams,
-} from "@medusajs/medusa"
+  AdminSwapsListRes,
+  AdminSwapsRes,
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

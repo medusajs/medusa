@@ -6,7 +6,7 @@ import {
   StorePostCartsCartPaymentSessionUpdateReq,
   StorePostCartsCartReq,
   StorePostCartsCartShippingMethodReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 import LineItemsResource from "./line-items"

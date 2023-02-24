@@ -1,4 +1,4 @@
-import { AdminReturnsListRes } from "@medusajs/medusa"
+import { AdminReturnsListRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -16,13 +16,13 @@ export const useAdminReturns = (
     Response<AdminReturnsListRes>,
     Error,
     ReturnType<ReturnQueryKeys["lists"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminReturnKeys.lists(),
     () => client.admin.returns.list(),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

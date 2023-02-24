@@ -3,7 +3,7 @@ import {
   AdminGetRegionsRegionFulfillmentOptionsRes,
   AdminRegionsListRes,
   AdminRegionsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -22,13 +22,13 @@ export const useAdminRegions = (
     Response<AdminRegionsListRes>,
     Error,
     ReturnType<RegionQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminRegionKeys.list(query),
     () => client.admin.regions.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -39,13 +39,13 @@ export const useAdminRegion = (
     Response<AdminRegionsRes>,
     Error,
     ReturnType<RegionQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminRegionKeys.detail(id),
     () => client.admin.regions.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -56,13 +56,13 @@ export const useAdminRegionFulfillmentOptions = (
     Response<AdminGetRegionsRegionFulfillmentOptionsRes>,
     Error,
     ReturnType<RegionQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminRegionKeys.detail(`${regionId}_fullfillment-options`),
     () => client.admin.regions.retrieveFulfillmentOptions(regionId),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

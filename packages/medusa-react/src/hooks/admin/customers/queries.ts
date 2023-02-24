@@ -1,8 +1,4 @@
-import {
-  AdminCustomersListRes,
-  AdminCustomersRes,
-  AdminGetCustomersParams,
-} from "@medusajs/medusa"
+import { AdminCustomersListRes, AdminCustomersRes, AdminGetCustomersParams } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -21,13 +17,13 @@ export const useAdminCustomers = (
     Response<AdminCustomersListRes>,
     Error,
     ReturnType<CustomerQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCustomerKeys.list(query),
     () => client.admin.customers.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -38,13 +34,13 @@ export const useAdminCustomer = (
     Response<AdminCustomersRes>,
     Error,
     ReturnType<CustomerQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCustomerKeys.detail(id),
     () => client.admin.customers.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

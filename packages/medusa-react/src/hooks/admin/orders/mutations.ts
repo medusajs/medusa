@@ -6,7 +6,7 @@ import {
   AdminPostOrdersOrderReturnsReq,
   AdminPostOrdersOrderShipmentReq,
   AdminPostOrdersOrderShippingMethodsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import {
   useMutation,

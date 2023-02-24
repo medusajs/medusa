@@ -5,7 +5,7 @@ import {
   StorePaymentCollectionsSessionRes,
   StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
   StorePostPaymentCollectionsBatchSessionsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 import qs from "qs"

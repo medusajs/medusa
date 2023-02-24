@@ -1,4 +1,4 @@
-import { AdminAuthRes } from "@medusajs/medusa"
+import { AdminAuthRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -16,13 +16,13 @@ export const useAdminGetSession = (
     Response<AdminAuthRes>,
     Error,
     ReturnType<AuthQueryKey["details"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminAuthKeys.details(),
     () => client.admin.auth.getSession(),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

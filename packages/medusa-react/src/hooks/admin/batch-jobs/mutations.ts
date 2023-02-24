@@ -1,4 +1,4 @@
-import { AdminBatchJobRes, AdminPostBatchesReq } from "@medusajs/medusa"
+import { AdminBatchJobRes, AdminPostBatchesReq } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import {
   useMutation,

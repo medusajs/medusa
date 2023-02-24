@@ -1,4 +1,4 @@
-import { StoreGetOrdersParams, StoreOrdersRes } from "@medusajs/medusa"
+import { StoreGetOrdersParams, StoreOrdersRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -9,7 +9,7 @@ const ORDERS_QUERY_KEY = `orders` as const
 
 export const orderKeys = {
   ...queryKeysFactory<typeof ORDERS_QUERY_KEY, StoreGetOrdersParams>(
-    ORDERS_QUERY_KEY
+    ORDERS_QUERY_KEY,
   ),
   cart: (cartId: string) => [...orderKeys.details(), "cart", cartId] as const,
 }
@@ -22,13 +22,13 @@ export const useOrder = (
     Response<StoreOrdersRes>,
     Error,
     ReturnType<OrderQueryKey["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     orderKeys.detail(id),
     () => client.orders.retrieve(id),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const
@@ -40,13 +40,13 @@ export const useCartOrder = (
     Response<StoreOrdersRes>,
     Error,
     ReturnType<OrderQueryKey["cart"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     orderKeys.cart(cartId),
     () => client.orders.retrieveByCartId(cartId),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const
@@ -58,13 +58,13 @@ export const useOrders = (
     Response<StoreOrdersRes>,
     Error,
     ReturnType<OrderQueryKey["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     orderKeys.list(query),
     () => client.orders.lookupOrder(query),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const

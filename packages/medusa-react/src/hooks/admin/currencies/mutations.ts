@@ -1,13 +1,6 @@
-import {
-  AdminCurrenciesRes,
-  AdminPostCurrenciesCurrencyReq,
-} from "@medusajs/medusa"
+import { AdminCurrenciesRes, AdminPostCurrenciesCurrencyReq } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminCurrenciesKeys } from "./queries"
@@ -18,7 +11,7 @@ export const useAdminUpdateCurrency = (
     Response<AdminCurrenciesRes>,
     Error,
     AdminPostCurrenciesCurrencyReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -28,7 +21,7 @@ export const useAdminUpdateCurrency = (
     buildOptions(
       queryClient,
       [adminCurrenciesKeys.lists(), adminCurrenciesKeys.detail(code)],
-      options
-    )
+      options,
+    ),
   )
 }

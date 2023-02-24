@@ -1,9 +1,5 @@
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
 import {
   AdminPostPublishableApiKeySalesChannelsBatchReq,
@@ -11,7 +7,7 @@ import {
   AdminPostPublishableApiKeysReq,
   AdminPublishableApiKeyDeleteRes,
   AdminPublishableApiKeysRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -22,14 +18,14 @@ export const useAdminCreatePublishableApiKey = (
     Response<AdminPublishableApiKeysRes>,
     Error,
     AdminPostPublishableApiKeysReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostPublishableApiKeysReq) =>
       client.admin.publishableApiKeys.create(payload),
-    buildOptions(queryClient, [adminPublishableApiKeysKeys.lists()], options)
+    buildOptions(queryClient, [adminPublishableApiKeysKeys.lists()], options),
   )
 }
 
@@ -39,7 +35,7 @@ export const useAdminUpdatePublishableApiKey = (
     Response<AdminPublishableApiKeysRes>,
     Error,
     AdminPostPublishableApiKeysPublishableApiKeyReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -54,8 +50,8 @@ export const useAdminUpdatePublishableApiKey = (
         adminPublishableApiKeysKeys.detail(id),
         adminPublishableApiKeysKeys.details(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -65,7 +61,7 @@ export const useAdminDeletePublishableApiKey = (
     Response<AdminPublishableApiKeyDeleteRes>,
     Error,
     void
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -78,14 +74,14 @@ export const useAdminDeletePublishableApiKey = (
         adminPublishableApiKeysKeys.detail(id),
         adminPublishableApiKeysKeys.lists(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminRevokePublishableApiKey = (
   id: string,
-  options?: UseMutationOptions<Response<AdminPublishableApiKeysRes>, Error>
+  options?: UseMutationOptions<Response<AdminPublishableApiKeysRes>, Error>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -98,8 +94,8 @@ export const useAdminRevokePublishableApiKey = (
         adminPublishableApiKeysKeys.lists(),
         adminPublishableApiKeysKeys.detail(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -109,7 +105,7 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
     Response<AdminPublishableApiKeysRes>,
     Error,
     AdminPostPublishableApiKeySalesChannelsBatchReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -120,8 +116,8 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
     buildOptions(
       queryClient,
       [adminPublishableApiKeysKeys.detailSalesChannels(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -131,7 +127,7 @@ export const useAdminRemovePublishableKeySalesChannelsBatch = (
     Response<AdminPublishableApiKeysRes>,
     Error,
     AdminPostPublishableApiKeySalesChannelsBatchReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -142,7 +138,7 @@ export const useAdminRemovePublishableKeySalesChannelsBatch = (
     buildOptions(
       queryClient,
       [adminPublishableApiKeysKeys.detailSalesChannels(id)],
-      options
-    )
+      options,
+    ),
   )
 }

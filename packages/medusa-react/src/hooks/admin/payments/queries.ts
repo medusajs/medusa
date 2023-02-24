@@ -1,4 +1,4 @@
-import { AdminPaymentRes } from "@medusajs/medusa"
+import { AdminPaymentRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -18,13 +18,13 @@ export const useAdminPayment = (
     Response<AdminPaymentRes>,
     Error,
     ReturnType<AdminPaymentKey["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminPaymentQueryKeys.detail(id),
     () => client.admin.payments.retrieve(id),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const

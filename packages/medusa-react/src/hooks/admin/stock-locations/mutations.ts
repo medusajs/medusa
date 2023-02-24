@@ -2,7 +2,7 @@ import {
   AdminPostStockLocationsReq,
   AdminStockLocationsDeleteRes,
   AdminStockLocationsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import {
   useMutation,

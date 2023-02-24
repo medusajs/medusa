@@ -1,7 +1,7 @@
 import {
   AdminGetProductTagsParams,
   AdminProductTagsListRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

@@ -1,7 +1,7 @@
 import {
   StoreGetShippingOptionsParams,
   StoreShippingOptionsListRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -13,7 +13,10 @@ class ShippingOptionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreShippingOptionsListRes>}
    */
-  listCartOptions(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
+  listCartOptions(
+    cart_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreShippingOptionsListRes> {
     const path = `/store/shipping-options/${cart_id}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
@@ -26,7 +29,8 @@ class ShippingOptionsResource extends BaseResource {
    */
   list(
     query?: StoreGetShippingOptionsParams,
-    customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreShippingOptionsListRes> {
     let path = `/store/shipping-options`
 
     if (query) {

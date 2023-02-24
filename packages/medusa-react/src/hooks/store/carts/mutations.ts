@@ -6,7 +6,7 @@ import {
   StorePostCartsCartPaymentSessionUpdateReq,
   StorePostCartsCartReq,
   StorePostCartsCartShippingMethodReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 

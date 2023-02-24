@@ -1,14 +1,7 @@
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
-import {
-  StoreOrderEditsRes,
-  StorePostOrderEditsOrderEditDecline,
-} from "@medusajs/medusa"
+import { StoreOrderEditsRes, StorePostOrderEditsOrderEditDecline } from "@medusajs/client-types"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -20,7 +13,7 @@ export const useDeclineOrderEdit = (
     Response<StoreOrderEditsRes>,
     Error,
     StorePostOrderEditsOrderEditDecline
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -31,14 +24,14 @@ export const useDeclineOrderEdit = (
     buildOptions(
       queryClient,
       [orderEditQueryKeys.lists(), orderEditQueryKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useCompleteOrderEdit = (
   id: string,
-  options?: UseMutationOptions<Response<StoreOrderEditsRes>, Error>
+  options?: UseMutationOptions<Response<StoreOrderEditsRes>, Error>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -48,7 +41,7 @@ export const useCompleteOrderEdit = (
     buildOptions(
       queryClient,
       [orderEditQueryKeys.lists(), orderEditQueryKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }

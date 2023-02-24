@@ -1,4 +1,4 @@
-import { StoreSwapsRes } from "@medusajs/medusa"
+import { StoreSwapsRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -20,13 +20,13 @@ export const useCartSwap = (
     Response<StoreSwapsRes>,
     Error,
     ReturnType<SwapQueryKey["cart"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     swapKey.cart(cartId),
     () => client.swaps.retrieveByCartId(cartId),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const

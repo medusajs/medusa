@@ -1,9 +1,9 @@
 import {
-  StoreGetProductCategoriesParams,
-  StoreGetProductCategoriesRes,
   StoreGetProductCategoriesCategoryParams,
   StoreGetProductCategoriesCategoryRes,
-} from "@medusajs/medusa"
+  StoreGetProductCategoriesParams,
+  StoreGetProductCategoriesRes,
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 

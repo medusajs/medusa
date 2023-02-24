@@ -1,14 +1,10 @@
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
 import {
   StorePostCustomersCustomerAcceptClaimReq,
   StorePostCustomersCustomerOrderClaimReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -19,7 +15,7 @@ export const useRequestOrderAccess = (
     Response<{}>,
     Error,
     StorePostCustomersCustomerOrderClaimReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -27,7 +23,7 @@ export const useRequestOrderAccess = (
   return useMutation(
     (payload: StorePostCustomersCustomerOrderClaimReq) =>
       client.orders.requestCustomerOrders(payload),
-    buildOptions(queryClient, [orderKeys.all], options)
+    buildOptions(queryClient, [orderKeys.all], options),
   )
 }
 export const useGrantOrderAccess = (
@@ -35,7 +31,7 @@ export const useGrantOrderAccess = (
     Response<{}>,
     Error,
     StorePostCustomersCustomerAcceptClaimReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -43,6 +39,6 @@ export const useGrantOrderAccess = (
   return useMutation(
     (payload: StorePostCustomersCustomerAcceptClaimReq) =>
       client.orders.confirmRequest(payload),
-    buildOptions(queryClient, [orderKeys.all], options)
+    buildOptions(queryClient, [orderKeys.all], options),
   )
 }

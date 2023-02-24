@@ -1,9 +1,5 @@
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
 import {
   StorePaymentCollectionSessionsReq,
@@ -11,7 +7,7 @@ import {
   StorePaymentCollectionsSessionRes,
   StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
   StorePostPaymentCollectionsBatchSessionsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -23,7 +19,7 @@ export const useManageMultiplePaymentSessions = (
     Response<StorePaymentCollectionsRes>,
     Error,
     StorePostPaymentCollectionsBatchSessionsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -37,8 +33,8 @@ export const useManageMultiplePaymentSessions = (
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -48,7 +44,7 @@ export const useManagePaymentSession = (
     Response<StorePaymentCollectionsRes>,
     Error,
     StorePaymentCollectionSessionsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -62,8 +58,8 @@ export const useManagePaymentSession = (
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -73,7 +69,7 @@ export const useAuthorizePaymentSession = (
     Response<StorePaymentCollectionsRes>,
     Error,
     string
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -87,8 +83,8 @@ export const useAuthorizePaymentSession = (
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -98,7 +94,7 @@ export const useAuthorizePaymentSessionsBatch = (
     Response<StorePaymentCollectionsRes>,
     Error,
     StorePostPaymentCollectionsBatchSessionsAuthorizeReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -112,8 +108,8 @@ export const useAuthorizePaymentSessionsBatch = (
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -123,7 +119,7 @@ export const usePaymentCollectionRefreshPaymentSession = (
     Response<StorePaymentCollectionsSessionRes>,
     Error,
     string
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -137,7 +133,7 @@ export const usePaymentCollectionRefreshPaymentSession = (
         paymentCollectionQueryKeys.lists(),
         paymentCollectionQueryKeys.detail(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }

@@ -1,7 +1,4 @@
-import {
-  StoreGetProductTagsParams,
-  StoreProductTagsListRes,
-} from "@medusajs/medusa"
+import { StoreGetProductTagsParams, StoreProductTagsListRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -20,13 +17,13 @@ export const useProductTags = (
     Response<StoreProductTagsListRes>,
     Error,
     ReturnType<ProductTypesQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     productTagKeys.list(query),
     () => client.productTags.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

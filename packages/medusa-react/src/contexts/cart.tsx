@@ -3,9 +3,9 @@ import {
   useAddShippingMethodToCart,
   useCompleteCart,
   useCreateCart,
+  useCreatePaymentSession,
   useSetPaymentSession,
   useUpdateCart,
-  useCreatePaymentSession,
 } from "../hooks/store/"
 import { Cart } from "../types"
 
@@ -74,8 +74,8 @@ export const CartProvider = ({
 
   const completeCheckout = useCompleteCart(cart?.id)
 
-  const totalItems = cart?.items
-    .map(i => i.quantity)
+  const totalItems = cart
+    ?.items!.map((i) => i.quantity)
     .reduce((acc, curr) => acc + curr, 0)
 
   return (

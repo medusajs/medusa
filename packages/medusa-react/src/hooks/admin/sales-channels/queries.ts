@@ -2,7 +2,7 @@ import {
   AdminGetSalesChannelsParams,
   AdminSalesChannelsListRes,
   AdminSalesChannelsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -12,7 +12,7 @@ import { queryKeysFactory } from "../../utils"
 const ADMIN_SALES_CHANNELS_QUERY_KEY = `admin_sales_channels` as const
 
 export const adminSalesChannelsKeys = queryKeysFactory(
-  ADMIN_SALES_CHANNELS_QUERY_KEY
+  ADMIN_SALES_CHANNELS_QUERY_KEY,
 )
 
 type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
@@ -29,13 +29,13 @@ export const useAdminSalesChannel = (
     Response<AdminSalesChannelsRes>,
     Error,
     ReturnType<SalesChannelsQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminSalesChannelsKeys.detail(id),
     () => client.admin.salesChannels.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -53,13 +53,13 @@ export const useAdminSalesChannels = (
     Response<AdminSalesChannelsListRes>,
     Error,
     ReturnType<SalesChannelsQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminSalesChannelsKeys.list(query),
     () => client.admin.salesChannels.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

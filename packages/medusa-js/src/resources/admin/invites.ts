@@ -2,7 +2,7 @@ import {
   AdminInviteDeleteRes,
   AdminListInvitesRes,
   AdminPostInvitesInviteAcceptReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { AdminPostInvitesPayload, ResponsePromise } from "../.."
 import BaseResource from "../base"
 

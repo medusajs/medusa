@@ -1,9 +1,5 @@
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
 import {
   AdminOrderEditDeleteRes,
@@ -13,7 +9,7 @@ import {
   AdminPostOrderEditsEditLineItemsReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -25,7 +21,7 @@ export const useAdminCreateOrderEdit = (
     Response<AdminOrderEditsRes>,
     Error,
     AdminPostOrderEditsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -35,14 +31,14 @@ export const useAdminCreateOrderEdit = (
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.lists(), adminOrderKeys.details()],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminDeleteOrderEdit = (
   id: string,
-  options?: UseMutationOptions<Response<AdminOrderEditDeleteRes>, Error, void>
+  options?: UseMutationOptions<Response<AdminOrderEditDeleteRes>, Error, void>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -56,8 +52,8 @@ export const useAdminDeleteOrderEdit = (
         adminOrderEditsKeys.lists(),
         adminOrderKeys.details(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -68,7 +64,7 @@ export const useAdminDeleteOrderEditItemChange = (
     Response<AdminOrderEditItemChangeDeleteRes>,
     Error,
     void
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -78,8 +74,8 @@ export const useAdminDeleteOrderEditItemChange = (
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -90,7 +86,7 @@ export const useAdminOrderEditUpdateLineItem = (
     Response<AdminOrderEditsRes>,
     Error,
     AdminPostOrderEditsEditLineItemsLineItemReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -101,15 +97,15 @@ export const useAdminOrderEditUpdateLineItem = (
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminOrderEditDeleteLineItem = (
   orderEditId: string,
   itemId: string,
-  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -119,8 +115,8 @@ export const useAdminOrderEditDeleteLineItem = (
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -130,7 +126,7 @@ export const useAdminUpdateOrderEdit = (
     Response<AdminOrderEditsRes>,
     Error,
     AdminPostOrderEditsOrderEditReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -145,8 +141,8 @@ export const useAdminUpdateOrderEdit = (
         adminOrderEditsKeys.detail(id),
         adminOrderKeys.details(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -156,7 +152,7 @@ export const useAdminOrderEditAddLineItem = (
     Response<AdminOrderEditsRes>,
     Error,
     AdminPostOrderEditsEditLineItemsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -166,14 +162,14 @@ export const useAdminOrderEditAddLineItem = (
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminRequestOrderEditConfirmation = (
   id: string,
-  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -187,14 +183,14 @@ export const useAdminRequestOrderEditConfirmation = (
         adminOrderEditsKeys.detail(id),
         adminOrderKeys.details(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminCancelOrderEdit = (
   id: string,
-  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -208,14 +204,14 @@ export const useAdminCancelOrderEdit = (
         adminOrderEditsKeys.detail(id),
         adminOrderKeys.details(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminConfirmOrderEdit = (
   id: string,
-  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -229,7 +225,7 @@ export const useAdminConfirmOrderEdit = (
         adminOrderEditsKeys.detail(id),
         adminOrderKeys.details(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }

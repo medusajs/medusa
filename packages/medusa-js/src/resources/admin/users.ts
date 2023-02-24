@@ -4,11 +4,11 @@ import {
   AdminResetPasswordTokenRequest,
   AdminUserRes,
   AdminUsersListRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import {
-  ResponsePromise,
   AdminCreateUserPayload,
   AdminUpdateUserPayload,
+  ResponsePromise,
 } from "../.."
 import BaseResource from "../base"
 

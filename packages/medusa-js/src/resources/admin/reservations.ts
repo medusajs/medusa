@@ -1,11 +1,11 @@
 import {
+  AdminGetReservationsParams,
   AdminPostReservationsReq,
   AdminPostReservationsReservationReq,
   AdminReservationsDeleteRes,
-  AdminReservationsRes,
-  AdminGetReservationsParams,
   AdminReservationsListRes,
-} from "@medusajs/medusa"
+  AdminReservationsRes,
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

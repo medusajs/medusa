@@ -1,4 +1,4 @@
-import { StoreRegionsListRes, StoreRegionsRes } from "@medusajs/medusa"
+import { StoreRegionsListRes, StoreRegionsRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -16,13 +16,13 @@ export const useRegions = (
     Response<StoreRegionsListRes>,
     Error,
     ReturnType<RegionQueryType["lists"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     regionsKey.lists(),
     () => client.regions.list(),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -33,13 +33,13 @@ export const useRegion = (
     Response<StoreRegionsRes>,
     Error,
     ReturnType<RegionQueryType["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     regionsKey.detail(id),
     () => client.regions.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

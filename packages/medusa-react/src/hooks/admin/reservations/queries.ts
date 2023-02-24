@@ -2,7 +2,7 @@ import {
   AdminGetReservationsParams,
   AdminReservationsListRes,
   AdminReservationsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -12,7 +12,7 @@ import { queryKeysFactory } from "../../utils"
 const ADMIN_RESERVATIONS_QUERY_KEY = `admin_stock_locations` as const
 
 export const adminReservationsKeys = queryKeysFactory(
-  ADMIN_RESERVATIONS_QUERY_KEY
+  ADMIN_RESERVATIONS_QUERY_KEY,
 )
 
 type ReservationsQueryKeys = typeof adminReservationsKeys
@@ -23,14 +23,14 @@ export const useAdminReservations = (
     Response<AdminReservationsListRes>,
     Error,
     ReturnType<ReservationsQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
 
   const { data, ...rest } = useQuery(
     adminReservationsKeys.list(query),
     () => client.admin.reservations.list(query),
-    { ...options }
+    { ...options },
   )
 
   return { ...data, ...rest } as const
@@ -42,14 +42,14 @@ export const useAdminReservation = (
     Response<AdminReservationsRes>,
     Error,
     ReturnType<ReservationsQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
 
   const { data, ...rest } = useQuery(
     adminReservationsKeys.detail(id),
     () => client.admin.reservations.retrieve(id),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const

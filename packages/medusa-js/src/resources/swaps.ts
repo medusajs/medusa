@@ -1,5 +1,5 @@
 import { ResponsePromise } from "../typings"
-import { StoreSwapsRes, StorePostSwapsReq } from "@medusajs/medusa"
+import { StorePostSwapsReq, StoreSwapsRes } from "@medusajs/client-types"
 import BaseResource from "./base"
 
 class SwapsResource extends BaseResource {
@@ -9,7 +9,10 @@ class SwapsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreSwapsRes>}
    */
-  create(payload: StorePostSwapsReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreSwapsRes> {
+  create(
+    payload: StorePostSwapsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreSwapsRes> {
     const path = `/store/swaps`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -20,7 +23,10 @@ class SwapsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreSwapsRes>}
    */
-  retrieveByCartId(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreSwapsRes> {
+  retrieveByCartId(
+    cart_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreSwapsRes> {
     const path = `/store/swaps/${cart_id}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }

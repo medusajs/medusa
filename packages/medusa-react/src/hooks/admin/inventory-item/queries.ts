@@ -3,7 +3,7 @@ import {
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
   AdminInventoryItemsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -13,7 +13,7 @@ import { queryKeysFactory } from "../../utils"
 const ADMIN_INVENTORY_ITEMS_QUERY_KEY = `admin_inventory_items` as const
 
 export const adminInventoryItemsKeys = queryKeysFactory(
-  ADMIN_INVENTORY_ITEMS_QUERY_KEY
+  ADMIN_INVENTORY_ITEMS_QUERY_KEY,
 )
 
 type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
@@ -24,14 +24,14 @@ export const useAdminInventoryItems = (
     Response<AdminInventoryItemsListWithVariantsAndLocationLevelsRes>,
     Error,
     ReturnType<InventoryItemsQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
 
   const { data, ...rest } = useQuery(
     adminInventoryItemsKeys.list(query),
     () => client.admin.inventoryItems.list(query),
-    { ...options }
+    { ...options },
   )
 
   return { ...data, ...rest } as const
@@ -44,14 +44,14 @@ export const useAdminInventoryItem = (
     Response<AdminInventoryItemsRes>,
     Error,
     ReturnType<InventoryItemsQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
 
   const { data, ...rest } = useQuery(
     adminInventoryItemsKeys.detail(inventoryItemId),
     () => client.admin.inventoryItems.retrieve(inventoryItemId, query),
-    { ...options }
+    { ...options },
   )
 
   return { ...data, ...rest } as const
@@ -64,7 +64,7 @@ export const useAdminInventoryItemLocationLevels = (
     Response<AdminInventoryItemsLocationLevelsRes>,
     Error,
     ReturnType<InventoryItemsQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
 
@@ -72,7 +72,7 @@ export const useAdminInventoryItemLocationLevels = (
     adminInventoryItemsKeys.detail(inventoryItemId),
     () =>
       client.admin.inventoryItems.listLocationLevels(inventoryItemId, query),
-    { ...options }
+    { ...options },
   )
 
   return { ...data, ...rest } as const

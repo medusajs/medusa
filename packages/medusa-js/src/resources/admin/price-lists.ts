@@ -1,15 +1,15 @@
 import {
+  AdminDeletePriceListPricesPricesReq,
+  AdminGetPriceListPaginationParams,
+  AdminGetPriceListsPriceListProductsParams,
   AdminPostPriceListPricesPricesReq,
   AdminPostPriceListsPriceListPriceListReq,
   AdminPostPriceListsPriceListReq,
+  AdminPriceListDeleteBatchRes,
   AdminPriceListDeleteRes,
   AdminPriceListRes,
-  AdminGetPriceListPaginationParams,
   AdminPriceListsListRes,
-  AdminDeletePriceListPricesPricesReq,
-  AdminPriceListDeleteBatchRes,
-  AdminGetPriceListsPriceListProductsParams,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

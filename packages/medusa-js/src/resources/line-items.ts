@@ -2,7 +2,7 @@ import {
   StoreCartsRes,
   StorePostCartsCartLineItemsItemReq,
   StorePostCartsCartLineItemsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
@@ -17,7 +17,8 @@ class LineItemsResource extends BaseResource {
   create(
     cart_id: string,
     payload: StorePostCartsCartLineItemsReq,
-    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCartsRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -35,7 +36,8 @@ class LineItemsResource extends BaseResource {
     cart_id: string,
     line_id: string,
     payload: StorePostCartsCartLineItemsItemReq,
-    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCartsRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items/${line_id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -47,7 +49,11 @@ class LineItemsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
-  delete(cart_id: string, line_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCartsRes> {
+  delete(
+    cart_id: string,
+    line_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items/${line_id}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }

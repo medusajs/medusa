@@ -1,7 +1,4 @@
-import {
-  AdminGetProductTagsParams,
-  AdminProductTagsListRes,
-} from "@medusajs/medusa"
+import { AdminGetProductTagsParams, AdminProductTagsListRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -11,7 +8,7 @@ import { queryKeysFactory } from "../../utils/index"
 const ADMIN_PRODUCT_TAGS_QUERY_KEY = `admin_product_tags` as const
 
 export const adminProductTagKeys = queryKeysFactory(
-  ADMIN_PRODUCT_TAGS_QUERY_KEY
+  ADMIN_PRODUCT_TAGS_QUERY_KEY,
 )
 
 type ProductQueryKeys = typeof adminProductTagKeys
@@ -22,13 +19,13 @@ export const useAdminProductTags = (
     Response<AdminProductTagsListRes>,
     Error,
     ReturnType<ProductQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductTagKeys.list(query),
     () => client.admin.productTags.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

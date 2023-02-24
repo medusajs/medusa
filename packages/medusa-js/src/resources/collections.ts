@@ -1,8 +1,8 @@
 import {
-  StoreCollectionsRes,
   StoreCollectionsListRes,
+  StoreCollectionsRes,
   StoreGetCollectionsParams,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -14,7 +14,10 @@ class CollectionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreCollectionsRes>}
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCollectionsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCollectionsRes> {
     const path = `/store/collections/${id}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
@@ -27,7 +30,8 @@ class CollectionsResource extends BaseResource {
    */
   list(
     query?: StoreGetCollectionsParams,
-    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCollectionsListRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCollectionsListRes> {
     let path = `/store/collections`
 
     if (query) {
