@@ -228,20 +228,14 @@ class ProductVariantService extends TransactionBaseService {
       const result = await variantRepo.save(productVariant)
 
       if (prices) {
-        for (const price of prices) {
-          if (price.region_id) {
-            const region = await this.regionService_.retrieve(price.region_id)
-
-            await this.setRegionPrice(result.id, {
-              amount: price.amount,
-              region_id: price.region_id,
-              currency_code: region.currency_code,
-            })
-          } else {
-            await this.setCurrencyPrice(result.id, price)
-          }
-        }
+        await this.updateVariantPricesNew([
+          {
+            variantId: result.id,
+            prices,
+          },
+        ])
       }
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductVariantService.Events.CREATED, {
