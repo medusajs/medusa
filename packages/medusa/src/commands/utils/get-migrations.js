@@ -187,8 +187,8 @@ export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {
         return Object.values(loaded)
       }
     })
-    .filter(Boolean)
     .flat()
+    .filter(Boolean)
 }
 
 export const getModuleMigrations = (configModule, isFlagEnabled) => {
@@ -210,8 +210,8 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
           return Object.values(migration)
         }
       })
-      .filter(Boolean)
       .flat()
+      .filter(Boolean)
 
     allModules.push({
       moduleDeclaration: loadedModule.moduleDeclaration,
