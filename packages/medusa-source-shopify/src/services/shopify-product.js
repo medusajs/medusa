@@ -32,7 +32,7 @@ class ShopifyProductService extends BaseService {
     this.shippingProfileService_ = shippingProfileService
     /** @private @const {ShopifyRestClient} */
     this.shopify_ = shopifyClientService
-
+    /** @private @const {ICacheService} */
     this.cacheService_ = shopifyCacheService
   }
 
@@ -41,15 +41,17 @@ class ShopifyProductService extends BaseService {
       return this
     }
 
-    const cloned = new ShopifyProductService({
-      manager: transactionManager,
-      options: this.options,
-      shippingProfileService: this.shippingProfileService_,
-      productVariantService: this.productVariantService_,
-      productService: this.productService_,
-      shopifyClientService: this.shopify_,
-      shopifyCacheService: this.cacheService_,
-    })
+    const cloned = new ShopifyProductService(
+      {
+        manager: transactionManager,
+        shippingProfileService: this.shippingProfileService_,
+        productVariantService: this.productVariantService_,
+        productService: this.productService_,
+        shopifyClientService: this.shopify_,
+        shopifyCacheService: this.cacheService_,
+      },
+      this.options
+    )
 
     cloned.transactionManager_ = transactionManager
 

@@ -1,9 +1,8 @@
-// shopify-redis
 import { BaseService } from "medusa-interfaces"
 
 import { IGNORE_THRESHOLD } from "../utils/const"
 
-class shopifyRedisService extends BaseService {
+class ShopifyRedisService extends BaseService {
   constructor({ cacheService }, options) {
     super()
 
@@ -38,4 +37,4 @@ class shopifyRedisService extends BaseService {
   }
 }
 
-export default shopifyRedisService
+export default ShopifyRedisService
