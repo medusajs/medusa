@@ -419,12 +419,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'features-and-guides/regions-and-currencies/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -435,7 +432,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/regions/overview',
+          id: 'features-and-guides/regions-and-currencies/regions',
           label: 'Regions'
         },
         {
@@ -455,7 +452,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/admin/manage-regions',
+          id: 'features-and-guides/regions-and-currencies/admin/manage-regions',
           label: 'Admin: Manage Regions'
         },
         {
@@ -468,7 +465,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/use-regions',
+          id: 'features-and-guides/regions-and-currencies/storefront/use-regions',
           label: 'Storefront: Use Regions'
         },
       ]

@@ -2,9 +2,9 @@
 description: 'Learn about what Regions are and how they are used in a Medusa server. Regions represent at least one country on the Medusa server.'
 ---
 
-# Regions Overview
+# Regions Architecture
 
-In this document, you’ll learn about Regions and their importance in your Medusa server.
+In this document, you’ll learn about the Region entity and its architecture.
 
 ## Introduction
 
@@ -43,13 +43,13 @@ There is no limit on how many regions you can create, and regions can share simi
 
 ## Region Entity Overview
 
-A region is stored in the database as a [Region](../../../references/entities/classes/Region.md) entity. Some of its important attributes are:
+A region is stored in the database as a [Region](../../references/entities/classes/Region.md) entity. Some of its important attributes are:
 
 - `name`: The name of the region. Customers will see this name on the storefront.
 - `tax_rate`: A number that indicates the tax rate. The tax rate is a percentage.
 - `tax_code`: An optional string that is used as the code for the default tax rate.
 - `gift_cards_taxable`: A boolean value that indicates whether gift cards in a region are taxable or not.
-- `automatic_taxes`: A boolean value that indicates whether taxes should be calculated during checkout automatically or manually for that region. You can learn more about manually calculating taxes in [this documentation](../taxes/manual-calculation.md).
+- `automatic_taxes`: A boolean value that indicates whether taxes should be calculated during checkout automatically or manually for that region. You can learn more about manually calculating taxes in [this documentation](../../advanced/backend/taxes/manual-calculation.md).
 
 ---
 
@@ -59,7 +59,7 @@ As regions are a core part of your Medusa server, there are many relations to ot
 
 This section covers relations to entities that make up the configurations of a region.
 
-![Regions Relations Overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1671465082/Medusa%20Docs/Diagrams/Regions_cg8hsi.jpg)
+![Regions Relations Overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1677174270/Medusa%20Docs/Diagrams/regions-architecture_ebzbpb.jpg)
 
 ### Country
 
@@ -92,7 +92,7 @@ The relation is available on a region by expanding the `payment_providers` relat
 
 :::info
 
-Both shipping options and return shipping options are represented by the `ShippingOption` entity. You can learn more in the [Shipping Architecture documentation](../shipping/overview.md#shipping-option).
+Both shipping options and return shipping options are represented by the `ShippingOption` entity. You can learn more in the [Shipping Architecture documentation](../../advanced/backend/shipping/overview.md#shipping-option).
 
 :::
 
@@ -117,5 +117,5 @@ The relation between the `Region` and `TaxRate` entities is available on both en
 
 ## See Also
 
-- [Use Regions in a storefront](../../storefront/use-regions.mdx).
-- [Use Regions in the admin](../../admin/manage-regions.mdx).
+- [Use Regions in a storefront](./storefront/use-regions.mdx).
+- [Use Regions in the admin](./admin/manage-regions.mdx).

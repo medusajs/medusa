@@ -1,3 +1,4 @@
+import IconAcademicCapSolid from './AcademicCapSolid';
 import IconAdjustments from './Adjustments';
 import IconAlert from './Alert';
 import IconArrowDownTray from './ArrowDownTray';
@@ -71,6 +72,7 @@ import IconUser from './User';
 import IconUsersSolid from './UsersSolid';
 
 export default {
+  'academic-cap-solid': IconAcademicCapSolid,
   'adjustments': IconAdjustments,
   'alert': IconAlert,
   'arrow-down-tray': IconArrowDownTray,

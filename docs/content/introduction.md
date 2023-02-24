@@ -8,7 +8,7 @@ description: 'Medusa is composed of three architectures: Medusa server, admin da
 
 Medusa is composed of three components: The Medusa server, the admin dashboard, and the storefront.
 
-![Medusa's Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1667999772/Medusa%20Docs/Diagrams/ZHvM2bu_td4rnx.png)
+![Medusa's Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1677171591/Medusa%20Docs/Diagrams/medusa-architecture_hruu1v.jpg)
 
 ### Medusa Server
 
