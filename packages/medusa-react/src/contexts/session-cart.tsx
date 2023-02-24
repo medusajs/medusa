@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react"
 import { getVariantPrice } from "../helpers"
 import { useLocalStorage } from "../hooks/utils"
-import { ProductVariant, RegionInfo } from "../types"
+import { ProductVariantWithPrices, RegionInfo } from "../types"
 import { isArray, isEmpty, isObject } from "../utils"
 
 interface Item {
-  variant: ProductVariant
+  variant: ProductVariantWithPrices
   quantity: number
   readonly total?: number
 }
