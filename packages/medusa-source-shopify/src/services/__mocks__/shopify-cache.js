@@ -1,4 +1,4 @@
-export const ShopifyRedisServiceMock = {
+export const ShopifyCacheServiceMock = {
   addIgnore: jest.fn().mockImplementation((_id, _event) => {
     return Promise.resolve()
   }),

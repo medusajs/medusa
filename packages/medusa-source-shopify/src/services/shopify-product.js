@@ -14,7 +14,7 @@ class ShopifyProductService extends BaseService {
       productVariantService,
       shippingProfileService,
       shopifyClientService,
-      shopifyRedisService,
+      shopifyCacheService,
     },
     options
   ) {
@@ -33,7 +33,7 @@ class ShopifyProductService extends BaseService {
     /** @private @const {ShopifyRestClient} */
     this.shopify_ = shopifyClientService
 
-    this.redis_ = shopifyRedisService
+    this.cacheService_ = shopifyCacheService
   }
 
   withTransaction(transactionManager) {
@@ -48,7 +48,7 @@ class ShopifyProductService extends BaseService {
       productVariantService: this.productVariantService_,
       productService: this.productService_,
       shopifyClientService: this.shopify_,
-      shopifyRedisService: this.redis_,
+      shopifyCacheService: this.cacheService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -65,7 +65,10 @@ class ShopifyProductService extends BaseService {
    */
   async create(data) {
     return this.atomicPhase_(async (manager) => {
-      const ignore = await this.redis_.shouldIgnore(data.id, "product.created")
+      const ignore = await this.cacheService_.shouldIgnore(
+        data.id,
+        "product.created"
+      )
       if (ignore) {
         return
       }
@@ -106,7 +109,7 @@ class ShopifyProductService extends BaseService {
         }
       }
 
-      await this.redis_.addIgnore(data.id, "product.created")
+      await this.cacheService_.addIgnore(data.id, "product.created")
 
       return product
     })
@@ -114,7 +117,7 @@ class ShopifyProductService extends BaseService {
 
   async update(existing, shopifyUpdate) {
     return this.atomicPhase_(async (manager) => {
-      const ignore = await this.redis_.shouldIgnore(
+      const ignore = await this.cacheService_.shouldIgnore(
         shopifyUpdate.id,
         "product.updated"
       )
@@ -140,7 +143,7 @@ class ShopifyProductService extends BaseService {
       }
 
       if (!isEmpty(update)) {
-        await this.redis_.addIgnore(shopifyUpdate.id, "product.updated")
+        await this.cacheService_.addIgnore(shopifyUpdate.id, "product.updated")
         return await this.productService_
           .withTransaction(manager)
           .update(existing.id, update)
@@ -219,7 +222,7 @@ class ShopifyProductService extends BaseService {
         )
       })
 
-    await this.redis_.addIgnore(product.external_id, "product.updated")
+    await this.cacheService_.addIgnore(product.external_id, "product.updated")
   }
 
   async shopifyVariantUpdate(id, fields) {
@@ -273,7 +276,7 @@ class ShopifyProductService extends BaseService {
         )
       })
 
-    await this.redis_.addIgnore(
+    await this.cacheService_.addIgnore(
       variant.metadata.sh_id,
       "product-variant.updated"
     )
@@ -298,7 +301,10 @@ class ShopifyProductService extends BaseService {
         )
       })
 
-    await this.redis_.addIgnore(metadata.sh_id, "product-variant.deleted")
+    await this.cacheService_.addIgnore(
+      metadata.sh_id,
+      "product-variant.deleted"
+    )
   }
 
   async updateCollectionId(productId, collectionId) {
@@ -314,11 +320,11 @@ class ShopifyProductService extends BaseService {
       const { id, variants, options } = product
       for (let variant of updateVariants) {
         const ignore =
-          (await this.redis_.shouldIgnore(
+          (await this.cacheService_.shouldIgnore(
             variant.metadata.sh_id,
             "product-variant.updated"
           )) ||
-          (await this.redis_.shouldIgnore(
+          (await this.cacheService_.shouldIgnore(
             variant.metadata.sh_id,
             "product-variant.created"
           ))
@@ -349,7 +355,7 @@ class ShopifyProductService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const { variants } = product
       for (const variant of variants) {
-        const ignore = await this.redis_.shouldIgnore(
+        const ignore = await this.cacheService_.shouldIgnore(
           variant.metadata.sh_id,
           "product-variant.deleted"
         )
@@ -551,15 +557,15 @@ class ShopifyProductService extends BaseService {
 
   async testUnique_(uniqueVal, type) {
     // Test if the unique value has already been added, if it was then pass the value onto the duplicate handler and return the new value
-    const exists = await this.redis_.getUniqueValue(uniqueVal, type)
+    const exists = await this.cacheService_.getUniqueValue(uniqueVal, type)
 
     if (exists) {
       const dupValue = this.handleDuplicateConstraint_(uniqueVal)
-      await this.redis_.addUniqueValue(dupValue, type)
+      await this.cacheService_.addUniqueValue(dupValue, type)
       return dupValue
     }
     // If it doesn't exist, we return the value
-    await this.redis_.addUniqueValue(uniqueVal, type)
+    await this.cacheService_.addUniqueValue(uniqueVal, type)
     return uniqueVal
   }
 
