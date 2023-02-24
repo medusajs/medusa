@@ -31,6 +31,7 @@ import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   CreateProductVariantInput,
   ProductVariantPricesUpdateReq,
+  UpdateProductVariantInput,
 } from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
@@ -166,7 +167,7 @@ export default async (req, res) => {
     const variantNotBelongingToProductIds: string[] = []
     const variantsToUpdate: {
       variant: ProductVariant
-      data: ProductVariantReq
+      updateData: UpdateProductVariantInput
     }[] = []
     const variantsToCreate: ProductVariantReq[] = []
 
@@ -192,7 +193,7 @@ export default async (req, res) => {
         variant_rank: variantRank,
         product_id: productVariant.product_id,
       })
-      variantsToUpdate.push({ variant: productVariant, data })
+      variantsToUpdate.push({ variant: productVariant, updateData: data })
     }
 
     if (variantNotBelongingToProductIds.length) {
@@ -204,36 +205,33 @@ export default async (req, res) => {
       )
     }
 
+    if (variantsToUpdate.length) {
+      await productVariantService.updateNew(variantsToUpdate)
+    }
+
     // Create or update variants
     await Promise.all(
-      [
-        variantsToUpdate.map(async ({ variant, data }) => {
-          return await productVariantService
-            .withTransaction(transactionManager)
-            .update(variant, data)
-        }),
-        variantsToCreate.map(async (data) => {
-          try {
-            const varTransaction = await createVariantTransaction(
-              transactionDependencies,
-              product.id,
-              data as CreateProductVariantInput
-            )
-            allVariantTransactions.push(varTransaction)
-          } catch (e) {
-            await Promise.all(
-              allVariantTransactions.map(async (transaction) => {
-                await revertVariantTransaction(
-                  transactionDependencies,
-                  transaction
-                ).catch(() => logger.warn("Transaction couldn't be reverted."))
-              })
-            )
+      variantsToCreate.map(async (data) => {
+        try {
+          const varTransaction = await createVariantTransaction(
+            transactionDependencies,
+            product.id,
+            data as CreateProductVariantInput
+          )
+          allVariantTransactions.push(varTransaction)
+        } catch (e) {
+          await Promise.all(
+            allVariantTransactions.map(async (transaction) => {
+              await revertVariantTransaction(
+                transactionDependencies,
+                transaction
+              ).catch(() => logger.warn("Transaction couldn't be reverted."))
+            })
+          )
 
-            throw e
-          }
-        }),
-      ].flat()
+          throw e
+        }
+      })
     )
   })
 

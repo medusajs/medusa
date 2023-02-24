@@ -25,9 +25,7 @@ import {
 import { CartRepository } from "../repositories/cart"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
-import {
-  ProductOptionValueRepository
-} from "../repositories/product-option-value"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import {
   FindWithRelationsOptions,
   ProductVariantRepository,
@@ -43,6 +41,7 @@ import {
 import { buildQuery, buildRelations, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -243,7 +242,6 @@ class ProductVariantService extends TransactionBaseService {
           }
         }
       }
-
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductVariantService.Events.CREATED, {
@@ -332,6 +330,69 @@ class ProductVariantService extends TransactionBaseService {
     })
   }
 
+  async updateNew(
+    variantData: {
+      variant: ProductVariant
+      updateData: UpdateProductVariantInput
+    }[]
+  ): Promise<ProductVariant[]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const variantRepo = manager.withRepository(this.productVariantRepository_)
+
+      const variantPriceUpdateData = variantData
+        .filter((data) => data.updateData.prices)
+        .map((data) => ({
+          variantId: data.variant.id,
+          prices: data.updateData.prices!,
+        }))
+
+      await this.updateVariantPricesNew(variantPriceUpdateData)
+
+      const promises = variantData.map(async (data) => {
+        const variant = data.variant
+
+        const { prices, options, metadata, inventory_quantity, ...rest } =
+          data.updateData
+
+        if (options) {
+          for (const option of options) {
+            await this.updateOptionValue(
+              variant.id!,
+              option.option_id,
+              option.value
+            )
+          }
+        }
+
+        if (typeof metadata === "object") {
+          variant.metadata = setMetadata(variant as ProductVariant, metadata)
+        }
+
+        if (typeof inventory_quantity === "number") {
+          variant.inventory_quantity = inventory_quantity as number
+        }
+
+        for (const [key, value] of Object.entries(rest)) {
+          variant[key] = value
+        }
+
+        const result = await variantRepo.save(variant)
+
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(ProductVariantService.Events.UPDATED, {
+            id: result.id,
+            product_id: result.product_id,
+            fields: Object.keys(data.updateData),
+          })
+
+        return result
+      })
+
+      return await Promise.all(promises)
+    })
+  }
+
   /**
    * Updates a variant's prices.
    * Deletes any prices that are not in the update object, and is not associated with a price list.
@@ -366,6 +427,67 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
+    })
+  }
+
+  async updateVariantPricesNew(
+    data: { variantId: string; prices: ProductVariantPrice[] }[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.withRepository(
+        this.moneyAmountRepository_
+      )
+
+      // Delete obsolete prices
+      await moneyAmountRepo.deleteVariantPricesNotInNew(data)
+
+      const regionIdsSet = new Set(
+        data
+          .map((data_) =>
+            data_.prices.map((price) => price.region_id).filter(Boolean)
+          )
+          .flat()
+      )
+
+      const regions = await this.regionService_.withTransaction(manager).list(
+        {
+          id: In([...regionIdsSet]),
+        },
+        {
+          select: ["currency_code"],
+        }
+      )
+
+      const regionsMap = new Map(regions.map((r) => [r.id, r]))
+
+      const regionPriceToUpdate = data
+        .map((data_) =>
+          data_.prices
+            .map((price) => {
+              return price.region_id
+                ? {
+                    variantId: data_.variantId,
+                    price: price,
+                    currency_code: regionsMap.get(price.region_id)!
+                      .currency_code,
+                  }
+                : null
+            })
+            .filter((val): val is any => !!val)
+        )
+        .flat()
+
+      await this.addOrUpdateRegionPrice(regionPriceToUpdate)
+
+      const promises = data.map(async (data_) => {
+        /* for (const price of data_.prices) {
+          if (!price.region_id) {
+            await this.setCurrencyPrice(data_.variantId, price)
+          }
+        }*/
+      })
+
+      await Promise.all(promises)
     })
   }
 
@@ -433,6 +555,71 @@ class ProductVariantService extends TransactionBaseService {
       }
 
       return await moneyAmountRepo.save(moneyAmount)
+    })
+  }
+
+  async addOrUpdateRegionPrice(
+    data: {
+      variantId: string
+      currency_code: string
+      price: ProductVariantPrice
+    }[]
+  ): Promise<MoneyAmount[]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.withRepository(
+        this.moneyAmountRepository_
+      )
+
+      const moneyAmounts = await moneyAmountRepo.find({
+        where: data.map((data_) => ({
+          variant_id: data_.variantId,
+          region_id: data_.price.region_id,
+          price_list_id: IsNull(),
+        })),
+      })
+
+      const moneyAmountsMapToVariantId = new Map()
+      moneyAmounts.map((d) => {
+        const moneyAmounts = moneyAmountsMapToVariantId.get(d.variant_id) ?? []
+        moneyAmounts.push(d)
+        moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
+      })
+
+      const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
+      const dataToUpdate: MoneyAmount[] = []
+
+      data.forEach((data_) => {
+        const variantMoneyAmounts =
+          moneyAmountsMapToVariantId.get(data_.variantId) ?? []
+
+        const hasMoneyAmount = variantMoneyAmounts.find(
+          (ma) => ma.region_id === data_.price.region_id
+        )
+
+        if (hasMoneyAmount) {
+          dataToUpdate.push({
+            ...hasMoneyAmount,
+            amount: data_.price.amount,
+          })
+        } else {
+          dataToCreate.push({
+            variant_id: data_.variantId,
+            currency_code: data_.currency_code,
+            ...data_.price,
+          })
+        }
+      })
+
+      const queryBuilder = moneyAmountRepo.createQueryBuilder()
+
+      const resultMoneyAmounts = (
+        await Promise.all([
+          queryBuilder.insert().values(dataToCreate).returning("*").execute(),
+          moneyAmountRepo.save(dataToUpdate),
+        ])
+      ).flat() as MoneyAmount[]
+
+      return resultMoneyAmounts
     })
   }
 

@@ -14,6 +14,7 @@ import {
 } from "../types/price-list"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
+import { ProductVariantPrice } from "../types/product-variant"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -106,6 +107,51 @@ export const MoneyAmountRepository = dataSource
         .where(where)
         .andWhere(orWhere)
         .execute()
+    },
+
+    async deleteVariantPricesNotInNew(
+      data: { variantId: string; prices: ProductVariantPrice[] }[]
+    ): Promise<void> {
+      const queryBuilder = this.createQueryBuilder().delete()
+
+      for (const data_ of data) {
+        const where_ = {
+          variant_id: data_.variantId,
+          price_list_id: IsNull(),
+        }
+
+        const orWhere: ObjectLiteral[] = []
+
+        for (const price of data_.prices) {
+          if (price.currency_code) {
+            orWhere.push(
+              {
+                currency_code: Not(price.currency_code),
+              },
+              {
+                region_id: price.region_id
+                  ? Not(price.region_id)
+                  : Not(IsNull()),
+                currency_code: price.currency_code,
+              }
+            )
+          }
+
+          if (price.region_id) {
+            orWhere.push({
+              region_id: Not(price.region_id),
+            })
+          }
+        }
+
+        queryBuilder.orWhere(
+          new Brackets((localQueryBuild) => {
+            localQueryBuild.where(where_).andWhere(orWhere)
+          })
+        )
+      }
+
+      await queryBuilder.execute()
     },
 
     async addPriceListPrices(
