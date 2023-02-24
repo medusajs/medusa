@@ -15,6 +15,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - (query) q {string} Query used for searching product category names orhandles.
  *   - (query) is_internal {boolean} Search for only internal categories.
  *   - (query) is_active {boolean} Search for only active categories
+ *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
@@ -91,6 +92,10 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsString()
+  @IsOptional()
+  include_descendants_tree?: boolean
 
   @IsString()
   @IsOptional()
