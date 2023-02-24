@@ -4,6 +4,7 @@ import {
   EntityManager,
   FindManyOptions,
   FindOneOptions,
+  FindOperator,
   FindOptionsSelect,
   FindOptionsWhere,
   ILike,
@@ -24,7 +25,9 @@ import {
 import { CartRepository } from "../repositories/cart"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import {
+  ProductOptionValueRepository
+} from "../repositories/product-option-value"
 import {
   FindWithRelationsOptions,
   ProductVariantRepository,
@@ -37,9 +40,10 @@ import {
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
-import { buildQuery, buildRelations, setMetadata } from "../utils"
+import { buildQuery, buildRelations, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
+import { In } from "typeorm/browser/find-options/operator/In";
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -258,7 +262,6 @@ class ProductVariantService extends TransactionBaseService {
    * The function will throw, if price updates are attempted.
    * @param variantOrVariantId - variant or id of a variant.
    * @param update - an object with the update values.
-   * @param config - an object with the config values for returning the variant.
    * @return resolves to the update result.
    */
   async update(
@@ -663,34 +666,40 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   /**
-   * Deletes variant.
+   * Deletes variant or variants.
    * Will never fail due to delete being idempotent.
-   * @param variantId - the id of the variant to delete. Must be
+   * @param variantIds - the id of the variant to delete. Must be
    *   castable as an ObjectId
    * @return empty promise
    */
-  async delete(variantId: string): Promise<void> {
+  async delete(variantIds: string | string[]): Promise<void> {
+    const variantIds_ = isString(variantIds) ? [variantIds] : variantIds
+
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const variantRepo = manager.withRepository(this.productVariantRepository_)
 
-      const variant = await variantRepo.findOne({
-        where: { id: variantId },
+      const variants = await variantRepo.find({
+        where: { id: In(variantIds_) as unknown as FindOperator<string> },
         relations: ["prices", "options", "inventory_items"],
       })
 
-      if (!variant) {
+      if (!variants.length) {
         return Promise.resolve()
       }
 
-      await variantRepo.softRemove(variant)
+      await variantRepo.softRemove(variants)
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.DELETED, {
-          id: variant.id,
-          product_id: variant.product_id,
-          metadata: variant.metadata,
+      await Promise.all(
+        variants.map(async (variant) => {
+          return await this.eventBus_
+            .withTransaction(manager)
+            .emit(ProductVariantService.Events.DELETED, {
+              id: variant.id,
+              product_id: variant.product_id,
+              metadata: variant.metadata,
+            })
         })
+      )
     })
   }
 
