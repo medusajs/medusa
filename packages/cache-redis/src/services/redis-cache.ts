@@ -35,8 +35,7 @@ class RedisCacheService implements ICacheService {
   }
   /**
    * Set a key/value pair to the cache.
-   * It is also possible to manage the ttl through environment variable using CACHE_TTL. If the ttl is 0 it will
-   * act like the value should not be cached at all.
+   * If the ttl is 0 it will act like the value should not be cached at all.
    * @param key
    * @param data
    * @param ttl

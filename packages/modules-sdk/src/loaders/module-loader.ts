@@ -22,7 +22,7 @@ const registerModule = async (
   configModule: ConfigModule,
   logger: Logger
 ): Promise<{ error?: Error } | void> => {
-  const containerName = resolution.definition.registrationName
+  const constainerName = resolution.definition.registrationName
 
   const { scope, resources } = resolution.moduleDeclaration ?? {}
   if (!scope || (scope === MODULE_SCOPE.INTERNAL && !resources)) {
@@ -32,7 +32,7 @@ const registerModule = async (
     }
 
     container.register({
-      [containerName]: asValue(undefined),
+      [constainerName]: asValue(undefined),
     })
 
     return {
@@ -42,7 +42,7 @@ const registerModule = async (
 
   if (!resolution.resolutionPath) {
     container.register({
-      [containerName]: asValue(undefined),
+      [constainerName]: asValue(undefined),
     })
 
     return
@@ -79,7 +79,7 @@ const registerModule = async (
 
   // TODO: "cradle" should only contain dependent Modules and the EntityManager if module scope is shared
   container.register({
-    [containerName]: asFunction((cradle) => {
+    [constainerName]: asFunction((cradle) => {
       return new moduleService(
         cradle,
         resolution.options,

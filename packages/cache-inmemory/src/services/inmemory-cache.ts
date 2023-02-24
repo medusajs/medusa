@@ -17,8 +17,8 @@ type InjectedDependencies = {}
 class InMemoryCacheService implements ICacheService {
   protected TTL: number
 
-  protected readonly timoutRefs = new Map<string, number>()
   protected readonly store = new Map<string, CacheRecord<any>>()
+  protected readonly timoutRefs = new Map<string, NodeJS.Timeout>()
 
   constructor(
     deps: InjectedDependencies,
@@ -66,10 +66,11 @@ class InMemoryCacheService implements ICacheService {
       this.timoutRefs.delete(key)
     }
 
-    setTimeout(() => {
+    const ref = setTimeout(() => {
       this.invalidate(key)
     }, ttl * 1000)
 
+    this.timoutRefs.set(key, ref)
     this.store.set(key, record)
   }
 
@@ -90,7 +91,9 @@ class InMemoryCacheService implements ICacheService {
    * Delete the entire cache.
    */
   async clear() {
+    this.timoutRefs.forEach((ref) => clearTimeout(ref))
     this.timoutRefs.clear()
+
     this.store.clear()
   }
 }
