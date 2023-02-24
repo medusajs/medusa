@@ -8,7 +8,7 @@ import {
   AdminPostDraftOrdersDraftOrderRegisterPaymentRes,
   AdminPostDraftOrdersDraftOrderReq,
   AdminPostDraftOrdersReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -19,7 +19,8 @@ class AdminDraftOrdersResource extends BaseResource {
    */
   create(
     payload: AdminPostDraftOrdersReq,
-    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

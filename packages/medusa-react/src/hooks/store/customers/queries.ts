@@ -2,7 +2,7 @@ import {
   StoreCustomersListOrdersRes,
   StoreCustomersRes,
   StoreGetCustomersCustomerOrdersParams,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -23,13 +23,13 @@ export const useMeCustomer = (
     Response<StoreCustomersRes>,
     Error,
     ReturnType<CustomerQueryKey["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     customerKeys.detail("me"),
     () => client.customers.retrieve(),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -40,13 +40,13 @@ export const useCustomerOrders = (
     Response<StoreCustomersListOrdersRes>,
     Error,
     ReturnType<CustomerQueryKey["orders"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     customerKeys.orders("me"),
     () => client.customers.listOrders(query),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const

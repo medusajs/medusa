@@ -1,21 +1,21 @@
 import {
-  AdminTaxRatesRes,
-  AdminTaxRatesListRes,
-  AdminTaxRatesDeleteRes,
+  AdminDeleteTaxRatesTaxRateProductsParams,
+  AdminDeleteTaxRatesTaxRateProductsReq,
+  AdminDeleteTaxRatesTaxRateProductTypesParams,
+  AdminDeleteTaxRatesTaxRateProductTypesReq,
+  AdminDeleteTaxRatesTaxRateShippingOptionsParams,
+  AdminDeleteTaxRatesTaxRateShippingOptionsReq,
   AdminGetTaxRatesParams,
   AdminGetTaxRatesTaxRateParams,
-  AdminDeleteTaxRatesTaxRateProductsReq,
-  AdminDeleteTaxRatesTaxRateProductsParams,
-  AdminDeleteTaxRatesTaxRateProductTypesReq,
-  AdminDeleteTaxRatesTaxRateProductTypesParams,
-  AdminDeleteTaxRatesTaxRateShippingOptionsReq,
-  AdminDeleteTaxRatesTaxRateShippingOptionsParams,
   AdminPostTaxRatesReq,
-  AdminPostTaxRatesTaxRateReq,
   AdminPostTaxRatesTaxRateProductsReq,
   AdminPostTaxRatesTaxRateProductTypesReq,
+  AdminPostTaxRatesTaxRateReq,
   AdminPostTaxRatesTaxRateShippingOptionsReq,
-} from "@medusajs/medusa"
+  AdminTaxRatesDeleteRes,
+  AdminTaxRatesListRes,
+  AdminTaxRatesRes,
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

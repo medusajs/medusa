@@ -1,13 +1,13 @@
 import {
-  AdminPostCollectionsReq,
-  AdminCollectionsRes,
-  AdminPostCollectionsCollectionReq,
   AdminCollectionsDeleteRes,
   AdminCollectionsListRes,
-  AdminGetCollectionsParams,
-  AdminPostProductsToCollectionReq,
+  AdminCollectionsRes,
   AdminDeleteProductsFromCollectionReq,
-} from "@medusajs/medusa"
+  AdminGetCollectionsParams,
+  AdminPostCollectionsCollectionReq,
+  AdminPostCollectionsReq,
+  AdminPostProductsToCollectionReq,
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

@@ -9,13 +9,9 @@ import {
   AdminProductsDeleteRes,
   AdminProductsDeleteVariantRes,
   AdminProductsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminProductKeys } from "./queries"
@@ -25,13 +21,13 @@ export const useAdminCreateProduct = (
     Response<AdminProductsRes>,
     Error,
     AdminPostProductsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostProductsReq) => client.admin.products.create(payload),
-    buildOptions(queryClient, adminProductKeys.lists(), options)
+    buildOptions(queryClient, adminProductKeys.lists(), options),
   )
 }
 
@@ -41,7 +37,7 @@ export const useAdminUpdateProduct = (
     Response<AdminProductsRes>,
     Error,
     AdminPostProductsProductReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -52,14 +48,14 @@ export const useAdminUpdateProduct = (
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminDeleteProduct = (
   id: string,
-  options?: UseMutationOptions<Response<AdminProductsDeleteRes>, Error, void>
+  options?: UseMutationOptions<Response<AdminProductsDeleteRes>, Error, void>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -69,8 +65,8 @@ export const useAdminDeleteProduct = (
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -80,7 +76,7 @@ export const useAdminCreateVariant = (
     Response<AdminProductsRes>,
     Error,
     AdminPostProductsProductVariantsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -91,8 +87,8 @@ export const useAdminCreateVariant = (
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -102,7 +98,7 @@ export const useAdminUpdateVariant = (
     Response<AdminProductsRes>,
     Error,
     AdminPostProductsProductVariantsVariantReq & { variant_id: string }
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -116,8 +112,8 @@ export const useAdminUpdateVariant = (
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -127,7 +123,7 @@ export const useAdminDeleteVariant = (
     Response<AdminProductsDeleteVariantRes>,
     Error,
     string
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -138,8 +134,8 @@ export const useAdminDeleteVariant = (
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -149,7 +145,7 @@ export const useAdminCreateProductOption = (
     Response<AdminProductsRes>,
     Error,
     AdminPostProductsProductOptionsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -157,7 +153,7 @@ export const useAdminCreateProductOption = (
   return useMutation(
     (payload: AdminPostProductsProductOptionsReq) =>
       client.admin.products.addOption(productId, payload),
-    buildOptions(queryClient, adminProductKeys.detail(productId), options)
+    buildOptions(queryClient, adminProductKeys.detail(productId), options),
   )
 }
 
@@ -167,7 +163,7 @@ export const useAdminUpdateProductOption = (
     Response<AdminProductsRes>,
     Error,
     AdminPostProductsProductOptionsOption & { option_id: string }
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -178,7 +174,7 @@ export const useAdminUpdateProductOption = (
       ...payload
     }: AdminPostProductsProductOptionsOption & { option_id: string }) =>
       client.admin.products.updateOption(productId, option_id, payload),
-    buildOptions(queryClient, adminProductKeys.detail(productId), options)
+    buildOptions(queryClient, adminProductKeys.detail(productId), options),
   )
 }
 
@@ -188,7 +184,7 @@ export const useAdminDeleteProductOption = (
     Response<AdminProductsDeleteOptionRes>,
     Error,
     string
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -196,6 +192,6 @@ export const useAdminDeleteProductOption = (
   return useMutation(
     (optionId: string) =>
       client.admin.products.deleteOption(productId, optionId),
-    buildOptions(queryClient, adminProductKeys.detail(productId), options)
+    buildOptions(queryClient, adminProductKeys.detail(productId), options),
   )
 }

@@ -1,9 +1,9 @@
 import {
   AdminGetProductCategoriesParams,
-  AdminProductCategoriesListRes,
   AdminGetProductCategoryParams,
   AdminProductCategoriesCategoryRes,
-} from "@medusajs/medusa"
+  AdminProductCategoriesListRes,
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 
@@ -13,7 +13,7 @@ import { queryKeysFactory } from "../../utils"
 
 const ADMIN_PRODUCT_CATEGORIES_QUERY_KEY = `product_categories` as const
 export const adminProductCategoryKeys = queryKeysFactory(
-  ADMIN_PRODUCT_CATEGORIES_QUERY_KEY
+  ADMIN_PRODUCT_CATEGORIES_QUERY_KEY,
 )
 type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
 
@@ -23,13 +23,13 @@ export const useAdminProductCategories = (
     Response<AdminProductCategoriesListRes>,
     Error,
     ReturnType<ProductCategoryQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductCategoryKeys.list(query),
     () => client.admin.productCategories.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -41,13 +41,13 @@ export const useAdminProductCategory = (
     Response<AdminProductCategoriesCategoryRes>,
     Error,
     ReturnType<ProductCategoryQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductCategoryKeys.detail(id),
     () => client.admin.productCategories.retrieve(id, query),
-    options
+    options,
   )
 
   return { ...data, ...rest } as const

@@ -4,7 +4,10 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 
-import { AdminCustomersRes, AdminPostCustomersReq } from "@medusajs/medusa"
+import {
+  AdminCustomersRes,
+  AdminPostCustomersReq,
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 
 import { useMedusa } from "../../../contexts"

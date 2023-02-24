@@ -1,7 +1,4 @@
-import {
-  AdminCurrenciesListRes,
-  AdminGetCurrenciesParams,
-} from "@medusajs/medusa"
+import { AdminCurrenciesListRes, AdminGetCurrenciesParams } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -20,13 +17,13 @@ export const useAdminCurrencies = (
     Response<AdminCurrenciesListRes>,
     Error,
     ReturnType<CurrenciesQueryKey["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCurrenciesKeys.list(query),
     () => client.admin.currencies.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

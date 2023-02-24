@@ -1,15 +1,14 @@
 import {
   AdminDeleteProductCategoriesCategoryProductsBatchReq,
   AdminGetProductCategoriesParams,
-  AdminPostProductCategoriesCategoryProductsBatchReq,
-  AdminPostProductCategoriesReq,
-  AdminPostProductCategoriesCategoryParams,
-  AdminProductCategoriesCategoryDeleteRes,
-  AdminProductCategoriesListRes,
-  AdminProductCategoriesCategoryRes,
   AdminGetProductCategoryParams,
+  AdminPostProductCategoriesCategoryProductsBatchReq,
   AdminPostProductCategoriesCategoryReq,
-} from "@medusajs/medusa"
+  AdminPostProductCategoriesReq,
+  AdminProductCategoriesCategoryDeleteRes,
+  AdminProductCategoriesCategoryRes,
+  AdminProductCategoriesListRes,
+} from "@medusajs/client-types"
 import qs from "qs"
 
 import { ResponsePromise } from "../../typings"

@@ -1,15 +1,15 @@
 import {
-  AdminPostRegionsReq,
-  AdminRegionsRes,
-  AdminPostRegionsRegionReq,
-  AdminRegionsDeleteRes,
-  AdminRegionsListRes,
   AdminGetRegionsParams,
+  AdminGetRegionsRegionFulfillmentOptionsRes,
   AdminPostRegionsRegionCountriesReq,
   AdminPostRegionsRegionFulfillmentProvidersReq,
   AdminPostRegionsRegionPaymentProvidersReq,
-  AdminGetRegionsRegionFulfillmentOptionsRes,
-} from "@medusajs/medusa"
+  AdminPostRegionsRegionReq,
+  AdminPostRegionsReq,
+  AdminRegionsDeleteRes,
+  AdminRegionsListRes,
+  AdminRegionsRes,
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

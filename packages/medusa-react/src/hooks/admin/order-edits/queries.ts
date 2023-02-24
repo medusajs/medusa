@@ -3,7 +3,7 @@ import {
   AdminOrderEditsRes,
   GetOrderEditsOrderEditParams,
   GetOrderEditsParams,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -22,13 +22,13 @@ export const useAdminOrderEdit = (
     Response<AdminOrderEditsRes>,
     Error,
     ReturnType<OrderEditQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminOrderEditsKeys.detail(id),
     () => client.admin.orderEdits.retrieve(id, query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -39,13 +39,13 @@ export const useAdminOrderEdits = (
     Response<AdminOrderEditsListRes>,
     Error,
     ReturnType<OrderEditQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminOrderEditsKeys.list(query),
     () => client.admin.orderEdits.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

@@ -34,6 +34,7 @@
   "author": "Zakaria S. El Asri",
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@medusajs/client-types": "*",
     "@medusajs/medusa": "^1.7.6",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",

@@ -5,13 +5,9 @@ import {
   AdminPostCollectionsCollectionReq,
   AdminPostCollectionsReq,
   AdminPostProductsToCollectionReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminCollectionKeys } from "./queries"
@@ -21,14 +17,14 @@ export const useAdminCreateCollection = (
     Response<AdminCollectionsRes>,
     Error,
     AdminPostCollectionsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostCollectionsReq) =>
       client.admin.collections.create(payload),
-    buildOptions(queryClient, adminCollectionKeys.lists(), options)
+    buildOptions(queryClient, adminCollectionKeys.lists(), options),
   )
 }
 
@@ -38,7 +34,7 @@ export const useAdminUpdateCollection = (
     Response<AdminCollectionsRes>,
     Error,
     AdminPostCollectionsCollectionReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -48,14 +44,14 @@ export const useAdminUpdateCollection = (
     buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminDeleteCollection = (
   id: string,
-  options?: UseMutationOptions<Response<AdminCollectionsDeleteRes>, Error, void>
+  options?: UseMutationOptions<Response<AdminCollectionsDeleteRes>, Error, void>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -64,8 +60,8 @@ export const useAdminDeleteCollection = (
     buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -81,7 +77,7 @@ export const useAdminAddProductsToCollection = (
     Response<AdminCollectionsRes>,
     Error,
     AdminPostProductsToCollectionReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -92,8 +88,8 @@ export const useAdminAddProductsToCollection = (
     buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -109,7 +105,7 @@ export const useAdminRemoveProductsFromCollection = (
     Response<AdminCollectionsDeleteRes>,
     Error,
     AdminDeleteProductsFromCollectionReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -120,7 +116,7 @@ export const useAdminRemoveProductsFromCollection = (
     buildOptions(
       queryClient,
       [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }

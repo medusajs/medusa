@@ -2,13 +2,9 @@ import {
   AdminPostReturnsReturnReceiveReq,
   AdminReturnsCancelRes,
   AdminReturnsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminReturnKeys } from "./queries"
@@ -19,7 +15,7 @@ export const useAdminReceiveReturn = (
     Response<AdminReturnsRes>,
     Error,
     AdminPostReturnsReturnReceiveReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -29,14 +25,14 @@ export const useAdminReceiveReturn = (
     buildOptions(
       queryClient,
       [adminReturnKeys.detail(id), adminReturnKeys.list()],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminCancelReturn = (
   id: string,
-  options?: UseMutationOptions<Response<AdminReturnsCancelRes>, Error, void>
+  options?: UseMutationOptions<Response<AdminReturnsCancelRes>, Error, void>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -46,7 +42,7 @@ export const useAdminCancelReturn = (
     buildOptions(
       queryClient,
       [adminReturnKeys.detail(id), adminReturnKeys.list()],
-      options
-    )
+      options,
+    ),
   )
 }

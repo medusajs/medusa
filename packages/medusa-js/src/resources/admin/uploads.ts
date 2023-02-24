@@ -4,7 +4,7 @@ import {
   AdminPostUploadsDownloadUrlReq,
   AdminUploadsDownloadUrlRes,
   AdminUploadsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { AdminCreateUploadPayload, ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 

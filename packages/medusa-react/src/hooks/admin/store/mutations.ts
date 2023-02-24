@@ -1,4 +1,4 @@
-import { AdminPostStoreReq, AdminStoresRes } from "@medusajs/medusa"
+import { AdminPostStoreReq, AdminStoresRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import {
   useMutation,

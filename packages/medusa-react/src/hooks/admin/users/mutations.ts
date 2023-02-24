@@ -3,17 +3,9 @@ import {
   AdminResetPasswordRequest,
   AdminResetPasswordTokenRequest,
   AdminUserRes,
-} from "@medusajs/medusa"
-import {
-  AdminCreateUserPayload,
-  AdminUpdateUserPayload,
-  Response,
-} from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+} from "@medusajs/client-types"
+import { AdminCreateUserPayload, AdminUpdateUserPayload, Response } from "@medusajs/medusa-js"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 import { adminCustomerKeys } from ".."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
@@ -23,14 +15,14 @@ export const useAdminCreateUser = (
     Response<AdminUserRes>,
     Error,
     AdminCreateUserPayload
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
     (payload: AdminCreateUserPayload) => client.admin.users.create(payload),
-    buildOptions(queryClient, adminCustomerKeys.lists(), options)
+    buildOptions(queryClient, adminCustomerKeys.lists(), options),
   )
 }
 
@@ -40,7 +32,7 @@ export const useAdminUpdateUser = (
     Response<AdminUserRes>,
     Error,
     AdminUpdateUserPayload
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -50,14 +42,14 @@ export const useAdminUpdateUser = (
     buildOptions(
       queryClient,
       [adminCustomerKeys.lists(), adminCustomerKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminDeleteUser = (
   id: string,
-  options?: UseMutationOptions<Response<AdminDeleteUserRes>, Error, void>
+  options?: UseMutationOptions<Response<AdminDeleteUserRes>, Error, void>,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -67,8 +59,8 @@ export const useAdminDeleteUser = (
     buildOptions(
       queryClient,
       [adminCustomerKeys.detail(id), adminCustomerKeys.lists()],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -77,13 +69,13 @@ export const useAdminResetPassword = (
     Response<AdminUserRes>,
     Error,
     AdminResetPasswordRequest
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   return useMutation(
     (payload: AdminResetPasswordRequest) =>
       client.admin.users.resetPassword(payload),
-    options
+    options,
   )
 }
 
@@ -92,12 +84,12 @@ export const useAdminSendResetPasswordToken = (
     Response<void>,
     Error,
     AdminResetPasswordTokenRequest
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   return useMutation(
     (payload: AdminResetPasswordTokenRequest) =>
       client.admin.users.sendResetPasswordToken(payload),
-    options
+    options,
   )
 }

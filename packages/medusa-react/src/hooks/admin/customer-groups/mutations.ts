@@ -5,13 +5,9 @@ import {
   AdminPostCustomerGroupsGroupCustomersBatchReq,
   AdminPostCustomerGroupsGroupReq,
   AdminPostCustomerGroupsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -27,7 +23,7 @@ export const useAdminCreateCustomerGroup = (
     Response<AdminCustomerGroupsRes>,
     Error,
     AdminPostCustomerGroupsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -35,7 +31,7 @@ export const useAdminCreateCustomerGroup = (
   return useMutation(
     (payload: AdminPostCustomerGroupsReq) =>
       client.admin.customerGroups.create(payload),
-    buildOptions(queryClient, adminCustomerGroupKeys.lists(), options)
+    buildOptions(queryClient, adminCustomerGroupKeys.lists(), options),
   )
 }
 
@@ -51,7 +47,7 @@ export const useAdminUpdateCustomerGroup = (
     Response<AdminCustomerGroupsRes>,
     Error,
     AdminPostCustomerGroupsGroupReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -62,8 +58,8 @@ export const useAdminUpdateCustomerGroup = (
     buildOptions(
       queryClient,
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -79,7 +75,7 @@ export const useAdminDeleteCustomerGroup = (
     Response<AdminCustomerGroupsDeleteRes>,
     Error,
     void
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -89,8 +85,8 @@ export const useAdminDeleteCustomerGroup = (
     buildOptions(
       queryClient,
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -106,7 +102,7 @@ export const useAdminAddCustomersToCustomerGroup = (
     Response<AdminCustomerGroupsRes>,
     Error,
     AdminPostCustomerGroupsGroupCustomersBatchReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -120,8 +116,8 @@ export const useAdminAddCustomersToCustomerGroup = (
         adminCustomerGroupKeys.lists(),
         adminCustomerGroupKeys.detailCustomer(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -137,7 +133,7 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
     Response<AdminCustomerGroupsRes>,
     Error,
     AdminDeleteCustomerGroupsGroupCustomerBatchReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -151,7 +147,7 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
         adminCustomerGroupKeys.lists(),
         adminCustomerGroupKeys.detailCustomer(id),
       ],
-      options
-    )
+      options,
+    ),
   )
 }

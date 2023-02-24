@@ -5,7 +5,7 @@ import {
   AdminGetCustomerGroupsGroupParams,
   AdminGetCustomerGroupsParams,
   AdminGetCustomersParams,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 
@@ -17,7 +17,7 @@ const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 
 export const adminCustomerGroupKeys = {
   ...queryKeysFactory(ADMIN_CUSTOMER_GROUPS_QUERY_KEY),
-  detailCustomer(id: string, query?: AdminGetCustomersParams) {
+  detailCustomer (id: string, query?: AdminGetCustomersParams) {
     return [...this.detail(id), "customers", { ...(query || {}) }]
   },
 }
@@ -38,13 +38,13 @@ export const useAdminCustomerGroup = (
     Response<AdminCustomerGroupsRes>,
     Error,
     ReturnType<CustomerGroupQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.detail(id),
     () => client.admin.customerGroups.retrieve(id, query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -61,13 +61,13 @@ export const useAdminCustomerGroups = (
     Response<AdminCustomerGroupsListRes>,
     Error,
     ReturnType<CustomerGroupQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.list(query),
     () => client.admin.customerGroups.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -86,13 +86,13 @@ export const useAdminCustomerGroupCustomers = (
     Response<AdminCustomersListRes>,
     Error,
     ReturnType<CustomerGroupQueryKeys["detailCustomer"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.detailCustomer(id, query),
     () => client.admin.customerGroups.listCustomers(id, query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

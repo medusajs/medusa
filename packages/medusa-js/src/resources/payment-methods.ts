@@ -1,4 +1,4 @@
-import { StoreCustomersListPaymentMethodsRes } from "@medusajs/medusa"
+import { StoreCustomersListPaymentMethodsRes } from "@medusajs/client-types"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 

@@ -4,7 +4,7 @@ import {
   AdminPriceListRes,
   AdminPriceListsListRes,
   AdminProductsListRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"

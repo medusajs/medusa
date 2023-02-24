@@ -1,11 +1,11 @@
 import {
-  AdminPostShippingOptionsReq,
-  AdminShippingOptionsRes,
+  AdminGetShippingOptionsParams,
   AdminPostShippingOptionsOptionReq,
+  AdminPostShippingOptionsReq,
   AdminShippingOptionsDeleteRes,
   AdminShippingOptionsListRes,
-  AdminGetShippingOptionsParams,
-} from "@medusajs/medusa"
+  AdminShippingOptionsRes,
+} from "@medusajs/client-types"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"

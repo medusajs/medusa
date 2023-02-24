@@ -1,17 +1,17 @@
 import {
-  AdminGetInventoryItemsParams,
-  AdminInventoryItemsRes,
-  AdminPostInventoryItemsInventoryItemReq,
   AdminGetInventoryItemsItemLocationLevelsParams,
-  AdminPostInventoryItemsItemLocationLevelsLevelReq,
-  AdminInventoryItemsDeleteRes,
   AdminGetInventoryItemsItemParams,
+  AdminGetInventoryItemsParams,
+  AdminInventoryItemsDeleteRes,
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
+  AdminInventoryItemsRes,
+  AdminPostInventoryItemsInventoryItemReq,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
   AdminPostInventoryItemsReq,
   AdminPostInventoryItemsParams,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 import qs from "qs"
@@ -90,7 +90,7 @@ class AdminInventoryItemsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
     let path = `/admin/inventory-items`
-    
+
     if (query) {
       const queryString = qs.stringify(query)
       path += `?${queryString}`

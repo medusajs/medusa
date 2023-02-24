@@ -1,4 +1,4 @@
-import { StoreCartsRes } from "@medusajs/medusa"
+import { StoreCartsRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
@@ -16,13 +16,13 @@ export const useGetCart = (
     Response<StoreCartsRes>,
     Error,
     ReturnType<CartQueryKey["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     cartKeys.detail(id),
     () => client.carts.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

@@ -1,16 +1,16 @@
 import {
-  AdminPostCustomerGroupsReq,
-  AdminCustomerGroupsRes,
-  AdminGetCustomerGroupsParams,
-  AdminCustomerGroupsListRes,
-  AdminPostCustomerGroupsGroupReq,
   AdminCustomerGroupsDeleteRes,
-  AdminPostCustomerGroupsGroupCustomersBatchReq,
+  AdminCustomerGroupsListRes,
+  AdminCustomerGroupsRes,
+  AdminCustomersListRes,
   AdminDeleteCustomerGroupsGroupCustomerBatchReq,
   AdminGetCustomerGroupsGroupParams,
-  AdminCustomersListRes,
+  AdminGetCustomerGroupsParams,
   AdminGetCustomersParams,
-} from "@medusajs/medusa"
+  AdminPostCustomerGroupsGroupCustomersBatchReq,
+  AdminPostCustomerGroupsGroupReq,
+  AdminPostCustomerGroupsReq,
+} from "@medusajs/client-types"
 import qs from "qs"
 
 import BaseResource from "../base"
@@ -52,6 +52,7 @@ class AdminCustomerGroupsResource extends BaseResource {
 
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
+
   /**
    * Updates a customer group
    *

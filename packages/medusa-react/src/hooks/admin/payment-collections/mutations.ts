@@ -1,15 +1,11 @@
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 
 import {
   AdminPaymentCollectionDeleteRes,
   AdminPaymentCollectionsRes,
   AdminUpdatePaymentCollectionsReq,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
@@ -21,7 +17,7 @@ export const useAdminDeletePaymentCollection = (
     Response<AdminPaymentCollectionDeleteRes>,
     Error,
     void
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -34,8 +30,8 @@ export const useAdminDeletePaymentCollection = (
         adminPaymentCollectionQueryKeys.detail(id),
         adminPaymentCollectionQueryKeys.lists(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -45,7 +41,7 @@ export const useAdminUpdatePaymentCollection = (
     Response<AdminPaymentCollectionsRes>,
     Error,
     AdminUpdatePaymentCollectionsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -59,8 +55,8 @@ export const useAdminUpdatePaymentCollection = (
         adminPaymentCollectionQueryKeys.detail(id),
         adminPaymentCollectionQueryKeys.lists(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -70,7 +66,7 @@ export const useAdminMarkPaymentCollectionAsAuthorized = (
     Response<AdminPaymentCollectionsRes>,
     Error,
     void
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -83,7 +79,7 @@ export const useAdminMarkPaymentCollectionAsAuthorized = (
         adminPaymentCollectionQueryKeys.detail(id),
         adminPaymentCollectionQueryKeys.lists(),
       ],
-      options
-    )
+      options,
+    ),
   )
 }

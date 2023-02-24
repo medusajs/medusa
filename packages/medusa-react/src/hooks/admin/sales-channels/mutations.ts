@@ -5,7 +5,7 @@ import {
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
   AdminSalesChannelsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import {
   useMutation,
@@ -187,16 +187,7 @@ export const useAdminAddLocationToSalesChannel = (
     return client.admin.salesChannels.addLocation(sales_channel_id, {
       location_id,
     })
-  }, buildOptions(
-    queryClient, 
-    [
-      adminSalesChannelsKeys.lists(), 
-      adminSalesChannelsKeys.details(), 
-      adminStockLocationsKeys.all
-    ], 
-    options
-    )
-  )
+  }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.details(), adminStockLocationsKeys.all], options))
 }
 
 /**
@@ -222,14 +213,5 @@ export const useAdminRemoveLocationFromSalesChannel = (
     return client.admin.salesChannels.removeLocation(sales_channel_id, {
       location_id,
     })
-  }, buildOptions(
-    queryClient, 
-    [
-      adminSalesChannelsKeys.lists(), 
-      adminSalesChannelsKeys.details(), 
-      adminStockLocationsKeys.all
-    ], 
-    options
-    )
-  )
+  }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.details(), adminStockLocationsKeys.all], options))
 }

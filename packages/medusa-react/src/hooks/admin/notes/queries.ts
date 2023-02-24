@@ -1,8 +1,4 @@
-import {
-  AdminGetNotesParams,
-  AdminNotesListRes,
-  AdminNotesRes,
-} from "@medusajs/medusa"
+import { AdminGetNotesParams, AdminNotesListRes, AdminNotesRes } from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -21,13 +17,13 @@ export const useAdminNotes = (
     Response<AdminNotesListRes>,
     Error,
     ReturnType<NoteQueryKeys["list"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminNoteKeys.list(query),
     () => client.admin.notes.list(query),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }
@@ -38,13 +34,13 @@ export const useAdminNote = (
     Response<AdminNotesRes>,
     Error,
     ReturnType<NoteQueryKeys["detail"]>
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminNoteKeys.detail(id),
     () => client.admin.notes.retrieve(id),
-    options
+    options,
   )
   return { ...data, ...rest } as const
 }

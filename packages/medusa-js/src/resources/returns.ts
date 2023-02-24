@@ -1,6 +1,9 @@
 import BaseResource from "./base"
 import { ResponsePromise } from "../typings"
-import { StoreReturnsRes, StorePostReturnsReq } from "@medusajs/medusa"
+import {
+  StorePostReturnsReq,
+  StoreReturnsRes,
+} from "@medusajs/client-types"
 
 class ReturnsResource extends BaseResource {
   /**
@@ -9,7 +12,10 @@ class ReturnsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreReturnsRes>}
    */
-  create(payload: StorePostReturnsReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnsRes> {
+  create(
+    payload: StorePostReturnsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreReturnsRes> {
     const path = `/store/returns`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

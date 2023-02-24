@@ -43,6 +43,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "devDependencies": {
+    "@medusajs/client-types": "*",
     "@medusajs/medusa": "^1.7.8",
     "@types/uuid": "^9.0.0",
     "cross-env": "^7.0.3",

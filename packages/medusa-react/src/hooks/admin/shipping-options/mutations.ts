@@ -2,13 +2,9 @@ import {
   AdminPostShippingOptionsOptionReq,
   AdminPostShippingOptionsReq,
   AdminShippingOptionsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { Response } from "@medusajs/medusa-js"
-import {
-  useMutation,
-  UseMutationOptions,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, UseMutationOptions, useQueryClient } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminShippingOptionKeys } from "./queries"
@@ -18,7 +14,7 @@ export const useAdminCreateShippingOption = (
     Response<AdminShippingOptionsRes>,
     Error,
     AdminPostShippingOptionsReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -26,7 +22,7 @@ export const useAdminCreateShippingOption = (
   return useMutation(
     (payload: AdminPostShippingOptionsReq) =>
       client.admin.shippingOptions.create(payload),
-    buildOptions(queryClient, adminShippingOptionKeys.lists(), options)
+    buildOptions(queryClient, adminShippingOptionKeys.lists(), options),
   )
 }
 
@@ -36,7 +32,7 @@ export const useAdminUpdateShippingOption = (
     Response<AdminShippingOptionsRes>,
     Error,
     AdminPostShippingOptionsOptionReq
-  >
+  >,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -47,14 +43,14 @@ export const useAdminUpdateShippingOption = (
     buildOptions(
       queryClient,
       [adminShippingOptionKeys.lists(), adminShippingOptionKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }
 
 export const useAdminDeleteShippingOption = (
   id: string,
-  options?: UseMutationOptions
+  options?: UseMutationOptions,
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -64,7 +60,7 @@ export const useAdminDeleteShippingOption = (
     buildOptions(
       queryClient,
       [adminShippingOptionKeys.lists(), adminShippingOptionKeys.detail(id)],
-      options
-    )
+      options,
+    ),
   )
 }

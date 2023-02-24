@@ -1,4 +1,3 @@
-import { RefundReason } from "@medusajs/medusa"
 import { renderHook } from "@testing-library/react-hooks/dom"
 import {
   useAdminPaymentsCapturePayment,
@@ -39,7 +38,7 @@ describe("useAdminPaymentsRefundPayment hook", () => {
 
     result.current.mutate({
       amount: 500,
-      reason: RefundReason.DISCOUNT,
+      reason: "discount",
       note: "note to refund",
     })
 
@@ -50,7 +49,7 @@ describe("useAdminPaymentsRefundPayment hook", () => {
       expect.objectContaining({
         payment_id: "payment_id",
         amount: 500,
-        reason: RefundReason.DISCOUNT,
+        reason: "discount",
         note: "note to refund",
       })
     )

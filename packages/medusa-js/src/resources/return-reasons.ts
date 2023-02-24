@@ -2,7 +2,7 @@ import BaseResource from "./base"
 import {
   StoreReturnReasonsListRes,
   StoreReturnReasonsRes,
-} from "@medusajs/medusa"
+} from "@medusajs/client-types"
 import { ResponsePromise } from "../typings"
 
 class ReturnReasonsResource extends BaseResource {
@@ -12,7 +12,10 @@ class ReturnReasonsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreReturnReasonsRes>}
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnReasonsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreReturnReasonsRes> {
     const path = `/store/return-reasons/${id}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
@@ -22,7 +25,9 @@ class ReturnReasonsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreReturnReasonsListRes>}
    */
-  list(customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnReasonsListRes> {
+  list(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreReturnReasonsListRes> {
     const path = `/store/return-reasons`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
