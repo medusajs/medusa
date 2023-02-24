@@ -15,16 +15,15 @@ type InjectedDependencies = {
 }
 
 class RedisCacheService implements ICacheService {
-  protected readonly redis_: Redis
-
   protected TTL: number
+  protected readonly redis: Redis
 
   constructor(
     { redisClient }: InjectedDependencies,
     options: RedisCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    this.redis_ = redisClient
+    this.redis = redisClient
     this.TTL = options.defaultTTL || DEFAULT_CACHE_TIME
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
@@ -47,13 +46,7 @@ class RedisCacheService implements ICacheService {
     data: Record<string, unknown>,
     ttl: number = this.TTL
   ): Promise<void> {
-    ttl = Number(process.env.CACHE_TTL ?? ttl)
-    if (ttl === 0) {
-      // No need to call redis set without expiry time
-      return
-    }
-
-    await this.redis_.set(key, JSON.stringify(data), EXPIRY_MODE, ttl)
+    await this.redis.set(key, JSON.stringify(data), EXPIRY_MODE, ttl)
   }
 
   /**
@@ -62,12 +55,12 @@ class RedisCacheService implements ICacheService {
    */
   async get<T>(cacheKey: string): Promise<T | null> {
     try {
-      const cached = await this.redis_.get(cacheKey)
+      const cached = await this.redis.get(cacheKey)
       if (cached) {
         return JSON.parse(cached)
       }
     } catch (err) {
-      await this.redis_.del(cacheKey)
+      await this.redis.del(cacheKey)
     }
     return null
   }
@@ -77,8 +70,8 @@ class RedisCacheService implements ICacheService {
    * @param key
    */
   async invalidate(key: string): Promise<void> {
-    const keys = await this.redis_.keys(key)
-    const pipeline = this.redis_.pipeline()
+    const keys = await this.redis.keys(key)
+    const pipeline = this.redis.pipeline()
 
     keys.forEach(function (key) {
       pipeline.del(key)
