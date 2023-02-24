@@ -113,7 +113,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK

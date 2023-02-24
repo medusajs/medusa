@@ -76,7 +76,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

@@ -31,7 +31,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - InventoryItem
+ *   - Inventory Items
  * responses:
  *   200:
  *     description: OK

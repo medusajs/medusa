@@ -1,6 +1,6 @@
 import { Store, PaymentProvider, FulfillmentProvider } from "../models"
 import { FeatureFlagsResponse } from "./feature-flags"
-import { ModulesResponse } from "./modules"
+import { ModulesResponse } from "@medusajs/modules-sdk"
 
 export type UpdateStoreInput = {
   name?: string
@@ -12,6 +12,23 @@ export type UpdateStoreInput = {
   metadata?: Record<string, unknown>
   default_sales_channel_id?: string
 }
+
+/**
+ * @schema ModulesResponse
+ * type: array
+ * items:
+ *   type: object
+ *   required:
+ *     - module
+ *     - resolution
+ *   properties:
+ *     module:
+ *       description: The key of the module.
+ *       type: string
+ *     resolution:
+ *       description: The resolution path of the module or false if module is not installed.
+ *       type: string
+ */
 
 /**
  * @schema ExtendedStoreDTO

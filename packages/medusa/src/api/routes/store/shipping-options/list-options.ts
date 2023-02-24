@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

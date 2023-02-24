@@ -30,7 +30,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - StockLocation
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
