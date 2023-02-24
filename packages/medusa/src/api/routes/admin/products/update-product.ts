@@ -26,16 +26,13 @@ import {
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import SalesChannelFeatureFlag
-  from "../../../../loaders/feature-flags/sales-channels"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   CreateProductVariantInput,
   ProductVariantPricesUpdateReq,
 } from "../../../../types/product-variant"
-import {
-  FeatureFlagDecorators
-} from "../../../../utils/feature-flag-decorators"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 import { MedusaError } from "medusa-core-utils"
 import { DistributedTransaction } from "../../../../utils/transaction"
@@ -45,6 +42,10 @@ import {
 } from "./transaction/create-product-variant"
 import { IInventoryService } from "../../../../interfaces"
 import { Logger } from "../../../../types/global"
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+} from "./index"
 
 /**
  * @oas [post] /admin/products/{id}
@@ -144,13 +145,15 @@ export default async (req, res) => {
         relations: ["variants"],
       })
 
-    const productVariantMap = new Map(product.variants.map(v => [v.id, v]))
+    const productVariantMap = new Map(product.variants.map((v) => [v.id, v]))
 
     // Delete the variant that does not exist in the provided variants
-    const variantsToDelete = variants.filter((v) => v.id && !productVariantMap.has(v.id))
+    const variantsToDelete = variants.filter(
+      (v) => v.id && !productVariantMap.has(v.id)
+    )
     await productVariantService
       .withTransaction(transactionManager)
-      .delete(variantsToDelete.map(v => v.id!))
+      .delete(variantsToDelete.map((v) => v.id!))
 
     const allVariantTransactions: DistributedTransaction[] = []
     const transactionDependencies = {
@@ -161,7 +164,10 @@ export default async (req, res) => {
     }
 
     const variantNotBelongingToProductIds: string[] = []
-    const variantsToUpdate: ({ variant: ProductVariant, data: ProductVariantReq })[] = []
+    const variantsToUpdate: {
+      variant: ProductVariant
+      data: ProductVariantReq
+    }[] = []
     const variantsToCreate: ProductVariantReq[] = []
 
     // Preparing the data step
@@ -192,42 +198,49 @@ export default async (req, res) => {
     if (variantNotBelongingToProductIds.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Variants with id: ${variantNotBelongingToProductIds.join(", ")} are not associated with this product`
+        `Variants with id: ${variantNotBelongingToProductIds.join(
+          ", "
+        )} are not associated with this product`
       )
     }
 
     // Create or update variants
-    await Promise.all([
-      variantsToUpdate.map(async ({variant, data}) => {
-        return await productVariantService
-          .withTransaction(transactionManager)
-          .update(variant, data)
-      }),
-      variantsToCreate.map(async data => {
-        try {
-          const varTransaction = await createVariantTransaction(
-            transactionDependencies,
-            product.id,
-            data as CreateProductVariantInput
-          )
-          allVariantTransactions.push(varTransaction)
-        } catch (e) {
-          await Promise.all(
-            allVariantTransactions.map(async (transaction) => {
-              await revertVariantTransaction(
-                transactionDependencies,
-                transaction
-              ).catch(() => logger.warn("Transaction couldn't be reverted."))
-            })
-          )
+    await Promise.all(
+      [
+        variantsToUpdate.map(async ({ variant, data }) => {
+          return await productVariantService
+            .withTransaction(transactionManager)
+            .update(variant, data)
+        }),
+        variantsToCreate.map(async (data) => {
+          try {
+            const varTransaction = await createVariantTransaction(
+              transactionDependencies,
+              product.id,
+              data as CreateProductVariantInput
+            )
+            allVariantTransactions.push(varTransaction)
+          } catch (e) {
+            await Promise.all(
+              allVariantTransactions.map(async (transaction) => {
+                await revertVariantTransaction(
+                  transactionDependencies,
+                  transaction
+                ).catch(() => logger.warn("Transaction couldn't be reverted."))
+              })
+            )
 
-          throw e
-        }
-      })
-    ].flat())
+            throw e
+          }
+        }),
+      ].flat()
+    )
   })
 
-  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  const rawProduct = await productService.retrieve(id, {
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
+  })
 
   const [product] = await pricingService.setProductPrices([rawProduct])
 
