@@ -18,7 +18,7 @@ async function loadModule(
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
-  const constainerName = resolution.definition.registrationName
+  const containerName = resolution.definition.registrationName
 
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
 
@@ -35,7 +35,7 @@ async function loadModule(
     }
 
     container.register({
-      [constainerName]: asValue(undefined),
+      [containerName]: asValue(undefined),
     })
 
     return {
@@ -45,7 +45,7 @@ async function loadModule(
 
   if (!resolution.resolutionPath) {
     container.register({
-      [constainerName]: asValue(undefined),
+      [containerName]: asValue(undefined),
     })
 
     return
