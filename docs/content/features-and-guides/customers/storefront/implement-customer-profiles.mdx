@@ -36,21 +36,21 @@ You can use Medusa’s Store APIs to achieve more functionalities as well. Check
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
-It's also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
+It's also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.md) and have [created an instance of the client](../../../js-client/overview.md#configuration).
 
 ### Medusa React
 
 This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
 
-If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
 ---
 
@@ -287,7 +287,7 @@ If the request has been processed successfully, it returns a `204` status code i
 
 :::note
 
-If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../add-plugins/sendgrid.mdx) successfully. You also need to add a subscriber that handles the [customer.password_reset](../backend/subscribers/events-list.md#customer-events) event and sends the email.
+If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../add-plugins/sendgrid.mdx) successfully. You also need to add a subscriber that handles the [customer.password_reset](../../../advanced/backend/subscribers/events-list.md#customer-events) event and sends the email.
 
 :::
 
@@ -667,7 +667,7 @@ You can learn more about pagination in the [API reference](/api/store/#section/P
 
 ## See Also
 
-- [Implement order-claim flow](./implement-claim-order.mdx)
+- [Implement order-claim flow](../../../advanced/storefront/implement-claim-order.mdx)
 - [Customers Store API reference](/api/store)
-- [Customers overview](../backend/customers/index.md)
+- [Customers overview](../customers.md)
 - [Manage customers using the admin APIs](../admin/manage-customers.mdx)

@@ -479,12 +479,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'features-and-guides/customers/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -495,13 +492,13 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/customers/index',
+          id: 'features-and-guides/customers/customers',
           label: 'Customers'
         },
         {
           type: 'doc',
-          id: 'advanced/backend/customer-groups/index',
-          label: 'Currencies'
+          id: 'features-and-guides/customers/customer-groups',
+          label: 'Customer Groups'
         },
         {
           type: 'html',
@@ -520,17 +517,17 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/admin/manage-customers',
+          id: 'features-and-guides/customers/admin/manage-customers',
           label: 'Admin: Manage Customers'
         },
         {
           type: 'doc',
-          id: 'advanced/admin/use-customergroups-api',
+          id: 'features-and-guides/customers/admin/manage-customer-groups',
           label: 'Admin: Manage Customer Groups'
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/customer-profiles',
+          id: 'features-and-guides/customers/storefront/implement-customer-profiles',
           label: 'Storefront: Add Customer Profiles'
         },
       ]

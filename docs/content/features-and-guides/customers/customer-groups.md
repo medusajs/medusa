@@ -24,7 +24,7 @@ The customer groups feature can be used in a variety of use cases including:
 
 ## CustomerGroup Entity Overview
 
-A customer group is stored in the database as a [CustomerGroup](../../../references/entities/classes/CustomerGroup.md) entity. This entity has two attributes other than the `id`: `name` and `metadata`.
+A customer group is stored in the database as a [CustomerGroup](../../references/entities/classes/CustomerGroup.md) entity. This entity has two attributes other than the `id`: `name` and `metadata`.
 
 Similar to all entities in Medusa, you can use the `metadata` object attribute to store any custom data you want. For example, you can add some flag or tag to the customer group for a custom use case:
 
@@ -60,5 +60,5 @@ The relation between the `PriceList` and `CustomerGroup` entities is available o
 
 ## See Also
 
-- [Manage customer groups using the Admin APIs](../../admin/use-customergroups-api.mdx).
-- [Price Lists Overview](../price-lists/index.md).
+- [Manage customer groups using the Admin APIs](./admin/manage-customer-groups.mdx).
+- [Price Lists Overview](../../advanced/backend/price-lists/index.md).

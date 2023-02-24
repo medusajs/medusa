@@ -120,8 +120,28 @@
 
 [[redirects]]
   from="/advanced/admin/manage-regions"
-  to="features-and-guides/regions-and-currencies/admin/manage-regions"
+  to="/features-and-guides/regions-and-currencies/admin/manage-regions"
 
 [[redirects]]
-  from="advanced/storefront/use-regions"
-  to="features-and-guides/regions-and-currencies/storefront/use-regions"
+  from="/advanced/storefront/use-regions"
+  to="/features-and-guides/regions-and-currencies/storefront/use-regions"
+
+[[redirects]]
+  from="/advanced/backend/customers"
+  to="/features-and-guides/customers/customers"
+
+[[redirects]]
+  from="/advanced/backend/customer-groups"
+  to="/features-and-guides/customers/customer-groups"
+
+[[redirects]]
+  from="/advanced/admin/manage-customers"
+  to="/features-and-guides/customers/admin/manage-customers"
+
+[[redirects]]
+  from="/advanced/admin/use-customergroups-api"
+  to="/features-and-guides/customers/admin/manage-customer-groups"
+
+[[redirects]]
+  from="/advanced/storefront/customer-profiles"
+  to="/features-and-guides/customers/storefront/implement-customer-profiles"

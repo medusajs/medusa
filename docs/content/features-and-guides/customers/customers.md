@@ -34,7 +34,7 @@ In the example mentioned above, after the unregistered customer places an order 
 
 :::info
 
-This architecture allows creating the Claim Order flow, where a registered customer can claim an order they placed as an unregistered customer. You can learn more about it in [this documentation](../../storefront/implement-claim-order.mdx).
+This architecture allows creating the Claim Order flow, where a registered customer can claim an order they placed as an unregistered customer. You can learn more about it in [this documentation](../../advanced/storefront/implement-claim-order.mdx).
 
 :::
 
@@ -48,7 +48,7 @@ Customer groups allow dividing customers into groups of similar attributes, then
 
 :::info
 
-You can learn more about customer groups in [this documentation](../customer-groups/index.md).
+You can learn more about customer groups in [this documentation](./customer-groups.md).
 
 :::
 
@@ -77,6 +77,6 @@ The relation between the `Customer` and `Address` entities is available on both 
 
 ## See Also
 
-- [Implement customer profiles in the storefront](../../storefront/customer-profiles.mdx)
-- [Manage customers using the admin APIs](../../admin/manage-customers.mdx)
+- [Implement customer profiles in the storefront](./storefront/implement-customer-profiles.mdx)
+- [Manage customers using the admin APIs](./admin/manage-customers.mdx)
 - Customers [Admin](/api/admin/#tag/Customer) and [Storefront](/api/store/#tag/Customer) API References
