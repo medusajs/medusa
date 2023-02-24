@@ -4,10 +4,10 @@ import {
   EntityManager,
   FindManyOptions,
   FindOneOptions,
-  FindOperator,
   FindOptionsSelect,
   FindOptionsWhere,
   ILike,
+  In,
   IsNull,
   SelectQueryBuilder,
 } from "typeorm"
@@ -43,7 +43,6 @@ import {
 import { buildQuery, buildRelations, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
-import { In } from "typeorm/browser/find-options/operator/In";
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -679,7 +678,7 @@ class ProductVariantService extends TransactionBaseService {
       const variantRepo = manager.withRepository(this.productVariantRepository_)
 
       const variants = await variantRepo.find({
-        where: { id: In(variantIds_) as unknown as FindOperator<string> },
+        where: { id: In(variantIds_) },
         relations: ["prices", "options", "inventory_items"],
       })
 
