@@ -37,7 +37,7 @@ import { PaymentCollectionService } from "../../../../services"
  * tags:
  *   - Payment Collections
  * responses:
- *   200:
+ *   207:
  *     description: OK
  *     content:
  *       application/json:

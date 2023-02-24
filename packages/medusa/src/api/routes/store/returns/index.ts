@@ -15,6 +15,12 @@ export default (app) => {
 /**
  * @schema StoreReturnsRes
  * type: object
+ * x-expanded-relations:
+ *   field: return
+ *   eager:
+ *     - items
+ *   implicit:
+ *     - items.reason
  * required:
  *   - return
  * properties:
