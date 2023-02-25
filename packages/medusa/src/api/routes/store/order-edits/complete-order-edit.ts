@@ -32,7 +32,7 @@ import {
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/complete'
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

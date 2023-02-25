@@ -49,7 +49,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   201:
  *     description: OK

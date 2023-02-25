@@ -42,7 +42,7 @@ import { EntityManager } from "typeorm"
  *           "data": {}
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

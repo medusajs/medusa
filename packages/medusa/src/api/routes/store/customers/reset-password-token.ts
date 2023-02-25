@@ -39,7 +39,7 @@ import { EntityManager } from "typeorm"
  *           "email": "user@example.com"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   204:
  *     description: OK

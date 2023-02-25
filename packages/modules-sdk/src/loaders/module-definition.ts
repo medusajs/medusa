@@ -1,9 +1,9 @@
 import resolveCwd from "resolve-cwd"
 
-import { ConfigModule, ModuleResolution } from "../../types/global"
-import MODULE_DEFINITIONS from "./definitions"
+import { ConfigModule, ModuleResolution } from "../types"
+import MODULE_DEFINITIONS from "../definitions"
 
-export default ({ modules }: ConfigModule) => {
+export const registerModules = ({ modules }: ConfigModule) => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
   const projectModules = modules ?? {}
 

@@ -1,16 +1,20 @@
 import {
   buildQuery,
-  ConfigurableModuleDeclaration,
   CreateStockLocationInput,
   FilterableStockLocationProps,
   FindConfig,
   IEventBusService,
-  MODULE_RESOURCE_TYPE,
   setMetadata,
   StockLocationAddressInput,
   TransactionBaseService,
   UpdateStockLocationInput,
 } from "@medusajs/medusa"
+
+import {
+  ConfigurableModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
+} from "@medusajs/modules-sdk"
+
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
@@ -232,7 +236,7 @@ export default class StockLocationService extends TransactionBaseService {
       const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
       const existingAddress = await locationAddressRepo.findOne({
-        where: { id: addressId }
+        where: { id: addressId },
       })
       if (!existingAddress) {
         throw new MedusaError(

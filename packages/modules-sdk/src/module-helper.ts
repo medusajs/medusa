@@ -1,5 +1,4 @@
-import { ModuleResolution } from "../types/global"
-import { ModulesResponse } from "../types/modules"
+import { ModuleResolution, ModulesResponse } from "./types/module"
 
 export class ModulesHelper {
   private modules_: Record<string, ModuleResolution> = {}
