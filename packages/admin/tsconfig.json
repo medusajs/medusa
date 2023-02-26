@@ -15,5 +15,5 @@
     "skipLibCheck": true
   },
   "include": ["src"],
-  "exclude": ["**/node_modules", "dashboard"]
+  "exclude": ["**/node_modules"]
 }
