@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query"
 import { MedusaProvider as Provider } from "medusa-react"
 import { PropsWithChildren } from "react"
+import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +19,7 @@ export const MedusaProvider = ({ children }: PropsWithChildren) => {
       queryClientProviderProps={{
         client: queryClient,
       }}
-      baseUrl={"http://localhost:9000"}
+      baseUrl={MEDUSA_BACKEND_URL}
     >
       {children}
     </Provider>

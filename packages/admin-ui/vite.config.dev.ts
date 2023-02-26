@@ -18,7 +18,7 @@ export default defineConfig({
   root: "ui",
   define: {
     __BASE__: JSON.stringify("/"),
-    __BACKEND__: JSON.stringify("http://localhost:9000"),
+    __MEDUSA_BACKEND_URL__: JSON.stringify("http://localhost:9000"),
   },
   build: {
     outDir: "preview",

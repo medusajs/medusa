@@ -43,7 +43,7 @@ export const currencies: CurrenciesType = {
   AED: {
     symbol: "AED",
     name: "United Arab Emirates Dirham",
-    symbol_native: "د.إ.",
+    symbol_native: "د.إ.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "AED",
@@ -133,7 +133,7 @@ export const currencies: CurrenciesType = {
   BHD: {
     symbol: "BD",
     name: "Bahraini Dinar",
-    symbol_native: "د.ب.",
+    symbol_native: "د.ب.‏",
     decimal_digits: 3,
     rounding: 0,
     code: "BHD",
@@ -304,7 +304,7 @@ export const currencies: CurrenciesType = {
   DZD: {
     symbol: "DA",
     name: "Algerian Dinar",
-    symbol_native: "د.ج.",
+    symbol_native: "د.ج.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "DZD",
@@ -322,7 +322,7 @@ export const currencies: CurrenciesType = {
   EGP: {
     symbol: "EGP",
     name: "Egyptian Pound",
-    symbol_native: "ج.م.",
+    symbol_native: "ج.م.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "EGP",
@@ -457,7 +457,7 @@ export const currencies: CurrenciesType = {
   IQD: {
     symbol: "IQD",
     name: "Iraqi Dinar",
-    symbol_native: "د.ع.",
+    symbol_native: "د.ع.‏",
     decimal_digits: 0,
     rounding: 0,
     code: "IQD",
@@ -493,7 +493,7 @@ export const currencies: CurrenciesType = {
   JOD: {
     symbol: "JD",
     name: "Jordanian Dinar",
-    symbol_native: "د.أ.",
+    symbol_native: "د.أ.‏",
     decimal_digits: 3,
     rounding: 0,
     code: "JOD",
@@ -547,7 +547,7 @@ export const currencies: CurrenciesType = {
   KWD: {
     symbol: "KD",
     name: "Kuwaiti Dinar",
-    symbol_native: "د.ك.",
+    symbol_native: "د.ك.‏",
     decimal_digits: 3,
     rounding: 0,
     code: "KWD",
@@ -565,7 +565,7 @@ export const currencies: CurrenciesType = {
   LBP: {
     symbol: "LB£",
     name: "Lebanese Pound",
-    symbol_native: "ل.ل.",
+    symbol_native: "ل.ل.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "LBP",
@@ -601,7 +601,7 @@ export const currencies: CurrenciesType = {
   LYD: {
     symbol: "LD",
     name: "Libyan Dinar",
-    symbol_native: "د.ل.",
+    symbol_native: "د.ل.‏",
     decimal_digits: 3,
     rounding: 0,
     code: "LYD",
@@ -610,7 +610,7 @@ export const currencies: CurrenciesType = {
   MAD: {
     symbol: "MAD",
     name: "Moroccan Dirham",
-    symbol_native: "د.م.",
+    symbol_native: "د.م.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "MAD",
@@ -754,7 +754,7 @@ export const currencies: CurrenciesType = {
   OMR: {
     symbol: "OMR",
     name: "Omani Rial",
-    symbol_native: "ر.ع.",
+    symbol_native: "ر.ع.‏",
     decimal_digits: 3,
     rounding: 0,
     code: "OMR",
@@ -817,7 +817,7 @@ export const currencies: CurrenciesType = {
   QAR: {
     symbol: "QR",
     name: "Qatari Rial",
-    symbol_native: "ر.ق.",
+    symbol_native: "ر.ق.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "QAR",
@@ -862,7 +862,7 @@ export const currencies: CurrenciesType = {
   SAR: {
     symbol: "SR",
     name: "Saudi Riyal",
-    symbol_native: "ر.س.",
+    symbol_native: "ر.س.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "SAR",
@@ -907,7 +907,7 @@ export const currencies: CurrenciesType = {
   SYP: {
     symbol: "SY£",
     name: "Syrian Pound",
-    symbol_native: "ل.س.",
+    symbol_native: "ل.س.‏",
     decimal_digits: 0,
     rounding: 0,
     code: "SYP",
@@ -925,7 +925,7 @@ export const currencies: CurrenciesType = {
   TND: {
     symbol: "DT",
     name: "Tunisian Dinar",
-    symbol_native: "د.ت.",
+    symbol_native: "د.ت.‏",
     decimal_digits: 3,
     rounding: 0,
     code: "TND",
@@ -1051,7 +1051,7 @@ export const currencies: CurrenciesType = {
   YER: {
     symbol: "YR",
     name: "Yemeni Rial",
-    symbol_native: "ر.ي.",
+    symbol_native: "ر.ي.‏",
     decimal_digits: 2,
     rounding: 0,
     code: "YER",

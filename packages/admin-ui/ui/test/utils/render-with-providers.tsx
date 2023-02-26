@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom"
 import { LayeredModalProvider } from "../../src/components/organisms/layered-modal"
 import { SteppedProvider } from "../../src/components/organisms/stepped-modal"
 import { queryClient } from "../../src/providers/medusa-provider"
-import { FeatureFlagProvider } from "../context/feature-flag"
+import { FeatureFlagProvider } from "../providers/feature-flag-provider"
 
 const Providers = ({ children }: PropsWithChildren) => {
   return (

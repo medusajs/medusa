@@ -1,35 +1,38 @@
 import clsx from "clsx"
-import { useState } from "react"
-import { LoginForm, ResetPasswordForm } from "../components/forms"
-import { MedusaIcon } from "../components/icons"
-import { PublicLayout } from "../components/layouts"
+import React, { useState } from "react"
+import MedusaIcon from "../components/fundamentals/icons/medusa-icon"
+import LoginCard from "../components/organisms/login-card"
+import ResetTokenCard from "../components/organisms/reset-token-card"
+import SEO from "../components/seo"
+import LoginLayout from "../components/templates/login-layout"
 
-const Login = () => {
+const LoginPage = () => {
   const [resetPassword, setResetPassword] = useState(false)
 
   return (
-    <PublicLayout>
+    <LoginLayout>
+      <SEO title="Login" />
       <div className="flex h-full w-full items-center justify-center">
         <div
           className={clsx(
-            "bg-grey-0 rounded-rounded flex min-h-[600px] w-[640px] justify-center transition-['min-height'] duration-300",
+            "flex min-h-[600px] w-[640px] bg-grey-0 rounded-rounded justify-center transition-['min-height'] duration-300",
             {
               "min-h-[480px]": resetPassword,
             }
           )}
         >
-          <div className="flex w-full flex-col items-center px-[120px] pt-12">
+          <div className="flex flex-col pt-12 w-full px-[120px] items-center">
             <MedusaIcon />
             {resetPassword ? (
-              <ResetPasswordForm onGoToLogin={() => setResetPassword(false)} />
+              <ResetTokenCard goBack={() => setResetPassword(false)} />
             ) : (
-              <LoginForm onGoToResetPassword={() => setResetPassword(true)} />
+              <LoginCard toResetPassword={() => setResetPassword(true)} />
             )}
           </div>
         </div>
       </div>
-    </PublicLayout>
+    </LoginLayout>
   )
 }
 
-export default Login
+export default LoginPage

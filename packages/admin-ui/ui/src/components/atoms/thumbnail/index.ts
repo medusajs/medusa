@@ -1,1 +1,1 @@
-export { Thumbnail } from "./thumbnail"
+export { Thumbnail as default } from "./thumbnail"

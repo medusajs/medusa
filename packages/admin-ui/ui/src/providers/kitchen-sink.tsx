@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react"
-import { LayeredModalProvider, SteppedProvider } from "../components/organisms"
+import { LayeredModalProvider } from "../components/molecules/modal/layered-modal"
+import { SteppedProvider } from "../components/molecules/modal/stepped-modal"
 import { FeatureFlagProvider } from "./feature-flag-provider"
 import { MedusaProvider } from "./medusa-provider"
 
