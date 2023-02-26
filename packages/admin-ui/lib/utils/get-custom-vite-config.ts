@@ -14,7 +14,7 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
 
     return {
       __BASE__: JSON.stringify(`/${base}`),
-      __BACKEND__: JSON.stringify(backend),
+      __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
     }
   }
 
@@ -49,6 +49,13 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
     base: formatBase(globals.base),
     define: globalReplacements(),
     build: buildConfig(),
+    resolve: {
+      alias: {
+        "@tanstack/react-query": resolve(
+          require.resolve("@tanstack/react-query")
+        ),
+      },
+    },
     clearScreen: false,
     logLevel: "error",
   }

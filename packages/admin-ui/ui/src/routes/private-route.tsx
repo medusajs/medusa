@@ -1,7 +1,7 @@
 import { useAdminGetSession } from "medusa-react"
 import { PropsWithChildren, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { Spinner } from "../components/atoms/spinner"
+import Spinner from "../components/atoms/spinner"
 
 export const ProtectedRoute = ({ children }: PropsWithChildren) => {
   const { user, isLoading } = useAdminGetSession()

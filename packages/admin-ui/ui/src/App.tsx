@@ -24,7 +24,10 @@ const router = createBrowserRouter(
       <Route path="reset-password" element={<ResetPasswordPage />} />
       <Route path="*" element={<NotFound />} />
     </>
-  )
+  ),
+  {
+    basename: __BASE__,
+  }
 )
 
 const Loading = () => (
