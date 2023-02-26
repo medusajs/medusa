@@ -72,6 +72,7 @@ module.exports = {
     node: true,
     jest: true,
   },
+  ignorePatterns: [],
   overrides: [
     {
       files: ["*.ts"],
