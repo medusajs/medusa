@@ -50,7 +50,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           "email": "user@example.com"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

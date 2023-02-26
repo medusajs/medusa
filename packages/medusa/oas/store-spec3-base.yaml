@@ -212,29 +212,29 @@ tags:
   - name: Auth
     description: Auth endpoints that allow authorization of customers and manages their
       sessions.
-  - name: Cart
+  - name: Carts
     description: Cart endpoints that allow handling carts in Medusa.
-  - name: Collection
+  - name: Collections
     description: Collection endpoints that allow handling collections in Medusa.
-  - name: Customer
+  - name: Customers
     description: Customer endpoints that allow handling customers in Medusa.
-  - name: Gift Card
+  - name: Gift Cards
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-  - name: Order
+  - name: Orders
     description: Order endpoints that allow handling orders in Medusa.
-  - name: Product
+  - name: Products
     description: Product endpoints that allow handling products in Medusa.
-  - name: Product Variant
+  - name: Product Variants
     description: Product Variant endpoints that allow handling product variants in Medusa.
-  - name: Region
+  - name: Regions
     description: Region endpoints that allow handling regions in Medusa.
-  - name: Return Reason
+  - name: Return Reasons
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-  - name: Return
+  - name: Returns
     description: Return endpoints that allow handling returns in Medusa.
-  - name: Shipping Option
+  - name: Shipping Options
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-  - name: Swap
+  - name: Swaps
     description: Swap endpoints that allow handling swaps in Medusa.
 servers:
   - url: https://api.medusa-commerce.com

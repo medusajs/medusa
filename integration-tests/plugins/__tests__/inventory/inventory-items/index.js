@@ -278,90 +278,145 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("List inventory items", async () => {
-      const api = useApi()
-      const inventoryItemId = inventoryItems[0].id
+    describe("List inventory items", () => {
+      it("Lists inventory items with location", async () => {
+        const api = useApi()
 
-      await api.post(
-        `/admin/inventory-items/${inventoryItemId}/location-levels`,
-        {
-          location_id: location2Id,
-          stocked_quantity: 10,
-        },
-        adminHeaders
-      )
+        await api.post(
+          `/admin/products/test-product/variants`,
+          {
+            title: "Test Variant w. inventory 2",
+            sku: "MY_SKU1",
+            material: "material",
+            origin_country: "UK",
+            manage_inventory: true,
+            options: [
+              {
+                option_id: "test-product-option",
+                value: "M",
+              },
+            ],
+            prices: [{ currency_code: "usd", amount: 200 }],
+          },
+          adminHeaders
+        )
 
-      await api.post(
-        `/admin/inventory-items/${inventoryItemId}/location-levels`,
-        {
-          location_id: location3Id,
-          stocked_quantity: 5,
-        },
-        adminHeaders
-      )
+        const inventoryItemId = inventoryItems[0].id
 
-      const response = await api.get(`/admin/inventory-items`, adminHeaders)
+        await api.post(
+          `/admin/inventory-items/${inventoryItemId}/location-levels`,
+          {
+            location_id: location3Id,
+            stocked_quantity: 5,
+          },
+          adminHeaders
+        )
 
-      expect(response.data.inventory_items).toHaveLength(1)
-      expect(response.data.inventory_items[0]).toEqual(
-        expect.objectContaining({
-          id: inventoryItemId,
-          sku: "MY_SKU",
-          origin_country: "UK",
-          hs_code: "hs001",
-          mid_code: "mids",
-          material: "material",
-          weight: 300,
-          length: 100,
-          height: 200,
-          width: 150,
-          requires_shipping: true,
-          metadata: null,
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: variantId,
-              title: "Test Variant w. inventory",
-              product_id: "test-product",
-              sku: "MY_SKU",
-              manage_inventory: true,
-              hs_code: "hs001",
-              origin_country: "UK",
-              mid_code: "mids",
-              material: "material",
-              weight: 300,
-              length: 100,
-              height: 200,
-              width: 150,
-              metadata: null,
-              product: expect.objectContaining({
-                id: "test-product",
+        const unfilteredResponse = await api.get(
+          `/admin/inventory-items`,
+          adminHeaders
+        )
+        expect(unfilteredResponse.data.inventory_items).toHaveLength(2)
+
+        const response = await api.get(
+          `/admin/inventory-items?location_id=${location3Id}`,
+          adminHeaders
+        )
+
+        expect(response.data.inventory_items).toHaveLength(1)
+        expect(response.data.inventory_items[0]).toEqual(
+          expect.objectContaining({
+            id: inventoryItemId,
+            sku: "MY_SKU",
+          })
+        )
+      })
+
+      it("Lists inventory items", async () => {
+        const api = useApi()
+        const inventoryItemId = inventoryItems[0].id
+
+        await api.post(
+          `/admin/inventory-items/${inventoryItemId}/location-levels`,
+          {
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/inventory-items/${inventoryItemId}/location-levels`,
+          {
+            location_id: location3Id,
+            stocked_quantity: 5,
+          },
+          adminHeaders
+        )
+
+        const response = await api.get(`/admin/inventory-items`, adminHeaders)
+
+        expect(response.data.inventory_items).toHaveLength(1)
+        expect(response.data.inventory_items[0]).toEqual(
+          expect.objectContaining({
+            id: inventoryItemId,
+            sku: "MY_SKU",
+            origin_country: "UK",
+            hs_code: "hs001",
+            mid_code: "mids",
+            material: "material",
+            weight: 300,
+            length: 100,
+            height: 200,
+            width: 150,
+            requires_shipping: true,
+            metadata: null,
+            variants: expect.arrayContaining([
+              expect.objectContaining({
+                id: variantId,
+                title: "Test Variant w. inventory",
+                product_id: "test-product",
+                sku: "MY_SKU",
+                manage_inventory: true,
+                hs_code: "hs001",
+                origin_country: "UK",
+                mid_code: "mids",
+                material: "material",
+                weight: 300,
+                length: 100,
+                height: 200,
+                width: 150,
+                metadata: null,
+                product: expect.objectContaining({
+                  id: "test-product",
+                }),
               }),
-            }),
-          ]),
-          location_levels: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              inventory_item_id: inventoryItemId,
-              location_id: location2Id,
-              stocked_quantity: 10,
-              reserved_quantity: 0,
-              incoming_quantity: 0,
-              metadata: null,
-              available_quantity: 10,
-            }),
-            expect.objectContaining({
-              id: expect.any(String),
-              inventory_item_id: inventoryItemId,
-              location_id: location3Id,
-              stocked_quantity: 5,
-              reserved_quantity: 0,
-              incoming_quantity: 0,
-              metadata: null,
-              available_quantity: 5,
-            }),
-          ]),
-        })
-      )
+            ]),
+            location_levels: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                inventory_item_id: inventoryItemId,
+                location_id: location2Id,
+                stocked_quantity: 10,
+                reserved_quantity: 0,
+                incoming_quantity: 0,
+                metadata: null,
+                available_quantity: 10,
+              }),
+              expect.objectContaining({
+                id: expect.any(String),
+                inventory_item_id: inventoryItemId,
+                location_id: location3Id,
+                stocked_quantity: 5,
+                reserved_quantity: 0,
+                incoming_quantity: 0,
+                metadata: null,
+                available_quantity: 5,
+              }),
+            ]),
+          })
+        )
+      })
     })
 
     it("When deleting an inventory item it removes the product variants associated to it", async () => {
