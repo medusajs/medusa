@@ -1,27 +1,12 @@
 import { render, RenderOptions } from "@testing-library/react"
-import { MedusaProvider } from "medusa-react"
 import { PropsWithChildren, ReactElement } from "react"
 import { BrowserRouter } from "react-router-dom"
-import { LayeredModalProvider } from "../../src/components/organisms/layered-modal"
-import { SteppedProvider } from "../../src/components/organisms/stepped-modal"
-import { queryClient } from "../../src/providers/medusa-provider"
-import { FeatureFlagProvider } from "../providers/feature-flag-provider"
+import { KitchenSink } from "../../src/providers"
 
 const Providers = ({ children }: PropsWithChildren) => {
   return (
     <BrowserRouter>
-      <MedusaProvider
-        baseUrl={"http://localhost:9000"}
-        queryClientProviderProps={{
-          client: queryClient,
-        }}
-      >
-        <FeatureFlagProvider>
-          <SteppedProvider>
-            <LayeredModalProvider>{children}</LayeredModalProvider>
-          </SteppedProvider>
-        </FeatureFlagProvider>
-      </MedusaProvider>
+      <KitchenSink>{children}</KitchenSink>
     </BrowserRouter>
   )
 }

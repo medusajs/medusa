@@ -1,5 +1,5 @@
 import React from "react"
-import { useFeatureFlag } from "../../providers/feature-flag-provider"
+import { useFeatureFlag } from "../../providers"
 
 export type FeatureToggleProps = {
   featureFlag: string

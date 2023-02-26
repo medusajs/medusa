@@ -7,7 +7,7 @@ import { MedusaProvider } from "./medusa-provider"
 /**
  * This component wraps all providers into a single component.
  */
-const KitchenSink = ({ children }: PropsWithChildren) => {
+export const KitchenSink = ({ children }: PropsWithChildren) => {
   return (
     <MedusaProvider>
       <FeatureFlagProvider>
@@ -18,5 +18,3 @@ const KitchenSink = ({ children }: PropsWithChildren) => {
     </MedusaProvider>
   )
 }
-
-export default KitchenSink

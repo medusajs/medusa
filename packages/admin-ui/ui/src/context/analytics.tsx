@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom"
 import Fade from "../components/atoms/fade-wrapper"
 import AnalyticsPreferencesModal from "../components/organisms/analytics-preferences"
 import { useDebounce } from "../hooks/use-debounce"
-import { useFeatureFlag } from "../providers/feature-flag-provider"
+import { useFeatureFlag } from "../providers"
 import { useAdminAnalyticsConfig } from "../services/analytics"
 
 type Props = {

@@ -15,18 +15,15 @@ type Props = {
 }
 
 export const ClaimSummary = ({ form, order }: Props) => {
-  const { control } = form
+  const { control, getValues } = form
 
   const claimItems = useWatch({
     control: control,
-    name: "return_items",
-    defaultValue: {
-      items: [],
-    },
+    name: "return_items.items",
   })
 
   const selectedClaimItems = useMemo(() => {
-    return claimItems.items.filter((item) => item.return)
+    return claimItems.filter((item) => item.return)
   }, [claimItems])
 
   const claimItemShipping = useWatch({
@@ -37,7 +34,6 @@ export const ClaimSummary = ({ form, order }: Props) => {
   const replacementItems = useWatch({
     control: control,
     name: "additional_items.items",
-    defaultValue: [],
   })
 
   const replacementItemShipping = useWatch({
@@ -70,17 +66,17 @@ export const ClaimSummary = ({ form, order }: Props) => {
     }
   }, [selectedClaimItems, order.currency_code])
 
-  if (!(selectedClaimItems.length > 0 || replacementItems.length > 0)) {
+  if (!(selectedClaimItems?.length > 0 || replacementItems?.length > 0)) {
     return null
   }
 
   return (
     <div className="inter-base-regular">
-      <div className="flex flex-col gap-y-base border-y border-grey-20 py-large">
+      <div className="gap-y-base border-grey-20 py-large flex flex-col border-y">
         {selectedClaimItems.length > 0 && (
           <div>
             <p className="inter-base-semibold mb-small">Claimed items</p>
-            <div className="flex flex-col gap-y-xsmall">
+            <div className="gap-y-xsmall flex flex-col">
               {selectedClaimItems.map((item, index) => {
                 return (
                   <SummaryLineItem
@@ -110,7 +106,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
         )}
         {claimType !== "refund" && replacementItems.length > 0 && (
           <div>
-            <div className="mb-small flex items-center gap-x-2xsmall">
+            <div className="mb-small gap-x-2xsmall flex items-center">
               <p className="inter-base-semibold">Replacement items</p>
               <IconTooltip
                 type="warning"
@@ -119,7 +115,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
                 }
               />
             </div>
-            <div className="flex flex-col gap-y-xsmall">
+            <div className="gap-y-xsmall flex flex-col">
               {replacementItems.map((item, index) => {
                 return (
                   <SummaryLineItem
@@ -152,7 +148,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
           className="inter-large-semibold flex items-center justify-between"
           data-testid="refund-amount-container"
         >
-          <div className="flex items-center gap-x-2xsmall">
+          <div className="gap-x-2xsmall flex items-center">
             <p className="inter-base-semibold">Refund amount</p>
             <IconTooltip
               type="info"

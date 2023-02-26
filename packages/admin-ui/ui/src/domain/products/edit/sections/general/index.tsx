@@ -10,7 +10,7 @@ import SalesChannelsDisplay from "../../../../../components/molecules/sales-chan
 import StatusSelector from "../../../../../components/molecules/status-selector"
 import Section from "../../../../../components/organisms/section"
 import useToggleState from "../../../../../hooks/use-toggle-state"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { useFeatureFlag } from "../../../../../providers"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
 import ChannelsModal from "./channels-modal"
 import GeneralModal from "./general-modal"

@@ -1,8 +1,8 @@
 import { Order, ShippingOption } from "@medusajs/medusa"
 import { renderHook, screen } from "@testing-library/react"
 import { useForm } from "react-hook-form"
-import { fixtures } from "../../../../../test/mocks/data"
-import { renderWithProviders } from "../../../../../test/test-utils"
+import { fixtures } from "../../../../../../test/fixtures"
+import { renderWithProviders } from "../../../../../../test/utils/render-with-providers"
 import { CreateClaimFormType } from "../../../details/claim/register-claim-menu"
 import { ClaimSummary } from "../claim-summary"
 
@@ -13,9 +13,7 @@ describe("ClaimSummary", () => {
   beforeEach(() => {
     order = fixtures.get("order") as unknown as Order
     so = fixtures.get("shipping_option") as unknown as ShippingOption
-  })
 
-  it("should render both a return and replacement shipping option", async () => {
     const { result } = renderHook(() =>
       useForm<CreateClaimFormType>({
         defaultValues: {
@@ -62,7 +60,9 @@ describe("ClaimSummary", () => {
     )
 
     renderWithProviders(<ClaimSummary order={order} form={result.current} />)
+  })
 
+  it("should render both a return and replacement shipping option", async () => {
     expect(screen.getAllByText(so.name)).toHaveLength(2)
 
     expect(screen.getByText("Return shipping")).toBeInTheDocument()

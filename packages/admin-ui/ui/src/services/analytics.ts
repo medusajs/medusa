@@ -3,7 +3,7 @@ import { AnalyticsBrowser } from "@segment/analytics-next"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { WRITE_KEY } from "../constants/analytics"
-import { useFeatureFlag } from "../providers/feature-flag-provider"
+import { useFeatureFlag } from "../providers"
 import { medusaUrl } from "./config"
 
 // API

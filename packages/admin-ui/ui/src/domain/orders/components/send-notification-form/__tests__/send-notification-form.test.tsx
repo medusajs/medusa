@@ -2,7 +2,7 @@ import { renderHook, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useForm, UseFormReturn } from "react-hook-form"
 import SendNotificationForm from ".."
-import { renderWithProviders } from "../../../../../test/test-utils"
+import { renderWithProviders } from "../../../../../../test/utils/render-with-providers"
 import { nestedForm } from "../../../../../utils/nested-form"
 import { CreateClaimFormType } from "../../../details/claim/register-claim-menu"
 
