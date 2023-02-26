@@ -33,11 +33,11 @@ import {
   MedusaContainer,
 } from "../types/global"
 import formatRegistrationName from "../utils/format-registration-name"
-import logger from "./logger"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string
@@ -71,7 +71,7 @@ export default async ({
 
   await Promise.all(
     resolved.map(
-      async (pluginDetails) => await runPreloadFunctions(pluginDetails)
+      async (pluginDetails) => await runSetupFunctions(pluginDetails)
     )
   )
 
@@ -563,27 +563,22 @@ function registerModels(
 }
 
 /**
- * Runs all preload functions in a plugin. Preload functions are run before anything from the plugin is
+ * Runs all setup functions in a plugin. Setup functions are run before anything from the plugin is
  * registered to the container. This is useful for running custom build logic, fetching remote
  * configurations, etc.
  * @param pluginDetails The plugin details including plugin options, version, id, resolved path, etc.
  */
-async function runPreloadFunctions(
-  pluginDetails: PluginDetails
-): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/preload/*.js`, {})
+async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
   await Promise.all(
     files.map(async (fn) => {
       const loaded = require(fn).default
       try {
         await loaded()
       } catch (err) {
-        throw new Error(
-          `A preload function from ${pluginDetails.name} failed`,
-          {
-            cause: err,
-          }
-        )
+        throw new Error(`A setup function from ${pluginDetails.name} failed`, {
+          cause: err,
+        })
       }
     })
   )

@@ -5,7 +5,7 @@ import { EOL } from "os"
 import { resolve } from "path"
 import { loadConfig } from "../utils"
 
-export default async function buildAdmin() {
+export default async function setupAdmin() {
   const { path, backend, outDir } = loadConfig()
 
   let dir: string

@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "outDir": "../../build"
   },
-  "include": ["./**/*"]
+  "include": ["./**/*", "postcss.config.js"]
 }

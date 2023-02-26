@@ -1,46 +1,33 @@
-import { useAdminLogin } from "medusa-react"
+import clsx from "clsx"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import PublicLayout from "../components/layouts/public-layout"
+import { LoginForm, ResetPasswordForm } from "../components/forms"
+import { MedusaIcon } from "../components/icons"
+import { PublicLayout } from "../components/layouts"
 
 const Login = () => {
   const [resetPassword, setResetPassword] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const { mutate } = useAdminLogin()
-  const navigate = useNavigate()
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const form = e.target as HTMLFormElement
-
-    const email = form.email.value
-    const password = form.password.value
-
-    mutate(
-      { email, password },
-      {
-        onSuccess: () => {
-          navigate("/")
-        },
-        onError: () => {
-          setError("Invalid email or password")
-        },
-      }
-    )
-  }
 
   return (
     <PublicLayout>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" />
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p className="text-red-500">{error}</p>}
+      <div className="flex h-full w-full items-center justify-center">
+        <div
+          className={clsx(
+            "bg-grey-0 rounded-rounded flex min-h-[600px] w-[640px] justify-center transition-['min-height'] duration-300",
+            {
+              "min-h-[480px]": resetPassword,
+            }
+          )}
+        >
+          <div className="flex w-full flex-col items-center px-[120px] pt-12">
+            <MedusaIcon />
+            {resetPassword ? (
+              <ResetPasswordForm onGoToLogin={() => setResetPassword(false)} />
+            ) : (
+              <LoginForm onGoToResetPassword={() => setResetPassword(true)} />
+            )}
+          </div>
+        </div>
+      </div>
     </PublicLayout>
   )
 }

@@ -7,7 +7,7 @@
 /utils
 /types
 /loaders
-/preload
+/setup
 
 # Vite cache
 .cache

@@ -1,14 +1,14 @@
 import React from "react"
 import App from "./App"
-import Providers from "./providers"
+import KitchenSink from "./providers/kitchen-sink"
 
 class MedusaApp {
   render() {
     return (
       <React.StrictMode>
-        <Providers>
+        <KitchenSink>
           <App />
-        </Providers>
+        </KitchenSink>
       </React.StrictMode>
     )
   }
