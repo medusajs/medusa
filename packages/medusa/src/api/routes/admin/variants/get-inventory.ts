@@ -87,7 +87,7 @@ export default async (req, res) => {
 
   const variant = await variantService.retrieve(id, { select: ["id"] })
 
-  const responseVariant: AdminGetVariantsVariantInventoryRes = {
+  const responseVariant: VariantInventory = {
     id: variant.id,
     inventory: [],
     sales_channel_availability: [],
@@ -150,7 +150,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
 }
 
 /**
- * @schema AdminGetVariantsVariantInventoryRes
+ * @schema VariantInventory
  * type: object
  * properties:
  *   id:
@@ -173,7 +173,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
  *         description: Available quantity in sales channel
  *         type: number
  */
-export type AdminGetVariantsVariantInventoryRes = {
+export type VariantInventory = {
   id: string
   inventory: ResponseInventoryItem[]
   sales_channel_availability: {
@@ -181,4 +181,16 @@ export type AdminGetVariantsVariantInventoryRes = {
     channel_id: string
     available_quantity: number
   }[]
+}
+
+/**
+ * @schema AdminGetVariantsVariantInventoryRes
+ * type: object
+ * properties:
+ *   variant:
+ *     type: object
+ *     $ref: "#/components/schemas/VariantInventory"
+ */
+export type AdminGetVariantsVariantInventoryRes = {
+  variant: VariantInventory
 }
