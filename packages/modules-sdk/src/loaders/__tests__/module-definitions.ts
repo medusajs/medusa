@@ -3,9 +3,9 @@ import {
   ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types/global"
-import ModuleDefinitionLoader from "../module-definitions"
-import MODULE_DEFINITIONS from "../module-definitions/definitions"
+} from "../../types"
+import { registerModules } from "../module-definition"
+import MODULE_DEFINITIONS from "../../definitions"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
 jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))
@@ -35,7 +35,7 @@ describe("module definitions loader", () => {
   it("Resolves module with default definition given empty config", () => {
     MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-    const res = ModuleDefinitionLoader({ modules: {} } as ConfigModule)
+    const res = registerModules({ modules: {} } as ConfigModule)
 
     expect(res[defaultDefinition.key]).toEqual({
       resolutionPath: defaultDefinition.defaultPackage,
@@ -52,7 +52,7 @@ describe("module definitions loader", () => {
     it("Resolves module with no resolution path when given false", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-      const res = ModuleDefinitionLoader({
+      const res = registerModules({
         modules: { [defaultDefinition.key]: false },
       } as ConfigModule)
 
@@ -68,7 +68,7 @@ describe("module definitions loader", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition, isRequired: true })
 
       try {
-        ModuleDefinitionLoader({
+        registerModules({
           modules: { [defaultDefinition.key]: false },
         } as ConfigModule)
       } catch (err) {
@@ -86,7 +86,7 @@ describe("module definitions loader", () => {
 
       MODULE_DEFINITIONS.push(definition)
 
-      const res = ModuleDefinitionLoader({
+      const res = registerModules({
         modules: {},
       } as ConfigModule)
 
@@ -106,7 +106,7 @@ describe("module definitions loader", () => {
     it("Resolves module with default definition given empty config", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-      const res = ModuleDefinitionLoader({
+      const res = registerModules({
         modules: {
           [defaultDefinition.key]: defaultDefinition.defaultPackage,
         },
@@ -128,7 +128,7 @@ describe("module definitions loader", () => {
     it("Resolves resolution path and provides empty options when none are provided", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-      const res = ModuleDefinitionLoader({
+      const res = registerModules({
         modules: {
           [defaultDefinition.key]: {
             resolve: defaultDefinition.defaultPackage,
@@ -152,7 +152,7 @@ describe("module definitions loader", () => {
     it("Resolves default resolution path and provides options when only options are provided", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-      const res = ModuleDefinitionLoader({
+      const res = registerModules({
         modules: {
           [defaultDefinition.key]: {
             options: { test: 123 },
@@ -175,7 +175,7 @@ describe("module definitions loader", () => {
     it("Resolves resolution path and provides options when only options are provided", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-      const res = ModuleDefinitionLoader({
+      const res = registerModules({
         modules: {
           [defaultDefinition.key]: {
             resolve: defaultDefinition.defaultPackage,

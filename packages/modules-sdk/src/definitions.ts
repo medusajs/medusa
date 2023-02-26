@@ -1,8 +1,4 @@
-import {
-  ModuleDefinition,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "../../types/global"
+import { ModuleDefinition, MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {

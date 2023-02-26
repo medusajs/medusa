@@ -27,7 +27,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
