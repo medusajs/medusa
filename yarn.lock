@@ -5737,7 +5737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@*, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -5804,6 +5804,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
+    "@medusajs/admin-ui": "*"
     "@types/express": ^4.17.13
     commander: ^10.0.0
     express: ^4.17.1
