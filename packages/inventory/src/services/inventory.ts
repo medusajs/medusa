@@ -1,5 +1,9 @@
 import {
   ConfigurableModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
+} from "@medusajs/modules-sdk"
+
+import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
   CreateReservationItemInput,
@@ -11,7 +15,6 @@ import {
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  MODULE_RESOURCE_TYPE,
   ReservationItemDTO,
   TransactionBaseService,
   UpdateInventoryLevelInput,

@@ -124,20 +124,22 @@ describe("/admin/product-categories", () => {
 
       productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
         name: "Mens",
-        handle: "mens",
       })
 
       productCategory = await simpleProductCategoryFactory(dbConnection, {
         name: "sweater",
-        handle: "sweater",
         parent_category: productCategoryParent,
         is_internal: true,
       })
 
       productCategoryChild = await simpleProductCategoryFactory(dbConnection, {
         name: "cashmere",
-        handle: "cashmere",
         parent_category: productCategory,
+      })
+
+      productCategoryChild2 = await simpleProductCategoryFactory(dbConnection, {
+        name: "specific cashmere",
+        parent_category: productCategoryChild,
       })
     })
 
@@ -155,7 +157,7 @@ describe("/admin/product-categories", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(3)
+      expect(response.data.count).toEqual(4)
       expect(response.data.offset).toEqual(0)
       expect(response.data.limit).toEqual(100)
       expect(response.data.product_categories).toEqual(
@@ -184,6 +186,17 @@ describe("/admin/product-categories", () => {
             id: productCategoryChild.id,
             parent_category: expect.objectContaining({
               id: productCategory.id,
+            }),
+            category_children: [
+              expect.objectContaining({
+                id: productCategoryChild2.id,
+              })
+            ],
+          }),
+          expect.objectContaining({
+            id: productCategoryChild2.id,
+            parent_category: expect.objectContaining({
+              id: productCategoryChild.id,
             }),
             category_children: [],
           }),
@@ -237,6 +250,41 @@ describe("/admin/product-categories", () => {
       expect(nullCategoryResponse.status).toEqual(200)
       expect(nullCategoryResponse.data.count).toEqual(1)
       expect(nullCategoryResponse.data.product_categories[0].id).toEqual(productCategoryParent.id)
+    })
+
+    it("adds all descendants to categories in a nested way", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: productCategoryParent.id,
+            category_children: [
+              expect.objectContaining({
+                id: productCategory.id,
+                category_children: [
+                  expect.objectContaining({
+                    id: productCategoryChild.id,
+                    category_children: [
+                      expect.objectContaining({
+                        id: productCategoryChild2.id,
+                        category_children: []
+                      })
+                    ],
+                  })
+                ]
+              })
+            ],
+          }),
+        ])
+      )
     })
   })
 
