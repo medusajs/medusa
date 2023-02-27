@@ -92,12 +92,10 @@ export type ModuleExports = {
 }
 
 export type MedusaModuleConfig = {
-  options?: Record<string, any>
   modules?: Record<
     string,
     | false
     | string
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
   >
-  moduleResolutions?: Record<string, ModuleResolution>
 }

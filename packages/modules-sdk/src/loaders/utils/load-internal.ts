@@ -62,12 +62,19 @@ export async function loadInternalModule(
       ? createMedusaContainer()
       : (container.createScope() as MedusaContainer)
 
-  const moduleDependencies = resolution?.dependencies ?? []
-  for (const dependency of moduleDependencies) {
-    localContainer.register(
-      dependency,
-      asFunction(() => container.resolve(dependency))
-    )
+  if (resources === MODULE_RESOURCE_TYPE.ISOLATED) {
+    const moduleDependencies = resolution?.dependencies ?? []
+
+    for (const dependency of moduleDependencies) {
+      if (!container.hasRegistration(dependency)) {
+        continue
+      }
+
+      localContainer.register(
+        dependency,
+        asFunction(() => container.resolve(dependency))
+      )
+    }
   }
 
   const moduleLoaders = loadedModule?.loaders || []
