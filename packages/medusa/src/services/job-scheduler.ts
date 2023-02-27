@@ -123,7 +123,7 @@ export default class JobSchedulerService {
     const repeatOpts = { repeat: { cron: schedule } }
 
     if (options?.keepExisting) {
-      return await this.queue_.add(eventName, jobToCreate, repeatOpts)
+      return await this.queue_.add(jobToCreate, repeatOpts)
     }
 
     const existingJobs = (await this.queue_.getRepeatableJobs()) ?? []
@@ -134,6 +134,6 @@ export default class JobSchedulerService {
       await this.queue_.removeRepeatableByKey(existingJob.key)
     }
 
-    return await this.queue_.add(eventName, jobToCreate, repeatOpts)
+    return await this.queue_.add(jobToCreate, repeatOpts)
   }
 }
