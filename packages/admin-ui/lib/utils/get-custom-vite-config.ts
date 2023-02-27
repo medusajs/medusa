@@ -10,7 +10,7 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
   const uiPath = resolve(__dirname, "..", "..", "ui")
 
   const globalReplacements = () => {
-    const base = globals.base || "dashboard"
+    const base = globals.base || "app"
 
     let backend = "/"
 

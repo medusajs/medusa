@@ -109,7 +109,7 @@ module.exports = {
       },
     },
     {
-      files: ["**/*.tsx", "**/*.jsx"],
+      files: ["packages/admin-ui/ui/**/*.ts", "packages/admin-ui/ui/**/*.tsx"],
       plugins: ["unused-imports"],
       extends: [
         "plugin:react/recommended",
@@ -142,6 +142,20 @@ module.exports = {
             argsIgnorePattern: "^_",
           },
         ],
+      },
+    },
+    {
+      files: ["packages/admin-ui/lib/**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/admin-ui/tsconfig.json",
+      },
+    },
+    {
+      files: ["packages/admin/**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/admin/tsconfig.json",
       },
     },
   ],

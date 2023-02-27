@@ -1,14 +1,14 @@
+import { Route, Routes } from "react-router-dom"
 import BodyCard from "../../components/organisms/body-card"
 import CustomerTable from "../../components/templates/customer-table"
-import CustomerGroups from "./groups"
 import Details from "./details"
+import CustomerGroups from "./groups"
 import CustomersPageTableHeader from "./header"
-import { Route, Routes } from "react-router-dom"
 
 const CustomerIndex = () => {
   return (
-    <div className="flex flex-col grow h-full">
-      <div className="w-full flex flex-col grow">
+    <div className="flex h-full grow flex-col">
+      <div className="flex w-full grow flex-col">
         <BodyCard
           customHeader={<CustomersPageTableHeader activeView="customers" />}
           className="h-fit"

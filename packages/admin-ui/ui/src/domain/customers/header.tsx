@@ -1,7 +1,5 @@
-import React from "react"
-
-import TableViewHeader from "../../components/organisms/custom-table-header"
 import { useNavigate } from "react-router-dom"
+import TableViewHeader from "../../components/organisms/custom-table-header"
 
 type P = {
   activeView: "customers" | "groups"
