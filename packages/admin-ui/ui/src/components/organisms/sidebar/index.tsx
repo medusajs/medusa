@@ -1,5 +1,5 @@
 import { useAdminStore } from "medusa-react"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import CartIcon from "../../fundamentals/icons/cart-icon"
@@ -14,7 +14,7 @@ import UserMenu from "../../molecules/user-menu"
 
 const ICON_SIZE = 20
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const [currentlyOpen, setCurrentlyOpen] = useState(-1)
 
   const { store } = useAdminStore()
