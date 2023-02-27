@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { WRITE_KEY } from "../constants/analytics"
 import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
-import { useFeatureFlag } from "../providers"
+import { useFeatureFlag } from "../providers/feature-flag-provider"
 
 // API
 

@@ -6,7 +6,6 @@ import PrivateRoute from "../components/private-route"
 import SEO from "../components/seo"
 import Layout from "../components/templates/layout"
 import { WRITE_KEY } from "../constants/analytics"
-import AnalyticsProvider from "../context/analytics"
 import Collections from "../domain/collections"
 import Customers from "../domain/customers"
 import Discounts from "../domain/discounts"
@@ -20,6 +19,7 @@ import ProductsRoute from "../domain/products"
 import PublishableApiKeys from "../domain/publishable-api-keys"
 import SalesChannels from "../domain/sales-channels"
 import Settings from "../domain/settings"
+import { AnalyticsProvider } from "../providers/analytics-provider"
 
 const IndexPage = () => {
   const navigate = useNavigate()

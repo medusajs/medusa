@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "dev": "vite -c vite.config.dev.ts --port 7001",
-    "dev:build": "tsc -p ./ui/tsconfig.json && vite build -c vite.config.dev.ts",
+    "dev:build": "vite build -c vite.config.dev.ts",
     "build": "tsc --build",
     "test:ui": "vitest --config ./vite.config.dev.ts",
     "test": "yarn test:ui"

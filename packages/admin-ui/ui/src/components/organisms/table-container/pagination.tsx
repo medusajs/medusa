@@ -1,6 +1,4 @@
-import React from "react"
-
-import SkeletonProvider from "../../../context/skeleton"
+import { SkeletonProvider } from "../../../providers/skeleton-provider"
 import Skeleton from "../../atoms/skeleton"
 import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
 import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
@@ -33,7 +31,7 @@ export const TablePagination = ({
     <SkeletonProvider isLoading={isLoading}>
       <div
         className={
-          "flex w-full justify-between inter-small-regular text-grey-50"
+          "inter-small-regular text-grey-50 flex w-full justify-between"
         }
       >
         <Skeleton>
@@ -43,16 +41,16 @@ export const TablePagination = ({
           <Skeleton>
             <div>{`${currentPage} of ${soothedPageCount}`}</div>
           </Skeleton>
-          <div className="flex space-x-4 items-center">
+          <div className="flex items-center space-x-4">
             <button
-              className="cursor-pointer disabled:text-grey-30 disabled:cursor-default"
+              className="disabled:text-grey-30 cursor-pointer disabled:cursor-default"
               disabled={!hasPrev || isLoading}
               onClick={() => prevPage()}
             >
               <ArrowLeftIcon />
             </button>
             <button
-              className="cursor-pointer disabled:text-grey-30 disabled:cursor-default"
+              className="disabled:text-grey-30 cursor-pointer disabled:cursor-default"
               disabled={!hasNext || isLoading}
               onClick={() => nextPage()}
             >

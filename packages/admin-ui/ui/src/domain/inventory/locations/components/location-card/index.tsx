@@ -11,7 +11,7 @@ import Actionables, {
 import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
 import useNotification from "../../../../../hooks/use-notification"
 import useToggleState from "../../../../../hooks/use-toggle-state"
-import { useFeatureFlag } from "../../../../../providers"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { countryLookup } from "../../../../../utils/countries"
 import { getErrorMessage } from "../../../../../utils/error-messages"
 import LocationEditModal from "../../edit"

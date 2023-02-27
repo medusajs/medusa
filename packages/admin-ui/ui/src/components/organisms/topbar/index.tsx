@@ -1,11 +1,6 @@
-import React, {
-  type MouseEvent,
-  useCallback,
-  useContext,
-  useState,
-} from "react"
-import { PollingContext } from "../../../context/polling"
+import React, { useCallback, useState, type MouseEvent } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { usePolling } from "../../../providers/polling-provider"
 import Button from "../../fundamentals/button"
 import HelpCircleIcon from "../../fundamentals/icons/help-circle"
 import NotificationBell from "../../molecules/notification-bell"
@@ -20,7 +15,7 @@ const Topbar: React.FC = () => {
     close: activityDrawerClose,
   } = useToggleState(false)
 
-  const { batchJobs } = useContext(PollingContext)
+  const { batchJobs } = usePolling()
 
   const [showSupportform, setShowSupportForm] = useState(false)
 
@@ -33,13 +28,13 @@ const Topbar: React.FC = () => {
   )
 
   return (
-    <div className="sticky top-0 z-40 flex items-center justify-between w-full border-b min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-grey-20">
+    <div className="min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-grey-20 sticky top-0 z-40 flex w-full items-center justify-between border-b">
       <SearchBar />
       <div className="flex items-center">
         <Button
           size="small"
           variant="ghost"
-          className="w-8 h-8 mr-3"
+          className="mr-3 h-8 w-8"
           onClick={() => setShowSupportForm(!showSupportform)}
         >
           <HelpCircleIcon size={24} />

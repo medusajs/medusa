@@ -3,10 +3,16 @@ import fse from "fs-extra"
 import ora from "ora"
 import { EOL } from "os"
 import { resolve } from "path"
-import { loadConfig } from "../utils"
+import { loadConfig, reporter, validatePath } from "../utils"
 
 export default async function setupAdmin() {
   const { path, backend, outDir } = loadConfig()
+
+  try {
+    validatePath(path)
+  } catch (err) {
+    reporter.panic(err)
+  }
 
   let dir: string
   let shouldBuild = false
@@ -55,7 +61,7 @@ export default async function setupAdmin() {
       },
     }).catch((err) => {
       spinner.fail(`Failed to build Admin UI${EOL}`)
-      throw err
+      reporter.panic(err)
     })
 
     spinner.succeed(`Admin UI build - ${Date.now() - time}ms`)

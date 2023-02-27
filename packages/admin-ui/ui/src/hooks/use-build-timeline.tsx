@@ -14,7 +14,7 @@ import {
 } from "medusa-react"
 import { useMemo } from "react"
 import { orderReturnableFields } from "../domain/orders/details/utils/order-returnable-fields"
-import { useFeatureFlag } from "../providers"
+import { useFeatureFlag } from "../providers/feature-flag-provider"
 
 export interface TimelineEvent {
   id: string

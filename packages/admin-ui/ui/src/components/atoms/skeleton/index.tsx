@@ -1,6 +1,6 @@
 import clsx from "clsx"
-import React, { PropsWithChildren } from "react"
-import { useSkeleton } from "../../../context/skeleton"
+import { PropsWithChildren } from "react"
+import { useSkeleton } from "../../../providers/skeleton-provider"
 
 type Props = PropsWithChildren<{
   isLoading?: boolean
@@ -14,7 +14,7 @@ const Skeleton = ({ children, isLoading }: Props) => {
   return (
     <div
       className={clsx("h-fit w-fit", {
-        "bg-grey-10 animate-pulse rounded-rounded [&>*]:opacity-0": state,
+        "bg-grey-10 rounded-rounded animate-pulse [&>*]:opacity-0": state,
       })}
     >
       {children}

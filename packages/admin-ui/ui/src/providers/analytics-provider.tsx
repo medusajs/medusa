@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom"
 import Fade from "../components/atoms/fade-wrapper"
 import AnalyticsPreferencesModal from "../components/organisms/analytics-preferences"
 import { useDebounce } from "../hooks/use-debounce"
-import { useFeatureFlag } from "../providers"
+import { useFeatureFlag } from "../providers/feature-flag-provider"
 import { useAdminAnalyticsConfig } from "../services/analytics"
 
 type Props = {
@@ -40,7 +40,7 @@ type AnalyticsContextType = {
 
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null)
 
-const AnalyticsProvider = ({ writeKey, children }: Props) => {
+export const AnalyticsProvider = ({ writeKey, children }: Props) => {
   const [submittingConfig, setSubmittingConfig] = useState(false)
   const { analytics_config: config, isLoading } = useAdminAnalyticsConfig()
 
@@ -210,5 +210,3 @@ export const useAnalytics = () => {
 
   return context
 }
-
-export default AnalyticsProvider

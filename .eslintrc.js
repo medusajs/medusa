@@ -108,5 +108,9 @@ module.exports = {
         "@typescript-eslint/no-var-requires": "off",
       },
     },
+    {
+      files: ["**/*.tsx", "**/*.jsx"],
+      extends: ["plugin:react/recommended", "plugin:react-hooks/recommended"],
+    },
   ],
 }

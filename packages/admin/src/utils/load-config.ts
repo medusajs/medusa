@@ -15,7 +15,7 @@ export const loadConfig = () => {
 
   let defaultConfig: PluginOptions = {
     serve: true,
-    path: "dashboard",
+    path: "app",
     dev: {
       autoOpen: true,
     },

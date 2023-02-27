@@ -1,6 +1,3 @@
-/**
- * @see https://docs.medusajs.com/plugins/admin
- */
 export type PluginOptions = {
   /**
    * Determines whether the admin dashboard should be served.
@@ -9,7 +6,7 @@ export type PluginOptions = {
   /**
    * The path to the admin dashboard. Should not be either prefixed or suffixed with a slash.
    * The chosen path cannot be one of the reserved paths: "admin", "store".
-   * @default "dashboard"
+   * @default "app"
    */
   path?: string
   /**

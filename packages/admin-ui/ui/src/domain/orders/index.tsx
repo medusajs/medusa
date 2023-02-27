@@ -1,5 +1,5 @@
 import { useAdminCreateBatchJob } from "medusa-react"
-import React, { useContext, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
 
 import Button from "../../components/fundamentals/button"
@@ -10,8 +10,8 @@ import ExportModal from "../../components/organisms/export-modal"
 import OrderTable from "../../components/templates/order-table"
 import useNotification from "../../hooks/use-notification"
 import useToggleState from "../../hooks/use-toggle-state"
+import { usePolling } from "../../providers/polling-provider"
 import { getErrorMessage } from "../../utils/error-messages"
-import { PollingContext } from "../../context/polling"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
 
@@ -20,7 +20,7 @@ const VIEWS = ["orders", "drafts"]
 const OrderIndex = () => {
   const view = "orders"
 
-  const { resetInterval } = useContext(PollingContext)
+  const { resetInterval } = usePolling()
   const navigate = useNavigate()
   const createBatchJob = useAdminCreateBatchJob()
   const notification = useNotification()
@@ -71,8 +71,8 @@ const OrderIndex = () => {
 
   return (
     <>
-      <div className="flex flex-col grow h-full">
-        <div className="w-full flex flex-col grow">
+      <div className="flex h-full grow flex-col">
+        <div className="flex w-full grow flex-col">
           <BodyCard
             customHeader={
               <TableViewHeader

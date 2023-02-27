@@ -1,6 +1,6 @@
 import { useAdminGetSession } from "medusa-react"
 import BackButton from "../../../components/atoms/back-button"
-import { useFeatureFlag } from "../../../providers"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import EditUserInformation from "./edit-user-information"
 import UsageInsights from "./usage-insights"
 

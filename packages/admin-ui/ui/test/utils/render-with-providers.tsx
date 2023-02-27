@@ -1,12 +1,12 @@
 import { render, RenderOptions } from "@testing-library/react"
 import { PropsWithChildren, ReactElement } from "react"
 import { BrowserRouter } from "react-router-dom"
-import { KitchenSink } from "../../src/providers"
+import { Providers } from "../../src/providers/providers"
 
-const Providers = ({ children }: PropsWithChildren) => {
+const Wrapper = ({ children }: PropsWithChildren) => {
   return (
     <BrowserRouter>
-      <KitchenSink>{children}</KitchenSink>
+      <Providers>{children}</Providers>
     </BrowserRouter>
   )
 }
@@ -14,7 +14,7 @@ const Providers = ({ children }: PropsWithChildren) => {
 const customRender = (
   ui: ReactElement,
   options?: Omit<RenderOptions, "wrapper">
-) => render(ui, { wrapper: Providers, ...options })
+) => render(ui, { wrapper: Wrapper, ...options })
 
 export const renderWithProviders = (
   ui: ReactElement,

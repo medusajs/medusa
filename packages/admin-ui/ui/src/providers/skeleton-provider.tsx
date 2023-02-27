@@ -13,7 +13,7 @@ type Props = {
   isLoading?: boolean
 }
 
-const SkeletonProvider = ({ children, isLoading }: Props) => {
+export const SkeletonProvider = ({ children, isLoading }: Props) => {
   return (
     <SkeletonContext.Provider
       value={{
@@ -24,8 +24,6 @@ const SkeletonProvider = ({ children, isLoading }: Props) => {
     </SkeletonContext.Provider>
   )
 }
-
-export default SkeletonProvider
 
 export const useSkeleton = () => {
   const { isLoading } = React.useContext(SkeletonContext)

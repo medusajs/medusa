@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import {
   mapFormValuesToCreatePriceList,

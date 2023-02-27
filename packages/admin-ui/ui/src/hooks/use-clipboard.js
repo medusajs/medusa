@@ -1,6 +1,6 @@
 // hugely inspired from @danoc https://github.com/danoc/react-use-clipboard/blob/master/src/index.tsx
-import React from "react"
 import copy from "copy-to-clipboard"
+import React from "react"
 
 /**
  * @param {string} text

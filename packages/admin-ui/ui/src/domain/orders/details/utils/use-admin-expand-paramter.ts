@@ -1,4 +1,4 @@
-import { useFeatureFlag } from "../../../../providers"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 const orderRelations = [
   "customer",

@@ -10,7 +10,21 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
   const uiPath = resolve(__dirname, "..", "..", "ui")
 
   const globalReplacements = () => {
-    const { base = "dashboard", backend = "/" } = globals
+    const base = globals.base || "dashboard"
+
+    let backend = "/"
+
+    if (globals.backend) {
+      try {
+        // Test if the backend is a valid URL
+        new URL(globals.backend)
+        backend = globals.backend
+      } catch (_e) {
+        throw new Error(
+          `The provided backend URL is not valid: ${globals.backend}. Please provide a valid URL (e.g. https://my-medusa-server.com).`
+        )
+      }
+    }
 
     return {
       __BASE__: JSON.stringify(`/${base}`),
