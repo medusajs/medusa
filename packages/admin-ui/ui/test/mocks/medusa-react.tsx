@@ -19,6 +19,9 @@ vi.mock("medusa-react", async () => {
     useAdminOrders: vi.fn(() => mockListQuery("order")),
     useAdminShippingOptions: vi.fn(() => mockListQuery("shipping_option")),
     useAdminReturnReasons: vi.fn(() => mockListQuery("return_reason")),
+    useAdminBatchJobs: vi.fn(() => {
+      return []
+    }),
     // Mutations
     useAdminCreateClaim: vi.fn(() => mockMutation),
   }

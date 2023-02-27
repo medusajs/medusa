@@ -19,7 +19,8 @@
     "dev:build": "vite build -c vite.config.dev.ts",
     "build": "tsc --build",
     "test:ui": "vitest --config ./vite.config.dev.ts",
-    "test": "yarn test:ui"
+    "test:ui:once": "vitest --config ./vite.config.dev.ts --run",
+    "test": "yarn test:ui:once"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",

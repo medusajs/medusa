@@ -125,6 +125,9 @@ module.exports = {
         sourceType: "module", // Allows for the use of imports
         project: "./packages/admin-ui/ui/tsconfig.json",
       },
+      env: {
+        browser: true,
+      },
       rules: {
         "prettier/prettier": "error",
         "react/prop-types": "off",
