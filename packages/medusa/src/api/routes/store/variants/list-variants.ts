@@ -74,7 +74,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/variants'
  * tags:
- *   - Product Variant
+ *   - Variants
  * responses:
  *   200:
  *     description: OK

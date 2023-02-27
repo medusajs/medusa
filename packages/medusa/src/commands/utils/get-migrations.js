@@ -5,7 +5,7 @@ import { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
 import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
 import { handleConfigError } from "../../loaders/config"
-import registerModuleDefinitions from "../../loaders/module-definitions"
+import { registerModules } from "@medusajs/modules-sdk"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -92,7 +92,7 @@ function resolvePlugin(pluginName) {
 export function getInternalModules(configModule) {
   const modules = []
 
-  const moduleResolutions = registerModuleDefinitions(configModule)
+  const moduleResolutions = registerModules(configModule)
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (

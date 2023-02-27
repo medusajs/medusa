@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
