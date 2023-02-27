@@ -2,7 +2,7 @@ import ConnectionLoader from "./loaders/connection"
 import StockLocationService from "./services/stock-location"
 import * as SchemaMigration from "./migrations/schema-migrations/1665749860179-setup"
 import * as StockLocationModels from "./models"
-import { ModuleExports } from "@medusajs/medusa"
+import { ModuleExports } from "@medusajs/modules-sdk"
 
 const service = StockLocationService
 const migrations = [SchemaMigration]

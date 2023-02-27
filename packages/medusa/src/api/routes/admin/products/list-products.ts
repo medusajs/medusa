@@ -191,7 +191,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

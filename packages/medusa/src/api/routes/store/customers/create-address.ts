@@ -63,7 +63,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *  "200":
  *    description: "A successful response"

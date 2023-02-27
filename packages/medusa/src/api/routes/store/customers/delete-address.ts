@@ -32,7 +32,7 @@ import CustomerService from "../../../../services/customer"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

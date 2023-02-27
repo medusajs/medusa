@@ -229,68 +229,63 @@ tags:
   - name: Auth
     description: Auth endpoints that allow authorization of admin Users and manages
       their sessions.
-  - name: App
+  - name: Apps
     description: App endpoints that allow handling apps in Medusa.
-  - name: Batch Job
+  - name: Batch Jobs
     description: Batch Job endpoints that allow handling batch jobs in Medusa.
-  - name: Claim
-    description: Claim endpoints that allow handling claims in Medusa.
-  - name: Collection
+  - name: Collections
     description: Collection endpoints that allow handling collections in Medusa.
-  - name: Customer
+  - name: Customers
     description: Customer endpoints that allow handling customers in Medusa.
-  - name: Customer Group
+  - name: Customer Groups
     description: Customer Group endpoints that allow handling customer groups in Medusa.
-  - name: Discount
+  - name: Discounts
     description: Discount endpoints that allow handling discounts in Medusa.
-  - name: Discount Condition
-    description: Discount Condition endpoints that allow handling discount conditions
-      in Medusa.
-  - name: Draft Order
+  - name: Draft Orders
     description: Draft Order endpoints that allow handling draft orders in Medusa.
-  - name: Gift Card
+  - name: Gift Cards
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-  - name: Invite
+  - name: Invites
     description: Invite endpoints that allow handling invites in Medusa.
-  - name: Note
+  - name: Notes
     description: Note endpoints that allow handling notes in Medusa.
-  - name: Notification
+  - name: Notifications
     description: Notification endpoints that allow handling notifications in Medusa.
-  - name: Order
+  - name: Orders
     description: Order endpoints that allow handling orders in Medusa.
-  - name: Price List
+  - name: Price Lists
     description: Price List endpoints that allow handling price lists in Medusa.
-  - name: Product
+  - name: Products
     description: Product endpoints that allow handling products in Medusa.
-  - name: Product Tag
+  - name: Product Tags
     description: Product Tag endpoints that allow handling product tags in Medusa.
-  - name: Product Type
+  - name: Product Types
     description: Product Types endpoints that allow handling product types in Medusa.
-  - name: Product Variant
-    description: Product Variant endpoints that allow handling product variants in Medusa.
-  - name: Region
+  - name: Regions
     description: Region endpoints that allow handling regions in Medusa.
-  - name: Return Reason
+  - name: Return Reasons
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-  - name: Return
+  - name: Returns
     description: Return endpoints that allow handling returns in Medusa.
-  - name: Sales Channel
+  - name: Sales Channels
     description: Sales Channel endpoints that allow handling sales channels in Medusa.
-  - name: Shipping Option
+  - name: Shipping Options
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-  - name: Shipping Profile
+  - name: Shipping Profiles
     description: Shipping Profile endpoints that allow handling shipping profiles in
       Medusa.
   - name: Store
     description: Store endpoints that allow handling stores in Medusa.
-  - name: Swap
+  - name: Swaps
     description: Swap endpoints that allow handling swaps in Medusa.
-  - name: Tax Rate
+  - name: Tax Rates
     description: Tax Rate endpoints that allow handling tax rates in Medusa.
-  - name: Upload
+  - name: Uploads
     description: Upload endpoints that allow handling uploads in Medusa.
-  - name: User
+  - name: Users
     description: User endpoints that allow handling users in Medusa.
+  - name: Variants
+    description: Product Variant endpoints that allow handling product variants in Medusa.
 servers:
   - url: https://api.medusa-commerce.com
 paths: { }

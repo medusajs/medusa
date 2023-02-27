@@ -62,6 +62,9 @@ export type ExtendedFindConfig<TEntity> = (
 }
 
 export type QuerySelector<TEntity> = Selector<TEntity> & { q?: string }
+export type TreeQuerySelector<TEntity> = QuerySelector<TEntity> & {
+  include_descendants_tree?: boolean
+}
 
 export type Selector<TEntity> = {
   [key in keyof TEntity]?:
