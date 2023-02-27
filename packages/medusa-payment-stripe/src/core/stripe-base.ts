@@ -16,7 +16,7 @@ import {
 } from "../types"
 
 abstract class StripeBase extends AbstractPaymentProcessor {
-  static identifier = "stripe"
+  static identifier = ""
 
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
