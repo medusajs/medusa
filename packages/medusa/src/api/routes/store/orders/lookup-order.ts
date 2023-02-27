@@ -101,7 +101,7 @@ export default async (req, res) => {
   const order = orders[0]
 
   res.json({
-    order: cleanResponseData(order, req.storeAllowedProperties || []),
+    order: cleanResponseData(order, req.allowedProperties || []),
   })
 }
 

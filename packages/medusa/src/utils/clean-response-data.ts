@@ -23,7 +23,7 @@ const EXCLUDED_FIELDS = [
 ]
 
 /**
- * Filter response data to contain props specified in the `storeAllowedProperties` or `allowedProperties`.
+ * Filter response data to contain props specified in the `allowedProperties`.
  * You can read more in the transformQuery middleware utility methods.
  *
  * @param data - record or an array of records in the response

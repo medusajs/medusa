@@ -253,10 +253,7 @@ export default async (req, res) => {
   ])
 
   res.json({
-    products: cleanResponseData(
-      computedProducts,
-      req.storeAllowedProperties || []
-    ),
+    products: cleanResponseData(computedProducts, req.allowedProperties || []),
     count,
     offset: validated.offset,
     limit: validated.limit,
