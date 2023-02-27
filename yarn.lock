@@ -23703,7 +23703,8 @@ __metadata:
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
-    jest: ^26.6.3
+    jest: 26.6.3
+    jest-environment-node: 26.6.2
     medusa-interfaces: "*"
     typeorm: ^0.3.11
   languageName: unknown
@@ -25381,6 +25382,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-environment-node@npm:26.6.2, jest-environment-node@npm:^26.6.2":
+  version: 26.6.2
+  resolution: "jest-environment-node@npm:26.6.2"
+  dependencies:
+    "@jest/environment": ^26.6.2
+    "@jest/fake-timers": ^26.6.2
+    "@jest/types": ^26.6.2
+    "@types/node": "*"
+    jest-mock: ^26.6.2
+    jest-util: ^26.6.2
+  checksum: 887382992bfd8110337cdc6e8a931f647d78363aa1ed777a2d9ff0f2edc468e6cc9e9b9a5d26c772534d0bd8ec41d860e433beb2d6f3c8a8a2cab3007ceec126
+  languageName: node
+  linkType: hard
+
 "jest-environment-node@npm:^25.5.0":
   version: 25.5.0
   resolution: "jest-environment-node@npm:25.5.0"
@@ -25392,20 +25407,6 @@ __metadata:
     jest-util: ^25.5.0
     semver: ^6.3.0
   checksum: 6c5484f828757abc5d9878d77a7c8d76b44d00de51cd056fc37d0817ae6a5d74ec543a8e02bcd2d8e3a433ec98b416f6c2038919487b9d3eca92d9dd223f0115
-  languageName: node
-  linkType: hard
-
-"jest-environment-node@npm:^26.6.2":
-  version: 26.6.2
-  resolution: "jest-environment-node@npm:26.6.2"
-  dependencies:
-    "@jest/environment": ^26.6.2
-    "@jest/fake-timers": ^26.6.2
-    "@jest/types": ^26.6.2
-    "@types/node": "*"
-    jest-mock: ^26.6.2
-    jest-util: ^26.6.2
-  checksum: 887382992bfd8110337cdc6e8a931f647d78363aa1ed777a2d9ff0f2edc468e6cc9e9b9a5d26c772534d0bd8ec41d860e433beb2d6f3c8a8a2cab3007ceec126
   languageName: node
   linkType: hard
 
