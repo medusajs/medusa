@@ -148,22 +148,6 @@ export default async (req, res) => {
 
     const productVariantMap = new Map(product.variants.map((v) => [v.id, v]))
 
-    // Delete the variant that does not exist in the provided variants
-    const variantsToDelete = variants.filter(
-      (v) => v.id && !productVariantMap.has(v.id)
-    )
-    await productVariantService
-      .withTransaction(transactionManager)
-      .delete(variantsToDelete.map((v) => v.id!))
-
-    const allVariantTransactions: DistributedTransaction[] = []
-    const transactionDependencies = {
-      manager: transactionManager,
-      inventoryService,
-      productVariantInventoryService,
-      productVariantService,
-    }
-
     const variantNotBelongingToProductIds: string[] = []
     const variantsToUpdate: {
       variant: ProductVariant
@@ -205,13 +189,35 @@ export default async (req, res) => {
       )
     }
 
-    if (variantsToUpdate.length) {
-      await productVariantService.updateNew(variantsToUpdate)
+    const allVariantTransactions: DistributedTransaction[] = []
+    const transactionDependencies = {
+      manager: transactionManager,
+      inventoryService,
+      productVariantInventoryService,
+      productVariantService,
     }
 
-    // Create or update variants
-    await Promise.all(
-      variantsToCreate.map(async (data) => {
+    const promises: Promise<any>[] = []
+
+    // Delete the variant that does not exist in the provided variants
+    const variantsToDelete = variants.filter(
+      (v) => v.id && !productVariantMap.has(v.id)
+    )
+
+    if (variantsToDelete) {
+      promises.push(
+        productVariantService
+          .withTransaction(transactionManager)
+          .delete(variantsToDelete.map((v) => v.id!))
+      )
+    }
+
+    if (variantsToUpdate.length) {
+      promises.push(productVariantService.updateNew(variantsToUpdate))
+    }
+
+    promises.push(
+      ...variantsToCreate.map(async (data) => {
         try {
           const varTransaction = await createVariantTransaction(
             transactionDependencies,
@@ -233,6 +239,8 @@ export default async (req, res) => {
         }
       })
     )
+
+    await Promise.all(promises)
   })
 
   const rawProduct = await productService.retrieve(id, {

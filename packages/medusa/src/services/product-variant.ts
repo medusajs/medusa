@@ -629,7 +629,12 @@ class ProductVariantService extends TransactionBaseService {
 
       return (
         await Promise.all([
-          queryBuilder.insert().values(dataToCreate).returning("*").execute(),
+          queryBuilder
+            .insert()
+            .into(MoneyAmount)
+            .values(dataToCreate)
+            .returning("*")
+            .execute(),
           moneyAmountRepo.save(dataToUpdate),
         ])
       ).flat() as MoneyAmount[]
@@ -695,7 +700,12 @@ class ProductVariantService extends TransactionBaseService {
       if (dataToCreate.length) {
         const queryBuilder = moneyAmountRepo.createQueryBuilder()
         promises.push(
-          queryBuilder.insert().values(dataToCreate).returning("*").execute()
+          queryBuilder
+            .insert()
+            .into(MoneyAmount)
+            .values(dataToCreate)
+            .returning("*")
+            .execute()
         )
       }
 
