@@ -10,11 +10,23 @@ export { doesConditionBelongToDiscount } from "./discount/does-condition-belong-
 export { transformIncludesOptions } from "./transform-includes-options"
 export { transformBody } from "./transform-body"
 export { transformQuery } from "./transform-query"
+export { default as authenticate } from "./authenticate"
+export { default as authenticateCustomer } from "./authenticate-customer"
+export { default as wrapHandler } from "./await-middleware"
+export { default as normalizeQuery } from "./normalized-query"
+export { default as requireCustomerAuthentication } from "./require-customer-authentication"
 
+/**
+ * @deprecated you can now import the middlewares directly without passing by the default export
+ * e.g `import { wrapHandler } from "@medusajs/medusa"
+ */
 export default {
   authenticate,
   authenticateCustomer,
   requireCustomerAuthentication,
   normalizeQuery,
+  /**
+   * @deprecated use `import { wrapHandler } from "@medusajs/medusa"`
+   */
   wrap,
 }

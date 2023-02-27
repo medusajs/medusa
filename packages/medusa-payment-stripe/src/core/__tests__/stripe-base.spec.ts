@@ -54,7 +54,7 @@ describe("StripeTest", () => {
       let status: PaymentSessionStatus
 
       status = await stripeTest.getPaymentStatus({
-        id: PaymentIntentDataByStatus.REQUIRE_PAYMENT_METHOD.id,
+        id: PaymentIntentDataByStatus.REQUIRES_PAYMENT_METHOD.id,
       })
       expect(status).toBe(PaymentSessionStatus.PENDING)
 

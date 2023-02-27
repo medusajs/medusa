@@ -1,5 +1,5 @@
 export const PaymentIntentDataByStatus = {
-  REQUIRE_PAYMENT_METHOD: {
+  REQUIRES_PAYMENT_METHOD: {
     id: "requires_payment_method",
     status: "requires_payment_method",
   },
