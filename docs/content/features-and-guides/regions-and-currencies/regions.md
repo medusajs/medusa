@@ -59,7 +59,7 @@ As regions are a core part of your Medusa server, there are many relations to ot
 
 This section covers relations to entities that make up the configurations of a region.
 
-![Regions Relations Overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1677174270/Medusa%20Docs/Diagrams/regions-architecture_ebzbpb.jpg)
+![Regions Relations Overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1677487695/Medusa%20Docs/Diagrams/regions-architecture_v50h9d.jpg)
 
 ### Country
 
