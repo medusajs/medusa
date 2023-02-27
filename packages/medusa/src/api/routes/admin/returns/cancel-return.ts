@@ -34,7 +34,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK

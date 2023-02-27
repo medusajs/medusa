@@ -24,6 +24,7 @@ import productTypesRoutes from "./product-types"
 import publishableApiKeyRoutes from "./publishable-api-keys"
 import productRoutes from "./products"
 import regionRoutes from "./regions"
+import reservationRoutes from "./reservations"
 import returnReasonRoutes from "./return-reasons"
 import returnRoutes from "./returns"
 import salesChannelRoutes from "./sales-channels"
@@ -97,6 +98,7 @@ export default (app, container, config) => {
   productTypesRoutes(route)
   publishableApiKeyRoutes(route)
   regionRoutes(route, featureFlagRouter)
+  reservationRoutes(route)
   returnReasonRoutes(route)
   returnRoutes(route)
   salesChannelRoutes(route)

@@ -48,7 +48,7 @@ import { TokenEvents } from "../../../../types/token"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
