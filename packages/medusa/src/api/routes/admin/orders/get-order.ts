@@ -70,7 +70,7 @@ export default async (req, res) => {
     }
   )
 
-  order = cleanResponseData(order, req.adminAllowedProperties)
+  order = cleanResponseData(order, req.allowedProperties)
 
   res.json({ order: order })
 }

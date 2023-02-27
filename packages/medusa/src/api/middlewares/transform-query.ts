@@ -12,7 +12,54 @@ import { FindConfig, QueryConfig, RequestQueryFields } from "../../types/common"
 import { omit } from "lodash"
 import { removeUndefinedProperties } from "../../utils"
 
+/**
+ * Middleware that transform the query input for the admin end points
+ * @param plainToClass
+ * @param queryConfig
+ * @param config
+ */
 export function transformQuery<
+  T extends RequestQueryFields,
+  TEntity extends BaseEntity
+>(
+  plainToClass: ClassConstructor<T>,
+  queryConfig?: Omit<
+    QueryConfig<TEntity>,
+    "allowedRelations" | "allowedFields"
+  >,
+  config: ValidatorOptions = {}
+): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      normalizeQuery()(req, res, () => void 0)
+      const validated: T = await validator<T, Record<string, unknown>>(
+        plainToClass,
+        req.query,
+        config
+      )
+      req.validatedQuery = validated
+      req.filterableFields = getFilterableFields(validated)
+      req.allowedProperties = getAllowedProperties(
+        validated,
+        req.includes ?? {},
+        queryConfig
+      )
+      attachListOrRetrieveConfig<TEntity>(req, queryConfig)
+
+      next()
+    } catch (e) {
+      next(e)
+    }
+  }
+}
+
+/**
+ * Middleware that transform the query input for the admin end points
+ * @param plainToClass
+ * @param queryConfig
+ * @param config
+ */
+export function transformStoreQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(
@@ -29,39 +76,13 @@ export function transformQuery<
         config
       )
       req.validatedQuery = validated
-
-      req.filterableFields = omit(validated, [
-        "limit",
-        "offset",
-        "expand",
-        "fields",
-        "order",
-      ])
-      req.filterableFields = removeUndefinedProperties(req.filterableFields)
-
-      req.storeAllowedProperties = getStoreAllowedProperties(
+      req.filterableFields = getFilterableFields(validated)
+      req.allowedProperties = getStoreAllowedProperties(
         validated,
         req.includes ?? {},
         queryConfig
       )
-
-      req.adminAllowedProperties = getAdminAllowedProperties(
-        validated,
-        req.includes ?? {},
-        queryConfig
-      )
-
-      if (queryConfig?.isList) {
-        req.listConfig = prepareListQuery(
-          validated,
-          queryConfig
-        ) as FindConfig<unknown>
-      } else {
-        req.retrieveConfig = prepareRetrieveQuery(
-          validated,
-          queryConfig
-        ) as FindConfig<unknown>
-      }
+      attachListOrRetrieveConfig<TEntity>(req, queryConfig)
 
       next()
     } catch (e) {
@@ -70,6 +91,43 @@ export function transformQuery<
   }
 }
 
+/**
+ * Omit the non filterable config from the validated object
+ * @param obj
+ */
+function getFilterableFields<T extends RequestQueryFields>(obj: T): T {
+  const result = omit(obj, [
+    "limit",
+    "offset",
+    "expand",
+    "fields",
+    "order",
+  ]) as T
+  return removeUndefinedProperties(result)
+}
+
+/**
+ * build and attach the `retrieveConfig` or `listConfig`
+ * @param req
+ * @param queryConfig
+ */
+function attachListOrRetrieveConfig<TEntity extends BaseEntity>(
+  req: Request,
+  queryConfig?: QueryConfig<TEntity>
+) {
+  const validated = req.validatedQuery
+  if (queryConfig?.isList) {
+    req.listConfig = prepareListQuery(
+      validated,
+      queryConfig
+    ) as FindConfig<unknown>
+  } else {
+    req.retrieveConfig = prepareRetrieveQuery(
+      validated,
+      queryConfig
+    ) as FindConfig<unknown>
+  }
+}
 /**
  * Build the store allowed props based on the custom fields query params, the defaults and the includes options.
  * This can be used later with `cleanResponseData` in order to clean up the returned objects to the client.
@@ -83,19 +141,14 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
   const allowed: string[] = []
-  if (
-    (queryConfig?.defaultFields || validated.fields) &&
-    (queryConfig?.defaultRelations || validated.expand)
-  ) {
-    allowed.push(
-      ...(validated.fields
-        ? validated.fields.split(",")
-        : queryConfig?.allowedFields || []),
-      ...(validated.expand
-        ? validated.expand.split(",")
-        : queryConfig?.allowedRelations || [])
-    )
-  }
+  allowed.push(
+    ...(validated.fields
+      ? validated.fields.split(",")
+      : queryConfig?.allowedFields || []),
+    ...(validated.expand
+      ? validated.expand.split(",")
+      : queryConfig?.allowedRelations || [])
+  )
 
   const includeKeys = Object.keys(includesOptions)
   if (includeKeys) {
@@ -113,18 +166,16 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
  * @param validated
  * @param includesOptions
  */
-function getAdminAllowedProperties<TEntity extends BaseEntity>(
+function getAllowedProperties<TEntity extends BaseEntity>(
   validated: RequestQueryFields,
   includesOptions: Record<string, boolean>,
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
   const allowed: string[] = []
-  if (validated.fields || validated.expand) {
-    allowed.push(
-      ...(validated.fields?.split(",") ?? []),
-      ...(validated.expand?.split(",") ?? [])
-    )
-  }
+  allowed.push(
+    ...(validated.fields?.split(",") ?? []),
+    ...(validated.expand?.split(",") ?? [])
+  )
 
   const includeKeys = Object.keys(includesOptions)
   if (includeKeys) {

@@ -206,7 +206,7 @@ export default async (req, res) => {
     req.listConfig
   )
 
-  const data = cleanResponseData(orders, req.adminAllowedProperties)
+  const data = cleanResponseData(orders, req.allowedProperties)
 
   res.json({ orders: data, count, offset: skip, limit: take })
 }

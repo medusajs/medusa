@@ -20,8 +20,7 @@ declare global {
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
-      storeAllowedProperties: string[]
-      adminAllowedProperties: string[]
+      allowedProperties: string[]
       includes?: Record<string, boolean>
       errors: string[]
     }
