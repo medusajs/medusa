@@ -5,7 +5,7 @@ import {
   isPaymentProcessor,
   isPaymentService,
 } from "../../interfaces"
-import { aliasTo, asFunction, Lifetime } from "awilix"
+import { aliasTo, asFunction } from "awilix"
 
 type Context = {
   container: MedusaContainer
@@ -25,9 +25,7 @@ export function registerPaymentServiceFromClass(
 
   container.registerAdd(
     "paymentProviders",
-    asFunction((cradle) => new klass(cradle, pluginDetails.options), {
-      lifetime: Lifetime.SINGLETON,
-    })
+    asFunction((cradle) => new klass(cradle, pluginDetails.options))
   )
 
   container.register({
@@ -51,9 +49,7 @@ export function registerPaymentProcessorFromClass(
 
   container.registerAdd(
     "paymentProviders",
-    asFunction((cradle) => new klass(cradle, pluginDetails.options), {
-      lifetime: Lifetime.SINGLETON,
-    })
+    asFunction((cradle) => new klass(cradle, pluginDetails.options))
   )
 
   container.register({

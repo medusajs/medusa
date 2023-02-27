@@ -29,3 +29,12 @@ export const ErrorIntentStatus = {
   SUCCEEDED: "succeeded",
   CANCELED: "canceled",
 }
+
+export const PaymentProviderKeys = {
+  STRIPE: "stripe",
+  BAN_CONTACT: "stripe-bancontact",
+  BLIK: "stripe-blik",
+  GIROPAY: "stripe-giropay",
+  IDEAL: "stripe-ideal",
+  PRWELEWY_24: "stripe-przelewy24",
+}

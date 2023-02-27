@@ -1,8 +1,8 @@
 import StripeBase from "../core/stripe-base"
-import { PaymentIntentOptions } from "../types"
+import { PaymentIntentOptions, PaymentProviderKeys } from "../types"
 
 class GiropayProviderService extends StripeBase {
-  static identifier = "stripe-giropay"
+  static identifier = PaymentProviderKeys.GIROPAY
 
   constructor(_, options) {
     super(_, options)

@@ -1,8 +1,8 @@
 import StripeBase from "../core/stripe-base"
-import { PaymentIntentOptions } from "../types"
+import { PaymentIntentOptions, PaymentProviderKeys } from "../types"
 
 class Przelewy24ProviderService extends StripeBase {
-  static identifier = "stripe-przelewy24"
+  static identifier = PaymentProviderKeys.PRWELEWY_24
 
   constructor(_, options) {
     super(_, options)

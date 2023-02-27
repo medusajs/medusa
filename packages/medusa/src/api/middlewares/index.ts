@@ -18,7 +18,7 @@ export { default as requireCustomerAuthentication } from "./require-customer-aut
 
 /**
  * @deprecated you can now import the middlewares directly without passing by the default export
- * e.g `import { wrapHandler } from "@medusajs/medusa"
+ * e.g `import { authenticate } from "@medusajs/medusa"
  */
 export default {
   authenticate,
