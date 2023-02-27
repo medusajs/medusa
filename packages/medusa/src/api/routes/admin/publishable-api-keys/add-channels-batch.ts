@@ -7,7 +7,7 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys/{id}/sales-channels/batch
+ * @oas [post] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "PostPublishableApiKeySalesChannelsChannelsBatch"
  * summary: "Add SalesChannels"
  * description: "Assign a batch of sales channels to a publishable api key."
@@ -55,7 +55,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

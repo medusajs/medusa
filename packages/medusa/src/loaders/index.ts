@@ -21,7 +21,6 @@ import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
 import modelsLoader from "./models"
-import moduleLoader from "./module"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
@@ -30,6 +29,8 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+
+import { moduleLoader } from "@medusajs/modules-sdk"
 
 type Options = {
   directory: string

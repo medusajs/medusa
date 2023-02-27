@@ -1,0 +1,5 @@
+{{~#if @root.useOptions~}}
+{{#unless isRequired}}?{{else if default}}?{{/unless}}
+{{~else~}}
+{{#unless isRequired}}{{#unless default}}?{{/unless}}{{/unless}}
+{{~/if~}}

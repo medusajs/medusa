@@ -5,7 +5,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /customer-groups/{id}/customers
+ * @oas [get] /admin/customer-groups/{id}/customers
  * operationId: "GetCustomerGroupsGroupCustomers"
  * summary: "List Customers"
  * description: "Retrieves a list of customers in a customer group"
@@ -39,7 +39,7 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK

@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /store
+ * @oas [post] /admin/store
  * operationId: "PostStore"
  * summary: "Update Store Details"
  * description: "Updates the Store details"

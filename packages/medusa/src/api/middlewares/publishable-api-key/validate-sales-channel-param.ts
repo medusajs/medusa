@@ -30,8 +30,8 @@ async function validateSalesChannelParam(
     channelIds = !Array.isArray(channelIds) ? [channelIds] : channelIds
 
     if (
-      scopes.sales_channel_id.length &&
-      !channelIds.every((sc) => scopes.sales_channel_id.includes(sc))
+      scopes.sales_channel_ids.length &&
+      !channelIds.every((sc) => scopes.sales_channel_ids.includes(sc))
     ) {
       req.errors = req.errors ?? []
       req.errors.push(

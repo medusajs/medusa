@@ -47,9 +47,6 @@ type PriceListConstructorProps = {
  * Provides layer to manipulate product tags.
  */
 class PriceListService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly customerGroupService_: CustomerGroupService
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
@@ -60,7 +57,6 @@ class PriceListService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     customerGroupService,
     regionService,
     productService,
@@ -73,7 +69,6 @@ class PriceListService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.customerGroupService_ = customerGroupService
     this.productService_ = productService
     this.variantService_ = productVariantService
@@ -101,7 +96,9 @@ class PriceListService extends TransactionBaseService {
       )
     }
 
-    const priceListRepo = this.manager_.withRepository(this.priceListRepo_)
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
 
     const query = buildQuery({ id: priceListId }, config)
     const priceList = await priceListRepo.findOne(query)
@@ -298,8 +295,9 @@ class PriceListService extends TransactionBaseService {
     selector: FilterablePriceListProps = {},
     config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
-    const manager = this.manager_
-    const priceListRepo = manager.withRepository(this.priceListRepo_)
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
 
     const { q, ...priceListSelector } = selector
     const query = buildQuery(
@@ -330,8 +328,9 @@ class PriceListService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[PriceList[], number]> {
-    const manager = this.manager_
-    const priceListRepo = manager.withRepository(this.priceListRepo_)
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
     const { q, ...priceListSelector } = selector
     const query = buildQuery(priceListSelector, config)
     query.where = query.where as FindOptionsWhere<PriceList>
@@ -389,7 +388,9 @@ class PriceListService extends TransactionBaseService {
     priceListId: string,
     customerGroups: { id: string }[]
   ): Promise<void> {
-    const priceListRepo = this.manager_.withRepository(this.priceListRepo_)
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
     const priceList = await this.retrieve(priceListId, { select: ["id"] })
 
     const groups: CustomerGroup[] = []
@@ -564,7 +565,9 @@ class PriceListService extends TransactionBaseService {
   >(prices: T[]): Promise<T[]> {
     const prices_: typeof prices = []
 
-    const regionServiceTx = this.regionService_.withTransaction(this.manager_)
+    const regionServiceTx = this.regionService_.withTransaction(
+      this.activeManager_
+    )
     for (const price of prices) {
       const p = { ...price }
 

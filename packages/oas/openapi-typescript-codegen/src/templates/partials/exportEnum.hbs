@@ -1,0 +1,24 @@
+{{#ifdef description deprecated}}
+/**
+{{#if description}}
+ * {{{escapeComment description}}}
+{{/if}}
+{{#if deprecated}}
+ * @deprecated
+{{/if}}
+ */
+{{/ifdef}}
+export enum {{{name}}} {
+	{{#each enum}}
+	{{#if description}}
+	/**
+	 * {{{escapeComment description}}}
+	 */
+	{{/if}}
+	{{#containsSpaces name}}
+	'{{{name}}}' = {{{value}}},
+	{{else}}
+	{{{name}}} = {{{value}}},
+	{{/containsSpaces}}
+	{{/each}}
+}

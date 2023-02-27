@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { Note, ReservationItemDTO } from "../../../.."
+import { ReservationItemDTO } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
@@ -56,7 +56,7 @@ export default (app) => {
 }
 
 /**
- * @schema AdminPostReservationsReq
+ * @schema AdminReservationsRes
  * type: object
  * required:
  *   - reservation
@@ -69,8 +69,13 @@ export type AdminReservationsRes = {
 }
 
 /**
- * @schema AdminGetReservationReservationsReq
+ * @schema AdminReservationsListRes
  * type: object
+ * required:
+ *   - reservations
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   reservations:
  *     type: array
@@ -103,9 +108,30 @@ export const defaultReservationFields = [
   "updated_at",
 ]
 
+/**
+ * @schema AdminReservationsDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Reservation.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: reservation
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Reservation was deleted.
+ *     default: true
+ */
 export type AdminReservationsDeleteRes = DeleteResponse
 
 export * from "./create-reservation"
 export * from "./delete-reservation"
 export * from "./get-reservation"
 export * from "./update-reservation"
+export * from "./list-reservations"

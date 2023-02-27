@@ -2,7 +2,7 @@ import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /store/currencies/{code}
+ * @oas [delete] /admin/store/currencies/{code}
  * operationId: "DeleteStoreCurrenciesCode"
  * summary: "Delete a Currency Code"
  * description: "Removes a Currency Code from the available currencies."

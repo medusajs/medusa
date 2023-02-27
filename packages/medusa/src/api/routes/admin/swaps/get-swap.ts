@@ -3,7 +3,7 @@ import { defaultAdminSwapFields, defaultAdminSwapRelations } from "."
 import { SwapService } from "../../../../services"
 
 /**
- * @oas [get] /swaps/{id}
+ * @oas [get] /admin/swaps/{id}
  * operationId: "GetSwapsSwap"
  * summary: "Get a Swap"
  * description: "Retrieves a Swap."
@@ -32,7 +32,7 @@ import { SwapService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK

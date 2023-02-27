@@ -6,7 +6,7 @@ import { selector } from "../../../../types/note"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /notes
+ * @oas [get] /admin/notes
  * operationId: "GetNotes"
  * summary: "List Notes"
  * x-authenticated: true
@@ -38,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Note
+ *   - Notes
  * responses:
  *   200:
  *     description: OK

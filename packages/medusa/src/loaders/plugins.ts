@@ -20,7 +20,6 @@ import {
   isCartCompletionStrategy,
   isFileService,
   isNotificationService,
-  isPaymentService,
   isPriceSelectionStrategy,
   isSearchService,
   isTaxCalculationStrategy,
@@ -35,6 +34,10 @@ import {
 } from "../types/global"
 import formatRegistrationName from "../utils/format-registration-name"
 import logger from "./logger"
+import {
+  registerPaymentProcessorFromClass,
+  registerPaymentServiceFromClass,
+} from "./helpers/plugins"
 
 type Options = {
   rootDirectory: string
@@ -371,22 +374,12 @@ export async function registerServices(
         throw new Error(message)
       }
 
-      if (isPaymentService(loaded.prototype)) {
-        // Register our payment providers to paymentProviders
-        container.registerAdd(
-          "paymentProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
-        )
+      const context = { container, pluginDetails, registrationName: name }
 
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which payment provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-          [`pp_${loaded.identifier}`]: aliasTo(name),
-        })
-      } else if (loaded.prototype instanceof OauthService) {
+      registerPaymentServiceFromClass(loaded, context)
+      registerPaymentProcessorFromClass(loaded, context)
+
+      if (loaded.prototype instanceof OauthService) {
         const appDetails = loaded.getAppDetails(pluginDetails.options)
 
         const oauthService =

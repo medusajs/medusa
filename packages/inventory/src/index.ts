@@ -3,7 +3,7 @@ import InventoryService from "./services/inventory"
 import * as InventoryModels from "./models"
 import * as SchemaMigration from "./migrations/schema-migrations/1665748086258-inventory_setup"
 import * as TypeMigration from "./migrations/schema-migrations/1675761451145-add_reservation_type"
-import { ModuleExports } from "@medusajs/medusa"
+import { ModuleExports } from "@medusajs/modules-sdk"
 
 const service = InventoryService
 const migrations = [SchemaMigration, TypeMigration]

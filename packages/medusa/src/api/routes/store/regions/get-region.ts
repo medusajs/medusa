@@ -1,7 +1,7 @@
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [get] /regions/{id}
+ * @oas [get] /store/regions/{id}
  * operationId: GetRegionsRegion
  * summary: Get a Region
  * description: "Retrieves a Region."
@@ -24,7 +24,7 @@ import RegionService from "../../../../services/region"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions/{id}'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

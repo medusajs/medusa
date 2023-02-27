@@ -9,12 +9,10 @@ import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /store/orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
  * description: "Look up an order using filters."
@@ -63,7 +61,7 @@ import { FindParams } from "../../../../types/common"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

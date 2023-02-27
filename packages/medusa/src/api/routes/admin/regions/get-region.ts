@@ -3,7 +3,7 @@ import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [get] /regions/{id}
+ * @oas [get] /admin/regions/{id}
  * operationId: "GetRegionsRegion"
  * summary: "Get a Region"
  * description: "Retrieves a Region."
@@ -32,7 +32,7 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

@@ -94,6 +94,8 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
 /**
  * @schema AdminPostDraftOrdersDraftOrderRegisterPaymentRes
  * type: object
+ * required:
+ *   - order
  * properties:
  *   order:
  *     $ref: "#/components/schemas/Order"
@@ -105,6 +107,8 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
 /**
  * @schema AdminDraftOrdersRes
  * type: object
+ * required:
+ *   - draft_order
  * properties:
  *   draft_order:
  *     $ref: "#/components/schemas/DraftOrder"
@@ -116,6 +120,10 @@ export type AdminDraftOrdersRes = {
 /**
  * @schema AdminDraftOrdersDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -134,6 +142,11 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
 /**
  * @schema AdminDraftOrdersListRes
  * type: object
+ * required:
+ *   - draft_orders
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   draft_orders:
  *     type: array

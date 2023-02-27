@@ -7,13 +7,13 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 import { defaultStoreScope } from "."
 
 /**
- * @oas [get] /product-categories
+ * @oas [get] /store/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories."
  * x-authenticated: false
  * parameters:
- *   - (query) q {string} Query used for searching product category names orhandles.
+ *   - (query) q {string} Query used for searching product category names or handles.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
@@ -39,7 +39,7 @@ import { defaultStoreScope } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   "200":
  *     description: OK

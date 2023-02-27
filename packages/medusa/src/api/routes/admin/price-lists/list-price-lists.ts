@@ -6,7 +6,7 @@ import { Request } from "express"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /price-lists
+ * @oas [get] /admin/price-lists
  * operationId: "GetPriceLists"
  * summary: "List Price Lists"
  * description: "Retrieves a list of Price Lists."
@@ -137,7 +137,7 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK

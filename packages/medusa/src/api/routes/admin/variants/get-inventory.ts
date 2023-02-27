@@ -13,7 +13,7 @@ import ProductVariantService from "../../../../services/product-variant"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
- * @oas [get] /variants/{id}/inventory
+ * @oas [get] /admin/variants/{id}/inventory
  * operationId: "GetVariantsVariantInventory"
  * summary: "Get inventory of Variant."
  * description: "Returns the available inventory of a Variant."
@@ -42,7 +42,7 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Variant
+ *   - Variants
  * responses:
  *   200:
  *     description: OK
@@ -72,7 +72,9 @@ export default async (req, res) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
-
+  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
+    "salesChannelLocationService"
+  )
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
@@ -85,17 +87,23 @@ export default async (req, res) => {
 
   const variant = await variantService.retrieve(id, { select: ["id"] })
 
-  const responseVariant: AdminGetVariantsVariantInventoryRes = {
+  const responseVariant: VariantInventory = {
     id: variant.id,
     inventory: [],
     sales_channel_availability: [],
   }
 
-  const [channels] = await channelService.listAndCount(
-    {},
-    {
-      relations: ["locations"],
-    }
+  const [rawChannels] = await channelService.listAndCount({})
+  const channels: SalesChannelDTO[] = await Promise.all(
+    rawChannels.map(async (channel) => {
+      const locationIds = await channelLocationService.listLocationIds(
+        channel.id
+      )
+      return {
+        ...channel,
+        locations: locationIds,
+      }
+    })
   )
 
   const inventory =
@@ -116,7 +124,7 @@ export default async (req, res) => {
 
         const quantity = await inventoryService.retrieveAvailableQuantity(
           inventory[0].id,
-          channel.locations.map((loc) => loc.id)
+          channel.locations
         )
 
         return {
@@ -133,12 +141,16 @@ export default async (req, res) => {
   })
 }
 
+type SalesChannelDTO = Omit<SalesChannel, "beforeInsert" | "locations"> & {
+  locations: string[]
+}
+
 type ResponseInventoryItem = Partial<InventoryItemDTO> & {
   location_levels?: InventoryLevelDTO[]
 }
 
 /**
- * @schema AdminGetVariantsVariantInventoryRes
+ * @schema VariantInventory
  * type: object
  * properties:
  *   id:
@@ -161,7 +173,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
  *         description: Available quantity in sales channel
  *         type: number
  */
-export type AdminGetVariantsVariantInventoryRes = {
+export type VariantInventory = {
   id: string
   inventory: ResponseInventoryItem[]
   sales_channel_availability: {
@@ -169,4 +181,16 @@ export type AdminGetVariantsVariantInventoryRes = {
     channel_id: string
     available_quantity: number
   }[]
+}
+
+/**
+ * @schema AdminGetVariantsVariantInventoryRes
+ * type: object
+ * properties:
+ *   variant:
+ *     type: object
+ *     $ref: "#/components/schemas/VariantInventory"
+ */
+export type AdminGetVariantsVariantInventoryRes = {
+  variant: VariantInventory
 }

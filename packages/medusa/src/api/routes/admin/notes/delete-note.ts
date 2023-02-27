@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import NoteService from "../../../../services/note"
 
 /**
- * @oas [delete] /notes/{id}
+ * @oas [delete] /admin/notes/{id}
  * operationId: "DeleteNotesNote"
  * summary: "Delete a Note"
  * description: "Deletes a Note."
@@ -31,7 +31,7 @@ import NoteService from "../../../../services/note"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Note
+ *   - Notes
  * responses:
  *   200:
  *     description: OK

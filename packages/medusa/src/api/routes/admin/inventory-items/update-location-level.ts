@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
-import { IsOptional, IsNumber } from "class-validator"
+import { IsNumber, IsOptional } from "class-validator"
 
 import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /inventory-items/{id}/location-levels/{location_id}
+ * @oas [post] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "PostInventoryItemsInventoryItemLocationLevelsLocationLevel"
  * summary: "Update an Inventory Location Level for a given Inventory Item."
  * description: "Updates an Inventory Location Level for a given Inventory Item."

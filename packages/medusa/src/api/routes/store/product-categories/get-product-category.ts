@@ -6,7 +6,7 @@ import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tre
 import { defaultStoreScope } from "."
 
 /**
- * @oas [get] /product-categories/{id}
+ * @oas [get] /store/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
  * description: "Retrieves a Product Category."
@@ -38,7 +38,7 @@ import { defaultStoreScope } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK
