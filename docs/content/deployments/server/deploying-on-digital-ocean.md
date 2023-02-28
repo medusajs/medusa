@@ -3,19 +3,19 @@ description: 'Learn step-by-step.'
 addHowToData: true
 ---
 
-# Deploy Your Medusa Server to DigitalOcean Apps
+# Deploy Your Medusa Backend to DigitalOcean Apps
 
-In this document, you'll learn how to deploy your Medusa server to a DigitalOcean App.
+In this document, you'll learn how to deploy your Medusa backend to a DigitalOcean App.
 
-DigitalOcean is a reliable hosting provider that provides different ways to host websites and servers. One way to host a server is using their DigitalOcean App Platform.
+DigitalOcean is a reliable hosting provider that provides different ways to host websites and servers. One way to host a backend is using their DigitalOcean App Platform.
 
 ## Prerequisites
 
 ### Medusa Server
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.mdx).
+It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../core/backend/install.mdx).
 
-Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](../../usage/configurations.md) to learn how to do that.
 
 ### Needed Accounts
 
@@ -42,7 +42,7 @@ Change the `start` script in `package.json` to the following:
 "start": "medusa migrations run && medusa start"
 ```
 
-This ensures that Migrations are run everytime the Medusa server is restarted.
+This ensures that Migrations are run everytime the Medusa backend is restarted.
 
 ---
 
@@ -79,7 +79,7 @@ module.exports = {
 
 ## Create GitHub Repository
 
-Before you can deploy your Medusa server you need to create a GitHub repository and push the code base to it.
+Before you can deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
@@ -97,7 +97,7 @@ After creating the repository, you’ll be redirected to the repository’s page
 
 ![GitHub repository's URL](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
-Copy the link. Then, open your terminal in the directory that holds your Medusa server codebase and run the following commands:
+Copy the link. Then, open your terminal in the directory that holds your Medusa backend codebase and run the following commands:
 
 ```bash
 git init
@@ -138,7 +138,7 @@ Additional inputs will show up to choose the Branch, Source Directory, and Autod
 
 ![Enter master for Branch input, backslash for Source Directory, and check Autodeploy](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002055/Medusa%20Docs/Digital%20Ocean/kjk9E2B_qpwrx4.png)
 
-If you host your Medusa server in a monorepo, you should change the Source Directory to the directory the server is available in the repository. Otherwise, it can be left as is.
+If you host your Medusa backend in a monorepo, you should change the Source Directory to the directory the backend is available in the repository. Otherwise, it can be left as is.
 
 Once you’re done, click Next to move on to the next step.
 
@@ -176,7 +176,7 @@ Once you’re done, click Next to move on to the next step.
 
 ### Set Environment Variables
 
-In this section, you’ll add environment variables that are essential to your Medusa server.
+In this section, you’ll add environment variables that are essential to your Medusa backend.
 
 You should see two ways to add environment variables: Global or specific to the Web Service.
 
@@ -221,7 +221,7 @@ In the final step, you can see a review of everything you created. If everything
 
 ### Create Redis Resource
 
-While the server is being deployed, you can create the Redis resource.
+While the backend is being deployed, you can create the Redis resource.
 
 Click the Create button at the top right and choose Database from the dropdown.
 
@@ -267,7 +267,7 @@ Then, go to `<YOUR_APP_URL>/store/products`. If the deployment was successful, y
 
 ## Run Commands on Your Server
 
-To run commands on your server, you can access the console on the App’s page by choosing the Console tab. This opens a console in your browser where you can run commands on your server.
+To run commands on your backend, you can access the console on the App’s page by choosing the Console tab. This opens a console in your browser where you can run commands on your backend.
 
 For example, you can run the following commands to create a new admin user:
 

@@ -13,7 +13,7 @@ This document will guide you through setting up the Medusa admin in minutes, as 
 
 ### Medusa Server
 
-The Medusa admin is connected to the Medusa server. So, make sure to install the Medusa server first before proceeding with the admin. You can check out the [quickstart guide to install the Medusa server](../quickstart/quick-start).
+The Medusa admin is connected to the Medusa backend. So, make sure to install the Medusa backend first before proceeding with the admin. You can check out the [quickstart guide to install the Medusa server](../core/backend/install.mdx).
 
 :::tip
 
@@ -81,11 +81,11 @@ If you run into errors during the installation, check out [this troubleshooting 
 
 ## Test it Out
 
-Before running your Medusa admin, make sure that your Medusa server is running.
+Before running your Medusa admin, make sure that your Medusa backend is running.
 
 :::tip
 
-To run your Medusa server, go to the directory holding the server and run:
+To run your Medusa backend, go to the directory holding the backend and run:
 
 ```bash npm2yarn
 npm run start
@@ -107,7 +107,7 @@ Use your Medusa admin’s user credentials to log in.
 
 ### Demo Credentials
 
-If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
+If you installed the demo data when you installed the Medusa backend by using the `--seed` option or running:
 
 ```bash npm2yarn
 npm run seed
@@ -145,9 +145,9 @@ The default port is set in `package.json` in the `dev` script:
 
 If you wish to change the port you can simply change the `7000` to your desired port.
 
-However, if you change your Medusa admin port, you need to change it in your Medusa server. The Medusa server has the Medusa admin and store URLs set in the configurations to avoid Cross-Origin Resource Sharing (CORS) issues.
+However, if you change your Medusa admin port, you need to change it in your Medusa backend. The Medusa backend has the Medusa admin and store URLs set in the configurations to avoid Cross-Origin Resource Sharing (CORS) issues.
 
-To change the URL of the Medusa admin in the server, add a new environment variable `ADMIN_CORS` or modify it if you already have it to your Admin URL:
+To change the URL of the Medusa admin in the backend, add a new environment variable `ADMIN_CORS` or modify it if you already have it to your Admin URL:
 
 ```bash
 ADMIN_CORS=<YOUR_ADMIN_URL>
@@ -157,7 +157,7 @@ Make sure to replace `<YOUR_ADMIN_URL>` with your URL.
 
 :::info
 
-For more details about the Admin CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#admin-cors).
+For more details about the Admin CORS configuration, check out the [Configure your Backend documentation](../usage/configurations.md#admin-cors).
 
 :::
 

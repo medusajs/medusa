@@ -1,5 +1,5 @@
 ---
-description: 'Learn what subscribers are in the Medusa server. Subscribers are used to listen to triggered events to perform an action.'
+description: 'Learn what subscribers are in the Medusa backend. Subscribers are used to listen to triggered events to perform an action.'
 ---
 
 # Subscribers
@@ -12,7 +12,7 @@ In Medusa, there are events that are emitted when a certain action occurs. For e
 
 The purpose of these events is to allow other parts of the platform, or third-party integrations, to listen to those events and perform a certain action. That is done by creating subscribers.
 
-Medusa's queuing and events system is handled by Redis. So, you must have [Redis configured](../../../tutorial/0-set-up-your-development-environment.mdx#redis) on your server to use subscribers.
+Medusa's queuing and events system is handled by Redis. So, you must have [Redis configured](../../../tutorial/0-set-up-your-development-environment.mdx#redis) on your backend to use subscribers.
 
 ---
 

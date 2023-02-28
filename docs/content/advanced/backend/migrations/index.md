@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a migration in the Medusa server. This guide explains how to write and run migrations.'
+description: 'Learn how to create a migration in the Medusa backend. This guide explains how to write and run migrations.'
 addHowToData: true
 ---
 
 # How to Create Migrations
 
-In this document, you’ll learn how to create a [Migration](overview.md) using [Typeorm](https://typeorm.io) on your Medusa server.
+In this document, you’ll learn how to create a [Migration](overview.md) using [Typeorm](https://typeorm.io) on your Medusa backend.
 
 ## Create Migration File
 
@@ -17,7 +17,7 @@ npx typeorm migration:create -n UserChanged --dir src/migrations
 
 This will create the migration file in the path you specify. You can use this without the need to install Typeorm's CLI tool. You can then go ahead and make changes to it as necessary.
 
-The migration file must be inside the `src/migrations` directory. When you run the build command, it will be transpiled into the directory `dist/migrations`. The `migrations run` command can only pick up migrations under the `dist/migrations` directory on a Medusa server. This applies to migrations created in a Medusa server, and not in a Medusa plugin. For plugins, check out the [Plugin's Structure section](../plugins/create.md).
+The migration file must be inside the `src/migrations` directory. When you run the build command, it will be transpiled into the directory `dist/migrations`. The `migrations run` command can only pick up migrations under the `dist/migrations` directory on a Medusa backend. This applies to migrations created in a Medusa backend, and not in a Medusa plugin. For plugins, check out the [Plugin's Structure section](../plugins/create.md).
 
 :::tip
 

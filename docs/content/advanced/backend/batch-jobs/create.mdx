@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a batch job strategy in the Medusa server. This guide also includes how to test your batch job strategy.'
+description: 'Learn how to create a batch job strategy in the Medusa backend. This guide also includes how to test your batch job strategy.'
 addHowToData: true
 ---
 
@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # Create a Batch Job Strategy
 
-In this document, you’ll learn how to create a batch job strategy on your Medusa server.
+In this document, you’ll learn how to create a batch job strategy on your Medusa backend.
 
 :::info
 
@@ -18,7 +18,7 @@ If you’re interested to learn more about what Batch Jobs are and how they work
 
 ## Overview
 
-Batch jobs can be used to perform long tasks in the background of your Medusa server. Batch jobs are handled by batch job strategies. An example of a batch job strategy is the Import Products functionality.
+Batch jobs can be used to perform long tasks in the background of your Medusa backend. Batch jobs are handled by batch job strategies. An example of a batch job strategy is the Import Products functionality.
 
 This documentation helps you learn how to create a batch job strategy. The batch job strategy used in this example changes the status of all draft products to `published`.
 
@@ -28,7 +28,7 @@ This documentation helps you learn how to create a batch job strategy. The batch
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
 
 ### Redis
 
@@ -282,7 +282,7 @@ npm run build
 
 ## Test your Batch Job Strategy
 
-This section covers how to test and use your batch job strategy. Make sure to start your server first:
+This section covers how to test and use your batch job strategy. Make sure to start your backend first:
 
 ```bash
 npm run start
@@ -290,7 +290,7 @@ npm run start
 
 :::info
 
-If your `start` script uses the `medusa develop` command, whenever you make changes in the `src` directory the `build` command will automatically run and the server will restart.
+If your `start` script uses the `medusa develop` command, whenever you make changes in the `src` directory the `build` command will automatically run and the backend will restart.
 
 :::
 
@@ -359,7 +359,7 @@ curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
 
 You set the `dry_run` to `true` to disable automatic confirmation and running of the batch job. If you want the batch job to run automatically, you can remove this body parameter.
 
-Make sure to replace `<YOUR_SERVER>` with the server URL where applicable.
+Make sure to replace `<YOUR_SERVER>` with the backend URL where applicable.
 
 ### (Optional) Retrieve Batch Job
 

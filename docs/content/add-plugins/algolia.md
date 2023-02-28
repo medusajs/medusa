@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate Algolia with the Medusa server. Learn how to install the Algolia plugin into the Medusa server and how to integrate it into a storefront.'
+description: 'Learn how to integrate Algolia with the Medusa backend. Learn how to install the Algolia plugin into the Medusa backend and how to integrate it into a storefront.'
 addHowToData: true
 ---
 
 # Algolia
 
-In this document, you’ll learn how to install the [Algolia plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-algolia) and use it on both your Medusa Server and your storefront.
+In this document, you’ll learn how to install the [Algolia plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-algolia) and use it on both your Medusa backend and your storefront.
 
 ---
 
@@ -15,7 +15,7 @@ In this document, you’ll learn how to install the [Algolia plugin](https://gi
 
 Algolia can be used for a wide range of use cases, including ecommerce websites. By integrating Algolia into your ecommerce website, you can provide your customers with a better user experience and help them find what they’re looking for swifltly.
 
-Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa server and storefront using Algolia with just a few steps.
+Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa backend and storefront using Algolia with just a few steps.
 
 ---
 
@@ -23,13 +23,13 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../core/backend/install.mdx) to get started in minutes.
 
-Furthermore, it’s highly recommended to ensure your Medusa server is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in Algolia are updated whenever products on the Medusa server are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
+Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in Algolia are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
 
 :::caution
 
-If you don’t install and configure Redis on your Medusa server, the Algolia integration will still work. However, products indexed in Algolia are only added and updated when you restart the Medusa server.
+If you don’t install and configure Redis on your Medusa backend, the Algolia integration will still work. However, products indexed in Algolia are only added and updated when you restart the Medusa backend.
 
 :::
 
@@ -41,7 +41,7 @@ You need to [create an Algolia account](https://www.algolia.com/users/sign_up) b
 
 ## Create an Algolia App
 
-The first step is to create an Algolia app for your Medusa server. To create one, open the [Applications page](https://www.algolia.com/account/applications) or, on your dashboard, go to Settings then choose Applications.
+The first step is to create an Algolia app for your Medusa backend. To create one, open the [Applications page](https://www.algolia.com/account/applications) or, on your dashboard, go to Settings then choose Applications.
 
 On the Applications page, click on the New application button at the top right.
 
@@ -69,7 +69,7 @@ To retrieve the API keys that you’ll use in the next sections, go to Settings,
 
 ![Click on API Keys in the Team and Access section of your settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000028/Medusa%20Docs/Algolia/gnORibC_msuur5.png)
 
-On this page, you’ll find the Application ID, Search-Only API Key, and Admin API Key. You’ll need the Application ID and Admin API Key for the Medusa server. As for the storefront, you’ll need the Application ID and Search-Only API Key.
+On this page, you’ll find the Application ID, Search-Only API Key, and Admin API Key. You’ll need the Application ID and Admin API Key for the Medusa backend. As for the storefront, you’ll need the Application ID and Search-Only API Key.
 
 :::note
 
@@ -83,7 +83,7 @@ If you have more than one application in your Algolia account, make sure you’r
 
 ## Install the Algolia Plugin
 
-In the directory of your Medusa server, run the following command to install the Algolia plugin:
+In the directory of your Medusa backend, run the following command to install the Algolia plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-algolia
@@ -137,7 +137,7 @@ The `searchableAttributes` are the attributes in a product that are searchable, 
 
 ## Test the Algolia Plugin
 
-Run your Medusa server with the following command:
+Run your Medusa backend with the following command:
 
 ```bash npm2yarn
 npm run start
@@ -147,7 +147,7 @@ The quickest way to test that the integration is working is by sending a `POST`
 
 ![Postman request send to the search endpoint that retrieves products using Algolia](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000054/Medusa%20Docs/Algolia/IHeTsi7_ymhb2p.png)
 
-You can also check that the products are properly indexed by opening your Algolia dashboard and choosing Search from the left sidebar. You’ll find your products that are on your Medusa server added there.
+You can also check that the products are properly indexed by opening your Algolia dashboard and choosing Search from the left sidebar. You’ll find your products that are on your Medusa backend added there.
 
 :::note
 
@@ -155,15 +155,15 @@ If you have more than one application on your Algolia account, make sure you’r
 
 :::
 
-![Products from the Medusa server can be seen on the Algolia dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000071/Medusa%20Docs/Algolia/wkXzUH0_dowyxj.png)
+![Products from the Medusa backend can be seen on the Algolia dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000071/Medusa%20Docs/Algolia/wkXzUH0_dowyxj.png)
 
 ### Add or Update Products
 
-If you add or update products on your Medusa server, the addition or update will be reflected in the Algolia indices.
+If you add or update products on your Medusa backend, the addition or update will be reflected in the Algolia indices.
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa server as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa server to see the change in the Algolia indices.
+This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the Algolia indices.
 
 :::
 
@@ -175,7 +175,7 @@ In this section, you’ll learn how to add the UI on your storefront to allow se
 
 ### Storefront Prerequisites
 
-It is assumed you already have a storefront set up and working with the Medusa server, as this section only covers how to add the search UI.
+It is assumed you already have a storefront set up and working with the Medusa backend, as this section only covers how to add the search UI.
 
 :::tip
 
@@ -222,11 +222,11 @@ export const SEARCH_INDEX_NAME =
   process.env.NEXT_PUBLIC_INDEX_NAME || "products"
 ```
 
-If you run your Next.js storefront now while the Medusa server is running, the search functionality will be available in your storefront.
+If you run your Next.js storefront now while the Medusa backend is running, the search functionality will be available in your storefront.
 
 :::note
 
-To make sure the Next.js storefront properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa server at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js storefront properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
@@ -353,7 +353,7 @@ And add the `Search` component in the returned JSX before `RegionPopover`:
 // ...
 ```
 
-If you run your Gatsby storefront while the Medusa server is running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
+If you run your Gatsby storefront while the Medusa backend is running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
 
 ![Search bar in the Gatsby storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000097/Medusa%20Docs/Algolia/INtlcIo_jlh16x.png)
 

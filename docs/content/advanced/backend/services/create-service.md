@@ -5,7 +5,7 @@ addHowToData: true
 
 # Create a Service
 
-In this document, you’ll learn how you can create a [Service](./overview.md) and use it across your Medusa server just like any of the core services.
+In this document, you’ll learn how you can create a [Service](./overview.md) and use it across your Medusa backend just like any of the core services.
 
 ## Implementation
 
@@ -63,7 +63,7 @@ class HelloService extends TransactionBaseService {
 
 ## Use a Service
 
-In this section, you'll learn how to use services throughout your Medusa server. This includes both Medusa's services and your custom services.
+In this section, you'll learn how to use services throughout your Medusa backend. This includes both Medusa's services and your custom services.
 
 :::note
 

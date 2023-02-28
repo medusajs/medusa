@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Twilio SMS with the Medusa server. Learn how to install the Twilio SMS plugin and test it out.'
+description: 'Learn how to integrate Twilio SMS with the Medusa backend. Learn how to install the Twilio SMS plugin and test it out.'
 addHowToData: true
 ---
 
@@ -23,7 +23,7 @@ This plugin only gives you access to the Twilio SMS API but does not implement s
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.mdx) if you don’t.
+Before going further with this guide make sure you have a Medusa backend set up. You can follow the [Quickstart guide](../core/backend/install.mdx) if you don’t.
 
 You also must have a [Twilio account created](https://www.twilio.com/sms) so if you don’t already please go ahead and create one.
 
@@ -37,7 +37,7 @@ For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packa
 
 ## Install Plugin
 
-In the directory of your Medusa server, run the following command to install [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms):
+In the directory of your Medusa backend, run the following command to install [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms):
 
 ```bash npm2yarn
 npm install medusa-plugin-twilio-sms
@@ -73,17 +73,17 @@ const plugins = [
 
 ## Example Usage of the Plugin
 
-This plugin adds the service `twilioSmsService` to your Medusa server. To send SMS using it, all you have to do is resolve it in your file as explained in the [Services](../advanced/backend/services/create-service.md#using-your-custom-service) documentation.
+This plugin adds the service `twilioSmsService` to your Medusa backend. To send SMS using it, all you have to do is resolve it in your file as explained in the [Services](../advanced/backend/services/create-service.md#using-your-custom-service) documentation.
 
 In this example, you’ll create a subscriber that listens to the `order.placed` event and sends an SMS to the customer to confirm their order.
 
 :::tip
 
-For this example to work, you’ll need to install and configure Redis on your server. You can refer to the [development guide](/tutorial/set-up-your-development-environment#redis) to learn how to do that.
+For this example to work, you’ll need to install and configure Redis on your backend. You can refer to the [development guide](/tutorial/set-up-your-development-environment#redis) to learn how to do that.
 
 :::
 
-Create the file `src/services/sms.js` in your Medusa server with the following content:
+Create the file `src/services/sms.js` in your Medusa backend with the following content:
 
 ```jsx title=src/services/sms.js
 class SmsSubscriber {

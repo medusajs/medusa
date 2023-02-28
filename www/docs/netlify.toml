@@ -116,32 +116,36 @@
 
 [[redirects]]
   from="/advanced/backend/regions/overview"
-  to="/features-and-guides/regions-and-currencies/regions"
+  to="/modules/regions-and-currencies/regions"
 
 [[redirects]]
   from="/advanced/admin/manage-regions"
-  to="/features-and-guides/regions-and-currencies/admin/manage-regions"
+  to="/modules/regions-and-currencies/admin/manage-regions"
 
 [[redirects]]
   from="/advanced/storefront/use-regions"
-  to="/features-and-guides/regions-and-currencies/storefront/use-regions"
+  to="/modules/regions-and-currencies/storefront/use-regions"
 
 [[redirects]]
   from="/advanced/backend/customers"
-  to="/features-and-guides/customers/customers"
+  to="/modules/customers/customers"
 
 [[redirects]]
   from="/advanced/backend/customer-groups"
-  to="/features-and-guides/customers/customer-groups"
+  to="/modules/customers/customer-groups"
 
 [[redirects]]
   from="/advanced/admin/manage-customers"
-  to="/features-and-guides/customers/admin/manage-customers"
+  to="/modules/customers/admin/manage-customers"
 
 [[redirects]]
   from="/advanced/admin/use-customergroups-api"
-  to="/features-and-guides/customers/admin/manage-customer-groups"
+  to="/modules/customers/admin/manage-customer-groups"
 
 [[redirects]]
   from="/advanced/storefront/customer-profiles"
-  to="/features-and-guides/customers/storefront/implement-customer-profiles"
+  to="/modules/customers/storefront/implement-customer-profiles"
+
+[[redirects]]
+  from="/quickstart/quick-start*"
+  to="/core/backend/install"

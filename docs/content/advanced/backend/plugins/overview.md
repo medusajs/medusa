@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Plugins are and how they are used in Medusa. Plugins are re-usable customizations that can be added to a Medusa server.'
+description: 'Learn what Plugins are and how they are used in Medusa. Plugins are re-usable customizations that can be added to a Medusa backend.'
 ---
 
 # Plugins
@@ -12,11 +12,11 @@ Medusa was built with flexibility and extendibility in mind. All different compo
 
 Developers can use plugins to take advantage of this abstraction, flexibility, and extendibility. Plugins allow developers to implement custom features or integrate third-party services into Medusa.
 
-For example, if you want to use Stripe as a payment provider in your store, then you can install the Stripe plugin on your server and use it.
+For example, if you want to use Stripe as a payment provider in your store, then you can install the Stripe plugin on your backend and use it.
 
 An alternative approach is developing a custom way of handling payment on your ecommerce store. Both approaches are achievable by either creating a plugin or using an existing plugin.
 
-Plugins run within the same process as the core Medusa server eliminating the need for extra server capacity, infrastructure, and maintenance. As a result, plugins can use all other services as dependencies and access the database.
+Plugins run within the same process as the core Medusa backend eliminating the need for extra backend capacity, infrastructure, and maintenance. As a result, plugins can use all other services as dependencies and access the database.
 
 ---
 
@@ -40,7 +40,7 @@ You can also check the [Awesome Medusa repository](https://github.com/adrien2p/a
 
 ## How to Install a Plugin
 
-To install an existing plugin, in your Medusa server run the following command:
+To install an existing plugin, in your Medusa backend run the following command:
 
 ```bash npm2yarn
 npm install <plugin_name>

@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to install the Medusa CLI Tool. Medusa CLI Tool can be used to perform actions such as create a new Medusa server, run migrations, create a new admin user, and more.'
+description: 'Learn how to install the Medusa CLI Tool. Medusa CLI Tool can be used to perform actions such as create a new Medusa backend, run migrations, create a new admin user, and more.'
 ---
 
 # CLI Reference
@@ -10,7 +10,7 @@ This document serves as a reference to the Medusa CLI tool including how to inst
 
 The Medusa CLI serves as a tool that allows you to perform important commands while developing with Medusa.
 
-To use Medusa, it is required to install the CLI tool as it is used to create a new Medusa server.
+To use Medusa, it is required to install the CLI tool as it is used to create a new Medusa backend.
 
 ---
 
@@ -98,7 +98,7 @@ medusa --version
 
 ### new
 
-Create a new Medusa server.
+Create a new Medusa backend.
 
 ```bash
 medusa new [<server_name> [<starter_url>]]
@@ -108,8 +108,8 @@ medusa new [<server_name> [<starter_url>]]
 
 | Name | Description | Default |
 | --- | --- | --- |
-| `server_name` | The name of the Medusa server. It will be used as the name of the directory created. | If not provided, you’ll be prompted to enter it. |
-| `starter_url` | The URL of the starter to create the server from. | The default starter is used. |
+| `server_name` | The name of the Medusa backend. It will be used as the name of the directory created. | If not provided, you’ll be prompted to enter it. |
+| `starter_url` | The URL of the starter to create the backend from. | The default starter is used. |
 
 #### Options
 
@@ -128,7 +128,7 @@ medusa new [<server_name> [<starter_url>]]
 
 ### develop
 
-Start development server. This command watches files for any changes to rebuild the files and restart the server.
+Start development backend. This command watches files for any changes to rebuild the files and restart the backend.
 
 ```bash
 medusa develop
@@ -143,7 +143,7 @@ medusa develop
 
 ### start
 
-Start development server. This command does not watch for file changes or restart the server.
+Start development backend. This command does not watch for file changes or restart the backend.
 
 ```bash
 medusa start

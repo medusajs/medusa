@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate Slack with the Medusa server. Learn how to create and configure a Slack app and install the Slack plugin on the Medusa server.'
+description: 'Learn how to integrate Slack with the Medusa backend. Learn how to create and configure a Slack app and install the Slack plugin on the Medusa backend.'
 addHowToData: true
 ---
 
 # Slack
 
-In this documentation, you'll learn how to add the [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) to your Medusa server to start receiving order notifications.
+In this documentation, you'll learn how to add the [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) to your Medusa backend to start receiving order notifications.
 
 ## Overview
 
@@ -32,13 +32,13 @@ To follow along with this guide, you need to have a Slack account with a connect
 
 ### Medusa Server
 
-This tutorial assumes you already have a Medusa server installed. If you don’t, please follow along with the [quickstart guide](../quickstart/quick-start.mdx).
+This tutorial assumes you already have a Medusa backend installed. If you don’t, please follow along with the [quickstart guide](../core/backend/install.mdx).
 
 ### Redis
 
 Medusa's event system works by pushing data into a queue that is based on [Redis](https://redis.io/). This queue then notifies handlers of different events of this data that is pushed into the queue. The handlers then use this data to perform a certain action.
 
-As the Slack plugin will listen to the `order.placed` event to know when to send notifications, you'll need to have Redis installed and configured with your Medusa server.
+As the Slack plugin will listen to the `order.placed` event to know when to send notifications, you'll need to have Redis installed and configured with your Medusa backend.
 
 You can read the [Set up your development enviornment guideline](../tutorial/0-set-up-your-development-environment.mdx#redis) to learn more about how you can install and setup Redis.
 
@@ -46,7 +46,7 @@ You can read the [Set up your development enviornment guideline](../tutorial/0-s
 
 ## Create Slack App
 
-The first step is to create a Slack app. This app will be connected to your workspace and will have Incoming Webhooks activated to receive notifications from the Medusa server using a Webhook URL.
+The first step is to create a Slack app. This app will be connected to your workspace and will have Incoming Webhooks activated to receive notifications from the Medusa backend using a Webhook URL.
 
 Go to [Slack API](https://api.slack.com/) and click Create app. This will take you to a new page with a pop-up. In the pop-up, choose From scratch.
 
@@ -76,7 +76,7 @@ This will create a new Webhook with a URL which you can see in the table at the 
 
 ## Install Slack Plugin
 
-The next step is to install Medusa’s [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) into your Medusa server.
+The next step is to install Medusa’s [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) into your Medusa backend.
 
 Open the terminal in the Medusa server’s directory and run the following command:
 

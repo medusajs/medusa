@@ -34,7 +34,7 @@ Before publishing your plugin, make sure you've set the following fields in your
   - `medusa-plugin-shipping`: For plugins that add shipping functionalities or integrations.
   - `medusa-plugin-storage`: For plugins that add a file service or storage integration.
   - `medusa-plugin-source`: For plugins that help migrate or import data into Medusa from another platform.
-  - `medusa-plugin-storefront`: For storefronts that can be integrated with a Medusa server.
+  - `medusa-plugin-storefront`: For storefronts that can be integrated with a Medusa backend.
   - `medusa-plugin-other`: For any other type of plugin.
 
 ### Scripts in package.json
@@ -131,7 +131,7 @@ Your package is then published on NPM and everyone can use it and install it.
 
 ### Install Plugin
 
-To install your published plugin, you can run the following command on any Medusa server project:
+To install your published plugin, you can run the following command on any Medusa backend project:
 
 ```bash npm2yarn
 npm install medusa-plugin-custom

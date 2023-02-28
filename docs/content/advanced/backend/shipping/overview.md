@@ -1,5 +1,5 @@
 ---
-description: 'Learn how the shipping architecture is implemented in the Medusa server. This includes an overview of what the Fulfillment Provider, Shipping Profile, Shipping Option, and Shipping Methods.'
+description: 'Learn how the shipping architecture is implemented in the Medusa backend. This includes an overview of what the Fulfillment Provider, Shipping Profile, Shipping Option, and Shipping Methods.'
 ---
 
 # Shipping Architecture Overview
@@ -39,13 +39,13 @@ Fulfillment Providers can also be related to a custom way of handling fulfillmen
 
 ### How Fulfillment Provider is Created
 
-A Fulfillment Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a Service file in your Medusa server.
+A Fulfillment Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a Service file in your Medusa backend.
 
 As a developer, you will mainly work with the Fulfillment Provider when integrating a fulfillment method in Medusa.
 
-When you run your Medusa server, the Fulfillment Provider will be registered on your server if it hasn’t been already.
+When you run your Medusa backend, the Fulfillment Provider will be registered on your backend if it hasn’t been already.
 
-Once the Fulfillment Provider is added to the server, the store operator will be able to associate on the [Medusa Admin](../../../quickstart/quick-start.mdx) the Fulfillment Provider with shipping options.
+Once the Fulfillment Provider is added to the backend, the store operator will be able to associate on the [Medusa Admin](../../../core/backend/install.mdx) the Fulfillment Provider with shipping options.
 
 ### FulfillmentProvider Entity Overview
 

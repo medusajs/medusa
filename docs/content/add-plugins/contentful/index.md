@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate Contentful with the Medusa server and a Gatsby storefront. Contentful is a headless CMS server that provides rich CMS functionalities.'
+description: 'Learn how to integrate Contentful with the Medusa backend and a Gatsby storefront. Contentful is a headless CMS backend that provides rich CMS functionalities.'
 addHowToData: true
 ---
 
 # Contentful
 
-In this document, you’ll learn how to integrate a Medusa server with Contentful to add rich Content Management System (CMS) functionalities
+In this document, you’ll learn how to integrate a Medusa backend with Contentful to add rich Content Management System (CMS) functionalities
 
 ## Overview
 
@@ -31,17 +31,17 @@ By integrating Contentful to Medusa, you can benefit from powerful features in y
 
 ---
 
-## Install Medusa Server Using Contentful Starter
+## Install Medusa Backend Using Contentful Starter
 
-Instead of using the default Medusa Server starter, you must use the [Contentful starter](https://github.com/medusajs/medusa-starter-contentful) to install a server that is ready to be used with Contentful. This server contains all the necessary files to make the integration work.
+Instead of using the default Medusa backend starter, you must use the [Contentful starter](https://github.com/medusajs/medusa-starter-contentful) to install a backend that is ready to be used with Contentful. This backend contains all the necessary files to make the integration work.
 
-In your terminal, run the following command to install the server:
+In your terminal, run the following command to install the backend:
 
 ```bash
 medusa new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
 ```
 
-This installs a new Medusa server in the directory `medusa-contentful`.
+This installs a new Medusa backend in the directory `medusa-contentful`.
 
 ### Add Contentful Environment Variables
 
@@ -168,7 +168,7 @@ After this command finishes running, in your Contentful Space dashboard click on
 
 ### (Optional) Seed Medusa Database
 
-This step seeds your Medusa database with demo data to easily add products as well as other data to your Medusa server.
+This step seeds your Medusa database with demo data to easily add products as well as other data to your Medusa backend.
 
 Run the following command to seed the Medusa database:
 
@@ -176,9 +176,9 @@ Run the following command to seed the Medusa database:
 npm run seed
 ```
 
-### Start the Server
+### Start the Backend
 
-To start the server run the following command:
+To start the backend run the following command:
 
 ```bash
 npm run start
@@ -188,13 +188,13 @@ If you seeded the database with demo data, you should see that events related to
 
 ![Seed the database](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001440/Medusa%20Docs/Contentful/ci4accp_okaro3.png)
 
-The Contentful integration ensures a two-way sync between the Medusa server and Contentful. So, when new products are added to Medusa, these products will be added to your Contentful Space as well.
+The Contentful integration ensures a two-way sync between the Medusa backend and Contentful. So, when new products are added to Medusa, these products will be added to your Contentful Space as well.
 
 ---
 
 ## (Optional) Add Products with the Medusa Admin
 
-Using the Medusa admin, you can add products to your Medusa server. This will trigger product events that subsequently add these products to Contentful.
+Using the Medusa admin, you can add products to your Medusa backend. This will trigger product events that subsequently add these products to Contentful.
 
 ---
 
@@ -202,7 +202,7 @@ Using the Medusa admin, you can add products to your Medusa server. This will tr
 
 ### Publish Products
 
-Products added through the integration with the Medusa server are by default saved as drafts. To show them on the storefront, you must set them as published.
+Products added through the integration with the Medusa backend are by default saved as drafts. To show them on the storefront, you must set them as published.
 
 To do that, open your Contentful Space Dashboard and click on Content in the Navigation bar. Then, change Any to Product in the select field next to the search bar. This shows only the content of the type Product, rather than all content.
 
@@ -234,9 +234,9 @@ Once you’re done adding products, click on Publish changes in the right sideba
 
 ## Setup Gatsby Storefront
 
-In this section, you’ll set up the Gatsby storefront of your Medusa server.
+In this section, you’ll set up the Gatsby storefront of your Medusa backend.
 
-In your terminal in a different directory of the Medusa server, run the following command:
+In your terminal in a different directory of the Medusa backend, run the following command:
 
 ```bash
 gatsby new medusa-contentful-storefront https://github.com/medusajs/medusa-contentful-storefront
@@ -259,7 +259,7 @@ CONTENTFUL_SPACE_ID=
 CONTENTFUL_ACCESS_TOKEN=
 ```
 
-The value of `CONTENTFUL_SPACE_ID` is the same value you [retrieved while setting up the Medusa server](#value-of-contentful_space_id).
+The value of `CONTENTFUL_SPACE_ID` is the same value you [retrieved while setting up the Medusa backend](#value-of-contentful_space_id).
 
 To retrieve the value of `CONTENTFUL_ACCESS_TOKEN`, on your Contentful Space dashboard click on Settings then API keys. Then, choose the API key you created in the previous section.
 
@@ -269,7 +269,7 @@ You should find the field "Content Delivery API - access token”. Copy its valu
 
 ### Start Storefront
 
-Make sure the Medusa server is still running. Then, start the storefront:
+Make sure the Medusa backend is still running. Then, start the storefront:
 
 ```bash
 npm run start
@@ -295,9 +295,9 @@ If you make changes to the data while your Gatsby storefront is running, the cha
 
 ## What’s Next
 
-Learn [How to customize your Contentful server and storefront](./customize-contentful.md).
+Learn [How to customize your Contentful backend and storefront](./customize-contentful.md).
 
 ## See Also
 
-- How to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
+- How to deploy your Medusa backend to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
 - [How to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

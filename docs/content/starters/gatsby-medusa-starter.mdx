@@ -22,7 +22,7 @@ Instead of manually following this guide to install then later deploy the Gatsby
 
 ## Prerequisites
 
-This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.mdx) to learn how to do it.
+This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../core/backend/install.mdx) to learn how to do it.
 
 You should also have the Gatsby CLI installed:
 
@@ -53,7 +53,7 @@ cd my-medusa-storefront
 mv .env.template .env.development
 ```
 
-3\. Make sure the Medusa server is running, then run the local Gatsby server:
+3\. Make sure the Medusa backend is running, then run the local Gatsby server:
 
 ```bash npm2yarn
 npm run start
@@ -84,7 +84,7 @@ To customize the components, pages, and UI of your Gatsby storefront, just edit 
 
 ### Data Refresh
 
-The Gatsby storefront uses the [gatsby-source-medusa](https://github.com/medusajs/medusa/tree/master/packages/gatsby-source-medusa) plugin to source data from your Medusa server. This data includes products, collections, and regions, and as a result, you can query this data in the storefront starter using GraphQL queries. You can also explore the data in your store on `localhost:8000/___graphql`.
+The Gatsby storefront uses the [gatsby-source-medusa](https://github.com/medusajs/medusa/tree/master/packages/gatsby-source-medusa) plugin to source data from your Medusa backend. This data includes products, collections, and regions, and as a result, you can query this data in the storefront starter using GraphQL queries. You can also explore the data in your store on `localhost:8000/___graphql`.
 
 Because of this, you must rebuild the site every time you update any of this data for it to be reflected in your storefront. The Medusa team will soon be releasing a new version of the plugin which adds incremental builds, which will improve build times.
 
@@ -103,7 +103,7 @@ To change the port, change the `develop` command in `package.json` to the follow
 
 Make sure to replace `<PORT>` with the port number you want the storefront to run on. For example, `3000`.
 
-Then, on your server, update the environment variable `STORE_CORS` to the URL with the new port:
+Then, on your backend, update the environment variable `STORE_CORS` to the URL with the new port:
 
 ```bash
 STORE_CORS=http://localhost:<PORT>
@@ -111,7 +111,7 @@ STORE_CORS=http://localhost:<PORT>
 
 :::info
 
-For more details about the Store Cross-Origin Resource Sharing (CORS) configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+For more details about the Store Cross-Origin Resource Sharing (CORS) configuration, check out the [Configure your Backend documentation](../usage/configurations.md#storefront-cors).
 
 :::
 

@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate SendGrid with the Medusa server. Learn how to install the SendGrid plugin and test it out.'
+description: 'Learn how to integrate SendGrid with the Medusa backend. Learn how to install the SendGrid plugin and test it out.'
 addHowToData: true
 ---
 
@@ -29,7 +29,7 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.mdx).
+Before going further with this guide make sure you have a Medusa backend set up. You can follow the [Quickstart guide](../core/backend/install.mdx).
 
 You also must have [Redis configured on your Medusa server](/tutorial/set-up-your-development-environment#redis). Sending emails is done through Subscribers, which uses Redis as the event queue. If you don’t set up Redis, the plugin will not send emails.
 
@@ -3907,7 +3907,7 @@ You don’t have to create a template for every type in the reference. You can s
 
 ## Install the SendGrid Plugin
 
-In the directory of your Medusa server run the following command to install the SendGrid plugin:
+In the directory of your Medusa backend run the following command to install the SendGrid plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-sendgrid
@@ -3960,7 +3960,7 @@ You can also optionally pass the option `localization` if you want to support di
 
 ## Test it Out
 
-Run your server now:
+Run your backend now:
 
 ```bash npm2yarn
 npm run start

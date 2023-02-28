@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate MeiliSearch with the Medusa server. Learn how to install the MeiliSearch plugin on the Medusa server and integrate it into the storefront.'
+description: 'Learn how to integrate MeiliSearch with the Medusa backend. Learn how to install the MeiliSearch plugin on the Medusa backend and integrate it into the storefront.'
 addHowToData: true
 ---
 
 # MeiliSearch
 
-In this document, you’ll learn how to install the [MeiliSearch plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-meilisearch) and use it on both your Medusa Server and your storefront.
+In this document, you’ll learn how to install the [MeiliSearch plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-meilisearch) and use it on both your Medusa Backend and your storefront.
 
 ## Overview
 
@@ -13,7 +13,7 @@ In this document, you’ll learn how to install the [MeiliSearch plugin](https:/
 
 MeiliSearch also provides a pleasant developer experience, as it is extremely intuitive and newcomer-friendly. So, even if you're new to the search engine ecosystem, [their documentation](https://docs.meilisearch.com/) is resourceful enough for everyone to go through and understand.
 
-Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa server and storefront using MeiliSearch with just a few steps.
+Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa backend and storefront using MeiliSearch with just a few steps.
 
 ---
 
@@ -21,13 +21,13 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../core/backend/install.mdx) to get started in minutes.
 
-Furthermore, it’s highly recommended to ensure your Medusa server is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa server are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
+Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
 
 :::caution
 
-If you don’t install and configure Redis on your Medusa server, the MeiliSearch integration will still work. However, products indexed in MeiliSearch are only added and updated when you restart the Medusa server.
+If you don’t install and configure Redis on your Medusa backend, the MeiliSearch integration will still work. However, products indexed in MeiliSearch are only added and updated when you restart the Medusa backend.
 
 :::
 
@@ -41,7 +41,7 @@ Furthermore, you should create a master key for your MeiliSearch instance. If yo
 
 ## Install the MeiliSearch Plugin
 
-In the directory of your Medusa server, run the following command to install the MeiliSearch plugin:
+In the directory of your Medusa backend, run the following command to install the MeiliSearch plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-meilisearch
@@ -109,17 +109,17 @@ The quickest way to test that the integration is working is by sending a `POST` 
 
 ![Postman request to search endpoint that shows results returned from the search engine](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000265/Medusa%20Docs/MeiliSearch/RCGquxU_um3dvn.png)
 
-You can also check that the products are properly indexed by opening the MeiliSearch host URL in your browser, which is `http://127.0.0.1:7700/` by default. You’ll find your products that are on your Medusa server added there.
+You can also check that the products are properly indexed by opening the MeiliSearch host URL in your browser, which is `http://127.0.0.1:7700/` by default. You’ll find your products that are on your Medusa backend added there.
 
-![MeiliSearch dashboard showing products from the Medusa server indexed](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000277/Medusa%20Docs/MeiliSearch/5sk3jyP_i3swkn.png)
+![MeiliSearch dashboard showing products from the Medusa backend indexed](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000277/Medusa%20Docs/MeiliSearch/5sk3jyP_i3swkn.png)
 
 ### Add or Update Products
 
-If you add or update products on your Medusa server, the addition or update will be reflected in the MeiliSearch indices.
+If you add or update products on your Medusa backend, the addition or update will be reflected in the MeiliSearch indices.
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa server as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa server to see the change in the MeiliSearch indices.
+This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the MeiliSearch indices.
 
 :::
 
@@ -131,7 +131,7 @@ In this section, you’ll learn how to add the UI on your storefront to allow se
 
 ### Storefront Prerequisites
 
-It is assumed you already have a storefront set up and working with the Medusa server, as this section only covers how to add the search UI.
+It is assumed you already have a storefront set up and working with the Medusa backend, as this section only covers how to add the search UI.
 
 :::tip
 
@@ -182,11 +182,11 @@ NEXT_PUBLIC_SEARCH_INDEX_NAME=products
 
 Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.
 
-If you run your Next.js storefront now while the Medusa server and the MeiliSearch services are running, the search functionality will be available in your storefront.
+If you run your Next.js storefront now while the Medusa backend and the MeiliSearch services are running, the search functionality will be available in your storefront.
 
 :::note
 
-To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa server at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
@@ -313,7 +313,7 @@ And add the `Search` component in the returned JSX before `RegionPopover`:
 // ...
 ```
 
-If you run your Gatsby storefront while the Medusa server and the MeiliSearch instance are running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
+If you run your Gatsby storefront while the Medusa backend and the MeiliSearch instance are running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
 
 ![Search box in the header of the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000317/Medusa%20Docs/MeiliSearch/ZkRgF2h_ytnpv9.png)
 

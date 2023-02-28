@@ -5,6 +5,7 @@ import {
   useThemeConfig,
   usePrevious,
   useCollapsible,
+  Collapsible
 } from '@docusaurus/theme-common';
 import {
   isActiveSidebarItem,
@@ -17,7 +18,6 @@ import {translate} from '@docusaurus/Translate';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import DocSidebarItems from '@theme/DocSidebarItems';
 import DocSidebarItemIcon from '../Icon';
-import { Collapsible } from '@site/src/components/SidebarCollapsible'
 
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
@@ -179,7 +179,7 @@ export default function DocSidebarItemCategory({
         )}
       </div>
 
-      <Collapsible as="ul" className="menu__list" collapsed={collapsed}>
+      <Collapsible lazy as="ul" className="menu__list" collapsed={collapsed}>
         <DocSidebarItems
           items={items}
           tabIndex={collapsed ? -1 : 0}

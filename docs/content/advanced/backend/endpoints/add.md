@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create endpoints in the Medusa server. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
+description: 'Learn how to create endpoints in the Medusa backend. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
 addHowToData: true
 ---
 
 # How to Create Endpoints
 
-In this document, you’ll learn how to create endpoints in your Medusa server.
+In this document, you’ll learn how to create endpoints in your Medusa backend.
 
 ## Overview
 
@@ -35,7 +35,7 @@ export default (rootDirectory, pluginOptions) => {
 
 This exports a function that returns an Express router. The function receives two parameters:
 
-- `rootDirectory` is the absolute path to the root directory that your server is running from.
+- `rootDirectory` is the absolute path to the root directory that your backend is running from.
 - `pluginOptions` is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
 
 ### Endpoints Path
@@ -63,7 +63,7 @@ import { ConfigModule } from "@medusajs/medusa/dist/types/global"
 import cors from "cors"
 ```
 
-Next, in the exported function, retrieve the CORS configurations of your server using the utility functions you imported:
+Next, in the exported function, retrieve the CORS configurations of your backend using the utility functions you imported:
 
 ```ts
 export default (rootDirectory) => {
@@ -290,7 +290,7 @@ The `productService` has a `count` method that returns a Promise. This Promi
 
 ## Building Files
 
-Custom endpoints must be transpiled and moved to the `dist` directory. This happens when you run your server using `medusa develop` and while it’s running, and when you run the following command:
+Custom endpoints must be transpiled and moved to the `dist` directory. This happens when you run your backend using `medusa develop` and while it’s running, and when you run the following command:
 
 ```bash npm2yarn
 npm run build

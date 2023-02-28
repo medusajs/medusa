@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate Spaces with the Medusa server. Learn how to install and configure the Spaces plugin on the Medusa server.'
+description: 'Learn how to integrate Spaces with the Medusa backend. Learn how to install and configure the Spaces plugin on the Medusa backend.'
 addHowToData: true
 ---
 
 # Spaces
 
-In this document, you’ll learn how to install the [Spaces plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-file-spaces) on your Medusa server and use it for storage.
+In this document, you’ll learn how to install the [Spaces plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-file-spaces) on your Medusa backend and use it for storage.
 
 <div>
   <video width="100%" height="100%" playsinline autoplay muted controls>
@@ -25,7 +25,7 @@ Medusa provides three different options to handle your file storage. This docume
 
 ### Medusa Server
 
-A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
+A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../core/backend/install.mdx) to get started in minutes.
 
 ### Required Accounts
 
@@ -77,7 +77,7 @@ The secret access key will not be shown again after you leave the page. Make sur
 
 ## Install the Spaces Plugin
 
-In the directory of your Medusa server, run the following command to install the Spaces plugin:
+In the directory of your Medusa backend, run the following command to install the Spaces plugin:
 
 ```bash npm2yarn
 npm install medusa-file-spaces
@@ -134,7 +134,7 @@ If you have multiple storage plugins configured, the last plugin declared in the
 
 ## Test the Space Plugin
 
-Run your Medusa server with the following command:
+Run your Medusa backend with the following command:
 
 ```bash npm2yarn
 npm run start
@@ -176,12 +176,12 @@ module.exports = withStoreConfig({
 })
 ```
 
-Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retrieved from the Space URL. For example, `medusa-server.fra1.digitaloceanspaces.com`.
+Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retrieved from the Space URL. For example, `medusa-backend.digitaloceanspaces.com`.
 
 ---
 
 ## See Also
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
-- [Deploy the Medusa server on DigitalOcean](../deployments/server/deploying-on-digital-ocean.md).
+- [Deploy the Medusa backend on DigitalOcean](../deployments/server/deploying-on-digital-ocean.md).
 - Install the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefront.

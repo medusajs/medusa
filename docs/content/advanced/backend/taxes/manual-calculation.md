@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to manually calculate taxes during checkout in the Medusa server. There are different methods including using endpoints or services.'
+description: 'Learn how to manually calculate taxes during checkout in the Medusa backend. There are different methods including using endpoints or services.'
 addHowToData: true
 ---
 

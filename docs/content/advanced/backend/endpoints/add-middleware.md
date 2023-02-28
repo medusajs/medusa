@@ -9,13 +9,13 @@ In this document, you’ll learn how to add a middleware to an existing or custo
 
 ## Overview
 
-As the Medusa server is built on top of [Express](https://expressjs.com/), Express’s features can be utilized during your development with Medusa.
+As the Medusa backend is built on top of [Express](https://expressjs.com/), Express’s features can be utilized during your development with Medusa.
 
 One feature in particular is adding a [middleware](http://expressjs.com/en/guide/using-middleware.html#using-middleware). A middleware is a function that has access to the request and response objects.
 
 A middleware can be used to perform an action when an endpoint is called or modify the response, among other usages.
 
-You can add a middleware to an existing route in the Medusa server, a route in a plugin, or your custom routes.
+You can add a middleware to an existing route in the Medusa backend, a route in a plugin, or your custom routes.
 
 ---
 
@@ -60,7 +60,7 @@ You can learn more about Middlewares and their capabilities in [Express’s docu
 
 ## Building Files
 
-Similar to custom endpoints, you must transpile the files under `src` into the `dist` directory for the server to load them.
+Similar to custom endpoints, you must transpile the files under `src` into the `dist` directory for the backend to load them.
 
 To do that, run the following command before running the Medusa server:
 

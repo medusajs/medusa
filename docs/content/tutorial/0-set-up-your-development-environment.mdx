@@ -147,21 +147,21 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 
 ## Install Medusa Server
 
-If you're not interested in installing the optional tools and want to get started quickly, check out the [quickstart guide](../quickstart/quick-start.mdx).
+If you're not interested in installing the optional tools and want to get started quickly, check out the [quickstart guide](../core/backend/install.mdx).
 
 ---
 
 ## Optional Tools
 
-These tools are not required to have to run a Medusa server, but it's highly recommended that you have them installed.
+These tools are not required to have to run a Medusa backend, but it's highly recommended that you have them installed.
 
 ### PostgreSQL
 
-Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your server.
+Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your backend.
 
 :::tip
 
-After installing PostgreSQL, check out the [Configure your Server documentation](../usage/configurations.md#postgresql-configurations) to learn how to configure PostgreSQL to work with Medusa.
+After installing PostgreSQL, check out the [Configure your Backend documentation](../usage/configurations.md#postgresql-configurations) to learn how to configure PostgreSQL to work with Medusa.
 
 :::
 
@@ -206,7 +206,7 @@ Where:
 
 - `--name` creates a new container named `postgres`.
 - `-e` creates environment variables `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. These will be used to set up a database named `medusa-docker` with the username and password being `postgres`.
-- `-p` maps the container port `5432` to the external host `5432`. This allows you to connect to the database server from outside of the container.
+- `-p` maps the container port `5432` to the external host `5432`. This allows you to connect to the database backend from outside of the container.
 - `-d` enables Docker to run the container in the background.
 - The last section of the command, `postgres` grabs the latest postgres image from the Docker hub.
 
@@ -215,13 +215,13 @@ Where:
 
 ### Redis
 
-Medusa uses Redis as the event queue in the server. If you want to use subscribers to handle events such as when an order is placed and perform actions based on the events, then you need to install and configure Redis.
+Medusa uses Redis as the event queue in the backend. If you want to use subscribers to handle events such as when an order is placed and perform actions based on the events, then you need to install and configure Redis.
 
-If you don’t install and configure Redis with your Medusa server, then it will work without any events-related features.
+If you don’t install and configure Redis with your Medusa backend, then it will work without any events-related features.
 
 :::tip
 
-After installing Redis, check out the [Configure your Server documentation](../usage/configurations.md#redis) to learn how to configure Redis to work with Medusa.
+After installing Redis, check out the [Configure your Backend documentation](../usage/configurations.md#redis) to learn how to configure Redis to work with Medusa.
 
 :::
 
@@ -284,7 +284,7 @@ To install Redis without Homebrew you can check out [Redis’s guide on installi
 
 ## See Also
 
-- [Install Medusa server](../quickstart/quick-start.mdx)
+- [Install Medusa server](../core/backend/install.mdx)
 - [Configure your Medusa server](../usage/configurations.md).
 - Install a storefront with [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](./../starters/gatsby-medusa-starter.mdx).
 - [Install the Medusa Admin](../admin/quickstart.mdx).

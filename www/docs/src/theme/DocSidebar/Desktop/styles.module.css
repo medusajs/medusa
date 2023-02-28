@@ -33,6 +33,5 @@
 
   .sidebarLogo img {
     height: var(--ifm-logo-height);
-    width: var(--ifm-logo-width);
   }
 }

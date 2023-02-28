@@ -16,25 +16,25 @@ Generally, all resources are registered in a container. Then, whenever a class d
 
 ### Medusa’s Dependency Container
 
-Medusa uses a dependency container to register essential resources of your server. You can then access these resources in classes and endpoints using the dependency container.
+Medusa uses a dependency container to register essential resources of your backend. You can then access these resources in classes and endpoints using the dependency container.
 
-For example, if you create a custom service, you can access any other service registered in Medusa in your service’s constructor. That includes Medusa’s core services, services defined in plugins, or other services that you create on your server.
+For example, if you create a custom service, you can access any other service registered in Medusa in your service’s constructor. That includes Medusa’s core services, services defined in plugins, or other services that you create on your backend.
 
-You can load more than services in your Medusa server. You can load the Entity Manager, logger instance, and much more.
+You can load more than services in your Medusa backend. You can load the Entity Manager, logger instance, and much more.
 
 ### MedusaContainer
 
 To manage dependency injections, Medusa uses [Awilix](https://github.com/jeffijoe/awilix). Awilix is an NPM package that implements dependency injection in Node.js projects.
 
-When you run the Medusa server, a container of the type `MedusaContainer` is created. This type extends the [AwilixContainer](https://github.com/jeffijoe/awilix#the-awilixcontainer-object) object.
+When you run the Medusa backend, a container of the type `MedusaContainer` is created. This type extends the [AwilixContainer](https://github.com/jeffijoe/awilix#the-awilixcontainer-object) object.
 
-The server then registers all important resources in the container, which makes them accessible in classes and endpoints.
+The backend then registers all important resources in the container, which makes them accessible in classes and endpoints.
 
 ---
 
 ## Registered Resources
 
-The Medusa server scans the core Medusa package, plugins, and your files in the `dist` directory and registers the following resources:
+The Medusa backend scans the core Medusa package, plugins, and your files in the `dist` directory and registers the following resources:
 
 :::note
 
@@ -560,7 +560,7 @@ Its camel-case name.
 
 ## Loading Resources
 
-This section covers how to load resources that the Medusa server registers when it starts running.
+This section covers how to load resources that the Medusa backend registers when it starts running.
 
 ### In Endpoints
 

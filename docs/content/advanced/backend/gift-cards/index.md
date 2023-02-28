@@ -1,5 +1,5 @@
 ---
-description: 'Learn what gift cards are and how they work in the Medusa server. Learn about the relations between Gift Cards and other entities.'
+description: 'Learn what gift cards are and how they work in the Medusa backend. Learn about the relations between Gift Cards and other entities.'
 ---
 
 # Gift Cards

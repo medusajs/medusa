@@ -1,5 +1,5 @@
 ---
-description: 'Learn what publishable API keys are and how they can be used in the Medusa server. Publishable API keys can be used to scope API calls with an API key.'
+description: 'Learn what publishable API keys are and how they can be used in the Medusa backend. Publishable API keys can be used to scope API calls with an API key.'
 ---
 
 # Publishable API Keys Overview
@@ -96,7 +96,7 @@ Then, the API key will be passed in the header parameter `x-publishable-api-key`
 
 ### Using Other Methods
 
-For other ways of sending requests to your Medusa server, such as using the Fetch API, you must pass `x-publishable-api-key` in the header of every request. Its value is the publishable API key’s `id`.
+For other ways of sending requests to your Medusa backend, such as using the Fetch API, you must pass `x-publishable-api-key` in the header of every request. Its value is the publishable API key’s `id`.
 
 ```ts
 fetch(`<SERVER_URL>/store/products`, {

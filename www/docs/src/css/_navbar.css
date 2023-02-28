@@ -17,7 +17,6 @@
 
 .navbar__logo {
   height: var(--ifm-logo-width);
-  width: var(--ifm-logo-height);
   display: flex;
   justify-content: center;
   align-items: center;

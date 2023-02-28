@@ -1,0 +1,89 @@
+---
+description: "Learn about the Medusa backend, the core that powers Medusa. Learn how to start, how to customize the backend, and what are some of the core concepts."
+hide_table_of_contents: true
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Core Concepts
+
+The Medusa backend is the core that powers the ecommerce platform. This part of the documentation explains all the fundamentals of the Medusa backend and modules to guide you through your custom development.
+
+## Backend Architecture Overview
+
+![Medusa Backend Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1677607702/Medusa%20Docs/Diagrams/medusa-architecture-3_e385zk.jpg)
+
+The Medusa backend is essentially a Node.js server built on top of [Express](https://expressjs.com/). It combines all the [**Modules**](#) that Medusa provides. Modules are ecommerce features that can be used as building blocks in an ecommerce ecosystem. Product is an example of a module.
+
+The Medusa backend connects to a **database**, such as [PostgreSQL](https://www.postgresql.org/), to store the ecommerce store’s data. The tables in that database are represented by [**Entities**](../advanced/backend/entities/overview.md), built on top of [Typeorm](https://typeorm.io/). Entities can also be reflected in the database using [**Migrations**](../advanced/backend/migrations/overview.md).
+
+The retrieval, manipulation, and other utility methods related to that entity are created inside a [**Service**](../advanced/backend/services/overview.md). Services are TypeScript or JavaScript classes. Services, as well as other resources, can be accessed throughout the Medusa backend through [**dependency injection**](../advanced/backend/dependency-container/).
+
+The backend does not have any tightly-coupled frontend. Instead, it exposes [**Endpoints**](#) which are REST APIs that frontends such as an admin or a storefront can use to communicate with the backend. Endpoints are [Express routes](https://expressjs.com/en/guide/routing.html).
+
+Medusa also uses an [**Events Architecture**](../advanced/backend/events/architecture.md) to trigger and handle events. Events are triggered when a specific action occurs, such as when an order is placed. To manage this events system, Medusa connects to a service that implements a pub/sub model, such as [Redis](https://redis.io/).
+
+Events can be handled using [**Subscribers**](../advanced/backend/subscribers/overview.md). Subscribers are TypeScript or JavaScript classes that add their methods as handlers for specific events. These handler methods are only executed when an event is triggered.
+
+You can create any of the resources in the backend’s architecture, such as entities, endpoints, services, and more, as part of your custom development without directly modifying the backend itself. The Medusa backend uses **loaders** to load the backend’s resources, as well as your custom resources and resources in [**Plugins**](../advanced/backend/plugins/overview.md).
+
+You can package your customizations into Plugins to reuse them in different Medusa backends or publish them for others to use. You can also install existing plugins into your Medusa backend.
+
+## Medusa Backend First Steps
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/core/backend/install',
+    label: 'Backend Quickstart',
+    customProps: {
+      icon: Icons['sparkles-solid'],
+      description: 'Install and run a Medusa backend by following three steps.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/tutorial/set-up-your-development-environment',
+    label: 'Prepare Environment',
+    customProps: {
+      icon: Icons['server-stack'],
+      description: 'Discover the tools that can supercharge your development.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/usage/configurations',
+    label: 'Configure Backend',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn about the available configurations for the Medusa backend.'
+    }
+  }
+]} />
+
+## Medusa Use Cases
+
+### Ecommerce Building Blocks
+
+![Architecture of Medusa Ecommerce Building Blocks](https://res.cloudinary.com/dza7lstvk/image/upload/v1677605998/Medusa%20Docs/Diagrams/use-case-1_lsuemr.jpg)
+
+Developers can set up a Medusa backend and handpick the modules they want to use. This gives them great flexibility in choosing the features they want to provide in their ecommerce store, while utilizing the powerful architecture in the Medusa backend.
+
+Developers can modify and tailor the modules that Medusa offers for their use case. They can also create custom Modules to implement new features. All these modules become building blocks that shape their ecommerce system.
+
+### Modules within an Ecommerce Ecosystem
+
+![Architecture of Medusa Modules within an Ecommerce Ecosystem](https://res.cloudinary.com/dza7lstvk/image/upload/v1677605998/Medusa%20Docs/Diagrams/use-case-2_o7jzmx.jpg)
+
+Medusa’s Modules can be used in isolation from the Medusa backend and within a larger ecommerce ecosystem. For example, you can use Medusa’s Cart module with other components in your custom ecommerce setup.
+
+This use case allows developers to benefit from Medusa’s Modules that provide essential ecommerce features while maintaining the ecommerce ecosystem of their choice. Modules are provided as NPM packages that you can install within your setup.
+
+### Full-Fledged Ecommerce System
+
+![Medusa Full-Fledged Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1677607702/Medusa%20Docs/Diagrams/medusa-architecture-3_e385zk.jpg)
+
+Developers can use Medusa’s toolkit to create their ecommerce system. With the use of the create-medusa-app command, developers can set up a Medusa backend, Medusa admin, and a storefront.
+
+Developers can still benefit from customization opportunities here that Medusa provides. This includes creating resources such as endpoints and services, creating plugins, integrating third-party services, create a custom storefront, and more.

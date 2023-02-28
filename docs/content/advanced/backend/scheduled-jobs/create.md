@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a scheduled job in the Medusa server. The scheduled job in this example will simply change the status of draft products to published.'
+description: 'Learn how to create a scheduled job in the Medusa backend. The scheduled job in this example will simply change the status of draft products to published.'
 addHowToData: true
 ---
 
@@ -11,7 +11,7 @@ In this document, you’ll learn how to create a scheduled job in Medusa.
 
 Medusa allows you to create scheduled jobs that run at specific times during your server’s lifetime. For example, you can synchronize your inventory with an Enterprise Resource Planning (ERP) system once a day.
 
-This guide explains how to create a scheduled job on your Medusa server. The scheduled job in this example will simply change the status of draft products to `published`.
+This guide explains how to create a scheduled job on your Medusa backend. The scheduled job in this example will simply change the status of draft products to `published`.
 
 ---
 
@@ -19,7 +19,7 @@ This guide explains how to create a scheduled job on your Medusa server. The sch
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
 
 ### Redis
 
@@ -108,7 +108,7 @@ jobSchedulerService.create("publish-products", {
 
 :::info
 
-Cron Jobs only run while the Medusa server is running.
+Cron Jobs only run while the Medusa backend is running.
 
 :::
 
@@ -118,7 +118,7 @@ In your terminal run the following command to run your Medusa server:
 npm run start
 ```
 
-This builds your code under the `src` directory into the `dist` directory, then runs the Medusa server.
+This builds your code under the `src` directory into the `dist` directory, then runs the Medusa backend.
 
 If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa server:
 
@@ -128,7 +128,7 @@ Registering publish-products
 
 Where `publish-products` is the unique name you provided to the scheduled job.
 
-Once it is time to run your scheduled job based on the scheduled job expression pattern, the scheduled job will run and you can see it logged on your Medusa server.
+Once it is time to run your scheduled job based on the scheduled job expression pattern, the scheduled job will run and you can see it logged on your Medusa backend.
 
 For example, the above scheduled job will run at 12 AM and, when it runs, you can see the following logged on your Medusa server:
 
@@ -136,7 +136,7 @@ For example, the above scheduled job will run at 12 AM and, when it runs, you ca
 info:    Processing scheduled job: publish-products
 ```
 
-If you log anything in the scheduled job, for example using `console.log`, or if any errors are thrown, it’ll also be logged on your Medusa server.
+If you log anything in the scheduled job, for example using `console.log`, or if any errors are thrown, it’ll also be logged on your Medusa backend.
 
 :::tip
 

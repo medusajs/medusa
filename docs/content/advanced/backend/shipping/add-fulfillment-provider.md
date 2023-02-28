@@ -1,17 +1,17 @@
 ---
-description: 'Learn how to create a fulfillment provider in the Medusa server. This guide explains the different methods in the fulfillment provider.'
+description: 'Learn how to create a fulfillment provider in the Medusa backend. This guide explains the different methods in the fulfillment provider.'
 addHowToData: true
 ---
 
 # How to Add a Fulfillment Provider
 
-In this document, you’ll learn how to add a fulfillment provider to a Medusa server. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](overview.md).
+In this document, you’ll learn how to add a fulfillment provider to a Medusa backend. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](overview.md).
 
 ## Overview
 
 A fulfillment provider is the shipping provider used to fulfill orders and deliver them to customers. An example of a fulfillment provider is FedEx.
 
-By default, a Medusa Server has a `manual` fulfillment provider which has minimal implementation. It allows you to accept orders and fulfill them manually. However, you can integrate any fulfillment provider into Medusa, and your fulfillment provider can interact with third-party shipping providers.
+By default, a Medusa Backend has a `manual` fulfillment provider which has minimal implementation. It allows you to accept orders and fulfill them manually. However, you can integrate any fulfillment provider into Medusa, and your fulfillment provider can interact with third-party shipping providers.
 
 Adding a fulfillment provider is as simple as creating one [service](../services/create-service.md) file in `src/services`. A fulfillment provider is essentially a service that extends the `FulfillmentService`. It requires implementing 4 methods:
 
@@ -22,7 +22,7 @@ Adding a fulfillment provider is as simple as creating one [service](../services
 
 Also, the fulfillment provider class should have a static property `identifier`. It is the name that will be used to install and refer to the fulfillment provider throughout Medusa.
 
-Fulfillment providers are loaded and installed on the server startup.
+Fulfillment providers are loaded and installed on the backend startup.
 
 ---
 
@@ -72,7 +72,7 @@ You can use the `constructor` of your fulfillment provider to have access to dif
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
 
-Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter.
+Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter.
 
 For example:
 

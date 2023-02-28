@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Strapi with the Medusa server. Learn how to install the plugin and test two-way sync between the ecommerce and CMS services.'
+description: 'Learn how to integrate Strapi with the Medusa backend. Learn how to install the plugin and test two-way sync between the ecommerce and CMS services.'
 addHowToData: true
 ---
 
@@ -25,11 +25,11 @@ By integrating Strapi to Medusa, you can benefit from powerful features in your 
 
 ### Medusa CLI
 
-[Medusa’s CLI tool](../cli/reference.md#how-to-install-cli-tool) is required to set up a new Medusa server.
+[Medusa’s CLI tool](../cli/reference.md#how-to-install-cli-tool) is required to set up a new Medusa backend.
 
 ### Redis
 
-Redis is required for the Strapi plugin to work as expected on your Medusa server. If you don’t have it installed, you can learn [how to install it in this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis).
+Redis is required for the Strapi plugin to work as expected on your Medusa backend. If you don’t have it installed, you can learn [how to install it in this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis).
 
 ---
 
@@ -43,7 +43,7 @@ npx create-strapi-app strapi-medusa --template shahednasser/strapi-medusa-templa
 
 This creates the Strapi project in the directory `strapi-medusa`.
 
-Once the installation is finished, the Strapi development server will run on `localhost:1337`. A new page will also open in your default browser to create a new admin user and log in.
+Once the installation is finished, the Strapi development backend will run on `localhost:1337`. A new page will also open in your default browser to create a new admin user and log in.
 
 ![Create User Form in Strapi](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001083/Medusa%20Docs/Strapi/9pFE1Ij_h2dicv.png)
 
@@ -65,7 +65,7 @@ Enter the user’s username, email, and password. Once you’re done, click on t
 
 ## Modify Permissions
 
-By default, created users have the “Authenticated” role. Before you start using the Strapi plugin on your Medusa server, you must modify this role’s permissions to allow making changes to Medusa’s models in Strapi.
+By default, created users have the “Authenticated” role. Before you start using the Strapi plugin on your Medusa backend, you must modify this role’s permissions to allow making changes to Medusa’s models in Strapi.
 
 On your Strapi dashboard, go to Settings → Roles → Authenticated. Then, under the Permissions section, expand the accordion of each content model type and check the Select All checkbox.
 
@@ -79,11 +79,11 @@ Once you’re done, click the Save button at the top right.
 
 :::note
 
-You can use the Strapi plugin on an existing Medusa server, however, existing data (such as existing products) will not be imported. Only newer data will be imported.
+You can use the Strapi plugin on an existing Medusa backend, however, existing data (such as existing products) will not be imported. Only newer data will be imported.
 
 :::
 
-To create your Medusa server, run the following command:
+To create your Medusa backend, run the following command:
 
 ```bash
 medusa new medusa-server --seed
@@ -109,7 +109,7 @@ This uses the default Redis configurations. If you want to learn more about conf
 
 :::tip
 
-It is also recommended to use PostgreSQL for an optimal experience, however, it is not required. Learn how to [install](../tutorial/0-set-up-your-development-environment.mdx#postgres) and [configure](../usage/configurations.md#postgresql-configurations) it on your Medusa server.
+It is also recommended to use PostgreSQL for an optimal experience, however, it is not required. Learn how to [install](../tutorial/0-set-up-your-development-environment.mdx#postgres) and [configure](../usage/configurations.md#postgresql-configurations) it on your Medusa backend.
 
 :::
 
@@ -117,7 +117,7 @@ It is also recommended to use PostgreSQL for an optimal experience, however, it 
 
 ## Install the Strapi Plugin
 
-In the directory of your Medusa server, run the following command to install the Strapi plugin:
+In the directory of your Medusa backend, run the following command to install the Strapi plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-strapi
@@ -137,9 +137,9 @@ Where:
 
 - `<STRAPI_IDENTIFIER>` is either the email address or username of the user you created in the previous step.
 - `<STRAPI_PASSWORD>` is the password of the user you created in the previous step.
-- `<STRAPI_PROTOCOL>` is the protocol of your Strapi server. If you’re using a local Strapi server, set this to `http`. The default value is `https`.
-- `<STRAPI_URL>` is the URL of your Strapi server. By default, the URL is `localhost`.
-- `<STRAPI_PORT>` is the port the Strapi server runs on. By default, the port is `1337`.
+- `<STRAPI_PROTOCOL>` is the protocol of your Strapi backend. If you’re using a local Strapi backend, set this to `http`. The default value is `https`.
+- `<STRAPI_URL>` is the URL of your Strapi backend. By default, the URL is `localhost`.
+- `<STRAPI_PORT>` is the port the Strapi backend runs on. By default, the port is `1337`.
 
 Finally, open `medusa-config.js` and add the following new item to the `plugins` array:
 
@@ -163,29 +163,29 @@ const plugins = [
 
 ## Run Medusa Server
 
-Make sure the Strapi server is still running. If not, you can run the following command to run the Strapi server in the directory of the Strapi project:
+Make sure the Strapi backend is still running. If not, you can run the following command to run the Strapi backend in the directory of the Strapi project:
 
 ```bash npm2yarn
 npm run develop
 ```
 
-Then, in the directory of your Medusa server, run the following command to start the Medusa server:
+Then, in the directory of your Medusa backend, run the following command to start the Medusa server:
 
 ```bash npm2yarn
 npm run start
 ```
 
-Once you start your Medusa server, if you ran the `--seed` command when you created your Medusa server, you’ll see that `product.created` events have been triggered along with similar events. This will update Strapi with the products you seeded.
+Once you start your Medusa backend, if you ran the `--seed` command when you created your Medusa backend, you’ll see that `product.created` events have been triggered along with similar events. This will update Strapi with the products you seeded.
 
 ---
 
 ## Test Two-Way Sync
 
-This plugin ensures a two-way sync between the Medusa server and the Strapi server. So, if you update data on Strapi, it will be reflected on your Medusa server, and vice-versa.
+This plugin ensures a two-way sync between the Medusa backend and the Strapi backend. So, if you update data on Strapi, it will be reflected on your Medusa backend, and vice-versa.
 
 ### Update Products on Strapi
 
-Try updating any products on Strapi by going to Content Manager → Products and choosing a product from the list. Then, make changes to the product and click Save. If you view the products on your server now, either using the [REST APIs](https://docs.medusajs.com/api/admin/#tag/Product/operation/GetProducts) or using [the Medusa Admin](../user-guide/products/index.mdx), you’ll see that the product has been updated.
+Try updating any products on Strapi by going to Content Manager → Products and choosing a product from the list. Then, make changes to the product and click Save. If you view the products on your backend now, either using the [REST APIs](https://docs.medusajs.com/api/admin/#tag/Product/operation/GetProducts) or using [the Medusa Admin](../user-guide/products/index.mdx), you’ll see that the product has been updated.
 
 ### Update Products on Medusa
 

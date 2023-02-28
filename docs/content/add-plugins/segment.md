@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Segment with the Medusa server. Learn how to add custom tracking with Segment and Medusa.'
+description: 'Learn how to integrate Segment with the Medusa backend. Learn how to add custom tracking with Segment and Medusa.'
 addHowToData: true
 ---
 
@@ -47,9 +47,9 @@ Check out the [Event Reference](../advanced/backend/subscribers/events-list.md) 
 
 ### Medusa Server
 
-It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
+It is assumed you already have a Medusa backend installed. If not, please follow the [Quickstart guide](../core/backend/install.mdx) to get started in minutes.
 
-In addition, make sure to have Redis installed and configured with your Medusa server. If not, follow [this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis) to install Redis and then [configure it](../usage/configurations.md#redis).
+In addition, make sure to have Redis installed and configured with your Medusa backend. If not, follow [this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis) to install Redis and then [configure it](../usage/configurations.md#redis).
 
 ### Segment Account
 
@@ -63,9 +63,9 @@ On your Segment dashboard, choose Catalog from the sidebar under Connections.
 
 ![Under Connections in the sidebar choose Catalog](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000661/Medusa%20Docs/Segment/rAeJkP3_ybyutz.png)
 
-Then, in the catalog list find the Server category and choose Node.js from the list.
+Then, in the catalog list find the Backend category and choose Node.js from the list.
 
-![Choose Node.js under the Server category](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000672/Medusa%20Docs/Segment/6RxQbW6_wjphte.png)
+![Choose Node.js under the Backend category](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000672/Medusa%20Docs/Segment/6RxQbW6_wjphte.png)
 
 This opens a new side menu. In the side menu, click on Add Source.
 
@@ -75,7 +75,7 @@ This opens a new page to create a Node.js source. Enter the name of the source t
 
 ![Enter a name under the Name field then click on the Add Source button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000693/Medusa%20Docs/Segment/u2hzkB5_t59yhj.png)
 
-On the new source dashboard, you should find a Write Key. You’ll use this key in the next section after you install the Segment plugin on your Medusa server.
+On the new source dashboard, you should find a Write Key. You’ll use this key in the next section after you install the Segment plugin on your Medusa backend.
 
 ![The Write Key is available on the new source's page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000708/Medusa%20Docs/Segment/OTJVsz7_v95qla.png)
 
@@ -97,7 +97,7 @@ The process of integrating each destination is different, so you must follow the
 
 ## Install the Segment Plugin
 
-In the directory of your Medusa server, run the following command to install the Segment plugin:
+In the directory of your Medusa backend, run the following command to install the Segment plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-segment
@@ -129,7 +129,7 @@ const plugins = [
 
 ## Test the Plugin
 
-Run your server with the following command:
+Run your backend with the following command:
 
 ```bash npm2yarn
 npm run start
@@ -196,7 +196,7 @@ The `SegmentServer` also provides the method `identify` to tie a user to their a
 
 ### Test Custom Tracking
 
-After adding the above subscriber, run your server again if it isn’t running and create a customer using the REST APIs or one of the Medusa storefronts. If you check the Debugger in your Segment source, you should see a new event “Customer Created” tracked. If you click on it, you’ll see the data you passed to the `track` method.
+After adding the above subscriber, run your backend again if it isn’t running and create a customer using the REST APIs or one of the Medusa storefronts. If you check the Debugger in your Segment source, you should see a new event “Customer Created” tracked. If you click on it, you’ll see the data you passed to the `track` method.
 
 ![The customer created event is recoreded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
 
