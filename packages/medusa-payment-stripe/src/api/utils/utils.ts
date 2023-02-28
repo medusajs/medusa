@@ -242,17 +242,9 @@ async function completeCartIfNecessary({
     )
 
     if (!idempotencyKey) {
-      try {
-        idempotencyKey = await idempotencyKeyService
-          .withTransaction(transactionManager)
-          .create(idempotencyConstraints)
-      } catch (error) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "Failed to create idempotency key",
-          "400"
-        )
-      }
+      idempotencyKey = await idempotencyKeyService
+        .withTransaction(transactionManager)
+        .create(idempotencyConstraints)
     }
 
     const cart = await cartService
