@@ -3,6 +3,7 @@ import { IStockLocationService, TransactionBaseService } from "../interfaces"
 import { EventBusService, SalesChannelService } from "./"
 
 import { SalesChannelLocation } from "../models/sales-channel-location"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
@@ -102,9 +103,16 @@ class SalesChannelLocationService extends TransactionBaseService {
       ? salesChannelId
       : [salesChannelId]
 
-    const [salesChannels] = await this.salesChannelService_
+    const [salesChannels, count] = await this.salesChannelService_
       .withTransaction(this.activeManager_)
       .listAndCount({ id: ids }, { select: ["id"], skip: 0 })
+
+    if (!count) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with id: ${ids.join(", ")} was not found`
+      )
+    }
 
     const locations = await this.activeManager_.find(SalesChannelLocation, {
       where: { sales_channel_id: In(salesChannels.map((sc) => sc.id)) },
