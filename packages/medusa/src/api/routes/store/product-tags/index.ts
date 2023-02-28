@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { ProductTag } from "../../../../models"
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { StoreGetProductTagsParams } from "./list-product-tags"
 
 const route = Router()
@@ -11,7 +11,7 @@ export default (app: Router) => {
 
   route.get(
     "/",
-    transformQuery(StoreGetProductTagsParams, {
+    transformStoreQuery(StoreGetProductTagsParams, {
       defaultFields: defaultStoreProductTagFields,
       defaultRelations: defaultStoreProductTagRelations,
       allowedFields: allowedStoreProductTagFields,
