@@ -13,11 +13,11 @@ export function transformIncludesOptions(
   expectedIncludesFields: string[] = []
 ) {
   return (req: Request, res: Response, next: NextFunction): void => {
-    if (!allowedIncludesFields.length || !req.query["fields"]) {
+    if (!allowedIncludesFields.length || !req.query.fields) {
       return next()
     }
 
-    const fields = (req.query["fields"] as string).split(",") ?? []
+    const fields = (req.query.fields as string).split(",") ?? []
 
     for (const includesField of allowedIncludesFields) {
       const fieldIndex = fields.indexOf(includesField as keyof Order) ?? -1
@@ -40,16 +40,16 @@ export function transformIncludesOptions(
           )
         }
 
-        req["includes"] = req["includes"] ?? {}
-        req["includes"][includesField] = true
+        req.includes = req.includes ?? {}
+        req.includes[includesField] = true
       }
     }
 
-    if (req.query["fields"]) {
+    if (req.query.fields) {
       if (fields.length) {
-        req.query["fields"] = fields.join(",")
+        req.query.fields = fields.join(",")
       } else {
-        delete req.query["fields"]
+        delete req.query.fields
       }
     }
 
