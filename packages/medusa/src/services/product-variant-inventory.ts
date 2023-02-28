@@ -179,7 +179,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param variantId variant id
    * @returns variant inventory items for the variant id
    */
-  private async listByVariant(
+  public async listByVariant(
     variantId: string | string[]
   ): Promise<ProductVariantInventoryItem[]> {
     const variantInventoryRepo = this.activeManager_.getRepository(
@@ -615,30 +615,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
         // first get all inventory items required for a variant
         const variantInventory = await this.listByVariant(variant.id)
 
-        const salesChannelInventoryServiceTx =
-          this.salesChannelInventoryService_.withTransaction(
-            this.activeManager_
+        variant.inventory_quantity =
+          await this.getVariantQuantityFromVariantInventoryItems(
+            variantInventory,
+            salesChannelId
           )
-        // the inventory quantity of the variant should be equal to the inventory
-        // item with the smallest stock, adjusted for quantity required to fulfill
-        // the given variant
-        variant.inventory_quantity = Math.min(
-          ...(await Promise.all(
-            variantInventory.map(async (variantInventory) => {
-              // get the total available quantity for the given sales channel
-              // divided by the required quantity to account for how many of the
-              // variant we can fulfill at the current time. Take the minimum we
-              // can fulfill and set that as quantity
-              return (
-                // eslint-disable-next-line max-len
-                (await salesChannelInventoryServiceTx.retrieveAvailableItemQuantity(
-                  salesChannelId,
-                  variantInventory.inventory_item_id
-                )) / variantInventory.required_quantity
-              )
-            })
-          ))
-        )
 
         return variant
       })
@@ -662,6 +643,53 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
         return product
       })
+    )
+  }
+
+  /**
+   * Get the quantity of a variant from a list of variantInventoryItems
+   * The inventory quantity of the variant should be equal to the inventory
+   * item with the smallest stock, adjusted for quantity required to fulfill
+   * the given variant.
+   *
+   * @param variantInventoryItems List of inventoryItems for a given variant, These must all be for the same variant
+   * @param channelId Sales channel id to fetch availability for
+   * @returns The available quantity of the variant from the inventoryItems
+   */
+  async getVariantQuantityFromVariantInventoryItems(
+    variantInventoryItems: ProductVariantInventoryItem[],
+    channelId: string
+  ): Promise<number> {
+    const variantItemsAreMixed = variantInventoryItems.some(
+      (inventoryItem) =>
+        inventoryItem.variant_id !== variantInventoryItems[0].variant_id
+    )
+
+    if (variantInventoryItems.length && variantItemsAreMixed) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "All variant inventory items must belong to the same variant"
+      )
+    }
+
+    return Math.min(
+      ...(await Promise.all(
+        variantInventoryItems.map(async (variantInventory) => {
+          // get the total available quantity for the given sales channel
+          // divided by the required quantity to account for how many of the
+          // variant we can fulfill at the current time. Take the minimum we
+          // can fulfill and set that as quantity
+          return (
+            // eslint-disable-next-line max-len
+            (await this.salesChannelInventoryService_
+              .withTransaction(this.activeManager_)
+              .retrieveAvailableItemQuantity(
+                channelId,
+                variantInventory.inventory_item_id
+              )) / variantInventory.required_quantity
+          )
+        })
+      ))
     )
   }
 }
