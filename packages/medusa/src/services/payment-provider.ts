@@ -356,17 +356,16 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       let paymentResponse
       if (provider instanceof AbstractPaymentProcessor) {
-        paymentResponse =
-          (await provider.updatePayment({
-            amount: context.amount,
-            context: context.context,
-            currency_code: context.currency_code,
-            customer: context.customer,
-            email: context.email,
-            billing_address: context.billing_address,
-            resource_id: context.resource_id,
-            paymentSessionData: paymentSession.data,
-          })) ?? {}
+        paymentResponse = await provider.updatePayment({
+          amount: context.amount,
+          context: context.context,
+          currency_code: context.currency_code,
+          customer: context.customer,
+          email: context.email,
+          billing_address: context.billing_address,
+          resource_id: context.resource_id,
+          paymentSessionData: paymentSession.data,
+        })
 
         if (paymentResponse && "error" in paymentResponse) {
           this.throwFromPaymentProcessorError(paymentResponse)
@@ -377,7 +376,7 @@ export default class PaymentProviderService extends TransactionBaseService {
           .updatePayment(paymentSession.data, context)
       }
 
-      const sessionData = paymentResponse.session_data ?? paymentResponse
+      const sessionData = paymentResponse?.session_data ?? paymentResponse
 
       // If no update occurs, return the original session
       if (!sessionData) {

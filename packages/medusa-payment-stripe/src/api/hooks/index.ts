@@ -1,6 +1,7 @@
+import stripeHooks from "./stripe"
 import { Router } from "express"
 import bodyParser from "body-parser"
-import middlewares from "../../middlewares"
+import { wrapHandler } from "@medusajs/medusa"
 
 const route = Router()
 
@@ -11,7 +12,7 @@ export default (app) => {
     "/hooks",
     // stripe constructEvent fails without body-parser
     bodyParser.raw({ type: "application/json" }),
-    middlewares.wrap(require("./stripe").default)
+    wrapHandler(stripeHooks)
   )
   return app
 }

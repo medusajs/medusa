@@ -1,5 +1,5 @@
 import { Router } from "express"
-import hooks from "./routes/hooks"
+import hooks from "./hooks"
 
 export default (container) => {
   const app = Router()

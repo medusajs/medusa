@@ -8,6 +8,8 @@ import {
   CreateIdempotencyKeyInput,
   IdempotencyCallbackResult,
 } from "../types/idempotency-key"
+import { Selector } from "../types/common"
+import { buildQuery, isString } from "../utils"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
@@ -75,14 +77,16 @@ class IdempotencyKeyService extends TransactionBaseService {
 
   /**
    * Retrieves an idempotency key
-   * @param idempotencyKey - key to retrieve
+   * @param idempotencyKeyOrSelector - key or selector to retrieve
    * @return idempotency key
    */
-  async retrieve(idempotencyKey: string): Promise<IdempotencyKey | never> {
-    if (!isDefined(idempotencyKey)) {
+  async retrieve(
+    idempotencyKeyOrSelector: string | Selector<IdempotencyKey>
+  ): Promise<IdempotencyKey | never> {
+    if (!isDefined(idempotencyKeyOrSelector)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `"idempotencyKey" must be defined`
+        `"idempotencyKeyOrSelector" must be defined`
       )
     }
 
@@ -90,15 +94,34 @@ class IdempotencyKeyService extends TransactionBaseService {
       this.idempotencyKeyRepository_
     )
 
-    const iKey = await idempotencyKeyRepo.findOne({
-      where: { idempotency_key: idempotencyKey },
-    })
+    const selector = isString(idempotencyKeyOrSelector)
+      ? { idempotency_key: idempotencyKeyOrSelector }
+      : idempotencyKeyOrSelector
+    const query = buildQuery(selector)
+
+    const iKeys = await idempotencyKeyRepo.find(query)
+
+    if (iKeys.length > 1) {
+      throw new Error(
+        `Multiple keys were found for constraints: ${JSON.stringify(
+          idempotencyKeyOrSelector
+        )}. There should only be one.`
+      )
+    }
+
+    const iKey = iKeys[0]
 
     if (!iKey) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Idempotency key ${idempotencyKey} was not found`
-      )
+      let message
+      if (isString(idempotencyKeyOrSelector)) {
+        message = `Idempotency key ${idempotencyKeyOrSelector} was not found`
+      } else {
+        message = `Idempotency key with constraints ${JSON.stringify(
+          idempotencyKeyOrSelector
+        )} was not found`
+      }
+
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, message)
     }
 
     return iKey
