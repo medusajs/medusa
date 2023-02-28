@@ -1,6 +1,6 @@
-import { useAdminNote, useAdminNotes } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
+import { useAdminNote, useAdminNotes } from "../../../../src"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminNotes hook", () => {

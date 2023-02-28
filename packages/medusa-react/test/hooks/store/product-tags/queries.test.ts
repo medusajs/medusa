@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data/index"
 import { useProductTags } from "../../../../src"
 import { createWrapper } from "../../../utils"

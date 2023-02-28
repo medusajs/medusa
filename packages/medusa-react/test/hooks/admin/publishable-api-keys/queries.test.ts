@@ -1,12 +1,12 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminPublishableApiKey,
   useAdminPublishableApiKeys,
   useAdminPublishableApiKeySalesChannels,
 } from "../../../../src"
 import { createWrapper } from "../../../utils"
-import { fixtures } from "../../../../mocks/data"
 
 describe("useAdminPublishableApiKey hook", () => {
   test("returns an publishable api key", async () => {

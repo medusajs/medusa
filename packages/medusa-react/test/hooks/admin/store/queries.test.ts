@@ -1,6 +1,6 @@
-import { useAdminStore, useAdminStorePaymentProviders } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
+import { useAdminStore, useAdminStorePaymentProviders } from "../../../../src"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminStore hook", () => {

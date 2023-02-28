@@ -1,5 +1,5 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { useCompleteOrderEdit, useDeclineOrderEdit } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
 
 describe("useDeclineOrderEdit hook", () => {

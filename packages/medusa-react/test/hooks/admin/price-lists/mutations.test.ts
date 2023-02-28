@@ -1,3 +1,5 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCreatePriceList,
   useAdminCreatePriceListPrices,
@@ -7,8 +9,6 @@ import {
   useAdminDeletePriceListVariantPrices,
   useAdminUpdatePriceList,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 import { PriceListType } from "@medusajs/medusa/dist/types/price-list"
@@ -143,10 +143,11 @@ describe("useAdminDeletePriceList hook", () => {
 describe("useAdminDeletePriceListProductPrices hook", () => {
   test("should delete prices from a price list for all the variants related to the specified product", async () => {
     const { result, waitFor } = renderHook(
-      () => useAdminDeletePriceListProductPrices(
-        fixtures.get("price_list").id,
-        fixtures.get("product").id
-      ),
+      () =>
+        useAdminDeletePriceListProductPrices(
+          fixtures.get("price_list").id,
+          fixtures.get("product").id
+        ),
       {
         wrapper: createWrapper(),
       }
@@ -157,21 +158,24 @@ describe("useAdminDeletePriceListProductPrices hook", () => {
     await waitFor(() => result.current.isSuccess)
 
     expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data).toEqual(expect.objectContaining({
-      ids: [],
-      object: "money-amount",
-      deleted: true
-    }))
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        ids: [],
+        object: "money-amount",
+        deleted: true,
+      })
+    )
   })
 })
 
 describe("useAdminDeletePriceListVariantPrices hook", () => {
   test("should delete prices from a price list for the specified variant", async () => {
     const { result, waitFor } = renderHook(
-      () => useAdminDeletePriceListVariantPrices(
-        fixtures.get("price_list").id,
-        fixtures.get("product_variant").id
-      ),
+      () =>
+        useAdminDeletePriceListVariantPrices(
+          fixtures.get("price_list").id,
+          fixtures.get("product_variant").id
+        ),
       {
         wrapper: createWrapper(),
       }
@@ -182,10 +186,12 @@ describe("useAdminDeletePriceListVariantPrices hook", () => {
     await waitFor(() => result.current.isSuccess)
 
     expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data).toEqual(expect.objectContaining({
-      ids: [],
-      object: "money-amount",
-      deleted: true
-    }))
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        ids: [],
+        object: "money-amount",
+        deleted: true,
+      })
+    )
   })
 })

@@ -1,17 +1,17 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCancelOrderEdit,
   useAdminConfirmOrderEdit,
   useAdminCreateOrderEdit,
   useAdminDeleteOrderEdit,
   useAdminDeleteOrderEditItemChange,
+  useAdminOrderEditAddLineItem,
+  useAdminOrderEditDeleteLineItem,
   useAdminOrderEditUpdateLineItem,
   useAdminRequestOrderEditConfirmation,
-  useAdminOrderEditAddLineItem,
   useAdminUpdateOrderEdit,
-  useAdminOrderEditDeleteLineItem,
 } from "../../../../src/"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminOrderEditUpdateLineItem hook", () => {

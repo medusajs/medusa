@@ -1,7 +1,7 @@
-import { renderHook } from "@testing-library/react-hooks"
-import { useProducts, useProduct } from "../../../../src"
-import { createWrapper } from "../../../utils"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data/index"
+import { useProduct, useProducts } from "../../../../src"
+import { createWrapper } from "../../../utils"
 
 describe("useProducts hook", () => {
   test("gets a list of products", async () => {

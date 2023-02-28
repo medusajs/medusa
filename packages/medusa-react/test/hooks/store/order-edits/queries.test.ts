@@ -1,7 +1,7 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
-import { createWrapper } from "../../../utils"
 import { useOrderEdit } from "../../../../src/hooks/store/order-edits"
+import { createWrapper } from "../../../utils"
 
 describe("useOrderEdit hook", () => {
   test("returns an order", async () => {

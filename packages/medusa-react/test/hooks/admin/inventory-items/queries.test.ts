@@ -1,12 +1,11 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminInventoryItem,
   useAdminInventoryItemLocationLevels,
   useAdminInventoryItems,
   useAdminPriceList,
-  useAdminPriceLists,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminInventoryItems hook", () => {

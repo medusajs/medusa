@@ -1,5 +1,5 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
-import { renderHook } from "@testing-library/react-hooks"
 import { useAdminOrderEdit, useAdminOrderEdits } from "../../../../src"
 import { createWrapper } from "../../../utils"
 

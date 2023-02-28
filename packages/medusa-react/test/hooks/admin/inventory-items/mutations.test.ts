@@ -1,11 +1,11 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import {
-  useAdminUpdateInventoryItem,
-  useAdminDeleteInventoryItem,
-  useAdminUpdateLocationLevel,
-  useAdminDeleteLocationLevel,
   useAdminCreateLocationLevel,
+  useAdminDeleteInventoryItem,
+  useAdminDeleteLocationLevel,
+  useAdminUpdateInventoryItem,
+  useAdminUpdateLocationLevel,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminUpdateInventoryItem hook", () => {
@@ -71,7 +71,7 @@ describe("useAdminUpdateLocationLevel hook", () => {
       }
     )
 
-    result.current.mutate({ ...payload, stockLocationId: "location_id"})
+    result.current.mutate({ ...payload, stockLocationId: "location_id" })
 
     await waitFor(() => result.current.isSuccess)
 

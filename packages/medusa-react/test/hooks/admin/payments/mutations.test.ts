@@ -1,10 +1,10 @@
+import { RefundReason } from "@medusajs/medusa"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import {
   useAdminPaymentsCapturePayment,
   useAdminPaymentsRefundPayment,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
-import { RefundReason } from "@medusajs/medusa"
 
 describe("useAdminPaymentsCapturePayment hook", () => {
   test("Capture a payment", async () => {
