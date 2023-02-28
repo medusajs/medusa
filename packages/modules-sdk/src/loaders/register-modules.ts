@@ -1,17 +1,22 @@
 import resolveCwd from "resolve-cwd"
 
 import {
-  MedusaModuleConfig,
   InternalModuleDeclaration,
   ModuleDefinition,
   ModuleResolution,
   MODULE_SCOPE,
+  ExternalModuleDeclaration,
 } from "../types"
 import MODULE_DEFINITIONS from "../definitions"
 
-export const registerModules = ({
-  modules,
-}: MedusaModuleConfig): Record<string, ModuleResolution> => {
+export const registerModules = (
+  modules?: Record<
+    string,
+    | false
+    | string
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+  >
+): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
   const projectModules = modules ?? {}
 
@@ -20,7 +25,7 @@ export const registerModules = ({
     const isObj = typeof customConfig === "object"
 
     if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)
+      // TODO: getExternalModuleResolution(...)a
       throw new Error("External Modules are not supported yet.")
     }
 
@@ -30,6 +35,31 @@ export const registerModules = ({
         | InternalModuleDeclaration
         | false
         | string
+    )
+  }
+
+  return moduleResolutions
+}
+
+export const registerMedusaModule = (
+  moduleKey: string,
+  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+): Record<string, ModuleResolution> => {
+  const moduleResolutions = {} as Record<string, ModuleResolution>
+
+  for (const definition of MODULE_DEFINITIONS) {
+    if (definition.key !== moduleKey) {
+      continue
+    }
+
+    if (moduleDeclaration.scope === MODULE_SCOPE.EXTERNAL) {
+      // TODO: getExternalModuleResolution(...)a
+      throw new Error("External Modules are not supported yet.")
+    }
+
+    moduleResolutions[definition.key] = getInternalModuleResolution(
+      definition,
+      moduleDeclaration as InternalModuleDeclaration
     )
   }
 

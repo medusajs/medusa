@@ -120,3 +120,15 @@ export async function loadInternalModule(
     "module"
   )
 }
+
+export async function loadModuleMigrations(
+  resolution: ModuleResolution
+): Promise<[Function | undefined, Function | undefined]> {
+  let loadedModule: ModuleExports
+  try {
+    loadedModule = (await import(resolution.resolutionPath as string)).default
+    return [loadedModule.runMigrations, loadedModule.revertMigration]
+  } catch {
+    return [undefined, undefined]
+  }
+}
