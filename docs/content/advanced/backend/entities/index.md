@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create an entity in the Medusa server. This guide also explains how to create a repository and access and delete the entity.'
+description: 'Learn how to create an entity in the Medusa backend. This guide also explains how to create a repository and access and delete the entity.'
 addHowToData: true
 ---
 

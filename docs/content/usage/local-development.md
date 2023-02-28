@@ -2,7 +2,7 @@
 description: 'Learn how to perform local development in the Medusa monorepo. This includes how to use the dev CLI tool and perform unit, integration, and plugin tests.'
 ---
 
-# Local Development of Medusa Server and Monorepo
+# Local Development of Medusa Backend and Monorepo
 
 In this document, you’ll learn how to customize Medusa’s core and run tests.
 
@@ -10,7 +10,7 @@ In this document, you’ll learn how to customize Medusa’s core and run tests.
 
 As an open-source platform, Medusa’s core can be completely customized.
 
-Whether you want to implement something differently, introduce a new future as part of Medusa’s core or any of the other packages, or contribute to Medusa, this guide helps you learn how to run Medusa’s integration tests, as well as test your own Medusa core in a local server.
+Whether you want to implement something differently, introduce a new future as part of Medusa’s core or any of the other packages, or contribute to Medusa, this guide helps you learn how to run Medusa’s integration tests, as well as test your own Medusa core in a local backend.
 
 ### Medusa Repository Overview
 
@@ -116,9 +116,9 @@ yarn test:integration:plugins
 
 ## Test in a Local Server
 
-Using Medusa’s dev CLI tool, you can test any changes you make to Medusa’s packages in a local server installation. This eliminates the need to publish these packages on NPM publicly to be able to use them.
+Using Medusa’s dev CLI tool, you can test any changes you make to Medusa’s packages in a local backend installation. This eliminates the need to publish these packages on NPM publicly to be able to use them.
 
-Medusa’s dev CLI tool scans and finds the Medusa packages used in your Medusa server. Then, it copies the files of these packages from the `packages` directory in the Medusa repository into the `node_modules` directory of your Medusa server.
+Medusa’s dev CLI tool scans and finds the Medusa packages used in your Medusa backend. Then, it copies the files of these packages from the `packages` directory in the Medusa repository into the `node_modules` directory of your Medusa backend.
 
 :::info
 
@@ -130,7 +130,7 @@ Medusa’s Dev CLI tool uses the [path you specified earlier](#set-the-location-
 
 To test in a local server:
 
-1. Change to the directory of the server you want to test your changes in:
+1. Change to the directory of the backend you want to test your changes in:
 
 ```bash
 cd medusa-server
@@ -148,7 +148,7 @@ By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when 
 
 While the above command is running, it's recommended to run the `watch` command inside the directory of every package you're making changes to.
 
-The combination of these two commands running at the same time will compile the package into the `dist` directory of the package, then copy the compiled changes into your local server.
+The combination of these two commands running at the same time will compile the package into the `dist` directory of the package, then copy the compiled changes into your local backend.
 
 For example, if you're making changes in the `medusa` package, run the following command inside the directory of the `medusa` package:
 

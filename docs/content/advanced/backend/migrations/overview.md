@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Migrations are in the Medusa server and how to run them. Migrations are used to make changes to the database schema the Medusa server is linked to.'
+description: 'Learn what Migrations are in the Medusa backend and how to run them. Migrations are used to make changes to the database schema the Medusa backend is linked to.'
 ---
 
 # Migrations
@@ -8,15 +8,15 @@ In this document, you'll learn what Migrations are in Medusa.
 
 :::note
 
-Medusa’s Migrations do not work with SQLite databases. They are intended to be used with PostgreSQL databases, which is the recommended Database for your Medusa production server.
+Medusa’s Migrations do not work with SQLite databases. They are intended to be used with PostgreSQL databases, which is the recommended Database for your Medusa production backend.
 
 :::
 
 ## What are Migrations
 
-Migrations are scripts that are used to make additions or changes to your database schema. In Medusa, they are essential for both when you first install your server and for subsequent server upgrades later on.
+Migrations are scripts that are used to make additions or changes to your database schema. In Medusa, they are essential for both when you first install your backend and for subsequent backend upgrades later on.
 
-When you first create your Medusa server, the database schema used must have all the tables necessary for the server to run.
+When you first create your Medusa backend, the database schema used must have all the tables necessary for the backend to run.
 
 When a new Medusa version introduces changes to the database schema, you'll have to run migrations to apply them to your own database.
 
@@ -40,7 +40,7 @@ Using the Medusa CLI tool, you can run migrations with the following command:
 medusa migrations run
 ```
 
-This will check for any migrations that contain changes to your database schema that aren't applied yet and run them on your server.
+This will check for any migrations that contain changes to your database schema that aren't applied yet and run them on your backend.
 
 ### Seed Command
 
@@ -52,7 +52,7 @@ You can use the following command to seed your database:
 npm run seed
 ```
 
-This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa server.
+This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa backend.
 
 ---
 

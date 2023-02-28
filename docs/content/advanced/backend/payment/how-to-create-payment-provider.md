@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a payment provider in the Medusa server. This guide explains the different methods available in a fulfillment provider.'
+description: 'Learn how to create a payment provider in the Medusa backend. This guide explains the different methods available in a fulfillment provider.'
 addHowToData: true
 ---
 
 # How to Create a Payment Provider
 
-In this document, you’ll learn how to add a Payment Provider to your Medusa server. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](./overview.md) first.
+In this document, you’ll learn how to add a Payment Provider to your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](./overview.md) first.
 
 ## Overview
 
@@ -15,11 +15,11 @@ By default, Medusa has a [manual payment provider](https://github.com/medusajs/m
 
 Adding a Payment Provider is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
 
-Payment Provider Services must have a static property `identifier`. It's the name that will be used to install and refer to the Payment Provider in the Medusa server.
+Payment Provider Services must have a static property `identifier`. It's the name that will be used to install and refer to the Payment Provider in the Medusa backend.
 
 :::tip
 
-Payment Providers are loaded and installed at the server startup.
+Payment Providers are loaded and installed at the backend startup.
 
 :::
 
@@ -137,7 +137,7 @@ As mentioned in the overview, Payment Providers should have a static `identifie
 
 The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
 
-The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
+The value of this property will also be used to reference the Payment Provider throughout the Medusa backend. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
 
 ### constructor
 
@@ -145,7 +145,7 @@ You can use the `constructor` of your Payment Provider to have access to diffe
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
 
-Additionally, if you’re creating your Payment Provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
+Additionally, if you’re creating your Payment Provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
 
 ```ts
 class MyPaymentService extends AbstractPaymentService {

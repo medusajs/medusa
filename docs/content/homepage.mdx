@@ -13,7 +13,9 @@ import Icons from '@theme/Icon';
 
 # Medusa Documentation
 
-Medusa is an open source ecommerce platform that provides developers and businesses with the necessary tooling to create creative experiences in their ecommerce store.
+Medusa is a set of ecommerce tools and modules that can be used to build unique ecommerce experiences.
+
+Medusa provides the essential building blocks that developers can put together to create a powerful ecommerce store. Developers have full control over their tech stack and the logic behind the ecommerce features.
 
 <DocCard item={{
   type: 'link',
@@ -21,7 +23,7 @@ Medusa is an open source ecommerce platform that provides developers and busines
   label: 'Get Started',
   customProps: {
     icon: Icons['bolt-solid'],
-    html: 'Learn how to use create-medusa-app to create a Medusa project with the three main components of Medusa: the headless server, the Medusa admin, and an ecommerce storefront.',
+    html: 'Create a full-fledged Medusa project with one command.',
     className: 'card-highlighted'
   }
 }} />
@@ -31,8 +33,8 @@ Medusa is an open source ecommerce platform that provides developers and busines
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '/features-and-guides/overview',
-    label: 'Features and Guides',
+    href: '/modules/overview',
+    label: 'Modules',
     customProps: {
       icon: Icons['sparkles-solid'],
       description: 'Learn about the ecommerce features and how to use and customize them.'
@@ -40,11 +42,11 @@ Medusa is an open source ecommerce platform that provides developers and busines
   },
   {
     type: 'link',
-    href: '/core-concepts/overview',
+    href: '/core/overview',
     label: 'Core Concepts',
     customProps: {
       icon: Icons['server-stack'],
-      description: 'Learn about the core of the Medusa server and how to leverage it.'
+      description: 'Learn about the core of the Medusa backend and how to leverage it.'
     }
   },
   {
@@ -58,28 +60,46 @@ Medusa is an open source ecommerce platform that provides developers and busines
   }
 ]} />
 
-## Why Use Medusa
-
-Medusa aims to provide developers with the best development experience on their journey to build a unique ecommerce experience. Developers and businesses have full control over their tech stack and the logic behind essential ecommerce features.
-
-Whether you're looking for a platform that provides you with the essential infrastructure to build on top of, or a platform that allows you to customize every aspect of your ecommerce store to build a bespoke commerce experience, Medusa is the ideal choice.
-
-## Medusa Components
-
-Medusa is composed of three main components: the Medusa server, the Medusa admin, and a storefront.
-
-### Medusa Server
-
-The Medusa server contains all the core logic and data processing of your ecommerce platform. Its APIs are built with abstraction to allow developers to extend them. The Medusa server can also be integrated to third-party services and tools through plugins.
+## Medusa Toolkit
 
 <DocCardList colSize={6} items={[
   {
     type: 'link',
-    href: '/quickstart/quick-start',
-    label: 'Server Quickstart',
+    href: '/core/backend/install',
+    label: 'Medusa Backend',
     customProps: {
       icon: Icons['rocket-launch'],
-      html: 'Install and run the Medusa Server in three steps.',
+      html: 'The Medusa backend is a Node.js backend that includes all modules provided by Medusa. It can be used as the core of an ecommerce store, where all the logic lies. The Medusa Admin and storefronts interact with it using the REST APIs.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/quickstart',
+    label: 'Medusa Admin Quickstart',
+    customProps: {
+      icon: Icons['computer-desktop-solid'],
+      description: 'The Medusa admin is an intuitive admin dashboard that can be used along with the Medusa backend and modules. Merchants can use it to perform data management and processes such as manage orders, products, customers, and much more.'
+    }
+  },
+]} />
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/js-client/overview',
+    label: 'JavaScript Client',
+    customProps: {
+      icon: Icons['javascript'],
+      description: 'Interact with a Medusa backend from a storefront or an admin built with any JavaScript framework.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/medusa-react/overview',
+    label: 'Medusa React',
+    customProps: {
+      icon: Icons['react'],
+      description: 'Interact with a Medusa backend from a React storefront or admin with utilities, hooks, and contexts.'
     }
   },
   {
@@ -88,50 +108,28 @@ The Medusa server contains all the core logic and data processing of your ecomme
     label: 'Plugins',
     customProps: {
       icon: Icons['squares-plus-solid'],
-      description: 'Supercharge your Medusa server with plugins for Storage, Notifications, Analytics, and more.'
+      description: 'Supercharge your Medusa backend with plugins for Storage, Notifications, Analytics, and more.'
     }
   },
 ]} />
-
-### Medusa Admin
-
-The Medusa Admin is an intuitive admin dashboard that allows businesses to manage their ecommerce store and its data including order management, product management, store settings, and much more.
-
-You can alternatively build your own admin dashboard using the Admin REST APIs.
-
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '/admin/quickstart',
-    label: 'Medusa Admin Quickstart',
-    customProps: {
-      icon: Icons['computer-desktop-solid'],
-      description: 'Install the Medusa Admin and use it with the Medusa server.'
-    }
-  },
-  {
-    type: 'link',
-    href: '/api/admin',
-    label: 'Admin API Reference',
-    customProps: {
-      icon: Icons['command-line-solid'],
-      description: 'Check out available APIs with example code snippets.'
-    }
-  },
-]} />
-
-### Ecommerce Storefront
-
-The storefront is where your customer view your products and place their orders. Medusa provides Next.js and Gatsby starter storefronts that you can use as building blocks for your storefront. You can also build your storefront from scratch using the Store REST APIs.
 
 <DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/cli/reference',
+    label: 'Medusa CLI',
+    customProps: {
+      icon: Icons['command-line-solid'],
+      description: 'Use the Medusa CLI tool to perform essential tasks on your Medusa backend.'
+    }
+  },
   {
     type: 'link',
     href: '/starters/nextjs-medusa-starter',
     label: 'Next.js Storefront Quickstart',
     customProps: {
       icon: Icons['nextjs'],
-      description: 'Install the Next.js Storefront and use it with the Medusa server.'
+      description: 'Install the Next.js starter storefront and use it with the Medusa backend.'
     }
   },
   {
@@ -140,7 +138,19 @@ The storefront is where your customer view your products and place their orders.
     label: 'Gatsby Storefront Quickstart',
     customProps: {
       icon: Icons['gatsby'],
-      description: 'Install the Gatsby Storefront and use it with the Medusa server.'
+      description: 'Install the Gatsby starter storefront and use it with the Medusa backend.'
+    }
+  },
+]} />
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/api/admin',
+    label: 'Admin API Reference',
+    customProps: {
+      icon: Icons['command-line-solid'],
+      description: 'Check out available REST APIs with example code snippets.'
     }
   },
   {
@@ -149,7 +159,7 @@ The storefront is where your customer view your products and place their orders.
     label: 'Store API Reference',
     customProps: {
       icon: Icons['command-line-solid'],
-      description: 'Check out available APIs with example code snippets.'
+      description: 'Check out available REST APIs with example code snippets.'
     }
   },
 ]} />
@@ -184,40 +194,6 @@ Learn about all the new features and enhancements in Medusa.
     customProps: {
       icon: Icons['key'],
       description: 'Scope API calls to specific resources using an API key'
-    }
-  },
-]} />
-
-## Development Tools
-
-Supercharge your development with Medusa using these tools.
-
-<DocCardList colSize={4} items={[
-  {
-    type: 'link',
-    href: '/js-client/overview',
-    label: 'JavaScript Client',
-    customProps: {
-      icon: Icons['javascript'],
-      description: 'Interact with the Medusa server from a storefront or an admin built with any JavaScript framework.'
-    }
-  },
-  {
-    type: 'link',
-    href: '/medusa-react/overview',
-    label: 'Medusa React',
-    customProps: {
-      icon: Icons['react'],
-      description: 'Interact with your Medusa server from a React storefront or admin with utilities, hooks, and contexts.'
-    }
-  },
-  {
-    type: 'link',
-    href: '/cli/reference',
-    label: 'Medusa CLI',
-    customProps: {
-      icon: Icons['command-line-solid'],
-      description: 'Use the Medusa CLI tool to perform essential tasks on your Medusa server.'
     }
   },
 ]} />

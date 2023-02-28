@@ -22,6 +22,7 @@
     "@docusaurus/remark-plugin-npm2yarn": "latest",
     "@svgr/webpack": "6.2.1",
     "algoliasearch-helper": "^3.11.3",
+    "animate.css": "^4.1.1",
     "clsx": "^1.1.1",
     "docusaurus-plugin-image-zoom": "^0.1.1",
     "docusaurus-plugin-segment": "^1.0.3",

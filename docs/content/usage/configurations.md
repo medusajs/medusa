@@ -1,20 +1,20 @@
 ---
-description: 'Learn about the different configurations available in a Medusa server. This includes configurations related to the database, CORS, plugins, redis, and more.'
+description: 'Learn about the different configurations available in a Medusa backend. This includes configurations related to the database, CORS, plugins, redis, and more.'
 ---
 
 # Configure Medusa Server
 
-In this document, you’ll learn what configurations you can add to your Medusa server and how to add them.
+In this document, you’ll learn what configurations you can add to your Medusa backend and how to add them.
 
 ## Prerequisites
 
-This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../quickstart/quick-start.mdx#create-a-medusa-server).
+This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../core/backend/install.mdx#create-a-medusa-server).
 
 ---
 
 ## Medusa Configurations File
 
-The configurations for your Medusa server are in `medusa-config.js`. This includes database, Redis, and plugin configurations, among other configurations.
+The configurations for your Medusa backend are in `medusa-config.js`. This includes database, Redis, and plugin configurations, among other configurations.
 
 Some of the configurations mentioned in this document are already defined in `medusa-config.js` with default values. It’s important that you know what these configurations are used for and how to set them.
 
@@ -158,7 +158,7 @@ It is recommended to set the Redis URL as an environment variable:
 REDIS_URL=<YOUR_REDIS_URL>
 ```
 
-Where `<YOUR_REDIS_URL>` is the URL of your Redis server.
+Where `<YOUR_REDIS_URL>` is the URL of your Redis backend.
 
 :::info
 
@@ -193,7 +193,7 @@ Where `<YOUR_JWT_SECRET>` is the JWT secret you want to use.
 
 :::caution
 
-In a development environment, if this option is not set the default secret is “supersecret”. However, in production, if this option is not set an error will be thrown and your server will crash.
+In a development environment, if this option is not set the default secret is “supersecret”. However, in production, if this option is not set an error will be thrown and your backend will crash.
 
 :::
 
@@ -224,7 +224,7 @@ Where `<YOUR_COOKIE_SECRET>` is the Cookie secret you want to use.
 
 :::caution
 
-In a development environment, if this option is not set the default secret is “supersecret”. However, in production, if this option is not set an error will be thrown and your server will crash.
+In a development environment, if this option is not set the default secret is “supersecret”. However, in production, if this option is not set an error will be thrown and your backend will crash.
 
 :::
 
@@ -232,7 +232,7 @@ In a development environment, if this option is not set the default secret is �
 
 ## CORS Configurations
 
-Medusa uses Cross-Origin Resource Sharing (CORS) to only allow specific origins to access the server.
+Medusa uses Cross-Origin Resource Sharing (CORS) to only allow specific origins to access the backend.
 
 The Admin and the Storefront have different CORS configurations that must be configured.
 
@@ -241,7 +241,7 @@ The Admin and the Storefront have different CORS configurations that must be con
 For both of the Admin and the Storefront CORS configurations, the value is expected to be a string. This string can be a comma-separated list of accepted origins. Every origin in that list can be of the following types:
 
 1. The accepted origin as is. For example, `http://localhost:8000`.
-2. A regular expression pattern that can match more than one origin. For example, `*.example.com`. The regex pattern that the server tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+2. A regular expression pattern that can match more than one origin. For example, `*.example.com`. The regex pattern that the backend tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
 
 ### Admin CORS
 
@@ -274,7 +274,7 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 ### Storefront CORS
 
-To make sure your Storefront dashboard can access the Medusa server, set this configuration:
+To make sure your Storefront dashboard can access the Medusa backend, set this configuration:
 
 ```jsx
 module.exports = {
@@ -305,7 +305,7 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 ## Plugins
 
-On your Medusa server, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment provider.
+On your Medusa backend, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment provider.
 
 :::info
 

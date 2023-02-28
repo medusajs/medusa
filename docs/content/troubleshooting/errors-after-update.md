@@ -8,7 +8,7 @@ If there's no upgrade guide for your version, make sure that you ran the `migrat
 medusa migrations run
 ```
 
-This ensures your server has the latest database structure required. Then, try running your Medusa server again and check whether the same error occurs.
+This ensures your backend has the latest database structure required. Then, try running your Medusa backend again and check whether the same error occurs.
 
 ---
 

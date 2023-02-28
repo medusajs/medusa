@@ -19,8 +19,8 @@ export default function NavbarActions ({items = []}) {
         switch(item.type) {
           case 'link':
             return (
-              <Tooltip text='Report an issue'>
-                <a key={index} href={item.href} title={item.title} 
+              <Tooltip text='Report an issue' key={index}>
+                <a href={item.href} title={item.title} 
                   className={`navbar-action ${item.icon ? 'navbar-link-icon' : ''} ${item.className || ''}`}>
                   {item.label}
                   {item.icon && findIcon(item.icon)}

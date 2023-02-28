@@ -11,7 +11,7 @@ In this document, you’ll learn how to customize the Contentful integration wit
 
 Part of what makes the integration between Medusa and Contentful powerful is that it’s completely customizable.
 
-On the server, you can create Contentful migrations that allow you to add or edit Content Types in Contentful. Although this can be done through Contentful’s interface, this solution allows you to create a reusable codebase for your store that is independent of a specific Contentful Space.
+On the backend, you can create Contentful migrations that allow you to add or edit Content Types in Contentful. Although this can be done through Contentful’s interface, this solution allows you to create a reusable codebase for your store that is independent of a specific Contentful Space.
 
 On your storefront, you can add any necessary components that can render the Content Types you create.
 
@@ -21,13 +21,13 @@ As an example to explain this process, in this documentation, you’ll create a 
 
 ## Prerequisites
 
-It’s assumed you already have set up a Medusa server integrated with Contentful and have a Gatsby storefront integrated with Contentful. If not, [please follow this documentation first](index.md).
+It’s assumed you already have set up a Medusa backend integrated with Contentful and have a Gatsby storefront integrated with Contentful. If not, [please follow this documentation first](index.md).
 
 ---
 
 ## Create a Contentful Migration
 
-The Contentful migrations are located in the `contentful-migrations` directory in the Medusa Contentful server starter. So, if you want to create your own Contentful migrations, you can create them under that directory.
+The Contentful migrations are located in the `contentful-migrations` directory in the Medusa Contentful backend starter. So, if you want to create your own Contentful migrations, you can create them under that directory.
 
 Here’s an example of a migration created in a new file `contentful-migrations/rich-text.js`:
 
@@ -247,7 +247,7 @@ export const query = graphql`
 
 ### Test Rich Text in Page Content
 
-To test this out, run your Medusa server by running this command in its directory:
+To test this out, run your Medusa backend by running this command in its directory:
 
 ```bash
 npm run start
@@ -335,5 +335,5 @@ Restart the Gatsby storefront then open a product that you added Rich Text conte
 
 ## See Also
 
-- Deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
+- Deploy your Medusa backend to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
 - [How to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

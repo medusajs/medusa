@@ -15,7 +15,7 @@ If you’re interested in learning what a price selection strategy is and how it
 
 ## 1. Create Class
 
-Create a TypeScript or JavaScript file in `src/strategies` of your Medusa server project with a class that extends the `AbstractPriceSelectionStrategy` class:
+Create a TypeScript or JavaScript file in `src/strategies` of your Medusa backend project with a class that extends the `AbstractPriceSelectionStrategy` class:
 
 ```ts title=src/strategies/price.ts
 import { 
@@ -114,7 +114,7 @@ npm run build
 
 ## Test it Out
 
-Run your server to test it out:
+Run your backend to test it out:
 
 ```bash npm2yarn
 npm run start

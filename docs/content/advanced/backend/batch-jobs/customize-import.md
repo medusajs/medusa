@@ -19,7 +19,7 @@ Although this documentation specifically targets import strategies, you can use 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
 
 ### Redis
 
@@ -39,7 +39,7 @@ If you’re interested to learn more about batch job strategies and how they wor
 
 ### 1. Create a File
 
-You must store batch job strategies in the `src/strategies` directory of your Medusa server. They are either TypeScript or JavaScript files.
+You must store batch job strategies in the `src/strategies` directory of your Medusa backend. They are either TypeScript or JavaScript files.
 
 So, for example, you can create the file `src/strategies/import.ts`.
 

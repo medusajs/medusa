@@ -154,7 +154,7 @@ Here's what each of these options mean:
 
 ### Note on Subscriber IDs
 
-If you have more than one handler methods attached to a single event, or if you have multiple server instances running, you must pass a subscriber ID as a third parameter to the `subscribe` method. This allows the `EventBusService` to differentiate between handler methods when retrying a failed one.
+If you have more than one handler methods attached to a single event, or if you have multiple backend instances running, you must pass a subscriber ID as a third parameter to the `subscribe` method. This allows the `EventBusService` to differentiate between handler methods when retrying a failed one.
 
 If a subscriber ID is not passed on subscription, all handler methods are run again. This can lead to data inconsistencies or general unwanted behavior in your system.
 

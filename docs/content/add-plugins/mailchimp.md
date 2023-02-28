@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Mailchimp with the Medusa server. Learn how to install the plugin on the Medusa server and how to add a subscription form.'
+description: 'Learn how to integrate Mailchimp with the Medusa backend. Learn how to install the plugin on the Medusa backend and how to add a subscription form.'
 addHowToData: true
 ---
 
@@ -23,7 +23,7 @@ This plugin is only used to allow your customers to subscribe but does not actua
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start).
+Before going further with this guide make sure you have a Medusa backend set up. You can follow the [Quickstart guide](../core/backend/install.mdx).
 
 You also need a Mailchimp account, so please [create one](https://mailchimp.com/signup) before you start.
 
@@ -41,7 +41,7 @@ You can follow [this guide](https://mailchimp.com/help/find-audience-id/) from M
 
 ## Install the Plugin
 
-In the directory of your Medusa server, run the following command to install the Mailchimp plugin:
+In the directory of your Medusa backend, run the following command to install the Mailchimp plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-mailchimp

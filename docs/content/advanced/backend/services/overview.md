@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Services are in the Medusa server. Services represent bundled helper methods that you want to use across the server.'
+description: 'Learn what Services are in the Medusa backend. Services represent bundled helper methods that you want to use across the backend.'
 ---
 
 # Services
@@ -8,11 +8,11 @@ In this document, you'll learn about what Services are in Medusa.
 
 ## What are Services
 
-Services in Medusa represent bundled helper methods that you want to use across your server. By convention, they represent a certain entity or functionality in your server.
+Services in Medusa represent bundled helper methods that you want to use across your backend. By convention, they represent a certain entity or functionality in your backend.
 
 For example, you can use Medusa’s `productService` to get the list of products, as well as perform other functionalities related to products. There’s also an `authService` that provides functionalities like authenticating customers and users.
 
-Custom services are TypeScript or JavaScript files located in the `src/services` directory of your Medusa Server installation. Each service should be a class that extends the `TransactionBaseService` class from the core Medusa package `@medusajs/medusa`.
+Custom services are TypeScript or JavaScript files located in the `src/services` directory of your Medusa Backend installation. Each service should be a class that extends the `TransactionBaseService` class from the core Medusa package `@medusajs/medusa`.
 
 Each file you create in `src/services` should hold one service and export it.
 

@@ -35,7 +35,7 @@ A sales channel is stored in the database as a [SalesChannel](../../../reference
 
 ### Store
 
-A store has a default sales channel. When you first run your Medusa server or seed your database, a default sales channel is created, if it doesn’t exist, and associated with the store.
+A store has a default sales channel. When you first run your Medusa backend or seed your database, a default sales channel is created, if it doesn’t exist, and associated with the store.
 
 The relation is implemented in the [Store](../../../references/entities/classes/Store.md) entity. You can access the default sales channel of a store by expanding the `default_sales_channel` relation and using `store.default_sales_channel`. You can also access the ID of the default sales channel using `store.default_sales_channel_id`.
 

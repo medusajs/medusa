@@ -115,6 +115,10 @@
   margin-top: 0 !important;
 }
 
+.docs-doc-id-homepage .sidebar-desktop [class*=sidebarLogo] {
+  padding-left: calc(var(--doc-sidebar-padding) + calc(var(--ifm-base-spacing) / 2));
+}
+
 /** Mobile Sidebar **/
 .navbar-sidebar__back {
   background: transparent;

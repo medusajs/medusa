@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to handle the order claim event in the Medusa server. When the event is triggered, you can send an email to the customer to inform them about it.'
+description: 'Learn how to handle the order claim event in the Medusa backend. When the event is triggered, you can send an email to the customer to inform them about it.'
 addHowToData: true
 ---
 
@@ -13,11 +13,11 @@ When a guest customer places an order, the order is not associated with a custom
 
 After the customer registers, later on, they can claim that order by providing the order’s ID.
 
-When the customer requests to claim the order, the event `order-update-token.created` is triggered on the Medusa server. This event should be used to send the customer a confirmation email.
+When the customer requests to claim the order, the event `order-update-token.created` is triggered on the Medusa backend. This event should be used to send the customer a confirmation email.
 
 ### What You’ll Learn
 
-In this document, you’ll learn how to handle the `order-update-token.created` event on the server to send the customer a confirmation email.
+In this document, you’ll learn how to handle the `order-update-token.created` event on the backend to send the customer a confirmation email.
 
 ---
 
@@ -25,7 +25,7 @@ In this document, you’ll learn how to handle the `order-update-token.created` 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../core/backend/install.mdx) to get started.
 
 ### Redis
 
@@ -150,7 +150,7 @@ The `handleRequestClaimOrder` event receives a `data` object as a parameter. Thi
 
 In this method, you should typically send an email to the customer’s old email. In the email, you should link to a page in your storefront and pass the `token` as a parameter.
 
-The page would then send a request to the server to verify that the `token` is valid and associate the order with the customer. You can read more about how to implement this in your storefront in [this documentation](../storefront/implement-claim-order.mdx).
+The page would then send a request to the backend to verify that the `token` is valid and associate the order with the customer. You can read more about how to implement this in your storefront in [this documentation](../storefront/implement-claim-order.mdx).
 
 ---
 

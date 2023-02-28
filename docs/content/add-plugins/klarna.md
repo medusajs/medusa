@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Klarna as a payment provider with the Medusa server. Learn how to install Klarna and enable the payment provider in a region.'
+description: 'Learn how to integrate Klarna as a payment provider with the Medusa backend. Learn how to install Klarna and enable the payment provider in a region.'
 addHowToData: true
 ---
 
@@ -19,7 +19,7 @@ You can integrate Klarna into Medusa using the [official plugin](https://github.
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../quickstart/quick-start.mdx).
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../core/backend/install.mdx).
 
 In addition, you’ll need to use the [Medusa Admin](../admin/quickstart.mdx) to enable the payment provider in later steps. You can alternatively use the [REST APIs](/api/admin/#tag/Region/operation/PostRegionsRegionPaymentProviders).
 
@@ -31,7 +31,7 @@ In addition, you’ll need to use the [Medusa Admin](../admin/quickstart.mdx) to
 
 ## Install Plugin
 
-On your Medusa server, run the following command to install the plugin:
+On your Medusa backend, run the following command to install the plugin:
 
 ```bash
 npm install medusa-payment-klarna

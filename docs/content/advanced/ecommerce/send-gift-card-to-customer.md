@@ -27,7 +27,7 @@ You can alternatively use the [SendGrid](../../add-plugins/sendgrid.mdx) plugin,
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../core/backend/install.mdx) to get started.
 
 ### Redis
 

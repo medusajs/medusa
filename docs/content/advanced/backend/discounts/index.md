@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the discount architecture in the Medusa server. Discounts are used to offer promotions to the user for marketing purposes.'
+description: 'Learn about the discount architecture in the Medusa backend. Discounts are used to offer promotions to the user for marketing purposes.'
 ---
 
 # Discounts Architecture

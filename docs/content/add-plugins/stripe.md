@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate Stripe with the Medusa server. Learn how to install the Stripe plugin on the Medusa server and integrate it into a storefront.'
+description: 'Learn how to integrate Stripe with the Medusa backend. Learn how to install the Stripe plugin on the Medusa backend and integrate it into a storefront.'
 addHowToData: true
 ---
 
 # Stripe
 
-This document guides you through setting up Stripe payments in your Medusa server, admin, and storefront using the [Stripe Plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe).
+This document guides you through setting up Stripe payments in your Medusa backend, admin, and storefront using the [Stripe Plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe).
 
 ## Video Guide
 
@@ -33,13 +33,13 @@ Before you proceed with this guide, make sure you create a [Stripe account](http
 
 ## Medusa Server
 
-This section guides you over the steps necessary to add Stripe as a payment provider to your Medusa server.
+This section guides you over the steps necessary to add Stripe as a payment provider to your Medusa backend.
 
-If you don’t have a Medusa server installed yet, you must follow the [quickstart guide](../quickstart/quick-start) first.
+If you don’t have a Medusa backend installed yet, you must follow the [quickstart guide](../core/backend/install.mdx) first.
 
 ### Install the Stripe Plugin
 
-In the root of your Medusa server, run the following command to install the stripe plugin:
+In the root of your Medusa backend, run the following command to install the stripe plugin:
 
 ```bash npm2yarn
 npm install medusa-payment-stripe
@@ -78,7 +78,7 @@ On the [dashboard](https://dashboard.stripe.com) of your Stripe account click on
 
 You’ll first retrieve the API key. You can find it by choosing API Keys from the sidebar and copying the Secret key.
 
-Next, you need to add the key to your environment variables. In your Medusa server, create `.env` if it doesn’t already exist and add the Stripe key:
+Next, you need to add the key to your environment variables. In your Medusa backend, create `.env` if it doesn’t already exist and add the Stripe key:
 
 ```bash
 STRIPE_API_KEY=sk_...
@@ -86,19 +86,19 @@ STRIPE_API_KEY=sk_...
 
 :::note
 
-If you store environment variables differently on your server, for example, using the hosting provider’s UI, then you don’t need to add it in `.env`. Add the environment variables in a way relevant to your server.
+If you store environment variables differently on your backend, for example, using the hosting provider’s UI, then you don’t need to add it in `.env`. Add the environment variables in a way relevant to your backend.
 
 :::
 
-Next, if you’re installing this plugin for production use, you need to retrieve the Webhook secret. Webhooks allows you to track different events on your Medusa server, such as failed payments.
+Next, if you’re installing this plugin for production use, you need to retrieve the Webhook secret. Webhooks allows you to track different events on your Medusa backend, such as failed payments.
 
 Go to Webhooks on Stripe’s developer dashboard. Then, choose the Add an Endpoint button.
 
-The endpoint for Stripe’s webhook on your Medusa server is `{SERVER_URL}/stripe/hooks`. So, add that endpoint in its field. Make sure to replace `{SERVER_URL}` with the URL to your server.
+The endpoint for Stripe’s webhook on your Medusa backend is `{SERVER_URL}/stripe/hooks`. So, add that endpoint in its field. Make sure to replace `{SERVER_URL}` with the URL to your backend.
 
 Then, you can add a description. You must select at least one event to listen to. Once you’re done, click “Add endpoint”.
 
-After the Webhook is created, you’ll see "Signing secret" in the Webhook details. Click on "Reveal" to reveal the secret key. Copy that key and in your Medusa server add the Webhook secret environment variable:
+After the Webhook is created, you’ll see "Signing secret" in the Webhook details. Click on "Reveal" to reveal the secret key. Copy that key and in your Medusa backend add the Webhook secret environment variable:
 
 ```bash
 STRIPE_WEBHOOK_SECRET=whsec_...
@@ -132,7 +132,7 @@ All storefronts require that you obtain your Stripe’s Publishable Key. You can
 
 ### Add to Next.js Storefront
 
-Medusa has a Next.js storefront that you can easily use with your Medusa server. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/nextjs-medusa-starter).
+Medusa has a Next.js storefront that you can easily use with your Medusa backend. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/nextjs-medusa-starter).
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 
@@ -142,7 +142,7 @@ NEXT_PUBLIC_STRIPE_KEY=<YOUR_PUBLISHABLE_KEY>
 
 Make sure to replace `<YOUR_PUBLISHABLE_KEY>` with your Stripe Publishable Key.
 
-Now, if you run your Medusa server and your storefront, on checkout you’ll be able to use Stripe.
+Now, if you run your Medusa backend and your storefront, on checkout you’ll be able to use Stripe.
 
 ![Next.js Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001145/Medusa%20Docs/Stripe/h5mWdJT_n1bktt.png)
 
@@ -162,7 +162,7 @@ You might find this environment variable already available so you can just repla
 
 :::
 
-Now, if you run your Medusa server and your storefront, on checkout you’ll be able to use Stripe.
+Now, if you run your Medusa backend and your storefront, on checkout you’ll be able to use Stripe.
 
 ![Gatsby Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001172/Medusa%20Docs/Stripe/1XvW776_omosuz.png)
 
@@ -361,7 +361,7 @@ This method also requires the customer’s information like `name`, `email`, and
 
 Once the promise resolves you can handle the errors, if there are any. If not, you can complete the customer’s order using `complete` from Medusa’s client. This request expects the cart ID which you should have access to as well.
 
-If you run your server and storefront now, you’ll see the Stripe UI element and you’ll be able to make orders.
+If you run your backend and storefront now, you’ll see the Stripe UI element and you’ll be able to make orders.
 
 ![Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001190/Medusa%20Docs/Stripe/NOi8THw_xv3zsx.png)
 

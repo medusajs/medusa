@@ -37,15 +37,6 @@ module.exports = {
       className: 'homepage-sidebar-item',
     },
     {
-      type: 'doc',
-      id: 'quickstart/quick-start',
-      label: 'Server Quickstart',
-      customProps: {
-        sidebar_icon: 'server-stack',
-      },
-      className: 'homepage-sidebar-item'
-    },
-    {
       type: 'html',
       value: ' ',
       customProps: {
@@ -55,8 +46,8 @@ module.exports = {
     },
     {
       type: 'ref',
-      id: 'features-and-guides/overview',
-      label: 'Features and Guides',
+      id: 'modules/overview',
+      label: 'Modules',
       customProps: {
         sidebar_icon: 'sparkles'
       },
@@ -64,8 +55,8 @@ module.exports = {
     },
     {
       type: 'ref',
-      id: 'core-concepts/overview',
-      label: 'Core Concepts',
+      id: 'core/overview',
+      label: 'Core',
       customProps: {
         sidebar_icon: 'star'
       },
@@ -216,7 +207,7 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Server",
+          label: "Backend",
           link: {
             type: "doc",
             id: "deployments/server/index"
@@ -391,7 +382,7 @@ module.exports = {
       className: 'homepage-sidebar-item',
     },
   ],
-  featuresAndGuides: [
+  modules: [
     {
       type: 'ref',
       id: 'homepage',
@@ -403,8 +394,8 @@ module.exports = {
     },
     {
       type: 'doc',
-      id: 'features-and-guides/overview',
-      label: 'Features and Guides',
+      id: 'modules/overview',
+      label: 'Modules',
       customProps: {
         sidebar_is_title: true,
         sidebar_icon: 'sparkles'
@@ -420,7 +411,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          id: 'features-and-guides/regions-and-currencies/overview',
+          id: 'modules/regions-and-currencies/overview',
           label: 'Overview'
         },
         {
@@ -432,7 +423,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'features-and-guides/regions-and-currencies/regions',
+          id: 'modules/regions-and-currencies/regions',
           label: 'Regions'
         },
         {
@@ -452,7 +443,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'features-and-guides/regions-and-currencies/admin/manage-regions',
+          id: 'modules/regions-and-currencies/admin/manage-regions',
           label: 'Admin: Manage Regions'
         },
         {
@@ -465,7 +456,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'features-and-guides/regions-and-currencies/storefront/use-regions',
+          id: 'modules/regions-and-currencies/storefront/use-regions',
           label: 'Storefront: Use Regions'
         },
       ]
@@ -480,7 +471,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          id: 'features-and-guides/customers/overview',
+          id: 'modules/customers/overview',
           label: 'Overview'
         },
         {
@@ -492,12 +483,12 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'features-and-guides/customers/customers',
+          id: 'modules/customers/customers',
           label: 'Customers'
         },
         {
           type: 'doc',
-          id: 'features-and-guides/customers/customer-groups',
+          id: 'modules/customers/customer-groups',
           label: 'Customer Groups'
         },
         {
@@ -510,24 +501,24 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Server: Send SignUp Email',
+          label: 'Backend: Send SignUp Email',
           customProps: {
             sidebar_is_soon: true
           }
         },
         {
           type: 'doc',
-          id: 'features-and-guides/customers/admin/manage-customers',
+          id: 'modules/customers/admin/manage-customers',
           label: 'Admin: Manage Customers'
         },
         {
           type: 'doc',
-          id: 'features-and-guides/customers/admin/manage-customer-groups',
+          id: 'modules/customers/admin/manage-customer-groups',
           label: 'Admin: Manage Customer Groups'
         },
         {
           type: 'doc',
-          id: 'features-and-guides/customers/storefront/implement-customer-profiles',
+          id: 'modules/customers/storefront/implement-customer-profiles',
           label: 'Storefront: Add Customer Profiles'
         },
       ]
@@ -668,12 +659,12 @@ module.exports = {
         {
           type: 'doc',
           id: 'advanced/backend/shipping/add-fulfillment-provider',
-          label: 'Server: Create Fulfillment Provider'
+          label: 'Backend: Create Fulfillment Provider'
         },
         {
           type: 'doc',
           id: 'advanced/backend/payment/how-to-create-payment-provider',
-          label: 'Server: Create Payment Provider'
+          label: 'Backend: Create Payment Provider'
         },
         {
           type: 'doc',
@@ -768,7 +759,7 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Server: Send Confirmation Email',
+          label: 'Backend: Send Confirmation Email',
           customProps: {
             sidebar_is_soon: true
           }
@@ -776,7 +767,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'advanced/ecommerce/handle-order-claim-event',
-          label: 'Server: Send Order Claim Email'
+          label: 'Backend: Send Order Claim Email'
         },
         {
           type: 'link',
@@ -913,7 +904,7 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Server: Create Tax Provider',
+          label: 'Backend: Create Tax Provider',
           customProps: {
             sidebar_is_soon: true
           }
@@ -1034,7 +1025,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'advanced/ecommerce/send-gift-card-to-customer',
-          label: 'Server: Send Gift Card Code'
+          label: 'Backend: Send Gift Card Code'
         },
         {
           type: 'doc',
@@ -1091,7 +1082,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'advanced/backend/price-selection-strategy/override',
-          label: 'Server: Override Price Selection'
+          label: 'Backend: Override Price Selection'
         },
         {
           type: 'doc',
@@ -1209,7 +1200,7 @@ module.exports = {
       ]
     },
   ],
-  coreConcepts: [
+  core: [
     {
       type: 'ref',
       id: 'homepage',
@@ -1221,7 +1212,7 @@ module.exports = {
     },
     {
       type: 'doc',
-      id: 'core-concepts/overview',
+      id: 'core/overview',
       label: 'Core Concepts',
       customProps: {
         sidebar_is_title: true,
@@ -1230,12 +1221,17 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Server Setup',
+      label: 'Backend Setup',
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true
       },
       items: [
+        {
+          type: 'doc',
+          id: 'core/backend/install',
+          label: 'Backend Quickstart',
+        },
         {
           type: 'doc',
           id: 'tutorial/set-up-your-development-environment',
@@ -1249,14 +1245,27 @@ module.exports = {
       ]
     },
     {
-      type: 'link',
-      href: '#',
-      label: 'Architecture'
-    },
-    {
-      type: 'doc',
-      id: 'advanced/backend/dependency-container/index',
-      label: 'Dependency Injection'
+      type: 'category',
+      label: 'Fundamentals',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Concepts',
+          customProps: {
+            sidebar_is_soon: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/dependency-container/index',
+          label: 'Dependency Injection'
+        },
+      ]
     },
     {
       type: 'category',
@@ -1680,7 +1689,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Server",
+      label: "Backend",
       collapsible: false,
       items: [
         {
@@ -1879,7 +1888,7 @@ module.exports = {
   servicesSidebar: [
     {
       type: 'ref',
-      id: 'core-concepts/overview',
+      id: 'core/overview',
       label: 'Back to core concepts',
       customProps: {
         sidebar_is_back_link: true,
@@ -2201,7 +2210,7 @@ module.exports = {
   entitiesSidebar: [
     {
       type: 'ref',
-      id: 'core-concepts/overview',
+      id: 'core/overview',
       label: 'Back to core concepts',
       customProps: {
         sidebar_is_back_link: true,

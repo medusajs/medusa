@@ -7,6 +7,7 @@
   --ifm-global-radius: 8px;
   --ifm-hr-background-color: var(--medusa-border-base);
   --ifm-base-spacing: 16px;
+  --ifm-global-spacing: var(--ifm-base-spacing);
   --ifm-base-margin-vertical: 32px;
   --ifm-hr-margin-vertical: var(--ifm-base-margin-vertical);
   --ifm-leading: 24px;

@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the payment architecture in the Medusa server. The payment architecture refers to all operations in the ecommerce store related to processing payments.'
+description: 'Learn about the payment architecture in the Medusa backend. The payment architecture refers to all operations in the ecommerce store related to processing payments.'
 ---
 
 # Payment Architecture Overview
@@ -30,13 +30,13 @@ Payment Providers can also be related to a custom way of handling payment operat
 
 ### How Payment Provider is Created
 
-A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the ``AbstractPaymentService` from the core Medusa package `@medusajs/medusa`. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa server.
+A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the ``AbstractPaymentService` from the core Medusa package `@medusajs/medusa`. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa backend.
 
 As a developer, you will mainly work with the Payment Provider when integrating a payment method in Medusa.
 
-When you run your Medusa server, the Payment Provider will be registered on your server if it hasn’t been already.
+When you run your Medusa backend, the Payment Provider will be registered on your backend if it hasn’t been already.
 
-Once the Payment Provider is added to the server, the store operator will be able to choose on the [Medusa Admin](../../../admin/quickstart.mdx) the payment providers available in a region. These payment providers are shown to the customer at checkout to choose from and use.
+Once the Payment Provider is added to the backend, the store operator will be able to choose on the [Medusa Admin](../../../admin/quickstart.mdx) the payment providers available in a region. These payment providers are shown to the customer at checkout to choose from and use.
 
 :::caution
 
@@ -124,7 +124,7 @@ That Idempotency Key is then set in the header under the `Idempotency-Key` respo
 
 If an error occurs or the purchase is interrupted at any step, the client can retry the payment by adding the Idempotency Key of the cart as the `Idempotency-Key` header field in their subsequent requests. 
 
-The server wraps each essential part of the checkout completion in its own step and stores the current step of checkout with its associated Idempotency Key. 
+The backend wraps each essential part of the checkout completion in its own step and stores the current step of checkout with its associated Idempotency Key. 
 
 If then the request is interrupted for any reason or the payment fails, the client can retry completing the check out using the Idempotency Key, and the flow will continue from the last stored step.
 

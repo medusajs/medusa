@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a notification provider in the Medusa server. This guide explains the different methods available in a Notification provider.'
+description: 'Learn how to create a notification provider in the Medusa backend. This guide explains the different methods available in a Notification provider.'
 addHowToData: true
 ---
 
 # How to Create a Notification Provider
 
-In this document, you’ll learn how to add a Notification Provider to your Medusa server.
+In this document, you’ll learn how to add a Notification Provider to your Medusa backend.
 
 :::note
 
@@ -15,7 +15,7 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.mdx).
+Before you start creating a Notification Provider, you need to install a [Medusa server](../../../core/backend/install.mdx).
 
 You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
 
@@ -96,7 +96,7 @@ You can use the `constructor` of your Notification Provider to have access to 
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the Service.
 
-Additionally, if you’re creating your Notification Provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter.
+Additionally, if you’re creating your Notification Provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter.
 
 :::info
 
@@ -294,7 +294,7 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 ## Test Sending Notifications with your Notification Provider
 
-Make sure you've configured Redis with your Medusa server as explained in the Prerequisites section and that the Redis service is running.
+Make sure you've configured Redis with your Medusa backend as explained in the Prerequisites section and that the Redis service is running.
 
 Then, start by running your Medusa server:
 

@@ -68,7 +68,6 @@ kbd {
 .markdown-doc-wrapper {
   margin: 0 auto;
   max-width: var(--ifm-container-width);
-  padding: 0 var(--ifm-spacing-horizontal);
   width: 100%;
   margin-left: auto !important;
 }
@@ -150,5 +149,17 @@ details > div {
 @media (min-width: 1440px) {
   .markdown-doc-wrapper {
     max-width: var(--ifm-container-width-xl) !important;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .markdown-doc-wrapper {
+    padding: 0 calc(86px - var(--ifm-spacing-horizontal));
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .markdown-doc-wrapper {
+    padding: 0 var(--ifm-spacing-horizontal);
   }
 }

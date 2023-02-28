@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to integrate MinIO with the Medusa server. Learn how to install the MinIO plugin on the Medusa server and configure it.'
+description: 'Learn how to integrate MinIO with the Medusa backend. Learn how to install the MinIO plugin on the Medusa backend and configure it.'
 addHowToData: true
 ---
 
 # MinIO
 
-This document will guide you through installing the MinIO file service plugin on your Medusa server.
+This document will guide you through installing the MinIO file service plugin on your Medusa backend.
 
 ## Overview
 
@@ -17,7 +17,7 @@ Medusa provides three different options to handle your file storage. This docume
 
 ## Prerequisites
 
-A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
+A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../core/backend/install.mdx) to get started in minutes.
 
 ---
 
@@ -25,21 +25,21 @@ A Medusa server is required to be set up before following along with this docume
 
 You can follow [MinIO’s guide to install it](https://docs.min.io/minio/baremetal/quickstart/quickstart.html) on your machine based on your operating system.
 
-After installing it, make sure MinIO is always running when your Medusa server is running. It’s recommended that you set up an alias to quickly start the MinIO server as instructed at the end of the installation guides in MinIO.
+After installing it, make sure MinIO is always running when your Medusa backend is running. It’s recommended that you set up an alias to quickly start the MinIO backend as instructed at the end of the installation guides in MinIO.
 
 ### Change MinIO port
 
-In MinIO’s documentation, port `9000` is used for the address of the MinIO server. However, this collides with the port for the Medusa server. You must change the port for MinIO to another one (for example, port `9001`).
+In MinIO’s documentation, port `9000` is used for the address of the MinIO backend. However, this collides with the port for the Medusa backend. You must change the port for MinIO to another one (for example, port `9001`).
 
 After setting up and installing MinIO on your system/sub-system, you can run the following command to change MinIO port to `9001` (or any other available port) instead of `9000` to avoid the port clash:
 
 ```bash
-minio server ~/minio --console-address :9090 --address :9001
+minio backend ~/minio --console-address :9090 --address :9001
 ```
 
 ### Create a MinIO bucket
 
-After installing MinIO and logging into the Console, you can create a bucket that will store the files of your Medusa server by following these steps:
+After installing MinIO and logging into the Console, you can create a bucket that will store the files of your Medusa backend by following these steps:
 
 1. Click on the “Create Bucket” button
 2. For the Bucket Name field, enter a name for the bucket. By MinIO’s requirement, the name can only consist of lower case characters, numbers, dots (`.`), and hyphens (`-`).
@@ -73,7 +73,7 @@ You will not be able to access the Secret Key after closing the pop-up. So, make
 
 ## Plugin Installation
 
-In the directory of your Medusa server, run the following command to install the MinIO plugin:
+In the directory of your Medusa backend, run the following command to install the MinIO plugin:
 
 ```bash npm2yarn
 npm install medusa-file-minio
@@ -88,7 +88,7 @@ MINIO_ACCESS_KEY=<ACCESS_KEY>
 MINIO_SECRET_KEY=<SECRET_KEY>
 ```
 
-Where `<ENDPOINT>` is the URL of your MinIO server, `<BUCKET>` is the name of the bucket you created earlier, and `<ACCESS_KEY>` and `<SECRET_KEY>` are the keys you generated in the previous section.
+Where `<ENDPOINT>` is the URL of your MinIO backend, `<BUCKET>` is the name of the bucket you created earlier, and `<ACCESS_KEY>` and `<SECRET_KEY>` are the keys you generated in the previous section.
 
 Finally, configure your `medusa-config.js` to include the plugin with the required options:
 
@@ -117,7 +117,7 @@ If you have multiple storage plugins configured, the last plugin declared in the
 
 ## Test it Out
 
-Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.mdx) to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in a MinIO server.
+Run your Medusa backend alongside the [Medusa Admin](../admin/quickstart.mdx) to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in a MinIO backend.
 
 ![Image Uploaded on Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000429/Medusa%20Docs/MinIO/alabX2i_dzg2mh.png)
 
@@ -193,7 +193,7 @@ const plugins = [
 
 ## Next.js Storefront Configuration
 
-If you’re using a [Next.js](../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO server.
+If you’re using a [Next.js](../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO backend.
 
 If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 
@@ -215,7 +215,7 @@ module.exports = withStoreConfig({
 })
 ```
 
-Where `127.0.0.1` is the domain of your local MinIO server.
+Where `127.0.0.1` is the domain of your local MinIO backend.
 
 ---
 

@@ -41,7 +41,7 @@ By convention, all plugin names start with `medusa` followed by a descriptive na
 
 ### Change Dependencies
 
-A basic Medusa server installed with the `medusa new` command has dependencies similar to this:
+A basic Medusa backend installed with the `medusa new` command has dependencies similar to this:
 
 ```json title=package.json
 "dependencies": {
@@ -61,7 +61,7 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
 }
 ```
 
-For a plugin, some dependencies are not necessary. You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
+For a plugin, some dependencies are not necessary. You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa backend, but not for a plugin.
 
 Additionally, you can remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
 
@@ -102,11 +102,11 @@ Now, You can start developing your plugin. This can include adding services, end
 
 While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, etc...
 
-However, before you test the changes on a Medusa server or publish your plugin, you must transpile your files, which moves them into the root of your plugin directory.
+However, before you test the changes on a Medusa backend or publish your plugin, you must transpile your files, which moves them into the root of your plugin directory.
 
 For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#change-scripts), the file should be transpiled into `api/index.js` in your plugin's root.
 
-If files and directories aren't placed in the root of your plugin, the Medusa server won't detect or load them.
+If files and directories aren't placed in the root of your plugin, the Medusa backend won't detect or load them.
 
 An example of a plugin's directory before testing or publishing:
 
@@ -151,7 +151,7 @@ This guide doesn't cover how to create different files and components. If you’
 
 Plugins often allow developers that will later use them to enter their own configuration. For example, you can allow developers to specify the API key of a service you’re integrating.
 
-To pass a plugin its configurations on a Medusa server, you have to add it to the `plugins` array in `medusa-config.js`:
+To pass a plugin its configurations on a Medusa backend, you have to add it to the `plugins` array in `medusa-config.js`:
 
 ```jsx title=medusa-config.js
 const plugins = [
@@ -207,7 +207,7 @@ Make sure to include in the README of your plugin the configurations that can be
 
 ## Test Your Plugin
 
-While you develop your plugin, you’ll need to test it on an actual Medusa server. This can be done by using the [npm link](https://docs.npmjs.com/cli/v8/commands/npm-link) command.
+While you develop your plugin, you’ll need to test it on an actual Medusa backend. This can be done by using the [npm link](https://docs.npmjs.com/cli/v8/commands/npm-link) command.
 
 In the root of your plugin directory, run the following command:
 
@@ -215,7 +215,7 @@ In the root of your plugin directory, run the following command:
 npm link
 ```
 
-Then, change to the directory of the Medusa server you want to test the plugin on and run the following command:
+Then, change to the directory of the Medusa backend you want to test the plugin on and run the following command:
 
 ```bash npm2yarn
 npm link medusa-plugin-custom
@@ -223,7 +223,7 @@ npm link medusa-plugin-custom
 
 Where `medusa-plugin-custom` is the package name of your plugin.
 
-After linking to your plugin in a local Medusa server, either run the `build` or `watch` commands in your plugin directory:
+After linking to your plugin in a local Medusa backend, either run the `build` or `watch` commands in your plugin directory:
 
 ```bash npm2yarn
 # in the directory of the plugin
@@ -253,11 +253,11 @@ const plugins = [
 
 :::note
 
-If your plugin has migrations, you must run them before you start the server. Check out the [Migrations guide](../migrations/overview.md#migrate-command) for more details.
+If your plugin has migrations, you must run them before you start the backend. Check out the [Migrations guide](../migrations/overview.md#migrate-command) for more details.
 
 :::
 
-Finally, start your server and test your plugin’s functionalities:
+Finally, start your backend and test your plugin’s functionalities:
 
 ```bash npm2yarn
 npm run start
@@ -284,13 +284,13 @@ cd <SERVER_PATH>
 npm link your-plugin
 ```
 
-Where `<SERVER_PATH>` is the path to your Medusa server and `<PLUGIN_PATH>` is the path to your plugin.
+Where `<SERVER_PATH>` is the path to your Medusa backend and `<PLUGIN_PATH>` is the path to your plugin.
 
 This links the `medusa-interfaces` and `@medusajs/medusa` packages from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
 
 #### APIs not loading
 
-If the APIs you added to your Medussa server are not loading then please try the following steps:
+If the APIs you added to your Medussa backend are not loading then please try the following steps:
 
 ```bash npm2yarn
 cd <PLUGIN_PATH>
@@ -303,7 +303,7 @@ cd <SERVER_PATH>
 npm run start
 ```
 
-Where `<SERVER_PATH>` is the path to your Medusa server, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
+Where `<SERVER_PATH>` is the path to your Medusa backend, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
 
 :::note
 

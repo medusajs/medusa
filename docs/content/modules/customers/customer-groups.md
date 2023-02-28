@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Customer Groups are and how they can be used in the Medusa server. Customer Groups allow to combine customers with similar attributes into a single group.'
+description: 'Learn what Customer Groups are and how they can be used in the Medusa backend. Customer Groups allow to combine customers with similar attributes into a single group.'
 ---
 
 # Customer Groups
