@@ -746,7 +746,7 @@ describe("/admin/product-categories", () => {
         `/admin/product-categories/${productCategoryChild1.id}`,
         {
           parent_category_id: productCategoryParent.id,
-          position: 0
+          position: 0,
         },
         adminHeaders
       )

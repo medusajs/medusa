@@ -15,6 +15,7 @@ import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
   ReorderConditions,
+  tempReorderPosition,
 } from "../types/product-category"
 import { isNumber } from "lodash"
 
@@ -23,7 +24,6 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   productCategoryRepository: typeof ProductCategoryRepository
 }
-const tempPosition = 99999
 
 /**
  * Provides layer to manipulate product categories.
@@ -156,6 +156,7 @@ class ProductCategoryService extends TransactionBaseService {
           productCategoryInput.parent_category_id
         ),
       })
+
       productCategoryInput.position = siblingCount
 
       await this.transformParentIdToEntity(productCategoryInput)
@@ -185,6 +186,7 @@ class ProductCategoryService extends TransactionBaseService {
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
       let productCategory = await this.retrieve(productCategoryId)
+
       const productCategoryRepo = manager.withRepository(
         this.productCategoryRepo_
       )
@@ -195,7 +197,7 @@ class ProductCategoryService extends TransactionBaseService {
       )
 
       if (conditions.shouldChangePosition || conditions.shouldChangeParent) {
-        productCategoryInput.position = tempPosition
+        productCategoryInput.position = tempReorderPosition
       }
 
       await this.transformParentIdToEntity(productCategoryInput)
@@ -209,7 +211,6 @@ class ProductCategoryService extends TransactionBaseService {
       productCategory = await productCategoryRepo.save(productCategory)
 
       await this.performReordering(productCategoryRepo, conditions)
-
       await this.eventBusService_
         .withTransaction(manager)
         .emit(ProductCategoryService.Events.UPDATED, {
@@ -394,10 +395,12 @@ class ProductCategoryService extends TransactionBaseService {
 
     // The category record that will be placed at the requested position
     // We've temporarily placed it at a temporary position that is
-    // beyond a reasonable value (tempPosition)
-    const targetCategory = await repository.findOneBy({
-      parent_category_id: nullableValue(targetParentId),
-      position: tempPosition,
+    // beyond a reasonable value (tempReorderPosition)
+    const targetCategory = await repository.findOne({
+      where: {
+        parent_category_id: nullableValue(targetParentId),
+        position: tempReorderPosition,
+      }
     })
 
     // If the targetPosition is not present, or if targetPosition is beyond the
@@ -450,16 +453,6 @@ class ProductCategoryService extends TransactionBaseService {
 
       await repository.save(sibling)
     }
-
-    const sibs = await repository.find({
-      where: {
-        parent_category_id: nullableValue(targetParentId),
-      },
-      order: {
-        // depending on whether we shift up or down, we order accordingly
-        position: shouldIncrementPosition ? "DESC" : "ASC",
-      },
-    })
 
     // The targetCategory will not be present in the query when we are shifting
     // siblings of the old parent of the targetCategory.

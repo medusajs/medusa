@@ -6,7 +6,10 @@ import {
   productCategoryRepositoryMock as productCategoryRepository,
   validProdCategoryId,
   validProdCategoryIdWithChildren,
+  validProdCategoryWithSiblings,
+  validProdCategoryPositionChange
 } from "../../repositories/__mocks__/product-category"
+import { tempReorderPosition } from "../../types/product-category"
 import { EventBusServiceMock as eventBusService } from "../__mocks__/event-bus"
 
 const productCategoryService = new ProductCategoryService({
@@ -97,6 +100,7 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.create).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.create).toHaveBeenCalledWith({
         name: validProdCategoryId,
+        position: 0,
       })
     })
 
@@ -151,6 +155,22 @@ describe("ProductCategoryService", () => {
         }
       )
     })
+
+    it("deleting a category shifts its siblings into the correct position", async () => {
+      const result = await productCategoryService.delete(
+        IdMap.getId(validProdCategoryWithSiblings)
+      )
+
+      expect(productCategoryRepository.delete).toBeCalledTimes(1)
+      expect(productCategoryRepository.delete).toBeCalledWith(IdMap.getId(validProdCategoryWithSiblings))
+
+      expect(productCategoryRepository.save).toBeCalledTimes(1)
+      expect(productCategoryRepository.save).toBeCalledWith({
+        id: IdMap.getId(validProdCategoryId),
+        category_children: [],
+        position: 0,
+      })
+    })
   })
 
   describe("update", () => {
@@ -166,6 +186,29 @@ describe("ProductCategoryService", () => {
         expect.objectContaining({
           id: IdMap.getId(validProdCategoryId),
           name: "bathrobes",
+        })
+      )
+    })
+
+    it("successfully updates a product category position and its siblings", async () => {
+      await productCategoryService.update(
+        IdMap.getId(validProdCategoryPositionChange), {
+          position: 0
+        }
+      )
+
+      expect(productCategoryRepository.save).toHaveBeenCalledTimes(3)
+      expect(productCategoryRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId(validProdCategoryPositionChange),
+          position: tempReorderPosition
+        })
+      )
+
+      expect(productCategoryRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId(validProdCategoryWithSiblings),
+          position: 1
         })
       )
     })

@@ -2,6 +2,7 @@ import { Transform } from "class-transformer"
 import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
 import { ProductCategory } from "../models"
 
+export const tempReorderPosition = 99999
 type ProductCategoryInput = {
   handle?: string
   is_internal?: boolean
