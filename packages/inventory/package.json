@@ -18,15 +18,15 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/medusa": "*",
-    "awilix": "^8.0.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
-    "typeorm": "^0.3.11",
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "*"
+    "@medusajs/modules-sdk": "*",
+    "awilix": "^8.0.0",
+    "typeorm": "^0.3.11"
   },
   "scripts": {
     "watch": "tsc --build --watch",
@@ -36,7 +36,6 @@
     "test:unit": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.7.8",
-    "typeorm": "^0.3.11"
+    "@medusajs/medusa": "1.7.8"
   }
 }
