@@ -29,7 +29,7 @@ export async function loadInternalModule(
     return { error }
   }
 
-  if (!loadedModule?.services || !loadedModule?.services.length) {
+  if (!loadedModule?.services?.length) {
     container.register({
       [constainerName]: asValue(undefined),
     })
@@ -98,8 +98,11 @@ export async function loadInternalModule(
   }
 
   for (const moduleService of moduleServices) {
+    const regName =
+      moduleService.name.charAt(0).toLowerCase() + moduleService.name.slice(1)
+
     container.register({
-      [constainerName]: asFunction((cradle) => {
+      [regName]: asFunction((cradle) => {
         return new moduleService(
           localContainer.cradle,
           resolution.options,

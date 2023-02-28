@@ -3,7 +3,11 @@ import path from "path"
 import fs from "fs"
 import { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import {
+  isDefined,
+  getConfigFile,
+  createRequireFromPath,
+} from "medusa-core-utils"
 import { handleConfigError } from "../../loaders/config"
 import { registerModules } from "@medusajs/modules-sdk"
 
@@ -203,7 +207,7 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
     const moduleMigrations = (mod.migrations ?? [])
       .map((migration) => {
         if (
-          typeof migration.featureFlag === "undefined" ||
+          !isDefined(migration.featureFlag) ||
           isFlagEnabled(migration.featureFlag)
         ) {
           delete migration.featureFlag

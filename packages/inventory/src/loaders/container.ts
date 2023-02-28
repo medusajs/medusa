@@ -13,8 +13,8 @@ export default async (
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
   container.register({
-    inventoryItemService: asClass(InventoryItemService),
-    inventoryLevelService: asClass(InventoryLevelService),
-    reservationItemService: asClass(ReservationItemService),
+    inventoryItemService: asClass(InventoryItemService).singleton(),
+    inventoryLevelService: asClass(InventoryLevelService).singleton(),
+    reservationItemService: asClass(ReservationItemService).singleton(),
   })
 }

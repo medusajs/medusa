@@ -8,7 +8,7 @@ import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
-import { Connection, EntityManager } from "typeorm"
+import { DataSource, EntityManager } from "typeorm"
 import { createMedusaContainer } from "medusa-core-utils"
 
 // ***** TEMPLATES *****
@@ -112,7 +112,7 @@ describe("plugins loader", () => {
   const container = createMedusaContainer()
 
   container.register("logger", asValue(Logger))
-  container.register("manager", asValue(new EntityManager({} as Connection)))
+  container.register("manager", asValue(new EntityManager({} as DataSource)))
 
   const pluginsDetails = {
     resolve: resolve(__dirname, "__pluginsLoaderTest__"),
