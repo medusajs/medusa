@@ -7,6 +7,7 @@ jest*
 packages/*
 # List of packages to Lint
 !packages/medusa
+!packages/medusa-payment-stripe
 
 
 

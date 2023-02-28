@@ -33,6 +33,5 @@
     "build": "tsc --build",
     "test": "jest",
     "test:unit": "jest"
-  },
-  "peerDependencies": {}
+  }
 }
