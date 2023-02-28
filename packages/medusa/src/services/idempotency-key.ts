@@ -94,10 +94,10 @@ class IdempotencyKeyService extends TransactionBaseService {
       this.idempotencyKeyRepository_
     )
 
-    const queryConfig = isString(idempotencyKeyOrSelector)
-      ? { where: { idempotency_key: idempotencyKeyOrSelector } }
+    const selector = isString(idempotencyKeyOrSelector)
+      ? { idempotency_key: idempotencyKeyOrSelector }
       : idempotencyKeyOrSelector
-    const query = buildQuery(queryConfig)
+    const query = buildQuery(selector)
 
     const iKeys = await idempotencyKeyRepo.find(query)
 
