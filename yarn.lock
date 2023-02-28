@@ -29427,9 +29427,9 @@ __metadata:
     tsup: ^6.5.0
   peerDependencies:
     "@medusajs/medusa": ^1.7.6
-    "@tanstack/react-query": ">=4.22.0"
-    react: ">=16"
-    react-dom: ">=16"
+    "@tanstack/react-query": ^4.22.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
   languageName: unknown
   linkType: soft
 
