@@ -54,7 +54,7 @@ export function transformQuery<
 }
 
 /**
- * Middleware that transform the query input for the admin end points
+ * Middleware that transform the query input for the store endpoints
  * @param plainToClass
  * @param queryConfig
  * @param config
