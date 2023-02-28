@@ -36,5 +36,5 @@ export const PaymentProviderKeys = {
   BLIK: "stripe-blik",
   GIROPAY: "stripe-giropay",
   IDEAL: "stripe-ideal",
-  PRWELEWY_24: "stripe-przelewy24",
+  PRZELEWY_24: "stripe-przelewy24",
 }

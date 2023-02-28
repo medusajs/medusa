@@ -103,9 +103,9 @@ class IdempotencyKeyService extends TransactionBaseService {
 
     if (iKeys.length > 1) {
       throw new Error(
-        `The provided constraints ${JSON.stringify(
+        `Multiple keys were found for constraints: ${JSON.stringify(
           idempotencyKeyOrSelector
-        )} result in multiple idempotency key found. There should only be one idempotency key found.`
+        )}. There should only be one.`
       )
     }
 
@@ -116,7 +116,7 @@ class IdempotencyKeyService extends TransactionBaseService {
       if (isString(idempotencyKeyOrSelector)) {
         message = `Idempotency key ${idempotencyKeyOrSelector} was not found`
       } else {
-        message = `Idempotency key with constraint ${JSON.stringify(
+        message = `Idempotency key with constraints ${JSON.stringify(
           idempotencyKeyOrSelector
         )} was not found`
       }
