@@ -17,7 +17,7 @@ import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /variants
+ * @oas [get] /store/variants
  * operationId: GetVariants
  * summary: Get Product Variants
  * description: "Retrieves a list of Product Variants"
@@ -74,7 +74,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/variants'
  * tags:
- *   - Product Variant
+ *   - Variants
  * responses:
  *   200:
  *     description: OK

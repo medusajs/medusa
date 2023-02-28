@@ -9,7 +9,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/complete
+ * @oas [post] /store/order-edits/{id}/complete
  * operationId: "PostOrderEditsOrderEditComplete"
  * summary: "Completes an OrderEdit"
  * description: "Completes an OrderEdit."
@@ -32,7 +32,7 @@ import {
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/complete'
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

@@ -10,7 +10,7 @@ import ProductTagService from "../../../../services/product-tag"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /product-tags
+ * @oas [get] /store/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
  * description: "Retrieve a list of Product Tags."
@@ -101,7 +101,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/product-tags'
  * tags:
- *   - Product Tag
+ *   - Product Tags
  * responses:
  *  "200":
  *    description: OK

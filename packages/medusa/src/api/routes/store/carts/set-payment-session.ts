@@ -6,7 +6,7 @@ import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /carts/{id}/payment-session
+ * @oas [post] /store/carts/{id}/payment-session
  * operationId: PostCartsCartPaymentSession
  * summary: Select a Payment Session
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
@@ -40,7 +40,7 @@ import { validator } from "../../../../utils/validator"
  *           "provider_id": "manual"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

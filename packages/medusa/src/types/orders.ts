@@ -17,6 +17,11 @@ export function isOrder(object: any): object is Order {
   return object.object === "order"
 }
 
+export type TotalsContext = {
+  force_taxes?: boolean
+  includes?: { returnable_items?: boolean }
+}
+
 enum OrderStatus {
   pending = "pending",
   completed = "completed",

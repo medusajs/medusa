@@ -3,6 +3,7 @@ description: Represents a Payment Provider plugin and holds its installation sta
 type: object
 required:
   - id
+  - is_installed
 properties:
   id:
     description: The id of the payment provider as given by the plugin.

@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [post] /reservations/{id}
+ * @oas [post] /admin/reservations/{id}
  * operationId: "PostReservationsReservation"
  * summary: "Updates a Reservation"
  * description: "Updates a Reservation which can be associated with any resource as required."
@@ -41,7 +41,7 @@ import { IInventoryService } from "../../../../interfaces"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK

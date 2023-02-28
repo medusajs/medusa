@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { ShippingProfileService } from "../../../../services"
 
 /**
- * @oas [delete] /shipping-profiles/{id}
+ * @oas [delete] /admin/shipping-profiles/{id}
  * operationId: "DeleteShippingProfilesProfile"
  * summary: "Delete a Shipping Profile"
  * description: "Deletes a Shipping Profile."
@@ -31,7 +31,7 @@ import { ShippingProfileService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK

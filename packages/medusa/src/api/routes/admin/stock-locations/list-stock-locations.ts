@@ -11,7 +11,7 @@ import {
 import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
- * @oas [get] /stock-locations
+ * @oas [get] /admin/stock-locations
  * operationId: "GetStockLocations"
  * summary: "List Stock Locations"
  * description: "Retrieves a list of stock locations"
@@ -113,7 +113,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -148,6 +148,8 @@ export default async (req: Request, res: Response) => {
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
+  const filterOnSalesChannel = !!filterableFields.sales_channel_id
+
   const includeSalesChannels =
     !!listConfig.relations?.includes("sales_channels")
 
@@ -155,6 +157,18 @@ export default async (req: Request, res: Response) => {
     listConfig.relations = listConfig.relations?.filter(
       (r) => r !== "sales_channels"
     )
+  }
+
+  if (filterOnSalesChannel) {
+    const ids: string[] = Array.isArray(filterableFields.sales_channel_id)
+      ? filterableFields.sales_channel_id
+      : [filterableFields.sales_channel_id]
+
+    delete filterableFields.sales_channel_id
+
+    const locationIds = await channelLocationService.listLocationIds(ids)
+
+    filterableFields.id = [...new Set(locationIds.flat())]
   }
 
   let [locations, count] = await stockLocationService.listAndCount(
@@ -193,4 +207,8 @@ export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsType([String, [String]])
   address_id?: string | string[]
+
+  @IsOptional()
+  @IsType([String, [String]])
+  sales_channel_id?: string | string[]
 }

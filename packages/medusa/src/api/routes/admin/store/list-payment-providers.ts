@@ -1,7 +1,7 @@
 import { PaymentProviderService } from "../../../../services"
 
 /**
- * @oas [get] /store/payment-providers
+ * @oas [get] /admin/store/payment-providers
  * operationId: "GetStorePaymentProviders"
  * summary: "List Payment Providers"
  * description: "Retrieves the configured Payment Providers"

@@ -21,7 +21,7 @@ import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [post] /draft-orders/{id}
+ * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
  * summary: Update a Draft Order
  * description: "Updates a Draft Order."
@@ -61,7 +61,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK

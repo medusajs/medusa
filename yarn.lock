@@ -5219,13 +5219,14 @@ __metadata:
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
     "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": "*"
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.7.7
+    "@medusajs/medusa": 1.7.9
     typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
@@ -5279,7 +5280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.7
+    "@medusajs/medusa": ^1.7.8
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
@@ -5291,7 +5292,7 @@ __metadata:
     typescript: ^4.9.5
     uuid: ^9.0.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.7
+    "@medusajs/medusa": ^1.7.8
   languageName: unknown
   linkType: soft
 
@@ -5314,7 +5315,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -5322,6 +5323,7 @@ __metadata:
     "@babel/core": ^7.14.3
     "@babel/preset-typescript": ^7.13.0
     "@medusajs/medusa-cli": ^1.3.8
+    "@medusajs/modules-sdk": "*"
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jest": ^27.5.2
@@ -5385,6 +5387,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/modules-sdk@*, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
+  dependencies:
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    medusa-telemetry: ^0.0.16
+    resolve-cwd: ^3.0.0
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/openapi-typescript-codegen@*, @medusajs/openapi-typescript-codegen@workspace:packages/oas/openapi-typescript-codegen":
   version: 0.0.0-use.local
   resolution: "@medusajs/openapi-typescript-codegen@workspace:packages/oas/openapi-typescript-codegen"
@@ -5427,6 +5443,7 @@ __metadata:
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
     "@medusajs/medusa": ^1.7.7
+    "@medusajs/modules-sdk": "*"
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1

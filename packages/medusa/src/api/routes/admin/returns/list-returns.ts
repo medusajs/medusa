@@ -7,7 +7,7 @@ import { FindConfig } from "../../../../types/common"
 import { Return } from "../../../../models"
 
 /**
- * @oas [get] /returns
+ * @oas [get] /admin/returns
  * operationId: "GetReturns"
  * summary: "List Returns"
  * description: "Retrieves a list of Returns"
@@ -37,7 +37,7 @@ import { Return } from "../../../../models"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK

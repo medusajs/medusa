@@ -1615,6 +1615,16 @@ describe("/admin/orders", () => {
               id: "test-billing-address",
               first_name: "lebron",
             }),
+            shipping_total: expect.any(Number),
+            discount_total: expect.any(Number),
+            tax_total: expect.any(Number),
+            refunded_total: expect.any(Number),
+            total: expect.any(Number),
+            subtotal: expect.any(Number),
+            paid_total: expect.any(Number),
+            refundable_amount: expect.any(Number),
+            gift_card_total: expect.any(Number),
+            gift_card_tax_total: expect.any(Number),
           },
         ])
       )

@@ -10,7 +10,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [delete] /draft-orders/{id}/line-items/{line_id}
+ * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Draft Order."
@@ -40,7 +40,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK

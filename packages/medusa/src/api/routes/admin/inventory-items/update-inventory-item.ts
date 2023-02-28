@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /inventory-items/{id}
+ * @oas [post] /admin/inventory-items/{id}
  * operationId: "PostInventoryItemsInventoryItem"
  * summary: "Update an Inventory Item."
  * description: "Updates an Inventory Item."

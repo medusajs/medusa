@@ -7,12 +7,14 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
-import { moduleHelper } from "../loaders/module"
+import {
+  moduleLoader,
+  moduleHelper,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import registerModuleDefinitions from "../loaders/module-definitions"
-import moduleLoader from "../loaders/module"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -26,7 +28,7 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const moduleResolutions = registerModuleDefinitions({})
+const moduleResolutions = registerModules({})
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",

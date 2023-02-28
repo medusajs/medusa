@@ -8,7 +8,7 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /products/{id}/variants/{variant_id}
+ * @oas [delete] /admin/products/{id}/variants/{variant_id}
  * operationId: "DeleteProductsProductVariantsVariant"
  * summary: "Delete a Product Variant"
  * description: "Deletes a Product Variant."
@@ -38,7 +38,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

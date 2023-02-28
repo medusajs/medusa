@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /shipping-options/{id}
+ * @oas [delete] /admin/shipping-options/{id}
  * operationId: "DeleteShippingOptionsOption"
  * summary: "Delete a Shipping Option"
  * description: "Deletes a Shipping Option."
@@ -30,7 +30,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK

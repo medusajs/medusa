@@ -5,7 +5,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /collections
+ * @oas [get] /store/collections
  * operationId: "GetCollections"
  * summary: "List Collections"
  * description: "Retrieve a list of Product Collection."
@@ -74,7 +74,7 @@ import { Type } from "class-transformer"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/collections'
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK

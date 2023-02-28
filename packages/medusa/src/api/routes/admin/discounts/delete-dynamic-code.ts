@@ -4,7 +4,7 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}/dynamic-codes/{code}
+ * @oas [delete] /admin/discounts/{id}/dynamic-codes/{code}
  * operationId: "DeleteDiscountsDiscountDynamicCodesCode"
  * summary: "Delete a Dynamic Code"
  * description: "Deletes a dynamic code from a Discount."
@@ -34,7 +34,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

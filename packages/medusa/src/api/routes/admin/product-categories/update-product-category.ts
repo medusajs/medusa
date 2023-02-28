@@ -7,7 +7,7 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}
+ * @oas [post] /admin/product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
  * summary: "Update a Product Category"
  * description: "Updates a Product Category."
@@ -50,7 +50,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK
