@@ -13,7 +13,7 @@ export const getVariantsByInventoryItemId = async (
   inventoryItems: InventoryItemDTO[],
   productVariantInventoryService: ProductVariantInventoryService,
   productVariantService: ProductVariantService
-): Promise<Record<string, InventoryItemsWithVariants>> => {
+): Promise<Record<string, ProductVariant[]>> => {
   const variantInventory = await productVariantInventoryService.listByItem(
     inventoryItems.map((item) => item.id)
   )
