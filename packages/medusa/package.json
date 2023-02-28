@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": "./cli.js",
