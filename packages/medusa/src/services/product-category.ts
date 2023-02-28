@@ -3,7 +3,12 @@ import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import {
+  FindConfig,
+  QuerySelector,
+  TreeQuerySelector,
+  Selector,
+} from "../types/common"
 import { buildQuery } from "../utils"
 import { EventBusService } from "."
 import {
@@ -49,7 +54,7 @@ class ProductCategoryService extends TransactionBaseService {
    *   as the second element.
    */
   async listAndCount(
-    selector: QuerySelector<ProductCategory>,
+    selector: TreeQuerySelector<ProductCategory>,
     config: FindConfig<ProductCategory> = {
       skip: 0,
       take: 100,
@@ -57,6 +62,9 @@ class ProductCategoryService extends TransactionBaseService {
     },
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
+    const includeDescendantsTree = selector.include_descendants_tree
+    delete selector.include_descendants_tree
+
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
@@ -71,11 +79,22 @@ class ProductCategoryService extends TransactionBaseService {
 
     const query = buildQuery(selector_, config)
 
-    return await productCategoryRepo.getFreeTextSearchResultsAndCount(
-      query,
-      q,
-      treeSelector
-    )
+    let [productCategories, count] =
+      await productCategoryRepo.getFreeTextSearchResultsAndCount(
+        query,
+        q,
+        treeSelector
+      )
+
+    if (includeDescendantsTree) {
+      productCategories = await Promise.all(
+        productCategories.map(async (productCategory) =>
+          productCategoryRepo.findDescendantsTree(productCategory)
+        )
+      )
+    }
+
+    return [productCategories, count]
   }
 
   /**
@@ -121,7 +140,7 @@ class ProductCategoryService extends TransactionBaseService {
 
   /**
    * Creates a product category
-   * @param productCategory - params used to create
+   * @param productCategoryInput - parameters to create a product category
    * @return created product category
    */
   async create(
@@ -129,6 +148,9 @@ class ProductCategoryService extends TransactionBaseService {
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
       const pcRepo = manager.withRepository(this.productCategoryRepo_)
+
+      await this.transformParentIdToEntity(productCategoryInput)
+
       let productCategory = pcRepo.create(productCategoryInput)
       productCategory = await pcRepo.save(productCategory)
 
@@ -156,6 +178,8 @@ class ProductCategoryService extends TransactionBaseService {
       const productCategoryRepo = manager.withRepository(
         this.productCategoryRepo_
       )
+
+      await this.transformParentIdToEntity(productCategoryInput)
 
       let productCategory = await this.retrieve(productCategoryId)
 
@@ -252,6 +276,34 @@ class ProductCategoryService extends TransactionBaseService {
         productIds
       )
     })
+  }
+
+  /**
+   * Accepts an input object and transforms product_category_id
+   * into product_category entity.
+   * @param productCategoryInput - params used to create/update
+   * @return transformed productCategoryInput
+   */
+  protected async transformParentIdToEntity(
+    productCategoryInput:
+      | CreateProductCategoryInput
+      | UpdateProductCategoryInput
+  ): Promise<CreateProductCategoryInput | UpdateProductCategoryInput> {
+    // Typeorm only updates mpath when the category entity of the parent
+    // is passed into create/save. For this reason, everytime we create a
+    // category, we must fetch the entity and push to create
+    const parentCategoryId = productCategoryInput.parent_category_id
+
+    if (!parentCategoryId) {
+      return productCategoryInput
+    }
+
+    const parentCategory = await this.retrieve(parentCategoryId)
+
+    productCategoryInput.parent_category = parentCategory
+    delete productCategoryInput.parent_category_id
+
+    return productCategoryInput
   }
 }
 

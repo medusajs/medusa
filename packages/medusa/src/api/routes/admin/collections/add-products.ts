@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
- * @oas [post] /collections/{id}/products/batch
+ * @oas [post] /admin/collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
  * summary: "Update Products"
  * description: "Updates products associated with a Product Collection"
@@ -35,7 +35,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK

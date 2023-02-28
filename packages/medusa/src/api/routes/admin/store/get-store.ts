@@ -5,10 +5,10 @@ import {
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
 import { FlagRouter } from "../../../../utils/flag-router"
-import { ModulesHelper } from "../../../../utils/module-helper"
+import { ModulesHelper } from "@medusajs/modules-sdk"
 
 /**
- * @oas [get] /store
+ * @oas [get] /admin/store
  * operationId: "GetStore"
  * summary: "Get Store details"
  * description: "Retrieves the Store details"

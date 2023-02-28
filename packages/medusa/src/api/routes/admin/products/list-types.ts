@@ -1,7 +1,7 @@
 import { ProductService } from "../../../../services"
 
 /**
- * @oas [get] /products/types
+ * @oas [get] /admin/products/types
  * deprecated: true
  * operationId: "GetProductsTypes"
  * summary: "List Product Types"
@@ -29,7 +29,7 @@ import { ProductService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

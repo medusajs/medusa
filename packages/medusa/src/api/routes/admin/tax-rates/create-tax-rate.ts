@@ -10,7 +10,7 @@ import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates
+ * @oas [post] /admin/tax-rates
  * operationId: "PostTaxRates"
  * summary: "Create a Tax Rate"
  * description: "Creates a Tax Rate"
@@ -72,7 +72,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK

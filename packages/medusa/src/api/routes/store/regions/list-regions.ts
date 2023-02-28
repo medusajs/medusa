@@ -7,7 +7,7 @@ import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /regions
+ * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
  * description: "Retrieves a list of Regions."
@@ -76,7 +76,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

@@ -7,7 +7,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [delete] /order-edits/{id}/items/{item_id}
+ * @oas [delete] /admin/order-edits/{id}/items/{item_id}
  * operationId: "DeleteOrderEditsOrderEditLineItemsLineItem"
  * summary: "Delete a Line Item"
  * description: "Delete line items from an order edit and create change item"
@@ -37,7 +37,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

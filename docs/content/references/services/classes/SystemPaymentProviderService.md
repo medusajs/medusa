@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:10](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L10)
+[packages/medusa/src/services/system-payment-provider.ts:10](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L10)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
 
 ___
 
@@ -80,7 +80,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:5](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L5)
+[packages/medusa/src/services/system-payment-provider.ts:5](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L5)
 
 ___
 
@@ -94,7 +94,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:6](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L6)
+[packages/medusa/src/services/system-payment-provider.ts:6](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L6)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:8](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L8)
+[packages/medusa/src/services/system-payment-provider.ts:8](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L8)
 
 ## Methods
 
@@ -143,7 +143,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:26](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L26)
+[packages/medusa/src/services/system-payment-provider.ts:26](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L26)
 
 ___
 
@@ -183,7 +183,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:50](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L50)
+[packages/medusa/src/services/system-payment-provider.ts:50](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L50)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:42](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L42)
+[packages/medusa/src/services/system-payment-provider.ts:42](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L42)
 
 ___
 
@@ -223,7 +223,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:14](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L14)
+[packages/medusa/src/services/system-payment-provider.ts:14](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L14)
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:38](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L38)
+[packages/medusa/src/services/system-payment-provider.ts:38](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L38)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:22](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L22)
+[packages/medusa/src/services/system-payment-provider.ts:22](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L22)
 
 ___
 
@@ -283,7 +283,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:18](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L18)
+[packages/medusa/src/services/system-payment-provider.ts:18](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L18)
 
 ___
 
@@ -303,7 +303,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:46](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L46)
+[packages/medusa/src/services/system-payment-provider.ts:46](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L46)
 
 ___
 
@@ -327,7 +327,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -347,7 +347,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:34](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L34)
+[packages/medusa/src/services/system-payment-provider.ts:34](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L34)
 
 ___
 
@@ -367,7 +367,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/system-payment-provider.ts:30](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/services/system-payment-provider.ts#L30)
+[packages/medusa/src/services/system-payment-provider.ts:30](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/system-payment-provider.ts#L30)
 
 ___
 
@@ -391,4 +391,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/f8d635845/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L14)

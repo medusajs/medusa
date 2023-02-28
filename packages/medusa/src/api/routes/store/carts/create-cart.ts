@@ -24,7 +24,7 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { CartCreateProps } from "../../../../types/cart"
 
 /**
- * @oas [post] /carts
+ * @oas [post] /store/carts
  * summary: "Create a Cart"
  * operationId: "PostCart"
  * description: "Creates a Cart within the given region and with the initial items. If no
@@ -53,7 +53,7 @@ import { CartCreateProps } from "../../../../types/cart"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "Successfully created a new Cart"

@@ -56,7 +56,7 @@ export default (app) => {
 }
 
 /**
- * @schema AdminPostReservationsReq
+ * @schema AdminReservationsRes
  * type: object
  * required:
  *   - reservation
@@ -69,7 +69,7 @@ export type AdminReservationsRes = {
 }
 
 /**
- * @schema AdminGetReservationReservationsReq
+ * @schema AdminReservationsListRes
  * type: object
  * required:
  *   - reservations
@@ -108,6 +108,26 @@ export const defaultReservationFields = [
   "updated_at",
 ]
 
+/**
+ * @schema AdminReservationsDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Reservation.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: reservation
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Reservation was deleted.
+ *     default: true
+ */
 export type AdminReservationsDeleteRes = DeleteResponse
 
 export * from "./create-reservation"

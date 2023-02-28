@@ -1,13 +1,12 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
 import { AdminListOrdersSelector } from "../../../../types/orders"
-import { Order } from "../../../../models"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { pick } from "lodash"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /admin/orders
  * operationId: "GetOrders"
  * summary: "List Orders"
  * description: "Retrieves a list of Orders"
@@ -176,7 +175,7 @@ import { pick } from "lodash"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -200,19 +199,14 @@ import { pick } from "lodash"
 export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const { skip, take, select, relations } = req.listConfig
+  const { skip, take } = req.listConfig
 
   const [orders, count] = await orderService.listAndCount(
     req.filterableFields,
     req.listConfig
   )
 
-  let data: Partial<Order>[] = orders
-
-  const fields = [...select, ...relations]
-  if (fields.length) {
-    data = orders.map((o) => pick(o, fields))
-  }
+  const data = cleanResponseData(orders, req.allowedProperties)
 
   res.json({ orders: data, count, offset: skip, limit: take })
 }

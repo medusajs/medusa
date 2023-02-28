@@ -9,7 +9,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import {
@@ -18,15 +17,18 @@ import {
 } from "../../../../services"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/fulfillment
+ * @oas [post] /admin/orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,6 +36,7 @@ import { Fulfillment, LineItem } from "../../../../models"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderFulfillmentsReq"
  * x-codegen:
  *   method: createFulfillment
+ *   params: AdminPostOrdersOrderFulfillmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -70,7 +73,7 @@ import { Fulfillment, LineItem } from "../../../../models"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -142,9 +145,8 @@ export default async (req, res) => {
     }
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order })
@@ -247,3 +249,5 @@ class Item {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderFulfillmentsParams extends FindParams {}

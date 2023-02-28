@@ -1,7 +1,7 @@
 import UserService from "../../../../services/user"
 
 /**
- * @oas [get] /users
+ * @oas [get] /admin/users
  * operationId: "GetUsers"
  * summary: "List Users"
  * description: "Retrieves all users."
@@ -28,7 +28,7 @@ import UserService from "../../../../services/user"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK

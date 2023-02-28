@@ -1,8 +1,8 @@
-import { RequestHandler, Router } from "express"
+import { Router } from "express"
 import "reflect-metadata"
 
 import { Product } from "../../../.."
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { PaginatedResponse } from "../../../../types/common"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
@@ -19,7 +19,7 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(StoreGetProductsParams, {
+    transformStoreQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
@@ -31,7 +31,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetProductsProductParams, {
+    transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,

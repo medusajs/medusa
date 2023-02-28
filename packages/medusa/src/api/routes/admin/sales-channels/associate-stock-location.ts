@@ -8,7 +8,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [post] /sales-channels/{id}/stock-locations
+ * @oas [post] /admin/sales-channels/{id}/stock-locations
  * operationId: "PostSalesChannelsSalesChannelStockLocation"
  * summary: "Associate a stock location to a Sales Channel"
  * description: "Associates a stock location to a Sales Channel."
@@ -48,7 +48,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK

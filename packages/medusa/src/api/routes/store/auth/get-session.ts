@@ -1,7 +1,7 @@
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [get] /auth
+ * @oas [get] /store/auth
  * operationId: "GetAuth"
  * summary: "Get Current Customer"
  * description: "Gets the currently logged in Customer."

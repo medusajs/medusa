@@ -351,7 +351,7 @@ describe("Claims", () => {
   })
 })
 
-const createReturnableOrder = async (dbConnection, options = {}) => {
+export const createReturnableOrder = async (dbConnection, options = {}) => {
   await simpleProductFactory(
     dbConnection,
     {

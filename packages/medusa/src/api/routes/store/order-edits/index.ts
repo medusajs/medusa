@@ -7,7 +7,7 @@ import {
 } from "../../../../types/order-edit"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import { StorePostOrderEditsOrderEditDecline } from "./decline-order-edit"
 
@@ -18,7 +18,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(FindParams, {
+    transformStoreQuery(FindParams, {
       defaultRelations: defaultStoreOrderEditRelations,
       defaultFields: defaultStoreOrderEditFields,
       allowedFields: defaultStoreOrderEditFields,

@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { Cart, Product } from "../../../../models"
 
 /**
- * @oas [get] /products
+ * @oas [get] /store/products
  * operationId: GetProducts
  * summary: List Products
  * description: "Retrieves a list of Products."
@@ -160,7 +160,7 @@ import { Cart, Product } from "../../../../models"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/products'
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
