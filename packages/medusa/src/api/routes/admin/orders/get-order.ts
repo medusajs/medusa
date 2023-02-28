@@ -1,5 +1,7 @@
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Order } from "../../../../models"
 
 /**
  * @oas [get] /admin/orders/{id}
@@ -60,9 +62,15 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
-    includes: req.includes,
-  })
+  let order: Partial<Order> = await orderService.retrieveWithTotals(
+    id,
+    req.retrieveConfig,
+    {
+      includes: req.includes,
+    }
+  )
+
+  order = cleanResponseData(order, req.allowedProperties)
 
   res.json({ order: order })
 }

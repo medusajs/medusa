@@ -1,5 +1,5 @@
 import { Router } from "express"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { ProductCategory } from "../../../../models"
 import { PaginatedResponse } from "../../../../types/common"
 
@@ -18,7 +18,7 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(StoreGetProductCategoriesParams, {
+    transformStoreQuery(StoreGetProductCategoriesParams, {
       defaultFields: defaultStoreProductCategoryFields,
       allowedFields: allowedStoreProductCategoryFields,
       defaultRelations: defaultStoreProductCategoryRelations,
@@ -29,7 +29,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetProductCategoryParams, {
+    transformStoreQuery(StoreGetProductCategoryParams, {
       defaultFields: defaultStoreProductCategoryFields,
       allowedFields: allowedStoreProductCategoryFields,
       defaultRelations: defaultStoreProductCategoryRelations,
