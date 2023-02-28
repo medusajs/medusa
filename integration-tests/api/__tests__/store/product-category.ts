@@ -39,12 +39,14 @@ describe("/store/product-categories", () => {
       name: "category parent",
       is_active: true,
       is_internal: false,
+      position: 0,
     })
 
     productCategory = await simpleProductCategoryFactory(dbConnection, {
       name: "category",
       parent_category: productCategoryParent,
       is_active: true,
+      position: 0,
     })
 
     productCategoryChild = await simpleProductCategoryFactory(dbConnection, {
@@ -59,6 +61,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_internal: true,
       is_active: true,
+      position: 1,
     })
 
     productCategoryChild3 = await simpleProductCategoryFactory(dbConnection, {
@@ -66,6 +69,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_active: false,
       is_internal: false,
+      position: 2,
     })
   })
 

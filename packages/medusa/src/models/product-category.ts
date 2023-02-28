@@ -51,6 +51,9 @@ export class ProductCategory extends SoftDeletableEntity {
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
 
+  @Column({ nullable: false, default: 0 })
+  position: number
+
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
     name: ProductCategory.productCategoryProductJoinTable,

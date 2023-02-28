@@ -2,22 +2,21 @@ import { Transform } from "class-transformer"
 import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
 import { ProductCategory } from "../models"
 
-export type CreateProductCategoryInput = {
-  name: string
+type ProductCategoryInput = {
   handle?: string
   is_internal?: boolean
   is_active?: boolean
   parent_category_id?: string | null
   parent_category?: ProductCategory | null
+  position?: number
 }
 
-export type UpdateProductCategoryInput = {
+export type CreateProductCategoryInput = ProductCategoryInput & {
+  name: string
+}
+
+export type UpdateProductCategoryInput = ProductCategoryInput & {
   name?: string
-  handle?: string
-  is_internal?: boolean
-  is_active?: boolean
-  parent_category_id?: string | null
-  parent_category?: ProductCategory | null
 }
 
 export class AdminProductCategoriesReqBase {
@@ -45,4 +44,16 @@ export class AdminProductCategoriesReqBase {
 export class ProductBatchProductCategory {
   @IsString()
   id: string
+}
+
+export type ReorderConditions = {
+  targetCategoryId: string
+  originalParentId: string | null
+  targetParentId: string | null
+  originalPosition: number
+  targetPosition: number | undefined
+  shouldChangeParent: boolean
+  shouldChangePosition: boolean
+  shouldIncrementPosition: boolean
+  shouldDeleteElement: boolean
 }

@@ -335,3 +335,13 @@ function buildOrder<TEntity>(orderBy: {
 
   return output
 }
+
+export function nullableValue(
+  value: any,
+): FindOperator<any> {
+  if (value === null) {
+    return IsNull()
+  } else {
+    return value
+  }
+}

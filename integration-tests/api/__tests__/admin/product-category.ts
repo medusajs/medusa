@@ -23,10 +23,14 @@ describe("/admin/product-categories", () => {
   let medusaProcess
   let dbConnection
   let productCategory = null
+  let productCategory1 = null
   let productCategory2 = null
   let productCategoryChild = null
   let productCategoryParent = null
+  let productCategoryChild0 = null
+  let productCategoryChild1 = null
   let productCategoryChild2 = null
+  let productCategoryChild3 = null
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -352,7 +356,42 @@ describe("/admin/product-categories", () => {
             parent_category: expect.objectContaining({
               id: productCategory.id
             }),
-            category_children: []
+            category_children: [],
+            position: 0,
+          }),
+        })
+      )
+    })
+
+    it("successfully creates a product category", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories`,
+        {
+          name: "test",
+          handle: "test",
+          is_internal: true,
+          parent_category_id: productCategoryParent.id,
+        },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            name: "test",
+            handle: "test",
+            is_internal: true,
+            is_active: false,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id
+            }),
+            category_children: [],
+            position: 1,
           }),
         })
       )
@@ -408,6 +447,18 @@ describe("/admin/product-categories", () => {
         name: "category",
         handle: "category",
         parent_category: productCategoryParent,
+      })
+
+      productCategory1 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category-1",
+        parent_category: productCategoryParent,
+        position: 1
+      })
+
+      productCategory2 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category-2",
+        parent_category: productCategoryParent,
+        position: 2
       })
     })
 
@@ -473,25 +524,54 @@ describe("/admin/product-categories", () => {
 
       productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
         name: "category parent",
-        handle: "category-parent",
       })
 
       productCategory = await simpleProductCategoryFactory(dbConnection, {
-        name: "category",
-        handle: "category",
+        name: "category-0",
         parent_category: productCategoryParent,
+        position: 0
+      })
+
+      productCategory1 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category-1",
+        parent_category: productCategoryParent,
+        position: 1
+      })
+
+      productCategory2 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category-2",
+        parent_category: productCategoryParent,
+        position: 2
       })
 
       productCategoryChild = await simpleProductCategoryFactory(dbConnection, {
         name: "category child",
-        handle: "category-child",
         parent_category: productCategory,
+        position: 0,
+      })
+
+      productCategoryChild0 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category child 0",
+        parent_category: productCategoryChild,
+        position: 0,
+      })
+
+      productCategoryChild1 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category child 1",
+        parent_category: productCategoryChild,
+        position: 1
       })
 
       productCategoryChild2 = await simpleProductCategoryFactory(dbConnection, {
         name: "category child 2",
-        handle: "category-child-2",
         parent_category: productCategoryChild,
+        position: 2,
+      })
+
+      productCategoryChild3 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category child 3",
+        parent_category: productCategoryChild,
+        position: 3,
       })
     })
 
@@ -515,6 +595,24 @@ describe("/admin/product-categories", () => {
       expect(error.response.data.type).toEqual("not_found")
       expect(error.response.data.message).toEqual(
         "ProductCategory with id: not-found-id was not found"
+      )
+    })
+
+    it("throws an error if position is negative", async () => {
+      const api = useApi()
+
+      const error = await api.post(
+        `/admin/product-categories/not-found-id`,
+        {
+          position: -1
+        },
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("invalid_data")
+      expect(error.response.data.message).toEqual(
+        "position must not be less than 0"
       )
     })
 
@@ -564,7 +662,8 @@ describe("/admin/product-categories", () => {
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
-            category_children: []
+            category_children: [],
+            position: 1,
           }),
         })
       )
@@ -574,7 +673,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/admin/product-categories/${productCategoryChild2.id}`,
+        `/admin/product-categories/${productCategoryChild.id}`,
         {
           parent_category_id: productCategory.id,
         },
@@ -593,18 +692,156 @@ describe("/admin/product-categories", () => {
           category_children: [
             expect.objectContaining({
               id: productCategory.id,
+              position: 0,
               category_children: [
                 expect.objectContaining({
                   id: productCategoryChild.id,
-                  category_children: []
-                }),
-                expect.objectContaining({
-                  id: productCategoryChild2.id,
-                  category_children: []
+                  position: 0,
                 })
-              ]
-            })
+              ],
+            }),
+            expect.objectContaining({
+              id: productCategory1.id,
+              category_children: [],
+              position: 1
+            }),
+            expect.objectContaining({
+              id: productCategory2.id,
+              category_children: [],
+              position: 2
+            }),
           ]
+        })
+      )
+    })
+
+    it("when parent is updated, position is last element", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategoryChild1.id}`,
+        {
+          parent_category_id: productCategoryParent.id,
+        },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id,
+            }),
+            position: 3,
+          }),
+        })
+      )
+    })
+
+    it("when parent is updated with position, position accurately updated", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategoryChild1.id}`,
+        {
+          parent_category_id: productCategoryParent.id,
+          position: 0
+        },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id,
+            }),
+            position: 0,
+          }),
+        })
+      )
+    })
+
+    it("when only position is updated, position is accurately updated", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategoryChild1.id}`,
+        {
+          position: 0
+        },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            position: 0,
+          }),
+        })
+      )
+    })
+
+    it("when position is greater than list count, position is updated to last element", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategoryChild1.id}`,
+        {
+          position: 99
+        },
+        adminHeaders
+      )
+
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            position: 3,
+          }),
+        })
+      )
+    })
+
+    it("when position is updated, it accurately updates sibling positions", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategoryChild2.id}`,
+        {
+          position: 0
+        },
+        adminHeaders
+      )
+
+      const parentResponse = await api.get(
+        `/admin/product-categories/${productCategoryChild2.parent_category_id}`,
+        adminHeaders
+      )
+
+      expect(parentResponse.data.product_category).toEqual(
+        expect.objectContaining({
+          id: productCategoryChild2.parent_category_id,
+          category_children: expect.arrayContaining([
+            expect.objectContaining({
+              id: productCategoryChild3.id,
+              position: 3
+            }),
+            expect.objectContaining({
+              id: productCategoryChild1.id,
+              position: 2
+            }),
+            expect.objectContaining({
+              id: productCategoryChild0.id,
+              position: 1,
+            }),
+            expect.objectContaining({
+              id: productCategoryChild2.id,
+              position: 0
+            }),
+          ])
         })
       )
     })

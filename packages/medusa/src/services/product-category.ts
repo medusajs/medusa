@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, IsNull, MoreThanOrEqual, Between } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
@@ -9,18 +9,21 @@ import {
   TreeQuerySelector,
   Selector,
 } from "../types/common"
-import { buildQuery } from "../utils"
+import { buildQuery, nullableValue } from "../utils"
 import { EventBusService } from "."
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
+  ReorderConditions,
 } from "../types/product-category"
+import { isNumber } from "lodash"
 
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
   productCategoryRepository: typeof ProductCategoryRepository
 }
+const tempPosition = 99999
 
 /**
  * Provides layer to manipulate product categories.
@@ -148,6 +151,12 @@ class ProductCategoryService extends TransactionBaseService {
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
       const pcRepo = manager.withRepository(this.productCategoryRepo_)
+      const siblingCount = await pcRepo.countBy({
+        parent_category_id: nullableValue(
+          productCategoryInput.parent_category_id
+        ),
+      })
+      productCategoryInput.position = siblingCount
 
       await this.transformParentIdToEntity(productCategoryInput)
 
@@ -175,13 +184,21 @@ class ProductCategoryService extends TransactionBaseService {
     productCategoryInput: UpdateProductCategoryInput
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
+      let productCategory = await this.retrieve(productCategoryId)
       const productCategoryRepo = manager.withRepository(
         this.productCategoryRepo_
       )
 
-      await this.transformParentIdToEntity(productCategoryInput)
+      const conditions = this.fetchReorderConditions(
+        productCategory,
+        productCategoryInput
+      )
 
-      let productCategory = await this.retrieve(productCategoryId)
+      if (conditions.shouldChangePosition || conditions.shouldChangeParent) {
+        productCategoryInput.position = tempPosition
+      }
+
+      await this.transformParentIdToEntity(productCategoryInput)
 
       for (const key in productCategoryInput) {
         if (isDefined(productCategoryInput[key])) {
@@ -190,6 +207,8 @@ class ProductCategoryService extends TransactionBaseService {
       }
 
       productCategory = await productCategoryRepo.save(productCategory)
+
+      await this.performReordering(productCategoryRepo, conditions)
 
       await this.eventBusService_
         .withTransaction(manager)
@@ -220,6 +239,15 @@ class ProductCategoryService extends TransactionBaseService {
         return
       }
 
+      const conditions = this.fetchReorderConditions(
+        productCategory,
+        {
+          parent_category_id: productCategory.parent_category_id,
+          position: productCategory.position,
+        },
+        true
+      )
+
       if (productCategory.category_children.length > 0) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
@@ -228,6 +256,7 @@ class ProductCategoryService extends TransactionBaseService {
       }
 
       await productCategoryRepository.delete(productCategory.id)
+      await this.performReordering(productCategoryRepository, conditions)
 
       await this.eventBusService_
         .withTransaction(manager)
@@ -276,6 +305,171 @@ class ProductCategoryService extends TransactionBaseService {
         productIds
       )
     })
+  }
+
+  protected fetchReorderConditions(
+    productCategory: ProductCategory,
+    input: UpdateProductCategoryInput,
+    shouldDeleteElement: boolean = false
+  ): ReorderConditions {
+    const originalParentId = productCategory.parent_category_id
+    const targetParentId = input.parent_category_id || null
+    const originalPosition = productCategory.position
+    const targetPosition = input.position
+    const shouldChangeParent =
+      !!targetParentId && targetParentId !== originalParentId
+    const shouldIncrementPosition = false
+    const shouldChangePosition =
+      shouldChangeParent || originalPosition !== targetPosition
+
+    return {
+      targetCategoryId: productCategory.id,
+      originalParentId,
+      targetParentId,
+      originalPosition,
+      targetPosition,
+      shouldChangeParent,
+      shouldChangePosition,
+      shouldIncrementPosition,
+      shouldDeleteElement,
+    }
+  }
+
+  protected async performReordering(
+    repository: typeof ProductCategoryRepository,
+    conditions: ReorderConditions
+  ): Promise<void> {
+    const { shouldChangeParent, shouldChangePosition, shouldDeleteElement } =
+      conditions
+
+    if (!(shouldChangeParent || shouldChangePosition || shouldDeleteElement)) {
+      return
+    }
+
+    // If we change parent, we need to shift the siblings to eliminate the
+    // position occupied by the targetCategory in the original parent.
+    shouldChangeParent &&
+      (await this.shiftSiblings(repository, {
+        ...conditions,
+        targetPosition: conditions.originalPosition,
+        targetParentId: conditions.originalParentId,
+      }))
+
+    // If we change parent, we need to shift the siblings of the new parent
+    // to create a position that the targetCategory will occupy.
+    shouldChangeParent &&
+      shouldChangePosition &&
+      (await this.shiftSiblings(repository, {
+        ...conditions,
+        shouldIncrementPosition: true,
+      }))
+
+    // If we only change position, we need to shift the siblings
+    // to create a position that the targetCategory will occupy.
+    ;((!shouldChangeParent && shouldChangePosition) || shouldDeleteElement) &&
+      (await this.shiftSiblings(repository, {
+        ...conditions,
+        targetParentId: conditions.originalParentId,
+      }))
+  }
+
+  protected async shiftSiblings(
+    repository: typeof ProductCategoryRepository,
+    conditions: ReorderConditions
+  ): Promise<void> {
+    let { shouldIncrementPosition, targetPosition } = conditions
+    const {
+      shouldChangeParent,
+      originalPosition,
+      targetParentId,
+      targetCategoryId,
+      shouldDeleteElement,
+    } = conditions
+
+    // The current sibling count will replace targetPosition if
+    // targetPosition is greater than the count of siblings.
+    const siblingCount = await repository.countBy({
+      parent_category_id: nullableValue(targetParentId),
+    })
+
+    // The category record that will be placed at the requested position
+    // We've temporarily placed it at a temporary position that is
+    // beyond a reasonable value (tempPosition)
+    const targetCategory = await repository.findOneBy({
+      parent_category_id: nullableValue(targetParentId),
+      position: tempPosition,
+    })
+
+    // If the targetPosition is not present, or if targetPosition is beyond the
+    // position of the last category, we set the position as the last position
+    if (targetPosition === undefined || targetPosition > siblingCount - 1) {
+      targetPosition = siblingCount - 1
+    }
+
+    let positionCondition
+
+    // If parent doesn't change, we only need to get the positions
+    // in between the original position and the target position.
+    if (shouldChangeParent || shouldDeleteElement) {
+      positionCondition = MoreThanOrEqual(targetPosition)
+    } else if (originalPosition > targetPosition) {
+      shouldIncrementPosition = true
+      positionCondition = Between(targetPosition, originalPosition)
+    } else {
+      shouldIncrementPosition = false
+      positionCondition = Between(originalPosition, targetPosition)
+    }
+
+    // Scope out the list of siblings that we need to shift up or down
+    const siblingsToShift = await repository.find({
+      where: {
+        parent_category_id: nullableValue(targetParentId),
+        position: positionCondition,
+      },
+      order: {
+        // depending on whether we shift up or down, we order accordingly
+        position: shouldIncrementPosition ? "DESC" : "ASC",
+      },
+    })
+
+    // Depending on the conditions, we get a subset of the siblings
+    // and independently shift them up or down a position
+    for (let index = 0; index < siblingsToShift.length; index++) {
+      const sibling = siblingsToShift[index]
+
+      // Depending on the condition, we could also have the targetCategory
+      // in the siblings list, we skip shifting the target until all other siblings
+      // have been shifted.
+      if (targetCategoryId === sibling.id) {
+        continue
+      }
+
+      sibling.position = shouldIncrementPosition
+        ? sibling.position + 1
+        : sibling.position - 1
+
+      await repository.save(sibling)
+    }
+
+    const sibs = await repository.find({
+      where: {
+        parent_category_id: nullableValue(targetParentId),
+      },
+      order: {
+        // depending on whether we shift up or down, we order accordingly
+        position: shouldIncrementPosition ? "DESC" : "ASC",
+      },
+    })
+
+    // The targetCategory will not be present in the query when we are shifting
+    // siblings of the old parent of the targetCategory.
+    if (!targetCategory) {
+      return
+    }
+
+    // Place the targetCategory in the requested position
+    targetCategory.position = targetPosition
+    await repository.save(targetCategory)
   }
 
   /**

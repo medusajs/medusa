@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsInt, Min, IsNotEmpty } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -121,6 +121,12 @@ export class AdminPostProductCategoriesCategoryReq extends AdminProductCategorie
   @IsString()
   @IsOptional()
   name?: string
+
+  @IsOptional()
+  @IsInt()
+  @IsNotEmpty()
+  @Min(0)
+  position?: number
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}
