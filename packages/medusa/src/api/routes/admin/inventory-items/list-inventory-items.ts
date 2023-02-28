@@ -3,10 +3,7 @@ import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Transform } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { getLevelsByInventoryItemId } from "./utils/join-levels"
-import {
-  getVariantsByInventoryItemId,
-  InventoryItemsWithVariants,
-} from "./utils/join-variants"
+import { getVariantsByInventoryItemId } from "./utils/join-variants"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
@@ -128,17 +125,14 @@ export default async (req: Request, res: Response) => {
     inventoryService
   )
 
-  const variantsByInventoryItemId: InventoryItemsWithVariants =
-    await getVariantsByInventoryItemId(
-      inventoryItems,
-      productVariantInventoryService,
-      productVariantService
-    )
+  const variantsByInventoryItemId = await getVariantsByInventoryItemId(
+    inventoryItems,
+    productVariantInventoryService,
+    productVariantService
+  )
 
   const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
-    (
-      inventoryItem
-    ): AdminInventoryItemsListWithVariantsAndLocationLevelsRes => {
+    (inventoryItem) => {
       return {
         ...inventoryItem,
         variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
