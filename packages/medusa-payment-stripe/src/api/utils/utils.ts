@@ -51,7 +51,7 @@ export async function handlePaymentHook({
   container,
   paymentIntent,
 }: {
-  event: { type: string }
+  event: { type: string; id: string }
   container: AwilixContainer
   paymentIntent: {
     id: string
@@ -69,6 +69,7 @@ export async function handlePaymentHook({
     case "payment_intent.succeeded":
       try {
         await onPaymentIntentSucceeded({
+          eventId: event.id,
           paymentIntent,
           cartId,
           resourceId,
@@ -85,7 +86,7 @@ export async function handlePaymentHook({
     case "payment_intent.amount_capturable_updated":
       try {
         await onPaymentAmountCapturableUpdate({
-          paymentIntent,
+          eventId: event.id,
           cartId,
           container,
         })
@@ -113,6 +114,7 @@ export async function handlePaymentHook({
 }
 
 async function onPaymentIntentSucceeded({
+  eventId,
   paymentIntent,
   cartId,
   resourceId,
@@ -130,7 +132,7 @@ async function onPaymentIntentSucceeded({
       })
     } else {
       await completeCartIfNecessary({
-        paymentIntent,
+        eventId,
         cartId,
         container,
         transactionManager,
@@ -145,16 +147,12 @@ async function onPaymentIntentSucceeded({
   })
 }
 
-async function onPaymentAmountCapturableUpdate({
-  paymentIntent,
-  cartId,
-  container,
-}) {
+async function onPaymentAmountCapturableUpdate({ eventId, cartId, container }) {
   const manager = container.resolve("manager")
 
   await manager.transaction(async (transactionManager) => {
     await completeCartIfNecessary({
-      paymentIntent,
+      eventId,
       cartId,
       container,
       transactionManager,
@@ -207,7 +205,7 @@ async function capturePaymentIfNecessary({
 }
 
 async function completeCartIfNecessary({
-  paymentIntent,
+  eventId,
   cartId,
   container,
   transactionManager,
@@ -226,25 +224,20 @@ async function completeCartIfNecessary({
       "idempotencyKeyService"
     )
 
-    const idempotencyConstraints = {
-      request_method: "post",
-      request_path: "/stripe/hooks",
-      request_params: {
-        cart_id: cartId,
-        payment_intent_id: paymentIntent.id,
-      },
-    }
-
     const idempotencyKeyServiceTx =
       idempotencyKeyService.withTransaction(transactionManager)
-    let idempotencyKey = await idempotencyKeyServiceTx.retrieve(
-      idempotencyConstraints
-    )
+    let idempotencyKey = await idempotencyKeyServiceTx.retrieve({
+      request_path: "/stripe/hooks",
+      idempotency_key: eventId,
+    })
 
     if (!idempotencyKey) {
       idempotencyKey = await idempotencyKeyService
         .withTransaction(transactionManager)
-        .create(idempotencyConstraints)
+        .create({
+          request_path: "/stripe/hooks",
+          idempotency_key: eventId,
+        })
     }
 
     const cart = await cartService

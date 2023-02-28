@@ -71,7 +71,7 @@ describe("Utils", () => {
     describe("on event type payment_intent.succeeded", () => {
       describe("in a payment context", () => {
         it("should complete the cart on non existing order", async () => {
-          const event = { type: "payment_intent.succeeded" }
+          const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
             metadata: { cart_id: nonExistingCartId },
@@ -95,22 +95,14 @@ describe("Utils", () => {
 
           expect(idempotencyKeyService.retrieve).toHaveBeenCalled()
           expect(idempotencyKeyService.retrieve).toHaveBeenCalledWith({
-            request_method: "post",
             request_path: "/stripe/hooks",
-            request_params: {
-              cart_id: paymentIntent.metadata.cart_id,
-              payment_intent_id: paymentIntent.id,
-            },
+            idempotency_key: event.id,
           })
 
           expect(idempotencyKeyService.create).toHaveBeenCalled()
           expect(idempotencyKeyService.create).toHaveBeenCalledWith({
-            request_method: "post",
             request_path: "/stripe/hooks",
-            request_params: {
-              cart_id: paymentIntent.metadata.cart_id,
-              payment_intent_id: paymentIntent.id,
-            },
+            idempotency_key: event.id,
           })
 
           expect(cartService.retrieve).toHaveBeenCalled()
@@ -128,7 +120,7 @@ describe("Utils", () => {
         })
 
         it("should not try to complete the cart on existing order", async () => {
-          const event = { type: "payment_intent.succeeded" }
+          const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
             metadata: { cart_id: existingCartId },
@@ -160,7 +152,7 @@ describe("Utils", () => {
         })
 
         it("should capture the payment if not already captured", async () => {
-          const event = { type: "payment_intent.succeeded" }
+          const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
             metadata: { cart_id: existingCartId },
@@ -182,7 +174,7 @@ describe("Utils", () => {
         })
 
         it("should not capture the payment if already captured", async () => {
-          const event = { type: "payment_intent.succeeded" }
+          const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
             metadata: { cart_id: existingCartIdWithCapturedStatus },
@@ -203,7 +195,7 @@ describe("Utils", () => {
 
       describe("in a payment collection context", () => {
         it("should capture the payment collection if not already captured", async () => {
-          const event = { type: "payment_intent.succeeded" }
+          const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
             metadata: { resource_id: existingResourceNotCapturedId },
@@ -228,7 +220,7 @@ describe("Utils", () => {
         })
 
         it("should not capture the payment collection if already captured", async () => {
-          const event = { type: "payment_intent.succeeded" }
+          const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
             metadata: { resource_id: existingResourceId },
@@ -253,7 +245,10 @@ describe("Utils", () => {
 
     describe("on event type payment_intent.amount_capturable_updated", () => {
       it("should complete the cart on non existing order", async () => {
-        const event = { type: "payment_intent.amount_capturable_updated" }
+        const event = {
+          id: "event",
+          type: "payment_intent.amount_capturable_updated",
+        }
         const paymentIntent = {
           id: paymentIntentId,
           metadata: { cart_id: nonExistingCartId },
@@ -275,22 +270,14 @@ describe("Utils", () => {
 
         expect(idempotencyKeyService.retrieve).toHaveBeenCalled()
         expect(idempotencyKeyService.retrieve).toHaveBeenCalledWith({
-          request_method: "post",
           request_path: "/stripe/hooks",
-          request_params: {
-            cart_id: paymentIntent.metadata.cart_id,
-            payment_intent_id: paymentIntent.id,
-          },
+          idempotency_key: event.id,
         })
 
         expect(idempotencyKeyService.create).toHaveBeenCalled()
         expect(idempotencyKeyService.create).toHaveBeenCalledWith({
-          request_method: "post",
           request_path: "/stripe/hooks",
-          request_params: {
-            cart_id: paymentIntent.metadata.cart_id,
-            payment_intent_id: paymentIntent.id,
-          },
+          idempotency_key: event.id,
         })
 
         expect(cartService.retrieve).toHaveBeenCalled()
@@ -308,7 +295,10 @@ describe("Utils", () => {
       })
 
       it("should not try to complete the cart on existing order", async () => {
-        const event = { type: "payment_intent.amount_capturable_updated" }
+        const event = {
+          id: "event",
+          type: "payment_intent.amount_capturable_updated",
+        }
         const paymentIntent = {
           id: paymentIntentId,
           metadata: { cart_id: existingCartId },
@@ -340,7 +330,7 @@ describe("Utils", () => {
 
     describe("on event type payment_intent.payment_failed", () => {
       it("should log the error", async () => {
-        const event = { type: "payment_intent.payment_failed" }
+        const event = { id: "event", type: "payment_intent.payment_failed" }
         const paymentIntent = {
           id: paymentIntentId,
           metadata: { cart_id: nonExistingCartId },
