@@ -2,3 +2,9 @@ dist
 node_modules
 .DS_store
 yarn.lock
+
+services
+core
+api
+__mocks__
+subscribers

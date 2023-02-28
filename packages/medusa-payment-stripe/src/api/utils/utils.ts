@@ -29,16 +29,16 @@ export function isPaymentCollection(id) {
 }
 
 export function buildError(event: string, err: Stripe.StripeRawError): string {
-  let message = `Stripe webhook ${event} handling failed\n${
+  let message = `Stripe webhook ${event} handling failed${EOL}${
     err?.detail ?? err?.message
   }`
   if (err?.code === PostgresError.SERIALIZATION_FAILURE) {
-    message = `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+    message = `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.${EOL}${
       err?.detail ?? err?.message
     }`
   }
   if (err?.code === "409") {
-    message = `Stripe webhook ${event} handle failed.\n${
+    message = `Stripe webhook ${event} handle failed.${EOL}${
       err?.detail ?? err?.message
     }`
   }
@@ -46,10 +46,23 @@ export function buildError(event: string, err: Stripe.StripeRawError): string {
   return message
 }
 
-export async function handlePaymentHook(event, req, res, paymentIntent) {
-  const logger = req.scope.resolve("logger")
+export async function handlePaymentHook({
+  event,
+  container,
+  paymentIntent,
+}: {
+  event: { type: string }
+  container: AwilixContainer
+  paymentIntent: {
+    id: string
+    metadata: { cart_id?: string; resource_id?: string }
+    last_payment_error?: { message: string }
+  }
+}): Promise<{ statusCode: number }> {
+  const logger = container.resolve("logger")
 
-  const cartId = paymentIntent.metadata.cart_id // Backward compatibility
+  const cartId =
+    paymentIntent.metadata.cart_id ?? paymentIntent.metadata.resource_id // Backward compatibility
   const resourceId = paymentIntent.metadata.resource_id
 
   switch (event.type) {
@@ -60,12 +73,12 @@ export async function handlePaymentHook(event, req, res, paymentIntent) {
           cartId,
           resourceId,
           isPaymentCollection: isPaymentCollection(resourceId),
-          container: req.scope,
+          container,
         })
       } catch (err) {
-        const message = buildError(event, err)
+        const message = buildError(event.type, err)
         logger.warn(message)
-        return res.sendStatus(409)
+        return { statusCode: 409 }
       }
 
       break
@@ -74,30 +87,29 @@ export async function handlePaymentHook(event, req, res, paymentIntent) {
         await onPaymentAmountCapturableUpdate({
           paymentIntent,
           cartId,
-          container: req.scope,
+          container,
         })
       } catch (err) {
-        const message = buildError(event, err)
+        const message = buildError(event.type, err)
         logger.warn(message)
-        return res.sendStatus(409)
+        return { statusCode: 409 }
       }
 
       break
     case "payment_intent.payment_failed": {
-      const intent = event.data.object
       const message =
-        intent.last_payment_error && intent.last_payment_error.message
+        paymentIntent.last_payment_error &&
+        paymentIntent.last_payment_error.message
       logger.error(
-        `The payment of the payment intent ${intent.id} has failed${EOL}${message}`
+        `The payment of the payment intent ${paymentIntent.id} has failed${EOL}${message}`
       )
       break
     }
     default:
-      res.sendStatus(204)
-      return
+      return { statusCode: 204 }
   }
 
-  res.sendStatus(200)
+  return { statusCode: 200 }
 }
 
 async function onPaymentIntentSucceeded({
@@ -110,13 +122,6 @@ async function onPaymentIntentSucceeded({
   const manager = container.resolve("manager")
 
   await manager.transaction(async (transactionManager) => {
-    await completeCartIfNecessary({
-      paymentIntent,
-      cartId,
-      container,
-      transactionManager,
-    })
-
     if (isPaymentCollection) {
       await capturePaymenCollectiontIfNecessary({
         paymentIntent,
@@ -124,6 +129,13 @@ async function onPaymentIntentSucceeded({
         container,
       })
     } else {
+      await completeCartIfNecessary({
+        paymentIntent,
+        cartId,
+        container,
+        transactionManager,
+      })
+
       await capturePaymentIfNecessary({
         cartId,
         transactionManager,
@@ -187,8 +199,7 @@ async function capturePaymentIfNecessary({
     .retrieveByCartId(cartId)
     .catch(() => undefined)
 
-  if (order.payment_status !== "captured") {
-    const orderService = container.resolve("orderService")
+  if (order?.payment_status !== "captured") {
     await orderService
       .withTransaction(transactionManager)
       .capturePayment(order.id)
@@ -215,24 +226,33 @@ async function completeCartIfNecessary({
       "idempotencyKeyService"
     )
 
-    let idempotencyKey
-    try {
-      idempotencyKey = await idempotencyKeyService
-        .withTransaction(transactionManager)
-        .create({
-          request_method: "post",
-          request_path: "/stripe/hooks",
-          request_params: {
-            cart_id: cartId,
-            payment_intent_id: paymentIntent.id,
-          },
-        })
-    } catch (error) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "Failed to create idempotency key",
-        "400"
-      )
+    const idempotencyConstraints = {
+      request_method: "post",
+      request_path: "/stripe/hooks",
+      request_params: {
+        cart_id: cartId,
+        payment_intent_id: paymentIntent.id,
+      },
+    }
+
+    const idempotencyKeyServiceTx =
+      idempotencyKeyService.withTransaction(transactionManager)
+    let idempotencyKey = await idempotencyKeyServiceTx.retrieve(
+      idempotencyConstraints
+    )
+
+    if (!idempotencyKey) {
+      try {
+        idempotencyKey = await idempotencyKeyService
+          .withTransaction(transactionManager)
+          .create(idempotencyConstraints)
+      } catch (error) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Failed to create idempotency key",
+          "400"
+        )
+      }
     }
 
     const cart = await cartService

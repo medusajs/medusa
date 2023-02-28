@@ -185,7 +185,7 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error:
-          "An error occurred in InitiatePayment during the creation of the stripe customer",
+          "An error occurred in initiatePayment when creating a Stripe customer",
         code: "",
         detail: "Error",
       })
@@ -287,8 +287,7 @@ describe("StripeTest", () => {
       const result = await stripeTest.cancelPayment(cancelPaymentFailData)
 
       expect(result).toEqual({
-        error:
-          "An error occurred in cancelPayment during the cancellation of the payment",
+        error: "An error occurred in cancelPayment",
         code: "",
         detail: "Error",
       })
@@ -335,8 +334,7 @@ describe("StripeTest", () => {
       )
 
       expect(result).toEqual({
-        error:
-          "An error occurred in deletePayment during the capture of the payment",
+        error: "An error occurred in deletePayment",
         code: "",
         detail: "Error",
       })
@@ -379,8 +377,7 @@ describe("StripeTest", () => {
       const result = await stripeTest.cancelPayment(deletePaymentFailData)
 
       expect(result).toEqual({
-        error:
-          "An error occurred in cancelPayment during the cancellation of the payment",
+        error: "An error occurred in cancelPayment",
         code: "",
         detail: "Error",
       })
@@ -419,7 +416,7 @@ describe("StripeTest", () => {
       )
 
       expect(result).toEqual({
-        error: "An error occurred in refundPayment during the refundPayment",
+        error: "An error occurred in refundPayment",
         code: "",
         detail: "Error",
       })
@@ -526,7 +523,7 @@ describe("StripeTest", () => {
           "An error occurred in updatePayment during the initiate of the new payment for the new customer",
         code: "",
         detail:
-          "An error occurred in InitiatePayment during the creation of the stripe customer" +
+          "An error occurred in initiatePayment when creating a Stripe customer" +
           EOL +
           "Error",
       })
@@ -576,8 +573,7 @@ describe("StripeTest", () => {
       )
 
       expect(result).toEqual({
-        error:
-          "An error occurred in updatePayment during the update of the payment",
+        error: "An error occurred in updatePayment",
         code: "",
         detail: "Error",
       })

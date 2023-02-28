@@ -16,5 +16,10 @@ export default async (req: Request, res: Response) => {
 
   const paymentIntent = event.data.object
 
-  await handlePaymentHook(event, req, res, paymentIntent)
+  const { statusCode } = await handlePaymentHook({
+    event,
+    container: req.scope,
+    paymentIntent,
+  })
+  res.sendStatus(statusCode)
 }

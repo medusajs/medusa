@@ -29,7 +29,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     this.init()
   }
 
-  init(): void {
+  protected init(): void {
     this.stripe_ =
       this.stripe_ ||
       new Stripe(this.options_.api_key, {
@@ -120,7 +120,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         })
       } catch (e) {
         return this.buildError(
-          "An error occurred in InitiatePayment during the creation of the stripe customer",
+          "An error occurred in initiatePayment when creating a Stripe customer",
           e
         )
       }
@@ -181,10 +181,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         return error.payment_intent
       }
 
-      return this.buildError(
-        "An error occurred in cancelPayment during the cancellation of the payment",
-        error
-      )
+      return this.buildError("An error occurred in cancelPayment", error)
     }
   }
 
@@ -204,10 +201,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         }
       }
 
-      return this.buildError(
-        "An error occurred in deletePayment during the capture of the payment",
-        error
-      )
+      return this.buildError("An error occurred in deletePayment", error)
     }
   }
 
@@ -233,10 +227,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         payment_intent: id as string,
       })
     } catch (e) {
-      return this.buildError(
-        "An error occurred in refundPayment during the refundPayment",
-        e
-      )
+      return this.buildError("An error occurred in refundPayment", e)
     }
 
     return paymentSessionData
@@ -285,10 +276,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
         return { session_data: sessionData }
       } catch (e) {
-        return this.buildError(
-          "An error occurred in updatePayment during the update of the payment",
-          e
-        )
+        return this.buildError("An error occurred in updatePayment", e)
       }
     }
   }
