@@ -343,7 +343,7 @@ class DraftOrderService extends TransactionBaseService {
         if (itemsWithoutVariant.length) {
           const toCreate = itemsWithoutVariant.map((item) => {
             let price
-            if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
+            if (!isDefined(item.unit_price) || item.unit_price < 0) {
               price = 0
             } else {
               price = item.unit_price
@@ -362,9 +362,6 @@ class DraftOrderService extends TransactionBaseService {
           promises.push(lineItemServiceTx.create(toCreate))
         }
 
-        const customShippingOptionServiceTx =
-          this.customShippingOptionService_.withTransaction(transactionManager)
-
         const shippingMethodToCreate: Partial<ShippingMethod>[] = []
 
         shipping_methods.forEach((method) => {
@@ -379,7 +376,9 @@ class DraftOrderService extends TransactionBaseService {
         })
 
         if (shippingMethodToCreate.length) {
-          await customShippingOptionServiceTx.create(shippingMethodToCreate)
+          await this.customShippingOptionService_
+            .withTransaction(transactionManager)
+            .create(shippingMethodToCreate)
         }
 
         createdCart = await cartServiceTx.retrieveWithTotals(createdCart.id, {
