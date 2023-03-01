@@ -1,10 +1,4 @@
-import {
-  Brackets,
-  FindOptionsWhere,
-  ILike,
-  DeleteResult,
-  In,
-} from "typeorm"
+import { Brackets, FindOptionsWhere, ILike, DeleteResult, In } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
@@ -12,12 +6,17 @@ import { buildLegacyFieldsListFrom } from "../utils"
 
 const sortChildren = (category: ProductCategory): ProductCategory => {
   if (category.category_children) {
-    category.category_children = category?.category_children.map(child => sortChildren(child)) || []
+    category.category_children =
+      category?.category_children.map((child) => sortChildren(child)) || []
 
     category.category_children = category.category_children.sort((a, b) => {
-      if (a.position < b.position) {return -1;}
-      if (a.position > b.position) {return 1;}
-      return 0;
+      if (a.position < b.position) {
+        return -1
+      }
+      if (a.position > b.position) {
+        return 1
+      }
+      return 0
     })
 
     return category
@@ -35,7 +34,7 @@ export const ProductCategoryRepository = dataSource
       },
       q: string | undefined,
       treeScope: QuerySelector<ProductCategory> = {},
-      includeTree: boolean = false
+      includeTree = false
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
@@ -59,7 +58,7 @@ export const ProductCategoryRepository = dataSource
         .select(selectStatements(entityName))
         .skip(options_.skip)
         .take(options_.take)
-        .addOrderBy(`${entityName}.position`, 'ASC')
+        .addOrderBy(`${entityName}.position`, "ASC")
 
       if (q) {
         delete options_.where?.name
@@ -93,7 +92,7 @@ export const ProductCategoryRepository = dataSource
             treeScope
           )
           .addSelect(selectStatements(treeRelation))
-          .addOrderBy(`${treeRelation}.position`, 'ASC')
+          .addOrderBy(`${treeRelation}.position`, "ASC")
       })
 
       const nonTreeRelations: string[] = legacyRelations.filter(

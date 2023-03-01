@@ -301,14 +301,14 @@ class ProductCategoryService extends TransactionBaseService {
   protected fetchReorderConditions(
     productCategory: ProductCategory,
     input: UpdateProductCategoryInput,
-    shouldDeleteElement: boolean = false
+    shouldDeleteElement = false
   ): ReorderConditions {
     const originalParentId = productCategory.parent_category_id
     const targetParentId = input.parent_category_id || null
     const originalPosition = productCategory.position
     const targetPosition = input.position
     const shouldChangeParent =
-      (targetParentId !== undefined) && targetParentId !== originalParentId
+      targetParentId !== undefined && targetParentId !== originalParentId
     const shouldIncrementPosition = false
     const shouldChangePosition =
       shouldChangeParent || originalPosition !== targetPosition
@@ -381,7 +381,7 @@ class ProductCategoryService extends TransactionBaseService {
     // targetPosition is greater than the count of siblings.
     const siblingCount = await repository.countBy({
       parent_category_id: nullableValue(targetParentId),
-      id: Not(targetCategoryId)
+      id: Not(targetCategoryId),
     })
 
     // The category record that will be placed at the requested position
@@ -392,7 +392,7 @@ class ProductCategoryService extends TransactionBaseService {
         id: targetCategoryId,
         parent_category_id: nullableValue(targetParentId),
         position: tempReorderPosition,
-      }
+      },
     })
 
     // If the targetPosition is not present, or if targetPosition is beyond the
@@ -481,7 +481,9 @@ class ProductCategoryService extends TransactionBaseService {
     // It is really important that the parentCategory is either null or a record.
     // If the null is not explicitly passed to make it a root element, the mpath gets
     // incorrectly set
-    const parentCategory = parentCategoryId ? await this.retrieve(parentCategoryId) : null
+    const parentCategory = parentCategoryId
+      ? await this.retrieve(parentCategoryId)
+      : null
 
     productCategoryInput.parent_category = parentCategory
     delete productCategoryInput.parent_category_id
