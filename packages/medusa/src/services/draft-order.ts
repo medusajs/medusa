@@ -297,23 +297,40 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of items || []) {
-          if (item.variant_id) {
-            const line = await lineItemServiceTx.generate(
-              item.variant_id,
-              data.region_id,
-              item.quantity,
-              {
-                metadata: item?.metadata || {},
-                unit_price: item.unit_price,
-              }
-            )
+        const itemsWithVariant: DraftOrderCreateProps["items"] = []
+        const itemsWithoutVariant: DraftOrderCreateProps["items"] = []
 
-            await lineItemServiceTx.create({
-              ...line,
-              cart_id: createdCart.id,
+        ;(items ?? []).forEach((item) => {
+          if (item.variant_id) {
+            return itemsWithVariant.push(item)
+          }
+
+          return itemsWithoutVariant.push(item)
+        })
+
+        const promises: Promise<any>[] = []
+
+        // generate line item link to a variant
+        if (itemsWithVariant.length) {
+          const itemsData = itemsWithVariant.map((item) => {
+            return {
+              variantId: item.variant_id,
+              quantity: item.quantity,
+              metadata: item.metadata,
+              unit_price: item.unit_price,
+            }
+          })
+
+          promises.push(
+            lineItemServiceTx.generate(itemsData, {
+              region_id: data.region_id,
             })
-          } else {
+          )
+        }
+
+        // custom line items can be added to a draft order
+        if (itemsWithoutVariant.length) {
+          itemsWithoutVariant.forEach((item) => {
             let price
             if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
               price = 0
@@ -321,38 +338,46 @@ class DraftOrderService extends TransactionBaseService {
               price = item.unit_price
             }
 
-            // custom line items can be added to a draft order
-            await lineItemServiceTx.create({
-              cart_id: createdCart.id,
-              has_shipping: true,
-              title: item.title || "Custom item",
-              allow_discounts: false,
-              unit_price: price,
-              quantity: item.quantity,
-            })
-          }
+            promises.push(
+              lineItemServiceTx.create({
+                cart_id: createdCart.id,
+                has_shipping: true,
+                title: item.title || "Custom item",
+                allow_discounts: false,
+                unit_price: price,
+                quantity: item.quantity,
+              })
+            )
+          })
         }
 
-        if (discounts?.length) {
-          await cartServiceTx.update(createdCart.id, { discounts })
-        }
+        const customShippingOptionServiceTx =
+          this.customShippingOptionService_.withTransaction(transactionManager)
 
-        for (const method of shipping_methods) {
+        shipping_methods.forEach((method) => {
           if (typeof method.price !== "undefined") {
-            await this.customShippingOptionService_
-              .withTransaction(transactionManager)
-              .create({
+            promises.push(
+              customShippingOptionServiceTx.create({
                 shipping_option_id: method.option_id,
                 cart_id: createdCart.id,
                 price: method.price,
               })
+            )
           }
 
-          await cartServiceTx.addShippingMethod(
-            createdCart.id,
-            method.option_id,
-            method.data
+          promises.push(
+            cartServiceTx.addShippingMethod(
+              createdCart.id,
+              method.option_id,
+              method.data
+            )
           )
+        })
+
+        await Promise.all(promises)
+
+        if (discounts?.length) {
+          await cartServiceTx.update(createdCart.id, { discounts })
         }
 
         return result
