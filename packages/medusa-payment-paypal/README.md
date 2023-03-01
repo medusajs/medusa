@@ -14,3 +14,7 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
   auth_webhook_id: "WEBHOOK_ID" //REQUIRED for webhook to work
 }
 ```
+
+## Deprecation
+
+The paypal plugin version `>=1.3.x` requires medusa `>=1.8.x`

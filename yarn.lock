@@ -8999,6 +8999,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/paypal__checkout-server-sdk@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@types/paypal__checkout-server-sdk@npm:1.0.5"
+  dependencies:
+    "@types/paypal__paypalhttp": "*"
+  checksum: 6caa3d8b30c0af6f144b03eb373acd59bc8c4511b7f5e3e51b7f6304c009f8c7139fb618df13b2b33ea891bfc5b33e00354402b392ee2687de7f8e7e29f27ca9
+  languageName: node
+  linkType: hard
+
+"@types/paypal__paypalhttp@npm:*":
+  version: 1.0.0
+  resolution: "@types/paypal__paypalhttp@npm:1.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: 415253469f6b62e0d01285375adb0c23baecc5be4f62410f67a291854013603541693c5f98d1df47c446b808bc97e35ce38719e2a356f3d2e580cd1d59c43065
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^1.19.0":
   version: 1.19.1
   resolution: "@types/prettier@npm:1.19.1"
@@ -25699,28 +25717,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-payment-paypal@workspace:packages/medusa-payment-paypal"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-proposal-optional-chaining": ^7.12.7
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.7.7
     "@paypal/checkout-server-sdk": ^1.0.3
+    "@types/paypal__checkout-server-sdk": ^1.0.5
+    "@types/stripe": ^8.0.417
     body-parser: ^1.19.0
-    client-sessions: ^0.8.0
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.1.39
-    medusa-interfaces: ^1.3.6
-    medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.3.6
+    "@medusajs/medusa": ^1.7.7
   languageName: unknown
   linkType: soft
 
