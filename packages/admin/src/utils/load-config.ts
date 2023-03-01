@@ -16,9 +16,6 @@ export const loadConfig = () => {
   let defaultConfig: PluginOptions = {
     serve: true,
     path: "app",
-    dev: {
-      autoOpen: true,
-    },
   }
 
   if (typeof plugin !== "string") {
@@ -28,9 +25,6 @@ export const loadConfig = () => {
       path: options.path ?? defaultConfig.path,
       backend: options.backend ?? defaultConfig.backend,
       outDir: options.outDir ?? defaultConfig.outDir,
-      dev: {
-        autoOpen: options.dev?.autoOpen ?? defaultConfig.dev.autoOpen,
-      },
     }
   }
 
