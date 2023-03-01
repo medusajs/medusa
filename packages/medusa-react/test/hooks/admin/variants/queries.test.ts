@@ -1,4 +1,4 @@
-import { useAdminVariants, useAdminVariantsInventory } from "../../../../src"
+import { useAdminVariant, useAdminVariants, useAdminVariantsInventory } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
@@ -14,6 +14,20 @@ describe("useAdminVariants hook", () => {
 
     expect(result.current.response.status).toEqual(200)
     expect(result.current.variants).toEqual(variants)
+  })
+})
+
+describe("useAdminVariant hook", () => {
+  test("returns a variant", async () => {
+    const variant = fixtures.get("product_variant")
+    const { result, waitFor } = renderHook(() => useAdminVariant(variant.id), {
+      wrapper: createWrapper(),
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.variant).toEqual(variant)
   })
 })
 
