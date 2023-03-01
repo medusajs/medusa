@@ -65,7 +65,7 @@ class ProductCategoryService extends TransactionBaseService {
     },
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
-    const includeDescendantsTree = selector.include_descendants_tree
+    const includeDescendantsTree = selector.include_descendants_tree || false
     delete selector.include_descendants_tree
 
     const productCategoryRepo = this.activeManager_.withRepository(
@@ -82,22 +82,12 @@ class ProductCategoryService extends TransactionBaseService {
 
     const query = buildQuery(selector_, config)
 
-    let [productCategories, count] =
-      await productCategoryRepo.getFreeTextSearchResultsAndCount(
-        query,
-        q,
-        treeSelector
-      )
-
-    if (includeDescendantsTree) {
-      productCategories = await Promise.all(
-        productCategories.map(async (productCategory) =>
-          productCategoryRepo.findDescendantsTree(productCategory)
-        )
-      )
-    }
-
-    return [productCategories, count]
+    return await productCategoryRepo.getFreeTextSearchResultsAndCount(
+      query,
+      q,
+      treeSelector,
+      includeDescendantsTree
+    )
   }
 
   /**

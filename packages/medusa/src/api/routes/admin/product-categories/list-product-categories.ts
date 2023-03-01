@@ -1,9 +1,10 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsBoolean } from "class-validator"
 import { Request, Response } from "express"
 import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /admin/product-categories
@@ -93,8 +94,9 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsOptional()
   q?: string
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   include_descendants_tree?: boolean
 
   @IsString()

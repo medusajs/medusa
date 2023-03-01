@@ -10,6 +10,22 @@ import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { buildLegacyFieldsListFrom } from "../utils"
 
+const sortChildren = (category: ProductCategory): ProductCategory => {
+  if (category.category_children) {
+    category.category_children = category?.category_children.map(child => sortChildren(child)) || []
+
+    category.category_children = category.category_children.sort((a, b) => {
+      if (a.position < b.position) {return -1;}
+      if (a.position > b.position) {return 1;}
+      return 0;
+    })
+
+    return category
+  } else {
+    return category
+  }
+}
+
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
   .extend({
@@ -18,7 +34,8 @@ export const ProductCategoryRepository = dataSource
         where: {},
       },
       q: string | undefined,
-      treeScope: QuerySelector<ProductCategory> = {}
+      treeScope: QuerySelector<ProductCategory> = {},
+      includeTree: boolean = false
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
@@ -42,6 +59,7 @@ export const ProductCategoryRepository = dataSource
         .select(selectStatements(entityName))
         .skip(options_.skip)
         .take(options_.take)
+        .addOrderBy(`${entityName}.position`, 'ASC')
 
       if (q) {
         delete options_.where?.name
@@ -75,6 +93,7 @@ export const ProductCategoryRepository = dataSource
             treeScope
           )
           .addSelect(selectStatements(treeRelation))
+          .addOrderBy(`${treeRelation}.position`, 'ASC')
       })
 
       const nonTreeRelations: string[] = legacyRelations.filter(
@@ -89,7 +108,19 @@ export const ProductCategoryRepository = dataSource
         queryBuilder.withDeleted()
       }
 
-      return await queryBuilder.getManyAndCount()
+      let [categories, count] = await queryBuilder.getManyAndCount()
+
+      if (includeTree) {
+        categories = await Promise.all(
+          categories.map(async (productCategory) => {
+            productCategory = await this.findDescendantsTree(productCategory)
+
+            return sortChildren(productCategory)
+          })
+        )
+      }
+
+      return [categories, count]
     },
 
     async addProducts(

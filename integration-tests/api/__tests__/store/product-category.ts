@@ -16,6 +16,7 @@ describe("/store/product-categories", () => {
   let productCategoryParent = null
   let productCategoryChild2 = null
   let productCategoryChild3 = null
+  let productCategoryChild4 = null
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -54,6 +55,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_active: true,
       is_internal: false,
+      position: 3
     })
 
     productCategoryChild2 = await simpleProductCategoryFactory(dbConnection, {
@@ -61,7 +63,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_internal: true,
       is_active: true,
-      position: 1,
+      position: 0,
     })
 
     productCategoryChild3 = await simpleProductCategoryFactory(dbConnection, {
@@ -69,7 +71,15 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_active: false,
       is_internal: false,
-      position: 2,
+      position: 1,
+    })
+
+    productCategoryChild4 = await simpleProductCategoryFactory(dbConnection, {
+      name: "category child 4",
+      parent_category: productCategory,
+      is_active: true,
+      is_internal: false,
+      position: 2
     })
   })
 
@@ -101,6 +111,11 @@ describe("/store/product-categories", () => {
               id: productCategoryChild.id,
               handle: productCategoryChild.handle,
               name: productCategoryChild.name,
+            }),
+            expect.objectContaining({
+              id: productCategoryChild4.id,
+              handle: productCategoryChild4.handle,
+              name: productCategoryChild4.name,
             }),
           ]
         })
@@ -164,14 +179,33 @@ describe("/store/product-categories", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(3)
+      expect(response.data.count).toEqual(4)
       expect(response.data.offset).toEqual(0)
       expect(response.data.limit).toEqual(100)
+
       expect(response.data.product_categories).toEqual(
-        expect.arrayContaining([
+        [
+          expect.objectContaining({
+            id: productCategory.id,
+            position: 0,
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id,
+            }),
+            category_children: [
+              expect.objectContaining({
+                id: productCategoryChild4.id,
+                position: 2,
+              }),
+              expect.objectContaining({
+                id: productCategoryChild.id,
+                position: 3,
+              }),
+            ],
+          }),
           expect.objectContaining({
             id: productCategoryParent.id,
             parent_category: null,
+            position: 0,
             category_children: [
               expect.objectContaining({
                 id: productCategory.id,
@@ -179,24 +213,22 @@ describe("/store/product-categories", () => {
             ],
           }),
           expect.objectContaining({
-            id: productCategory.id,
-            parent_category: expect.objectContaining({
-              id: productCategoryParent.id,
-            }),
-            category_children: [
-              expect.objectContaining({
-                id: productCategoryChild.id,
-              }),
-            ],
-          }),
-          expect.objectContaining({
-            id: productCategoryChild.id,
+            id: productCategoryChild4.id,
+            position: 2,
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
             category_children: [],
           }),
-        ])
+          expect.objectContaining({
+            id: productCategoryChild.id,
+            position: 3,
+            parent_category: expect.objectContaining({
+              id: productCategory.id,
+            }),
+            category_children: [],
+          }),
+        ]
       )
     })
 
@@ -232,17 +264,26 @@ describe("/store/product-categories", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(1)
+      expect(response.data.count).toEqual(2)
       expect(response.data.product_categories).toEqual(
-        expect.arrayContaining([
+        [
+          expect.objectContaining({
+            id: productCategoryChild4.id,
+            category_children: [],
+            parent_category: expect.objectContaining({
+              id: productCategory.id,
+            }),
+            position: 2
+          }),
           expect.objectContaining({
             id: productCategoryChild.id,
             category_children: [],
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
+            position: 3
           }),
-        ])
+        ]
       )
 
       const nullCategoryResponse = await api.get(

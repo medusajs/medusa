@@ -128,22 +128,44 @@ describe("/admin/product-categories", () => {
 
       productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
         name: "Mens",
+        position: 0,
       })
 
       productCategory = await simpleProductCategoryFactory(dbConnection, {
         name: "sweater",
         parent_category: productCategoryParent,
         is_internal: true,
+        position: 0
       })
 
       productCategoryChild = await simpleProductCategoryFactory(dbConnection, {
         name: "cashmere",
         parent_category: productCategory,
+        position: 0
+      })
+
+      productCategoryChild0 = await simpleProductCategoryFactory(dbConnection, {
+        name: "position 2",
+        parent_category: productCategoryChild,
+        position: 2
+      })
+
+      productCategoryChild1 = await simpleProductCategoryFactory(dbConnection, {
+        name: "position 1",
+        parent_category: productCategoryChild,
+        position: 1
       })
 
       productCategoryChild2 = await simpleProductCategoryFactory(dbConnection, {
-        name: "specific cashmere",
+        name: "position 0",
         parent_category: productCategoryChild,
+        position: 0
+      })
+
+      productCategoryChild3 = await simpleProductCategoryFactory(dbConnection, {
+        name: "position 3",
+        parent_category: productCategoryChild,
+        position: 3
       })
     })
 
@@ -161,20 +183,12 @@ describe("/admin/product-categories", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(4)
+      expect(response.data.count).toEqual(7)
       expect(response.data.offset).toEqual(0)
       expect(response.data.limit).toEqual(100)
+
       expect(response.data.product_categories).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: productCategoryParent.id,
-            parent_category: null,
-            category_children: [
-              expect.objectContaining({
-                id: productCategory.id,
-              })
-            ],
-          }),
+        [
           expect.objectContaining({
             id: productCategory.id,
             parent_category: expect.objectContaining({
@@ -194,7 +208,20 @@ describe("/admin/product-categories", () => {
             category_children: [
               expect.objectContaining({
                 id: productCategoryChild2.id,
-              })
+                position: 0
+              }),
+              expect.objectContaining({
+                id: productCategoryChild1.id,
+                position: 1
+              }),
+              expect.objectContaining({
+                id: productCategoryChild0.id,
+                position: 2
+              }),
+              expect.objectContaining({
+                id: productCategoryChild3.id,
+                position: 3
+              }),
             ],
           }),
           expect.objectContaining({
@@ -203,8 +230,42 @@ describe("/admin/product-categories", () => {
               id: productCategoryChild.id,
             }),
             category_children: [],
+            position: 0
           }),
-        ])
+          expect.objectContaining({
+            id: productCategoryParent.id,
+            parent_category: null,
+            category_children: [
+              expect.objectContaining({
+                id: productCategory.id,
+              })
+            ],
+          }),
+          expect.objectContaining({
+            id: productCategoryChild1.id,
+            parent_category: expect.objectContaining({
+              id: productCategoryChild.id,
+            }),
+            category_children: [],
+            position: 1
+          }),
+          expect.objectContaining({
+            id: productCategoryChild0.id,
+            parent_category: expect.objectContaining({
+              id: productCategoryChild.id,
+            }),
+            category_children: [],
+            position: 2
+          }),
+          expect.objectContaining({
+            id: productCategoryChild3.id,
+            parent_category: expect.objectContaining({
+              id: productCategoryChild.id,
+            }),
+            category_children: [],
+            position: 3
+          }),
+        ]
       )
     })
 
@@ -267,7 +328,7 @@ describe("/admin/product-categories", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.product_categories).toEqual(
-        expect.arrayContaining([
+        [
           expect.objectContaining({
             id: productCategoryParent.id,
             category_children: [
@@ -279,7 +340,23 @@ describe("/admin/product-categories", () => {
                     category_children: [
                       expect.objectContaining({
                         id: productCategoryChild2.id,
-                        category_children: []
+                        category_children: [],
+                        position: 0
+                      }),
+                      expect.objectContaining({
+                        id: productCategoryChild1.id,
+                        category_children: [],
+                        position: 1
+                      }),
+                      expect.objectContaining({
+                        id: productCategoryChild0.id,
+                        category_children: [],
+                        position: 2
+                      }),
+                      expect.objectContaining({
+                        id: productCategoryChild3.id,
+                        category_children: [],
+                        position: 3
                       })
                     ],
                   })
@@ -287,7 +364,7 @@ describe("/admin/product-categories", () => {
               })
             ],
           }),
-        ])
+        ]
       )
     })
   })
