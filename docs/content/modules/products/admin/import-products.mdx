@@ -12,7 +12,7 @@ In this document, you’ll learn how to use the Admin APIs to bulk import produc
 
 ## Overview
 
-Using Medusa’s [Batch Job Admin APIs](https://docs.medusajs.com/api/admin/#tag/Batch-Job), you can import products into your Medusa backend. This will either add new products or update existing products.
+Using Medusa’s [Batch Job Admin APIs](/api/admin/#tag/Batch-Job), you can import products into your Medusa backend. This will either add new products or update existing products.
 
 ---
 
@@ -20,18 +20,18 @@ Using Medusa’s [Batch Job Admin APIs](https://docs.medusajs.com/api/admin/#tag
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](./../../usage/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
 
 ### File Service Plugin
 
 Part of the process of importing products is uploading a CSV file. This requires a file service plugin to be installed on your backend. If you don’t have any installed, you can install one of the following options:
 
-- [MinIO](../../add-plugins/minio.md) (At least version `1.1.0`)
-- [Spaces](../../add-plugins/spaces.md)
+- [MinIO](../../../add-plugins/minio.md) (At least version `1.1.0`)
+- [Spaces](../../../add-plugins/spaces.md)
 
 ### CSV File
 
@@ -47,13 +47,13 @@ If you have Sales Channels enabled on your backend, you must use [this CSV examp
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
 
 ### Medusa React
 
 This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
 
-If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -67,7 +67,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 The first step is to upload the CSV file that you want to import products.
 
-You can do that by sending the following request to the [Upload Files](https://docs.medusajs.com/api/admin/#tag/Upload/operation/PostUploads) endpoint:
+You can do that by sending the following request to the [Upload Files](/api/admin/#tag/Upload/operation/PostUploads) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -141,7 +141,7 @@ This request returns an array of uploads. Each item in the array is an object th
 
 To start a new product import, you must create a batch job.
 
-You can do that by sending the following request to the [Create a Batch Job](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint:
+You can do that by sending the following request to the [Create a Batch Job](/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -411,5 +411,5 @@ After confirming the batch job, you can check the status while it is processing 
 
 ## See Also
 
-- [Batch Jobs Overview](../backend/batch-jobs/index.md)
-- [Batch Jobs API Reference](https://docs.medusajs.com/api/admin/#tag/Batch-Job)
+- [Batch Jobs Overview](../../../advanced/backend/batch-jobs/index.md)
+- [Batch Jobs API Reference](/api/admin/#tag/Batch-Job)
