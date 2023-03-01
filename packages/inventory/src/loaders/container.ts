@@ -17,8 +17,4 @@ export default async (
     inventoryLevelService: asClass(InventoryLevelService).singleton(),
     reservationItemService: asClass(ReservationItemService).singleton(),
   })
-
-  if (!container.hasRegistration("eventBusService")) {
-    container.register("eventBusService", asValue(undefined))
-  }
 }
