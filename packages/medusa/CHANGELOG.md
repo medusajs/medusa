@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.7.9
+
+### Patch Changes
+
+- [#3335](https://github.com/medusajs/medusa/pull/3335) [`370bd472e`](https://github.com/medusajs/medusa/commit/370bd472ed8c9038f66defd012a886e0f83c32cf) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - fix(medusa): Fix regression in job scheduler service
+
 ## 1.7.8
 
 ### Patch Changes

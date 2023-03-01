@@ -6,7 +6,6 @@ import glob from "glob"
 import _ from "lodash"
 import { createRequireFromPath } from "medusa-core-utils"
 import {
-  BaseService as LegacyBaseService,
   FileService,
   FulfillmentService,
   OauthService,
@@ -23,7 +22,6 @@ import {
   isPriceSelectionStrategy,
   isSearchService,
   isTaxCalculationStrategy,
-  TransactionBaseService as BaseService,
 } from "../interfaces"
 import { MiddlewareService } from "../services"
 import {
@@ -364,16 +362,6 @@ export async function registerServices(
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
-      if (
-        !(loaded.prototype instanceof LegacyBaseService) &&
-        !(loaded.prototype instanceof BaseService)
-      ) {
-        const logger = container.resolve<Logger>("logger")
-        const message = `The class must be a valid service implementation, please check ${fn}`
-        logger.error(message)
-        throw new Error(message)
-      }
-
       const context = { container, pluginDetails, registrationName: name }
 
       registerPaymentServiceFromClass(loaded, context)
@@ -627,8 +615,18 @@ function resolvePlugin(pluginName: string): {
     )
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
+    const computedResolvedPath =
+      resolvedPath + (process.env.DEV_MODE ? "/src" : "")
+
+    // Add support for a plugin to output the build into a dist directory
+    const resolvedPathToDist = resolvedPath + "/dist"
+    const isDistExist =
+      resolvedPathToDist &&
+      !process.env.DEV_MODE &&
+      existsSync(resolvedPath + "/dist")
+
     return {
-      resolve: resolvedPath + (process.env.DEV_MODE ? "/src" : ""),
+      resolve: isDistExist ? resolvedPathToDist : computedResolvedPath,
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
       options: {},

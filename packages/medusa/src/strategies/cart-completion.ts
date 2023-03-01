@@ -30,8 +30,6 @@ type InjectedDependencies = {
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
-  protected manager_: EntityManager
-
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly paymentProviderService_: PaymentProviderService
@@ -47,9 +45,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     cartService,
     orderService,
     swapService,
-    manager,
   }: InjectedDependencies) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.paymentProviderService_ = paymentProviderService
     this.productVariantInventoryService_ = productVariantInventoryService
@@ -57,7 +55,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     this.cartService_ = cartService
     this.orderService_ = orderService
     this.swapService_ = swapService
-    this.manager_ = manager
   }
 
   async complete(
@@ -73,7 +70,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          await this.manager_
+          await this.activeManager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
@@ -90,7 +87,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           break
         }
         case "tax_lines_created": {
-          await this.manager_
+          await this.activeManager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
@@ -111,7 +108,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         }
 
         case "payment_authorized": {
-          await this.manager_
+          await this.activeManager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
@@ -134,7 +131,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         }
 
         default:
-          await this.manager_.transaction(async (transactionManager) => {
+          await this.activeManager_.transaction(async (transactionManager) => {
             idempotencyKey = await this.idempotencyKeyService_
               .withTransaction(transactionManager)
               .update(idempotencyKey.idempotency_key, {
@@ -149,7 +146,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     if (err) {
       if (idempotencyKey.recovery_point !== "started") {
-        await this.manager_.transaction(async (transactionManager) => {
+        await this.activeManager_.transaction(async (transactionManager) => {
           try {
             await this.orderService_
               .withTransaction(transactionManager)
@@ -264,16 +261,19 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     const cartServiceTx = this.cartService_.withTransaction(manager)
 
     const cart = await cartServiceTx.retrieveWithTotals(id, {
-      relations: ["region", "payment", "payment_sessions", "items.variant.product",],
+      relations: [
+        "region",
+        "payment",
+        "payment_sessions",
+        "items.variant.product",
+      ],
     })
 
     let allowBackorder = false
-    let swapId: string
 
     if (cart.type === "swap") {
       const swap = await swapServiceTx.retrieveByCartId(id)
       allowBackorder = swap.allow_backorder
-      swapId = swap.id
     }
 
     if (!allowBackorder) {
