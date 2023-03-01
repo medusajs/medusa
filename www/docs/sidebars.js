@@ -532,12 +532,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/products/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -587,7 +584,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/admin/import-products',
+          id: 'modules/products/admin/import-products',
           label: 'Admin: Import Products'
         },
         {

@@ -113,7 +113,7 @@ Since you didn’t create a new batch job type and overwrote the functionality o
 
 Specifically, since you create batch jobs using the [Create Batch Job](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint which accepts the batch job type as a body parameter, you just need to send the same type you used for this field. In the example of this documentation, the `type` would be `product-import`.
 
-If you overwrote the import functionality, you can follow [these steps to learn how to import products using the Admin APIs](../../admin/import-products.mdx).
+If you overwrote the import functionality, you can follow [these steps to learn how to import products using the Admin APIs](../../../modules/products/admin/import-products.mdx).
 
 ---
 
@@ -128,4 +128,4 @@ For more details on creating custom batch job strategies, please check out the [
 ## What’s Next
 
 - [Batch Jobs Overview](./index.md).
-- [Use the Import Product APIs](../../admin/import-products.mdx).
+- [Use the Import Product APIs](../../../modules/products/admin/import-products.mdx).

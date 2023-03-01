@@ -52,6 +52,7 @@ import IconLinkedIn from './LinkedIn';
 import IconNextjs from './Nextjs';
 import IconPencilSquareSolid from './PencilSquareSolid';
 import IconReact from './React';
+import IconReceiptPercent from './ReceiptPercent';
 import IconReport from './Report';
 import IconRocketLaunch from './RocketLaunch';
 import IconServer from './Server';
@@ -126,6 +127,7 @@ export default {
   'nextjs': IconNextjs,
   'pencil-square-solid': IconPencilSquareSolid,
   'react': IconReact,
+  'receipt-percent': IconReceiptPercent,
   'report': IconReport,
   'rocket-launch': IconRocketLaunch,
   'server': IconServer,

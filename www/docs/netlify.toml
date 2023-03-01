@@ -149,3 +149,7 @@
 [[redirects]]
   from="/quickstart/quick-start*"
   to="/core/backend/install"
+
+[[redirects]]
+  from="/advanced/admin/import-products"
+  to="/modules/products/admin/import-products"
