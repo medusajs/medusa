@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, IsNull, MoreThanOrEqual, Between } from "typeorm"
+import { EntityManager, IsNull, MoreThanOrEqual, Between, Not } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
@@ -308,7 +308,7 @@ class ProductCategoryService extends TransactionBaseService {
     const originalPosition = productCategory.position
     const targetPosition = input.position
     const shouldChangeParent =
-      !!targetParentId && targetParentId !== originalParentId
+      (targetParentId !== undefined) && targetParentId !== originalParentId
     const shouldIncrementPosition = false
     const shouldChangePosition =
       shouldChangeParent || originalPosition !== targetPosition
@@ -381,6 +381,7 @@ class ProductCategoryService extends TransactionBaseService {
     // targetPosition is greater than the count of siblings.
     const siblingCount = await repository.countBy({
       parent_category_id: nullableValue(targetParentId),
+      id: Not(targetCategoryId)
     })
 
     // The category record that will be placed at the requested position
@@ -388,6 +389,7 @@ class ProductCategoryService extends TransactionBaseService {
     // beyond a reasonable value (tempReorderPosition)
     const targetCategory = await repository.findOne({
       where: {
+        id: targetCategoryId,
         parent_category_id: nullableValue(targetParentId),
         position: tempReorderPosition,
       }
@@ -395,8 +397,8 @@ class ProductCategoryService extends TransactionBaseService {
 
     // If the targetPosition is not present, or if targetPosition is beyond the
     // position of the last category, we set the position as the last position
-    if (targetPosition === undefined || targetPosition > siblingCount - 1) {
-      targetPosition = siblingCount - 1
+    if (targetPosition === undefined || targetPosition > siblingCount) {
+      targetPosition = siblingCount
     }
 
     let positionCondition
@@ -418,6 +420,7 @@ class ProductCategoryService extends TransactionBaseService {
       where: {
         parent_category_id: nullableValue(targetParentId),
         position: positionCondition,
+        id: Not(targetCategoryId),
       },
       order: {
         // depending on whether we shift up or down, we order accordingly
@@ -471,11 +474,14 @@ class ProductCategoryService extends TransactionBaseService {
     // category, we must fetch the entity and push to create
     const parentCategoryId = productCategoryInput.parent_category_id
 
-    if (!parentCategoryId) {
+    if (parentCategoryId === undefined) {
       return productCategoryInput
     }
 
-    const parentCategory = await this.retrieve(parentCategoryId)
+    // It is really important that the parentCategory is either null or a record.
+    // If the null is not explicitly passed to make it a root element, the mpath gets
+    // incorrectly set
+    const parentCategory = parentCategoryId ? await this.retrieve(parentCategoryId) : null
 
     productCategoryInput.parent_category = parentCategory
     delete productCategoryInput.parent_category_id
