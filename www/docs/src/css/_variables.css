@@ -11,7 +11,7 @@
   --ifm-base-margin-vertical: 32px;
   --ifm-hr-margin-vertical: var(--ifm-base-margin-vertical);
   --ifm-leading: 24px;
-  --ifm-logo-width: 20px;
+  --ifm-logo-width: 83px;
   --ifm-logo-height: 20px;
   
   /* Colors */
@@ -65,6 +65,7 @@
 
   /* Docs Page */
   --ifm-docs-page-max-width: var(--ifm-container-width-xl);
+  --ifm-max-content-width: 1419px;
 
   /* Toc */
   --ifm-toc-border-color: var(--medusa-border-base);

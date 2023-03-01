@@ -1,6 +1,6 @@
 /** General sidebar styles **/
 .theme-doc-sidebar-container {
-  z-index: calc(var(--ifm-z-index-overlay) - 1);
+  z-index: calc(var(--ifm-z-index-overlay) - 2);
 }
 
 .main-sidebar {
@@ -97,7 +97,7 @@
   content: none;
 }
 
-.sidebar-desktop:not(.scrolling) nav {
+.sidebar-desktop nav {
   --ifm-scrollbar-track-background-color: transparent !important;
   --ifm-scrollbar-thumb-background-color: transparent !important;
   --ifm-scrollbar-thumb-hover-background-color: transparent !important;
@@ -115,9 +115,13 @@
   margin-top: 0 !important;
 }
 
-.docs-doc-id-homepage .sidebar-desktop [class*=sidebarLogo] {
-  padding-left: calc(var(--doc-sidebar-padding) + calc(var(--ifm-base-spacing) / 2));
-}
+/* .sidebar-desktop::before {
+  content: '';
+  width: 100%;
+  height: calc(var(--ifm-base-spacing) * 1.5);
+  display: block;
+  background-color: var(--ifm-background-color);
+} */
 
 /** Mobile Sidebar **/
 .navbar-sidebar__back {
@@ -347,7 +351,8 @@
 
 /** Media Query **/
 @media screen and (min-width: 992px) {
-  .sidebar-title {
+  .sidebar-title,
+  .sidebar-back-link {
     position: sticky;
     background-color: var(--ifm-background-color);
     z-index: 100;
@@ -362,9 +367,6 @@
   }
 
   .sidebar-back-link {
-    position: sticky;
     top: 0;
-    background-color: var(--ifm-background-color);
-    z-index: 100;
   }
 }

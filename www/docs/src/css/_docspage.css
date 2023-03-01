@@ -1,3 +1,9 @@
+.main-wrapper {
+  max-width: var(--ifm-max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .theme-doc-breadcrumbs {
   display: none;
 }
@@ -146,15 +152,26 @@ details > div {
   justify-content: flex-end;
 }
 
-@media (min-width: 1440px) {
-  .markdown-doc-wrapper {
-    max-width: var(--ifm-container-width-xl) !important;
+.docs-page-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@media screen and (min-width: 1419px) {
+  .main-wrapper {
+    min-width: var(--ifm-max-content-width);
+  }
+}
+
+@media screen and (max-width: 1418px) {
+  .main-wrapper {
+    width: 100%;
   }
 }
 
 @media screen and (min-width: 992px) {
   .markdown-doc-wrapper {
-    padding: 0 calc(86px - var(--ifm-spacing-horizontal));
+    padding: 0 calc(var(--ifm-spacing-horizontal) * 4);
   }
 }
 

@@ -1,5 +1,6 @@
 .navbar {
   z-index: calc(var(--ifm-z-index-overlay) - 1);
+  padding: 0;
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) { 
@@ -15,11 +16,24 @@
   font-weight: var(--medusa-label-small-plus-font-weight);
 }
 
+.navbar__inner {
+  max-width: var(--ifm-max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--ifm-navbar-padding-vertical) var(--ifm-navbar-padding-horizontal);
+}
+
+.navbar__brand {
+  margin-right: calc(var(--ifm-base-spacing) * 2);
+}
+
 .navbar__logo {
-  height: var(--ifm-logo-width);
+  height: var(--ifm-logo-height);
+  width: var(--ifm-logo-width);
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 0 !important;
 }
 
 [class*=colorModeToggle],
@@ -55,17 +69,7 @@
   border-radius: var(--ifm-global-radius) !important;
 }
 
-@media screen and (min-width: 992px) {
-  html.doc-has-sidebar .navbar__brand {
-    display: none;
-  }
-
-  html.doc-has-sidebar .navbar {
-    width: calc(100% - var(--doc-sidebar-width));
-    margin-right: 0;
-    margin-left: auto;
-  }
-  
+@media screen and (min-width: 992px) {  
   .navbar .divider {
     height: 20px;
     width: 1px;
