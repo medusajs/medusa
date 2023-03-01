@@ -24,14 +24,6 @@ export type PluginOptions = {
    * @default undefined
    */
   outDir?: string
-  dev?: {
-    /**
-     * If enabled the admin dashboard will automatically open in the browser
-     * when the Medusa server starts in a development environment.
-     * @default false
-     */
-    autoOpen?: boolean
-  }
 }
 
 type PluginObject = {

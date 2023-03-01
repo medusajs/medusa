@@ -26,7 +26,6 @@
     "express": "^4.17.1",
     "fs-extra": "^11.1.0",
     "medusa-core-utils": "*",
-    "open": "^8.4.0",
     "ora": "5.4.0",
     "picocolors": "^1.0.0"
   },
