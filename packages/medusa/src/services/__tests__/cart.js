@@ -1688,8 +1688,8 @@ describe("CartService", () => {
 
       expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(1)
       expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2) // create and update
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(1)
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(1)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: "not_in_region",
       })
     })
@@ -1697,12 +1697,12 @@ describe("CartService", () => {
     it("removes if cart total === 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-remove"))
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider1Id,
       })
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider2Id,
       })
     })
@@ -1710,12 +1710,12 @@ describe("CartService", () => {
     it("removes if cart total < 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-negative"))
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider1Id,
       })
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider2Id,
       })
     })
