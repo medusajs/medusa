@@ -9,7 +9,12 @@ import {
   UpdateResult,
 } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { CartType, DraftOrder, DraftOrderStatus } from "../models"
+import {
+  CartType,
+  DraftOrder,
+  DraftOrderStatus,
+  ShippingMethod,
+} from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
@@ -275,7 +280,7 @@ class DraftOrderService extends TransactionBaseService {
         const cartServiceTx =
           this.cartService_.withTransaction(transactionManager)
 
-        const createdCart = await cartServiceTx.create({
+        let createdCart = await cartServiceTx.create({
           type: CartType.DRAFT_ORDER,
           ...rawCart,
         })
@@ -302,10 +307,11 @@ class DraftOrderService extends TransactionBaseService {
 
         ;(items ?? []).forEach((item) => {
           if (item.variant_id) {
-            return itemsWithVariant.push(item)
+            itemsWithVariant.push(item)
+            return
           }
 
-          return itemsWithoutVariant.push(item)
+          itemsWithoutVariant.push(item)
         })
 
         const promises: Promise<any>[] = []
@@ -321,16 +327,21 @@ class DraftOrderService extends TransactionBaseService {
             }
           })
 
-          promises.push(
-            lineItemServiceTx.generate(itemsData, {
-              region_id: data.region_id,
-            })
-          )
+          const generatedLines = await lineItemServiceTx.generate(itemsData, {
+            region_id: data.region_id,
+          })
+
+          const toCreate = generatedLines.map((line) => ({
+            ...line,
+            cart_id: createdCart.id,
+          }))
+
+          promises.push(lineItemServiceTx.create(toCreate))
         }
 
         // custom line items can be added to a draft order
         if (itemsWithoutVariant.length) {
-          itemsWithoutVariant.forEach((item) => {
+          const toCreate = itemsWithoutVariant.map((item) => {
             let price
             if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
               price = 0
@@ -338,36 +349,54 @@ class DraftOrderService extends TransactionBaseService {
               price = item.unit_price
             }
 
-            promises.push(
-              lineItemServiceTx.create({
-                cart_id: createdCart.id,
-                has_shipping: true,
-                title: item.title || "Custom item",
-                allow_discounts: false,
-                unit_price: price,
-                quantity: item.quantity,
-              })
-            )
+            return {
+              cart_id: createdCart.id,
+              has_shipping: true,
+              title: item.title || "Custom item",
+              allow_discounts: false,
+              unit_price: price,
+              quantity: item.quantity,
+            }
           })
+
+          promises.push(lineItemServiceTx.create(toCreate))
         }
 
         const customShippingOptionServiceTx =
           this.customShippingOptionService_.withTransaction(transactionManager)
 
-        shipping_methods.forEach((method) => {
-          if (typeof method.price !== "undefined") {
-            promises.push(
-              customShippingOptionServiceTx.create({
-                shipping_option_id: method.option_id,
-                cart_id: createdCart.id,
-                price: method.price,
-              })
-            )
-          }
+        const shippingMethodToCreate: Partial<ShippingMethod>[] = []
 
+        shipping_methods.forEach((method) => {
+          if (isDefined(method.price)) {
+            shippingMethodToCreate.push({
+              shipping_option_id: method.option_id,
+              cart_id: createdCart.id,
+              price: method.price,
+            })
+            return
+          }
+        })
+
+        if (shippingMethodToCreate.length) {
+          await customShippingOptionServiceTx.create(shippingMethodToCreate)
+        }
+
+        createdCart = await cartServiceTx.retrieveWithTotals(createdCart.id, {
+          relations: [
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+            "items",
+            "items.variant",
+            "items.variant.product",
+            "payment_sessions",
+          ],
+        })
+
+        shipping_methods.forEach((method) => {
           promises.push(
             cartServiceTx.addShippingMethod(
-              createdCart.id,
+              createdCart,
               method.option_id,
               method.data
             )
