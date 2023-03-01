@@ -7,7 +7,7 @@
     position: sticky;
     top: 0;
     transition: opacity 50ms ease;
-    margin-top: var(--ifm-navbar-height);
+    /* margin-top: var(--ifm-navbar-height); */
     border-right: 1px solid var(--ifm-toc-border-color);
     padding-top: calc(var(--ifm-base-spacing) * 1.5);
   }

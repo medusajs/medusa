@@ -13,7 +13,7 @@
   .docSidebarContainer {
     display: block;
     width: var(--doc-sidebar-width);
-    margin-top: calc(-1 * var(--ifm-navbar-height));
+    /* margin-top: calc(-1 * var(--ifm-navbar-height)); */
     will-change: width;
     transition: width var(--ifm-transition-fast) ease;
     clip-path: inset(0);
@@ -25,9 +25,12 @@
   }
 
   .sidebarViewportWrapper {
-    top: 0;
+    top: var(--ifm-navbar-height);
     position: sticky;
-    height: 100%;
+  }
+
+  .sidebarViewportWrapper,
+  .sidebarViewportWrapper > div {
     max-height: 100vh;
   }
 }
