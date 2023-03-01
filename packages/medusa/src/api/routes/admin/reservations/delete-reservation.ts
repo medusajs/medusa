@@ -57,9 +57,7 @@ export default async (req, res) => {
   const inventoryService: IInventoryService = req.resolve("inventoryService")
   const manager: EntityManager = req.resolve("manager")
 
-  await manager.transaction(async (manager) => {
-    await inventoryService.withTransaction(manager).deleteReservationItem(id)
-  })
+  await inventoryService.deleteReservationItem(id)
 
   res.json({
     id,

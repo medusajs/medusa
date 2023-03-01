@@ -33,7 +33,7 @@ export default class StockLocationService extends TransactionBaseService {
     DELETED: "stock-location.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: IEventBusService | undefined
 
   constructor(
     { eventBusService }: InjectedDependencies,
@@ -146,11 +146,9 @@ export default class StockLocationService extends TransactionBaseService {
 
       const result = await locationRepo.save(loc)
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(StockLocationService.Events.CREATED, {
-          id: result.id,
-        })
+      await this.eventBusService_?.emit?.(StockLocationService.Events.CREATED, {
+        id: result.id,
+      })
 
       return result
     })
@@ -194,11 +192,9 @@ export default class StockLocationService extends TransactionBaseService {
 
       await locationRepo.save(toSave)
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(StockLocationService.Events.UPDATED, {
-          id: stockLocationId,
-        })
+      await this.eventBusService_?.emit?.(StockLocationService.Events.UPDATED, {
+        id: stockLocationId,
+      })
 
       return item
     })
@@ -257,11 +253,9 @@ export default class StockLocationService extends TransactionBaseService {
 
       await locationRepo.softRemove({ id })
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(StockLocationService.Events.DELETED, {
-          id,
-        })
+      await this.eventBusService_?.emit?.(StockLocationService.Events.DELETED, {
+        id,
+      })
     })
   }
 }

@@ -74,11 +74,7 @@ export default async (req: Request, res: Response) => {
     )
   }
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryLevel(id, location_id)
-  })
+  await inventoryService.deleteInventoryLevel(id, location_id)
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,

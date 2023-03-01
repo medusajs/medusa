@@ -22,19 +22,17 @@ export const registerModules = (
 
   for (const definition of MODULE_DEFINITIONS) {
     const customConfig = projectModules[definition.key]
+
     const isObj = typeof customConfig === "object"
 
     if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)a
+      // TODO: getExternalModuleResolution(...)
       throw new Error("External Modules are not supported yet.")
     }
 
     moduleResolutions[definition.key] = getInternalModuleResolution(
       definition,
-      projectModules[definition.key] as
-        | InternalModuleDeclaration
-        | false
-        | string
+      customConfig as InternalModuleDeclaration
     )
   }
 

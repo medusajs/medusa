@@ -69,11 +69,9 @@ export default async (req, res) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
-  const reservation = await manager.transaction(async (manager) => {
-    return await inventoryService
-      .withTransaction(manager)
-      .createReservationItem(validatedBody)
-  })
+  const reservation = await inventoryService.createReservationItem(
+    validatedBody
+  )
 
   res.status(200).json({ reservation })
 }

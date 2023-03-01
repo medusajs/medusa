@@ -1,11 +1,11 @@
 import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 import { DataSource, DataSourceOptions } from "typeorm"
-import { InventoryServiceInitializeOptions } from "../types"
+import { StockLocationServiceInitializeOptions } from "../types"
 
 import migrations from "./index"
 
 function getDataSource(
-  dbData: InventoryServiceInitializeOptions["database"]
+  dbData: StockLocationServiceInitializeOptions["database"]
 ): DataSource {
   return new DataSource({
     type: dbData!.type,
@@ -29,16 +29,18 @@ export async function runMigrations(
   moduleDeclaration?: InternalModuleDeclaration
 ) {
   const dbData =
-    options?.database as InventoryServiceInitializeOptions["database"]
+    options?.database as StockLocationServiceInitializeOptions["database"]
 
   try {
     const dataSource = getDataSource(dbData)
     await dataSource.initialize()
     await dataSource.runMigrations()
 
-    logger?.info("Inventory module migration executed")
+    logger?.info("Stock Location module migration executed")
   } catch (error) {
-    logger?.error(`Inventory module migration failed to run - Error: ${error}`)
+    logger?.error(
+      `Stock Location module migration failed to run - Error: ${error}`
+    )
   }
 }
 
@@ -47,17 +49,17 @@ export async function revertMigration(
   moduleDeclaration?: InternalModuleDeclaration
 ) {
   const dbData =
-    options?.database as InventoryServiceInitializeOptions["database"]
+    options?.database as StockLocationServiceInitializeOptions["database"]
 
   try {
     const dataSource = getDataSource(dbData)
     await dataSource.initialize()
     await dataSource.undoLastMigration()
 
-    logger?.info("Inventory module migration reverted")
+    logger?.info("Stock Location module migration reverted")
   } catch (error) {
     logger?.error(
-      `Inventory module migration failed to revert - Error: ${error}`
+      `Stock Location module migration failed to revert - Error: ${error}`
     )
   }
 }

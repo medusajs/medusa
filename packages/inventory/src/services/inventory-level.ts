@@ -23,7 +23,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     DELETED: "inventory-level.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: IEventBusService | undefined
 
   constructor({ eventBusService }: InjectedDependencies) {
     super(arguments[0])
@@ -86,7 +86,10 @@ export default class InventoryLevelService extends TransactionBaseService {
     const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const query = buildQuery({ id: inventoryLevelId }, config) as FindManyOptions
+    const query = buildQuery(
+      { id: inventoryLevelId },
+      config
+    ) as FindManyOptions
     const [inventoryLevel] = await levelRepository.find(query)
 
     if (!inventoryLevel) {
@@ -117,11 +120,12 @@ export default class InventoryLevelService extends TransactionBaseService {
       })
 
       const saved = await levelRepository.save(inventoryLevel)
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(InventoryLevelService.Events.CREATED, {
+      await this.eventBusService_?.emit?.(
+        InventoryLevelService.Events.CREATED,
+        {
           id: saved.id,
-        })
+        }
+      )
 
       return saved
     })
@@ -154,11 +158,12 @@ export default class InventoryLevelService extends TransactionBaseService {
         levelRepository.merge(item, data)
         await levelRepository.save(item)
 
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(InventoryLevelService.Events.UPDATED, {
+        await this.eventBusService_?.emit?.(
+          InventoryLevelService.Events.UPDATED,
+          {
             id: item.id,
-          })
+          }
+        )
       }
 
       return item
@@ -199,11 +204,12 @@ export default class InventoryLevelService extends TransactionBaseService {
 
       await levelRepository.delete({ id: inventoryLevelId })
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(InventoryLevelService.Events.DELETED, {
+      await this.eventBusService_?.emit?.(
+        InventoryLevelService.Events.DELETED,
+        {
           id: inventoryLevelId,
-        })
+        }
+      )
     })
   }
 

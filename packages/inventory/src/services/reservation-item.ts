@@ -27,7 +27,7 @@ export default class ReservationItemService extends TransactionBaseService {
     DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({
@@ -95,7 +95,10 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.activeManager_
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery({ id: reservationItemId }, config) as FindManyOptions
+    const query = buildQuery(
+      { id: reservationItemId },
+      config
+    ) as FindManyOptions
     const [reservationItem] = await reservationItemRepository.find(query)
 
     if (!reservationItem) {
@@ -136,11 +139,12 @@ export default class ReservationItemService extends TransactionBaseService {
           ),
       ])
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.CREATED, {
+      await this.eventBusService_?.emit?.(
+        ReservationItemService.Events.CREATED,
+        {
           id: newInventoryItem.id,
-        })
+        }
+      )
 
       return newInventoryItem
     })
@@ -207,11 +211,12 @@ export default class ReservationItemService extends TransactionBaseService {
 
       await Promise.all(ops)
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.UPDATED, {
+      await this.eventBusService_?.emit?.(
+        ReservationItemService.Events.UPDATED,
+        {
           id: mergedItem.id,
-        })
+        }
+      )
 
       return mergedItem
     })
@@ -242,11 +247,12 @@ export default class ReservationItemService extends TransactionBaseService {
       }
       await Promise.all(ops)
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.DELETED_BY_LINE_ITEM, {
+      await this.eventBusService_?.emit?.(
+        ReservationItemService.Events.DELETED_BY_LINE_ITEM,
+        {
           line_item_id: lineItemId,
-        })
+        }
+      )
     })
   }
 
@@ -271,7 +277,7 @@ export default class ReservationItemService extends TransactionBaseService {
       ])
     })
 
-    await this.eventBusService_.emit(ReservationItemService.Events.DELETED, {
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       id: reservationItemId,
     })
   }

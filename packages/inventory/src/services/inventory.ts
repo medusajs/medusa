@@ -37,7 +37,7 @@ export default class InventoryService
   extends TransactionBaseService
   implements IInventoryService
 {
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService

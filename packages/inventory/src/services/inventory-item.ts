@@ -25,7 +25,7 @@ export default class InventoryItemService extends TransactionBaseService {
     DELETED: "inventory-item.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: IEventBusService | undefined
 
   constructor({ eventBusService }: InjectedDependencies) {
     super(arguments[0])
@@ -117,11 +117,9 @@ export default class InventoryItemService extends TransactionBaseService {
 
       const result = await itemRepository.save(inventoryItem)
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(InventoryItemService.Events.CREATED, {
-          id: result.id,
-        })
+      await this.eventBusService_?.emit?.(InventoryItemService.Events.CREATED, {
+        id: result.id,
+      })
 
       return result
     })
@@ -152,11 +150,12 @@ export default class InventoryItemService extends TransactionBaseService {
         itemRepository.merge(item, data)
         await itemRepository.save(item)
 
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(InventoryItemService.Events.UPDATED, {
+        await this.eventBusService_?.emit?.(
+          InventoryItemService.Events.UPDATED,
+          {
             id: item.id,
-          })
+          }
+        )
       }
 
       return item
@@ -172,11 +171,9 @@ export default class InventoryItemService extends TransactionBaseService {
 
       await itemRepository.softRemove({ id: inventoryItemId })
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(InventoryItemService.Events.DELETED, {
-          id: inventoryItemId,
-        })
+      await this.eventBusService_?.emit?.(InventoryItemService.Events.DELETED, {
+        id: inventoryItemId,
+      })
     })
   }
 }

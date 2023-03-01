@@ -6,7 +6,7 @@ import {
   ReservationItemService,
 } from "../services"
 
-import { asClass } from "awilix"
+import { asClass, asValue } from "awilix"
 
 export default async (
   { container }: LoaderOptions,
@@ -17,4 +17,8 @@ export default async (
     inventoryLevelService: asClass(InventoryLevelService).singleton(),
     reservationItemService: asClass(ReservationItemService).singleton(),
   })
+
+  if (!container.hasRegistration("eventBusService")) {
+    container.register("eventBusService", asValue(undefined))
+  }
 }

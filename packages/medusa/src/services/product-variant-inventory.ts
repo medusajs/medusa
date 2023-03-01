@@ -115,13 +115,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .confirmInventory(
-            inventoryPart.inventory_item_id,
-            locationIds,
-            itemQuantity
-          )
+        return await this.inventoryService_.confirmInventory(
+          inventoryPart.inventory_item_id,
+          locationIds,
+          itemQuantity
+        )
       })
     )
 
@@ -253,11 +251,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
 
     // Verify that item exists
-    await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .retrieveInventoryItem(inventoryItemId, {
-        select: ["id"],
-      })
+    await this.inventoryService_.retrieveInventoryItem(inventoryItemId, {
+      select: ["id"],
+    })
 
     const variantInventoryRepo = this.activeManager_.getRepository(
       ProductVariantInventoryItem
@@ -379,14 +375,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .createReservationItem({
-            ...toReserve,
-            location_id: locationId as string,
-            inventory_item_id: inventoryPart.inventory_item_id,
-            quantity: itemQuantity,
-          })
+        return await this.inventoryService_.createReservationItem({
+          ...toReserve,
+          location_id: locationId as string,
+          inventory_item_id: inventoryPart.inventory_item_id,
+          quantity: itemQuantity,
+        })
       })
     )
   }
@@ -422,9 +416,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    const [reservations, reservationCount] = await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .listReservationItems(
+    const [reservations, reservationCount] =
+      await this.inventoryService_.listReservationItems(
         {
           line_item_id: lineItemId,
         },
@@ -451,15 +444,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
         quantity * productVariantInventory.required_quantity
 
       if (reservationQtyUpdate === 0) {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .deleteReservationItem(reservation.id)
+        await this.inventoryService_.deleteReservationItem(reservation.id)
       } else {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .updateReservationItem(reservation.id, {
-            quantity: reservationQtyUpdate,
-          })
+        await this.inventoryService_.updateReservationItem(reservation.id, {
+          quantity: reservationQtyUpdate,
+        })
       }
     }
   }
@@ -539,9 +528,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .deleteReservationItemsByLineItem(lineItemId)
+    await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
   }
 
   /**
@@ -581,13 +568,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       await Promise.all(
         variantInventory.map(async (inventoryPart) => {
           const itemQuantity = inventoryPart.required_quantity * quantity
-          return await this.inventoryService_
-            .withTransaction(this.activeManager_)
-            .adjustInventory(
-              inventoryPart.inventory_item_id,
-              locationId,
-              itemQuantity
-            )
+          return await this.inventoryService_.adjustInventory(
+            inventoryPart.inventory_item_id,
+            locationId,
+            itemQuantity
+          )
         })
       )
     }

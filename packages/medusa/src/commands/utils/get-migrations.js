@@ -9,7 +9,7 @@ import {
   createRequireFromPath,
 } from "medusa-core-utils"
 import { handleConfigError } from "../../loaders/config"
-import { registerModules } from "@medusajs/modules-sdk"
+import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -96,7 +96,7 @@ function resolvePlugin(pluginName) {
 export function getInternalModules(configModule) {
   const modules = []
 
-  const moduleResolutions = registerModules(configModule)
+  const moduleResolutions = registerModules(configModule.modules)
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (
@@ -203,7 +203,6 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
   for (const loadedModule of loadedModules) {
     const mod = loadedModule.loadedModule
 
-    const isolatedMigrations = {}
     const moduleMigrations = (mod.migrations ?? [])
       .map((migration) => {
         if (
@@ -221,7 +220,6 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
       moduleDeclaration: loadedModule.moduleDeclaration,
       models: mod.models ?? [],
       migrations: moduleMigrations,
-      externalMigrations: isolatedMigrations,
     })
   }
 
@@ -250,5 +248,45 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
   return {
     models,
     migrations,
+  }
+}
+
+export const runIsolatedModulesMigration = async (configModule) => {
+  const moduleResolutions = registerModules(configModule.modules)
+
+  for (const moduleResolution of Object.values(moduleResolutions)) {
+    if (
+      !moduleResolution.resolutionPath ||
+      moduleResolution.moduleDeclaration.scope !== "internal" ||
+      moduleResolution.moduleDeclaration.resources !== "isolated"
+    ) {
+      continue
+    }
+
+    await MedusaModule.migrateUp(
+      moduleResolution.definition.key,
+      moduleResolution.resolutionPath,
+      moduleResolution.options
+    )
+  }
+}
+
+export const revertIsolatedModulesMigration = async (configModule) => {
+  const moduleResolutions = registerModules(configModule.modules)
+
+  for (const moduleResolution of Object.values(moduleResolutions)) {
+    if (
+      !moduleResolution.resolutionPath ||
+      moduleResolution.moduleDeclaration.scope !== "internal" ||
+      moduleResolution.moduleDeclaration.resources !== "isolated"
+    ) {
+      continue
+    }
+
+    await MedusaModule.migrateDown(
+      moduleResolution.definition.key,
+      moduleResolution.resolutionPath,
+      moduleResolution.options
+    )
   }
 }

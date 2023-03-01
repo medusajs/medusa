@@ -9,6 +9,13 @@ import {
 } from "./types"
 import { loadModuleMigrations } from "./loaders/utils"
 
+const logger: any = {
+  log: (a) => console.log(a),
+  info: (a) => console.log(a),
+  warn: (a) => console.warn(a),
+  error: (a) => console.error(a),
+}
+
 export class MedusaModule {
   public static async bootstrap(
     moduleKey: string,
@@ -34,12 +41,6 @@ export class MedusaModule {
       for (const service in injectedDependencies) {
         container.register(service, asValue(injectedDependencies[service]))
       }
-    }
-
-    const logger: any = {
-      log: (a) => console.log(a),
-      warn: (a) => console.warn(a),
-      error: (a) => console.error(a),
     }
 
     const moduleResolutions = registerMedusaModule(moduleKey, modDeclaration!)
@@ -73,7 +74,10 @@ export class MedusaModule {
       const [migrateUp] = await loadModuleMigrations(moduleResolutions[mod])
 
       if (typeof migrateUp === "function") {
-        await migrateUp()
+        await migrateUp({
+          options,
+          logger,
+        })
       }
     }
   }
@@ -94,7 +98,10 @@ export class MedusaModule {
       const [, migrateDown] = await loadModuleMigrations(moduleResolutions[mod])
 
       if (typeof migrateDown === "function") {
-        await migrateDown()
+        await migrateDown({
+          options,
+          logger,
+        })
       }
     }
   }
