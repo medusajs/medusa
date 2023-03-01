@@ -20,28 +20,4 @@ module.exports = {
     jwt_secret: "test",
     cookie_secret: "test",
   },
-  modules: {
-    stockLocationService: {
-      scope: "internal",
-      resources: "isolated",
-      resolve: "@medusajs/stock-location",
-      options: {
-        database: {
-          database_type: "postgres",
-          database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-        },
-      },
-    },
-    inventoryService: {
-      scope: "internal",
-      resources: "isolated",
-      resolve: "@medusajs/inventory",
-      options: {
-        database: {
-          type: "postgres",
-          url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-        },
-      },
-    },
-  },
 }

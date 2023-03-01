@@ -34,7 +34,8 @@ export default class ReservationItemService extends TransactionBaseService {
     eventBusService,
     inventoryLevelService,
   }: InjectedDependencies) {
-    super(arguments[0])
+    // @ts-ignore
+    super(...arguments)
 
     this.eventBusService_ = eventBusService
     this.inventoryLevelService_ = inventoryLevelService

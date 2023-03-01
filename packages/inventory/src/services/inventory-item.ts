@@ -28,7 +28,8 @@ export default class InventoryItemService extends TransactionBaseService {
   protected readonly eventBusService_: IEventBusService | undefined
 
   constructor({ eventBusService }: InjectedDependencies) {
-    super(arguments[0])
+    // @ts-ignore
+    super(...arguments)
 
     this.eventBusService_ = eventBusService
   }

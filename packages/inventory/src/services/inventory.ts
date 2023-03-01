@@ -13,7 +13,6 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
   ReservationItemDTO,
-  TransactionBaseService,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
 } from "@medusajs/medusa"
@@ -33,10 +32,8 @@ type InjectedDependencies = {
   inventoryLevelService: InventoryLevelService
   reservationItemService: ReservationItemService
 }
-export default class InventoryService
-  extends TransactionBaseService
-  implements IInventoryService
-{
+export default class InventoryService implements IInventoryService {
+  protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
@@ -53,9 +50,7 @@ export default class InventoryService
     options?: unknown,
     moduleDeclaration?: InternalModuleDeclaration
   ) {
-    // @ts-ignore
-    super(...arguments)
-
+    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryItemService_ = inventoryItemService
     this.inventoryLevelService_ = inventoryLevelService
@@ -72,9 +67,7 @@ export default class InventoryService
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryItemDTO[], number]> {
-    return await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .listAndCount(selector, config)
+    return await this.inventoryItemService_.listAndCount(selector, config)
   }
 
   /**
@@ -87,9 +80,7 @@ export default class InventoryService
     selector: FilterableInventoryLevelProps,
     config: FindConfig<InventoryLevelDTO> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryLevelDTO[], number]> {
-    return await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .listAndCount(selector, config)
+    return await this.inventoryLevelService_.listAndCount(selector, config)
   }
 
   /**
@@ -106,9 +97,7 @@ export default class InventoryService
       take: 10,
     }
   ): Promise<[ReservationItemDTO[], number]> {
-    return await this.reservationItemService_
-      .withTransaction(this.activeManager_)
-      .listAndCount(selector, config)
+    return await this.reservationItemService_.listAndCount(selector, config)
   }
 
   /**
@@ -121,9 +110,10 @@ export default class InventoryService
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>
   ): Promise<InventoryItemDTO> {
-    const inventoryItem = await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .retrieve(inventoryItemId, config)
+    const inventoryItem = await this.inventoryItemService_.retrieve(
+      inventoryItemId,
+      config
+    )
     return { ...inventoryItem }
   }
 
@@ -137,12 +127,10 @@ export default class InventoryService
     inventoryItemId: string,
     locationId: string
   ): Promise<InventoryLevelDTO> {
-    const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .list(
-        { inventory_item_id: inventoryItemId, location_id: locationId },
-        { take: 1 }
-      )
+    const [inventoryLevel] = await this.inventoryLevelService_.list(
+      { inventory_item_id: inventoryItemId, location_id: locationId },
+      { take: 1 }
+    )
     if (!inventoryLevel) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -161,15 +149,13 @@ export default class InventoryService
     input: CreateReservationItemInput
   ): Promise<ReservationItemDTO> {
     // Verify that the item is stocked at the location
-    const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .list(
-        {
-          inventory_item_id: input.inventory_item_id,
-          location_id: input.location_id,
-        },
-        { take: 1 }
-      )
+    const [inventoryLevel] = await this.inventoryLevelService_.list(
+      {
+        inventory_item_id: input.inventory_item_id,
+        location_id: input.location_id,
+      },
+      { take: 1 }
+    )
 
     if (!inventoryLevel) {
       throw new MedusaError(
@@ -178,9 +164,7 @@ export default class InventoryService
       )
     }
 
-    const reservationItem = await this.reservationItemService_
-      .withTransaction(this.activeManager_)
-      .create(input)
+    const reservationItem = await this.reservationItemService_.create(input)
 
     return { ...reservationItem }
   }
@@ -193,9 +177,7 @@ export default class InventoryService
   async createInventoryItem(
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO> {
-    const inventoryItem = await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .create(input)
+    const inventoryItem = await this.inventoryItemService_.create(input)
     return { ...inventoryItem }
   }
 
@@ -207,9 +189,7 @@ export default class InventoryService
   async createInventoryLevel(
     input: CreateInventoryLevelInput
   ): Promise<InventoryLevelDTO> {
-    return await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .create(input)
+    return await this.inventoryLevelService_.create(input)
   }
 
   /**
@@ -222,9 +202,10 @@ export default class InventoryService
     inventoryItemId: string,
     input: Partial<CreateInventoryItemInput>
   ): Promise<InventoryItemDTO> {
-    const inventoryItem = await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .update(inventoryItemId, input)
+    const inventoryItem = await this.inventoryItemService_.update(
+      inventoryItemId,
+      input
+    )
     return { ...inventoryItem }
   }
 
@@ -233,9 +214,7 @@ export default class InventoryService
    * @param inventoryItemId - the id of the inventory item to delete
    */
   async deleteInventoryItem(inventoryItemId: string): Promise<void> {
-    return await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .delete(inventoryItemId)
+    return await this.inventoryItemService_.delete(inventoryItemId)
   }
 
   /**
@@ -247,20 +226,16 @@ export default class InventoryService
     inventoryItemId: string,
     locationId: string
   ): Promise<void> {
-    const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .list(
-        { inventory_item_id: inventoryItemId, location_id: locationId },
-        { take: 1 }
-      )
+    const [inventoryLevel] = await this.inventoryLevelService_.list(
+      { inventory_item_id: inventoryItemId, location_id: locationId },
+      { take: 1 }
+    )
 
     if (!inventoryLevel) {
       return
     }
 
-    return await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .delete(inventoryLevel.id)
+    return await this.inventoryLevelService_.delete(inventoryLevel.id)
   }
 
   /**
@@ -275,12 +250,10 @@ export default class InventoryService
     locationId: string,
     input: UpdateInventoryLevelInput
   ): Promise<InventoryLevelDTO> {
-    const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .list(
-        { inventory_item_id: inventoryItemId, location_id: locationId },
-        { take: 1 }
-      )
+    const [inventoryLevel] = await this.inventoryLevelService_.list(
+      { inventory_item_id: inventoryItemId, location_id: locationId },
+      { take: 1 }
+    )
 
     if (!inventoryLevel) {
       throw new MedusaError(
@@ -289,9 +262,7 @@ export default class InventoryService
       )
     }
 
-    return await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .update(inventoryLevel.id, input)
+    return await this.inventoryLevelService_.update(inventoryLevel.id, input)
   }
 
   /**
@@ -304,9 +275,7 @@ export default class InventoryService
     reservationItemId: string,
     input: UpdateReservationItemInput
   ): Promise<ReservationItemDTO> {
-    return await this.reservationItemService_
-      .withTransaction(this.activeManager_)
-      .update(reservationItemId, input)
+    return await this.reservationItemService_.update(reservationItemId, input)
   }
 
   /**
@@ -314,9 +283,7 @@ export default class InventoryService
    * @param lineItemId - the id of the line item associated with the reservation item
    */
   async deleteReservationItemsByLineItem(lineItemId: string): Promise<void> {
-    return await this.reservationItemService_
-      .withTransaction(this.activeManager_)
-      .deleteByLineItem(lineItemId)
+    return await this.reservationItemService_.deleteByLineItem(lineItemId)
   }
 
   /**
@@ -324,9 +291,7 @@ export default class InventoryService
    * @param reservationItemId - the id of the reservation item to delete
    */
   async deleteReservationItem(reservationItemId: string): Promise<void> {
-    return await this.reservationItemService_
-      .withTransaction(this.activeManager_)
-      .delete(reservationItemId)
+    return await this.reservationItemService_.delete(reservationItemId)
   }
 
   /**
@@ -342,12 +307,10 @@ export default class InventoryService
     locationId: string,
     adjustment: number
   ): Promise<InventoryLevelDTO> {
-    const [inventoryLevel] = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .list(
-        { inventory_item_id: inventoryItemId, location_id: locationId },
-        { take: 1 }
-      )
+    const [inventoryLevel] = await this.inventoryLevelService_.list(
+      { inventory_item_id: inventoryItemId, location_id: locationId },
+      { take: 1 }
+    )
     if (!inventoryLevel) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -355,11 +318,12 @@ export default class InventoryService
       )
     }
 
-    const updatedInventoryLevel = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .update(inventoryLevel.id, {
+    const updatedInventoryLevel = await this.inventoryLevelService_.update(
+      inventoryLevel.id,
+      {
         stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
-      })
+      }
+    )
 
     return { ...updatedInventoryLevel }
   }
@@ -376,15 +340,15 @@ export default class InventoryService
     locationIds: string[]
   ): Promise<number> {
     // Throws if item does not exist
-    await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .retrieve(inventoryItemId, {
-        select: ["id"],
-      })
+    await this.inventoryItemService_.retrieve(inventoryItemId, {
+      select: ["id"],
+    })
 
-    const availableQuantity = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .getAvailableQuantity(inventoryItemId, locationIds)
+    const availableQuantity =
+      await this.inventoryLevelService_.getAvailableQuantity(
+        inventoryItemId,
+        locationIds
+      )
 
     return availableQuantity
   }
@@ -401,15 +365,15 @@ export default class InventoryService
     locationIds: string[]
   ): Promise<number> {
     // Throws if item does not exist
-    await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .retrieve(inventoryItemId, {
-        select: ["id"],
-      })
+    await this.inventoryItemService_.retrieve(inventoryItemId, {
+      select: ["id"],
+    })
 
-    const stockedQuantity = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .getStockedQuantity(inventoryItemId, locationIds)
+    const stockedQuantity =
+      await this.inventoryLevelService_.getStockedQuantity(
+        inventoryItemId,
+        locationIds
+      )
 
     return stockedQuantity
   }
@@ -426,15 +390,15 @@ export default class InventoryService
     locationIds: string[]
   ): Promise<number> {
     // Throws if item does not exist
-    await this.inventoryItemService_
-      .withTransaction(this.activeManager_)
-      .retrieve(inventoryItemId, {
-        select: ["id"],
-      })
+    await this.inventoryItemService_.retrieve(inventoryItemId, {
+      select: ["id"],
+    })
 
-    const reservedQuantity = await this.inventoryLevelService_
-      .withTransaction(this.activeManager_)
-      .getReservedQuantity(inventoryItemId, locationIds)
+    const reservedQuantity =
+      await this.inventoryLevelService_.getReservedQuantity(
+        inventoryItemId,
+        locationIds
+      )
 
     return reservedQuantity
   }

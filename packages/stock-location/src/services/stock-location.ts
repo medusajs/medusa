@@ -6,7 +6,6 @@ import {
   IEventBusService,
   setMetadata,
   StockLocationAddressInput,
-  TransactionBaseService,
   UpdateStockLocationInput,
 } from "@medusajs/medusa"
 
@@ -26,23 +25,22 @@ type InjectedDependencies = {
  * Service for managing stock locations.
  */
 
-export default class StockLocationService extends TransactionBaseService {
+export default class StockLocationService {
   static Events = {
     CREATED: "stock-location.created",
     UPDATED: "stock-location.updated",
     DELETED: "stock-location.deleted",
   }
 
+  protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
 
   constructor(
-    { eventBusService }: InjectedDependencies,
+    { eventBusService, manager }: InjectedDependencies,
     options?: unknown,
     moduleDeclaration?: InternalModuleDeclaration
   ) {
-    // @ts-ignore
-    super(...arguments)
-
+    this.manager_ = manager
     this.eventBusService_ = eventBusService
   }
 
@@ -56,8 +54,7 @@ export default class StockLocationService extends TransactionBaseService {
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
   ): Promise<StockLocation[]> {
-    const manager = this.activeManager_
-    const locationRepo = manager.getRepository(StockLocation)
+    const locationRepo = this.manager_.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
     return await locationRepo.find(query)
@@ -73,8 +70,7 @@ export default class StockLocationService extends TransactionBaseService {
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
   ): Promise<[StockLocation[], number]> {
-    const manager = this.activeManager_
-    const locationRepo = manager.getRepository(StockLocation)
+    const locationRepo = this.manager_.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
     return await locationRepo.findAndCount(query)
@@ -98,8 +94,7 @@ export default class StockLocationService extends TransactionBaseService {
       )
     }
 
-    const manager = this.activeManager_
-    const locationRepo = manager.getRepository(StockLocation)
+    const locationRepo = this.manager_.getRepository(StockLocation)
 
     const query = buildQuery({ id: stockLocationId }, config)
     const [loc] = await locationRepo.find(query)
@@ -120,7 +115,7 @@ export default class StockLocationService extends TransactionBaseService {
    * @returns The created stock location.
    */
   async create(data: CreateStockLocationInput): Promise<StockLocation> {
-    return await this.atomicPhase_(async (manager) => {
+    return await this.manager_.transaction(async (manager) => {
       const locationRepo = manager.getRepository(StockLocation)
 
       const loc = locationRepo.create({
@@ -165,7 +160,7 @@ export default class StockLocationService extends TransactionBaseService {
     stockLocationId: string,
     updateData: UpdateStockLocationInput
   ): Promise<StockLocation> {
-    return await this.atomicPhase_(async (manager) => {
+    return await this.manager_.transaction(async (manager) => {
       const locationRepo = manager.getRepository(StockLocation)
 
       const item = await this.retrieve(stockLocationId)
@@ -218,7 +213,7 @@ export default class StockLocationService extends TransactionBaseService {
       )
     }
 
-    return await this.atomicPhase_(async (manager) => {
+    return await this.manager_.transaction(async (manager) => {
       const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
       const existingAddress = await locationAddressRepo.findOne({
@@ -248,7 +243,7 @@ export default class StockLocationService extends TransactionBaseService {
    * @returns An empty promise.
    */
   async delete(id: string): Promise<void> {
-    return await this.atomicPhase_(async (manager) => {
+    return await this.manager_.transaction(async (manager) => {
       const locationRepo = manager.getRepository(StockLocation)
 
       await locationRepo.softRemove({ id })
