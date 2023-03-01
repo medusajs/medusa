@@ -42,6 +42,7 @@ import {
 } from "./transaction/create-product-variant"
 import { DistributedTransaction } from "../../../../utils/transaction"
 import { Logger } from "../../../../types/global"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /products
@@ -117,6 +118,8 @@ export default async (req, res) => {
   const shippingProfileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"
   )
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const inventoryService: IInventoryService | undefined =
@@ -148,8 +151,12 @@ export default async (req, res) => {
         .retrieveDefault()
     }
 
-    // If no sales channel available, set the default one
-    if (!validated?.sales_channels?.length) {
+    // Provided that the feature flag is enabled and
+    // no sales channels are available, set the default one
+    if (
+      featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+      !validated?.sales_channels?.length
+    ) {
       const defaultSalesChannel = await salesChannelService
         .withTransaction(manager)
         .retrieveDefault()
