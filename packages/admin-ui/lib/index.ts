@@ -11,9 +11,10 @@ async function build(options?: AdminBuildConfig) {
     process.exit(1)
   })
 
-  await fse.writeJSON(resolve(config.build.outDir, "build-manifest.json"), {
-    base: options?.globals?.base || "dashboard",
-  })
+  await fse.writeJSON(
+    resolve(config.build.outDir, "build-manifest.json"),
+    options
+  )
 }
 
 async function watch() {

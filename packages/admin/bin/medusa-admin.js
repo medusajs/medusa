@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require("../commands/run.js")
+require("../commands/index.js")

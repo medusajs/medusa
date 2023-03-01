@@ -32,16 +32,31 @@ export default async function setupAdmin() {
 
   const manifestPath = resolve(dir, "build-manifest.json")
 
+  const buildOptions = {
+    build: {
+      outDir: outDir,
+    },
+    globals: {
+      base: path,
+      backend: backend,
+    },
+  }
+
   try {
     const manifest = await fse.readJSON(manifestPath)
 
-    if (
-      manifest.base !== path ||
-      (manifest.buildDir && manifest.buildDir !== outDir)
-    ) {
+    /**
+     * If the manifest is not the same as the current build options,
+     * we should rebuild the admin UI.
+     */
+    if (JSON.stringify(manifest) !== JSON.stringify(buildOptions)) {
       shouldBuild = true
     }
   } catch (_e) {
+    /**
+     * If the manifest file does not exist, we should rebuild the admin UI.
+     * This is the case when the admin UI is built for the first time.
+     */
     shouldBuild = true
   }
 
