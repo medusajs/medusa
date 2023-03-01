@@ -11886,6 +11886,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/stripe@npm:^8.0.417":
+  version: 8.0.417
+  resolution: "@types/stripe@npm:8.0.417"
+  dependencies:
+    stripe: "*"
+  checksum: 97e3a5ad6948a94366d6749328b721a3c9004ba68795e7675efaa74e4b4c51d57c1dfc785747f4221192dabd7a13fb41778e88e080bafd5d3938a50df7f4ef98
+  languageName: node
+  linkType: hard
+
 "@types/superagent@npm:*":
   version: 4.1.15
   resolution: "@types/superagent@npm:4.1.15"
@@ -28666,7 +28675,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@*, medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.39, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.38, medusa-core-utils@^1.1.39, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -28984,28 +28993,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-proposal-optional-chaining": ^7.12.7
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.7.7
+    "@types/stripe": ^8.0.417
     body-parser: ^1.19.0
-    client-sessions: ^0.8.0
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.39
-    medusa-interfaces: ^1.3.6
-    medusa-test-utils: ^1.1.37
-    stripe: ^8.50.0
+    medusa-core-utils: ^1.1.38
+    stripe: ^11.10.0
   peerDependencies:
-    medusa-interfaces: 1.3.6
+    "@medusajs/medusa": ^1.7.7
   languageName: unknown
   linkType: soft
 
@@ -33833,7 +33830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.5.1, qs@npm:^6.6.0, qs@npm:^6.9.4":
+"qs@npm:^6.10.0, qs@npm:^6.10.3, qs@npm:^6.11.0, qs@npm:^6.5.1, qs@npm:^6.6.0, qs@npm:^6.9.4":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
   dependencies:
@@ -37853,12 +37850,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-literal@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "strip-literal@npm:1.0.1"
+"stripe@npm:*, stripe@npm:^11.10.0":
+  version: 11.10.0
+  resolution: "stripe@npm:11.10.0"
   dependencies:
-    acorn: ^8.8.2
-  checksum: 287ccf57f139f58908324a9115b9dd6a6f6876f16543ecc3eb9b646e67f86c633634c842a5319b8b7e15ee7169dfb4ebcfd91601085d038322f5b1146fe90eaf
+    "@types/node": ">=8.1.0"
+    qs: ^6.11.0
+  checksum: e50b7f671f608557a6dec74ae817c13df73ded75f586e2c5069e6acf86d5e459753695c59454226e8ede3ab7df00915f6a5becda8e7153226ea2eacbd7fb87a2
   languageName: node
   linkType: hard
 

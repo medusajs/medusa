@@ -27,6 +27,7 @@ import regionRoutes from "./regions"
 import reservationRoutes from "./reservations"
 import returnReasonRoutes from "./return-reasons"
 import returnRoutes from "./returns"
+import reservationRoutes from "./reservations"
 import salesChannelRoutes from "./sales-channels"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -101,6 +102,7 @@ export default (app, container, config) => {
   reservationRoutes(route)
   returnReasonRoutes(route)
   returnRoutes(route)
+  reservationRoutes(route)
   salesChannelRoutes(route)
   shippingOptionRoutes(route, featureFlagRouter)
   shippingProfileRoutes(route)

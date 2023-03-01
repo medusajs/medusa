@@ -9,6 +9,7 @@ packages/*
 !packages/medusa
 !packages/admin-ui
 !packages/admin
+!packages/medusa-payment-stripe
 
 
 
