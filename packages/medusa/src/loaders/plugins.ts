@@ -1,4 +1,4 @@
-import { aliasTo, asClass, asFunction, asValue } from "awilix"
+import { aliasTo, asFunction, asValue } from "awilix"
 import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
@@ -495,18 +495,16 @@ function registerRepositories(
 ): void {
   const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
   files.forEach((fn) => {
-    const loaded = require(fn) as ClassConstructor<unknown>
+    const loaded = require(fn)
 
-    Object.entries(loaded).map(
-      ([, val]: [string, ClassConstructor<unknown>]) => {
-        if (typeof val === "function") {
-          const name = formatRegistrationName(fn)
-          container.register({
-            [name]: asClass(val),
-          })
-        }
+    Object.entries(loaded).map(([, val]: [string, any]) => {
+      if (typeof loaded === "object") {
+        const name = formatRegistrationName(fn)
+        container.register({
+          [name]: asValue(val),
+        })
       }
-    )
+    })
   })
 }
 
