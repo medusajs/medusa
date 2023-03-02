@@ -1,4 +1,4 @@
-import { Brackets, FindOptionsWhere, ILike, DeleteResult, In } from "typeorm"
+import { Brackets, FindOptionsWhere, ILike, DeleteResult, In, FindOneOptions } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
@@ -8,7 +8,7 @@ const sortChildren = (category: ProductCategory): ProductCategory => {
   if (category.category_children) {
     category.category_children = category?.category_children
       .map((child) => sortChildren(child))
-      .sort((a, b) => a.position - b.position)
+      .sort((a, b) => a.rank - b.rank)
    }
 
   return category
@@ -17,6 +17,21 @@ const sortChildren = (category: ProductCategory): ProductCategory => {
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
   .extend({
+    async findOneWithDescendants(query: FindOneOptions<ProductCategory>): Promise<ProductCategory | null> {
+      const productCategory = await this.findOne(query)
+
+      if (!productCategory) {
+        return productCategory
+      }
+
+      return sortChildren(
+        // Returns the productCategory with all of its descendants until the last child node
+        await this.findDescendantsTree(
+          productCategory
+        )
+      )
+    },
+
     async getFreeTextSearchResultsAndCount(
       options: ExtendedFindConfig<ProductCategory> = {
         where: {},
@@ -47,7 +62,7 @@ export const ProductCategoryRepository = dataSource
         .select(selectStatements(entityName))
         .skip(options_.skip)
         .take(options_.take)
-        .addOrderBy(`${entityName}.position`, "ASC")
+        .addOrderBy(`${entityName}.rank`, "ASC")
         .addOrderBy(`${entityName}.handle`, "ASC")
 
       if (q) {
@@ -82,7 +97,7 @@ export const ProductCategoryRepository = dataSource
             treeScope
           )
           .addSelect(selectStatements(treeRelation))
-          .addOrderBy(`${treeRelation}.position`, "ASC")
+          .addOrderBy(`${treeRelation}.rank`, "ASC")
           .addOrderBy(`${treeRelation}.handle`, "ASC")
       })
 

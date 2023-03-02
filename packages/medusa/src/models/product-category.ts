@@ -17,6 +17,7 @@ import {
 
 @Entity()
 @Tree("materialized-path")
+@Index(["parent_category_id", "rank"], { unique: true })
 export class ProductCategory extends SoftDeletableEntity {
   static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
@@ -52,7 +53,7 @@ export class ProductCategory extends SoftDeletableEntity {
   category_children: ProductCategory[]
 
   @Column({ nullable: false, default: 0 })
-  position: number
+  rank: number
 
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
@@ -122,6 +123,10 @@ export class ProductCategory extends SoftDeletableEntity {
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
  *     default: false
+ *   rank:
+ *     type: integer
+ *     description: An integer that depicts the rank of category in a tree node
+ *     default: 0
  *   category_children:
  *     description: Available if the relation `category_children` are expanded.
  *     type: array

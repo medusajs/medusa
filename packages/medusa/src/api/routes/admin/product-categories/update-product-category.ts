@@ -115,9 +115,9 @@ export default async (req: Request, res: Response) => {
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category
- *   position:
+ *   rank:
  *     type: number
- *     description: The position of the category in the tree node (starting from 0)
+ *     description: The rank of the category in the tree node (starting from 0)
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
@@ -129,7 +129,7 @@ export class AdminPostProductCategoriesCategoryReq extends AdminProductCategorie
   @IsInt()
   @IsNotEmpty()
   @Min(0)
-  position?: number
+  rank?: number
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}

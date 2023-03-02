@@ -15,7 +15,7 @@ import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
   ReorderConditions,
-  tempReorderPosition,
+  tempReorderRank,
 } from "../types/product-category"
 import { isNumber } from "lodash"
 
@@ -52,6 +52,9 @@ class ProductCategoryService extends TransactionBaseService {
   /**
    * Lists product category based on the provided parameters and includes the count of
    * product category that match the query.
+   * @param selector - Filter options for product category.
+   * @param config - Configuration for query.
+   * @param treeSelector - Filter options for product category tree relations
    * @return an array containing the product category as
    *   the first element and the total count of product category that matches the query
    *   as the second element.
@@ -61,11 +64,10 @@ class ProductCategoryService extends TransactionBaseService {
     config: FindConfig<ProductCategory> = {
       skip: 0,
       take: 100,
-      order: { position: "ASC" },
     },
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
-    const includeDescendantsTree = selector.include_descendants_tree || false
+    const includeDescendantsTree = !!selector.include_descendants_tree
     delete selector.include_descendants_tree
 
     const productCategoryRepo = this.activeManager_.withRepository(
@@ -114,7 +116,7 @@ class ProductCategoryService extends TransactionBaseService {
       this.productCategoryRepo_
     )
 
-    const productCategory = await productCategoryRepo.findOne(query)
+    const productCategory = await productCategoryRepo.findOneWithDescendants(query)
 
     if (!productCategory) {
       throw new MedusaError(
@@ -123,12 +125,7 @@ class ProductCategoryService extends TransactionBaseService {
       )
     }
 
-    // Returns the productCategory with all of its descendants until the last child node
-    const productCategoryTree = await productCategoryRepo.findDescendantsTree(
-      productCategory
-    )
-
-    return productCategoryTree
+    return productCategory
   }
 
   /**
@@ -147,7 +144,7 @@ class ProductCategoryService extends TransactionBaseService {
         ),
       })
 
-      productCategoryInput.position = siblingCount
+      productCategoryInput.rank = siblingCount
 
       await this.transformParentIdToEntity(productCategoryInput)
 
@@ -186,8 +183,8 @@ class ProductCategoryService extends TransactionBaseService {
         productCategoryInput
       )
 
-      if (conditions.shouldChangePosition || conditions.shouldChangeParent) {
-        productCategoryInput.position = tempReorderPosition
+      if (conditions.shouldChangeRank || conditions.shouldChangeParent) {
+        productCategoryInput.rank = tempReorderRank
       }
 
       await this.transformParentIdToEntity(productCategoryInput)
@@ -234,7 +231,7 @@ class ProductCategoryService extends TransactionBaseService {
         productCategory,
         {
           parent_category_id: productCategory.parent_category_id,
-          position: productCategory.position,
+          rank: productCategory.rank,
         },
         true
       )
@@ -305,23 +302,22 @@ class ProductCategoryService extends TransactionBaseService {
   ): ReorderConditions {
     const originalParentId = productCategory.parent_category_id
     const targetParentId = input.parent_category_id
-    const originalPosition = productCategory.position
-    const targetPosition = input.position
+    const originalRank = productCategory.rank
+    const targetRank = input.rank
     const shouldChangeParent =
       targetParentId !== undefined && targetParentId !== originalParentId
-    const shouldIncrementPosition = false
-    const shouldChangePosition =
-      shouldChangeParent || originalPosition !== targetPosition
+    const shouldChangeRank =
+      shouldChangeParent || originalRank !== targetRank
 
     return {
       targetCategoryId: productCategory.id,
       originalParentId,
       targetParentId,
-      originalPosition,
-      targetPosition,
+      originalRank,
+      targetRank,
       shouldChangeParent,
-      shouldChangePosition,
-      shouldIncrementPosition,
+      shouldChangeRank,
+      shouldIncrementRank: false,
       shouldDeleteElement,
     }
   }
@@ -330,34 +326,34 @@ class ProductCategoryService extends TransactionBaseService {
     repository: typeof ProductCategoryRepository,
     conditions: ReorderConditions
   ): Promise<void> {
-    const { shouldChangeParent, shouldChangePosition, shouldDeleteElement } =
+    const { shouldChangeParent, shouldChangeRank, shouldDeleteElement } =
       conditions
 
-    if (!(shouldChangeParent || shouldChangePosition || shouldDeleteElement)) {
+    if (!(shouldChangeParent || shouldChangeRank || shouldDeleteElement)) {
       return
     }
 
     // If we change parent, we need to shift the siblings to eliminate the
-    // position occupied by the targetCategory in the original parent.
+    // rank occupied by the targetCategory in the original parent.
     shouldChangeParent &&
       (await this.shiftSiblings(repository, {
         ...conditions,
-        targetPosition: conditions.originalPosition,
+        targetRank: conditions.originalRank,
         targetParentId: conditions.originalParentId,
       }))
 
     // If we change parent, we need to shift the siblings of the new parent
-    // to create a position that the targetCategory will occupy.
+    // to create a rank that the targetCategory will occupy.
     shouldChangeParent &&
-      shouldChangePosition &&
+      shouldChangeRank &&
       (await this.shiftSiblings(repository, {
         ...conditions,
-        shouldIncrementPosition: true,
+        shouldIncrementRank: true,
       }))
 
-    // If we only change position, we need to shift the siblings
-    // to create a position that the targetCategory will occupy.
-    ;((!shouldChangeParent && shouldChangePosition) || shouldDeleteElement) &&
+    // If we only change rank, we need to shift the siblings
+    // to create a rank that the targetCategory will occupy.
+    ;((!shouldChangeParent && shouldChangeRank) || shouldDeleteElement) &&
       (await this.shiftSiblings(repository, {
         ...conditions,
         targetParentId: conditions.originalParentId,
@@ -368,68 +364,68 @@ class ProductCategoryService extends TransactionBaseService {
     repository: typeof ProductCategoryRepository,
     conditions: ReorderConditions
   ): Promise<void> {
-    let { shouldIncrementPosition, targetPosition } = conditions
+    let { shouldIncrementRank, targetRank } = conditions
     const {
       shouldChangeParent,
-      originalPosition,
+      originalRank,
       targetParentId,
       targetCategoryId,
       shouldDeleteElement,
     } = conditions
 
-    // The current sibling count will replace targetPosition if
-    // targetPosition is greater than the count of siblings.
+    // The current sibling count will replace targetRank if
+    // targetRank is greater than the count of siblings.
     const siblingCount = await repository.countBy({
       parent_category_id: nullableValue(targetParentId),
       id: Not(targetCategoryId),
     })
 
-    // The category record that will be placed at the requested position
-    // We've temporarily placed it at a temporary position that is
-    // beyond a reasonable value (tempReorderPosition)
+    // The category record that will be placed at the requested rank
+    // We've temporarily placed it at a temporary rank that is
+    // beyond a reasonable value (tempReorderRank)
     const targetCategory = await repository.findOne({
       where: {
         id: targetCategoryId,
         parent_category_id: nullableValue(targetParentId),
-        position: tempReorderPosition,
+        rank: tempReorderRank,
       },
     })
 
-    // If the targetPosition is not present, or if targetPosition is beyond the
-    // position of the last category, we set the position as the last position
-    if (targetPosition === undefined || targetPosition > siblingCount) {
-      targetPosition = siblingCount
+    // If the targetRank is not present, or if targetRank is beyond the
+    // rank of the last category, we set the rank as the last rank
+    if (targetRank === undefined || targetRank > siblingCount) {
+      targetRank = siblingCount
     }
 
-    let positionCondition
+    let rankCondition
 
-    // If parent doesn't change, we only need to get the positions
-    // in between the original position and the target position.
+    // If parent doesn't change, we only need to get the ranks
+    // in between the original rank and the target rank.
     if (shouldChangeParent || shouldDeleteElement) {
-      positionCondition = MoreThanOrEqual(targetPosition)
-    } else if (originalPosition > targetPosition) {
-      shouldIncrementPosition = true
-      positionCondition = Between(targetPosition, originalPosition)
+      rankCondition = MoreThanOrEqual(targetRank)
+    } else if (originalRank > targetRank) {
+      shouldIncrementRank = true
+      rankCondition = Between(targetRank, originalRank)
     } else {
-      shouldIncrementPosition = false
-      positionCondition = Between(originalPosition, targetPosition)
+      shouldIncrementRank = false
+      rankCondition = Between(originalRank, targetRank)
     }
 
     // Scope out the list of siblings that we need to shift up or down
     const siblingsToShift = await repository.find({
       where: {
         parent_category_id: nullableValue(targetParentId),
-        position: positionCondition,
+        rank: rankCondition,
         id: Not(targetCategoryId),
       },
       order: {
         // depending on whether we shift up or down, we order accordingly
-        position: shouldIncrementPosition ? "DESC" : "ASC",
+        rank: shouldIncrementRank ? "DESC" : "ASC",
       },
     })
 
     // Depending on the conditions, we get a subset of the siblings
-    // and independently shift them up or down a position
+    // and independently shift them up or down a rank
     for (let index = 0; index < siblingsToShift.length; index++) {
       const sibling = siblingsToShift[index]
 
@@ -440,9 +436,9 @@ class ProductCategoryService extends TransactionBaseService {
         continue
       }
 
-      sibling.position = shouldIncrementPosition
-        ? sibling.position + 1
-        : sibling.position - 1
+      sibling.rank = shouldIncrementRank
+        ? sibling.rank + 1
+        : sibling.rank - 1
 
       await repository.save(sibling)
     }
@@ -453,8 +449,8 @@ class ProductCategoryService extends TransactionBaseService {
       return
     }
 
-    // Place the targetCategory in the requested position
-    targetCategory.position = targetPosition
+    // Place the targetCategory in the requested rank
+    targetCategory.rank = targetRank
     await repository.save(targetCategory)
   }
 

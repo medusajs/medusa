@@ -2,14 +2,14 @@ import { Transform } from "class-transformer"
 import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
 import { ProductCategory } from "../models"
 
-export const tempReorderPosition = 99999
+export const tempReorderRank = 99999
 type ProductCategoryInput = {
   handle?: string
   is_internal?: boolean
   is_active?: boolean
   parent_category_id?: string | null
   parent_category?: ProductCategory | null
-  position?: number
+  rank?: number
 }
 
 export type CreateProductCategoryInput = ProductCategoryInput & {
@@ -51,10 +51,10 @@ export type ReorderConditions = {
   targetCategoryId: string
   originalParentId: string | null
   targetParentId: string | null | undefined
-  originalPosition: number
-  targetPosition: number | undefined
+  originalRank: number
+  targetRank: number | undefined
   shouldChangeParent: boolean
-  shouldChangePosition: boolean
-  shouldIncrementPosition: boolean
+  shouldChangeRank: boolean
+  shouldIncrementRank: boolean
   shouldDeleteElement: boolean
 }

@@ -1,12 +1,55 @@
 import { IdMap, MockRepository } from "medusa-test-utils"
-import { tempReorderPosition } from "../../types/product-category"
+import { tempReorderRank } from "../../types/product-category"
 
 export const validProdCategoryId = "skinny-jeans"
 export const invalidProdCategoryId = "not-found"
 export const validProdCategoryIdWithChildren = "with-children"
 export const validProdCategoryWithSiblings = "with-siblings"
-export const validProdCategoryPositionChange = "position-change"
-export const validProdCategoryPositionParent = "position-parent"
+export const validProdCategoryRankChange = "rank-change"
+export const validProdCategoryRankParent = "rank-parent"
+
+const findOneQuery = (query) => {
+  if (query.where.id === IdMap.getId(invalidProdCategoryId)) {
+    return null
+  }
+
+  if (query.where.parent_category_id === IdMap.getId(validProdCategoryIdWithChildren)) {
+    return null
+  }
+
+  if (query.where.id === IdMap.getId(validProdCategoryRankChange)) {
+    return Promise.resolve({
+      id: IdMap.getId(validProdCategoryRankChange),
+      parent_category_id: IdMap.getId(validProdCategoryRankParent),
+      category_children: [],
+      rank: 1,
+    })
+  }
+
+  if (query.where.id === IdMap.getId(validProdCategoryWithSiblings)) {
+    return Promise.resolve({
+      id: IdMap.getId(validProdCategoryWithSiblings),
+      parent_category_id: IdMap.getId(validProdCategoryIdWithChildren),
+      category_children: [],
+    })
+  }
+
+  if (query.where.id === IdMap.getId(validProdCategoryIdWithChildren)) {
+    return Promise.resolve({
+      id: IdMap.getId(validProdCategoryIdWithChildren),
+      parent_category_id: null,
+      category_children: [{
+        id: IdMap.getId(validProdCategoryId),
+      }]
+    })
+  }
+
+  return Promise.resolve({
+    id: IdMap.getId(validProdCategoryId),
+    parent_category_id: null,
+    category_children: []
+  })
+}
 
 export const productCategoryRepositoryMock = {
   ...MockRepository({
@@ -17,60 +60,21 @@ export const productCategoryRepositoryMock = {
     save: (record) => Promise.resolve(record),
 
     findOne: query => {
-      if (query.where.id === IdMap.getId(invalidProdCategoryId)) {
-        return null
-      }
-
-      if (query.where.parent_category_id === IdMap.getId(validProdCategoryIdWithChildren)) {
-        return null
-      }
-
-      if (query.where.id === IdMap.getId(validProdCategoryPositionChange)) {
-        return Promise.resolve({
-          id: IdMap.getId(validProdCategoryPositionChange),
-          parent_category_id: IdMap.getId(validProdCategoryPositionParent),
-          category_children: [],
-          position: 1,
-        })
-      }
-
-      if (query.where.id === IdMap.getId(validProdCategoryWithSiblings)) {
-        return Promise.resolve({
-          id: IdMap.getId(validProdCategoryWithSiblings),
-          parent_category_id: IdMap.getId(validProdCategoryIdWithChildren),
-          category_children: [],
-        })
-      }
-
-      if (query.where.id === IdMap.getId(validProdCategoryIdWithChildren)) {
-        return Promise.resolve({
-          id: IdMap.getId(validProdCategoryIdWithChildren),
-          parent_category_id: null,
-          category_children: [{
-            id: IdMap.getId(validProdCategoryId),
-          }]
-        })
-      }
-
-      return Promise.resolve({
-        id: IdMap.getId(validProdCategoryId),
-        parent_category_id: null,
-        category_children: []
-      })
+      return findOneQuery(query)
     },
 
     find: query => {
-      if (query.where.parent_category_id === IdMap.getId(validProdCategoryPositionParent)) {
+      if (query.where.parent_category_id === IdMap.getId(validProdCategoryRankParent)) {
         return Promise.resolve([{
           id: IdMap.getId(validProdCategoryWithSiblings),
-          parent_category_id: IdMap.getId(validProdCategoryPositionParent),
+          parent_category_id: IdMap.getId(validProdCategoryRankParent),
           category_children: [],
-          position: 0
+          rank: 0
         }, {
-          id: IdMap.getId(validProdCategoryPositionChange),
-          parent_category_id: IdMap.getId(validProdCategoryPositionParent),
+          id: IdMap.getId(validProdCategoryRankChange),
+          parent_category_id: IdMap.getId(validProdCategoryRankParent),
           category_children: [],
-          position: 1
+          rank: 1
         }])
       }
 
@@ -78,18 +82,22 @@ export const productCategoryRepositoryMock = {
         id: IdMap.getId(validProdCategoryWithSiblings),
         parent_category_id: null,
         category_children: [],
-        position: 0
+        rank: 0
       }, {
         id: IdMap.getId(validProdCategoryId),
         parent_category_id: null,
         category_children: [],
-        position: 1
+        rank: 1
       }])
     },
 
     findDescendantsTree: productCategory => {
       return Promise.resolve(productCategory)
     },
+  }),
+
+  findOneWithDescendants: jest.fn().mockImplementation((query) => {
+    return findOneQuery(query)
   }),
 
   addProducts: jest.fn().mockImplementation((id, productIds) => {
@@ -113,7 +121,7 @@ export const productCategoryRepositoryMock = {
       return Promise.resolve(0)
     }
 
-    if (args.parent_category_id === IdMap.getId(validProdCategoryPositionParent)) {
+    if (args.parent_category_id === IdMap.getId(validProdCategoryRankParent)) {
       return Promise.resolve(2)
     }
 

@@ -58,7 +58,7 @@ export const defaultStoreProductCategoryFields = [
   "parent_category_id",
   "created_at",
   "updated_at",
-  "position",
+  "rank",
 ]
 
 export const allowedStoreProductCategoryFields = [
@@ -68,7 +68,7 @@ export const allowedStoreProductCategoryFields = [
   "parent_category_id",
   "created_at",
   "updated_at",
-  "position",
+  "rank",
 ]
 
 /**

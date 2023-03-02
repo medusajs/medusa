@@ -10,13 +10,13 @@ jest.setTimeout(30000)
 describe("/store/product-categories", () => {
   let medusaProcess
   let dbConnection
-  let productCategory = null
-  let productCategory2 = null
-  let productCategoryChild = null
-  let productCategoryParent = null
-  let productCategoryChild2 = null
-  let productCategoryChild3 = null
-  let productCategoryChild4 = null
+  let productCategory!: ProductCategory
+  let productCategory2!: ProductCategory
+  let productCategoryChild!: ProductCategory
+  let productCategoryParent!: ProductCategory
+  let productCategoryChild2!: ProductCategory
+  let productCategoryChild3!: ProductCategory
+  let productCategoryChild4!: ProductCategory
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -40,14 +40,14 @@ describe("/store/product-categories", () => {
       name: "category parent",
       is_active: true,
       is_internal: false,
-      position: 0,
+      rank: 0,
     })
 
     productCategory = await simpleProductCategoryFactory(dbConnection, {
       name: "category",
       parent_category: productCategoryParent,
       is_active: true,
-      position: 0,
+      rank: 0,
     })
 
     productCategoryChild = await simpleProductCategoryFactory(dbConnection, {
@@ -55,7 +55,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_active: true,
       is_internal: false,
-      position: 3
+      rank: 3
     })
 
     productCategoryChild2 = await simpleProductCategoryFactory(dbConnection, {
@@ -63,7 +63,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_internal: true,
       is_active: true,
-      position: 0,
+      rank: 0,
     })
 
     productCategoryChild3 = await simpleProductCategoryFactory(dbConnection, {
@@ -71,7 +71,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_active: false,
       is_internal: false,
-      position: 1,
+      rank: 1,
     })
 
     productCategoryChild4 = await simpleProductCategoryFactory(dbConnection, {
@@ -79,7 +79,7 @@ describe("/store/product-categories", () => {
       parent_category: productCategory,
       is_active: true,
       is_internal: false,
-      position: 2
+      rank: 2
     })
   })
 
@@ -108,14 +108,14 @@ describe("/store/product-categories", () => {
           }),
           category_children: [
             expect.objectContaining({
-              id: productCategoryChild.id,
-              handle: productCategoryChild.handle,
-              name: productCategoryChild.name,
-            }),
-            expect.objectContaining({
               id: productCategoryChild4.id,
               handle: productCategoryChild4.handle,
               name: productCategoryChild4.name,
+            }),
+            expect.objectContaining({
+              id: productCategoryChild.id,
+              handle: productCategoryChild.handle,
+              name: productCategoryChild.name,
             }),
           ]
         })
@@ -187,25 +187,25 @@ describe("/store/product-categories", () => {
         [
           expect.objectContaining({
             id: productCategory.id,
-            position: 0,
+            rank: 0,
             parent_category: expect.objectContaining({
               id: productCategoryParent.id,
             }),
             category_children: [
               expect.objectContaining({
                 id: productCategoryChild4.id,
-                position: 2,
+                rank: 2,
               }),
               expect.objectContaining({
                 id: productCategoryChild.id,
-                position: 3,
+                rank: 3,
               }),
             ],
           }),
           expect.objectContaining({
             id: productCategoryParent.id,
             parent_category: null,
-            position: 0,
+            rank: 0,
             category_children: [
               expect.objectContaining({
                 id: productCategory.id,
@@ -214,7 +214,7 @@ describe("/store/product-categories", () => {
           }),
           expect.objectContaining({
             id: productCategoryChild4.id,
-            position: 2,
+            rank: 2,
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
@@ -222,7 +222,7 @@ describe("/store/product-categories", () => {
           }),
           expect.objectContaining({
             id: productCategoryChild.id,
-            position: 3,
+            rank: 3,
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
@@ -273,7 +273,7 @@ describe("/store/product-categories", () => {
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
-            position: 2
+            rank: 2
           }),
           expect.objectContaining({
             id: productCategoryChild.id,
@@ -281,7 +281,7 @@ describe("/store/product-categories", () => {
             parent_category: expect.objectContaining({
               id: productCategory.id,
             }),
-            position: 3
+            rank: 3
           }),
         ]
       )
