@@ -1481,7 +1481,7 @@ export const adminHandlers = [
     )
   }),
 
-  rest.get("/admin/variant/:id", (req, res, ctx) => {
+  rest.get("/admin/variants/:id", (req, res, ctx) => {
     const { id } = req.params
     return res(
       ctx.status(200),
