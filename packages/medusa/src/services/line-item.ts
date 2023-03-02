@@ -215,9 +215,11 @@ class LineItemService extends TransactionBaseService {
               quantity: quantity as number,
             }
           : variantIdOrData
+
         const resolvedContext = isString(variantIdOrData)
           ? context
           : (regionIdOrContext as GenerateLineItemContext)
+
         const regionId = (
           isString(variantIdOrData)
             ? regionIdOrContext
@@ -227,6 +229,10 @@ class LineItemService extends TransactionBaseService {
         const resolvedData = (
           Array.isArray(data) ? data : [data]
         ) as GenerateInputData[]
+
+        const resolvedDataMap = new Map(
+          resolvedData.map((d) => [d.variantId, d])
+        )
 
         const variants = await this.productVariantService_.list(
           {
@@ -242,7 +248,11 @@ class LineItemService extends TransactionBaseService {
 
         for (const variant of variants) {
           variantsMap.set(variant.id, variant)
-          if (resolvedContext.unit_price == null) {
+          const variantResolvedData = resolvedDataMap.get(variant.id)
+          if (
+            resolvedContext.unit_price == null &&
+            variantResolvedData?.unit_price == null
+          ) {
             variantIdsToCalculatePricingFor.push(variant.id)
           }
         }
@@ -269,6 +279,8 @@ class LineItemService extends TransactionBaseService {
             variantData.quantity,
             {
               ...resolvedContext,
+              unit_price: variantData.unit_price ?? resolvedContext.unit_price,
+              metadata: variantData.metadata ?? resolvedContext.metadata,
               variantPricing,
             }
           )
