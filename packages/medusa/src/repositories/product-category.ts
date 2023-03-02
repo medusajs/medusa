@@ -1,25 +1,15 @@
-import { Brackets, FindOptionsWhere, ILike, DeleteResult, In } from "typeorm"
-import { ProductCategory } from "../models/product-category"
+import { DeleteResult, FindOptionsWhere, ILike, In } from "typeorm"
+import { ProductCategory } from "../models"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { buildLegacyFieldsListFrom } from "../utils"
 
 const sortChildren = (category: ProductCategory): ProductCategory => {
   if (category.category_children) {
-    category.category_children =
-      category?.category_children.map((child) => sortChildren(child)) || []
+    category.category_children = category?.category_children
+      .map((child) => sortChildren(child))
+      .sort((a, b) => a.position - b.position)
+  }
 
-    category.category_children = category.category_children.sort((a, b) => {
-      if (a.position < b.position) {
-        return -1
-      }
-      if (a.position > b.position) {
-        return 1
-      }
-      return 0
-    })
-   }
-   
   return category
 }
 
@@ -30,80 +20,51 @@ export const ProductCategoryRepository = dataSource
       options: ExtendedFindConfig<ProductCategory> = {
         where: {},
       },
-      q: string | undefined,
+      q?: string,
       treeScope: QuerySelector<ProductCategory> = {},
       includeTree = false
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
-
-      const legacySelect = buildLegacyFieldsListFrom(options_.select)
-      const legacyRelations = buildLegacyFieldsListFrom(options_.relations)
-
-      const selectStatements = (relationName: string): string[] => {
-        const modelColumns = this.metadata.ownColumns.map(
-          (column) => column.propertyName
-        )
-        const selectColumns = legacySelect.length ? legacySelect : modelColumns
-
-        return selectColumns.map((column) => {
-          return `${relationName}.${column}`
-        })
-      }
+      options_.order = options_.order ?? {}
 
       const queryBuilder = this.createQueryBuilder(entityName)
-        .select(selectStatements(entityName))
-        .skip(options_.skip)
-        .take(options_.take)
-        .addOrderBy(`${entityName}.position`, "ASC")
+
+      queryBuilder.addOrderBy(`${entityName}.position`, "ASC")
+      queryBuilder.addOrderBy(`${entityName}.handle`, "ASC")
+
+      if (options_.relations?.category_children) {
+        options_.order.category_children = { position: "ASC", handle: "ASC" }
+        Object.assign(options_.where?.category_children || {}, treeScope)
+      }
+
+      if (options_.relations?.parent_category) {
+        options_.order.parent_category = { position: "ASC", handle: "ASC" }
+        Object.assign(options_.where?.parent_category || {}, treeScope)
+      }
 
       if (q) {
         delete options_.where?.name
         delete options_.where?.handle
 
-        queryBuilder.where(
-          new Brackets((bracket) => {
-            bracket
-              .where({ name: ILike(`%${q}%`) })
-              .orWhere({ handle: ILike(`%${q}%`) })
-          })
-        )
+        options_.where = [
+          {
+            ...options_.where,
+            name: ILike(`%${q}%`),
+          },
+          {
+            ...options_.where,
+            handle: ILike(`%${q}%`),
+          },
+        ]
       }
-
-      queryBuilder.andWhere(options_.where)
-
-      const includedTreeRelations: string[] = legacyRelations.filter((rel) =>
-        ProductCategory.treeRelations.includes(rel)
-      )
-
-      includedTreeRelations.forEach((treeRelation) => {
-        const treeWhere = Object.entries(treeScope)
-          .map((entry) => `${treeRelation}.${entry[0]} = :${entry[0]}`)
-          .join(" AND ")
-
-        queryBuilder
-          .leftJoin(
-            `${entityName}.${treeRelation}`,
-            treeRelation,
-            treeWhere,
-            treeScope
-          )
-          .addSelect(selectStatements(treeRelation))
-          .addOrderBy(`${treeRelation}.position`, "ASC")
-      })
-
-      const nonTreeRelations: string[] = legacyRelations.filter(
-        (rel) => !ProductCategory.treeRelations.includes(rel)
-      )
-
-      nonTreeRelations.forEach((relation) => {
-        queryBuilder.leftJoinAndSelect(`${entityName}.${relation}`, relation)
-      })
 
       if (options_.withDeleted) {
         queryBuilder.withDeleted()
       }
+
+      queryBuilder.setFindOptions(options_)
 
       let [categories, count] = await queryBuilder.getManyAndCount()
 

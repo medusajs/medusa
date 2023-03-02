@@ -2,7 +2,8 @@ import path from "path"
 import { Product, ProductCategory } from "@medusajs/medusa"
 import { In } from "typeorm"
 
-import startServerWithEnvironment from "../../../helpers/start-server-with-environment"
+import startServerWithEnvironment
+  from "../../../helpers/start-server-with-environment"
 import { useApi } from "../../../helpers/use-api"
 import { useDb } from "../../../helpers/use-db"
 import adminSeeder from "../../helpers/admin-seeder"
@@ -22,15 +23,15 @@ const adminHeaders = {
 describe("/admin/product-categories", () => {
   let medusaProcess
   let dbConnection
-  let productCategory = null
-  let productCategory1 = null
-  let productCategory2 = null
-  let productCategoryChild = null
-  let productCategoryParent = null
-  let productCategoryChild0 = null
-  let productCategoryChild1 = null
-  let productCategoryChild2 = null
-  let productCategoryChild3 = null
+  let productCategory!: ProductCategory
+  let productCategory1!: ProductCategory
+  let productCategory2!: ProductCategory
+  let productCategoryChild!: ProductCategory
+  let productCategoryParent!: ProductCategory
+  let productCategoryChild0!: ProductCategory
+  let productCategoryChild1!: ProductCategory
+  let productCategoryChild2!: ProductCategory
+  let productCategoryChild3!: ProductCategory
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -190,17 +191,6 @@ describe("/admin/product-categories", () => {
       expect(response.data.product_categories).toEqual(
         [
           expect.objectContaining({
-            id: productCategory.id,
-            parent_category: expect.objectContaining({
-              id: productCategoryParent.id,
-            }),
-            category_children: [
-              expect.objectContaining({
-                id: productCategoryChild.id,
-              })
-            ],
-          }),
-          expect.objectContaining({
             id: productCategoryChild.id,
             parent_category: expect.objectContaining({
               id: productCategory.id,
@@ -225,6 +215,15 @@ describe("/admin/product-categories", () => {
             ],
           }),
           expect.objectContaining({
+            id: productCategoryParent.id,
+            parent_category: null,
+            category_children: [
+              expect.objectContaining({
+                id: productCategory.id,
+              })
+            ],
+          }),
+          expect.objectContaining({
             id: productCategoryChild2.id,
             parent_category: expect.objectContaining({
               id: productCategoryChild.id,
@@ -233,11 +232,13 @@ describe("/admin/product-categories", () => {
             position: 0
           }),
           expect.objectContaining({
-            id: productCategoryParent.id,
-            parent_category: null,
+            id: productCategory.id,
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id,
+            }),
             category_children: [
               expect.objectContaining({
-                id: productCategory.id,
+                id: productCategoryChild.id,
               })
             ],
           }),
