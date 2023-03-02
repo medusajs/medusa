@@ -5,7 +5,7 @@ addHowToData: true
 
 # How to Create a Payment Provider
 
-In this document, you’ll learn how to add a Payment Provider to your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](./overview.md) first.
+In this document, you’ll learn how to add a Payment Provider to your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](../payment.md) first.
 
 ## Overview
 
@@ -13,7 +13,7 @@ A Payment Provider is the payment method used to authorize, capture, and refund 
 
 By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
 
-Adding a Payment Provider is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
+Adding a Payment Provider is as simple as creating a [service](../../../advanced/backend/services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
 
 Payment Provider Services must have a static property `identifier`. It's the name that will be used to install and refer to the Payment Provider in the Medusa backend.
 
@@ -29,7 +29,7 @@ The Payment Provider service is also required to implement the following methods
 2. `retrievePayment`: Used to retrieve payment data from the third-party provider, if there’s any.
 3. `getStatus`: Used to get the status of a Payment or Payment Session.
 4. `updatePayment`: Used to update the Payment Session whenever the cart and its related data are updated.
-5. `updatePaymentData`: Used to update the `data` field of Payment Sessions. Specifically called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) endpoint.
+5. `updatePaymentData`: Used to update the `data` field of Payment Sessions. Specifically called when a request is sent to the [Update Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) endpoint.
 6. `deletePayment`: Used to perform any action necessary before a Payment Session is deleted.
 7. `authorizePayment`: Used to authorize the payment amount of the cart before the order or swap is created.
 8. `getPaymentData`: Used to retrieve the data that should be stored in the `data` field of a new  Payment instance after the payment amount has been authorized.
@@ -45,7 +45,7 @@ All these methods must be declared async in the Payment Provider Service.
 
 These methods are used at different points in the Checkout flow as well as when processing the order after it’s placed.
 
-![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001750/Medusa%20Docs/Diagrams/WeDr0ph_idcrir.jpg)
+![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1677770739/Medusa%20Docs/Diagrams/checkout-payment_rouet2.png)
 
 ---
 
@@ -127,7 +127,7 @@ Payment Providers must extend `AbstractPaymentService` from the core Medusa pack
 
 :::tip
 
-Following the naming convention of Services, the name of the file should be the slug name of the Payment Provider, and the name of the class should be the camel case name of the Payment Provider suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the Payment Provider, and the name of the class should be the camel case name of the Payment Provider suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../../../advanced/backend/services/create-service.md).
 
 :::
 
@@ -137,7 +137,7 @@ As mentioned in the overview, Payment Providers should have a static `identifie
 
 The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
 
-The value of this property will also be used to reference the Payment Provider throughout the Medusa backend. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
+The value of this property will also be used to reference the Payment Provider throughout the Medusa backend. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
 
 ### constructor
 
@@ -160,7 +160,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 ### createPayment
 
-This method is called during checkout when [Payment Sessions are initialized](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
+This method is called during checkout when [Payment Sessions are initialized](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
 
 For example, in Stripe this method is used to initialize a Payment Intent for the customer.
 
@@ -199,7 +199,7 @@ type PaymentSessionResponse = {
 
 Where:
 
-- `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
+- `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](../payment.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
 - `update_requests` is an object that can be used to pass data from the payment provider plugin to the core to update internal resources. Currently, it only has one attribute `customer_metadata` which allows updating the `metadata` field of the customer.
 
 An example of a minimal implementation of `createPayment`:
@@ -281,7 +281,7 @@ This code block assumes the status is stored in the `data` field as demonstrated
 
 ### updatePayment
 
-This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartLineItems) or when a [shipping method is selected](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
+This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](/api/store/#tag/Cart/operation/PostCartsCartLineItems) or when a [shipping method is selected](/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
 :::tip
 
@@ -326,7 +326,7 @@ type PaymentSessionResponse = {
 
 Where:
 
-- `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
+- `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](../payment.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
 - `update_requests` is an object that can be used to request from the Medusa core to update internal resources. Currently, it only has one attribute `customer_metadata` which allows updating the `metadata` field of the customer.
 
 An example of a minimal implementation of `updatePayment`:
@@ -357,7 +357,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 ### updatePaymentData
 
-This method is used to update the `data` field of a Payment Session. Particularly, it is called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) endpoint. This endpoint receives a `data` object in the body of the request that should be used to update the existing `data` field of the Payment Session.
+This method is used to update the `data` field of a Payment Session. Particularly, it is called when a request is sent to the [Update Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) endpoint. This endpoint receives a `data` object in the body of the request that should be used to update the existing `data` field of the Payment Session.
 
 This method accepts the current `data` field of the Payment Session as the first parameter, and the new `data` field sent in the body request as the second parameter.
 
@@ -386,8 +386,8 @@ class MyPaymentService extends AbstractPaymentService {
 
 This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
 
-1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/DeleteCartsCartPaymentSessionsSession).
-2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionsSession). The Payment Session is deleted so that a newer one is initialized instead.
+1. When a request is sent to [delete the Payment Session](/api/store/#tag/Cart/operation/DeleteCartsCartPaymentSessionsSession).
+2. When the [Payment Session is refreshed](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionsSession). The Payment Session is deleted so that a newer one is initialized instead.
 3. When the Payment Provider is no longer available. This generally happens when the store operator removes it from the available Payment Provider in the admin.
 4. When the region of the store is changed based on the cart information and the Payment Provider is not available in the new region.
 
@@ -411,7 +411,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 ### authorizePayment
 
-This method is used to authorize payment using the Payment Session for an order. This is called when the [cart is completed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) and before the order is created.
+This method is used to authorize payment using the Payment Session for an order. This is called when the [cart is completed](/api/store/#tag/Cart/operation/PostCartsCartComplete) and before the order is created.
 
 This method is also used for authorizing payments of a swap of an order.
 
@@ -430,7 +430,7 @@ The payment authorization status is determined using the `getStatus` method as m
 This method accepts the Payment Session as an object for its first parameter, and a `context` object as a second parameter. The `context` object contains the following properties:
 
 1. `ip`: The customer’s IP.
-2. `idempotency_key`: The [Idempotency Key](./overview.md#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.
+2. `idempotency_key`: The [Idempotency Key](../payment.md#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.
 
 This method must return an object containing the property `status` which is a string that indicates the current status of the payment, and the property `data` which is an object containing any additional information required to perform additional payment processing such as capturing the payment. The values of both of these properties are stored in the Payment Session’s `status` and `data` fields respectively.
 
@@ -583,7 +583,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 This method can be added to your Payment Provider service if your third-party provider supports saving the customer’s payment methods. Please note that in Medusa there is no way to save payment methods.
 
-This method is called when a request is sent to [Retrieve Saved Payment Methods](https://docs.medusajs.com/api/store/#tag/Customer/operation/GetCustomersCustomerPaymentMethods).
+This method is called when a request is sent to [Retrieve Saved Payment Methods](/api/store/#tag/Customer/operation/GetCustomersCustomerPaymentMethods).
 
 This method accepts the customer as an object for its first parameter.
 
@@ -628,4 +628,4 @@ class MyPaymentService extends AbstractPaymentService {
 ## See Also
 
 - Implementation Examples: [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) payment providers.
-- [Implement checkout flow on the storefront](./../../storefront/how-to-implement-checkout-flow.mdx).
+- [Implement checkout flow on the storefront](../storefront/implement-checkout-flow.mdx).

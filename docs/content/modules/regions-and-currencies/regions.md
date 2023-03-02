@@ -92,7 +92,7 @@ The relation is available on a region by expanding the `payment_providers` relat
 
 :::info
 
-Both shipping options and return shipping options are represented by the `ShippingOption` entity. You can learn more in the [Shipping Architecture documentation](../../advanced/backend/shipping/overview.md#shipping-option).
+Both shipping options and return shipping options are represented by the `ShippingOption` entity. You can learn more in the [Shipping Architecture documentation](../carts-and-checkout/shipping.md#shipping-option).
 
 :::
 

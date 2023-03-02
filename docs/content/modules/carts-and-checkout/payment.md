@@ -30,13 +30,13 @@ Payment Providers can also be related to a custom way of handling payment operat
 
 ### How Payment Provider is Created
 
-A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the ``AbstractPaymentService` from the core Medusa package `@medusajs/medusa`. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa backend.
+A Payment Provider is essentially a Medusa [service](../../advanced/backend/services/create-service.md) with a unique identifier, and it extends the ``AbstractPaymentService` from the core Medusa package `@medusajs/medusa`. It can be created as part of a [plugin](../../advanced/backend/plugins/overview.md), or it can be created just as a service file in your Medusa backend.
 
 As a developer, you will mainly work with the Payment Provider when integrating a payment method in Medusa.
 
 When you run your Medusa backend, the Payment Provider will be registered on your backend if it hasn’t been already.
 
-Once the Payment Provider is added to the backend, the store operator will be able to choose on the [Medusa Admin](../../../admin/quickstart.mdx) the payment providers available in a region. These payment providers are shown to the customer at checkout to choose from and use.
+Once the Payment Provider is added to the backend, the store operator will be able to choose on the [Medusa Admin](../../admin/quickstart.mdx) the payment providers available in a region. These payment providers are shown to the customer at checkout to choose from and use.
 
 :::caution
 
@@ -46,7 +46,7 @@ It’s important to choose a payment provider in the list of payment providers i
 
 ### PaymentProvider Entity Overview
 
-The [`PaymentProvider`](../../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
+The [`PaymentProvider`](../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
 
 ---
 
@@ -70,7 +70,7 @@ Among the Payment Sessions available only one will be selected based on the cust
 
 ### PaymentSession Entity Overview
 
-The [`PaymentSession`](../../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
+The [`PaymentSession`](../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
 
 The `PaymentSession` also belongs to a `PaymentProvider`. This is the Payment Provider that was used to create the Payment Session and that controls it for further actions like authorizing the payment.
 
@@ -104,7 +104,7 @@ When the store operator then chooses to capture the order from the Medusa Admin,
 
 ### Payment Entity Overview
 
-The [`Payment`](../../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
+The [`Payment`](../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 
@@ -134,5 +134,5 @@ This prevents any payment issues from occurring with the customers and allows fo
 
 ## See Also
 
-- [Create a Payment Provider](./how-to-create-payment-provider.md)
-- [Implement the checkout flow in the storefront](./../../storefront/how-to-implement-checkout-flow.mdx)
+- [Create a Payment Provider](./backend/add-payment-provider.md)
+- [Implement the checkout flow in the storefront](./storefront/implement-checkout-flow.mdx)

@@ -18,12 +18,12 @@ It’s also constructed to support multiple regions, provide different shipment 
 
 ## Summary
 
-- **Fulfillment Provider:** Fulfillment providers are plugins or [Services](../services/create-service.md) used to ship the products to your customers, whether physically or virtually. An example of a fulfillment provider would be FedEx.
+- **Fulfillment Provider:** Fulfillment providers are plugins or [Services](../../advanced/backend/services/create-service.md) used to ship the products to your customers, whether physically or virtually. An example of a fulfillment provider would be FedEx.
 - **Shipping Profiles:** created by the admin. They are used to group products that should be shipped in a different manner than the default. Shipping profiles can have multiple shipping options.
 - **Shipping Options:** created by the admin and belong to a shipping profile. They are specific to certain regions and can have cart conditions. They use an underlying fulfillment provider. Once a customer checks out, they can choose the shipping option that’s available and most relevant to them.
 - **Shipping Method:** created when the customer chooses a shipping option on checkout. The shipping method is basically a copy of the shipping option, but with values specific to the customer and the cart it’s associated with. When the order is placed, the shipping method will then be associated with the order and fulfilled based on the integration with the fulfillment provider.
 
-![Shipping Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001762/Medusa%20Docs/Diagrams/QII2Hvn_vjkrdy.png)
+![Shipping Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1677698747/Medusa%20Docs/Diagrams/shipping-architecture_oszxhj.jpg)
 
 ---
 
@@ -39,17 +39,17 @@ Fulfillment Providers can also be related to a custom way of handling fulfillmen
 
 ### How Fulfillment Provider is Created
 
-A Fulfillment Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a Service file in your Medusa backend.
+A Fulfillment Provider is essentially a Medusa [Service](../../advanced/backend/services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../../advanced/backend/plugins/overview.md), or it can be created just as a Service file in your Medusa backend.
 
 As a developer, you will mainly work with the Fulfillment Provider when integrating a fulfillment method in Medusa.
 
 When you run your Medusa backend, the Fulfillment Provider will be registered on your backend if it hasn’t been already.
 
-Once the Fulfillment Provider is added to the backend, the store operator will be able to associate on the [Medusa Admin](../../../core/backend/install.mdx) the Fulfillment Provider with shipping options.
+Once the Fulfillment Provider is added to the backend, the store operator will be able to associate on the [Medusa Admin](../../core/backend/install.mdx) the Fulfillment Provider with shipping options.
 
 ### FulfillmentProvider Entity Overview
 
-The [`FulfillmentProvider`](../../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
+The [`FulfillmentProvider`](../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
 
 ---
 
@@ -73,7 +73,7 @@ For example, shipping heavy items might be more expensive than others, which wou
 
 ### ShippingProfile Entity Overview
 
-The [`ShippingProfile`](../../../references/entities/classes/ShippingProfile.md) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
+The [`ShippingProfile`](../../references/entities/classes/ShippingProfile.md) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
 
 The `ShippingProfile` has a `type` attribute that can be `default`, `gift_card`, or `custom`.
 
@@ -101,7 +101,7 @@ Think of a shipping option as a template defined by the admin that indicates wha
 
 ### ShippingOption Entity Overview
 
-The [`ShippingOption`](../../../references/entities/classes/ShippingOption.md) entity belongs to the `ShippingProfile` entity.
+The [`ShippingOption`](../../references/entities/classes/ShippingOption.md) entity belongs to the `ShippingProfile` entity.
 
 The `ShippingOption` entity also belongs to a `FulfillmentProvider`. This can be either a custom third-party provider or one of Medusa’s default fulfillment providers.
 
@@ -139,7 +139,7 @@ This separation allows for developers to implement the custom integration with t
 
 A lot of the shipping method’s attributes are similar to the shipping option’s attribute.
 
-The [`ShippingMethod`](../../../references/entities/classes/ShippingMethod.md) entity belongs to a `ShippingOption`.
+The [`ShippingMethod`](../../references/entities/classes/ShippingMethod.md) entity belongs to a `ShippingOption`.
 
 Similar to the `data` attribute explained for the `ShippingOption` entity, a `ShippingMethod` has a similar `data` attribute that includes all the data to be sent to the fulfillment provider when fulfilling the order.
 
@@ -153,5 +153,5 @@ The `ShippingMethod` instance holds a `price` attribute, which will either b
 
 ## See Also
 
-- [Create a Fulfillment Provider](./add-fulfillment-provider.md)
+- [Create a Fulfillment Provider](./backend/add-fulfillment-provider.md)
 - [Available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages)

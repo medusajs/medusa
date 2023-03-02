@@ -614,12 +614,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'modules/carts-and-checkout/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -638,12 +635,12 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/shipping/overview',
+          id: 'modules/carts-and-checkout/shipping',
           label: 'Shipping'
         },
         {
           type: 'doc',
-          id: 'advanced/backend/payment/overview',
+          id: 'modules/carts-and-checkout/payment',
           label: 'Payment'
         },
         {
@@ -655,22 +652,22 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/shipping/add-fulfillment-provider',
+          id: 'modules/carts-and-checkout/backend/add-fulfillment-provider',
           label: 'Backend: Create Fulfillment Provider'
         },
         {
           type: 'doc',
-          id: 'advanced/backend/payment/how-to-create-payment-provider',
+          id: 'modules/carts-and-checkout/backend/add-payment-provider',
           label: 'Backend: Create Payment Provider'
         },
         {
           type: 'doc',
-          id: 'guides/carts-in-medusa',
+          id: 'modules/carts-and-checkout/storefront/implement-cart',
           label: 'Storefront: Implement Cart'
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/how-to-implement-checkout-flow',
+          id: 'modules/carts-and-checkout/storefront/implement-checkout-flow',
           label: 'Storefront: Implement Checkout'
         },
       ]
