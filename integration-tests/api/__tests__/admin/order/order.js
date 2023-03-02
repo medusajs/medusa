@@ -2443,9 +2443,35 @@ describe("/admin/orders", () => {
       )
 
       expect(order.status).toEqual(200)
+      // id, region and the totals
+      expect(Object.keys(order.data.order)).toHaveLength(12)
       expect(order.data.order).toEqual(
         expect.objectContaining({
           id: "test-order",
+          region: expect.any(Object),
+        })
+      )
+    })
+
+    it("retrieves an order with fields returnable_items only should return the entire object", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?fields=returnable_items`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      // all the expected properties, returnable_items being considered as
+      // a special field and does not count as a field like any classic prop of an order
+      expect(Object.keys(order.data.order)).toHaveLength(46)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          returnable_items: [],
+          customer: expect.any(Object),
+          items: expect.any(Object),
+          region: expect.any(Object),
         })
       )
     })
