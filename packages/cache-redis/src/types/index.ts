@@ -18,4 +18,10 @@ export type RedisCacheModuleOptions = {
    * Redis client options
    */
   redisOptions?: RedisOptions
+
+  /**
+   * Prefix for event keys
+   * @default `medusa:`
+   */
+  namespace?: string
 }

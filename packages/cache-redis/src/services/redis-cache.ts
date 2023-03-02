@@ -8,6 +8,7 @@ import {
 
 import { RedisCacheModuleOptions } from "../types"
 
+const DEFAULT_NAMESPACE = "medusa:"
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
 const EXPIRY_MODE = "EX" // "EX" stands for an expiry time in second
 
@@ -18,6 +19,7 @@ type InjectedDependencies = {
 class RedisCacheService implements ICacheService {
   protected TTL: number
   protected readonly redis: Redis
+  private readonly namespace: string
 
   constructor(
     { redisConnection }: InjectedDependencies,
@@ -26,6 +28,7 @@ class RedisCacheService implements ICacheService {
   ) {
     this.redis = redisConnection
     this.TTL = options.ttl || DEFAULT_CACHE_TIME
+    this.namespace = options.namespace || DEFAULT_NAMESPACE
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
@@ -46,7 +49,12 @@ class RedisCacheService implements ICacheService {
     data: Record<string, unknown>,
     ttl: number = this.TTL
   ): Promise<void> {
-    await this.redis.set(key, JSON.stringify(data), EXPIRY_MODE, ttl)
+    await this.redis.set(
+      this.getCacheKey(key),
+      JSON.stringify(data),
+      EXPIRY_MODE,
+      ttl
+    )
   }
 
   /**
@@ -54,6 +62,7 @@ class RedisCacheService implements ICacheService {
    * @param cacheKey
    */
   async get<T>(cacheKey: string): Promise<T | null> {
+    cacheKey = this.getCacheKey(cacheKey)
     try {
       const cached = await this.redis.get(cacheKey)
       if (cached) {
@@ -70,7 +79,7 @@ class RedisCacheService implements ICacheService {
    * @param key
    */
   async invalidate(key: string): Promise<void> {
-    const keys = await this.redis.keys(key)
+    const keys = await this.redis.keys(this.getCacheKey(key))
     const pipeline = this.redis.pipeline()
 
     keys.forEach(function (key) {
@@ -78,6 +87,14 @@ class RedisCacheService implements ICacheService {
     })
 
     await pipeline.exec()
+  }
+
+  /**
+   * Returns namespaced cache key
+   * @param key
+   */
+  private getCacheKey(key: string) {
+    return `${DEFAULT_NAMESPACE}${key}`
   }
 }
 
