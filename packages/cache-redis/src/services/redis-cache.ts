@@ -23,19 +23,11 @@ class RedisCacheService implements ICacheService {
 
   constructor(
     { redisConnection }: InjectedDependencies,
-    options: RedisCacheModuleOptions = {},
-    moduleDeclaration?: ConfigurableModuleDeclaration
+    options: RedisCacheModuleOptions = {}
   ) {
     this.redis = redisConnection
     this.TTL = options.ttl || DEFAULT_CACHE_TIME
     this.namespace = options.namespace || DEFAULT_NAMESPACE
-
-    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "At the moment this module can only be used with shared resources"
-      )
-    }
   }
   /**
    * Set a key/value pair to the cache.

@@ -26,13 +26,6 @@ class InMemoryCacheService implements ICacheService {
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
     this.TTL = options.ttl || DEFAULT_TTL
-
-    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "At the moment this module can only be used with shared resources"
-      )
-    }
   }
 
   /**

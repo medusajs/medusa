@@ -9,29 +9,11 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Creates an `InMemoryCacheService`", () => {
-    inMemoryCache = new InMemoryCacheService(
-      {},
-      { ttl: 10 },
-      { resources: "shared" }
-    )
-  })
-
-  it("Throws on isolated module declaration", () => {
-    try {
-      inMemoryCache = new InMemoryCacheService(
-        {},
-        {},
-        { resources: "isolated" }
-      )
-    } catch (error) {
-      expect(error.message).toEqual(
-        "At the moment this module can only be used with shared resources"
-      )
-    }
+    inMemoryCache = new InMemoryCacheService({}, { ttl: 10 })
   })
 
   it("Stores and retrieves data", async () => {
-    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
+    inMemoryCache = new InMemoryCacheService({}, {})
 
     await inMemoryCache.set("cache-key", { data: "value" })
 
@@ -39,7 +21,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Invalidates data", async () => {
-    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
+    inMemoryCache = new InMemoryCacheService({}, {})
 
     await inMemoryCache.set("cache-key", { data: "value" })
 
@@ -49,7 +31,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Removes data after TTL", async () => {
-    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
+    inMemoryCache = new InMemoryCacheService({}, {})
 
     await inMemoryCache.set("cache-key", { data: "value" }, 2)
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
@@ -60,11 +42,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Removes data after default TTL if TTL params isn't passed", async () => {
-    inMemoryCache = new InMemoryCacheService(
-      {},
-      { ttl: 1 },
-      { resources: "shared" }
-    )
+    inMemoryCache = new InMemoryCacheService({}, { ttl: 1 })
 
     await inMemoryCache.set("cache-key", { data: "value" })
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
@@ -75,11 +53,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Removes data after TTL from the config if TTL params isn't passed", async () => {
-    inMemoryCache = new InMemoryCacheService(
-      {},
-      { ttl: 1 },
-      { resources: "shared" }
-    )
+    inMemoryCache = new InMemoryCacheService({}, { ttl: 1 })
 
     await inMemoryCache.set("cache-key", { data: "value" })
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })

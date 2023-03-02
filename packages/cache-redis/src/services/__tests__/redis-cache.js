@@ -15,36 +15,18 @@ describe("RedisCacheService", () => {
   it("Creates a RedisCacheService", () => {
     cacheService = new RedisCacheService(
       {
-        redisClient: redisClientMock,
+        redisConnection: redisClientMock,
       },
-      {},
-      { resources: "shared" }
+      {}
     )
-  })
-
-  it("Throws on isolated module declaration", () => {
-    try {
-      cacheService = new RedisCacheService(
-        {
-          redisClient: redisClientMock,
-        },
-        {},
-        { resources: "shared" }
-      )
-    } catch (error) {
-      expect(error.message).toEqual(
-        "At the moment this module can only be used with shared resources"
-      )
-    }
   })
 
   it("Underlying client methods are called", async () => {
     cacheService = new RedisCacheService(
       {
-        redisClient: redisClientMock,
+        redisConnection: redisClientMock,
       },
-      {},
-      { resources: "shared" }
+      {}
     )
 
     await cacheService.set("test-key", "value")
