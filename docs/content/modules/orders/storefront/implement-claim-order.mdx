@@ -12,7 +12,7 @@ In this document, you’ll learn how to implement the claim order flow in a stor
 
 :::note
 
-This flow was added starting from Medusa v1.7. You can learn more about upgrading in the [upgrade guide](../backend/upgrade-guides/medusa-core/1-7-0.md).
+This flow was added starting from Medusa v1.7. You can learn more about upgrading in the [upgrade guide](../../../advanced/backend/upgrade-guides/medusa-core/1-7-0.md).
 
 :::
 
@@ -28,7 +28,7 @@ The email should contain a link to a page in the storefront, and the link should
 
 The customer must then click the link in the email they received. If the token is valid, the order will be associated with the customer.
 
-![Claim Order Flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1671040165/Medusa%20Docs/Diagrams/Claim_Order_Flow_ybf2ok.jpg)
+![Claim Order Flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1677782439/Medusa%20Docs/Diagrams/claim-order-workflow_m6oybo.jpg)
 
 ### What You’ll Learn
 
@@ -43,31 +43,31 @@ In this document, you’ll learn how to implement two parts of this flow:
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.md) and have [created an instance of the client](../../../js-client/overview.md#configuration).
 
 ### Medusa React
 
 This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
 
-If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
 ### Handle Order Claim Request Event
 
 When the customer requests to claim the order, an event will be triggered. You should subscribe to this event to send a confirmation email to the customer when the event is triggered.
 
-You can learn how to implement this flow in [this documentation](../ecommerce/handle-order-claim-event.md).
+You can learn how to implement this flow in [this documentation](../backend/handle-order-claim-event.md).
 
 ### Previous Steps
 
-It is assumed you already have an order placed by a guest customer. You can refer to the [Cart](../../modules/carts-and-checkout/storefront/implement-cart) and [Checkout](../../modules/carts-and-checkout/storefront/implement-checkout-flow.mdx) implementation documentation to learn how to implement them in your storefront.
+It is assumed you already have an order placed by a guest customer. You can refer to the [Cart](../../carts-and-checkout/storefront/implement-cart) and [Checkout](../../carts-and-checkout/storefront/implement-checkout-flow.mdx) implementation documentation to learn how to implement them in your storefront.
 
 In addition, it is assumed you already have a logged-in customer before performing the steps in this document. You can refer to the [API reference](/api/store/#tag/Auth/operation/PostAuth) for more details on that.
 
@@ -207,4 +207,4 @@ If the verification is successful, the order will now be associated with the cus
 
 ## See Also
 
-- [Send a confirmation email to claim an order](../ecommerce/handle-order-claim-event.md)
+- [Send a confirmation email to claim an order](../backend/handle-order-claim-event.md)

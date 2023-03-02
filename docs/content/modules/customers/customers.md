@@ -34,7 +34,7 @@ In the example mentioned above, after the unregistered customer places an order 
 
 :::info
 
-This architecture allows creating the Claim Order flow, where a registered customer can claim an order they placed as an unregistered customer. You can learn more about it in [this documentation](../../advanced/storefront/implement-claim-order.mdx).
+This architecture allows creating the Claim Order flow, where a registered customer can claim an order they placed as an unregistered customer. You can learn more about it in [this documentation](../orders/storefront/implement-claim-order.mdx).
 
 :::
 

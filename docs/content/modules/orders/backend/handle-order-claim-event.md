@@ -25,17 +25,17 @@ In this document, you’ll learn how to handle the `order-update-token.created` 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../usage/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
 
 ### Notification Provider
 
-To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../backend/notification/how-to-create-notification-provider.md).
+To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../advanced/backend/notification/how-to-create-notification-provider.md).
 
-This document has an example using the [SendGrid](../../add-plugins/sendgrid.mdx) plugin.
+This document has an example using the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin.
 
 ---
 
@@ -45,7 +45,7 @@ To subscribe to and handle an event, you must create a subscriber.
 
 :::tip
 
-You can learn more about subscribers in the [Subscribers](../backend/subscribers/overview.md) documentation.
+You can learn more about subscribers in the [Subscribers](../../../advanced/backend/subscribers/overview.md) documentation.
 
 :::
 
@@ -69,7 +69,7 @@ You’ll be adding in the next step the necessary dependencies to the subscriber
 
 :::info
 
-You can learn more about [dependency injection](../backend/dependency-container/index.md) in this documentation.
+You can learn more about [dependency injection](../../../advanced/backend/dependency-container/index.md) in this documentation.
 
 :::
 
@@ -108,7 +108,7 @@ Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notificati
 
 :::info
 
-You can learn more about handling events with the Notification Service using [this documentation](../backend/notification/how-to-create-notification-provider.md).
+You can learn more about handling events with the Notification Service using [this documentation](../../../advanced/backend/notification/how-to-create-notification-provider.md).
 
 :::
 
