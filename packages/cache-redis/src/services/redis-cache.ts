@@ -1,17 +1,18 @@
 import { Redis } from "ioredis"
+import { ICacheService } from "@medusajs/medusa"
+import { MedusaError } from "medusa-core-utils"
 import {
   ConfigurableModuleDeclaration,
   MODULE_RESOURCE_TYPE,
-  ICacheService,
-} from "@medusajs/medusa"
-import { MedusaError } from "medusa-core-utils"
+} from "@medusajs/modules-sdk"
+
 import { RedisCacheModuleOptions } from "../types"
 
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
 const EXPIRY_MODE = "EX" // "EX" stands for an expiry time in second
 
 type InjectedDependencies = {
-  redisClient: Redis
+  redisConnection: Redis
 }
 
 class RedisCacheService implements ICacheService {
@@ -19,11 +20,11 @@ class RedisCacheService implements ICacheService {
   protected readonly redis: Redis
 
   constructor(
-    { redisClient }: InjectedDependencies,
+    { redisConnection }: InjectedDependencies,
     options: RedisCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    this.redis = redisClient
+    this.redis = redisConnection
     this.TTL = options.ttl || DEFAULT_CACHE_TIME
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {

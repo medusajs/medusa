@@ -1,9 +1,10 @@
-import { ModuleExports } from "@medusajs/medusa"
+import { ModuleExports } from "@medusajs/modules-sdk"
 
 import { RedisCacheService } from "./services"
+import Loader from "./loaders"
 
 const service = RedisCacheService
-const loaders = []
+const loaders = [Loader]
 
 const moduleDefinition: ModuleExports = {
   service,
