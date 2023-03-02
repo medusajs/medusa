@@ -61,7 +61,7 @@ class ProductCategoryService extends TransactionBaseService {
     config: FindConfig<ProductCategory> = {
       skip: 0,
       take: 100,
-      order: { created_at: "DESC" },
+      order: { position: "ASC" },
     },
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
@@ -304,7 +304,7 @@ class ProductCategoryService extends TransactionBaseService {
     shouldDeleteElement = false
   ): ReorderConditions {
     const originalParentId = productCategory.parent_category_id
-    const targetParentId = input.parent_category_id || null
+    const targetParentId = input.parent_category_id
     const originalPosition = productCategory.position
     const targetPosition = input.position
     const shouldChangeParent =
@@ -436,7 +436,7 @@ class ProductCategoryService extends TransactionBaseService {
       // Depending on the condition, we could also have the targetCategory
       // in the siblings list, we skip shifting the target until all other siblings
       // have been shifted.
-      if (targetCategoryId === sibling.id) {
+      if (sibling.id === targetCategoryId) {
         continue
       }
 

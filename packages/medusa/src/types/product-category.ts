@@ -50,7 +50,7 @@ export class ProductBatchProductCategory {
 export type ReorderConditions = {
   targetCategoryId: string
   originalParentId: string | null
-  targetParentId: string | null
+  targetParentId: string | null | undefined
   originalPosition: number
   targetPosition: number | undefined
   shouldChangeParent: boolean

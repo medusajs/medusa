@@ -45,6 +45,7 @@ export const productCategoryRepositoryMock = {
       if (query.where.id === IdMap.getId(validProdCategoryIdWithChildren)) {
         return Promise.resolve({
           id: IdMap.getId(validProdCategoryIdWithChildren),
+          parent_category_id: null,
           category_children: [{
             id: IdMap.getId(validProdCategoryId),
           }]
@@ -53,6 +54,7 @@ export const productCategoryRepositoryMock = {
 
       return Promise.resolve({
         id: IdMap.getId(validProdCategoryId),
+        parent_category_id: null,
         category_children: []
       })
     },
@@ -74,10 +76,12 @@ export const productCategoryRepositoryMock = {
 
       return Promise.resolve([{
         id: IdMap.getId(validProdCategoryWithSiblings),
+        parent_category_id: null,
         category_children: [],
         position: 0
       }, {
         id: IdMap.getId(validProdCategoryId),
+        parent_category_id: null,
         category_children: [],
         position: 1
       }])

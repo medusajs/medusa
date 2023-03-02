@@ -62,14 +62,15 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
         {
           order: {
-            created_at: "DESC",
+            position: "ASC",
           },
           skip: 0,
           take: 100,
           where: {},
         },
         validID,
-        {}
+        {},
+        false,
       )
     })
 
@@ -89,7 +90,19 @@ describe("ProductCategoryService", () => {
 
       expect(result[0].id).toEqual(validID)
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
+        {
+          order: {
+            position: "ASC",
+          },
+          skip: 0,
+          take: 100,
+          where: {},
+        },
+        undefined,
+        {},
+        true,
+      )
     })
   })
 
@@ -168,6 +181,7 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.save).toBeCalledWith({
         id: IdMap.getId(validProdCategoryId),
         category_children: [],
+        parent_category_id: null,
         position: 0,
       })
     })
