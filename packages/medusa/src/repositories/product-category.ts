@@ -18,11 +18,9 @@ const sortChildren = (category: ProductCategory): ProductCategory => {
       }
       return 0
     })
-
-    return category
-  } else {
-    return category
-  }
+   }
+   
+  return category
 }
 
 export const ProductCategoryRepository = dataSource
