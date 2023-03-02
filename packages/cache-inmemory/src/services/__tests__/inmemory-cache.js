@@ -11,7 +11,7 @@ describe("InMemoryCacheService", () => {
   it("Creates an `InMemoryCacheService`", () => {
     inMemoryCache = new InMemoryCacheService(
       {},
-      { defaultTTL: 10 },
+      { ttl: 10 },
       { resources: "shared" }
     )
   })
@@ -62,7 +62,7 @@ describe("InMemoryCacheService", () => {
   it("Removes data after default TTL if TTL params isn't passed", async () => {
     inMemoryCache = new InMemoryCacheService(
       {},
-      { defaultTTL: 1 },
+      { ttl: 1 },
       { resources: "shared" }
     )
 
@@ -77,7 +77,7 @@ describe("InMemoryCacheService", () => {
   it("Removes data after TTL from the config if TTL params isn't passed", async () => {
     inMemoryCache = new InMemoryCacheService(
       {},
-      { defaultTTL: 1 },
+      { ttl: 1 },
       { resources: "shared" }
     )
 

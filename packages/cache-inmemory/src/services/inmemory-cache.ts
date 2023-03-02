@@ -25,7 +25,7 @@ class InMemoryCacheService implements ICacheService {
     options: InMemoryCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    this.TTL = options.defaultTTL || DEFAULT_TTL
+    this.TTL = options.ttl || DEFAULT_TTL
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(

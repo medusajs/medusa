@@ -24,7 +24,7 @@ class RedisCacheService implements ICacheService {
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
     this.redis = redisClient
-    this.TTL = options.defaultTTL || DEFAULT_CACHE_TIME
+    this.TTL = options.ttl || DEFAULT_CACHE_TIME
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
