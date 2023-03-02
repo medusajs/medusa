@@ -54,7 +54,7 @@ The `LineItem` entity also has the `includes_tax` attribute. The value of this f
 
 :::info
 
-When a shipping option is selected, a shipping method is created based on that shipping option. You can learn more about this in the [Shipping Architecture documentation](../shipping/overview.md).
+When a shipping option is selected, a shipping method is created based on that shipping option. You can learn more about this in the [Shipping Architecture documentation](../../../modules/carts-and-checkout/shipping.md).
 
 :::
 

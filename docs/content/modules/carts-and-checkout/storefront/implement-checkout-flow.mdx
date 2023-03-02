@@ -18,7 +18,7 @@ This document will take you through the general process of a checkout flow. You 
 
 :::note
 
-It’s recommended to go through the [Shipping Architecture Overview](../backend/shipping/overview.md) and [Payment Architecture Overview](../backend/payment/overview.md) first to have a better understanding of Medusa’s architecture.
+It’s recommended to go through the [Shipping Architecture Overview](../shipping.md) and [Payment Architecture Overview](../payment.md) first to have a better understanding of Medusa’s architecture.
 
 :::
 
@@ -28,29 +28,29 @@ It’s recommended to go through the [Shipping Architecture Overview](../backend
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client and JavaScript’s Fetch API.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.md) and have [created an instance of the client](../../../js-client/overview.md#configuration).
 
 ### Medusa React
 
 This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
 
-If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
-It's also assumed you already have [used CartProvider higher in your component tree](../../medusa-react/overview.md#cartprovider).
+It's also assumed you already have [used CartProvider higher in your component tree](../../../medusa-react/overview.md#cartprovider).
 
 ### Previous Steps
 
 This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
-You can learn how to implement the cart flow using [this documentation](../../guides/carts-in-medusa.mdx).
+You can learn how to implement the cart flow using [this documentation](./implement-cart.mdx).
 
 ---
 
@@ -161,7 +161,7 @@ The request returns the updated cart, with the new shipping address available in
 
 ### List Shipping Options
 
-After updating the cart with the customer’s address, the list of available [shipping options](../backend/shipping/overview.md#shipping-option) for that cart might change. So, you should retrieve the updated list of options. 
+After updating the cart with the customer’s address, the list of available [shipping options](../shipping.md#shipping-option) for that cart might change. So, you should retrieve the updated list of options. 
 
 You can retrieve the list of shipping options by sending a `GET` request to the [Retrieve Shipping Options for Cart API](/api/store/#tag/Shipping-Option/operation/GetShippingOptionsCartId) endpoint:
 
@@ -229,7 +229,7 @@ The request accepts the ID of the cart as a path parameter. It returns the array
 
 ### Choose Shipping Option
 
-Once the customer chooses one of the available shipping options, send a `POST` request to the [Add a Shipping Method](/api/store/#tag/Cart/operation/PostCartsCartShippingMethod) API endpoint. This will create a [shipping method](../backend/shipping/overview.md#shipping-method) based on the shipping option chosen and will associate it with the customer’s cart:
+Once the customer chooses one of the available shipping options, send a `POST` request to the [Add a Shipping Method](/api/store/#tag/Cart/operation/PostCartsCartShippingMethod) API endpoint. This will create a [shipping method](../shipping.md#shipping-method) based on the shipping option chosen and will associate it with the customer’s cart:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -301,7 +301,7 @@ In this step, the customer generally chooses a payment method to complete their 
 
 ### Initialize Payment Sessions
 
-When the page opens and before the payment providers are displayed to the customer to choose from, you must initialize the [payment sessions](./../backend/payment/overview.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
+When the page opens and before the payment providers are displayed to the customer to choose from, you must initialize the [payment sessions](../payment.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
 
 To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) API endpoint:
 
@@ -439,7 +439,7 @@ If you have one payment provider or if only one payment provider is available fo
 
 ### Update Payment Session
 
-This step is optional and is only necessary for some payment providers. As mentioned in the [Payment Architecture](../backend/payment/overview.md#overview) documentation, the `PaymentSession` model has a `data` attribute that holds any data required for the Payment Provider to perform payment operations such as capturing payment.
+This step is optional and is only necessary for some payment providers. As mentioned in the [Payment Architecture](../payment.md#overview) documentation, the `PaymentSession` model has a `data` attribute that holds any data required for the Payment Provider to perform payment operations such as capturing payment.
 
 If you need to update that data at any point before the purchase is made, send a request to [Update a Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) API endpoint:
 
@@ -590,7 +590,7 @@ If an error occurred while placing the order, `type` will be `cart` and `data` w
 
 ## See Also
 
-- [Medusa JS Client Overview](../../js-client/overview.md).
-- Check out available plugins for popular payment providers such as [Stripe](../../add-plugins/stripe.md) and [PayPal](/add-plugins/paypal.md).
-- [Payment Architecture](../backend/payment/overview.md)
-- [Shipping Architecture](../backend/shipping/overview.md)
+- [Medusa JS Client Overview](../../../js-client/overview.md).
+- Check out available plugins for popular payment providers such as [Stripe](../../../add-plugins/stripe.md) and [PayPal](../../../add-plugins/paypal.md).
+- [Payment Architecture](../payment.md)
+- [Shipping Architecture](../shipping.md)

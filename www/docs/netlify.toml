@@ -153,3 +153,27 @@
 [[redirects]]
   from="/advanced/admin/import-products"
   to="/modules/products/admin/import-products"
+
+[[redirects]]
+  from="/advanced/backend/shipping/overview"
+  to="/modules/carts-and-checkout/shipping"
+
+[[redirects]]
+  from="/advanced/backend/shipping/add-fulfillment-provider"
+  to="/modules/carts-and-checkout/backend/add-fulfillment-provider"
+
+[[redirects]]
+  from="/advanced/backend/payment/overview"
+  to="/modules/carts-and-checkout/payment"
+
+[[redirects]]
+  from="/advanced/backend/payment/how-to-create-payment-provider"
+  to="/modules/carts-and-checkout/backend/add-payment-provider"
+
+[[redirects]]
+  from="/guides/carts-in-medusa"
+  to="/modules/carts-and-checkout/storefront/implement-cart"
+
+[[redirects]]
+  from="/advanced/storefront/how-to-implement-checkout-flow"
+  to="/modules/carts-and-checkout/storefront/implement-checkout-flow"

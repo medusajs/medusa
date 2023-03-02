@@ -109,7 +109,7 @@ Aside from the Next.js Storefront, you need to add the implementation with PayPa
 
 :::note
 
-It is recommended to read through the [Frontend Checkout Flow](/advanced/storefront/how-to-implement-checkout-flow) first to fully understand how payment is implemented on the storefront.
+It is recommended to read through the [Frontend Checkout Flow](../modules/carts-and-checkout/storefront/implement-checkout-flow.mdx) first to fully understand how payment is implemented on the storefront.
 
 :::
 
@@ -117,7 +117,7 @@ Although the next sections have different implementations to add PayPal into you
 
 1. Show PayPal’s button if the PayPal provider is available for the current cart.
 2. When the button is clicked, open PayPal’s payment portal and wait for the customer to authorize the payment.
-3. If the payment is authorized successfully, set PayPal’s [Payment Session](../advanced/backend/payment/overview.md#payment-session) as the session used to perform the payment for the current cart, then update the Payment Session on the backend with the data received from PayPal’s payment portal. This data is essential to the backend to verify the authorization and perform additional payment processing later such as capturing payment.
+3. If the payment is authorized successfully, set PayPal’s [Payment Session](../modules/carts-and-checkout/payment.md#payment-session) as the session used to perform the payment for the current cart, then update the Payment Session on the backend with the data received from PayPal’s payment portal. This data is essential to the backend to verify the authorization and perform additional payment processing later such as capturing payment.
 4. Complete the cart to create the order.
 
 :::info

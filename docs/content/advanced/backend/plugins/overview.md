@@ -60,4 +60,4 @@ For community plugins, please refer to the installation instructions of that plu
 
 - [Create a plugin](create.md)
 - [Publish a plugin](publish.md)
-- [Create a fulfillment provider](../shipping/add-fulfillment-provider.md) or a [payment provider](../payment/how-to-create-payment-provider.md)
+- [Create a fulfillment provider](../../../modules/carts-and-checkout/backend/add-fulfillment-provider.md) or a [payment provider](../../../modules/carts-and-checkout/backend/add-payment-provider.md)
