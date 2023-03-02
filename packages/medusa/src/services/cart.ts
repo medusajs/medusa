@@ -1846,7 +1846,7 @@ class CartService extends TransactionBaseService {
             return paymentProviderServiceTx.deleteSession(session)
           }
 
-          return psRepo.delete(session)
+          return psRepo.remove(session)
         }
 
         // In the case of a cart that has a total <= 0 we can return prematurely.
