@@ -13,6 +13,7 @@ import {
   CartType,
   DraftOrder,
   DraftOrderStatus,
+  LineItem,
   ShippingMethod,
 } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
@@ -27,6 +28,7 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
+import { GenerateInputData } from "../types/line-item"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -302,34 +304,48 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        const itemsWithVariant: DraftOrderCreateProps["items"] = []
-        const itemsWithoutVariant: DraftOrderCreateProps["items"] = []
+        const itemsToGenerate: GenerateInputData[] = []
+        const itemsToCreate: Partial<LineItem>[] = []
 
+        // prepare that for next steps
         ;(items ?? []).forEach((item) => {
           if (item.variant_id) {
-            itemsWithVariant.push(item)
+            itemsToGenerate.push({
+              variantId: item.variant_id,
+              quantity: item.quantity,
+              metadata: item.metadata,
+              unit_price: item.unit_price,
+            })
             return
           }
 
-          itemsWithoutVariant.push(item)
+          let price
+          if (!isDefined(item.unit_price) || item.unit_price < 0) {
+            price = 0
+          } else {
+            price = item.unit_price
+          }
+
+          itemsToCreate.push({
+            cart_id: createdCart.id,
+            has_shipping: true,
+            title: item.title || "Custom item",
+            allow_discounts: false,
+            unit_price: price,
+            quantity: item.quantity,
+          })
         })
 
         const promises: Promise<any>[] = []
 
         // generate line item link to a variant
-        if (itemsWithVariant.length) {
-          const itemsData = itemsWithVariant.map((item) => {
-            return {
-              variantId: item.variant_id,
-              quantity: item.quantity,
-              metadata: item.metadata,
-              unit_price: item.unit_price,
+        if (itemsToGenerate.length) {
+          const generatedLines = await lineItemServiceTx.generate(
+            itemsToGenerate,
+            {
+              region_id: data.region_id,
             }
-          })
-
-          const generatedLines = await lineItemServiceTx.generate(itemsData, {
-            region_id: data.region_id,
-          })
+          )
 
           const toCreate = generatedLines.map((line) => ({
             ...line,
@@ -340,26 +356,8 @@ class DraftOrderService extends TransactionBaseService {
         }
 
         // custom line items can be added to a draft order
-        if (itemsWithoutVariant.length) {
-          const toCreate = itemsWithoutVariant.map((item) => {
-            let price
-            if (!isDefined(item.unit_price) || item.unit_price < 0) {
-              price = 0
-            } else {
-              price = item.unit_price
-            }
-
-            return {
-              cart_id: createdCart.id,
-              has_shipping: true,
-              title: item.title || "Custom item",
-              allow_discounts: false,
-              unit_price: price,
-              quantity: item.quantity,
-            }
-          })
-
-          promises.push(lineItemServiceTx.create(toCreate))
+        if (itemsToCreate.length) {
+          promises.push(lineItemServiceTx.create(itemsToCreate))
         }
 
         const shippingMethodToCreate: Partial<ShippingMethod>[] = []
