@@ -26,7 +26,7 @@ The Order Edit can then either be confirmed using the Storefront API as a custom
 
 The changes are only reflected on the original order once the Order Edit is confirmed.
 
-![Order edit documentation](https://res.cloudinary.com/dza7lstvk/image/upload/v1671719712/Medusa%20Docs/Diagrams/Order_Edits_xvquwc.jpg)
+![Order edit flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1677782269/Medusa%20Docs/Diagrams/order-edit_mcnfc3.jpg)
 
 ### Scenario
 
@@ -50,19 +50,19 @@ You can perform other functionalities related to order editing. To learn more, c
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
 
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
 
 ### Medusa React
 
 This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
 
-If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -552,7 +552,7 @@ It returns the Order Edit object. You can access the following properties relate
 
 :::tip
 
-💡 This request triggers the event `order-edit.requested`. You can use a subscriber to send an email to the customer with a link to view the order edit on the storefront. You can learn more in the [Events reference](../backend/subscribers/events-list.md).
+💡 This request triggers the event `order-edit.requested`. You can use a subscriber to send an email to the customer with a link to view the order edit on the storefront. You can learn more in the [Events reference](../../../advanced/backend/subscribers/events-list.md).
 
 :::
 
@@ -820,5 +820,5 @@ It returns in the response the full Refund object.
 
 ## See Also
 
-- [Handle order edits on the storefront](../storefront/handle-order-edits).
+- [Handle order edits on the storefront](../storefront/handle-order-edits.mdx).
 - [Order Edits API reference](/api/admin/#tag/OrderEdit).

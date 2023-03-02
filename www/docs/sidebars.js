@@ -681,12 +681,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/orders/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -760,7 +757,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/ecommerce/handle-order-claim-event',
+          id: 'modules/orders/backend/handle-order-claim-event',
           label: 'Backend: Send Order Claim Email'
         },
         {
@@ -773,7 +770,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/admin/order-edit',
+          id: 'modules/orders/admin/edit-order',
           label: 'Admin: Edit an Order'
         },
         {
@@ -803,7 +800,7 @@ module.exports = {
         {
           type: 'link',
           href: '#',
-          label: 'Admin: Manage Order Drafts',
+          label: 'Admin: Manage Draft Orders',
           customProps: {
             sidebar_is_soon: true
           }
@@ -842,12 +839,12 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/handle-order-edits',
+          id: 'modules/orders/storefront/handle-order-edits',
           label: 'Storefront: Handle Order Edits'
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/implement-claim-order',
+          id: 'modules/orders/storefront/implement-claim-order',
           label: 'Storefront: Implement Claim Order'
         },
       ]

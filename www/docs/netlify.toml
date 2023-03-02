@@ -177,3 +177,19 @@
 [[redirects]]
   from="/advanced/storefront/how-to-implement-checkout-flow"
   to="/modules/carts-and-checkout/storefront/implement-checkout-flow"
+
+[[redirects]]
+  from="/advanced/ecommerce/handle-order-claim-event"
+  to="/modules/orders/backend/handle-order-claim-event"
+
+[[redirects]]
+  from="/advanced/admin/order-edit"
+  to="/modules/orders/admin/edit-order"
+
+[[redirects]]
+  from="/advanced/storefront/handle-order-edits"
+  to="/modules/orders/storefront/handle-order-edits"
+
+[[redirects]]
+  from="/advanced/storefront/implement-claim-order"
+  to="/modules/orders/storefront/implement-claim-order"
