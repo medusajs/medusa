@@ -1,9 +1,8 @@
-import { FindParams } from "../../../.."
 import {
   PricingService,
-  ProductService,
   ProductVariantService,
 } from "../../../../services"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/variants/{id}
@@ -71,7 +70,7 @@ export default async (req, res) => {
 
   const [variant] = await pricingService.setVariantPrices([rawVariant])
 
-  res.json({ variant })
+  res.status(200).json({ variant })
 }
 
 export class AdminGetVariantParams extends FindParams {}
