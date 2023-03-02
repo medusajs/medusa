@@ -151,7 +151,7 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
   )
 
   const includeKeys = Object.keys(includesOptions)
-  if (includeKeys) {
+  if (allowed.length && includeKeys.length) {
     allowed.push(...includeKeys)
   }
 
@@ -178,7 +178,7 @@ function getAllowedProperties<TEntity extends BaseEntity>(
   )
 
   const includeKeys = Object.keys(includesOptions)
-  if (includeKeys) {
+  if (allowed.length && includeKeys.length) {
     allowed.push(...includeKeys)
   }
 
