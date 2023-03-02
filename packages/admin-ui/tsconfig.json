@@ -10,9 +10,9 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "rootDir": "lib",
+    "rootDir": "src",
     "skipLibCheck": true
   },
-  "include": ["lib"],
+  "include": ["src"],
   "exclude": ["**/node_modules", "ui"]
 }

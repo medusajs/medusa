@@ -83,7 +83,8 @@ module.exports = {
         project: [
           "./packages/medusa/tsconfig.json",
           "./packages/medusa-payment-stripe/tsconfig.spec.json",
-        ]
+          "./packages/admin-ui/tsconfig.json",
+        ],
       },
       rules: {
         "valid-jsdoc": "off",
