@@ -15,16 +15,18 @@ export const ImageRepository = dataSource.getRepository(Image).extend({
 
     const upsertedImgs: Image[] = []
 
-    for (const url of imageUrls) {
-      const aImg = existingImagesMap.get(url)
-      if (aImg) {
-        upsertedImgs.push(aImg)
-      } else {
-        const newImg = this.create({ url })
-        const savedImg = await this.save(newImg)
-        upsertedImgs.push(savedImg)
-      }
-    }
+    await Promise.all(
+      imageUrls.map(async (url) => {
+        const aImg = existingImagesMap.get(url)
+        if (aImg) {
+          upsertedImgs.push(aImg)
+        } else {
+          const newImg = this.create({ url })
+          const savedImg = await this.save(newImg)
+          upsertedImgs.push(savedImg)
+        }
+      })
+    )
 
     return upsertedImgs
   },

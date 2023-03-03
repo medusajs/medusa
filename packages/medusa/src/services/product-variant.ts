@@ -165,7 +165,7 @@ class ProductVariantService extends TransactionBaseService {
 
       let product = productOrProductId
 
-      if (typeof product === `string`) {
+      if (isString(product)) {
         product = (await productRepo.findOne({
           where: { id: productOrProductId as string },
           relations: buildRelations([
@@ -448,7 +448,7 @@ class ProductVariantService extends TransactionBaseService {
           id: In([...regionIdsSet]),
         },
         {
-          select: ["currency_code"],
+          select: ["id", "currency_code"],
         }
       )
 
@@ -618,10 +618,12 @@ class ProductVariantService extends TransactionBaseService {
             amount: data_.price.amount,
           })
         } else {
-          dataToCreate.push({
-            ...data_.price,
-            variant_id: data_.variantId,
-          })
+          dataToCreate.push(
+            moneyAmountRepo.create({
+              ...data_.price,
+              variant_id: data_.variantId,
+            }) as QueryDeepPartialEntity<MoneyAmount>
+          )
         }
       })
 
@@ -687,11 +689,13 @@ class ProductVariantService extends TransactionBaseService {
             amount: data_.price.amount,
           })
         } else {
-          dataToCreate.push({
-            ...data_.price,
-            variant_id: data_.variantId,
-            currency_code: data_.price.currency_code,
-          })
+          dataToCreate.push(
+            moneyAmountRepo.create({
+              ...data_.price,
+              variant_id: data_.variantId,
+              currency_code: data_.price.currency_code,
+            }) as QueryDeepPartialEntity<MoneyAmount>
+          )
         }
       })
 

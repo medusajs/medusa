@@ -129,26 +129,25 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
+    const productServiceTx = productService.withTransaction(transactionManager)
+
     const { variants } = validated
     delete validated.variants
 
-    await productService
-      .withTransaction(transactionManager)
-      .update(id, validated)
+    await productServiceTx.update(id, validated)
 
     if (!variants) {
       return
     }
 
-    const product = await productService
-      .withTransaction(transactionManager)
-      .retrieve(id, {
-        relations: ["variants"],
-      })
+    const product = await productServiceTx.retrieve(id, {
+      relations: ["variants"],
+    })
 
     const productVariantMap = new Map(product.variants.map((v) => [v.id, v]))
+    const variantWithIdSet = new Set()
 
-    const variantNotBelongingToProductIds: string[] = []
+    const variantIdsNotBelongingToProduct: string[] = []
     const variantsToUpdate: {
       variant: ProductVariant
       updateData: UpdateProductVariantInput
@@ -158,32 +157,35 @@ export default async (req, res) => {
     // Preparing the data step
     for (const [variantRank, variant] of variants.entries()) {
       if (!variant.id) {
-        const data = Object.assign(variant, {
+        Object.assign(variant, {
           variant_rank: variantRank,
           options: variant.options || [],
           prices: variant.prices || [],
         })
-        variantsToCreate.push(data)
+        variantsToCreate.push(variant)
         continue
       }
 
+      // Will be used to find the variants that should be removed during the next steps
+      variantWithIdSet.add(variant.id)
+
       if (!productVariantMap.has(variant.id)) {
-        variantNotBelongingToProductIds.push(variant.id)
+        variantIdsNotBelongingToProduct.push(variant.id)
         continue
       }
 
       const productVariant = productVariantMap.get(variant.id)!
-      const data = Object.assign(variant, {
+      Object.assign(variant, {
         variant_rank: variantRank,
         product_id: productVariant.product_id,
       })
-      variantsToUpdate.push({ variant: productVariant, updateData: data })
+      variantsToUpdate.push({ variant: productVariant, updateData: variant })
     }
 
-    if (variantNotBelongingToProductIds.length) {
+    if (variantIdsNotBelongingToProduct.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Variants with id: ${variantNotBelongingToProductIds.join(
+        `Variants with id: ${variantIdsNotBelongingToProduct.join(
           ", "
         )} are not associated with this product`
       )
@@ -198,22 +200,20 @@ export default async (req, res) => {
     }
 
     const promises: Promise<any>[] = []
+    const productVariantServiceTx =
+      productVariantService.withTransaction(transactionManager)
 
-    // Delete the variant that does not exist in the provided variants
-    const variantsToDelete = variants.filter(
-      (v) => v.id && !productVariantMap.has(v.id)
+    // Delete the variant that does not exist anymore from the provided variants
+    const variantIdsToDelete = [...productVariantMap.keys()].filter(
+      (variantId) => !variantWithIdSet.has(variantId)
     )
 
-    if (variantsToDelete) {
-      promises.push(
-        productVariantService
-          .withTransaction(transactionManager)
-          .delete(variantsToDelete.map((v) => v.id!))
-      )
+    if (variantIdsToDelete) {
+      promises.push(productVariantServiceTx.delete(variantIdsToDelete))
     }
 
     if (variantsToUpdate.length) {
-      promises.push(productVariantService.updateNew(variantsToUpdate))
+      promises.push(productVariantServiceTx.updateNew(variantsToUpdate))
     }
 
     promises.push(
