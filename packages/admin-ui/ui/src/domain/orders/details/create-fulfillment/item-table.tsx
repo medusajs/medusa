@@ -1,12 +1,11 @@
-import { LineItem } from "@medusajs/medusa"
-import clsx from "clsx"
-import React from "react"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
+import { LineItem } from "@medusajs/medusa"
 import MinusIcon from "../../../../components/fundamentals/icons/minus-icon"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
 import Table from "../../../../components/molecules/table"
+import clsx from "clsx"
 
-const getFulfillableQuantity = (item: LineItem): number => {
+export const getFulfillableQuantity = (item: LineItem): number => {
   return item.quantity - item.fulfilled_quantity - item.returned_quantity
 }
 
@@ -62,10 +61,10 @@ const CreateFulfillmentItemsTable = ({
 
   return (
     <Table>
-      <Table.HeadRow className="text-grey-50 inter-small-semibold border-t border-t-grey-20">
+      <Table.HeadRow className="text-grey-50 inter-small-semibold border-t-grey-20 border-t">
         <Table.HeadCell>Details</Table.HeadCell>
         <Table.HeadCell />
-        <Table.HeadCell className="text-right pr-8">Quantity</Table.HeadCell>
+        <Table.HeadCell className="pr-8 text-right">Quantity</Table.HeadCell>
       </Table.HeadRow>
       <Table.Body>
         {items
@@ -76,10 +75,10 @@ const CreateFulfillmentItemsTable = ({
               <>
                 <Table.Row className={"border-b-grey-0 hover:bg-grey-0"}>
                   <Table.Cell className="w-[50px]">
-                    <div className="items-center ml-1 h-full flex">
+                    <div className="ml-1 flex h-full items-center">
                       <div
                         onClick={() => handleFulfillmentItemToggle(item)}
-                        className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border cursor-pointer rounded-base ${
+                        className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 cursor-pointer justify-center border ${
                           checked && "bg-violet-60"
                         }`}
                       >
@@ -98,14 +97,14 @@ const CreateFulfillmentItemsTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell>
-                    <div className="min-w-[240px] flex py-2">
-                      <div className="w-[30px] h-[40px] ">
+                    <div className="flex min-w-[240px] py-2">
+                      <div className="h-[40px] w-[30px] ">
                         <img
-                          className="h-full w-full object-cover rounded"
+                          className="h-full w-full rounded object-cover"
                           src={item.thumbnail}
                         />
                       </div>
-                      <div className="inter-small-regular text-grey-50 flex flex-col ml-4">
+                      <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
                         <span>
                           <span className="text-grey-90">{item.title}</span>
                         </span>
@@ -113,15 +112,15 @@ const CreateFulfillmentItemsTable = ({
                       </div>
                     </div>
                   </Table.Cell>
-                  <Table.Cell className="text-right w-32 pr-8">
+                  <Table.Cell className="w-32 pr-8 text-right">
                     {toFulfill.includes(item.id) ? (
-                      <div className="flex w-full text-right justify-end text-grey-50 ">
+                      <div className="text-grey-50 flex w-full justify-end text-right ">
                         <span
                           onClick={() => handleQuantity(-1, item)}
                           className={clsx(
-                            "w-5 h-5 flex text-grey-50 items-center justify-center rounded cursor-pointer hover:bg-grey-20 mr-2",
+                            "text-grey-50 hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded",
                             {
-                              ["pointer-events-none text-grey-30"]:
+                              ["text-grey-30 pointer-events-none"]:
                                 quantities[item.id] === 1,
                             }
                           )}
@@ -132,9 +131,9 @@ const CreateFulfillmentItemsTable = ({
                         <span
                           onClick={() => handleQuantity(1, item)}
                           className={clsx(
-                            "w-5 h-5 flex text-grey-50 items-center justify-center rounded cursor-pointer hover:bg-grey-20 ml-2",
+                            "text-grey-50 hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded",
                             {
-                              ["pointer-events-none text-grey-30"]:
+                              ["text-grey-30 pointer-events-none"]:
                                 item.quantity - item.fulfilled_quantity ===
                                 quantities[item.id],
                             }

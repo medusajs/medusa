@@ -1,10 +1,10 @@
-import { useAdminGetSession, useAdminStore } from "medusa-react"
 import React, {
   PropsWithChildren,
   useContext,
   useEffect,
   useState,
 } from "react"
+import { useAdminGetSession, useAdminStore } from "medusa-react"
 
 const defaultFeatureFlagContext: {
   featureToggleList: Record<string, boolean>
@@ -16,7 +16,7 @@ const defaultFeatureFlagContext: {
   },
 }
 
-const FeatureFlagContext = React.createContext(defaultFeatureFlagContext)
+export const FeatureFlagContext = React.createContext(defaultFeatureFlagContext)
 
 export const FeatureFlagProvider = ({ children }: PropsWithChildren) => {
   const { user, isLoading } = useAdminGetSession()
