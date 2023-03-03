@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import {
   IEventBusService,
   IStockLocationService,
@@ -6,7 +6,8 @@ import {
 } from "../interfaces"
 import { SalesChannelService } from "./"
 
-import { SalesChannelLocation } from "../models"
+import { MedusaError } from "medusa-core-utils"
+import { SalesChannelLocation } from "../models/sales-channel-location"
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
@@ -101,13 +102,24 @@ class SalesChannelLocationService extends TransactionBaseService {
    * @param salesChannelId - The ID of the sales channel.
    * @returns A promise that resolves with an array of location IDs.
    */
-  async listLocationIds(salesChannelId: string): Promise<string[]> {
-    const salesChannel = await this.salesChannelService_
+  async listLocationIds(salesChannelId: string | string[]): Promise<string[]> {
+    const ids = Array.isArray(salesChannelId)
+      ? salesChannelId
+      : [salesChannelId]
+
+    const [salesChannels, count] = await this.salesChannelService_
       .withTransaction(this.activeManager_)
-      .retrieve(salesChannelId)
+      .listAndCount({ id: ids }, { select: ["id"], skip: 0 })
+
+    if (!count) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with id: ${ids.join(", ")} was not found`
+      )
+    }
 
     const locations = await this.activeManager_.find(SalesChannelLocation, {
-      where: { sales_channel_id: salesChannel.id },
+      where: { sales_channel_id: In(salesChannels.map((sc) => sc.id)) },
       select: ["location_id"],
     })
 

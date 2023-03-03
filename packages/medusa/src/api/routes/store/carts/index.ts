@@ -1,11 +1,11 @@
 import "reflect-metadata"
-import { RequestHandler, Router } from "express"
+import { Router } from "express"
 
 import { Cart, Order, Swap } from "../../../../"
 import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
@@ -33,7 +33,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(FindParams, {
+    transformStoreQuery(FindParams, {
       defaultRelations: defaultStoreCartRelations,
       defaultFields: defaultStoreCartFields,
       isList: false,

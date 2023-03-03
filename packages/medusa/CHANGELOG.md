@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.7.10
+
+### Patch Changes
+
+- [#3346](https://github.com/medusajs/medusa/pull/3346) [`b458615ed`](https://github.com/medusajs/medusa/commit/b458615ed50a7c637e9e77f29f21c7ab300ed5d8) Thanks [@adrien2p](https://github.com/adrien2p)! - Fix(medusa): All payment sessions should be removed if cart total reach 0
+
+- [#3351](https://github.com/medusajs/medusa/pull/3351) [`4b114cc41`](https://github.com/medusajs/medusa/commit/4b114cc4191ba20832b66072ec82386b22a3533c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Use Bull `jobId` option to identify duplicates
+
+## 1.7.9
+
+### Patch Changes
+
+- [#3335](https://github.com/medusajs/medusa/pull/3335) [`370bd472e`](https://github.com/medusajs/medusa/commit/370bd472ed8c9038f66defd012a886e0f83c32cf) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - fix(medusa): Fix regression in job scheduler service
+
 ## 1.7.8
 
 ### Patch Changes

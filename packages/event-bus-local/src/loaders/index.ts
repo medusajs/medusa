@@ -1,4 +1,5 @@
-import { LoaderOptions } from "@medusajs/medusa"
+import { LoaderOptions } from "@medusajs/modules-sdk"
+
 
 export default async ({ logger }: LoaderOptions): Promise<void> => {
   logger?.warn(

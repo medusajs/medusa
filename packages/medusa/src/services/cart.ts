@@ -56,7 +56,7 @@ import {
   WithRequiredProperty,
 } from "../types/common"
 import { PaymentSessionInput } from "../types/payment"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import EventBusService from "./event-bus"
@@ -1846,7 +1846,7 @@ class CartService extends TransactionBaseService {
             return paymentProviderServiceTx.deleteSession(session)
           }
 
-          return psRepo.delete(session)
+          return psRepo.remove(session)
         }
 
         // In the case of a cart that has a total <= 0 we can return prematurely.
@@ -2083,28 +2083,30 @@ class CartService extends TransactionBaseService {
    * Shipping Option is a possible way to ship an order. Shipping Methods may
    * also have additional details in the data field such as an id for a package
    * shop.
-   * @param cartId - the id of the cart to add shipping method to
+   * @param cartOrId - the id of the cart to add shipping method to
    * @param optionId - id of shipping option to add as valid method
    * @param data - the fulmillment data for the method
    * @return the result of the update operation
    */
   async addShippingMethod(
-    cartId: string,
+    cartOrId: string | Cart,
     optionId: string,
     data: Record<string, unknown> = {}
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieveWithTotals(cartId, {
-          relations: [
-            "shipping_methods",
-            "shipping_methods.shipping_option",
-            "items",
-            "items.variant",
-            "items.variant.product",
-            "payment_sessions",
-          ],
-        })
+        const cart = !isString(cartOrId)
+          ? cartOrId
+          : await this.retrieveWithTotals(cartOrId, {
+              relations: [
+                "shipping_methods",
+                "shipping_methods.shipping_option",
+                "items",
+                "items.variant",
+                "items.variant.product",
+                "payment_sessions",
+              ],
+            })
 
         const cartCustomShippingOptions =
           await this.customShippingOptionService_
@@ -2164,7 +2166,7 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const updatedCart = await this.retrieve(cartId, {
+        const updatedCart = await this.retrieve(cart.id, {
           relations: ["discounts", "discounts.rule", "shipping_methods"],
         })
 

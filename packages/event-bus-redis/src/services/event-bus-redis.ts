@@ -1,10 +1,9 @@
 import {
   AbstractEventBusModuleService,
   ConfigModule,
-  ConfigurableModuleDeclaration,
-  Logger,
-  MODULE_RESOURCE_TYPE
+  Logger
 } from "@medusajs/medusa"
+import { ConfigurableModuleDeclaration, MODULE_RESOURCE_TYPE } from "@medusajs/modules-sdk"
 import { Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { MedusaError } from "medusa-core-utils"

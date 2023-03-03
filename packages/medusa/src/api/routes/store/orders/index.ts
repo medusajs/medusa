@@ -3,7 +3,7 @@ import "reflect-metadata"
 import { Order } from "../../../.."
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
 import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
@@ -21,7 +21,7 @@ export default (app) => {
    */
   route.get(
     "/",
-    transformQuery(StoreGetOrdersParams, {
+    transformStoreQuery(StoreGetOrdersParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,
@@ -36,7 +36,7 @@ export default (app) => {
    */
   route.get(
     "/:id",
-    transformQuery(StoreGetOrderParams, {
+    transformStoreQuery(StoreGetOrderParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,

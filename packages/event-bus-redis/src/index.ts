@@ -1,11 +1,10 @@
-import { ModuleExports } from "@medusajs/medusa"
 import Loader from "./loaders"
 import RedisEventBusService from "./services/event-bus-redis"
 
-const service = RedisEventBusService
+const services = [RedisEventBusService]
 const loaders = [Loader]
 
 export default {
-  service,
+  services,
   loaders,
-} as ModuleExports
+}

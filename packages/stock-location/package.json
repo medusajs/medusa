@@ -24,6 +24,9 @@
     "typeorm": "^0.3.11",
     "typescript": "^4.4.4"
   },
+  "dependencies": {
+    "@medusajs/modules-sdk": "*"
+  },
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",

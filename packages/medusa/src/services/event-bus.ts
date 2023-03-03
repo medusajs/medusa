@@ -115,7 +115,7 @@ export default class EventBusService
     options?: Record<string, unknown>
   ): Promise<StagedJob | void> {
     /**
-     * We always store events in the database.
+     * We store events in the database when in an ongoing transaction.
      *
      * If we are in a long-running transaction, the ACID properties of a
      * transaction ensure, that events are kept invisible to the enqueuer

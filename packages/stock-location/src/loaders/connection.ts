@@ -1,4 +1,7 @@
-import { ConfigurableModuleDeclaration, LoaderOptions } from "@medusajs/medusa"
+import {
+  ConfigurableModuleDeclaration,
+  LoaderOptions,
+} from "@medusajs/modules-sdk"
 
 export default async (
   { configModule }: LoaderOptions,

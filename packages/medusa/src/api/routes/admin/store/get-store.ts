@@ -5,7 +5,7 @@ import {
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
 import { FlagRouter } from "../../../../utils/flag-router"
-import { ModulesHelper } from "../../../../utils/module-helper"
+import { ModulesHelper } from "@medusajs/modules-sdk"
 
 /**
  * @oas [get] /admin/store

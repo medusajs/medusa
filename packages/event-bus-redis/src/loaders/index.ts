@@ -1,4 +1,4 @@
-import { LoaderOptions } from "@medusajs/medusa"
+import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asValue } from "awilix"
 import Redis from "ioredis"
 import { EOL } from "os"
