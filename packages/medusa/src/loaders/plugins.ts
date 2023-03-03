@@ -31,11 +31,11 @@ import {
   MedusaContainer,
 } from "../types/global"
 import formatRegistrationName from "../utils/format-registration-name"
-import logger from "./logger"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string
@@ -66,6 +66,12 @@ export default async ({
   activityId,
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
+
+  await Promise.all(
+    resolved.map(
+      async (pluginDetails) => await runSetupFunctions(pluginDetails)
+    )
+  )
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
@@ -567,6 +573,28 @@ function registerModels(
       }
     )
   })
+}
+
+/**
+ * Runs all setup functions in a plugin. Setup functions are run before anything from the plugin is
+ * registered to the container. This is useful for running custom build logic, fetching remote
+ * configurations, etc.
+ * @param pluginDetails The plugin details including plugin options, version, id, resolved path, etc.
+ */
+async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
+  await Promise.all(
+    files.map(async (fn) => {
+      const loaded = require(fn).default
+      try {
+        await loaded()
+      } catch (err) {
+        throw new Error(`A setup function from ${pluginDetails.name} failed`, {
+          cause: err,
+        })
+      }
+    })
+  )
 }
 
 // TODO: Create unique id for each plugin
