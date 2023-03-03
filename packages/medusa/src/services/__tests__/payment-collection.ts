@@ -2,20 +2,20 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import {
   PaymentCollection,
   PaymentCollectionStatus,
-  PaymentCollectionType,
+  PaymentCollectionType
 } from "../../models"
 import { PaymentCollectionsSessionsBatchInput } from "../../types/payment-collection"
 import EventBusService from "../event-bus"
 import {
   CustomerService,
   PaymentCollectionService,
-  PaymentProviderService,
+  PaymentProviderService
 } from "../index"
 import { CustomerServiceMock } from "../__mocks__/customer"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import {
   DefaultProviderMock,
-  PaymentProviderServiceMock,
+  PaymentProviderServiceMock
 } from "../__mocks__/payment-provider"
 
 describe("PaymentCollectionService", () => {

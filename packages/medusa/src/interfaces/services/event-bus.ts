@@ -57,7 +57,7 @@ export abstract class AbstractEventBusModuleService
     SubscriberDescriptor[]
   > = new Map()
 
-  protected get eventToSubscribersMap(): Map<
+  public get eventToSubscribersMap(): Map<
     string | symbol,
     SubscriberDescriptor[]
   > {
