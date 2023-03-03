@@ -670,9 +670,6 @@ describe("ProductVariantService", () => {
           name: "California",
         })
       },
-      withTransaction: function () {
-        return this
-      },
     }
 
     const productVariantService = new ProductVariantService({
@@ -884,14 +881,16 @@ describe("ProductVariantService", () => {
 
   describe("delete", () => {
     const productVariantRepository = MockRepository({
-      findOne: (query) => {
+      find: (query) => {
         if (query.where.id === IdMap.getId("ironmanv2")) {
-          return Promise.resolve(undefined)
+          return Promise.resolve([])
         }
-        return Promise.resolve({
-          id: IdMap.getId("ironman"),
-          product_id: IdMap.getId("product-test"),
-        })
+        return Promise.resolve([
+          {
+            id: IdMap.getId("ironman"),
+            product_id: IdMap.getId("product-test"),
+          },
+        ])
       },
     })
 
@@ -909,11 +908,11 @@ describe("ProductVariantService", () => {
       await productVariantService.delete(IdMap.getId("ironman"))
 
       expect(productVariantRepository.softRemove).toBeCalledTimes(1)
-      expect(productVariantRepository.softRemove).toBeCalledWith(
+      expect(productVariantRepository.softRemove).toBeCalledWith([
         expect.objectContaining({
           id: IdMap.getId("ironman"),
-        })
-      )
+        }),
+      ])
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
