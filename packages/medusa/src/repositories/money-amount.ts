@@ -25,6 +25,18 @@ type Price = Partial<
 export const MoneyAmountRepository = dataSource
   .getRepository(MoneyAmount)
   .extend({
+    async insertBulk(
+      data: QueryDeepPartialEntity<MoneyAmount>[]
+    ): Promise<MoneyAmount[]> {
+      const queryBuilder = this.createQueryBuilder()
+      return (await queryBuilder
+        .insert()
+        .into(MoneyAmount)
+        .values(data)
+        .returning("*")
+        .execute()
+        .then((res) => res.generatedMaps)) as MoneyAmount[]
+    },
     async findVariantPricesNotIn(
       variantId: string,
       prices: Price[]

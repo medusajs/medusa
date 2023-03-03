@@ -313,6 +313,12 @@ class ProductVariantService extends TransactionBaseService {
     return res
   }
 
+  /**
+   * @deprecated in favour of updateBatch
+   * @param variantOrVariantId
+   * @param update
+   * @protected
+   */
   protected async updateLegacy(
     variantOrVariantId: string | Partial<ProductVariant>,
     update: UpdateProductVariantInput
@@ -494,6 +500,7 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   /**
+   * @deprecated in favour or updateVariantPricesBatch
    * Updates a variant's prices.
    * Deletes any prices that are not in the update object, and is not associated with a price list.
    * @param variantId - the id of variant
@@ -573,12 +580,12 @@ class ProductVariantService extends TransactionBaseService {
         price: WithRequiredProperty<ProductVariantPrice, "currency_code">
       }[] = []
 
-      data.forEach((data_) => {
-        data_.prices.forEach((price) => {
+      data.forEach(({ prices, variantId }) => {
+        prices.forEach((price) => {
           if (price.region_id) {
             const region = regionsMap.get(price.region_id)!
             dataRegionPrices.push({
-              variantId: data_.variantId,
+              variantId,
               price: {
                 currency_code: region.currency_code,
                 region_id: price.region_id,
@@ -587,7 +594,7 @@ class ProductVariantService extends TransactionBaseService {
             })
           } else {
             dataCurrencyPrices.push({
-              variantId: data_.variantId,
+              variantId,
               price: { ...price, currency_code: price.currency_code! },
             })
           }
@@ -710,39 +717,32 @@ class ProductVariantService extends TransactionBaseService {
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
       const dataToUpdate: MoneyAmount[] = []
 
-      data.forEach((data_) => {
+      data.forEach(({ price, variantId }) => {
         const variantMoneyAmounts =
-          moneyAmountsMapToVariantId.get(data_.variantId) ?? []
+          moneyAmountsMapToVariantId.get(variantId) ?? []
 
         const moneyAmount = variantMoneyAmounts.find(
-          (ma) => ma.region_id === data_.price.region_id
+          (ma) => ma.region_id === price.region_id
         )
 
         if (moneyAmount) {
           dataToUpdate.push({
             ...moneyAmount,
-            amount: data_.price.amount,
+            amount: price.amount,
           })
         } else {
           dataToCreate.push(
             moneyAmountRepo.create({
-              ...data_.price,
-              variant_id: data_.variantId,
+              ...price,
+              variant_id: variantId,
             }) as QueryDeepPartialEntity<MoneyAmount>
           )
         }
       })
 
-      const queryBuilder = moneyAmountRepo.createQueryBuilder()
-
       return (
         await Promise.all([
-          queryBuilder
-            .insert()
-            .into(MoneyAmount)
-            .values(dataToCreate)
-            .returning("*")
-            .execute(),
+          moneyAmountRepo.insertBulk(dataToCreate),
           moneyAmountRepo.save(dataToUpdate),
         ])
       ).flat() as MoneyAmount[]
