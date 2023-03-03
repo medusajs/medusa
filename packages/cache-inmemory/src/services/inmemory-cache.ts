@@ -1,9 +1,5 @@
-import {
-  ConfigurableModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-} from "@medusajs/modules-sdk"
+import { ConfigurableModuleDeclaration } from "@medusajs/modules-sdk"
 import { ICacheService } from "@medusajs/medusa"
-import { MedusaError } from "medusa-core-utils"
 
 import { CacheRecord, InMemoryCacheModuleOptions } from "../types"
 

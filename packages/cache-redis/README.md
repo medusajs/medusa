@@ -18,7 +18,7 @@ yarn add @medusajs/cache-redis
     
       redisOptions?: RedisOptions // Redis client options
     
-      namespace?: string          // Prefix for event keys
+      namespace?: string          // Prefix for event keys (the default is `medusa:`)
   }
 ```
 

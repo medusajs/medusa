@@ -1,10 +1,5 @@
 import { Redis } from "ioredis"
 import { ICacheService } from "@medusajs/medusa"
-import { MedusaError } from "medusa-core-utils"
-import {
-  ConfigurableModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-} from "@medusajs/modules-sdk"
 
 import { RedisCacheModuleOptions } from "../types"
 
