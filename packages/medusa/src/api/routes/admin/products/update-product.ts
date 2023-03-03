@@ -213,7 +213,7 @@ export default async (req, res) => {
     }
 
     if (variantsToUpdate.length) {
-      promises.push(productVariantServiceTx.updateNew(variantsToUpdate))
+      promises.push(productVariantServiceTx.update(variantsToUpdate))
     }
 
     promises.push(

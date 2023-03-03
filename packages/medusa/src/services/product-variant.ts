@@ -36,6 +36,7 @@ import {
   FilterableProductVariantProps,
   GetRegionPriceContext,
   ProductVariantPrice,
+  UpdateProductVariantData,
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import {
@@ -254,6 +255,18 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   /**
+   * Updates a collection of variant.
+   * @param variantData - a collection of variant and the data to update.
+   * @return resolves to the update result.
+   */
+  async update(
+    variantData: {
+      variant: ProductVariant
+      updateData: UpdateProductVariantInput
+    }[]
+  ): Promise<ProductVariant[]>
+
+  /**
    * Updates a variant.
    * Price updates should use dedicated methods.
    * The function will throw, if price updates are attempted.
@@ -262,6 +275,44 @@ class ProductVariantService extends TransactionBaseService {
    * @return resolves to the update result.
    */
   async update(
+    variantOrVariantId: string | Partial<ProductVariant>,
+    update: UpdateProductVariantInput
+  ): Promise<ProductVariant>
+
+  async update<
+    TInput extends string | Partial<ProductVariant> | UpdateProductVariantData
+  >(
+    variantOrVariantIdOrData: TInput,
+    update?: UpdateProductVariantInput
+  ): Promise<
+    TInput extends UpdateProductVariantData ? ProductVariant[] : ProductVariant
+  > {
+    let res: TInput extends UpdateProductVariantData
+      ? ProductVariant[]
+      : ProductVariant
+
+    if (update) {
+      res = (await this.updateLegacy(
+        variantOrVariantIdOrData,
+        update
+      )) as TInput extends UpdateProductVariantData
+        ? ProductVariant[]
+        : ProductVariant
+    } else {
+      res = (await this.updateBatch(
+        variantOrVariantIdOrData as {
+          variant: ProductVariant
+          updateData: UpdateProductVariantInput
+        }[]
+      )) as TInput extends UpdateProductVariantData
+        ? ProductVariant[]
+        : ProductVariant
+    }
+
+    return res
+  }
+
+  protected async updateLegacy(
     variantOrVariantId: string | Partial<ProductVariant>,
     update: UpdateProductVariantInput
   ): Promise<ProductVariant> {
@@ -330,7 +381,7 @@ class ProductVariantService extends TransactionBaseService {
     })
   }
 
-  async updateNew(
+  protected async updateBatch(
     variantData: {
       variant: ProductVariant
       updateData: UpdateProductVariantInput
@@ -440,6 +491,28 @@ class ProductVariantService extends TransactionBaseService {
       }
     })
   }
+
+  /**
+   * Updates variant/prices collection.
+   * Deletes any prices that are not in the update object, and is not associated with a price list.
+   * @param data
+   * @returns empty promise
+   */
+  async updateVariantPrices(
+    data: { variantId: string; prices: ProductVariantPrice[] }[]
+  ): Promise<void>
+
+  /**
+   * Updates a variant's prices.
+   * Deletes any prices that are not in the update object, and is not associated with a price list.
+   * @param variantId - the id of variant
+   * @param prices - the update prices
+   * @returns empty promise
+   */
+  async updateVariantPrices(
+    variantId: string,
+    prices: ProductVariantPrice[]
+  ): Promise<void>
 
   async updateVariantPricesNew(
     data: { variantId: string; prices: ProductVariantPrice[] }[]
@@ -991,15 +1064,15 @@ class ProductVariantService extends TransactionBaseService {
       await variantRepo.softRemove(variants)
 
       await Promise.all(
-        variants.map(async (variant) => {
-          return await this.eventBus_
+        variants.map(async (variant) =>
+          this.eventBus_
             .withTransaction(manager)
             .emit(ProductVariantService.Events.DELETED, {
               id: variant.id,
               product_id: variant.product_id,
               metadata: variant.metadata,
             })
-        })
+        )
       )
     })
   }
