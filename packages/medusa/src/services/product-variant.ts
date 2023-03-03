@@ -340,13 +340,15 @@ class ProductVariantService extends TransactionBaseService {
       const variantRepo = manager.withRepository(this.productVariantRepository_)
 
       const variantPriceUpdateData = variantData
-        .filter((data) => data.updateData.prices)
+        .filter((data) => isDefined(data.updateData.prices))
         .map((data) => ({
           variantId: data.variant.id,
           prices: data.updateData.prices!,
         }))
 
-      await this.updateVariantPricesNew(variantPriceUpdateData)
+      if (variantPriceUpdateData.length) {
+        await this.updateVariantPricesNew(variantPriceUpdateData)
+      }
 
       const results: [ProductVariant, UpdateProductVariantInput][] =
         await Promise.all(
