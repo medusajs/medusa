@@ -1,6 +1,6 @@
-import { useAdminDeleteSession, useAdminLogin } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
+import { useAdminDeleteSession, useAdminLogin } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminLogin hook", () => {

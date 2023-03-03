@@ -1,7 +1,7 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
-import { createWrapper } from "../../../utils"
 import { useAdminPaymentCollection } from "../../../../src/hooks/admin/payment-collections"
+import { createWrapper } from "../../../utils"
 
 describe("useAdminPaymentCollection hook", () => {
   test("returns a payment collection", async () => {
