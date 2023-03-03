@@ -129,7 +129,7 @@ function attachListOrRetrieveConfig<TEntity extends BaseEntity>(
   }
 }
 /**
- * Build the store allowed props based on the custom fields query params, the defaults and the includes options.
+ * Build the store allowed props based on the custom fields query params, the allowed props config and the includes options.
  * This can be used later with `cleanResponseData` in order to clean up the returned objects to the client.
  * @param queryConfig
  * @param validated
@@ -141,15 +141,17 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
   const allowed: string[] = []
-  allowed.push(
-    ...(validated.fields?.split(",") ?? queryConfig?.allowedFields ?? []),
-    ...(validated.expand?.split(",") ?? queryConfig?.allowedRelations ?? [])
-  )
 
   const includeKeys = Object.keys(includesOptions)
-  if (allowed.length && includeKeys.length) {
-    allowed.push(...includeKeys)
-  }
+  const fields = validated.fields
+    ? validated.fields?.split(",")
+    : queryConfig?.allowedFields || []
+  const expand =
+    validated.expand || includeKeys.length
+      ? [...(validated.expand?.split(",") || []), ...includeKeys]
+      : queryConfig?.allowedRelations || []
+
+  allowed.push(...fields, ...expand)
 
   return allowed
 }
@@ -168,15 +170,17 @@ function getAllowedProperties<TEntity extends BaseEntity>(
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
   const allowed: (string | keyof TEntity)[] = []
-  allowed.push(
-    ...(validated.fields?.split(",") ?? queryConfig?.defaultFields ?? []),
-    ...(validated.expand?.split(",") ?? queryConfig?.defaultRelations ?? [])
-  )
 
   const includeKeys = Object.keys(includesOptions)
-  if (allowed.length && includeKeys.length) {
-    allowed.push(...includeKeys)
-  }
+  const fields = validated.fields
+    ? validated.fields?.split(",")
+    : queryConfig?.defaultFields || []
+  const expand =
+    validated.expand || includeKeys.length
+      ? [...(validated.expand?.split(",") || []), ...includeKeys]
+      : queryConfig?.defaultRelations || []
+
+  allowed.push(...fields, ...expand)
 
   return allowed as string[]
 }

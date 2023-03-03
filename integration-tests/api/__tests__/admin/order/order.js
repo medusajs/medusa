@@ -2443,7 +2443,7 @@ describe("/admin/orders", () => {
       )
 
       expect(order.status).toEqual(200)
-      // id, region and the totals
+      // id + totals + region relation
       expect(Object.keys(order.data.order)).toHaveLength(12)
       expect(order.data.order).toEqual(
         expect.objectContaining({
@@ -2453,47 +2453,40 @@ describe("/admin/orders", () => {
       )
     })
 
-    it("retrieves an order with fields returnable_items only should return the entire object", async () => {
+    it("retrieves an order with expand returnable_items only should return the entire object and only returnable_items as relation", async () => {
       const api = useApi()
 
       const order = await api.get(
-        `/admin/orders/${testOrderId}?fields=returnable_items`,
+        `/admin/orders/${testOrderId}?expand=returnable_items`,
         adminReqConfig
       )
 
       expect(order.status).toEqual(200)
-      // all the expected properties, returnable_items being considered as
-      // a special field and does not count as a field like any classic prop of an order
-      expect(Object.keys(order.data.order)).toHaveLength(44)
+      // all order properties + totals + returnable_items relation
+      expect(Object.keys(order.data.order)).toHaveLength(29)
       expect(order.data.order).toEqual(
         expect.objectContaining({
           id: "test-order",
           returnable_items: [],
-          customer: expect.any(Object),
-          items: expect.any(Object),
-          region: expect.any(Object),
         })
       )
     })
 
-    it("retrieves an order with fields returnable_items and expand region should return the entire order properties but only the region relation", async () => {
+    it("retrieves an order with expand returnable_items and field id should return the id and the retunable_items", async () => {
       const api = useApi()
 
       const order = await api.get(
-        `/admin/orders/${testOrderId}?fields=returnable_items&expand=region`,
+        `/admin/orders/${testOrderId}?expand=returnable_items&fields=id`,
         adminReqConfig
       )
 
       expect(order.status).toEqual(200)
-      // all the expected properties, returnable_items being considered as
-      // a special field and does not count as a field like any classic prop of an order.
-      // Also, only the region relation should be return as requested with expand query param
-      expect(Object.keys(order.data.order)).toHaveLength(30)
+      // id + totals + returnable_items relation
+      expect(Object.keys(order.data.order)).toHaveLength(12)
       expect(order.data.order).toEqual(
         expect.objectContaining({
           id: "test-order",
           returnable_items: [],
-          region: expect.any(Object),
         })
       )
     })
