@@ -1,3 +1,8 @@
-import * as setup from "./schema-migrations/1665748086258-inventory_setup"
+import { getFilesFromPath } from "@medusajs/modules-sdk"
 
-export default [setup]
+const migrations: object[] = []
+getFilesFromPath("./**/*.{js|ts}", ["index.js", "index.ts"], (file: string) => {
+  migrations.push(require(file))
+})
+
+export default migrations

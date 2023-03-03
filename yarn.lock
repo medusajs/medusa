@@ -5393,6 +5393,7 @@ __metadata:
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    glob: 7.1.6
     jest: ^25.5.4
     medusa-core-utils: ^1.1.39
     medusa-telemetry: ^0.0.16
