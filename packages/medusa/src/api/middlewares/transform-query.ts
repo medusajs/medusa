@@ -142,12 +142,8 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
 ): string[] {
   const allowed: string[] = []
   allowed.push(
-    ...(validated.fields
-      ? validated.fields.split(",")
-      : queryConfig?.allowedFields || []),
-    ...(validated.expand
-      ? validated.expand.split(",")
-      : queryConfig?.allowedRelations || [])
+    ...(validated.fields?.split(",") ?? queryConfig?.allowedFields ?? []),
+    ...(validated.expand?.split(",") ?? queryConfig?.allowedRelations ?? [])
   )
 
   const includeKeys = Object.keys(includesOptions)
@@ -171,10 +167,10 @@ function getAllowedProperties<TEntity extends BaseEntity>(
   includesOptions: Record<string, boolean>,
   queryConfig?: QueryConfig<TEntity>
 ): string[] {
-  const allowed: string[] = []
+  const allowed: (string | keyof TEntity)[] = []
   allowed.push(
-    ...(validated.fields?.split(",") ?? []),
-    ...(validated.expand?.split(",") ?? [])
+    ...(validated.fields?.split(",") ?? queryConfig?.defaultFields ?? []),
+    ...(validated.expand?.split(",") ?? queryConfig?.defaultRelations ?? [])
   )
 
   const includeKeys = Object.keys(includesOptions)
@@ -182,5 +178,5 @@ function getAllowedProperties<TEntity extends BaseEntity>(
     allowed.push(...includeKeys)
   }
 
-  return allowed
+  return allowed as string[]
 }
