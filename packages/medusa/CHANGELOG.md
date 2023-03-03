@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.7.11
+
+### Patch Changes
+
+- [#3357](https://github.com/medusajs/medusa/pull/3357) [`c43248131`](https://github.com/medusajs/medusa/commit/c432481319cc205938081c3fcf60e75053b659ca) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa): fix error on creating product without FF sales channel
+
 ## 1.7.10
 
 ### Patch Changes
