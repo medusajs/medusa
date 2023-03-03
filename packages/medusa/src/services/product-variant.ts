@@ -408,21 +408,15 @@ class ProductVariantService extends TransactionBaseService {
         await this.updateVariantPrices(variantPriceUpdateData)
       }
 
-      const results: [ProductVariant, UpdateProductVariantInput, boolean][] =
+      const results: [ProductVariant, UpdateProductVariantInput][] =
         await Promise.all(
           variantData.map(async ({ variant, updateData }) => {
             const { prices, options, metadata, inventory_quantity, ...rest } =
               updateData
 
             let shouldUpdate = false
-            let shouldEmit = false
-
-            if (prices?.length) {
-              shouldEmit = true
-            }
 
             if (options?.length) {
-              shouldEmit = true
               for (const option of options) {
                 await this.updateOptionValue(
                   variant.id!,
@@ -446,12 +440,11 @@ class ProductVariantService extends TransactionBaseService {
               variant.inventory_quantity = inventory_quantity as number
             }
 
-            if (!Object.keys(rest).length) {
+            if (Object.keys(rest).length) {
               shouldUpdate = true
-            }
-
-            for (const [key, value] of Object.entries(rest)) {
-              variant[key] = value
+              for (const [key, value] of Object.entries(rest)) {
+                variant[key] = value
+              }
             }
 
             let result = variant
@@ -459,20 +452,14 @@ class ProductVariantService extends TransactionBaseService {
               result = await variantRepo.save(variant)
             }
 
-            shouldEmit = shouldEmit || shouldUpdate
-
-            return [result, updateData, shouldEmit]
+            return [result, updateData]
           })
         )
 
       const eventBusServiceTx = this.eventBus_.withTransaction(manager)
 
       await Promise.all(
-        results.map(async ([result, updatedData, shouldEmit]) => {
-          if (!shouldEmit) {
-            return
-          }
-
+        results.map(async ([result, updatedData]) => {
           return eventBusServiceTx.emit(ProductVariantService.Events.UPDATED, {
             id: result.id,
             product_id: result.product_id,
