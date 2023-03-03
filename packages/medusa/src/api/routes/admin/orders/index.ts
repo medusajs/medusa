@@ -525,6 +525,8 @@ export const defaultAdminOrdersRelations = [
   "discounts.rule",
   "shipping_methods",
   "payments",
+  "items",
+  "region",
   "fulfillments",
   "fulfillments.tracking_links",
   "fulfillments.items",

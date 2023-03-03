@@ -2464,7 +2464,7 @@ describe("/admin/orders", () => {
       expect(order.status).toEqual(200)
       // all the expected properties, returnable_items being considered as
       // a special field and does not count as a field like any classic prop of an order
-      expect(Object.keys(order.data.order)).toHaveLength(46)
+      expect(Object.keys(order.data.order)).toHaveLength(44)
       expect(order.data.order).toEqual(
         expect.objectContaining({
           id: "test-order",
@@ -2487,7 +2487,7 @@ describe("/admin/orders", () => {
       expect(order.status).toEqual(200)
       // all the expected properties, returnable_items being considered as
       // a special field and does not count as a field like any classic prop of an order.
-      // Also, only the region relation should be return as requested with the expand query param
+      // Also, only the region relation should be return as requested with expand query param
       expect(Object.keys(order.data.order)).toHaveLength(30)
       expect(order.data.order).toEqual(
         expect.objectContaining({
