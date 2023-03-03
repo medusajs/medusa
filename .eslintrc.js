@@ -83,7 +83,8 @@ module.exports = {
         project: [
           "./packages/medusa/tsconfig.json",
           "./packages/medusa-payment-stripe/tsconfig.spec.json",
-        ]
+          "./packages/admin-ui/tsconfig.json",
+        ],
       },
       rules: {
         "valid-jsdoc": "off",
@@ -109,6 +110,59 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-var-requires": "off",
+      },
+    },
+    {
+      files: ["packages/admin-ui/ui/**/*.ts", "packages/admin-ui/ui/**/*.tsx"],
+      plugins: ["unused-imports"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended",
+      ],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+        sourceType: "module", // Allows for the use of imports
+        project: "./packages/admin-ui/ui/tsconfig.json",
+      },
+      env: {
+        browser: true,
+      },
+      rules: {
+        "prettier/prettier": "error",
+        "react/prop-types": "off",
+        "new-cap": "off",
+        "require-jsdoc": "off",
+        "valid-jsdoc": "off",
+        "no-unused-expressions": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            vars: "all",
+            varsIgnorePattern: "^_",
+            args: "after-used",
+            argsIgnorePattern: "^_",
+          },
+        ],
+      },
+    },
+    {
+      files: ["packages/admin-ui/lib/**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/admin-ui/tsconfig.json",
+      },
+    },
+    {
+      files: ["packages/admin/**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/admin/tsconfig.json",
       },
     },
   ],

@@ -1,4 +1,4 @@
-import { aliasTo, asFunction, asValue } from "awilix"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
@@ -31,11 +31,11 @@ import {
   MedusaContainer,
 } from "../types/global"
 import formatRegistrationName from "../utils/format-registration-name"
-import logger from "./logger"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string
@@ -66,6 +66,12 @@ export default async ({
   activityId,
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
+
+  await Promise.all(
+    resolved.map(
+      async (pluginDetails) => await runSetupFunctions(pluginDetails)
+    )
+  )
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
@@ -377,36 +383,49 @@ export async function registerServices(
         const name = appDetails.application_name
         container.register({
           [`${name}Oauth`]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
         })
       } else if (loaded.prototype instanceof FulfillmentService) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "fulfillmentProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
+            lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+          })
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which fulfillment provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ).singleton(),
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
+            }
+          ),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (isNotificationService(loaded.prototype)) {
         container.registerAdd(
           "notificationProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
+            lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+          })
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which notification provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ).singleton(),
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
+            }
+          ),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (
@@ -417,7 +436,10 @@ export async function registerServices(
         // resolution if we already know which file storage provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
           [`fileService`]: aliasTo(name),
         })
@@ -426,7 +448,10 @@ export async function registerServices(
         // resolution if we already know which search provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
           [`searchService`]: aliasTo(name),
         })
@@ -435,19 +460,27 @@ export async function registerServices(
       } else if (loaded.prototype instanceof AbstractTaxService) {
         container.registerAdd(
           "taxProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
+            lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+          })
         )
 
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ).singleton(),
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
+            }
+          ),
           [`tp_${loaded.identifier}`]: aliasTo(name),
         })
       } else {
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
         })
       }
@@ -540,6 +573,28 @@ function registerModels(
       }
     )
   })
+}
+
+/**
+ * Runs all setup functions in a plugin. Setup functions are run before anything from the plugin is
+ * registered to the container. This is useful for running custom build logic, fetching remote
+ * configurations, etc.
+ * @param pluginDetails The plugin details including plugin options, version, id, resolved path, etc.
+ */
+async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
+  await Promise.all(
+    files.map(async (fn) => {
+      const loaded = require(fn).default
+      try {
+        await loaded()
+      } catch (err) {
+        throw new Error(`A setup function from ${pluginDetails.name} failed`, {
+          cause: err,
+        })
+      }
+    })
+  )
 }
 
 // TODO: Create unique id for each plugin
