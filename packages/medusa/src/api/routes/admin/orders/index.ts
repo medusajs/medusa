@@ -526,6 +526,7 @@ export const defaultAdminOrdersRelations = [
   "shipping_methods",
   "payments",
   "items",
+  "refunds",
   "region",
   "fulfillments",
   "fulfillments.tracking_links",
