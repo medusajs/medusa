@@ -221,6 +221,10 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
+    if(locationIds.length === 0) {
+      return 0
+    }
+
     const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -248,6 +252,10 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
+    if(locationIds.length === 0) {
+      return 0
+    }
+
     const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -273,6 +281,10 @@ export default class InventoryLevelService extends TransactionBaseService {
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
+    }
+
+    if(locationIds.length === 0) {
+      return 0
     }
 
     const manager = this.activeManager_
