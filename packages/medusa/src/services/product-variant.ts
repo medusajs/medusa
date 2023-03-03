@@ -38,7 +38,13 @@ import {
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
-import { buildQuery, buildRelations, isString, setMetadata } from "../utils"
+import {
+  buildQuery,
+  buildRelations,
+  isObject,
+  isString,
+  setMetadata,
+} from "../utils"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
@@ -342,48 +348,57 @@ class ProductVariantService extends TransactionBaseService {
 
       await this.updateVariantPricesNew(variantPriceUpdateData)
 
-      const promises = variantData.map(async (data) => {
-        const variant = data.variant
+      const results: [ProductVariant, UpdateProductVariantInput][] =
+        await Promise.all(
+          variantData.map(async (data) => {
+            const variant = data.variant
 
-        const { prices, options, metadata, inventory_quantity, ...rest } =
-          data.updateData
+            const { prices, options, metadata, inventory_quantity, ...rest } =
+              data.updateData
 
-        if (options) {
-          for (const option of options) {
-            await this.updateOptionValue(
-              variant.id!,
-              option.option_id,
-              option.value
-            )
-          }
-        }
+            if (options) {
+              for (const option of options) {
+                await this.updateOptionValue(
+                  variant.id!,
+                  option.option_id,
+                  option.value
+                )
+              }
+            }
 
-        if (typeof metadata === "object") {
-          variant.metadata = setMetadata(variant as ProductVariant, metadata)
-        }
+            if (isObject(metadata)) {
+              variant.metadata = setMetadata(
+                variant as ProductVariant,
+                metadata
+              )
+            }
 
-        if (typeof inventory_quantity === "number") {
-          variant.inventory_quantity = inventory_quantity as number
-        }
+            if (typeof inventory_quantity === "number") {
+              variant.inventory_quantity = inventory_quantity as number
+            }
 
-        for (const [key, value] of Object.entries(rest)) {
-          variant[key] = value
-        }
+            for (const [key, value] of Object.entries(rest)) {
+              variant[key] = value
+            }
 
-        const result = await variantRepo.save(variant)
+            const result = await variantRepo.save(variant)
+            return [result, data.updateData]
+          })
+        )
 
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(ProductVariantService.Events.UPDATED, {
+      const eventBusServiceTx = this.eventBus_.withTransaction(manager)
+
+      await Promise.all(
+        results.map(async ([result, updatedData]) =>
+          eventBusServiceTx.emit(ProductVariantService.Events.UPDATED, {
             id: result.id,
             product_id: result.product_id,
-            fields: Object.keys(data.updateData),
+            fields: Object.keys(updatedData),
           })
+        )
+      )
 
-        return result
-      })
-
-      return await Promise.all(promises)
+      return results.map(([variant]) => variant)
     })
   }
 
