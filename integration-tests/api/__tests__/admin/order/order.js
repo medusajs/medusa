@@ -2476,6 +2476,28 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("retrieves an order with fields returnable_items and expand region should return the entire order properties but only the region relation", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?fields=returnable_items&expand=region`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      // all the expected properties, returnable_items being considered as
+      // a special field and does not count as a field like any classic prop of an order.
+      // Also, only the region relation should be return as requested with the expand query param
+      expect(Object.keys(order.data.order)).toHaveLength(30)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          returnable_items: [],
+          region: expect.any(Object),
+        })
+      )
+    })
+
     it("retrieves an order should include the items totals", async () => {
       const api = useApi()
 
