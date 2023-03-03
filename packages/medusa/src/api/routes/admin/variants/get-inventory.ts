@@ -151,8 +151,23 @@ type SalesChannelDTO = Omit<SalesChannel, "beforeInsert" | "locations"> & {
   locations: string[]
 }
 
-type ResponseInventoryItem = Partial<InventoryItemDTO> & {
-  location_levels?: InventoryLevelDTO[]
+export type LevelWithAvailability = InventoryLevelDTO & {
+  available_quantity: number
+}
+
+/**
+ * @schema ResponseInventoryItem
+ * allOf:
+ *   - $ref: "#/components/schemas/InventoryItemDTO"
+ *   - type: object
+ *     required:
+ *      - available_quantity
+ *     properties:
+ *       available_quantity:
+ *         type: number
+ */
+export type ResponseInventoryItem = Partial<InventoryItemDTO> & {
+  location_levels?: LevelWithAvailability[]
 }
 
 /**
@@ -164,7 +179,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
  *     type: string
  *   inventory:
  *     description: the stock location address ID
- *     type: string
+ *     $ref: "#/components/schemas/ResponseInventoryItem"
  *   sales_channel_availability:
  *     type: object
  *     description: An optional key-value map with additional details

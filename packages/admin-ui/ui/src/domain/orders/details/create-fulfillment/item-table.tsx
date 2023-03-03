@@ -93,7 +93,9 @@ const FulfillmentLine = ({
   }, [variant, locationId, isLoading])
 
   const validQuantity =
-    !locationId || (locationId && quantities[item.id] < availableQuantity)
+    !locationId ||
+    (locationId &&
+      (!availableQuantity || quantities[item.id] < availableQuantity))
 
   React.useEffect(() => {
     setErrors((errors) => {
