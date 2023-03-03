@@ -1,4 +1,4 @@
-import { aliasTo, asClass, asFunction, asValue } from "awilix"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
@@ -383,36 +383,49 @@ export async function registerServices(
         const name = appDetails.application_name
         container.register({
           [`${name}Oauth`]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
         })
       } else if (loaded.prototype instanceof FulfillmentService) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "fulfillmentProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
+            lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+          })
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which fulfillment provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ).singleton(),
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
+            }
+          ),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (isNotificationService(loaded.prototype)) {
         container.registerAdd(
           "notificationProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
+            lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+          })
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which notification provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ).singleton(),
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
+            }
+          ),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (
@@ -423,7 +436,10 @@ export async function registerServices(
         // resolution if we already know which file storage provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
           [`fileService`]: aliasTo(name),
         })
@@ -432,7 +448,10 @@ export async function registerServices(
         // resolution if we already know which search provider we need to use
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
           [`searchService`]: aliasTo(name),
         })
@@ -441,19 +460,27 @@ export async function registerServices(
       } else if (loaded.prototype instanceof AbstractTaxService) {
         container.registerAdd(
           "taxProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
+            lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+          })
         )
 
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ).singleton(),
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
+            }
+          ),
           [`tp_${loaded.identifier}`]: aliasTo(name),
         })
       } else {
         container.register({
           [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options),
+            {
+              lifetime: loaded.LIFE_TIME || Lifetime.TRANSIENT,
+            }
           ),
         })
       }
@@ -501,18 +528,16 @@ function registerRepositories(
 ): void {
   const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
   files.forEach((fn) => {
-    const loaded = require(fn) as ClassConstructor<unknown>
+    const loaded = require(fn)
 
-    Object.entries(loaded).map(
-      ([, val]: [string, ClassConstructor<unknown>]) => {
-        if (typeof val === "function") {
-          const name = formatRegistrationName(fn)
-          container.register({
-            [name]: asClass(val),
-          })
-        }
+    Object.entries(loaded).map(([, val]: [string, any]) => {
+      if (typeof loaded === "object") {
+        const name = formatRegistrationName(fn)
+        container.register({
+          [name]: asValue(val),
+        })
       }
-    )
+    })
   })
 }
 
