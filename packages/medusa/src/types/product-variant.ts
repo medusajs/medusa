@@ -90,6 +90,11 @@ export type UpdateProductVariantData = {
   updateData: UpdateProductVariantInput
 }[]
 
+export type UpdateVariantPricesData = {
+  variantId: string
+  prices: ProductVariantPrice[]
+}[]
+
 export class FilterableProductVariantProps {
   @ValidateNested()
   @IsType([String, [String], StringComparisonOperator])

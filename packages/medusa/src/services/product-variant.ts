@@ -38,6 +38,7 @@ import {
   ProductVariantPrice,
   UpdateProductVariantData,
   UpdateProductVariantInput,
+  UpdateVariantPricesData,
 } from "../types/product-variant"
 import {
   buildQuery,
@@ -235,7 +236,7 @@ class ProductVariantService extends TransactionBaseService {
       const result = await variantRepo.save(productVariant)
 
       if (prices) {
-        await this.updateVariantPricesNew([
+        await this.updateVariantPrices([
           {
             variantId: result.id,
             prices,
@@ -398,7 +399,7 @@ class ProductVariantService extends TransactionBaseService {
         }))
 
       if (variantPriceUpdateData.length) {
-        await this.updateVariantPricesNew(variantPriceUpdateData)
+        await this.updateVariantPrices(variantPriceUpdateData)
       }
 
       const results: [ProductVariant, UpdateProductVariantInput][] =
@@ -456,6 +457,14 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   /**
+   * Updates variant/prices collection.
+   * Deletes any prices that are not in the update object, and is not associated with a price list.
+   * @param data
+   * @returns empty promise
+   */
+  async updateVariantPrices(data: UpdateVariantPricesData): Promise<void>
+
+  /**
    * Updates a variant's prices.
    * Deletes any prices that are not in the update object, and is not associated with a price list.
    * @param variantId - the id of variant
@@ -463,6 +472,35 @@ class ProductVariantService extends TransactionBaseService {
    * @returns empty promise
    */
   async updateVariantPrices(
+    variantId: string,
+    prices: ProductVariantPrice[]
+  ): Promise<void>
+
+  async updateVariantPrices(
+    variantIdOrData: string | UpdateVariantPricesData,
+    prices?: ProductVariantPrice[]
+  ): Promise<void> {
+    let res
+
+    if (prices && isString(variantIdOrData)) {
+      res = await this.updateVariantPricesLegacy(variantIdOrData, prices)
+    } else {
+      res = await this.updateVariantPricesBatch(
+        variantIdOrData as UpdateVariantPricesData
+      )
+    }
+
+    return res
+  }
+
+  /**
+   * Updates a variant's prices.
+   * Deletes any prices that are not in the update object, and is not associated with a price list.
+   * @param variantId - the id of variant
+   * @param prices - the update prices
+   * @returns empty promise
+   */
+  protected async updateVariantPricesLegacy(
     variantId: string,
     prices: ProductVariantPrice[]
   ): Promise<void> {
@@ -492,29 +530,7 @@ class ProductVariantService extends TransactionBaseService {
     })
   }
 
-  /**
-   * Updates variant/prices collection.
-   * Deletes any prices that are not in the update object, and is not associated with a price list.
-   * @param data
-   * @returns empty promise
-   */
-  async updateVariantPrices(
-    data: { variantId: string; prices: ProductVariantPrice[] }[]
-  ): Promise<void>
-
-  /**
-   * Updates a variant's prices.
-   * Deletes any prices that are not in the update object, and is not associated with a price list.
-   * @param variantId - the id of variant
-   * @param prices - the update prices
-   * @returns empty promise
-   */
-  async updateVariantPrices(
-    variantId: string,
-    prices: ProductVariantPrice[]
-  ): Promise<void>
-
-  async updateVariantPricesNew(
+  protected async updateVariantPricesBatch(
     data: { variantId: string; prices: ProductVariantPrice[] }[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
