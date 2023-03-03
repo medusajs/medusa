@@ -53,6 +53,15 @@ describe("JobSchedulerService", () => {
 
       it("added the handler to the job queue", () => {
         expect(jobScheduler.handlers_.get("eventName").length).toEqual(1)
+        expect(jobScheduler.queue_.add).toHaveBeenCalledWith(
+          {
+            eventName: "eventName",
+            data: { data: "test" },
+          },
+          {
+            repeat: { cron: "* * * * *" },
+          }
+        )
       })
     })
 

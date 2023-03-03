@@ -3,7 +3,12 @@ import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import {
+  FindConfig,
+  QuerySelector,
+  TreeQuerySelector,
+  Selector,
+} from "../types/common"
 import { buildQuery } from "../utils"
 import { EventBusService } from "."
 import {
@@ -49,7 +54,7 @@ class ProductCategoryService extends TransactionBaseService {
    *   as the second element.
    */
   async listAndCount(
-    selector: QuerySelector<ProductCategory>,
+    selector: TreeQuerySelector<ProductCategory>,
     config: FindConfig<ProductCategory> = {
       skip: 0,
       take: 100,
@@ -57,6 +62,9 @@ class ProductCategoryService extends TransactionBaseService {
     },
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
+    const includeDescendantsTree = selector.include_descendants_tree
+    delete selector.include_descendants_tree
+
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
@@ -71,11 +79,22 @@ class ProductCategoryService extends TransactionBaseService {
 
     const query = buildQuery(selector_, config)
 
-    return await productCategoryRepo.getFreeTextSearchResultsAndCount(
-      query,
-      q,
-      treeSelector
-    )
+    let [productCategories, count] =
+      await productCategoryRepo.getFreeTextSearchResultsAndCount(
+        query,
+        q,
+        treeSelector
+      )
+
+    if (includeDescendantsTree) {
+      productCategories = await Promise.all(
+        productCategories.map(async (productCategory) =>
+          productCategoryRepo.findDescendantsTree(productCategory)
+        )
+      )
+    }
+
+    return [productCategories, count]
   }
 
   /**

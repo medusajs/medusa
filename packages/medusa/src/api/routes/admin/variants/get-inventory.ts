@@ -4,6 +4,7 @@ import {
 } from "../../../../types/inventory"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import {
+  SalesChannelInventoryService,
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
@@ -75,6 +76,8 @@ export default async (req, res) => {
   const channelLocationService: SalesChannelLocationService = req.scope.resolve(
     "salesChannelLocationService"
   )
+  const salesChannelInventoryService: SalesChannelInventoryService =
+    req.scope.resolve("salesChannelInventoryService")
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
@@ -87,7 +90,7 @@ export default async (req, res) => {
 
   const variant = await variantService.retrieve(id, { select: ["id"] })
 
-  const responseVariant: AdminGetVariantsVariantInventoryRes = {
+  const responseVariant: VariantInventory = {
     id: variant.id,
     inventory: [],
     sales_channel_availability: [],
@@ -106,11 +109,13 @@ export default async (req, res) => {
     })
   )
 
+  const variantInventoryItems =
+    await productVariantInventoryService.listByVariant(variant.id)
+
   const inventory =
     await productVariantInventoryService.listInventoryItemsByVariant(variant.id)
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
-  // TODO: adjust for required quantity
   if (inventory.length) {
     responseVariant.sales_channel_availability = await Promise.all(
       channels.map(async (channel) => {
@@ -122,10 +127,11 @@ export default async (req, res) => {
           }
         }
 
-        const quantity = await inventoryService.retrieveAvailableQuantity(
-          inventory[0].id,
-          channel.locations
-        )
+        const quantity =
+          await productVariantInventoryService.getVariantQuantityFromVariantInventoryItems(
+            variantInventoryItems,
+            channel.id
+          )
 
         return {
           channel_name: channel.name as string,
@@ -150,7 +156,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
 }
 
 /**
- * @schema AdminGetVariantsVariantInventoryRes
+ * @schema VariantInventory
  * type: object
  * properties:
  *   id:
@@ -173,7 +179,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
  *         description: Available quantity in sales channel
  *         type: number
  */
-export type AdminGetVariantsVariantInventoryRes = {
+export type VariantInventory = {
   id: string
   inventory: ResponseInventoryItem[]
   sales_channel_availability: {
@@ -181,4 +187,16 @@ export type AdminGetVariantsVariantInventoryRes = {
     channel_id: string
     available_quantity: number
   }[]
+}
+
+/**
+ * @schema AdminGetVariantsVariantInventoryRes
+ * type: object
+ * properties:
+ *   variant:
+ *     type: object
+ *     $ref: "#/components/schemas/VariantInventory"
+ */
+export type AdminGetVariantsVariantInventoryRes = {
+  variant: VariantInventory
 }

@@ -230,11 +230,12 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
  *     description: The number of items per page
  */
 export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
-  Partial<InventoryItemDTO> & {
-    location_levels?: InventoryLevelDTO[]
-    variants?: ProductVariant[]
+  PaginatedResponse & {
+    inventory_items: (Partial<InventoryItemDTO> & {
+      location_levels?: InventoryLevelDTO[]
+      variants?: ProductVariant[]
+    })[]
   }
-
 /**
  * @schema AdminInventoryItemsLocationLevelsRes
  * type: object

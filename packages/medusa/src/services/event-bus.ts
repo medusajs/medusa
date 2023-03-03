@@ -1,4 +1,4 @@
-import Bull from "bull"
+import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -40,14 +40,16 @@ type SubscriberDescriptor = {
   subscriber: Subscriber
 }
 
-type EmitOptions = {
+export type EmitOptions = {
   delay?: number
   attempts: number
   backoff?: {
     type: "fixed" | "exponential"
     delay: number
   }
-}
+} & JobOptions
+
+const COMPLETED_JOB_TTL = 10000
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -225,10 +227,13 @@ export default class EventBusService {
     data: T,
     options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
-    const opts: { removeOnComplete: boolean } & EmitOptions = {
-      removeOnComplete: true,
-      attempts: 1,
+    const opts: EmitOptions = {
+      removeOnComplete: {
+        age: COMPLETED_JOB_TTL,
+      },
+      ...options,
     }
+
     if (typeof options.attempts === "number") {
       opts.attempts = options.attempts
       if (isDefined(options.backoff)) {
@@ -295,7 +300,7 @@ export default class EventBusService {
           this.queue_
             .add(
               { eventName: job.event_name, data: job.data },
-              job.options ?? { removeOnComplete: true }
+              { jobId: job.id, ...job.options }
             )
             .then(async () => {
               await stagedJobRepo.remove(job)

@@ -1,5 +1,5 @@
 import CustomShippingOptionService from "../custom-shipping-option"
-import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
+import { MockManager, MockRepository } from "medusa-test-utils"
 
 describe("CustomShippingOptionService", () => {
   describe("list", () => {
@@ -38,7 +38,7 @@ describe("CustomShippingOptionService", () => {
           cart_id: "test-cso-cart",
         },
         relations: {
-          "shipping_option": true
+          shipping_option: true,
         },
       })
     })
@@ -76,8 +76,8 @@ describe("CustomShippingOptionService", () => {
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledWith({
         where: { id: "cso-test" },
         relations: {
-          "shipping_option": true,
-          "cart": true,
+          shipping_option: true,
+          cart: true,
         },
       })
     })
@@ -113,20 +113,24 @@ describe("CustomShippingOptionService", () => {
       await customShippingOptionService.create(customShippingOption)
 
       expect(customShippingOptionRepository.create).toHaveBeenCalledTimes(1)
-      expect(customShippingOptionRepository.create).toHaveBeenCalledWith({
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: undefined,
-      })
+      expect(customShippingOptionRepository.create).toHaveBeenCalledWith([
+        {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+          metadata: undefined,
+        },
+      ])
 
       expect(customShippingOptionRepository.save).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.save).toHaveBeenCalledWith({
         id: "test-cso",
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: undefined,
+        0: {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+          metadata: undefined,
+        },
       })
     })
   })

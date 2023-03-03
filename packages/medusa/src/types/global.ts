@@ -21,6 +21,7 @@ declare global {
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
       allowedProperties: string[]
+      includes?: Record<string, boolean>
       errors: string[]
     }
   }

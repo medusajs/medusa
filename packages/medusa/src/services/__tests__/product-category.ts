@@ -55,6 +55,7 @@ describe("ProductCategoryService", () => {
       expect(result.length).toEqual(1)
       expect(result[0].id).toEqual(validID)
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.findDescendantsTree).not.toBeCalled()
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
         {
           order: {
@@ -76,6 +77,16 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
       expect(result).toEqual([])
       expect(count).toEqual(0)
+    })
+
+    it("successfully calls tree descendants when requested to be included", async () => {
+      const validID = IdMap.getId(validProdCategoryId)
+      const [result, count] = await productCategoryService
+        .listAndCount({ include_descendants_tree: true })
+
+      expect(result[0].id).toEqual(validID)
+      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
     })
   })
 
