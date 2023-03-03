@@ -3,6 +3,11 @@
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/admin-ui"
+  },
   "exports": {
     ".": "./dist/index.js",
     "./ui": "./ui",

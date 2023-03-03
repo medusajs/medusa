@@ -20,6 +20,11 @@
     "build": "tsc --build",
     "test": "jest --passWithNoTests"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/admin"
+  },
   "dependencies": {
     "@medusajs/admin-ui": "*",
     "commander": "^10.0.0",
