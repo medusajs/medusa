@@ -16,7 +16,7 @@ const defaultFeatureFlagContext: {
   },
 }
 
-const FeatureFlagContext = React.createContext(defaultFeatureFlagContext)
+export const FeatureFlagContext = React.createContext(defaultFeatureFlagContext)
 
 export const FeatureFlagProvider = ({ children }: PropsWithChildren) => {
   const { user, isLoading } = useAdminGetSession()
