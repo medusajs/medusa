@@ -448,6 +448,7 @@ class ProductVariantService extends TransactionBaseService {
             }
 
             let result = variant
+            // No need to update if the nothing on the variant has been specified
             if (shouldUpdate) {
               result = await variantRepo.save(variant)
             }
@@ -701,7 +702,7 @@ class ProductVariantService extends TransactionBaseService {
         amount: number
       }
     }[]
-  ): Promise<MoneyAmount[]> {
+  ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
@@ -736,10 +737,13 @@ class ProductVariantService extends TransactionBaseService {
         )
 
         if (moneyAmount) {
-          dataToUpdate.push({
-            ...moneyAmount,
-            amount: price.amount,
-          })
+          // No need to update if the amount is the same
+          if (moneyAmount.amount !== price.amount) {
+            dataToUpdate.push({
+              ...moneyAmount,
+              amount: price.amount,
+            })
+          }
         } else {
           dataToCreate.push(
             moneyAmountRepo.create({
@@ -750,12 +754,17 @@ class ProductVariantService extends TransactionBaseService {
         }
       })
 
-      return (
-        await Promise.all([
-          moneyAmountRepo.insertBulk(dataToCreate),
-          moneyAmountRepo.save(dataToUpdate),
-        ])
-      ).flat() as MoneyAmount[]
+      const promises: Promise<any>[] = []
+
+      if (dataToCreate.length) {
+        promises.push(moneyAmountRepo.insertBulk(dataToCreate))
+      }
+
+      if (dataToUpdate.length) {
+        promises.push(moneyAmountRepo.save(dataToUpdate))
+      }
+
+      await Promise.all(promises)
     })
   }
 
@@ -764,7 +773,7 @@ class ProductVariantService extends TransactionBaseService {
       variantId: string
       price: WithRequiredProperty<ProductVariantPrice, "currency_code">
     }[]
-  ): Promise<MoneyAmount[]> {
+  ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
@@ -791,25 +800,28 @@ class ProductVariantService extends TransactionBaseService {
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
       const dataToUpdate: MoneyAmount[] = []
 
-      data.forEach((data_) => {
+      data.forEach(({ price, variantId }) => {
         const variantMoneyAmounts =
-          moneyAmountsMapToVariantId.get(data_.variantId) ?? []
+          moneyAmountsMapToVariantId.get(variantId) ?? []
 
-        const hasMoneyAmount = variantMoneyAmounts.find(
-          (ma) => ma.currency_code === data_.price.currency_code
+        const moneyAmount = variantMoneyAmounts.find(
+          (ma) => ma.currency_code === price.currency_code
         )
 
-        if (hasMoneyAmount) {
-          dataToUpdate.push({
-            ...hasMoneyAmount,
-            amount: data_.price.amount,
-          })
+        if (moneyAmount) {
+          // No need to update if the amount is the same
+          if (moneyAmount.amount !== price.amount) {
+            dataToUpdate.push({
+              ...moneyAmount,
+              amount: price.amount,
+            })
+          }
         } else {
           dataToCreate.push(
             moneyAmountRepo.create({
-              ...data_.price,
-              variant_id: data_.variantId,
-              currency_code: data_.price.currency_code,
+              ...price,
+              variant_id: variantId,
+              currency_code: price.currency_code,
             }) as QueryDeepPartialEntity<MoneyAmount>
           )
         }
@@ -818,22 +830,14 @@ class ProductVariantService extends TransactionBaseService {
       const promises: Promise<any>[] = []
 
       if (dataToCreate.length) {
-        const queryBuilder = moneyAmountRepo.createQueryBuilder()
-        promises.push(
-          queryBuilder
-            .insert()
-            .into(MoneyAmount)
-            .values(dataToCreate)
-            .returning("*")
-            .execute()
-        )
+        promises.push(moneyAmountRepo.insertBulk(dataToCreate))
       }
 
       if (dataToUpdate.length) {
         promises.push(moneyAmountRepo.save(dataToUpdate))
       }
 
-      return (await Promise.all(promises)).flat() as MoneyAmount[]
+      await Promise.all(promises)
     })
   }
 
