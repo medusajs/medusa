@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:25](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L25)
+[packages/medusa/src/services/idempotency-key.ts:25](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L25)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L23)
+[packages/medusa/src/services/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L23)
 
 ___
 
@@ -90,7 +90,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L20)
+[packages/medusa/src/services/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L20)
 
 ___
 
@@ -104,7 +104,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:21](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L21)
+[packages/medusa/src/services/idempotency-key.ts:21](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L21)
 
 ## Methods
 
@@ -143,7 +143,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -169,7 +169,7 @@ the created idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:67](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L67)
+[packages/medusa/src/services/idempotency-key.ts:67](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L67)
 
 ___
 
@@ -196,7 +196,7 @@ the existing or created idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:41](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L41)
+[packages/medusa/src/services/idempotency-key.ts:41](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L41)
 
 ___
 
@@ -220,7 +220,7 @@ result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:116](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L116)
+[packages/medusa/src/services/idempotency-key.ts:116](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L116)
 
 ___
 
@@ -244,7 +244,7 @@ idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:85](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L85)
+[packages/medusa/src/services/idempotency-key.ts:85](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L85)
 
 ___
 
@@ -268,7 +268,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -303,7 +303,7 @@ result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:145](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L145)
+[packages/medusa/src/services/idempotency-key.ts:145](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L145)
 
 ___
 
@@ -327,7 +327,7 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -356,4 +356,4 @@ new updated idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:174](https://github.com/medusajs/medusa/blob/fefc248a4/packages/medusa/src/services/idempotency-key.ts#L174)
+[packages/medusa/src/services/idempotency-key.ts:174](https://github.com/medusajs/medusa/blob/3718f88c6/packages/medusa/src/services/idempotency-key.ts#L174)
