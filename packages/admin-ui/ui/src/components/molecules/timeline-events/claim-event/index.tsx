@@ -6,7 +6,6 @@ import {
 import { Fragment } from "react"
 import CreateFulfillmentModal from "../../../../domain/orders/details/create-fulfillment"
 import { ReceiveReturnMenu } from "../../../../domain/orders/details/receive-return"
-import { orderReturnableFields } from "../../../../domain/orders/details/utils/order-returnable-fields"
 import useOrdersExpandParam from "../../../../domain/orders/details/utils/use-admin-expand-paramter"
 import { ClaimEvent } from "../../../../hooks/use-build-timeline"
 import useNotification from "../../../../hooks/use-notification"
@@ -49,7 +48,6 @@ const Claim = ({ event }: Props) => {
   const { orderRelations } = useOrdersExpandParam()
   // Orders and returns aren't linked in `medusa-react` so we need to manually refetch the order
   const { refetch } = useAdminOrder(event.orderId, {
-    fields: orderReturnableFields,
     expand: orderRelations,
   })
 
@@ -104,13 +102,13 @@ const Claim = ({ event }: Props) => {
     topNode: Actions,
     children: [
       <Fragment key={event.id}>
-        <div className="flex flex-col gap-y-base">
+        <div className="gap-y-base flex flex-col">
           <ClaimStatus event={event} />
           {renderClaimItems(event)}
           {event.claim?.additional_items?.length > 0 &&
             renderReplacementItems(event)}
           {shouldHaveButtonActions && (
-            <div className="flex items-center gap-x-xsmall">
+            <div className="gap-x-xsmall flex items-center">
               {event.claim.return_order.status === "requested" && (
                 <Button
                   variant="secondary"
@@ -157,7 +155,7 @@ const Claim = ({ event }: Props) => {
 export default Claim
 
 const ClaimStatus = ({ event }: Props) => {
-  const divider = <div className="h-11 w-px bg-grey-20" />
+  const divider = <div className="bg-grey-20 h-11 w-px" />
 
   const shouldHaveFulfillment =
     !!event.claim?.fulfillment_status &&
@@ -168,7 +166,7 @@ const ClaimStatus = ({ event }: Props) => {
 
   if (event.claim?.type === "replace") {
     refundStatus =
-      event.claim?.return_order.status === "received"
+      event.claim?.return_order?.status === "received"
         ? "refunded"
         : event.claim?.payment_status
   }
@@ -178,15 +176,15 @@ const ClaimStatus = ({ event }: Props) => {
   }
 
   return (
-    <div className="inter-small-regular flex items-center gap-x-base">
-      <div className="flex flex-col gap-y-2xsmall">
+    <div className="inter-small-regular gap-x-base flex items-center">
+      <div className="gap-y-2xsmall flex flex-col">
         <span className="text-grey-50">Refund:</span>
         <RefundStatus refundStatus={refundStatus} />
       </div>
       {shouldHaveReturnStatus && (
         <>
           {divider}
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             <span className="text-grey-50">Return:</span>
             <ReturnStatus returnStatus={event.returnStatus} />
           </div>
@@ -195,7 +193,7 @@ const ClaimStatus = ({ event }: Props) => {
       {shouldHaveFulfillment && (
         <>
           {divider}
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             <span className="text-grey-50">Fulfillment:</span>
             <FulfillmentStatus
               fulfillmentStatus={event.claim?.fulfillment_status}
@@ -209,7 +207,7 @@ const ClaimStatus = ({ event }: Props) => {
 
 const renderClaimItems = (event: ClaimEvent) => {
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       <span className="inter-small-regular text-grey-50">Claim Items</span>
       <div>
         {event.claimItems.map((i, index) => (
@@ -222,7 +220,7 @@ const renderClaimItems = (event: ClaimEvent) => {
 
 const renderReplacementItems = (event: ClaimEvent) => {
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       <span className="inter-small-regular text-grey-50">
         Replacement Items
       </span>
