@@ -1,16 +1,16 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
-  useCreateCart,
-  useUpdateCart,
+  useAddShippingMethodToCart,
   useCompleteCart,
+  useCreateCart,
   useCreatePaymentSession,
-  useUpdatePaymentSession,
+  useDeletePaymentSession,
   useRefreshPaymentSession,
   useSetPaymentSession,
-  useDeletePaymentSession,
-  useAddShippingMethodToCart,
+  useUpdateCart,
+  useUpdatePaymentSession,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useCreateCart hook", () => {
