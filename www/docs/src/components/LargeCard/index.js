@@ -1,22 +1,26 @@
 import React from "react"
-import ThemedImage from '@theme/ThemedImage'
-import Bordered from '../Bordered'
 import './index.css'
 import BorderedIcon from "../BorderedIcon"
+import clsx from 'clsx';
+import Badge from "../Badge";
 
 export default function LargeCard ({
   Icon,
   image,
   title,
   action: {
-    label,
     href
   },
+  isSoon = false,
   children
 }) {
   return (
-    <article className="large-card">
+    <article className={clsx(
+      'large-card',
+      isSoon && 'large-card-soon'
+    )}>
       <div>
+        {isSoon && <Badge variant={'purple'} className={'large-card-badge'}>Guide coming soon</Badge>}
         {(Icon || image) && (
           <BorderedIcon
             IconComponent={Icon}

@@ -34,7 +34,9 @@ export default function DocSidebarItemHtml({item, level, index}) {
 
       </span>
     {customProps?.sidebar_is_soon && (
-      <span className={`sidebar-badge sidebar-soon-badge`}>Soon</span>
+      <Badge variant='purple' className={`sidebar-soon-badge`}>
+        Soon
+      </Badge>
     )}
     </li>
   );

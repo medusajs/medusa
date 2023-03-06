@@ -4,17 +4,9 @@
   border-radius: var(--ifm-global-radius);
 }
 
-.card-icon-wrapper {
-  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
-}
-
 img.card-icon {
   width: var(--ifm-card-icon-size);
   height: var(--ifm-card-icon-size);
-}
-
-.card:hover {
-  background-color: var(--ifm-card-bg-hover);
 }
 
 .cards-grid {
@@ -68,6 +60,11 @@ html[data-theme="dark"] .card-highlighted:hover::before {
 
 .card + p {
   margin-top: var(--ifm-base-margin-vertical);
+}
+
+.card-wrapper:hover > [class*=cardSoon] [class*=cardTitle],
+.card-wrapper:hover > [class*=cardSoon] [class*=cardDescription] {
+  color: var(--medusa-text-disabled);
 }
 
 @media screen and (min-width: 992px) {

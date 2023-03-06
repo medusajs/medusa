@@ -7,6 +7,7 @@ import isInternalUrl from '@docusaurus/isInternalUrl';
 import IconExternalLink from '@theme/Icon/ExternalLink';
 import styles from './styles.module.css';
 import DocSidebarItemIcon from '../Icon';
+import Badge from '../../../components/Badge';
 
 export default function DocSidebarItemLink({
   item,
@@ -56,7 +57,9 @@ export default function DocSidebarItemLink({
         {!isInternalLink && <IconExternalLink />}
       </Link>
       {customProps?.sidebar_is_soon && (
-        <span className={`sidebar-badge sidebar-soon-badge`}>Soon</span>
+        <Badge variant='purple' className={`sidebar-soon-badge`}>
+          Soon
+        </Badge>
       )}
     </li>
   );
