@@ -26,9 +26,7 @@ export const ProductCategoryRepository = dataSource
 
       return sortChildren(
         // Returns the productCategory with all of its descendants until the last child node
-        await this.findDescendantsTree(
-          productCategory
-        )
+        await this.findDescendantsTree(productCategory)
       )
     },
 
@@ -120,7 +118,7 @@ export const ProductCategoryRepository = dataSource
           categories.map(async (productCategory) => {
             productCategory = await this.findDescendantsTree(productCategory)
 
-            return sortChildren(productCategory)
+            return sortChildren(productCategory, treeScope)
           })
         )
       }
