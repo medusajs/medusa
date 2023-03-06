@@ -109,7 +109,7 @@ const Claim = ({ event }: Props) => {
             renderReplacementItems(event)}
           {shouldHaveButtonActions && (
             <div className="gap-x-xsmall flex items-center">
-              {event.claim.return_order.status === "requested" && (
+              {event.claim.return_order?.status === "requested" && (
                 <Button
                   variant="secondary"
                   size="small"
@@ -243,7 +243,7 @@ const renderClaimActions = (
   if (!event.canceledAt && !event.isCanceled) {
     if (
       event.claim.return_order &&
-      event.claim.return_order.status === "requested"
+      event.claim.return_order?.status === "requested"
     ) {
       actions.push({
         icon: <TrashIcon size={20} />,
