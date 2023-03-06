@@ -1,13 +1,13 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 
-import {
-  useAdminDeleteSalesChannel,
-  useAdminCreateSalesChannel,
-  useAdminUpdateSalesChannel,
-  useAdminDeleteProductsFromSalesChannel,
-  useAdminAddProductsToSalesChannel,
-} from "../../../../src"
 import { fixtures } from "../../../../mocks/data"
+import {
+  useAdminAddProductsToSalesChannel,
+  useAdminCreateSalesChannel,
+  useAdminDeleteProductsFromSalesChannel,
+  useAdminDeleteSalesChannel,
+  useAdminUpdateSalesChannel,
+} from "../../../../src"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateSalesChannel hook", () => {

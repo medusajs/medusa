@@ -1,7 +1,8 @@
 import { useAdminVariant, useAdminVariants, useAdminVariantsInventory } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
+
 import { createWrapper } from "../../../utils"
+import { fixtures } from "../../../../mocks/data"
+import { renderHook } from "@testing-library/react-hooks"
 
 describe("useAdminVariants hook", () => {
   test("returns a list of variants", async () => {
