@@ -43,6 +43,7 @@ import {
 import {
   buildQuery,
   buildRelations,
+  hasChanges,
   isObject,
   isString,
   setMetadata,
@@ -414,7 +415,7 @@ class ProductVariantService extends TransactionBaseService {
             const { prices, options, metadata, inventory_quantity, ...rest } =
               updateData
 
-            let shouldUpdate = false
+            const shouldUpdate = hasChanges(variant, rest)
 
             if (options?.length) {
               for (const option of options) {
@@ -427,21 +428,13 @@ class ProductVariantService extends TransactionBaseService {
             }
 
             if (isObject(metadata)) {
-              shouldUpdate = true
-
               variant.metadata = setMetadata(
                 variant as ProductVariant,
                 metadata
               )
             }
 
-            if (typeof inventory_quantity === "number") {
-              shouldUpdate = true
-              variant.inventory_quantity = inventory_quantity as number
-            }
-
             if (Object.keys(rest).length) {
-              shouldUpdate = true
               for (const [key, value] of Object.entries(rest)) {
                 variant[key] = value
               }
