@@ -353,29 +353,29 @@ class ProductVariantService extends TransactionBaseService {
         await this.updateVariantPrices(variantPriceUpdateData)
       }
 
-      const results: [ProductVariant, UpdateProductVariantInput][] =
+      const results: [ProductVariant, UpdateProductVariantInput, boolean][] =
         await Promise.all(
           variantData.map(async ({ variant, updateData }) => {
-            const { prices, options, metadata, inventory_quantity, ...rest } =
-              updateData
+            const { prices, options, ...rest } = updateData
 
             const shouldUpdate = hasChanges(variant, rest)
+            const shouldEmitUpdateEvent =
+              shouldUpdate || !!options?.length || !!prices?.length
 
-            if (options?.length) {
-              for (const option of options) {
-                await this.updateOptionValue(
-                  variant.id!,
-                  option.option_id,
-                  option.value
-                )
-              }
+            for (const option of options ?? []) {
+              await this.updateOptionValue(
+                variant.id!,
+                option.option_id,
+                option.value
+              )
             }
 
-            if (isObject(metadata)) {
+            if (isObject(rest.metadata)) {
               variant.metadata = setMetadata(
                 variant as ProductVariant,
-                metadata
+                rest.metadata
               )
+              delete rest.metadata
             }
 
             if (Object.keys(rest).length) {
@@ -385,24 +385,30 @@ class ProductVariantService extends TransactionBaseService {
             }
 
             let result = variant
-            // No need to update if the nothing on the variant has been specified
+
+            // No need to update if the nothing on the variant has been changed
             if (shouldUpdate) {
               result = await variantRepo.save(variant)
             }
 
-            return [result, updateData]
+            return [result, updateData, shouldEmitUpdateEvent]
           })
         )
 
       const eventBusServiceTx = this.eventBus_.withTransaction(manager)
 
       await Promise.all(
-        results.map(async ([result, updatedData]) => {
-          return eventBusServiceTx.emit(ProductVariantService.Events.UPDATED, {
-            id: result.id,
-            product_id: result.product_id,
-            fields: Object.keys(updatedData),
-          })
+        results.map(async ([result, updatedData, shouldEmitUpdateEvent]) => {
+          if (shouldEmitUpdateEvent) {
+            return eventBusServiceTx.emit(
+              ProductVariantService.Events.UPDATED,
+              {
+                id: result.id,
+                product_id: result.product_id,
+                fields: Object.keys(updatedData),
+              }
+            )
+          }
         })
       )
 
