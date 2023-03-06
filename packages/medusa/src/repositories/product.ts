@@ -176,8 +176,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     if (tags) {
       const joinMethod = options_.relations.tags
-        ? queryBuilder.leftJoinAndSelect
-        : queryBuilder.leftJoin
+        ? queryBuilder.leftJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.leftJoin.bind(queryBuilder)
 
       const tagIds = tags.value
 
@@ -196,8 +196,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     if (salesChannelId) {
       const joinMethod = options_.relations.sales_channel_id
-        ? queryBuilder.innerJoinAndSelect
-        : queryBuilder.innerJoin
+        ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.innerJoin.bind(queryBuilder)
 
       const scIds = salesChannelId.value
 
@@ -215,8 +215,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     if (categoryId) {
       const joinMethod = options_.relations.category_id
-        ? queryBuilder.innerJoinAndSelect
-        : queryBuilder.innerJoin
+        ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.innerJoin.bind(queryBuilder)
 
       let categoryIds = categoryId.value
 
