@@ -156,6 +156,7 @@ const getReturnableItemsValues = (order: Order) => {
       thumbnail: item.thumbnail,
       refundable: item.refundable || 0,
       product_title: item.variant.product.title,
+      sku: item.variant.sku,
       variant_title: item.variant.title,
       quantity: returnableQuantity,
       original_quantity: item.quantity,

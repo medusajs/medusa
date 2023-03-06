@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import React, { useCallback, useMemo } from "react"
 import { Controller, useWatch } from "react-hook-form"
 import { ItemsToReturnFormType, ReturnItemObject } from "."
+import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import { Thumbnail } from "../../../../components/atoms/thumbnail/thumbnail"
 import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -98,14 +99,27 @@ export const useItemsToReturnColumns = ({ form, orderCurrency }: Props) => {
       columnHelper.accessor("variant_title", {
         header: "Product",
         cell: ({ getValue, row: { original } }) => {
+          const value = getValue()
+
           return (
-            <div className="flex items-center gap-x-base py-xsmall">
+            <div className="gap-x-base py-xsmall flex items-center">
               <div>
                 <Thumbnail src={original.thumbnail} />
               </div>
               <div className="inter-small-regular">
-                <p>{original.product_title}</p>
-                <p className="text-grey-50">{getValue()}</p>
+                <div className="gap-x-2xsmall flex items-center">
+                  <p>{original.product_title}</p>
+                  {value && <p className="text-grey-50">({value})</p>}
+                </div>
+                {original.sku && (
+                  <span>
+                    <CopyToClipboard
+                      value={original.sku}
+                      displayValue={original.sku}
+                      iconSize={14}
+                    />
+                  </span>
+                )}
               </div>
             </div>
           )
