@@ -20,7 +20,7 @@ properties:
   claim_item:
     description: A claim item object. Available if the relation `claim_item` is expanded.
     nullable: true
-    $ref: ./ClaimItem.yaml
+    type: object
   url:
     description: The URL of the image
     type: string

@@ -59,7 +59,7 @@ properties:
   parent_discount:
     description: Available if the relation `parent_discount` is expanded.
     nullable: true
-    $ref: ./Discount.yaml
+    type: object
   starts_at:
     description: The time at which the discount can be used.
     type: string

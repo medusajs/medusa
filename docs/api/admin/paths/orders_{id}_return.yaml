@@ -12,6 +12,16 @@ post:
       description: The ID of the Order.
       schema:
         type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the result.
+      schema:
+        type: string
   requestBody:
     content:
       application/json:
@@ -19,6 +29,7 @@ post:
           $ref: ../components/schemas/AdminPostOrdersOrderReturnsReq.yaml
   x-codegen:
     method: requestReturn
+    params: AdminPostOrdersOrderReturnsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

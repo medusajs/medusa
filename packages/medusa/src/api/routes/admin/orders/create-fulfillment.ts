@@ -9,16 +9,15 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import {
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /orders/{id}/fulfillment
@@ -28,6 +27,8 @@ import { Fulfillment, LineItem } from "../../../../models"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -35,6 +36,7 @@ import { Fulfillment, LineItem } from "../../../../models"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderFulfillmentsReq"
  * x-codegen:
  *   method: createFulfillment
+ *   params: AdminPostOrdersOrderFulfillmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -95,10 +97,7 @@ import { Fulfillment, LineItem } from "../../../../models"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    AdminPostOrdersOrderFulfillmentsReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
   const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
@@ -136,9 +135,8 @@ export default async (req, res) => {
     }
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order })
@@ -239,3 +237,5 @@ class Item {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderFulfillmentsParams extends FindParams {}

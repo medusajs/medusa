@@ -53,6 +53,12 @@ export function transformQuery<
         ] as unknown as string[]
       }
 
+      const includesFields = Object.keys(req["includes"] ?? {})
+      if (includesFields.length) {
+        req.allowedProperties = req.allowedProperties ?? []
+        req.allowedProperties.push(...includesFields)
+      }
+
       if (queryConfig?.isList) {
         req.listConfig = prepareListQuery(
           validated,

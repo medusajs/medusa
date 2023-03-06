@@ -4,6 +4,7 @@ import { ExtendedRequest } from "../../../../types/global"
 import { CurrencyService } from "../../../../services"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /currencies/{code}
@@ -56,8 +57,15 @@ export default async (req: ExtendedRequest<Currency>, res) => {
   const code = req.params.code as string
   const data = req.validatedBody as AdminPostCurrenciesCurrencyReq
   const currencyService: CurrencyService = req.scope.resolve("currencyService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
-  const currency = await currencyService.update(code, data)
+  const currency = await manager.transaction(
+    async (transactionManager) => {
+      return await currencyService
+        .withTransaction(transactionManager)
+        .update(code, data)
+    }
+  )
 
   res.json({ currency })
 }

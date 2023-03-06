@@ -6,10 +6,10 @@ import {
   IsString,
 } from "class-validator"
 import { OrderService, SwapService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
@@ -20,6 +20,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,6 +29,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsSwapShipmentsReq"
  * x-codegen:
  *   method: createSwapShipment
+ *   params: AdminPostOrdersOrderSwapsSwapShipmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -95,9 +98,8 @@ export default async (req, res) => {
     )
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.json({ order })
@@ -135,3 +137,5 @@ export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderSwapsSwapShipmentsParams extends FindParams {}

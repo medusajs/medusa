@@ -8,21 +8,32 @@ description: >-
   capture/refunds/etc.
 type: object
 required:
+  - amount
   - cart_id
+  - created_at
+  - data
+  - id
+  - is_initiated
+  - is_selected
+  - idempotency_key
+  - payment_authorized_at
   - provider_id
   - status
+  - updated_at
 properties:
   id:
-    type: string
     description: The payment session's ID
+    type: string
     example: ps_01G901XNSRM2YS3ASN9H5KG3FZ
   cart_id:
     description: The id of the Cart that the Payment Session is created for.
+    nullable: true
     type: string
     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
   cart:
     description: A cart object. Available if the relation `cart` is expanded.
-    type: object
+    nullable: true
+    $ref: ./Cart.yaml
   provider_id:
     description: The id of the Payment Provider that is responsible for the Payment Session
     type: string
@@ -31,6 +42,7 @@ properties:
     description: >-
       A flag to indicate if the Payment Session has been selected as the method
       that will be used to complete the purchase.
+    nullable: true
     type: boolean
     example: true
   is_initiated:
@@ -38,8 +50,8 @@ properties:
       A flag to indicate if a communication with the third party provider has
       been initiated.
     type: boolean
-    example: true
     default: false
+    example: true
   status:
     description: >-
       Indicates the status of the Payment Session. Will default to `pending`,
@@ -63,19 +75,30 @@ properties:
     type: object
     example: {}
   idempotency_key:
-    type: string
     description: >-
       Randomly generated key used to continue the completion of a cart in case
       of failure.
+    nullable: true
+    type: string
     externalDocs:
       url: >-
         https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
       description: Learn more how to use the idempotency key.
-  created_at:
+  amount:
+    description: The amount that the Payment Session has been authorized for.
+    nullable: true
+    type: integer
+    example: 100
+  payment_authorized_at:
+    description: The date with timezone at which the Payment Session was authorized.
+    nullable: true
     type: string
+    format: date-time
+  created_at:
     description: The date with timezone at which the resource was created.
+    type: string
     format: date-time
   updated_at:
-    type: string
     description: The date with timezone at which the resource was updated.
+    type: string
     format: date-time

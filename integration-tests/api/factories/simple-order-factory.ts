@@ -1,13 +1,37 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import { Discount, FulfillmentStatus, Order, PaymentStatus, Refund, } from "@medusajs/medusa"
-import { DiscountFactoryData, simpleDiscountFactory, } from "./simple-discount-factory"
+import {
+  Discount,
+  FulfillmentStatus,
+  Order,
+  PaymentStatus,
+  Refund,
+} from "@medusajs/medusa"
+import {
+  DiscountFactoryData,
+  simpleDiscountFactory,
+} from "./simple-discount-factory"
 import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
-import { LineItemFactoryData, simpleLineItemFactory, } from "./simple-line-item-factory"
-import { AddressFactoryData, simpleAddressFactory, } from "./simple-address-factory"
-import { ShippingMethodFactoryData, simpleShippingMethodFactory, } from "./simple-shipping-method-factory"
-import { SalesChannelFactoryData, simpleSalesChannelFactory, } from "./simple-sales-channel-factory"
-import { CustomerFactoryData, simpleCustomerFactory, } from "./simple-customer-factory"
+import {
+  LineItemFactoryData,
+  simpleLineItemFactory,
+} from "./simple-line-item-factory"
+import {
+  AddressFactoryData,
+  simpleAddressFactory,
+} from "./simple-address-factory"
+import {
+  ShippingMethodFactoryData,
+  simpleShippingMethodFactory,
+} from "./simple-shipping-method-factory"
+import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "./simple-sales-channel-factory"
+import {
+  CustomerFactoryData,
+  simpleCustomerFactory,
+} from "./simple-customer-factory"
 
 export type OrderFactoryData = {
   id?: string
@@ -40,6 +64,7 @@ export const simpleOrderFactory = async (
   let currencyCode: string
   let regionId: string
   let taxRate: number
+
   if (typeof data.region === "string") {
     currencyCode = data.currency_code as string
     regionId = data.region
@@ -51,6 +76,7 @@ export const simpleOrderFactory = async (
     currencyCode = region.currency_code
     regionId = region.id
   }
+
   const address = await simpleAddressFactory(connection, data.shipping_address)
 
   const customer = await simpleCustomerFactory(connection, {

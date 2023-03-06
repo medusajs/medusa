@@ -201,7 +201,7 @@ class LineItemService extends TransactionBaseService {
       ? LineItem
       : LineItem[]
   >(
-    variantIdOrData: string | T,
+    variantIdOrData: T,
     regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number,
     context: GenerateLineItemContext = {}

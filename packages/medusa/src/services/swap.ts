@@ -1,12 +1,28 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 
-import { buildQuery, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata, validateId } from "../utils"
 
-import LineItemAdjustmentService from "./line-item-adjustment"
-import { FindConfig, Selector } from "../types/common"
+import {
+  Cart,
+  CartType,
+  FulfillmentItem,
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentSessionStatus,
+  PaymentStatus,
+  ReturnItem,
+  ReturnStatus,
+  Swap,
+  SwapFulfillmentStatus,
+  SwapPaymentStatus,
+} from "../models"
 import { SwapRepository } from "../repositories/swap"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { CreateShipmentConfig } from "../types/fulfillment"
+import { OrdersReturnItem } from "../types/orders"
 import CartService from "./cart"
 import {
   CustomShippingOptionService,
@@ -20,21 +36,7 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
-import {
-  Cart,
-  CartType,
-  FulfillmentItem,
-  LineItem,
-  Order,
-  PaymentSessionStatus,
-  ReturnItem,
-  ReturnStatus,
-  Swap,
-  SwapFulfillmentStatus,
-  SwapPaymentStatus,
-} from "../models"
-import { CreateShipmentConfig } from "../types/fulfillment"
-import { OrdersReturnItem } from "../types/orders"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -314,7 +316,7 @@ class SwapService extends TransactionBaseService {
    */
   async create(
     order: Order,
-    returnItems: Partial<ReturnItem>[],
+    returnItems: WithRequiredProperty<Partial<ReturnItem>, "item_id">[],
     additionalItems?: Pick<LineItem, "variant_id" | "quantity">[],
     returnShipping?: { option_id: string; price?: number },
     custom: {
@@ -325,32 +327,27 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
     return await this.atomicPhase_(async (manager) => {
-      if (
-        order.fulfillment_status === "not_fulfilled" ||
-        order.payment_status !== "captured"
-      ) {
+      if (order.payment_status !== PaymentStatus.CAPTURED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Order cannot be swapped"
+          "Cannot swap an order that has not been captured"
         )
       }
 
-      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      for (const item of returnItems) {
-        const line = await lineItemServiceTx.retrieve(item.item_id!, {
-          relations: ["order", "swap", "claim_order"],
-        })
+      if (order.fulfillment_status === FulfillmentStatus.NOT_FULFILLED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot swap an order that has not been fulfilled"
+        )
+      }
 
-        if (
-          line.order?.canceled_at ||
-          line.swap?.canceled_at ||
-          line.claim_order?.canceled_at
-        ) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Cannot create a swap on a canceled item.`
-          )
-        }
+      const areReturnItemsValid = await this.areReturnItemsValid(returnItems)
+
+      if (!areReturnItemsValid) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot create a swap on a canceled item.`
+        )
       }
 
       let newItems: LineItem[] = []
@@ -364,9 +361,13 @@ class SwapService extends TransactionBaseService {
                 "You must include a variant when creating additional items on a swap"
               )
             }
-            return this.lineItemService_
-              .withTransaction(manager)
-              .generate(variant_id, order.region_id, quantity)
+            return this.lineItemService_.withTransaction(manager).generate(
+              { variantId: variant_id, quantity },
+              {
+                region_id: order.region_id,
+                cart: order.cart,
+              }
+            )
           })
         )
       }
@@ -1220,6 +1221,33 @@ class SwapService extends TransactionBaseService {
 
       return result
     })
+  }
+
+  protected async areReturnItemsValid(
+    returnItems: WithRequiredProperty<Partial<ReturnItem>, "item_id">[]
+  ): Promise<boolean> {
+    const manager = this.transactionManager_ ?? this.manager_
+
+    const returnItemsEntities = await this.lineItemService_
+      .withTransaction(manager)
+      .list(
+        {
+          id: In(returnItems.map((r) => r.item_id)),
+        },
+        {
+          relations: ["order", "swap", "claim_order"],
+        }
+      )
+
+    const hasCanceledItem = returnItemsEntities.some((item) => {
+      return (
+        item.order?.canceled_at ||
+        item.swap?.canceled_at ||
+        item.claim_order?.canceled_at
+      )
+    })
+
+    return !hasCanceledItem
   }
 }
 

@@ -53,52 +53,67 @@ export class ReturnItem {
  * description: "Correlates a Line Item with a Return, keeping track of the quantity of the Line Item that will be returned."
  * type: object
  * required:
- *   - return_id
+ *   - is_requested
  *   - item_id
+ *   - metadata
+ *   - note
+ *   - quantity
+ *   - reason_id
+ *   - received_quantity
+ *   - requested_quantity
+ *   - return_id
  * properties:
  *   return_id:
- *     description: "The id of the Return that the Return Item belongs to."
+ *     description: The id of the Return that the Return Item belongs to.
  *     type: string
  *     example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
- *   return_order:
- *     description: Available if the relation `return_order` is expanded.
- *     $ref: "#/components/schemas/Return"
  *   item_id:
- *     description: "The id of the Line Item that the Return Item references."
+ *     description: The id of the Line Item that the Return Item references.
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
+ *   return_order:
+ *     description: Available if the relation `return_order` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Return"
  *   item:
  *     description: Available if the relation `item` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   quantity:
- *     description: "The quantity of the Line Item that is included in the Return."
+ *     description: The quantity of the Line Item that is included in the Return.
  *     type: integer
  *     example: 1
  *   is_requested:
- *     description: "Whether the Return Item was requested initially or received unexpectedly in the warehouse."
+ *     description: Whether the Return Item was requested initially or received unexpectedly in the warehouse.
  *     type: boolean
  *     default: true
  *   requested_quantity:
- *     description: "The quantity that was originally requested to be returned."
+ *     description: The quantity that was originally requested to be returned.
+ *     nullable: true
  *     type: integer
  *     example: 1
- *   recieved_quantity:
- *     description: "The quantity that was received in the warehouse."
+ *   received_quantity:
+ *     description: The quantity that was received in the warehouse.
+ *     nullable: true
  *     type: integer
  *     example: 1
  *   reason_id:
  *     description: The ID of the reason for returning the item.
+ *     nullable: true
  *     type: string
  *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
  *   reason:
  *     description: Available if the relation `reason` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ReturnReason"
  *   note:
- *     description: "An optional note with additional details about the Return."
+ *     description: An optional note with additional details about the Return.
+ *     nullable: true
  *     type: string
  *     example: I didn't like it.
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

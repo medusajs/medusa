@@ -24,6 +24,11 @@ export class Image extends SoftDeletableEntity {
  * description: "Images holds a reference to a URL at which the image file can be found."
  * type: object
  * required:
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
+ *   - updated_at
  *   - url
  * properties:
  *   id:
@@ -31,23 +36,25 @@ export class Image extends SoftDeletableEntity {
  *     description: The image's ID
  *     example: img_01G749BFYR6T8JTVW6SGW3K3E6
  *   url:
- *     description: "The URL at which the image file can be found."
+ *     description: The URL at which the image file can be found.
  *     type: string
  *     format: uri
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

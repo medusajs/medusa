@@ -82,12 +82,12 @@ properties:
   payment_session:
     description: The selected payment session in the cart.
     nullable: true
-    $ref: ./PaymentSession.yaml
+    type: object
   payment_sessions:
     description: The payment sessions created on the cart.
     type: array
     items:
-      $ref: ./PaymentSession.yaml
+      type: object
   payment_id:
     description: The payment's ID if available
     nullable: true

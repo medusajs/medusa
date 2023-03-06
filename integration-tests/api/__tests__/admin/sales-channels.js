@@ -850,6 +850,7 @@ describe("sales channels", () => {
         salesChannel = await simpleSalesChannelFactory(dbConnection, {
           name: "test name",
           description: "test description",
+          is_default: true,
         })
       })
 
@@ -875,6 +876,47 @@ describe("sales channels", () => {
             },
           ],
           sales_channels: [{ id: salesChannel.id }],
+        }
+
+        const response = await api
+          .post("/admin/products", payload, {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            sales_channels: [
+              expect.objectContaining({
+                id: salesChannel.id,
+                name: salesChannel.name,
+              }),
+            ],
+          })
+        )
+      })
+
+      it("should assign the default sales channel to a product if none is provided when creating it", async () => {
+        const api = useApi()
+
+        const payload = {
+          title: "Product-no-saleschannel",
+          description: "test-product-description",
+          type: { value: "test-type" },
+          options: [{ title: "size" }],
+          variants: [
+            {
+              title: "Test variant",
+              inventory_quantity: 10,
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: [{ value: "large" }],
+            },
+          ],
         }
 
         const response = await api

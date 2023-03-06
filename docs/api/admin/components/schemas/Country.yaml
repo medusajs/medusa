@@ -54,4 +54,4 @@ properties:
   region:
     description: A region object. Available if the relation `region` is expanded.
     nullable: true
-    $ref: ./Region.yaml
+    type: object

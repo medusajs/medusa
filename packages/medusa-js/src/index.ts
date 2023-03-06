@@ -1,28 +1,30 @@
 import MedusaError from "./error"
 import KeyManager from "./key-manager"
 import Client, { Config } from "./request"
-import Admin from "./resources/admin"
-import AuthResource from "./resources/auth"
-import CartsResource from "./resources/carts"
-import CollectionsResource from "./resources/collections"
-import CustomersResource from "./resources/customers"
-import GiftCardsResource from "./resources/gift-cards"
-import OrderEditsResource from "./resources/order-edits"
-import OrdersResource from "./resources/orders"
-import PaymentCollectionsResource from "./resources/payment-collections"
-import PaymentMethodsResource from "./resources/payment-methods"
-import ProductTagsResource from "./resources/product-tags"
-import ProductTypesResource from "./resources/product-types"
-import ProductsResource from "./resources/products"
-import RegionsResource from "./resources/regions"
-import ReturnReasonsResource from "./resources/return-reasons"
-import ReturnsResource from "./resources/returns"
-import ShippingOptionsResource from "./resources/shipping-options"
-import SwapsResource from "./resources/swaps"
-import ProductCategoriesResource from "./resources/product-categories"
+import {
+  Admin,
+  AuthResource,
+  CartsResource,
+  CollectionsResource,
+  CustomersResource,
+  GiftCardsResource,
+  OrderEditsResource,
+  OrdersResource,
+  PaymentCollectionsResource,
+  PaymentMethodsResource,
+  ProductCategoriesResource,
+  ProductsResource,
+  ProductTagsResource,
+  ProductTypesResource,
+  RegionsResource,
+  ReturnReasonsResource,
+  ReturnsResource,
+  ShippingOptionsResource,
+  SwapsResource,
+} from "./resources"
 
 class Medusa {
-  private client: Client
+  public client: Client
   public admin: Admin
 
   public auth: AuthResource
@@ -83,5 +85,8 @@ class Medusa {
 }
 
 export default Medusa
+export { default as MedusaError } from "./error"
 export { default as KeyManager } from "./key-manager"
+export { Config, default as Client } from "./request"
+export * from "./resources"
 export * from "./typings"

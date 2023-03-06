@@ -80,6 +80,7 @@ export default async (req, res) => {
     )
 
     const updated = await txCartService.retrieve(id, {
+      select: ["id"],
       relations: ["payment_sessions"],
     })
 

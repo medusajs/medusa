@@ -1,17 +1,9 @@
 name: Generate Services Reference
 on: 
-  push:
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/services/**
-  pull_request:
-    types:
-      - closed
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/services/**
+  workflow_dispatch:
+  release:
+    types: [published]
+
 jobs:
   services:
     runs-on: ubuntu-latest
