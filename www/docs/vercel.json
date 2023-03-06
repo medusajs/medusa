@@ -5,27 +5,27 @@
       "destination": "/api/store"
     },
     {
-      "source": "/api/store/auth/*",
+      "source": "/api/store/auth/(.*)",
       "destination": "/api/store/#tag/Auth"
     },
     {
-      "source": "/api/store/cart/*",
+      "source": "/api/store/cart/(.*)",
       "destination": "/api/store/#tag/Cart"
     },
     {
-      "source": "/api/store/collection/*",
+      "source": "/api/store/collection/(.*)",
       "destination": "/api/store/#tag/Collection"
     },
     {
-      "source": "/api/store/product/*",
+      "source": "/api/store/product/(.*)",
       "destination": "/api/store/#tag/Product"
     },
     {
-      "source": "/api/admin/auth/*",
+      "source": "/api/admin/auth/(.*)",
       "destination": "/api/admin/#tag/Auth"
     },
     {
-      "source": "/api/admin/users/*",
+      "source": "/api/admin/users/(.*)",
       "destination": "/api/admin/#tag/User"
     },
     {
