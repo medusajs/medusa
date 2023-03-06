@@ -115,6 +115,86 @@
     {
       "source": "/advanced/backend/upgrade-guides/1-3-0",
       "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-0"
+    },
+    {
+      "source": "/advanced/backend/regions/overview",
+      "destination": "/modules/regions-and-currencies/regions"
+    },
+    {
+      "source": "/advanced/admin/manage-regions",
+      "destination": "/modules/regions-and-currencies/admin/manage-regions"
+    },
+    {
+      "source": "/advanced/storefront/use-regions",
+      "destination": "/modules/regions-and-currencies/storefront/use-regions"
+    },
+    {
+      "source": "/advanced/backend/customers",
+      "destination": "/modules/customers/customers"
+    },
+    {
+      "source": "/advanced/backend/customer-groups",
+      "destination": "/modules/customers/customer-groups"
+    },
+    {
+      "source": "/advanced/admin/manage-customers",
+      "destination": "/modules/customers/admin/manage-customers"
+    },
+    {
+      "source": "/advanced/admin/use-customergroups-api",
+      "destination": "/modules/customers/admin/manage-customer-groups"
+    },
+    {
+      "source": "/advanced/storefront/customer-profiles",
+      "destination": "/modules/customers/storefront/implement-customer-profiles"
+    },
+    {
+      "source": "/quickstart/quick-start(.*)",
+      "destination": "/core/backend/install"
+    },
+    {
+      "source": "/advanced/admin/import-products",
+      "destination": "/modules/products/admin/import-products"
+    },
+    {
+      "source": "/advanced/backend/shipping/overview",
+      "destination": "/modules/carts-and-checkout/shipping"
+    },
+    {
+      "source": "/advanced/backend/shipping/add-fulfillment-provider",
+      "destination": "/modules/carts-and-checkout/backend/add-fulfillment-provider"
+    },
+    {
+      "source": "/advanced/backend/payment/overview",
+      "destination": "/modules/carts-and-checkout/payment"
+    },
+    {
+      "source": "/advanced/backend/payment/how-to-create-payment-provider",
+      "destination": "/modules/carts-and-checkout/backend/add-payment-provider"
+    },
+    {
+      "source": "/guides/carts-in-medusa",
+      "destination": "/modules/carts-and-checkout/storefront/implement-cart"
+    },
+    {
+      "source": "/advanced/storefront/how-to-implement-checkout-flow",
+      "destination": "/modules/carts-and-checkout/storefront/implement-checkout-flow"
+    },
+    {
+      "source": "/advanced/ecommerce/handle-order-claim-event",
+      "destination": "/modules/orders/backend/handle-order-claim-event"
+    },
+    {
+      "source": "/advanced/admin/order-edit",
+      "destination": "/modules/orders/admin/edit-order"
+    },
+    {
+      "source": "/advanced/storefront/handle-order-edits",
+      "destination": "/modules/orders/storefront/handle-order-edits"
+    },
+    {
+      "source": "/advanced/storefront/implement-claim-order",
+      "destination": "/modules/orders/storefront/implement-claim-order"
     }
   ]
 }
