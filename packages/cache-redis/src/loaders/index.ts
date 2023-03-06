@@ -12,7 +12,7 @@ export default async ({
 
   if (!redisUrl) {
     throw Error(
-      "No `redis_url` provided in project config. It is required for the Redis Cache Module."
+      "No `redisUrl` provided in `cacheService` module options. It is required for the Redis Cache Module."
     )
   }
 

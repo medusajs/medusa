@@ -35,7 +35,6 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
-      options: { ttl: 30 },
     },
   },
 ]
