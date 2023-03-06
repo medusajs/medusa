@@ -73,5 +73,5 @@
     "@changesets/cli": "^2.26.0",
     "@octokit/core": "^4.2.0"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.2.1"
 }
