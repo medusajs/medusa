@@ -1,8 +1,9 @@
 import React, { useState } from "react"
-import useNotification from "../../hooks/use-notification"
-import { getErrorMessage } from "../../utils/error-messages"
+
 import Button from "../fundamentals/button"
 import Modal from "../molecules/modal"
+import { getErrorMessage } from "../../utils/error-messages"
+import useNotification from "../../hooks/use-notification"
 
 type DeletePromptProps = {
   heading?: string
@@ -31,7 +32,11 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
 
     setIsLoading(true)
     onDelete()
-      .then(() => notification("Success", successText, "success"))
+      .then(() => {
+        if (successText) {
+          notification("Success", successText, "success")
+        }
+      })
       .catch((err) => notification("Error", getErrorMessage(err), "error"))
       .finally(() => {
         setIsLoading(false)
@@ -45,14 +50,14 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
         <Modal.Content>
           <div className="flex flex-col">
             <span className="inter-large-semibold">{heading}</span>
-            <span className="inter-base-regular mt-1 text-grey-50">{text}</span>
+            <span className="inter-base-regular text-grey-50 mt-1">{text}</span>
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full h-8 justify-end">
+          <div className="flex h-8 w-full justify-end">
             <Button
               variant="ghost"
-              className="mr-2 w-24 text-small justify-center"
+              className="text-small min-w-24 mr-2 justify-center"
               size="small"
               onClick={handleClose}
             >
@@ -61,7 +66,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
             <Button
               loading={isLoading}
               size="small"
-              className="w-24 text-small justify-center"
+              className="text-small w-24 justify-center"
               variant="nuclear"
               onClick={handleSubmit}
               disabled={isLoading}
