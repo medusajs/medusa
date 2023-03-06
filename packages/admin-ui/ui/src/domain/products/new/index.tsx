@@ -8,8 +8,8 @@ import FeatureToggle from "../../../components/fundamentals/feature-toggle"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../components/molecules/modal/focus-modal"
 import Accordion from "../../../components/organisms/accordion"
-import useNotification from "../../../hooks/use-notification"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import useNotification from "../../../hooks/use-notification"
 import { FormImage, ProductStatus } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { prepareImages } from "../../../utils/images"
@@ -155,7 +155,7 @@ const NewProduct = ({ onClose }: Props) => {
     <form className="w-full">
       <FocusModal>
         <FocusModal.Header>
-          <div className="medium:w-8/12 flex w-full justify-between px-8">
+          <div className="flex w-full justify-between px-8 medium:w-8/12">
             <Button
               size="small"
               variant="ghost"
@@ -164,7 +164,7 @@ const NewProduct = ({ onClose }: Props) => {
             >
               <CrossIcon size={20} />
             </Button>
-            <div className="gap-x-small flex">
+            <div className="flex gap-x-small">
               <Button
                 size="small"
                 variant="secondary"
@@ -187,7 +187,7 @@ const NewProduct = ({ onClose }: Props) => {
           </div>
         </FocusModal.Header>
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
-          <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
+          <div className="my-16 max-w-[700px] small:w-4/5 medium:w-7/12 large:w-6/12">
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
@@ -197,7 +197,7 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="mt-xlarge gap-y-xlarge flex flex-col">
+                <div className="mt-xlarge flex flex-col gap-y-xlarge">
                   <GeneralForm
                     form={nestedForm(form, "general")}
                     requireHandle={false}
@@ -209,7 +209,7 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
+                <div className="mt-xlarge flex flex-col gap-y-xlarge pb-xsmall">
                   <div>
                     <h3 className="inter-base-semibold mb-base">
                       Organize Product
@@ -226,7 +226,7 @@ const NewProduct = ({ onClose }: Props) => {
                 </div>
               </Accordion.Item>
               <Accordion.Item title="Variants" value="variants">
-                <p className="text-grey-50 inter-base-regular">
+                <p className="inter-base-regular text-grey-50">
                   Add variations of this product.
                   <br />
                   Offer your customers different options for color, format,
@@ -254,14 +254,14 @@ const NewProduct = ({ onClose }: Props) => {
                 </div>
               </Accordion.Item>
               <Accordion.Item title="Thumbnail" value="thumbnail">
-                <p className="inter-base-regular text-grey-50 mb-large">
+                <p className="inter-base-regular mb-large text-grey-50">
                   Used to represent your product during checkout, social sharing
                   and more.
                 </p>
                 <ThumbnailForm form={nestedForm(form, "thumbnail")} />
               </Accordion.Item>
               <Accordion.Item title="Media" value="media">
-                <p className="inter-base-regular text-grey-50 mb-large">
+                <p className="inter-base-regular mb-large text-grey-50">
                   Add images to your product.
                 </p>
                 <MediaForm form={nestedForm(form, "media")} />
@@ -304,6 +304,9 @@ const createPayload = (
       ? data.organize.tags.map((t) => ({
           value: t,
         }))
+      : undefined,
+    categories: data.organize.categories?.length
+      ? data.organize.categories.map((id) => ({ id }))
       : undefined,
     origin_country: data.customs.origin_country?.value || undefined,
     options: data.variants.options.map((o) => ({
