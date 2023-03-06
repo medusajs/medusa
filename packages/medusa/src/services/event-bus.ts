@@ -49,8 +49,6 @@ export type EmitOptions = {
   }
 } & JobOptions
 
-const COMPLETED_JOB_TTL = 10000
-
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
@@ -228,9 +226,7 @@ export default class EventBusService {
     options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
     const opts: EmitOptions = {
-      removeOnComplete: {
-        age: COMPLETED_JOB_TTL,
-      },
+      removeOnComplete: true,
       ...options,
     }
 
