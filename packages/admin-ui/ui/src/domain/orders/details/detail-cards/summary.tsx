@@ -1,18 +1,19 @@
-import React, { useContext, useMemo } from "react"
-import { Order } from "@medusajs/medusa"
-import OrderLine from "../order-line"
 import { DisplayTotal, PaymentDetails } from "../templates"
-import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
+import React, { useContext, useMemo } from "react"
+
+import { ActionType } from "../../../../components/molecules/actionables"
+import AllocateItemsModal from "../allocations/allocate-items-modal"
 import Badge from "../../../../components/fundamentals/badge"
-import { FeatureFlagContext } from "../../../../context/feature-flag"
-import { OrderEditContext } from "../../edit/context"
 import BodyCard from "../../../../components/organisms/body-card"
+import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
+import { Order } from "@medusajs/medusa"
+import { OrderEditContext } from "../../edit/context"
+import OrderLine from "../order-line"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
 import { useAdminReservations } from "medusa-react"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
-import { ActionType } from "../../../../components/molecules/actionables"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../hooks/use-toggle-state"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
 
 type SummaryCardProps = {
   order: Order
@@ -28,7 +29,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     close: closeAllocationModal,
   } = useToggleState()
 
-  const { isFeatureEnabled } = useContext(FeatureFlagContext)
+  const { isFeatureEnabled } = useFeatureFlag()
+
   const { showModal } = useContext(OrderEditContext)
   const { reservations, isLoading } = useAdminReservations({
     line_item_id: order.items.map((item) => item.id),
@@ -143,7 +145,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             currency={order.currency_code}
             totalAmount={-1 * order.discount_total}
             totalTitle={
-              <div className="inter-small-regular flex items-center text-grey-90">
+              <div className="inter-small-regular text-grey-90 flex items-center">
                 Discount:{" "}
                 <Badge className="ml-3" variant="default">
                   {discount.code}
@@ -158,7 +160,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             currency={order.currency_code}
             totalAmount={-1 * order.gift_card_total}
             totalTitle={
-              <div className="inter-small-regular flex items-center text-grey-90">
+              <div className="inter-small-regular text-grey-90 flex items-center">
                 Gift card:
                 <Badge className="ml-3" variant="default">
                   {giftCard.code}
