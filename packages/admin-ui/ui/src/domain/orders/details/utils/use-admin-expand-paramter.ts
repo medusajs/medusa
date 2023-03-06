@@ -16,11 +16,17 @@ const orderRelations = [
   "claims",
   "claims.claim_items",
   "claims.claim_items.item",
+  "claims.fulfillments",
   "claims.return_order",
   "claims.additional_items",
+  "claims.additional_items.variant",
+  "claims.additional_items.variant.product",
   "swaps",
   "swaps.return_order",
   "swaps.additional_items",
+  "swaps.additional_items.variant",
+  "swaps.additional_items.variant.product",
+  "swaps.fulfillments",
   "returnable_items",
 ]
 
