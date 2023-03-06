@@ -45,6 +45,10 @@ export const getAllReturnableItems = (
   if (!isClaim) {
     if (order.swaps && order.swaps.length) {
       for (const swap of order.swaps) {
+        if (swap.fulfillment_status === "not_fulfilled") {
+          continue
+        }
+
         orderItems = swap.additional_items.reduce(
           (map, obj) =>
             map.set(obj.id, {

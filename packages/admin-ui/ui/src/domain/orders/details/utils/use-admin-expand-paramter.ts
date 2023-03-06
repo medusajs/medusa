@@ -12,6 +12,8 @@ const orderRelations = [
   "fulfillments",
   "fulfillments.tracking_links",
   "returns",
+  "returns.shipping_method",
+  "returns.shipping_method.tax_lines",
   "refunds",
   "claims",
   "claims.claim_items",
