@@ -26,7 +26,9 @@ export const ProductCategoryRepository = dataSource
 
       return sortChildren(
         // Returns the productCategory with all of its descendants until the last child node
-        await this.findDescendantsTree(productCategory)
+        await this.findDescendantsTree(
+          productCategory
+        )
       )
     },
 
@@ -111,24 +113,16 @@ export const ProductCategoryRepository = dataSource
         queryBuilder.withDeleted()
       }
 
-      let categories: ProductCategory[] = []
-      let count = 0
-
-      ;[categories, count] = await queryBuilder.getManyAndCount()
+      let [categories, count] = await queryBuilder.getManyAndCount()
 
       if (includeTree) {
         categories = await Promise.all(
-          categories.map(async (productCategory: ProductCategory) => {
+          categories.map(async (productCategory) => {
             productCategory = await this.findDescendantsTree(productCategory)
 
-            return sortChildren(productCategory, treeScope)
+            return sortChildren(productCategory)
           })
         )
-      }
-
-      if (categories === null) {
-        categories = []
-        count = 0
       }
 
       return [categories, count]
