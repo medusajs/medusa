@@ -61,7 +61,7 @@ Medusa provides the necessary features to build a customizable shopping experien
     title='Customers'
     action={{
       label: 'Learn more',
-      href: '#'
+      href: '/modules/customers/overview'
     }}
   >
 
@@ -102,6 +102,7 @@ Medusa's products configuration allows managing products of different types incl
       label: 'Learn more',
       href: '#'
     }}
+    isSoon={true}
   >
 
   - Offer your customers a gift card with unlimited denominations.
@@ -118,6 +119,7 @@ Medusa's products configuration allows managing products of different types incl
       label: 'Learn more',
       href: '#'
     }}
+    isSoon={true}
   >
 
   - Create discounts and deals with advanced conditions and rules such as minimum cart quantity or specific products.
@@ -156,6 +158,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
       label: 'Learn more',
       href: '#'
     }}
+    isSoon={true}
   >
 
   - Specify different tax providers for different regions.
@@ -172,6 +175,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
       label: 'Learn more',
       href: '#'
     }}
+    isSoon={true}
   >
 
   - Create sales channels for your different platforms such as web, mobile, or marketplaces.
@@ -192,38 +196,38 @@ If you have any questions about Medusa, its features, and development with it, f
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '#',
+    href: '/modules/customers/storefront/implement-customer-profiles',
     label: 'Implement Accounts',
     customProps: {
       icon: Icons['users-solid'],
-      description: 'Add customer profiles to the storefront.'
+      description: 'Add customer profiles to the storefront.',
     }
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/carts-and-checkout/storefront/implement-cart',
     label: 'Implement Cart',
     customProps: {
       icon: Icons['shopping-cart-solid'],
-      description: 'Add cart functionality to the storefront.'
+      description: 'Add cart functionality to the storefront.',
     }
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/carts-and-checkout/backend/add-payment-provider',
     label: 'Create a Payment Provider',
     customProps: {
       icon: Icons['credit-card-solid'],
-      description: 'Create a payment provider.'
+      description: 'Create a payment provider.',
     },
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/orders/admin/edit-order',
     label: 'Edit an Order',
     customProps: {
       icon: Icons['pencil-square-solid'],
-      description: 'Edit an order with the Admin APIs.'
+      description: 'Edit an order with the Admin APIs.',
     }
   },
   {
@@ -232,7 +236,8 @@ If you have any questions about Medusa, its features, and development with it, f
     label: 'Import Prices',
     customProps: {
       icon: Icons['currency-dollar-solid'],
-      description: 'Import prices to Medusa.'
+      description: 'Import prices to Medusa.',
+      isSoon: true,
     }
   },
   {
@@ -241,7 +246,8 @@ If you have any questions about Medusa, its features, and development with it, f
     label: 'Manage Sales Channels',
     customProps: {
       icon: Icons['channels-solid'],
-      description: 'Manage sales channels.'
+      description: 'Manage sales channels.',
+      isSoon: true,
     }
   }
 ]} />

@@ -10,6 +10,7 @@ import isInternalUrl from '@docusaurus/isInternalUrl';
 import styles from './styles.module.css';
 import {translate} from '@docusaurus/Translate';
 import BorderedIcon from '../../components/BorderedIcon';
+import Badge from '../../components/Badge';
 
 function CardContainer({href, children, className}) {
   return (
@@ -20,10 +21,13 @@ function CardContainer({href, children, className}) {
     </Link>
   );
 }
-function CardLayout({href, icon, title, description, html, containerClassName}) {
+function CardLayout({href, icon, title, description, html, containerClassName, isSoon = false}) {
   return (
-    <CardContainer href={href} className={containerClassName}>
-      {icon}
+    <CardContainer href={href} className={clsx(containerClassName, isSoon && styles.cardSoon)}>
+      <div className={clsx(styles.cardIconContainer)}>
+        {icon}
+        {isSoon && <Badge variant={'purple'}>Guide coming soon</Badge>}
+      </div>
       <div className={clsx(styles.contentContainer)}>
         <span className={clsx(styles.cardTitle)} title={title}>
           {title}
@@ -68,6 +72,7 @@ function CardCategory({item}) {
         {count: item.items.length},
       )}
       containerClassName={item.customProps?.className}
+      isSoon={item.customProps?.isSoon}
     />
   );
 }
@@ -107,6 +112,7 @@ function CardLink({item}) {
       description={item.customProps?.description || doc?.description}
       html={item.customProps?.html}
       containerClassName={item.customProps?.className}
+      isSoon={item.customProps?.isSoon}
     />
   );
 }
