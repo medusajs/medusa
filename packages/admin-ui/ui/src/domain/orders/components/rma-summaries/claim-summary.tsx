@@ -15,11 +15,12 @@ type Props = {
 }
 
 export const ClaimSummary = ({ form, order }: Props) => {
-  const { control, getValues } = form
+  const { control } = form
 
   const claimItems = useWatch({
     control: control,
     name: "return_items.items",
+    defaultValue: [],
   })
 
   const selectedClaimItems = useMemo(() => {
@@ -34,6 +35,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
   const replacementItems = useWatch({
     control: control,
     name: "additional_items.items",
+    defaultValue: [],
   })
 
   const replacementItemShipping = useWatch({
@@ -84,6 +86,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
                     currencyCode={order.currency_code}
                     productTitle={item.product_title}
                     quantity={item.quantity}
+                    sku={item.sku}
                     price={item.total / item.original_quantity}
                     total={
                       (item.total / item.original_quantity) * item.quantity
@@ -123,6 +126,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
                     currencyCode={order.currency_code}
                     productTitle={item.product_title}
                     quantity={item.quantity}
+                    sku={item.sku}
                     price={item.price}
                     total={item.price * item.quantity}
                     variantTitle={item.variant_title}
