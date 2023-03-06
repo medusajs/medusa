@@ -1,4 +1,4 @@
-import { ModuleExports } from "@medusajs/medusa"
+import { ModuleExports } from "@medusajs/modules-sdk"
 
 import InMemoryCacheService from "./services/inmemory-cache"
 
