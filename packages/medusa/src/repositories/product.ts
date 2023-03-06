@@ -5,7 +5,7 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { Product, ProductCategory } from "../models"
+import { Product, ProductCategory, ProductVariant } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { ProductFilterOptions } from "../types/product"
@@ -73,7 +73,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<SelectQueryBuilder<Product>> {
-    const options_ = { ...options }
+    const options_ = { ...options, skip: undefined, limit: undefined }
 
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
@@ -146,29 +146,26 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       ]
     }
 
-    if (options_.withDeleted) {
-      queryBuilder.withDeleted()
-    }
-
-    queryBuilder.setFindOptions(options_)
-
     // Add explicit ordering for variant ranking on the variants join directly
     // This constraint is applied if no other order is applied
     if (options_.relations.variants && !isObject(options_.order?.variants)) {
-      const join = queryBuilder.expressionMap.joinAttributes.find(
-        (join) => join.entityOrProperty === `${productAlias}.variants`
-      )!
-
-      // Here we are overriding orderBy with only variant rank, see https://github.com/typeorm/typeorm/issues/6294
-      queryBuilder.orderBy(`${join.alias.name}.variant_rank`, "ASC")
+      queryBuilder.leftJoin(
+        (subQueryBuilder) => {
+          return subQueryBuilder
+            .from(ProductVariant, "v")
+            .orderBy("v.variant_rank", "ASC")
+        },
+        "variants",
+        "product.id = variants.product_id"
+      )
     }
 
     if (priceListId) {
       const priceListIds = priceListId.value
 
       queryBuilder
-        .leftJoin(`${productAlias}.variants`, "variants")
-        .leftJoin("variants.prices", "ma")
+        .leftJoin(`${productAlias}.variants`, "variants_")
+        .leftJoin("variants_.prices", "ma")
         .andWhere("ma.price_list_id IN (:...price_list_ids)", {
           price_list_ids: priceListIds,
         })
@@ -270,6 +267,12 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         { dcId: discountConditionId }
       )
     }
+
+    if (options_.withDeleted) {
+      queryBuilder.withDeleted()
+    }
+
+    queryBuilder.setFindOptions(options_)
 
     return queryBuilder
   },
