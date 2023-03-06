@@ -104,14 +104,14 @@ const Claim = ({ event }: Props) => {
     topNode: Actions,
     children: [
       <Fragment key={event.id}>
-        <div className="flex flex-col gap-y-base">
+        <div className="gap-y-base flex flex-col">
           <ClaimStatus event={event} />
           {renderClaimItems(event)}
           {event.claim?.additional_items?.length > 0 &&
             renderReplacementItems(event)}
           {shouldHaveButtonActions && (
-            <div className="flex items-center gap-x-xsmall">
-              {event.claim.return_order.status === "requested" && (
+            <div className="gap-x-xsmall flex items-center">
+              {event.claim.return_order?.status === "requested" && (
                 <Button
                   variant="secondary"
                   size="small"
@@ -157,7 +157,7 @@ const Claim = ({ event }: Props) => {
 export default Claim
 
 const ClaimStatus = ({ event }: Props) => {
-  const divider = <div className="h-11 w-px bg-grey-20" />
+  const divider = <div className="bg-grey-20 h-11 w-px" />
 
   const shouldHaveFulfillment =
     !!event.claim?.fulfillment_status &&
@@ -168,7 +168,7 @@ const ClaimStatus = ({ event }: Props) => {
 
   if (event.claim?.type === "replace") {
     refundStatus =
-      event.claim?.return_order.status === "received"
+      event.claim?.return_order?.status === "received"
         ? "refunded"
         : event.claim?.payment_status
   }
@@ -178,15 +178,15 @@ const ClaimStatus = ({ event }: Props) => {
   }
 
   return (
-    <div className="inter-small-regular flex items-center gap-x-base">
-      <div className="flex flex-col gap-y-2xsmall">
+    <div className="inter-small-regular gap-x-base flex items-center">
+      <div className="gap-y-2xsmall flex flex-col">
         <span className="text-grey-50">Refund:</span>
         <RefundStatus refundStatus={refundStatus} />
       </div>
       {shouldHaveReturnStatus && (
         <>
           {divider}
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             <span className="text-grey-50">Return:</span>
             <ReturnStatus returnStatus={event.returnStatus} />
           </div>
@@ -195,7 +195,7 @@ const ClaimStatus = ({ event }: Props) => {
       {shouldHaveFulfillment && (
         <>
           {divider}
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             <span className="text-grey-50">Fulfillment:</span>
             <FulfillmentStatus
               fulfillmentStatus={event.claim?.fulfillment_status}
@@ -209,7 +209,7 @@ const ClaimStatus = ({ event }: Props) => {
 
 const renderClaimItems = (event: ClaimEvent) => {
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       <span className="inter-small-regular text-grey-50">Claim Items</span>
       <div>
         {event.claimItems.map((i, index) => (
@@ -222,7 +222,7 @@ const renderClaimItems = (event: ClaimEvent) => {
 
 const renderReplacementItems = (event: ClaimEvent) => {
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       <span className="inter-small-regular text-grey-50">
         Replacement Items
       </span>
@@ -245,7 +245,7 @@ const renderClaimActions = (
   if (!event.canceledAt && !event.isCanceled) {
     if (
       event.claim.return_order &&
-      event.claim.return_order.status === "requested"
+      event.claim.return_order?.status === "requested"
     ) {
       actions.push({
         icon: <TrashIcon size={20} />,
