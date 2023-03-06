@@ -1,8 +1,8 @@
 import clsx from "clsx"
 import { useAdminStore } from "medusa-react"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator"
-import Tooltip from "../../atoms/tooltip"
+import DelimitedList from "../../molecules/delimited-list"
 import ListIcon from "../../fundamentals/icons/list-icon"
 import TileIcon from "../../fundamentals/icons/tile-icon"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
@@ -27,33 +27,11 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const { store } = useAdminStore()
 
   const getProductSalesChannels = (salesChannels) => {
-    if (salesChannels?.length) {
-      salesChannels.sort(
-        defaultChannelsSorter(store?.default_sales_channel_id || "")
-      )
-      return (
-        <span className="inter-small-regular">
-          {salesChannels[0].name}
-          {salesChannels.length > 1 && (
-            <Tooltip
-              content={
-                <div className="flex flex-col">
-                  {salesChannels.slice(1).map((sc) => (
-                    <span>{sc.name}</span>
-                  ))}
-                </div>
-              }
-            >
-              <span className="text-grey-40">
-                {" "}
-                + {salesChannels.length - 1} more
-              </span>
-            </Tooltip>
-          )}
-        </span>
-      )
-    }
-    return <></>
+    ;(salesChannels || []).sort(
+      defaultChannelsSorter(store?.default_sales_channel_id || "")
+    )
+
+    return <DelimitedList list={salesChannels.map((sc) => sc.name)} />
   }
 
   const columns = useMemo(
@@ -64,11 +42,11 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
+              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
                 {original.thumbnail ? (
                   <img
                     src={original.thumbnail}
-                    className="h-full object-cover rounded-soft"
+                    className="rounded-soft h-full object-cover"
                   />
                 ) : (
                   <ImagePlaceholder />
@@ -110,7 +88,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
       {
         accessor: "col-3",
         Header: (
-          <div className="text-right flex justify-end">
+          <div className="flex justify-end text-right">
             <span
               onClick={setListView}
               className={clsx("hover:bg-grey-5 cursor-pointer rounded p-0.5", {
