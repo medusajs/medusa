@@ -1,6 +1,6 @@
+import { TransactionBaseService } from "medusa-core-utils/src/transaction-base-service"
 import { IdempotencyKey } from "../models"
 import { RequestContext } from "../types/request"
-import { TransactionBaseService } from "./transaction-base-service"
 
 export type CartCompletionResponse = {
   /** The response code for the completion request */

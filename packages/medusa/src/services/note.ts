@@ -1,12 +1,16 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import { NoteRepository } from "../repositories/note"
-import EventBusService from "./event-bus"
-import { FindConfig, Selector } from "../types/common"
 import { Note } from "../models"
-import { buildQuery } from "../utils"
+import { NoteRepository } from "../repositories/note"
 import { CreateNoteInput } from "../types/note"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager

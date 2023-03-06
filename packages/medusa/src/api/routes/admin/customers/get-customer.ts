@@ -1,7 +1,7 @@
+import { validator } from "medusa-core-utils"
+import { defaultAdminCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { FindParams } from "../../../../types/common"
-import { defaultAdminCustomersRelations } from "."
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/customers/{id}

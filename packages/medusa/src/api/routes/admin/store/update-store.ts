@@ -1,8 +1,8 @@
 import { IsArray, IsObject, IsOptional, IsString } from "class-validator"
 
-import { StoreService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { StoreService } from "../../../../services"
 
 /**
  * @oas [post] /admin/store

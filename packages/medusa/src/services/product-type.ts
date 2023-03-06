@@ -1,10 +1,15 @@
-import { MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  ExtendedFindConfig,
+  FindConfig,
+  isString,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { FindOptionsWhere, ILike } from "typeorm"
 import { ProductType } from "../models"
 import { ProductTypeRepository } from "../repositories/product-type"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, isString } from "../utils"
 
 class ProductTypeService extends TransactionBaseService {
   protected readonly typeRepository_: typeof ProductTypeRepository

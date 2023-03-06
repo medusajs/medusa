@@ -1,12 +1,11 @@
 import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
-import { isDefined } from "medusa-core-utils"
+import { isDefined, sleep } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
-import { sleep } from "../utils/sleep"
 import JobSchedulerService, { CreateJobOptions } from "./job-scheduler"
 
 type InjectedDependencies = {

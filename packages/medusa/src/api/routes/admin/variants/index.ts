@@ -2,6 +2,7 @@ import { Router } from "express"
 
 import { ProductVariant } from "../../../../models/product-variant"
 import { PaginatedResponse } from "../../../../types/common"
+
 import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"

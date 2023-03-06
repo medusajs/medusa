@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -6,9 +11,6 @@ import {
   Index,
   PrimaryColumn,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class IdempotencyKey {

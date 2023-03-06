@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import ProductService from "../../../../services/product"
-import { SearchService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
+import { SearchService } from "../../../../services"
+import ProductService from "../../../../services/product"
 
 /**
  * @oas [post] /store/products/search

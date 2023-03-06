@@ -6,13 +6,13 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { Region } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import RegionService from "../../../../services/region"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [post] /admin/regions

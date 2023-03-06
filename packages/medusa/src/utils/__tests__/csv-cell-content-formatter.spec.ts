@@ -11,7 +11,7 @@ const cases: [string, Case][] = [
     {
       str: "Hello my name is Adrien and I like writing single line content.",
       expected:
-        'Hello my name is Adrien and I like writing single line content.',
+        "Hello my name is Adrien and I like writing single line content.",
     },
   ],
   [

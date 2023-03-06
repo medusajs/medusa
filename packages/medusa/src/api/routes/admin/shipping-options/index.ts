@@ -1,9 +1,8 @@
 import { Router } from "express"
-import { ShippingOption } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { DeleteResponse, PaginatedResponse, ShippingOption } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../../../../utils"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 

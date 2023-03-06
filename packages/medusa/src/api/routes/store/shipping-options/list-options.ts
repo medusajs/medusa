@@ -1,7 +1,7 @@
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
+import { validator } from "medusa-core-utils"
 import { PricingService, ProductService } from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /store/shipping-options

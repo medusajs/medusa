@@ -1,7 +1,7 @@
+import { FlagRouter } from "../../../utils"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../../utils/flag-router"
-import PriceSelectionStrategy from "../price-selection"
 import { cacheServiceMock } from "../../services/__mocks__/cache"
+import PriceSelectionStrategy from "../price-selection"
 
 const executeTest =
   (flagValue) =>

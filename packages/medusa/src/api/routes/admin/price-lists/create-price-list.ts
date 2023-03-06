@@ -18,7 +18,7 @@ import { Request } from "express"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [post] /admin/price-lists

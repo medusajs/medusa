@@ -1,3 +1,4 @@
+import { BaseEntity, generateEntityId, resolveDbType } from "medusa-core-utils"
 import {
   AfterLoad,
   BeforeInsert,
@@ -9,11 +10,6 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-
-import { BaseEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
-import { resolveDbType } from "../utils/db-aware-column"
-
 import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
 export enum OrderEditStatus {

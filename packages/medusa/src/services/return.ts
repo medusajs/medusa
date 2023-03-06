@@ -1,6 +1,23 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import {
+  FulfillmentProviderService,
+  LineItemService,
+  OrderService,
+  ProductVariantInventoryService,
+  ReturnReasonService,
+  ShippingOptionService,
+  TaxProviderService,
+  TotalsService,
+} from "."
 import {
   FulfillmentStatus,
   LineItem,
@@ -12,21 +29,8 @@ import {
 } from "../models"
 import { ReturnRepository } from "../repositories/return"
 import { ReturnItemRepository } from "../repositories/return-item"
-import { FindConfig, Selector } from "../types/common"
 import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
-import { buildQuery, setMetadata } from "../utils"
-
-import {
-  FulfillmentProviderService,
-  LineItemService,
-  OrderService,
-  ProductVariantInventoryService,
-  ReturnReasonService,
-  ShippingOptionService,
-  TaxProviderService,
-  TotalsService,
-} from "."
 
 type InjectedDependencies = {
   manager: EntityManager

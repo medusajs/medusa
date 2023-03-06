@@ -35,9 +35,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@medusajs/medusa": "^1.7.6",
-    "@storybook/addon-contexts": "^5.3.21",
     "@storybook/addon-essentials": "^6.3.12",
-    "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",
     "@storybook/react": "^6.3.12",

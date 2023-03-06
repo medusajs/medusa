@@ -1,5 +1,3 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   buildQuery,
   CreateInventoryItemInput,
@@ -7,8 +5,11 @@ import {
   FindConfig,
   IEventBusService,
   InventoryItemDTO,
+  isDefined,
+  MedusaError,
   TransactionBaseService,
-} from "@medusajs/medusa"
+} from "medusa-core-utils"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"

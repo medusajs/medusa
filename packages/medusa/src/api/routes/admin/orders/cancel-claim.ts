@@ -1,7 +1,7 @@
 import { ClaimService, OrderService } from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 
 /**

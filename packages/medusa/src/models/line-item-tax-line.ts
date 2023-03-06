@@ -1,3 +1,4 @@
+import { generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -7,10 +8,8 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-
 import { LineItem } from "./line-item"
 import { TaxLine } from "./tax-line"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["item_id", "code"])

@@ -1,10 +1,11 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import {
-  ITaxCalculationStrategy,
-  TaxCalculationContext,
+  isDefined,
+  MedusaError,
   TransactionBaseService,
-} from "../interfaces"
+} from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Cart,
   ClaimOrder,
@@ -26,11 +27,8 @@ import {
   LineDiscountAmount,
   SubtotalOptions,
 } from "../types/totals"
+import { calculatePriceTaxAmount, FlagRouter } from "../utils"
 import { NewTotalsService, TaxProviderService } from "./index"
-
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { calculatePriceTaxAmount } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 
 type ShippingMethodTotals = {
   price: number

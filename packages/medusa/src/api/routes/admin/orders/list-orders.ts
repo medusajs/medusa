@@ -3,7 +3,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { AdminListOrdersSelector } from "../../../../types/orders"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
 
 /**
  * @oas [get] /admin/orders

@@ -1,5 +1,5 @@
-import { CustomShippingOption } from "../models"
 import { dataSource } from "../loaders/database"
+import { CustomShippingOption } from "../models"
 
 export const CustomShippingOptionRepository =
   dataSource.getRepository(CustomShippingOption)

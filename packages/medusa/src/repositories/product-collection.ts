@@ -1,6 +1,6 @@
-import { ProductCollection } from "../models"
+import { ExtendedFindConfig } from "medusa-core-utils"
 import { dataSource } from "../loaders/database"
-import { ExtendedFindConfig } from "../types/common"
+import { ProductCollection } from "../models"
 
 // eslint-disable-next-line max-len
 export const ProductCollectionRepository = dataSource

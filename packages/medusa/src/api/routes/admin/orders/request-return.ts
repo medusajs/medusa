@@ -16,8 +16,8 @@ import { Type } from "class-transformer"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { Order, Return } from "../../../../models"
-import { OrdersReturnItem } from "../../../../types/orders"
 import { FindParams } from "../../../../types/common"
+import { OrdersReturnItem } from "../../../../types/orders"
 
 /**
  * @oas [post] /admin/orders/{id}/return

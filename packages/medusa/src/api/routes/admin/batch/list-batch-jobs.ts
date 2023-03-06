@@ -1,12 +1,11 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { Transform, Type } from "class-transformer"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 
-import BatchJobService from "../../../../services/batch-job"
-import { DateComparisonOperator } from "../../../../types/common"
-import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
 import { pickBy } from "lodash"
-import { isDefined } from "medusa-core-utils"
+import { isDefined, IsType } from "medusa-core-utils"
+import BatchJobService from "../../../../services/batch-job"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/batch-jobs

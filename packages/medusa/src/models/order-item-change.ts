@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -7,10 +12,6 @@ import {
   OneToOne,
   Unique,
 } from "typeorm"
-
-import { SoftDeletableEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { OrderEdit } from "./order-edit"
 

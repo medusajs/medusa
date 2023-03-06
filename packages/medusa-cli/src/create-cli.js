@@ -7,18 +7,20 @@ const { setTelemetryEnabled } = require("medusa-telemetry")
 const { getLocalMedusaVersion } = require(`./util/version`)
 const { didYouMean } = require(`./did-you-mean`)
 
-const reporter = require("./reporter").default
+const { logger } = require("medusa-core-utils")
 const { newStarter } = require("./commands/new")
 const { whoami } = require("./commands/whoami")
 const { login } = require("./commands/login")
 const { link } = require("./commands/link")
 
-const handlerP = fn => (...args) => {
-  Promise.resolve(fn(...args)).then(
-    () => process.exit(0),
-    err => console.log(err)
-  )
-}
+const handlerP =
+  (fn) =>
+  (...args) => {
+    Promise.resolve(fn(...args)).then(
+      () => process.exit(0),
+      (err) => console.log(err)
+    )
+  }
 
 function buildLocalCommands(cli, isLocalProject) {
   const defaultHost = `localhost`
@@ -59,7 +61,7 @@ function buildLocalCommands(cli, isLocalProject) {
   }
 
   function getCommandHandler(command, handler) {
-    return argv => {
+    return (argv) => {
       const localCmd = resolveLocalCommand(command)
       const args = { ...argv, ...projectInfo, useYarn }
 
@@ -70,7 +72,7 @@ function buildLocalCommands(cli, isLocalProject) {
   cli
     .command({
       command: `new [root] [starter]`,
-      builder: _ =>
+      builder: (_) =>
         _.option(`seed`, {
           type: `boolean`,
           describe: `If flag is set the command will attempt to seed the database after setup.`,
@@ -123,7 +125,7 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: `telemetry`,
       describe: `Enable or disable collection of anonymous usage data.`,
-      builder: yargs =>
+      builder: (yargs) =>
         yargs
           .option(`enable`, {
             type: `boolean`,
@@ -137,15 +139,13 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(({ enable, disable }) => {
         const enabled = Boolean(enable) || !disable
         setTelemetryEnabled(enabled)
-        reporter.info(
-          `Telemetry collection ${enabled ? `enabled` : `disabled`}`
-        )
+        logger.info(`Telemetry collection ${enabled ? `enabled` : `disabled`}`)
       }),
     })
     .command({
       command: `seed`,
       desc: `Migrates and populates the database with the provided file.`,
-      builder: _ =>
+      builder: (_) =>
         _.option(`f`, {
           alias: `seed-file`,
           type: `string`,
@@ -188,7 +188,7 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: `link`,
       desc: `Creates your Medusa Cloud user in your local database for local testing.`,
-      builder: _ =>
+      builder: (_) =>
         _.option(`su`, {
           alias: `skip-local-user`,
           type: `boolean`,
@@ -199,7 +199,7 @@ function buildLocalCommands(cli, isLocalProject) {
           default: false,
           describe: `If set medusa develop will be run after successful linking.`,
         }),
-      handler: handlerP(argv => {
+      handler: handlerP((argv) => {
         if (!isLocalProject) {
           console.log("must be a local project")
           cli.showHelp()
@@ -218,7 +218,7 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
-      builder: _ =>
+      builder: (_) =>
         _.option(`H`, {
           alias: `host`,
           type: `string`,
@@ -239,14 +239,14 @@ function buildLocalCommands(cli, isLocalProject) {
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
           // kills it so this is fine.
-          return new Promise(resolve => {})
+          return new Promise((resolve) => {})
         })
       ),
     })
     .command({
       command: `start`,
       desc: `Start development server.`,
-      builder: _ =>
+      builder: (_) =>
         _.option(`H`, {
           alias: `host`,
           type: `string`,
@@ -267,14 +267,14 @@ function buildLocalCommands(cli, isLocalProject) {
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
           // kills it so this is fine.
-          return new Promise(resolve => {})
+          return new Promise((resolve) => {})
         })
       ),
     })
     .command({
       command: `user`,
       desc: `Create a user`,
-      builder: _ =>
+      builder: (_) =>
         _.option(`e`, {
           alias: `email`,
           type: `string`,
@@ -296,7 +296,7 @@ function buildLocalCommands(cli, isLocalProject) {
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
           // kills it so this is fine.
-          return new Promise(resolve => {})
+          return new Promise((resolve) => {})
         })
       ),
     })
@@ -335,7 +335,7 @@ Medusa version: ${medusaVersion}
   }
 }
 
-module.exports = argv => {
+module.exports = (argv) => {
   const cli = yargs()
   const isLocalProject = isLocalMedusaProject()
 
@@ -381,16 +381,18 @@ module.exports = argv => {
     .demandCommand(1, `Pass --help to see all available commands and options.`)
     .strict()
     .fail((msg, err, yargs) => {
-      const availableCommands = yargs.getCommands().map(commandDescription => {
-        const [command] = commandDescription
-        return command.split(` `)[0]
-      })
+      const availableCommands = yargs
+        .getCommands()
+        .map((commandDescription) => {
+          const [command] = commandDescription
+          return command.split(` `)[0]
+        })
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
       cli.showHelp()
-      reporter.info(suggestion)
-      reporter.info(msg)
+      logger.info(suggestion)
+      logger.info(msg)
     })
     .parse(argv.slice(2))
 }

@@ -1,7 +1,6 @@
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, TransactionBaseService } from "medusa-core-utils"
 import BaseFulfillmentService from "medusa-interfaces"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
   Fulfillment,

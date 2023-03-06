@@ -1,4 +1,10 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import {
   EntityManager,
   FindOptionsWhere,
@@ -8,14 +14,11 @@ import {
   Raw,
   UpdateResult,
 } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import { CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
-import { FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
-import { buildQuery } from "../utils"
 import CartService from "./cart"
 import CustomShippingOptionService from "./custom-shipping-option"
 import EventBusService from "./event-bus"

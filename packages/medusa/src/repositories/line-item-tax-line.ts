@@ -1,6 +1,6 @@
-import { LineItemTaxLine } from "../models"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
+import { LineItemTaxLine } from "../models"
 
 export const LineItemTaxLineRepository = dataSource
   .getRepository(LineItemTaxLine)

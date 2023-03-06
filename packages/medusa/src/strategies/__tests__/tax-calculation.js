@@ -1,6 +1,6 @@
-import TaxCalculationStrategy from "../tax-calculation"
+import { FlagRouter } from "../../../utils"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../../utils/flag-router"
+import TaxCalculationStrategy from "../tax-calculation"
 
 const toTest = [
   [

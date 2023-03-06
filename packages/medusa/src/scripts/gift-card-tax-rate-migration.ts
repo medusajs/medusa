@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import { createConnection, IsNull } from "typeorm"
+import { createConnection } from "typeorm"
 import Logger from "../loaders/logger"
 import { GiftCard } from "../models/gift-card"
 import { typeormConfig } from "./db-config"

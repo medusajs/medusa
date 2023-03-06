@@ -1,11 +1,10 @@
+import { aliasTo, asFunction } from "awilix"
 import glob from "glob"
 import path from "path"
-import { aliasTo, asFunction } from "awilix"
 
-import formatRegistrationName from "../utils/format-registration-name"
+import { formatRegistrationName, isDefined } from "medusa-core-utils"
 import { isBatchJobStrategy } from "../interfaces"
 import { MedusaContainer } from "../types/global"
-import { isDefined } from "medusa-core-utils"
 
 type LoaderOptions = {
   container: MedusaContainer
@@ -30,8 +29,8 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
     "**/__fixtures__/**",
     "**/index.js",
     "**/index.ts",
-    "**/utils.js",
-    "**/utils.ts",
+    "medusa-core-utils",
+    "medusa-core-utils",
     "**/types.js",
     "**/types.ts",
     "**/types/**",

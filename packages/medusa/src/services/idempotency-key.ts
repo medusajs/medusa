@@ -1,15 +1,19 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { v4 } from "uuid"
-import { TransactionBaseService } from "../interfaces"
+import {
+  buildQuery,
+  isDefined,
+  isString,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import { IdempotencyKeyRepository } from "../repositories/idempotency-key"
+import { v4 } from "uuid"
 import { IdempotencyKey } from "../models"
+import { IdempotencyKeyRepository } from "../repositories/idempotency-key"
 import {
   CreateIdempotencyKeyInput,
   IdempotencyCallbackResult,
 } from "../types/idempotency-key"
-import { Selector } from "../types/common"
-import { buildQuery, isString } from "../utils"
 
 const KEY_LOCKED_TIMEOUT = 1000
 

@@ -1,8 +1,7 @@
+import { generateEntityId, SoftDeletableEntity } from "medusa-core-utils"
 import { BeforeInsert, Column, Index } from "typeorm"
-import { SoftDeletableEntity } from "../interfaces"
 import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
-import { generateEntityId } from "../utils"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
+import { FeatureFlagEntity } from "../utils"
 
 @FeatureFlagEntity(AnalyticsFeatureFlag.key)
 export class AnalyticsConfig extends SoftDeletableEntity {

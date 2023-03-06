@@ -1,4 +1,10 @@
 import {
+  BaseEntity,
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -7,10 +13,6 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-
-import { BaseEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {

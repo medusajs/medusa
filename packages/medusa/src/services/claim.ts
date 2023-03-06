@@ -1,6 +1,12 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import {
   ClaimFulfillmentStatus,
   ClaimOrder,
@@ -20,8 +26,6 @@ import {
   CreateClaimItemInput,
   UpdateClaimInput,
 } from "../types/claim"
-import { FindConfig } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
 import ClaimItemService from "./claim-item"
 import EventBusService from "./event-bus"
 import FulfillmentService from "./fulfillment"

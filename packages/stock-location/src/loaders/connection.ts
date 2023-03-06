@@ -4,11 +4,10 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
-import { DataSource, DataSourceOptions } from "typeorm"
-
-import * as StockLocationModels from "../models"
-import { MedusaError } from "medusa-core-utils"
 import { asValue } from "awilix"
+import { MedusaError } from "medusa-core-utils"
+import { DataSource, DataSourceOptions } from "typeorm"
+import * as StockLocationModels from "../models"
 import { StockLocationServiceInitializeOptions } from "../types"
 
 export default async (

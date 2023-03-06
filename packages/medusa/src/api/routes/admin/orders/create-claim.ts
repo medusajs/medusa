@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,11 +10,9 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ClaimReason, ClaimType } from "../../../../models"
-
-import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { ClaimReason, ClaimType } from "../../../../models"
 import { ClaimTypeValue } from "../../../../types/claim"
 import { AddressPayload, FindParams } from "../../../../types/common"
 

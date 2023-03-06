@@ -7,20 +7,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import {
   CartService,
   ProductService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { IsType } from "../../../../utils/validators/is-type"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+
+import { IsType, optionalBooleanMapper } from "medusa-core-utils"
 import { Cart, Product } from "../../../../models"
+import { cleanResponseData, FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [get] /store/products

@@ -1,5 +1,7 @@
-import { Logger as _Logger } from "winston"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
+import {
+  MedusaContainer as coreMedusaContainer,
+  Reporter,
+} from "medusa-core-utils"
 
 export type MedusaContainer = coreMedusaContainer
 export type Constructor<T> = new (...args: any[]) => T
@@ -14,11 +16,7 @@ export type LogLevel =
   | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
 
-export type Logger = _Logger & {
-  progress: (activityId: string, msg: string) => void
-  info: (msg: string) => void
-  warn: (msg: string) => void
-}
+export type Logger = Reporter
 
 export enum MODULE_SCOPE {
   INTERNAL = "internal",

@@ -1,7 +1,6 @@
-import { MedusaError } from "medusa-core-utils"
-import { PaymentCollection } from "./../models/payment-collection"
-import { FindConfig } from "../types/common"
+import { FindConfig, MedusaError } from "medusa-core-utils"
 import { dataSource } from "../loaders/database"
+import { PaymentCollection } from "./../models/payment-collection"
 
 export const PaymentCollectionRepository = dataSource
   .getRepository(PaymentCollection)

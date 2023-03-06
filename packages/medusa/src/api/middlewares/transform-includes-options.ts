@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { Order } from "../../models"
 import { MedusaError } from "medusa-core-utils"
+import { Order } from "../../models"
 
 /**
  * Retrieve the includes options from the fields query param.

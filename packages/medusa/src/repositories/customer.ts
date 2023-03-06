@@ -1,7 +1,7 @@
+import { ExtendedFindConfig } from "medusa-core-utils"
 import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
-import { Customer } from "../models"
 import { dataSource } from "../loaders/database"
-import { ExtendedFindConfig } from "../types/common"
+import { Customer } from "../models"
 
 export const CustomerRepository = dataSource.getRepository(Customer).extend({
   async listAndCount(

@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
 
-import { CustomerGroupService } from "../../../../services"
-import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
-import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { CustomerGroupService } from "../../../../services"
+import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 
 /**
  * @oas [post] /admin/customer-groups/{id}/customers/batch

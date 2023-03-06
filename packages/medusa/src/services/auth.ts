@@ -1,10 +1,10 @@
+import { TransactionBaseService } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
-import { AuthenticateResult } from "../types/auth"
-import { Customer, User } from "../models"
-import { TransactionBaseService } from "../interfaces"
-import UserService from "./user"
-import CustomerService from "./customer"
 import { EntityManager } from "typeorm"
+import { Customer, User } from "../models"
+import { AuthenticateResult } from "../types/auth"
+import CustomerService from "./customer"
+import UserService from "./user"
 
 type InjectedDependencies = {
   manager: EntityManager

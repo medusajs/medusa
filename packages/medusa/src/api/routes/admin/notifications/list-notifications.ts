@@ -1,15 +1,15 @@
 import { IsBooleanString, IsInt, IsOptional, IsString } from "class-validator"
+import { FindConfig } from "medusa-core-utils"
+import { Notification } from "../../../../models"
 import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
-import { Notification } from "../../../../models"
-import { FindConfig } from "../../../../types/common"
 
-import { NotificationService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pick } from "lodash"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
+import { NotificationService } from "../../../../services"
 
 /**
  * @oas [get] /admin/notifications

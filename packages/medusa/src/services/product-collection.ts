@@ -1,20 +1,27 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  ExtendedFindConfig,
+  FindConfig,
+  isDefined,
+  isString,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import {
   EntityManager,
   FindManyOptions,
   FindOptionsWhere,
   ILike,
 } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateProductCollection,
   UpdateProductCollection,
 } from "../types/product-collection"
-import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {

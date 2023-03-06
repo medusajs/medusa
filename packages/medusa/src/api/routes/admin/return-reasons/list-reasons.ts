@@ -1,10 +1,10 @@
+import { Selector } from "medusa-core-utils"
 import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
 import { ReturnReason } from "../../../../models"
 import { ReturnReasonService } from "../../../../services"
-import { Selector } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/return-reasons

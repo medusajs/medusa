@@ -1,4 +1,4 @@
-import { isString } from "../../utils";
+import { isString } from "medusa-core-utils"
 
 export const DefaultProviderMock = {
   getStatus: jest.fn().mockImplementation((data) => {
@@ -41,18 +41,20 @@ export const PaymentProviderServiceMock = {
   registerInstalledProviders: jest.fn().mockImplementation(() => {
     return Promise.resolve()
   }),
-  createSession: jest.fn().mockImplementation((providerIdOrSessionInput, cart) => {
-    if (isString(providerIdOrSessionInput)) {
-      return Promise.resolve({
-        id: `${providerIdOrSessionInput}_session`,
-        cartId: cart._id,
-      })
-    } else {
-      return Promise.resolve({
-        id: `${providerIdOrSessionInput.providerId}_session`,
-      })
-    }
-  }),
+  createSession: jest
+    .fn()
+    .mockImplementation((providerIdOrSessionInput, cart) => {
+      if (isString(providerIdOrSessionInput)) {
+        return Promise.resolve({
+          id: `${providerIdOrSessionInput}_session`,
+          cartId: cart._id,
+        })
+      } else {
+        return Promise.resolve({
+          id: `${providerIdOrSessionInput.providerId}_session`,
+        })
+      }
+    }),
   retrieveProvider: jest.fn().mockImplementation((providerId) => {
     if (providerId === "default_provider") {
       return DefaultProviderMock

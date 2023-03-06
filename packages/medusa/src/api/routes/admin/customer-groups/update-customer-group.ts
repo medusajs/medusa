@@ -1,11 +1,11 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
-import { CustomerGroupService } from "../../../../services"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { FindParams } from "../../../../types/common"
 import { defaultAdminCustomerGroupsRelations } from "."
-import { validator } from "../../../../utils/validator"
+import { CustomerGroupService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/customer-groups/{id}

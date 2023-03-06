@@ -5,7 +5,7 @@ import middlewares, {
   transformQuery,
 } from "../../../middlewares"
 
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import deleteProductCategory from "./delete-product-category"
 import { validateProductsExist } from "../../../middlewares/validators/product-existence"

@@ -1,14 +1,6 @@
 import { asClass, asValue, createContainer } from "awilix"
-import {
-  defaultContainerMock,
-  giftCards,
-  giftCardsWithTaxRate,
-  lineItems,
-  shippingMethods,
-} from "../__fixtures__/new-totals"
-import { NewTotalsService } from "../index"
 import { TaxCalculationContext } from "../../interfaces"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Discount,
   DiscountRuleType,
@@ -17,8 +9,16 @@ import {
   Region,
   ShippingMethod,
 } from "../../models"
-import { FlagRouter } from "../../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../../utils"
+import { NewTotalsService } from "../index"
+import {
+  defaultContainerMock,
+  giftCards,
+  giftCardsWithTaxRate,
+  lineItems,
+  shippingMethods,
+} from "../__fixtures__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 describe("New totals service", () => {
   describe("Without [MEDUSA_FF_TAX_INCLUSIVE_PRICING]", () => {
@@ -566,7 +566,7 @@ describe("New totals service", () => {
             tax_rate: 20,
             is_taxable: false,
             amount: 1000,
-            gift_card: testGiftCard
+            gift_card: testGiftCard,
           },
         ]
 
@@ -598,7 +598,7 @@ describe("New totals service", () => {
             tax_rate: 20,
             is_taxable: null,
             amount: 1000,
-            gift_card: testGiftCard
+            gift_card: testGiftCard,
           },
         ]
 
@@ -631,7 +631,7 @@ describe("New totals service", () => {
             tax_rate: 20,
             is_taxable: null,
             amount: 1000,
-            gift_card: testGiftCard
+            gift_card: testGiftCard,
           },
         ]
 

@@ -1,7 +1,7 @@
 import axios from "axios"
-import moment from "moment"
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import moment from "moment"
 import EUCountries from "../utils/eu-countries"
 
 const ECONOMIC_BASE_URL = "https://restapi.e-conomic.com"

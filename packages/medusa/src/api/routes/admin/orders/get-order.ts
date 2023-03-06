@@ -1,6 +1,6 @@
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
 import { Order } from "../../../../models"
 
 /**

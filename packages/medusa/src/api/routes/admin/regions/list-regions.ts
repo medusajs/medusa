@@ -2,11 +2,11 @@ import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import _, { identity } from "lodash"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 
-import { DateComparisonOperator } from "../../../../types/common"
+import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/regions

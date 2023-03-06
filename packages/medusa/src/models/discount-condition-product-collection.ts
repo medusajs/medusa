@@ -1,3 +1,4 @@
+import { DbAwareColumn, resolveDbType } from "medusa-core-utils"
 import {
   CreateDateColumn,
   Entity,
@@ -6,8 +7,6 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
 import { DiscountCondition } from "./discount-condition"
 import { ProductCollection } from "./product-collection"
 

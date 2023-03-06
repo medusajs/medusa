@@ -10,11 +10,11 @@ import {
 import { Type } from "class-transformer"
 import { omit } from "lodash"
 import { defaultStoreVariantRelations } from "."
+
+import { IsType, validator } from "medusa-core-utils"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /store/variants

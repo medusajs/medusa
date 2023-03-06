@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -10,13 +15,9 @@ import {
   OneToOne,
   Unique,
 } from "typeorm"
-
 import { Address } from "./address"
 import { CustomerGroup } from "./customer-group"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Order } from "./order"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["email", "has_account"])

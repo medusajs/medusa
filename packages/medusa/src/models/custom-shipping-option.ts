@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -7,12 +12,8 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-
 import { Cart } from "./cart"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { ShippingOption } from "./shipping-option"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["shipping_option_id", "cart_id"])

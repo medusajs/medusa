@@ -1,6 +1,5 @@
 const path = require("path")
 const express = require("express")
-const importFrom = require("import-from")
 const chokidar = require("chokidar")
 
 process.env.DEV_MODE = !!process[Symbol.for("ts-node.register.instance")]
@@ -134,7 +133,7 @@ const bootstrapApp = async () => {
   const dir = path.resolve(
     path.join(__dirname, "../../packages/medusa/src/loaders")
   )
-  const loaders = importFrom(dir, ".").default
+  const loaders = require(dir, ".").default
 
   const configDir = __dirname
   const { dbConnection } = await loaders({

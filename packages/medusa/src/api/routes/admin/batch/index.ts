@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { BatchJob } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { BatchJob, PaginatedResponse } from "../../../.."
+
 import middlewares, {
   canAccessBatchJob,
   getRequestedBatchJob,

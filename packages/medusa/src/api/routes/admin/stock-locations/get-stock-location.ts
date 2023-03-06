@@ -1,11 +1,11 @@
-import { IStockLocationService } from "../../../../interfaces"
 import { Request, Response } from "express"
-import { FindParams } from "../../../../types/common"
-import { joinSalesChannels } from "./utils/join-sales-channels"
+import { IStockLocationService } from "medusa-core-utils"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
+import { FindParams } from "../../../../types/common"
+import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
  * @oas [get] /admin/stock-locations/{id}

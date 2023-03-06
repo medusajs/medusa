@@ -1,8 +1,12 @@
 import { PostgresError } from "@medusajs/medusa"
-import Stripe from "stripe"
 import { EOL } from "os"
+import Stripe from "stripe"
 
-import { buildError, handlePaymentHook, isPaymentCollection } from "../utils"
+import {
+  buildError,
+  handlePaymentHook,
+  isPaymentCollection,
+} from "medusa-core-utils"
 import { container } from "../__fixtures__/container"
 import {
   existingCartId,

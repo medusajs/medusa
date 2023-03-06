@@ -4,7 +4,10 @@ import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
 import _ from "lodash"
-import { createRequireFromPath } from "medusa-core-utils"
+import {
+  createRequireFromPath,
+  formatRegistrationName,
+} from "medusa-core-utils"
 import {
   FileService,
   FulfillmentService,
@@ -30,12 +33,11 @@ import {
   Logger,
   MedusaContainer,
 } from "../types/global"
-import formatRegistrationName from "../utils/format-registration-name"
-import logger from "./logger"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string

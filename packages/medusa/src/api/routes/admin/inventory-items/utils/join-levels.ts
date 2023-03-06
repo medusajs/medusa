@@ -1,8 +1,8 @@
-import { IInventoryService } from "../../../../../interfaces"
 import {
+  IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
-} from "../../../../../types/inventory"
+} from "medusa-core-utils"
 
 type LevelWithAvailability = InventoryLevelDTO & {
   available_quantity: number

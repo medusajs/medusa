@@ -1,7 +1,5 @@
+import { BaseEntity, generateEntityId, resolveDbType } from "medusa-core-utils"
 import { BeforeInsert, Column, Entity } from "typeorm"
-
-import { BaseEntity } from "../interfaces"
-import { generateEntityId, resolveDbType } from "../utils"
 
 @Entity()
 export class PublishableApiKey extends BaseEntity {

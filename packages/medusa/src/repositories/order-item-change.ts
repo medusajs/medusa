@@ -1,5 +1,5 @@
-import { OrderItemChange } from "../models"
 import { dataSource } from "../loaders/database"
+import { OrderItemChange } from "../models"
 
 export const OrderItemChangeRepository =
   dataSource.getRepository(OrderItemChange)

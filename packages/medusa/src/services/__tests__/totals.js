@@ -1,9 +1,8 @@
+import { calculatePriceTaxAmount } from "medusa-core-utils"
 import { IdMap } from "medusa-test-utils"
-import TotalsService from "../totals"
-import { FlagRouter } from "../../utils/flag-router"
-
+import { FlagRouter } from "../../../utils"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
-import { calculatePriceTaxAmount } from "../../utils"
+import TotalsService from "../totals"
 
 const discounts = {
   total10Percent: {
@@ -64,7 +63,7 @@ const discounts = {
 }
 
 const applyDiscount = (cart, discount) => {
-  let newCart = { ...cart }
+  const newCart = { ...cart }
   if (newCart.items) {
     newCart.items = cart.items.map((item) => {
       return {
@@ -96,11 +95,11 @@ const calculateAdjustment = (cart, lineItem, discount) => {
           includesTax: lineItem.includes_tax,
         })
       )
-  let price = lineItem.unit_price - taxAmountIncludedInPrice
+  const price = lineItem.unit_price - taxAmountIncludedInPrice
   const lineItemPrice = price * lineItem.quantity
 
   if (discount.rule.type === "fixed" && discount.rule.allocation === "total") {
-    let subtotal = cart.items.reduce(
+    const subtotal = cart.items.reduce(
       (total, item) => total + price * item.quantity,
       0
     )
@@ -310,7 +309,7 @@ describe("TotalsService", () => {
 
     it("calculate total percentage discount", async () => {
       discountCart.discounts.push(discounts.total10Percent)
-      let cart = applyDiscount(discountCart, discounts.total10Percent)
+      const cart = applyDiscount(discountCart, discounts.total10Percent)
       res = await totalsService.getDiscountTotal(cart)
 
       expect(res).toEqual(28)
@@ -320,7 +319,7 @@ describe("TotalsService", () => {
 
     it("calculate item fixed discount", async () => {
       discountCart.discounts.push(discounts.item2Fixed)
-      let cart = applyDiscount(discountCart, discounts.item2Fixed)
+      const cart = applyDiscount(discountCart, discounts.item2Fixed)
       res = await totalsService.getDiscountTotal(cart)
 
       expect(res).toEqual(40)
@@ -328,7 +327,7 @@ describe("TotalsService", () => {
 
     it("calculate item percentage discount", async () => {
       discountCart.discounts.push(discounts.item10Percent)
-      let cart = applyDiscount(discountCart, discounts.item10Percent)
+      const cart = applyDiscount(discountCart, discounts.item10Percent)
       res = await totalsService.getDiscountTotal(cart)
 
       expect(res).toEqual(28)
@@ -336,7 +335,7 @@ describe("TotalsService", () => {
 
     it("calculate total fixed discount", async () => {
       discountCart.discounts.push(discounts.total10Fixed)
-      let cart = applyDiscount(discountCart, discounts.total10Fixed)
+      const cart = applyDiscount(discountCart, discounts.total10Fixed)
       res = await totalsService.getDiscountTotal(cart)
 
       expect(res).toEqual(10)
@@ -587,7 +586,7 @@ describe("TotalsService", () => {
 
     it("calculates refund with item fixed discount", async () => {
       orderToRefund.discounts.push(discounts.item2Fixed)
-      let order = applyDiscount(orderToRefund, discounts.item2Fixed)
+      const order = applyDiscount(orderToRefund, discounts.item2Fixed)
       res = await totalsService.getRefundTotal(order, [
         {
           id: "line2",
@@ -607,7 +606,7 @@ describe("TotalsService", () => {
 
     it("calculates refund with item percentage discount", async () => {
       orderToRefund.discounts.push(discounts.item10Percent)
-      let order = applyDiscount(orderToRefund, discounts.item10Percent)
+      const order = applyDiscount(orderToRefund, discounts.item10Percent)
       res = await totalsService.getRefundTotal(order, [
         {
           id: "line2",
@@ -746,7 +745,7 @@ describe("TotalsService", () => {
 
     it("calculates refund with item fixed discount", async () => {
       orderToRefund.discounts.push(discounts.item2Fixed)
-      let order = applyDiscount(orderToRefund, discounts.item2Fixed)
+      const order = applyDiscount(orderToRefund, discounts.item2Fixed)
       res = await totalsService.getRefundTotal(order, [
         {
           id: "line2",
@@ -766,7 +765,7 @@ describe("TotalsService", () => {
 
     it("calculates refund with item fixed discount and a line that includes tax", async () => {
       orderToRefund.discounts.push(discounts.item2Fixed)
-      let order = applyDiscount(orderToRefund, discounts.item2Fixed)
+      const order = applyDiscount(orderToRefund, discounts.item2Fixed)
       res = await totalsService.getRefundTotal(order, [
         {
           id: "line",
@@ -787,7 +786,7 @@ describe("TotalsService", () => {
 
     it("calculates refund with item percentage discount", async () => {
       orderToRefund.discounts.push(discounts.item10Percent)
-      let order = applyDiscount(orderToRefund, discounts.item10Percent)
+      const order = applyDiscount(orderToRefund, discounts.item10Percent)
       res = await totalsService.getRefundTotal(order, [
         {
           id: "line2",
@@ -807,7 +806,7 @@ describe("TotalsService", () => {
 
     it("calculates refund with item percentage discount and a line that includes tax", async () => {
       orderToRefund.discounts.push(discounts.item10Percent)
-      let order = applyDiscount(orderToRefund, discounts.item10Percent)
+      const order = applyDiscount(orderToRefund, discounts.item10Percent)
       res = await totalsService.getRefundTotal(order, [
         {
           id: "line",

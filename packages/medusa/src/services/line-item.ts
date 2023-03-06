@@ -1,8 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isString,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
-
-import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   LineItem,
@@ -13,11 +19,9 @@ import {
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { FindConfig, Selector } from "../types/common"
 import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
-import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
+import { FlagRouter } from "../utils"
 import {
   PricingService,
   ProductService,
@@ -440,7 +444,9 @@ class LineItemService extends TransactionBaseService {
 
         return await lineItemRepository
           .findOne({ where: { id } })
-          .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
+          .then(
+            async (lineItem) => lineItem && lineItemRepository.remove(lineItem)
+          )
       }
     )
   }

@@ -1,3 +1,4 @@
+import { DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -7,11 +8,8 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Discount } from "./discount"
 import { LineItem } from "./line-item"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Index(["discount_id", "item_id"], {

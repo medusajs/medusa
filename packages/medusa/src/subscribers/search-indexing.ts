@@ -1,9 +1,9 @@
-import EventBusService from "../services/event-bus"
-import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
-import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
-import { Product } from "../models"
 import { ISearchService } from "../interfaces"
+import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
+import { Product } from "../models"
+import EventBusService from "../services/event-bus"
+import ProductService from "../services/product"
 
 type InjectedDependencies = {
   eventBusService: EventBusService

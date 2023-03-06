@@ -1,12 +1,10 @@
+import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-
+import { getRetrieveConfig, validator } from "medusa-core-utils"
 import { ProductVariant } from "../../../../models"
 import { ProductVariantService } from "../../../../services"
-import { Type } from "class-transformer"
 import { defaultAdminGetProductsVariantsFields } from "./index"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/products/{id}/variants
@@ -82,7 +80,7 @@ export default async (req: Request, res: Response) => {
       product_id: id,
     },
     {
-      ...queryConfig,
+      ...(queryConfig as ProductVariant),
       skip: offset,
       take: limit,
     }

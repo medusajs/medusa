@@ -1,10 +1,9 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
-import { validator } from "../../../../utils/validator"
-import { isDefined } from "medusa-core-utils"
+import { isDefined, validator } from "medusa-core-utils"
+import { GiftCardService } from "../../../../services"
 
 /**
  * @oas [get] /admin/gift-cards

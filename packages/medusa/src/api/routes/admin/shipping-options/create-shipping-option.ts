@@ -10,10 +10,10 @@ import {
 import { defaultFields, defaultRelations } from "."
 
 import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [post] /admin/shipping-options

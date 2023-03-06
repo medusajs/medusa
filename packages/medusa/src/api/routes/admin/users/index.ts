@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { User } from "../../../.."
-import { DeleteResponse } from "../../../../types/common"
+import { DeleteResponse, User } from "../../../.."
+
 import middlewares from "../../../middlewares"
 
 export const unauthenticatedUserRoutes = (app) => {

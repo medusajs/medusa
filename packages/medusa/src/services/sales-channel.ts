@@ -1,17 +1,20 @@
+import { FindConfig, QuerySelector, Selector } from "medusa-core-utils"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 
+import {
+  buildQuery,
+  isDefined,
+  MedusaError,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import EventBusService from "./event-bus"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
+import EventBusService from "./event-bus"
 import StoreService from "./store"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository

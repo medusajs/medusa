@@ -1,6 +1,3 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -10,16 +7,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
 
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import { Cart, LineItem } from "../../../../models"
 import {
   CartService,
   LineItemService,
   RegionService,
 } from "../../../../services"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { Cart, LineItem } from "../../../../models"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { FeatureFlagDecorators, FlagRouter } from "../../../../utils"
+
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartCreateProps } from "../../../../types/cart"
 

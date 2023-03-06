@@ -1,14 +1,18 @@
+import { AwilixContainer } from "awilix"
+import { countries, currencies } from "medusa-core-utils"
 import {
   BaseFulfillmentService,
   BaseNotificationService,
   BasePaymentService,
 } from "medusa-interfaces"
-import { currencies } from "../utils/currencies"
-import { countries } from "../utils/countries"
-import { AwilixContainer } from "awilix"
-import { Logger } from "../types/global"
 import { EntityManager } from "typeorm"
+import {
+  AbstractPaymentProcessor,
+  AbstractPaymentService,
+  AbstractTaxService,
+} from "../interfaces"
 import { CountryRepository } from "../repositories/country"
+import { CurrencyRepository } from "../repositories/currency"
 import {
   FulfillmentProviderService,
   NotificationService,
@@ -18,14 +22,9 @@ import {
   StoreService,
   TaxProviderService,
 } from "../services"
-import { CurrencyRepository } from "../repositories/currency"
-import { FlagRouter } from "../utils/flag-router"
+import { Logger } from "../types/global"
+import { FlagRouter } from "../utils"
 import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
-import {
-  AbstractPaymentProcessor,
-  AbstractPaymentService,
-  AbstractTaxService,
-} from "../interfaces"
 
 const silentResolution = <T>(
   container: AwilixContainer,
@@ -227,7 +226,7 @@ async function registerNotificationProvider({
   logger: Logger
 }): Promise<void> {
   const notiProviders =
-    silentResolution<typeof BaseNotificationService[]>(
+    silentResolution<(typeof BaseNotificationService)[]>(
       container,
       "notificationProviders",
       logger
@@ -252,7 +251,7 @@ async function registerFulfillmentProvider({
   logger: Logger
 }): Promise<void> {
   const fulfilProviders =
-    silentResolution<typeof BaseFulfillmentService[]>(
+    silentResolution<(typeof BaseFulfillmentService)[]>(
       container,
       "fulfillmentProviders",
       logger

@@ -1,8 +1,8 @@
 import { Router } from "express"
 
-import { Swap } from "./../../../../"
+import { FindConfig } from "medusa-core-utils"
 import middlewares from "../../../middlewares"
-import { FindConfig } from "../../../../types/common"
+import { Swap } from "./../../../../"
 
 const route = Router()
 

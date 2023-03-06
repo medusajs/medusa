@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,7 +9,15 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import {
+  DistributedTransaction,
+  IInventoryService,
+  validator,
+} from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus } from "../../../../models"
 import {
   PricingService,
   ProductService,
@@ -17,6 +26,7 @@ import {
   SalesChannelService,
   ShippingProfileService,
 } from "../../../../services"
+import { Logger } from "../../../../types/global"
 import {
   ProductProductCategoryReq,
   ProductSalesChannelReq,
@@ -27,21 +37,11 @@ import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
-
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus } from "../../../../models"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
-import { IInventoryService } from "../../../../interfaces"
-
+import { FeatureFlagDecorators } from "../../../../utils"
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /admin/products

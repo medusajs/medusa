@@ -1,8 +1,8 @@
-import { DbAwareColumn, generateEntityId } from "../utils"
-import { MoneyAmount } from "./money-amount"
-import { Product } from "./product"
-import { ProductOptionValue } from "./product-option-value"
-import { SoftDeletableEntity } from "../interfaces"
+import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -10,9 +10,11 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
 } from "typeorm"
-
+import { MoneyAmount } from "./money-amount"
+import { Product } from "./product"
+import { ProductOptionValue } from "./product-option-value"
 import { ProductVariantInventoryItem } from "./product-variant-inventory-item"
 
 @Entity()

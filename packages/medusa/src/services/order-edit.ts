@@ -7,7 +7,13 @@ import {
   IsNull,
 } from "typeorm"
 
-import { TransactionBaseService } from "../interfaces"
+import {
+  buildQuery,
+  FindConfig,
+  isString,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import {
   Cart,
   Order,
@@ -16,12 +22,10 @@ import {
   OrderEditStatus,
 } from "../models"
 import { OrderEditRepository } from "../repositories/order-edit"
-import { FindConfig, Selector } from "../types/common"
 import {
   AddOrderEditLineItemInput,
   CreateOrderEditInput,
 } from "../types/order-edit"
-import { buildQuery, isString } from "../utils"
 import {
   EventBusService,
   LineItemAdjustmentService,

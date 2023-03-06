@@ -1,12 +1,17 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { TransactionBaseService } from "../interfaces"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
 import { ClaimItemRepository } from "../repositories/claim-item"
 import { ClaimTagRepository } from "../repositories/claim-tag"
 import { CreateClaimItemInput } from "../types/claim"
-import { FindConfig, Selector } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 

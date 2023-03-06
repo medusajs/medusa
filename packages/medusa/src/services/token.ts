@@ -1,8 +1,7 @@
 import jwt, { Jwt, JwtPayload, SignOptions, VerifyOptions } from "jsonwebtoken"
-import { ConfigModule } from "../types/global"
-import formatRegistrationName from "../utils/format-registration-name"
+import { formatRegistrationName, MedusaError } from "medusa-core-utils"
 import { resolve } from "path"
-import { MedusaError } from "medusa-core-utils"
+import { ConfigModule } from "../types/global"
 
 type InjectedDependencies = {
   configModule: ConfigModule

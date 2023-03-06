@@ -1,3 +1,4 @@
+import { DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Check,
@@ -10,18 +11,15 @@ import {
   OneToOne,
   PrimaryColumn,
 } from "typeorm"
-
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FeatureFlagColumn } from "../utils"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
 import { ShippingOption } from "./shipping-option"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`

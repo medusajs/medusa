@@ -1,12 +1,14 @@
-import { PaymentRepository } from "./../repositories/payment"
-import { EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { PaymentRepository } from "./../repositories/payment"
 
+import {
+  buildQuery,
+  FindConfig,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { Payment, Refund } from "../models"
-import { TransactionBaseService } from "../interfaces"
 import { EventBusService, PaymentProviderService } from "./index"
-import { buildQuery } from "../utils"
-import { FindConfig } from "../types/common"
 
 type InjectedDependencies = {
   manager: EntityManager

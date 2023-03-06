@@ -1,7 +1,7 @@
-import { Router } from "express"
 import bodyParser from "body-parser"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { Router } from "express"
 import jwt from "jsonwebtoken"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 const JWT_SECRET = process.env.JWT_SECRET || ""
 

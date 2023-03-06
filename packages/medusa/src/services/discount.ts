@@ -1,6 +1,16 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  isFuture,
+  isPast,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import {
   DeepPartial,
   EntityManager,
@@ -15,7 +25,6 @@ import {
   RegionService,
   TotalsService,
 } from "."
-import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Cart, Discount, LineItem, Region } from "../models"
 import {
@@ -27,7 +36,6 @@ import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
-import { FindConfig, Selector } from "../types/common"
 import {
   CreateDiscountInput,
   CreateDiscountRuleInput,
@@ -36,12 +44,10 @@ import {
   UpdateDiscountInput,
   UpdateDiscountRuleInput,
 } from "../types/discount"
-import { buildQuery, setMetadata } from "../utils"
-import { isFuture, isPast } from "../utils/date-helpers"
-import { FlagRouter } from "../utils/flag-router"
+import { CalculationContextData } from "../types/totals"
+import { FlagRouter } from "../utils"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
-import { CalculationContextData } from "../types/totals"
 
 /**
  * Provides layer to manipulate discounts.

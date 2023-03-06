@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import NoteService from "../../../../services/note"
 import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
+import NoteService from "../../../../services/note"
 import { selector } from "../../../../types/note"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/notes

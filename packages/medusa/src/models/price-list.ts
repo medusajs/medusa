@@ -1,4 +1,10 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -6,15 +12,11 @@ import {
   ManyToMany,
   OneToMany,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { PriceListStatus, PriceListType } from "../types/price-list"
-
+import { FeatureFlagColumn } from "../utils"
 import { CustomerGroup } from "./customer-group"
 import { MoneyAmount } from "./money-amount"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class PriceList extends SoftDeletableEntity {

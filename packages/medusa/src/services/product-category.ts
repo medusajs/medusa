@@ -1,16 +1,17 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  QuerySelector,
+  Selector,
+  TransactionBaseService,
+  TreeQuerySelector,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { EventBusService } from "."
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import {
-  FindConfig,
-  QuerySelector,
-  TreeQuerySelector,
-  Selector,
-} from "../types/common"
-import { buildQuery } from "../utils"
-import { EventBusService } from "."
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,

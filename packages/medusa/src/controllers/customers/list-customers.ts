@@ -1,11 +1,9 @@
 import { omit, pickBy } from "lodash"
-import { AdminGetCustomersParams } from "../../api/routes/admin/customers"
+import { FindConfig, isDefined, validator } from "medusa-core-utils"
 import { AdminCustomersListRes } from "../../api"
-import { CustomerService } from "../../services"
-import { FindConfig } from "../../types/common"
-import { validator } from "../../utils/validator"
+import { AdminGetCustomersParams } from "../../api/routes/admin/customers"
 import { Customer } from "../../models/customer"
-import { isDefined } from "medusa-core-utils"
+import { CustomerService } from "../../services"
 
 const listAndCount = async (
   scope,

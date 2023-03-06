@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "../../../utils"
 import { MoneyAmountRepository } from "../../repositories/money-amount"
-import { FlagRouter } from "../../utils/flag-router"
 import PriceListService from "../price-list"
 import { RegionServiceMock } from "../__mocks__/region"
 

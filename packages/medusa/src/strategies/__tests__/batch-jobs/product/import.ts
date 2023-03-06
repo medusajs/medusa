@@ -1,9 +1,7 @@
-import { PassThrough, Readable } from "stream"
-import { EntityManager } from "typeorm"
-
 import { FileService } from "medusa-interfaces"
 import { IdMap, MockManager } from "medusa-test-utils"
-
+import { PassThrough, Readable } from "stream"
+import { EntityManager } from "typeorm"
 import { User } from "../../../../models"
 import {
   BatchJobService,
@@ -13,7 +11,7 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import { BatchJobStatus } from "../../../../types/batch-job"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { FlagRouter } from "../../../../utils"
 import ProductImportStrategy from "../../../batch-jobs/product/import"
 import { ProductImportInjectedProps } from "../../../batch-jobs/product/types"
 

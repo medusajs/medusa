@@ -1,10 +1,10 @@
 import { IsInt, IsOptional, ValidateNested } from "class-validator"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
 import { omit } from "lodash"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
+import RegionService from "../../../../services/region"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /store/regions

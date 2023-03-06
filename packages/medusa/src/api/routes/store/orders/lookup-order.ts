@@ -8,7 +8,7 @@ import {
 import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
 import { FindParams } from "../../../../types/common"
 
 /**

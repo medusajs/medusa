@@ -1,9 +1,11 @@
 import {
-  ITaxCalculationStrategy,
-  TaxCalculationContext,
+  isDefined,
+  MedusaError,
   TransactionBaseService,
-} from "../interfaces"
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Discount,
   DiscountRuleType,
@@ -14,12 +16,9 @@ import {
   ShippingMethod,
   ShippingMethodTaxLine,
 } from "../models"
-import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../utils/flag-router"
-import { calculatePriceTaxAmount } from "../utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { calculatePriceTaxAmount, FlagRouter } from "../utils"
+import { TaxProviderService } from "./index"
 
 type LineItemTotals = {
   unit_price: number

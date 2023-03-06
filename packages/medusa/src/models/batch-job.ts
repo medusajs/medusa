@@ -1,4 +1,10 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   AfterLoad,
   BeforeInsert,
   Column,
@@ -11,11 +17,7 @@ import {
   BatchJobResultStatDescriptor,
   BatchJobStatus,
 } from "../types/batch-job"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { User } from "./user"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {

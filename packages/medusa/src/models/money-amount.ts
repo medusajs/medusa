@@ -1,3 +1,4 @@
+import { generateEntityId, SoftDeletableEntity } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -6,13 +7,10 @@ import {
   JoinColumn,
   ManyToOne,
 } from "typeorm"
-
 import { Currency } from "./currency"
 import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {

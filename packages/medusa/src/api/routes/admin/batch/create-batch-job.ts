@@ -1,9 +1,9 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { BatchJob } from "../../../../models"
 import BatchJobService from "../../../../services/batch-job"
-import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/batch-jobs

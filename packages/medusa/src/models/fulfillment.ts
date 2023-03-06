@@ -1,4 +1,10 @@
 import {
+  BaseEntity,
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -7,16 +13,12 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
 import { ClaimOrder } from "./claim-order"
 import { FulfillmentItem } from "./fulfillment-item"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { Order } from "./order"
 import { Swap } from "./swap"
 import { TrackingLink } from "./tracking-link"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Fulfillment extends BaseEntity {

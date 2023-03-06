@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { OrderEdit } from "../../../../models"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,

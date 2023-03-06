@@ -1,3 +1,4 @@
+import { generateEntityId, resolveDbType } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -9,11 +10,8 @@ import {
   PrimaryColumn,
   Unique,
 } from "typeorm"
-
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { resolveDbType } from "../utils/db-aware-column"
 
 @Unique("gcuniq", ["gift_card_id", "order_id"])
 @Entity()

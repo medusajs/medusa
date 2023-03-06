@@ -1,9 +1,9 @@
-import stream from "stream"
-import aws from "aws-sdk"
-import { parse } from "path"
-import fs from "fs"
 import { AbstractFileService } from "@medusajs/medusa"
+import aws from "aws-sdk"
+import fs from "fs"
 import { MedusaError } from "medusa-core-utils"
+import { parse } from "path"
+import stream from "stream"
 
 class MinioService extends AbstractFileService {
   constructor({}, options) {

@@ -1,9 +1,9 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
+import { CartService } from "../../../../services"
 
 /**
  * @oas [post] /store/carts/{id}/shipping-methods

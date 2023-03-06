@@ -1,8 +1,8 @@
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { OrderService, SwapService } from "../../../../services"
 
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
 
 /**

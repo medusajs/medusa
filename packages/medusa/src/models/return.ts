@@ -1,4 +1,10 @@
 import {
+  BaseEntity,
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -8,10 +14,6 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 import { ClaimOrder } from "./claim-order"
 import { Order } from "./order"
 import { ReturnItem } from "./return-item"

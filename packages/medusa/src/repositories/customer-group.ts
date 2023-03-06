@@ -1,20 +1,20 @@
 import {
+  buildLegacyFieldsListFrom,
+  ExtendedFindConfig,
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+  queryEntityWithIds,
+  queryEntityWithoutRelations,
+} from "medusa-core-utils"
+import {
   DeleteResult,
   FindOperator,
   FindOptionsRelations,
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { CustomerGroup } from "../models"
-import { ExtendedFindConfig } from "../types/common"
-import {
-  getGroupedRelations,
-  mergeEntitiesWithRelations,
-  queryEntityWithIds,
-  queryEntityWithoutRelations,
-} from "../utils/repository"
-import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
+import { CustomerGroup } from "../models"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<CustomerGroup>,

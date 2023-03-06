@@ -3,11 +3,11 @@ import {
   defaultAdminNotificationsRelations,
 } from "."
 
-import { EntityManager } from "typeorm"
 import { IsOptional, IsString } from "class-validator"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/notifications/{id}/resend

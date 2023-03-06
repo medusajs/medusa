@@ -1,3 +1,4 @@
+import { BaseEntity, DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Check,
@@ -8,12 +9,8 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-
-import { BaseEntity } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { FeatureFlagColumn } from "../utils"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
 import { LineItemAdjustment } from "./line-item-adjustment"

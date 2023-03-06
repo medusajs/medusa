@@ -1,5 +1,14 @@
 import jwt from "jsonwebtoken"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  ExtendedFindConfig,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import {
   DeepPartial,
@@ -9,18 +18,11 @@ import {
 } from "typeorm"
 import { EventBusService } from "."
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
-import { TransactionBaseService } from "../interfaces"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
-import {
-  AddressCreatePayload,
-  ExtendedFindConfig,
-  FindConfig,
-  Selector,
-} from "../types/common"
+import { AddressCreatePayload } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
-import { buildQuery, setMetadata } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

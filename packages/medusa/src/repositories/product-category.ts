@@ -1,14 +1,11 @@
 import {
-  Brackets,
-  FindOptionsWhere,
-  ILike,
-  DeleteResult,
-  In,
-} from "typeorm"
-import { ProductCategory } from "../models/product-category"
-import { ExtendedFindConfig, QuerySelector } from "../types/common"
+  buildLegacyFieldsListFrom,
+  ExtendedFindConfig,
+  QuerySelector,
+} from "medusa-core-utils"
+import { Brackets, DeleteResult, FindOptionsWhere, ILike, In } from "typeorm"
 import { dataSource } from "../loaders/database"
-import { buildLegacyFieldsListFrom } from "../utils"
+import { ProductCategory } from "../models/product-category"
 
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)

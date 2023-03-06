@@ -1,16 +1,15 @@
+import { Transform, Type } from "class-transformer"
 import {
   IsBoolean,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
-
-import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
-import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
+import { optionalBooleanMapper } from "medusa-core-utils"
 import { DiscountService } from "../../../../services"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { extendedFindParamsMixin } from "../../../../types/common"
+import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 
 /**
  * @oas [get] /admin/discounts

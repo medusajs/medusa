@@ -1,4 +1,11 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  PostgresError,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import {
@@ -11,10 +18,7 @@ import {
   DiscountConditionType,
 } from "../models"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
-import { FindConfig } from "../types/common"
 import { DiscountConditionInput } from "../types/discount"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, PostgresError } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

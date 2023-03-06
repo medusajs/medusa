@@ -1,7 +1,7 @@
+import { ExtendedFindConfig } from "medusa-core-utils"
 import { In } from "typeorm"
-import { ProductTag } from "../models/product-tag"
-import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { ProductTag } from "../models/product-tag"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string

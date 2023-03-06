@@ -1,8 +1,8 @@
 import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ShippingProfileType } from "../../../../models"
 import { ShippingProfileService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/shipping-profiles

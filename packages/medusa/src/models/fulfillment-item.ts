@@ -1,5 +1,4 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
-
 import { Fulfillment } from "./fulfillment"
 import { LineItem } from "./line-item"
 

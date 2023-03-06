@@ -2,10 +2,10 @@ import { IsEmail, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
 import jwt from "jsonwebtoken"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/customers

@@ -1,14 +1,14 @@
-import { EntityManager } from "typeorm"
 import { computerizeAmount, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
-import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
   PriceListService,
   ProductVariantService,
   RegionService,
 } from "../../../services"
+import CsvParser from "../../../services/csv-parser"
 import { CreateBatchJobInput } from "../../../types/batch-job"
 import {
   InjectedProps,

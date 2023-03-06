@@ -1,25 +1,22 @@
 import { Router } from "express"
+import { StockLocationDTO, StockLocationExpandedDTO } from "medusa-core-utils"
 import "reflect-metadata"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import {
-  StockLocationDTO,
-  StockLocationExpandedDTO,
-} from "../../../../types/stock-location"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetStockLocationsParams } from "./list-stock-locations"
-import { AdminGetStockLocationsLocationParams } from "./get-stock-location"
-import {
-  AdminPostStockLocationsLocationParams,
-  AdminPostStockLocationsLocationReq,
-} from "./update-stock-location"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 import {
   AdminPostStockLocationsParams,
   AdminPostStockLocationsReq,
 } from "./create-stock-location"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminGetStockLocationsLocationParams } from "./get-stock-location"
+import { AdminGetStockLocationsParams } from "./list-stock-locations"
+import {
+  AdminPostStockLocationsLocationParams,
+  AdminPostStockLocationsLocationReq,
+} from "./update-stock-location"
 
 const route = Router()
 
@@ -155,7 +152,7 @@ export type AdminStockLocationsListRes = PaginatedResponse & {
   stock_locations: StockLocationExpandedDTO[]
 }
 
-export * from "./list-stock-locations"
-export * from "./get-stock-location"
 export * from "./create-stock-location"
+export * from "./get-stock-location"
+export * from "./list-stock-locations"
 export * from "./update-stock-location"

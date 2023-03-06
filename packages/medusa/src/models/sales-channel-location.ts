@@ -1,8 +1,6 @@
+import { generateEntityId, SoftDeletableEntity } from "medusa-core-utils"
 import { BeforeInsert, Column, Index, JoinColumn, ManyToOne } from "typeorm"
-
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
-import { SoftDeletableEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
+import { FeatureFlagEntity } from "../utils"
 import { SalesChannel } from "./sales-channel"
 
 @FeatureFlagEntity("sales_channels")

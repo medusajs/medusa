@@ -1,4 +1,6 @@
+import { isString } from "medusa-core-utils"
 import { DeleteResult, EntityTarget, In, Not } from "typeorm"
+import { dataSource } from "../loaders/database"
 import {
   Discount,
   DiscountCondition,
@@ -10,8 +12,6 @@ import {
   DiscountConditionProductType,
   DiscountConditionType,
 } from "../models"
-import { isString } from "../utils"
-import { dataSource } from "../loaders/database"
 
 export enum DiscountConditionJoinTableForeignKey {
   PRODUCT_ID = "product_id",

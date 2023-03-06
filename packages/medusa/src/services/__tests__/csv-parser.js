@@ -1,8 +1,8 @@
 import { createContainer } from "awilix"
+import { currencies } from "medusa-core-utils"
 import { Readable } from "stream"
 import { AbstractCsvValidator } from "../../interfaces/csv-parser"
 import CsvParser from "../csv-parser"
-import { currencies } from "../../utils/currencies"
 
 describe("CsvParser", () => {
   describe("parse", () => {

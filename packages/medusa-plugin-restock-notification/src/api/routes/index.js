@@ -1,6 +1,6 @@
-import { Router } from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
+import { Router } from "express"
 import { getConfigFile, parseCorsOrigins } from "medusa-core-utils"
 
 import middlewares from "../middleware"

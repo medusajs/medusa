@@ -1,6 +1,6 @@
 import { Router } from "express"
 import multer from "multer"
-import { DeleteResponse } from "../../../../types/common"
+import { DeleteResponse } from "../../../.."
 
 import middlewares, { transformBody } from "../../../middlewares"
 import { AdminDeleteUploadsReq } from "./delete-upload"

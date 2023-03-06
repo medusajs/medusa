@@ -4,9 +4,9 @@ import {
   defaultAdminReturnReasonsRelations,
 } from "."
 
-import { ReturnReasonService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { ReturnReasonService } from "../../../../services"
 
 /**
  * @oas [post] /admin/return-reasons

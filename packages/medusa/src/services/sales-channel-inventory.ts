@@ -1,7 +1,6 @@
+import { IInventoryService, TransactionBaseService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-
 import { EventBusService, SalesChannelLocationService } from "./"
-import { IInventoryService, TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   inventoryService: IInventoryService

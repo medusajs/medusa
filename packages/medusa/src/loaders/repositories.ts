@@ -1,9 +1,9 @@
 import glob from "glob"
 import path from "path"
 
-import formatRegistrationName from "../utils/format-registration-name"
-import { MedusaContainer } from "../types/global"
 import { asValue } from "awilix"
+import { formatRegistrationName } from "medusa-core-utils"
+import { MedusaContainer } from "../types/global"
 
 /**
  * Registers all models in the model directory

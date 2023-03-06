@@ -1,11 +1,15 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import { ReturnReason } from "../models"
 import { ReturnReasonRepository } from "../repositories/return-reason"
-import { FindConfig, Selector } from "../types/common"
 import { CreateReturnReason, UpdateReturnReason } from "../types/return-reason"
-import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

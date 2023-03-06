@@ -1,9 +1,9 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import CustomerService from "../../../../services/customer"
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/customers/me/addresses/{address_id}

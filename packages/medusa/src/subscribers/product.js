@@ -1,7 +1,7 @@
-import ProductVariantService from "../services/product-variant"
-import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
 import { isSearchEngineInstalledResolutionKey } from "../loaders/plugins"
+import ProductService from "../services/product"
+import ProductVariantService from "../services/product-variant"
 
 const searchFields = [
   "id",

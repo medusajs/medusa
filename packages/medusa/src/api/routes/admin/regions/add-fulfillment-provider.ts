@@ -1,10 +1,10 @@
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 
-import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/regions/{id}/fulfillment-providers

@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
 
-import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import InviteService from "../../../../services/invite"
 
 /**
  * @oas [post] /admin/invites/accept

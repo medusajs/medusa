@@ -1,12 +1,12 @@
+import { AwilixContainer } from "awilix"
+import "medusa-core-utils"
 import {
   DataSource,
   DataSourceOptions,
   Repository,
   TreeRepository,
 } from "typeorm"
-import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
-import "../utils/naming-strategy"
 
 type Options = {
   configModule: ConfigModule

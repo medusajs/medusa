@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -9,15 +14,11 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-
 import { ClaimImage } from "./claim-image"
 import { ClaimOrder } from "./claim-order"
 import { ClaimTag } from "./claim-tag"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { ProductVariant } from "./product-variant"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ClaimReason {
   MISSING_ITEM = "missing_item",

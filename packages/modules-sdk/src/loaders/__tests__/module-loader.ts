@@ -1,6 +1,6 @@
-import { EOL } from "os"
 import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
+import { EOL } from "os"
 import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,

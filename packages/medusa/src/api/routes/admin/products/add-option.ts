@@ -1,8 +1,8 @@
-import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { PricingService, ProductService } from "../../../../services"
 
 import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
 /**

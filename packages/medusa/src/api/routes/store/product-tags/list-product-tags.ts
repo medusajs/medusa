@@ -6,8 +6,8 @@ import {
 } from "../../../../types/common"
 
 import { Request, Response } from "express"
+import { IsType } from "medusa-core-utils"
 import ProductTagService from "../../../../services/product-tag"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /store/product-tags

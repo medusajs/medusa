@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Check,
   Column,
@@ -8,16 +13,12 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FeatureFlagColumn } from "../utils"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { Region } from "./region"
 import { ShippingOptionRequirement } from "./shipping-option-requirement"
 import { ShippingProfile } from "./shipping-profile"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 export enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",

@@ -1,8 +1,4 @@
-import {
-  AllocationType,
-  DiscountConditionOperator,
-  DiscountRuleType,
-} from "../../../../models"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -16,14 +12,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import DiscountService from "../../../../services/discount"
-import { EntityManager } from "typeorm"
-import { IsGreaterThan } from "../../../../utils/validators/greater-than"
-import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
-import { Type } from "class-transformer"
 import { Request, Response } from "express"
+import { IsGreaterThan, IsISO8601Duration } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import {
+  AllocationType,
+  DiscountConditionOperator,
+  DiscountRuleType,
+} from "../../../../models"
+import DiscountService from "../../../../services/discount"
 import { FindParams } from "../../../../types/common"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 
 /**
  * @oas [post] /admin/discounts

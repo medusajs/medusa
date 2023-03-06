@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { ProductTag } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { PaginatedResponse, ProductTag } from "../../../.."
+
 import middlewares, { transformQuery } from "../../../middlewares"
 import "reflect-metadata"
 import { AdminGetProductTagsParams } from "./list-product-tags"

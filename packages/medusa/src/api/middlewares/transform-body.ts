@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express"
-import { ClassConstructor } from "../../types/global"
 import { ValidatorOptions } from "class-validator"
-import { validator } from "../../utils/validator"
+import { NextFunction, Request, Response } from "express"
+import { validator } from "medusa-core-utils"
+import { ClassConstructor } from "../../types/global"
 
 export function transformBody<T>(
   plainToClass: ClassConstructor<T>,

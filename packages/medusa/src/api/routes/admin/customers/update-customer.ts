@@ -7,13 +7,12 @@ import {
   ValidateNested,
 } from "class-validator"
 
-import CustomerService from "../../../../services/customer"
-import { EntityManager } from "typeorm"
-import { FindParams } from "../../../../types/common"
-import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
+import { MedusaError, validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { defaultAdminCustomersRelations } from "."
-import { validator } from "../../../../utils/validator"
+import CustomerService from "../../../../services/customer"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/customers/{id}

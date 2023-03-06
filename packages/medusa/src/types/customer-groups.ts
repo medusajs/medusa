@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
-import { IsType } from "../utils/validators/is-type"
+import { IsType } from "medusa-core-utils"
 
 import { DateComparisonOperator, StringComparisonOperator } from "./common"
 

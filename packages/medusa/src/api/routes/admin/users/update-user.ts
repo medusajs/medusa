@@ -1,9 +1,9 @@
 import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
 
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/users/{id}

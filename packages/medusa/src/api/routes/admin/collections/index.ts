@@ -1,7 +1,11 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { ProductCollection } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import {
+  ProductCollection,
+  DeleteResponse,
+  PaginatedResponse,
+} from "../../../.."
+
 import middlewares, {
   transformBody,
   transformQuery,

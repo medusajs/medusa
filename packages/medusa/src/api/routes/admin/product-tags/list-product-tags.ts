@@ -1,13 +1,13 @@
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import {
   DateComparisonOperator,
   StringComparisonOperator,
 } from "../../../../types/common"
-import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import { IsType } from "../../../../utils/validators/is-type"
-import ProductTagService from "../../../../services/product-tag"
 import { Type } from "class-transformer"
 import { Request, Response } from "express"
+import { IsType } from "medusa-core-utils"
+import ProductTagService from "../../../../services/product-tag"
 
 /**
  * @oas [get] /admin/product-tags

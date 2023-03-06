@@ -1,13 +1,11 @@
+import { IInventoryService, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { Fulfillment } from "../../../../models"
 import {
   FulfillmentService,
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-import { Fulfillment } from "../../../../models"
-import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**

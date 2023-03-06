@@ -7,19 +7,19 @@ import execa from "execa"
 import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
-import isValid from "is-valid-path"
-import sysPath from "path"
-import prompts from "prompts"
-import { Pool } from "pg"
-import url from "url"
-import { createDatabase } from "pg-god"
-import { track } from "medusa-telemetry"
 import inquirer from "inquirer"
+import isValid from "is-valid-path"
+import { track } from "medusa-telemetry"
+import sysPath from "path"
+import { Pool } from "pg"
+import { createDatabase } from "pg-god"
+import prompts from "prompts"
+import url from "url"
 
-import reporter from "../reporter"
+import { logger } from "medusa-core-utils"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 
-const removeUndefined = obj => {
+const removeUndefined = (obj) => {
   return Object.fromEntries(
     Object.entries(obj)
       .filter(([_, v]) => v != null)
@@ -50,38 +50,36 @@ const isAlreadyGitRepository = async () => {
   try {
     return await spawn(`git rev-parse --is-inside-work-tree`, {
       stdio: `pipe`,
-    }).then(output => output.stdout === `true`)
+    }).then((output) => output.stdout === `true`)
   } catch (err) {
     return false
   }
 }
 
 // Initialize newly cloned directory as a git repo
-const gitInit = async rootPath => {
-  reporter.info(`Initialising git in ${rootPath}`)
+const gitInit = async (rootPath) => {
+  logger.info(`Initialising git in ${rootPath}`)
 
   return await spawn(`git init`, { cwd: rootPath })
 }
 
 // Create a .gitignore file if it is missing in the new directory
-const maybeCreateGitIgnore = async rootPath => {
+const maybeCreateGitIgnore = async (rootPath) => {
   if (existsSync(sysPath.join(rootPath, `.gitignore`))) {
     return
   }
 
-  const gignore = reporter.activity(
-    `Creating minimal .gitignore in ${rootPath}`
-  )
+  const gignore = logger.activity(`Creating minimal .gitignore in ${rootPath}`)
   await fs.writeFile(
     sysPath.join(rootPath, `.gitignore`),
     `.cache\nnode_modules\npublic\n`
   )
-  reporter.success(gignore, `Created .gitignore in ${rootPath}`)
+  logger.success(gignore, `Created .gitignore in ${rootPath}`)
 }
 
 // Create an initial git commit in the new directory
 const createInitialGitCommit = async (rootPath, starterUrl) => {
-  reporter.info(`Create initial git commit in ${rootPath}`)
+  logger.info(`Create initial git commit in ${rootPath}`)
 
   await spawn(`git add -A`, { cwd: rootPath })
   // use execSync instead of spawn to handle git clients using
@@ -92,16 +90,16 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
     })
   } catch {
     // Remove git support if initial commit fails
-    reporter.warn(`Initial git commit failed - removing git support\n`)
+    logger.warn(`Initial git commit failed - removing git support\n`)
     fs.removeSync(sysPath.join(rootPath, `.git`))
   }
 }
 
 // Executes `npm install` or `yarn install` in rootPath.
-const install = async rootPath => {
+const install = async (rootPath) => {
   const prevDir = process.cwd()
 
-  reporter.info(`Installing packages...`)
+  logger.info(`Installing packages...`)
   console.log() // Add some space
 
   process.chdir(rootPath)
@@ -128,7 +126,7 @@ const install = async rootPath => {
   }
 }
 
-const ignored = path => !/^\.(git|hg)$/.test(sysPath.basename(path))
+const ignored = (path) => !/^\.(git|hg)$/.test(sysPath.basename(path))
 
 // Copy starter from file system.
 const copy = async (starterPath, rootPath) => {
@@ -149,15 +147,15 @@ const copy = async (starterPath, rootPath) => {
     )
   }
 
-  reporter.info(`Creating new site from local starter: ${starterPath}`)
+  logger.info(`Creating new site from local starter: ${starterPath}`)
 
-  const copyActivity = reporter.activity(
+  const copyActivity = logger.activity(
     `Copying local starter to ${rootPath} ...`
   )
 
   await fs.copy(starterPath, rootPath, { filter: ignored })
 
-  reporter.success(copyActivity, `Created starter directory layout`)
+  logger.success(copyActivity, `Created starter directory layout`)
   console.log() // Add some space
 
   await install(rootPath)
@@ -178,7 +176,7 @@ const clone = async (hostInfo, rootPath) => {
 
   const branch = hostInfo.committish ? [`-b`, hostInfo.committish] : []
 
-  const createAct = reporter.activity(`Creating new project from git: ${url}`)
+  const createAct = logger.activity(`Creating new project from git: ${url}`)
 
   const args = [
     `clone`,
@@ -187,14 +185,14 @@ const clone = async (hostInfo, rootPath) => {
     rootPath,
     `--recursive`,
     `--depth=1`,
-  ].filter(arg => Boolean(arg))
+  ].filter((arg) => Boolean(arg))
 
   await execa(`git`, args, {})
     .then(() => {
-      reporter.success(createAct, `Created starter directory layout`)
+      logger.success(createAct, `Created starter directory layout`)
     })
-    .catch(err => {
-      reporter.failure(createAct, `Failed to clone repository`)
+    .catch((err) => {
+      logger.failure(createAct, `Failed to clone repository`)
       throw err
     })
 
@@ -207,7 +205,7 @@ const clone = async (hostInfo, rootPath) => {
   if (!isGit) await createInitialGitCommit(rootPath, url)
 }
 
-const getMedusaConfig = rootPath => {
+const getMedusaConfig = (rootPath) => {
   try {
     const configPath = sysPath.join(rootPath, "medusa-config.js")
     if (existsSync(configPath)) {
@@ -218,7 +216,7 @@ const getMedusaConfig = rootPath => {
     throw Error()
   } catch (err) {
     console.log(err)
-    reporter.warn(
+    logger.warn(
       `Couldn't find a medusa-config.js file; please double check that you have the correct starter installed`
     )
   }
@@ -268,8 +266,8 @@ const getPaths = async (starterPath, rootPath) => {
   return { starterPath, rootPath, selectedOtherStarter }
 }
 
-const successMessage = path => {
-  reporter.info(`Your new Medusa project is ready for you! To start developing run:
+const successMessage = (path) => {
+  logger.info(`Your new Medusa project is ready for you! To start developing run:
 
   cd ${path}
   medusa develop
@@ -284,7 +282,7 @@ const defaultDBCreds = {
   host: "localhost",
 }
 
-const verifyPgCreds = async creds => {
+const verifyPgCreds = async (creds) => {
   const pool = new Pool(creds)
   return new Promise((resolve, reject) => {
     pool.query("SELECT NOW()", (err, res) => {
@@ -361,7 +359,7 @@ Do you wish to continue with these credentials?
           message: `DB database`,
         },
       ])
-      .then(async answers => {
+      .then(async (answers) => {
         const collectedCreds = Object.assign({}, credentials, {
           user: answers.user,
           password: answers.password,
@@ -372,14 +370,14 @@ Do you wish to continue with these credentials?
 
         switch (answers.continueWithDefault) {
           case "Continue": {
-            const done = await verifyPgCreds(credentials).catch(_ => false)
+            const done = await verifyPgCreds(credentials).catch((_) => false)
             if (done) {
               return credentials
             }
             return false
           }
           case "Change credentials": {
-            const done = await verifyPgCreds(collectedCreds).catch(_ => false)
+            const done = await verifyPgCreds(collectedCreds).catch((_) => false)
             if (done) {
               return collectedCreds
             }
@@ -401,7 +399,7 @@ Do you wish to continue with these credentials?
 const setupDB = async (dbName, dbCreds = {}) => {
   const credentials = Object.assign({}, defaultDBCreds, dbCreds)
 
-  const dbActivity = reporter.activity(`Setting up database "${dbName}"...`)
+  const dbActivity = logger.activity(`Setting up database "${dbName}"...`)
   await createDatabase(
     {
       databaseName: dbName,
@@ -410,17 +408,17 @@ const setupDB = async (dbName, dbCreds = {}) => {
     credentials
   )
     .then(() => {
-      reporter.success(dbActivity, `Created database "${dbName}"`)
+      logger.success(dbActivity, `Created database "${dbName}"`)
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.name === "PDG_ERR::DuplicateDatabase") {
-        reporter.success(
+        logger.success(
           dbActivity,
           `Database ${dbName} already exists; skipping setup`
         )
       } else {
-        reporter.failure(dbActivity, `Skipping database setup.`)
-        reporter.warn(
+        logger.failure(dbActivity, `Skipping database setup.`)
+        logger.warn(
           `Failed to setup database; install PostgresQL or make sure to manage your database connection manually`
         )
         console.error(err)
@@ -456,8 +454,8 @@ const setupEnvVars = async (
   }
 }
 
-const runMigrations = async rootPath => {
-  const migrationActivity = reporter.activity("Applying database migrations...")
+const runMigrations = async (rootPath) => {
+  const migrationActivity = logger.activity("Applying database migrations...")
 
   const cliPath = sysPath.join(
     `node_modules`,
@@ -470,10 +468,10 @@ const runMigrations = async rootPath => {
     cwd: rootPath,
   })
     .then(() => {
-      reporter.success(migrationActivity, "Database migrations completed.")
+      logger.success(migrationActivity, "Database migrations completed.")
     })
-    .catch(err => {
-      reporter.failure(
+    .catch((err) => {
+      logger.failure(
         migrationActivity,
         "Failed to migrate database you must complete migration manually before starting your server."
       )
@@ -481,8 +479,8 @@ const runMigrations = async rootPath => {
     })
 }
 
-const attemptSeed = async rootPath => {
-  const seedActivity = reporter.activity("Seeding database")
+const attemptSeed = async (rootPath) => {
+  const seedActivity = logger.activity("Seeding database")
 
   const pkgPath = sysPath.resolve(rootPath, "package.json")
   if (existsSync(pkgPath)) {
@@ -497,27 +495,27 @@ const attemptSeed = async rootPath => {
 
       await proc
         .then(() => {
-          reporter.success(seedActivity, "Seed completed")
+          logger.success(seedActivity, "Seed completed")
         })
-        .catch(err => {
-          reporter.failure(seedActivity, "Failed to complete seed; skipping")
+        .catch((err) => {
+          logger.failure(seedActivity, "Failed to complete seed; skipping")
           console.error(err)
         })
     } else {
-      reporter.failure(
+      logger.failure(
         seedActivity,
         "Starter doesn't provide a seed command; skipping."
       )
     }
   } else {
-    reporter.failure(seedActivity, "Could not find package.json")
+    logger.failure(seedActivity, "Could not find package.json")
   }
 }
 
 /**
  * Main function that clones or copies the starter.
  */
-export const newStarter = async args => {
+export const newStarter = async (args) => {
   track("CLI_NEW")
 
   const {
@@ -551,7 +549,7 @@ export const newStarter = async args => {
   const urlObject = url.parse(rootPath)
 
   if (selectedOtherStarter) {
-    reporter.info(
+    logger.info(
       `Find the url of the Medusa starter you wish to create and run:
 
 medusa new ${rootPath} [url-to-starter]
@@ -566,7 +564,7 @@ medusa new ${rootPath} [url-to-starter]
       starter && !url.parse(starter).hostname && !url.parse(starter).protocol
 
     if (/medusa-starter/gi.test(rootPath) && isStarterAUrl) {
-      reporter.panic({
+      logger.panic({
         id: `10000`,
         context: {
           starter,
@@ -575,7 +573,7 @@ medusa new ${rootPath} [url-to-starter]
       })
       return
     }
-    reporter.panic({
+    logger.panic({
       id: `10001`,
       context: {
         rootPath,
@@ -585,7 +583,7 @@ medusa new ${rootPath} [url-to-starter]
   }
 
   if (!isValid(rootPath)) {
-    reporter.panic({
+    logger.panic({
       id: `10002`,
       context: {
         path: sysPath.resolve(rootPath),
@@ -595,7 +593,7 @@ medusa new ${rootPath} [url-to-starter]
   }
 
   if (existsSync(sysPath.join(rootPath, `package.json`))) {
-    reporter.panic({
+    logger.panic({
       id: `10003`,
       context: {
         rootPath,
@@ -628,7 +626,7 @@ medusa new ${rootPath} [url-to-starter]
   }
 
   if (creds === null) {
-    reporter.info("Skipping automatic database setup")
+    logger.info("Skipping automatic database setup")
   } else {
     if (!skipDb && isPostgres) {
       track("CLI_NEW_SETUP_DB")

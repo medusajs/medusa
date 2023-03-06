@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+import { IsType, MedusaError, validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   defaultAdminDraftOrdersCartFields,
@@ -17,8 +17,6 @@ import { DraftOrderStatus } from "../../../../models"
 import { CartService, DraftOrderService } from "../../../../services"
 import { CartUpdateProps } from "../../../../types/cart"
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /admin/draft-orders/{id}

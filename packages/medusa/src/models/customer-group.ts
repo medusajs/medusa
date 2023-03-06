@@ -1,10 +1,11 @@
+import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
 import { BeforeInsert, Column, Entity, Index, ManyToMany } from "typeorm"
-
 import { Customer } from "./customer"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { PriceList } from "./price-list"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class CustomerGroup extends SoftDeletableEntity {

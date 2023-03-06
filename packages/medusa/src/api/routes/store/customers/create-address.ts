@@ -1,10 +1,10 @@
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { AddressCreatePayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/customers/me/addresses

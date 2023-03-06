@@ -1,7 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { SalesChannel } from "../../../../models"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
 import middlewares, {
   transformBody,
   transformQuery,

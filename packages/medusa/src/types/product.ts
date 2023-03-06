@@ -11,17 +11,17 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   PriceList,
   Product,
+  ProductCategory,
   ProductOptionValue,
   ProductStatus,
   SalesChannel,
-  ProductCategory,
 } from "../models"
-import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
-import { optionalBooleanMapper } from "../utils/validators/is-boolean"
-import { IsType } from "../utils/validators/is-type"
+
+import { IsType, optionalBooleanMapper } from "medusa-core-utils"
+import { FindOperator } from "typeorm"
+import { FeatureFlagDecorators } from "../utils"
 import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import { PriceListLoadConfig } from "./price-list"
-import { FindOperator } from "typeorm"
 
 /**
  * API Level DTOs + Validation rules

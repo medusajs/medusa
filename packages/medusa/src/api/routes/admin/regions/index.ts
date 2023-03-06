@@ -1,10 +1,9 @@
 import { Router } from "express"
-import { Region } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { DeleteResponse, PaginatedResponse, Region } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../../../../utils"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -183,9 +182,9 @@ export class AdminGetRegionsRegionFulfillmentOptionsRes {
   fulfillment_options: FulfillmentOption[]
 }
 
+export * from "./add-country"
+export * from "./add-fulfillment-provider"
+export * from "./add-payment-provider"
+export * from "./create-region"
 export * from "./list-regions"
 export * from "./update-region"
-export * from "./create-region"
-export * from "./add-country"
-export * from "./add-payment-provider"
-export * from "./add-fulfillment-provider"

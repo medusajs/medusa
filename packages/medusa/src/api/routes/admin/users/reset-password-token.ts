@@ -1,7 +1,7 @@
 import { IsEmail } from "class-validator"
-import UserService from "../../../../services/user"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import UserService from "../../../../services/user"
 
 /**
  * @oas [post] /admin/users/password-token

@@ -1,3 +1,4 @@
+import { BaseEntity, DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -7,14 +8,10 @@ import {
   ManyToMany,
   ManyToOne,
 } from "typeorm"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Product } from "./product"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { ShippingOption } from "./shipping-option"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class TaxRate extends BaseEntity {

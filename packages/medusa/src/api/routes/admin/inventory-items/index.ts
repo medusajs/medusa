@@ -1,28 +1,25 @@
 import { Router } from "express"
+import { InventoryItemDTO, InventoryLevelDTO } from "medusa-core-utils"
 import "reflect-metadata"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-} from "../../../../types/inventory"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
+import { ProductVariant } from "../../../../models"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetInventoryItemsParams } from "./list-inventory-items"
-import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
-import { AdminPostInventoryItemsInventoryItemReq } from "./update-inventory-item"
-import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 import {
   AdminPostInventoryItemsItemLocationLevelsParams,
   AdminPostInventoryItemsItemLocationLevelsReq,
 } from "./create-location-level"
+import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
+import { AdminGetInventoryItemsParams } from "./list-inventory-items"
+import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
+import { AdminPostInventoryItemsInventoryItemReq } from "./update-inventory-item"
 import {
   AdminPostInventoryItemsItemLocationLevelsLevelParams,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
 } from "./update-location-level"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { ProductVariant } from "../../../../models"
 
 const route = Router()
 
@@ -263,9 +260,9 @@ export type AdminInventoryItemsLocationLevelsRes = {
   }
 }
 
-export * from "./list-inventory-items"
-export * from "./get-inventory-item"
-export * from "./update-inventory-item"
-export * from "./list-location-levels"
 export * from "./create-location-level"
+export * from "./get-inventory-item"
+export * from "./list-inventory-items"
+export * from "./list-location-levels"
+export * from "./update-inventory-item"
 export * from "./update-location-level"

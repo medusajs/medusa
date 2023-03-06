@@ -2,12 +2,15 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
 } from "@medusajs/modules-sdk"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { Request } from "express"
+import {
+  FindConfig,
+  MedusaContainer as coreMedusaContainer,
+  Reporter,
+  RequestQueryFields,
+} from "medusa-core-utils"
 import { LoggerOptions } from "typeorm"
-import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
-import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -35,11 +38,7 @@ export type ClassConstructor<T> = {
 
 export type MedusaContainer = coreMedusaContainer
 
-export type Logger = _Logger & {
-  progress: (activityId: string, msg: string) => void
-  info: (msg: string) => void
-  warn: (msg: string) => void
-}
+export type Logger = Reporter
 
 export type Constructor<T> = new (...args: any[]) => T
 

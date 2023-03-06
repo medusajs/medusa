@@ -1,9 +1,9 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
-import { CustomerGroupService } from "../../../../services"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
+import { CustomerGroupService } from "../../../../services"
 
 /**
  * @oas [post] /admin/customer-groups

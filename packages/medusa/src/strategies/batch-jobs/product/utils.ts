@@ -1,7 +1,7 @@
 import set from "lodash/set"
+import { csvRevertCellContentFormatter } from "../../../utils"
 
 import { TParsedProductImportRowData } from "./types"
-import { csvRevertCellContentFormatter } from "../../../utils"
 
 /**
  * Pick keys for a new object by regex.

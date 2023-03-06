@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { Invite } from "../../../../models/invite"
-import { DeleteResponse } from "../../../../types/common"
+import { DeleteResponse } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
 

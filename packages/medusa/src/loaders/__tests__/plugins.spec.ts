@@ -5,11 +5,11 @@ import {
   Resolver,
 } from "awilix"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
+import { createMedusaContainer } from "medusa-core-utils"
 import { resolve } from "path"
+import { DataSource, EntityManager } from "typeorm"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
-import { DataSource, EntityManager } from "typeorm"
-import { createMedusaContainer } from "medusa-core-utils"
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {

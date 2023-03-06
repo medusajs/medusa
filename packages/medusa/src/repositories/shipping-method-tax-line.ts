@@ -1,6 +1,6 @@
-import { ShippingMethodTaxLine } from "../models"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
+import { ShippingMethodTaxLine } from "../models"
 
 export const ShippingMethodTaxLineRepository = dataSource
   .getRepository(ShippingMethodTaxLine)

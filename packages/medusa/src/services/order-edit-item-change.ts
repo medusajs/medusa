@@ -1,13 +1,16 @@
-import { TransactionBaseService } from "../interfaces"
-import { OrderItemChangeRepository } from "../repositories/order-item-change"
+import {
+  buildQuery,
+  FindConfig,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
-import { EventBusService, LineItemService } from "./index"
-import { FindConfig, Selector } from "../types/common"
 import { OrderItemChange } from "../models"
-import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
-import TaxProviderService from "./tax-provider"
+import { OrderItemChangeRepository } from "../repositories/order-item-change"
 import { CreateOrderEditItemChangeInput } from "../types/order-edit"
+import { EventBusService, LineItemService } from "./index"
+import TaxProviderService from "./tax-provider"
 
 type InjectedDependencies = {
   manager: EntityManager

@@ -1,3 +1,4 @@
+import { BaseEntity, DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -7,12 +8,8 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
 import { Customer } from "./customer"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { NotificationProvider } from "./notification-provider"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Notification extends BaseEntity {

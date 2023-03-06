@@ -1,10 +1,10 @@
 import { IsArray, IsOptional } from "class-validator"
-import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
+import { getRetrieveConfig, pickByConfig } from "medusa-core-utils"
 
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /admin/tax-rates/{id}/products/batch

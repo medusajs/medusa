@@ -1,10 +1,10 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator"
 
+import _ from "lodash"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
-import _ from "lodash"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/users

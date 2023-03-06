@@ -1,6 +1,6 @@
-import { ShippingOption } from "../models"
-import { dataSource } from "../loaders/database"
 import { In } from "typeorm"
+import { dataSource } from "../loaders/database"
+import { ShippingOption } from "../models"
 
 export const ShippingOptionRepository = dataSource
   .getRepository(ShippingOption)

@@ -1,10 +1,11 @@
-import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { Product } from "./product"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
-import { generateEntityId } from "../utils/generate-entity-id"
+import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
+import { Product } from "./product"
 
 @Entity()
 export class ProductCollection extends SoftDeletableEntity {

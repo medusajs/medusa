@@ -14,12 +14,12 @@ import {
 } from "../../../../types/price-list"
 
 import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [post] /admin/price-lists/{id}

@@ -1,9 +1,9 @@
-import { IEventBusService, IInventoryService } from "@medusajs/medusa"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaModule,
 } from "@medusajs/modules-sdk"
+import { IEventBusService, IInventoryService } from "medusa-core-utils"
 import { InventoryServiceInitializeOptions } from "../types"
 
 export const initialize = async (

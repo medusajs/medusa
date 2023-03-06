@@ -1,19 +1,22 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantInventoryService, ShippingProfileService } from "."
-import { TransactionBaseService } from "../interfaces"
 import { Fulfillment, LineItem, ShippingMethod } from "../models"
 import { FulfillmentRepository } from "../repositories/fulfillment"
 import { LineItemRepository } from "../repositories/line-item"
 import { TrackingLinkRepository } from "../repositories/tracking-link"
-import { FindConfig } from "../types/common"
 import {
   CreateFulfillmentOrder,
   CreateShipmentConfig,
   FulfillmentItemPartition,
   FulFillmentItemType,
 } from "../types/fulfillment"
-import { buildQuery } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import LineItemService from "./line-item"
 import TotalsService from "./totals"

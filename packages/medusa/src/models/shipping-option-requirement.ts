@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   DeleteDateColumn,
@@ -8,10 +13,7 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
 import { ShippingOption } from "./shipping-option"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum RequirementType {
   MIN_SUBTOTAL = "min_subtotal",

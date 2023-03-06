@@ -1,4 +1,14 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  isString,
+  MedusaError,
+  PostgresError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { CustomerService } from "."
 import { CustomerGroup } from ".."
@@ -6,10 +16,7 @@ import {
   CustomerGroupRepository,
   FindWithoutRelationsOptions,
 } from "../repositories/customer-group"
-import { FindConfig, Selector } from "../types/common"
 import { CustomerGroupUpdate } from "../types/customer-groups"
-import { buildQuery, isString, PostgresError, setMetadata } from "../utils"
-import { TransactionBaseService } from "../interfaces"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager

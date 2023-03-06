@@ -1,9 +1,9 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
-import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { CartService } from "../../../../services"
 
 /**
  * @oas [post] /store/carts/{id}/payment-session

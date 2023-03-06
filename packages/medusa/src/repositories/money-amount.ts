@@ -5,15 +5,15 @@ import {
   IsNull,
   Not,
   ObjectLiteral,
-  WhereExpressionBuilder,
+  WhereExpressionBuilder
 } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { dataSource } from "../loaders/database"
 import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
-  PriceListPriceUpdateInput,
+  PriceListPriceUpdateInput
 } from "../types/price-list"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { dataSource } from "../loaders/database"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">

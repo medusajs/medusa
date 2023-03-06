@@ -1,5 +1,5 @@
+import { Selector } from "medusa-core-utils"
 import { BatchJob, Order } from "../../../models"
-import { Selector } from "../../../types/common"
 
 export type OrderExportBatchJobContext = {
   offset?: number

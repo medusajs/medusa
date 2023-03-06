@@ -1,3 +1,4 @@
+import { generateEntityId, SoftDeletableEntity } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -6,8 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
 } from "typeorm"
-import { SoftDeletableEntity, generateEntityId } from "@medusajs/medusa"
-
 import { StockLocationAddress } from "."
 
 @Entity()

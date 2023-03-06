@@ -1,9 +1,11 @@
+import {
+  buildQuery,
+  FindConfig,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { ProductTaxRate } from "../models"
 import { ProductTaxRateRepository } from "../repositories/product-tax-rate"
-import { FindConfig } from "../types/common"
 import { FilterableProductTaxRateProps } from "../types/product-tax-rate"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
 
 class ProductTaxRateService extends TransactionBaseService {
   protected readonly productTaxRateRepository_: typeof ProductTaxRateRepository

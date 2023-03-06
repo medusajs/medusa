@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { AnalyticsConfig } from "../../../.."
-import { DeleteResponse } from "../../../../types/common"
+import { AnalyticsConfig, DeleteResponse } from "../../../.."
+
 import middlewares, { transformBody } from "../../../middlewares"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { AdminPostAnalyticsConfigReq } from "./create-analytics-config"

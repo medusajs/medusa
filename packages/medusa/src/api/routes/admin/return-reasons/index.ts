@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { ReturnReason } from "../../../.."
-import { DeleteResponse } from "../../../../types/common"
+import { DeleteResponse } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()

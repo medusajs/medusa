@@ -1,4 +1,5 @@
-import { TransactionBaseService } from "./transaction-base-service"
+import { TransactionBaseService } from "medusa-core-utils/src/transaction-base-service"
+import { PaymentService } from "medusa-interfaces"
 import {
   Address,
   Cart,
@@ -8,7 +9,6 @@ import {
   PaymentSessionStatus,
   ShippingMethod,
 } from "../models"
-import { PaymentService } from "medusa-interfaces"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data

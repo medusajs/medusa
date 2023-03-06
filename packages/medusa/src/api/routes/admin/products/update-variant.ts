@@ -15,10 +15,10 @@ import {
 } from "../../../../services"
 
 import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products/{id}/variants/{variant_id}

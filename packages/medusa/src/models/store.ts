@@ -1,3 +1,4 @@
+import { BaseEntity, DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -8,16 +9,9 @@ import {
   ManyToOne,
   OneToOne,
 } from "typeorm"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { FeatureFlagColumn, FeatureFlagDecorators } from "../utils"
 import { Currency } from "./currency"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { SalesChannel } from "./sales-channel"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Store extends BaseEntity {

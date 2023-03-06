@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from "typeorm"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FeatureFlagColumn } from "../utils"
 
 @Entity()
 export class Currency {

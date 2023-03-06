@@ -6,7 +6,7 @@ import middlewares, {
 } from "../../../middlewares"
 import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
 import { PublishableApiKey, SalesChannel } from "../../../../models"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
 import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
 import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
 import { AdminDeletePublishableApiKeySalesChannelsBatchReq } from "./delete-channels-batch"

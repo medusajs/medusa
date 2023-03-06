@@ -13,7 +13,10 @@ export const ProductCategoryServiceMock = {
   }),
   retrieve: jest.fn().mockImplementation((id) => {
     if (id === IdMap.getId(invalidProdCategoryId)) {
-      throw new MedusaError(MedusaError.Types.NOT_FOUND, "ProductCategory not found")
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "ProductCategory not found"
+      )
     }
 
     if (id === IdMap.getId(validProdCategoryId)) {
@@ -23,7 +26,10 @@ export const ProductCategoryServiceMock = {
   delete: jest.fn().mockReturnValue(Promise.resolve()),
   update: jest.fn().mockImplementation((id, data) => {
     if (id === IdMap.getId(invalidProdCategoryId)) {
-      throw new MedusaError(MedusaError.Types.NOT_FOUND, "ProductCategory not found")
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "ProductCategory not found"
+      )
     }
 
     return Promise.resolve(Object.assign({ id }, data))

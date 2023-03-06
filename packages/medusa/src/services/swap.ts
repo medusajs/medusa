@@ -1,9 +1,14 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+  validateId,
+} from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
-
 import {
   Cart,
   CartType,
@@ -20,7 +25,7 @@ import {
   SwapPaymentStatus,
 } from "../models"
 import { SwapRepository } from "../repositories/swap"
-import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { WithRequiredProperty } from "../types/common"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
 import CartService from "./cart"

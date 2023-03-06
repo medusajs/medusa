@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { Cart, DraftOrder, Order } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()

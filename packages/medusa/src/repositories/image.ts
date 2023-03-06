@@ -1,6 +1,6 @@
-import { Image } from "../models"
-import { dataSource } from "../loaders/database"
 import { In } from "typeorm"
+import { dataSource } from "../loaders/database"
+import { Image } from "../models"
 
 export const ImageRepository = dataSource.getRepository(Image).extend({
   async upsertImages(imageUrls: string[]) {

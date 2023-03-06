@@ -1,9 +1,10 @@
+import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Fulfillment } from "./fulfillment"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class TrackingLink extends SoftDeletableEntity {

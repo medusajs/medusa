@@ -1,10 +1,10 @@
-import OrderExportStrategy from "../../../batch-jobs/order/export"
 import { IdMap, MockManager } from "medusa-test-utils"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
+import { FlagRouter } from "../../../../utils"
+import OrderExportStrategy from "../../../batch-jobs/order/export"
 import { ordersToExport } from "../../../__fixtures__/order-export-data"
-import { FlagRouter } from "../../../../utils/flag-router";
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
 
 const orderServiceMock = {
   withTransaction: function (): any {
@@ -19,11 +19,7 @@ const orderServiceMock = {
 }
 const orderServiceWithoutDataMock = {
   ...orderServiceMock,
-  listAndCount: jest
-    .fn()
-    .mockImplementation(() =>
-      Promise.resolve([[], 0])
-    ),
+  listAndCount: jest.fn().mockImplementation(() => Promise.resolve([[], 0])),
   list: jest.fn().mockImplementation(() => Promise.resolve([])),
 }
 
@@ -90,7 +86,7 @@ describe("Order export strategy", () => {
         ...fakeJob,
         ...data,
         context: { ...fakeJob?.context, ...data?.context },
-        result: { ...fakeJob?.result, ...data?.result }
+        result: { ...fakeJob?.result, ...data?.result },
       }
       return Promise.resolve(fakeJob)
     }),
@@ -226,7 +222,7 @@ describe("Order export strategy with sales channel", () => {
         ...fakeJob,
         ...data,
         context: { ...fakeJob?.context, ...data?.context },
-        result: { ...fakeJob?.result, ...data?.result }
+        result: { ...fakeJob?.result, ...data?.result },
       }
       return Promise.resolve(fakeJob)
     }),

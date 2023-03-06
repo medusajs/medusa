@@ -1,13 +1,16 @@
-import { MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Currency } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
-import { FindConfig, Selector } from "../types/common"
 import { UpdateCurrencyInput } from "../types/currency"
-import { buildQuery } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
+import { FlagRouter } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {

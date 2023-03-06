@@ -8,9 +8,10 @@ import {
   RegionService,
 } from "../../../../services"
 import ProductVariantService from "../../../../services/product-variant"
+
+import { IsType } from "medusa-core-utils"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /admin/variants

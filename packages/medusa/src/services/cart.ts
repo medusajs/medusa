@@ -1,7 +1,35 @@
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  setMetadata,
+  TransactionBaseService,
+  validateEmail,
+} from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
-import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
+import {
+  CustomerService,
+  CustomShippingOptionService,
+  DiscountService,
+  EventBusService,
+  GiftCardService,
+  LineItemAdjustmentService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductService,
+  ProductVariantInventoryService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingOptionService,
+  StoreService,
+  TaxProviderService,
+  TotalsService,
+} from "."
+import { IPriceSelectionStrategy } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -32,34 +60,11 @@ import {
 } from "../types/cart"
 import {
   AddressPayload,
-  FindConfig,
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
-import { validateEmail } from "../utils/is-email"
 import { PaymentSessionInput } from "../types/payment"
-import {
-  CustomerService,
-  CustomShippingOptionService,
-  DiscountService,
-  EventBusService,
-  GiftCardService,
-  LineItemAdjustmentService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductService,
-  ProductVariantInventoryService,
-  ProductVariantService,
-  RegionService,
-  SalesChannelService,
-  ShippingOptionService,
-  StoreService,
-  TaxProviderService,
-  TotalsService,
-} from "."
+import { FlagRouter } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

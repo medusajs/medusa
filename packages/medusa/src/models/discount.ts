@@ -1,4 +1,10 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -8,10 +14,6 @@ import {
   ManyToMany,
   ManyToOne,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
 

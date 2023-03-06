@@ -1,6 +1,6 @@
-import { Router } from "express"
 import bodyParser from "body-parser"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { Router } from "express"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 export default (container) => {
   const route = Router()
@@ -19,11 +19,9 @@ export default (container) => {
     const code = await discountGenerator.generateDiscount(value.discount_code)
 
     res.json({
-      code
+      code,
     })
   })
 
-
   return route
 }
-

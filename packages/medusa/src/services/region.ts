@@ -1,8 +1,14 @@
+import {
+  buildQuery,
+  countries,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-
-import { isDefined, MedusaError } from "medusa-core-utils"
-
-import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Country, Currency, Region } from "../models"
 import { CountryRepository } from "../repositories/country"
@@ -11,11 +17,8 @@ import { FulfillmentProviderRepository } from "../repositories/fulfillment-provi
 import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { RegionRepository } from "../repositories/region"
 import { TaxProviderRepository } from "../repositories/tax-provider"
-import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, setMetadata } from "../utils"
-import { countries } from "../utils/countries"
-import { FlagRouter } from "../utils/flag-router"
+import { FlagRouter } from "../utils"
 import EventBusService from "./event-bus"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { PaymentProviderService } from "./index"

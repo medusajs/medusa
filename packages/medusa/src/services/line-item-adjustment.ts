@@ -1,14 +1,17 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOperator, In } from "typeorm"
 
+import {
+  buildQuery,
+  FindConfig,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
-import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
-import DiscountService from "./discount"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
 import { CalculationContextData } from "../types/totals"
+import DiscountService from "./discount"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager

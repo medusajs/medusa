@@ -1,3 +1,9 @@
+import _ from "lodash"
+import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -9,21 +15,16 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import { FeatureFlagDecorators } from "../utils"
 import { Image } from "./image"
+import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
 import { ProductOption } from "./product-option"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
-import { ProductCategory } from "./product-category"
 import { ProductVariant } from "./product-variant"
 import { SalesChannel } from "./sales-channel"
 import { ShippingProfile } from "./shipping-profile"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import _ from "lodash"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ProductStatus {
   DRAFT = "draft",

@@ -1,13 +1,15 @@
 import { IsArray, IsOptional, IsString } from "class-validator"
-import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
-
+import { omit } from "lodash"
+import {
+  getRetrieveConfig,
+  isDefined,
+  IsType,
+  pickByConfig,
+  validator,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IsType } from "../../../../utils/validators/is-type"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
-import { omit } from "lodash"
-import { validator } from "../../../../utils/validator"
-import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [post] /admin/tax-rates/{id}

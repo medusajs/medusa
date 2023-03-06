@@ -1,10 +1,9 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 
-import { PricingService } from "../../../../services"
 import { Transform } from "class-transformer"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper, validator } from "medusa-core-utils"
+import { PricingService } from "../../../../services"
 
 /**
  * @oas [get] /admin/shipping-options

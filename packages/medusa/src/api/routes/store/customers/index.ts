@@ -1,6 +1,5 @@
 import { Router } from "express"
-import { Customer, Order } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { Customer, Order, PaginatedResponse } from "../../../.."
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 import {
   defaultStoreOrdersFields,

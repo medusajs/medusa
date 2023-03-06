@@ -1,7 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Order, Return } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { Order, PaginatedResponse, Return } from "../../../.."
+
 import middlewares from "../../../middlewares"
 
 const route = Router()

@@ -1,16 +1,15 @@
 import {
+  IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
-} from "../../../../types/inventory"
-import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
+} from "medusa-core-utils"
+import { SalesChannel } from "../../../../models"
 import {
-  SalesChannelInventoryService,
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
-import { SalesChannel } from "../../../../models"
-import { IInventoryService } from "../../../../interfaces"
 import ProductVariantService from "../../../../services/product-variant"
+import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
@@ -76,12 +75,11 @@ export default async (req, res) => {
   const channelLocationService: SalesChannelLocationService = req.scope.resolve(
     "salesChannelLocationService"
   )
-  const salesChannelInventoryService: SalesChannelInventoryService =
-    req.scope.resolve("salesChannelInventoryService")
+
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
-  const productVariantInventoryService: ProductVariantInventoryService =
+  const prodVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
 
   const variantService: ProductVariantService = req.scope.resolve(
@@ -109,11 +107,12 @@ export default async (req, res) => {
     })
   )
 
-  const variantInventoryItems =
-    await productVariantInventoryService.listByVariant(variant.id)
+  const variantInventoryItems = await prodVariantInventoryService.listByVariant(
+    variant.id
+  )
 
   const inventory =
-    await productVariantInventoryService.listInventoryItemsByVariant(variant.id)
+    await prodVariantInventoryService.listInventoryItemsByVariant(variant.id)
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
   if (inventory.length) {
@@ -128,7 +127,8 @@ export default async (req, res) => {
         }
 
         const quantity =
-          await productVariantInventoryService.getVariantQuantityFromVariantInventoryItems(
+          // eslint-disable-next-line max-len
+          await prodVariantInventoryService.getVariantQuantityFromVariantInventoryItems(
             variantInventoryItems,
             channel.id
           )

@@ -1,6 +1,14 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  isString,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
   CustomShippingOption,
@@ -10,12 +18,10 @@ import {
 } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ShippingProfileRepository } from "../repositories/shipping-profile"
-import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingProfile,
   UpdateShippingProfile,
 } from "../types/shipping-profile"
-import { buildQuery, isString, setMetadata } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import ProductService from "./product"
 import ShippingOptionService from "./shipping-option"

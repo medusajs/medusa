@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "medusa-core-utils"
 import { OrderService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
 

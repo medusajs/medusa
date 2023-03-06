@@ -1,7 +1,7 @@
-import { Router } from "express"
 import bodyParser from "body-parser"
-import crypto from "crypto"
 import cors from "cors"
+import crypto from "crypto"
+import { Router } from "express"
 import { getConfigFile, parseCorsOrigins } from "medusa-core-utils"
 
 export default (rootDirectory) => {

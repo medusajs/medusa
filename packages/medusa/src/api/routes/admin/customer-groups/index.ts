@@ -1,6 +1,5 @@
 import { Router } from "express"
-import { CustomerGroup } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { CustomerGroup, DeleteResponse, PaginatedResponse } from "../../../.."
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetCustomerGroupsGroupParams } from "./get-customer-group"
 import { AdminGetCustomerGroupsParams } from "./list-customer-groups"

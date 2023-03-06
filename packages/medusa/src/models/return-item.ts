@@ -1,6 +1,5 @@
+import { DbAwareColumn } from "medusa-core-utils"
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { Return } from "./return"
 import { ReturnReason } from "./return-reason"

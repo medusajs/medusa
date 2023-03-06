@@ -1,4 +1,16 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  buildRelations,
+  buildSelects,
+  FindConfig,
+  isDefined,
+  isString,
+  MedusaError,
+  QuerySelector,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -8,7 +20,25 @@ import {
   Not,
   Raw,
 } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  EventBusService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
+} from "."
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -29,41 +59,13 @@ import {
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import {
-  buildQuery,
-  buildRelations,
-  buildSelects,
-  isString,
-  setMetadata,
-} from "../utils"
-import { FlagRouter } from "../utils/flag-router"
-
-import {
-  CartService,
-  CustomerService,
-  DiscountService,
-  DraftOrderService,
-  EventBusService,
-  FulfillmentProviderService,
-  FulfillmentService,
-  GiftCardService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductVariantInventoryService,
-  RegionService,
-  ShippingOptionService,
-  ShippingProfileService,
-  TaxProviderService,
-  TotalsService,
-} from "."
+import { FlagRouter } from "../utils"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 

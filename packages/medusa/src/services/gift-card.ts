@@ -1,18 +1,24 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  QuerySelector,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import randomize from "randomatic"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
-import { TransactionBaseService } from "../interfaces"
 import { GiftCard, Region } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateGiftCardInput,
   CreateGiftCardTransactionInput,
   UpdateGiftCardInput,
 } from "../types/gift-card"
-import { buildQuery, setMetadata } from "../utils"
 import RegionService from "./region"
 
 type InjectedDependencies = {

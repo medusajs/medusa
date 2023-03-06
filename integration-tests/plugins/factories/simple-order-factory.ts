@@ -1,37 +1,37 @@
-import { Connection } from "typeorm"
-import faker from "faker"
 import {
   Customer,
+  Discount,
+  FulfillmentStatus,
+  isString,
   Order,
   PaymentStatus,
-  FulfillmentStatus,
   SalesChannel,
-  Discount,
-  isString,
 } from "@medusajs/medusa"
+import faker from "faker"
+import { Connection } from "typeorm"
 
+import { isDefined } from "medusa-core-utils"
 import {
-  DiscountFactoryData,
-  simpleDiscountFactory,
-} from "./simple-discount-factory"
-import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
-import {
-  LineItemFactoryData,
-  simpleLineItemFactory,
-} from "./simple-line-item-factory"
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "../../api/factories"
 import {
   AddressFactoryData,
   simpleAddressFactory,
 } from "./simple-address-factory"
 import {
+  DiscountFactoryData,
+  simpleDiscountFactory,
+} from "./simple-discount-factory"
+import {
+  LineItemFactoryData,
+  simpleLineItemFactory,
+} from "./simple-line-item-factory"
+import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
+import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
-import {
-  SalesChannelFactoryData,
-  simpleSalesChannelFactory,
-} from "../../api/factories"
-import { isDefined } from "medusa-core-utils"
 
 export type OrderFactoryData = {
   id?: string
@@ -105,7 +105,7 @@ export const simpleOrderFactory = async (
   let sc_id
   if (isDefined(data.sales_channel)) {
     let sc
-    
+
     if (isString(data.sales_channel)) {
       sc = await manager.findOne(SalesChannel, {
         where: { id: data.sales_channel },

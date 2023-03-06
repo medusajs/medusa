@@ -1,7 +1,7 @@
+import { ExtendedFindConfig } from "medusa-core-utils"
 import { FindOptionsWhere, ILike, Raw } from "typeorm"
-import { GiftCard } from "../models"
-import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { GiftCard } from "../models"
 
 export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
   async listGiftCardsAndCount(

@@ -1,3 +1,4 @@
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,15 +9,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
 
+import { optionalBooleanMapper } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { Fulfillment, LineItem } from "../../../../models"
 import {
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { Fulfillment, LineItem } from "../../../../models"
 import { FindParams } from "../../../../types/common"
 
 /**

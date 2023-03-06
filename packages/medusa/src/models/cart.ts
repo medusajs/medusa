@@ -212,6 +212,12 @@
  */
 
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   AfterLoad,
   BeforeInsert,
   Column,
@@ -224,12 +230,7 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
-
+import { FeatureFlagColumn, FeatureFlagDecorators } from "../utils"
 import { Address } from "./address"
 import { Customer } from "./customer"
 import { Discount } from "./discount"
@@ -240,8 +241,6 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum CartType {
   DEFAULT = "default",

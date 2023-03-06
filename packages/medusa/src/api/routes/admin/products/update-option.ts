@@ -1,9 +1,9 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { IsString } from "class-validator"
-import { ProductService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { ProductService } from "../../../../services"
 
 /**
  * @oas [post] /admin/products/{id}/options/{option_id}

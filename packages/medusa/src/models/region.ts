@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -9,18 +14,14 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FeatureFlagColumn } from "../utils"
 import { Country } from "./country"
 import { Currency } from "./currency"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { PaymentProvider } from "./payment-provider"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { TaxProvider } from "./tax-provider"
 import { TaxRate } from "./tax-rate"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class Region extends SoftDeletableEntity {

@@ -1,7 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { ShippingProfile } from "../../../.."
-import { DeleteResponse } from "../../../../types/common"
+import { DeleteResponse } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()

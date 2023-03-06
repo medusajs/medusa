@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "es2019"],
-    "target": "es5",
+    "lib": ["es2020"],
+    "target": "es2020",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -16,10 +16,14 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true, // to use ES5 specific tooling
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*", "index.d.ts"],
+  "include": [
+    "./src/**/*",
+    "index.d.ts",
+    "../medusa-core-utils/src/types/modules/services/inventory.ts",
+    "../medusa-core-utils/src/transaction-base-service.ts"
+  ],
   "exclude": [
     "./dist/**/*",
     "./src/**/__tests__",

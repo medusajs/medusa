@@ -1,11 +1,10 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
+import { IsType, validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import CustomerService from "../../../../services/customer"
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /store/customers/me

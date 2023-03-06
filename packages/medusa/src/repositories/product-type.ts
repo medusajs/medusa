@@ -1,6 +1,6 @@
-import { ProductType } from "../models/product-type"
-import { ExtendedFindConfig } from "../types/common"
+import { ExtendedFindConfig } from "medusa-core-utils"
 import { dataSource } from "../loaders/database"
+import { ProductType } from "../models/product-type"
 
 type UpsertTypeInput = Partial<ProductType> & {
   value: string

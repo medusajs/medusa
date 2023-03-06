@@ -2,7 +2,7 @@ import {
   AbstractTaxService,
   ItemTaxCalculationLine,
   ShippingTaxCalculationLine,
-  TaxCalculationContext,
+  TaxCalculationContext
 } from "../interfaces/tax-service"
 import { ProviderTaxLine } from "../types/tax-service"
 

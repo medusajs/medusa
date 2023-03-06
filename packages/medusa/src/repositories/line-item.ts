@@ -1,6 +1,6 @@
+import { dataSource } from "../loaders/database"
 import { LineItem } from "../models/line-item"
 import { ReturnItem } from "../models/return-item"
-import { dataSource } from "../loaders/database"
 
 export const LineItemRepository = dataSource.getRepository(LineItem).extend({
   /**

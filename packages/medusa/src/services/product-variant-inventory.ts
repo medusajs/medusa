@@ -1,17 +1,16 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
 import {
   IInventoryService,
-  IStockLocationService,
-  TransactionBaseService,
-} from "../interfaces"
-import { LineItem, Product, ProductVariant } from "../models"
-import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
-import {
   InventoryItemDTO,
+  isDefined,
+  IStockLocationService,
+  MedusaError,
   ReservationItemDTO,
   ReserveQuantityContext,
-} from "../types/inventory"
+  TransactionBaseService,
+} from "medusa-core-utils"
+import { EntityManager, In } from "typeorm"
+import { LineItem, Product, ProductVariant } from "../models"
+import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 import {
   CacheService,

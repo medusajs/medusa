@@ -1,8 +1,8 @@
 import { flatten, groupBy, map, merge } from "lodash"
+import { buildLegacyFieldsListFrom } from "medusa-core-utils"
 import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
-import { Order } from "../models"
-import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
+import { Order } from "../models"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"

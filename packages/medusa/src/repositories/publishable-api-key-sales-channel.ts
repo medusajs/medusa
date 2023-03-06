@@ -1,7 +1,6 @@
 import { Brackets, In } from "typeorm"
-
-import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 import { dataSource } from "../loaders/database"
+import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 
 export const PublishableApiKeySalesChannelRepository = dataSource
   .getRepository(PublishableApiKeySalesChannel)

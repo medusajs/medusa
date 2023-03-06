@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsString } from "class-validator"
 
-import NoteService from "../../../../services/note"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import NoteService from "../../../../services/note"
 
 /**
  * @oas [post] /admin/notes

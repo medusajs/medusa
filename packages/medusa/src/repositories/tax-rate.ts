@@ -1,4 +1,5 @@
 import { unionBy } from "lodash"
+import { buildLegacyFieldsListFrom, isDefined } from "medusa-core-utils"
 import {
   DeleteResult,
   FindManyOptions,
@@ -7,6 +8,7 @@ import {
   Not,
   SelectQueryBuilder,
 } from "typeorm"
+import { dataSource } from "../loaders/database"
 import {
   Product,
   ProductTaxRate,
@@ -15,9 +17,6 @@ import {
   TaxRate,
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
-import { isDefined } from "medusa-core-utils"
-import { buildLegacyFieldsListFrom } from "../utils"
-import { dataSource } from "../loaders/database"
 
 const resolveableFields = [
   "product_count",

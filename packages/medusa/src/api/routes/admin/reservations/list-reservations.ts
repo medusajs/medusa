@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "medusa-core-utils"
 import {
   extendedFindParamsMixin,
   NumericalComparisonOperator,

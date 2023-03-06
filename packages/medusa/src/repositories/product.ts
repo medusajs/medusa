@@ -1,3 +1,4 @@
+import { ExtendedFindConfig, isObject } from "medusa-core-utils"
 import {
   FindOperator,
   FindOptionsWhere,
@@ -5,10 +6,8 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { Product, ProductCategory } from "../models"
-import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { isObject } from "../utils"
+import { Product, ProductCategory } from "../models"
 import { ProductFilterOptions } from "../types/product"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({

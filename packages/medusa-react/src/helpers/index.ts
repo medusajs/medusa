@@ -1,5 +1,5 @@
+import { isEmpty } from "medusa-core-utils"
 import { ProductVariantInfo, RegionInfo } from "../types"
-import { isEmpty } from "../utils"
 
 type FormatVariantPriceParams = {
   variant: ProductVariantInfo

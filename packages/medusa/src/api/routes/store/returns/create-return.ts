@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsNotEmpty,
@@ -7,14 +8,11 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-
-import { Type } from "class-transformer"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import ReturnService from "../../../../services/return"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/returns

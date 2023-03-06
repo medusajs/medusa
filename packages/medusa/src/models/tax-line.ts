@@ -1,6 +1,5 @@
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { BaseEntity, DbAwareColumn } from "medusa-core-utils"
 import { Column } from "typeorm"
-import { DbAwareColumn } from "../utils/db-aware-column"
 
 export class TaxLine extends BaseEntity {
   @Column({ type: "real" })

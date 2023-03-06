@@ -1,4 +1,4 @@
-import { TransactionBaseService } from "../interfaces/transaction-base-service"
+import { TransactionBaseService } from "medusa-core-utils"
 
 class SystemProviderService extends TransactionBaseService {
   static identifier = "system"

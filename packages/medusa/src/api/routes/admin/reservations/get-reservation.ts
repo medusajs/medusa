@@ -1,5 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService, MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [get] /admin/reservations/{id}

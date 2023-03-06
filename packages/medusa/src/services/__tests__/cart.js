@@ -1,27 +1,27 @@
-import _ from "lodash"
 import { asClass, asValue, createContainer } from "awilix"
+import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { IsNull, Not } from "typeorm"
+import { FlagRouter } from "../../../utils"
+import { PaymentSessionStatus } from "../../models"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
 import CartService from "../cart"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
+import { NewTotalsService, TaxProviderService } from "../index"
+import SystemTaxService from "../system-tax"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { CustomerServiceMock } from "../__mocks__/customer"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { LineItemServiceMock } from "../__mocks__/line-item"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { PaymentSessionStatus } from "../../models"
-import { NewTotalsService, TaxProviderService } from "../index"
-import { cacheServiceMock } from "../__mocks__/cache"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { ProductServiceMock } from "../__mocks__/product"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { RegionServiceMock } from "../__mocks__/region"
-import { LineItemServiceMock } from "../__mocks__/line-item"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
-import { CustomerServiceMock } from "../__mocks__/customer"
-import TaxCalculationStrategy from "../../strategies/tax-calculation"
-import SystemTaxService from "../system-tax"
-import { IsNull, Not } from "typeorm"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -65,8 +65,7 @@ describe("CartService", () => {
   describe("retrieve", () => {
     let result
     const cartRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({ id: IdMap.getId("emptyCart") }),
+      findOne: () => Promise.resolve({ id: IdMap.getId("emptyCart") }),
     })
     beforeAll(async () => {
       jest.clearAllMocks()
@@ -83,13 +82,11 @@ describe("CartService", () => {
 
     it("calls cart model functions", () => {
       expect(cartRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(cartRepository.findOne).toHaveBeenCalledWith(
-        {
-          where: { id: IdMap.getId("emptyCart") },
-          select: undefined,
-          relations: undefined,
-        }
-      )
+      expect(cartRepository.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("emptyCart") },
+        select: undefined,
+        relations: undefined,
+      })
     })
   })
 
@@ -853,24 +850,24 @@ describe("CartService", () => {
             customer: true,
             discounts: {
               regions: true,
-              rule: true
+              rule: true,
             },
             gift_cards: true,
             items: {
               variant: {
-                product: true
-              }
+                product: true,
+              },
             },
             payment_sessions: true,
             region: { countries: true },
             shipping_address: true,
-            shipping_methods: true
+            shipping_methods: true,
           },
           select: undefined,
           where: {
-            id: "withpays"
-          }
-        }),
+            id: "withpays",
+          },
+        })
       )
     })
   })
@@ -1377,9 +1374,11 @@ describe("CartService", () => {
           shipping_address: {
             country_code: "us",
           },
-          items: [{
-            id: IdMap.getId("testitem")
-          }],
+          items: [
+            {
+              id: IdMap.getId("testitem"),
+            },
+          ],
           payment_session: null,
           payment_sessions: [],
           gift_cards: [],

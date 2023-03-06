@@ -1,11 +1,11 @@
+import { ModulesHelper } from "@medusajs/modules-sdk"
 import {
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { ModulesHelper } from "@medusajs/modules-sdk"
+import { FlagRouter } from "../../../../utils"
 
 /**
  * @oas [get] /admin/store

@@ -1,11 +1,11 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   DateComparisonOperator,
   FindPaginationParams,
   StringComparisonOperator,
 } from "../../../../types/common"
-import { IsOptional, IsString } from "class-validator"
 
-import { IsType } from "../../../../utils/validators/is-type"
+import { IsType } from "medusa-core-utils"
 import ProductTypeService from "../../../../services/product-type"
 
 /**

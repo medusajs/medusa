@@ -1,9 +1,16 @@
-import { FlagRouter } from "../utils/flag-router"
-
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  ExtendedFindConfig,
+  FindConfig,
+  isDefined,
+  isString,
+  MedusaError,
+  Selector,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
-import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
@@ -21,7 +28,6 @@ import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateProductInput,
   FindProductConfig,
@@ -30,7 +36,7 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isString, setMetadata } from "../utils"
+import { FlagRouter } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {

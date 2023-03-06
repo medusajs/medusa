@@ -1,10 +1,9 @@
 import { IsNumber, IsOptional } from "class-validator"
 
-import { ReturnService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
-import { FindConfig } from "../../../../types/common"
+import { FindConfig, validator } from "medusa-core-utils"
 import { Return } from "../../../../models"
+import { ReturnService } from "../../../../services"
 
 /**
  * @oas [get] /admin/returns

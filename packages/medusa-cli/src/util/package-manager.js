@@ -1,5 +1,5 @@
 import ConfigStore from "configstore"
-import reporter from "../reporter"
+import reporter from "medusa-core-utils"
 
 let config
 
@@ -13,7 +13,7 @@ export const getPackageManager = () => {
   return config.get(packageMangerConfigKey)
 }
 
-export const setPackageManager = packageManager => {
+export const setPackageManager = (packageManager) => {
   if (!config) {
     config = new ConfigStore(`medusa`, {}, { globalConfigPath: true })
   }

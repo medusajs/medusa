@@ -1,0 +1,9 @@
+{
+  "workbench.colorCustomizations": {
+    "[monokai-best]": {
+      "editor.lineHighlightBackground": "#1073cf2d",
+      "editor.lineHighlightBorder": "#9fced11f",
+      "tab.activeBackground": "#a732e2"
+    }
+  }
+}

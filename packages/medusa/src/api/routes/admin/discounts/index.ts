@@ -1,8 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Discount } from "../../../.."
+import { DeleteResponse, Discount, PaginatedResponse } from "../../../.."
 import { DiscountCondition } from "../../../../models"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   doesConditionBelongToDiscount,
   transformBody,
@@ -13,31 +12,31 @@ import {
   AdminPostDiscountsDiscountConditionsConditionBatchReq,
 } from "./add-resources-to-condition-batch"
 import {
-  AdminPostDiscountsDiscountConditionsCondition,
-  AdminPostDiscountsDiscountConditionsConditionParams,
-} from "./update-condition"
-import {
   AdminPostDiscountsDiscountConditions,
   AdminPostDiscountsDiscountConditionsParams,
 } from "./create-condition"
-import { AdminPostDiscountsDiscountDynamicCodesReq } from "./create-dynamic-code"
-import {
-  AdminPostDiscountsDiscountParams,
-  AdminPostDiscountsDiscountReq,
-} from "./update-discount"
 import {
   AdminPostDiscountsParams,
   AdminPostDiscountsReq,
 } from "./create-discount"
-import { AdminGetDiscountsParams } from "./list-discounts"
-import { AdminGetDiscountsDiscountConditionsConditionParams } from "./get-condition"
+import { AdminPostDiscountsDiscountDynamicCodesReq } from "./create-dynamic-code"
 import { AdminDeleteDiscountsDiscountConditionsConditionParams } from "./delete-condition"
-import { AdminGetDiscountsDiscountCodeParams } from "./get-discount-by-code"
-import { AdminGetDiscountParams } from "./get-discount"
 import {
   AdminDeleteDiscountsDiscountConditionsConditionBatchParams,
   AdminDeleteDiscountsDiscountConditionsConditionBatchReq,
 } from "./delete-resources-from-condition-batch"
+import { AdminGetDiscountsDiscountConditionsConditionParams } from "./get-condition"
+import { AdminGetDiscountParams } from "./get-discount"
+import { AdminGetDiscountsDiscountCodeParams } from "./get-discount-by-code"
+import { AdminGetDiscountsParams } from "./list-discounts"
+import {
+  AdminPostDiscountsDiscountConditionsCondition,
+  AdminPostDiscountsDiscountConditionsConditionParams,
+} from "./update-condition"
+import {
+  AdminPostDiscountsDiscountParams,
+  AdminPostDiscountsDiscountReq,
+} from "./update-discount"
 
 const route = Router()
 
@@ -324,12 +323,14 @@ export type AdminDiscountsListRes = PaginatedResponse & {
 }
 
 export * from "./add-region"
+export * from "./add-resources-to-condition-batch"
 export * from "./create-condition"
 export * from "./create-discount"
 export * from "./create-dynamic-code"
 export * from "./delete-condition"
 export * from "./delete-discount"
 export * from "./delete-dynamic-code"
+export * from "./delete-resources-from-condition-batch"
 export * from "./get-condition"
 export * from "./get-discount"
 export * from "./get-discount-by-code"
@@ -337,5 +338,3 @@ export * from "./list-discounts"
 export * from "./remove-region"
 export * from "./update-condition"
 export * from "./update-discount"
-export * from "./add-resources-to-condition-batch"
-export * from "./delete-resources-from-condition-batch"

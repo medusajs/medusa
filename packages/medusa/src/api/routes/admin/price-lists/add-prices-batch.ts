@@ -1,12 +1,12 @@
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 
-import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
+import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch

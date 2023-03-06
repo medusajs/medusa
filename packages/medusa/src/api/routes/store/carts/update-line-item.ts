@@ -1,9 +1,8 @@
 import { IsInt } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}

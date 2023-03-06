@@ -1,4 +1,12 @@
 import {
+  BaseEntity,
+  DbAwareColumn,
+  generateEntityId,
+  manualAutoIncrement,
+  resolveDbGenerationStrategy,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -11,12 +19,7 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { DbAwareColumn, resolveDbGenerationStrategy, resolveDbType, } from "../utils/db-aware-column"
-import { FeatureFlagColumn, FeatureFlagDecorators, } from "../utils/feature-flag-decorators"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { manualAutoIncrement } from "../utils/manual-auto-increment"
+import { FeatureFlagColumn, FeatureFlagDecorators } from "../utils"
 import { Address } from "./address"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"

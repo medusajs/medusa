@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "../../../utils"
 import ShippingOptionService from "../shipping-option"
 
 describe("ShippingOptionService", () => {
@@ -348,7 +348,7 @@ describe("ShippingOptionService", () => {
         } else {
           return null
         }
-      }
+      },
     })
 
     const optionService = new ShippingOptionService({

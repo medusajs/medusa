@@ -1,5 +1,5 @@
+import { TransactionBaseService } from "medusa-core-utils/src/transaction-base-service"
 import stream from "stream"
-import { TransactionBaseService } from "./transaction-base-service"
 
 export type FileServiceUploadResult = {
   url: string

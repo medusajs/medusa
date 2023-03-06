@@ -1,9 +1,9 @@
 import { IsEmail, IsString } from "class-validator"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import CustomerService from "../../../../services/customer"
 
 /**
  * @oas [post] /store/customers/password-reset

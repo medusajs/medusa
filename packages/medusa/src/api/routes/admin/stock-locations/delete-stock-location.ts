@@ -1,5 +1,5 @@
+import { IStockLocationService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IStockLocationService } from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**

@@ -1,7 +1,7 @@
 import { Router } from "express"
-import { Currency } from "../../../.."
+import { Currency, PaginatedResponse } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { PaginatedResponse } from "../../../../types/common"
+
 import middlewares, {
   transformBody,
   transformQuery,

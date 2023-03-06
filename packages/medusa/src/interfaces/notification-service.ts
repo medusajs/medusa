@@ -1,4 +1,4 @@
-import { TransactionBaseService } from "./transaction-base-service"
+import { TransactionBaseService } from "medusa-core-utils/src/transaction-base-service"
 import BaseNotificationService from "medusa-interfaces/dist/notification-service"
 
 type ReturnedData = {

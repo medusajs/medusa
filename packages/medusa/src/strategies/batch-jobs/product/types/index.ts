@@ -1,6 +1,9 @@
-import { BatchJob, Product, ProductVariant } from "../../../../models"
-import { Selector } from "../../../../types/common"
+import { Selector } from "medusa-core-utils"
+import { FileService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
+import { IFileService } from "../../../../interfaces"
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
+import { BatchJob, Product, ProductVariant } from "../../../../models"
 import {
   BatchJobService,
   ProductCollectionService,
@@ -10,10 +13,7 @@ import {
   SalesChannelService,
   ShippingProfileService,
 } from "../../../../services"
-import { FileService } from "medusa-interfaces"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { EntityManager } from "typeorm"
-import { IFileService } from "../../../../interfaces"
+import { FlagRouter } from "../../../../utils"
 
 export type ProductExportInjectedDependencies = {
   manager: EntityManager

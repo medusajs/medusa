@@ -1,6 +1,6 @@
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
 
 /**
  * @oas [get] /store/orders/{id}

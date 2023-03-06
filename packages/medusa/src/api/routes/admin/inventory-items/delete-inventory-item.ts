@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
+import { IInventoryService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 import { ProductVariantInventoryService } from "../../../../services"
 
 /**

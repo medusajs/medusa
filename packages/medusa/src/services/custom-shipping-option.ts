@@ -1,11 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import { CustomShippingOption } from "../models"
 import { CustomShippingOptionRepository } from "../repositories/custom-shipping-option"
-import { FindConfig, Selector } from "../types/common"
 import { CreateCustomShippingOptionInput } from "../types/shipping-options"
-import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

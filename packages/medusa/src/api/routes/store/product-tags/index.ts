@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { ProductTag } from "../../../../models"
 import { PaginatedResponse } from "../../../../types/common"
+
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { StoreGetProductTagsParams } from "./list-product-tags"
 

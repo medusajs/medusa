@@ -1,5 +1,5 @@
+import { IInventoryService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [delete] /admin/reservations/{id}

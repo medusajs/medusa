@@ -8,6 +8,7 @@ import {
   Validate,
   ValidateNested,
 } from "class-validator"
+import { optionalBooleanMapper } from "medusa-core-utils"
 import {
   AllocationType,
   DiscountConditionOperator,
@@ -15,7 +16,6 @@ import {
   DiscountRuleType,
   Region,
 } from "../models"
-import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { ExactlyOne } from "./validators/exactly-one"
 
 export type QuerySelector = {

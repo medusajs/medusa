@@ -4,7 +4,7 @@ import { Currency } from "../../../../models"
 import { CurrencyService } from "../../../../services"
 import { FindPaginationParams } from "../../../../types/common"
 import { ExtendedRequest } from "../../../../types/global"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [get] /admin/currencies

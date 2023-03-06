@@ -1,15 +1,16 @@
-import { MedusaError } from "medusa-core-utils"
 import {
-  AbstractNotificationService,
+  buildQuery,
+  FindConfig,
+  MedusaError,
+  Selector,
   TransactionBaseService,
-} from "../interfaces"
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { Logger } from "../types/global"
+import { AbstractNotificationService } from "../interfaces"
+import { Notification } from "../models"
 import { NotificationRepository } from "../repositories/notification"
 import { NotificationProviderRepository } from "../repositories/notification-provider"
-import { FindConfig, Selector } from "../types/common"
-import { buildQuery } from "../utils"
-import { Notification } from "../models"
+import { Logger } from "../types/global"
 
 type InjectedDependencies = {
   manager: EntityManager

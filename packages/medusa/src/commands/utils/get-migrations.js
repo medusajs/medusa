@@ -1,15 +1,15 @@
-import glob from "glob"
-import path from "path"
-import fs from "fs"
-import { isString } from "lodash"
-import { sync as existsSync } from "fs-exists-cached"
-import {
-  isDefined,
-  getConfigFile,
-  createRequireFromPath,
-} from "medusa-core-utils"
-import { handleConfigError } from "../../loaders/config"
 import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import { isString } from "lodash"
+import {
+  createRequireFromPath,
+  getConfigFile,
+  isDefined,
+} from "medusa-core-utils"
+import path from "path"
+import { handleConfigError } from "../../loaders/config"
 
 function createFileContentHash(path, files) {
   return path + files

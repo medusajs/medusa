@@ -1,8 +1,8 @@
 import { IsObject } from "class-validator"
+import { validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}

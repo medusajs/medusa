@@ -25,6 +25,13 @@
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },
-  "dependencies": {},
+  "dependencies": {
+    "awilix": "^8.0.0",
+    "medusa-telemetry": "0.0.16",
+    "ora": "^5.4.1",
+    "stack-trace": "^0.0.10",
+    "ulid": "^2.3.0",
+    "winston": "^3.8.2"
+  },
   "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
 }

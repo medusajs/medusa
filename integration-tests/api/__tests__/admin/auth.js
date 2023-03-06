@@ -1,11 +1,9 @@
 const path = require("path")
-const { Region, DiscountRule, Discount } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
-const { exportAllDeclaration } = require("@babel/types")
 
 jest.setTimeout(30000)
 

@@ -1,7 +1,7 @@
 import Analytics from "analytics-node"
 import axios from "axios"
-import { BaseService } from "medusa-interfaces"
 import { humanizeAmount } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
 
 class SegmentService extends BaseService {
   /**

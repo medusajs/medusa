@@ -1,8 +1,8 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/prices/batch

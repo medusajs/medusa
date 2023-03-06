@@ -1,13 +1,11 @@
 import { IsOptional } from "class-validator"
-import { IsType } from "../../../../utils/validators/is-type"
-
-import { IStockLocationService } from "../../../../interfaces"
-import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
+import { IStockLocationService, IsType } from "medusa-core-utils"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
+import { extendedFindParamsMixin } from "../../../../types/common"
 import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**

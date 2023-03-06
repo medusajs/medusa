@@ -1,12 +1,11 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
 
-import { MedusaError } from "medusa-core-utils"
+import jwt from "jsonwebtoken"
+import _ from "lodash"
+import { MedusaError, validator } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { User } from "../../../.."
 import UserService from "../../../../services/user"
-import _ from "lodash"
-import jwt from "jsonwebtoken"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/users/reset-password

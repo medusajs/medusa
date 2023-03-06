@@ -18,13 +18,12 @@ import {
 } from "."
 
 import { Type } from "class-transformer"
+import { IsType, validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { DraftOrder } from "../../../.."
 import { CartService, DraftOrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { DraftOrderCreateProps } from "../../../../types/draft-orders"
-import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /admin/draft-orders

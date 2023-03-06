@@ -1,6 +1,5 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "medusa-core-utils"
 
 /**
  * @oas [post] /admin/reservations
@@ -63,8 +62,6 @@ import { IInventoryService } from "../../../../interfaces"
  */
 export default async (req, res) => {
   const { validatedBody } = req as { validatedBody: AdminPostReservationsReq }
-
-  const manager: EntityManager = req.scope.resolve("manager")
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")

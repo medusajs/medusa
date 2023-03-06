@@ -1,5 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
-
 export const ProductVariantInventoryServiceMock = {
   withTransaction: function () {
     return this

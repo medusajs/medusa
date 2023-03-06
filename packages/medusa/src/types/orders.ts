@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { IsType } from "../utils/validators/is-type"
+import { IsType } from "medusa-core-utils"
 import { Order, Payment } from "../models"
 import { AddressPayload, DateComparisonOperator } from "./common"
 

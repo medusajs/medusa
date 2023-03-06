@@ -1,10 +1,10 @@
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { GiftCardService } from "../../../../services"
 
 /**
  * @oas [post] /admin/gift-cards/{id}

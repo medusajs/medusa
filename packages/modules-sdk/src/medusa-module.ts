@@ -1,20 +1,13 @@
 import { asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
+import { createMedusaContainer, logger } from "medusa-core-utils"
 import { moduleLoader, registerMedusaModule } from "./loaders"
+import { loadModuleMigrations } from "./loaders/utils"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "./types"
-import { loadModuleMigrations } from "./loaders/utils"
-
-const logger: any = {
-  log: (a) => console.log(a),
-  info: (a) => console.log(a),
-  warn: (a) => console.warn(a),
-  error: (a) => console.error(a),
-}
 
 export class MedusaModule {
   public static async bootstrap(

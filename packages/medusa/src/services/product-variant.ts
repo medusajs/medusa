@@ -1,4 +1,12 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  buildRelations,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  setMetadata,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -10,11 +18,7 @@ import {
   IsNull,
   SelectQueryBuilder,
 } from "typeorm"
-import {
-  IPriceSelectionStrategy,
-  PriceSelectionContext,
-  TransactionBaseService,
-} from "../interfaces"
+import { IPriceSelectionStrategy, PriceSelectionContext } from "../interfaces"
 import {
   MoneyAmount,
   Product,
@@ -29,7 +33,6 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
@@ -37,7 +40,6 @@ import {
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
-import { buildQuery, buildRelations, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
 

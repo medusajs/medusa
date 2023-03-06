@@ -1,3 +1,11 @@
+import { Request } from "express"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
@@ -9,12 +17,7 @@ import {
   CreateBatchJobInput,
   FilterableBatchJobProps,
 } from "../types/batch-job"
-import { FindConfig } from "../types/common"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import { EventBusService, StrategyResolverService } from "./index"
-import { Request } from "express"
 
 type InjectedDependencies = {
   manager: EntityManager

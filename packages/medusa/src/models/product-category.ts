@@ -1,7 +1,5 @@
-import { generateEntityId } from "../utils/generate-entity-id"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { kebabCase } from "lodash"
-import { Product } from "."
+import { generateEntityId, SoftDeletableEntity } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -14,6 +12,7 @@ import {
   TreeChildren,
   TreeParent,
 } from "typeorm"
+import { Product } from "."
 
 @Entity()
 @Tree("materialized-path")

@@ -1,6 +1,6 @@
-import { AbstractBatchJobStrategy, TransactionBaseService } from "../interfaces"
+import { MedusaError, TransactionBaseService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { AbstractBatchJobStrategy } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager

@@ -6,9 +6,9 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { IsType } from "../utils/validators/is-type"
-import { DateComparisonOperator } from "./common"
+import { IsType } from "medusa-core-utils"
 import { BatchJob } from "../models"
+import { DateComparisonOperator } from "./common"
 
 export enum BatchJobStatus {
   CREATED = "created",

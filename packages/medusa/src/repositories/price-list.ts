@@ -1,7 +1,7 @@
+import { CustomFindOptions, ExtendedFindConfig } from "medusa-core-utils"
 import { FindOptionsWhere, ILike } from "typeorm"
-import { PriceList } from "../models"
-import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { PriceList } from "../models"
 
 export type PriceListFindOptions = CustomFindOptions<
   PriceList,

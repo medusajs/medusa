@@ -1,9 +1,9 @@
 import { IsEmail, IsEnum } from "class-validator"
 
-import InviteService from "../../../../services/invite"
-import { UserRoles } from "../../../../models/user"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { UserRoles } from "../../../../models/user"
+import InviteService from "../../../../services/invite"
 
 /**
  * @oas [post] /admin/invites

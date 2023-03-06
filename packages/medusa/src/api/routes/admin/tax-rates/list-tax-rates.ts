@@ -1,13 +1,16 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
-import { getListConfig, pickByConfig } from "./utils/get-query-config"
-import { identity, omit, pickBy } from "lodash"
-
-import { IsType } from "../../../../utils/validators/is-type"
-import { NumericalComparisonOperator } from "../../../../types/common"
-import { TaxRate } from "../../../.."
-import { TaxRateService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
+import { identity, omit, pickBy } from "lodash"
+import {
+  getListConfig,
+  IsType,
+  pickByConfig,
+  validator,
+} from "medusa-core-utils"
+import { TaxRate } from "../../../../models"
+
+import { TaxRateService } from "../../../../services"
+import { NumericalComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/tax-rates

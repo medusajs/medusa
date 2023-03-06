@@ -1,9 +1,11 @@
+import {
+  IStockLocationService,
+  MedusaError,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
-import { IStockLocationService, TransactionBaseService } from "../interfaces"
-import { EventBusService, SalesChannelService } from "./"
-
 import { SalesChannelLocation } from "../models/sales-channel-location"
-import { MedusaError } from "medusa-core-utils"
+import { EventBusService, SalesChannelService } from "./"
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService

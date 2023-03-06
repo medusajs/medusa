@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -7,20 +12,14 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   Unique,
 } from "typeorm"
-
 import { CustomerGroup } from "./customer-group"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Product } from "./product"
 import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { Discount } from "./discount"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",

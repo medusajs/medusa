@@ -1,8 +1,8 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 
-import { CustomerService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { CustomerService } from "../../../../services"
 
 /**
  * @oas [post] /admin/customers

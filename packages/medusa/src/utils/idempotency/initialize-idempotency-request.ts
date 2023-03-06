@@ -14,8 +14,7 @@ export async function initializeIdempotencyRequest(
 
   const headerKey = req.get("Idempotency-Key") || ""
 
-  let idempotencyKey
-  idempotencyKey = await idempotencyKeyService
+  const idempotencyKey = await idempotencyKeyService
     .withTransaction(manager)
     .initializeRequest(headerKey, req.method, req.params, req.path)
 

@@ -1,9 +1,15 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
-import { FindParams, PaginatedResponse } from "../../../../types/common"
+import {
+  FindParams,
+  PaginatedResponse,
+  Product,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+} from "../../../.."
 import { PricedProduct } from "../../../../types/pricing"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { FlagRouter } from "../../../../utils"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
 import { AdminGetProductsParams } from "./list-products"

@@ -2,7 +2,7 @@ import { IsBoolean, IsOptional } from "class-validator"
 import { Currency } from "../../../../models"
 import { ExtendedRequest } from "../../../../types/global"
 import { CurrencyService } from "../../../../services"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FeatureFlagDecorators } from "../../../../utils"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { EntityManager } from "typeorm"
 

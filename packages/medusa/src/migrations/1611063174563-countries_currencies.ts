@@ -1,6 +1,5 @@
+import { countries, currencies } from "medusa-core-utils"
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { countries } from "../utils/countries"
-import { currencies } from "../utils/currencies"
 
 export class countriesCurrencies1611063174563 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -11,8 +11,8 @@ import {
 import { ClaimService, OrderService } from "../../../../services"
 
 import { Type } from "class-transformer"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
 
 /**

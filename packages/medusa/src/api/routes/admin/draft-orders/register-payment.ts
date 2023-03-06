@@ -10,9 +10,9 @@ import {
   defaultAdminOrdersRelations as defaultOrderRelations,
 } from "../orders/index"
 
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { Order } from "../../../../models"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/pay

@@ -6,10 +6,10 @@ import {
   RegionService,
 } from "../../../../services"
 
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import { defaultStoreVariantRelations } from "."
-import { validator } from "../../../../utils/validator"
 import { IsOptional, IsString } from "class-validator"
+import { validator } from "medusa-core-utils"
+import { defaultStoreVariantRelations } from "."
+import { PriceSelectionParams } from "../../../../types/price-selection"
 
 /**
  * @oas [get] /store/variants/{variant_id}

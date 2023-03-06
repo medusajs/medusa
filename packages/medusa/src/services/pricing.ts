@@ -1,7 +1,6 @@
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, TransactionBaseService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
-import { TransactionBaseService } from "../interfaces"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -17,8 +16,7 @@ import {
   TaxedPricing,
 } from "../types/pricing"
 import { TaxServiceRate } from "../types/tax-service"
-import { calculatePriceTaxAmount } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
+import { calculatePriceTaxAmount, FlagRouter } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

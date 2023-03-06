@@ -7,7 +7,7 @@ import {
   RegionService,
 } from "../../../../services"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
 
 /**
  * @oas [get] /store/products/{id}

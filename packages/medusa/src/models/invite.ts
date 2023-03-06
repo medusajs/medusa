@@ -1,9 +1,11 @@
+import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
 import { BeforeInsert, Column, CreateDateColumn, Entity, Index } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { UserRoles } from "./user"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Invite extends SoftDeletableEntity {

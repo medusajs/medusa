@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { PaginatedResponse } from "../../../../types/common"
-import { ProductCollection } from "../../../../"
+
+import { PaginatedResponse, ProductCollection } from "../../../../"
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { StoreGetCollectionsParams } from "./list-collections"
 

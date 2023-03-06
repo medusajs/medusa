@@ -1,4 +1,12 @@
 import {
+  BaseEntity,
+  DbAwareColumn,
+  generateEntityId,
+  manualAutoIncrement,
+  resolveDbGenerationStrategy,
+  resolveDbType,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -7,17 +15,8 @@ import {
   JoinColumn,
   OneToOne,
 } from "typeorm"
-import {
-  DbAwareColumn,
-  resolveDbGenerationStrategy,
-  resolveDbType,
-} from "../utils/db-aware-column"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
 import { Cart } from "./cart"
 import { Order } from "./order"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { manualAutoIncrement } from "../utils/manual-auto-increment"
 
 export enum DraftOrderStatus {
   OPEN = "open",

@@ -1,4 +1,4 @@
-import { MedusaError, humanizeAmount } from "medusa-core-utils"
+import { humanizeAmount, MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 

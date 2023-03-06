@@ -1,6 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError, TransactionBaseService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import { AnalyticsConfig } from "../models"
 import { AnalyticsConfigRepository as AnalyticsRepository } from "../repositories/analytics-config"
 import {

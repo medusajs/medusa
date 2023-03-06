@@ -8,11 +8,11 @@ import {
 } from "class-validator"
 import { EntityManager } from "typeorm"
 
+import { validator } from "medusa-core-utils"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import RegionService from "../../../../services/region"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [post] /admin/regions/{id}

@@ -1,4 +1,9 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   Entity,
@@ -8,11 +13,7 @@ import {
   ManyToMany,
   ManyToOne,
 } from "typeorm"
-
 import { Currency, Payment, PaymentSession, Region } from "."
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn } from "../utils/db-aware-column"
 
 export enum PaymentCollectionStatus {
   NOT_PAID = "not_paid",

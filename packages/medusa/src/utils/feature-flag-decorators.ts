@@ -15,7 +15,7 @@ try {
   console.warn(
     "[feature-flag-decorator.ts] setImmediate will use a mock, this happen when this file is required in a browser environment and should not impact you"
   )
-  setImmediate_ = (callback: () => void | Promise<void>) => callback()
+  setImmediate_ = async (callback: () => void | Promise<void>) => callback()
 }
 
 export function FeatureFlagColumn(

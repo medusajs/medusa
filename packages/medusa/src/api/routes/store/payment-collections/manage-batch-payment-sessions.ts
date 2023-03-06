@@ -1,5 +1,5 @@
 import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator"
-import { IsType } from "../../../../utils/validators/is-type"
+import { IsType } from "medusa-core-utils"
 
 import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"

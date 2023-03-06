@@ -1,4 +1,10 @@
 import {
+  DbAwareColumn,
+  generateEntityId,
+  resolveDbType,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
+import {
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -11,8 +17,6 @@ import {
   OneToOne,
   UpdateDateColumn,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-
 import { Address } from "./address"
 import { ClaimItem } from "./claim-item"
 import { Fulfillment } from "./fulfillment"
@@ -20,8 +24,6 @@ import { LineItem } from "./line-item"
 import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ClaimType {
   REFUND = "refund",

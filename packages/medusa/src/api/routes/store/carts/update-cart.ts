@@ -12,8 +12,9 @@ import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { IsType } from "../../../../utils/validators/is-type"
+
+import { IsType } from "medusa-core-utils"
+import { FeatureFlagDecorators } from "../../../../utils"
 
 /**
  * @oas [post] /store/carts/{id}

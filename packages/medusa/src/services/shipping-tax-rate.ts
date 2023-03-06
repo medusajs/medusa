@@ -1,9 +1,11 @@
+import {
+  buildQuery,
+  FindConfig,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { ShippingTaxRate } from "../models"
 import { ShippingTaxRateRepository } from "../repositories/shipping-tax-rate"
-import { FindConfig } from "../types/common"
 import { FilterableShippingTaxRateProps } from "../types/shipping-tax-rate"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
 
 class ShippingTaxRateService extends TransactionBaseService {
   // eslint-disable-next-line max-len

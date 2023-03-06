@@ -1,9 +1,9 @@
-import formatRegistrationName from "../utils/format-registration-name"
+import { asClass, asValue } from "awilix"
 import glob from "glob"
+import { formatRegistrationName } from "medusa-core-utils"
 import path from "path"
-import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
-import { asClass, asValue, AwilixContainer } from "awilix"
+import { ClassConstructor, MedusaContainer } from "../types/global"
 
 /**
  * Registers all models in the model directory

@@ -1,6 +1,6 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { IInventoryService } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [post] /admin/reservations/{id}

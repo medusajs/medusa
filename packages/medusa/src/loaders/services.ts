@@ -1,9 +1,8 @@
 import { asFunction } from "awilix"
 import glob from "glob"
+import { formatRegistrationName, isDefined } from "medusa-core-utils"
 import path from "path"
 import { ConfigModule, MedusaContainer } from "../types/global"
-import { isDefined } from "medusa-core-utils"
-import formatRegistrationName from "../utils/format-registration-name"
 
 type Options = {
   container: MedusaContainer

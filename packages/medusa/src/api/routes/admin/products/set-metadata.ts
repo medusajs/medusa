@@ -1,7 +1,7 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
 /**

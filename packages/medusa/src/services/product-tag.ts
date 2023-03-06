@@ -1,10 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isString,
+  MedusaError,
+  Selector,
+  TransactionBaseService,
+} from "medusa-core-utils"
 import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { ProductTag } from "../models"
 import { ProductTagRepository } from "../repositories/product-tag"
-import { FindConfig, Selector } from "../types/common"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, isString } from "../utils"
 
 type ProductTagConstructorProps = {
   manager: EntityManager

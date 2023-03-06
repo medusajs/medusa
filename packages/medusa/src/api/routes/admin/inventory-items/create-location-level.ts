@@ -1,10 +1,6 @@
-import { Request, Response } from "express"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-
-import {
-  IInventoryService,
-  IStockLocationService,
-} from "../../../../interfaces"
+import { Request, Response } from "express"
+import { IInventoryService, IStockLocationService } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 
 /**

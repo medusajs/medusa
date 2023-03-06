@@ -1,10 +1,13 @@
+import { prepareListQuery } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { defaultAdminProductRelations } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { Product, ProductVariant } from "../../../models"
 import { BatchJobService, ProductService } from "../../../services"
 import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
-import { defaultAdminProductRelations } from "../../../api"
-import { prepareListQuery } from "../../../utils/get-query-config"
+import { FindProductConfig } from "../../../types/product"
+import { csvCellContentFormatter, FlagRouter } from "../../../utils"
 import {
   DynamicProductExportDescriptor,
   ProductExportBatchJob,
@@ -12,10 +15,6 @@ import {
   ProductExportInjectedDependencies,
   ProductExportPriceData,
 } from "./types"
-import { FindProductConfig } from "../../../types/product"
-import { FlagRouter } from "../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { csvCellContentFormatter } from "../../../utils"
 import {
   productColumnsDefinition,
   productSalesChannelColumnsDefinition,

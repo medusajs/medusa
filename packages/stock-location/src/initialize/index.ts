@@ -1,9 +1,9 @@
-import { IEventBusService, IStockLocationService } from "@medusajs/medusa"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaModule,
 } from "@medusajs/modules-sdk"
+import { IEventBusService, IStockLocationService } from "medusa-core-utils"
 import { StockLocationServiceInitializeOptions } from "../types"
 
 export const initialize = async (

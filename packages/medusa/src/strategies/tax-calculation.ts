@@ -1,13 +1,13 @@
+import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   LineItem,
   LineItemTaxLine,
   ShippingMethod,
   ShippingMethodTaxLine,
 } from "../models"
-import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   protected readonly featureFlagRouter_: FlagRouter

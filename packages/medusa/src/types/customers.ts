@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
-import { optionalBooleanMapper } from "../utils/validators/is-boolean"
+import { optionalBooleanMapper } from "medusa-core-utils"
 import { AddressPayload } from "./common"
 
 export class AdminListCustomerSelector {

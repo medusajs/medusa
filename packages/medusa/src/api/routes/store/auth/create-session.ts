@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty } from "class-validator"
 import jwt from "jsonwebtoken"
+import { validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/auth

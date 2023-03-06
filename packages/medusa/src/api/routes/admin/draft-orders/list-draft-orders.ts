@@ -4,12 +4,11 @@ import {
   defaultAdminDraftOrdersRelations,
 } from "."
 
-import { DraftOrder } from "../../../../models"
-import { DraftOrderListSelector } from "../../../../types/draft-orders"
-import { DraftOrderService } from "../../../../services"
-import { FindConfig } from "../../../../types/common"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { FindConfig, validator } from "medusa-core-utils"
+import { DraftOrder } from "../../../../models"
+import { DraftOrderService } from "../../../../services"
+import { DraftOrderListSelector } from "../../../../types/draft-orders"
 
 /**
  * @oas [get] /admin/draft-orders

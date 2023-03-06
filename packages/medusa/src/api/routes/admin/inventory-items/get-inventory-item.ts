@@ -1,5 +1,5 @@
-import { IInventoryService } from "../../../../interfaces"
 import { Request, Response } from "express"
+import { IInventoryService } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 import { joinLevels } from "./utils/join-levels"
 

@@ -1,10 +1,11 @@
+import {
+  DbAwareColumn,
+  generateEntityId,
+  SoftDeletableEntity,
+} from "medusa-core-utils"
 import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Product } from "./product"
 import { ShippingOption } from "./shipping-option"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ShippingProfileType {
   DEFAULT = "default",

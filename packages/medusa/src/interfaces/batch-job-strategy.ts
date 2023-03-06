@@ -1,8 +1,8 @@
-import { TransactionBaseService } from "./transaction-base-service"
-import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
-import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
-import { BatchJobService } from "../services"
+import { TransactionBaseService } from "medusa-core-utils/src/transaction-base-service"
 import { BatchJob } from "../models"
+import { BatchJobService } from "../services"
+import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
+import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
 
 export interface IBatchJobStrategy extends TransactionBaseService {
   /**

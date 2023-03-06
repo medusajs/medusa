@@ -1,5 +1,5 @@
-import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import PayPal from "@paypal/checkout-server-sdk"
+import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { PaymentService } from "medusa-interfaces"
 
 function roundToTwo(num, currency) {

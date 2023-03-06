@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { ProductType } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { PaginatedResponse, ProductType } from "../../../.."
+
 import middlewares, { transformQuery } from "../../../middlewares"
 import "reflect-metadata"
 import { AdminGetProductTypesParams } from "./list-product-types"

@@ -1,7 +1,7 @@
+import { ExtendedFindConfig } from "medusa-core-utils"
 import { Brackets, DeleteResult, FindOptionsWhere, In } from "typeorm"
-import { SalesChannel } from "../models"
-import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { SalesChannel } from "../models"
 
 export const SalesChannelRepository = dataSource
   .getRepository(SalesChannel)

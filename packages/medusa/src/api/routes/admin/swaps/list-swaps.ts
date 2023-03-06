@@ -1,10 +1,9 @@
 import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
 
-import { SwapService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { FindConfig } from "../../../../types/common"
+import { FindConfig, validator } from "medusa-core-utils"
 import { Swap } from "../../../../models"
+import { SwapService } from "../../../../services"
 
 /**
  * @oas [get] /admin/swaps

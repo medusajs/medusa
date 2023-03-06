@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
 
+import { transformTreeNodesWithConfig } from "medusa-core-utils"
+import { defaultStoreScope } from "."
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
-import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tree"
-import { defaultStoreScope } from "."
 
 /**
  * @oas [get] /store/product-categories/{id}

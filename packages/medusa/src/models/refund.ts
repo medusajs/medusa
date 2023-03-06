@@ -1,3 +1,4 @@
+import { BaseEntity, DbAwareColumn, generateEntityId } from "medusa-core-utils"
 import {
   BeforeInsert,
   Column,
@@ -7,10 +8,6 @@ import {
   ManyToOne,
   OneToOne,
 } from "typeorm"
-
-import { BaseEntity } from "../interfaces/models/base-entity"
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateEntityId } from "../utils/generate-entity-id"
 import { Order } from "./order"
 import { Payment } from "./payment"
 

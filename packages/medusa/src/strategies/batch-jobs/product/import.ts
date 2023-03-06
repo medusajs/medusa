@@ -12,27 +12,28 @@ import {
   ProductVariantService,
   RegionService,
   SalesChannelService,
-  ShippingProfileService
+  ShippingProfileService,
 } from "../../../services"
 import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
-  UpdateProductVariantInput
+  UpdateProductVariantInput,
 } from "../../../types/product-variant"
-import { FlagRouter } from "../../../utils/flag-router"
 import {
   OperationType,
   ProductImportBatchJob,
   ProductImportCsvSchema,
   ProductImportInjectedProps,
   ProductImportJobContext,
-  TParsedProductImportRowData
+  TParsedProductImportRowData,
 } from "./types"
 import {
   productImportColumnsDefinition,
-  productImportSalesChannelsColumnsDefinition
+  productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
+
+import { FlagRouter } from "../../../utils"
 import { transformProductData, transformVariantData } from "./utils"
 
 /**

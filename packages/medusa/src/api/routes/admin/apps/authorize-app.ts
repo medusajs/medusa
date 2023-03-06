@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator"
 
+import { validator } from "medusa-core-utils"
 import { OauthService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/apps/authorizations

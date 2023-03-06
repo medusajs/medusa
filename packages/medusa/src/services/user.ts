@@ -1,20 +1,24 @@
 import jwt from "jsonwebtoken"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  buildQuery,
+  FindConfig,
+  isDefined,
+  MedusaError,
+  setMetadata,
+  TransactionBaseService,
+  validateEmail,
+} from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
 import { User } from "../models"
 import { UserRepository } from "../repositories/user"
-import { FindConfig } from "../types/common"
 import {
   CreateUserInput,
   FilterableUserProps,
   UpdateUserInput,
 } from "../types/user"
-import { buildQuery, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
-import { validateEmail } from "../utils/is-email"
+import { FlagRouter } from "../utils"
 import AnalyticsConfigService from "./analytics-config"
 import EventBusService from "./event-bus"
 
