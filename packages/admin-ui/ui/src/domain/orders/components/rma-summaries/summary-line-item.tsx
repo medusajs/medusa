@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import Thumbnail from "../../../../components/atoms/thumbnail"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 
@@ -9,6 +10,7 @@ type SummaryLineProps = {
   quantity: number
   price: number
   total: number
+  sku?: string | null
   currencyCode: string
   isFree?: boolean
 }
@@ -17,6 +19,7 @@ export const SummaryLineItem = ({
   thumbnail,
   productTitle,
   variantTitle,
+  sku,
   quantity,
   price,
   total,
@@ -25,16 +28,23 @@ export const SummaryLineItem = ({
 }: SummaryLineProps) => {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-x-base">
+      <div className="gap-x-base flex items-center">
         <div>
           <Thumbnail src={thumbnail} />
         </div>
         <div className="inter-small-regular">
-          <p>{productTitle}</p>
-          <p className="text-grey-50">{variantTitle}</p>
+          <div className="gap-x-2xsmall flex items-center">
+            <p>{productTitle}</p>
+            {variantTitle && <p className="text-grey-50">({variantTitle})</p>}
+          </div>
+          {sku && (
+            <span>
+              <CopyToClipboard value={sku} displayValue={sku} iconSize={14} />
+            </span>
+          )}
         </div>
       </div>
-      <div className="inter-small-regular flex items-center gap-x-base">
+      <div className="inter-small-regular gap-x-base flex items-center">
         <p className="text-grey-40">
           {formatAmountWithSymbol({
             amount: price,
