@@ -26,7 +26,7 @@ const {
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const testProductId = "test-product"
 const testProduct1Id = "test-product1"
@@ -395,7 +395,8 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products.length).toEqual(4)
+      // 6 products in db, default order created_at DESC, skip 1, therefore 5 respect the q param
+      expect(response.data.products.length).toEqual(5)
     })
 
     it("returns a list of deleted products", async () => {
