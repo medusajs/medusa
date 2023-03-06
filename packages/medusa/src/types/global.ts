@@ -3,6 +3,7 @@ import { Request } from "express"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
+import { EmitOptions } from "../services/event-bus"
 import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
@@ -113,6 +114,9 @@ type SessionOptions = {
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
+
+    // use to configure global options passed to `EventBusService.emit` i.e. the options passed to Bull
+    global_job_options?: Record<string, unknown> & EmitOptions
 
     session_options?: SessionOptions
 
