@@ -27,8 +27,8 @@ The migration file must be inside the `src/migrations` directory. When you run t
   For example, create the file `datasource.js` in the root of your Medusa server with the following content:
 
   ```js
-  const { DataSource } = require("typeorm");
-
+  const { DataSource } = require("typeorm")
+  
   const AppDataSource = new DataSource({
     type: "postgres",
     port: 5432,
@@ -36,15 +36,15 @@ The migration file must be inside the `src/migrations` directory. When you run t
     password: "<YOUR_DB_PASSWORD>",
     database: "<YOUR_DB_NAME>",
     entities: [
-      "dist/models/*.js"
+      "dist/models/*.js",
     ],
     migrations: [
-      "dist/migrations/*.js"
+      "dist/migrations/*.js",
     ],
   })
 
   module.exports = {
-    datasource: AppDataSource
+    datasource: AppDataSource,
   }
   ```
 
