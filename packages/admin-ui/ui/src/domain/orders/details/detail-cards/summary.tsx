@@ -4,7 +4,7 @@ import OrderLine from "../order-line"
 import { DisplayTotal, PaymentDetails } from "../templates"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import Badge from "../../../../components/fundamentals/badge"
-import { FeatureFlagContext } from "../../../../context/feature-flag"
+
 import { OrderEditContext } from "../../edit/context"
 import BodyCard from "../../../../components/organisms/body-card"
 import { sum } from "lodash"
@@ -13,6 +13,7 @@ import StatusIndicator from "../../../../components/fundamentals/status-indicato
 import { ActionType } from "../../../../components/molecules/actionables"
 import useToggleState from "../../../../hooks/use-toggle-state"
 import AllocateItemsModal from "../allocations/allocate-items-modal"
+import { FeatureFlagContext } from "../../../../providers/feature-flag-provider"
 
 type SummaryCardProps = {
   order: Order
@@ -143,7 +144,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             currency={order.currency_code}
             totalAmount={-1 * order.discount_total}
             totalTitle={
-              <div className="inter-small-regular flex items-center text-grey-90">
+              <div className="flex items-center inter-small-regular text-grey-90">
                 Discount:{" "}
                 <Badge className="ml-3" variant="default">
                   {discount.code}
@@ -158,7 +159,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             currency={order.currency_code}
             totalAmount={-1 * order.gift_card_total}
             totalTitle={
-              <div className="inter-small-regular flex items-center text-grey-90">
+              <div className="flex items-center inter-small-regular text-grey-90">
                 Gift card:
                 <Badge className="ml-3" variant="default">
                   {giftCard.code}
