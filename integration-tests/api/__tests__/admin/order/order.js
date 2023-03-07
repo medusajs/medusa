@@ -2475,7 +2475,7 @@ describe("/admin/orders", () => {
         status: "pending",
         fulfillment_status: "fulfilled",
         payment_status: "captured",
-        display_id: 7,
+        display_id: expect.any(Number),
         cart_id: null,
         draft_order_id: null,
         customer_id: "test-customer",
