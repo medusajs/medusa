@@ -110,33 +110,208 @@ type SessionOptions = {
   ttl?: number
 }
 
+
 export type ConfigModule = {
+
+  /**
+   * The project wide configuration
+   */
   projectConfig: {
+    /**
+     * ## Redis URL
+     * The URL to the redis instance to use.
+     * 
+     * ### Example
+     * ```js
+     * {
+     *    // Other configurations,
+     *    redis_url: "redis://localhost:6379",
+     * }
+     * ```
+     * 
+     * @see https://docs.medusajs.com/usage/configurations/#redis
+     */
     redis_url?: string
 
+    
     session_options?: SessionOptions
 
+    /**
+     * ## JWT Secret
+     * The secret used to sign JWT tokens.
+     * 
+     * @default ```supersecret``` (in development environment)
+     * @see https://docs.medusajs.com/usage/configurations/#jwt-secret
+     */
     jwt_secret?: string
+
+    /**
+     * ## Cookie Secret
+     * The secret used to sign the session ID cookies.
+     * 
+     * @default ```supersecret``` (in development environment)
+     * @see https://docs.medusajs.com/usage/configurations/#cookie-secret
+     */
     cookie_secret?: string
 
+    /**
+     * ## Database URL
+     * The URL to the **PostgreSQL** database to use.
+     * 
+     * ### Example
+     * ```js
+     * {
+     *    // Other configurations,
+     *    database_type: "postgres",
+     *    database_url: process.env.DATABASE_URL || "postgres://localhost:5432/medusa",
+     * }
+     * ```
+     * 
+     * @see https://docs.medusajs.com/usage/configurations/#postgresql-configurations
+     */
     database_url?: string
+
+    /**
+     * ## Database Type
+     * The type of database to use between : ```sqlite``` or ```postgres```.
+     * 
+     * ### Example
+     * ```js
+     * {
+     *    // Other configurations,
+     *    database_type: "postgres",
+     *    database_url: process.env.DATABASE_URL || "postgres://localhost:5432/medusa",
+     * }
+     * ```
+     * 
+     * @see https://docs.medusajs.com/usage/configurations/#sqlite-configurations
+     */
     database_type: string
+
+    /**
+     * ## Database Location
+     * The location of the SQLite database file.
+     * 
+     * ### Example
+     * ```js
+     * {
+     *    // Other configurations,
+     *    database_type: "sqlite",
+     *    database_database: "./medusa-db.sql",
+     * }
+     * ```
+     * 
+     * @see https://docs.medusajs.com/usage/configurations/#sqlite-configurations
+     */
     database_database?: string
+
+
+    /**
+     * # DEPRECATED
+     * ## Custom Database Schema
+     * This is a deprecated option. Please use `search_path` option inside your database URL.
+     * 
+     * @deprecated
+     * @default ```public```
+     * @see https://github.com/medusajs/medusa/blob/master/docs/content/usage/configurations.md#changing-postgresql-schema
+     */
     database_schema?: string
+
+    /**
+     * ## Database Logging
+     * The logging configuration for the database.
+     * 
+     * @see https://docs.medusajs.com/usage/configurations/#common-configuration
+     */
     database_logging: LoggerOptions
 
+    /**
+     * ## Database Extra
+     * Extra configuration for the database.
+     * 
+     * @see https://docs.medusajs.com/usage/configurations/#common-configuration
+     */
     database_extra?: Record<string, unknown> & {
       ssl: { rejectUnauthorized: false }
     }
+
+
+    /**
+     * ## Store URL
+     * The accepted origin for the store API.
+     * 
+     * 
+     * ### Example
+     * ```js
+     * const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000"
+     * ```
+     * 
+     * @default ```http://localhost:8000```
+     * @see https://docs.medusajs.com/usage/configurations/#storefront-cors
+     */
     store_cors?: string
+
+    /**
+     * ## Admin URL
+     * The accepted origin for the admin API.
+     *  
+     * ### Example
+     * ```js
+     * const ADMIN_CORS = process.env.ADMIN_CORS || "http://localhost:3000"
+     * ```
+     * 
+     * @default ```http://localhost:7000```
+     * @see https://docs.medusajs.com/usage/configurations/#admin-cors
+     */
     admin_cors?: string
   }
+
+  /**
+   * ## Feature Flags
+   * Feature flags can be used to enable or disable certain features in Medusa.
+   * 
+   * ### Example
+   * ```js
+   * {
+   *    featureFlags: {
+   *      sales_channels : false // Disable the sales channels feature
+   *    }
+   * }
+   * ```
+   * 
+   * @see https://docs.medusajs.com/advanced/backend/feature-flags/toggle
+   */
   featureFlags: Record<string, boolean | string>
+
+
+  /**
+   * ## Modules configuration
+   * Modules loaded inside the container can be enabled, disabled or configured using the `modules` option.
+   * 
+   * A `false` value will disable the module.
+   * A `string` value will be treated as the path to the overriding module.
+   * A `Partial<ConfigurableModuleDeclaration>` value will be used to configure the module.
+   * 
+   * ### Example
+   * ```js
+   * {
+   *    modules: {
+   *      inventoryService: false, // Module will not be loaded
+   *      stockLocationService: "./my-custom-stock-location-service", // Module will be loaded from the given path
+   *    }
+   * }
+   * ```
+   */
   modules?: Record<
     string,
     false | string | Partial<ConfigurableModuleDeclaration>
   >
+
+  /**
+   * ## Module Resolutions
+   */
   moduleResolutions?: Record<string, ModuleResolution>
+
   plugins: (
     | {
         resolve: string
