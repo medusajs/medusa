@@ -4,6 +4,11 @@ import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
 import { OpenAPIObject } from "openapi3-ts"
 import { Command, Option, OptionValues } from "commander"
+import { combineOAS } from "./utils/combine-oas"
+import {
+  mergeBaseIntoOAS,
+  mergePathsAndSchemasIntoOAS,
+} from "./utils/merge-oas"
 
 /**
  * Constants
@@ -23,7 +28,7 @@ export const commandDescription =
 
 export const commandOptions: Option[] = [
   new Option("-t, --type <type>", "API type to compile.")
-    .choices(["admin", "store"])
+    .choices(["admin", "store", "combined"])
     .makeOptionMandatory(),
   new Option(
     "-o, --out-dir <outDir>",
@@ -33,6 +38,10 @@ export const commandOptions: Option[] = [
   new Option(
     "-p, --paths <paths...>",
     "Additional paths to crawl for OAS JSDoc."
+  ),
+  new Option(
+    "-b, --base <base>",
+    "Custom base OAS file to use for swagger-inline."
   ),
   new Option("-F, --force", "Ignore OAS validation and output OAS files."),
 ]
@@ -70,6 +79,13 @@ export async function execute(cliParams: OptionValues) {
     }
   }
 
+  const baseFile = cliParams.base ? path.resolve(cliParams.base) : undefined
+  if (baseFile) {
+    if (!(await isFile(cliParams.base))) {
+      throw new Error(`--base must be a file - ${baseFile}`)
+    }
+  }
+
   /**
    * Command execution
    */
@@ -77,12 +93,25 @@ export async function execute(cliParams: OptionValues) {
     await mkdir(outDir, { recursive: true })
   }
 
+  let oas: OpenAPIObject
   console.log(`🟣 Generating OAS - ${apiType}`)
-  const oas = await getOASFromCodebase(apiType)
 
-  if (additionalPaths.length) {
-    const customOAS = await getOASFromPaths(additionalPaths)
-    mergePathsAndSchemasIntoOAS(oas, customOAS)
+  if (apiType === "combined") {
+    const adminOAS = await getOASFromCodebase("admin")
+    const storeOAS = await getOASFromCodebase("store")
+    oas = await combineOAS(adminOAS, storeOAS)
+  } else {
+    oas = await getOASFromCodebase(apiType)
+  }
+
+  if (additionalPaths.length || baseFile) {
+    const customOAS = await getOASFromPaths(additionalPaths, baseFile)
+    if (baseFile) {
+      mergeBaseIntoOAS(oas, customOAS)
+    }
+    if (additionalPaths.length) {
+      mergePathsAndSchemasIntoOAS(oas, customOAS)
+    }
   }
 
   await validateOAS(oas, apiType, force)
@@ -94,7 +123,10 @@ export async function execute(cliParams: OptionValues) {
 /**
  * Methods
  */
-async function getOASFromCodebase(apiType: ApiType): Promise<OpenAPIObject> {
+async function getOASFromCodebase(
+  apiType: ApiType,
+  customBaseFile?: string
+): Promise<OpenAPIObject> {
   const gen = await swaggerInline(
     [
       path.resolve(medusaPackagePath, "dist", "models"),
@@ -103,7 +135,9 @@ async function getOASFromCodebase(apiType: ApiType): Promise<OpenAPIObject> {
       path.resolve(medusaPackagePath, "dist", `api/routes/${apiType}`),
     ],
     {
-      base: path.resolve(medusaPackagePath, "oas", `${apiType}.oas.base.yaml`),
+      base:
+        customBaseFile ??
+        path.resolve(medusaPackagePath, "oas", `${apiType}.oas.base.yaml`),
       format: ".json",
     }
   )
@@ -111,40 +145,19 @@ async function getOASFromCodebase(apiType: ApiType): Promise<OpenAPIObject> {
 }
 
 async function getOASFromPaths(
-  additionalPaths: string[] = []
+  additionalPaths: string[] = [],
+  customBaseFile?: string
 ): Promise<OpenAPIObject> {
   console.log(`🔵 Gathering custom OAS`)
   const gen = await swaggerInline(additionalPaths, {
-    base: path.resolve(basePath, "oas", "default.oas.base.yaml"),
+    base:
+      customBaseFile ?? path.resolve(basePath, "oas", "default.oas.base.yaml"),
     format: ".json",
     logger: (log) => {
       console.log(log)
     },
   })
   return await OpenAPIParser.parse(JSON.parse(gen))
-}
-
-function mergePathsAndSchemasIntoOAS(
-  targetOAS: OpenAPIObject,
-  sourceOAS: OpenAPIObject
-): void {
-  /**
-   * merge paths
-   */
-  Object.assign(targetOAS.paths, sourceOAS.paths)
-
-  /**
-   * merge components.schemas
-   */
-  if (sourceOAS.components?.schemas) {
-    if (!targetOAS.components) {
-      targetOAS.components = {}
-    }
-    if (!targetOAS.components.schemas) {
-      targetOAS.components.schemas = {}
-    }
-    Object.assign(targetOAS.components.schemas, sourceOAS.components.schemas)
-  }
 }
 
 async function validateOAS(
@@ -177,6 +190,15 @@ async function exportOASToJSON(
 async function isDirectory(dirPath: string): Promise<boolean> {
   try {
     return (await lstat(path.resolve(dirPath))).isDirectory()
+  } catch (err) {
+    console.log(err)
+    return false
+  }
+}
+
+async function isFile(filePath: string): Promise<boolean> {
+  try {
+    return (await lstat(path.resolve(filePath))).isFile()
   } catch (err) {
     console.log(err)
     return false
