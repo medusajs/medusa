@@ -11,20 +11,18 @@ import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import Tooltip from "../../../../components/atoms/tooltip"
 import { sum } from "lodash"
 
+/**
+ * Types
+ */
 export type NestedMultiselectOption = {
   value: string
   label: string
   children?: NestedMultiselectOption[]
 }
 
-type InputProps = {
-  isOpen: boolean
-  selected: Record<string, true>
-  options: NestedMultiselectOption[]
-  openPopup: () => void
-  resetSelected: () => void
-}
-
+/**
+ * Selected categories count tooltip
+ */
 const ToolTipContent = (props: { list: string[] }) => {
   return (
     <div className="flex flex-col">
@@ -35,6 +33,17 @@ const ToolTipContent = (props: { list: string[] }) => {
   )
 }
 
+type InputProps = {
+  isOpen: boolean
+  selected: Record<string, true>
+  options: NestedMultiselectOption[]
+  openPopup: () => void
+  resetSelected: () => void
+}
+
+/**
+ * Multiselect input area
+ */
 function Input(props: InputProps) {
   const { isOpen, selected, openPopup, resetSelected, options } = props
   const selectedCount = Object.keys(selected).length
@@ -56,7 +65,7 @@ function Input(props: InputProps) {
   return (
     <div
       onClick={openPopup}
-      className="flex h-10 items-center justify-between rounded-rounded border border-grey-20 bg-grey-5 px-small focus-within:border-violet-60 focus-within:shadow-cta"
+      className="rounded-rounded border-grey-20 bg-grey-5 px-small focus-within:border-violet-60 focus-within:shadow-cta flex h-10 items-center justify-between border"
     >
       <div className="flex items-center gap-1">
         {!!selectedCount && (
@@ -65,7 +74,7 @@ function Input(props: InputProps) {
             delayDuration={1500}
             content={<ToolTipContent list={selectedOption} />}
           >
-            <span className="flex h-[28px] items-center gap-2 rounded-rounded border bg-grey-10 px-2 text-small font-medium text-gray-500">
+            <span className="rounded-rounded bg-grey-10 text-small flex h-[28px] items-center gap-2 border px-2 font-medium text-gray-500">
               {selectedCount}
               <CrossIcon
                 className="cursor-pointer"
@@ -90,11 +99,14 @@ function Input(props: InputProps) {
 
 type CheckboxProps = { isSelected: boolean }
 
+/**
+ * List item checkbox
+ */
 const Checkbox = ({ isSelected }: CheckboxProps) => {
   return (
     <div
       className={clsx(
-        `flex h-5 w-5 justify-center rounded-base border border-grey-30 text-grey-0`,
+        `rounded-base border-grey-30 text-grey-0 flex h-5 w-5 justify-center border`,
         {
           "bg-violet-60": isSelected,
         }
@@ -115,6 +127,9 @@ type PopupItemProps = {
   onOptionCheckboxClick: (option: NestedMultiselectOption) => void
 }
 
+/**
+ * Popup list item
+ */
 function PopupItem(props: PopupItemProps) {
   const {
     option,
@@ -137,7 +152,7 @@ function PopupItem(props: PopupItemProps) {
     <div
       onClick={onClick}
       className={clsx("flex h-[40px] items-center justify-between gap-2 px-3", {
-        "cursor-pointer hover:bg-grey-10": hasChildren,
+        "hover:bg-grey-10 cursor-pointer": hasChildren,
       })}
     >
       <div className="flex items-center gap-2">
@@ -176,6 +191,9 @@ type PopupProps = {
   onOptionCheckboxClick: (option: NestedMultiselectOption) => void
 }
 
+/**
+ * Popup menu
+ */
 function Popup(props: PopupProps) {
   const {
     activeOption,
@@ -191,7 +209,7 @@ function Popup(props: PopupProps) {
   return (
     <div
       style={{ top: 8, boxShadow: "0px 2px 16px rgba(0, 0, 0, 0.08)" }}
-      className="relative z-50 w-[100%] rounded-rounded border bg-white"
+      className="rounded-rounded relative z-50 w-[100%] border bg-white"
     >
       {showBack && (
         <div
@@ -199,7 +217,7 @@ function Popup(props: PopupProps) {
             e.stopPropagation()
             pop()
           }}
-          className="mb-1 flex h-[50px] cursor-pointer items-center gap-2 border-b border-grey-20 px-3 hover:bg-grey-10"
+          className="border-grey-20 hover:bg-grey-10 mb-1 flex h-[50px] cursor-pointer items-center gap-2 border-b px-3"
         >
           <UTurnIcon size={16} />
           <span className="font-medium">{activeOption.label}</span>
@@ -225,6 +243,9 @@ type NestedMultiselectProps = {
   initiallySelected?: Record<string, true>
 }
 
+/**
+ * Nested multiselect container
+ */
 function NestedMultiselect(props: NestedMultiselectProps) {
   const { options, initiallySelected, onSelect } = props
   const [isOpen, openPopup, closePopup] = useToggleState(false)

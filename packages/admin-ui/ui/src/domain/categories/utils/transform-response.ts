@@ -1,4 +1,5 @@
 import { ProductCategory } from "@medusajs/medusa"
+
 import { NestedMultiselectOption } from "../components/multiselect"
 
 export function transformCategoryToNestedFormOptions(

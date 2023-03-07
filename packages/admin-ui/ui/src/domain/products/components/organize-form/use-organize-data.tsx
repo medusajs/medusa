@@ -38,7 +38,7 @@ const useOrganizeData = () => {
     )
   }, [collections])
 
-  const categoriesOptions: NestedMultiselectOption = useMemo(
+  const categoriesOptions: NestedMultiselectOption[] | undefined = useMemo(
     () => categories?.map(transformCategoryToNestedFormOptions),
     [categories]
   )

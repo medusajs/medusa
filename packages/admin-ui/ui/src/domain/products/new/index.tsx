@@ -155,7 +155,7 @@ const NewProduct = ({ onClose }: Props) => {
     <form className="w-full">
       <FocusModal>
         <FocusModal.Header>
-          <div className="flex w-full justify-between px-8 medium:w-8/12">
+          <div className="medium:w-8/12 flex w-full justify-between px-8">
             <Button
               size="small"
               variant="ghost"
@@ -164,7 +164,7 @@ const NewProduct = ({ onClose }: Props) => {
             >
               <CrossIcon size={20} />
             </Button>
-            <div className="flex gap-x-small">
+            <div className="gap-x-small flex">
               <Button
                 size="small"
                 variant="secondary"
@@ -187,7 +187,7 @@ const NewProduct = ({ onClose }: Props) => {
           </div>
         </FocusModal.Header>
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
-          <div className="my-16 max-w-[700px] small:w-4/5 medium:w-7/12 large:w-6/12">
+          <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
@@ -197,7 +197,7 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="mt-xlarge flex flex-col gap-y-xlarge">
+                <div className="mt-xlarge gap-y-xlarge flex flex-col">
                   <GeneralForm
                     form={nestedForm(form, "general")}
                     requireHandle={false}
@@ -209,7 +209,7 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="mt-xlarge flex flex-col gap-y-xlarge pb-xsmall">
+                <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
                   <div>
                     <h3 className="inter-base-semibold mb-base">
                       Organize Product

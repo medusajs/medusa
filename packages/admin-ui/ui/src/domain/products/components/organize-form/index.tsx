@@ -8,17 +8,18 @@ import TagInput from "../../../../components/molecules/tag-input"
 import { Option } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
 import useOrganizeData from "./use-organize-data"
-import NestedMultiselect, {
-  NestedMultiselectOption,
-} from "../../../categories/components/multiselect"
+import NestedMultiselect from "../../../categories/components/multiselect"
 import InputHeader from "../../../../components/fundamentals/input-header"
-import { useFeatureFlag, FeatureFlag } from "../../../../providers/feature-flag-provider"
+import {
+  useFeatureFlag,
+  FeatureFlag,
+} from "../../../../providers/feature-flag-provider"
 
 export type OrganizeFormType = {
   type: Option | null
   collection: Option | null
   tags: string[] | null
-  categories: NestedMultiselectOption[] | null
+  categories: string[] | null
 }
 
 type Props = {
@@ -47,7 +48,7 @@ const OrganizeForm = ({ form }: Props) => {
 
   return (
     <div>
-      <div className="mb-large grid grid-cols-2 gap-x-large">
+      <div className="mb-large gap-x-large grid grid-cols-2">
         <Controller
           name={path("type")}
           control={control}
@@ -101,8 +102,8 @@ const OrganizeForm = ({ form }: Props) => {
 
               return (
                 <NestedMultiselect
-                  options={categoriesOptions}
                   onSelect={onChange}
+                  options={categoriesOptions}
                   initiallySelected={initiallySelected}
                 />
               )
