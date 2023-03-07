@@ -221,7 +221,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    if(locationIds.length) {
+    if(!locationIds.length) {
       return 0
     }
 
@@ -252,7 +252,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    if(locationIds.length) {
+    if(!locationIds.length) {
       return 0
     }
 
@@ -283,7 +283,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    if(locationIds.length) {
+    if(!locationIds.length) {
       return 0
     }
 
