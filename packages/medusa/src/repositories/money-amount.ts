@@ -12,10 +12,12 @@ import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
 import { ProductVariantPrice } from "../types/product-variant"
 import { isString } from "../utils"
+import { RelationIdLoader } from "typeorm/query-builder/relation-id/RelationIdLoader"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -30,13 +32,33 @@ export const MoneyAmountRepository = dataSource
       data: QueryDeepPartialEntity<MoneyAmount>[]
     ): Promise<MoneyAmount[]> {
       const queryBuilder = this.createQueryBuilder()
-      return (await queryBuilder
+      const rawMoneyAmounts = await queryBuilder
         .insert()
         .into(MoneyAmount)
         .values(data)
         .returning("*")
         .execute()
-        .then((res) => res.generatedMaps)) as MoneyAmount[]
+
+      const relationIdLoader = new RelationIdLoader(
+        queryBuilder.connection,
+        this.queryRunner,
+        queryBuilder.expressionMap.relationIdAttributes
+      )
+      const rawRelationIdResults = await relationIdLoader.load(
+        rawMoneyAmounts.raw
+      )
+      const transformer = new RawSqlResultsToEntityTransformer(
+        queryBuilder.expressionMap,
+        queryBuilder.connection.driver,
+        rawRelationIdResults,
+        [],
+        this.queryRunner
+      )
+
+      return transformer.transform(
+        rawMoneyAmounts.raw,
+        queryBuilder.expressionMap.mainAlias!
+      ) as MoneyAmount[]
     },
     async findVariantPricesNotIn(
       variantId: string,
