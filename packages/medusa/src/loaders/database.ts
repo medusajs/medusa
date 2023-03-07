@@ -52,7 +52,6 @@ export default async ({
     logging:
       customOptions?.logging ??
       (configModule.projectConfig.database_logging || false),
-    relationLoadStrategy: "query",
   } as DataSourceOptions)
 
   await dataSource.initialize()
