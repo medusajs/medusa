@@ -12,7 +12,6 @@ import { ItemsToReceiveForm } from "../../components/items-to-receive-form/items
 import { RefundAmountFormType } from "../../components/refund-amount-form"
 import { ReceiveReturnSummary } from "../../components/rma-summaries/receive-return-summary"
 import { getDefaultReceiveReturnValues } from "../utils/get-default-values"
-import { orderReturnableFields } from "../utils/order-returnable-fields"
 import useOrdersExpandParam from "../utils/use-admin-expand-paramter"
 
 type Props = {
@@ -30,7 +29,6 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
   const { mutate, isLoading } = useAdminReceiveReturn(returnRequest.id)
   const { orderRelations } = useOrdersExpandParam()
   const { refetch } = useAdminOrder(order.id, {
-    fields: orderReturnableFields,
     expand: orderRelations,
   })
 
@@ -146,7 +144,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
-            <div className="flex flex-col gap-y-large">
+            <div className="gap-y-large flex flex-col">
               <ItemsToReceiveForm
                 order={order}
                 form={nestedForm(form, "receive_items")}
@@ -161,7 +159,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full items-center justify-end gap-x-xsmall">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button size="small" variant="secondary">
                 Cancel
               </Button>
