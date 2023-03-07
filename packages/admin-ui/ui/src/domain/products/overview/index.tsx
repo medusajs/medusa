@@ -1,5 +1,5 @@
 import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
-import { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
 import Button from "../../../components/fundamentals/button"
@@ -14,10 +14,10 @@ import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { usePolling } from "../../../providers/polling-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
+import { usePolling } from "../../../providers/polling-provider"
 
 const VIEWS = ["products", "collections"]
 

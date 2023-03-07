@@ -37,7 +37,11 @@ export const useAdminCreateProductCategory = (
   return useMutation(
     (payload: AdminPostProductCategoriesReq) =>
       client.admin.productCategories.create(payload),
-    buildOptions(queryClient, [adminProductCategoryKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [adminProductCategoryKeys.list(), adminProductKeys.details()],
+      options
+    )
   )
 }
 
@@ -63,7 +67,11 @@ export const useAdminUpdateProductCategory = (
       client.admin.productCategories.update(id, payload),
     buildOptions(
       queryClient,
-      [adminProductCategoryKeys.lists(), adminProductCategoryKeys.detail(id)],
+      [
+        adminProductCategoryKeys.lists(),
+        adminProductCategoryKeys.detail(id),
+        adminProductKeys.details(),
+      ],
       options
     )
   )
