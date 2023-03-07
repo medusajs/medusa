@@ -1,13 +1,14 @@
 import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
-import { isDefined } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
 import JobSchedulerService, { CreateJobOptions } from "./job-scheduler"
+import { isString } from "../utils"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -48,6 +49,14 @@ export type EmitOptions = {
     delay: number
   }
 } & JobOptions
+
+export type EmitData<T = unknown> = {
+  eventName: string
+  data: T
+  options?: Record<string, unknown> & EmitOptions
+}
+
+const COMPLETED_JOB_TTL = 10000
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -215,6 +224,13 @@ export default class EventBusService {
 
   /**
    * Calls all subscribers when an event occurs.
+   * @param data - The data to use to process the events
+   * @return the jobs from our queue
+   */
+  async emit<T>(data: EmitData<T>[]): Promise<StagedJob[] | void>
+
+  /**
+   * Calls all subscribers when an event occurs.
    * @param {string} eventName - the name of the event to be process.
    * @param data - the data to send to the subscriber.
    * @param options - options to add the job with
@@ -223,28 +239,35 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown> & EmitOptions = { attempts: 1 }
-  ): Promise<StagedJob | void> {
-    const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
+    options?: Record<string, unknown> & EmitOptions
+  ): Promise<StagedJob | void>
 
-    // The order of precedence for job options is:
-    // 1. local options
-    // 2. global options
-    // 3. default options
-    const opts: EmitOptions = {
-      removeOnComplete: true,
-      ...globalEventOptions,
-      ...options,
-    }
+  async emit<
+    T,
+    TInput extends string | EmitData<T>[] = string,
+    TResult = TInput extends EmitData<T>[] ? StagedJob[] : StagedJob
+  >(
+    eventNameOrData: TInput,
+    data?: T,
+    options?: Record<string, unknown> & EmitOptions
+  ): Promise<TResult | void> {
+    let events = eventNameOrData as EmitData<T>[]
 
-    if (typeof options.attempts === "number") {
-      opts.attempts = options.attempts
-      if (isDefined(options.backoff)) {
-        opts.backoff = options.backoff
+    if (isString(eventNameOrData)) {
+      const opts: EmitOptions = {
+        removeOnComplete: {
+          age: COMPLETED_JOB_TTL,
+        },
+        ...options,
       }
-    }
-    if (typeof options.delay === "number") {
-      opts.delay = options.delay
+
+      events = [
+        {
+          eventName: eventNameOrData,
+          data: data!,
+          options: opts,
+        },
+      ]
     }
 
     /**
@@ -261,18 +284,22 @@ export default class EventBusService {
         this.stagedJobRepository_
       )
 
-      const jobToCreate = {
-        event_name: eventName,
-        data: data as unknown as Record<string, unknown>,
-        options: opts,
-      } as Partial<StagedJob>
+      const jobToCreates = events.map((event) => {
+        return stagedJobRepository.create({
+          event_name: event.eventName,
+          data: event.data,
+          options: event.options,
+        } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
+      })
 
-      const stagedJobInstance = stagedJobRepository.create(jobToCreate)
+      const stagedJobs = await stagedJobRepository.insertBulk(jobToCreates)
 
-      return await stagedJobRepository.save(stagedJobInstance)
+      return (isString(eventNameOrData)
+        ? stagedJobs[0]
+        : stagedJobs) as unknown as TResult
     }
 
-    this.queue_.add({ eventName, data }, opts)
+    this.queue_.addBulk(events)
   }
 
   startEnqueuer(): void {
