@@ -1,13 +1,13 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  buildQuery,
   CreateInventoryLevelInput,
   FilterableInventoryLevelProps,
   FindConfig,
   IEventBusService,
   TransactionBaseService,
+  buildQuery,
 } from "@medusajs/medusa"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
+import { MedusaError, isDefined } from "medusa-core-utils"
 
 import { InventoryLevel } from "../models"
 
@@ -221,6 +221,10 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
+    if(!locationIds.length) {
+      return 0
+    }
+
     const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -248,6 +252,10 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
+    if(!locationIds.length) {
+      return 0
+    }
+
     const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -273,6 +281,10 @@ export default class InventoryLevelService extends TransactionBaseService {
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
+    }
+
+    if(!locationIds.length) {
+      return 0
     }
 
     const manager = this.activeManager_
