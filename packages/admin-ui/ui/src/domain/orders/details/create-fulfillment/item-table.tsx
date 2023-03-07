@@ -1,160 +1,166 @@
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
+import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
+import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
+import InputField from "../../../../components/molecules/input"
 import { LineItem } from "@medusajs/medusa"
-import MinusIcon from "../../../../components/fundamentals/icons/minus-icon"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import Table from "../../../../components/molecules/table"
-import clsx from "clsx"
+import React, { useMemo } from "react"
+import { useAdminVariantsInventory } from "medusa-react"
 
 export const getFulfillableQuantity = (item: LineItem): number => {
-  return item.quantity - item.fulfilled_quantity - item.returned_quantity
+  return (
+    item.quantity -
+    (item.fulfilled_quantity || 0) -
+    (item.returned_quantity || 0)
+  )
 }
 
 const CreateFulfillmentItemsTable = ({
   items,
-  toFulfill,
-  setToFulfill,
   quantities,
   setQuantities,
+  locationId,
+  setErrors,
+}: {
+  items: LineItem[]
+  quantities: Record<string, number>
+  setQuantities: (quantities: Record<string, number>) => void
+  locationId: string
+  setErrors: (errors: React.SetStateAction<{}>) => void
 }) => {
-  const handleQuantity = (upOrDown, item) => {
-    const current = quantities[item.id]
-
+  const handleQuantityUpdate = (value: number, id: string) => {
     let newQuantities = { ...quantities }
 
-    if (upOrDown === -1) {
-      newQuantities = {
-        ...newQuantities,
-        [item.id]: current - 1,
-      }
-    } else {
-      newQuantities = {
-        ...newQuantities,
-        [item.id]: current + 1,
-      }
+    newQuantities = {
+      ...newQuantities,
+      [id]: value,
     }
 
     setQuantities(newQuantities)
   }
-
-  const handleFulfillmentItemToggle = (item) => {
-    const id = item.id
-    const idxOfToggled = toFulfill.indexOf(id)
-
-    // if already in fulfillment items, you unchecked the item
-    // so we remove the item
-    if (idxOfToggled !== -1) {
-      const newFulfills = [...toFulfill]
-      newFulfills.splice(idxOfToggled, 1)
-      setToFulfill(newFulfills)
-    } else {
-      const newFulfills = [...toFulfill, id]
-      setToFulfill(newFulfills)
-
-      const newQuantities = {
-        ...quantities,
-        [item.id]: getFulfillableQuantity(item),
-      }
-
-      setQuantities(newQuantities)
-    }
-  }
-
   return (
-    <Table>
-      <Table.HeadRow className="text-grey-50 inter-small-semibold border-t-grey-20 border-t">
-        <Table.HeadCell>Details</Table.HeadCell>
-        <Table.HeadCell />
-        <Table.HeadCell className="pr-8 text-right">Quantity</Table.HeadCell>
-      </Table.HeadRow>
-      <Table.Body>
-        {items
-          ?.filter((i) => getFulfillableQuantity(i) > 0)
-          .map((item) => {
-            const checked = toFulfill.includes(item.id)
-            return (
-              <>
-                <Table.Row className={"border-b-grey-0 hover:bg-grey-0"}>
-                  <Table.Cell className="w-[50px]">
-                    <div className="ml-1 flex h-full items-center">
-                      <div
-                        onClick={() => handleFulfillmentItemToggle(item)}
-                        className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 cursor-pointer justify-center border ${
-                          checked && "bg-violet-60"
-                        }`}
-                      >
-                        <span className="self-center">
-                          {checked && <CheckIcon size={16} />}
-                        </span>
-                      </div>
-
-                      <input
-                        className="hidden"
-                        checked={checked}
-                        tabIndex={-1}
-                        onChange={() => handleFulfillmentItemToggle(item)}
-                        type="checkbox"
-                      />
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="flex min-w-[240px] py-2">
-                      <div className="h-[40px] w-[30px] ">
-                        <img
-                          className="h-full w-full rounded object-cover"
-                          src={item.thumbnail}
-                        />
-                      </div>
-                      <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
-                        <span>
-                          <span className="text-grey-90">{item.title}</span>
-                        </span>
-                        <span>{item?.variant?.title || ""}</span>
-                      </div>
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell className="w-32 pr-8 text-right">
-                    {toFulfill.includes(item.id) ? (
-                      <div className="text-grey-50 flex w-full justify-end text-right ">
-                        <span
-                          onClick={() => handleQuantity(-1, item)}
-                          className={clsx(
-                            "text-grey-50 hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded",
-                            {
-                              ["text-grey-30 pointer-events-none"]:
-                                quantities[item.id] === 1,
-                            }
-                          )}
-                        >
-                          <MinusIcon size={16} />
-                        </span>
-                        <span>{quantities[item.id] || ""}</span>
-                        <span
-                          onClick={() => handleQuantity(1, item)}
-                          className={clsx(
-                            "text-grey-50 hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded",
-                            {
-                              ["text-grey-30 pointer-events-none"]:
-                                item.quantity - item.fulfilled_quantity ===
-                                quantities[item.id],
-                            }
-                          )}
-                        >
-                          <PlusIcon size={16} />
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-grey-40">
-                        {getFulfillableQuantity(item)}
-                      </span>
-                    )}
-                  </Table.Cell>
-                </Table.Row>
-              </>
-            )
-          })}
-      </Table.Body>
-    </Table>
+    <div>
+      {items.map((item, idx) => {
+        return (
+          <FulfillmentLine
+            item={item}
+            locationId={locationId}
+            key={`fulfillmentLine-${idx}`}
+            quantities={quantities}
+            handleQuantityUpdate={handleQuantityUpdate}
+            setErrors={setErrors}
+          />
+        )
+      })}
+    </div>
   )
 }
 
+const FulfillmentLine = ({
+  item,
+  locationId,
+  quantities,
+  handleQuantityUpdate,
+  setErrors,
+}: {
+  locationId: string
+  item: LineItem
+  quantities: Record<string, number>
+  handleQuantityUpdate: (value: number, id: string) => void
+  setErrors: (errors: Record<string, string>) => void
+}) => {
+  const { variant, isLoading } = useAdminVariantsInventory(
+    item.variant_id as string
+  )
+
+  const { availableQuantity, inStockQuantity } = useMemo(() => {
+    if (isLoading || !locationId || !variant) {
+      return {}
+    }
+
+    const { inventory } = variant
+
+    const locationInventory = inventory[0].location_levels?.find(
+      (inv) => inv.location_id === locationId
+    )
+
+    if (!locationInventory) {
+      return {}
+    }
+
+    return {
+      availableQuantity: locationInventory.available_quantity,
+      inStockQuantity: locationInventory.stocked_quantity,
+    }
+  }, [variant, locationId, isLoading])
+
+  const validQuantity =
+    !locationId ||
+    (locationId &&
+      (!availableQuantity || quantities[item.id] < availableQuantity))
+
+  React.useEffect(() => {
+    setErrors((errors) => {
+      if (validQuantity) {
+        delete errors[item.id]
+        return { errors }
+      }
+
+      errors[item.id] = "Quantity is not valid"
+      return { errors }
+    })
+  }, [validQuantity, setErrors, item.id])
+
+  return (
+    <div className="rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
+      <div className="flex justify-center space-x-4">
+        <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
+          {item.thumbnail ? (
+            <img src={item.thumbnail} className="object-cover" />
+          ) : (
+            <ImagePlaceholder />
+          )}
+        </div>
+        <div className="flex max-w-[185px] flex-col justify-center">
+          <span className="truncate inter-small-regular text-grey-90">
+            {item.title}
+          </span>
+          {item?.variant && (
+            <span className="truncate inter-small-regular text-grey-50">
+              {`${item.variant.title}${
+                item.variant.sku ? ` (${item.variant.sku})` : ""
+              }`}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="flex items-center">
+        <FeatureToggle featureFlag="inventoryService">
+          <div className="flex flex-col items-end mr-6 inter-base-regular text-grey-50 whitespace-nowrap">
+            <p>{availableQuantity || "N/A"} available</p>
+            <p>({inStockQuantity || "N/A"} in stock)</p>
+          </div>
+        </FeatureToggle>
+        <InputField
+          type="number"
+          name={`quantity`}
+          defaultValue={getFulfillableQuantity(item)}
+          min={0}
+          suffix={
+            <span className="flex">
+              {"/"}
+              <span className="pl-1">{getFulfillableQuantity(item)}</span>
+            </span>
+          }
+          value={quantities[item.id]}
+          max={getFulfillableQuantity(item)}
+          onChange={(e) =>
+            handleQuantityUpdate(e.target.valueAsNumber, item.id)
+          }
+          errors={
+            validQuantity ? undefined : { quantity: "Quantity is not valid" }
+          }
+        />
+      </div>
+    </div>
+  )
+}
 export default CreateFulfillmentItemsTable
