@@ -1,13 +1,13 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  buildQuery,
   CreateInventoryLevelInput,
   FilterableInventoryLevelProps,
   FindConfig,
   IEventBusService,
   TransactionBaseService,
+  buildQuery,
 } from "@medusajs/medusa"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
+import { MedusaError, isDefined } from "medusa-core-utils"
 
 import { InventoryLevel } from "../models"
 
@@ -221,7 +221,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    if(locationIds.length === 0) {
+    if(locationIds.length) {
       return 0
     }
 
@@ -252,7 +252,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    if(locationIds.length === 0) {
+    if(locationIds.length) {
       return 0
     }
 
@@ -283,7 +283,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    if(locationIds.length === 0) {
+    if(locationIds.length) {
       return 0
     }
 
