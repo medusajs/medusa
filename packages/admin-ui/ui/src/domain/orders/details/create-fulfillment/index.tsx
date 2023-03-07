@@ -6,6 +6,9 @@ import {
   Order,
   Swap,
 } from "@medusajs/medusa"
+import CreateFulfillmentItemsTable, {
+  getFulfillableQuantity,
+} from "./item-table"
 import Metadata, {
   MetadataField,
 } from "../../../../components/organisms/metadata"
@@ -18,17 +21,14 @@ import {
 } from "medusa-react"
 
 import Button from "../../../../components/fundamentals/button"
-import CreateFulfillmentItemsTable, {
-  getFulfillableQuantity,
-} from "./item-table"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import useNotification from "../../../../hooks/use-notification"
-import { FeatureFlagContext } from "../../../../providers/feature-flag-provider"
-import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
+import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import Select from "../../../../components/molecules/select/next-select/select"
 import Switch from "../../../../components/atoms/switch"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import useNotification from "../../../../hooks/use-notification"
 
 type CreateFulfillmentModalProps = {
   handleCancel: () => void
@@ -43,7 +43,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   orderToFulfill,
   orderId,
 }) => {
-  const { isFeatureEnabled } = React.useContext(FeatureFlagContext)
+  const { isFeatureEnabled } = useFeatureFlag()
   const [quantities, setQuantities] = useState<Record<string, number>>(
     "object" in orderToFulfill
       ? (orderToFulfill as Order).items.reduce((acc, next) => {
