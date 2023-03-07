@@ -52,6 +52,7 @@
     "framer-motion": "^9.1.6",
     "medusa-react": "*",
     "postcss": "^8.4.21",
+    "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-collapsible": "^2.8.3",
     "react-country-flag": "^3.0.2",
