@@ -1,6 +1,13 @@
-import { createContext } from "react"
+import { createContext, useState } from "react"
 
+import { ProductCategory } from "@medusajs/medusa"
+import { useAdminProductCategories } from "medusa-react"
+
+import useToggleState from "../../../hooks/use-toggle-state"
 import BodyCard from "../../../components/organisms/body-card"
+import CreateProductCategory from "../modals/add-product-category"
+import ProductCategoriesList from "../components/product-categories-list"
+import EditProductCategoriesSideModal from "../modals/edit-product-category"
 
 /**
  * Product categories empty state placeholder.
@@ -16,20 +23,58 @@ function ProductCategoriesEmptyState() {
   )
 }
 
-export const ProductCategoriesContext = createContext<{}>({} as any)
+export const ProductCategoriesContext = createContext<{
+  editCategory: (category: ProductCategory) => void
+  createSubCategory: (category: ProductCategory) => void
+}>({} as any)
 
 /**
  * Product category index page container.
  */
 function ProductCategoryPage() {
+  const {
+    state: isCreateModalVisible,
+    open: showCreateModal,
+    close: hideCreateModal,
+  } = useToggleState()
+
+  const {
+    state: isEditModalVisible,
+    open: showEditModal,
+    close: hideEditModal,
+  } = useToggleState()
+
+  const [activeCategory, setActiveCategory] = useState<ProductCategory>()
+
+  const { product_categories: categories, isLoading } =
+    useAdminProductCategories({
+      parent_category_id: "null",
+      include_descendants_tree: true,
+    })
+
   const actions = [
     {
       label: "Add category",
-      onClick: () => {},
+      onClick: showCreateModal,
     },
   ]
 
-  const context = {}
+  const showPlaceholder = !isLoading && !categories?.length
+
+  const editCategory = (category: ProductCategory) => {
+    setActiveCategory(category)
+    showEditModal()
+  }
+
+  const createSubCategory = (category: ProductCategory) => {
+    setActiveCategory(category)
+    showCreateModal()
+  }
+
+  const context = {
+    editCategory,
+    createSubCategory,
+  }
 
   return (
     <ProductCategoriesContext.Provider value={context}>
@@ -43,8 +88,27 @@ function ProductCategoryPage() {
             footerMinHeight={40}
             setBorders
           >
-            <ProductCategoriesEmptyState />
+            {showPlaceholder ? (
+              <ProductCategoriesEmptyState />
+            ) : isLoading ? null : (
+              <ProductCategoriesList categories={categories!} />
+            )}
           </BodyCard>
+          {isCreateModalVisible && (
+            <CreateProductCategory
+              parentCategory={activeCategory}
+              closeModal={() => {
+                hideCreateModal()
+                setActiveCategory(undefined)
+              }}
+            />
+          )}
+
+          <EditProductCategoriesSideModal
+            close={hideEditModal}
+            activeCategory={activeCategory}
+            isVisible={!!activeCategory && isEditModalVisible}
+          />
         </div>
       </div>
     </ProductCategoriesContext.Provider>
