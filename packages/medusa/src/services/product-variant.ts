@@ -460,7 +460,7 @@ class ProductVariantService extends TransactionBaseService {
       )
 
       // Delete obsolete prices
-      await moneyAmountRepo.deleteVariantPricesNotInNew(data)
+      await moneyAmountRepo.deleteVariantPricesNotIn(data)
 
       const regionIdsSet = new Set(
         data

@@ -15,6 +15,7 @@ import {
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
 import { ProductVariantPrice } from "../types/product-variant"
+import { isString } from "../utils"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -84,46 +85,20 @@ export const MoneyAmountRepository = dataSource
     },
 
     async deleteVariantPricesNotIn(
-      variantId: string,
-      prices: Price[]
+      variantIdOrData:
+        | string
+        | { variantId: string; prices: ProductVariantPrice[] }[],
+      prices?: Price[]
     ): Promise<void> {
-      const where = {
-        variant_id: variantId,
-        price_list_id: IsNull(),
-      }
-
-      const orWhere: ObjectLiteral[] = []
-
-      for (const price of prices) {
-        if (price.currency_code) {
-          orWhere.push(
+      const data = isString(variantIdOrData)
+        ? [
             {
-              currency_code: Not(price.currency_code),
+              variantId: variantIdOrData,
+              prices: prices!,
             },
-            {
-              region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
-              currency_code: price.currency_code,
-            }
-          )
-        }
+          ]
+        : variantIdOrData
 
-        if (price.region_id) {
-          orWhere.push({
-            region_id: Not(price.region_id),
-          })
-        }
-      }
-
-      await this.createQueryBuilder()
-        .delete()
-        .where(where)
-        .andWhere(orWhere)
-        .execute()
-    },
-
-    async deleteVariantPricesNotInNew(
-      data: { variantId: string; prices: ProductVariantPrice[] }[]
-    ): Promise<void> {
       const queryBuilder = this.createQueryBuilder().delete()
 
       for (const data_ of data) {
