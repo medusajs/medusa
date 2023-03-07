@@ -4,22 +4,25 @@ import {
   StockLocationAddressDTO,
   StockLocationAddressInput,
 } from "@medusajs/medusa"
+import GeneralForm, { GeneralFormType } from "../components/general-form"
 import {
   useAdminAddLocationToSalesChannel,
   useAdminCreateStockLocation,
 } from "medusa-react"
-import { useForm } from "react-hook-form"
+
+import Accordion from "../../../../components/organisms/accordion"
+import AddressForm from "../components/address-form"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
+import DeletePrompt from "../../../../components/organisms/delete-prompt"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../../components/organisms/accordion"
-import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import SalesChannelsForm from "../components/sales-channels-form"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
-import AddressForm from "../components/address-form"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
-import SalesChannelsForm from "../components/sales-channels-form"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { useForm } from "react-hook-form"
+import useNotification from "../../../../hooks/use-notification"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 type NewLocationForm = {
   general: GeneralFormType
@@ -43,7 +46,16 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
     reValidateMode: "onBlur",
     mode: "onBlur",
   })
-  const { handleSubmit, formState } = form
+  const {
+    handleSubmit,
+    formState: { isDirty, isValid },
+  } = form
+
+  const {
+    state: isShowingClosePrompt,
+    open: showClosePrompt,
+    close: closeClosePrompt,
+  } = useToggleState()
 
   const notification = useNotification()
   const { isFeatureEnabled } = useFeatureFlag()
@@ -57,6 +69,14 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
       sales_channel_id: salesChannelId,
       location_id: locationId,
     })
+
+  const handleClose = () => {
+    if (!isDirty) {
+      onClose()
+    } else {
+      showClosePrompt()
+    }
+  }
 
   const onSubmit = () =>
     handleSubmit(async (data) => {
@@ -89,8 +109,6 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
       }
     })
 
-  const { isDirty, isValid } = formState
-
   return (
     <form className="w-full">
       <FocusModal>
@@ -100,14 +118,24 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
               size="small"
               variant="ghost"
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
             >
               <CrossIcon size={20} />
             </Button>
+            {isShowingClosePrompt && (
+              <DeletePrompt
+                heading="Are you sure you want to cancel with unsaved changes"
+                confirmText="Yes, cancel"
+                cancelText="No, continue creating"
+                successText={undefined}
+                handleClose={closeClosePrompt}
+                onDelete={async () => onClose()}
+              />
+            )}
             <div className="gap-x-small flex">
               <Button
                 size="small"
-                variant="secondary"
+                variant="primary"
                 type="button"
                 disabled={!isDirty || !isValid}
                 onClick={onSubmit()}
@@ -131,7 +159,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 <p className="inter-base-regular text-grey-50">
                   Specify the details about this location
                 </p>
-                <div className="mt-xlarge gap-y-xlarge flex flex-col">
+                <div className="mt-xlarge gap-y-xlarge flex flex-col pb-0.5">
                   <GeneralForm form={nestedForm(form, "general")} />
                   <AddressForm form={nestedForm(form, "address")} />
                 </div>
