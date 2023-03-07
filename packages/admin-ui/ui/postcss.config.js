@@ -5,7 +5,7 @@ module.exports = {
     require("tailwindcss")({
       config: path.join(__dirname, "tailwind.config.js"),
     }),
-    require("tailwindcss/nesting"),
     require("autoprefixer"),
+    require("tailwindcss/nesting"),
   ],
 }
