@@ -1,24 +1,44 @@
-import {
-  Brackets,
-  FindOptionsWhere,
-  ILike,
-  DeleteResult,
-  In,
-} from "typeorm"
+import { Brackets, FindOptionsWhere, ILike, DeleteResult, In, FindOneOptions } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { buildLegacyFieldsListFrom } from "../utils"
 
+const sortChildren = (category: ProductCategory): ProductCategory => {
+  if (category.category_children) {
+    category.category_children = category?.category_children
+      .map((child) => sortChildren(child))
+      .sort((a, b) => a.rank - b.rank)
+   }
+
+  return category
+}
+
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
   .extend({
+    async findOneWithDescendants(query: FindOneOptions<ProductCategory>): Promise<ProductCategory | null> {
+      const productCategory = await this.findOne(query)
+
+      if (!productCategory) {
+        return productCategory
+      }
+
+      return sortChildren(
+        // Returns the productCategory with all of its descendants until the last child node
+        await this.findDescendantsTree(
+          productCategory
+        )
+      )
+    },
+
     async getFreeTextSearchResultsAndCount(
       options: ExtendedFindConfig<ProductCategory> = {
         where: {},
       },
-      q: string | undefined,
-      treeScope: QuerySelector<ProductCategory> = {}
+      q?: string,
+      treeScope: QuerySelector<ProductCategory> = {},
+      includeTree = false
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
@@ -42,6 +62,8 @@ export const ProductCategoryRepository = dataSource
         .select(selectStatements(entityName))
         .skip(options_.skip)
         .take(options_.take)
+        .addOrderBy(`${entityName}.rank`, "ASC")
+        .addOrderBy(`${entityName}.handle`, "ASC")
 
       if (q) {
         delete options_.where?.name
@@ -75,6 +97,8 @@ export const ProductCategoryRepository = dataSource
             treeScope
           )
           .addSelect(selectStatements(treeRelation))
+          .addOrderBy(`${treeRelation}.rank`, "ASC")
+          .addOrderBy(`${treeRelation}.handle`, "ASC")
       })
 
       const nonTreeRelations: string[] = legacyRelations.filter(
@@ -89,7 +113,19 @@ export const ProductCategoryRepository = dataSource
         queryBuilder.withDeleted()
       }
 
-      return await queryBuilder.getManyAndCount()
+      let [categories, count] = await queryBuilder.getManyAndCount()
+
+      if (includeTree) {
+        categories = await Promise.all(
+          categories.map(async (productCategory) => {
+            productCategory = await this.findDescendantsTree(productCategory)
+
+            return sortChildren(productCategory)
+          })
+        )
+      }
+
+      return [categories, count]
     },
 
     async addProducts(
