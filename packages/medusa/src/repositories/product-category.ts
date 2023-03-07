@@ -168,18 +168,13 @@ const scopeChildren = (
     return category
   }
 
-  category.category_children = category.category_children.filter((c) => {
-    let success = true
-
-    for (const [attribute, value] of Object.entries(treeScope)) {
-      if (c[attribute] !== value) {
-        success = false
-        break
-      }
+  category.category_children = category.category_children.filter(
+    (categoryChild) => {
+      return !Object.entries(treeScope).some(
+        ([attribute, value]) => categoryChild[attribute] !== value
+      )
     }
-
-    return success
-  })
+  )
 
   return category
 }
