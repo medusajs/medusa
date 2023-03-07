@@ -22,6 +22,7 @@ export type ReturnItem = {
   thumbnail?: string | null
   product_title: string
   variant_title: string
+  sku?: string | null
   quantity: number
   original_quantity: number
   total: number
@@ -75,7 +76,7 @@ const ItemsToReturnForm = ({ form, order, isClaim = false }: Props) => {
   })
 
   return (
-    <div className="flex flex-col gap-y-base">
+    <div className="gap-y-base flex flex-col">
       <h2 className="inter-base-semibold">
         Items to {isClaim ? "claim" : "return"}
       </h2>
