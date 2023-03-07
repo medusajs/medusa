@@ -208,7 +208,12 @@ function Popup(props: PopupProps) {
 
   return (
     <div
-      style={{ top: 8, boxShadow: "0px 2px 16px rgba(0, 0, 0, 0.08)" }}
+      style={{
+        top: 8,
+        overflow: "scroll",
+        boxShadow: "0px 2px 16px rgba(0, 0, 0, 0.08)",
+        maxHeight: activeOption.value === null ? 228 : 242,
+      }}
       className="rounded-rounded relative z-50 w-[100%] border bg-white"
     >
       {showBack && (
