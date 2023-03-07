@@ -23,7 +23,6 @@ export type UpdateProductCategoryInput = ProductCategoryInput & {
 export class AdminProductCategoriesReqBase {
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   handle?: string
 
   @IsBoolean()
