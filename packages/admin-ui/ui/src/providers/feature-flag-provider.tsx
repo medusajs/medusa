@@ -6,6 +6,10 @@ import React, {
   useState,
 } from "react"
 
+export enum FeatureFlag {
+  PRODUCT_CATEGORIES = "product_categories",
+}
+
 const defaultFeatureFlagContext: {
   featureToggleList: Record<string, boolean>
   isFeatureEnabled: (flag: string) => boolean

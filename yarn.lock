@@ -2699,7 +2699,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.14.2, @babel/traverse@npm:^7.20.10, @babel/traverse@npm:^7.20.12, @babel/traverse@npm:^7.20.13, @babel/traverse@npm:^7.20.5, @babel/traverse@npm:^7.4.5":
+"@babel/traverse@npm:^7.14.2, @babel/traverse@npm:^7.20.10, @babel/traverse@npm:^7.20.12, @babel/traverse@npm:^7.20.13, @babel/traverse@npm:^7.20.5":
   version: 7.20.13
   resolution: "@babel/traverse@npm:7.20.13"
   dependencies:
@@ -2717,7 +2717,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.21.0, @babel/traverse@npm:^7.21.2":
+"@babel/traverse@npm:^7.21.0, @babel/traverse@npm:^7.21.2, @babel/traverse@npm:^7.4.5":
   version: 7.21.2
   resolution: "@babel/traverse@npm:7.21.2"
   dependencies:
@@ -3565,9 +3565,9 @@ __metadata:
   linkType: hard
 
 "@exodus/schemasafe@npm:^1.0.0-rc.2":
-  version: 1.0.0-rc.7
-  resolution: "@exodus/schemasafe@npm:1.0.0-rc.7"
-  checksum: b612252f93578cf776d18d8a238332a003815b4ac47528163bc91122edfdf8aea27ec5cd5877b1e8ed1fb99d07e49041ee78b76a0bcab782ca2706200ae0618d
+  version: 1.0.0-rc.11
+  resolution: "@exodus/schemasafe@npm:1.0.0-rc.11"
+  checksum: 4c0aa9402e1ad66d033701a7b0157b881ee190fd32a9e0259ceb347583285d5766ba05c7b072a711978bbe7d254ce9ad8b9e00984721247f00720a5e8a6fd862
   languageName: node
   linkType: hard
 
@@ -6004,6 +6004,18 @@ __metadata:
     resolve-cwd: ^3.0.0
     ts-jest: ^25.5.1
     typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
+  dependencies:
+    "@medusajs/medusa-oas-cli": "*"
+    "@readme/openapi-parser": ^2.4.0
+    "@redocly/cli": 1.0.0-beta.123
+    execa: ^5.1.1
+    js-yaml: ^4.1.0
   languageName: unknown
   linkType: soft
 
@@ -11569,9 +11581,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^14.11.8":
-  version: 14.18.22
-  resolution: "@types/node@npm:14.18.22"
-  checksum: 6ade9441d9ad57c1a32351f57ca81a9f721809fb91574fd214fcedcf4d60c24194db412d35f3bdfa8ad94b2fbcc38aaa417e9602dbdb649d4c84d6a54342f924
+  version: 14.18.37
+  resolution: "@types/node@npm:14.18.37"
+  checksum: cb2bcd7177fe0fa0e6db899e06d86955b85c7629359842278fa47a58ff2c3b96c9a88fa40493c23b12b5febb5195f783d028d63d44da64401a55956a8555aaeb
   languageName: node
   linkType: hard
 
@@ -13801,7 +13813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^2.6.2":
+"async@npm:^2.6.4":
   version: 2.6.4
   resolution: "async@npm:2.6.4"
   dependencies:
@@ -17285,13 +17297,13 @@ __metadata:
   linkType: hard
 
 "css-to-react-native@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "css-to-react-native@npm:3.1.0"
+  version: 3.2.0
+  resolution: "css-to-react-native@npm:3.2.0"
   dependencies:
     camelize: ^1.0.0
     css-color-keywords: ^1.0.0
     postcss-value-parser: ^4.0.2
-  checksum: 30e91d063b8c57cab84ca0e16750d64a8e497c65673c793c7270e258dcd5af773d70542f8db07a14e645249619a9479020f4f890f78ff27d1bfc4610c67ad11f
+  checksum: fde850a511d5d3d7c55a1e9b8ed26b69a8ad4868b3487e36ebfbfc0b96fc34bc977d9cd1d61a289d0c74d3f9a662d8cee297da53d4433bf2e27d6acdff8e1003
   languageName: node
   linkType: hard
 
@@ -17636,7 +17648,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.0.0, debug@npm:^3.0.1, debug@npm:^3.1.0, debug@npm:^3.1.1, debug@npm:^3.2.7":
+"debug@npm:^3.0.0, debug@npm:^3.0.1, debug@npm:^3.1.0, debug@npm:^3.2.7":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -18332,9 +18344,9 @@ __metadata:
   linkType: hard
 
 "dompurify@npm:^2.2.8":
-  version: 2.4.3
-  resolution: "dompurify@npm:2.4.3"
-  checksum: 4c93f5bc8855bbe7dcb33487c0b252a00309fbd8a6d0ec280abbc3af695b43d1bf7f526c2f323fa697314b0b3de3511c756005dddc6ed90d1a1440a3d6ff89d9
+  version: 2.4.5
+  resolution: "dompurify@npm:2.4.5"
+  checksum: 90d880e04c8476041778777d412eaa3d204448f1be67b9c72f76374f8f113e04552d5abbcee2d76fe36d03db9f9cb97b2cfa48cd7440b20fbcae2e1c7131e9de
   languageName: node
   linkType: hard
 
@@ -30118,7 +30130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:0.x, mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.3, mkdirp@npm:^0.5.4, mkdirp@npm:^0.5.5, mkdirp@npm:~0.5.1":
+"mkdirp@npm:0.x, mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.3, mkdirp@npm:^0.5.4, mkdirp@npm:^0.5.5, mkdirp@npm:^0.5.6, mkdirp@npm:~0.5.1":
   version: 0.5.6
   resolution: "mkdirp@npm:0.5.6"
   dependencies:
@@ -30151,8 +30163,8 @@ __metadata:
   linkType: hard
 
 "mobx-react-lite@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "mobx-react-lite@npm:3.4.0"
+  version: 3.4.2
+  resolution: "mobx-react-lite@npm:3.4.2"
   peerDependencies:
     mobx: ^6.1.0
     react: ^16.8.0 || ^17 || ^18
@@ -30161,7 +30173,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 7aa64fb8740d48de23c370385331063f0a0821a87ed7a1eb0324305e8ef2f5173806c3e5ff2bfb7696e5b80faf19de11e2d3c0b64268df21895d4eec4816e325
+  checksum: 97e5ddc0bec22b37d7b90cba60453360f4d9e02db1d8e31fe2df4a7f355bf2774a4735707ba5ce1cce01ab61a466c6b67ed1c3ecdf5be42bd38b28ecfe8ff356
   languageName: node
   linkType: hard
 
@@ -30183,9 +30195,9 @@ __metadata:
   linkType: hard
 
 "mobx@npm:^6.3.2":
-  version: 6.7.0
-  resolution: "mobx@npm:6.7.0"
-  checksum: 91c09333073a6103d62cfcce133817402723eead9500a85ace8f39404b86ffdba19e9fc792fc626a9c872eeeae8437c445f80eedf6914f7f950b83d44f795b03
+  version: 6.8.0
+  resolution: "mobx@npm:6.8.0"
+  checksum: 8d2dfd87085f843ca4595c0ff11344f4db14e87f097d3370c7462a992f6c98da18078dbfdb7d36edda42021f842cf5bf6e20c2eba2cc86cff4d9a39f1ccabc2d
   languageName: node
   linkType: hard
 
@@ -32648,13 +32660,13 @@ __metadata:
   linkType: hard
 
 "portfinder@npm:^1.0.26":
-  version: 1.0.28
-  resolution: "portfinder@npm:1.0.28"
+  version: 1.0.32
+  resolution: "portfinder@npm:1.0.32"
   dependencies:
-    async: ^2.6.2
-    debug: ^3.1.1
-    mkdirp: ^0.5.5
-  checksum: fefd3d65a6464b498e0e9b4a4b82f29489441bb1892a3350403cfdf6e591e583d9e75bac1c6ae8ca2cdf1a942ae18890831a0a855bb1bb977678acdf9e5a560f
+    async: ^2.6.4
+    debug: ^3.2.7
+    mkdirp: ^0.5.6
+  checksum: cef8b567b78aabccc59fe8e103bac8b394bb45a6a69be626608f099f454124c775aaf47b274c006332c07ab3f501cde55e49aaeb9d49d78d90362d776a565cbf
   languageName: node
   linkType: hard
 
@@ -34223,10 +34235,11 @@ __metadata:
   resolution: "react-dom@npm:17.0.2"
   dependencies:
     loose-envify: ^1.1.0
-    scheduler: ^0.23.0
+    object-assign: ^4.1.1
+    scheduler: ^0.20.2
   peerDependencies:
-    react: ^18.2.0
-  checksum: 66dfc5f93e13d0674e78ef41f92ed21dfb80f9c4ac4ac25a4b51046d41d4d2186abc915b897f69d3d0ebbffe6184e7c5876f2af26bfa956f179225d921be713a
+    react: 17.0.2
+  checksum: 51abbcb72450fe527ebf978c3bc989ba266630faaa53f47a2fae5392369729e8de62b2e4683598cbe651ea7873cd34ec7d5127e2f50bf4bfe6bd0c3ad9bddcb0
   languageName: node
   linkType: hard
 
@@ -35943,10 +35956,7 @@ __metadata:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
     "@linear/sdk": ^1.22.0
-    "@medusajs/medusa-oas-cli": "*"
     "@octokit/core": ^4.0.5
-    "@readme/openapi-parser": ^2.4.0
-    "@redocly/cli": 1.0.0-beta.123
     "@typescript-eslint/eslint-plugin": ^5.53.0
     "@typescript-eslint/parser": ^5.53.0
     axios: ^0.21.4
@@ -35962,14 +35972,12 @@ __metadata:
     eslint-plugin-react: ^7.31.11
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-unused-imports: ^2.0.0
-    execa: ^5.1.1
     express: ^4.17.1
     get-port: ^5.1.1
     global: ^4.4.0
     husky: ^7.0.4
     import-from: ^3.0.0
     jest: ^26.6.3
-    js-yaml: ^4.1.0
     lint-staged: ^11.2.6
     microbundle: ^0.13.3
     pg-god: ^1.0.12
@@ -36191,6 +36199,16 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 9658932a73148a93d791c064b331d9690ddfecc4de25bcd6c9b89f5f1166e3d23d9c31c1595d66565e5ffbb34d47035cb14841aba6444bc266bfcd215cefe9c0
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "scheduler@npm:0.20.2"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
   languageName: node
   linkType: hard
 
