@@ -3,4 +3,4 @@
 "@medusajs/medusa": patch
 ---
 
-Minor ui fixes relating to stock locations
+fix(admin-ui, medusa): Minor ui fixes relating to stock locations
