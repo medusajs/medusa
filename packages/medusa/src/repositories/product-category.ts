@@ -1,23 +1,23 @@
-import { Brackets, FindOptionsWhere, ILike, DeleteResult, In, FindOneOptions } from "typeorm"
+import {
+  Brackets,
+  FindOptionsWhere,
+  ILike,
+  DeleteResult,
+  In,
+  FindOneOptions,
+} from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { buildLegacyFieldsListFrom } from "../utils"
-
-const sortChildren = (category: ProductCategory): ProductCategory => {
-  if (category.category_children) {
-    category.category_children = category?.category_children
-      .map((child) => sortChildren(child))
-      .sort((a, b) => a.rank - b.rank)
-   }
-
-  return category
-}
+import { isEmpty } from "lodash"
 
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
   .extend({
-    async findOneWithDescendants(query: FindOneOptions<ProductCategory>): Promise<ProductCategory | null> {
+    async findOneWithDescendants(
+      query: FindOneOptions<ProductCategory>
+    ): Promise<ProductCategory | null> {
       const productCategory = await this.findOne(query)
 
       if (!productCategory) {
@@ -26,9 +26,7 @@ export const ProductCategoryRepository = dataSource
 
       return sortChildren(
         // Returns the productCategory with all of its descendants until the last child node
-        await this.findDescendantsTree(
-          productCategory
-        )
+        await this.findDescendantsTree(productCategory)
       )
     },
 
@@ -120,7 +118,7 @@ export const ProductCategoryRepository = dataSource
           categories.map(async (productCategory) => {
             productCategory = await this.findDescendantsTree(productCategory)
 
-            return sortChildren(productCategory)
+            return sortChildren(productCategory, treeScope)
           })
         )
       }
@@ -161,3 +159,39 @@ export const ProductCategoryRepository = dataSource
   })
 
 export default ProductCategoryRepository
+
+const scopeChildren = (
+  category: ProductCategory,
+  treeScope: QuerySelector<ProductCategory> = {}
+): ProductCategory => {
+  if (isEmpty(treeScope)) {
+    return category
+  }
+
+  category.category_children = category.category_children.filter(
+    (categoryChild) => {
+      return !Object.entries(treeScope).some(
+        ([attribute, value]) => categoryChild[attribute] !== value
+      )
+    }
+  )
+
+  return category
+}
+
+const sortChildren = (
+  category: ProductCategory,
+  treeScope: QuerySelector<ProductCategory> = {}
+): ProductCategory => {
+  if (category.category_children) {
+    category.category_children = category?.category_children
+      .map(
+        // Before we sort the children, we need scope the children
+        // to conform to treeScope conditions
+        (child) => sortChildren(scopeChildren(child, treeScope), treeScope)
+      )
+      .sort((a, b) => a.rank - b.rank)
+  }
+
+  return category
+}
