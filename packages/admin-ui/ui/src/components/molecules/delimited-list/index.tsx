@@ -26,7 +26,7 @@ const DelimitedList: React.FC<DelimitedListProps> = ({ list, delimit = 1 }) => {
   }
 
   return (
-    <span className="inter-small-regular">
+    <span className="inter-base-regular text-grey-50">
       {itemsToDisplay}
 
       {showExtraItemsInTooltip && (
