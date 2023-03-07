@@ -232,6 +232,47 @@ describe("/store/product-categories", () => {
       )
     })
 
+    it("gets list of product category with all childrens when include_descendants_tree=true", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/product-categories?parent_category_id=null&include_descendants_tree=true`,
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: productCategoryParent.id,
+            parent_category: null,
+            rank: 0,
+            category_children: [
+              expect.objectContaining({
+                id: productCategory.id,
+                parent_category_id: productCategoryParent.id,
+                rank: 0,
+                category_children: [
+                  expect.objectContaining({
+                    id: productCategoryChild4.id,
+                    parent_category_id: productCategory.id,
+                    category_children: [],
+                    rank: 2
+                  }),
+                  expect.objectContaining({
+                    id: productCategoryChild.id,
+                    parent_category_id: productCategory.id,
+                    category_children: [],
+                    rank: 3,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ])
+      )
+    })
+
     it("throws error when querying not allowed fields", async () => {
       const api = useApi()
 
