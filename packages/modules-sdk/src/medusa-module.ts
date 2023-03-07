@@ -1,13 +1,13 @@
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { moduleLoader, registerMedusaModule } from "./loaders"
+import { loadModuleMigrations } from "./loaders/utils"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "./types"
-import { loadModuleMigrations } from "./loaders/utils"
 
 const logger: any = {
   log: (a) => console.log(a),
@@ -50,9 +50,9 @@ export class MedusaModule {
     const services = {}
 
     for (const resolution of Object.values(moduleResolutions)) {
-      const containerName = resolution.definition.registrationName
+      const registrationName = resolution.definition.registrationName
 
-      services[containerName] = container.resolve(containerName)
+      services[registrationName] = container.resolve(registrationName)
     }
 
     return services
