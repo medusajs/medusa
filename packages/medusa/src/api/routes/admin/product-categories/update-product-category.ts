@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsInt, Min, IsNotEmpty } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -115,12 +115,21 @@ export default async (req: Request, res: Response) => {
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category
+ *   rank:
+ *     type: number
+ *     description: The rank of the category in the tree node (starting from 0)
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
   @IsString()
   @IsOptional()
   name?: string
+
+  @IsOptional()
+  @IsInt()
+  @IsNotEmpty()
+  @Min(0)
+  rank?: number
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}

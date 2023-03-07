@@ -1,11 +1,12 @@
-import { StockLocationExpandedDTO } from "@medusajs/medusa"
+import { SalesChannel, StockLocationExpandedDTO } from "@medusajs/medusa"
 import {
   useAdminAddLocationToSalesChannel,
   useAdminRemoveLocationFromSalesChannel,
 } from "medusa-react"
+
 import Button from "../../../../../components/fundamentals/button"
-import useToggleState from "../../../../../hooks/use-toggle-state"
 import SalesChannelsModal from "../../../../products/components/sales-channels-modal"
+import useToggleState from "../../../../../hooks/use-toggle-state"
 
 const EditSalesChannels = ({
   location,
@@ -23,7 +24,7 @@ const EditSalesChannels = ({
   const { mutateAsync: removeLocationFromSalesChannel } =
     useAdminRemoveLocationFromSalesChannel()
 
-  const onSave = async (channels) => {
+  const onSave = async (channels: SalesChannel[]) => {
     const existingChannels = location.sales_channels
     const channelsToRemove =
       existingChannels?.filter(
