@@ -43,6 +43,10 @@ const LocationDropdown = ({
 }) => {
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
+  if (!selectedLocation && !isLoading && locations) {
+    onChange(locations[0].id)
+  }
+
   const selectedLocObj = useMemo(() => {
     if (!isLoading && locations) {
       return locations.find((l) => l.id === selectedLocation)

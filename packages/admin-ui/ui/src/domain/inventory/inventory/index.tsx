@@ -10,7 +10,6 @@ const InventoryView = () => {
           customHeader={<InventoryPageTableHeader activeView="inventory" />}
           className="h-fit"
         >
-          <h1>Inventory</h1>
           <InventoryTable />
         </BodyCard>
       </div>
