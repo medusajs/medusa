@@ -1,38 +1,37 @@
 import { NextFunction, Request, Response } from "express"
-import { Order } from "../../models"
 import { MedusaError } from "medusa-core-utils"
 
 /**
  * Retrieve the includes options from the fields query param.
  * If the include option is present then assigned it to includes on req
- * @param allowedIncludesFields The list of fields that can be passed and assign to req.includes
- * @param expectedIncludesFields The list of fields that the consumer can pass to the end point using this middleware. It is a subset of `allowedIncludesFields`
+ * @param allowedIncludes The list of fields that can be passed and assign to req.includes
+ * @param expectedIncludes The list of fields that the consumer can pass to the end point using this middleware. It is a subset of `allowedIncludes`
  */
 export function transformIncludesOptions(
-  allowedIncludesFields: string[] = [],
-  expectedIncludesFields: string[] = []
+  allowedIncludes: string[] = [],
+  expectedIncludes: string[] = []
 ) {
   return (req: Request, res: Response, next: NextFunction): void => {
-    if (!allowedIncludesFields.length || !req.query.fields) {
+    if (!allowedIncludes.length || !req.query.expand) {
       return next()
     }
 
-    const fields = (req.query.fields as string).split(",") ?? []
+    const expand = (req.query.expand as string).split(",") ?? []
 
-    for (const includesField of allowedIncludesFields) {
-      const fieldIndex = fields.indexOf(includesField as keyof Order) ?? -1
+    for (const includes of allowedIncludes) {
+      const fieldIndex = expand.indexOf(includes) ?? -1
 
       const isPresent = fieldIndex !== -1
 
       if (isPresent) {
-        fields.splice(fieldIndex, 1)
+        expand.splice(fieldIndex, 1)
 
-        if (!expectedIncludesFields.includes(includesField)) {
+        if (!expectedIncludes.includes(includes)) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `The field "${includesField}" is not supported by this end point. ${
-              expectedIncludesFields.length
-                ? `The includes fields can be one of entity properties or in [${expectedIncludesFields.join(
+            `The field "${includes}" is not supported by this end point. ${
+              expectedIncludes.length
+                ? `The includes fields can be one of entity properties or in [${expectedIncludes.join(
                     ", "
                   )}]`
                 : ""
@@ -41,15 +40,15 @@ export function transformIncludesOptions(
         }
 
         req.includes = req.includes ?? {}
-        req.includes[includesField] = true
+        req.includes[includes] = true
       }
     }
 
-    if (req.query.fields) {
-      if (fields.length) {
-        req.query.fields = fields.join(",")
+    if (req.query.expand) {
+      if (expand.length) {
+        req.query.expand = expand.join(",")
       } else {
-        delete req.query.fields
+        delete req.query.expand
       }
     }
 
