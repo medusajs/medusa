@@ -1,9 +1,10 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsBoolean } from "class-validator"
 import { Request, Response } from "express"
 import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { defaultStoreScope } from "."
 
 /**
@@ -15,6 +16,7 @@ import { defaultStoreScope } from "."
  * parameters:
  *   - (query) q {string} Query used for searching product category names or handles.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
+ *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
  * x-codegen:
@@ -100,4 +102,9 @@ export class StoreGetProductCategoriesParams extends extendedFindParamsMixin({
     return value === "null" ? null : value
   })
   parent_category_id?: string | null
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
+  include_descendants_tree?: boolean
 }
