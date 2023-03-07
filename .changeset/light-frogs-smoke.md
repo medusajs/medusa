@@ -2,4 +2,4 @@
 "@medusajs/admin-ui": patch
 ---
 
-Add gap in table actions
+ fix(admin-ui): Add gap in table actions
