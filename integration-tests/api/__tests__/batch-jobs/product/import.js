@@ -81,7 +81,7 @@ describe("Product import batch job", () => {
     await batchJobSeeder(dbConnection)
     await adminSeeder(dbConnection)
     await userSeeder(dbConnection)
-     await simpleProductCollectionFactory(dbConnection, [
+    await simpleProductCollectionFactory(dbConnection, [
       {
         handle: collectionHandle1,
       },
@@ -184,7 +184,7 @@ describe("Product import batch job", () => {
               ean: null,
               upc: null,
               inventory_quantity: 10,
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   currency_code: "eur",
                   amount: 100,
@@ -199,7 +199,7 @@ describe("Product import batch job", () => {
                   amount: 130,
                   region_id: "region-product-import-1",
                 }),
-              ],
+              ]),
               options: expect.arrayContaining([
                 expect.objectContaining({
                   value: "option 1 value red",
@@ -250,7 +250,7 @@ describe("Product import batch job", () => {
               ean: null,
               upc: null,
               inventory_quantity: 10,
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({
                   currency_code: "eur",
                   amount: 100,
@@ -265,7 +265,7 @@ describe("Product import batch job", () => {
                   amount: 130,
                   region_id: "region-product-import-1",
                 }),
-              ],
+              ]),
               options: expect.arrayContaining([
                 expect.objectContaining({
                   value: "option 1 value red",

@@ -5,7 +5,7 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { Product, ProductCategory } from "../models"
+import { Product, ProductCategory, ProductVariant } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { isObject } from "../utils"
@@ -58,7 +58,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<[Product[], number]> {
-    const queryBuilder = await this.prepareQueryBuilder_(options, q)
+    const options_ = { ...options }
+    options_.relationLoadStrategy = "query"
+
+    const queryBuilder = await this.prepareQueryBuilder_(options_, q)
     return await queryBuilder.getManyAndCount()
   },
 
@@ -78,63 +81,24 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
 
-    // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
-    // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
-    // In other word, if the order depth is more than 1 then use join otherwise use query
-    /* const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
-      options.order ?? {}
-    )
-    const isDepth1 = !orderFieldsCollectionPointSeparated.some(
-      (field) => field.indexOf(".") !== -1
-    )
-    options_.relationLoadStrategy = isDepth1 ? "query" : "join"*/
-    options_.relationLoadStrategy = "join"
-
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
 
     // Add explicit ordering for variant ranking on the variants join directly
-    // The constraint if there is any will be applied by the options_
+    // This constraint is applied if no other order is applied
     if (options_.relations.variants && !isObject(options_.order?.variants)) {
-      options_.order = options_.order ?? {}
-      options_.order.variants = {
-        variant_rank: "ASC",
-      }
-      /* // The query strategy, as explain at the top of the function, does not select the column from the separated query
-      // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
-      options_.relationLoadStrategy = "join"
-      queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
-
-      options_.order = options_.order ?? {}
-
-      if (!isObject(options_.order.variants)) {
-        options_.order.variants = {
-          variant_rank: "ASC",
-        }
-      }*/
+      queryBuilder.leftJoin(
+        (subQueryBuilder) => {
+          return subQueryBuilder
+            .from(ProductVariant, "v")
+            .orderBy("v.variant_rank", "ASC")
+        },
+        "variants",
+        `${productAlias}.id = variants.product_id`
+      )
     }
 
     if (options_.where.price_list_id) {
-      /* options_.relations.variants = {
-        ...(isObject(options_.relations.variants)
-          ? options_.relations.variants
-          : {}),
-        prices: true,
-      }
-
-      const priceListIds = (
-        options_.where.price_list_id as FindOperator<string[]>
-      ).value
-      delete options_.where.price_list_id
-
-      options_.where.variants = {
-        ...(isObject(options_.where.variants) ? options_.where.variants : {}),
-        prices: [
-          {
-            price_list_id: In(priceListIds),
-          },
-        ],
-      }*/
       const priceListIds = (
         options_.where.price_list_id as FindOperator<string[]>
       ).value
