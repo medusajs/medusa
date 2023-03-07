@@ -6,7 +6,10 @@ import {
   productCategoryRepositoryMock as productCategoryRepository,
   validProdCategoryId,
   validProdCategoryIdWithChildren,
+  validProdCategoryWithSiblings,
+  validProdCategoryRankChange
 } from "../../repositories/__mocks__/product-category"
+import { tempReorderRank } from "../../types/product-category"
 import { EventBusServiceMock as eventBusService } from "../__mocks__/event-bus"
 
 const productCategoryService = new ProductCategoryService({
@@ -26,9 +29,8 @@ describe("ProductCategoryService", () => {
       )
 
       expect(result.id).toEqual(validID)
-      expect(productCategoryRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.findOne).toHaveBeenCalledWith({
+      expect(productCategoryRepository.findOneWithDescendants).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.findOneWithDescendants).toHaveBeenCalledWith({
         where: { id: validID },
       })
     })
@@ -58,15 +60,13 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.findDescendantsTree).not.toBeCalled()
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
         {
-          order: {
-            created_at: "DESC",
-          },
           skip: 0,
           take: 100,
           where: {},
         },
         validID,
-        {}
+        {},
+        false,
       )
     })
 
@@ -86,7 +86,16 @@ describe("ProductCategoryService", () => {
 
       expect(result[0].id).toEqual(validID)
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
+        {
+          skip: 0,
+          take: 100,
+          where: {},
+        },
+        undefined,
+        {},
+        true,
+      )
     })
   })
 
@@ -97,6 +106,7 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.create).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.create).toHaveBeenCalledWith({
         name: validProdCategoryId,
+        rank: 0,
       })
     })
 
@@ -151,6 +161,23 @@ describe("ProductCategoryService", () => {
         }
       )
     })
+
+    it("deleting a category shifts its siblings into the correct rank", async () => {
+      const result = await productCategoryService.delete(
+        IdMap.getId(validProdCategoryWithSiblings)
+      )
+
+      expect(productCategoryRepository.delete).toBeCalledTimes(1)
+      expect(productCategoryRepository.delete).toBeCalledWith(IdMap.getId(validProdCategoryWithSiblings))
+
+      expect(productCategoryRepository.save).toBeCalledTimes(1)
+      expect(productCategoryRepository.save).toBeCalledWith({
+        id: IdMap.getId(validProdCategoryId),
+        category_children: [],
+        parent_category_id: null,
+        rank: 0,
+      })
+    })
   })
 
   describe("update", () => {
@@ -166,6 +193,29 @@ describe("ProductCategoryService", () => {
         expect.objectContaining({
           id: IdMap.getId(validProdCategoryId),
           name: "bathrobes",
+        })
+      )
+    })
+
+    it("successfully updates a product category rank and its siblings", async () => {
+      await productCategoryService.update(
+        IdMap.getId(validProdCategoryRankChange), {
+          rank: 0
+        }
+      )
+
+      expect(productCategoryRepository.save).toHaveBeenCalledTimes(3)
+      expect(productCategoryRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId(validProdCategoryRankChange),
+          rank: tempReorderRank
+        })
+      )
+
+      expect(productCategoryRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId(validProdCategoryWithSiblings),
+          rank: 1
         })
       )
     })
