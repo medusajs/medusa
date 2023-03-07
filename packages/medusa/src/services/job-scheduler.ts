@@ -1,5 +1,5 @@
-import Bull from "bull"
-import Redis from "ioredis"
+import Queue from "bull"
+import Redis, { RedisOptions } from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
 
 type InjectedDependencies = {
@@ -22,7 +22,7 @@ export default class JobSchedulerService {
   protected readonly logger_: Logger
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]> =
     new Map()
-  protected readonly queue_: Bull
+  protected readonly queue_: Queue.Queue
 
   constructor(
     { logger, redisClient, redisSubscriber }: InjectedDependencies,
@@ -34,7 +34,7 @@ export default class JobSchedulerService {
 
     if (singleton) {
       const opts = {
-        createClient: (type: string): Redis.Redis => {
+        createClient: (type: string, redisOpts: RedisOptions) => {
           switch (type) {
             case "client":
               return redisClient
@@ -42,14 +42,17 @@ export default class JobSchedulerService {
               return redisSubscriber
             default:
               if (config.projectConfig.redis_url) {
-                return new Redis(config.projectConfig.redis_url)
+                return new Redis(config.projectConfig.redis_url, redisOpts)
               }
               return redisClient
           }
         },
       }
 
-      this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
+      this.queue_ = new Queue(`queue`, {
+        prefix: `scheduled-jobs`,
+        ...(opts as any),
+      })
       // Register scheduled job worker
       this.queue_.process(this.scheduledJobsWorker)
     }
@@ -112,7 +115,7 @@ export default class JobSchedulerService {
     schedule: string,
     handler: ScheduledJobHandler,
     options: CreateJobOptions
-  ): Promise<void> {
+  ): Promise<unknown> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 

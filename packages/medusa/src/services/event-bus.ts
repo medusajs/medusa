@@ -1,5 +1,5 @@
-import Bull, { JobOptions } from "bull"
-import Redis from "ioredis"
+import Queue, { Job, JobOptions } from "bull"
+import Redis, { RedisOptions } from "ioredis"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
@@ -25,7 +25,7 @@ type SubscriberContext = {
 }
 
 type BullJob<T> = {
-  update: (data: unknown) => void
+  // update: (data: unknown) => void
   attemptsMade: number
   opts: EmitOptions
   data: {
@@ -33,21 +33,14 @@ type BullJob<T> = {
     data: T
     completedSubscriberIds: string[] | undefined
   }
-}
+} & Job
 
 type SubscriberDescriptor = {
   id: string
   subscriber: Subscriber
 }
 
-export type EmitOptions = {
-  delay?: number
-  attempts: number
-  backoff?: {
-    type: "fixed" | "exponential"
-    delay: number
-  }
-} & JobOptions
+export type EmitOptions = JobOptions
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -65,7 +58,7 @@ export default class EventBusService {
   >
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
-  protected queue_: Bull
+  protected queue_: Queue.Queue
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
   protected enqueue_: Promise<void>
@@ -90,7 +83,7 @@ export default class EventBusService {
 
     if (singleton) {
       const opts = {
-        createClient: (type: string): Redis.Redis => {
+        createClient: (type: string, redisOpts: RedisOptions) => {
           switch (type) {
             case "client":
               return redisClient
@@ -98,7 +91,7 @@ export default class EventBusService {
               return redisSubscriber
             default:
               if (config.projectConfig.redis_url) {
-                return new Redis(config.projectConfig.redis_url)
+                return new Redis(config.projectConfig.redis_url, redisOpts)
               }
               return redisClient
           }
@@ -106,9 +99,14 @@ export default class EventBusService {
       }
 
       this.eventToSubscribersMap_ = new Map()
-      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
+      this.queue_ = new Queue(`queue`, {
+        prefix: `${this.constructor.name}`,
+        ...(opts as any),
+      })
+
       this.redisClient_ = redisClient
       this.redisSubscriber_ = redisSubscriber
+
       // Register our worker to handle emit calls
       this.queue_.process(this.worker_)
 
@@ -257,7 +255,7 @@ export default class EventBusService {
       const jobToCreate = {
         event_name: eventName,
         data: data as unknown as Record<string, unknown>,
-        options: opts,
+        options: opts as unknown as Record<string, unknown>,
       } as Partial<StagedJob>
 
       const stagedJobInstance = stagedJobRepository.create(jobToCreate)
@@ -265,7 +263,7 @@ export default class EventBusService {
       return await stagedJobRepository.save(stagedJobInstance)
     }
 
-    this.queue_.add({ eventName, data }, opts)
+    await this.queue_.add({ eventName, data }, opts)
   }
 
   startEnqueuer(): void {
@@ -292,7 +290,7 @@ export default class EventBusService {
       const jobs = await stagedJobRepo.find(listConfig)
 
       await Promise.all(
-        jobs.map((job) => {
+        jobs.map(async (job) =>
           this.queue_
             .add(
               { eventName: job.event_name, data: job.data },
@@ -301,7 +299,7 @@ export default class EventBusService {
             .then(async () => {
               await stagedJobRepo.remove(job)
             })
-        })
+        )
       )
 
       await sleep(3000)
@@ -372,7 +370,7 @@ export default class EventBusService {
       completedSubscribersInCurrentAttempt.length !==
       subscribersInCurrentAttempt.length
 
-    const isRetriesConfigured = job?.opts?.attempts > 1
+    const isRetriesConfigured = (job?.opts?.attempts ?? 1) > 1
 
     // Therefore, if retrying is configured, we try again
     const shouldRetry =
@@ -386,7 +384,7 @@ export default class EventBusService {
 
       job.data.completedSubscriberIds = updatedCompletedSubscribers
 
-      job.update(job.data)
+      await job.update(job.data)
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 

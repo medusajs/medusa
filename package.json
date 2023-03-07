@@ -88,6 +88,7 @@
     "@changesets/cli": "^2.26.0",
     "@linear/sdk": "^1.22.0",
     "@octokit/core": "^4.0.5",
+    "bull": "latest",
     "global": "^4.4.0",
     "import-from": "^3.0.0",
     "oas-normalize": "^5.0.1",

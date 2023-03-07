@@ -3218,6 +3218,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ioredis/commands@npm:^1.1.1":
+  version: 1.2.0
+  resolution: "@ioredis/commands@npm:1.2.0"
+  checksum: a5d3c29dd84d8a28b7c67a441ac1715cbd7337a7b88649c0f17c345d89aa218578d2b360760017c48149ef8a70f44b051af9ac0921a0622c2b479614c4f65b36
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -4815,6 +4822,7 @@ __metadata:
     "@babel/core": ^7.14.3
     "@babel/preset-typescript": ^7.13.0
     "@medusajs/medusa-cli": ^1.3.8
+    "@types/bull": ^4.10.0
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jest": ^27.5.2
@@ -4929,9 +4937,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:2.0.2":
   version: 2.0.2
   resolution: "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:2.0.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -4943,9 +4965,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.2"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@msgpackr-extract/msgpackr-extract-linux-arm@npm:2.0.2":
   version: 2.0.2
   resolution: "@msgpackr-extract/msgpackr-extract-linux-arm@npm:2.0.2"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -4957,9 +4993,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.2"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@msgpackr-extract/msgpackr-extract-win32-x64@npm:2.0.2":
   version: 2.0.2
   resolution: "@msgpackr-extract/msgpackr-extract-win32-x64@npm:2.0.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -7732,6 +7782,15 @@ __metadata:
     "@types/connect": "*"
     "@types/node": "*"
   checksum: c2dd533e1d4af958d656bdba7f376df68437d8dfb7e4522c88b6f3e6f827549e4be5bf0be68a5f1878accf5752ea37fba7e8a4b6dda53d0d122d77e27b69c750
+  languageName: node
+  linkType: hard
+
+"@types/bull@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "@types/bull@npm:4.10.0"
+  dependencies:
+    bull: "*"
+  checksum: b29a29f41707680c5fb6f7db695ace67e8928dfc5c2a367a0e8ab1ea9bd4758b6ef2c3a0af9cb5660fe05a4242b878907da439ddb44cf8bc9fa4cee2cf1049b1
   languageName: node
   linkType: hard
 
@@ -11676,6 +11735,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bull@npm:*, bull@npm:latest":
+  version: 4.10.4
+  resolution: "bull@npm:4.10.4"
+  dependencies:
+    cron-parser: ^4.2.1
+    debuglog: ^1.0.0
+    get-port: ^5.1.1
+    ioredis: ^5.0.0
+    lodash: ^4.17.21
+    msgpackr: ^1.5.2
+    semver: ^7.3.2
+    uuid: ^8.3.0
+  checksum: a85af23ba6711bdc2fbc3f65887113714e9dcb8d4541ed065aedf562ac1adeea25002af632a7201dc4d668b682e0aaccffcd4f375eccf8a107550b12247211c4
+  languageName: node
+  linkType: hard
+
 "bull@npm:^3.12.1":
   version: 3.29.3
   resolution: "bull@npm:3.29.3"
@@ -13456,6 +13531,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cron-parser@npm:^4.2.1":
+  version: 4.8.0
+  resolution: "cron-parser@npm:4.8.0"
+  dependencies:
+    luxon: ^3.2.1
+  checksum: 57d3dc9e0552598d16914f5d1948869bf305d7e172b594233cf80b823eda3fa8b207a7b2334fc61aeb0ed66ade43411e076de1f42f467af87b0275574077f949
+  languageName: node
+  linkType: hard
+
 "cross-env@npm:^5.2.1":
   version: 5.2.1
   resolution: "cross-env@npm:5.2.1"
@@ -14267,6 +14351,13 @@ __metadata:
   version: 1.5.1
   resolution: "denque@npm:1.5.1"
   checksum: 9e6fc1a63e1c9ded38325290302fef40e5ad28471ad8c66d68eaea623ef847bd25fc75a7c3f47396206dc967922615999066470a364e1786f2758d61337872b7
+  languageName: node
+  linkType: hard
+
+"denque@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "denque@npm:2.1.0"
+  checksum: f9ef81aa0af9c6c614a727cb3bd13c5d7db2af1abf9e6352045b86e85873e629690f6222f4edd49d10e4ccf8f078bbeec0794fafaf61b659c0589d0c511ec363
   languageName: node
   linkType: hard
 
@@ -19848,6 +19939,23 @@ __metadata:
     redis-parser: ^3.0.0
     standard-as-callback: ^2.1.0
   checksum: 6fd12957d2906f83d8aa662ba78d084df16dc7c1a0e6e18c512302ac94339dcd5936d2e7cd6f89e9e7b511e3cf96617ca2fdea63aa4679bfdf48aa2be441ad76
+  languageName: node
+  linkType: hard
+
+"ioredis@npm:^5.0.0":
+  version: 5.3.1
+  resolution: "ioredis@npm:5.3.1"
+  dependencies:
+    "@ioredis/commands": ^1.1.1
+    cluster-key-slot: ^1.1.0
+    debug: ^4.3.4
+    denque: ^2.1.0
+    lodash.defaults: ^4.2.0
+    lodash.isarguments: ^3.1.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+    standard-as-callback: ^2.1.0
+  checksum: 52277fd278e1a29fed020c1fb6238dd82e1b0f7b2b9bd052787ba6d6785fb153d7ce8276b354ba542cdb6005b5d9a3b439f7c811ef5852223b8367332acebe12
   languageName: node
   linkType: hard
 
@@ -26182,6 +26290,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"msgpackr-extract@npm:^3.0.1":
+  version: 3.0.2
+  resolution: "msgpackr-extract@npm:3.0.2"
+  dependencies:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64": 3.0.2
+    "@msgpackr-extract/msgpackr-extract-darwin-x64": 3.0.2
+    "@msgpackr-extract/msgpackr-extract-linux-arm": 3.0.2
+    "@msgpackr-extract/msgpackr-extract-linux-arm64": 3.0.2
+    "@msgpackr-extract/msgpackr-extract-linux-x64": 3.0.2
+    "@msgpackr-extract/msgpackr-extract-win32-x64": 3.0.2
+    node-gyp: latest
+    node-gyp-build-optional-packages: 5.0.7
+  dependenciesMeta:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-darwin-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-win32-x64":
+      optional: true
+  bin:
+    download-msgpackr-prebuilds: bin/download-prebuilds.js
+  checksum: f14727e0121c241a11cf75824f87822c0a08d65e6b8eba8a3fbf26c7d7287ea3f8ca3ab76887fda781a203bd16e51705207d82593ba6f06abca3181c743a352d
+  languageName: node
+  linkType: hard
+
+"msgpackr@npm:^1.5.2":
+  version: 1.8.4
+  resolution: "msgpackr@npm:1.8.4"
+  dependencies:
+    msgpackr-extract: ^3.0.1
+  dependenciesMeta:
+    msgpackr-extract:
+      optional: true
+  checksum: 27ac10dbd8148a80b38e0b230d59e7dc114c070d74583bed1d79cd4d0f008d4a4913d7e956e8e415d7a541f896f838cc915a3e65cbabf8aefe95e7d186acf70d
+  languageName: node
+  linkType: hard
+
 "msgpackr@npm:^1.5.4":
   version: 1.6.1
   resolution: "msgpackr@npm:1.6.1"
@@ -26573,6 +26724,17 @@ __metadata:
     node-gyp-build-optional-packages-optional: optional.js
     node-gyp-build-optional-packages-test: build-test.js
   checksum: 334336bdefb398469a115a2c9d4c141d28e093fd703be7adc1448f9dd3e1b5525281a789be8a60a778c91212daaa310155b1908b1fb9a987cec61a9fe04d774a
+  languageName: node
+  linkType: hard
+
+"node-gyp-build-optional-packages@npm:5.0.7":
+  version: 5.0.7
+  resolution: "node-gyp-build-optional-packages@npm:5.0.7"
+  bin:
+    node-gyp-build-optional-packages: bin.js
+    node-gyp-build-optional-packages-optional: optional.js
+    node-gyp-build-optional-packages-test: build-test.js
+  checksum: e0edb57358dfa8e31c26b38310ddc5ae81d19fd13b3bf095c41215dfd6a033b1269b510c3ce5e73f7a4ed3d36f101ea47716ec75be38f5e31916d185e7f18905
   languageName: node
   linkType: hard
 
@@ -31154,6 +31316,7 @@ __metadata:
     axios-mock-adapter: ^1.19.0
     babel-jest: ^26.6.3
     babel-preset-medusa-package: ^1.0.0
+    bull: latest
     cross-env: ^7.0.3
     eslint: ^8.23.0
     eslint-config-google: ^0.14.0
