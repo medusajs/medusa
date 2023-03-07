@@ -1481,6 +1481,16 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/variants/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        variant: {...fixtures.get("product_variant"), id: id},
+      })
+    )
+  }),
+
   rest.get("/admin/variants/:id/inventory", (req, res, ctx) => {
     return res(
       ctx.status(200),
