@@ -509,7 +509,10 @@ class ProductVariantService extends TransactionBaseService {
           } else {
             dataCurrencyPrices.push({
               variantId,
-              price: { ...price, currency_code: price.currency_code! },
+              price: {
+                ...price,
+                currency_code: price.currency_code!,
+              },
             })
           }
         })
@@ -651,6 +654,7 @@ class ProductVariantService extends TransactionBaseService {
           dataToCreate.push(
             moneyAmountRepo.create({
               ...price,
+              currency_code: price.currency_code?.toLowerCase(),
               variant_id: variantId,
             }) as QueryDeepPartialEntity<MoneyAmount>
           )
@@ -724,7 +728,7 @@ class ProductVariantService extends TransactionBaseService {
             moneyAmountRepo.create({
               ...price,
               variant_id: variantId,
-              currency_code: price.currency_code,
+              currency_code: price.currency_code.toLowerCase(),
             }) as QueryDeepPartialEntity<MoneyAmount>
           )
         }
