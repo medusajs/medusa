@@ -66,8 +66,6 @@ function EditProductCategoriesSideModal(
         is_internal: !isPublic,
       })
 
-      // TODO: check on the BD, when we send update partial children of the category are lost
-
       notification("Success", "Product category updated", "success")
     } catch (e) {
       notification("Error", "Failed to update the category", "error")
@@ -148,12 +146,7 @@ function EditProductCategoriesSideModal(
           <Button size="small" variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-          <Button
-            size="small"
-            variant="primary"
-            onClick={onSave}
-            // disabled={}
-          >
+          <Button size="small" variant="primary" onClick={onSave}>
             Save and close
           </Button>
         </div>
