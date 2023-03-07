@@ -1,7 +1,12 @@
 import { Product, ProductVariant } from "@medusajs/medusa"
+import { useMedusa } from "medusa-react"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
 import { countries } from "../../../../../utils/countries"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
@@ -24,6 +29,7 @@ const EditVariantModal = ({
   isDuplicate = false,
 }: Props) => {
   const form = useForm<EditFlowVariantFormType>({
+    // @ts-ignore
     defaultValues: getEditVariantDefaultValues(variant, product),
   })
 
@@ -41,22 +47,69 @@ const EditVariantModal = ({
   const { onUpdateVariant, onAddVariant, addingVariant, updatingVariant } =
     useEditProductActions(product.id)
 
+  const { client } = useMedusa()
+
+  const createStockLocationsForVariant = async (
+    productRes,
+    stock_locations: { stocked_quantity: number; location_id: string }[]
+  ) => {
+    const { variants } = productRes
+
+    const pvMap = new Map(product.variants.map((v) => [v.id, true]))
+    const addedVariant = variants.find((variant) => !pvMap.get(variant.id))
+
+    const inventory = await client.admin.variants.getInventory(addedVariant.id)
+
+    console.log(inventory)
+
+    await Promise.all(
+      inventory.variant.inventory
+        .map(async (item) => {
+          return Promise.all(
+            stock_locations.map(async (stock_location) => {
+              client.admin.inventoryItems.createLocationLevel(item.id!, {
+                location_id: stock_location.location_id,
+                stocked_quantity: stock_location.stocked_quantity,
+              })
+            })
+          )
+        })
+        .flat()
+    )
+  }
+
   const onSubmit = handleSubmit((data) => {
+    const {
+      stock: { stock_location },
+    } = data
+    delete data.stock.stock_location
+
     if (isDuplicate) {
-      onAddVariant(createAddPayload(data), handleClose)
+      onAddVariant(createAddPayload(data), (productRes) => {
+        if (typeof stock_location !== "undefined") {
+          createStockLocationsForVariant(productRes, stock_location).then(
+            () => {
+              handleClose()
+            }
+          )
+        } else {
+          handleClose()
+        }
+      })
     } else {
       // @ts-ignore
       onUpdateVariant(variant.id, createUpdatePayload(data), handleClose)
     }
   })
 
+  const layeredModalContext = useContext(LayeredModalContext)
   return (
-    <Modal handleClose={handleClose}>
+    <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
         <h1 className="inter-xlarge-semibold">
           Edit Variant
           {variant.title && (
-            <span className="text-grey-50 inter-xlarge-regular">
+            <span className="inter-xlarge-regular text-grey-50">
               {" "}
               ({variant.title})
             </span>
@@ -68,7 +121,7 @@ const EditVariantModal = ({
           <EditFlowVariantForm form={form} />
         </Modal.Content>
         <Modal.Footer>
-          <div className="w-full flex items-center gap-x-xsmall justify-end">
+          <div className="flex items-center justify-end w-full gap-x-xsmall">
             <Button
               variant="secondary"
               size="small"
@@ -89,7 +142,7 @@ const EditVariantModal = ({
           </div>
         </Modal.Footer>
       </form>
-    </Modal>
+    </LayeredModal>
   )
 }
 

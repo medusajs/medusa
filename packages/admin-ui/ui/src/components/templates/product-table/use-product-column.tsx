@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { useAdminStore } from "medusa-react"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator"
 import Tooltip from "../../atoms/tooltip"
 import ListIcon from "../../fundamentals/icons/list-icon"
@@ -64,11 +64,12 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
+              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+                {" "}
                 {original.thumbnail ? (
                   <img
                     src={original.thumbnail}
-                    className="h-full object-cover rounded-soft"
+                    className="object-cover h-full rounded-soft"
                   />
                 ) : (
                   <ImagePlaceholder />
@@ -110,7 +111,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
       {
         accessor: "col-3",
         Header: (
-          <div className="text-right flex justify-end">
+          <div className="flex justify-end text-right">
             <span
               onClick={setListView}
               className={clsx("hover:bg-grey-5 cursor-pointer rounded p-0.5", {

@@ -61,7 +61,7 @@ const EditVariantScreen = ({ variant, product }: Props) => {
           <EditFlowVariantForm form={form} />
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex items-center w-full justify-end gap-x-xsmall">
+          <div className="flex items-center justify-end w-full gap-x-xsmall">
             <Button variant="secondary" size="small" type="button">
               Cancel
             </Button>
@@ -97,7 +97,7 @@ export const createUpdatePayload = (
 ): AdminPostProductsProductVariantsVariantReq => {
   const { customs, dimensions, prices, options, general, stock } = data
 
-  const priceArray = prices.prices
+  const priceArray = prices?.prices
     .filter((price) => typeof price.amount === "number")
     .map((price) => {
       return {
@@ -109,19 +109,18 @@ export const createUpdatePayload = (
     })
 
   return {
-    // @ts-ignore
     ...general,
     ...customs,
     ...stock,
     ...dimensions,
     ...customs,
     // @ts-ignore
-    origin_country: customs.origin_country
+    origin_country: customs?.origin_country
       ? customs.origin_country.value
       : null,
     // @ts-ignore
     prices: priceArray,
-    options: options.map((option) => ({
+    options: options?.map((option) => ({
       option_id: option.id,
       value: option.value,
     })),

@@ -1,4 +1,4 @@
-import React from "react"
+import { AdminGetVariantsVariantInventoryRes } from "@medusajs/medusa"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
 import IconTooltip from "../../../../../components/molecules/icon-tooltip"
 import InputField from "../../../../../components/molecules/input"
@@ -32,6 +32,7 @@ export type EditFlowVariantFormType = {
 
 type Props = {
   form: UseFormReturn<EditFlowVariantFormType, any>
+  inventory?: AdminGetVariantsVariantInventoryRes["inventory"]
 }
 
 /**
@@ -65,7 +66,7 @@ const EditFlowVariantForm = ({ form }: Props) => {
         <div>
           <VariantGeneralForm form={nestedForm(form, "general")} />
           <div className="mt-xlarge">
-            <div className="flex items-center gap-x-2xsmall mb-base">
+            <div className="flex items-center mb-base gap-x-2xsmall">
               <h3 className="inter-base-semibold">Options</h3>
               <IconTooltip
                 type="info"
