@@ -13,12 +13,12 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
   const remainder = Math.max(channels.length - 3, 0)
 
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       {channels.length > 0 && (
         <div className="flex gap-x-1">
-          <div className="flex gap-x-1 max-w-[600px] overflow-clip">
+          <div className="flex max-w-[600px] gap-x-1 overflow-clip">
             {channels.slice(0, 3).map((sc) => (
-              <SalesChannelBadge channel={sc} />
+              <SalesChannelBadge key={sc.id} channel={sc} />
             ))}
           </div>
           {remainder > 0 && (
@@ -32,7 +32,7 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
               }
             >
               <Badge variant="ghost" className="px-3 py-1.5">
-                <div className="flex items-center h-full inter-small-regular text-grey-50">
+                <div className="inter-small-regular text-grey-50 flex h-full items-center">
                   + {remainder} more
                 </div>
               </Badge>
