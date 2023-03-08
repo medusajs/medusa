@@ -262,7 +262,7 @@
 }
 
 .sidebar-group-divider:not(:first-child) {
-  padding-top: calc(6px + var(--ifm-base-margin-vertical) / 4) !important;
+  padding-top: calc(var(--ifm-base-margin-vertical) / 2) !important;
 }
 
 /** Sidebar Item Icon **/
