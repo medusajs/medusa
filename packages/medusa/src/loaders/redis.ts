@@ -1,8 +1,7 @@
 import { asValue } from "awilix"
 import RealRedis from "ioredis"
 import FakeRedis from "ioredis-mock"
-import { ConfigModule, MedusaContainer } from "../types/global"
-import { Logger } from "../types/global"
+import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
   container: MedusaContainer
@@ -17,8 +16,16 @@ async function redisLoader({
 }: Options): Promise<void> {
   if (configModule.projectConfig.redis_url) {
     // Economical way of dealing with redis clients
-    const client = new RealRedis(configModule.projectConfig.redis_url)
-    const subscriber = new RealRedis(configModule.projectConfig.redis_url)
+    const client = new RealRedis(configModule.projectConfig.redis_url, {
+      // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
+      maxRetriesPerRequest: null,
+      enableReadyCheck: false,
+    })
+    const subscriber = new RealRedis(configModule.projectConfig.redis_url, {
+      // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
+      maxRetriesPerRequest: null,
+      enableReadyCheck: false,
+    })
 
     container.register({
       redisClient: asValue(client),
