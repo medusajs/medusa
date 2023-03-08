@@ -1,32 +1,36 @@
-import { useLocation } from "react-router-dom"
-import { isEmpty } from "lodash"
+import { Cell, Row, TableRowProps, usePagination, useTable } from "react-table"
 import {
-  useAdminStore,
-  useAdminStockLocations,
-  useAdminInventoryItems,
-  useAdminVariant,
-  useAdminUpdateLocationLevel,
-} from "medusa-react"
-import qs from "qs"
+  InventoryItemDTO,
+  InventoryLevelDTO,
+  ProductVariant,
+} from "@medusajs/medusa"
 import React, { useEffect, useMemo, useState } from "react"
-import { usePagination, useTable } from "react-table"
+import {
+  useAdminInventoryItems,
+  useAdminStockLocations,
+  useAdminStore,
+  useAdminUpdateLocationLevel,
+  useAdminVariant,
+} from "medusa-react"
+
+import Button from "../../fundamentals/button"
+import ImagePlaceholder from "../../fundamentals/image-placeholder"
+import InputField from "../../molecules/input"
+import InputHeader from "../../fundamentals/input-header"
 import InventoryFilter from "../../../domain/inventory/filter-dropdown"
+import Modal from "../../molecules/modal"
+import { NextSelect } from "../../molecules/select/next-select"
+import Spinner from "../../atoms/spinner"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
-import { NextSelect } from "../../molecules/select/next-select"
-import useInventoryActions from "./use-inventory-actions"
-import useInventoryTableColumn from "./use-inventory-column"
-import { useInventoryFilters } from "./use-inventory-filters"
-import { InventoryItemDTO } from "@medusajs/medusa"
-import Modal from "../../molecules/modal"
-import useToggleState from "../../../hooks/use-toggle-state"
-import InputField from "../../molecules/input"
-import Button from "../../fundamentals/button"
-import InputHeader from "../../fundamentals/input-header"
-import ImagePlaceholder from "../../fundamentals/image-placeholder"
-import Spinner from "../../atoms/spinner"
-import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { isEmpty } from "lodash"
+import qs from "qs"
+import { useInventoryFilters } from "./use-inventory-filters"
+import useInventoryTableColumn from "./use-inventory-column"
+import { useLocation } from "react-router-dom"
+import useNotification from "../../../hooks/use-notification"
+import useToggleState from "../../../hooks/use-toggle-state"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -260,24 +264,33 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
         {...getTableProps()}
       >
         <Table.Head>
-          {headerGroups?.map((headerGroup) => (
-            <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((col) => (
-                <Table.HeadCell
-                  className="min-w-[100px]"
-                  {...col.getHeaderProps()}
-                >
-                  {col.render("Header")}
-                </Table.HeadCell>
-              ))}
-            </Table.HeadRow>
-          ))}
+          {headerGroups?.map((headerGroup) => {
+            const { key, ...rest } = headerGroup.getHeaderGroupProps()
+
+            return (
+              <Table.HeadRow key={key} {...rest}>
+                {headerGroup.headers.map((col) => {
+                  const { key, ...rest } = col.getHeaderProps()
+                  return (
+                    <Table.HeadCell
+                      className="min-w-[100px]"
+                      key={key}
+                      {...rest}
+                    >
+                      {col.render("Header")}
+                    </Table.HeadCell>
+                  )
+                })}
+              </Table.HeadRow>
+            )
+          })}
         </Table.Head>
 
         <Table.Body {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row)
-            return <InventoryRow row={row} {...row.getRowProps()} />
+            const { key, ...rest } = row.getRowProps()
+            return <InventoryRow row={row} key={key} {...rest} />
           })}
         </Table.Body>
       </Table>
@@ -285,9 +298,18 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
   )
 }
 
-const InventoryRow = ({ row, ...rest }) => {
+const InventoryRow = ({
+  row,
+  ...rest
+}: {
+  row: Row<
+    Partial<InventoryItemDTO> & {
+      location_levels?: InventoryLevelDTO[] | undefined
+      variants?: ProductVariant[] | undefined
+    }
+  >
+} & TableRowProps) => {
   const inventory = row.original
-  const { getActions } = useInventoryActions(inventory)
 
   const {
     state: isShowingAdjustAvailabilityModal,
@@ -297,14 +319,14 @@ const InventoryRow = ({ row, ...rest }) => {
   return (
     <Table.Row
       color={"inherit"}
-      actions={getActions()}
       onClick={showAdjustAvailabilityModal}
       forceDropdown={true}
       {...rest}
     >
-      {row.cells.map((cell, index) => {
+      {row.cells.map((cell: Cell, index: number) => {
+        const { key, ...rest } = cell.getCellProps()
         return (
-          <Table.Cell {...cell.getCellProps()}>
+          <Table.Cell {...rest} key={key}>
             {cell.render("Cell", { index })}
           </Table.Cell>
         )
@@ -323,16 +345,20 @@ const AdjustAvailabilityModal = ({
   inventory,
   handleClose,
 }: {
-  inventory: InventoryItemDTO
+  inventory: Partial<InventoryItemDTO> & {
+    location_levels?: InventoryLevelDTO[] | undefined
+    variants?: ProductVariant[] | undefined
+  }
   handleClose: () => void
 }) => {
-  const inventoryVariantId = inventory["variants"][0].id
-  const locationLevel = inventory["location_levels"]?.[0]
-  const { variant, isLoading } = useAdminVariant(inventoryVariantId)
+  const inventoryVariantId = inventory.variants?.[0]?.id
+  const locationLevel = inventory.location_levels?.[0]
+
+  const { variant, isLoading } = useAdminVariant(inventoryVariantId || "")
   const {
     mutate: updateLocationLevelForInventoryItem,
     isLoading: isSubmitting,
-  } = useAdminUpdateLocationLevel(inventory.id)
+  } = useAdminUpdateLocationLevel(inventory.id!)
 
   const notification = useNotification()
 
@@ -341,12 +367,14 @@ const AdjustAvailabilityModal = ({
   )
 
   const disableSubmit =
-    stockedQuantity === (locationLevel.stocked_quantity || 0)
+    stockedQuantity === (locationLevel?.stocked_quantity || 0) ||
+    !variant ||
+    !locationLevel
 
   const onSubmit = () => {
     updateLocationLevelForInventoryItem(
       {
-        stockLocationId: locationLevel.location_id,
+        stockLocationId: locationLevel!.location_id,
         stocked_quantity: stockedQuantity,
       },
       {
@@ -383,7 +411,7 @@ const AdjustAvailabilityModal = ({
                     {variant?.product?.thumbnail ? (
                       <img
                         src={variant?.product?.thumbnail}
-                        className="object-cover h-full rounded-rounded"
+                        className="rounded-rounded h-full object-cover"
                       />
                     ) : (
                       <ImagePlaceholder />
@@ -392,13 +420,13 @@ const AdjustAvailabilityModal = ({
                   <div className="flex flex-col">
                     <span className="truncate">
                       {variant?.product?.title}
-                      <span className="truncate text-grey-50">
+                      <span className="text-grey-50 truncate">
                         ({inventory.sku})
                       </span>
                     </span>
                     <span className="text-grey-50">
                       {variant?.options?.map((o) => (
-                        <span>{o.value}</span>
+                        <span key={o.id}>{o.value}</span>
                       ))}
                     </span>
                   </div>
@@ -415,7 +443,7 @@ const AdjustAvailabilityModal = ({
         </Modal.Content>
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end w-full gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button
             size="small"
             variant="ghost"
