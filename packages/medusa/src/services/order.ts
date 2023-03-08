@@ -1396,14 +1396,15 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const eventBusTx = this.eventBus_.withTransaction(manager)
-      for (const fulfillment of fulfillments) {
-        await eventBusTx.emit(OrderService.Events.FULFILLMENT_CREATED, {
+      const eventToEmits = fulfillments.map((fulfillment) => ({
+        eventName: OrderService.Events.FULFILLMENT_CREATED,
+        data: {
           id: orderId,
           fulfillment_id: fulfillment.id,
           no_notification: evaluatedNoNotification,
-        })
-      }
+        },
+      }))
+      await this.eventBus_.withTransaction(manager).emit(eventToEmits)
 
       return result
     })
