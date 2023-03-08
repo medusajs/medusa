@@ -14,7 +14,7 @@ import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import FolderOpenIcon from "../../../components/fundamentals/icons/folder-open-icon"
 import TagIcon from "../../../components/fundamentals/icons/tag-icon"
-import TagRedDotIcon from "../../../components/fundamentals/icons/tag-red-dot-icon"
+import TagDotIcon from "../../../components/fundamentals/icons/tag-dot-icon"
 import EyeOffIcon from "../../../components/fundamentals/icons/eye-off-icon"
 import MoreHorizontalIcon from "../../../components/fundamentals/icons/more-horizontal-icon"
 import useNotification from "../../../hooks/use-notification"
@@ -73,11 +73,11 @@ function ProductCategoryListItemDetails(
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center">
             {hasChildren && (
-              <div className="flex w-[20px] items-center justify-center absolute cursor-pointer">
+              <div className="absolute flex w-[20px] cursor-pointer items-center justify-center">
                 {props.collapseIcon}
               </div>
             )}
-            <div className="flex ml-[20px] w-[32px] items-center justify-center">
+            <div className="ml-[20px] flex w-[32px] items-center justify-center">
               {hasChildren && <FolderOpenIcon color="#889096" size={18} />}
               {!hasChildren && <TagIcon color="#889096" size={18} />}
             </div>
@@ -93,7 +93,13 @@ function ProductCategoryListItemDetails(
               {!item.is_active && (
                 <TooltipIcon
                   content="Category status is inactive"
-                  icon={<TagRedDotIcon size="32" className="cursor-pointer" />}
+                  icon={
+                    <TagDotIcon
+                      size="32"
+                      className="cursor-pointer"
+                      outerColor="#FFE5E5"
+                    />
+                  }
                 />
               )}
               {item.is_internal && (
