@@ -1,6 +1,6 @@
 module.exports = {
   transform: {
-    ".(ts|tsx|ts)$": ["ts-jest", { isolatedModules: true, diagnostics: false }],
+    ".(ts|tsx)$": ["ts-jest", { isolatedModules: true, diagnostics: false }],
   },
   setupFilesAfterEnv: ["./jest.setup.js"],
   testEnvironment: "jsdom",

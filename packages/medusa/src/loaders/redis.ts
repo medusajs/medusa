@@ -15,17 +15,21 @@ async function redisLoader({
   logger,
 }: Options): Promise<void> {
   if (configModule.projectConfig.redis_url) {
+    const redisSettings = {
+      // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
+      maxRetriesPerRequest: null,
+      enableReadyCheck: false,
+    }
+
     // Economical way of dealing with redis clients
-    const client = new RealRedis(configModule.projectConfig.redis_url, {
-      // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
-      maxRetriesPerRequest: null,
-      enableReadyCheck: false,
-    })
-    const subscriber = new RealRedis(configModule.projectConfig.redis_url, {
-      // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
-      maxRetriesPerRequest: null,
-      enableReadyCheck: false,
-    })
+    const client = new RealRedis(
+      configModule.projectConfig.redis_url,
+      redisSettings
+    )
+    const subscriber = new RealRedis(
+      configModule.projectConfig.redis_url,
+      redisSettings
+    )
 
     container.register({
       redisClient: asValue(client),

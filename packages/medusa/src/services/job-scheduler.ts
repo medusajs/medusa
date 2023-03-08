@@ -1,4 +1,4 @@
-import Queue from "bull"
+import Queue, { QueueOptions } from "bull"
 import Redis, { RedisOptions } from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
 
@@ -56,7 +56,7 @@ export default class JobSchedulerService {
 
       this.queue_ = new Queue(`queue`, {
         prefix: `scheduled-jobs`,
-        ...(opts as any),
+        ...(opts as unknown as QueueOptions),
       })
       // Register scheduled job worker
       this.queue_.process(this.scheduledJobsWorker)

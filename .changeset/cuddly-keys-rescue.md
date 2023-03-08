@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-Bump `bull` package
+chore(medusa): Bump `bull` package

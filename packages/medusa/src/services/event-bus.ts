@@ -1,4 +1,4 @@
-import Queue, { Job, JobOptions } from "bull"
+import Queue, { Job, JobOptions, QueueOptions } from "bull"
 import Redis, { RedisOptions } from "ioredis"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -103,7 +103,7 @@ export default class EventBusService {
       this.eventToSubscribersMap_ = new Map()
       this.queue_ = new Queue(`queue`, {
         prefix: `${this.constructor.name}`,
-        ...(opts as any),
+        ...(opts as unknown as QueueOptions),
       })
 
       this.redisClient_ = redisClient
