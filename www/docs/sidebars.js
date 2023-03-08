@@ -928,7 +928,7 @@ module.exports = {
         {
           type: 'doc',
           id: 'modules/taxes/storefront/manual-calculation',
-          label: 'Storefront: Calculate Taxes Manually'
+          label: 'Storefront: Calculate Taxes'
         }
       ]
     },
