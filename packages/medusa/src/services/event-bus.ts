@@ -24,10 +24,7 @@ type SubscriberContext = {
   subscriberId: string
 }
 
-type BullJob<T> = {
-  // update: (data: unknown) => void
-  attemptsMade: number
-  opts: EmitOptions
+type BullJob<T = any> = {
   data: {
     eventName: string
     data: T
