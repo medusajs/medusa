@@ -43,7 +43,7 @@ export default class JobSchedulerService {
             default:
               if (config.projectConfig.redis_url) {
                 return new Redis(config.projectConfig.redis_url, {
-                  ...redisOpts,
+                  ...(redisOpts ?? {}),
                   // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
                   maxRetriesPerRequest: null,
                   enableReadyCheck: false,

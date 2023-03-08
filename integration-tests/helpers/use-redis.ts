@@ -42,11 +42,18 @@ module.exports = {
       .withExposedPorts(6379)
       .start()
 
-    const redisClient = new Redis({
-      host: container.getHost(),
-      port: container.getMappedPort(6379),
-      db: workerId,
-    })
+    const redisClient = new Redis(
+      {
+        host: container.getHost(),
+        port: container.getMappedPort(6379),
+        db: workerId,
+      },
+      {
+        // Required settings. See: https://github.com/OptimalBits/bull/issues/1873
+        maxRetriesPerRequest: null,
+        enableReadyCheck: false,
+      }
+    )
 
     instance.setDb(redisClient)
 
