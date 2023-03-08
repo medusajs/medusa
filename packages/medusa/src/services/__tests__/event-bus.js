@@ -132,7 +132,7 @@ describe("EventBusService", () => {
     describe("successfully adds job to queue", () => {
       let eventBus
 
-      beforeAll(() => {
+      beforeEach(() => {
         eventBus = new EventBusService({
           logger: loggerMock,
           manager: mockManager,
@@ -142,11 +142,8 @@ describe("EventBusService", () => {
         eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
       })
 
-      afterEach(() => {
+      afterEach(async () => {
         jest.clearAllMocks()
-      })
-
-      afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
 
@@ -187,7 +184,7 @@ describe("EventBusService", () => {
     describe("successfully adds jobs in bulk to queue", () => {
       let eventBus
 
-      beforeAll(() => {
+      beforeEach(() => {
         eventBus = new EventBusService({
           logger: loggerMock,
           manager: mockManager,
@@ -197,11 +194,8 @@ describe("EventBusService", () => {
         eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
       })
 
-      afterEach(() => {
+      afterEach(async () => {
         jest.clearAllMocks()
-      })
-
-      afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
 
@@ -247,13 +241,13 @@ describe("EventBusService", () => {
         expect(stagedJobRepository.insertBulk).toHaveBeenCalledTimes(1)
         expect(stagedJobRepository.insertBulk).toHaveBeenCalledWith([
           {
-            event_name: eventName,
             data: bulkData[0],
+            event_name: eventName,
             options: defaultOptions,
           },
           {
-            event_name: eventName,
             data: bulkData[1],
+            event_name: eventName,
             options: defaultOptions,
           },
         ])
@@ -263,13 +257,11 @@ describe("EventBusService", () => {
     describe("successfully adds job to queue with global options", () => {
       let eventBus
 
-      beforeAll(() => {
-        jest.resetAllMocks()
-
+      beforeEach(() => {
         eventBus = new EventBusService(
           {
             logger: loggerMock,
-            manager: MockManager,
+            manager: mockManager,
             stagedJobRepository,
           },
           {
@@ -282,7 +274,8 @@ describe("EventBusService", () => {
         eventBus.emit(eventName, data)
       })
 
-      afterAll(async () => {
+      afterEach(async () => {
+        jest.clearAllMocks()
         await eventBus.stopEnqueuer()
       })
 
@@ -301,15 +294,10 @@ describe("EventBusService", () => {
     describe("successfully adds job to queue with default options", () => {
       let eventBus
 
-      beforeAll(() => {
-        jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
-
+      beforeEach(() => {
         eventBus = new EventBusService({
           logger: loggerMock,
-          manager: MockManager,
+          manager: mockManager,
           stagedJobRepository,
         })
 
@@ -318,7 +306,8 @@ describe("EventBusService", () => {
         eventBus.emit(eventName, data)
       })
 
-      afterAll(async () => {
+      afterEach(async () => {
+        jest.clearAllMocks()
         await eventBus.stopEnqueuer()
       })
 
@@ -337,12 +326,7 @@ describe("EventBusService", () => {
     describe("successfully adds job to queue with local options and global options merged", () => {
       let eventBus
 
-      beforeAll(() => {
-        jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
-
+      beforeEach(() => {
         eventBus = new EventBusService(
           {
             logger: loggerMock,
@@ -363,7 +347,8 @@ describe("EventBusService", () => {
         })
       })
 
-      afterAll(async () => {
+      afterEach(async () => {
+        jest.clearAllMocks()
         await eventBus.stopEnqueuer()
       })
 
