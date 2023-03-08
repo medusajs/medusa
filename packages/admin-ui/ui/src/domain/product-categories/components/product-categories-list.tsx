@@ -57,10 +57,10 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
           parent_category_id: parentId,
           rank,
         })
-        notification("Success", "New order saved", "success")
+        notification("Success", "Successfully updated category tree", "success")
         await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
       } catch (e) {
-        notification("Error", "Failed to save new order", "error")
+        notification("Error", "Failed to update category tree", "error")
       } finally {
         setIsUpdating(false)
       }
