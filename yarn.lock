@@ -5837,7 +5837,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-redis@workspace:packages/cache-redis":
+"@medusajs/cache-redis@*, @medusajs/cache-redis@workspace:packages/cache-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-redis@workspace:packages/cache-redis"
   dependencies:
@@ -23776,6 +23776,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/cache-redis": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3

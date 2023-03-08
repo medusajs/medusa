@@ -12,4 +12,7 @@ module.exports = {
     jwt_secret: "test",
     cookie_secret: "test",
   },
+  modules: {
+    cacheService: { options: { ttl: 30, redisUrl: process.env.REDIS_URL } },
+  },
 }
