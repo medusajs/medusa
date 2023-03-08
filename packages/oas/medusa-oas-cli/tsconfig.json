@@ -24,8 +24,11 @@
     "src"
   ],
   "exclude": [
-    "node_modules",
-    "**/tests/*"
+    "dist",
+    "src/**/__tests__",
+    "src/**/__mocks__",
+    "src/**/__fixtures__",
+    "node_modules"
   ],
   "ts-node": {
     "transpileOnly": true
