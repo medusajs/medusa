@@ -862,12 +862,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/taxes/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -886,7 +883,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/taxes/inclusive-pricing',
+          id: 'modules/taxes/inclusive-pricing',
           label: 'Tax Inclusive Pricing'
         },
         {
@@ -930,7 +927,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/taxes/manual-calculation',
+          id: 'modules/taxes/storefront/manual-calculation',
           label: 'Storefront: Calculate Taxes Manually'
         }
       ]

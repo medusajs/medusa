@@ -13,7 +13,7 @@ Tax Inclusive Pricing is currently in beta mode and guarded by a feature flag. T
 1. Enable the `MEDUSA_FF_TAX_INCLUSIVE_PRICING` environment variable;
 2. Or enable the `tax_inclusive_pricing` key in the Medusa server's settings.
 
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+You can learn more about enabling it in the [feature flags](../../advanced/backend/feature-flags/toggle.md) documentation.
 
 :::
 
@@ -31,7 +31,7 @@ Then, Medusa handles calculating the tax amount using the tax rate and the tax-i
 
 Tax inclusivity can be toggled for regions, currencies, price lists, and shipping options either during creation or while editing. This is represented by the boolean attribute `includes_tax` available in the entities `Region`, `Currency`, `PriceList`, and `ShippingOption`. By default, this attribute is set to `false`.
 
-If you want to enable or disable this attribute for any of these entities, you can use the create or update endpoints related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/api/admin/).
+If you want to enable or disable this attribute for any of these entities, you can use the create or update endpoints related to these entities as shown in the [Admin API reference](/api/admin/).
 
 The value set for these entities can affect whether line items and shipping methods are tax inclusive or not.
 
@@ -54,7 +54,7 @@ The `LineItem` entity also has the `includes_tax` attribute. The value of this f
 
 :::info
 
-When a shipping option is selected, a shipping method is created based on that shipping option. You can learn more about this in the [Shipping Architecture documentation](../../../modules/carts-and-checkout/shipping.md).
+When a shipping option is selected, a shipping method is created based on that shipping option. You can learn more about this in the [Shipping Architecture documentation](../carts-and-checkout/shipping.md).
 
 :::
 
@@ -82,13 +82,13 @@ This section covers at which point tax amounts are calculated for different enti
 
 :::note
 
-If you have disabled the automatic calculation of taxes in a region, you must [manually calculate the taxes of the line items and the cart](manual-calculation.md). Otherwise, taxes will not be calculated or retrieved during checkout for each entity mentioned here.
+If you have disabled the automatic calculation of taxes in a region, you must [manually calculate the taxes of the line items and the cart](./storefront/manual-calculation.md). Otherwise, taxes will not be calculated or retrieved during checkout for each entity mentioned here.
 
 :::
 
 ### Products
 
-Taxes are calculated for each product variant either when a [single product is retrieved](https://docs.medusajs.com/api/store/#tag/Product/operation/GetProductsProduct) or a [list of products is retrieved](https://docs.medusajs.com/api/store/#tag/Product/operation/GetProducts).
+Taxes are calculated for each product variant either when a [single product is retrieved](/api/store/#tag/Product/operation/GetProductsProduct) or a [list of products is retrieved](/api/store/#tag/Product/operation/GetProducts).
 
 Among the pricing fields retrieved for each variant, the following fields are relevant to taxes:
 
@@ -148,7 +148,7 @@ Here is an example of these fields when tax inclusivity is enabled for both the 
 
 ### Line Item
 
-The taxes of line items are calculated and retrieved whenever the [cart is retrieved or updated](https://docs.medusajs.com/api/store/#tag/Cart).
+The taxes of line items are calculated and retrieved whenever the [cart is retrieved or updated](/api/store/#tag/Cart).
 
 Each line item returned in any of the cart’s requests has total fields related to the price of the line item and its taxes. Among those fields, the following are relevant to tax-inclusive pricing:
 
@@ -172,7 +172,7 @@ Finally, `original_tax_total` undergoes the same `tax_total` calculation, howeve
 
 ### Shipping Options
 
-Taxes for Shipping Options are calculated and retrieved when the [list of shipping options is retrieved](https://docs.medusajs.com/api/store/#tag/Shipping-Option).
+Taxes for Shipping Options are calculated and retrieved when the [list of shipping options is retrieved](/api/store/#tag/Shipping-Option).
 
 Among the returned fields for each shipping option, the following are relevant to each of their pricing and taxes:
 
@@ -186,9 +186,9 @@ If tax inclusivity is enabled for the shipping option, `amount` and `price_incl_
 
 Carts and Orders have the same total fields relevant for taxes.
 
-A cart’s totals, including its taxes, are calculated and retrieved whenever the cart is [updated or retrieved](https://docs.medusajs.com/api/store/#tag/Cart).
+A cart’s totals, including its taxes, are calculated and retrieved whenever the cart is [updated or retrieved](/api/store/#tag/Cart).
 
-An order’s totals, including its taxes, are calculated and retrieved whenever the order is retrieved both on the [storefront](https://docs.medusajs.com/api/store/#tag/Order) and on the [admin](https://docs.medusajs.com/api/admin/#tag/Order).
+An order’s totals, including its taxes, are calculated and retrieved whenever the order is retrieved both on the [storefront](/api/store/#tag/Order) and on the [admin](/api/admin/#tag/Order).
 
 The relevant fields are:
 
@@ -203,5 +203,5 @@ During the calculation of the totals of different components of the cart or orde
 
 ## See Also
 
-- [Calculate taxes manually](manual-calculation.md)
+- [Calculate taxes manually](./storefront/manual-calculation.md)
 - [Storefront API reference](/api/store)
