@@ -129,7 +129,7 @@ export const run = async (): Promise<void> => {
     console.log(`
     Storefront
     cd ${projectRoot}/storefront
-    yarn start
+    yarn dev
     `)
   }
 }
