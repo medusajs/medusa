@@ -1,19 +1,8 @@
+import AddSalesChannelsForm, {
+  AddSalesChannelsFormType,
+} from "./add-sales-channels"
+import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
 import { AdminPostProductsReq, ProductVariant } from "@medusajs/medusa"
-import { useAdminCreateProduct, useMedusa } from "medusa-react"
-import { useEffect } from "react"
-import { useForm, useWatch } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import Button from "../../../components/fundamentals/button"
-import FeatureToggle from "../../../components/fundamentals/feature-toggle"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import FocusModal from "../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../components/organisms/accordion"
-import useNotification from "../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { FormImage, ProductStatus } from "../../../types/shared"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { prepareImages } from "../../../utils/images"
-import { nestedForm } from "../../../utils/nested-form"
 import CustomsForm, { CustomsFormType } from "../components/customs-form"
 import DimensionsForm, {
   DimensionsFormType,
@@ -21,15 +10,27 @@ import DimensionsForm, {
 import DiscountableForm, {
   DiscountableFormType,
 } from "../components/discountable-form"
+import { FormImage, ProductStatus } from "../../../types/shared"
 import GeneralForm, { GeneralFormType } from "../components/general-form"
 import MediaForm, { MediaFormType } from "../components/media-form"
 import OrganizeForm, { OrganizeFormType } from "../components/organize-form"
-import { PricesFormType } from "../components/prices-form"
 import ThumbnailForm, { ThumbnailFormType } from "../components/thumbnail-form"
-import AddSalesChannelsForm, {
-  AddSalesChannelsFormType,
-} from "./add-sales-channels"
-import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
+import { useAdminCreateProduct, useMedusa } from "medusa-react"
+import { useForm, useWatch } from "react-hook-form"
+
+import Accordion from "../../../components/organisms/accordion"
+import Button from "../../../components/fundamentals/button"
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import FeatureToggle from "../../../components/fundamentals/feature-toggle"
+import FocusModal from "../../../components/molecules/modal/focus-modal"
+import { PricesFormType } from "../components/prices-form"
+import { getErrorMessage } from "../../../utils/error-messages"
+import { nestedForm } from "../../../utils/nested-form"
+import { prepareImages } from "../../../utils/images"
+import { useEffect } from "react"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { useNavigate } from "react-router-dom"
+import useNotification from "../../../hooks/use-notification"
 
 type NewProductForm = {
   general: GeneralFormType
@@ -215,7 +216,7 @@ const NewProduct = ({ onClose }: Props) => {
     <form className="w-full">
       <FocusModal>
         <FocusModal.Header>
-          <div className="flex justify-between w-full px-8 medium:w-8/12">
+          <div className="medium:w-8/12 flex w-full justify-between px-8">
             <Button
               size="small"
               variant="ghost"
@@ -224,7 +225,7 @@ const NewProduct = ({ onClose }: Props) => {
             >
               <CrossIcon size={20} />
             </Button>
-            <div className="flex gap-x-small">
+            <div className="gap-x-small flex">
               <Button
                 size="small"
                 variant="secondary"
@@ -246,7 +247,7 @@ const NewProduct = ({ onClose }: Props) => {
             </div>
           </div>
         </FocusModal.Header>
-        <FocusModal.Main className="flex justify-center w-full no-scrollbar">
+        <FocusModal.Main className="no-scrollbar flex w-full justify-center">
           <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
@@ -257,7 +258,7 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="flex flex-col mt-xlarge gap-y-xlarge">
+                <div className="mt-xlarge gap-y-xlarge flex flex-col">
                   <GeneralForm
                     form={nestedForm(form, "general")}
                     requireHandle={false}
@@ -269,7 +270,7 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="flex flex-col mt-xlarge gap-y-xlarge pb-xsmall">
+                <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
                   <div>
                     <h3 className="inter-base-semibold mb-base">
                       Organize Product
@@ -364,6 +365,9 @@ const createPayload = (
       ? data.organize.tags.map((t) => ({
           value: t,
         }))
+      : undefined,
+    categories: data.organize.categories?.length
+      ? data.organize.categories.map((id) => ({ id }))
       : undefined,
     origin_country: data.customs.origin_country?.value || undefined,
     options: data.variants.options.map((o) => ({

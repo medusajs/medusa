@@ -1,5 +1,5 @@
 import qs from "query-string"
-import React, { useContext, useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
 import AddressForm, {
@@ -7,7 +7,7 @@ import AddressForm, {
 } from "../../../../components/templates/address-form"
 import Medusa from "../../../../services/api"
 
-import { useAdminCustomer } from "medusa-react"
+import { useAdminCustomer, useAdminCustomers } from "medusa-react"
 import { Controller, useWatch } from "react-hook-form"
 import LockIcon from "../../../../components/fundamentals/icons/lock-icon"
 import InputField from "../../../../components/molecules/input"
@@ -23,6 +23,8 @@ import { useNewOrderForm } from "../form"
 const ShippingDetails = () => {
   const [addNew, setAddNew] = useState(false)
   const { disableNextPage, enableNextPage } = useContext(SteppedContext)
+
+  const { customers } = useAdminCustomers()
 
   const {
     context: { validCountries },
@@ -144,7 +146,7 @@ const ShippingDetails = () => {
   }, [shippingAddress, email])
 
   return (
-    <div className="min-h-[705px] flex flex-col gap-y-8">
+    <div className="flex min-h-[705px] flex-col gap-y-8">
       <div>
         <span className="inter-base-semibold">
           Customer and shipping details
@@ -182,11 +184,11 @@ const ShippingDetails = () => {
           required
           // @ts-ignore
           prefix={
-            !!customerId ? (
+            customerId ? (
               <LockIcon size={16} className="text-grey-40" />
             ) : undefined
           }
-          tabIndex={!!customerId ? -1 : 0}
+          tabIndex={customerId ? -1 : 0}
         />
       </div>
 
@@ -229,7 +231,7 @@ const ShippingDetails = () => {
             <Button
               variant="ghost"
               size="small"
-              className="border border-grey-20 w-[112px]"
+              className="border-grey-20 w-[112px] border"
               onClick={onCreateNew}
             >
               Create new
