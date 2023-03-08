@@ -1,55 +1,4 @@
 import { Address, ClaimOrder, Fulfillment, Swap } from "@medusajs/medusa"
-import { capitalize, sum } from "lodash"
-import {
-  useAdminCancelOrder,
-  useAdminCapturePayment,
-  useAdminOrder,
-  useAdminRegion,
-  useAdminUpdateOrder,
-} from "medusa-react"
-import moment from "moment"
-import { useMemo, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
-import { useNavigate, useParams } from "react-router-dom"
-import Avatar from "../../../components/atoms/avatar"
-import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
-import Spinner from "../../../components/atoms/spinner"
-import Tooltip from "../../../components/atoms/tooltip"
-import Badge from "../../../components/fundamentals/badge"
-import Button from "../../../components/fundamentals/button"
-import DetailsIcon from "../../../components/fundamentals/details-icon"
-import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
-import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon"
-import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon"
-import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
-import MailIcon from "../../../components/fundamentals/icons/mail-icon"
-import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
-import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
-import { ActionType } from "../../../components/molecules/actionables"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import JSONView from "../../../components/molecules/json-view"
-import BodyCard from "../../../components/organisms/body-card"
-import RawJSON from "../../../components/organisms/raw-json"
-import Timeline from "../../../components/organisms/timeline"
-import { AddressType } from "../../../components/templates/address-form"
-import TransferOrdersModal from "../../../components/templates/transfer-orders-modal"
-import useClipboard from "../../../hooks/use-clipboard"
-import useImperativeDialog from "../../../hooks/use-imperative-dialog"
-import useNotification from "../../../hooks/use-notification"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { isoAlpha2Countries } from "../../../utils/countries"
-import { getErrorMessage } from "../../../utils/error-messages"
-import extractCustomerName from "../../../utils/extract-customer-name"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import OrderEditProvider, { OrderEditContext } from "../edit/context"
-import OrderEditModal from "../edit/modal"
-import AddressModal from "./address-modal"
-import CreateFulfillmentModal from "./create-fulfillment"
-import EmailModal from "./email-modal"
-import MarkShippedModal from "./mark-shipped"
-import OrderLine from "./order-line"
-import CreateRefundModal from "./refund"
 import {
   DisplayTotal,
   FormattedAddress,
@@ -57,9 +6,57 @@ import {
   FulfillmentStatusComponent,
   OrderStatusComponent,
   PaymentActionables,
-  PaymentDetails,
   PaymentStatusComponent,
 } from "./templates"
+import OrderEditProvider, { OrderEditContext } from "../edit/context"
+import {
+  useAdminCancelOrder,
+  useAdminCapturePayment,
+  useAdminOrder,
+  useAdminRegion,
+  useAdminUpdateOrder,
+} from "medusa-react"
+import { useNavigate, useParams } from "react-router-dom"
+
+import { ActionType } from "../../../components/molecules/actionables"
+import AddressModal from "./address-modal"
+import { AddressType } from "../../../components/templates/address-form"
+import Avatar from "../../../components/atoms/avatar"
+import BodyCard from "../../../components/organisms/body-card"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
+import Button from "../../../components/fundamentals/button"
+import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
+import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon"
+import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon"
+import CreateFulfillmentModal from "./create-fulfillment"
+import CreateRefundModal from "./refund"
+import DetailsIcon from "../../../components/fundamentals/details-icon"
+import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
+import EmailModal from "./email-modal"
+import JSONView from "../../../components/molecules/json-view"
+import MailIcon from "../../../components/fundamentals/icons/mail-icon"
+import MarkShippedModal from "./mark-shipped"
+import OrderEditModal from "../edit/modal"
+import RawJSON from "../../../components/organisms/raw-json"
+import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
+import Spinner from "../../../components/atoms/spinner"
+import SummaryCard from "./detail-cards/summary"
+import Timeline from "../../../components/organisms/timeline"
+import Tooltip from "../../../components/atoms/tooltip"
+import TransferOrdersModal from "../../../components/templates/transfer-orders-modal"
+import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
+import { capitalize } from "lodash"
+import extractCustomerName from "../../../utils/extract-customer-name"
+import { formatAmountWithSymbol } from "../../../utils/prices"
+import { getErrorMessage } from "../../../utils/error-messages"
+import { isoAlpha2Countries } from "../../../utils/countries"
+import moment from "moment"
+import useClipboard from "../../../hooks/use-clipboard"
+import { useHotkeys } from "react-hotkeys-hook"
+import useImperativeDialog from "../../../hooks/use-imperative-dialog"
+import useNotification from "../../../hooks/use-notification"
+import { useState } from "react"
+import useToggleState from "../../../hooks/use-toggle-state"
 
 type OrderDetailFulfillment = {
   title: string
@@ -120,7 +117,6 @@ const gatherAllFulfillments = (order) => {
 const OrderDetails = () => {
   const { id } = useParams()
 
-  const { isFeatureEnabled } = useFeatureFlag()
   const dialog = useImperativeDialog()
 
   const [addressModal, setAddressModal] = useState<null | {
@@ -166,37 +162,6 @@ const OrderDetails = () => {
   // @ts-ignore
   useHotkeys("esc", () => navigate("/a/orders"))
   useHotkeys("command+i", handleCopy)
-
-  const { hasMovements, swapAmount, manualRefund, swapRefund, returnRefund } =
-    useMemo(() => {
-      let manualRefund = 0
-      let swapRefund = 0
-      let returnRefund = 0
-
-      const swapAmount = sum(order?.swaps.map((s) => s.difference_due) || [0])
-
-      if (order?.refunds?.length) {
-        order.refunds.forEach((ref) => {
-          if (ref.reason === "other" || ref.reason === "discount") {
-            manualRefund += ref.amount
-          }
-          if (ref.reason === "return") {
-            returnRefund += ref.amount
-          }
-          if (ref.reason === "swap") {
-            swapRefund += ref.amount
-          }
-        })
-      }
-      return {
-        hasMovements:
-          swapAmount + manualRefund + swapRefund + returnRefund !== 0,
-        swapAmount,
-        manualRefund,
-        swapRefund,
-        returnRefund,
-      }
-    }, [order])
 
   const handleDeleteOrder = async () => {
     const shouldDelete = await dialog({
@@ -350,101 +315,8 @@ const OrderDetails = () => {
                     </div>
                   </div>
                 </BodyCard>
-                <OrderEditContext.Consumer>
-                  {({ showModal }) => (
-                    <BodyCard
-                      className={"mb-4 h-auto min-h-0 w-full"}
-                      title="Summary"
-                      actionables={
-                        isFeatureEnabled("order_editing")
-                          ? [
-                              {
-                                label: "Edit Order",
-                                onClick: showModal,
-                              },
-                            ]
-                          : undefined
-                      }
-                    >
-                      <div className="mt-6">
-                        {order.items?.map((item, i) => (
-                          <OrderLine
-                            key={i}
-                            item={item}
-                            currencyCode={order.currency_code}
-                          />
-                        ))}
-                        <DisplayTotal
-                          currency={order.currency_code}
-                          totalAmount={order.subtotal}
-                          totalTitle={"Subtotal"}
-                        />
-                        {order?.discounts?.map((discount, index) => (
-                          <DisplayTotal
-                            key={index}
-                            currency={order.currency_code}
-                            totalAmount={-1 * order.discount_total}
-                            totalTitle={
-                              <div className="inter-small-regular text-grey-90 flex items-center">
-                                Discount:{" "}
-                                <Badge className="ml-3" variant="default">
-                                  {discount.code}
-                                </Badge>
-                              </div>
-                            }
-                          />
-                        ))}
-                        {order?.gift_cards?.map((giftCard, index) => (
-                          <DisplayTotal
-                            key={index}
-                            currency={order.currency_code}
-                            totalAmount={-1 * order.gift_card_total}
-                            totalTitle={
-                              <div className="inter-small-regular text-grey-90 flex items-center">
-                                Gift card:
-                                <Badge className="ml-3" variant="default">
-                                  {giftCard.code}
-                                </Badge>
-                                <div className="ml-2">
-                                  <CopyToClipboard
-                                    value={giftCard.code}
-                                    showValue={false}
-                                    iconSize={16}
-                                  />
-                                </div>
-                              </div>
-                            }
-                          />
-                        ))}
-                        <DisplayTotal
-                          currency={order.currency_code}
-                          totalAmount={order.shipping_total}
-                          totalTitle={"Shipping"}
-                        />
-                        <DisplayTotal
-                          currency={order.currency_code}
-                          totalAmount={order.tax_total}
-                          totalTitle={`Tax`}
-                        />
-                        <DisplayTotal
-                          variant={"large"}
-                          currency={order.currency_code}
-                          totalAmount={order.total}
-                          totalTitle={hasMovements ? "Original Total" : "Total"}
-                        />
-                        <PaymentDetails
-                          manualRefund={manualRefund}
-                          swapAmount={swapAmount}
-                          swapRefund={swapRefund}
-                          returnRefund={returnRefund}
-                          paidTotal={order.paid_total}
-                          refundedTotal={order.refunded_total}
-                          currency={order.currency_code}
-                        />
-                      </div>
-                    </BodyCard>
-                  )}
-                </OrderEditContext.Consumer>
+
+                <SummaryCard order={order} />
 
                 <BodyCard
                   className={"mb-4 h-auto min-h-0 w-full"}

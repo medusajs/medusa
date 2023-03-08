@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import type { Identifier, XYCoord } from "dnd-core"
-import React, { useEffect, useRef } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import { useForm } from "react-hook-form"
 import Tooltip from "../../../../../components/atoms/tooltip"
@@ -13,6 +13,9 @@ import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
 import Actionables from "../../../../../components/molecules/actionables"
 import IconTooltip from "../../../../../components/molecules/icon-tooltip"
 import Modal from "../../../../../components/molecules/modal"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
 import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import { DragItem } from "../../../../../types/shared"
@@ -156,6 +159,7 @@ const NewVariant = ({
   })
 
   drag(drop(ref))
+  const layeredModalContext = useContext(LayeredModalContext)
 
   return (
     <>
@@ -163,7 +167,7 @@ const NewVariant = ({
         ref={preview}
         data-handler-id={handlerId}
         className={clsx(
-          "grid grid-cols-[32px_1fr_90px_100px_48px] transition-all rounded-rounded hover:bg-grey-5 focus-within:bg-grey-5 h-16 py-xsmall pl-xsmall pr-base translate-y-0 translate-x-0",
+          "rounded-rounded py-xsmall pl-xsmall pr-base focus-within:bg-grey-5 hover:bg-grey-5 grid h-16 translate-y-0 translate-x-0 grid-cols-[32px_1fr_90px_100px_48px] transition-all",
           {
             "opacity-50": isDragging,
           }
@@ -171,15 +175,15 @@ const NewVariant = ({
       >
         <div
           ref={ref}
-          className="text-grey-40 cursor-move flex items-center justify-center"
+          className="flex items-center justify-center cursor-move text-grey-40"
         >
           <GripIcon size={20} />
         </div>
-        <div className="flex justify-center flex-col ml-base">
+        <div className="flex flex-col justify-center ml-base">
           <p className="inter-base-semibold">
             {source.general.title}
             {source.stock.sku && (
-              <span className="inter-base-regular text-grey-50 ml-2xsmall">
+              <span className="inter-base-regular ml-2xsmall text-grey-50">
                 ({source.stock.sku})
               </span>
             )}
@@ -200,7 +204,7 @@ const NewVariant = ({
             productDimensions={productDimensions}
           />
         </div>
-        <div className="ml-xlarge flex items-center justify-center pr-base">
+        <div className="flex items-center justify-center ml-xlarge pr-base">
           <Actionables
             forceDropdown
             actions={[
@@ -219,7 +223,7 @@ const NewVariant = ({
             customTrigger={
               <Button
                 variant="ghost"
-                className="w-xlarge h-xlarge p-0 flex items-center justify-center text-grey-50"
+                className="flex items-center justify-center p-0 h-xlarge w-xlarge text-grey-50"
               >
                 <MoreHorizontalIcon size={20} />
               </Button>
@@ -227,14 +231,17 @@ const NewVariant = ({
           />
         </div>
       </div>
-
-      <Modal open={state} handleClose={closeAndReset}>
+      <LayeredModal
+        context={layeredModalContext}
+        open={state}
+        handleClose={closeAndReset}
+      >
         <Modal.Body>
           <Modal.Header handleClose={closeAndReset}>
             <h1 className="inter-xlarge-semibold">
               Edit Variant
               {source.general.title && (
-                <span className="ml-xsmall inter-xlarge-regular text-grey-50">
+                <span className="inter-xlarge-regular ml-xsmall text-grey-50">
                   ({source.general.title})
                 </span>
               )}
@@ -248,7 +255,7 @@ const NewVariant = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center gap-x-xsmall justify-end w-full">
+            <div className="flex items-center justify-end w-full gap-x-xsmall">
               <Button
                 variant="secondary"
                 size="small"
@@ -268,7 +275,7 @@ const NewVariant = ({
             </div>
           </Modal.Footer>
         </Modal.Body>
-      </Modal>
+      </LayeredModal>
     </>
   )
 }
@@ -292,7 +299,7 @@ const VariantValidity = ({
       <IconTooltip
         type="error"
         content={
-          <div className="text-rose-50 flex flex-col gap-y-2xsmall">
+          <div className="flex flex-col gap-y-2xsmall text-rose-50">
             <p>This variant has no options.</p>
           </div>
         }
@@ -307,7 +314,7 @@ const VariantValidity = ({
       <IconTooltip
         type="error"
         content={
-          <div className="text-rose-50 flex flex-col gap-y-2xsmall">
+          <div className="flex flex-col gap-y-2xsmall text-rose-50">
             <p>You are missing options values for the following options:</p>
             <ul className="list-disc list-inside">
               {invalidOptions.map((io, index) => {
@@ -343,7 +350,7 @@ const VariantValidity = ({
         type="warning"
         side="right"
         content={
-          <div className="text-orange-50 flex flex-col gap-y-2xsmall">
+          <div className="flex flex-col gap-y-2xsmall text-orange-50">
             <p>
               Your variant is createable, but it's missing some important
               fields:

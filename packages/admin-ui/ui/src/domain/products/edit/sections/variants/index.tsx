@@ -1,26 +1,39 @@
+import OptionsProvider, { useOptionsContext } from "./options-provider"
 import { Product, ProductVariant } from "@medusajs/medusa"
-import React, { useState } from "react"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import GearIcon from "../../../../../components/fundamentals/icons/gear-icon"
-import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
+
 import { ActionType } from "../../../../../components/molecules/actionables"
-import Section from "../../../../../components/organisms/section"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
 import AddVariantModal from "./add-variant-modal"
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
+import EditVariantInventoryModal from "./edit-variant-inventory-modal"
 import EditVariantModal from "./edit-variant-modal"
 import EditVariantsModal from "./edit-variants-modal"
+import GearIcon from "../../../../../components/fundamentals/icons/gear-icon"
 import OptionsModal from "./options-modal"
-import OptionsProvider, { useOptionsContext } from "./options-provider"
+import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
+import Section from "../../../../../components/organisms/section"
 import VariantsTable from "./table"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { useState } from "react"
+import useToggleState from "../../../../../hooks/use-toggle-state"
 
 type Props = {
   product: Product
 }
 
 const VariantsSection = ({ product }: Props) => {
+  const { isFeatureEnabled } = useFeatureFlag()
+
   const [variantToEdit, setVariantToEdit] = useState<
-    { base: ProductVariant; isDuplicate: boolean } | undefined
+    | {
+        base: ProductVariant
+        isDuplicate: boolean
+      }
+    | undefined
+  >(undefined)
+
+  const [variantInventoryToEdit, setVariantInventoryToEdit] = useState<
+    { base: ProductVariant } | undefined
   >(undefined)
 
   const {
@@ -74,6 +87,10 @@ const VariantsSection = ({ product }: Props) => {
     setVariantToEdit({ base: { ...variant, options: [] }, isDuplicate: true })
   }
 
+  const handleEditVariantInventory = (variant: ProductVariant) => {
+    setVariantInventoryToEdit({ base: variant })
+  }
+
   return (
     <OptionsProvider product={product}>
       <Section title="Variants" actions={actions}>
@@ -91,6 +108,7 @@ const VariantsSection = ({ product }: Props) => {
               deleteVariant: handleDeleteVariant,
               updateVariant: handleEditVariant,
               duplicateVariant: handleDuplicateVariant,
+              updateVariantInventory: handleEditVariantInventory,
             }}
           />
         </div>
@@ -118,6 +136,13 @@ const VariantsSection = ({ product }: Props) => {
           onClose={() => setVariantToEdit(undefined)}
         />
       )}
+      {variantInventoryToEdit && (
+        <EditVariantInventoryModal
+          variant={variantInventoryToEdit.base}
+          product={product}
+          onClose={() => setVariantInventoryToEdit(undefined)}
+        />
+      )}
     </OptionsProvider>
   )
 }
@@ -135,11 +160,11 @@ const ProductOptions = () => {
         {Array.from(Array(2)).map((_, i) => {
           return (
             <div key={i}>
-              <div className="bg-grey-30 h-6 w-9 animate-pulse mb-xsmall"></div>
+              <div className="mb-xsmall bg-grey-30 h-6 w-9 animate-pulse"></div>
               <ul className="flex flex-wrap items-center gap-1">
                 {Array.from(Array(3)).map((_, j) => (
                   <li key={j}>
-                    <div className="text-grey-50 bg-grey-10 h-8 w-12 animate-pulse rounded-rounded">
+                    <div className="rounded-rounded bg-grey-10 text-grey-50 h-8 w-12 animate-pulse">
                       {j}
                     </div>
                   </li>
@@ -153,7 +178,7 @@ const ProductOptions = () => {
   }
 
   return (
-    <div className="mt-base flex items-center flex-wrap gap-8">
+    <div className="mt-base flex flex-wrap items-center gap-8">
       {options.map((option) => {
         return (
           <div key={option.id}>
@@ -164,7 +189,7 @@ const ProductOptions = () => {
                 .filter((v, index, self) => self.indexOf(v) === index)
                 .map((v, i) => (
                   <li key={i}>
-                    <div className="text-grey-50 bg-grey-10 inter-small-semibold px-3 py-[6px] rounded-rounded whitespace-nowrap">
+                    <div className="inter-small-semibold rounded-rounded bg-grey-10 text-grey-50 whitespace-nowrap px-3 py-[6px]">
                       {v}
                     </div>
                   </li>
