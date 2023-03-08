@@ -251,6 +251,8 @@ export default class EventBusService {
     data?: T,
     options: Record<string, unknown> & EmitOptions = {}
   ): Promise<TResult | void> {
+    const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
+
     const isBulkEmit = !isString(eventNameOrData)
     const events: EmitData<T>[] = isBulkEmit
       ? eventNameOrData
@@ -262,17 +264,20 @@ export default class EventBusService {
           },
         ]
 
+    // The order of precedence for job options is:
+    // 1. local options
+    // 2. global options
+    // 3. default options
     const defaultOptions: EmitOptions = {
-      attempts: 1,
-      removeOnComplete: {
-        age: COMPLETED_JOB_TTL,
-      },
+      attempts: 1, // default
+      removeOnComplete: true, // default
+      ...globalEventOptions, // global
     }
 
     for (const event of events) {
       event.options = {
         ...defaultOptions,
-        ...(event.options ?? {}),
+        ...(event.options ?? {}), // local
       }
     }
 

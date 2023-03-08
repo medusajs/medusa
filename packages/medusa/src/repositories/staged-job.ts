@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from "typeorm"
 import { StagedJob } from "../models"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { RelationIdLoader } from "typeorm/query-builder/RelationIdLoader"
 import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer"
+import { RelationIdLoader } from "typeorm/query-builder/relation-id/RelationIdLoader"
 
 @EntityRepository(StagedJob)
 export class StagedJobRepository extends Repository<StagedJob> {
