@@ -4,6 +4,8 @@ export const getAllReturnableItems = (
   order: Omit<Order, "beforeInserts">,
   isClaim: boolean
 ) => {
+  console.log(JSON.stringify(order, null, 2))
+
   let orderItems = order.items.reduce(
     (map, obj) =>
       map.set(obj.id, {
@@ -16,8 +18,10 @@ export const getAllReturnableItems = (
 
   if (order.claims && order.claims.length) {
     for (const claim of order.claims) {
-      claim.claim_items = claim.claim_items ?? []
-      claimedItems = [...claimedItems, ...claim.claim_items]
+      if (claim.return_order?.status !== "canceled") {
+        claim.claim_items = claim.claim_items ?? []
+        claimedItems = [...claimedItems, ...claim.claim_items]
+      }
 
       if (
         claim.fulfillment_status === "not_fulfilled" &&
@@ -41,6 +45,10 @@ export const getAllReturnableItems = (
   if (!isClaim) {
     if (order.swaps && order.swaps.length) {
       for (const swap of order.swaps) {
+        if (swap.fulfillment_status === "not_fulfilled") {
+          continue
+        }
+
         orderItems = swap.additional_items.reduce(
           (map, obj) =>
             map.set(obj.id, {

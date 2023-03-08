@@ -2,7 +2,7 @@ import { Order, Return } from "@medusajs/medusa"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { nestedForm } from "../../../../utils/nested-form"
-import { ReceiveReturnFormType } from "../../details/receive-return/receive-return-menu"
+import { ReceiveReturnFormType } from "../../details/receive-return"
 import RefundAmountForm from "../refund-amount-form"
 import { SummaryLineItem } from "./summary-line-item"
 import { SummaryShippingLine } from "./summary-shipping-line"
@@ -71,11 +71,11 @@ export const ReceiveReturnSummary = ({ form, order, returnRequest }: Props) => {
 
   return (
     <div className="inter-base-regular">
-      <div className="flex flex-col gap-y-base border-y border-grey-20 py-large">
+      <div className="gap-y-base border-grey-20 py-large flex flex-col border-y">
         {itemToReceive.length > 0 && (
           <div>
             <p className="inter-base-semibold mb-small">Receiving</p>
-            <div className="flex flex-col gap-y-xsmall">
+            <div className="gap-y-xsmall flex flex-col">
               {itemToReceive.map((item, index) => {
                 return (
                   <SummaryLineItem
@@ -102,7 +102,7 @@ export const ReceiveReturnSummary = ({ form, order, returnRequest }: Props) => {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-y-xsmall pt-large">
+      <div className="gap-y-xsmall pt-large flex flex-col">
         <div
           className="inter-large-semibold flex items-center justify-between"
           data-testid="refund-amount-container"
