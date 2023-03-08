@@ -249,27 +249,31 @@ export default class EventBusService {
   >(
     eventNameOrData: TInput,
     data?: T,
-    options?: Record<string, unknown> & EmitOptions
+    options: Record<string, unknown> & EmitOptions = {}
   ): Promise<TResult | void> {
-    let events = eventNameOrData as EmitData<T>[]
-
     const isBulkEmit = !isString(eventNameOrData)
+    const events: EmitData<T>[] = isBulkEmit
+      ? eventNameOrData
+      : [
+          {
+            eventName: eventNameOrData,
+            data: data!,
+            options,
+          },
+        ]
 
-    if (!isBulkEmit) {
-      const opts: EmitOptions = {
-        removeOnComplete: {
-          age: COMPLETED_JOB_TTL,
-        },
-        ...options,
+    const defaultOptions: EmitOptions = {
+      attempts: 1,
+      removeOnComplete: {
+        age: COMPLETED_JOB_TTL,
+      },
+    }
+
+    for (const event of events) {
+      event.options = {
+        ...defaultOptions,
+        ...(event.options ?? {}),
       }
-
-      events = [
-        {
-          eventName: eventNameOrData,
-          data: data!,
-          options: opts,
-        },
-      ]
     }
 
     /**
