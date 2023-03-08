@@ -126,6 +126,11 @@ export class AdminPostProductCategoriesCategoryReq extends AdminProductCategorie
   name?: string
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  handle?: string
+
+  @IsOptional()
   @IsInt()
   @IsNotEmpty()
   @Min(0)
