@@ -124,15 +124,17 @@ describe("EventBusService", () => {
     const bulkData = [{ hi: "1234" }, { hi: "12345" }]
 
     const mockManager = MockManager
-    const stagedJobRepository = MockRepository({
-      insertBulk: async (data) => data,
-      create: (data) => data,
-    })
 
     describe("successfully adds job to queue", () => {
       let eventBus
+      let stagedJobRepository
 
       beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
         eventBus = new EventBusService({
           logger: loggerMock,
           manager: mockManager,
@@ -143,8 +145,8 @@ describe("EventBusService", () => {
       })
 
       afterEach(async () => {
-        jest.clearAllMocks()
         await eventBus.stopEnqueuer()
+        jest.clearAllMocks()
       })
 
       it("calls queue.addBulk", async () => {
@@ -183,8 +185,14 @@ describe("EventBusService", () => {
 
     describe("successfully adds jobs in bulk to queue", () => {
       let eventBus
+      let stagedJobRepository
 
       beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
         eventBus = new EventBusService({
           logger: loggerMock,
           manager: mockManager,
@@ -256,8 +264,14 @@ describe("EventBusService", () => {
 
     describe("successfully adds job to queue with global options", () => {
       let eventBus
+      let stagedJobRepository
 
       beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
         eventBus = new EventBusService(
           {
             logger: loggerMock,
@@ -293,8 +307,14 @@ describe("EventBusService", () => {
 
     describe("successfully adds job to queue with default options", () => {
       let eventBus
+      let stagedJobRepository
 
       beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
         eventBus = new EventBusService({
           logger: loggerMock,
           manager: mockManager,
@@ -325,8 +345,14 @@ describe("EventBusService", () => {
 
     describe("successfully adds job to queue with local options and global options merged", () => {
       let eventBus
+      let stagedJobRepository
 
       beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
         eventBus = new EventBusService(
           {
             logger: loggerMock,
