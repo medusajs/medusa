@@ -11742,7 +11742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bull@npm:*, bull@npm:4.10.4, bull@npm:latest":
+"bull@npm:*, bull@npm:4.10.4":
   version: 4.10.4
   resolution: "bull@npm:4.10.4"
   dependencies:
@@ -31267,7 +31267,6 @@ __metadata:
     axios-mock-adapter: ^1.19.0
     babel-jest: ^26.6.3
     babel-preset-medusa-package: ^1.0.0
-    bull: latest
     cross-env: ^7.0.3
     eslint: ^8.23.0
     eslint-config-google: ^0.14.0
