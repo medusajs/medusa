@@ -115,8 +115,24 @@ export type ConfigModule = {
   projectConfig: {
     redis_url?: string
 
-    // use to configure global options passed to `EventBusService.emit` i.e. the options passed to Bull
-    global_job_options?: Record<string, unknown> & EmitOptions
+    /**
+     * Global options passed to all `EventBusService.emit` in the core as well as your own emitters. The options are forwarded to Bull's `Queue.add` method.
+     *
+     * The global options can be overridden by passing options to `EventBusService.emit` directly.
+     *
+     * Note: This will be deprecated as we move to Event Bus module in 1.8
+     *
+     *
+     * Example
+     * ```js
+     * {
+     *    removeOnComplete: { age: 10 },
+     * }
+     * ```
+     *
+     * @see https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueadd
+     */
+    event_options?: Record<string, unknown> & EmitOptions
 
     session_options?: SessionOptions
 

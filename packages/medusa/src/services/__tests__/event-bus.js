@@ -190,7 +190,7 @@ describe("EventBusService", () => {
             stagedJobRepository,
           },
           {
-            projectConfig: { global_job_options: { removeOnComplete: 10 } },
+            projectConfig: { event_options: { removeOnComplete: 10 } },
           }
         )
 
@@ -255,7 +255,7 @@ describe("EventBusService", () => {
             stagedJobRepository,
           },
           {
-            projectConfig: { global_job_options: { removeOnComplete: 10 } },
+            projectConfig: { event_options: { removeOnComplete: 10 } },
           }
         )
 

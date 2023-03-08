@@ -227,8 +227,7 @@ export default class EventBusService {
     data: T,
     options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
-    const globalJobOptions =
-      this.config_?.projectConfig?.global_job_options ?? {}
+    const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
 
     // The order of precedence for job options is:
     // 1. local options
@@ -236,7 +235,7 @@ export default class EventBusService {
     // 3. default options
     const opts: EmitOptions = {
       removeOnComplete: true,
-      ...globalJobOptions,
+      ...globalEventOptions,
       ...options,
     }
 
