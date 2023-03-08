@@ -1,5 +1,9 @@
+import {
+  AdminReservationsListRes,
+  Order,
+  ReservationItemDTO,
+} from "@medusajs/medusa"
 import { DisplayTotal, PaymentDetails } from "../templates"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import React, { useContext, useMemo } from "react"
 
 import { ActionType } from "../../../../components/molecules/actionables"
@@ -7,43 +11,19 @@ import AllocateItemsModal from "../allocations/allocate-items-modal"
 import Badge from "../../../../components/fundamentals/badge"
 import BodyCard from "../../../../components/organisms/body-card"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
-import { Order } from "@medusajs/medusa"
 import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
+import { Response } from "@medusajs/medusa-js"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
-import { useMedusa } from "medusa-react"
+import { useAdminReservations } from "medusa-react"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../hooks/use-toggle-state"
 
 type SummaryCardProps = {
   order: Order
 }
 
-const useReservations = async ({
-  line_item_id,
-}: {
-  line_item_id: string[]
-}) => {
-  const { isFeatureEnabled } = useFeatureFlag()
-  const { client } = useMedusa()
-
-  if (!isFeatureEnabled("inventoryService")) {
-    return {
-      reservations: [],
-    }
-  }
-
-  return client.admin.reservations
-    .list({
-      line_item_id,
-    })
-    .then(({ reservations }) => {
-      return { reservations }
-    })
-    .catch(() => {
-      return { reservations: [] }
-    })
-}
 const SummaryCard: React.FC<SummaryCardProps> = ({
   order,
 }: {
@@ -55,32 +35,49 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     close: closeAllocationModal,
   } = useToggleState()
 
-  const { isFeatureEnabled } = useFeatureFlag()
-  const inventoryEnabled = !isFeatureEnabled("inventoryService")
-
   const { showModal } = useContext(OrderEditContext)
+  const { isFeatureEnabled } = useFeatureFlag()
+  const inventoryEnabled = isFeatureEnabled("inventoryService")
 
-  const [reservations, setReservations] = React.useState<any[]>([])
+  const { reservations, isLoading, refetch } = useAdminReservations(
+    {
+      line_item_id: order.items.map((item) => item.id),
+    },
+    {
+      enabled: inventoryEnabled,
+      initialData: {
+        reservations: [] as ReservationItemDTO[],
+        limit: 0,
+        offset: 0,
+        count: 0,
+      } as Response<AdminReservationsListRes>,
+    }
+  )
 
-  useReservations({
-    line_item_id: order.items.map((item) => item.id),
-  }).then(({ reservations }) => setReservations(reservations))
+  React.useEffect(() => {
+    if (inventoryEnabled) {
+      refetch()
+    }
+  }, [inventoryEnabled, refetch])
 
   const reservationItemsMap = useMemo(() => {
-    if (!reservations?.length || !inventoryEnabled) {
+    if (!reservations?.length || !inventoryEnabled || isLoading) {
       return {}
     }
 
-    return reservations.reduce((acc, item) => {
-      if (!item.line_item_id) {
+    return reservations.reduce(
+      (acc: Record<string, ReservationItemDTO[]>, item: ReservationItemDTO) => {
+        if (!item.line_item_id) {
+          return acc
+        }
+        acc[item.line_item_id] = acc[item.line_item_id]
+          ? [...acc[item.line_item_id], item]
+          : [item]
         return acc
-      }
-      acc[item.line_item_id] = acc[item.line_item_id]
-        ? [...acc[item.line_item_id], item]
-        : [item]
-      return acc
-    }, {})
-  }, [reservations, inventoryEnabled])
+      },
+      {}
+    )
+  }, [reservations, inventoryEnabled, isLoading])
 
   const allItemsReserved = useMemo(() => {
     return order.items.every((item) => {
