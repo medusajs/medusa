@@ -23,7 +23,7 @@ import CreateFulfillmentItemsTable, {
 } from "./item-table"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import useNotification from "../../../../hooks/use-notification"
-import { FeatureFlagContext } from "../../../../providers/feature-flag-provider"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
@@ -43,7 +43,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   orderToFulfill,
   orderId,
 }) => {
-  const { isFeatureEnabled } = React.useContext(FeatureFlagContext)
+  const { isFeatureEnabled } = useFeatureFlag()
   const [quantities, setQuantities] = useState<Record<string, number>>(
     "object" in orderToFulfill
       ? (orderToFulfill as Order).items.reduce((acc, next) => {
@@ -190,7 +190,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   return (
     <FocusModal>
       <FocusModal.Header>
-        <div className="medium:w-8/12 flex w-full justify-between px-8">
+        <div className="flex justify-between w-full px-8 medium:w-8/12">
           <Button
             size="small"
             variant="ghost"
@@ -199,7 +199,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
           >
             <CrossIcon size={20} />
           </Button>
-          <div className="gap-x-small flex">
+          <div className="flex gap-x-small">
             <Button
               size="small"
               variant="secondary"
@@ -247,7 +247,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
             </FeatureToggle>
             <div className="flex flex-col">
               <span className="inter-base-semibold ">Items to fulfill</span>
-              <span className="text-grey-50 mb-6">
+              <span className="mb-6 text-grey-50">
                 Select the number of items that you wish to fulfill.
               </span>
               <CreateFulfillmentItemsTable
@@ -262,7 +262,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               <Metadata metadata={metadata} setMetadata={setMetadata} />
             </div>
             <div>
-              <div className="mb-2xsmall flex items-center justify-between">
+              <div className="flex items-center justify-between mb-2xsmall">
                 <h2 className="inter-base-semibold">Send notifications</h2>
                 <Switch
                   checked={!noNotis}

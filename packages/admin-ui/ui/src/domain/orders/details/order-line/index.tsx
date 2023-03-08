@@ -1,12 +1,12 @@
 import { LineItem, ReservationItemDTO } from "@medusajs/medusa"
-import React, { useContext } from "react"
+import React from "react"
 
 import Button from "../../../../components/fundamentals/button"
 import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
 import CircleQuarterSolid from "../../../../components/fundamentals/icons/circle-quarter-solid"
 import EditAllocationDrawer from "../allocations/edit-allocation-modal"
 import ExclamationCircleIcon from "../../../../components/fundamentals/icons/exclamation-circle-icon"
-import { FeatureFlagContext } from "../../../../providers/feature-flag-provider"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import Tooltip from "../../../../components/atoms/tooltip"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
@@ -20,7 +20,7 @@ type OrderLineProps = {
 }
 
 const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
-  const { isFeatureEnabled } = useContext(FeatureFlagContext)
+  const { isFeatureEnabled } = useFeatureFlag()
   return (
     <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
       <div className="flex justify-center space-x-4">
@@ -32,11 +32,11 @@ const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
           )}
         </div>
         <div className="flex max-w-[185px] flex-col justify-center">
-          <span className="inter-small-regular text-grey-90 truncate">
+          <span className="truncate inter-small-regular text-grey-90">
             {item.title}
           </span>
           {item?.variant && (
-            <span className="inter-small-regular text-grey-50 truncate">
+            <span className="truncate inter-small-regular text-grey-50">
               {`${item.variant.title}${
                 item.variant.sku ? ` (${item.variant.sku})` : ""
               }`}
@@ -44,8 +44,8 @@ const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
           )}
         </div>
       </div>
-      <div className="flex  items-center">
-        <div className="small:space-x-2 medium:space-x-4 large:space-x-6 mr-3 flex">
+      <div className="flex items-center">
+        <div className="flex mr-3 small:space-x-2 medium:space-x-4 large:space-x-6">
           <div className="inter-small-regular text-grey-50">
             {formatAmountWithSymbol({
               amount: (item?.total ?? 0) / item.quantity,
@@ -100,10 +100,10 @@ const ReservationIndicator = ({
     <div className={awaitingAllocation ? "text-rose-50" : "text-grey-40"}>
       <Tooltip
         content={
-          <div className="inter-small-regular flex flex-col items-center px-1 pb-2 pt-1">
-            <div className="gap-y-base grid grid-cols-1 divide-y">
+          <div className="flex flex-col items-center px-1 pt-1 pb-2 inter-small-regular">
+            <div className="grid grid-cols-1 divide-y gap-y-base">
               {!!awaitingAllocation && (
-                <span className="flex w-full items-center">
+                <span className="flex items-center w-full">
                   {awaitingAllocation} items await allocation
                 </span>
               )}
@@ -163,7 +163,7 @@ const EditAllocationButton = ({
         onClick={onClick}
         variant="ghost"
         size="small"
-        className="mt-2 w-full border"
+        className="w-full mt-2 border"
       >
         Edit Allocation
       </Button>

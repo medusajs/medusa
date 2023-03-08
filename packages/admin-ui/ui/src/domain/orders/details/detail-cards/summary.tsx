@@ -13,7 +13,7 @@ import StatusIndicator from "../../../../components/fundamentals/status-indicato
 import { ActionType } from "../../../../components/molecules/actionables"
 import useToggleState from "../../../../hooks/use-toggle-state"
 import AllocateItemsModal from "../allocations/allocate-items-modal"
-import { FeatureFlagContext } from "../../../../providers/feature-flag-provider"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 type SummaryCardProps = {
   order: Order
@@ -29,7 +29,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     close: closeAllocationModal,
   } = useToggleState()
 
-  const { isFeatureEnabled } = useContext(FeatureFlagContext)
+  const { isFeatureEnabled } = useFeatureFlag()
   const { showModal } = useContext(OrderEditContext)
   const { reservations, isLoading } = useAdminReservations({
     line_item_id: order.items.map((item) => item.id),
