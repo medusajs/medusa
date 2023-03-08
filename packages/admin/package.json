@@ -32,7 +32,9 @@
     "fs-extra": "^11.1.0",
     "medusa-core-utils": "*",
     "ora": "5.4.0",
-    "picocolors": "^1.0.0"
+    "picocolors": "^1.0.0",
+    "ts-dedent": "^2.2.0",
+    "vercel": "^28.16.15"
   },
   "peerDependencies": {
     "@medusajs/medusa": "*"
