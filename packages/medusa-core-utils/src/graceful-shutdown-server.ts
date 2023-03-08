@@ -11,14 +11,15 @@ export abstract class GracefulShutdownServer {
   public isShuttingDown: boolean
   public abstract shutdown(timeout?: number): Promise<void>
   public static create<T extends Server>(
-    server: T & GracefulShutdownServer,
-    waitingResponseTime: number = 300
+    originalServer: T,
+    waitingResponseTime: number = 200
   ): T & GracefulShutdownServer {
     let connectionId = 0
     let shutdownPromise: Promise<void>
 
     const allSockets: { [id: number]: SocketState } = {}
 
+    const server = originalServer as T & GracefulShutdownServer
     server.isShuttingDown = false
     server.shutdown = async (timeout: number = 0): Promise<void> => {
       if (server.isShuttingDown) {
@@ -29,27 +30,26 @@ export abstract class GracefulShutdownServer {
 
       shutdownPromise = new Promise((ok, nok) => {
         let forceQuit = false
-        let forceTimeout: Timer
         let cleanInterval: Timer
 
-        function clearTimeouts() {
-          clearTimeout(forceTimeout)
-          clearInterval(cleanInterval)
-        }
-
         try {
+          // stop accepting new incoming connections
           server.close(() => {
-            clearTimeouts()
+            clearInterval(cleanInterval)
             ok()
           })
 
           if (+timeout > 0) {
-            forceTimeout = setTimeout(() => {
+            setTimeout(() => {
               forceQuit = true
-            }, timeout)
+            }, timeout).unref()
           }
 
           cleanInterval = setInterval(() => {
+            if (!Object.keys(allSockets).length) {
+              clearInterval(cleanInterval)
+            }
+
             for (const key of Object.keys(allSockets)) {
               const socketId = +key
               if (forceQuit || allSockets[socketId]._idle) {
@@ -59,7 +59,7 @@ export abstract class GracefulShutdownServer {
             }
           }, waitingResponseTime)
         } catch (error) {
-          clearTimeouts()
+          clearInterval(cleanInterval!)
           return nok(error)
         }
       })
