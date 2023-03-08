@@ -1,16 +1,14 @@
+import React, { useMemo } from "react"
+
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import InputField from "../../../../components/molecules/input"
 import { LineItem } from "@medusajs/medusa"
-import React, { useMemo } from "react"
 import { useAdminVariantsInventory } from "medusa-react"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 export const getFulfillableQuantity = (item: LineItem): number => {
-  return (
-    item.quantity -
-    (item.fulfilled_quantity || 0) -
-    (item.returned_quantity || 0)
-  )
+  return item.quantity - (item.fulfilled_quantity || 0)
 }
 
 const CreateFulfillmentItemsTable = ({
@@ -67,9 +65,20 @@ const FulfillmentLine = ({
   handleQuantityUpdate: (value: number, id: string) => void
   setErrors: (errors: Record<string, string>) => void
 }) => {
-  const { variant, isLoading } = useAdminVariantsInventory(
-    item.variant_id as string
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isLocationFulfillmentEnabled =
+    isFeatureEnabled("inventoryService") &&
+    isFeatureEnabled("stockLocationService")
+
+  const { variant, isLoading, refetch } = useAdminVariantsInventory(
+    item.variant_id as string,
+    { enabled: isLocationFulfillmentEnabled }
   )
+  React.useEffect(() => {
+    if (isLocationFulfillmentEnabled) {
+      refetch()
+    }
+  }, [isLocationFulfillmentEnabled, refetch])
 
   const { availableQuantity, inStockQuantity } = useMemo(() => {
     if (isLoading || !locationId || !variant) {
@@ -109,6 +118,10 @@ const FulfillmentLine = ({
     })
   }, [validQuantity, setErrors, item.id])
 
+  if (getFulfillableQuantity(item) <= 0) {
+    return null
+  }
+
   return (
     <div className="rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
       <div className="flex justify-center space-x-4">
@@ -120,11 +133,11 @@ const FulfillmentLine = ({
           )}
         </div>
         <div className="flex max-w-[185px] flex-col justify-center">
-          <span className="truncate inter-small-regular text-grey-90">
+          <span className="inter-small-regular text-grey-90 truncate">
             {item.title}
           </span>
           {item?.variant && (
-            <span className="truncate inter-small-regular text-grey-50">
+            <span className="inter-small-regular text-grey-50 truncate">
               {`${item.variant.title}${
                 item.variant.sku ? ` (${item.variant.sku})` : ""
               }`}
@@ -134,7 +147,7 @@ const FulfillmentLine = ({
       </div>
       <div className="flex items-center">
         <FeatureToggle featureFlag="inventoryService">
-          <div className="flex flex-col items-end mr-6 inter-base-regular text-grey-50 whitespace-nowrap">
+          <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
             <p>{availableQuantity || "N/A"} available</p>
             <p>({inStockQuantity || "N/A"} in stock)</p>
           </div>

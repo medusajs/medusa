@@ -6,6 +6,9 @@ import {
   Order,
   Swap,
 } from "@medusajs/medusa"
+import CreateFulfillmentItemsTable, {
+  getFulfillableQuantity,
+} from "./item-table"
 import Metadata, {
   MetadataField,
 } from "../../../../components/organisms/metadata"
@@ -18,17 +21,14 @@ import {
 } from "medusa-react"
 
 import Button from "../../../../components/fundamentals/button"
-import CreateFulfillmentItemsTable, {
-  getFulfillableQuantity,
-} from "./item-table"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
-import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
+import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import Select from "../../../../components/molecules/select/next-select/select"
 import Switch from "../../../../components/atoms/switch"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import useNotification from "../../../../hooks/use-notification"
 
 type CreateFulfillmentModalProps = {
   handleCancel: () => void
@@ -44,6 +44,9 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   orderId,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag()
+  const isLocationFulfillmentEnabled =
+    isFeatureEnabled("inventoryService") &&
+    isFeatureEnabled("stockLocationService")
   const [quantities, setQuantities] = useState<Record<string, number>>(
     "object" in orderToFulfill
       ? (orderToFulfill as Order).items.reduce((acc, next) => {
@@ -73,7 +76,18 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   if (salesChannelId) {
     filterableFields.sales_channel_id = salesChannelId
   }
-  const { stock_locations } = useAdminStockLocations(filterableFields)
+  const { stock_locations, refetch } = useAdminStockLocations(
+    filterableFields,
+    {
+      enabled: isLocationFulfillmentEnabled,
+    }
+  )
+
+  React.useEffect(() => {
+    if (isLocationFulfillmentEnabled) {
+      refetch()
+    }
+  }, [isLocationFulfillmentEnabled, refetch])
 
   const locationOptions = React.useMemo(() => {
     if (!stock_locations) {
@@ -102,11 +116,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   const notification = useNotification()
 
   const createFulfillment = () => {
-    if (
-      isFeatureEnabled("inventoryService") &&
-      isFeatureEnabled("stockLocationService") &&
-      !locationSelectValue.value
-    ) {
+    if (isLocationFulfillmentEnabled && !locationSelectValue.value) {
       notification("Error", "Please select a location to fulfill from", "error")
       return
     }
@@ -190,7 +200,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   return (
     <FocusModal>
       <FocusModal.Header>
-        <div className="flex justify-between w-full px-8 medium:w-8/12">
+        <div className="medium:w-8/12 flex w-full justify-between px-8">
           <Button
             size="small"
             variant="ghost"
@@ -199,7 +209,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
           >
             <CrossIcon size={20} />
           </Button>
-          <div className="flex gap-x-small">
+          <div className="gap-x-small flex">
             <Button
               size="small"
               variant="secondary"
@@ -247,7 +257,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
             </FeatureToggle>
             <div className="flex flex-col">
               <span className="inter-base-semibold ">Items to fulfill</span>
-              <span className="mb-6 text-grey-50">
+              <span className="text-grey-50 mb-6">
                 Select the number of items that you wish to fulfill.
               </span>
               <CreateFulfillmentItemsTable
@@ -262,7 +272,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               <Metadata metadata={metadata} setMetadata={setMetadata} />
             </div>
             <div>
-              <div className="flex items-center justify-between mb-2xsmall">
+              <div className="mb-2xsmall flex items-center justify-between">
                 <h2 className="inter-base-semibold">Send notifications</h2>
                 <Switch
                   checked={!noNotis}
