@@ -13,7 +13,7 @@ import {
   useAdminOrderEdits,
 } from "medusa-react"
 import { useMemo } from "react"
-import { orderReturnableFields } from "../domain/orders/details/utils/order-returnable-fields"
+import useOrdersExpandParam from "../domain/orders/details/utils/use-admin-expand-paramter"
 import { useFeatureFlag } from "../providers/feature-flag-provider"
 
 export interface TimelineEvent {
@@ -157,8 +157,10 @@ export interface NotificationEvent extends TimelineEvent {
 }
 
 export const useBuildTimeline = (orderId: string) => {
+  const { orderRelations } = useOrdersExpandParam()
+
   const { order, refetch } = useAdminOrder(orderId, {
-    fields: orderReturnableFields,
+    expand: orderRelations,
   })
 
   const { order_edits: edits } = useAdminOrderEdits({ order_id: orderId })

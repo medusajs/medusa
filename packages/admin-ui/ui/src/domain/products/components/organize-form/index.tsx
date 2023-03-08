@@ -8,11 +8,18 @@ import TagInput from "../../../../components/molecules/tag-input"
 import { Option } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
 import useOrganizeData from "./use-organize-data"
+import NestedMultiselect from "../../../categories/components/multiselect"
+import InputHeader from "../../../../components/fundamentals/input-header"
+import {
+  useFeatureFlag,
+  FeatureFlag,
+} from "../../../../providers/feature-flag-provider"
 
 export type OrganizeFormType = {
   type: Option | null
   collection: Option | null
   tags: string[] | null
+  categories: string[] | null
 }
 
 type Props = {
@@ -21,7 +28,10 @@ type Props = {
 
 const OrganizeForm = ({ form }: Props) => {
   const { control, path, setValue } = form
-  const { productTypeOptions, collectionOptions } = useOrganizeData()
+  const { productTypeOptions, collectionOptions, categoriesOptions } =
+    useOrganizeData()
+
+  const { isFeatureEnabled } = useFeatureFlag()
 
   const typeOptions = productTypeOptions
 
@@ -38,7 +48,7 @@ const OrganizeForm = ({ form }: Props) => {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-x-large mb-large">
+      <div className="mb-large gap-x-large grid grid-cols-2">
         <Controller
           name={path("type")}
           control={control}
@@ -73,6 +83,37 @@ const OrganizeForm = ({ form }: Props) => {
           }}
         />
       </div>
+
+      {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
+        <>
+          <InputHeader label="Categories" className="mb-2" />
+          <Controller
+            name={path("categories")}
+            control={control}
+            render={({ field: { value, onChange } }) => {
+              if (!categoriesOptions) {
+                return null
+              }
+
+              const initiallySelected = (value || []).reduce((acc, val) => {
+                acc[val] = true
+                return acc
+              }, {})
+
+              return (
+                <NestedMultiselect
+                  onSelect={onChange}
+                  options={categoriesOptions}
+                  initiallySelected={initiallySelected}
+                />
+              )
+            }}
+          />
+        </>
+      )}
+
+      <div className="mb-large" />
+
       <Controller
         control={control}
         name={path("tags")}
