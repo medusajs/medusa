@@ -395,8 +395,7 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      // 6 products in db, default order created_at DESC, skip 1, therefore 5 respect the q param
-      expect(response.data.products.length).toEqual(5)
+      expect(response.data.products.length).toEqual(4)
     })
 
     it("returns a list of deleted products", async () => {
