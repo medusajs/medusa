@@ -58,7 +58,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<[Product[], number]> {
-    const queryBuilder = await this.prepareQueryBuilder_(options, q)
+    const options_ = { ...options }
+    options_.relationLoadStrategy = "query"
+
+    const queryBuilder = await this.prepareQueryBuilder_(options_, q)
     return await queryBuilder.getManyAndCount()
   },
 
@@ -81,7 +84,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     // TODO: https://github.com/typeorm/typeorm/issues/9719
     // https://github.com/typeorm/typeorm/issues/6294
     // Cleanup the repo and fix order/skip/take when those issues are resolved
-    options_.relationLoadStrategy = "query"
 
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
