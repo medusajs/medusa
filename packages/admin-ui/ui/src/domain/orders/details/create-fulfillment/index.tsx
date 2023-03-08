@@ -6,22 +6,29 @@ import {
   Order,
   Swap,
 } from "@medusajs/medusa"
+import CreateFulfillmentItemsTable, {
+  getFulfillableQuantity,
+} from "./item-table"
+import Metadata, {
+  MetadataField,
+} from "../../../../components/organisms/metadata"
+import React, { useState } from "react"
 import {
   useAdminCreateFulfillment,
   useAdminFulfillClaim,
   useAdminFulfillSwap,
+  useAdminStockLocations,
 } from "medusa-react"
-import React, { useState } from "react"
+
 import Button from "../../../../components/fundamentals/button"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../components/molecules/modal"
-import Metadata, {
-  MetadataField,
-} from "../../../../components/organisms/metadata"
-import useNotification from "../../../../hooks/use-notification"
+import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
+import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
+import FocusModal from "../../../../components/molecules/modal/focus-modal"
+import Select from "../../../../components/molecules/select/next-select/select"
+import Switch from "../../../../components/atoms/switch"
 import { getErrorMessage } from "../../../../utils/error-messages"
-import CreateFulfillmentItemsTable from "./item-table"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import useNotification from "../../../../hooks/use-notification"
 
 type CreateFulfillmentModalProps = {
   handleCancel: () => void
@@ -36,12 +43,61 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   orderToFulfill,
   orderId,
 }) => {
-  const [toFulfill, setToFulfill] = useState<string[]>([])
-  const [quantities, setQuantities] = useState({})
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isLocationFulfillmentEnabled =
+    isFeatureEnabled("inventoryService") &&
+    isFeatureEnabled("stockLocationService")
+  const [quantities, setQuantities] = useState<Record<string, number>>(
+    "object" in orderToFulfill
+      ? (orderToFulfill as Order).items.reduce((acc, next) => {
+          return {
+            ...acc,
+            [next.id]: getFulfillableQuantity(next),
+          }
+        }, {})
+      : {}
+  )
   const [noNotis, setNoNotis] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [locationSelectValue, setLocationSelectValue] = useState<{
+    value?: string
+    label?: string
+  }>({})
   const [metadata, setMetadata] = useState<MetadataField[]>([
     { key: "", value: "" },
   ])
+
+  const salesChannelId =
+    "object" in orderToFulfill
+      ? (orderToFulfill as Order).sales_channel_id
+      : (orderToFulfill as ClaimOrder | Swap)?.order?.sales_channel_id
+
+  const filterableFields: { sales_channel_id?: string } = {}
+  if (salesChannelId) {
+    filterableFields.sales_channel_id = salesChannelId
+  }
+  const { stock_locations, refetch } = useAdminStockLocations(
+    filterableFields,
+    {
+      enabled: isLocationFulfillmentEnabled,
+    }
+  )
+
+  React.useEffect(() => {
+    if (isLocationFulfillmentEnabled) {
+      refetch()
+    }
+  }, [isLocationFulfillmentEnabled, refetch])
+
+  const locationOptions = React.useMemo(() => {
+    if (!stock_locations) {
+      return []
+    }
+    return stock_locations.map((sl) => ({
+      value: sl.id,
+      label: sl.name,
+    }))
+  }, [stock_locations])
 
   const items =
     "items" in orderToFulfill
@@ -60,6 +116,20 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   const notification = useNotification()
 
   const createFulfillment = () => {
+    if (isLocationFulfillmentEnabled && !locationSelectValue.value) {
+      notification("Error", "Please select a location to fulfill from", "error")
+      return
+    }
+
+    if (Object.keys(errors).length > 0) {
+      notification(
+        "Can't allow this action",
+        "Trying to fulfill more than in stock",
+        "error"
+      )
+      return
+    }
+
     const [type] = orderToFulfill.id.split("_")
 
     type actionType =
@@ -108,9 +178,13 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
           metadata: preparedMetadata,
           no_notification: noNotis,
         } as AdminPostOrdersOrderFulfillmentsReq
-        requestObj.items = toFulfill
-          .map((itemId) => ({ item_id: itemId, quantity: quantities[itemId] }))
-          .filter((t) => !!t)
+
+        requestObj.items = Object.entries(quantities)
+          .filter(([, value]) => !!value)
+          .map(([key, value]) => ({
+            item_id: key,
+            quantity: value,
+          }))
         break
     }
 
@@ -124,77 +198,95 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   }
 
   return (
-    <Modal handleClose={handleCancel}>
-      <Modal.Body>
-        <Modal.Header handleClose={handleCancel}>
-          <span className="inter-xlarge-semibold">Create Fulfillment</span>
-        </Modal.Header>
-        <Modal.Content>
-          <div className="flex flex-col">
-            <span className="inter-base-semibold mb-2">Items</span>
-            <CreateFulfillmentItemsTable
-              items={items}
-              toFulfill={toFulfill}
-              setToFulfill={setToFulfill}
-              quantities={quantities}
-              setQuantities={setQuantities}
-            />
+    <FocusModal>
+      <FocusModal.Header>
+        <div className="medium:w-8/12 flex w-full justify-between px-8">
+          <Button
+            size="small"
+            variant="ghost"
+            type="button"
+            onClick={handleCancel}
+          >
+            <CrossIcon size={20} />
+          </Button>
+          <div className="gap-x-small flex">
+            <Button
+              size="small"
+              variant="secondary"
+              type="button"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="small"
+              variant="primary"
+              type="submit"
+              loading={isSubmitting}
+              onClick={createFulfillment}
+            >
+              Create fulfillment
+            </Button>
+          </div>
+        </div>
+      </FocusModal.Header>
+      <FocusModal.Main className="medium:w-6/12">
+        <div className="pt-16">
+          <h1 className="inter-xlarge-semibold">Create Fulfillment</h1>
+          <div className="grid-col-1 grid gap-y-8 divide-y [&>*]:pt-8">
+            <FeatureToggle featureFlag="inventoryService">
+              <div className="grid grid-cols-2">
+                <div>
+                  <h2 className="inter-base-semibold">Locations</h2>
+                  <span className="text-grey-50">
+                    Choose where you wish to fulfill from.
+                  </span>
+                </div>
+                <Select
+                  isMulti={false}
+                  options={locationOptions}
+                  value={locationSelectValue}
+                  onChange={(option) => {
+                    setLocationSelectValue({
+                      value: option?.value,
+                      label: option?.label,
+                    })
+                  }}
+                />
+              </div>
+            </FeatureToggle>
+            <div className="flex flex-col">
+              <span className="inter-base-semibold ">Items to fulfill</span>
+              <span className="text-grey-50 mb-6">
+                Select the number of items that you wish to fulfill.
+              </span>
+              <CreateFulfillmentItemsTable
+                items={items}
+                quantities={quantities}
+                setQuantities={setQuantities}
+                locationId={locationSelectValue.value}
+                setErrors={setErrors}
+              />
+            </div>
             <div className="mt-4">
               <Metadata metadata={metadata} setMetadata={setMetadata} />
             </div>
-          </div>
-        </Modal.Content>
-        <Modal.Footer>
-          <div className="flex w-full h-8 justify-between">
-            <div
-              className="items-center h-full flex cursor-pointer"
-              onClick={() => setNoNotis(!noNotis)}
-            >
-              <div
-                className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border rounded-base ${
-                  !noNotis && "bg-violet-60"
-                }`}
-              >
-                <span className="self-center">
-                  {!noNotis && <CheckIcon size={16} />}
-                </span>
+            <div>
+              <div className="mb-2xsmall flex items-center justify-between">
+                <h2 className="inter-base-semibold">Send notifications</h2>
+                <Switch
+                  checked={!noNotis}
+                  onCheckedChange={(checked) => setNoNotis(!checked)}
+                />
               </div>
-              <input
-                id="noNotification"
-                className="hidden"
-                name="noNotification"
-                checked={!noNotis}
-                type="checkbox"
-              />
-              <span className="ml-3 flex items-center text-grey-90 gap-x-xsmall">
-                Send notifications
-                <IconTooltip content="" />
-              </span>
-            </div>
-            <div className="flex">
-              <Button
-                variant="ghost"
-                className="mr-2 w-32 text-small justify-center"
-                size="large"
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
-              <Button
-                size="large"
-                className="w-32 text-small justify-center"
-                variant="primary"
-                disabled={!toFulfill?.length || isSubmitting}
-                onClick={createFulfillment}
-                loading={isSubmitting}
-              >
-                Complete
-              </Button>
+              <p className="inter-base-regular text-grey-50">
+                When toggled, notification emails will be sent.
+              </p>
             </div>
           </div>
-        </Modal.Footer>
-      </Modal.Body>
-    </Modal>
+        </div>
+      </FocusModal.Main>
+    </FocusModal>
   )
 }
 

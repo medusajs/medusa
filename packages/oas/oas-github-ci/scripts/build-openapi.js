@@ -9,7 +9,12 @@ const OpenAPIParser = require("@readme/openapi-parser")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const basePath = path.resolve(__dirname, `../`)
-const docsApiPath = path.resolve(basePath, "docs/api/")
+const repoRootPath = path.resolve(basePath, `../../../`)
+const docsApiPath = path.resolve(repoRootPath, "docs/api/")
+const redoclyConfigPath = path.resolve(
+  repoRootPath,
+  "docs-util/redocly/config.yaml"
+)
 
 const run = async () => {
   const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
@@ -51,12 +56,7 @@ const jsonFileToYamlFile = async (inputJsonFile, outputYamlFile) => {
 const sanitizeOAS = async (srcFile) => {
   const { all: logs } = await execa(
     "redocly",
-    [
-      "bundle",
-      srcFile,
-      `--output=${srcFile}`,
-      "--config=docs-util/redocly/config.yaml",
-    ],
+    ["bundle", srcFile, `--output=${srcFile}`, `--config=${redoclyConfigPath}`],
     { cwd: basePath, all: true }
   )
   console.log(logs)

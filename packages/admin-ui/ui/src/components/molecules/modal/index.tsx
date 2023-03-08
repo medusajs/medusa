@@ -3,6 +3,7 @@ import * as Portal from "@radix-ui/react-portal"
 import clsx from "clsx"
 import React from "react"
 import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
+import Button from "../../fundamentals/button"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 
 type ModalState = {
@@ -42,7 +43,7 @@ type ModalType = React.FC<ModalProps> & {
 
 const Overlay: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <Dialog.Overlay className="fixed bg-grey-90/40 z-50 grid top-0 left-0 right-0 bottom-0 place-items-center overflow-y-auto">
+    <Dialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 z-50 grid overflow-y-auto bg-grey-90/40 place-items-center">
       {children}
     </Dialog.Overlay>
   )
@@ -56,7 +57,7 @@ const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Dialog.Content
       style={style}
-      className="bg-grey-0 min-w-modal rounded-rounded overflow-x-hidden"
+      className="overflow-x-hidden min-w-modal rounded-rounded bg-grey-0"
     >
       {children}
     </Dialog.Content>
@@ -108,7 +109,7 @@ Modal.Content = ({ children, className }) => {
     <div
       style={style}
       className={clsx(
-        "px-7 pt-5 overflow-y-auto",
+        "overflow-y-auto px-8 pt-6",
         {
           ["w-largeModal pb-7"]: isLargeModal,
           ["pb-5"]: !isLargeModal,
@@ -124,17 +125,22 @@ Modal.Content = ({ children, className }) => {
 Modal.Header = ({ handleClose = undefined, children }) => {
   return (
     <div
-      className="pl-7 pt-3.5 pr-3.5 flex flex-col w-full"
+      className="flex items-center w-full px-8 py-6 border-b"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="pb-1 flex w-full justify-end">
+      <div className="flex flex-grow">{children}</div>
+      <div className="self-end">
         {handleClose && (
-          <button onClick={handleClose} className="text-grey-50 cursor-pointer">
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={handleClose}
+            className="text-grey-50 cursor-pointer border p-1.5"
+          >
             <CrossIcon size={20} />
-          </button>
+          </Button>
         )}
       </div>
-      {children}
     </div>
   )
 }
@@ -146,9 +152,9 @@ Modal.Footer = ({ children, className }) => {
     <div
       onClick={(e) => e.stopPropagation()}
       className={clsx(
-        "px-7 bottom-0 pb-5 flex w-full",
+        "bottom-0 flex w-full px-7 pb-5",
         {
-          "border-t border-grey-20 pt-4": isLargeModal,
+          "border-grey-20 border-t pt-4": isLargeModal,
         },
         className
       )}

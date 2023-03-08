@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import React, {
+  CSSProperties,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -31,6 +32,7 @@ type MultiSelectProps = InputHeaderProps & {
   placeholder?: string
   isMultiSelect?: boolean
   labelledBy?: string
+  menuPortalStyles?: CSSProperties
   options: { label: string; value: string | null; disabled?: boolean }[]
   value:
     | { label: string; value: string }[]
@@ -69,6 +71,7 @@ const SSelect = React.forwardRef(
       placeholder = "Search...",
       options,
       onCreateOption,
+      menuPortalStyles = {},
     }: MultiSelectProps,
     ref
   ) => {
@@ -135,10 +138,10 @@ const SSelect = React.forwardRef(
         <div
           key={name}
           className={clsx(className, {
-            "bg-white rounded-t-rounded": isFocussed,
+            "rounded-t-rounded bg-white": isFocussed,
           })}
         >
-          <div className="w-full flex text-grey-50 pr-0.5 justify-between pointer-events-none cursor-pointer mb-2">
+          <div className="text-grey-50 pointer-events-none mb-2 flex w-full cursor-pointer justify-between pr-0.5">
             <InputHeader {...{ label, required, tooltip, tooltipContent }} />
           </div>
 
@@ -176,7 +179,9 @@ const SSelect = React.forwardRef(
               }}
               closeMenuOnSelect={!isMultiSelect}
               blurInputOnSelect={!isMultiSelect}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 60 }) }}
+              styles={{
+                menuPortal: (base) => ({ ...base, ...menuPortalStyles }),
+              }}
               hideSelectedOptions={false}
               menuPortalTarget={portalRef?.current?.lastChild || document.body}
               menuPlacement="auto"
@@ -188,7 +193,7 @@ const SSelect = React.forwardRef(
               components={SelectComponents}
             />
           }
-          {isFocussed && enableSearch && <div className="w-full h-5" />}
+          {isFocussed && enableSearch && <div className="h-5 w-full" />}
         </div>
       </div>
     )
