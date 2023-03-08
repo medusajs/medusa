@@ -1,20 +1,21 @@
+import EditFlowVariantForm, {
+  EditFlowVariantFormType,
+} from "../../../components/variant-inventory-form/edit-flow-variant-form"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
 import { Product, ProductVariant } from "@medusajs/medusa"
+import React, { useContext } from "react"
 import {
   useAdminUpdateLocationLevel,
   useAdminVariantsInventory,
 } from "medusa-react"
-import React, { useContext } from "react"
-import { useForm } from "react-hook-form"
+
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
-import EditFlowVariantForm, {
-  EditFlowVariantFormType,
-} from "../../../components/variant-inventory-form/edit-flow-variant-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { useForm } from "react-hook-form"
 
 type Props = {
   onClose: () => void
@@ -57,6 +58,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     // / TODO: Call update location level with new values
     delete data.stock.location_levels
 
+    console.log(createUpdatePayload(data))
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
       refetch()
@@ -129,7 +131,7 @@ const StockForm = ({
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex items-center justify-end w-full gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button
             variant="secondary"
             size="small"
