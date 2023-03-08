@@ -18,7 +18,7 @@ import { ClaimTypeValue } from "../../../../types/claim"
 import { AddressPayload, FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /admin/order/{id}/claims
+ * @oas [post] /admin/orders/{id}/claims
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
  * description: "Creates a Claim."
