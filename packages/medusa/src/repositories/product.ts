@@ -73,22 +73,15 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<SelectQueryBuilder<Product>> {
-    const options_ = { ...options, skip: undefined, limit: undefined }
+    const options_ = { ...options }
 
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
 
-    // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
-    // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
-    // In other word, if the order depth is more than 1 then use join otherwise use query
-    /* const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
-      options.order ?? {}
-    )
-    const isDepth1 = !orderFieldsCollectionPointSeparated.some(
-      (field) => field.indexOf(".") !== -1
-    )
-    options_.relationLoadStrategy = isDepth1 ? "query" : "join"*/
-    // options_.relationLoadStrategy = "join"
+    // TODO: https://github.com/typeorm/typeorm/issues/9719
+    // https://github.com/typeorm/typeorm/issues/6294
+    // Cleanup the repo and fix order/skip/take when those issues are resolved
+    options_.relationLoadStrategy = "query"
 
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
@@ -198,8 +191,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
       const scIds = salesChannelId.value
 
-      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
-
       joinMethod(
         `${productAlias}.sales_channels`,
         "sales_channels",
@@ -217,7 +208,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
       let categoryIds = categoryId.value
 
-      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
       if (includeCategoryChildren) {
         const categoryRepository =
           this.manager.getTreeRepository(ProductCategory)
@@ -258,8 +248,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (discountConditionId) {
-      // inner join is only doable using the query builder and not the options
-
       queryBuilder.innerJoin(
         "discount_condition_product",
         "dc_product",
