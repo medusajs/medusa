@@ -1,17 +1,17 @@
 import { LineItem, ReservationItemDTO } from "@medusajs/medusa"
-import React from "react"
 
 import Button from "../../../../components/fundamentals/button"
 import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
 import CircleQuarterSolid from "../../../../components/fundamentals/icons/circle-quarter-solid"
 import EditAllocationDrawer from "../allocations/edit-allocation-modal"
-import ExclamationCircleIcon from "../../../../components/fundamentals/icons/exclamation-circle-icon"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
+import React from "react"
 import Tooltip from "../../../../components/atoms/tooltip"
+import WarningCircleIcon from "../../../../components/fundamentals/icons/warning-circle"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 import { sum } from "lodash"
 import { useAdminStockLocations } from "medusa-react"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 type OrderLineProps = {
   item: LineItem
@@ -32,11 +32,11 @@ const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
           )}
         </div>
         <div className="flex max-w-[185px] flex-col justify-center">
-          <span className="truncate inter-small-regular text-grey-90">
+          <span className="inter-small-regular text-grey-90 truncate">
             {item.title}
           </span>
           {item?.variant && (
-            <span className="truncate inter-small-regular text-grey-50">
+            <span className="inter-small-regular text-grey-50 truncate">
               {`${item.variant.title}${
                 item.variant.sku ? ` (${item.variant.sku})` : ""
               }`}
@@ -45,7 +45,7 @@ const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
         </div>
       </div>
       <div className="flex items-center">
-        <div className="flex mr-3 small:space-x-2 medium:space-x-4 large:space-x-6">
+        <div className="small:space-x-2 medium:space-x-4 large:space-x-6 mr-3 flex">
           <div className="inter-small-regular text-grey-50">
             {formatAmountWithSymbol({
               amount: (item?.total ?? 0) / item.quantity,
@@ -100,10 +100,10 @@ const ReservationIndicator = ({
     <div className={awaitingAllocation ? "text-rose-50" : "text-grey-40"}>
       <Tooltip
         content={
-          <div className="flex flex-col items-center px-1 pt-1 pb-2 inter-small-regular">
-            <div className="grid grid-cols-1 divide-y gap-y-base">
+          <div className="inter-small-regular flex flex-col items-center px-1 pt-1 pb-2">
+            <div className="gap-y-base grid grid-cols-1 divide-y">
               {!!awaitingAllocation && (
-                <span className="flex items-center w-full">
+                <span className="flex w-full items-center">
                   {awaitingAllocation} items await allocation
                 </span>
               )}
@@ -126,7 +126,7 @@ const ReservationIndicator = ({
           reservationsSum ? (
             <CircleQuarterSolid size={20} />
           ) : (
-            <ExclamationCircleIcon size={20} />
+            <WarningCircleIcon fillType="solid" size={20} />
           )
         ) : (
           <CheckCircleFillIcon size={20} />
@@ -163,7 +163,7 @@ const EditAllocationButton = ({
         onClick={onClick}
         variant="ghost"
         size="small"
-        className="w-full mt-2 border"
+        className="mt-2 w-full border"
       >
         Edit Allocation
       </Button>
