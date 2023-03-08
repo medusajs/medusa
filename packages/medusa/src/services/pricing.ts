@@ -423,7 +423,7 @@ class PricingService extends TransactionBaseService {
    */
   async setVariantPrices(
     variants: ProductVariant[],
-    context: PriceSelectionContext
+    context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
     return await Promise.all(

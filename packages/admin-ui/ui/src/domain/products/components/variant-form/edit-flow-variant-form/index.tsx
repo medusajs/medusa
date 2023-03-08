@@ -1,17 +1,18 @@
-import React from "react"
-import { useFieldArray, UseFormReturn } from "react-hook-form"
-import IconTooltip from "../../../../../components/molecules/icon-tooltip"
-import InputField from "../../../../../components/molecules/input"
-import Accordion from "../../../../../components/organisms/accordion"
-import { nestedForm } from "../../../../../utils/nested-form"
 import CustomsForm, { CustomsFormType } from "../../customs-form"
 import DimensionsForm, { DimensionsFormType } from "../../dimensions-form"
-import { PricesFormType } from "../../prices-form"
+import { UseFormReturn, useFieldArray } from "react-hook-form"
 import VariantGeneralForm, {
   VariantGeneralFormType,
 } from "../variant-general-form"
-import VariantPricesForm from "../variant-prices-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
+
+import Accordion from "../../../../../components/organisms/accordion"
+import IconTooltip from "../../../../../components/molecules/icon-tooltip"
+import InputField from "../../../../../components/molecules/input"
+import { PricesFormType } from "../../prices-form"
+import VariantPricesForm from "../variant-prices-form"
+import { nestedForm } from "../../../../../utils/nested-form"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 export type EditFlowVariantFormType = {
   /**
@@ -32,6 +33,7 @@ export type EditFlowVariantFormType = {
 
 type Props = {
   form: UseFormReturn<EditFlowVariantFormType, any>
+  isEdit?: boolean
 }
 
 /**
@@ -53,11 +55,14 @@ type Props = {
  *   )
  * }
  */
-const EditFlowVariantForm = ({ form }: Props) => {
+const EditFlowVariantForm = ({ form, isEdit }: Props) => {
+  const { isFeatureEnabled } = useFeatureFlag()
   const { fields } = useFieldArray({
     control: form.control,
     name: "options",
   })
+
+  const showStockAndInventory = !isEdit || !isFeatureEnabled("inventoryService")
 
   return (
     <Accordion type="multiple" defaultValue={["general"]}>
@@ -65,14 +70,14 @@ const EditFlowVariantForm = ({ form }: Props) => {
         <div>
           <VariantGeneralForm form={nestedForm(form, "general")} />
           <div className="mt-xlarge">
-            <div className="flex items-center gap-x-2xsmall mb-base">
+            <div className="mb-base gap-x-2xsmall flex items-center">
               <h3 className="inter-base-semibold">Options</h3>
               <IconTooltip
                 type="info"
                 content="Options are used to define the color, size, etc. of the variant."
               />
             </div>
-            <div className="grid grid-cols-2 gap-large pb-2xsmall">
+            <div className="gap-large pb-2xsmall grid grid-cols-2">
               {fields.map((field, index) => {
                 return (
                   <InputField
@@ -93,9 +98,11 @@ const EditFlowVariantForm = ({ form }: Props) => {
       <Accordion.Item title="Pricing" value="pricing">
         <VariantPricesForm form={nestedForm(form, "prices")} />
       </Accordion.Item>
-      <Accordion.Item title="Stock & Inventory" value="stock">
-        <VariantStockForm form={nestedForm(form, "stock")} />
-      </Accordion.Item>
+      {showStockAndInventory && (
+        <Accordion.Item title="Stock & Inventory" value="stock">
+          <VariantStockForm form={nestedForm(form, "stock")} />
+        </Accordion.Item>
+      )}
       <Accordion.Item title="Shipping" value="shipping">
         <p className="inter-base-regular text-grey-50">
           Shipping information can be required depending on your shipping

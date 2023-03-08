@@ -1,7 +1,9 @@
 import {
+  AdminGetVariantParams,
   AdminGetVariantsParams,
   AdminGetVariantsVariantInventoryRes,
   AdminVariantsListRes,
+  AdminVariantsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
@@ -27,6 +29,24 @@ export const useAdminVariants = (
   const { data, ...rest } = useQuery(
     adminVariantKeys.list(query),
     () => client.admin.variants.list(query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminVariant = (
+  id: string,
+  query?: AdminGetVariantParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminVariantsRes>,
+    Error,
+    ReturnType<VariantQueryKeys["detail"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminVariantKeys.detail(id),
+    () => client.admin.variants.retrieve(id, query),
     options
   )
   return { ...data, ...rest } as const

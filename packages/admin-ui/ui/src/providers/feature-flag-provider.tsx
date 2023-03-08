@@ -1,10 +1,10 @@
-import { useAdminGetSession, useAdminStore } from "medusa-react"
 import React, {
   PropsWithChildren,
   useContext,
   useEffect,
   useState,
 } from "react"
+import { useAdminGetSession, useAdminStore } from "medusa-react"
 
 export enum FeatureFlag {
   PRODUCT_CATEGORIES = "product_categories",

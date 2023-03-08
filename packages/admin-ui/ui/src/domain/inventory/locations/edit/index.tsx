@@ -1,6 +1,7 @@
 import {
   AdminPostStockLocationsReq,
   StockLocationAddressDTO,
+  StockLocationAddressInput,
   StockLocationDTO,
 } from "@medusajs/medusa"
 import { useAdminUpdateStockLocation } from "medusa-react"
@@ -98,16 +99,20 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
 const createPayload = (data): AdminPostStockLocationsReq => {
   const { general, address } = data
 
-  return {
-    name: general.name,
-    address: {
+  let addressInput
+  if (address.address_1) {
+    addressInput = {
       company: address.company,
       address_1: address.address_1,
       address_2: address.address_2,
       postal_code: address.postal_code,
       city: address.city,
-      country_code: address.country_code.value || address.country_code,
-    },
+      country_code: address.country_code?.value || address.country_code,
+    } as StockLocationAddressInput
+  }
+  return {
+    name: general.name,
+    address: addressInput,
   }
 }
 
