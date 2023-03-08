@@ -5,11 +5,11 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { Product, ProductCategory } from "../models"
+import { Product, ProductCategory, ProductVariant } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { isObject } from "../utils"
 import { ProductFilterOptions } from "../types/product"
+import { buildLegacyFieldsListFrom, isObject } from "../utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -58,7 +58,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<[Product[], number]> {
-    const queryBuilder = await this.prepareQueryBuilder_(options, q)
+    const options_ = { ...options }
+    options_.relationLoadStrategy = "query"
+
+    const queryBuilder = await this.prepareQueryBuilder_(options_, q)
     return await queryBuilder.getManyAndCount()
   },
 
@@ -78,82 +81,108 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
 
-    // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
-    // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
-    // In other word, if the order depth is more than 1 then use join otherwise use query
-    /* const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
+    // TODO: https://github.com/typeorm/typeorm/issues/9719
+    // https://github.com/typeorm/typeorm/issues/6294
+    // Cleanup the repo and fix order/skip/take and relation load strategy when those issues are resolved
+
+    const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
       options.order ?? {}
     )
+
     const isDepth1 = !orderFieldsCollectionPointSeparated.some(
       (field) => field.indexOf(".") !== -1
     )
-    options_.relationLoadStrategy = isDepth1 ? "query" : "join"*/
-    options_.relationLoadStrategy = "join"
+    options_.relationLoadStrategy = isDepth1
+      ? options_.relationLoadStrategy
+      : "join"
 
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
 
-    // Add explicit ordering for variant ranking on the variants join directly
-    // The constraint if there is any will be applied by the options_
-    if (options_.relations.variants && !isObject(options_.order?.variants)) {
-      options_.order = options_.order ?? {}
-      options_.order.variants = {
-        variant_rank: "ASC",
-      }
-      /* // The query strategy, as explain at the top of the function, does not select the column from the separated query
-      // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
-      options_.relationLoadStrategy = "join"
-      queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
+    const priceListId = options_.where.price_list_id as FindOperator<string[]>
+    const tags = options_.where.tags as FindOperator<string[]>
+    const salesChannelId = options_.where.sales_channel_id as FindOperator<
+      string[]
+    >
+    const categoryId = options_.where.category_id as FindOperator<string[]>
+    const discountConditionId = options_.where.discount_condition_id
+    const includeCategoryChildren =
+      options_.where.include_category_children ?? false
 
-      options_.order = options_.order ?? {}
+    delete options_.where.price_list_id
+    delete options_.where.tags
+    delete options_.where.sales_channel_id
+    delete options_.where.category_id
+    delete options_.where.discount_condition_id
+    delete options_.where.include_category_children
 
-      if (!isObject(options_.order.variants)) {
-        options_.order.variants = {
-          variant_rank: "ASC",
-        }
-      }*/
+    // TODO: move back to the service layer
+    if (q) {
+      options_.relations = options_.relations ?? {}
+      options_.relations.variants = options_.relations.variants ?? true
+      options_.relations.collection = options_.relations.collection ?? true
+
+      options_.where = [
+        {
+          ...options_.where,
+          description: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          title: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          variants: {
+            title: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...options_.where,
+          variants: {
+            sku: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...options_.where,
+          collection: {
+            title: ILike(`%${q}%`),
+          },
+        },
+      ]
     }
 
-    if (options_.where.price_list_id) {
-      /* options_.relations.variants = {
-        ...(isObject(options_.relations.variants)
-          ? options_.relations.variants
-          : {}),
-        prices: true,
-      }
+    // Add explicit ordering for variant ranking on the variants join directly
+    // This constraint is applied if no other order is applied
+    if (options_.relations.variants && !isObject(options_.order?.variants)) {
+      queryBuilder.leftJoin(
+        (subQueryBuilder) => {
+          return subQueryBuilder
+            .from(ProductVariant, "v")
+            .orderBy("v.variant_rank", "ASC")
+        },
+        "variants",
+        "product.id = variants.product_id"
+      )
+    }
 
-      const priceListIds = (
-        options_.where.price_list_id as FindOperator<string[]>
-      ).value
-      delete options_.where.price_list_id
-
-      options_.where.variants = {
-        ...(isObject(options_.where.variants) ? options_.where.variants : {}),
-        prices: [
-          {
-            price_list_id: In(priceListIds),
-          },
-        ],
-      }*/
-      const priceListIds = (
-        options_.where.price_list_id as FindOperator<string[]>
-      ).value
-      delete options_.where.price_list_id
+    if (priceListId) {
+      const priceListIds = priceListId.value
 
       queryBuilder
-        .leftJoin(`${productAlias}.variants`, "variants")
-        .leftJoin("variants.prices", "ma")
+        .leftJoin(`${productAlias}.variants`, "variants_")
+        .leftJoin("variants_.prices", "ma")
         .andWhere("ma.price_list_id IN (:...price_list_ids)", {
           price_list_ids: priceListIds,
         })
     }
 
-    if (options_.where.tags) {
+    if (tags) {
       const joinMethod = options_.relations.tags
         ? queryBuilder.leftJoinAndSelect.bind(queryBuilder)
         : queryBuilder.leftJoin.bind(queryBuilder)
 
-      const tagIds = (options_.where.tags as FindOperator<string[]>).value
+      const tagIds = tags.value
 
       // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
       // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
@@ -166,19 +195,14 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           tag_ids: tagIds,
         }
       )
-
-      delete options_.where.tags
     }
 
-    if (options_.where.sales_channel_id) {
+    if (salesChannelId) {
       const joinMethod = options_.relations.sales_channel_id
         ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
         : queryBuilder.innerJoin.bind(queryBuilder)
 
-      const scIds = (options_.where.sales_channel_id as FindOperator<string[]>)
-        .value
-
-      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
+      const scIds = salesChannelId.value
 
       joinMethod(
         `${productAlias}.sales_channels`,
@@ -188,21 +212,15 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           sales_channels_ids: scIds,
         }
       )
-
-      delete options_.where.sales_channel_id
     }
 
-    if (options_.where.category_id) {
-      const includeCategoryChildren =
-        options_.where.include_category_children || false
+    if (categoryId) {
       const joinMethod = options_.relations.category_id
         ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
         : queryBuilder.innerJoin.bind(queryBuilder)
 
-      let categoryIds = (options_.where.category_id as FindOperator<string[]>)
-        .value
+      let categoryIds = categoryId.value
 
-      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
       if (includeCategoryChildren) {
         const categoryRepository =
           this.manager.getTreeRepository(ProductCategory)
@@ -240,58 +258,15 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           categoryIds,
         }
       )
-
-      delete options_.where.category_id
     }
 
-    delete options_.where.include_category_children
-
-    if (options_.where.discount_condition_id) {
-      // inner join is only doable using the query builder and not the options
-
+    if (discountConditionId) {
       queryBuilder.innerJoin(
         "discount_condition_product",
         "dc_product",
         `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
-        { dcId: options_.where.discount_condition_id }
+        { dcId: discountConditionId }
       )
-
-      delete options_.where.discount_condition_id
-    }
-    // TODO: move back to the service layer
-    if (q) {
-      options_.relations = options_.relations ?? {}
-      options_.relations.variants = options_.relations.variants ?? true
-      options_.relations.collection = options_.relations.collection ?? true
-
-      options_.where = [
-        {
-          ...options_.where,
-          description: ILike(`%${q}%`),
-        },
-        {
-          ...options_.where,
-          title: ILike(`%${q}%`),
-        },
-        {
-          ...options_.where,
-          variants: {
-            title: ILike(`%${q}%`),
-          },
-        },
-        {
-          ...options_.where,
-          variants: {
-            sku: ILike(`%${q}%`),
-          },
-        },
-        {
-          ...options_.where,
-          collection: {
-            title: ILike(`%${q}%`),
-          },
-        },
-      ]
     }
 
     if (options_.withDeleted) {
@@ -299,6 +274,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     queryBuilder.setFindOptions(options_)
+
     return queryBuilder
   },
 
