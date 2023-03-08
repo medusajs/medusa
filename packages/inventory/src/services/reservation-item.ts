@@ -1,5 +1,3 @@
-import { EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   buildQuery,
   CreateReservationItemInput,
@@ -9,9 +7,10 @@ import {
   TransactionBaseService,
   UpdateReservationItemInput,
 } from "@medusajs/medusa"
-
-import { ReservationItem } from "../models"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
+import { ReservationItem } from "../models"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -33,6 +32,7 @@ export default class ReservationItemService extends TransactionBaseService {
   constructor({
     eventBusService,
     inventoryLevelService,
+    manager,
   }: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)

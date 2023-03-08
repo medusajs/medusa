@@ -1,5 +1,3 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   buildQuery,
   CreateInventoryLevelInput,
@@ -8,7 +6,8 @@ import {
   IEventBusService,
   TransactionBaseService,
 } from "@medusajs/medusa"
-
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevel } from "../models"
 
 type InjectedDependencies = {
@@ -25,7 +24,7 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   protected readonly eventBusService_: IEventBusService | undefined
 
-  constructor({ eventBusService }: InjectedDependencies) {
+  constructor({ eventBusService, manager }: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
 

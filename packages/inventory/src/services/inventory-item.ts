@@ -1,5 +1,3 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   buildQuery,
   CreateInventoryItemInput,
@@ -9,7 +7,8 @@ import {
   InventoryItemDTO,
   TransactionBaseService,
 } from "@medusajs/medusa"
-
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 
@@ -27,7 +26,7 @@ export default class InventoryItemService extends TransactionBaseService {
 
   protected readonly eventBusService_: IEventBusService | undefined
 
-  constructor({ eventBusService }: InjectedDependencies) {
+  constructor({ eventBusService, manager }: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
 
