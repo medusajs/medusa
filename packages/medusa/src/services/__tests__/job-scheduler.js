@@ -27,8 +27,9 @@ describe("JobSchedulerService", () => {
 
     it("creates bull queue", () => {
       expect(Bull).toHaveBeenCalledTimes(1)
-      expect(Bull).toHaveBeenCalledWith("scheduled-jobs:queue", {
+      expect(Bull).toHaveBeenCalledWith("queue", {
         createClient: expect.any(Function),
+        prefix: "scheduled-jobs",
       })
     })
   })

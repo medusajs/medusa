@@ -37,8 +37,9 @@ describe("EventBusService", () => {
 
     it("creates bull queue", () => {
       expect(Bull).toHaveBeenCalledTimes(1)
-      expect(Bull).toHaveBeenCalledWith("EventBusService:queue", {
+      expect(Bull).toHaveBeenCalledWith("queue", {
         createClient: expect.any(Function),
+        prefix: "EventBusService",
       })
     })
   })
