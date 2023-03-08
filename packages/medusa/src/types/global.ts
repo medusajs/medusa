@@ -286,11 +286,14 @@ export type ConfigModule = {
 
   /**
    * ## Modules configuration
-   * Modules loaded inside the container can be enabled, disabled or configured using the `modules` option.
+   * This can be used to configure loaded modules inside the container.
    * 
-   * A `false` value will disable the module.
-   * A `string` value will be treated as the path to the overriding module.
-   * A `Partial<ConfigurableModuleDeclaration>` value will be used to configure the module.
+   * Modules can be enabled, disabled or configured :
+   * 
+   * - A `false` value will disable the module.
+   * - A `string` value will be treated as the path to the overriding module.
+   * - A `Partial<ConfigurableModuleDeclaration>` value will be used to configure the module.
+   * 
    * 
    * ### Example
    * ```js
@@ -307,11 +310,38 @@ export type ConfigModule = {
     false | string | Partial<ConfigurableModuleDeclaration>
   >
 
+
   /**
    * ## Module Resolutions
+   * This refers to a collection of modules to be loaded and registered within the application container.
+   * 
+   * @see https://github.com/jeffijoe/awilix#readme
    */
   moduleResolutions?: Record<string, ModuleResolution>
 
+  /**
+   * ## Plugins
+   * This refers to a collection of plugins to be loaded and registered within the app.
+   * 
+   * ### Example
+   * ```js
+   * {
+   *    plugins: [
+   *    'medusa-fulfillment-manual',
+   *    'medusa-payment-manual',
+   *    {
+   *      resolve: 'medusa-payment-stripe',
+   *      options: {
+   *        api_key: process.env.STRIPE_API_KEY,
+   *        webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
+   *      },
+   *    },
+   *    ]
+   * }
+   * ```
+   * 
+   * @see https://docs.medusajs.com/advanced/backend/plugins/overview
+   */
   plugins: (
     | {
         resolve: string
