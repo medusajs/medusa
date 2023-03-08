@@ -73,11 +73,11 @@ function ProductCategoryListItemDetails(
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center">
             {hasChildren && (
-              <div className="flex w-[32px] items-center justify-center">
+              <div className="flex w-[20px] items-center justify-center absolute cursor-pointer">
                 {props.collapseIcon}
               </div>
             )}
-            <div className="flex w-[32px] items-center justify-center">
+            <div className="flex ml-[20px] w-[32px] items-center justify-center">
               {hasChildren && <FolderOpenIcon color="#889096" size={18} />}
               {!hasChildren && <TagIcon color="#889096" size={18} />}
             </div>
