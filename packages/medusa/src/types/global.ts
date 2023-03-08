@@ -3,6 +3,7 @@ import { Request } from "express"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
+import { EmitOptions } from "../services/event-bus"
 import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
@@ -113,6 +114,25 @@ type SessionOptions = {
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
+
+    /**
+     * Global options passed to all `EventBusService.emit` in the core as well as your own emitters. The options are forwarded to Bull's `Queue.add` method.
+     *
+     * The global options can be overridden by passing options to `EventBusService.emit` directly.
+     *
+     * Note: This will be deprecated as we move to Event Bus module in 1.8
+     *
+     *
+     * Example
+     * ```js
+     * {
+     *    removeOnComplete: { age: 10 },
+     * }
+     * ```
+     *
+     * @see https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueadd
+     */
+    event_options?: Record<string, unknown> & EmitOptions
 
     session_options?: SessionOptions
 
