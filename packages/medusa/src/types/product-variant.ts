@@ -14,6 +14,7 @@ import {
   StringComparisonOperator,
 } from "./common"
 import { XorConstraint } from "./validators/xor"
+import { ProductVariant } from "../models"
 
 export type ProductVariantPrice = {
   id?: string
@@ -83,6 +84,16 @@ export type UpdateProductVariantInput = {
   prices?: ProductVariantPrice[]
   metadata?: Record<string, unknown>
 }
+
+export type UpdateProductVariantData = {
+  variant: ProductVariant
+  updateData: UpdateProductVariantInput
+}[]
+
+export type UpdateVariantPricesData = {
+  variantId: string
+  prices: ProductVariantPrice[]
+}[]
 
 export class FilterableProductVariantProps {
   @ValidateNested()

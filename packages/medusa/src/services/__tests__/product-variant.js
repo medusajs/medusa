@@ -334,7 +334,7 @@ describe("ProductVariantService", () => {
       await productVariantService.update(
         { id: IdMap.getId("ironman"), title: "new title" },
         {
-          title: "new title",
+          title: "new title 2",
         }
       )
 
@@ -350,8 +350,21 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("ironman"),
-        title: "new title",
+        title: "new title 2",
       })
+    })
+
+    it("successfully avoid to update variant if the data have not changed", async () => {
+      await productVariantService.update(
+        { id: IdMap.getId("ironman"), title: "new title" },
+        {
+          title: "new title",
+        }
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(0)
+
+      expect(productVariantRepository.save).toHaveBeenCalledTimes(0)
     })
 
     it("throws if provided variant is missing an id", async () => {
@@ -881,14 +894,16 @@ describe("ProductVariantService", () => {
 
   describe("delete", () => {
     const productVariantRepository = MockRepository({
-      findOne: (query) => {
+      find: (query) => {
         if (query.where.id === IdMap.getId("ironmanv2")) {
-          return Promise.resolve(undefined)
+          return Promise.resolve([])
         }
-        return Promise.resolve({
-          id: IdMap.getId("ironman"),
-          product_id: IdMap.getId("product-test"),
-        })
+        return Promise.resolve([
+          {
+            id: IdMap.getId("ironman"),
+            product_id: IdMap.getId("product-test"),
+          },
+        ])
       },
     })
 
