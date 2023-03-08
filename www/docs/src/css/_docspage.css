@@ -16,6 +16,10 @@ article {
   padding-top: 48px !important;
 }
 
+.margin-bottom--lg {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2) !important;
+}
+
 .pagination-nav {
   margin-left: auto;
   margin-right: auto;

@@ -117,3 +117,12 @@ video {
 p + img:not(.ui-icon) {
   margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
 }
+
+h1 + .cards-grid,
+h1 + .card,
+h2 + .cards-grid,
+h2 + .card,
+h3 + .cards-grid,
+h3 + .card {
+  margin-top: calc(var(--ifm-hr-margin-vertical) - 8px);
+}

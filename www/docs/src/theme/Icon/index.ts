@@ -17,6 +17,7 @@ import IconChannels from './Channels';
 import IconChannelsSolid from './ChannelsSolid';
 import IconCheckCircleSolid from './CheckCircleSolid';
 import IconCircleStack from './CircleStack';
+import IconCircleStackSolid from './CircleStackSolid';
 import IconClockSolidMini from './ClockSolidMini';
 import IconClose from './Close';
 import IconCloudArrowUp from './CloudArrowUp';
@@ -45,18 +46,23 @@ import IconGlobeEurope from './GlobeEurope';
 import IconGlobeEuropeSolid from './GlobeEuropeSolid';
 import IconJavaScript from './JavaScript';
 import IconKey from './Key';
+import IconKeySolid from './KeySolid';
 import IconLightBulb from './LightBulb';
 import IconLightBulbSolid from './LightBulbSolid';
 import IconLightMode from './LightMode';
 import IconLinkedIn from './LinkedIn';
 import IconNextjs from './Nextjs';
 import IconPencilSquareSolid from './PencilSquareSolid';
+import IconPuzzle from './Puzzle';
+import IconPuzzleSolid from './PuzzleSolid';
 import IconReact from './React';
 import IconReceiptPercent from './ReceiptPercent';
 import IconReport from './Report';
 import IconRocketLaunch from './RocketLaunch';
 import IconServer from './Server';
+import IconServerSolid from './ServerSolid';
 import IconServerStack from './ServerStack';
+import IconServerStackSolid from './ServerStackSolid';
 import IconShoppingCart from './ShoppingCart';
 import IconShoppingCartSolid from './ShoppingCartSolid';
 import IconSparkles from './Sparkles';
@@ -92,6 +98,7 @@ export default {
   'channels': IconChannels,
   'check-circle-solid': IconCheckCircleSolid,
   'circle-stack': IconCircleStack,
+  'circle-stack-solid': IconCircleStackSolid,
   'clock-solid-mini': IconClockSolidMini,
   'close': IconClose,
   'cloud-arrow-up': IconCloudArrowUp,
@@ -120,18 +127,23 @@ export default {
   'globe-europe-solid': IconGlobeEuropeSolid,
   'javascript': IconJavaScript,
   'key': IconKey,
+  'key-solid': IconKeySolid,
   'light-bulb': IconLightBulb,
   'light-bulb-solid': IconLightBulbSolid,
   'light-mode': IconLightMode,
   'linkedin': IconLinkedIn,
   'nextjs': IconNextjs,
   'pencil-square-solid': IconPencilSquareSolid,
+  'puzzle': IconPuzzle,
+  'puzzle-solid': IconPuzzleSolid,
   'react': IconReact,
   'receipt-percent': IconReceiptPercent,
   'report': IconReport,
   'rocket-launch': IconRocketLaunch,
   'server': IconServer,
+  'server-solid': IconServerSolid,
   'server-stack': IconServerStack,
+  'server-stack-solid': IconServerStackSolid,
   'shopping-cart': IconShoppingCart,
   'shopping-cart-solid': IconShoppingCartSolid,
   'sparkles': IconSparkles,

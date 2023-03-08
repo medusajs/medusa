@@ -38,9 +38,9 @@ module.exports = {
     },
     {
       type: 'html',
-      value: ' ',
+      value: 'Browse Docs',
       customProps: {
-        sidebar_is_divider_line: true
+        sidebar_is_group_divider: true
       },
       className: 'homepage-sidebar-item'
     },
@@ -49,7 +49,7 @@ module.exports = {
       id: 'modules/overview',
       label: 'Commerce Modules',
       customProps: {
-        sidebar_icon: 'sparkles'
+        sidebar_icon: 'puzzle'
       },
       className: 'homepage-sidebar-item'
     },
@@ -58,7 +58,7 @@ module.exports = {
       id: 'core/overview',
       label: 'Core Concepts',
       customProps: {
-        sidebar_icon: 'star'
+        sidebar_icon: 'server-stack'
       },
       className: 'homepage-sidebar-item'
     },
@@ -77,14 +77,6 @@ module.exports = {
       label: 'Plugins',
       customProps: {
         sidebar_icon: 'squares-plus'
-      },
-      className: 'homepage-sidebar-item'
-    },
-    {
-      type: 'html',
-      value: ' ',
-      customProps: {
-        sidebar_is_divider_line: true
       },
       className: 'homepage-sidebar-item'
     },
@@ -116,14 +108,6 @@ module.exports = {
     },
     {
       type: 'html',
-      value: ' ',
-      customProps: {
-        sidebar_is_divider_line: true
-      },
-      className: 'homepage-sidebar-item'
-    },
-    {
-      type: 'html',
       value: 'SDKs',
       customProps: {
         sidebar_is_group_divider: true
@@ -150,14 +134,6 @@ module.exports = {
     },
     {
       type: 'html',
-      value: ' ',
-      customProps: {
-        sidebar_is_divider_line: true
-      },
-      className: 'homepage-sidebar-item'
-    },
-    {
-      type: 'html',
       value: 'CLI Tools',
       customProps: {
         sidebar_is_group_divider: true
@@ -179,14 +155,6 @@ module.exports = {
       label: 'Medusa Dev CLI',
       customProps: {
         sidebar_icon: 'tools'
-      },
-      className: 'homepage-sidebar-item'
-    },
-    {
-      type: 'html',
-      value: ' ',
-      customProps: {
-        sidebar_is_divider_line: true
       },
       className: 'homepage-sidebar-item'
     },
@@ -434,7 +402,7 @@ module.exports = {
       label: 'Commerce Modules',
       customProps: {
         sidebar_is_title: true,
-        sidebar_icon: 'sparkles'
+        sidebar_icon: 'puzzle'
       }
     },
     {
@@ -1243,7 +1211,7 @@ module.exports = {
       label: 'Core Concepts',
       customProps: {
         sidebar_is_title: true,
-        sidebar_icon: 'star'
+        sidebar_icon: 'server-stack'
       }
     },
     {
