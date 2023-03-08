@@ -1,22 +1,48 @@
-import React, { useContext, useMemo } from "react"
-import { Order } from "@medusajs/medusa"
-import OrderLine from "../order-line"
 import { DisplayTotal, PaymentDetails } from "../templates"
-import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
-import Badge from "../../../../components/fundamentals/badge"
-
-import { OrderEditContext } from "../../edit/context"
-import BodyCard from "../../../../components/organisms/body-card"
-import { sum } from "lodash"
-import { useAdminReservations } from "medusa-react"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
-import { ActionType } from "../../../../components/molecules/actionables"
-import useToggleState from "../../../../hooks/use-toggle-state"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import React, { useContext, useMemo } from "react"
+
+import { ActionType } from "../../../../components/molecules/actionables"
+import AllocateItemsModal from "../allocations/allocate-items-modal"
+import Badge from "../../../../components/fundamentals/badge"
+import BodyCard from "../../../../components/organisms/body-card"
+import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
+import { Order } from "@medusajs/medusa"
+import { OrderEditContext } from "../../edit/context"
+import OrderLine from "../order-line"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
+import { sum } from "lodash"
+import { useMedusa } from "medusa-react"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 type SummaryCardProps = {
   order: Order
+}
+
+const useReservations = async ({
+  line_item_id,
+}: {
+  line_item_id: string[]
+}) => {
+  const { isFeatureEnabled } = useFeatureFlag()
+  const { client } = useMedusa()
+
+  if (!isFeatureEnabled("inventoryService")) {
+    return {
+      reservations: [],
+    }
+  }
+
+  return client.admin.reservations
+    .list({
+      line_item_id,
+    })
+    .then(({ reservations }) => {
+      return { reservations }
+    })
+    .catch(() => {
+      return { reservations: [] }
+    })
 }
 const SummaryCard: React.FC<SummaryCardProps> = ({
   order,
@@ -30,13 +56,18 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   } = useToggleState()
 
   const { isFeatureEnabled } = useFeatureFlag()
+  const inventoryEnabled = !isFeatureEnabled("inventoryService")
+
   const { showModal } = useContext(OrderEditContext)
-  const { reservations, isLoading } = useAdminReservations({
+
+  const [reservations, setReservations] = React.useState<any[]>([])
+
+  useReservations({
     line_item_id: order.items.map((item) => item.id),
-  })
+  }).then(({ reservations }) => setReservations(reservations))
 
   const reservationItemsMap = useMemo(() => {
-    if (!reservations?.length || isLoading) {
+    if (!reservations?.length || !inventoryEnabled) {
       return {}
     }
 
@@ -49,7 +80,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
         : [item]
       return acc
     }, {})
-  }, [reservations, isLoading])
+  }, [reservations, inventoryEnabled])
 
   const allItemsReserved = useMemo(() => {
     return order.items.every((item) => {
@@ -144,7 +175,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             currency={order.currency_code}
             totalAmount={-1 * order.discount_total}
             totalTitle={
-              <div className="flex items-center inter-small-regular text-grey-90">
+              <div className="inter-small-regular text-grey-90 flex items-center">
                 Discount:{" "}
                 <Badge className="ml-3" variant="default">
                   {discount.code}
@@ -159,7 +190,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             currency={order.currency_code}
             totalAmount={-1 * order.gift_card_total}
             totalTitle={
-              <div className="flex items-center inter-small-regular text-grey-90">
+              <div className="inter-small-regular text-grey-90 flex items-center">
                 Gift card:
                 <Badge className="ml-3" variant="default">
                   {giftCard.code}

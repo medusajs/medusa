@@ -1,25 +1,29 @@
+import OptionsProvider, { useOptionsContext } from "./options-provider"
 import { Product, ProductVariant } from "@medusajs/medusa"
-import { useState } from "react"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import GearIcon from "../../../../../components/fundamentals/icons/gear-icon"
-import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
+
 import { ActionType } from "../../../../../components/molecules/actionables"
-import Section from "../../../../../components/organisms/section"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
 import AddVariantModal from "./add-variant-modal"
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import EditVariantInventoryModal from "./edit-variant-inventory-modal"
 import EditVariantModal from "./edit-variant-modal"
 import EditVariantsModal from "./edit-variants-modal"
+import GearIcon from "../../../../../components/fundamentals/icons/gear-icon"
 import OptionsModal from "./options-modal"
-import OptionsProvider, { useOptionsContext } from "./options-provider"
+import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
+import Section from "../../../../../components/organisms/section"
 import VariantsTable from "./table"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { useState } from "react"
+import useToggleState from "../../../../../hooks/use-toggle-state"
 
 type Props = {
   product: Product
 }
 
 const VariantsSection = ({ product }: Props) => {
+  const { isFeatureEnabled } = useFeatureFlag()
+
   const [variantToEdit, setVariantToEdit] = useState<
     | {
         base: ProductVariant
@@ -152,15 +156,15 @@ const ProductOptions = () => {
 
   if (status === "loading" || !options) {
     return (
-      <div className="grid grid-cols-3 mt-base gap-x-8">
+      <div className="mt-base grid grid-cols-3 gap-x-8">
         {Array.from(Array(2)).map((_, i) => {
           return (
             <div key={i}>
-              <div className="h-6 mb-xsmall bg-grey-30 w-9 animate-pulse"></div>
+              <div className="mb-xsmall bg-grey-30 h-6 w-9 animate-pulse"></div>
               <ul className="flex flex-wrap items-center gap-1">
                 {Array.from(Array(3)).map((_, j) => (
                   <li key={j}>
-                    <div className="w-12 h-8 rounded-rounded bg-grey-10 text-grey-50 animate-pulse">
+                    <div className="rounded-rounded bg-grey-10 text-grey-50 h-8 w-12 animate-pulse">
                       {j}
                     </div>
                   </li>
@@ -174,7 +178,7 @@ const ProductOptions = () => {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-8 mt-base">
+    <div className="mt-base flex flex-wrap items-center gap-8">
       {options.map((option) => {
         return (
           <div key={option.id}>
