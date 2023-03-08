@@ -9,6 +9,7 @@ import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
 import Select from "../../../components/molecules/select"
 import useNotification from "../../../hooks/use-notification"
+import TreeCrumbs from "../../../components/molecules/tree-crumbs"
 
 const visibilityOptions = [
   {
@@ -35,7 +36,7 @@ type EditProductCategoriesSideModalProps = {
 function EditProductCategoriesSideModal(
   props: EditProductCategoriesSideModalProps
 ) {
-  const { isVisible, close, activeCategory } = props
+  const { isVisible, close, activeCategory, categories } = props
 
   const [name, setName] = useState("")
   const [handle, setHandle] = useState("")
@@ -97,6 +98,12 @@ function EditProductCategoriesSideModal(
           </Button>
         </div>
         {/* === DIVIDER === */}
+
+        {activeCategory && (
+          <div className="mt-[30px]">
+            <TreeCrumbs nodes={categories} currentNode={activeCategory} />
+          </div>
+        )}
 
         <div className="flex-grow">
           <InputField
