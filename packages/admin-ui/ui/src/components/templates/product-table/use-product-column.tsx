@@ -46,7 +46,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
                 {original.thumbnail ? (
                   <img
                     src={original.thumbnail}
-                    className="rounded-soft h-full object-cover"
+                    className="object-cover h-full rounded-soft"
                   />
                 ) : (
                   <ImagePlaceholder />
