@@ -72,7 +72,7 @@ describe("GracefulShutdownServer", () => {
     expect(onSocketClose.mock.calls[0][0]).toEqual("close")
   })
 
-  it("waits requests to complete before shutting it dow", (done: Function) => {
+  it("waits requests to complete before shutting the server down", (done: Function) => {
     jest.useFakeTimers()
 
     const onEventMock = jest.fn()
