@@ -56,8 +56,6 @@ export type EmitData<T = unknown> = {
   options?: Record<string, unknown> & EmitOptions
 }
 
-const COMPLETED_JOB_TTL = 10000
-
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
