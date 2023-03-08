@@ -47,9 +47,11 @@ const LocationDropdown = ({
 }) => {
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
-  if (!selectedLocation && !isLoading && locations) {
-    onChange(locations[0].id)
-  }
+  useEffect(() => {
+    if (!selectedLocation && !isLoading && locations) {
+      onChange(locations[0].id)
+    }
+  }, [isLoading, locations, onChange, selectedLocation])
 
   const selectedLocObj = useMemo(() => {
     if (!isLoading && locations) {
@@ -80,19 +82,19 @@ const LocationDropdown = ({
 }
 
 const InventoryTable: React.FC<InventoryTableProps> = () => {
-  const { store, isLoading: isLoadingStore } = useAdminStore()
+  const { store } = useAdminStore()
 
   const location = useLocation()
 
   const defaultQuery = useMemo(() => {
-    if (!isLoadingStore && store) {
+    if (store) {
       return {
         ...defaultQueryProps,
         location_id: store.default_location_id,
       }
     }
     return defaultQueryProps
-  }, [store, isLoadingStore])
+  }, [store])
 
   const {
     removeTab,
@@ -320,7 +322,7 @@ const InventoryRow = ({
     <Table.Row
       color={"inherit"}
       onClick={showAdjustAvailabilityModal}
-      forceDropdown={true}
+      forceDropdown
       {...rest}
     >
       {row.cells.map((cell: Cell, index: number) => {
@@ -411,7 +413,7 @@ const AdjustAvailabilityModal = ({
                     {variant?.product?.thumbnail ? (
                       <img
                         src={variant?.product?.thumbnail}
-                        className="rounded-rounded h-full object-cover"
+                        className="object-cover h-full rounded-rounded"
                       />
                     ) : (
                       <ImagePlaceholder />
@@ -420,7 +422,7 @@ const AdjustAvailabilityModal = ({
                   <div className="flex flex-col">
                     <span className="truncate">
                       {variant?.product?.title}
-                      <span className="text-grey-50 truncate">
+                      <span className="truncate text-grey-50">
                         ({inventory.sku})
                       </span>
                     </span>
@@ -443,7 +445,7 @@ const AdjustAvailabilityModal = ({
         </Modal.Content>
       </Modal.Body>
       <Modal.Footer>
-        <div className="gap-x-xsmall flex w-full justify-end">
+        <div className="flex justify-end w-full gap-x-xsmall">
           <Button
             size="small"
             variant="ghost"

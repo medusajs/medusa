@@ -60,8 +60,6 @@ const EditVariantModal = ({
 
     const inventory = await client.admin.variants.getInventory(addedVariant.id)
 
-    console.log(inventory)
-
     await Promise.all(
       inventory.variant.inventory
         .map(async (item) => {

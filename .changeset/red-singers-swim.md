@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-add get-variant endpoint
+feat(medusa): add get-variant endpoint

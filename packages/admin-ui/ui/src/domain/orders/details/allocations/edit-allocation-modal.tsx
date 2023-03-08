@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import Button from "../../../../components/fundamentals/button"
 import {
@@ -123,20 +123,20 @@ const EditAllocationDrawer = ({
   }
 
   return (
-    <SideModal isVisible={true} close={close}>
+    <SideModal isVisible close={close}>
       <form
-        className="h-full w-full text-grey-90"
+        className="w-full h-full text-grey-90"
         onSubmit={handleSubmit(submit)}
       >
-        <div className="flex h-full flex-col justify-between ">
+        <div className="flex flex-col justify-between h-full ">
           <div>
-            <div className="flex items-center justify-between border-b border-grey-20 px-8 py-6">
+            <div className="flex items-center justify-between px-8 py-6 border-b border-grey-20">
               <h1 className="inter-large-semibold ">Edit allocation</h1>
               <Button variant="ghost" className="p-1.5" onClick={close}>
                 <CrossIcon />
               </Button>
             </div>
-            <div className="flex flex-col gap-y-8 px-8 pt-6">
+            <div className="flex flex-col px-8 pt-6 gap-y-8">
               <div>
                 <h2 className="inter-base-semibold">Location</h2>
                 <span className="inter-base-regular text-grey-50">
@@ -171,7 +171,7 @@ const EditAllocationDrawer = ({
               </div>
               <Button
                 variant="ghost"
-                className="my-1 w-full border text-rose-50"
+                className="w-full my-1 border text-rose-50"
                 size="small"
                 onClick={handleDelete}
               >
@@ -179,7 +179,7 @@ const EditAllocationDrawer = ({
               </Button>
             </div>
           </div>
-          <div className="flex w-full justify-end gap-x-xsmall border-t px-8 pb-6 pt-4">
+          <div className="flex justify-end w-full px-8 pt-4 pb-6 border-t gap-x-xsmall">
             <Button
               variant="ghost"
               size="small"
