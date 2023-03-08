@@ -253,7 +253,9 @@ export default class EventBusService {
   ): Promise<TResult | void> {
     let events = eventNameOrData as EmitData<T>[]
 
-    if (isString(eventNameOrData)) {
+    const isBulkEmit = !isString(eventNameOrData)
+
+    if (!isBulkEmit) {
       const opts: EmitOptions = {
         removeOnComplete: {
           age: COMPLETED_JOB_TTL,
@@ -294,12 +296,10 @@ export default class EventBusService {
 
       const stagedJobs = await stagedJobRepository.insertBulk(jobToCreates)
 
-      return (isString(eventNameOrData)
-        ? stagedJobs[0]
-        : stagedJobs) as unknown as TResult
+      return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
     }
 
-    this.queue_.addBulk(events)
+    await this.queue_.addBulk(events)
   }
 
   startEnqueuer(): void {
