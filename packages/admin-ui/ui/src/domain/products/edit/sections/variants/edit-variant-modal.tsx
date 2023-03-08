@@ -1,14 +1,20 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import { countries } from "../../../../../utils/countries"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../components/variant-form/edit-flow-variant-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
+import { Product, ProductVariant } from "@medusajs/medusa"
+
+import Button from "../../../../../components/fundamentals/button"
+import Modal from "../../../../../components/molecules/modal"
+import { countries } from "../../../../../utils/countries"
 import { createAddPayload } from "./add-variant-modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+import { useContext } from "react"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { useForm } from "react-hook-form"
+import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void
@@ -24,6 +30,7 @@ const EditVariantModal = ({
   isDuplicate = false,
 }: Props) => {
   const form = useForm<EditFlowVariantFormType>({
+    // @ts-ignore
     defaultValues: getEditVariantDefaultValues(variant, product),
   })
 
@@ -41,22 +48,67 @@ const EditVariantModal = ({
   const { onUpdateVariant, onAddVariant, addingVariant, updatingVariant } =
     useEditProductActions(product.id)
 
+  const { client } = useMedusa()
+
+  const createStockLocationsForVariant = async (
+    productRes,
+    stock_locations: { stocked_quantity: number; location_id: string }[]
+  ) => {
+    const { variants } = productRes
+
+    const pvMap = new Map(product.variants.map((v) => [v.id, true]))
+    const addedVariant = variants.find((variant) => !pvMap.get(variant.id))
+
+    const inventory = await client.admin.variants.getInventory(addedVariant.id)
+
+    await Promise.all(
+      inventory.variant.inventory
+        .map(async (item) => {
+          return Promise.all(
+            stock_locations.map(async (stock_location) => {
+              client.admin.inventoryItems.createLocationLevel(item.id!, {
+                location_id: stock_location.location_id,
+                stocked_quantity: stock_location.stocked_quantity,
+              })
+            })
+          )
+        })
+        .flat()
+    )
+  }
+
   const onSubmit = handleSubmit((data) => {
+    const {
+      stock: { stock_location },
+    } = data
+    delete data.stock.stock_location
+
     if (isDuplicate) {
-      onAddVariant(createAddPayload(data), handleClose)
+      onAddVariant(createAddPayload(data), (productRes) => {
+        if (typeof stock_location !== "undefined") {
+          createStockLocationsForVariant(productRes, stock_location).then(
+            () => {
+              handleClose()
+            }
+          )
+        } else {
+          handleClose()
+        }
+      })
     } else {
       // @ts-ignore
       onUpdateVariant(variant.id, createUpdatePayload(data), handleClose)
     }
   })
 
+  const layeredModalContext = useContext(LayeredModalContext)
   return (
-    <Modal handleClose={handleClose}>
+    <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
         <h1 className="inter-xlarge-semibold">
           Edit Variant
           {variant.title && (
-            <span className="text-grey-50 inter-xlarge-regular">
+            <span className="inter-xlarge-regular text-grey-50">
               {" "}
               ({variant.title})
             </span>
@@ -65,10 +117,10 @@ const EditVariantModal = ({
       </Modal.Header>
       <form onSubmit={onSubmit} noValidate>
         <Modal.Content>
-          <EditFlowVariantForm form={form} />
+          <EditFlowVariantForm isEdit={true} form={form} />
         </Modal.Content>
         <Modal.Footer>
-          <div className="w-full flex items-center gap-x-xsmall justify-end">
+          <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button
               variant="secondary"
               size="small"
@@ -89,7 +141,7 @@ const EditVariantModal = ({
           </div>
         </Modal.Footer>
       </form>
-    </Modal>
+    </LayeredModal>
   )
 }
 
