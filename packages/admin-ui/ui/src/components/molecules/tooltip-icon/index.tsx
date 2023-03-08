@@ -2,7 +2,7 @@ import React from "react"
 import Tooltip, { TooltipProps } from "../../atoms/tooltip"
 
 type TooltipIconProps = TooltipProps & {
-  icon: any
+  icon: React.ReactNode
 }
 
 const TooltipIcon: React.FC<TooltipIconProps> = ({
@@ -12,7 +12,7 @@ const TooltipIcon: React.FC<TooltipIconProps> = ({
 }) => {
   return (
     <Tooltip content={content} side="top" {...props}>
-      {icon ?? icon}
+      {icon}
     </Tooltip>
   )
 }

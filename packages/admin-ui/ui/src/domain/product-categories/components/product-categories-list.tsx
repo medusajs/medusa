@@ -26,6 +26,7 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
   const queryClient = useQueryClient()
   const notification = useNotification()
   const [isUpdating, setIsUpdating] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   const { categories } = props
 
@@ -53,15 +54,18 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
       }
 
       try {
+        isError && setIsError(false)
+
         await client.admin.productCategories.update(dragItem.id, {
           parent_category_id: parentId,
           rank,
         })
         notification("Success", "Successfully updated category tree", "success")
-        await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
       } catch (e) {
         notification("Error", "Failed to update category tree", "error")
+        setIsError(true)
       } finally {
+        await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
         setIsUpdating(false)
       }
     },
@@ -71,7 +75,6 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
   const NestableList = useMemo(
     () => (
       <Nestable
-        collapsed
         items={categories}
         onChange={onItemDrop}
         childrenProp="category_children"
@@ -98,7 +101,7 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
         )}
       />
     ),
-    [categories]
+    [categories, isError]
   )
 
   return (
