@@ -8,11 +8,14 @@ import { ProductCategoriesContext } from "../pages"
 import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
 import Actionables from "../../../components/molecules/actionables"
+import TooltipIcon from "../../../components/molecules/tooltip-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import FolderOpenIcon from "../../../components/fundamentals/icons/folder-open-icon"
 import TagIcon from "../../../components/fundamentals/icons/tag-icon"
+import TagRedDotIcon from "../../../components/fundamentals/icons/tag-red-dot-icon"
+import EyeOffIcon from "../../../components/fundamentals/icons/eye-off-icon"
 import MoreHorizontalIcon from "../../../components/fundamentals/icons/more-horizontal-icon"
 import useNotification from "../../../hooks/use-notification"
 
@@ -85,6 +88,27 @@ function ProductCategoryListItemDetails(
             >
               {item.name}
             </span>
+
+            <div className="flex w-[64px] items-center justify-center">
+              {!item.is_active && (
+                <TooltipIcon
+                  content="Category status is inactive"
+                  icon={<TagRedDotIcon size="32" className="cursor-pointer" />}
+                />
+              )}
+              {item.is_internal && (
+                <TooltipIcon
+                  content="Category visibility is private"
+                  icon={
+                    <EyeOffIcon
+                      color="#889096"
+                      size={18}
+                      className="cursor-pointer"
+                    />
+                  }
+                />
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
