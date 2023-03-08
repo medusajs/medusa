@@ -11,9 +11,7 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/oas/oas-github-ci"
   },
-  "publishConfig": {
-    "access": "restricted"
-  },
+  "private": true,
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
