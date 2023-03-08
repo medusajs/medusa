@@ -109,7 +109,6 @@ const EditAllocationDrawer = ({
       {
         quantity: data.item.quantity,
         location_id: data.location.value,
-        inventory_item_id: data.item.inventory_item_id,
       },
       {
         onSuccess: () => {
