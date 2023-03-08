@@ -1,9 +1,5 @@
-import {
-  AdminReservationsListRes,
-  Order,
-  ReservationItemDTO,
-} from "@medusajs/medusa"
 import { DisplayTotal, PaymentDetails } from "../templates"
+import { Order, ReservationItemDTO } from "@medusajs/medusa"
 import React, { useContext, useMemo } from "react"
 
 import { ActionType } from "../../../../components/molecules/actionables"
@@ -13,7 +9,6 @@ import BodyCard from "../../../../components/organisms/body-card"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
-import { Response } from "@medusajs/medusa-js"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
 import { useAdminReservations } from "medusa-react"
@@ -45,12 +40,6 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     },
     {
       enabled: inventoryEnabled,
-      initialData: {
-        reservations: [] as ReservationItemDTO[],
-        limit: 0,
-        offset: 0,
-        count: 0,
-      } as Response<AdminReservationsListRes>,
     }
   )
 
@@ -142,7 +131,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
       className={"mb-4 h-auto min-h-0 w-full"}
       title="Summary"
       status={
-        isFeatureEnabled("inventoryService") && (
+        isFeatureEnabled("inventoryService") &&
+        Array.isArray(reservations) && (
           <StatusIndicator
             variant={allItemsReserved ? "success" : "danger"}
             title={allItemsReserved ? "Allocated" : "Awaits allocation"}

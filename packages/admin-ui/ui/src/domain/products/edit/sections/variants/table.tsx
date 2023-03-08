@@ -20,9 +20,31 @@ type Props = {
   }
 }
 
-export const useVariantsTableColumns = () => {
-  const columns = useMemo<Column<ProductVariant>[]>(
-    () => [
+export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
+  const columns = useMemo<Column<ProductVariant>[]>(() => {
+    const quantityColumns = []
+    if (!inventoryIsEnabled) {
+      quantityColumns.push({
+        Header: () => {
+          return (
+            <div className="text-right">
+              <span>Inventory</span>
+            </div>
+          )
+        },
+        id: "inventory",
+        accessor: "inventory_quantity",
+        maxWidth: 56,
+        Cell: ({ cell }) => {
+          return (
+            <div className="text-right">
+              <span>{cell.value}</span>
+            </div>
+          )
+        },
+      })
+    }
+    return [
       {
         Header: "Title",
         id: "title",
@@ -54,36 +76,17 @@ export const useVariantsTableColumns = () => {
           )
         },
       },
-      {
-        Header: () => {
-          return (
-            <div className="text-right">
-              <span>Inventory</span>
-            </div>
-          )
-        },
-        id: "inventory",
-        accessor: "inventory_quantity",
-        maxWidth: 56,
-        Cell: ({ cell }) => {
-          return (
-            <div className="text-right">
-              <span>{cell.value}</span>
-            </div>
-          )
-        },
-      },
-    ],
-    []
-  )
+      ...quantityColumns,
+    ]
+  }, [inventoryIsEnabled])
 
   return columns
 }
 
 const VariantsTable = ({ variants, actions }: Props) => {
-  const columns = useVariantsTableColumns()
   const { isFeatureEnabled } = useFeatureFlag()
   const hasInventoryService = isFeatureEnabled("inventoryService")
+  const columns = useVariantsTableColumns(hasInventoryService)
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({

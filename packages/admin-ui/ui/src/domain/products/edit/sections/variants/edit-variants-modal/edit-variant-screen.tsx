@@ -3,17 +3,18 @@ import {
   Product,
   ProductVariant,
 } from "@medusajs/medusa"
-import React, { useContext, useEffect, useMemo } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../../components/fundamentals/button"
-import Modal from "../../../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../../components/variant-form/edit-flow-variant-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import React, { useContext, useEffect, useMemo } from "react"
+
+import Button from "../../../../../../components/fundamentals/button"
+import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
+import Modal from "../../../../../../components/molecules/modal"
 import { getEditVariantDefaultValues } from "../edit-variant-modal"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useEditVariantsModal } from "./use-edit-variants-modal"
+import { useForm } from "react-hook-form"
 
 type Props = {
   variant: ProductVariant
@@ -58,10 +59,10 @@ const EditVariantScreen = ({ variant, product }: Props) => {
     <>
       <form noValidate>
         <Modal.Content>
-          <EditFlowVariantForm form={form} />
+          <EditFlowVariantForm isEdit={true} form={form} />
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex items-center justify-end w-full gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" type="button">
               Cancel
             </Button>

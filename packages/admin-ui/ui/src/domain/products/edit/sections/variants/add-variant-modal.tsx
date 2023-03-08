@@ -1,16 +1,17 @@
 import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
-import { useMedusa } from "medusa-react"
-import { useContext, useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../components/variant-form/edit-flow-variant-form"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
+import { useContext, useEffect } from "react"
+
+import Button from "../../../../../components/fundamentals/button"
+import Modal from "../../../../../components/molecules/modal"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { useForm } from "react-hook-form"
+import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void
@@ -92,10 +93,10 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
-            <EditFlowVariantForm form={form} />
+            <EditFlowVariantForm isEdit={false} form={form} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end w-full gap-x-xsmall">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="secondary"
                 size="small"
