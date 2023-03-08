@@ -9,7 +9,7 @@ import { Product, ProductCategory, ProductVariant } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { ProductFilterOptions } from "../types/product"
-import { isObject } from "../utils"
+import { buildLegacyFieldsListFrom, isObject } from "../utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -83,7 +83,18 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     // TODO: https://github.com/typeorm/typeorm/issues/9719
     // https://github.com/typeorm/typeorm/issues/6294
-    // Cleanup the repo and fix order/skip/take when those issues are resolved
+    // Cleanup the repo and fix order/skip/take and relation load strategy when those issues are resolved
+
+    const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
+      options.order ?? {}
+    )
+
+    const isDepth1 = !orderFieldsCollectionPointSeparated.some(
+      (field) => field.indexOf(".") !== -1
+    )
+    options_.relationLoadStrategy = isDepth1
+      ? options_.relationLoadStrategy
+      : "join"
 
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
