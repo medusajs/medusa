@@ -941,12 +941,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/discounts/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -957,7 +954,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/discounts/index',
+          id: 'modules/discounts/discounts',
           label: 'Discounts',
         },
         {
@@ -969,13 +966,13 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/admin/manage-discounts',
+          id: 'modules/discounts/admin/manage-discounts',
           label: 'Admin: Manage Discounts'
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/use-discounts-in-checkout',
-          label: 'Storefront: Use Discounts in Checkout'
+          id: 'modules/discounts/storefront/use-discounts-in-checkout',
+          label: 'Storefront: Discounts in Checkout'
         },
       ]
     },
