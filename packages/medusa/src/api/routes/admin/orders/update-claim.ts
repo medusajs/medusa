@@ -16,7 +16,7 @@ import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /admin/order/{id}/claims/{claim_id}
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
  * description: "Updates a Claim."

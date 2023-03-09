@@ -98,7 +98,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerAddressesAddressReq
  * anyOf:
- *   - $ref: "#/components/schemas/AddressFields"
+ *   - $ref: "#/components/schemas/AddressPayload"
  */
 // eslint-disable-next-line max-len
 export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}
