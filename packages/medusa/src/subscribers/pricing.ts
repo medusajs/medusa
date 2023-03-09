@@ -20,7 +20,7 @@ class PricingSubscriber {
       async (data) => {
         const { id, fields } = data as ProductVariantUpdatedEventData
         if (fields.includes("prices")) {
-          await this.cacheService_.invalidate(`ps:${id}*`)
+          await this.cacheService_.invalidate(`ps:${id}:*`)
         }
       }
     )

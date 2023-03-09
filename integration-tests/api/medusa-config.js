@@ -17,7 +17,11 @@ module.exports = {
   modules: {
     cacheService: {
       resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 5 },
+      // don't set cache since this is shared between tests
+      // and since we have "test-product" / "test-variant" as ids
+      // in a bunch of tests, this could cause that incorrect data is returned
+      // (e.g. price selection caches calculations under `ps:${variantId}`)
+      options: { ttl: 0 },
     },
   },
 }

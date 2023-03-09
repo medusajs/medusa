@@ -46,8 +46,6 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      verbose: true,
-      redisUrl: "redis://127.0.0.1:6379",
     })
   })
 
