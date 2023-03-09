@@ -71,7 +71,6 @@ const useEditProductActions = (productId: string) => {
     successMessage = "Variant was updated successfully"
   ) => {
     updateVariant.mutate(
-      // @ts-ignore - TODO fix type on request
       {
         variant_id: id,
         ...removeNullish(payload),
