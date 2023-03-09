@@ -3,10 +3,12 @@ const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 
+const redisUrl = process.env.REDIS_URL || "127.0.0.1:6379"
+
 module.exports = {
   plugins: [],
   projectConfig: {
-    redis_url: process.env.REDIS_URL,
+    redis_url: redisUrl,
     database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
     database_type: "postgres",
     jwt_secret: "test",
@@ -15,7 +17,7 @@ module.exports = {
   modules: {
     cacheService: {
       resolve: "@medusajs/cache-redis",
-      options: { ttl: 30, redisUrl: "127.0.0.1:6379" },
+      options: { ttl: 30, redisUrl },
     },
   },
 }
