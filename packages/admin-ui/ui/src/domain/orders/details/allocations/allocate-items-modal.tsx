@@ -288,7 +288,7 @@ export const AllocationLineItem: React.FC<{
       >
         <div
           className={clsx(
-            "inter-base-regular text-grey-50 flex items-end whitespace-nowrap",
+            "inter-base-regular text-grey-50 gap-x-xsmall flex items-end whitespace-nowrap",
             {
               "flex-col": !compact,
             }

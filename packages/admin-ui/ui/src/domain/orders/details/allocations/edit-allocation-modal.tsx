@@ -105,6 +105,10 @@ const EditAllocationDrawer = ({
   }, [reservation, setValue])
 
   const submit = (data: EditAllocationLineItemForm) => {
+    if (!data.item.quantity) {
+      return handleDelete()
+    }
+
     updateReservation(
       {
         quantity: data.item.quantity,
