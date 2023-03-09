@@ -35,10 +35,12 @@ describe("DraftOrderService", () => {
 
     const lineItemService = {
       generate: jest.fn().mockImplementation(() =>
-        Promise.resolve({
-          title: "test-item",
-          variant_id: "test-variant",
-        })
+        Promise.resolve([
+          {
+            title: "test-item",
+            variant_id: "test-variant",
+          },
+        ])
       ),
       create: jest.fn().mockImplementation((data) => data),
       withTransaction: function () {

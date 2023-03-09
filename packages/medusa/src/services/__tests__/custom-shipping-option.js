@@ -109,22 +109,22 @@ describe("CustomShippingOptionService", () => {
       await customShippingOptionService.create(customShippingOption)
 
       expect(customShippingOptionRepository.create).toHaveBeenCalledTimes(1)
-      expect(customShippingOptionRepository.create).toHaveBeenCalledWith({
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: undefined,
-      })
+      expect(customShippingOptionRepository.create).toHaveBeenCalledWith([
+        {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+        },
+      ])
 
       expect(customShippingOptionRepository.save).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.save).toHaveBeenCalledWith({
         0: {
-          id: "test-cso",
           cart_id: "test-cso-cart",
           shipping_option_id: "test-so",
           price: 30,
-          metadata: undefined,
         },
+        id: "test-cso",
       })
     })
   })
