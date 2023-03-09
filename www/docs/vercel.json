@@ -205,8 +205,8 @@
       "destination": "/modules/taxes/storefront/manual-calculation"
     },
     {
-      "source": "/advanced/backend/discounts/index",
-      "destination": "/modules/discounts/discounts"
+      "source": "/advanced/backend/discounts",
+      "destination": "/modules/discounts"
     },
     {
       "source": "/advanced/admin/manage-discounts",
@@ -215,6 +215,22 @@
     {
       "source": "/advanced/storefront/use-discounts-in-checkout",
       "destination": "/modules/discounts/storefront/use-discounts-in-checkout"
+    },
+    {
+      "source": "/advanced/backend/gift-cards",
+      "destination": "/modules/gift-cards"
+    },
+    {
+      "source": "/advanced/admin/manage-gift-cards",
+      "destination": "/modules/gift-cards/admin/manage-gift-cards"
+    },
+    {
+      "source": "/advanced/storefront/use-gift-cards",
+      "destination": "/modules/gift-cards/storefront/use-gift-cards"
+    },
+    {
+      "source": "/advanced/ecommerce/send-gift-card-to-customer",
+      "destination": "/modules/gift-cards/backend/send-gift-card-to-customer"
     }
   ]
 }

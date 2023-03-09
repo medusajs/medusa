@@ -985,12 +985,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/gift-cards/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -1001,7 +998,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/gift-cards/index',
+          id: 'modules/gift-cards/gift-cards',
           label: 'Gift Cards'
         },
         {
@@ -1013,17 +1010,17 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/ecommerce/send-gift-card-to-customer',
+          id: 'modules/gift-cards/backend/send-gift-card-to-customer',
           label: 'Backend: Send Gift Card Code'
         },
         {
           type: 'doc',
-          id: 'advanced/admin/manage-gift-cards',
+          id: 'modules/gift-cards/admin/manage-gift-cards',
           label: 'Admin: Manage Gift Cards'
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/use-gift-cards',
+          id: 'modules/gift-cards/storefront/use-gift-cards',
           label: 'Storefront: Use Gift Cards'
         },
       ]

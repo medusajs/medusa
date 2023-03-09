@@ -34,7 +34,7 @@ As custom gift cards can be used once they’re created, they’re also represen
 
 ## GiftCard Entity Overview
 
-Some of the [GiftCard](../../../references/entities/classes/GiftCard.md) entity’s attributes are:
+Some of the [GiftCard](../../references/entities/classes/GiftCard.md) entity’s attributes are:
 
 - `code`: a unique string of random characters. This is the code that the customer can use during their checkout to redeem the gift card.
 - `value`: The amount of the gift card. This is the amount the customer purchased, or was gifted in the case of custom gift cards.
@@ -71,6 +71,6 @@ You can also access the gift cards used in an order by expanding the `gift_cards
 ## See Also
 
 - Gift cards [store](/api/store/#tag/Gift-Card) and [admin](/api/admin/#tag/Gift-Card) APIs
-- [How to manage gift cards using admin APIs](../../admin/manage-gift-cards.mdx)
-- [How to use gift cards in the storefront](../../storefront/use-gift-cards.mdx)
-- [How to send the customer a gift card](../../ecommerce/send-gift-card-to-customer.md)
+- [How to manage gift cards using admin APIs](./admin/manage-gift-cards.mdx)
+- [How to use gift cards in the storefront](./storefront/use-gift-cards.mdx)
+- [How to send the customer a gift card](./backend/send-gift-card-to-customer.md)

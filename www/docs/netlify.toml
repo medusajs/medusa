@@ -203,7 +203,7 @@
   to="/modules/taxes/storefront/manual-calculation"
 
 [[redirects]]
-  from="/advanced/backend/discounts/index"
+  from="/advanced/backend/discounts"
   to="/modules/discounts/discounts"
 
 [[redirects]]
@@ -213,3 +213,19 @@
 [[redirects]]
   from="/advanced/storefront/use-discounts-in-checkout"
   to="/modules/discounts/storefront/use-discounts-in-checkout"
+
+[[redirects]]
+  from="/advanced/backend/gift-cards"
+  to="/modules/gift-cards"
+
+[[redirects]]
+  from="/advanced/admin/manage-gift-cards"
+  to="/modules/gift-cards/admin/manage-gift-cards"
+
+[[redirects]]
+  from="/advanced/storefront/use-gift-cards"
+  to="/modules/gift-cards/storefront/use-gift-cards"
+
+[[redirects]]
+  from="/advanced/ecommerce/send-gift-card-to-customer"
+  to="/modules/gift-cards/backend/send-gift-card-to-customer"
