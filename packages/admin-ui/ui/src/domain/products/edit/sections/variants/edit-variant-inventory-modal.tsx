@@ -1,9 +1,4 @@
-import {
-  AdminPostInventoryItemsInventoryItemReq,
-  InventoryLevelDTO,
-  Product,
-  ProductVariant,
-} from "@medusajs/medusa"
+import { InventoryLevelDTO, Product, ProductVariant } from "@medusajs/medusa"
 import { useMedusa } from "medusa-react"
 import { useAdminVariantsInventory } from "medusa-react"
 import { useContext } from "react"
@@ -18,6 +13,7 @@ import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { removeNullish } from "../../../../../utils/remove-nullish"
 
 type Props = {
   onClose: () => void
@@ -48,71 +44,88 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   const onSubmit = async (data: EditFlowVariantFormType) => {
     const locationLevels = data.stock.location_levels || []
     const manageInventory = data.stock.manage_inventory
+    delete data.stock.manage_inventory
+    delete data.stock.location_levels
 
-    const deleteLocations = manageInventory
-      ? variantInventoryItem.location_levels.filter(
-          (itemLevel: InventoryLevelDTO) => {
-            return !locationLevels.find(
-              (level) => level.location_id === itemLevel.location_id
+    let inventoryItemId: string | undefined = itemId
+
+    const upsertPayload = removeNullish(data.stock)
+
+    if (variantInventoryItem) {
+      // variant inventory exists
+      const deleteLocations = manageInventory
+        ? variantInventoryItem?.location_levels?.filter(
+            (itemLevel: InventoryLevelDTO) => {
+              return !locationLevels.find(
+                (level) => level.location_id === itemLevel.location_id
+              )
+            }
+          ) ?? []
+        : variantInventoryItem?.location_levels || []
+
+      if (inventoryItemId) {
+        await Promise.all(
+          deleteLocations.map(async (location: InventoryLevelDTO) => {
+            await client.admin.inventoryItems.deleteLocationLevel(
+              inventoryItemId!,
+              location.id
+            )
+          })
+        )
+      }
+
+      if (!manageInventory) {
+        // has an inventory item but no longer wants to manage inventory
+        await client.admin.inventoryItems.delete(itemId!)
+        inventoryItemId = undefined
+      } else {
+        // has an inventory item and wants to update inventory
+        await client.admin.inventoryItems.update(itemId!, upsertPayload)
+      }
+    } else if (manageInventory) {
+      console.log("testing")
+      // does not have an inventory item but wants to manage inventory
+      const { inventory_item } = await client.admin.inventoryItems.create({
+        variant_id: variant.id,
+        ...upsertPayload,
+      })
+      inventoryItemId = inventory_item.id
+    }
+
+    // If some inventory Item exists update location levels
+    if (inventoryItemId) {
+      await Promise.all(
+        locationLevels.map(async (level) => {
+          if (!level.location_id) {
+            return
+          }
+          if (level.id) {
+            await client.admin.inventoryItems.updateLocationLevel(
+              inventoryItemId!,
+              level.location_id,
+              {
+                stocked_quantity: level.stocked_quantity,
+              }
+            )
+          } else {
+            await client.admin.inventoryItems.createLocationLevel(
+              inventoryItemId!,
+              {
+                location_id: level.location_id,
+                stocked_quantity: level.stocked_quantity!,
+              }
             )
           }
-        )
-      : variantInventoryItem.location_levels
-
-    let itemIdd = itemId
-    if (!manageInventory && variantInventory) {
-      await client.admin.inventoryItems.delete(itemId)
-      itemIdd = null
-    } else if (manageInventory && !variantInventory) {
-      const { id } = await createInventoryItem(data.stock)
-      itemIdd = id
-    } else if (manageInventory && variantInventory) {
-      await client.admin.inventoryItems.update(
-        itemId,
-        data.stock as AdminPostInventoryItemsInventoryItemReq
+        })
       )
     }
 
-    await Promise.all([
-      ...(locationLevels.map(async (level) => {
-        if (!itemIdd) {
-          return
-        }
-        if (level.id) {
-          await client.admin.inventoryItems.updateLocationLevel(
-            itemIdd,
-            level.location_id,
-            {
-              stocked_quantity: level.stocked_quantity,
-            }
-          )
-        } else {
-          await client.admin.inventoryItems.createLocationLevel(itemIdd, {
-            location_id: level.location_id,
-            stocked_quantity: level.stocked_quantity,
-          })
-        }
-      }) || []),
-      ...deleteLocations.map(async (location: InventoryLevelDTO) => {
-        await client.admin.inventoryItems.deleteLocationLevel(
-          itemIdd,
-          location.id
-        )
-      }),
-    ])
-
-    // / TODO: Call update location level with new values
-    delete data.stock.location_levels
-
-    console.log(createUpdatePayload(data))
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
       refetch()
       handleClose()
     })
   }
-
-  const createInventoryItem = async (test: any) => {}
 
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>

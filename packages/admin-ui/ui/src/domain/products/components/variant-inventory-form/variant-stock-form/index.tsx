@@ -12,7 +12,7 @@ import IconBadge from "../../../../../components/fundamentals/icon-badge"
 import BuildingsIcon from "../../../../../components/fundamentals/icons/buildings-icon"
 
 export type VariantStockFormType = {
-  manage_inventory: boolean
+  manage_inventory?: boolean
   allow_backorder: boolean
   inventory_quantity: number | null
   sku: string | null
