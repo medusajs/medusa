@@ -1,21 +1,22 @@
-import { useEffect, useMemo } from "react"
-import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import Button from "../../../../components/fundamentals/button"
 import {
   AllocationLineItem,
   AllocationLineItemForm,
 } from "./allocate-items-modal"
 import { Controller, useForm, useWatch } from "react-hook-form"
+import { LineItem, ReservationItemDTO } from "@medusajs/medusa"
 import {
   useAdminDeleteReservation,
   useAdminStockLocations,
   useAdminUpdateReservation,
 } from "medusa-react"
+import { useEffect, useMemo } from "react"
+
+import Button from "../../../../components/fundamentals/button"
+import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import Select from "../../../../components/molecules/select/next-select/select"
-import { LineItem, ReservationItemDTO } from "@medusajs/medusa"
-import useNotification from "../../../../hooks/use-notification"
-import { nestedForm } from "../../../../utils/nested-form"
 import SideModal from "../../../../components/molecules/modal/side-modal"
+import { nestedForm } from "../../../../utils/nested-form"
+import useNotification from "../../../../hooks/use-notification"
 
 type EditAllocationLineItemForm = {
   location: { label: string; value: string }
@@ -104,11 +105,14 @@ const EditAllocationDrawer = ({
   }, [reservation, setValue])
 
   const submit = (data: EditAllocationLineItemForm) => {
+    if (!data.item.quantity) {
+      return handleDelete()
+    }
+
     updateReservation(
       {
         quantity: data.item.quantity,
         location_id: data.location.value,
-        inventory_item_id: data.item.inventory_item_id,
       },
       {
         onSuccess: () => {
@@ -125,18 +129,18 @@ const EditAllocationDrawer = ({
   return (
     <SideModal isVisible close={close}>
       <form
-        className="w-full h-full text-grey-90"
+        className="text-grey-90 h-full w-full"
         onSubmit={handleSubmit(submit)}
       >
-        <div className="flex flex-col justify-between h-full ">
+        <div className="flex h-full flex-col justify-between ">
           <div>
-            <div className="flex items-center justify-between px-8 py-6 border-b border-grey-20">
+            <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
               <h1 className="inter-large-semibold ">Edit allocation</h1>
               <Button variant="ghost" className="p-1.5" onClick={close}>
                 <CrossIcon />
               </Button>
             </div>
-            <div className="flex flex-col px-8 pt-6 gap-y-8">
+            <div className="flex flex-col gap-y-8 px-8 pt-6">
               <div>
                 <h2 className="inter-base-semibold">Location</h2>
                 <span className="inter-base-regular text-grey-50">
@@ -163,6 +167,7 @@ const EditAllocationDrawer = ({
                 <AllocationLineItem
                   form={nestedForm(form, `item` as "item")}
                   item={item}
+                  compact
                   locationId={selectedLocation?.value}
                   reservedQuantity={
                     totalReservedQuantity - (reservation?.quantity || 0)
@@ -171,7 +176,7 @@ const EditAllocationDrawer = ({
               </div>
               <Button
                 variant="ghost"
-                className="w-full my-1 border text-rose-50"
+                className="my-1 w-full border text-rose-50"
                 size="small"
                 onClick={handleDelete}
               >
@@ -179,7 +184,7 @@ const EditAllocationDrawer = ({
               </Button>
             </div>
           </div>
-          <div className="flex justify-end w-full px-8 pt-4 pb-6 border-t gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full justify-end border-t px-8 pt-4 pb-6">
             <Button
               variant="ghost"
               size="small"
