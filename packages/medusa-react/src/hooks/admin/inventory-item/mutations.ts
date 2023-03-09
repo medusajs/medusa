@@ -4,6 +4,8 @@ import {
   AdminPostInventoryItemsInventoryItemReq,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
+  AdminPostInventoryItemsReq,
+  AdminPostInventoryItemsParams
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import {
@@ -16,6 +18,29 @@ import { buildOptions } from "../../utils/buildOptions"
 import { adminInventoryItemsKeys } from "./queries"
 
 // inventory item
+
+// create inventory item
+export const useAdminCreateInventoryItem = (
+  options?: UseMutationOptions<
+    Response<AdminInventoryItemsRes>,
+    Error,
+    AdminPostInventoryItemsReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminPostInventoryItemsReq, query?: AdminPostInventoryItemsParams) =>
+      client.admin.inventoryItems.create(payload, query),
+    buildOptions(
+      queryClient,
+      [adminInventoryItemsKeys.lists()],
+      options
+    )
+  )
+}
+
 
 // update inventory item
 export const useAdminUpdateInventoryItem = (

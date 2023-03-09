@@ -19,40 +19,24 @@ import { ProductVariant } from "../../../../../models"
 import { MedusaError } from "medusa-core-utils"
 
 enum actions {
-  createVariant = "createVariant",
   createInventoryItem = "createInventoryItem",
   attachInventoryItem = "attachInventoryItem",
 }
 
-const simpleFlow: TransactionStepsDefinition = {
+const flow: TransactionStepsDefinition = {
   next: {
-    action: actions.createVariant,
-  },
-}
-
-const flowWithInventory: TransactionStepsDefinition = {
-  next: {
-    action: actions.createVariant,
+    action: actions.createInventoryItem,
     saveResponse: true,
     next: {
-      action: actions.createInventoryItem,
-      saveResponse: true,
-      next: {
-        action: actions.attachInventoryItem,
-        noCompensation: true,
-      },
+      action: actions.attachInventoryItem,
+      noCompensation: true,
     },
   },
 }
 
-const createSimpleVariantStrategy = new TransactionOrchestrator(
-  "create-variant",
-  simpleFlow
-)
-
-const createVariantStrategyWithInventory = new TransactionOrchestrator(
+const createInventoryItemStrategy = new TransactionOrchestrator(
   "create-variant-with-inventory",
-  flowWithInventory
+  flow
 )
 
 type InjectedDependencies = {
@@ -62,10 +46,23 @@ type InjectedDependencies = {
   inventoryService?: IInventoryService
 }
 
-export const createVariantTransaction = async (
+type CreateInventoryItemInput = {
+  sku?: string
+  hs_code?: string
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: Record<string, unknown>
+}
+
+export const createInventoryItemTransaction = async (
   dependencies: InjectedDependencies,
-  productId: string,
-  input: CreateProductVariantInput
+  variantId: string,
+  input: CreateInventoryItemInput
 ): Promise<DistributedTransaction> => {
   const {
     manager,
@@ -81,21 +78,9 @@ export const createVariantTransaction = async (
 
   const productVariantServiceTx = productVariantService.withTransaction(manager)
 
-  async function createVariant(variantInput: CreateProductVariantInput) {
-    return await productVariantServiceTx.create(productId, variantInput)
-  }
+  const variant = await productVariantServiceTx.retrieve(variantId)
 
-  async function removeVariant(variant: ProductVariant) {
-    if (variant) {
-      await productVariantServiceTx.delete(variant.id)
-    }
-  }
-
-  async function createInventoryItem(variant: ProductVariant) {
-    if (!variant.manage_inventory) {
-      return
-    }
-
+  async function createInventoryItem(input: CreateInventoryItemInput) {
     return await inventoryServiceTx!.createInventoryItem({
       sku: variant.sku,
       origin_country: variant.origin_country,
@@ -135,30 +120,14 @@ export const createVariantTransaction = async (
     payload: TransactionPayload
   ) {
     const command = {
-      [actions.createVariant]: {
-        [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput
-        ) => {
-          return await createVariant(data)
-        },
-        [TransactionHandlerType.COMPENSATE]: async (
-          data: CreateProductVariantInput,
-          { invoke }
-        ) => {
-          await removeVariant(invoke[actions.createVariant])
-        },
-      },
       [actions.createInventoryItem]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput,
-          { invoke }
+          data: CreateInventoryItemInput
         ) => {
-          const { [actions.createVariant]: variant } = invoke
-
-          return await createInventoryItem(variant)
+          return await createInventoryItem(data)
         },
         [TransactionHandlerType.COMPENSATE]: async (
-          data: CreateProductVariantInput,
+          data: CreateInventoryItemInput,
           { invoke }
         ) => {
           await removeInventoryItem(invoke[actions.createInventoryItem])
@@ -166,13 +135,10 @@ export const createVariantTransaction = async (
       },
       [actions.attachInventoryItem]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput,
+          data: CreateInventoryItemInput,
           { invoke }
         ) => {
-          const {
-            [actions.createVariant]: variant,
-            [actions.createInventoryItem]: inventoryItem,
-          } = invoke
+          const { [actions.createInventoryItem]: inventoryItem } = invoke
 
           return await attachInventoryItem(variant, inventoryItem)
         },
@@ -181,16 +147,12 @@ export const createVariantTransaction = async (
     return command[actionId][type](payload.data, payload.context)
   }
 
-  const strategy = inventoryService
-    ? createVariantStrategyWithInventory
-    : createSimpleVariantStrategy
-
-  const transaction = await strategy.beginTransaction(
+  const transaction = await createInventoryItemStrategy.beginTransaction(
     ulid(),
     transactionHandler,
     input
   )
-  await strategy.resume(transaction)
+  await createInventoryItemStrategy.resume(transaction)
 
   if (transaction.getState() !== TransactionState.DONE) {
     throw new MedusaError(
@@ -206,13 +168,7 @@ export const createVariantTransaction = async (
 }
 
 export const revertVariantTransaction = async (
-  dependencies: InjectedDependencies,
   transaction: DistributedTransaction
 ) => {
-  const { inventoryService } = dependencies
-  const strategy = inventoryService
-    ? createVariantStrategyWithInventory
-    : createSimpleVariantStrategy
-
-  await strategy.cancelTransaction(transaction)
+  await createInventoryItemStrategy.cancelTransaction(transaction)
 }

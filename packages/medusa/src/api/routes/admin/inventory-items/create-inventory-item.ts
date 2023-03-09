@@ -1,44 +1,33 @@
-import {
-  IsArray,
-  IsBoolean,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { Type } from "class-transformer"
+import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import {
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
 import { IInventoryService } from "../../../../interfaces"
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
+import { CreateProductVariantInput } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 import { EntityManager } from "typeorm"
 
-import { createVariantTransaction } from "./transaction/create-inventory-item"
+import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
+import { FindParams, Logger } from "../../../.."
+import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /admin/products/{id}/variants
- * operationId: "PostProductsProductVariants"
- * summary: "Create a Product Variant"
- * description: "Creates a Product Variant. Each Product Variant must have a unique combination of Product Option Values."
+ * @oas [post] /admin/inventory-items
+ * operationId: "PostInventoryItems"
+ * summary: "Create an Inventory Item."
+ * description: "Creates an Inventory Item."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Product.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostProductsProductVariantsReq"
- * x-codegen:
- *   method: createVariant
+ *         $ref: "#/components/schemas/AdminPostInventoryItemsItemLocationLevelsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -46,58 +35,35 @@ import { createVariantTransaction } from "./transaction/create-inventory-item"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.createVariant(product_id, {
- *         title: 'Color',
- *         prices: [
- *           {
- *             amount: 1000,
- *             currency_code: "eur"
- *           }
- *         ],
- *         options: [
- *           {
- *             option_id,
- *             value: 'S'
- *           }
- *         ],
- *         inventory_quantity: 100
+ *       medusa.admin.inventoryItems.createInventoryItem(inventoryItemId, {
+ *         location_id: 'sloc',
+ *         stocked_quantity: 10,
  *       })
- *       .then(({ product }) => {
- *         console.log(product.id);
+ *       .then(({ inventory_item }) => {
+ *         console.log(inventory_item.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/{id}/variants' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "title": "Color",
- *           "prices": [
- *             {
- *               "amount": 1000,
- *               "currency_code": "eur"
- *             }
- *           ],
- *           "options": [
- *             {
- *               "option_id": "asdasf",
- *               "value": "S"
- *             }
- *           ]
+ *           "location_id": "sloc",
+ *           "stocked_quantity": 10
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Products
+ *   - Inventory Items
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductsRes"
+ *           $ref: "#/components/schemas/AdminInventoryItemsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -113,14 +79,10 @@ import { createVariantTransaction } from "./transaction/create-inventory-item"
  */
 
 export default async (req, res) => {
-  const { id } = req.params
+  const validated = await validator(AdminPostInventoryItemsReq, req.body)
+  const { variant_id, ...input } = validated
 
-  const validated = await validator(
-    AdminPostProductsProductVariantsReq,
-    req.body
-  )
-
-  const inventoryService: IInventoryService | undefined =
+  const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
@@ -128,46 +90,49 @@ export default async (req, res) => {
     "productVariantService"
   )
 
+  let inventoryItems = await productVariantInventoryService.listByVariant(
+    variant_id
+  )
+
+  // TODO: this is a temporary fix to prevent duplicate inventory items since we don't support this functionality yet
+  if (inventoryItems.length) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Inventory Item already exists for this variant"
+    )
+  }
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   await manager.transaction(async (transactionManager) => {
-    await createVariantTransaction(
+    await createInventoryItemTransaction(
       {
         manager: transactionManager,
         inventoryService,
         productVariantInventoryService,
         productVariantService,
       },
-      id,
-      validated as CreateProductVariantInput
+      variant_id,
+      input
     )
   })
 
-  const productService: ProductService = req.scope.resolve("productService")
-  const product = await productService.retrieve(id)
+  inventoryItems = await productVariantInventoryService.listByVariant(
+    variant_id
+  )
 
-  res.json({ product })
-}
+  const inventoryItem = await inventoryService.retrieveInventoryItem(
+    inventoryItems[0].inventory_item_id,
+    req.retrieveConfig
+  )
 
-class ProductVariantOptionReq {
-  @IsString()
-  value: string
-
-  @IsString()
-  option_id: string
+  res.status(200).json({ inventory_item: inventoryItem })
 }
 
 /**
- * @schema AdminPostProductsProductVariantsReq
+ * @schema AdminPostInventoryItemsReq
  * type: object
- * required:
- *   - title
- *   - prices
- *   - options
  * properties:
- *   title:
- *     description: The title to identify the Product Variant by.
- *     type: string
  *   sku:
  *     description: The unique SKU for the Product Variant.
  *     type: string
@@ -218,77 +183,18 @@ class ProductVariantOptionReq {
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
- *   prices:
- *     type: array
- *     items:
- *       type: object
- *       required:
- *         - amount
- *       properties:
- *         id:
- *           description: The ID of the price.
- *           type: string
- *         region_id:
- *           description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
- *           type: string
- *         currency_code:
- *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
- *           type: string
- *           externalDocs:
- *             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *             description: See a list of codes.
- *         amount:
- *           description: The amount to charge for the Product Variant.
- *           type: integer
- *         min_quantity:
- *          description: The minimum quantity for which the price will be used.
- *          type: integer
- *         max_quantity:
- *           description: The maximum quantity for which the price will be used.
- *           type: integer
- *   options:
- *     type: array
- *     items:
- *       type: object
- *       required:
- *         - option_id
- *         - value
- *       properties:
- *         option_id:
- *           description: The ID of the Product Option to set the value for.
- *           type: string
- *         value:
- *           description: The value to give for the Product Option.
- *           type: string
  */
-export class AdminPostProductsProductVariantsReq {
+export class AdminPostInventoryItemsReq {
+  @IsString()
+  variant_id: string
+
   @IsString()
   @IsOptional()
   sku?: string
 
   @IsString()
   @IsOptional()
-  ean?: string
-
-  @IsString()
-  @IsOptional()
-  upc?: string
-
-  @IsString()
-  @IsOptional()
-  barcode?: string
-
-  @IsString()
-  @IsOptional()
   hs_code?: string
-
-  @IsBoolean()
-  @IsOptional()
-  allow_backorder?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  manage_inventory?: boolean = true
 
   @IsNumber()
   @IsOptional()
@@ -321,15 +227,6 @@ export class AdminPostProductsProductVariantsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesCreateReq)
-  prices: ProductVariantPricesCreateReq[]
-
-  @IsOptional()
-  @Type(() => ProductVariantOptionReq)
-  @ValidateNested({ each: true })
-  @IsArray()
-  options?: ProductVariantOptionReq[] = []
 }
+
+export class AdminPostInventoryItemsParams extends FindParams {}
