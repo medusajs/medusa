@@ -49,7 +49,7 @@ A region is stored in the database as a [Region](../../references/entities/class
 - `tax_rate`: A number that indicates the tax rate. The tax rate is a percentage.
 - `tax_code`: An optional string that is used as the code for the default tax rate.
 - `gift_cards_taxable`: A boolean value that indicates whether gift cards in a region are taxable or not.
-- `automatic_taxes`: A boolean value that indicates whether taxes should be calculated during checkout automatically or manually for that region. You can learn more about manually calculating taxes in [this documentation](../../advanced/backend/taxes/manual-calculation.md).
+- `automatic_taxes`: A boolean value that indicates whether taxes should be calculated during checkout automatically or manually for that region. You can learn more about manually calculating taxes in [this documentation](../taxes/storefront/manual-calculation.md).
 
 ---
 

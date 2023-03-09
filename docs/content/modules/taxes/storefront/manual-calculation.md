@@ -21,7 +21,7 @@ This section explores different ways you can calculate taxes based on your purpo
 
 ### Use Calculate Cart Taxes Endpoint
 
-The [Calculate Cart Taxes](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartTaxes) endpoint forces the calculation of taxes for a cart during checkout. This bypasses the option set in admin to not calculate taxes automatically, which results in sending requests to the tax provider.
+The [Calculate Cart Taxes](/api/store/#tag/Cart/operation/PostCartsCartTaxes) endpoint forces the calculation of taxes for a cart during checkout. This bypasses the option set in admin to not calculate taxes automatically, which results in sending requests to the tax provider.
 
 This calculates and retrieves the taxes on the cart and each of the line items in that cart.
 
@@ -39,7 +39,7 @@ cartService.retrieve("cart_01G8Z...", { }, { force_taxes: true })
 
 :::tip
 
-You can learn how to [retrieve and use services](../services/create-service.md#using-your-custom-service) in this documentation.
+You can learn how to [retrieve and use services](../../../advanced/backend/services/create-service.md#using-your-custom-service) in this documentation.
 
 :::
 
@@ -83,7 +83,7 @@ const itemTotals = await totalsService
 
 :::tip
 
-You can learn how to [retrieve and use services](../services/create-service.md#using-your-custom-service) in this documentation.
+You can learn how to [retrieve and use services](../../../advanced/backend/services/create-service.md#using-your-custom-service) in this documentation.
 
 :::
 
@@ -91,5 +91,5 @@ You can learn how to [retrieve and use services](../services/create-service.md#u
 
 ## See Also
 
-- [Tax-Inclusive Pricing Overview](inclusive-pricing.md)
+- [Tax-Inclusive Pricing Overview](../inclusive-pricing.md)
 - [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md)

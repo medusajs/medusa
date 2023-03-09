@@ -195,6 +195,14 @@
     {
       "source": "/advanced/storefront/implement-claim-order",
       "destination": "/modules/orders/storefront/implement-claim-order"
+    },
+    {
+      "source": "/advanced/backend/taxes/inclusive-pricing",
+      "destination": "/modules/taxes/inclusive-pricing"
+    },
+    {
+      "source": "/advanced/backend/taxes/manual-calculation",
+      "destination": "/modules/taxes/storefront/manual-calculation"
     }
   ]
 }

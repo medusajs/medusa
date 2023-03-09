@@ -193,3 +193,11 @@
 [[redirects]]
   from="/advanced/storefront/implement-claim-order"
   to="/modules/orders/storefront/implement-claim-order"
+
+[[redirects]]
+  from="/advanced/backend/taxes/inclusive-pricing"
+  to="/modules/taxes/inclusive-pricing"
+
+[[redirects]]
+  from="/advanced/backend/taxes/manual-calculation"
+  to="/modules/taxes/storefront/manual-calculation"
