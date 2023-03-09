@@ -251,6 +251,18 @@
     {
       "source": "/advanced/admin/import-prices",
       "destination": "/modules/price-lists/admin/import-prices"
+    },
+    {
+      "source": "/advanced/backend/sales-channels",
+      "destination": "/modules/sales-channels"
+    },
+    {
+      "source": "/advanced/backend/sales-channels/manage-admin",
+      "destination": "/modules/sales-channels/admin/manage"
+    },
+    {
+      "source": "/advanced/storefront/use-sales-channels",
+      "destination": "/modules/sales-channels/storefront/use-sales-channels"
     }
   ]
 }
