@@ -8,6 +8,7 @@ import BodyCard from "../../../components/organisms/body-card"
 import CreateProductCategory from "../modals/add-product-category"
 import ProductCategoriesList from "../components/product-categories-list"
 import EditProductCategoriesSideModal from "../modals/edit-product-category"
+import { flattenCategoryTree } from "../utils"
 
 /**
  * Product categories empty state placeholder.
@@ -46,7 +47,7 @@ function ProductCategoryPage() {
 
   const [activeCategory, setActiveCategory] = useState<ProductCategory>()
 
-  const { product_categories: categories, isLoading } =
+  const { product_categories: categories = [], isLoading } =
     useAdminProductCategories({
       parent_category_id: "null",
       include_descendants_tree: true,
@@ -59,7 +60,7 @@ function ProductCategoryPage() {
     },
   ]
 
-  const showPlaceholder = !isLoading && !categories?.length
+  const showPlaceholder = !isLoading && !categories.length
 
   const editCategory = (category: ProductCategory) => {
     setActiveCategory(category)
@@ -67,10 +68,14 @@ function ProductCategoryPage() {
   }
 
   const createSubCategory = (category: ProductCategory) => {
+    if (isLoading) {
+      return
+    }
     setActiveCategory(category)
     showCreateModal()
   }
 
+  const flattenedCategories = flattenCategoryTree(categories)
   const context = {
     editCategory,
     createSubCategory,
@@ -97,6 +102,7 @@ function ProductCategoryPage() {
           {isCreateModalVisible && (
             <CreateProductCategory
               parentCategory={activeCategory}
+              categories={flattenedCategories}
               closeModal={() => {
                 hideCreateModal()
                 setActiveCategory(undefined)
@@ -108,6 +114,7 @@ function ProductCategoryPage() {
             close={hideEditModal}
             activeCategory={activeCategory}
             isVisible={!!activeCategory && isEditModalVisible}
+            categories={flattenedCategories}
           />
         </div>
       </div>
