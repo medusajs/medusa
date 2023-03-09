@@ -20,7 +20,7 @@ describe("InMemoryCacheService", () => {
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
   })
 
-  it("Invalidates data", async () => {
+  it("Invalidates single record", async () => {
     inMemoryCache = new InMemoryCacheService({}, {})
 
     await inMemoryCache.set("cache-key", { data: "value" })
@@ -28,6 +28,40 @@ describe("InMemoryCacheService", () => {
     await inMemoryCache.invalidate("cache-key")
 
     expect(await inMemoryCache.get("cache-key")).toEqual(null)
+  })
+
+  it("Invalidates multiple keys with wildcard (end matching)", async () => {
+    inMemoryCache = new InMemoryCacheService({}, {})
+
+    await inMemoryCache.set("cache-key:id_1:x:y", { data: "value" })
+    await inMemoryCache.set("cache-key:id_2:x:y", { data: "value" })
+    await inMemoryCache.set("cache-key:id_3:x:y", { data: "value" })
+    await inMemoryCache.set("cache-key-old", { data: "value" })
+
+    await inMemoryCache.invalidate("cache-key:*")
+
+    expect(await inMemoryCache.get("cache-key:id1:x:y")).toEqual(null)
+    expect(await inMemoryCache.get("cache-key:id2:x:y")).toEqual(null)
+    expect(await inMemoryCache.get("cache-key:id3:x:y")).toEqual(null)
+    expect(await inMemoryCache.get("cache-key-old")).toEqual({ data: "value" })
+  })
+
+  it("Invalidates multiple keys with wildcard (middle matching)", async () => {
+    inMemoryCache = new InMemoryCacheService({}, {})
+
+    await inMemoryCache.set("cache-key:1:new", { data: "value" })
+    await inMemoryCache.set("cache-key:2:new", { data: "value" })
+    await inMemoryCache.set("cache-key:3:new", { data: "value" })
+    await inMemoryCache.set("cache-key:4:old", { data: "value" })
+
+    await inMemoryCache.invalidate("cache-key:*:new")
+
+    expect(await inMemoryCache.get("cache-key:1:new")).toEqual(null)
+    expect(await inMemoryCache.get("cache-key:2:new")).toEqual(null)
+    expect(await inMemoryCache.get("cache-key:3:new")).toEqual(null)
+    expect(await inMemoryCache.get("cache-key:4:old")).toEqual({
+      data: "value",
+    })
   })
 
   it("Removes data after TTL", async () => {

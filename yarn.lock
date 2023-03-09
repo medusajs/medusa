@@ -5822,7 +5822,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-inmemory@workspace:packages/cache-inmemory":
+"@medusajs/cache-inmemory@*, @medusajs/cache-inmemory@workspace:packages/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/cache-inmemory"
   dependencies:
@@ -23776,7 +23776,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
-    "@medusajs/cache-redis": "*"
+    "@medusajs/cache-inmemory": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3

@@ -46,6 +46,8 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
+      verbose: true,
+      redisUrl: "redis://127.0.0.1:6379",
     })
   })
 
@@ -2291,7 +2293,7 @@ describe("/admin/products", () => {
 
       const variantId = "test-variant_3"
 
-      await api
+      let r = await api
         .post(
           `/admin/products/test-product1/variants/${variantId}`,
           createPrices,

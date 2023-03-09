@@ -65,15 +65,29 @@ class InMemoryCacheService implements ICacheService {
 
   /**
    * Delete data from the cache.
+   * Could use wildcard (*) matcher e.g. `invalidate("ps:*")` to delete all keys that start with "ps:"
+   *
    * @param key - cache key
    */
   async invalidate(key: string): Promise<void> {
-    const timeoutRef = this.timoutRefs.get(key)
-    if (timeoutRef) {
-      clearTimeout(timeoutRef)
-      this.timoutRefs.delete(key)
+    let keys = [key]
+
+    if (key.includes("*")) {
+      const regExp = new RegExp(key.replace("*", ".*"))
+      keys = Array.from(this.store.keys()).filter((k) => k.match(regExp))
     }
-    this.store.delete(key)
+
+    keys.forEach((key) => {
+      const timeoutRef = this.timoutRefs.get(key)
+      if (timeoutRef) {
+        clearTimeout(timeoutRef)
+        this.timoutRefs.delete(key)
+      }
+      this.store.delete(key)
+    })
+
+    // @ts-ignore
+    return this.store.entries()
   }
 
   /**

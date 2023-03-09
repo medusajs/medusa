@@ -16,8 +16,8 @@ module.exports = {
   },
   modules: {
     cacheService: {
-      resolve: "@medusajs/cache-redis",
-      options: { ttl: 30, redisUrl },
+      resolve: "@medusajs/cache-inmemory",
+      options: { ttl: 5 },
     },
   },
 }
