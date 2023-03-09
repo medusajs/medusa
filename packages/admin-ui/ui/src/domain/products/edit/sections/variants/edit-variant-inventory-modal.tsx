@@ -48,7 +48,16 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   const onSubmit = async (data: EditFlowVariantFormType) => {
     const locationLevels = data.stock.location_levels || []
     const manageInventory = data.stock.manage_inventory
-    console.log(locationLevels)
+
+    const deleteLocations = manageInventory
+      ? variantInventoryItem.location_levels.filter(
+          (itemLevel: InventoryLevelDTO) => {
+            return !locationLevels.find(
+              (level) => level.location_id === itemLevel.location_id
+            )
+          }
+        )
+      : variantInventoryItem.location_levels
 
     let itemIdd = itemId
     if (!manageInventory && variantInventory) {
@@ -64,13 +73,6 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       )
     }
 
-    const deleteLocations = variantInventoryItem.location_levels.filter(
-      (location: InventoryLevelDTO) => {
-        return !locationLevels.find(
-          (level) => level.location_id === location.id
-        )
-      }
-    )
     await Promise.all([
       ...(locationLevels.map(async (level) => {
         if (!itemIdd) {
