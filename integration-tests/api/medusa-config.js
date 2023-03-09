@@ -13,6 +13,9 @@ module.exports = {
     cookie_secret: "test",
   },
   modules: {
-    cacheService: { options: { ttl: 30, redisUrl: process.env.REDIS_URL } },
+    cacheService: {
+      resolve: "@medusajs/cache-redis",
+      options: { ttl: 30, redisUrl: "127.0.0.1:6379" },
+    },
   },
 }

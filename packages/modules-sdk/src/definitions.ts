@@ -28,8 +28,8 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {
     key: "cacheService",
     registrationName: "cacheService",
-    defaultPackage: "@medusajs/cache-inmemory",
-    label: "InMemoryCacheService",
+    defaultPackage: "@medusajs/cache-redis",
+    label: "RedisCacheService",
     isRequired: true,
     canOverride: true,
     defaultModuleDeclaration: {
