@@ -1,9 +1,12 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
+import { InventoryLevelDTO, Product, ProductVariant } from "@medusajs/medusa"
+import { useAdminDeleteLocationLevel } from "medusa-react"
+import { useAdminDeleteInventoryItem } from "medusa-react"
+import { useAdminCreateLocationLevel } from "medusa-react"
 import {
   useAdminUpdateLocationLevel,
   useAdminVariantsInventory,
 } from "medusa-react"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -32,30 +35,63 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     refetch,
   } = useAdminVariantsInventory(variant.id)
 
-  const itemId = variantInventory?.inventory[0]?.id
+  console.log(variantInventory)
+  const variantInventoryItem = variantInventory?.inventory[0]
+  const itemId = variantInventoryItem?.id
 
   const { mutate: updateLocationLevel } = useAdminUpdateLocationLevel(
     itemId || ""
   )
+  const { mutate: deleteLevel } = useAdminDeleteLocationLevel(itemId)
+  const { mutate: createLevel } = useAdminCreateLocationLevel(itemId)
+  const { mutate: deleteInventoryItem } = useAdminDeleteInventoryItem(itemId)
+
   const handleClose = () => {
     onClose()
   }
 
   const { onUpdateVariant, updatingVariant } = useEditProductActions(product.id)
 
-  const onSubmit = async (data) => {
-    const { location_levels } = data.stock
+  const onSubmit = async (data: EditFlowVariantFormType) => {
+    const locationLevels = data.stock.location_levels || []
+    const manageInventory = data.stock.manage_inventory
+    console.log(locationLevels)
 
-    await Promise.all(
-      location_levels.map(async (level) => {
-        await updateLocationLevel({
-          stockLocationId: level.location_id,
-          stocked_quantity: level.stocked_quantity,
-        })
-      })
+    console.log(data)
+    const deleteLocations = variantInventoryItem.location_levels.filter(
+      (location: InventoryLevelDTO) => {
+        return !locationLevels.find(
+          (level) => level.location_id === location.id
+        )
+      }
     )
+    await Promise.all([
+      ...(locationLevels.map(async (level) => {
+        if (level.id) {
+          await updateLocationLevel({
+            stockLocationId: level.location_id,
+            stocked_quantity: level.stocked_quantity,
+          })
+        } else {
+          await createLevel({
+            location_id: level.location_id,
+            stocked_quantity: level.stocked_quantity,
+          })
+        }
+      }) || []),
+      ...deleteLocations.map(async (location: InventoryLevelDTO) => {
+        await deleteLevel(location.id)
+      }),
+    ])
+
     // / TODO: Call update location level with new values
     delete data.stock.location_levels
+
+    if (!manageInventory && variantInventory) {
+      await deleteInventoryItem()
+    } else if (manageInventory && !variantInventory) {
+      await createInventoryItem()
+    }
 
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
@@ -63,6 +99,8 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       handleClose()
     })
   }
+
+  const createInventoryItem = async () => {}
 
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
@@ -90,7 +128,7 @@ const StockForm = ({
   isLoadingInventory,
   handleClose,
   updatingVariant,
-}) => {
+}: any) => {
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getEditVariantDefaultValues(variantInventory),
   })
@@ -99,23 +137,15 @@ const StockForm = ({
     formState: { isDirty },
     handleSubmit,
     reset,
-    watch,
   } = form
-
-  const locationLevels = watch("stock.location_levels")
 
   const { location_levels } = variantInventory.inventory[0]
 
-  React.useEffect(() => {
-    form.setValue("stock.location_levels", location_levels)
-  }, [form, location_levels])
+  const itemId = variantInventory.inventory[0].id
 
   const handleOnSubmit = handleSubmit((data) => {
-    // @ts-ignore
     onSubmit(data)
   })
-
-  const itemId = variantInventory.inventory[0].id
 
   return (
     <form onSubmit={handleOnSubmit} noValidate>
@@ -123,13 +153,13 @@ const StockForm = ({
         <EditFlowVariantForm
           form={form}
           refetchInventory={refetchInventory}
-          locationLevels={locationLevels || []}
+          locationLevels={location_levels || []}
           itemId={itemId}
           isLoading={isLoadingInventory}
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex items-center justify-end w-full gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button
             variant="secondary"
             size="small"

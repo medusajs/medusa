@@ -1,13 +1,9 @@
 import React, { useMemo, useState, useContext } from "react"
 import Modal from "../../../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
-import {
-  useAdminCreateLocationLevel,
-  useAdminDeleteLocationLevel,
-  useAdminStockLocations,
-} from "medusa-react"
+import { useAdminStockLocations } from "medusa-react"
 import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/medusa"
-import { Controller } from "react-hook-form"
+import { Controller, useFieldArray } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Switch from "../../../../../components/atoms/switch"
 import InputField from "../../../../../components/molecules/input"
@@ -23,7 +19,7 @@ export type VariantStockFormType = {
   ean: string | null
   upc: string | null
   barcode: string | null
-  location_levels: InventoryLevelDTO[] | null
+  location_levels?: Partial<InventoryLevelDTO>[] | null
 }
 
 type Props = {
@@ -39,40 +35,50 @@ const VariantStockForm = ({
   refetchInventory,
   itemId,
 }: Props) => {
+  const locationLevelMap = useMemo(
+    () => new Map(locationLevels.map((l) => [l.location_id, l])),
+    [locationLevels]
+  )
+
   const layeredModalContext = useContext(LayeredModalContext)
 
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
-  const deleteLevel = useAdminDeleteLocationLevel(itemId)
-  const createLevel = useAdminCreateLocationLevel(itemId)
-
   const { path, control, register } = form
 
-  const handleUpdateLocations = async (value) => {
-    await Promise.all(
-      value.removed.map(async (id) => {
-        await deleteLevel.mutateAsync(id)
-      })
+  const {
+    fields: selectedLocations,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: path("location_levels"),
+  })
+
+  const handleUpdateLocations = async (data: {
+    added: string[]
+    removed: string[]
+  }) => {
+    const removed = data.removed.map((r) =>
+      selectedLocations.findIndex((sl) => sl.location_id === r)
     )
 
-    await Promise.all(
-      value.added.map(async (id) => {
-        await createLevel.mutateAsync({
-          stocked_quantity: 0,
-          location_id: id,
-        })
-      })
-    )
+    removed.forEach((r) => remove(r))
 
-    refetchInventory()
+    data.added.forEach((added) => {
+      append({
+        location_id: added,
+        stocked_quantity: locationLevelMap.get(added)?.stocked_quantity ?? 0,
+      })
+    })
   }
 
   return (
     <div>
-      <div className="flex flex-col gap-y-xlarge">
+      <div className="gap-y-xlarge flex flex-col">
         <div className="flex flex-col gap-y-4">
           <h3 className="inter-base-semibold">General</h3>
-          <div className="grid grid-cols-2 gap-large">
+          <div className="gap-large grid grid-cols-2">
             <InputField
               label="Stock keeping unit (SKU)"
               placeholder="SUN-G, JK1234..."
@@ -95,7 +101,7 @@ const VariantStockForm = ({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="inter-base-semibold mb-2xsmall">Manage inventory</h3>
             <Controller
@@ -111,7 +117,7 @@ const VariantStockForm = ({
             returns are made.
           </p>
         </div>
-        <div className="flex flex-col gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="inter-base-semibold mb-2xsmall">Allow backorders</h3>
             <Controller
@@ -127,35 +133,41 @@ const VariantStockForm = ({
             product being sold out
           </p>
         </div>
-        <div className="flex flex-col w-full text-base">
+        <div className="flex w-full flex-col text-base">
           <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
           {!isLoading && locations && (
-            <div className="flex flex-col w-full">
-              <div className="flex justify-between py-3 inter-base-regular text-grey-50">
+            <div className="flex w-full flex-col">
+              <div className="inter-base-regular text-grey-50 flex justify-between py-3">
                 <div className="">Location</div>
                 <div className="">In Stock</div>
               </div>
-              {locationLevels.map((level, i) => {
+              {selectedLocations.map((level, i) => {
+                console.log(level)
                 const locationDetails = locations.find(
-                  (l) => l.id === level.location_id
+                  (l: StockLocationDTO) => l.id === level.location_id
                 )
 
                 return (
                   <div key={level.id} className="flex items-center py-3">
-                    <div className="flex items-center inter-base-regular">
+                    <div className="inter-base-regular flex items-center">
                       <IconBadge className="mr-base">
                         <BuildingsIcon />
                       </IconBadge>
                       {locationDetails?.name}
                     </div>
-                    <div className="flex ml-auto">
-                      <div className="flex flex-col mr-base text-small text-grey-50">
+                    <div className="ml-auto flex">
+                      <div className="mr-base text-small text-grey-50 flex flex-col">
                         <span className="whitespace-nowrap">
                           {`${
-                            level.stocked_quantity - level.available_quantity
+                            0
+                            // level.stocked_quantity - level.available_quantity
                           } reserved`}
                         </span>
-                        <span className="whitespace-nowrap">{`${level.available_quantity} available`}</span>
+                        <span className="whitespace-nowrap">{`${
+                          0
+                          // level.stocked_quantity -
+                          // (level.stocked_quantity - level.available_quantity)
+                        } available`}</span>
                       </div>
                       <InputField
                         placeholder={"0"}
@@ -183,7 +195,7 @@ const VariantStockForm = ({
                 // @ts-ignore
                 ManageLocationsScreen(
                   layeredModalContext.pop,
-                  locationLevels,
+                  selectedLocations,
                   locations,
                   handleUpdateLocations
                 )
@@ -200,7 +212,7 @@ const VariantStockForm = ({
 
 export const ManageLocationsScreen = (
   pop: () => void,
-  levels: InventoryLevelDTO[],
+  levels: Partial<InventoryLevelDTO>[],
   locations: StockLocationDTO[],
   onSubmit: (value: any) => Promise<void>
 ) => {
@@ -218,7 +230,7 @@ export const ManageLocationsScreen = (
 }
 
 type ManageLocationFormProps = {
-  existingLevels: InventoryLevelDTO[]
+  existingLevels: Partial<InventoryLevelDTO>[]
   locationOptions: StockLocationDTO[]
   onSubmit: (value: any) => Promise<void>
 }
@@ -232,7 +244,7 @@ const ManageLocationsForm = ({
   const { pop } = layeredModalContext
 
   const existingLocations = useMemo(() => {
-    return existingLevels.map((level) => level.location_id)
+    return existingLevels.map((level) => level.location_id!)
   }, [existingLevels])
 
   const [selectedLocations, setSelectedLocations] =
@@ -266,7 +278,7 @@ const ManageLocationsForm = ({
       (locationId: string) => !existingLocations.includes(locationId)
     )
     const removedLevels = existingLocations.filter(
-      (locationId) => !selectedLocations.includes(locationId)
+      (locationId) => !!locationId && !selectedLocations.includes(locationId)
     )
 
     await onSubmit({
@@ -284,11 +296,11 @@ const ManageLocationsForm = ({
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <form onSubmit={handleSubmit}>
         <Modal.Content>
           <div>
-            <div className="flex items-center justify-between w-full border-b border-grey-20 pb-base text-grey-50">
+            <div className="border-grey-20 pb-base text-grey-50 flex w-full items-center justify-between border-b">
               <div className="">
                 <p>Select locations that stock the selected variant</p>
                 <p>{`(${selectedLocations.length} of ${locationOptions.length} selected)`}</p>
@@ -307,7 +319,7 @@ const ManageLocationsForm = ({
 
               return (
                 <div
-                  className="flex items-center justify-between gap-6 border-b border-grey-20 py-base"
+                  className="border-grey-20 py-base flex items-center justify-between gap-6 border-b"
                   key={loc.id}
                 >
                   <div className="flex items-center">
@@ -326,7 +338,7 @@ const ManageLocationsForm = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex justify-end w-full gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full justify-end">
             <Button
               variant="ghost"
               size="small"
