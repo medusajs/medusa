@@ -150,12 +150,12 @@ const VariantStockForm = ({
                     </div>
                     <div className="flex ml-auto">
                       <div className="flex flex-col mr-base text-small text-grey-50">
-                        <span className="whitespace-nowrap">
-                          {`${
-                            level.stocked_quantity - level.available_quantity
-                          } reserved`}
+                        <span className="text-right whitespace-nowrap">
+                          {`${level.reserved_quantity} reserved`}
                         </span>
-                        <span className="whitespace-nowrap">{`${level.available_quantity} available`}</span>
+                        <span className="text-right whitespace-nowrap">{`${
+                          level.stocked_quantity - level.reserved_quantity
+                        } available`}</span>
                       </div>
                       <InputField
                         placeholder={"0"}
