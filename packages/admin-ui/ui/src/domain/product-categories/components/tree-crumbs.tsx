@@ -1,5 +1,6 @@
 import React from "react"
 import { ProductCategory } from "@medusajs/medusa"
+import { getAncestors } from "../utils"
 
 type TreeCrumbsProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
   nodes: ProductCategory[]
@@ -15,27 +16,31 @@ const TreeCrumbs: React.FC<TreeCrumbsProps> = ({
   placeholderText = "",
   ...props
 }) => {
-  const parentNode = nodes.find((n) => n.id === currentNode?.parent_category_id)
+  const ancestors = getAncestors(currentNode, nodes)
 
   return (
     <span {...props}>
       <span className="text-grey-40">
-        {parentNode && (
-          <TreeCrumbs
-            nodes={nodes}
-            currentNode={parentNode}
-            showPlaceholder={false}
-          />
-        )}
+        {ancestors.map((ancestor, index) => {
+          const categoryName = ancestor.name
 
-        {parentNode && <span className="mx-2">/</span>}
+          return (
+            <div key={ancestor.id} className="inline-block">
+              <span>
+                {categoryName.length > 25
+                  ? categoryName.substring(0, 25) + "..."
+                  : categoryName}
+              </span>
 
-        {currentNode.name}
+              {(showPlaceholder || ancestors.length !== index + 1) && (
+                <span className="mx-2">/</span>
+              )}
+            </div>
+          )
+        })}
 
         {showPlaceholder && (
           <span>
-            <span className="mx-2">/</span>
-
             <span className="border-grey-40 rounded-[10px] border-[1px] border-dashed px-[8px] py-[4px]">
               {placeholderText}
             </span>

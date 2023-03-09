@@ -11,3 +11,17 @@ export const flattenCategoryTree = (rootCategories) => {
     return acc
   }, [])
 }
+
+export const getAncestors = (targetNode, nodes, acc = []) => {
+  let parentCategory = null
+
+  if (targetNode.parent_category_id) {
+    parentCategory = nodes.find((n) => n.id === targetNode.parent_category_id)
+
+    acc.push(parentCategory)
+
+    acc = getAncestors(parentCategory, nodes, acc)
+  }
+
+  return acc
+}

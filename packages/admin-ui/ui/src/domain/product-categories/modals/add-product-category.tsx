@@ -12,7 +12,7 @@ import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
 import Select from "../../../components/molecules/select"
-import TreeCrumbs from "../../../components/molecules/tree-crumbs"
+import TreeCrumbs from "../components/tree-crumbs"
 import { useQueryClient } from "@tanstack/react-query"
 
 const visibilityOptions = [
@@ -37,7 +37,7 @@ type CreateProductCategoryProps = {
  * Focus modal container for creating Publishable Keys.
  */
 function CreateProductCategory(props: CreateProductCategoryProps) {
-  const { closeModal, parentCategory, rootCategory, categories } = props
+  const { closeModal, parentCategory, categories } = props
   const notification = useNotification()
   const queryClient = useQueryClient()
 
