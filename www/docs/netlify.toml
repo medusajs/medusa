@@ -201,3 +201,15 @@
 [[redirects]]
   from="/advanced/backend/taxes/manual-calculation"
   to="/modules/taxes/storefront/manual-calculation"
+
+[[redirects]]
+  from="/advanced/backend/discounts/index"
+  to="/modules/discounts/discounts"
+
+[[redirects]]
+  from="/advanced/admin/manage-discounts"
+  to="/modules/discounts/admin/manage-discounts"
+
+[[redirects]]
+  from="/advanced/storefront/use-discounts-in-checkout"
+  to="/modules/discounts/storefront/use-discounts-in-checkout"

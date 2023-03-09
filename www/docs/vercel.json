@@ -203,6 +203,18 @@
     {
       "source": "/advanced/backend/taxes/manual-calculation",
       "destination": "/modules/taxes/storefront/manual-calculation"
+    },
+    {
+      "source": "/advanced/backend/discounts/index",
+      "destination": "/modules/discounts/discounts"
+    },
+    {
+      "source": "/advanced/admin/manage-discounts",
+      "destination": "/modules/discounts/admin/manage-discounts"
+    },
+    {
+      "source": "/advanced/storefront/use-discounts-in-checkout",
+      "destination": "/modules/discounts/storefront/use-discounts-in-checkout"
     }
   ]
 }
