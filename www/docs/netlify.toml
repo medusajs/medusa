@@ -249,3 +249,15 @@
 [[redirects]]
   from="/advanced/admin/import-prices"
   to="/modules/price-lists/admin/import-prices"
+
+[[redirects]]
+  from="/advanced/backend/sales-channels"
+  to="/modules/sales-channels"
+
+[[redirects]]
+  from="/advanced/backend/sales-channels/manage-admin"
+  to="/modules/sales-channels/admin/manage"
+
+[[redirects]]
+  from="/advanced/storefront/use-sales-channels"
+  to="/modules/sales-channels/storefront/use-sales-channels"

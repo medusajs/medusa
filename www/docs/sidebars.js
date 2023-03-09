@@ -1088,12 +1088,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/sales-channels/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -1104,7 +1101,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/sales-channels/index',
+          id: 'modules/sales-channels/sales-channels',
           label: 'Sales Channels'
         },
         {
@@ -1116,12 +1113,12 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/sales-channels/manage-admin',
+          id: 'modules/sales-channels/admin/manage',
           label: 'Admin: Manage Sales Channels'
         },
         {
           type: 'doc',
-          id: 'advanced/storefront/use-sales-channels',
+          id: 'modules/sales-channels/storefront/use-sales-channels',
           label: 'Storefront: Use Sales Channels'
         },
       ]
