@@ -23,7 +23,7 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /admin/order/{id}/swaps
+ * @oas [post] /admin/orders/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
