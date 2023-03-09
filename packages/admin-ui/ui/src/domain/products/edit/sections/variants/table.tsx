@@ -106,7 +106,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
 
   const getTableRowActionables = (variant: ProductVariant) => {
     const inventoryManagementActions = []
-    if (hasInventoryService && variant.manage_inventory) {
+    if (hasInventoryService) {
       inventoryManagementActions.push({
         label: "Manage inventory", // TODO: Only add this item if variant.manageInventory is true
         icon: <BuildingsIcon size="20" />,

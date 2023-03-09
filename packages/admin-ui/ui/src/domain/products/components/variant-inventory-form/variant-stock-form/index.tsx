@@ -44,7 +44,9 @@ const VariantStockForm = ({
 
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
-  const { path, control, register } = form
+  const { path, control, register, watch } = form
+
+  const manageInventory = watch(path("manage_inventory"))
 
   const {
     fields: selectedLocations,
@@ -117,94 +119,100 @@ const VariantStockForm = ({
             returns are made.
           </p>
         </div>
-        <div className="gap-y-2xsmall flex flex-col">
-          <div className="flex items-center justify-between">
-            <h3 className="inter-base-semibold mb-2xsmall">Allow backorders</h3>
-            <Controller
-              control={control}
-              name={path("allow_backorder")}
-              render={({ field: { value, onChange } }) => {
-                return <Switch checked={value} onCheckedChange={onChange} />
-              }}
-            />
-          </div>
-          <p className="inter-base-regular text-grey-50">
-            When checked the product will be available for purchase despite the
-            product being sold out
-          </p>
-        </div>
-        <div className="flex w-full flex-col text-base">
-          <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
-          {!isLoading && locations && (
-            <div className="flex w-full flex-col">
-              <div className="inter-base-regular text-grey-50 flex justify-between py-3">
-                <div className="">Location</div>
-                <div className="">In Stock</div>
+        {manageInventory && (
+          <>
+            <div className="gap-y-2xsmall flex flex-col">
+              <div className="flex items-center justify-between">
+                <h3 className="inter-base-semibold mb-2xsmall">
+                  Allow backorders
+                </h3>
+                <Controller
+                  control={control}
+                  name={path("allow_backorder")}
+                  render={({ field: { value, onChange } }) => {
+                    return <Switch checked={value} onCheckedChange={onChange} />
+                  }}
+                />
               </div>
-              {selectedLocations.map((level, i) => {
-                console.log(level)
-                const locationDetails = locations.find(
-                  (l: StockLocationDTO) => l.id === level.location_id
-                )
-
-                return (
-                  <div key={level.id} className="flex items-center py-3">
-                    <div className="inter-base-regular flex items-center">
-                      <IconBadge className="mr-base">
-                        <BuildingsIcon />
-                      </IconBadge>
-                      {locationDetails?.name}
-                    </div>
-                    <div className="ml-auto flex">
-                      <div className="mr-base text-small text-grey-50 flex flex-col">
-                        <span className="whitespace-nowrap">
-                          {`${
-                            0
-                            // level.stocked_quantity - level.available_quantity
-                          } reserved`}
-                        </span>
-                        <span className="whitespace-nowrap">{`${
-                          0
-                          // level.stocked_quantity -
-                          // (level.stocked_quantity - level.available_quantity)
-                        } available`}</span>
-                      </div>
-                      <InputField
-                        placeholder={"0"}
-                        type="number"
-                        {...register(
-                          path(`location_levels.${i}.stocked_quantity`),
-                          { valueAsNumber: true }
-                        )}
-                      />
-                    </div>
-                  </div>
-                )
-              })}
+              <p className="inter-base-regular text-grey-50">
+                When checked the product will be available for purchase despite
+                the product being sold out
+              </p>
             </div>
-          )}
-        </div>
-        <div className="flex">
-          <Button
-            variant="secondary"
-            size="small"
-            type="button"
-            className="w-full"
-            onClick={() => {
-              layeredModalContext.push(
-                // @ts-ignore
-                ManageLocationsScreen(
-                  layeredModalContext.pop,
-                  selectedLocations,
-                  locations,
-                  handleUpdateLocations
-                )
-              )
-            }}
-          >
-            Manage locations
-          </Button>
-        </div>
+            <div className="flex w-full flex-col text-base">
+              <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
+              {!isLoading && locations && (
+                <div className="flex w-full flex-col">
+                  <div className="inter-base-regular text-grey-50 flex justify-between py-3">
+                    <div className="">Location</div>
+                    <div className="">In Stock</div>
+                  </div>
+                  {selectedLocations.map((level, i) => {
+                    console.log(level)
+                    const locationDetails = locations.find(
+                      (l: StockLocationDTO) => l.id === level.location_id
+                    )
+
+                    return (
+                      <div key={level.id} className="flex items-center py-3">
+                        <div className="inter-base-regular flex items-center">
+                          <IconBadge className="mr-base">
+                            <BuildingsIcon />
+                          </IconBadge>
+                          {locationDetails?.name}
+                        </div>
+                        <div className="ml-auto flex">
+                          <div className="mr-base text-small text-grey-50 flex flex-col">
+                            <span className="whitespace-nowrap">
+                              {`${
+                                0
+                                // level.stocked_quantity - level.available_quantity
+                              } reserved`}
+                            </span>
+                            <span className="whitespace-nowrap">{`${
+                              0
+                              // level.stocked_quantity -
+                              // (level.stocked_quantity - level.available_quantity)
+                            } available`}</span>
+                          </div>
+                          <InputField
+                            placeholder={"0"}
+                            type="number"
+                            {...register(
+                              path(`location_levels.${i}.stocked_quantity`),
+                              { valueAsNumber: true }
+                            )}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+            <div className="flex">
+              <Button
+                variant="secondary"
+                size="small"
+                type="button"
+                className="w-full"
+                onClick={() => {
+                  layeredModalContext.push(
+                    // @ts-ignore
+                    ManageLocationsScreen(
+                      layeredModalContext.pop,
+                      selectedLocations,
+                      locations,
+                      handleUpdateLocations
+                    )
+                  )
+                }}
+              >
+                Manage locations
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

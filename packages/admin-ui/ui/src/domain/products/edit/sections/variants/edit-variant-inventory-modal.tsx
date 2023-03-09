@@ -149,9 +149,9 @@ const StockForm = ({
     reset,
   } = form
 
-  const { location_levels } = variantInventory.inventory[0]
+  const locationLevels = variantInventory.inventory[0]?.location_levels || []
 
-  const itemId = variantInventory.inventory[0].id
+  const itemId = variantInventory.inventory[0]?.id
 
   const handleOnSubmit = handleSubmit((data) => {
     onSubmit(data)
@@ -163,7 +163,7 @@ const StockForm = ({
         <EditFlowVariantForm
           form={form}
           refetchInventory={refetchInventory}
-          locationLevels={location_levels || []}
+          locationLevels={locationLevels}
           itemId={itemId}
           isLoading={isLoadingInventory}
         />
