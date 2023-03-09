@@ -229,3 +229,23 @@
 [[redirects]]
   from="/advanced/ecommerce/send-gift-card-to-customer"
   to="/modules/gift-cards/backend/send-gift-card-to-customer"
+
+[[redirects]]
+  from="/advanced/backend/price-lists"
+  to="/modules/price-lists"
+
+[[redirects]]
+  from="/advanced/backend/price-lists/use-api"
+  to="/modules/price-lists/admin/manage-price-lists"
+
+[[redirects]]
+  from="/advanced/backend/price-selection-strategy"
+  to="/modules/price-lists/price-selection-strategy"
+
+[[redirects]]
+  from="/advanced/backend/price-selection-strategy/override"
+  to="/modules/price-lists/backend/override-price-selection-strategy"
+
+[[redirects]]
+  from="/advanced/admin/import-prices"
+  to="/modules/price-lists/admin/import-prices"

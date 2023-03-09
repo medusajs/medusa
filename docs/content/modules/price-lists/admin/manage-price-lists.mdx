@@ -6,13 +6,13 @@ addHowToData: true
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Manage PriceLists
+# How to Manage Price Lists
 
 In this document, you’ll learn how to use the PriceList Admin APIs to create, update, and manage prices in a price list.
 
 :::note
 
-This document doesn't cover what price lists are and their basics. If you’re interested to learn about that, check out [this documentation](./index.md) instead.
+This document doesn't cover what price lists are and their basics. If you’re interested to learn about that, check out [this documentation](../price-lists.md) instead.
 
 :::
 
@@ -38,7 +38,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
 
 ---
 
@@ -218,7 +218,7 @@ curl -L -X POST '<YOUR_SERVER_URL>/admin/price-lists' \
 
 This request returns the created price list.
 
-You can check the full list of request body parameters in the [API reference](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceList).
+You can check the full list of request body parameters in the [API reference](/api/admin/#tag/Price-List/operation/PostPriceListsPriceList).
 
 ---
 
@@ -285,7 +285,7 @@ curl -L -X GET '<SERVER_URL>/admin/price-lists/{id}' \
 
 ## Update a Price List
 
-After creating a price list, you can update all of its fields including its status, prices, and more using the [Update Price List](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPriceList) endpoint.
+After creating a price list, you can update all of its fields including its status, prices, and more using the [Update Price List](/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPriceList) endpoint.
 
 For example, by sending the following request the end date of the price list will be updated:
 
@@ -361,7 +361,7 @@ curl -L -X POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
 
 This request returns the updated price list.
 
-For a full list of request body parameters, check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPriceList).
+For a full list of request body parameters, check out the [API reference](/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPriceList).
 
 ---
 
@@ -369,7 +369,7 @@ For a full list of request body parameters, check out the [API reference](https:
 
 ### Add Prices
 
-You can add prices to your price list after creating it using the [Update Prices](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPricesBatch) endpoint.
+You can add prices to your price list after creating it using the [Update Prices](/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPricesBatch) endpoint.
 
 You can also set the `override` request body parameter to `true` to replace the existing prices in the price list.
 
@@ -470,11 +470,11 @@ curl -L -X POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
 
 This request returns the price list with the updated prices.
 
-For a full list of request body parameters, check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPricesBatch).
+For a full list of request body parameters, check out the [API reference](/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPricesBatch).
 
 ### Delete a Product’s Prices
 
-You can delete all the prices of a product’s variants using the [Delete Product Prices](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListProductsProductPrices) endpoint:
+You can delete all the prices of a product’s variants using the [Delete Product Prices](/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListProductsProductPrices) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -543,7 +543,7 @@ This request returns the IDs of the deleted prices.
 
 ### Delete a Variant’s Prices
 
-You can delete all the prices of a variant using the [Delete Variant Prices](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListVariantsVariantPrices) endpoint:
+You can delete all the prices of a variant using the [Delete Variant Prices](/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListVariantsVariantPrices) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -614,7 +614,7 @@ This request returns the IDs of the deleted prices.
 
 ## Delete Price List
 
-You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/DeletePriceListsPriceList) endpoint:
+You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List](/api/admin/#tag/Price-List/operation/DeletePriceListsPriceList) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -677,5 +677,5 @@ This request returns the ID of the deleted price list.
 
 ## See Also
 
-- [Price Lists Overview](./index.md).
-- [Price Selection Strategy Overview](../price-selection-strategy/index.md).
+- [Price Lists Overview](../price-lists.md).
+- [Price Selection Strategy Overview](../price-selection-strategy.md).
