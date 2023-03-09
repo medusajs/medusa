@@ -14,7 +14,7 @@
     "loaders",
     "commands",
     "utils",
-    "src"
+    "setup"
   ],
   "scripts": {
     "build": "tsc --build",

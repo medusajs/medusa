@@ -8,11 +8,14 @@ import { ProductCategoriesContext } from "../pages"
 import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
 import Actionables from "../../../components/molecules/actionables"
+import TooltipIcon from "../../../components/molecules/tooltip-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import FolderOpenIcon from "../../../components/fundamentals/icons/folder-open-icon"
 import TagIcon from "../../../components/fundamentals/icons/tag-icon"
+import TagDotIcon from "../../../components/fundamentals/icons/tag-dot-icon"
+import EyeOffIcon from "../../../components/fundamentals/icons/eye-off-icon"
 import MoreHorizontalIcon from "../../../components/fundamentals/icons/more-horizontal-icon"
 import useNotification from "../../../hooks/use-notification"
 
@@ -70,11 +73,11 @@ function ProductCategoryListItemDetails(
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center">
             {hasChildren && (
-              <div className="flex w-[32px] items-center justify-center">
+              <div className="absolute flex w-[20px] cursor-pointer items-center justify-center">
                 {props.collapseIcon}
               </div>
             )}
-            <div className="flex w-[32px] items-center justify-center">
+            <div className="ml-[20px] flex w-[32px] items-center justify-center">
               {hasChildren && <FolderOpenIcon color="#889096" size={18} />}
               {!hasChildren && <TagIcon color="#889096" size={18} />}
             </div>
@@ -85,6 +88,33 @@ function ProductCategoryListItemDetails(
             >
               {item.name}
             </span>
+
+            <div className="flex w-[64px] items-center justify-center">
+              {!item.is_active && (
+                <TooltipIcon
+                  content="Category status is inactive"
+                  icon={
+                    <TagDotIcon
+                      size="32"
+                      className="cursor-pointer"
+                      outerColor="#FFE5E5"
+                    />
+                  }
+                />
+              )}
+              {item.is_internal && (
+                <TooltipIcon
+                  content="Category visibility is private"
+                  icon={
+                    <EyeOffIcon
+                      color="#889096"
+                      size={18}
+                      className="cursor-pointer"
+                    />
+                  }
+                />
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">

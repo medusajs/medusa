@@ -59,9 +59,11 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
       // TODO: temporary here, investigate why `useAdminCreateProductCategory` doesn't invalidate this
       await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
       closeModal()
-      notification("Success", "Created a new product category", "success")
+      notification("Success", "Successfully created a category", "success")
     } catch (e) {
-      notification("Error", "Failed to create a new product category", "error")
+      const errorMessage =
+        e.response?.data?.message || "Failed to create a new category"
+      notification("Error", errorMessage, "error")
     }
   }
 
@@ -95,6 +97,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
           <div className="mb-8 flex justify-between gap-6">
             <InputField
+              required
               label="Name"
               type="string"
               name="name"
