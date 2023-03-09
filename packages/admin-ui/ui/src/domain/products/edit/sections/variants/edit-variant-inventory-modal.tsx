@@ -1,11 +1,11 @@
-import { InventoryLevelDTO, Product, ProductVariant } from "@medusajs/medusa"
-import { useAdminDeleteLocationLevel } from "medusa-react"
-import { useAdminDeleteInventoryItem } from "medusa-react"
-import { useAdminCreateLocationLevel } from "medusa-react"
 import {
-  useAdminUpdateLocationLevel,
-  useAdminVariantsInventory,
-} from "medusa-react"
+  AdminPostInventoryItemsInventoryItemReq,
+  InventoryLevelDTO,
+  Product,
+  ProductVariant,
+} from "@medusajs/medusa"
+import { useMedusa } from "medusa-react"
+import { useAdminVariantsInventory } from "medusa-react"
 import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
@@ -27,6 +27,7 @@ type Props = {
 }
 
 const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
+  const { client } = useMedusa()
   const layeredModalContext = useContext(LayeredModalContext)
   const {
     // @ts-ignore
@@ -35,16 +36,8 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     refetch,
   } = useAdminVariantsInventory(variant.id)
 
-  console.log(variantInventory)
   const variantInventoryItem = variantInventory?.inventory[0]
   const itemId = variantInventoryItem?.id
-
-  const { mutate: updateLocationLevel } = useAdminUpdateLocationLevel(
-    itemId || ""
-  )
-  const { mutate: deleteLevel } = useAdminDeleteLocationLevel(itemId)
-  const { mutate: createLevel } = useAdminCreateLocationLevel(itemId)
-  const { mutate: deleteInventoryItem } = useAdminDeleteInventoryItem(itemId)
 
   const handleClose = () => {
     onClose()
@@ -57,7 +50,20 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     const manageInventory = data.stock.manage_inventory
     console.log(locationLevels)
 
-    console.log(data)
+    let itemIdd = itemId
+    if (!manageInventory && variantInventory) {
+      await client.admin.inventoryItems.delete(itemId)
+      itemIdd = null
+    } else if (manageInventory && !variantInventory) {
+      const { id } = await createInventoryItem(data.stock)
+      itemIdd = id
+    } else if (manageInventory && variantInventory) {
+      await client.admin.inventoryItems.update(
+        itemId,
+        data.stock as AdminPostInventoryItemsInventoryItemReq
+      )
+    }
+
     const deleteLocations = variantInventoryItem.location_levels.filter(
       (location: InventoryLevelDTO) => {
         return !locationLevels.find(
@@ -67,31 +73,34 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     )
     await Promise.all([
       ...(locationLevels.map(async (level) => {
+        if (!itemIdd) {
+          return
+        }
         if (level.id) {
-          await updateLocationLevel({
-            stockLocationId: level.location_id,
-            stocked_quantity: level.stocked_quantity,
-          })
+          await client.admin.inventoryItems.updateLocationLevel(
+            itemIdd,
+            level.location_id,
+            {
+              stocked_quantity: level.stocked_quantity,
+            }
+          )
         } else {
-          await createLevel({
+          await client.admin.inventoryItems.createLocationLevel(itemIdd, {
             location_id: level.location_id,
             stocked_quantity: level.stocked_quantity,
           })
         }
       }) || []),
       ...deleteLocations.map(async (location: InventoryLevelDTO) => {
-        await deleteLevel(location.id)
+        await client.admin.inventoryItems.deleteLocationLevel(
+          itemIdd,
+          location.id
+        )
       }),
     ])
 
     // / TODO: Call update location level with new values
     delete data.stock.location_levels
-
-    if (!manageInventory && variantInventory) {
-      await deleteInventoryItem()
-    } else if (manageInventory && !variantInventory) {
-      await createInventoryItem()
-    }
 
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
@@ -100,7 +109,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     })
   }
 
-  const createInventoryItem = async () => {}
+  const createInventoryItem = async (test: any) => {}
 
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
