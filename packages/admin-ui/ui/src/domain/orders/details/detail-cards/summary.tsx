@@ -117,14 +117,14 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
         onClick: showModal,
       })
     }
-    if (isFeatureEnabled("inventoryService")) {
+    if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
       actionables.push({
         label: "Allocate",
         onClick: showAllocationModal,
       })
     }
     return actionables
-  }, [showModal, isFeatureEnabled, showAllocationModal])
+  }, [showModal, isFeatureEnabled, showAllocationModal, allItemsReserved])
 
   return (
     <BodyCard
@@ -134,6 +134,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
         isFeatureEnabled("inventoryService") &&
         Array.isArray(reservations) && (
           <StatusIndicator
+            onClick={allItemsReserved ? undefined : showAllocationModal}
             variant={allItemsReserved ? "success" : "danger"}
             title={allItemsReserved ? "Allocated" : "Awaits allocation"}
             className="rounded-rounded border px-3 py-1.5"
