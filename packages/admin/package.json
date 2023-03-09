@@ -33,8 +33,7 @@
     "medusa-core-utils": "*",
     "ora": "5.4.0",
     "picocolors": "^1.0.0",
-    "ts-dedent": "^2.2.0",
-    "vercel": "^28.16.15"
+    "ts-dedent": "^2.2.0"
   },
   "peerDependencies": {
     "@medusajs/medusa": "*"

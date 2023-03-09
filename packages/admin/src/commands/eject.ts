@@ -2,55 +2,24 @@ import * as fse from "fs-extra"
 import path from "path"
 import dedent from "ts-dedent"
 
-const animals = [
-  "aardvark",
-  "albatross",
-  "alligator",
-  "alpaca",
-  "ant",
-  "anteater",
-  "antelope",
-]
+type EjectParams = {
+  outDir?: string
+}
 
-/**
- * Creates a temporary directory that contains a version of the admin UI
- * that can be deployed externally. This is necessary because the admin
- * per default is configured to be build within the the context of a Medusa
- * server project.
- *
- * The temporary directory will contain a package.json that has been modified
- * to remove fields that are not needed for the deployment, as well as placing
- * dependencies in the correct location. The temporary directory will also
- * contain a vite.config.ts file based on the user specified config.
- *
- * @returns The path to the temporary directory
- */
-export async function createTmpDir() {
+const DEFAULT_DESTINATION = "medusa-admin-ui"
+
+export default async function eject({
+  outDir = DEFAULT_DESTINATION,
+}: EjectParams) {
   const projectPath = require.resolve("@medusajs/admin-ui")
   const uiPath = path.join(projectPath, "..", "..", "ui")
 
-  // Get path to package.json
   const packageJsonPath = path.join(projectPath, "..", "..", "package.json")
-
-  // Create a new package.json based on the current one that we can modify
   const pkg = await fse.readJSON(packageJsonPath)
 
-  // Remove exports field
-  delete pkg.exports
+  const fieldsToRemove = ["exports", "types", "files", "main", "packageManager"]
+  fieldsToRemove.forEach((field) => delete pkg[field])
 
-  // Remove types field
-  delete pkg.types
-
-  // Remove files field
-  delete pkg.files
-
-  // Remove main field
-  delete pkg.main
-
-  // Remove package manager field
-  delete pkg.packageManager
-
-  // Add type field
   pkg.type = "module"
 
   const dependenciesToMove = [
@@ -73,18 +42,20 @@ export async function createTmpDir() {
     delete pkg.dependencies[dep]
   })
 
-  // TESTING ONLY: Set the version of the dependency `medusa-react` to `next`
-  pkg.dependencies["medusa-react"] = "next"
-
-  // Overwrite scripts field
   pkg.scripts = {
     build: "vite build",
+    dev: "vite --port 7001",
+    preview: "vite preview",
   }
 
-  // Create a vite.config.ts file
   const viteConfig = dedent`
-    import react from "@vitejs/plugin-react"
-    import { defineConfig } from "vite"
+  import { defineConfig } from "vite"
+  import dns from "dns"
+  import react from "@vitejs/plugin-react"
+
+    // Resolve localhost for Node v16 and older.
+    // @see https://vitejs.dev/config/server-options.html#server-host.
+    dns.setDefaultResultOrder("verbatim")
 
     // https://vitejs.dev/config/
     export default defineConfig({
@@ -125,34 +96,16 @@ export async function createTmpDir() {
     }
 `
 
-  const randomDir = `${
-    animals[Math.floor(Math.random() * animals.length)]
-  }-${Math.floor(Math.random() * 1000)}`
+  const tmpPath = path.join(process.cwd(), outDir)
 
-  // Copy UI folder to a temporary folder
-  const tmpPath = path.join(process.cwd(), randomDir)
   await fse.copy(uiPath, tmpPath)
-
-  // Remove old tailwind.config.js
   await fse.remove(path.join(tmpPath, "tailwind.config.js"))
-
-  // Remove old postcss.config.js
   await fse.remove(path.join(tmpPath, "postcss.config.js"))
-
-  // Write new package.json to temporary folder
   await fse.writeJSON(path.join(tmpPath, "package.json"), pkg)
-
-  // Write vite.config.ts to temporary folder
   await fse.writeFile(path.join(tmpPath, "vite.config.ts"), viteConfig)
-
-  // Write new tailwind.config.js to temporary folder
   await fse.writeFile(
     path.join(tmpPath, "tailwind.config.cjs"),
     newTailwindConfig
   )
-
-  // Write postcss.config.js to temporary folder
   await fse.writeFile(path.join(tmpPath, "postcss.config.cjs"), postcssConfig)
-
-  return tmpPath
 }

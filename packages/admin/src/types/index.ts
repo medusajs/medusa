@@ -24,6 +24,13 @@ export type PluginOptions = {
    * @default undefined
    */
   outDir?: string
+  /**
+   * Optional array of paths to include in the build output. This can be used to
+   * include host specific assets, such a routing redirects, or additional HTML such
+   * as a `200.html` file if that is required by your host.
+   * @default undefined
+   */
+  include?: string[]
 }
 
 type PluginObject = {

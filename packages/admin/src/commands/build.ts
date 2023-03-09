@@ -7,6 +7,7 @@ type BuildArgs = {
   outDir?: string
   backend?: string
   path?: string
+  include?: string[]
 }
 
 export default async function build(args: BuildArgs) {
@@ -38,11 +39,12 @@ export default async function build(args: BuildArgs) {
 }
 
 const mergeArgs = (args: BuildArgs) => {
-  const { path, backend, outDir } = loadConfig()
+  const { path, backend, outDir, include } = loadConfig()
 
   return {
     path: args.path || path,
     backend: args.backend || backend,
     outDir: args.outDir || outDir,
+    include: args.include || include,
   }
 }
