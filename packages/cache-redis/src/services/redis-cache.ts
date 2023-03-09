@@ -3,7 +3,7 @@ import { ICacheService } from "@medusajs/medusa"
 
 import { RedisCacheModuleOptions } from "../types"
 
-const DEFAULT_NAMESPACE = "medusa:"
+const DEFAULT_NAMESPACE = "medusa"
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
 const EXPIRY_MODE = "EX" // "EX" stands for an expiry time in second
 
@@ -12,7 +12,7 @@ type InjectedDependencies = {
 }
 
 class RedisCacheService implements ICacheService {
-  protected TTL: number
+  protected readonly TTL: number
   protected readonly redis: Redis
   private readonly namespace: string
 
@@ -21,7 +21,7 @@ class RedisCacheService implements ICacheService {
     options: RedisCacheModuleOptions = {}
   ) {
     this.redis = redisConnection
-    this.TTL = options.ttl || DEFAULT_CACHE_TIME
+    this.TTL = options.ttl ?? DEFAULT_CACHE_TIME
     this.namespace = options.namespace || DEFAULT_NAMESPACE
   }
   /**
@@ -81,7 +81,7 @@ class RedisCacheService implements ICacheService {
    * @param key
    */
   private getCacheKey(key: string) {
-    return `${DEFAULT_NAMESPACE}${key}`
+    return this.namespace ? `${this.namespace}:${key}` : key
   }
 }
 

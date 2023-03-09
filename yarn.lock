@@ -5833,7 +5833,6 @@ __metadata:
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.7.11
-    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -5848,7 +5847,6 @@ __metadata:
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.7.11
-    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 

@@ -1,4 +1,3 @@
-import { ConfigurableModuleDeclaration } from "@medusajs/modules-sdk"
 import { ICacheService } from "@medusajs/medusa"
 
 import { CacheRecord, InMemoryCacheModuleOptions } from "../types"
@@ -11,17 +10,16 @@ type InjectedDependencies = {}
  * Class represents basic, in-memory, cache store.
  */
 class InMemoryCacheService implements ICacheService {
-  protected TTL: number
+  protected readonly TTL: number
 
   protected readonly store = new Map<string, CacheRecord<any>>()
   protected readonly timoutRefs = new Map<string, NodeJS.Timeout>()
 
   constructor(
     deps: InjectedDependencies,
-    options: InMemoryCacheModuleOptions = {},
-    moduleDeclaration?: ConfigurableModuleDeclaration
+    options: InMemoryCacheModuleOptions = {}
   ) {
-    this.TTL = options.ttl || DEFAULT_TTL
+    this.TTL = options.ttl ?? DEFAULT_TTL
   }
 
   /**

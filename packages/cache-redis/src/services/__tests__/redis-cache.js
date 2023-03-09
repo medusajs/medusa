@@ -8,17 +8,8 @@ const redisClientMock = {
 describe("RedisCacheService", () => {
   let cacheService
 
-  beforeAll(() => {
-    jest.resetAllMocks()
-  })
-
-  it("Creates a RedisCacheService", () => {
-    cacheService = new RedisCacheService(
-      {
-        redisConnection: redisClientMock,
-      },
-      {}
-    )
+  beforeEach(() => {
+    jest.clearAllMocks()
   })
 
   it("Underlying client methods are called", async () => {

@@ -4,12 +4,9 @@ jest.setTimeout(40000)
 
 describe("InMemoryCacheService", () => {
   let inMemoryCache
-  beforeAll(() => {
-    jest.resetAllMocks()
-  })
 
-  it("Creates an `InMemoryCacheService`", () => {
-    inMemoryCache = new InMemoryCacheService({}, { ttl: 10 })
+  beforeEach(() => {
+    jest.clearAllMocks()
   })
 
   it("Stores and retrieves data", async () => {
@@ -76,12 +73,12 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Removes data after default TTL if TTL params isn't passed", async () => {
-    inMemoryCache = new InMemoryCacheService({}, { ttl: 1 })
+    inMemoryCache = new InMemoryCacheService({})
 
     await inMemoryCache.set("cache-key", { data: "value" })
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
 
-    await new Promise((res) => setTimeout(res, 2000))
+    await new Promise((res) => setTimeout(res, 33000))
 
     expect(await inMemoryCache.get("cache-key")).toEqual(null)
   })
