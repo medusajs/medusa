@@ -66,11 +66,13 @@ function EditProductCategoriesSideModal(
         is_internal: !isPublic,
       })
 
-      notification("Success", "Product category updated", "success")
+      notification("Success", "Successfully updated the category", "success")
+      close()
     } catch (e) {
-      notification("Error", "Failed to update the category", "error")
+      const errorMessage =
+        e.response?.data?.message || "Failed to update the category"
+      notification("Error", errorMessage, "error")
     }
-    close()
   }
 
   const onClose = () => {
@@ -98,6 +100,7 @@ function EditProductCategoriesSideModal(
 
         <div className="flex-grow">
           <InputField
+            required
             label="Name"
             type="string"
             name="name"
@@ -108,6 +111,7 @@ function EditProductCategoriesSideModal(
           />
 
           <InputField
+            required
             label="Handle"
             type="string"
             name="handle"
