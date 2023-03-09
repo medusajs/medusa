@@ -8,7 +8,7 @@ import BodyCard from "../../../components/organisms/body-card"
 import CreateProductCategory from "../modals/add-product-category"
 import ProductCategoriesList from "../components/product-categories-list"
 import EditProductCategoriesSideModal from "../modals/edit-product-category"
-import { flattenCategoryTree } from "../../../utils/tree-helpers"
+import { flattenCategoryTree } from "../utils"
 
 /**
  * Product categories empty state placeholder.

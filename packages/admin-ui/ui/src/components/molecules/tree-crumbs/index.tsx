@@ -2,14 +2,17 @@ import React from "react"
 import { ProductCategory } from "@medusajs/medusa"
 
 type TreeCrumbsProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
-  nodes: ProductCategory
+  nodes: ProductCategory[]
   currentNode: ProductCategory
+  showPlaceholder: boolean
+  placeholderText: string
 }
 
 const TreeCrumbs: React.FC<TreeCrumbsProps> = ({
   nodes,
   currentNode,
   showPlaceholder = false,
+  placeholderText = "",
   ...props
 }) => {
   const parentNode = nodes.find((n) => n.id === currentNode?.parent_category_id)
@@ -34,7 +37,7 @@ const TreeCrumbs: React.FC<TreeCrumbsProps> = ({
             <span className="mx-2">/</span>
 
             <span className="border-grey-40 rounded-[10px] border-[1px] border-dashed px-[8px] py-[4px]">
-              New
+              {placeholderText}
             </span>
           </span>
         )}
