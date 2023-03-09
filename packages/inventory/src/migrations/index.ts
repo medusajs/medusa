@@ -1,9 +1,3 @@
-import { getFilesFromPath } from "@medusajs/modules-sdk"
+import * as setup from "./schema-migrations/1665748086258-inventory_setup"
 
-const migrations: object[] = []
-
-getFilesFromPath(__dirname + "/**/*.{ts,js}", ["**/*.d.ts"], (file: string) => {
-  migrations.push(require(file))
-})
-
-export default migrations
+export default [setup]
