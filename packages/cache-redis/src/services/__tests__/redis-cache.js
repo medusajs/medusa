@@ -15,7 +15,7 @@ describe("RedisCacheService", () => {
   it("Underlying client methods are called", async () => {
     cacheService = new RedisCacheService(
       {
-        redisConnection: redisClientMock,
+        cacheRedisConnection: redisClientMock,
       },
       {}
     )
