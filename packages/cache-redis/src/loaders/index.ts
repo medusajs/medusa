@@ -1,6 +1,7 @@
 import Redis from "ioredis"
 import { asValue } from "awilix"
 import { LoaderOptions } from "@medusajs/modules-sdk"
+
 import { RedisCacheModuleOptions } from "../types"
 
 export default async ({
@@ -32,6 +33,6 @@ export default async ({
   }
 
   container.register({
-    redisConnection: asValue(connection),
+    cacheRedisConnection: asValue(connection),
   })
 }

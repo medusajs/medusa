@@ -8,7 +8,7 @@ const DEFAULT_CACHE_TIME = 30 // 30 seconds
 const EXPIRY_MODE = "EX" // "EX" stands for an expiry time in second
 
 type InjectedDependencies = {
-  redisConnection: Redis
+  cacheRedisConnection: Redis
 }
 
 class RedisCacheService implements ICacheService {
@@ -17,10 +17,10 @@ class RedisCacheService implements ICacheService {
   private readonly namespace: string
 
   constructor(
-    { redisConnection }: InjectedDependencies,
+    { cacheRedisConnection }: InjectedDependencies,
     options: RedisCacheModuleOptions = {}
   ) {
-    this.redis = redisConnection
+    this.redis = cacheRedisConnection
     this.TTL = options.ttl ?? DEFAULT_CACHE_TIME
     this.namespace = options.namespace || DEFAULT_NAMESPACE
   }
