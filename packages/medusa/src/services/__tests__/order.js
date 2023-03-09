@@ -1072,10 +1072,15 @@ describe("OrderService", () => {
           { no_notification: input }
         )
 
-        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
-          id: expect.any(String),
-          no_notification: expected,
-        })
+        expect(eventBusService.emit).toHaveBeenCalledWith([
+          {
+            eventName: expect.any(String),
+            data: {
+              id: expect.any(String),
+              no_notification: expected,
+            },
+          },
+        ])
       }
     )
   })
