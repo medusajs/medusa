@@ -6,6 +6,7 @@ import Content from '@theme/DocSidebar/Desktop/Content';
 import styles from './styles.module.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import AnnouncementBar from '@theme/AnnouncementBar';
+import {useLocation} from '@docusaurus/router';
 
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   const {
@@ -16,6 +17,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   } = useThemeConfig();
   const isBrowser = useIsBrowser()
   const sidebarRef = useRef(null)
+  const location = useLocation();
 
   useEffect(() => {
     if (isBrowser && sidebarRef.current) {
@@ -31,7 +33,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
         }
       }
 
-      const navElement = sidebarRef.current.querySelector('nav');
+      const navElement = sidebarRef.current.querySelector('.main-sidebar');
       navElement.addEventListener('scroll', handleScroll);
 
       return () => {
@@ -39,6 +41,44 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
       }
     }
   }, [isBrowser, sidebarRef.current])
+
+  useEffect(() => {
+    const navElement = sidebarRef.current.querySelector('.main-sidebar'),
+      navElementBoundingRect = navElement.getBoundingClientRect();
+
+    //scroll to current active item
+    const activeItem = document.querySelector('.sidebar-desktop .menu__link--active'),
+      activeItemBoundingReact = activeItem?.getBoundingClientRect(),
+      isActiveItemVisible = activeItemBoundingReact.top >= 0 && activeItemBoundingReact.bottom <= navElementBoundingRect.height
+    
+    console.log(activeItem, isActiveItemVisible)
+    if (activeItem && !isActiveItemVisible) {
+      //check if it has a parent list item element
+      let parentListItem = activeItem.parentElement
+
+      //search only to reach the main sidebar element
+      while (parentListItem && !parentListItem.classList.contains('sidebar-desktop')) {
+        if (parentListItem.classList.contains('menu__list-item')) {
+          // if (parentListItem.firstElementChild?.classList.contains('menu__list-item-collapsible')) {
+          //   parentListItem = parentListItem.firstElementChild
+          // }
+          break;
+        }
+
+        parentListItem = parentListItem.parentElement
+      }
+
+      const elementToScrollTo = parentListItem || activeItem,
+        elementBounding = elementToScrollTo.getBoundingClientRect()
+      //scroll to element
+      navElement.scroll({
+        //the extra 120 is due to the sticky elements in the sidebar
+        top: elementBounding.top - navElementBoundingRect.top + navElement.scrollTop - 120,
+        behaviour: 'smooth'
+      })
+    }
+  }, [location])
+
   return (
     <div
       className={clsx(
