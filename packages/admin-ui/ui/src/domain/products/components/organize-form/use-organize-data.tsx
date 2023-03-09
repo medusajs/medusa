@@ -1,5 +1,13 @@
-import { useAdminCollections, useAdminProductTypes } from "medusa-react"
 import { useMemo } from "react"
+
+import {
+  useAdminCollections,
+  useAdminProductCategories,
+  useAdminProductTypes,
+} from "medusa-react"
+
+import { NestedMultiselectOption } from "../../../categories/components/multiselect"
+import { transformCategoryToNestedFormOptions } from "../../../categories/utils/transform-response"
 
 const useOrganizeData = () => {
   const { product_types } = useAdminProductTypes(undefined, {
@@ -7,6 +15,10 @@ const useOrganizeData = () => {
     refetchOnWindowFocus: true,
   })
   const { collections } = useAdminCollections()
+  const { product_categories: categories } = useAdminProductCategories({
+    parent_category_id: "null",
+    include_descendants_tree: true,
+  })
 
   const productTypeOptions = useMemo(() => {
     return (
@@ -26,9 +38,15 @@ const useOrganizeData = () => {
     )
   }, [collections])
 
+  const categoriesOptions: NestedMultiselectOption[] | undefined = useMemo(
+    () => categories?.map(transformCategoryToNestedFormOptions),
+    [categories]
+  )
+
   return {
     productTypeOptions,
     collectionOptions,
+    categoriesOptions,
   }
 }
 

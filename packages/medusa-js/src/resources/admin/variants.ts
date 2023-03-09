@@ -2,6 +2,9 @@ import {
   AdminGetVariantsVariantInventoryRes,
   AdminGetVariantsParams,
   AdminVariantsListRes,
+  StoreGetVariantsVariantParams,
+  AdminGetVariantParams,
+  AdminVariantsRes,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../.."
@@ -19,6 +22,27 @@ class AdminVariantsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminVariantsListRes> {
     let path = `/admin/variants`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/variants?${queryString}`
+    }
+
+    return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
+
+  /**
+   * Get a product variant
+   * @param id Query to filter variants by
+   * @param customHeaders custom headers
+   * @returns A list of variants satisfying the criteria of the query
+   */
+  retrieve(
+    id: string,
+    query?: AdminGetVariantParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminVariantsRes> {
+    let path = `/admin/variants/${id}`
 
     if (query) {
       const queryString = qs.stringify(query)

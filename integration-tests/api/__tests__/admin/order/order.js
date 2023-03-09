@@ -2443,11 +2443,90 @@ describe("/admin/orders", () => {
       )
 
       expect(order.status).toEqual(200)
-      expect(order.data.order).toEqual(
-        expect.objectContaining({
-          id: "test-order",
-        })
+      // id + totals + region relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        region: expect.any(Object),
+        shipping_total: 1000,
+        discount_total: 800,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 0,
+        refundable_amount: 0,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
+    })
+
+    it("retrieves an order with expand returnable_items only should return the entire object and only returnable_items as relation", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?expand=returnable_items`,
+        adminReqConfig
       )
+
+      expect(order.status).toEqual(200)
+      // all order properties + totals + returnable_items relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        status: "pending",
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        display_id: expect.any(Number),
+        cart_id: null,
+        draft_order_id: null,
+        customer_id: "test-customer",
+        email: "test@email.com",
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        canceled_at: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        metadata: null,
+        no_notification: null,
+        sales_channel_id: null,
+        returnable_items: expect.any(Array),
+        shipping_total: 1000,
+        discount_total: 800,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
+    })
+
+    it("retrieves an order with expand returnable_items and field id should return the id and the retunable_items", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?expand=returnable_items&fields=id`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      // id + totals + returnable_items relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        returnable_items: expect.any(Array),
+        shipping_total: 1000,
+        discount_total: 800,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
     })
 
     it("retrieves an order should include the items totals", async () => {

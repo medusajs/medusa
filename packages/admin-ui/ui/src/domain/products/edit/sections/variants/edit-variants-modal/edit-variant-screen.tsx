@@ -3,17 +3,18 @@ import {
   Product,
   ProductVariant,
 } from "@medusajs/medusa"
-import React, { useContext, useEffect, useMemo } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../../components/fundamentals/button"
-import Modal from "../../../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../../components/variant-form/edit-flow-variant-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import React, { useContext, useEffect, useMemo } from "react"
+
+import Button from "../../../../../../components/fundamentals/button"
+import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
+import Modal from "../../../../../../components/molecules/modal"
 import { getEditVariantDefaultValues } from "../edit-variant-modal"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useEditVariantsModal } from "./use-edit-variants-modal"
+import { useForm } from "react-hook-form"
 
 type Props = {
   variant: ProductVariant
@@ -58,10 +59,10 @@ const EditVariantScreen = ({ variant, product }: Props) => {
     <>
       <form noValidate>
         <Modal.Content>
-          <EditFlowVariantForm form={form} />
+          <EditFlowVariantForm isEdit={true} form={form} />
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex items-center w-full justify-end gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" type="button">
               Cancel
             </Button>
@@ -97,7 +98,7 @@ export const createUpdatePayload = (
 ): AdminPostProductsProductVariantsVariantReq => {
   const { customs, dimensions, prices, options, general, stock } = data
 
-  const priceArray = prices.prices
+  const priceArray = prices?.prices
     .filter((price) => typeof price.amount === "number")
     .map((price) => {
       return {
@@ -109,19 +110,18 @@ export const createUpdatePayload = (
     })
 
   return {
-    // @ts-ignore
     ...general,
     ...customs,
     ...stock,
     ...dimensions,
     ...customs,
     // @ts-ignore
-    origin_country: customs.origin_country
+    origin_country: customs?.origin_country
       ? customs.origin_country.value
       : null,
     // @ts-ignore
     prices: priceArray,
-    options: options.map((option) => ({
+    options: options?.map((option) => ({
       option_id: option.id,
       value: option.value,
     })),

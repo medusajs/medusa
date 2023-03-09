@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const MODAL_WIDTH = 560
@@ -43,9 +43,9 @@ function SideModal(props: SideModalProps) {
               background: "white",
               right: 0,
               top: 0,
-              zIndex: 9999,
+              zIndex: 200,
             }}
-            className="rounded border overflow-hidden"
+            className="overflow-hidden rounded border"
             animate={{ right: 0 }}
             exit={{ right: -MODAL_WIDTH }}
           >

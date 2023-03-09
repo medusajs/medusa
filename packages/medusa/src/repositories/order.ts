@@ -34,6 +34,7 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
           relations: rels,
           withDeleted:
             topLevel === ITEMS_REL_NAME || topLevel === REGION_REL_NAME,
+          relationLoadStrategy: "join",
         })
       })
     ).then(flatten)
