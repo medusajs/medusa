@@ -1,24 +1,25 @@
-import React, { useEffect, useMemo } from "react"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { LineItem, Order, ReservationItemDTO } from "@medusajs/medusa"
-import FocusModal from "../../../../components/molecules/modal/focus-modal"
-import Button from "../../../../components/fundamentals/button"
-import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import Select from "../../../../components/molecules/select/next-select/select"
+import { NestedForm, nestedForm } from "../../../../utils/nested-form"
+import React, { useEffect, useMemo } from "react"
 import {
   useAdminCreateReservation,
   useAdminStockLocations,
   useAdminVariantsInventory,
   useMedusa,
 } from "medusa-react"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import Thumbnail from "../../../../components/atoms/thumbnail"
+
+import Button from "../../../../components/fundamentals/button"
+import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
+import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import InputField from "../../../../components/molecules/input"
-import { NestedForm, nestedForm } from "../../../../utils/nested-form"
-import { sum } from "lodash"
+import Select from "../../../../components/molecules/select/next-select/select"
+import Thumbnail from "../../../../components/atoms/thumbnail"
 import clsx from "clsx"
-import { getFulfillableQuantity } from "../create-fulfillment/item-table"
-import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { getFulfillableQuantity } from "../create-fulfillment/item-table"
+import { sum } from "lodash"
+import useNotification from "../../../../hooks/use-notification"
 
 type AllocationModalFormData = {
   location?: { label: string; value: string }
@@ -121,11 +122,11 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <FocusModal>
         <FocusModal.Header>
-          <div className="flex w-full justify-between px-8 medium:w-8/12">
+          <div className="medium:w-8/12 flex w-full justify-between px-8">
             <Button size="small" variant="ghost" type="button" onClick={close}>
               <CrossIcon size={20} />
             </Button>
-            <div className="flex gap-x-small">
+            <div className="gap-x-small flex">
               <Button
                 size="small"
                 variant="secondary"
@@ -170,7 +171,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
               </div>
               <div
                 className={clsx(
-                  "mt-8 flex w-full flex-col border-t border-grey-20",
+                  "border-grey-20 mt-8 flex w-full flex-col border-t",
                   {
                     "pointer-events-none opacity-50": !selectedLocation?.value,
                   }
@@ -217,7 +218,8 @@ export const AllocationLineItem: React.FC<{
   item: LineItem
   locationId?: string
   reservedQuantity?: number
-}> = ({ form, item, locationId, reservedQuantity }) => {
+  compact?: boolean
+}> = ({ form, item, locationId, reservedQuantity, compact }) => {
   const { variant, isLoading } = useAdminVariantsInventory(
     item.variant_id as string
   )
@@ -260,44 +262,58 @@ export const AllocationLineItem: React.FC<{
     inventoryItemReservationCapacity
   )
   return (
-    <div>
-      <div className="mt-8 flex w-full items-center justify-between">
-        <div className="flex gap-x-base">
+    <div className="mt-8 flex w-full items-start justify-between">
+      <div className="gap-x-base flex w-7/12">
+        <div className="min-w-9">
           <Thumbnail size="medium" src={item.thumbnail} />
-          <div className="text-grey-50">
-            <p className="flex gap-x-2xsmall">
-              <p className="inter-base-semibold text-grey-90">{item.title}</p>
-              {`(${item.variant.sku})`}
-            </p>
-            <p className="inter-base-regular ">
-              {item.variant.options?.map((option) => option.value) ||
-                item.variant.title ||
-                "-"}
-            </p>
-          </div>
         </div>
-        <div className="flex items-center gap-x-large">
-          <div className="inter-base-regular flex flex-col items-end whitespace-nowrap text-grey-50">
-            <p>{availableQuantity || "N/A"} available</p>
-            <p>({inStockQuantity || "N/A"} in stock)</p>
-          </div>
-          <InputField
-            {...register(path(`quantity`), { valueAsNumber: true })}
-            type="number"
-            defaultValue={0}
-            disabled={lineItemReservationCapacity < 0}
-            min={0}
-            max={maxReservation > 0 ? maxReservation : 0}
-            suffix={
-              <span className="flex">
-                {"/"}{" "}
-                <span className="ml-1">
-                  {maxReservation > 0 ? maxReservation : 0}
-                </span>
-              </span>
+        <div className="text-grey-50 truncate">
+          <p className="gap-x-2xsmall nowrap flex grow ">
+            <p className="inter-base-semibold text-grey-90 truncate">
+              {item.title}
+            </p>
+            {`(${item.variant.sku})`}
+          </p>
+          <p className="inter-base-regular ">
+            {item.variant.options?.map((option) => option.value) ||
+              item.variant.title ||
+              "-"}
+          </p>
+        </div>
+      </div>
+      <div
+        className={clsx("gap-x-large flex items-center", {
+          "gap-y-xsmall flex-col-reverse": compact,
+        })}
+      >
+        <div
+          className={clsx(
+            "inter-base-regular text-grey-50 gap-x-xsmall flex items-end whitespace-nowrap",
+            {
+              "flex-col": !compact,
             }
-          />
+          )}
+        >
+          <p>{availableQuantity || "N/A"} available</p>
+          <p>({inStockQuantity || "N/A"} in stock)</p>
         </div>
+        <InputField
+          {...register(path(`quantity`), { valueAsNumber: true })}
+          type="number"
+          className="min-w-[120px]"
+          defaultValue={0}
+          disabled={lineItemReservationCapacity < 0}
+          min={0}
+          max={maxReservation > 0 ? maxReservation : 0}
+          suffix={
+            <span className="flex">
+              {"/"}{" "}
+              <span className="ml-1">
+                {maxReservation > 0 ? maxReservation : 0}
+              </span>
+            </span>
+          }
+        />
       </div>
     </div>
   )
