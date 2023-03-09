@@ -39,5 +39,9 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/inventory",
     },
+    cacheService: {
+      resolve: "@medusajs/cache-redis",
+      options: { ttl: 30, redisUrl: "redis://localhost:6379" },
+    },
   },
 }
