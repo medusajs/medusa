@@ -40,8 +40,8 @@ module.exports = {
       resolve: "@medusajs/inventory",
     },
     cacheService: {
-      resolve: "@medusajs/cache-redis",
-      options: { ttl: 30, redisUrl: "redis://localhost:6379" },
+      resolve: "@medusajs/cache-inmemory",
+      options: { ttl: 5 },
     },
   },
 }

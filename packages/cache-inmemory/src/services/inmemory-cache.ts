@@ -85,9 +85,6 @@ class InMemoryCacheService implements ICacheService {
       }
       this.store.delete(key)
     })
-
-    // @ts-ignore
-    return this.store.entries()
   }
 
   /**

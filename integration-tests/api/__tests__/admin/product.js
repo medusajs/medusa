@@ -2293,7 +2293,7 @@ describe("/admin/products", () => {
 
       const variantId = "test-variant_3"
 
-      let r = await api
+      await api
         .post(
           `/admin/products/test-product1/variants/${variantId}`,
           createPrices,
