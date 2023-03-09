@@ -12,6 +12,7 @@ import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
 import Select from "../../../components/molecules/select"
+import TreeCrumbs from "../components/tree-crumbs"
 import { useQueryClient } from "@tanstack/react-query"
 
 const visibilityOptions = [
@@ -36,7 +37,7 @@ type CreateProductCategoryProps = {
  * Focus modal container for creating Publishable Keys.
  */
 function CreateProductCategory(props: CreateProductCategoryProps) {
-  const { closeModal, parentCategory } = props
+  const { closeModal, parentCategory, categories } = props
   const notification = useNotification()
   const queryClient = useQueryClient()
 
@@ -90,9 +91,21 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
       <FocusModal.Main className="no-scrollbar flex w-full justify-center">
         <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
-          <h1 className="inter-xlarge-semibold text-grey-90 pb-8">
+          <h1 className="inter-xlarge-semibold text-grey-90 pb-6">
             Add category {parentCategory && `to ${parentCategory.name}`}
           </h1>
+
+          {parentCategory && (
+            <div className="mb-6">
+              <TreeCrumbs
+                nodes={categories}
+                currentNode={parentCategory}
+                showPlaceholder={true}
+                placeholderText={name || "New"}
+              />
+            </div>
+          )}
+
           <h4 className="inter-large-semibold text-grey-90 pb-1">Details</h4>
 
           <div className="mb-8 flex justify-between gap-6">
