@@ -3,7 +3,7 @@ const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 
-const redisUrl = process.env.REDIS_URL || "127.0.0.1:6379"
+const redisUrl = process.env.REDIS_URL || "redis://localhost:6379"
 
 module.exports = {
   plugins: [],
