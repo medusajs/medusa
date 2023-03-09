@@ -1,25 +1,26 @@
-import { LineItem as RawLineItem, Order } from "@medusajs/medusa"
-import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
-import React, { useContext, useEffect, useState } from "react"
-import Spinner from "../../../../components/atoms/spinner"
-import Button from "../../../../components/fundamentals/button"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../components/molecules/modal"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../../../components/molecules/modal/layered-modal"
+import { Order, LineItem as RawLineItem } from "@medusajs/medusa"
+import React, { useContext, useEffect, useState } from "react"
+import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
+
+import Button from "../../../../components/fundamentals/button"
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
+import CurrencyInput from "../../../../components/organisms/currency-input"
+import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
+import IconTooltip from "../../../../components/molecules/icon-tooltip"
+import Modal from "../../../../components/molecules/modal"
+import { Option } from "../../../../types/shared"
+import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
 import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping"
 import Select from "../../../../components/molecules/select"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
-import useNotification from "../../../../hooks/use-notification"
-import { Option } from "../../../../types/shared"
-import { getErrorMessage } from "../../../../utils/error-messages"
+import Spinner from "../../../../components/atoms/spinner"
 import { displayAmount } from "../../../../utils/prices"
-import { removeNullish } from "../../../../utils/remove-nullish"
 import { getAllReturnableItems } from "../utils/create-filtering"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { removeNullish } from "../../../../utils/remove-nullish"
+import useNotification from "../../../../hooks/use-notification"
 
 type ReturnMenuProps = {
   order: Order
@@ -29,7 +30,7 @@ type ReturnMenuProps = {
 type LineItem = Omit<RawLineItem, "beforeInsert">
 
 const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
-  const layoutmodalcontext = useContext(LayeredModalContext)
+  const layeredModalContext = useContext(LayeredModalContext)
 
   const [submitting, setSubmitting] = useState(false)
   const [refundEdited, setRefundEdited] = useState(false)
@@ -156,7 +157,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
   }
 
   return (
-    <LayeredModal context={layoutmodalcontext} handleClose={onDismiss}>
+    <LayeredModal context={layeredModalContext} handleClose={onDismiss}>
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
           <h2 className="inter-xlarge-semibold">Request Return</h2>
@@ -213,7 +214,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   <span>Shipping</span>
                   <div>
                     {displayAmount(order.currency_code, shippingPrice || 0)}{" "}
-                    <span className="ml-3 text-grey-40">
+                    <span className="text-grey-40 ml-3">
                       {order.currency_code.toUpperCase()}
                     </span>
                   </div>
@@ -225,7 +226,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   {!refundEdited && (
                     <>
                       <span
-                        className="mr-2 cursor-pointer text-grey-40"
+                        className="text-grey-40 mr-2 cursor-pointer"
                         onClick={() => setRefundEdited(true)}
                       >
                         <EditIcon size={20} />{" "}
@@ -262,7 +263,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
               onClick={() => setNoNotification(!noNotification)}
             >
               <div
-                className={`flex h-5 w-5 justify-center rounded-base border border-grey-30 text-grey-0 ${
+                className={`rounded-base border-grey-30 text-grey-0 flex h-5 w-5 justify-center border ${
                   !noNotification && "bg-violet-60"
                 }`}
               >
@@ -278,12 +279,12 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 onChange={() => setNoNotification(!noNotification)}
                 type="checkbox"
               />
-              <span className="ml-3 flex items-center gap-x-xsmall text-grey-90">
+              <span className="gap-x-xsmall text-grey-90 ml-3 flex items-center">
                 Send notifications
                 <IconTooltip content="Notify customer of created return" />
               </span>
             </div>
-            <div className="flex gap-x-xsmall">
+            <div className="gap-x-xsmall flex">
               <Button
                 onClick={() => onDismiss()}
                 className="w-[112px]"

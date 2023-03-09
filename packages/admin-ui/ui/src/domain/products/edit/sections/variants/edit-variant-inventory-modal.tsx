@@ -8,16 +8,16 @@ import { useMedusa } from "medusa-react"
 import { useAdminVariantsInventory } from "medusa-react"
 import { useContext } from "react"
 import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../components/variant-inventory-form/edit-flow-variant-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
+import Button from "../../../../../components/fundamentals/button"
+import Modal from "../../../../../components/molecules/modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
 
 type Props = {
   onClose: () => void
@@ -102,6 +102,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     // / TODO: Call update location level with new values
     delete data.stock.location_levels
 
+    console.log(createUpdatePayload(data))
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
       refetch()
