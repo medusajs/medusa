@@ -108,12 +108,10 @@ export default async (req, res) => {
  *     type: string
  *   billing_address:
  *     description: Billing address
- *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *     $ref: "#/components/schemas/AddressPayload"
  *   shipping_address:
  *     description: Shipping address
- *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *     $ref: "#/components/schemas/AddressPayload"
  *   items:
  *     description: The Line Items for the order
  *     type: array
