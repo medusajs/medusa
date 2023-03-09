@@ -2,4 +2,4 @@
 "@medusajs/admin-ui": patch
 ---
 
-fix(admin-ui): set manage-inventory manually when updating a variant
+fix(admin-ui): create/update/delete inventory items according to inventory items on the variant
