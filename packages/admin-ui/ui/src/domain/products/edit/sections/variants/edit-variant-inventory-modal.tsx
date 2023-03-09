@@ -1,4 +1,9 @@
-import { InventoryLevelDTO, Product, ProductVariant } from "@medusajs/medusa"
+import {
+  InventoryLevelDTO,
+  Product,
+  ProductVariant,
+  VariantInventory,
+} from "@medusajs/medusa"
 import { useMedusa } from "medusa-react"
 import { useAdminVariantsInventory } from "medusa-react"
 import { useContext } from "react"
@@ -52,7 +57,8 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     const upsertPayload = removeNullish(data.stock)
 
     if (variantInventoryItem) {
-      // variant inventory exists
+      // variant inventory exists and we can remove location levels
+      // (it's important to do this before potentially deleting the inventory item)
       const deleteLocations = manageInventory
         ? variantInventoryItem?.location_levels?.filter(
             (itemLevel: InventoryLevelDTO) => {
@@ -83,7 +89,6 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         await client.admin.inventoryItems.update(itemId!, upsertPayload)
       }
     } else if (manageInventory) {
-      console.log("testing")
       // does not have an inventory item but wants to manage inventory
       const { inventory_item } = await client.admin.inventoryItems.create({
         variant_id: variant.id,
@@ -134,8 +139,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       </Modal.Header>
       {!isLoadingInventory && (
         <StockForm
-          variantInventory={variantInventory}
-          refetchInventory={refetch}
+          variantInventory={variantInventory!}
           onSubmit={onSubmit}
           isLoadingInventory={isLoadingInventory}
           handleClose={handleClose}
@@ -149,11 +153,16 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
 const StockForm = ({
   variantInventory,
   onSubmit,
-  refetchInventory,
   isLoadingInventory,
   handleClose,
   updatingVariant,
-}: any) => {
+}: {
+  variantInventory: VariantInventory
+  onSubmit: (data: EditFlowVariantFormType) => void
+  isLoadingInventory: boolean
+  handleClose: () => void
+  updatingVariant: boolean
+}) => {
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getEditVariantDefaultValues(variantInventory),
   })
@@ -166,8 +175,6 @@ const StockForm = ({
 
   const locationLevels = variantInventory.inventory[0]?.location_levels || []
 
-  const itemId = variantInventory.inventory[0]?.id
-
   const handleOnSubmit = handleSubmit((data) => {
     onSubmit(data)
   })
@@ -177,9 +184,7 @@ const StockForm = ({
       <Modal.Content>
         <EditFlowVariantForm
           form={form}
-          refetchInventory={refetchInventory}
           locationLevels={locationLevels}
-          itemId={itemId}
           isLoading={isLoadingInventory}
         />
       </Modal.Content>

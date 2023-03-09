@@ -35,9 +35,9 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.inventoryItems.createInventoryItem(inventoryItemId, {
- *         location_id: 'sloc',
- *         stocked_quantity: 10,
+ *       medusa.admin.inventoryItems.create(inventoryItemId, {
+ *         variant_id: 'variant_123',
+ *         sku: "sku-123",
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
@@ -45,12 +45,12 @@ import { MedusaError } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "location_id": "sloc",
- *           "stocked_quantity": 10
+ *           "variant_id": "variant_123",
+ *           "sku": "sku-123",
  *       }'
  * security:
  *   - api_token: []

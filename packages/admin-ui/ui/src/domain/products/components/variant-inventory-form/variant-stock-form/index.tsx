@@ -23,18 +23,11 @@ export type VariantStockFormType = {
 }
 
 type Props = {
-  itemId: string
   locationLevels: InventoryLevelDTO[]
-  refetchInventory: () => void
   form: NestedForm<VariantStockFormType>
 }
 
-const VariantStockForm = ({
-  form,
-  locationLevels,
-  refetchInventory,
-  itemId,
-}: Props) => {
+const VariantStockForm = ({ form, locationLevels }: Props) => {
   const locationLevelMap = useMemo(
     () => new Map(locationLevels.map((l) => [l.location_id, l])),
     [locationLevels]
