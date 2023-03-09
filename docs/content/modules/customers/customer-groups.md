@@ -61,4 +61,4 @@ The relation between the `PriceList` and `CustomerGroup` entities is available o
 ## See Also
 
 - [Manage customer groups using the Admin APIs](./admin/manage-customer-groups.mdx).
-- [Price Lists Overview](../../advanced/backend/price-lists/index.md).
+- [Price Lists Overview](../price-lists/price-lists.md).

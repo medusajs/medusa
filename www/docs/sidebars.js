@@ -1034,12 +1034,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'modules/price-lists/overview',
+          label: 'Overview'
         },
         {
           type: 'html',
@@ -1050,12 +1047,12 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/price-lists/index',
+          id: 'modules/price-lists/price-lists',
           label: 'Price Lists'
         },
         {
           type: 'doc',
-          id: 'advanced/backend/price-selection-strategy/index',
+          id: 'modules/price-lists/price-selection-strategy',
           label: 'Price Selection Strategy'
         },
         {
@@ -1067,17 +1064,17 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/price-selection-strategy/override',
+          id: 'modules/price-lists/backend/override-price-selection-strategy',
           label: 'Backend: Override Price Selection'
         },
         {
           type: 'doc',
-          id: 'advanced/backend/price-lists/use-api',
+          id: 'modules/price-lists/admin/manage-price-lists',
           label: 'Admin: Manage Price Lists'
         },
         {
           type: 'doc',
-          id: 'advanced/admin/import-prices',
+          id: 'modules/price-lists/admin/import-prices',
           label: 'Admin: Import Prices'
         },
       ]

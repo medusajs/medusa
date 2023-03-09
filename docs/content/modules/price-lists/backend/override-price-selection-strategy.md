@@ -9,7 +9,7 @@ In this document, you’ll learn how to override Medusa’s price selection stra
 
 :::note
 
-If you’re interested in learning what a price selection strategy is and how it works, check out [this documentation](./index.md) instead.
+If you’re interested in learning what a price selection strategy is and how it works, check out [this documentation](../price-selection-strategy.md) instead.
 
 :::
 
@@ -86,7 +86,7 @@ export default class MyStrategy extends AbstractPriceSelectionStrategy {
 
 Implement the price selection strategy you want inside the `calculateVariantPrice` method.
 
-This method accepts the variant ID as a first parameter and the [context](./index.md#context-object) object as a second parameter.
+This method accepts the variant ID as a first parameter and the [context](../price-selection-strategy.md#context-object) object as a second parameter.
 
 This method must return an object having the following fields:
 
@@ -98,7 +98,7 @@ This method must return an object having the following fields:
 }
 ```
 
-You can learn more about optional properties and the meaning behind every property [here](./index.md#calculatevariantprice-method).
+You can learn more about optional properties and the meaning behind every property [here](../price-selection-strategy.md#calculatevariantprice-method).
 
 ---
 
@@ -120,10 +120,10 @@ Run your backend to test it out:
 npm run start
 ```
 
-Then, try out your strategy using any of the [Products](https://docs.medusajs.com/api/store/#tag/Product) or [Carts](https://docs.medusajs.com/api/store/#tag/Cart) endpoints which include retrieving product variants and line items respectively. You should then see the prices in the response based on your implemented strategy.
+Then, try out your strategy using any of the [Products](/api/store/#tag/Product) or [Carts](/api/store/#tag/Cart) endpoints which include retrieving product variants and line items respectively. You should then see the prices in the response based on your implemented strategy.
 
 ---
 
 ## See Also
 
-- [Price List Selection Strategy Overview](./index.md)
+- [Price List Selection Strategy Overview](../price-selection-strategy.md)

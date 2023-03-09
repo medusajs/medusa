@@ -231,6 +231,26 @@
     {
       "source": "/advanced/ecommerce/send-gift-card-to-customer",
       "destination": "/modules/gift-cards/backend/send-gift-card-to-customer"
+    },
+    {
+      "source": "/advanced/backend/price-lists",
+      "destination": "/modules/price-lists"
+    },
+    {
+      "source": "/advanced/backend/price-lists/use-api",
+      "destination": "/modules/price-lists/admin/manage-price-lists"
+    },
+    {
+      "source": "/advanced/backend/price-selection-strategy/index",
+      "destination": "/modules/price-lists/price-selection-strategy"
+    },
+    {
+      "source": "/advanced/backend/price-selection-strategy/override",
+      "destination": "/modules/price-lists/backend/override-price-selection-strategy"
+    },
+    {
+      "source": "/advanced/admin/import-prices",
+      "destination": "/modules/price-lists/admin/import-prices"
     }
   ]
 }

@@ -8,7 +8,7 @@ In this document, you’ll learn what a price selection strategy is.
 
 :::note
 
-If you’re interested to learn how to override the price selection strategy, check out [this documentation](./override.md) instead.
+If you’re interested to learn how to override the price selection strategy, check out [this documentation](./backend/override-price-selection-strategy.md) instead.
 
 :::
 
@@ -38,15 +38,15 @@ The method retrieves all the available prices of the variant based on the condit
 It returns an object with the following properties:
 
 1. `originalPrice`: The original price of the variant which depends on the selected region or currency code in the context object. If both region ID and currency code are available in the context object, the region has higher precedence.
-2. `originalPriceIncludesTax`: A boolean value indicating whether the original price includes taxes or not. This is only available for [Tax-Inclusive Pricing](../../../modules/taxes/inclusive-pricing.md).
+2. `originalPriceIncludesTax`: A boolean value indicating whether the original price includes taxes or not. This is only available for [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md).
 3. `calculatedPrice`: The lowest price among the prices of the product variant retrieved using the context object.
-4. `calculatedPriceIncludesTax`: A boolean value indicating whether the calculated price includes taxes or not. This is only available for [Tax-Inclusive Pricing](../../../modules/taxes/inclusive-pricing.md).
+4. `calculatedPriceIncludesTax`: A boolean value indicating whether the calculated price includes taxes or not. This is only available for [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md).
 5. `calculatedPriceType`: Either `default` if the `calculatedPrice` is the original price, or the type of the price list applied.
 6. `prices`: an array of all the prices of the variant retrieved using the context object. It can include its original price and its price lists if there are any.
 
 :::info
 
-You can learn more about price lists and how they’re used in [this documentation](../price-lists/index.md).
+You can learn more about price lists and how they’re used in [this documentation](./price-lists.md).
 
 :::
 
@@ -60,11 +60,11 @@ The context that is passed to the `calculateVariantPrice` method is an object th
 - `region_id`: The ID of the region the customer is using.
 - `currency_code`: The currency code the customer is using.
 - `include_discount_prices`: A boolean value indicating whether price list prices should be retrieved or not.
-- `tax_rates`: The tax rates to be applied. This is only used for [Tax-Inclusive Pricing](../../../modules/taxes/inclusive-pricing.md).
+- `tax_rates`: The tax rates to be applied. This is only used for [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md).
 
 ---
 
 ## See Also
 
-- [Override the Price Selection Strategy](./override.md)
-- [Price Lists Overview](./../price-lists/index.md)
+- [Override the Price Selection Strategy](./backend/override-price-selection-strategy.md)
+- [Price Lists Overview](./price-lists.md)
