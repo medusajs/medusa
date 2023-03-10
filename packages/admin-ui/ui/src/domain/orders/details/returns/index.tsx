@@ -131,7 +131,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
         noNotification !== order.no_notification ? noNotification : undefined,
     }
 
-    if (selectedLocation) {
+    if (selectedLocation && isLocationFulfillmentEnabled) {
       data.location_id = selectedLocation.value
     }
 
