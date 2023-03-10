@@ -9,6 +9,7 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
+    "@medusajs/cache-inmemory": "*",
     "@medusajs/medusa": "*",
     "faker": "^5.5.3",
     "medusa-fulfillment-webshipper": "*",
