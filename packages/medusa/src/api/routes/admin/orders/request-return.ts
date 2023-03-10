@@ -97,7 +97,7 @@ import { FindParams } from "../../../../types/common"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = req.validatedBody
+  const value = req.validatedBody as AdminPostOrdersOrderReturnsReq
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
   const manager: EntityManager = req.scope.resolve("manager")
@@ -139,6 +139,9 @@ export default async (req, res) => {
                     order_id: id,
                     idempotency_key: idempotencyKey.idempotency_key,
                     items: value.items,
+                  }
+                  if (isDefined(value.location_id)) {
+                    returnObj.location_id = value.location_id
                   }
 
                   if (value.return_shipping) {
@@ -284,6 +287,7 @@ type ReturnObj = {
   shipping_method?: ReturnShipping
   refund_amount?: number
   no_notification?: boolean
+  location_id?: string
 }
 
 /**
@@ -363,6 +367,10 @@ export class AdminPostOrdersOrderReturnsReq {
   @IsInt()
   @IsOptional()
   refund?: number
+
+  @IsOptional()
+  @IsString()
+  location_id?: string
 }
 
 class ReturnShipping {
