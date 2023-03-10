@@ -17,7 +17,7 @@ export const storeProductCategoryKeys = queryKeysFactory(
 )
 type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
 
-export const useStoreProductCategories = (
+export const useProductCategories = (
   query?: StoreGetProductCategoriesParams,
   options?: UseQueryOptionsWrapper<
     Response<StoreGetProductCategoriesRes>,
@@ -28,13 +28,13 @@ export const useStoreProductCategories = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     storeProductCategoryKeys.list(query),
-    () => client.store.productCategories.list(query),
+    () => client.productCategories.list(query),
     options
   )
   return { ...data, ...rest } as const
 }
 
-export const useStoreProductCategory = (
+export const useProductCategory = (
   id: string,
   query?: StoreGetProductCategoriesCategoryParams,
   options?: UseQueryOptionsWrapper<
@@ -46,7 +46,7 @@ export const useStoreProductCategory = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     storeProductCategoryKeys.detail(id),
-    () => client.store.productCategories.retrieve(id, query),
+    () => client.productCategories.retrieve(id, query),
     options
   )
 
