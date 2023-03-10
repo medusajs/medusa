@@ -52,7 +52,7 @@
 }
 
 .feedback-btn:not(:last-child) {
-  margin-right: var(--ifm-base-spacing);
+  margin-right: calc(var(--ifm-base-spacing) / 2);
 }
 
 .inline-question .feedback-btn {

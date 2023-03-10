@@ -1132,12 +1132,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'modules/users/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -1155,10 +1152,34 @@ module.exports = {
           }
         },
         {
+          type: 'link',
+          href: '#',
+          label: 'Invites',
+          customProps: {
+            sidebar_is_soon: true
+          }
+        },
+        {
           type: 'html',
           value: 'How-to',
           customProps: {
             sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Backend: Send Invite',
+          customProps: {
+            sidebar_is_soon: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Profile',
+          customProps: {
+            sidebar_is_soon: true
           }
         },
         {
