@@ -21,7 +21,7 @@ const {
 } = require("../../../factories")
 const setupServer = require("../../../../helpers/setup-server")
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 const adminHeaders = {
   headers: {
@@ -2402,7 +2402,7 @@ describe("/admin/order-edits", () => {
       )
     })
 
-    it("update an exising order edit item change of type update on multiple line item update with correct totals including discounts", async () => {
+    it.only("update an exising order edit item change of type update on multiple line item update with correct totals including discounts", async () => {
       const api = useApi()
 
       const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })

@@ -682,17 +682,19 @@ class DiscountService extends TransactionBaseService {
         const stringifiedAdjustment = adjustment.toString()
         const pointIndex = stringifiedAdjustment.indexOf(".")
 
-        // Get the big int value of the adjustment
-        adjustment = Number(
-          Math.trunc(adjustment) + stringifiedAdjustment.slice(pointIndex + 1)
-        )
+        if (pointIndex !== -1) {
+          // Get the big int value of the adjustment
+          adjustment = Number(
+            Math.trunc(adjustment) + stringifiedAdjustment.slice(pointIndex + 1)
+          )
 
-        const zeroCount = stringifiedAdjustment.slice(pointIndex + 1).length
-        multiplierFactor = Number(
-          new Array(zeroCount).fill("0").reduce(function (acc, v) {
-            return acc + v
-          }, "1")
-        )
+          const zeroCount = stringifiedAdjustment.slice(pointIndex + 1).length
+          multiplierFactor = Number(
+            new Array(zeroCount).fill("0").reduce(function (acc, v) {
+              return acc + v
+            }, "1")
+          )
+        }
       } else {
         adjustment = value * lineItem.quantity
       }
