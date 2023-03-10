@@ -30,7 +30,9 @@ class InMemoryCacheService implements ICacheService {
     const now = Date.now()
     const record: CacheRecord<T> | undefined = this.store.get(key)
 
-    if (!record || (record.expire && record.expire < now)) {
+    const recordExpire = record?.expire ?? Infinity
+
+    if (!record || recordExpire < now) {
       return null
     }
 
