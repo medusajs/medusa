@@ -67,7 +67,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
               )
             }
           ) ?? []
-        : variantInventoryItem?.location_levels || []
+        : []
 
       if (inventoryItemId) {
         await Promise.all(
