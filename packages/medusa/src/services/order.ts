@@ -521,10 +521,12 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      await this.eventBus_.emit(OrderService.Events.COMPLETED, {
-        id: orderId,
-        no_notification: order.no_notification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.COMPLETED, {
+          id: orderId,
+          no_notification: order.no_notification,
+        })
 
       order.status = OrderStatus.COMPLETED
 
@@ -1561,11 +1563,13 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      await this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-        id: result.id,
-        refund_id: refund.id,
-        no_notification: evaluatedNoNotification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.REFUND_CREATED, {
+          id: result.id,
+          refund_id: refund.id,
+          no_notification: evaluatedNoNotification,
+        })
       return result
     })
   }
