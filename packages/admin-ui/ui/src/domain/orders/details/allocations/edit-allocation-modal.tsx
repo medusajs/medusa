@@ -204,16 +204,25 @@ const EditAllocationDrawer = ({
                       <Thumbnail size="medium" src={item.thumbnail} />
                     </div>
                     <div className="text-grey-50 truncate">
-                      <p className="gap-x-2xsmall nowrap flex grow ">
-                        <p className="inter-base-semibold text-grey-90 truncate">
-                          {item.title}
-                        </p>
-                        {`(${item.variant.sku})`}
+                      <p className="inter-base-semibold text-grey-90 truncate">
+                        {item.title}
                       </p>
-                      <p className="inter-base-regular ">
-                        {item.variant.options?.map((option) => option.value) ||
-                          item.variant.title ||
-                          "-"}
+                      <p className="inter-base-semibold gap-x-2xsmall flex">
+                        <p>{`(${item.variant.sku})`}</p>
+                        <span>&#183;</span>
+                        <span className="inter-base-regular gap-x-2xsmall flex">
+                          {item.variant.options
+                            ?.map((option, i) => [
+                              <span key={`${option.id}-${i}`}>
+                                {option.value}
+                              </span>,
+                              <span key={`${option.id}-${i}.dot`}>&#183;</span>,
+                            ])
+                            .flat()
+                            .slice(0, -1) ||
+                            item.variant.title ||
+                            "-"}
+                        </span>
                       </p>
                     </div>
                   </div>
