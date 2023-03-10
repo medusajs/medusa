@@ -78,6 +78,10 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
         items={categories}
         onChange={onItemDrop}
         childrenProp="category_children"
+        // Adding an unreasonably high number here to prevent us from
+        // setting a hard limit  on category depth. This should be decided upon
+        // by consumers of medusa after considering the pros and cons to the approach
+        maxDepth={99}
         renderItem={({ item, depth, handler, collapseIcon }) => (
           <ProductCategoryListItemDetails
             item={item}
