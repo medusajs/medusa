@@ -51,7 +51,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
       activeItemBoundingReact = activeItem?.getBoundingClientRect(),
       isActiveItemVisible = activeItemBoundingReact.top >= 0 && activeItemBoundingReact.bottom <= navElementBoundingRect.height
     
-    console.log(activeItem, isActiveItemVisible)
     if (activeItem && !isActiveItemVisible) {
       //check if it has a parent list item element
       let parentListItem = activeItem.parentElement
