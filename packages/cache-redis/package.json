@@ -9,11 +9,11 @@
     "directory": "packages/cache-redis"
   },
   "publishConfig": {
-    "access": "public",
-    "files": [
-      "dist"
-    ]
+    "access": "public"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
