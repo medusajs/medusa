@@ -48,7 +48,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     isFeatureEnabled("inventoryService") &&
     isFeatureEnabled("stockLocationService")
   const [quantities, setQuantities] = useState<Record<string, number>>(
-    "object" in orderToFulfill
+    "items" in orderToFulfill
       ? (orderToFulfill as Order).items.reduce((acc, next) => {
           return {
             ...acc,
@@ -57,6 +57,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
         }, {})
       : {}
   )
+  console.log({ orderToFulfill })
   const [noNotis, setNoNotis] = useState(false)
   const [errors, setErrors] = useState({})
   const [locationSelectValue, setLocationSelectValue] = useState<{
@@ -67,17 +68,8 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     { key: "", value: "" },
   ])
 
-  const salesChannelId =
-    "object" in orderToFulfill
-      ? (orderToFulfill as Order).sales_channel_id
-      : (orderToFulfill as ClaimOrder | Swap)?.order?.sales_channel_id
-
-  const filterableFields: { sales_channel_id?: string } = {}
-  if (salesChannelId) {
-    filterableFields.sales_channel_id = salesChannelId
-  }
   const { stock_locations, refetch } = useAdminStockLocations(
-    filterableFields,
+    {},
     {
       enabled: isLocationFulfillmentEnabled,
     }
