@@ -198,7 +198,7 @@ describe("/store/carts", () => {
         )
       })
 
-      it.only("increases stocked quantity when return is received at location", async () => {
+      it("increases stocked quantity when return is received at location", async () => {
         const api = useApi()
 
         const fulfillmentRes = await api.post(
@@ -209,8 +209,6 @@ describe("/store/carts", () => {
           },
           adminHeaders
         )
-
-        console.log(fulfillmentRes.data.order.fulfillments[0].id)
 
         const shipmentRes = await api.post(
           `/admin/orders/${order.id}/shipment`,
