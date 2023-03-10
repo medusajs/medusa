@@ -615,12 +615,12 @@ class DiscountService extends TransactionBaseService {
     discountId: string,
     lineItem: LineItem,
     calculationContextData: CalculationContextData
-  ): Promise<number> {
+  ): Promise<{ adjustment: number; multiplierFactor: number }> {
     return await this.atomicPhase_(async (transactionManager) => {
       let adjustment = 0
 
       if (!lineItem.allow_discounts) {
-        return adjustment
+        return { adjustment, multiplierFactor: 0 }
       }
 
       const discount = await this.retrieve(discountId, { relations: ["rule"] })
@@ -649,6 +649,8 @@ class DiscountService extends TransactionBaseService {
         fullItemPrice = lineItemTotals[lineItem.id].subtotal
       }
 
+      let multiplierFactor
+
       if (type === DiscountRuleType.PERCENTAGE) {
         adjustment = Math.round((fullItemPrice / 100) * value)
       } else if (
@@ -673,14 +675,40 @@ class DiscountService extends TransactionBaseService {
         }, 0)
         const nominator = Math.min(value, subtotal)
         const totalItemPercentage = fullItemPrice / subtotal
-        adjustment = Math.round(nominator * totalItemPercentage)
+
+        // Original adjustment with decimals
+        adjustment = nominator * totalItemPercentage
+
+        const stringifiedAdjustment = adjustment.toString()
+        const pointIndex = stringifiedAdjustment.indexOf(".")
+
+        // Get the big int value of the adjustment
+        adjustment = Number(
+          Math.trunc(adjustment) + stringifiedAdjustment.slice(pointIndex + 1)
+        )
+
+        const zeroCount = stringifiedAdjustment.slice(pointIndex + 1).length
+        multiplierFactor = Number(
+          new Array(zeroCount).fill("0").reduce(function (acc, v) {
+            return acc + v
+          }, "1")
+        )
       } else {
         adjustment = value * lineItem.quantity
       }
 
       // if the amount of the discount exceeds the total price of the item,
       // we return the total item price, else the fixed amount
-      return adjustment >= fullItemPrice ? fullItemPrice : adjustment
+      return {
+        adjustment:
+          (adjustment / multiplierFactor ?? 1) >= fullItemPrice
+            ? fullItemPrice
+            : adjustment,
+        multiplierFactor:
+          (adjustment / multiplierFactor ?? 1) >= fullItemPrice
+            ? 1
+            : multiplierFactor,
+      }
     })
   }
 

@@ -1859,6 +1859,7 @@ class OrderService extends TransactionBaseService {
       })
     }
 
+    order.discount_total = Math.round(order.discount_total)
     order.total =
       order.subtotal +
       order.shipping_total +

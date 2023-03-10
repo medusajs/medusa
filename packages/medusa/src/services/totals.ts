@@ -465,7 +465,7 @@ class TotalsService extends TransactionBaseService {
             /**
              * Used for the refund computation
              */
-            unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
+            unit_amount: adjustmentAmount / ld.item.quantity,
           }
         } else {
           allocationMap[ld.item.id] = {
@@ -705,7 +705,10 @@ class TotalsService extends TransactionBaseService {
       (total, item) =>
         total +
           item.adjustments?.reduce(
-            (total, adjustment) => total + adjustment.amount,
+            (total, adjustment) =>
+              total +
+              adjustment.amount /
+                (Number(adjustment.metadata?.multiplierFactor) ?? 1),
             0
           ) || 0,
       0
@@ -754,7 +757,9 @@ class TotalsService extends TransactionBaseService {
         (adjustment) => adjustment.discount_id === null
       )
 
-      const sumAdjustments = (total, adjustment) => total + adjustment.amount
+      const sumAdjustments = (total, adjustment) =>
+        total +
+        adjustment.amount / (Number(adjustment.metadata?.multiplierFactor) ?? 1)
 
       return {
         item,
