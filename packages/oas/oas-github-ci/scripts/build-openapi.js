@@ -19,9 +19,8 @@ const redoclyConfigPath = path.resolve(
 const run = async () => {
   const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
 
-  await generateOASSources(outputPath)
-
   for (const apiType of ["store", "admin"]) {
+    await generateOASSource(outputPath, apiType)
     const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
     const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
 
@@ -34,11 +33,8 @@ const run = async () => {
   }
 }
 
-const generateOASSources = async (outDir, isDryRun) => {
-  const params = ["oas", `--out-dir=${outDir}`]
-  if (isDryRun) {
-    params.push("--dry-run")
-  }
+const generateOASSource = async (outDir, apiType) => {
+  const params = ["oas", `--type=${apiType}`, `--out-dir=${outDir}`]
   const { all: logs } = await execa("medusa-oas", params, {
     cwd: basePath,
     all: true,
@@ -78,6 +74,7 @@ const circularReferenceCheck = async (srcFile) => {
       `🔴 Unhandled circular references - ${fileName} - Please patch in docs-util/redocly/config.yaml`
     )
   }
+  console.log(`🟢 All circular references handled`)
 }
 
 const generateReference = async (srcFile, apiType) => {

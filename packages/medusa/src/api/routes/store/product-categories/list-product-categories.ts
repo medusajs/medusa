@@ -48,7 +48,7 @@ import { defaultStoreScope } from "."
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/StoreProductCategoriesListRes"
+ *           $ref: "#/components/schemas/StoreGetProductCategoriesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
