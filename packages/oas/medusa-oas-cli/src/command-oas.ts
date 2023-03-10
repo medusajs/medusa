@@ -4,6 +4,11 @@ import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
 import { OpenAPIObject } from "openapi3-ts"
 import { Command, Option, OptionValues } from "commander"
+import { combineOAS } from "./utils/combine-oas"
+import {
+  mergeBaseIntoOAS,
+  mergePathsAndSchemasIntoOAS,
+} from "./utils/merge-oas"
 
 /**
  * Constants
@@ -12,8 +17,7 @@ import { Command, Option, OptionValues } from "commander"
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
 )
-
-type ApiType = "store" | "admin"
+const basePath = path.resolve(__dirname, "../")
 
 /**
  * CLI Command declaration
@@ -23,9 +27,9 @@ export const commandDescription =
   "Compile full OAS from swagger-inline compliant JSDoc."
 
 export const commandOptions: Option[] = [
-  new Option("-t, --type <type>", "API type to compile []")
-    .choices(["all", "admin", "store"])
-    .default("all"),
+  new Option("-t, --type <type>", "API type to compile.")
+    .choices(["admin", "store", "combined"])
+    .makeOptionMandatory(),
   new Option(
     "-o, --out-dir <outDir>",
     "Destination directory to output generated OAS files."
@@ -34,6 +38,10 @@ export const commandOptions: Option[] = [
   new Option(
     "-p, --paths <paths...>",
     "Additional paths to crawl for OAS JSDoc."
+  ),
+  new Option(
+    "-b, --base <base>",
+    "Custom base OAS file to use for swagger-inline."
   ),
   new Option("-F, --force", "Ignore OAS validation and output OAS files."),
 ]
@@ -58,8 +66,7 @@ export async function execute(cliParams: OptionValues) {
   const dryRun = !!cliParams.dryRun
   const force = !!cliParams.force
 
-  const apiTypesToExport =
-    cliParams.type === "all" ? ["store", "admin"] : [cliParams.type]
+  const apiType: ApiType = cliParams.type
 
   const outDir = path.resolve(cliParams.outDir)
 
@@ -72,6 +79,13 @@ export async function execute(cliParams: OptionValues) {
     }
   }
 
+  const baseFile = cliParams.base ? path.resolve(cliParams.base) : undefined
+  if (baseFile) {
+    if (!(await isFile(cliParams.base))) {
+      throw new Error(`--base must be a file - ${baseFile}`)
+    }
+  }
+
   /**
    * Command execution
    */
@@ -79,13 +93,30 @@ export async function execute(cliParams: OptionValues) {
     await mkdir(outDir, { recursive: true })
   }
 
-  for (const apiType of apiTypesToExport) {
-    console.log(`🟣 Generating OAS - ${apiType}`)
-    const oas = await getOASFromCodebase(apiType as ApiType, additionalPaths)
-    await validateOAS(oas, apiType as ApiType, force)
-    if (!dryRun) {
-      await exportOASToJSON(oas, apiType as ApiType, outDir)
+  let oas: OpenAPIObject
+  console.log(`🟣 Generating OAS - ${apiType}`)
+
+  if (apiType === "combined") {
+    const adminOAS = await getOASFromCodebase("admin")
+    const storeOAS = await getOASFromCodebase("store")
+    oas = await combineOAS(adminOAS, storeOAS)
+  } else {
+    oas = await getOASFromCodebase(apiType)
+  }
+
+  if (additionalPaths.length || baseFile) {
+    const customOAS = await getOASFromPaths(additionalPaths, baseFile)
+    if (baseFile) {
+      mergeBaseIntoOAS(oas, customOAS)
     }
+    if (additionalPaths.length) {
+      mergePathsAndSchemasIntoOAS(oas, customOAS)
+    }
+  }
+
+  await validateOAS(oas, apiType, force)
+  if (!dryRun) {
+    await exportOASToJSON(oas, apiType, outDir)
   }
 }
 
@@ -94,7 +125,7 @@ export async function execute(cliParams: OptionValues) {
  */
 async function getOASFromCodebase(
   apiType: ApiType,
-  additionalPaths: string[] = []
+  customBaseFile?: string
 ): Promise<OpenAPIObject> {
   const gen = await swaggerInline(
     [
@@ -102,18 +133,30 @@ async function getOASFromCodebase(
       path.resolve(medusaPackagePath, "dist", "types"),
       path.resolve(medusaPackagePath, "dist", "api/middlewares"),
       path.resolve(medusaPackagePath, "dist", `api/routes/${apiType}`),
-      ...additionalPaths,
     ],
     {
-      base: path.resolve(
-        medusaPackagePath,
-        "oas",
-        `${apiType}-spec3-base.yaml`
-      ),
+      base:
+        customBaseFile ??
+        path.resolve(medusaPackagePath, "oas", `${apiType}.oas.base.yaml`),
       format: ".json",
     }
   )
+  return await OpenAPIParser.parse(JSON.parse(gen))
+}
 
+async function getOASFromPaths(
+  additionalPaths: string[] = [],
+  customBaseFile?: string
+): Promise<OpenAPIObject> {
+  console.log(`🔵 Gathering custom OAS`)
+  const gen = await swaggerInline(additionalPaths, {
+    base:
+      customBaseFile ?? path.resolve(basePath, "oas", "default.oas.base.yaml"),
+    format: ".json",
+    logger: (log) => {
+      console.log(log)
+    },
+  })
   return await OpenAPIParser.parse(JSON.parse(gen))
 }
 
@@ -145,5 +188,19 @@ async function exportOASToJSON(
 }
 
 async function isDirectory(dirPath: string): Promise<boolean> {
-  return (await lstat(path.resolve(dirPath))).isDirectory()
+  try {
+    return (await lstat(path.resolve(dirPath))).isDirectory()
+  } catch (err) {
+    console.log(err)
+    return false
+  }
+}
+
+async function isFile(filePath: string): Promise<boolean> {
+  try {
+    return (await lstat(path.resolve(filePath))).isFile()
+  } catch (err) {
+    console.log(err)
+    return false
+  }
 }

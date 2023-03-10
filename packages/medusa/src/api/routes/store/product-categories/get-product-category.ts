@@ -17,7 +17,7 @@ import { defaultStoreScope } from "."
  *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
  * x-codegen:
  *   method: retrieve
- *   queryParams: StoreGetProductCategoryParams
+ *   queryParams: StoreGetProductCategoriesCategoryParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -85,4 +85,4 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class StoreGetProductCategoryParams extends FindParams {}
+export class StoreGetProductCategoriesCategoryParams extends FindParams {}
