@@ -13,7 +13,8 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "oas"
   ],
   "author": "Sebastian Rindom",
   "license": "MIT",

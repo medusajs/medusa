@@ -59,8 +59,8 @@ const AddressForm = ({
   return (
     <>
       <span className="inter-base-semibold">Address</span>
-      <div className="grid grid-cols-1 gap-y-large gap-x-large">
-        <div className="grid grid-cols-2 gap-x-large">
+      <div className="gap-y-large gap-x-large grid grid-cols-1">
+        <div className="gap-x-large grid grid-cols-2">
           <InputField
             label="Company"
             placeholder="Medusa"
@@ -70,7 +70,7 @@ const AddressForm = ({
             })}
           />
         </div>
-        <div className="grid grid-cols-2 gap-x-large">
+        <div className="gap-x-large grid grid-cols-2">
           <InputField
             label="Address 1"
             placeholder="Address 1"
@@ -90,7 +90,7 @@ const AddressForm = ({
             })}
           />
         </div>
-        <div className="grid grid-cols-2 gap-x-large">
+        <div className="gap-x-large grid grid-cols-2">
           <InputField
             label="Postal code"
             placeholder="Postal code"
@@ -108,7 +108,7 @@ const AddressForm = ({
             })}
           />
         </div>
-        <div className="grid grid-cols-2 gap-x-large">
+        <div className="gap-x-large grid grid-cols-2 pb-0.5">
           <Controller
             control={control}
             name={path("country_code")}
