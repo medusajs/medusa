@@ -28,7 +28,7 @@ class ShopifyCacheService extends BaseService {
 
   async addUniqueValue(uniqueVal, type) {
     const key = `sh_${uniqueVal}_${type}`
-    return await this.cacheService_.set(key, 1, "EX", 60 * 5)
+    return await this.cacheService_.set(key, 1, 60 * 5)
   }
 
   async getUniqueValue(uniqueVal, type) {
