@@ -250,7 +250,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
           amount,
           discount_id: discount.id,
           description: "discount",
-          metadata: { multiplierFactor },
+          multiplier_factor: multiplierFactor,
         },
       ]
     })

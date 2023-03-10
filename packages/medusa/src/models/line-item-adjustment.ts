@@ -41,8 +41,11 @@ export class LineItemAdjustment {
   @Column({ nullable: true })
   discount_id: string
 
-  @Column({ type: "int" })
+  @Column({ type: "bigint" })
   amount: number
+
+  @Column({ type: "bigint" })
+  multiplier_factor: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
@@ -60,6 +63,7 @@ export class LineItemAdjustment {
  * type: object
  * required:
  *   - amount
+ *   - multiplier_factor
  *   - description
  *   - discount_id
  *   - id
@@ -93,7 +97,10 @@ export class LineItemAdjustment {
  *     $ref: "#/components/schemas/Discount"
  *   amount:
  *     description: The adjustment amount
- *     type: integer
+ *     type: bigint
+ *     example: 1000
+ *   multiplier_factor: the factor used to move from int to decimals and vice verca
+ *     type: bigint
  *     example: 1000
  *   metadata:
  *     description: An optional key-value map with additional details
