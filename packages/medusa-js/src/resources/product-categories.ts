@@ -1,8 +1,8 @@
 import {
-  StoreGetProductCategoriesCategoryRes,
-  StoreProductCategoriesListRes,
   StoreGetProductCategoriesParams,
-  StoreGetProductCategoryParams,
+  StoreGetProductCategoriesRes,
+  StoreGetProductCategoriesCategoryParams,
+  StoreGetProductCategoriesCategoryRes,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../typings"
@@ -18,7 +18,7 @@ class ProductCategoriesResource extends BaseResource {
    */
   retrieve(
     id: string,
-    query?: StoreGetProductCategoryParams,
+    query?: StoreGetProductCategoriesCategoryParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreGetProductCategoriesCategoryRes> {
     let path = `/store/product-categories/${id}`
@@ -35,12 +35,12 @@ class ProductCategoriesResource extends BaseResource {
    * @description Retrieves a list of product categories
    * @param {string} query is optional. Can contain a limit and offset for the returned list
    * @param customHeaders
-   * @return {ResponsePromise<StoreProductCategoriesListRes>}
+   * @return {ResponsePromise<StoreGetProductCategoriesRes>}
    */
   list(
     query?: StoreGetProductCategoriesParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StoreProductCategoriesListRes> {
+  ): ResponsePromise<StoreGetProductCategoriesRes> {
     let path = `/store/product-categories`
 
     if (query) {
