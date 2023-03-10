@@ -638,7 +638,7 @@ export default class ClaimService extends TransactionBaseService {
         )
         const claimOrder = await claimRepo.save(claim)
 
-        const eventToEmits = fulfillments.map((fulfillment) => ({
+        const eventsToEmit = fulfillments.map((fulfillment) => ({
           eventName: ClaimService.Events.FULFILLMENT_CREATED,
           data: {
             id: id,
@@ -648,7 +648,7 @@ export default class ClaimService extends TransactionBaseService {
         }))
         await this.eventBus_
           .withTransaction(transactionManager)
-          .emit(eventToEmits)
+          .emit(eventsToEmit)
 
         return claimOrder
       }

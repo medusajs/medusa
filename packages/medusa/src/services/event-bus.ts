@@ -1,14 +1,14 @@
 import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
 import { DeepPartial, EntityManager } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { ulid } from "ulid"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
+import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
 import JobSchedulerService, { CreateJobOptions } from "./job-scheduler"
-import { isString } from "../utils"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -53,7 +53,7 @@ export type EmitOptions = {
 export type EmitData<T = unknown> = {
   eventName: string
   data: T
-  options?: Record<string, unknown> & EmitOptions
+  opts?: Record<string, unknown> & EmitOptions
 }
 
 /**
@@ -258,7 +258,7 @@ export default class EventBusService {
           {
             eventName: eventNameOrData,
             data: data!,
-            options,
+            opts: options,
           },
         ]
 
@@ -273,9 +273,9 @@ export default class EventBusService {
     }
 
     for (const event of events) {
-      event.options = {
+      event.opts = {
         ...defaultOptions,
-        ...(event.options ?? {}), // local
+        ...(event.opts ?? {}), // local
       }
     }
 
@@ -297,7 +297,7 @@ export default class EventBusService {
         return stagedJobRepository.create({
           event_name: event.eventName,
           data: event.data,
-          options: event.options,
+          options: event.opts,
         } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
       })
 
