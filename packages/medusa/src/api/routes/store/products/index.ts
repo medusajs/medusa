@@ -97,6 +97,7 @@ export const allowedStoreProductsRelations = [
   "variants.title",
   "variants.prices.amount",
   "sales_channels",
+  "categories",
 ]
 
 export * from "./list-products"

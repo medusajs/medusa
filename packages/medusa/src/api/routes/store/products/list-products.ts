@@ -199,6 +199,12 @@ export default async (req, res) => {
 
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
+  // store APIs only receive active and public categories to query from
+  filterableFields["categories"] = {
+    ...(filterableFields.categories || {}),
+    is_internal: false,
+    is_active: true,
+  }
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
     filterableFields.sales_channel_id =

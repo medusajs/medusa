@@ -44,9 +44,7 @@ describe("/admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({
-      cwd,
-    })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -470,6 +468,8 @@ describe("/admin/products", () => {
           id: categoryWithProductId,
           name: "category with Product",
           products: [{ id: testProductId }],
+          is_active: false,
+          is_internal: false,
         })
 
         nestedCategoryWithProduct = await simpleProductCategoryFactory(
@@ -479,6 +479,8 @@ describe("/admin/products", () => {
             name: "nested category with Product1",
             parent_category: categoryWithProduct,
             products: [{ id: testProduct1Id }],
+            is_active: true,
+            is_internal: true,
           }
         )
 
@@ -489,6 +491,8 @@ describe("/admin/products", () => {
             name: "nested2 category with Product1",
             parent_category: nestedCategoryWithProduct,
             products: [{ id: testProductFilteringId1 }],
+            is_active: false,
+            is_internal: true,
           }
         )
 
@@ -497,6 +501,8 @@ describe("/admin/products", () => {
           {
             id: categoryWithoutProductId,
             name: "category without product",
+            is_active: true,
+            is_internal: false,
           }
         )
       })
