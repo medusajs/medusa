@@ -63,7 +63,7 @@ const AddressForm = ({
         <div className="gap-x-large grid grid-cols-2">
           <InputField
             label="Company"
-            placeholder="Medusa"
+            placeholder="Company"
             errors={errors}
             {...register(path("company"), {
               pattern: FormValidator.whiteSpaceRule("Company"),
