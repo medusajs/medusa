@@ -706,9 +706,7 @@ class TotalsService extends TransactionBaseService {
         total +
           item.adjustments?.reduce(
             (total, adjustment) =>
-              total +
-              adjustment.amount /
-                (Number(adjustment.metadata?.multiplierFactor) ?? 1),
+              total + adjustment.amount / adjustment.multiplier_factor,
             0
           ) || 0,
       0
@@ -758,8 +756,7 @@ class TotalsService extends TransactionBaseService {
       )
 
       const sumAdjustments = (total, adjustment) =>
-        total +
-        adjustment.amount / (Number(adjustment.metadata?.multiplierFactor) ?? 1)
+        total + adjustment.amount / adjustment.multiplier_factor
 
       return {
         item,

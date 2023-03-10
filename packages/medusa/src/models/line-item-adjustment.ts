@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -54,6 +55,12 @@ export class LineItemAdjustment {
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "lia")
   }
+
+  @AfterLoad()
+  afterLoad() {
+    this.multiplier_factor = Number(this.multiplier_factor)
+    this.amount = Number(this.amount)
+  }
 }
 
 /**
@@ -99,7 +106,7 @@ export class LineItemAdjustment {
  *     description: The adjustment amount
  *     type: bigint
  *     example: 1000
- *   multiplier_factor: the factor used to move from int to decimals and vice verca
+ *   multiplier_factor: the factor used to move from int to decimals. It represents the number of decimals
  *     type: bigint
  *     example: 1000
  *   metadata:
