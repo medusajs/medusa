@@ -106,6 +106,14 @@ const FulfillmentLine = ({
     (locationId &&
       (!availableQuantity || quantities[item.id] < availableQuantity))
 
+  console.log({
+    validQuantity,
+    locationId,
+    availableQuantity,
+    quantities,
+    itemId: item.id,
+  })
+
   React.useEffect(() => {
     setErrors((errors) => {
       if (validQuantity) {
