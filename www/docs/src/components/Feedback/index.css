@@ -68,11 +68,27 @@
   font-family: var(--ifm-font-family-base);
 }
 
-.feedback-message {
-  text-align: center;
+.feedback-message,
+.solutions-wrapper {
   font-size: var(--medusa-label-large-plus-size);
   line-height: var(--medusa-label-large-plus-line-height);
+}
+
+.feedback-message {
   font-weight: var(--medusa-label-large-plus-font-weight);
+}
+
+.solutions-wrapper {
+  font-weight: 400;
+}
+
+.solutions-message {
+  display: inline-block;
+  margin: calc(var(--ifm-base-margin-vertical) / 2) 0;
+}
+
+.solutions-wrapper li:not(:last-child) {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
 }
 
 .fade-in {
