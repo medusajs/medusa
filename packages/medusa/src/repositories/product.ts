@@ -228,9 +228,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         : queryBuilder.innerJoin.bind(queryBuilder)
 
       let categoryIds = categoryId.value
-      console.log("categoryIds - ", categoryIds)
-      console.log("options_ - ", options_)
-      console.log("includeCategoryChildren --- ", includeCategoryChildren)
+
       if (includeCategoryChildren) {
         const categoryRepository =
           this.manager.getTreeRepository(ProductCategory)
