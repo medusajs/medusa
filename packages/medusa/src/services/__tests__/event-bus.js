@@ -157,7 +157,7 @@ describe("EventBusService", () => {
           {
             eventName,
             data,
-            options: defaultOptions,
+            opts: defaultOptions,
           },
         ])
       })
@@ -218,12 +218,12 @@ describe("EventBusService", () => {
           {
             eventName,
             data: bulkData[0],
-            options: defaultOptions,
+            opts: defaultOptions,
           },
           {
             eventName,
             data: bulkData[1],
-            options: defaultOptions,
+            opts: defaultOptions,
           },
         ])
       })
@@ -299,7 +299,7 @@ describe("EventBusService", () => {
           {
             eventName,
             data,
-            options: { removeOnComplete: 10, attempts: 1 },
+            opts: { removeOnComplete: 10, attempts: 1 },
           },
         ])
       })
@@ -337,7 +337,7 @@ describe("EventBusService", () => {
           {
             eventName: eventName,
             data,
-            options: { removeOnComplete: true, attempts: 1 },
+            opts: { removeOnComplete: true, attempts: 1 },
           },
         ])
       })
@@ -384,7 +384,7 @@ describe("EventBusService", () => {
           {
             eventName,
             data,
-            options: {
+            opts: {
               removeOnComplete: 10, // global option
               attempts: 10, // local option
               delay: 1000, // local option

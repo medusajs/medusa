@@ -293,7 +293,7 @@ export default class EventBusService {
         this.stagedJobRepository_
       )
 
-      const jobToCreates = events.map((event) => {
+      const jobsToCreate = events.map((event) => {
         return stagedJobRepository.create({
           event_name: event.eventName,
           data: event.data,
@@ -301,7 +301,7 @@ export default class EventBusService {
         } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
       })
 
-      const stagedJobs = await stagedJobRepository.insertBulk(jobToCreates)
+      const stagedJobs = await stagedJobRepository.insertBulk(jobsToCreate)
 
       return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
     }
