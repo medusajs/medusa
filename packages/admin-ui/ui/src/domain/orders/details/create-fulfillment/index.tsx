@@ -57,7 +57,6 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
         }, {})
       : {}
   )
-  console.log({ orderToFulfill })
   const [noNotis, setNoNotis] = useState(false)
   const [errors, setErrors] = useState({})
   const [locationSelectValue, setLocationSelectValue] = useState<{

@@ -51,14 +51,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
 
   const selectedLocation = useWatch({ control, name: "location" })
 
-  // if not sales channel is present fetch all locations
-  const stockLocationsFilter: { sales_channel_id?: string } = {}
-  if (order.sales_channel_id) {
-    stockLocationsFilter.sales_channel_id = order.sales_channel_id
-  }
-
-  const { stock_locations, isLoading } =
-    useAdminStockLocations(stockLocationsFilter)
+  const { stock_locations, isLoading } = useAdminStockLocations()
 
   const locationOptions = useMemo(() => {
     if (!stock_locations) {
