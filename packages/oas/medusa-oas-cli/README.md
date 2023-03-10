@@ -25,15 +25,16 @@ yarn medusa-oas <command>
 
 This command will scan the `@medusajs/medusa` package in order to extract JSDoc OAS into a json file.
 
-By default, the command will output the two files `admin.oas.json` and `store.oas.json` in the same directory that the
-command was run.
+The command will output one of three the files `admin.oas.json`, `store.oas.json` or `combined.oas.json` in the same
+directory that the command was run.
 
 Invalid OAS with throw an error and will prevent the files from being outputted.
 
 #### `--type <string>`
 
-Specify which API OAS to create. Accepts `all`, `admin`, `store`.
-Defaults to `all`.
+Specify which API OAS to create. Accepts `admin`, `store`, `combined`.
+
+The `combined` option will merge both the admin and the store APIs into a single OAS file.
 
 ```bash
 yarn medusa-oas oas --type admin
@@ -55,6 +56,15 @@ It accepts multiple entries.
 
 ```bash
 yarn medusa-oas oas --paths ~/medusa-server/src
+```
+
+#### `--base <path>`
+
+Allows overwriting the content the API's base.yaml OAS that is fed to swagger-inline.
+Paths, tags, and components will be merged together. Other OAS properties will be overwritten.
+
+```bash
+yarn medusa-oas oas --base ~/medusa-server/oas/custom.oas.base.yaml
 ```
 
 #### `--dry-run`
