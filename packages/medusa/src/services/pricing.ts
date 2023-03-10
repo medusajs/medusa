@@ -57,7 +57,7 @@ class PricingService extends TransactionBaseService {
   }
 
   /**
-   * Collects additional information neccessary for completing the price
+   * Collects additional information necessary for completing the price
    * selection.
    * @param context - the price selection context to use
    * @return The pricing context

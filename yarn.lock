@@ -5694,6 +5694,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/cache-inmemory@*, @medusajs/cache-inmemory@workspace:packages/cache-inmemory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cache-inmemory@workspace:packages/cache-inmemory"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.11
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/cache-redis@workspace:packages/cache-redis":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cache-redis@workspace:packages/cache-redis"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.11
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/inventory@workspace:packages/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
@@ -23220,6 +23248,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/cache-inmemory": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
@@ -23237,6 +23266,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/cache-inmemory": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
