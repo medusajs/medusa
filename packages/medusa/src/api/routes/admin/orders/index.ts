@@ -1,6 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Order } from "../../../.."
+import { Fulfillment, Order } from "../../../.."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
@@ -229,6 +229,22 @@ export default (app, featureFlagRouter: FlagRouter) => {
       isList: false,
     }),
     middlewares.wrap(require("./cancel-fulfillment-claim").default)
+  )
+
+  /**
+   * Mark a fulfillment as delivered
+   */
+  route.post(
+    "/:id/fulfillments/:fulfillment_id/delivery",
+    middlewares.wrap(require("./delivered-fulfillment").default)
+  )
+
+  /**
+   * Mark a fulfillment as undelivered
+   */
+  route.delete(
+    "/:id/fulfillments/:fulfillment_id/delivery",
+    middlewares.wrap(require("./undelivered-fulfillment").default)
   )
 
   /**
@@ -478,6 +494,19 @@ export default (app, featureFlagRouter: FlagRouter) => {
 }
 
 /**
+ * @schema AdminFulfillmentRes
+ * type: object
+ * required:
+ *   - fulfillment
+ * properties:
+ *   fulfillment:
+ *     $ref: "#/components/schemas/Fulfillment"
+ */
+export type AdminFulfillmentRes = {
+  fulfillment: Fulfillment
+}
+
+/**
  * @schema AdminOrdersRes
  * type: object
  * required:
@@ -618,6 +647,7 @@ export * from "./cancel-claim"
 export * from "./cancel-fulfillment"
 export * from "./cancel-fulfillment-claim"
 export * from "./cancel-fulfillment-swap"
+export * from "./delivered-fulfillment"
 export * from "./cancel-order"
 export * from "./cancel-swap"
 export * from "./capture-payment"

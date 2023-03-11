@@ -1,6 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { ProductVariantInventoryService, ShippingProfileService } from "."
+import { EventBusService, ProductVariantInventoryService, ShippingProfileService } from "."
 import { TransactionBaseService } from "../interfaces"
 import { Fulfillment, LineItem, ShippingMethod } from "../models"
 import { FulfillmentRepository } from "../repositories/fulfillment"
@@ -20,6 +20,7 @@ import TotalsService from "./totals"
 
 type InjectedDependencies = {
   manager: EntityManager
+  eventBusService: EventBusService
   totalsService: TotalsService
   shippingProfileService: ShippingProfileService
   lineItemService: LineItemService
@@ -34,6 +35,12 @@ type InjectedDependencies = {
  * Handles Fulfillments
  */
 class FulfillmentService extends TransactionBaseService {
+  static readonly Events = {
+    FULFILLMENT_DELIVERED: "fulfillment.delivered",
+    FULFILLMENT_UNDELIVERED: "fulfillment.undelivered"
+  }
+
+  protected readonly eventBus_: EventBusService
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly shippingProfileService_: ShippingProfileService
@@ -45,6 +52,7 @@ class FulfillmentService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
+    eventBusService,
     totalsService,
     fulfillmentRepository,
     trackingLinkRepository,
@@ -58,6 +66,7 @@ class FulfillmentService extends TransactionBaseService {
     super(arguments[0])
 
     this.lineItemRepository_ = lineItemRepository
+    this.eventBus_ = eventBusService
     this.totalsService_ = totalsService
     this.fulfillmentRepository_ = fulfillmentRepository
     this.trackingLinkRepository_ = trackingLinkRepository
@@ -358,6 +367,124 @@ class FulfillmentService extends TransactionBaseService {
       }
 
       return await fulfillmentRepository.save(fulfillment)
+    })
+  }
+
+  /**
+   * Marks a fulfillment as delivered and record delivered_at
+   * @param fulfillmentId - the fulfillment id that is delivered
+   * @param time - optional delivered date, if no time provided will use now
+   * @return the fulfillment
+   */
+  async markDelivered(
+    fulfillmentId: string,
+    time?: Date
+  ): Promise<Fulfillment>{
+    return await this.atomicPhase_(async (manager) => {
+      const deliveredTime = time ? time : new Date()
+
+      if (!isDefined(fulfillmentId)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `"fulfillmentId" must be defined`
+        )
+      }
+
+      const fulfillment = await this.retrieve(fulfillmentId, {
+        relations: ["items", "claim_order", "swap"],
+      })
+
+      if (fulfillment.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment has already been canceled. Fulfillment cannot be delivered`
+        )
+      }
+
+      if (!fulfillment.shipped_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment has not been shipped. Fulfillment cannot be delivered`
+        )
+      }
+
+      if (fulfillment.created_at > deliveredTime ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment delivery time is less than created time. Fulfillment cannot be delivered`
+        )
+      }
+
+      if (fulfillment.shipped_at > deliveredTime ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment delivery time is less than shipped time. Fulfillment cannot be delivered`
+        )
+      }
+
+      const fulfillmentRepo = manager.withRepository(
+        this.fulfillmentRepository_
+      )
+
+      fulfillment.delivered_at = deliveredTime
+      const deliveredFulfillment = await fulfillmentRepo.save(fulfillment)
+      
+      await this.eventBus_.emit(FulfillmentService.Events.FULFILLMENT_DELIVERED, {
+        id: deliveredFulfillment.id,
+      })
+      
+      return deliveredFulfillment
+    })
+  }
+
+  async markUndelivered(
+    fulfillmentId: string,
+  ): Promise<Fulfillment>{
+    return await this.atomicPhase_(async (manager) => {
+      if (!isDefined(fulfillmentId)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `"fulfillmentId" must be defined`
+        )
+      }
+
+      const fulfillment = await this.retrieve(fulfillmentId, {
+        relations: ["items", "claim_order", "swap"],
+      })
+
+      if (fulfillment.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment has already been canceled. Fulfillment cannot be undelivered`
+        )
+      }
+
+      if (!fulfillment.shipped_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment has not been shipped. Fulfillment cannot be undelivered`
+        )
+      }
+
+      if (!fulfillment.delivered_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The fulfillment has not been delivered. Fulfillment cannot be undelivered`
+        )
+      }
+
+      const fulfillmentRepo = manager.withRepository(
+        this.fulfillmentRepository_
+      )
+
+      fulfillment.delivered_at = null
+      const undeliveredFulfillment = await fulfillmentRepo.save(fulfillment)
+
+      await this.eventBus_.emit(FulfillmentService.Events.FULFILLMENT_UNDELIVERED, {
+        id: undeliveredFulfillment.id,
+      })
+
+      return undeliveredFulfillment
     })
   }
 }
