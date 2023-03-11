@@ -79,6 +79,9 @@ export class Fulfillment extends BaseEntity {
   shipped_at: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  delivered_at: Date | null
+
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
