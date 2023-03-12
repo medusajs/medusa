@@ -49,8 +49,6 @@ export type EmitOptions = {
   }
 } & JobOptions
 
-const COMPLETED_JOB_TTL = 10000
-
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
@@ -227,10 +225,15 @@ export default class EventBusService {
     data: T,
     options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
+    const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
+
+    // The order of precedence for job options is:
+    // 1. local options
+    // 2. global options
+    // 3. default options
     const opts: EmitOptions = {
-      removeOnComplete: {
-        age: COMPLETED_JOB_TTL,
-      },
+      removeOnComplete: true,
+      ...globalEventOptions,
       ...options,
     }
 
