@@ -28701,7 +28701,7 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.39
-    meilisearch: latest
+    meilisearch: ^0.31.0
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.7.7
@@ -28984,7 +28984,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"meilisearch@npm:latest":
+"meilisearch@npm:^0.31.0":
   version: 0.31.1
   resolution: "meilisearch@npm:0.31.1"
   dependencies:

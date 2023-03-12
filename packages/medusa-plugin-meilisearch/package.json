@@ -26,7 +26,7 @@
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
     "medusa-core-utils": "^1.1.39",
-    "meilisearch": "latest"
+    "meilisearch": "^0.31.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.1",
