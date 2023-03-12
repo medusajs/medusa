@@ -6,18 +6,14 @@ export const categoryMatchesScope = (
   category: ProductCategory,
   query: FindOptionsWhere<ProductCategory>
 ): boolean => {
-  const scopeActive = isDefined(query.is_active)
-  const scopePublic = isDefined(query.is_internal)
-  const scopeActiveAndPublic = scopeActive && scopePublic
-
-  if (scopeActiveAndPublic) {
+  if (isDefined(query.is_active) && isDefined(query.is_internal)) {
     return (
       category.is_internal === query.is_internal &&
       category.is_active === query.is_active
     )
-  } else if (scopeActive) {
+  } else if (isDefined(query.is_active)) {
     return category.is_active === query.is_active
-  } else if (scopePublic) {
+  } else if (isDefined(query.is_internal)) {
     return category.is_internal === query.is_internal
   } else {
     return true
