@@ -15,7 +15,7 @@ type InjectedDependencies = {
   redisConnection: Redis
 }
 
-const COMPLETED_JOB_TTL = 10000
+const COMPLETED_JOB_TTL = 10 // 10 seconds
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -73,13 +73,19 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions = { attempts: 1 }
+    options: EmitOptions = { }
   ): Promise<void> {
+    const globalJobOptions = this.moduleOptions_.jobOptions ?? {}
+
     const opts = {
+      // default options
       removeOnComplete: {
-        // We will keep the job for 10 seconds to ensure BullMQ has enough time to match against potential duplicates
         age: COMPLETED_JOB_TTL,
       },
+      attempts: 1,
+      // global options
+      ...globalJobOptions,
+      // local options
       ...options,
     } as EmitOptions
 
