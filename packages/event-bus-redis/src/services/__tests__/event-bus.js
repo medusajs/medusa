@@ -79,7 +79,9 @@ describe("RedisEventBusService", () => {
     describe("Successfully emits events", () => {
       beforeEach(() => {
         jest.resetAllMocks()
+      })
 
+      it("Adds job to queue with default options", () => {
         eventBus = new RedisEventBusService(
           {
             manager: MockManager,
@@ -93,9 +95,7 @@ describe("RedisEventBusService", () => {
             resources: "shared",
           }
         )
-      })
 
-      it("Adds job to queue with default options", () => {
         eventBus.queue_.add.mockImplementationOnce(() => "hi")
         eventBus.emit("eventName", { hi: "1234" })
 
@@ -106,13 +106,27 @@ describe("RedisEventBusService", () => {
           {
             attempts: 1,
             removeOnComplete: {
-              age: 10000,
+              age: 10,
             },
           }
         )
       })
 
       it("Adds job to queue with custom options", () => {
+        eventBus = new RedisEventBusService(
+          {
+            manager: MockManager,
+            logger: loggerMock,
+            redisConnection: {},
+          },
+          {
+            redisUrl: "test-url",
+          },
+          {
+            resources: "shared",
+          }
+        )
+
         eventBus.queue_.add.mockImplementationOnce(() => "hi")
         eventBus.emit(
           "eventName",
@@ -129,8 +143,78 @@ describe("RedisEventBusService", () => {
             backoff: 5000,
             delay: 1000,
             removeOnComplete: {
-              age: 10000,
+              age: 10,
             },
+          }
+        )
+      })
+
+      it("Adds job to queue with custom options", () => {
+        eventBus = new RedisEventBusService(
+          {
+            manager: MockManager,
+            logger: loggerMock,
+            redisConnection: {},
+          },
+          {
+            redisUrl: "test-url",
+            jobOptions: {
+              removeOnComplete: {
+                age: 5,
+              },
+              attempts: 7,
+            },
+          },
+          {
+            resources: "shared",
+          }
+        )
+
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.emit("eventName", { hi: "1234" })
+
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          "eventName",
+          { eventName: "eventName", data: { hi: "1234" } },
+          {
+            attempts: 7,
+            removeOnComplete: {
+              age: 5,
+            },
+          }
+        )
+      })
+
+      it("Adds job to queue with default, local, and global options merged", () => {
+        eventBus = new RedisEventBusService(
+          {
+            manager: MockManager,
+            logger: loggerMock,
+            redisConnection: {},
+          },
+          {
+            redisUrl: "test-url",
+            jobOptions: {
+              removeOnComplete: 5,
+            },
+          },
+          {
+            resources: "shared",
+          }
+        )
+
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.emit("eventName", { hi: "1234" }, { delay: 1000 })
+
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          "eventName",
+          { eventName: "eventName", data: { hi: "1234" } },
+          {
+            attempts: 1,
+            removeOnComplete: 5,
+            delay: 1000,
           }
         )
       })
