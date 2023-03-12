@@ -5,6 +5,7 @@ import {
   CustomerService,
   CustomShippingOptionService,
   DiscountService,
+  EventBusService,
   GiftCardService,
   LineItemAdjustmentService,
   LineItemService,
@@ -59,7 +60,6 @@ import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
-import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager

@@ -16,6 +16,10 @@ type InjectedDependencies = {
   eventBusModuleService: AbstractEventBusModuleService
 }
 
+/**
+ * Can keep track of multiple subscribers to different events and run the
+ * subscribers when events happen. Events will run asynchronously.
+ */
 export default class EventBusService
   extends TransactionBaseService
   implements IEventBusService
