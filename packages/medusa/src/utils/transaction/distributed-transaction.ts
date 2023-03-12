@@ -1,4 +1,3 @@
-import e from "express"
 import { TransactionFlow, TransactionHandlerType, TransactionState } from "."
 
 /**

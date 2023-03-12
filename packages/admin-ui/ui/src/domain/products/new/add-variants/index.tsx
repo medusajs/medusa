@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useContext, useEffect, useMemo } from "react"
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { v4 as uuidv4 } from "uuid"
 import Button from "../../../../components/fundamentals/button"
@@ -8,6 +8,9 @@ import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../components/molecules/modal/layered-modal"
 import TagInput from "../../../../components/molecules/tag-input"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import useToggleState from "../../../../hooks/use-toggle-state"
@@ -43,6 +46,7 @@ const AddVariantsForm = ({
   productCustoms,
   productDimensions,
 }: Props) => {
+  const layeredModalContext = useContext(LayeredModalContext)
   const { control, path, register } = form
 
   const { checkForDuplicate, getOptions } = useCheckOptions(form)
@@ -267,7 +271,7 @@ const AddVariantsForm = ({
         <div>
           {options.length > 0 && (
             <div className="mt-small">
-              <div className="grid grid-cols-[230px_1fr_40px] gap-x-xsmall inter-small-semibold text-grey-50 mb-small">
+              <div className="inter-small-semibold mb-small gap-x-xsmall text-grey-50 grid grid-cols-[230px_1fr_40px]">
                 <span>Option title</span>
                 <span>Variations (comma separated)</span>
               </div>
@@ -276,7 +280,7 @@ const AddVariantsForm = ({
                   return (
                     <div
                       key={field.fieldId}
-                      className="grid grid-cols-[230px_1fr_40px] gap-x-xsmall"
+                      className="gap-x-xsmall grid grid-cols-[230px_1fr_40px]"
                     >
                       <InputField
                         placeholder="Color..."
@@ -322,7 +326,7 @@ const AddVariantsForm = ({
           <Button
             variant="secondary"
             size="small"
-            className="h-10 w-full mt-base"
+            className="w-full h-10 mt-base"
             type="button"
             onClick={appendNewOption}
           >
@@ -350,7 +354,7 @@ const AddVariantsForm = ({
             </div>
             {variants?.length > 0 && (
               <div className="mt-small">
-                <div className="grid grid-cols-[1fr_90px_100px_48px] inter-small-semibold text-grey-50 pr-base">
+                <div className="inter-small-semibold pr-base text-grey-50 grid grid-cols-[1fr_90px_100px_48px]">
                   <p>Variant</p>
                   <div className="flex justify-end mr-xlarge">
                     <p>Inventory</p>
@@ -380,7 +384,7 @@ const AddVariantsForm = ({
             <Button
               variant="secondary"
               size="small"
-              className="h-10 w-full mt-base"
+              className="w-full h-10 mt-base"
               type="button"
               disabled={!enableVariants}
               onClick={onToggleForm}
@@ -392,7 +396,11 @@ const AddVariantsForm = ({
         </div>
       </div>
 
-      <Modal open={state} handleClose={onToggleForm}>
+      <LayeredModal
+        context={layeredModalContext}
+        open={state}
+        handleClose={onToggleForm}
+      >
         <Modal.Body>
           <Modal.Header handleClose={onToggleForm}>
             <h1 className="inter-xlarge-semibold">Create Variant</h1>
@@ -405,7 +413,7 @@ const AddVariantsForm = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center gap-x-xsmall justify-end w-full">
+            <div className="flex items-center justify-end w-full gap-x-xsmall">
               <Button
                 variant="secondary"
                 size="small"
@@ -425,7 +433,7 @@ const AddVariantsForm = ({
             </div>
           </Modal.Footer>
         </Modal.Body>
-      </Modal>
+      </LayeredModal>
     </>
   )
 }

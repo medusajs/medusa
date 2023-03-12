@@ -1,6 +1,4 @@
-import { Product, SalesChannel } from "@medusajs/medusa"
-import React from "react"
-import Badge from "../../../../../components/fundamentals/badge"
+import { Product } from "@medusajs/medusa"
 import FeatureToggle from "../../../../../components/fundamentals/feature-toggle"
 import ChannelsIcon from "../../../../../components/fundamentals/icons/channels-icon"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
@@ -8,9 +6,13 @@ import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
 import { ActionType } from "../../../../../components/molecules/actionables"
 import SalesChannelsDisplay from "../../../../../components/molecules/sales-channels-display"
 import StatusSelector from "../../../../../components/molecules/status-selector"
+import DelimitedList from "../../../../../components/molecules/delimited-list"
 import Section from "../../../../../components/organisms/section"
+import {
+  useFeatureFlag,
+  FeatureFlag,
+} from "../../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../../hooks/use-toggle-state"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
 import ChannelsModal from "./channels-modal"
 import GeneralModal from "./general-modal"
@@ -95,19 +97,33 @@ const GeneralSection = ({ product }: Props) => {
 
 type DetailProps = {
   title: string
-  value?: string | null
+  value?: string[] | string | null
 }
 
 const Detail = ({ title, value }: DetailProps) => {
+  const DetailValue = () => {
+    if (!Array.isArray(value)) {
+      return <p>{value ? value : "–"}</p>
+    }
+
+    if (value.length) {
+      return <DelimitedList list={value} delimit={2} />
+    }
+
+    return <p>–</p>
+  }
+
   return (
     <div className="inter-base-regular text-grey-50 flex items-center justify-between">
       <p>{title}</p>
-      <p>{value ? value : "–"}</p>
+      <DetailValue />
     </div>
   )
 }
 
 const ProductDetails = ({ product }: Props) => {
+  const { isFeatureEnabled } = useFeatureFlag()
+
   return (
     <div className="mt-8 flex flex-col gap-y-3">
       <h2 className="inter-base-semibold">Details</h2>
@@ -115,6 +131,12 @@ const ProductDetails = ({ product }: Props) => {
       <Detail title="Handle" value={product.handle} />
       <Detail title="Type" value={product.type?.value} />
       <Detail title="Collection" value={product.collection?.title} />
+      {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
+        <Detail
+          title="Category"
+          value={product.categories.map((c) => c.name)}
+        />
+      )}
       <Detail
         title="Discountable"
         value={product.discountable ? "True" : "False"}
@@ -138,20 +160,6 @@ const ProductTags = ({ product }: Props) => {
         </li>
       ))}
     </ul>
-  )
-}
-
-type SalesChannelBadgeProps = {
-  channel: SalesChannel
-}
-
-const SalesChannelBadge: React.FC<SalesChannelBadgeProps> = ({ channel }) => {
-  return (
-    <Badge variant="ghost" className="px-3 py-1.5">
-      <div className="flex items-center">
-        <span className="inter-small-regular text-grey-90">{channel.name}</span>
-      </div>
-    </Badge>
   )
 }
 

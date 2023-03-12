@@ -9,7 +9,6 @@ import React, { useEffect, useState } from "react"
 
 import CreateFulfillmentModal from "../../../domain/orders/details/create-fulfillment"
 import { ReceiveReturnMenu } from "../../../domain/orders/details/receive-return"
-import { orderReturnableFields } from "../../../domain/orders/details/utils/order-returnable-fields"
 import useOrdersExpandParam from "../../../domain/orders/details/utils/use-admin-expand-paramter"
 import { ExchangeEvent } from "../../../hooks/use-build-timeline"
 import useNotification from "../../../hooks/use-notification"
@@ -39,21 +38,21 @@ type ExchangeStatusProps = {
 }
 
 const ExchangeStatus: React.FC<ExchangeStatusProps> = ({ event }) => {
-  const divider = <div className="h-11 w-px bg-grey-20" />
+  const divider = <div className="bg-grey-20 h-11 w-px" />
 
   return (
-    <div className="inter-small-regular flex items-center gap-x-base">
-      <div className="flex flex-col gap-y-2xsmall">
+    <div className="inter-small-regular gap-x-base flex items-center">
+      <div className="gap-y-2xsmall flex flex-col">
         <span className="text-grey-50">Payment:</span>
         <PaymentStatus paymentStatus={event.paymentStatus} />
       </div>
       {divider}
-      <div className="flex flex-col gap-y-2xsmall">
+      <div className="gap-y-2xsmall flex flex-col">
         <span className="text-grey-50">Return:</span>
         <ReturnStatus returnStatus={event.returnStatus} />
       </div>
       {divider}
-      <div className="flex flex-col gap-y-2xsmall">
+      <div className="gap-y-2xsmall flex flex-col">
         <span className="text-grey-50">Fulfillment:</span>
         <FulfillmentStatus fulfillmentStatus={event.fulfillmentStatus} />
       </div>
@@ -79,7 +78,6 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
   const { orderRelations } = useOrdersExpandParam()
   const { order } = useAdminOrder(event.orderId, {
     expand: orderRelations,
-    fields: orderReturnableFields,
   })
 
   const notification = useNotification()
@@ -197,7 +195,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
     noNotification: event.noNotification,
     topNode: getActions(event, actions),
     children: [
-      <div className="flex flex-col gap-y-base" key={event.id}>
+      <div className="gap-y-base flex flex-col" key={event.id}>
         {event.canceledAt && (
           <div>
             <span className="inter-small-semibold mr-2">Requested on:</span>
@@ -210,7 +208,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
         {!event.canceledAt && paymentLink}
         {returnItems}
         {newItems}
-        <div className="flex items-center gap-x-xsmall">
+        <div className="gap-x-xsmall flex items-center">
           {event.returnStatus === "requested" && (
             <Button
               variant="secondary"
@@ -276,7 +274,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
 
 function getNewItems(event: ExchangeEvent) {
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       <span className="inter-small-regular text-grey-50">New Items</span>
       <div>
         {event.newItems.map((i, index) => (
@@ -294,8 +292,8 @@ function getPaymentLink(
   exchangeCartId: string | undefined
 ) {
   return payable ? (
-    <div className="inter-small-regular flex flex-col gap-y-xsmall text-grey-50">
-      <div className="flex items-center gap-x-xsmall">
+    <div className="inter-small-regular gap-y-xsmall text-grey-50 flex flex-col">
+      <div className="gap-x-xsmall flex items-center">
         {paymentFormatWarning && <IconTooltip content={paymentFormatWarning} />}
         <span>Payment link:</span>
       </div>
@@ -311,7 +309,7 @@ function getPaymentLink(
 
 function getReturnItems(event: ExchangeEvent) {
   return (
-    <div className="flex flex-col gap-y-small">
+    <div className="gap-y-small flex flex-col">
       <span className="inter-small-regular text-grey-50">Return Items</span>
       <div>
         {event.returnItems

@@ -1,7 +1,6 @@
 export { default as AnalyticsConfigService } from "./analytics-config"
 export { default as AuthService } from "./auth"
 export { default as BatchJobService } from "./batch-job"
-export { default as CacheService } from "./cache"
 export { default as CartService } from "./cart"
 export { default as ClaimService } from "./claim"
 export { default as ClaimItemService } from "./claim-item"
@@ -57,3 +56,4 @@ export { default as TaxRateService } from "./tax-rate"
 export { default as TokenService } from "./token"
 export { default as TotalsService } from "./totals"
 export { default as UserService } from "./user"
+
