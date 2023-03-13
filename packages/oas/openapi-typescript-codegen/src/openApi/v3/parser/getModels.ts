@@ -8,6 +8,7 @@ import { OpenApiSchema } from "../interfaces/OpenApiSchema"
 import { Dictionary } from "../../../utils/types"
 import { OpenApiParameter } from "../interfaces/OpenApiParameter"
 import { listOperations } from "./listOperations"
+import { handleExpandedRelations } from "./getModelsExpandedRelations"
 
 export const getModels = (openApi: OpenApi): Model[] => {
   const models: Model[] = []
@@ -25,6 +26,10 @@ export const getModels = (openApi: OpenApi): Model[] => {
         models.push(model)
       }
     }
+  }
+
+  for (const model of models) {
+    handleExpandedRelations(model, models)
   }
 
   /**

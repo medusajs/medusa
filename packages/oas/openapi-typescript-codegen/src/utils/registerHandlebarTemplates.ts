@@ -7,6 +7,7 @@ import templateCoreApiError from "../templates/core/ApiError.hbs"
 import templateCoreApiRequestOptions from "../templates/core/ApiRequestOptions.hbs"
 import templateCoreApiResult from "../templates/core/ApiResult.hbs"
 import templateCoreHookUtils from "../templates/core/HookUtils.hbs"
+import templateCoreModelUtils from "../templates/core/ModelUtils.hbs"
 import axiosGetHeaders from "../templates/core/axios/getHeaders.hbs"
 import axiosGetRequestBody from "../templates/core/axios/getRequestBody.hbs"
 import axiosGetResponseBody from "../templates/core/axios/getResponseBody.hbs"
@@ -84,6 +85,7 @@ import partialTypeInterface from "../templates/partials/typeInterface.hbs"
 import partialTypeIntersection from "../templates/partials/typeIntersection.hbs"
 import partialTypeReference from "../templates/partials/typeReference.hbs"
 import partialTypeUnion from "../templates/partials/typeUnion.hbs"
+import partialTypeWithRelation from "../templates/partials/typeWithRelation.hbs"
 import { registerHandlebarHelpers } from "./registerHandlebarHelpers"
 
 export interface Templates {
@@ -111,6 +113,7 @@ export interface Templates {
     baseHttpRequest: Handlebars.TemplateDelegate
     httpRequest: Handlebars.TemplateDelegate
     hookUtils: Handlebars.TemplateDelegate
+    modelUtils: Handlebars.TemplateDelegate
   }
 }
 
@@ -151,6 +154,7 @@ export const registerHandlebarTemplates = (root: {
       baseHttpRequest: Handlebars.template(templateCoreBaseHttpRequest),
       httpRequest: Handlebars.template(templateCoreHttpRequest),
       hookUtils: Handlebars.template(templateCoreHookUtils),
+      modelUtils: Handlebars.template(templateCoreModelUtils),
     },
   }
 
@@ -241,6 +245,10 @@ export const registerHandlebarTemplates = (root: {
   Handlebars.registerPartial(
     "typeIntersection",
     Handlebars.template(partialTypeIntersection)
+  )
+  Handlebars.registerPartial(
+    "typeWithRelation",
+    Handlebars.template(partialTypeWithRelation)
   )
   Handlebars.registerPartial("base", Handlebars.template(partialBase))
 
