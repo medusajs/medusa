@@ -5966,9 +5966,24 @@ __metadata:
   dependencies:
     "@medusajs/medusa": "workspace:^"
     "@medusajs/modules-sdk": "*"
+    "@medusajs/types": "*"
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.7
+    "@medusajs/types": ^0.0.1
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/types@*, @medusajs/types@workspace:packages/types":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/types@workspace:packages/types"
+  dependencies:
+    cross-env: ^5.2.1
+    typeorm: ^0.3.11
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -16655,8 +16670,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-=======
 "create-react-class@npm:^15.6.0":
   version: 15.7.0
   resolution: "create-react-class@npm:15.7.0"
@@ -16667,7 +16680,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "create-require@npm:^1.1.0":
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
@@ -20201,8 +20213,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-=======
 "fbjs@npm:^0.8.9":
   version: 0.8.18
   resolution: "fbjs@npm:0.8.18"
@@ -20218,7 +20228,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "fbjs@npm:^3.0.0, fbjs@npm:^3.0.1":
   version: 3.0.4
   resolution: "fbjs@npm:3.0.4"
@@ -33420,8 +33429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-=======
 "react-addons-shallow-compare@npm:^15.6.3":
   version: 15.6.3
   resolution: "react-addons-shallow-compare@npm:15.6.3"
@@ -33440,7 +33447,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "react-base16-styling@npm:^0.6.0":
   version: 0.6.0
   resolution: "react-base16-styling@npm:0.6.0"
@@ -33608,8 +33614,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-=======
 "react-dom@npm:^15.7.0":
   version: 15.7.0
   resolution: "react-dom@npm:15.7.0"
@@ -33624,7 +33628,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "react-dom@npm:^17.0.1, react-dom@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
@@ -34070,8 +34073,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-=======
 "react@npm:^15.7.0":
   version: 15.7.0
   resolution: "react@npm:15.7.0"
@@ -34085,7 +34086,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "react@npm:^17.0.1, react@npm:^17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
@@ -35495,8 +35495,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-=======
 "scheduler@npm:^0.20.2":
   version: 0.20.2
   resolution: "scheduler@npm:0.20.2"
@@ -35507,7 +35505,6 @@ __metadata:
   languageName: node
   linkType: hard
 
->>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "scheduler@npm:^0.23.0":
   version: 0.23.0
   resolution: "scheduler@npm:0.23.0"

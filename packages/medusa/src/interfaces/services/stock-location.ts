@@ -1,9 +1,8 @@
 import { FindConfig } from "../../types/common"
-
 import {
-  StockLocationDTO,
-  FilterableStockLocationProps,
   CreateStockLocationInput,
+  FilterableStockLocationProps,
+  StockLocationDTO,
   UpdateStockLocationInput,
 } from "../../types/stock-location"
 

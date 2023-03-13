@@ -59,6 +59,8 @@ class InMemoryCacheService implements ICacheService {
       this.invalidate(key)
     }, ttl * 1000)
 
+    ref.unref()
+
     this.timoutRefs.set(key, ref)
     this.store.set(key, record)
   }
