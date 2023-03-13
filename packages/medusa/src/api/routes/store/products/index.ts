@@ -9,10 +9,15 @@ import { validateProductSalesChannelAssociation } from "../../../middlewares/pub
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { StoreGetProductsParams } from "./list-products"
 import { StoreGetProductsProductParams } from "./get-product"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
+  if (featureFlagRouter.isFeatureEnabled("product_categories")) {
+    allowedStoreProductsRelations.push("categories")
+  }
+
   app.use("/products", extendRequestParams, validateSalesChannelParam, route)
 
   route.use("/:id", validateProductSalesChannelAssociation)
