@@ -80,7 +80,7 @@ const EditAllocationDrawer = ({
         close()
       },
       onError: () => {
-        notification("Errors", "Failed to delete the allocation ", "error")
+        notification("Error", "Failed to delete the allocation ", "error")
       },
     })
   }
