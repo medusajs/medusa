@@ -7,13 +7,17 @@ import { rowSqlResultsToEntityTransformer } from "../utils"
 export class StagedJobRepository extends Repository<StagedJob> {
   async insertBulk(jobToCreates: QueryDeepPartialEntity<StagedJob>[]) {
     const queryBuilder = this.createQueryBuilder()
-
-    const rawStagedJobs = await queryBuilder
       .insert()
       .into(StagedJob)
       .values(jobToCreates)
-      .returning("*")
-      .execute()
+
+    if (queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+      queryBuilder.returning("*")
+      const rawStagedJobs = await queryBuilder.execute()
+      return rawStagedJobs.generatedMaps
+    }
+
+    const rawStagedJobs = await queryBuilder.execute()
 
     return rowSqlResultsToEntityTransformer(
       rawStagedJobs.raw,
