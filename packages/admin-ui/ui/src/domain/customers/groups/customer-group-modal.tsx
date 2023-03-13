@@ -3,7 +3,7 @@ import {
   AdminPostCustomerGroupsReq,
   CustomerGroup,
 } from "@medusajs/medusa"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import Button from "../../../components/fundamentals/button"
@@ -87,10 +87,10 @@ function CustomerGroupModal(props: CustomerGroupModalProps) {
         </Modal.Content>
 
         <Modal.Footer>
-          <div className="flex w-full h-8 justify-end">
+          <div className="flex h-8 w-full justify-end">
             <Button
               variant="ghost"
-              className="mr-2 w-32 text-small justify-center"
+              className="text-small mr-2 w-32 justify-center"
               size="large"
               onClick={handleClose}
             >
@@ -98,7 +98,7 @@ function CustomerGroupModal(props: CustomerGroupModalProps) {
             </Button>
             <Button
               size="medium"
-              className="w-32 text-small justify-center"
+              className="text-small w-32 justify-center"
               variant="primary"
               onClick={handleFromSubmit(onSubmit)}
             >

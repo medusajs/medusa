@@ -36,7 +36,6 @@ const Prices = ({ id }) => {
       </Fade>
       {showUpload && (
         <ImportPrices priceListId={id} handleClose={() => closeUpload()} />
-
       )}
       {selectedProduct && (
         <EditPricesOverridesModal

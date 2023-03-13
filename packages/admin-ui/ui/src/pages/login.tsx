@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useState } from "react"
+import { useState } from "react"
 import MedusaIcon from "../components/fundamentals/icons/medusa-icon"
 import LoginCard from "../components/organisms/login-card"
 import ResetTokenCard from "../components/organisms/reset-token-card"
@@ -15,13 +15,13 @@ const LoginPage = () => {
       <div className="flex h-full w-full items-center justify-center">
         <div
           className={clsx(
-            "flex min-h-[600px] w-[640px] bg-grey-0 rounded-rounded justify-center transition-['min-height'] duration-300",
+            "bg-grey-0 rounded-rounded flex min-h-[600px] w-[640px] justify-center transition-['min-height'] duration-300",
             {
               "min-h-[480px]": resetPassword,
             }
           )}
         >
-          <div className="flex flex-col pt-12 w-full px-[120px] items-center">
+          <div className="flex w-full flex-col items-center px-[120px] pt-12">
             <MedusaIcon />
             {resetPassword ? (
               <ResetTokenCard goBack={() => setResetPassword(false)} />

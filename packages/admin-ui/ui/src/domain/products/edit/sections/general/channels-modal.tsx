@@ -1,6 +1,5 @@
 import { Product, SalesChannel } from "@medusajs/medusa"
 import { useAdminUpdateProduct } from "medusa-react"
-import React from "react"
 import SalesChannelsModal from "../../../components/sales-channels-modal"
 
 type Props = {

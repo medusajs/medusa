@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useAdminProductTypes } from "medusa-react"
 import { SelectableTable } from "./selectable-table"
 

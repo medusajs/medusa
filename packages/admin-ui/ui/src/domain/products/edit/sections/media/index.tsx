@@ -1,5 +1,4 @@
 import { Product } from "@medusajs/medusa"
-import React from "react"
 import { ActionType } from "../../../../../components/molecules/actionables"
 import Section from "../../../../../components/organisms/section"
 import useToggleState from "../../../../../hooks/use-toggle-state"
@@ -23,17 +22,17 @@ const MediaSection = ({ product }: Props) => {
     <>
       <Section title="Media" actions={actions}>
         {product.images && product.images.length > 0 && (
-          <div className="grid grid-cols-3 gap-xsmall mt-base">
+          <div className="gap-xsmall mt-base grid grid-cols-3">
             {product.images.map((image, index) => {
               return (
                 <div
                   key={image.id}
-                  className="aspect-square flex items-center justify-center"
+                  className="flex aspect-square items-center justify-center"
                 >
                   <img
                     src={image.url}
                     alt={`Image ${index + 1}`}
-                    className="object-contain rounded-rounded max-w-full max-h-full"
+                    className="rounded-rounded max-h-full max-w-full object-contain"
                   />
                 </div>
               )

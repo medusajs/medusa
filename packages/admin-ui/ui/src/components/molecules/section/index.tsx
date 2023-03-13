@@ -15,10 +15,10 @@ const Section: React.FC<SectionProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center mb-2xsmall">
+      <div className="mb-2xsmall flex items-center">
         <h3 className="inter-base-semibold">{title}</h3>
         {tooltip && (
-          <div className="flex items-center ml-1.5">
+          <div className="ml-1.5 flex items-center">
             <IconTooltip content={tooltip} />
           </div>
         )}

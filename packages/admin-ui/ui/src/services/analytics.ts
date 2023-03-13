@@ -75,7 +75,7 @@ export const useAdminAnalyticsConfig = () => {
 
   const { data, ...rest } = useQuery(
     ANALYTICS_CONFIG_KEY,
-    () => getAnalyticsConfig(),
+    async () => getAnalyticsConfig(),
     {
       retry: false,
       enabled: isFeatureEnabled("analytics"),
@@ -89,7 +89,7 @@ export const useAdminUpdateAnalyticsConfig = () => {
   const invalidateAnalyticsConfig = useInvalidateAnalyticsConfig()
 
   const mutation = useMutation(
-    (payload: UpdateConfigPayload) => updateAnalyticsConfig(payload),
+    async (payload: UpdateConfigPayload) => updateAnalyticsConfig(payload),
     {
       onSuccess: invalidateAnalyticsConfig,
     }
@@ -102,7 +102,7 @@ export const useAdminCreateAnalyticsConfig = () => {
   const invalidateAnalyticsConfig = useInvalidateAnalyticsConfig()
 
   const mutation = useMutation(
-    (payload: CreateConfigPayload) => createAnalyticsConfig(payload),
+    async (payload: CreateConfigPayload) => createAnalyticsConfig(payload),
     {
       onSuccess: invalidateAnalyticsConfig,
     }
