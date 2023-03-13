@@ -160,7 +160,7 @@ const AddAdditionalItemsScreen = ({
         <TablePagination table={table} count={count} className="mt-11" />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full items-center justify-end gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
             Go back
           </Button>

@@ -34,7 +34,7 @@ export type PriceListFormValues = {
   customer_groups: Option[] | null
   type: PriceListType | null
   prices: PriceProps[] | null
-  includes_tax: boolean 
+  includes_tax: boolean
 }
 
 export type CreatePriceListPricesFormValues = {
@@ -49,7 +49,7 @@ export type CreatePriceListFormValues = {
   customer_groups: Option[] | null
   type: PriceListType | null
   prices: CreatePriceListPricesFormValues | null
-  includes_tax: boolean 
+  includes_tax: boolean
 }
 
 export type ConfigurationField = keyof Pick<

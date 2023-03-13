@@ -16,8 +16,8 @@ export const SummaryShippingLine = ({
 }: ShippingLineProps) => {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-x-base">
-        <div className=" w-[30px] h-10 rounded-rounded flex items-center justify-center text-grey-50">
+      <div className="gap-x-base flex items-center">
+        <div className=" rounded-rounded text-grey-50 flex h-10 w-[30px] items-center justify-center">
           <CornerDownRightIcon size={16} />
         </div>
         <div className="inter-small-regular">

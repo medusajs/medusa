@@ -129,7 +129,7 @@ const StockForm = ({
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex items-center justify-end w-full gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button
             variant="secondary"
             size="small"

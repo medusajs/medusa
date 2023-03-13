@@ -141,7 +141,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
           <Modal.Content>
             <div>
               <h2 className="inter-base-semibold mb-base">Details</h2>
-              <div className="flex items-center gap-x-base">
+              <div className="gap-x-base flex items-center">
                 <InputField
                   label="Title"
                   required
@@ -164,7 +164,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end w-full gap-x-xsmall">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="secondary"
                 size="small"

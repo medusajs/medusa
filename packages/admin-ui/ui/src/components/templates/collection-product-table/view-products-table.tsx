@@ -89,7 +89,7 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
           id: "actions",
           Cell: ({ row }) => {
             return (
-              <Table.Cell className="w-[0%] pr-2xsmall">
+              <Table.Cell className="pr-2xsmall w-[0%]">
                 <Button
                   variant="ghost"
                   size="small"

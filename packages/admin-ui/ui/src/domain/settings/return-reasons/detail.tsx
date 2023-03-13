@@ -3,7 +3,7 @@ import {
   useAdminDeleteReturnReason,
   useAdminUpdateReturnReason,
 } from "medusa-react"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import DuplicateIcon from "../../../components/fundamentals/icons/duplicate-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
@@ -35,9 +35,8 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
     open: handleOpenPrompt,
     close: handleClosePrompt,
   } = useToggleState()
-  const { register, reset, handleSubmit } = useForm<
-    ReturnReasonDetailsFormData
-  >()
+  const { register, reset, handleSubmit } =
+    useForm<ReturnReasonDetailsFormData>()
   const notification = useNotification()
   const { mutate: deleteRR } = useAdminDeleteReturnReason(reason?.id)
   const { mutate: update } = useAdminUpdateReturnReason(reason?.id)

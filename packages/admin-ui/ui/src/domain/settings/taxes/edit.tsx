@@ -1,5 +1,5 @@
 import { useAdminTaxRate } from "medusa-react"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import Spinner from "../../../components/atoms/spinner"
 import Modal from "../../../components/molecules/modal"
 import LayeredModal, {

@@ -50,17 +50,17 @@ const VariantsTable: React.FC<Props> = (props) => {
     return [
       {
         Header: (
-          <div className="text-gray-500 text-small font-semibold">Name</div>
+          <div className="text-small font-semibold text-gray-500">Name</div>
         ),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
+              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
                 {original.product.thumbnail ? (
                   <img
                     src={original.product.thumbnail}
-                    className="h-full object-cover rounded-soft"
+                    className="rounded-soft h-full object-cover"
                   />
                 ) : (
                   <ImagePlaceholder />
@@ -76,21 +76,21 @@ const VariantsTable: React.FC<Props> = (props) => {
       },
       {
         Header: (
-          <div className="text-gray-500 text-small font-semibold">SKU</div>
+          <div className="text-small font-semibold text-gray-500">SKU</div>
         ),
         accessor: "sku",
         Cell: ({ row: { original } }) => <div>{original.sku}</div>,
       },
       {
         Header: (
-          <div className="text-gray-500 text-small font-semibold">Options</div>
+          <div className="text-small font-semibold text-gray-500">Options</div>
         ),
         accessor: "options",
         Cell: ({ row: { original } }) => {
           const options = original.options?.map(({ value }) => value).join(", ")
 
           return (
-            <div title={options} className="truncate max-w-[160px]">
+            <div title={options} className="max-w-[160px] truncate">
               <span>{options}</span>
             </div>
           )
@@ -98,7 +98,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       },
       {
         Header: (
-          <div className="text-right text-gray-500 text-small font-semibold">
+          <div className="text-small text-right font-semibold text-gray-500">
             In Stock
           </div>
         ),
@@ -109,7 +109,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       },
       {
         Header: (
-          <div className="text-right text-gray-500 text-small font-semibold">
+          <div className="text-small text-right font-semibold text-gray-500">
             Price
           </div>
         ),
@@ -122,7 +122,7 @@ const VariantsTable: React.FC<Props> = (props) => {
           const showOriginal = original.calculated_price_type !== "default"
 
           return (
-            <div className="flex justify-end items-center gap-2">
+            <div className="flex items-center justify-end gap-2">
               <div className="flex flex-col items-end">
                 {showOriginal && (
                   <span className="text-gray-400 line-through">

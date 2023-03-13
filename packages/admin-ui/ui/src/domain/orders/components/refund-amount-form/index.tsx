@@ -41,7 +41,7 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-[40px_1fr] justify-end gap-x-xsmall">
+    <div className="gap-x-xsmall grid grid-cols-[40px_1fr] justify-end">
       <div className="flex flex-shrink justify-end">
         {refundAmount !== undefined ? (
           <Button

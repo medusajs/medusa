@@ -1,5 +1,5 @@
 import { useAdminCollections } from "medusa-react"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Modal from "../../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
@@ -17,11 +17,8 @@ const ProductCollectionsConditionsTable = () => {
 
   const [selectedResources, setSelectedResources] = useState<string[]>([])
 
-  const {
-    condition,
-    removeConditionResources,
-    isLoading,
-  } = useEditConditionContext()
+  const { condition, removeConditionResources, isLoading } =
+    useEditConditionContext()
 
   const {
     isLoading: isLoadingCollections,

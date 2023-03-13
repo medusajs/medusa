@@ -24,7 +24,7 @@ const SwitchableItem: React.FC<SwitchableItemProps> = ({
     <div>
       <div className="flex items-start justify-between">
         <div className="flex flex-col">
-          <div className="flex items-center gap-x-2xsmall">
+          <div className="gap-x-2xsmall flex items-center">
             <p className="inter-base-semibold">{title}</p>
             {tooltip && <IconTooltip content={tooltip} />}
           </div>
@@ -39,7 +39,7 @@ const SwitchableItem: React.FC<SwitchableItemProps> = ({
       </div>
       <div
         className={clsx(
-          "transition-[max-height,opacity] duration-500 ease-in-out overflow-hidden",
+          "overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out",
           {
             "max-h-[1000px] opacity-100": open,
             "max-h-0 opacity-0": !open,

@@ -1,6 +1,5 @@
 import { AdminPostGiftCardsGiftCardReq, GiftCard } from "@medusajs/medusa"
 import clsx from "clsx"
-import React from "react"
 import { Controller, useForm, useWatch } from "react-hook-form"
 import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
@@ -45,7 +44,7 @@ const UpdateBalanceModal = ({
             <span className="inter-xlarge-semibold">Update Balance</span>
             <span
               className={clsx(
-                "inter-small-regular text-rose-50 mt-2xsmall transition-display delay-75",
+                "inter-small-regular mt-2xsmall transition-display text-rose-50 delay-75",
                 {
                   hidden: !(balance > giftCard.value),
                 }
@@ -80,7 +79,7 @@ const UpdateBalanceModal = ({
             </CurrencyInput.Root>
           </Modal.Content>
           <Modal.Footer>
-            <div className="w-full flex justify-end">
+            <div className="flex w-full justify-end">
               <Button
                 variant="ghost"
                 size="small"

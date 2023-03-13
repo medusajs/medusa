@@ -128,7 +128,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full justify-end gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button
             variant="ghost"
             size="small"
@@ -156,10 +156,10 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
 }
 
 const ImageRow = ({ url, onDelete, name, size }) => (
-  <div className="flex items-center w-full justify-between my-8">
+  <div className="my-8 flex w-full items-center justify-between">
     <div className="flex items-center">
-      <div className="w-20 h-20 bg-voilet-60">
-        <img className="object-cover rounded-rounded w-full h-full" src={url} />
+      <div className="bg-voilet-60 h-20 w-20">
+        <img className="rounded-rounded h-full w-full object-cover" src={url} />
       </div>
       <div className="inter-small-regular ml-8 flex flex-col">
         {name}
@@ -169,7 +169,7 @@ const ImageRow = ({ url, onDelete, name, size }) => (
     <Button
       variant="ghost"
       size="small"
-      className="w-8 h-8 text-grey-40"
+      className="text-grey-40 h-8 w-8"
       onClick={onDelete}
     >
       <TrashIcon size={20} />

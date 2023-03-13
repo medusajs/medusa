@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useAdminSalesChannels } from "medusa-react"
 import { SalesChannel } from "@medusajs/medusa"
 
@@ -72,16 +72,16 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
 
   return (
     <SideModal close={onClose} isVisible={!!isVisible}>
-      <div className="flex flex-col justify-between h-full p-6">
+      <div className="flex h-full flex-col justify-between p-6">
         {/* === HEADER === */}
 
         <div className="flex items-center justify-between">
-          <h3 className="inter-large-semibold text-xl text-gray-900 flex items-center gap-2">
+          <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
             Add sales channels
           </h3>
           <Button
             variant="secondary"
-            className="w-8 h-8 p-2"
+            className="h-8 w-8 p-2"
             onClick={props.close}
           >
             <CrossIcon size={20} className="text-grey-50" />
@@ -118,7 +118,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
         {/* === DIVIDER === */}
 
         <div
-          className="h-[1px] bg-gray-200 block"
+          className="block h-[1px] bg-gray-200"
           style={{ margin: "24px -24px" }}
         />
         {/* === FOOTER === */}
