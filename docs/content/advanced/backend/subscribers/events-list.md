@@ -2280,7 +2280,7 @@ As of Medusa v1.6.3, Publishable API Keys are available but guarded by a feature
 1. Enable the `MEDUSA_FF_PUBLISHABLE_API_KEYS` environment variable;
 2. Or enable the `publishable_api_keys` key in the Medusa server's settings.
 
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+You can learn more about enabling it in the [feature flags](../../../development/feature-flags/toggle.md) documentation.
 
 :::
 
@@ -2460,7 +2460,7 @@ As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag.
 1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
 2. Or enable the `sales_channels` key in the Medusa server's settings.
 
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+You can learn more about enabling it in the [feature flags](../../../development/feature-flags/toggle.md) documentation.
 
 :::
 

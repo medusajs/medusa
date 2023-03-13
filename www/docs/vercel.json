@@ -287,6 +287,18 @@
     {
       "source": "/add-plugins/:path",
       "destination": "/plugins/:path"
+    },
+    {
+      "source": "/advanced/backend/feature-flags/toggle",
+      "destination": "/development/feature-flags/toggle"
+    },
+    {
+      "source": "/advanced/backend/publishable-api-keys",
+      "destination": "/development/publishable-api-keys"
+    },
+    {
+      "source": "/advanced/admin/manage-publishable-api-keys",
+      "destination": "/development/publishable-api-keys/admin/manage-publishable-api-keys"
     }
   ]
 }

@@ -1254,18 +1254,15 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Concepts',
-          customProps: {
-            sidebar_is_soon: true
-          }
-        },
-        {
           type: 'doc',
           id: 'advanced/backend/dependency-container/index',
           label: 'Dependency Injection'
         },
+        {
+          type: 'doc',
+          id: 'usage/local-development',
+          label: 'Local Development'
+        }
       ]
     },
     {
@@ -1569,12 +1566,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'development/feature-flags/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -1585,7 +1579,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/feature-flags/toggle',
+          id: 'development/feature-flags/toggle',
           label: 'Toggle Feature Flags'
         },
       ]
@@ -1632,7 +1626,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          id: 'advanced/backend/publishable-api-keys/index',
+          id: 'development/publishable-api-keys/index',
           label: 'Overview'
         },
         {
@@ -1644,18 +1638,13 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/admin/manage-publishable-api-keys',
+          id: 'development/publishable-api-keys/admin/manage-publishable-api-keys',
           label: 'Admin: Manage Publishable API Keys'
         },
         {
-          type: 'link',
-          href: '#',
-          label: 'Storefront: Use in Requests'
-        },
-        {
           type: 'doc',
-          id: 'usage/local-development',
-          label: 'Local Development'
+          id: 'development/publishable-api-keys/storefront/use-in-requests',
+          label: 'Storefront: Use in Requests'
         }
       ]
     },

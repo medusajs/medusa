@@ -13,7 +13,7 @@ Tax Inclusive Pricing is currently in beta mode and guarded by a feature flag. T
 1. Enable the `MEDUSA_FF_TAX_INCLUSIVE_PRICING` environment variable;
 2. Or enable the `tax_inclusive_pricing` key in the Medusa server's settings.
 
-You can learn more about enabling it in the [feature flags](../../advanced/backend/feature-flags/toggle.md) documentation.
+You can learn more about enabling it in the [feature flags](../../development/feature-flags/toggle.md) documentation.
 
 :::
 
