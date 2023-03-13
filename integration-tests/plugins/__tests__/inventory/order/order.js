@@ -280,11 +280,13 @@ describe("/store/carts", () => {
         expect(inventoryItem.data.inventory_item.location_levels).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
+              location_id: locationId,
               stocked_quantity: 0,
               reserved_quantity: 0,
               available_quantity: 0,
             }),
             expect.objectContaining({
+              location_id: loc.id,
               stocked_quantity: 1,
               reserved_quantity: 0,
               available_quantity: 1,
