@@ -17,7 +17,7 @@ export async function loadInternalModule(
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
-  const constainerName = resolution.definition.registrationName
+  const registrationName = resolution.definition.registrationName
 
   const { scope, resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
@@ -31,7 +31,7 @@ export async function loadInternalModule(
 
   if (!loadedModule?.services?.length) {
     container.register({
-      [constainerName]: asValue(undefined),
+      [registrationName]: asValue(undefined),
     })
 
     return {
@@ -87,7 +87,7 @@ export async function loadInternalModule(
     }
   } catch (err) {
     container.register({
-      [constainerName]: asValue(undefined),
+      [registrationName]: asValue(undefined),
     })
 
     return {
@@ -97,9 +97,11 @@ export async function loadInternalModule(
     }
   }
 
+  const hasSingleService = moduleServices.length === 1
   for (const moduleService of moduleServices) {
-    const regName =
-      moduleService.name.charAt(0).toLowerCase() + moduleService.name.slice(1)
+    const regName = hasSingleService
+      ? registrationName
+      : moduleService.name.charAt(0).toLowerCase() + moduleService.name.slice(1)
 
     container.register({
       [regName]: asFunction((cradle) => {
