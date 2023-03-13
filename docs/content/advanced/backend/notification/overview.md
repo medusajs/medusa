@@ -94,6 +94,6 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 
 - [Create a Notification Provider](how-to-create-notification-provider.md)
 - [Events reference](../subscribers/events-list.md)
-- [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
+- [SendGrid Plugin](../../../plugins/notifications/sendgrid.mdx)
 - [Subscribers Overview](../subscribers/create-subscriber.md)
 - [Services Overview](../services/create-service.md)

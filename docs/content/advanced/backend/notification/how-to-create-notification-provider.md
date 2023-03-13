@@ -15,9 +15,9 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../../../core/backend/install.mdx).
+Before you start creating a Notification Provider, you need to install a [Medusa server](../../../development/backend/install.mdx).
 
-You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
+You also need to [setup Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with the Medusa server](../../../development/backend/configurations.md#redis).
 
 ---
 
@@ -229,7 +229,7 @@ class EmailSenderService extends AbstractNotificationService {
       status: string; 
       data: Record<string, unknown>; 
     }> {
-    // check if the receiver of the notification should be changed
+    // check if the receiver should be changed
     const to: string = config.to ? config.to : notification.to
 
     // TODO resend the notification using the same data
@@ -239,7 +239,7 @@ class EmailSenderService extends AbstractNotificationService {
     return {
       to,
       status: "done",
-      data: notification.data, // you can also make changes to the data
+      data: notification.data, // make changes to the data
     }
   }
 }
@@ -274,7 +274,10 @@ Following the previous example, to make sure the `email-sender` Notification Pro
 ```ts title=src/subscribers/notification.js
 class NotificationSubscriber {
   constructor({ notificationService }) {
-    notificationService.subscribe("order.placed", "email-sender")
+    notificationService.subscribe(
+      "order.placed", 
+      "email-sender"
+    )
   }
   // ...
 }
@@ -337,7 +340,7 @@ This request returns the same notification object as the List Notifications endp
 ## See Also
 
 - [Events reference](../subscribers/events-list.md)
-- [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
+- [SendGrid Plugin](../../../plugins/notifications/sendgrid.mdx)
 - [Create a Subscriber](../subscribers/create-subscriber.md)
 - [Create a Service](../services/create-service.md)
 - [Create a Plugin](../plugins/create.md)

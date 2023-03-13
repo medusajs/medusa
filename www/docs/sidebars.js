@@ -55,8 +55,8 @@ module.exports = {
     },
     {
       type: 'ref',
-      id: 'core/overview',
-      label: 'Core Concepts',
+      id: 'development/overview',
+      label: 'Medusa Development',
       customProps: {
         sidebar_icon: 'server-stack'
       },
@@ -1213,8 +1213,8 @@ module.exports = {
     },
     {
       type: 'doc',
-      id: 'core/overview',
-      label: 'Core Concepts',
+      id: 'development/overview',
+      label: 'Medusa Development',
       customProps: {
         sidebar_is_title: true,
         sidebar_icon: 'server-stack'
@@ -1230,17 +1230,17 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          id: 'core/backend/install',
+          id: 'development/backend/install',
           label: 'Backend Quickstart',
         },
         {
           type: 'doc',
-          id: 'tutorial/set-up-your-development-environment',
-          label: 'Development Environment'
+          id: 'development/backend/prepare-environment',
+          label: 'Prepare Environment'
         },
         {
           type: 'doc',
-          id: 'usage/configurations',
+          id: 'development/backend/configurations',
           label: 'Configurations',
         },
       ]
@@ -1319,12 +1319,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'development/endpoints/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -1335,12 +1332,12 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/endpoints/add',
+          id: 'development/endpoints/create',
           label: 'Create an Endpoint'
         },
         {
           type: 'doc',
-          id: 'advanced/backend/endpoints/add-middleware',
+          id: 'development/endpoints/add-middleware',
           label: 'Add a Middleware'
         },
       ]
@@ -1423,12 +1420,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'development/scheduled-jobs/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -1439,7 +1433,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'advanced/backend/scheduled-jobs/create',
+          id: 'development/scheduled-jobs/create',
           label: 'Create a Scheduled Job'
         },
       ]
@@ -1480,12 +1474,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'development/file-service/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -1738,19 +1729,30 @@ module.exports = {
       label: 'Plugins',
       customProps: {
         sidebar_is_title: true,
-        sidebar_icon: 'bolt'
+        sidebar_icon: 'squares-plus-solid'
       }
     },
     [
       {
         type: 'category',
         label: 'Analytics',
+        link: {
+          type: 'doc',
+          id: 'plugins/analytics/index',
+        },
         collapsible: false,
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
         items: [
           {
             type: 'doc',
-            id: 'add-plugins/segment',
+            id: 'plugins/analytics/segment',
             label: 'Segment',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Segment with the Medusa backend.'
+            }
           },
         ],
       },
@@ -1758,26 +1760,41 @@ module.exports = {
         type: 'category',
         label: 'CMS',
         collapsible: false,
+        link: {
+          type: 'doc',
+          id: 'plugins/cms/index',
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
         items: [
           {
             type: 'category',
             label: 'Contentful',
             link: {
               type: 'doc',
-              id: 'add-plugins/contentful/index',
+              id: 'plugins/cms/contentful/index',
+            },
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Contentful with the Medusa backend.'
             },
             items: [
               {
                 type: 'doc',
-                id: 'add-plugins/contentful/customize-contentful',
+                id: 'plugins/cms/contentful/customize-contentful',
                 label: 'Customize Integration',
               },
             ]
           },
           {
             type: 'doc',
-            id: 'add-plugins/strapi',
+            id: 'plugins/cms/strapi',
             label: 'Strapi',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Strapi with the Medusa backend.'
+            },
           },
         ],
       },
@@ -1785,26 +1802,49 @@ module.exports = {
         type: 'category',
         label: 'Notifications',
         collapsible: false,
+        link: {
+          type: 'doc',
+          id: 'plugins/notifications/index',
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
         items: [
           {
             type: 'doc',
-            id: 'add-plugins/sendgrid',
+            id: 'plugins/notifications/sendgrid',
             label: 'SendGrid',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate SendGrid with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/mailchimp',
+            id: 'plugins/notifications/mailchimp',
             label: 'Mailchimp',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Mailchimp with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/twilio-sms',
+            id: 'plugins/notifications/twilio-sms',
             label: 'Twilio SMS',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Twilio SMS with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/slack',
+            id: 'plugins/notifications/slack',
             label: 'Slack',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Slack with the Medusa backend.'
+            },
           },
         ],
       },
@@ -1812,21 +1852,40 @@ module.exports = {
         type: 'category',
         label: 'Payment',
         collapsible: false,
+        link: {
+          type: 'doc',
+          id: 'plugins/payment/index',
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
         items: [
           {
             type: 'doc',
-            id: 'add-plugins/klarna',
+            id: 'plugins/payment/klarna',
             label: 'Klarna',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Klarna with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/paypal',
+            id: 'plugins/payment/paypal',
             label: 'PayPal',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate PayPal with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/stripe',
+            id: 'plugins/payment/stripe',
             label: 'Stripe',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Stripe with the Medusa backend.'
+            },
           },
         ],
       },
@@ -1834,16 +1893,31 @@ module.exports = {
         type: 'category',
         label: 'Search',
         collapsible: false,
+        link: {
+          type: 'doc',
+          id: 'plugins/search/index',
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
         items: [
           {
             type: 'doc',
-            id: 'add-plugins/algolia',
+            id: 'plugins/search/algolia',
             label: 'Algolia',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Algolia with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/meilisearch',
+            id: 'plugins/search/meilisearch',
             label: 'MeiliSearch',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate MeiliSearch with the Medusa backend.'
+            },
           },
         ],
       },
@@ -1851,21 +1925,40 @@ module.exports = {
         type: 'category',
         label: 'File Service',
         collapsible: false,
+        link: {
+          type: 'doc',
+          id: 'plugins/file-service/index',
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
         items: [
           {
             type: 'doc',
-            id: 'add-plugins/minio',
+            id: 'plugins/file-service/minio',
             label: 'MinIO',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate MinIO with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/s3',
+            id: 'plugins/file-service/s3',
             label: 'S3',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate S3 with the Medusa backend.'
+            },
           },
           {
             type: 'doc',
-            id: 'add-plugins/spaces',
+            id: 'plugins/file-service/spaces',
             label: 'Spaces',
+            customProps: {
+              iconName: 'bolt-solid',
+              description: 'Learn how to integrate Spaces with the Medusa backend.'
+            },
           },
         ],
       },
@@ -1889,7 +1982,7 @@ module.exports = {
   servicesSidebar: [
     {
       type: 'ref',
-      id: 'core/overview',
+      id: 'development/overview',
       label: 'Back to core concepts',
       customProps: {
         sidebar_is_back_link: true,
@@ -2211,7 +2304,7 @@ module.exports = {
   entitiesSidebar: [
     {
       type: 'ref',
-      id: 'core/overview',
+      id: 'development/overview',
       label: 'Back to core concepts',
       customProps: {
         sidebar_is_back_link: true,

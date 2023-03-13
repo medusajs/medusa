@@ -59,4 +59,4 @@ This will use the underlying `seed` command provided by Medusa's CLI to seed you
 ## See Also
 
 - [Create a migration](index.md)
-- [Set up your development environment](../../../tutorial/set-up-your-development-environment)
+- [Set up your development environment](../../../development/backend/prepare-environment.mdx)

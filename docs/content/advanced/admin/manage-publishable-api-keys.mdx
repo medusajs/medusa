@@ -37,7 +37,7 @@ You want to use or implement the following admin functionalities:
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../development/backend/install.mdx) to get started.
 
 ### JS Client
 
@@ -81,7 +81,8 @@ import { PublishableApiKey } from "@medusajs/medusa"
 import { useAdminPublishableApiKeys } from "medusa-react"
 
 const PublishabelApiKeys = () => {
-  const { publishable_api_keys, isLoading } = useAdminPublishableApiKeys()
+  const { publishable_api_keys, isLoading } = 
+    useAdminPublishableApiKeys()
 
   return (
     <div>
@@ -89,11 +90,14 @@ const PublishabelApiKeys = () => {
       {publishable_api_keys && !publishable_api_keys.length && (
         <span>No Publishable API Keys</span>
       )}
-      {publishable_api_keys && publishable_api_keys.length > 0 && (
+      {publishable_api_keys && 
+        publishable_api_keys.length > 0 && (
         <ul>
           {publishable_api_keys.map(
             (publishableApiKey: PublishableApiKey) => (
-              <li key={publishableApiKey.id}>{publishableApiKey.title}</li>
+              <li key={publishableApiKey.id}>
+                {publishableApiKey.title}
+              </li>
             )
           )}
         </ul>
@@ -248,7 +252,9 @@ medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
 import { useAdminUpdatePublishableApiKey } from "medusa-react"
 
 const UpdatePublishableApiKey = () => {
-  const updateKey = useAdminUpdatePublishableApiKey(publishableApiKeyId)
+  const updateKey = useAdminUpdatePublishableApiKey(
+    publishableApiKeyId
+  )
   // ...
 
   const handleUpdate = (title: string) => {
@@ -265,6 +271,8 @@ export default UpdatePublishableApiKey
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(`<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
@@ -327,7 +335,9 @@ medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
 import { useAdminRevokePublishableApiKey } from "medusa-react"
 
 const PublishableApiKey = () => {
-  const revokeKey = useAdminRevokePublishableApiKey(publishableApiKeyId)
+  const revokeKey = useAdminRevokePublishableApiKey(
+    publishableApiKeyId
+  )
   // ...
 
   const handleRevoke = () => {
@@ -342,6 +352,8 @@ export default PublishableApiKey
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(
@@ -393,7 +405,9 @@ medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
 import { useAdminDeletePublishableApiKey } from "medusa-react"
 
 const PublishableApiKey = () => {
-  const deleteKey = useAdminDeletePublishableApiKey(publishableApiKeyId)
+  const deleteKey = useAdminDeletePublishableApiKey(
+    publishableApiKeyId
+  )
   // ...
 
   const handleDelete = () => {
@@ -408,6 +422,8 @@ export default PublishableApiKey
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(`<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
@@ -453,7 +469,8 @@ You can retrieve the list of sales channels associated with a publishable API ke
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.admin.publishableApiKeys.listSalesChannels(publishableApiKeyId)
+medusa.admin.publishableApiKeys
+  .listSalesChannels(publishableApiKeyId)
 .then(({ sales_channels }) => {
   console.log(sales_channels)
 })
@@ -464,7 +481,9 @@ medusa.admin.publishableApiKeys.listSalesChannels(publishableApiKeyId)
 
 ```tsx
 import { SalesChannel } from "@medusajs/medusa"
-import { useAdminPublishableApiKeySalesChannels } from "medusa-react"
+import { 
+  useAdminPublishableApiKeySalesChannels,
+} from "medusa-react"
 
 const SalesChannels = () => {
   const { sales_channels, isLoading } = 
@@ -552,12 +571,15 @@ medusa.admin.publishableApiKeys.addSalesChannelsBatch(
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminAddPublishableKeySalesChannelsBatch } from "medusa-react"
+import {
+  useAdminAddPublishableKeySalesChannelsBatch,
+} from "medusa-react"
 
 const PublishableApiKey = () => {
-  const addSalesChannels = useAdminAddPublishableKeySalesChannelsBatch(
-    publishableApiKeyId
-  )
+  const addSalesChannels = 
+    useAdminAddPublishableKeySalesChannelsBatch(
+      publishableApiKeyId
+    )
   // ...
 
   const handleAdd = (salesChannelId: string) => {

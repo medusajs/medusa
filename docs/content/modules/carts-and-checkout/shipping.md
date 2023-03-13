@@ -45,7 +45,7 @@ As a developer, you will mainly work with the Fulfillment Provider when integrat
 
 When you run your Medusa backend, the Fulfillment Provider will be registered on your backend if it hasn’t been already.
 
-Once the Fulfillment Provider is added to the backend, the store operator will be able to associate on the [Medusa Admin](../../core/backend/install.mdx) the Fulfillment Provider with shipping options.
+Once the Fulfillment Provider is added to the backend, the store operator will be able to associate on the [Medusa Admin](../../development/backend/install.mdx) the Fulfillment Provider with shipping options.
 
 ### FulfillmentProvider Entity Overview
 

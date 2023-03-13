@@ -148,7 +148,7 @@
 
 [[redirects]]
   from="/quickstart/quick-start*"
-  to="/core/backend/install"
+  to="/development/backend/install"
 
 [[redirects]]
   from="/advanced/admin/import-products"
@@ -261,3 +261,27 @@
 [[redirects]]
   from="/advanced/storefront/use-sales-channels"
   to="/modules/sales-channels/storefront/use-sales-channels"
+
+[[redirects]]
+  from="/advanced/backend/endpoints/add"
+  to="/development/endpoints/create"
+
+[[redirects]]
+  from="/advanced/backend/endpoints/add-middleware"
+  to="/development/endpoints/add-middleware"
+
+[[redirects]]
+  from="/advanced/backend/scheduled-jobs/create"
+  to="/development/scheduled-jobs/create"
+
+[[redirects]]
+  from="/tutorial/set-up-your-development-environment"
+  to="/development/backend/prepare-environment"
+
+[[redirects]]
+  from="/usage/configurations"
+  to="/development/backend/configurations"
+
+[[redirects]]
+  from="/add-plugins/:path"
+  to="/plugins/:path"

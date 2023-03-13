@@ -11,6 +11,7 @@ import styles from './styles.module.css';
 import {translate} from '@docusaurus/Translate';
 import BorderedIcon from '../../components/BorderedIcon';
 import Badge from '../../components/Badge';
+import Icons from '../Icon';
 
 function CardContainer({href, children, className}) {
   return (
@@ -21,6 +22,7 @@ function CardContainer({href, children, className}) {
     </Link>
   );
 }
+
 function CardLayout({href, icon, title, description, html, containerClassName, isSoon = false}) {
   return (
     <CardContainer href={href} className={clsx(containerClassName, isSoon && styles.cardSoon)}>
@@ -51,8 +53,41 @@ function CardLayout({href, icon, title, description, html, containerClassName, i
     </CardContainer>
   );
 }
+
+function getCardIcon (item) {
+  if (item.customProps?.themedImage) {
+    return (
+      <BorderedIcon icon={{
+        light: item.customProps.themedImage.light,
+        dark: item.customProps.themedImage.dark
+      }} wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />
+    )
+  } else if (item.customProps?.image) {
+    return (
+      <BorderedIcon icon={{
+        light: item.customProps.image
+      }} wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />
+    );
+  } else if (item.customProps?.icon) {
+    return <BorderedIcon 
+      IconComponent={item.customProps.icon} 
+      wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />;
+  } else if (item.customProps?.iconName && Icons.hasOwnProperty(item.customProps?.iconName)) {
+    return <BorderedIcon
+      IconComponent={Icons[item.customProps?.iconName]}
+      wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />;
+  } else {
+    return (
+      <div className={clsx('card-icon-wrapper', 'no-zoom-img')}>
+        {isInternalUrl(item.href) ? '📄️' : '🔗'}
+      </div>
+    );
+  }
+}
+
 function CardCategory({item}) {
   const href = findFirstCategoryLink(item);
+  const icon = getCardIcon(item);
   // Unexpected: categories that don't have a link have been filtered upfront
   if (!href) {
     return null;
@@ -60,11 +95,11 @@ function CardCategory({item}) {
   return (
     <CardLayout
       href={href}
-      icon="🗃️"
+      icon={icon}
       title={item.label}
       description={translate(
         {
-          message: '{count} items',
+          message: item.customProps?.description || '{count} items',
           id: 'theme.docs.DocCard.categoryDescription',
           description:
             'The default description for a category card in the generated index about how many items this category includes',
@@ -76,32 +111,9 @@ function CardCategory({item}) {
     />
   );
 }
+
 function CardLink({item}) {
-  let icon;
-  if (item.customProps && item.customProps.themedImage) {
-    icon = (
-      <BorderedIcon icon={{
-        light: item.customProps.themedImage.light,
-        dark: item.customProps.themedImage.dark
-      }} wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />
-    )
-  } else if (item.customProps && item.customProps.image) {
-    icon = (
-      <BorderedIcon icon={{
-        light: item.customProps.image
-      }} wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />
-    );
-  } else if (item.customProps && item.customProps.icon) {
-    icon = <BorderedIcon 
-      IconComponent={item.customProps.icon} 
-      wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />;
-  } else {
-    icon = (
-      <div className={clsx('card-icon-wrapper', 'no-zoom-img')}>
-        {isInternalUrl(item.href) ? '📄️' : '🔗'}
-      </div>
-    );
-  }
+  const icon = getCardIcon(item);
   const doc = useDocById(item.docId ?? undefined);
 
   return (
@@ -116,6 +128,7 @@ function CardLink({item}) {
     />
   );
 }
+
 export default function DocCard({item}) {
   switch (item.type) {
     case 'link':

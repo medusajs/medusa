@@ -20,7 +20,7 @@ This document doesn't cover what price lists are and their basics. If you’re i
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### JS Client
 
@@ -80,7 +80,10 @@ For example, sending the following request creates a price list with two prices:
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-import { PriceListStatus, PriceListType } from "@medusajs/medusa"
+import { 
+  PriceListStatus, 
+  PriceListType, 
+} from "@medusajs/medusa"
 
 medusa.admin.priceLists.create({
   name: "New Price List",
@@ -111,7 +114,10 @@ medusa.admin.priceLists.create({
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { PriceListStatus, PriceListType } from "@medusajs/medusa"
+import { 
+  PriceListStatus, 
+  PriceListType, 
+} from "@medusajs/medusa"
 import { useAdminCreatePriceList } from "medusa-react"
 
 const CreatePriceList = () => {
@@ -244,7 +250,10 @@ import { CustomerGroup } from "@medusajs/medusa"
 import { useAdminPriceList } from "medusa-react"
 
 const PriceList = () => {
-  const { price_list, isLoading } = useAdminPriceList(priceListId)
+  const { 
+    price_list, 
+    isLoading, 
+  } = useAdminPriceList(priceListId)
 
   return (
     <div>
@@ -305,7 +314,10 @@ medusa.admin.priceLists.update(priceListId, {
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { PriceListStatus, PriceListType } from "@medusajs/medusa"
+import { 
+  PriceListStatus, 
+  PriceListType,
+} from "@medusajs/medusa"
 import { useAdminUpdatePriceList } from "medusa-react"
 
 const CreatePriceList = () => {
@@ -424,6 +436,8 @@ export default PriceList
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
   method: "POST",
@@ -479,18 +493,23 @@ You can delete all the prices of a product’s variants using the [Delete Produc
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
-.then(({ ids, object, deleted }) => {
-  console.log(ids.length)
-})
+```tsx
+medusa
+  .admin
+  .priceLists
+  .deleteProductPrices(priceListId, productId)
+  .then(({ ids, object, deleted }) => {
+    console.log(ids.length)
+  })
 ```
 
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminDeletePriceListProductPrices } from "medusa-react"
+import { 
+  useAdminDeletePriceListProductPrices,
+} from "medusa-react"
 
 const PriceList = () => {
   const deletePrices = useAdminDeletePriceListProductPrices(
@@ -548,24 +567,30 @@ You can delete all the prices of a variant using the [Delete Variant Prices](/ap
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
-.then(({ ids, object, deleted }) => {
-  console.log(ids)
-})
+```tsx
+medusa
+  .admin
+  .priceLists
+  .deleteVariantPrices(priceListId, variantId)
+  .then(({ ids, object, deleted }) => {
+    console.log(ids)
+  })
 ```
 
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminDeletePriceListVariantPrices } from "medusa-react"
+import { 
+  useAdminDeletePriceListVariantPrices,
+} from "medusa-react"
 
 const PriceList = () => {
-  const deleteVariantPrices = useAdminDeletePriceListVariantPrices(
-    priceListId, 
-    variantId
-  )
+  const deleteVariantPrices = 
+    useAdminDeletePriceListVariantPrices(
+      priceListId, 
+      variantId
+    )
   // ...
 
   const handleDeletePrices = () => {

@@ -227,6 +227,9 @@
 .sidebar-group-headline > .menu__list-item-collapsible > .menu__link {
   color: var(--medusa-text-primary);
   padding: 0 !important;
+}
+
+.sidebar-group-headline > .menu__list-item-collapsible > .menu__link:not([href]) {
   cursor: default;
 }
 

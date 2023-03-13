@@ -28,7 +28,7 @@ This document does not cover implementing the checkout flow. You can refer to [t
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
@@ -77,7 +77,9 @@ const Cart = () => {
     createCart.mutate(
       {}, // create an empty cart
       {
-        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
+        onSuccess: ({ cart }) => {
+          localStorage.setItem("cart_id", cart.id)
+        },
       }
     )
   }
@@ -142,7 +144,9 @@ const Cart = () => {
         region_id,
       },
       {
-        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
+        onSuccess: ({ cart }) => {
+          localStorage.setItem("cart_id", cart.id)
+        },
       }
     )
   }
@@ -557,6 +561,8 @@ export default Cart
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: "POST",
@@ -618,6 +624,8 @@ export default Cart
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {

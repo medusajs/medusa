@@ -36,7 +36,7 @@ If you want to use another Git Provider, it’s possible to follow along with th
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../development/backend/prepare-environment.mdx#git).
 
 ---
 
@@ -325,4 +325,4 @@ Then, restart your Medusa backend. Once the backend is running again, you can us
 ## See Also
 
 - [Deploy the Medusa Admin](../admin/index.mdx)
-- [Configure your Medusa server](../../usage/configurations.md)
+- [Configure your Medusa server](../../development/backend/configurations.md)

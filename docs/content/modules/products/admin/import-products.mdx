@@ -20,18 +20,18 @@ Using Medusa’s [Batch Job Admin APIs](/api/admin/#tag/Batch-Job), you can impo
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
 
 ### File Service Plugin
 
 Part of the process of importing products is uploading a CSV file. This requires a file service plugin to be installed on your backend. If you don’t have any installed, you can install one of the following options:
 
-- [MinIO](../../../add-plugins/minio.md) (At least version `1.1.0`)
-- [Spaces](../../../add-plugins/spaces.md)
+- [MinIO](../../../plugins/file-service/minio.md) (At least version `1.1.0`)
+- [Spaces](../../../plugins/file-service/spaces.md)
 
 ### CSV File
 

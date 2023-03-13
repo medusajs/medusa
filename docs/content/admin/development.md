@@ -25,7 +25,7 @@ In this document, you’ll learn how to:
 
 ### Required Tools
 
-[Git CLI tool](../tutorial/0-set-up-your-development-environment.mdx#git)
+[Git CLI tool](../development/backend/prepare-environment.mdx#git)
 
 ### Required Accounts
 

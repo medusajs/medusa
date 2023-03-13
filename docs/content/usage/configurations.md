@@ -8,7 +8,7 @@ In this document, you’ll learn what configurations you can add to your Medusa 
 
 ## Prerequisites
 
-This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../core/backend/install.mdx#create-a-medusa-server).
+This document assumes you already followed along with the [“Set up your development environment” documentation](../development/backend/prepare-environment.mdx) and have [installed a Medusa server](../development/backend/install.mdx#create-a-medusa-server).
 
 ---
 

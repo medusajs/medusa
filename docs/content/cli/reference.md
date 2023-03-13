@@ -220,5 +220,5 @@ medusa telemetry
 
 ## See Also
 
-- [Configure your Medusa server](../usage/configurations.md)
-- [Set up your development environment](../tutorial/0-set-up-your-development-environment.mdx)
+- [Configure your Medusa server](../development/backend/configurations.md)
+- [Set up your development environment](../development/backend/prepare-environment.mdx)

@@ -139,7 +139,7 @@ medusa-plugin-custom
 
 This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
 
-- How to [create endpoints](../endpoints/add.md)
+- How to [create endpoints](../../../development/endpoints/create.md)
 - How to [create a service](../services/create-service.md)
 - How to [create a subscriber](../subscribers/create-subscriber.md)
 - How to [create an entity](./../entities/index.md)
@@ -189,7 +189,8 @@ export default (rootDirectory, options) => {
 
   router.get("/hello-world", (req, res) => {
     res.json({
-      message: `Welcome to ${options.name ? options.name : "Medusa"}!`,
+      message: 
+      `Welcome to ${options.name ? options.name : "Medusa"}!`,
     })
   })
 

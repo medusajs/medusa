@@ -12,7 +12,12 @@ In this document, you’ll learn how you can create an [Entity](overview.md).
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
 ```ts title=src/models/post.ts
-import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
+import { 
+  BeforeInsert, 
+  Column, 
+  Entity, 
+  PrimaryColumn,
+} from "typeorm"
 import { BaseEntity } from "@medusajs/medusa"
 import { generateEntityId } from "@medusajs/medusa/dist/utils"
 

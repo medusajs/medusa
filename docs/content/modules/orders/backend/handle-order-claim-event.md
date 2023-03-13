@@ -25,17 +25,17 @@ In this document, you’ll learn how to handle the `order-update-token.created` 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
 
 ### Notification Provider
 
 To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../advanced/backend/notification/how-to-create-notification-provider.md).
 
-This document has an example using the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin.
+This document has an example using the [SendGrid](../../../plugins/notifications/sendgrid.mdx) plugin.
 
 ---
 
@@ -158,6 +158,8 @@ The page would then send a request to the backend to verify that the `token` is 
 
 For example, you can implement this subscriber to send emails using SendGrid:
 
+<!-- eslint-disable max-len -->
+
 ```ts title=src/subscribers/claim-order.ts
 import { EventBusService } from "@medusajs/medusa"
 
@@ -169,7 +171,10 @@ type InjectedDependencies = {
 class ClaimOrderSubscriber {
   protected sendGridService: any
 
-  constructor({ eventBusService, sendgridService }: InjectedDependencies) {
+  constructor({
+    eventBusService,
+    sendgridService,
+  }: InjectedDependencies) {
     this.sendGridService = sendgridService
     eventBusService.subscribe(
       "order-update-token.created",

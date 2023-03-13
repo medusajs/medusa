@@ -12,7 +12,7 @@ Error: Transaction already started for the given connection, commit current tran
 
 This error occurs because SQLite does not allow for multiple write transactions at the same time. To resolve it, you need to use PostgreSQL instead.
 
-You can learn how to install PostgreSQL on your machine in the [Set Up your Development Environment documentation](../tutorial/0-set-up-your-development-environment.mdx#postgresql).
+You can learn how to install PostgreSQL on your machine in the [Set Up your Development Environment documentation](../development/backend/prepare-environment.mdx#postgresql).
 
 Then in your `medusa-config.js`, you should change the project configuration to use Postgres as the database type:
 
@@ -58,6 +58,6 @@ npm run seed
 
 ## See Also
 
-- [Set up your development environment](../tutorial/0-set-up-your-development-environment.mdx)
-- [Configure your server](../usage/configurations.md)
+- [Set up your development environment](../development/backend/prepare-environment.mdx)
+- [Configure your server](../development/backend/configurations.md)
 - [Medusa CLI tool reference](../cli/reference.md)

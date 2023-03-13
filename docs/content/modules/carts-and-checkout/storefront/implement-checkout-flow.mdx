@@ -28,7 +28,7 @@ It’s recommended to go through the [Shipping Architecture Overview](../shippin
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
@@ -96,22 +96,23 @@ const Cart = () => {
 
   const { updateCart } = useCart()
 
-  const addShippingAddress = (address: Record<string, string>) => {
-    updateCart.mutate({
-      shipping_address: {
-        company: address.company,
-        first_name: address.first_name,
-        last_name: address.last_name,
-        address_1: address.address_1,
-        address_2: address.address_2,
-        city: address.city,
-        country_code: address.country_code,
-        province: address.province,
-        postal_code: address.postal_code,
-        phone: address.phone,
-      },
-    })
-  }
+  const addShippingAddress = 
+    (address: Record<string, string>) => {
+      updateCart.mutate({
+        shipping_address: {
+          company: address.company,
+          first_name: address.first_name,
+          last_name: address.last_name,
+          address_1: address.address_1,
+          address_2: address.address_2,
+          city: address.city,
+          country_code: address.country_code,
+          province: address.province,
+          postal_code: address.postal_code,
+          phone: address.phone,
+        },
+      })
+    }
 
   // ...
 }
@@ -187,7 +188,8 @@ type Props = {
 }
 
 const ShippingOptions = ({ cartId }: Props) => {
-  const { shipping_options, isLoading } = useCartShippingOptions(cartId)
+  const { shipping_options, isLoading } =
+    useCartShippingOptions(cartId)
 
   return (
     <div>
@@ -197,9 +199,13 @@ const ShippingOptions = ({ cartId }: Props) => {
       )}
       {shipping_options && (
         <ul>
-          {shipping_options.map((shipping_option: ShippingOption) => (
-            <li key={shipping_option.id}>{shipping_option.name}</li>
-          ))}
+          {shipping_options.map(
+            (shipping_option: ShippingOption) => (
+              <li key={shipping_option.id}>
+                {shipping_option.name}
+              </li>
+            )
+          )}
         </ul>
       )}
     </div>
@@ -274,7 +280,7 @@ fetch(`<SERVER_URL>/store/carts/${cartId}/shipping-methods`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
-    option_id: shippingOptionId, // the ID of the selected option
+    option_id: shippingOptionId, // ID of the selected option
   }),
   headers: {
     "Content-Type": "application/json",
@@ -332,11 +338,17 @@ const PaymentProviders = () => {
 
   return (
     <div>
-      {!cart?.payment_sessions.length && <span>No payment providers</span>}
+      {!cart?.payment_sessions.length && (
+        <span>No payment providers</span>
+      )}
       <ul>
-        {cart?.payment_sessions.map((paymentSession: PaymentSession) => (
-          <li key={paymentSession.id}>{paymentSession.provider_id}</li>
-        ))}
+        {cart?.payment_sessions.map(
+          (paymentSession: PaymentSession) => (
+            <li key={paymentSession.id}>
+              {paymentSession.provider_id}
+            </li>
+          )
+        )}
       </ul>
     </div>
   )
@@ -411,7 +423,7 @@ fetch(`<SERVER_URL>/store/carts/${cartId}/payment-session`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
-    // retrieved from the payment session selected by the customer
+    // the payment session selected by the customer
     provider_id: paymentProviderId,
   }),
   headers: {
@@ -591,6 +603,6 @@ If an error occurred while placing the order, `type` will be `cart` and `data` w
 ## See Also
 
 - [Medusa JS Client Overview](../../../js-client/overview.md).
-- Check out available plugins for popular payment providers such as [Stripe](../../../add-plugins/stripe.md) and [PayPal](../../../add-plugins/paypal.md).
+- Check out available plugins for popular payment providers such as [Stripe](../../../plugins/payment/stripe.md) and [PayPal](../../../plugins/payment/paypal.md).
 - [Payment Architecture](../payment.md)
 - [Shipping Architecture](../shipping.md)

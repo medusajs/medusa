@@ -50,7 +50,7 @@ You can perform other functionalities related to order editing. To learn more, c
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### JS Client
 
@@ -198,12 +198,13 @@ import { useAdminOrderEditAddLineItem } from "medusa-react"
 const OrderEdit = () => {
   const addLineItem = useAdminOrderEditAddLineItem(orderEditId)
 
-  const handleAddLineItem = (quantity: number, variantId: string) => {
-    addLineItem.mutate({
-      quantity,
-      variant_id: variantId,
-    })
-  }
+  const handleAddLineItem = 
+    (quantity: number, variantId: string) => {
+      addLineItem.mutate({
+        quantity,
+        variant_id: variantId,
+      })
+    }
   
   // ...
 }
@@ -299,6 +300,8 @@ export default OrderEdit
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
   method: "POST",
@@ -376,6 +379,8 @@ export default OrderEdit
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
   method: "DELETE",
@@ -445,6 +450,8 @@ export default OrderEdit
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(
   `<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`,
@@ -492,7 +499,10 @@ To move an Order Edit into the request state, send a request to the [Request Con
 ```ts
 medusa.admin.orderEdits.requestConfirmation(orderEditId)
 .then(({ order_edit }) => {
-  console.log(order_edit.requested_at, order_edit.requested_by)
+  console.log(
+    order_edit.requested_at, 
+    order_edit.requested_by
+  )
 })
 ```
 
@@ -500,7 +510,9 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminRequestOrderEditConfirmation } from "medusa-react"
+import { 
+  useAdminRequestOrderEditConfirmation,
+} from "medusa-react"
 
 const OrderEdit = () => {
   const requestOrderConfirmation = 
@@ -520,6 +532,8 @@ export default OrderEdit
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/request`, {
@@ -607,6 +621,8 @@ export default OrderEdit
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/confirm`, {
   method: "POST",
@@ -673,7 +689,9 @@ medusa.admin.payments.capturePayment(paymentId)
 import { useAdminPaymentsCapturePayment } from "medusa-react"
 
 const OrderEditPayment = () => {
-  const capturePayment = useAdminPaymentsCapturePayment(paymentId)
+  const capturePayment = useAdminPaymentsCapturePayment(
+    paymentId
+  )
   
   const handleCapturePayment = () => {
     capturePayment.mutate()
@@ -746,12 +764,13 @@ import { RefundReason } from "@medusajs/medusa"
 const OrderEditPayment = () => {
   const refundPayment = useAdminPaymentsRefundPayment(paymentId)
   
-  const handleRefundPayment = (amount: number, reason: RefundReason) => {
-    refundPayment.mutate({
-      amount,
-      reason,
-    })
-  }
+  const handleRefundPayment = 
+    (amount: number, reason: RefundReason) => {
+      refundPayment.mutate({
+        amount,
+        reason,
+      })
+    }
 
   // ...
 }
