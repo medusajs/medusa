@@ -13,7 +13,6 @@ import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../../services"
-import { CreateProductVariantInput } from "../../../../../types/product-variant"
 import { InventoryItemDTO } from "../../../../../types/inventory"
 import { ProductVariant } from "../../../../../models"
 import { MedusaError } from "medusa-core-utils"

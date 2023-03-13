@@ -1,18 +1,16 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import {
-  ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
 import { IInventoryService } from "../../../../interfaces"
-import { CreateProductVariantInput } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 import { EntityManager } from "typeorm"
 
 import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
-import { FindParams, Logger } from "../../../.."
 import { MedusaError } from "medusa-core-utils"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/inventory-items
