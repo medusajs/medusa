@@ -1,7 +1,7 @@
 import { Currency } from "@medusajs/medusa"
 import clsx from "clsx"
 import { useAdminUpdateStore } from "medusa-react"
-import React, { useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { usePagination, useRowSelect, useSortBy, useTable } from "react-table"
 import Button from "../../../../../components/fundamentals/button"
 import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
@@ -101,7 +101,7 @@ const CurrentCurrenciesScreen = () => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="w-full justify-end flex items-center">
+        <div className="flex w-full items-center justify-end">
           <Button variant="primary" size="small" onClick={onClose}>
             Close
           </Button>
@@ -132,18 +132,18 @@ const TableActions = ({
   }
 
   return (
-    <div className="flex space-x-xsmall h-[34px] overflow-hidden">
+    <div className="space-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
-        <div className="divide-x flex items-center h-[34px] mb-2">
-          <span className="mr-3 inter-small-regular text-grey-50">
+        <div className="mb-2 flex h-[34px] items-center divide-x">
+          <span className="inter-small-regular text-grey-50 mr-3">
             {numberOfSelectedRows} selected
           </span>
-          <div className="flex space-x-xsmall pl-3">
+          <div className="space-x-xsmall flex pl-3">
             <Button
               onClick={onDeselect}
               size="small"
               variant="ghost"
-              className="border border-grey-20"
+              className="border-grey-20 border"
             >
               Deselect
             </Button>
@@ -151,17 +151,17 @@ const TableActions = ({
               onClick={onRemove}
               size="small"
               variant="ghost"
-              className="border border-grey-20 text-rose-50"
+              className="border-grey-20 border text-rose-50"
             >
               Remove
             </Button>
           </div>
         </div>
-        <div className="flex justify-end h-[34px]">
+        <div className="flex h-[34px] justify-end">
           <Button
             size="small"
             variant="ghost"
-            className="border border-grey-20"
+            className="border-grey-20 border"
             onClick={() => push(screen)}
           >
             <PlusIcon size={20} /> Add Currencies

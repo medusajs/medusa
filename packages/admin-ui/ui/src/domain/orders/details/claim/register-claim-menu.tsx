@@ -227,7 +227,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         </Modal.Header>
         <form onSubmit={onSubmit} data-testid="register-claim-form">
           <Modal.Content>
-            <div className="flex flex-col gap-y-xlarge">
+            <div className="gap-y-xlarge flex flex-col">
               <ItemsToReturnForm
                 form={nestedForm(form, "return_items")}
                 order={order}
@@ -266,7 +266,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                 form={nestedForm(form, "notification")}
                 type="claim"
               />
-              <div className="flex items-center justify-end gap-x-xsmall">
+              <div className="gap-x-xsmall flex items-center justify-end">
                 <Button
                   variant="secondary"
                   size="small"

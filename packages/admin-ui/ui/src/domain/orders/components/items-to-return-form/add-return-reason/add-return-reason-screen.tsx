@@ -73,7 +73,7 @@ const AddReasonScreen = ({
   return (
     <>
       <Modal.Content>
-        <div className="flex flex-col gap-y-base">
+        <div className="gap-y-base flex flex-col">
           <h2 className="inter-base-semibold">Reason for Return</h2>
           <Controller
             control={control}
@@ -98,7 +98,7 @@ const AddReasonScreen = ({
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full items-center justify-end gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button size="small" variant="secondary" onClick={pop} type="button">
             Cancel
           </Button>

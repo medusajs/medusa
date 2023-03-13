@@ -22,7 +22,7 @@ const Header = ({ priceList }) => {
     <HeadingBodyCard priceList={priceList} setIsOpen={setIsOpen}>
       <div className="flex gap-12">
         {priceList.customer_groups.length ? (
-          <div className="border-l border-grey-20 pl-6">
+          <div className="border-grey-20 border-l pl-6">
             <span className="inter-base-regular text-grey-50">
               Customer groups
             </span>
@@ -33,13 +33,13 @@ const Header = ({ priceList }) => {
             </p>
           </div>
         ) : null}
-        <div className="border-l border-grey-20 pl-6">
+        <div className="border-grey-20 border-l pl-6">
           <span className="inter-base-regular text-grey-50">Last edited</span>
           <p className="inter-base-regular text-grey-90">
             {moment(priceList.updated_at).format("ddd, D MMM YYYY")}
           </p>
         </div>
-        <div className="border-l border-grey-20 pl-6">
+        <div className="border-grey-20 border-l pl-6">
           <span className="inter-base-regular text-grey-50">
             Price overrides
           </span>
@@ -115,7 +115,7 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
       forceDropdown
       className="min-h-[200px]"
       status={
-        <div className="flex items-center gap-x-2xsmall">
+        <div className="gap-x-2xsmall flex items-center">
           {getPriceListStatus(priceList)}
         </div>
       }

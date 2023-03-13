@@ -23,7 +23,7 @@ const IconBadge: React.FC<IconBadgeProps> = ({
     <Badge
       variant={variant ?? "default"}
       className={clsx(
-        "flex items-center justify-center aspect-square w-[40px] h-[40px] border-2 border-white outline outline-1 outline-grey-20",
+        "outline-grey-20 flex aspect-square h-[40px] w-[40px] items-center justify-center border-2 border-white outline outline-1",
         className
       )}
       {...rest}

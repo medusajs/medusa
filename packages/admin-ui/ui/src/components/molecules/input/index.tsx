@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header"
 import React, {
   ChangeEventHandler,
   FocusEventHandler,
@@ -6,10 +6,11 @@ import React, {
   useImperativeHandle,
   useRef,
 } from "react"
+
 import InputError from "../../atoms/input-error"
 import MinusIcon from "../../fundamentals/icons/minus-icon"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
-import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header"
+import clsx from "clsx"
 
 export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
   InputHeaderProps & {
@@ -21,9 +22,11 @@ export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
     onFocus?: FocusEventHandler<HTMLInputElement>
     errors?: { [x: string]: unknown }
     prefix?: React.ReactNode
+    suffix?: React.ReactNode
     props?: React.HTMLAttributes<HTMLDivElement>
   }
 
+// eslint-disable-next-line react/display-name
 const InputField = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -39,6 +42,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
       tooltipContent,
       tooltip,
       prefix,
+      suffix,
       errors,
       props,
       className,
@@ -89,9 +93,9 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div
           className={clsx(
-            "w-full flex items-center bg-grey-5 border border-gray-20 px-small py-xsmall rounded-rounded focus-within:shadow-input focus-within:border-violet-60",
+            "bg-grey-5 border-gray-20 px-small py-xsmall rounded-rounded focus-within:shadow-input focus-within:border-violet-60 flex w-full items-center border",
             {
-              "border-rose-50 focus-within:shadow-cta focus-within:shadow-rose-60/10 focus-within:border-rose-50":
+              "focus-within:shadow-cta focus-within:shadow-rose-60/10 border-rose-50 focus-within:border-rose-50":
                 errors && name && errors[name],
             },
             small ? "h-8" : "h-10"
@@ -102,7 +106,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
           ) : null}
           <input
             className={clsx(
-              "bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40",
+              "remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent font-normal outline-none outline-0",
               { "text-small": small, "pt-[1px]": small }
             )}
             ref={inputRef}
@@ -114,11 +118,14 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
             required={required}
             {...fieldProps}
           />
+          {suffix ? (
+            <span className="mx-2xsmall text-grey-40">{suffix}</span>
+          ) : null}
 
           {deletable && (
             <button
               onClick={onDelete}
-              className="flex items-center justify-center w-4 h-4 pb-px ml-2 outline-none cursor-pointer text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft"
+              className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft ml-2 flex h-4 w-4 cursor-pointer items-center justify-center pb-px outline-none"
               type="button"
             >
               &times;
@@ -126,11 +133,11 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
           )}
 
           {fieldProps.type === "number" && (
-            <div className="flex items-center self-end h-full">
+            <div className="flex h-full items-center self-end">
               <button
                 onClick={onNumberDecrement}
                 onMouseDown={(e) => e.preventDefault()}
-                className="w-4 h-4 mr-2 outline-none cursor-pointer text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft"
+                className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft mr-2 h-4 w-4 cursor-pointer outline-none"
                 type="button"
               >
                 <MinusIcon size={16} />
@@ -138,7 +145,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
               <button
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={onNumberIncrement}
-                className="w-4 h-4 outline-none cursor-pointer text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft"
+                className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft h-4 w-4 cursor-pointer outline-none"
                 type="button"
               >
                 <PlusIcon size={16} />

@@ -1,5 +1,5 @@
 import { ProductCollection } from "@medusajs/medusa"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { Column, HeaderGroup, Row } from "react-table"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import Table from "../../../../../../components/molecules/table"
@@ -42,7 +42,7 @@ export const useCollectionColumns = () => {
     return [
       {
         Header: () => (
-          <div className="flex items-center gap-1 min-w-[546px]">
+          <div className="flex min-w-[546px] items-center gap-1">
             Title <SortingIcon size={16} />
           </div>
         ),
@@ -53,7 +53,7 @@ export const useCollectionColumns = () => {
       },
       {
         Header: () => (
-          <div className="flex justify-end items-center gap-1">
+          <div className="flex items-center justify-end gap-1">
             Products <SortingIcon size={16} />
           </div>
         ),

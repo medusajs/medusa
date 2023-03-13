@@ -1,6 +1,5 @@
 import { Product } from "@medusajs/medusa"
 import clsx from "clsx"
-import React from "react"
 import TwoStepDelete from "../../../../../components/atoms/two-step-delete"
 import Button from "../../../../../components/fundamentals/button"
 import Section from "../../../../../components/organisms/section"
@@ -42,7 +41,7 @@ const TumbnailSection = ({ product }: Props) => {
       <Section
         title="Thumbnail"
         customActions={
-          <div className="flex items-center gap-x-xsmall">
+          <div className="gap-x-xsmall flex items-center">
             <Button
               variant="secondary"
               size="small"
@@ -58,16 +57,16 @@ const TumbnailSection = ({ product }: Props) => {
         }
       >
         <div
-          className={clsx("grid grid-cols-3 gap-xsmall mt-base", {
+          className={clsx("gap-xsmall mt-base grid grid-cols-3", {
             hidden: !product.thumbnail,
           })}
         >
           {product.thumbnail && (
-            <div className="aspect-square flex items-center justify-center">
+            <div className="flex aspect-square items-center justify-center">
               <img
                 src={product.thumbnail}
                 alt={`Thumbnail for ${product.title}`}
-                className="object-contain rounded-rounded max-w-full max-h-full"
+                className="rounded-rounded max-h-full max-w-full object-contain"
               />
             </div>
           )}

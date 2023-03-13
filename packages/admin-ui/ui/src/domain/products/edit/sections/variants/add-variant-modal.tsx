@@ -1,12 +1,17 @@
 import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
-import { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../components/variant-form/edit-flow-variant-form"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
+import { useContext, useEffect } from "react"
+
+import Button from "../../../../../components/fundamentals/button"
+import Modal from "../../../../../components/molecules/modal"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { useForm } from "react-hook-form"
+import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void
@@ -15,6 +20,8 @@ type Props = {
 }
 
 const AddVariantModal = ({ open, onClose, product }: Props) => {
+  const context = useContext(LayeredModalContext)
+  const { client } = useMedusa()
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getDefaultValues(product),
   })
@@ -32,22 +39,64 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
     onClose()
   }
 
+  const createStockLocationsForVariant = async (
+    productRes,
+    stock_locations: { stocked_quantity: number; location_id: string }[]
+  ) => {
+    const { variants } = productRes
+
+    const pvMap = new Map(product.variants.map((v) => [v.id, true]))
+    const addedVariant = variants.find((variant) => !pvMap.get(variant.id))
+
+    const inventory = await client.admin.variants.getInventory(addedVariant.id)
+
+    console.log(inventory)
+
+    await Promise.all(
+      inventory.variant.inventory
+        .map(async (item) => {
+          return Promise.all(
+            stock_locations.map(async (stock_location) => {
+              client.admin.inventoryItems.createLocationLevel(item.id!, {
+                location_id: stock_location.location_id,
+                stocked_quantity: stock_location.stocked_quantity,
+              })
+            })
+          )
+        })
+        .flat()
+    )
+  }
+
   const onSubmit = handleSubmit((data) => {
-    onAddVariant(createAddPayload(data), resetAndClose)
+    const {
+      stock: { stock_location },
+    } = data
+    delete data.stock.stock_location
+
+    onAddVariant(createAddPayload(data), (productRes) => {
+      if (typeof stock_location !== "undefined") {
+        createStockLocationsForVariant(productRes, stock_location).then(() => {
+          resetAndClose()
+        })
+      } else {
+        resetAndClose()
+      }
+    })
   })
 
   return (
-    <Modal open={open} handleClose={resetAndClose}>
+    <LayeredModal context={context} open={open} handleClose={resetAndClose}>
       <Modal.Body>
         <Modal.Header handleClose={resetAndClose}>
           <h1 className="inter-xlarge-semibold">Add Variant</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
-            <EditFlowVariantForm form={form} />
+            <EditFlowVariantForm isEdit={false} form={form} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center gap-x-xsmall justify-end w-full">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="secondary"
                 size="small"
@@ -68,7 +117,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
           </Modal.Footer>
         </form>
       </Modal.Body>
-    </Modal>
+    </LayeredModal>
   )
 }
 
@@ -92,6 +141,7 @@ const getDefaultValues = (product: Product): EditFlowVariantFormType => {
       inventory_quantity: null,
       manage_inventory: false,
       allow_backorder: false,
+      stock_location: [],
     },
     options: options,
     prices: {

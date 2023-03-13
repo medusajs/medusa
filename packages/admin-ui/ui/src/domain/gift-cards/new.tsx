@@ -3,7 +3,6 @@ import {
   useAdminProducts,
   useAdminStore,
 } from "medusa-react"
-import React from "react"
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import FileUploadField from "../../components/atoms/file-upload-field"
@@ -146,7 +145,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             <div className="mb-base">
               <h3 className="inter-base-semibold">Gift Card Details</h3>
             </div>
-            <div className="flex flex-col gap-y-base">
+            <div className="gap-y-base flex flex-col">
               <InputField
                 label={"Name"}
                 required
@@ -161,13 +160,13 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
             <div className="mt-xlarge">
               <h3 className="inter-base-semibold">Thumbnail</h3>
-              <div className="h-[80px] mt-base">
+              <div className="mt-base h-[80px]">
                 {thumbnail ? (
                   <div className="flex items-center gap-x-6">
                     <img
                       src={thumbnail.url}
                       alt=""
-                      className="w-20 h-20 rounded-base object-cover object-center"
+                      className="rounded-base h-20 w-20 object-cover object-center"
                     />
                     <div className="flex flex-col gap-y-1">
                       <span className="inter-small-regular">
@@ -175,7 +174,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                       </span>
                       <div>
                         <button
-                          className="text-rose-50 inter-small-semibold"
+                          className="inter-small-semibold text-rose-50"
                           type="button"
                           onClick={() => setValue("thumbnail", null)}
                         >
@@ -202,12 +201,12 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
               <h3 className="inter-base-semibold mb-base">
                 Denominations<span className="text-rose-50">*</span>
               </h3>
-              <div className="flex flex-col gap-y-xsmall">
+              <div className="gap-y-xsmall flex flex-col">
                 {fields.map((denomination, index) => {
                   return (
                     <div
                       key={denomination.id}
-                      className="flex items-end gap-x-base last:mb-large"
+                      className="gap-x-base last:mb-large flex items-end"
                     >
                       <CurrencyInput.Root
                         currentCurrency={store?.default_currency_code}
@@ -236,7 +235,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                       <Button
                         variant="ghost"
                         size="large"
-                        className="w-10 h-10 text-grey-40"
+                        className="text-grey-40 h-10 w-10"
                         type="button"
                         onClick={() => remove(index)}
                       >
@@ -263,7 +262,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end w-full">
+            <div className="flex w-full items-center justify-end">
               <Button
                 type="submit"
                 variant="ghost"

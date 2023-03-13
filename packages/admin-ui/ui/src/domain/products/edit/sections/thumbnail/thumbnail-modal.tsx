@@ -1,5 +1,5 @@
 import { Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -92,7 +92,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
             <ThumbnailForm form={nestedForm(form, "thumbnail")} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex gap-x-2 justify-end w-full">
+            <div className="flex w-full justify-end gap-x-2">
               <Button
                 size="small"
                 variant="secondary"

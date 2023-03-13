@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import React, { ReactNode, useContext, useReducer } from "react"
 import Button from "../../fundamentals/button"
-import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
+import UTurnIcon from "../../fundamentals/icons/u-turn-icon"
 import Modal, { ModalProps } from "../../molecules/modal"
 
 enum LayeredModalActions {
@@ -112,13 +112,13 @@ const LayeredModal: React.FC<LayeredModalProps> = ({
                 <Button
                   variant="ghost"
                   size="small"
-                  className="h-8 w-8 text-grey-50"
+                  className="text-grey-50 h-8 w-8 border"
                   onClick={screen.onBack}
                 >
-                  <ArrowLeftIcon size={20} />
+                  <UTurnIcon size={20} />
                 </Button>
-                <div className="flex items-center gap-x-2xsmall">
-                  <h2 className="inter-xlarge-semibold ml-5">{screen.title}</h2>
+                <div className="gap-x-2xsmall flex items-center">
+                  <h2 className="inter-xlarge-semibold ml-4">{screen.title}</h2>
                   {screen.subtitle && (
                     <span className="inter-xlarge-regular text-grey-50">
                       ({screen.subtitle})

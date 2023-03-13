@@ -52,12 +52,12 @@ const SigninInput = React.forwardRef(
     return (
       <div
         className={clsx(
-          "w-[320px] h-[48px] mb-xsmall last:mb-0 border rounded-rounded overflow-hidden",
+          "mb-xsmall rounded-rounded h-[48px] w-[320px] overflow-hidden border last:mb-0",
           "bg-grey-5 inter-base-regular placeholder:text-grey-40",
           "focus-within:shadow-input focus-within:border-violet-60",
           "flex items-center",
           {
-            "pointer-events-none focus-within:shadow-none focus-within:border-none text-grey-40":
+            "text-grey-40 pointer-events-none focus-within:border-none focus-within:shadow-none":
               props.readOnly,
           },
           className
@@ -68,7 +68,7 @@ const SigninInput = React.forwardRef(
         )}
         <input
           className={clsx(
-            "outline-none outline-0 remove-number-spinner leading-base bg-transparent w-full py-3 px-4",
+            "remove-number-spinner leading-base w-full bg-transparent py-3 px-4 outline-none outline-0",
             {
               "pl-xsmall": props.readOnly,
             }
@@ -86,7 +86,7 @@ const SigninInput = React.forwardRef(
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-grey-40 px-4 focus:outline-none focus:text-violet-60"
+            className="text-grey-40 focus:text-violet-60 px-4 focus:outline-none"
           >
             {showPassword ? <EyeIcon /> : <EyeOffIcon />}
           </button>

@@ -1,5 +1,3 @@
-import React from "react"
-
 import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 
@@ -29,14 +27,14 @@ export const SALES_CHANNEL_PRODUCTS_TABLE_COLUMNS = [
     Cell: ({ row: { original } }) => {
       return (
         <div className="flex items-center">
-          <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
+          <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
             {original.thumbnail ? (
               <img
                 src={original.thumbnail}
-                className="h-full object-cover rounded-soft"
+                className="rounded-soft h-full object-cover"
               />
             ) : (
-              <div className="flex items-center justify-center w-full h-full rounded-soft bg-grey-10">
+              <div className="rounded-soft bg-grey-10 flex h-full w-full items-center justify-center">
                 <ImagePlaceholder size={16} />
               </div>
             )}

@@ -49,7 +49,7 @@ const RefundRequired: React.FC<RequestedProps> = ({ event }) => {
           onClick={() => setShowRefundModal(true)}
           variant="ghost"
           size="small"
-          className="w-full border border-grey-20 mb-xsmall text-rose-50"
+          className="border-grey-20 mb-xsmall w-full border text-rose-50"
         >
           Refund
           {formatAmountWithSymbol({

@@ -29,7 +29,7 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           sideOffset={5}
-          className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
+          className="bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall z-30 min-w-[200px] border"
         >
           <DropdownMenu.Item>
             {

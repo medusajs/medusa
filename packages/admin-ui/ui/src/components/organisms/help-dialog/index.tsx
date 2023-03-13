@@ -26,8 +26,8 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
 
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
-      <Dialog.Overlay className="fixed z-50 grid top-0 left-0 right-0 bottom-0 place-items-end overflow-y-auto">
-        <Dialog.Content className="bg-grey-0 w-[400px] shadow-dropdown rounded-rounded p-8 top-[64px] bottom-2 right-3 fixed flex flex-col justify-between">
+      <Dialog.Overlay className="fixed top-0 left-0 right-0 bottom-0 z-50 grid place-items-end overflow-y-auto">
+        <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col justify-between p-8">
           <div>
             <Dialog.Title className="inter-xlarge-semibold mb-1">
               How can we help?
@@ -53,14 +53,14 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
               enableEmoji
             />
           </div>
-          <div className="flex flex-col items-center gap-y-base">
+          <div className="gap-y-base flex flex-col items-center">
             <a
               href="https://discord.gg/medusajs"
               target="_blank"
               rel="noopener noreferrer"
-              className="group cursor-pointer w-full"
+              className="group w-full cursor-pointer"
             >
-              <div className="flex flex-col items-center justify-center rounded-rounded group-hover:bg-grey-5 w-full py-small">
+              <div className="rounded-rounded group-hover:bg-grey-5 py-small flex w-full flex-col items-center justify-center">
                 <span className="text-grey-40 mb-3">
                   <DiscordIcon size={24} />
                 </span>

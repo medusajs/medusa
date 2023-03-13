@@ -1,6 +1,5 @@
 import { Product } from "@medusajs/medusa"
 import { useAdminDeleteProduct, useAdminUpdateProduct } from "medusa-react"
-import * as React from "react"
 import { useNavigate } from "react-router-dom"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
@@ -50,7 +49,8 @@ const useProductActions = (product: Product) => {
             onSuccess: () => {
               notification(
                 "Success",
-                `Successfully ${product.status === "published" ? "unpublished" : "published"
+                `Successfully ${
+                  product.status === "published" ? "unpublished" : "published"
                 } product`,
                 "success"
               )
