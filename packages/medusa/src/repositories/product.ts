@@ -12,7 +12,6 @@ import { ProductFilterOptions } from "../types/product"
 import {
   buildLegacyFieldsListFrom,
   isObject,
-  categoryMatchesScope,
   fetchCategoryDescendantsIds,
 } from "../utils"
 

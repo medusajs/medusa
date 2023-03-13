@@ -6,18 +6,7 @@ export const categoryMatchesScope = (
   category: ProductCategory,
   query: FindOptionsWhere<ProductCategory>
 ): boolean => {
-  if (isDefined(query.is_active) && isDefined(query.is_internal)) {
-    return (
-      category.is_internal === query.is_internal &&
-      category.is_active === query.is_active
-    )
-  } else if (isDefined(query.is_active)) {
-    return category.is_active === query.is_active
-  } else if (isDefined(query.is_internal)) {
-    return category.is_internal === query.is_internal
-  } else {
-    return true
-  }
+  return Object.keys(query ?? {}).every(key => category[key] === query[key])
 }
 
 export const fetchCategoryDescendantsIds = (

@@ -439,7 +439,7 @@ class ProductCategoryService extends TransactionBaseService {
         continue
       }
 
-      sibling.rank = shouldIncrementRank ? sibling.rank + 1 : sibling.rank - 1
+      sibling.rank = shouldIncrementRank ? ++sibling.rank : --sibling.rank
 
       await repository.save(sibling)
     }

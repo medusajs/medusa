@@ -21,6 +21,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { Cart, Product } from "../../../../models"
+import { defaultStoreCategoryScope } from "../product-categories"
 
 /**
  * @oas [get] /store/products
@@ -202,8 +203,8 @@ export default async (req, res) => {
   // store APIs only receive active and public categories to query from
   filterableFields["categories"] = {
     ...(filterableFields.categories || {}),
-    is_internal: false,
-    is_active: true,
+    // Store APIs are only allowed to query active and public categories
+    ...defaultStoreCategoryScope
   }
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
