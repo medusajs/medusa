@@ -76,6 +76,7 @@
     "test:integration:plugins": "turbo run test --no-daemon --filter=integration-tests-plugins",
     "test:integration:repositories": "turbo run test --no-daemon --filter=integration-tests-repositories",
     "openapi:generate": "yarn ./packages/oas/oas-github-ci run ci",
+    "medusa-oas": "yarn ./packages/oas/medusa-oas-cli run medusa-oas",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
     "generate:entities": "typedoc --options typedoc.entities.js",
