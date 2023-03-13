@@ -9,13 +9,14 @@ export const handleExpandedRelations = (model: Model, allModels: Model[]) => {
   const relations = xExpandedRelation.relations ?? []
   const totals = xExpandedRelation.totals ?? []
   const implicit = xExpandedRelation.implicit ?? []
+  const eager = xExpandedRelation.eager ?? []
 
   const nestedRelation: NestedRelation = {
     field,
     nestedRelations: [],
   }
 
-  for (const relation of [...relations, ...totals, ...implicit]) {
+  for (const relation of [...relations, ...totals, ...implicit, ...eager]) {
     const splitRelation = relation.split(".")
     walkSplitRelations(nestedRelation, splitRelation, 0)
   }
