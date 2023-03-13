@@ -40,16 +40,16 @@ export const TablePagination = <T,>({
   return (
     <div
       className={clsx(
-        "inter-small-regular flex items-center justify-between text-grey-50",
+        "inter-small-regular text-grey-50 flex items-center justify-between",
         className
       )}
     >
       <div>
         <p>{`${from} – ${to} of ${count} results`}</p>
       </div>
-      <div className="flex items-center gap-x-small">
+      <div className="gap-x-small flex items-center">
         <p>{`${getState().pagination.pageIndex + 1} of ${getPageCount()}`}</p>
-        <div className="flex items-center gap-x-2xsmall">
+        <div className="gap-x-2xsmall flex items-center">
           <Button
             variant="ghost"
             size="small"

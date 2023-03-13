@@ -18,7 +18,7 @@ const GeneralForm = ({ form }: Props) => {
   } = form
   return (
     <div>
-      <div className="grid grid-cols-2 gap-x-large mb-small">
+      <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
           label="Location name"
           placeholder="Flagship store, warehouse"

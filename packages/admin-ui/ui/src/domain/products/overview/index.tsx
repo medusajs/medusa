@@ -1,5 +1,5 @@
 import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
-import React, { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
 import Button from "../../../components/fundamentals/button"

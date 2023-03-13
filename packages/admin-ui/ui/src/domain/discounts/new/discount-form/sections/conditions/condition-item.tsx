@@ -162,20 +162,20 @@ const ConditionItem = <Type extends DiscountConditionType>({
 
   return (
     <div>
-      <div className="p-base border rounded-rounded flex gap-base justify-between items-center">
-        <div className="flex overflow-hidden gap-base w-full">
+      <div className="p-base rounded-rounded gap-base flex items-center justify-between border">
+        <div className="gap-base flex w-full overflow-hidden">
           <div>
             <Badge
-              className="inter-base-semibold flex justify-center items-center w-[40px] h-[40px]"
+              className="inter-base-semibold flex h-[40px] w-[40px] items-center justify-center"
               variant="default"
             >
               §{index + 1}
             </Badge>
           </div>
-          <div className="truncate flex flex-col justify-center flex-1 w-full">
+          <div className="flex w-full flex-1 flex-col justify-center truncate">
             <div className="inter-small-semibold">{getTitle(type)}</div>
-            <div className="w-full flex items-center inter-small-regular gap-x-xsmall flex-1">
-              <div className="gap-x-2xsmall text-grey-50 flex items-center w-full inter-small-regular flex-1">
+            <div className="inter-small-regular gap-x-xsmall flex w-full flex-1 items-center">
+              <div className="gap-x-2xsmall text-grey-50 inter-small-regular flex w-full flex-1 items-center">
                 {visibleItems.map((item, i) => {
                   return (
                     <span key={i}>

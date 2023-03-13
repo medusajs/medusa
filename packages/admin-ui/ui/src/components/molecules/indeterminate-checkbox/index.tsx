@@ -56,7 +56,7 @@ const IndeterminateCheckbox = React.forwardRef<
     <div className="flex h-full items-center">
       <div
         onClick={handleClick}
-        className={`flex h-5 w-5 cursor-pointer justify-center rounded-base border border-grey-30 text-grey-0 ${
+        className={`rounded-base border-grey-30 text-grey-0 flex h-5 w-5 cursor-pointer justify-center border ${
           rest.disabled
             ? checked
               ? "bg-gray-300"

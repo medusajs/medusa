@@ -57,7 +57,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
             <span className="inter-xlarge-semibold">Invite Users</span>
           </Modal.Header>
           <Modal.Content>
-            <div className="flex flex-col gap-y-base">
+            <div className="gap-y-base flex flex-col">
               <InputField
                 label="Email"
                 placeholder="lebron@james.com"
@@ -82,10 +82,10 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full h-8 justify-end">
+            <div className="flex h-8 w-full justify-end">
               <Button
                 variant="ghost"
-                className="mr-2 w-32 text-small justify-center"
+                className="text-small mr-2 w-32 justify-center"
                 size="large"
                 type="button"
                 onClick={handleClose}
@@ -96,7 +96,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
                 loading={isLoading}
                 disabled={isLoading}
                 size="large"
-                className="w-32 text-small justify-center"
+                className="text-small w-32 justify-center"
                 variant="primary"
               >
                 Invite

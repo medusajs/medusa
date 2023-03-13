@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import {
   Controller,
   FieldArrayWithId,
@@ -99,7 +99,7 @@ const MediaForm = ({ form }: Props) => {
               onRemove={handleRemove}
             />
           </div>
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             {fields.map((field, index) => {
               return (
                 <Image
@@ -146,7 +146,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
           <div className="relative">
             <button
               className={clsx(
-                "px-base py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between",
+                "px-base py-xsmall hover:bg-grey-5 rounded-rounded group flex items-center justify-between",
                 {
                   "bg-grey-5": value,
                 }
@@ -154,32 +154,32 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
               type="button"
               onClick={() => onChange(!value)}
             >
-              <div className="flex items-center gap-x-large">
-                <div className="w-16 h-16 flex items-center justify-center">
+              <div className="gap-x-large flex items-center">
+                <div className="flex h-16 w-16 items-center justify-center">
                   <img
                     src={image.url}
                     alt={image.name || "Uploaded image"}
-                    className="max-w-[64px] max-h-[64px] rounded-rounded"
+                    className="rounded-rounded max-h-[64px] max-w-[64px]"
                   />
                 </div>
-                <div className="flex flex-col inter-small-regular text-left">
+                <div className="inter-small-regular flex flex-col text-left">
                   <p>{image.name}</p>
                   <p className="text-grey-50">
                     {image.size ? `${(image.size / 1024).toFixed(2)} KB` : ""}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-x-base">
+              <div className="gap-x-base flex items-center">
                 <span
                   className={clsx("hidden", {
-                    "!block !text-violet-60": value,
+                    "!text-violet-60 !block": value,
                   })}
                 >
                   <CheckCircleFillIcon size={24} />
                 </span>
               </div>
             </button>
-            <div className="absolute top-0 right-base bottom-0 flex items-center">
+            <div className="right-base absolute top-0 bottom-0 flex items-center">
               <Actionables actions={actions} forceDropdown />
             </div>
           </div>
@@ -197,10 +197,10 @@ type ModalActionsProps = {
 
 const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
   return (
-    <div className="h-10 overflow-y-hidden flex items-center pr-1">
+    <div className="flex h-10 items-center overflow-y-hidden pr-1">
       <div
         className={clsx(
-          "flex items-center gap-x-small transition-all duration-200",
+          "gap-x-small flex items-center transition-all duration-200",
           {
             "translate-y-[-42px]": !number,
             "translate-y-[0px]": number,
@@ -208,8 +208,8 @@ const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
         )}
       >
         <span>{number} selected</span>
-        <div className="w-px h-5 bg-grey-20" />
-        <div className="flex items-center gap-x-xsmall">
+        <div className="bg-grey-20 h-5 w-px" />
+        <div className="gap-x-xsmall flex items-center">
           <Button
             variant="secondary"
             size="small"

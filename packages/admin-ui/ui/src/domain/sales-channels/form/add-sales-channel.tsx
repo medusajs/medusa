@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useAdminCreateSalesChannel } from "medusa-react"
 
 import Button from "../../../components/fundamentals/button"
@@ -24,7 +24,7 @@ function General(props: GeneralProps) {
   const { name, description, setName, setDescription } = props
 
   return (
-    <div className="flex flex-col gap-y-base my-base">
+    <div className="gap-y-base my-base flex flex-col">
       <div className="flex-1">
         <InputField
           label="Title"
@@ -62,17 +62,17 @@ function AddProducts() {
         size="small"
         type="button"
         variant="secondary"
-        className="w-full h-[40px] mt-6"
+        className="mt-6 h-[40px] w-full"
         onClick={() => setShowModal(true)}
       >
         <PlusIcon size={20} />
         Add Products
       </Button>
-      {/*{showModal && (*/}
+      {/* {showModal && (*/}
       {/*  <SalesChannelAvaliableProductsModal*/}
       {/*    handleClose={() => setShowModal(false)}*/}
       {/*  />*/}
-      {/*)}*/}
+      {/* )}*/}
     </div>
   )
 }
@@ -135,12 +135,12 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
   return (
     <FocusModal>
       <FocusModal.Header>
-        <div className="medium:w-8/12 w-full px-8 flex justify-between">
+        <div className="medium:w-8/12 flex w-full justify-between px-8">
           <Button
             size="small"
             variant="ghost"
             onClick={onClose}
-            className="border rounded-rounded w-8 h-8"
+            className="rounded-rounded h-8 w-8 border"
           >
             <CrossIcon size={20} />
           </Button>
@@ -168,11 +168,11 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
         </div>
       </FocusModal.Header>
       <FocusModal.Main>
-        <div className="flex justify-center mb-[25%]">
+        <div className="mb-[25%] flex justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 w-full pt-16">
             <h1 className="inter-xlarge-semibold">Create new sales channel</h1>
             <Accordion
-              className="pt-7 text-grey-90"
+              className="text-grey-90 pt-7"
               defaultValue={["general"]}
               type="multiple"
             >
@@ -188,10 +188,10 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
                   setDescription={setDescription}
                 />
               </Accordion.Item>
-              {/*TODO: add a modal for initially selecting products*/}
-              {/*<Accordion.Item title="Products" value="products">*/}
+              {/* TODO: add a modal for initially selecting products*/}
+              {/* <Accordion.Item title="Products" value="products">*/}
               {/*  <AddProducts />*/}
-              {/*</Accordion.Item>*/}
+              {/* </Accordion.Item>*/}
             </Accordion>
           </div>
         </div>

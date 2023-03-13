@@ -113,7 +113,7 @@ const TaxDetails = ({ id }) => {
             ))}
           </Table.Head>
           {regionIsLoading || taxRatesLoading ? (
-            <div className="flex w-full h-full absolute items-center justify-center mt-10">
+            <div className="absolute mt-10 flex h-full w-full items-center justify-center">
               <div className="">
                 <Spinner size={"large"} variant={"secondary"} />
               </div>

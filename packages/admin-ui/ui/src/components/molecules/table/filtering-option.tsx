@@ -24,7 +24,7 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
   return (
     <div
       className={clsx(
-        "inter-small-regular flex text-grey-50 mr-6 last:mr-0",
+        "inter-small-regular text-grey-50 mr-6 flex last:mr-0",
         className
       )}
       {...props}
@@ -34,11 +34,11 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
         <DropdownMenu.Trigger
           asChild
           className={clsx(
-            "inter-small-regular text-grey-50 flex items-center pl-1.5 pr-0.5 rounded active:bg-grey-5 hover:bg-grey-5",
+            "inter-small-regular text-grey-50 active:bg-grey-5 hover:bg-grey-5 flex items-center rounded pl-1.5 pr-0.5",
             { "bg-grey-5": open }
           )}
         >
-          <div className="flex align-center">
+          <div className="align-center flex">
             {selected}
             <div className="text-grey-40 h-min">
               <ChevronDownIcon size={16} />
@@ -47,7 +47,7 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           sideOffset={8}
-          className="bg-grey-0 p-2 border border-grey-20 rounded-rounded shadow-dropdown"
+          className="bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown border p-2"
         >
           {options.map((opt, idx) => (
             <DropdownMenu.DropdownMenuItem
@@ -58,9 +58,9 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
               }}
               disabled={typeof opt.count !== "undefined" && opt.count < 1}
               className={clsx(
-                "py-1.5 my-1 w-48 px-3 flex items-center rounded text-grey-90  hover:border-0 hover:outline-none inter-small-semibold",
+                "text-grey-90 inter-small-semibold my-1 flex w-48 items-center rounded py-1.5  px-3 hover:border-0 hover:outline-none",
                 {
-                  "cursor-pointer hover:bg-grey-10":
+                  "hover:bg-grey-10 cursor-pointer":
                     typeof opt.count === "undefined" || opt.count > 0,
                 }
               )}
@@ -71,7 +71,7 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
                 </span>
               )}
               <div
-                className={clsx("ml-3 w-full flex justify-between", {
+                className={clsx("ml-3 flex w-full justify-between", {
                   "ml-7": selected !== opt.title,
                   "text-grey-30": (opt.count || 0) < 1,
                 })}

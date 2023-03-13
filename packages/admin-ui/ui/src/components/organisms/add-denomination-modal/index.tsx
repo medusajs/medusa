@@ -41,23 +41,19 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
   // passed to useValuesFieldArray so new prices are intialized with the currenct default price
   const defaultValue = watch("default_price", 10000)
 
-  const {
-    fields,
-    appendPrice,
-    deletePrice,
-    availableCurrencies,
-  } = useValuesFieldArray(
-    currencyCodes,
-    {
-      control,
-      name: "prices",
-      keyName: "indexId",
-    },
-    {
-      defaultAmount: defaultValue,
-      defaultCurrencyCode: storeCurrency,
-    }
-  )
+  const { fields, appendPrice, deletePrice, availableCurrencies } =
+    useValuesFieldArray(
+      currencyCodes,
+      {
+        control,
+        name: "prices",
+        keyName: "indexId",
+      },
+      {
+        defaultAmount: defaultValue,
+        defaultCurrencyCode: storeCurrency,
+      }
+    )
 
   const onSubmit = async (data: any) => {
     const prices = [
@@ -118,8 +114,8 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
             <span className="inter-xlarge-semibold">Add Denomination</span>
           </Modal.Header>
           <Modal.Content>
-            <div className="flex-1 mb-xlarge">
-              <div className="flex gap-x-2 mb-base">
+            <div className="mb-xlarge flex-1">
+              <div className="mb-base flex gap-x-2">
                 <h3 className="inter-base-semibold">Default Value</h3>
                 <IconTooltip content="This is the denomination in your store's default currency" />
               </div>
@@ -149,16 +145,16 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
               />
             </div>
             <div>
-              <div className="flex gap-x-2 mb-base">
+              <div className="mb-base flex gap-x-2">
                 <h3 className="inter-base-semibold">Other Values</h3>
                 <IconTooltip content="Here you can add values in other currencies" />
               </div>
-              <div className="flex flex-col gap-y-xsmall">
+              <div className="gap-y-xsmall flex flex-col">
                 {fields.map((field, index) => {
                   return (
                     <div
                       key={field.indexId}
-                      className="last:mb-0 mb-xsmall flex items-end"
+                      className="mb-xsmall flex items-end last:mb-0"
                     >
                       <div className="flex-1">
                         <Controller
@@ -208,7 +204,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
                       <Button
                         variant="ghost"
                         size="small"
-                        className="ml-large w-10 h-10"
+                        className="ml-large h-10 w-10"
                         type="button"
                       >
                         <TrashIcon
@@ -236,7 +232,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="w-full flex justify-end">
+            <div className="flex w-full justify-end">
               <Button
                 variant="ghost"
                 size="small"

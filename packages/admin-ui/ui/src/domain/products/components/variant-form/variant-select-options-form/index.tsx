@@ -1,4 +1,3 @@
-import React from "react"
 import { Controller, useFieldArray } from "react-hook-form"
 import { NextCreateableSelect } from "../../../../../components/molecules/select/next-select"
 import { NestedForm } from "../../../../../utils/nested-form"
@@ -34,7 +33,7 @@ const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
   })
 
   return (
-    <div className="grid grid-cols-2 gap-large pb-2xsmall">
+    <div className="gap-large pb-2xsmall grid grid-cols-2">
       {fields.map((field, index) => {
         return (
           <Controller

@@ -88,7 +88,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
         forceDropdown
         className="min-h-[200px]"
         status={
-          <div className="flex items-center gap-x-2xsmall">
+          <div className="gap-x-2xsmall flex items-center">
             {discount.is_dynamic && (
               <span>
                 <Badge variant="default">
@@ -108,13 +108,13 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
         }
       >
         <div className="flex">
-          <div className="border-l border-grey-20 pl-6">
+          <div className="border-grey-20 border-l pl-6">
             {getPromotionDescription(discount)}
             <span className="inter-small-regular text-grey-50">
               Discount Amount
             </span>
           </div>
-          <div className="border-l border-grey-20 pl-6 ml-12">
+          <div className="border-grey-20 ml-12 border-l pl-6">
             <h2 className="inter-xlarge-regular text-grey-90">
               {discount.regions.length.toLocaleString("en-US")}
             </h2>
@@ -122,7 +122,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               Valid Regions
             </span>
           </div>
-          <div className="border-l border-grey-20 pl-6 ml-12">
+          <div className="border-grey-20 ml-12 border-l pl-6">
             <h2 className="inter-xlarge-regular text-grey-90">
               {discount.usage_count.toLocaleString("en-US")}
             </h2>
