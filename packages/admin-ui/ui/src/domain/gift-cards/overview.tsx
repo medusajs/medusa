@@ -4,7 +4,7 @@ import {
   useAdminStore,
   useAdminUpdateProduct,
 } from "medusa-react"
-import React, { useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import PageDescription from "../../components/atoms/page-description"
 import Spinner from "../../components/atoms/spinner"
@@ -79,7 +79,7 @@ const Overview = () => {
 
   return (
     <>
-      <div className="flex flex-col grow h-full pb-xlarge">
+      <div className="pb-xlarge flex h-full grow flex-col">
         <PageDescription
           title="Gift Cards"
           subtitle="Manage the Gift Cards of your Medusa store"
@@ -107,7 +107,7 @@ const Overview = () => {
                 </BannerCard>
               )}
             </div>
-            <div className="w-full flex flex-col grow">
+            <div className="flex w-full grow flex-col">
               <BodyCard
                 title="History"
                 subtitle="See the history of purchased Gift Cards"
@@ -119,7 +119,7 @@ const Overview = () => {
             </div>
           </>
         ) : (
-          <div className="w-full flex items-center justify-center h-44 rounded-rounded border border-grey-20">
+          <div className="rounded-rounded border-grey-20 flex h-44 w-full items-center justify-center border">
             <Spinner variant="secondary" size="large" />
           </div>
         )}

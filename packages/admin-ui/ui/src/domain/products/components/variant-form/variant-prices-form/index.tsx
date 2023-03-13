@@ -1,4 +1,3 @@
-import React from "react"
 import { NestedForm } from "../../../../../utils/nested-form"
 import PricesForm, { PricesFormType } from "../../prices-form"
 

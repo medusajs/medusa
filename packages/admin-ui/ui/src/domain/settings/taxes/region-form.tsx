@@ -1,6 +1,6 @@
 import { Region } from "@medusajs/medusa"
 import { useAdminStoreTaxProviders, useAdminUpdateRegion } from "medusa-react"
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
 import Checkbox from "../../../components/atoms/checkbox"
 import Button from "../../../components/fundamentals/button"
@@ -58,10 +58,8 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
     })
   }, [region])
 
-  const {
-    isLoading: isProvidersLoading,
-    tax_providers,
-  } = useAdminStoreTaxProviders()
+  const { isLoading: isProvidersLoading, tax_providers } =
+    useAdminStoreTaxProviders()
 
   const updateRegion = useAdminUpdateRegion(region.id)
 
@@ -108,8 +106,8 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
   }
 
   return (
-    <form className="flex flex-col flex-1" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-base flex-1">
+    <form className="flex flex-1 flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <div className="gap-base flex flex-1 flex-col">
         <Controller
           name="tax_provider_id"
           control={control}
@@ -125,7 +123,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             />
           )}
         />
-        <div className="flex item-center gap-x-1.5">
+        <div className="item-center flex gap-x-1.5">
           <Checkbox
             className="inter-base-regular"
             {...register("automatic_taxes")}
@@ -137,7 +135,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             }
           />
         </div>
-        <div className="flex item-center gap-x-1.5">
+        <div className="item-center flex gap-x-1.5">
           <Checkbox
             className="inter-base-regular"
             {...register("gift_cards_taxable")}

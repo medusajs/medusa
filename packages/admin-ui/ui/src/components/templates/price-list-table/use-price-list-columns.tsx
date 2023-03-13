@@ -1,6 +1,6 @@
 import { PriceList } from "@medusajs/medusa"
 import { isArray } from "lodash"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { Column } from "react-table"
 import Actionables from "../../molecules/actionables"
 import Table from "../../molecules/table"
@@ -54,7 +54,7 @@ export const usePriceListTableColumns = () => {
           return (
             <Table.Cell
               onClick={(e) => e.stopPropagation()}
-              className="w-full flex justify-end"
+              className="flex w-full justify-end"
             >
               <div className="justify-end">
                 <Actionables forceDropdown actions={getActions()} />

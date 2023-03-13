@@ -23,7 +23,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
 }) => {
   const { updateCondition } = useDiscountForm()
   return (
-    <div className="flex items-center justify-end w-full gap-x-xsmall">
+    <div className="gap-x-xsmall flex w-full items-center justify-end">
       <Button variant="secondary" size="small" onClick={onClose}>
         Cancel
       </Button>

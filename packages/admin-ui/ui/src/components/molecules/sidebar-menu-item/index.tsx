@@ -40,7 +40,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
       trigger={
         <NavLink className={classNameFn} to={pageLink}>
           <span className="items-start">{icon}</span>
-          <span className="ml-3 group-[.is-active]:text-grey-90">{text}</span>
+          <span className="group-[.is-active]:text-grey-90 ml-3">{text}</span>
         </NavLink>
       }
     >
@@ -62,7 +62,7 @@ const SubItem = ({ pageLink, text }: SidebarMenuSubitemProps) => {
 
   return (
     <NavLink className={classNameFn} to={pageLink}>
-      <span className="ml-3 text-grey-90 text-small">{text}</span>
+      <span className="text-grey-90 text-small ml-3">{text}</span>
     </NavLink>
   )
 }

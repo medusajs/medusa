@@ -1,4 +1,3 @@
-import * as React from "react"
 import { useAdminDeletePriceList, useAdminUpdatePriceList } from "medusa-react"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"

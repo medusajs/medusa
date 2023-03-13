@@ -297,7 +297,7 @@ const ProductRow = ({ row, actions, onClick, disabled }) => {
       color={"inherit"}
       className={clsx("cursor-pointer", {
         "bg-grey-5": row.isSelected,
-        "opacity-40 cursor-not-allowed pointer-events-none": disabled,
+        "pointer-events-none cursor-not-allowed opacity-40": disabled,
       })}
       actions={actions}
       {...row.getRowProps()}
@@ -335,13 +335,13 @@ function RemoveProductsPopup({
   return (
     <div
       className={clsx(
-        "absolute w-full bottom-1 flex justify-center transition-all duration-200 pointer-events-none",
+        "pointer-events-none absolute bottom-1 flex w-full justify-center transition-all duration-200",
         classes
       )}
     >
-      <div className="h-[48px] min-w-[224px] rounded-lg border shadow-toaster flex items-center justify-around gap-3 px-4 py-3 pointer-events-auto">
+      <div className="shadow-toaster pointer-events-auto flex h-[48px] min-w-[224px] items-center justify-around gap-3 rounded-lg border px-4 py-3">
         <span className="text-small text-grey-50">{total} selected</span>
-        <div className="w-[1px] h-[20px] bg-grey-20" />
+        <div className="bg-grey-20 h-[20px] w-[1px]" />
         <Button variant="danger" size="small" onClick={onRemove}>
           Remove
         </Button>
@@ -501,7 +501,7 @@ function SalesChannelProductsSelectModal(
           />
         </Modal.Content>
         <Modal.Footer>
-          <div className="w-full flex justify-end">
+          <div className="flex w-full justify-end">
             <Button
               variant="ghost"
               size="small"

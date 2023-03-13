@@ -20,7 +20,7 @@ const COLUMNS = [
     width: 30,
     id: "selection",
     Header: ({ getToggleAllPageRowsSelectedProps }) => (
-      <span className="flex justify-center w-[30px]">
+      <span className="flex w-[30px] justify-center">
         <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
       </span>
     ),
@@ -28,7 +28,7 @@ const COLUMNS = [
       return (
         <span
           onClick={(e) => e.stopPropagation()}
-          className="flex justify-center w-[30px]"
+          className="flex w-[30px] justify-center"
         >
           <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
         </span>
@@ -44,7 +44,7 @@ const COLUMNS = [
       return (
         <span
           title={row.original.name}
-          className="truncate block max-w-[160px]"
+          className="block max-w-[160px] truncate"
         >
           {row.original.name}
         </span>
@@ -58,7 +58,7 @@ const COLUMNS = [
       return (
         <span
           title={row.original.description}
-          className="truncate block max-w-[200px]"
+          className="block max-w-[200px] truncate"
         >
           {row.original.description}
         </span>
@@ -208,7 +208,7 @@ const SalesChannelTable = forwardRef(
           </Table>
 
           {!isLoading && !data?.length && (
-            <div className="absolute w-full h-full flex justify-center items-center">
+            <div className="absolute flex h-full w-full items-center justify-center">
               <span className="text-sma text-grey-40">
                 No added sales channels
               </span>

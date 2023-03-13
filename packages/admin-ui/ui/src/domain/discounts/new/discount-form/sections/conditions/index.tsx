@@ -47,7 +47,7 @@ const DiscountNewConditions: React.FC<DiscountNewConditionsProps> = ({
 
   return (
     <div className="pt-5">
-      <div className="flex flex-col gap-y-small">
+      <div className="gap-y-small flex flex-col">
         {filteredConditions.map((values, i) => (
           <ConditionItem
             index={i}
@@ -65,7 +65,7 @@ const DiscountNewConditions: React.FC<DiscountNewConditionsProps> = ({
           size="small"
           variant="ghost"
           onClick={() => setShowConditionsModal(true)}
-          className="mt-4 p-2 w-full rounded-rounded border"
+          className="rounded-rounded mt-4 w-full border p-2"
         >
           <PlusIcon size={18} />
           <span>Add Condition</span>
