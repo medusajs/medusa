@@ -11,6 +11,7 @@ export class StagedJobRepository extends Repository<StagedJob> {
       .into(StagedJob)
       .values(jobToCreates)
 
+    // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
     if (queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
       queryBuilder.returning("*")
       const rawStagedJobs = await queryBuilder.execute()
