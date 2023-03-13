@@ -275,7 +275,9 @@ class UserService extends TransactionBaseService {
 
       await userRepo.softRemove(user)
 
-      await this.eventBus_.emit(UserService.Events.DELETED, { id: user.id })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(UserService.Events.DELETED, { id: user.id })
 
       return Promise.resolve()
     })

@@ -12,6 +12,8 @@ class MockRepo {
     save,
     findAndCount,
     del,
+    count,
+    insertBulk
   }) {
     this.create_ = create;
     this.update_ = update;
@@ -25,12 +27,19 @@ class MockRepo {
     this.save_ = save;
     this.findAndCount_ = findAndCount;
     this.findOneWithRelations_ = findOneWithRelations;
+    this.insertBulk_ = insertBulk;
   }
 
   setFindOne(fn) {
     this.findOne_ = fn;
   }
 
+  insertBulk = jest.fn().mockImplementation((...args) => {
+    if (this.insertBulk_) {
+      return this.insertBulk_(...args)
+    }
+    return {}
+  })
   create = jest.fn().mockImplementation((...args) => {
     if (this.create_) {
       return this.create_(...args);
