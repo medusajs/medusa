@@ -273,7 +273,7 @@ const UserTable: React.FC<UserTableProps> = ({
   }
 
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className="h-full w-full overflow-y-auto">
       <Table
         filteringOptions={filteringOptions}
         enableSearch

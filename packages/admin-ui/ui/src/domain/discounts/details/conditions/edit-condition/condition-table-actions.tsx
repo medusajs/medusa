@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import React from "react"
 import { useContext } from "react"
 import Button from "../../../../../components/fundamentals/button"
 import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
@@ -32,18 +31,18 @@ const ExistingConditionTableActions = ({
   const { push } = useContext(LayeredModalContext)
 
   return (
-    <div className="flex space-x-xsmall h-[34px] overflow-hidden">
+    <div className="space-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
-        <div className="divide-x flex items-center h-[34px] mb-2">
-          <span className="mr-3 inter-small-regular text-grey-50">
+        <div className="mb-2 flex h-[34px] items-center divide-x">
+          <span className="inter-small-regular text-grey-50 mr-3">
             {numberOfSelectedRows} selected
           </span>
-          <div className="flex space-x-xsmall pl-3">
+          <div className="space-x-xsmall flex pl-3">
             <Button
               onClick={onDeselect}
               size="small"
               variant="ghost"
-              className="border border-grey-20"
+              className="border-grey-20 border"
             >
               Deselect
             </Button>
@@ -51,17 +50,17 @@ const ExistingConditionTableActions = ({
               onClick={onRemove}
               size="small"
               variant="ghost"
-              className="border border-grey-20 text-rose-50"
+              className="border-grey-20 border text-rose-50"
             >
               Remove
             </Button>
           </div>
         </div>
-        <div className="flex justify-end h-[34px]">
+        <div className="flex h-[34px] justify-end">
           <Button
             size="small"
             variant="ghost"
-            className="border border-grey-20"
+            className="border-grey-20 border"
             onClick={() => push(addConditionsModalScreen)}
           >
             <PlusIcon size={20} /> Add

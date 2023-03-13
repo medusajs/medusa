@@ -82,9 +82,9 @@ const Root: React.FC<CurrencyInputProps> = ({
   const [value, setValue] = useState<Option | null>(
     currentCurrency
       ? {
-        label: currentCurrency.toUpperCase(),
-        value: currentCurrency,
-      }
+          label: currentCurrency.toUpperCase(),
+          value: currentCurrency,
+        }
       : null
   )
 
@@ -120,7 +120,7 @@ const Root: React.FC<CurrencyInputProps> = ({
         currencyInfo: selectedCurrency,
       }}
     >
-      <div className={clsx("flex items-center gap-x-xsmall", className)}>
+      <div className={clsx("gap-x-xsmall flex items-center", className)}>
         {!hideCurrency && (
           <div
             className={clsx(
@@ -239,9 +239,9 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
         <InputHeader label={label} required={required} className="mb-xsmall" />
         <div
           className={clsx(
-            "w-full flex items-center bg-grey-5 border border-gray-20 px-small py-xsmall rounded-rounded h-10 focus-within:shadow-input focus-within:border-violet-60",
+            "bg-grey-5 border-gray-20 px-small py-xsmall rounded-rounded focus-within:shadow-input focus-within:border-violet-60 flex h-10 w-full items-center border",
             {
-              "border-rose-50 focus-within:shadow-cta focus-within:shadow-rose-60/10 focus-within:border-rose-50":
+              "focus-within:shadow-cta focus-within:shadow-rose-60/10 border-rose-50 focus-within:border-rose-50":
                 errors && name && errors[name],
             }
           )}
@@ -258,7 +258,7 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
             </Tooltip>
           )}
           <AmountField
-            className="bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40"
+            className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent font-normal outline-none outline-0"
             decimalScale={currencyInfo?.decimal_digits}
             value={formattedValue}
             onValueChange={(value, _name, values) =>
@@ -272,7 +272,7 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
           />
           <div className="flex items-center">
             <button
-              className="mr-2 text-grey-50 w-4 h-4 hover:bg-grey-10 rounded-soft cursor-pointer"
+              className="text-grey-50 hover:bg-grey-10 rounded-soft mr-2 h-4 w-4 cursor-pointer"
               type="button"
               onClick={() => handleManualValueChange(-step)}
             >
@@ -280,7 +280,7 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
             </button>
             <button
               type="button"
-              className="text-grey-50 w-4 h-4 hover:bg-grey-10 rounded-soft cursor-pointer"
+              className="text-grey-50 hover:bg-grey-10 rounded-soft h-4 w-4 cursor-pointer"
               onClick={() => handleManualValueChange(step)}
             >
               <PlusIcon size={16} />

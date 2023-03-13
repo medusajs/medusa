@@ -413,7 +413,7 @@ const AdjustAvailabilityModal = ({
                     {variant?.product?.thumbnail ? (
                       <img
                         src={variant?.product?.thumbnail}
-                        className="object-cover h-full rounded-rounded"
+                        className="rounded-rounded h-full object-cover"
                       />
                     ) : (
                       <ImagePlaceholder />
@@ -422,7 +422,7 @@ const AdjustAvailabilityModal = ({
                   <div className="flex flex-col">
                     <span className="truncate">
                       {variant?.product?.title}
-                      <span className="truncate text-grey-50">
+                      <span className="text-grey-50 truncate">
                         ({inventory.sku})
                       </span>
                     </span>
@@ -445,7 +445,7 @@ const AdjustAvailabilityModal = ({
         </Modal.Content>
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end w-full gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button
             size="small"
             variant="ghost"

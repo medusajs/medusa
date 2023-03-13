@@ -1,5 +1,4 @@
 import { Product } from "@medusajs/medusa"
-import React from "react"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import { ActionType } from "../../../../../components/molecules/actionables"
 import Section from "../../../../../components/organisms/section"
@@ -24,18 +23,18 @@ const AttributesSection = ({ product }: Props) => {
   return (
     <>
       <Section title="Attributes" actions={actions} forceDropdown>
-        <div className="flex flex-col gap-y-xsmall mb-large mt-base">
+        <div className="gap-y-xsmall mb-large mt-base flex flex-col">
           <h2 className="inter-base-semibold">Dimensions</h2>
-          <div className="flex flex-col gap-y-xsmall">
+          <div className="gap-y-xsmall flex flex-col">
             <Attribute attribute="Height" value={product.height} />
             <Attribute attribute="Width" value={product.width} />
             <Attribute attribute="Length" value={product.length} />
             <Attribute attribute="Weight" value={product.weight} />
           </div>
         </div>
-        <div className="flex flex-col gap-y-xsmall">
+        <div className="gap-y-xsmall flex flex-col">
           <h2 className="inter-base-semibold">Customs</h2>
-          <div className="flex flex-col gap-y-xsmall">
+          <div className="gap-y-xsmall flex flex-col">
             <Attribute attribute="MID Code" value={product.mid_code} />
             <Attribute attribute="HS Code" value={product.hs_code} />
             <Attribute
@@ -58,7 +57,7 @@ type AttributeProps = {
 
 const Attribute = ({ attribute, value }: AttributeProps) => {
   return (
-    <div className="flex items-center justify-between w-full inter-base-regular text-grey-50">
+    <div className="inter-base-regular text-grey-50 flex w-full items-center justify-between">
       <p>{attribute}</p>
       <p>{value || "–"}</p>
     </div>

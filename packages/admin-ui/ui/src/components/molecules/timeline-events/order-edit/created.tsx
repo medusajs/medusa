@@ -45,9 +45,8 @@ const getInfo = (edit: OrderEdit): { type: string; user_id: string } => {
 }
 
 const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
-  const { isModalVisible, showModal, setActiveOrderEdit } = useContext(
-    OrderEditContext
-  )
+  const { isModalVisible, showModal, setActiveOrderEdit } =
+    useContext(OrderEditContext)
 
   const { order_edit: orderEdit, isFetching } = useAdminOrderEdit(event.edit.id)
 
@@ -90,8 +89,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
   const onConfirmEditClicked = async () => {
     const shouldDelete = await forceConfirmDialog({
       heading: "Delete Confirm",
-      text:
-        "By force confirming you allow the order edit to be fulfilled. You will still have to reconcile payments manually after confirming.",
+      text: "By force confirming you allow the order edit to be fulfilled. You will still have to reconcile payments manually after confirming.",
       confirmText: "Yes, Force Confirm",
       cancelText: "No, Cancel",
     })
@@ -149,7 +147,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
             {type === "created" ? (
               <>
                 <Button
-                  className="w-full border border-grey-20"
+                  className="border-grey-20 w-full border"
                   size="small"
                   variant="ghost"
                   onClick={onContinueEdit}
@@ -158,7 +156,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
                 </Button>
                 <TwoStepDelete
                   onDelete={onDeleteOrderEditClicked}
-                  className="w-full border border-grey-20"
+                  className="border-grey-20 w-full border"
                 >
                   Delete the order edit
                 </TwoStepDelete>
@@ -166,7 +164,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
             ) : (
               <>
                 <Button
-                  className="w-full border border-grey-20"
+                  className="border-grey-20 w-full border"
                   size="small"
                   variant="ghost"
                   onClick={onCopyConfirmationLinkClicked}
@@ -174,7 +172,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
                   Copy Confirmation-Request Link
                 </Button>
                 <Button
-                  className="w-full border border-grey-20"
+                  className="border-grey-20 w-full border"
                   size="small"
                   variant="ghost"
                   onClick={onConfirmEditClicked}
@@ -184,7 +182,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
 
                 <TwoStepDelete
                   onDelete={onCancelOrderEditClicked}
-                  className="w-full border border-grey-20"
+                  className="border-grey-20 w-full border"
                 >
                   Cancel Order Edit
                 </TwoStepDelete>
@@ -220,7 +218,7 @@ const OrderEditChanges = ({ orderEdit }) => {
   )
 
   return (
-    <div className="flex flex-col gap-y-base">
+    <div className="gap-y-base flex flex-col">
       {added.length > 0 && (
         <div>
           <span className="inter-small-regular text-grey-50">Added</span>
@@ -264,9 +262,9 @@ const OrderEditChangeItem: React.FC<OrderEditChangeItemProps> = ({
   const lineItem = isAdd ? change.line_item : change.original_line_item
 
   return (
-    <div className="flex gap-x-base mt-xsmall">
+    <div className="gap-x-base mt-xsmall flex">
       <div>
-        <div className="flex h-[40px] w-[30px] rounded-rounded overflow-hidden">
+        <div className="rounded-rounded flex h-[40px] w-[30px] overflow-hidden">
           {lineItem?.thumbnail ? (
             <img src={lineItem.thumbnail} className="object-cover" />
           ) : (
@@ -281,7 +279,7 @@ const OrderEditChangeItem: React.FC<OrderEditChangeItemProps> = ({
             <CopyToClipboard value={lineItem?.variant?.sku} iconSize={14} />
           )}
         </span>
-        <span className="flex inter-small-regular text-grey-50">
+        <span className="inter-small-regular text-grey-50 flex">
           {lineItem?.variant?.options?.map((option) => option.value)}
         </span>
       </div>

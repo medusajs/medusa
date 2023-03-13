@@ -4,8 +4,8 @@ import InventoryPageTableHeader from "../header"
 
 const InventoryView = () => {
   return (
-    <div className="flex flex-col h-full grow">
-      <div className="flex flex-col w-full grow">
+    <div className="flex h-full grow flex-col">
+      <div className="flex w-full grow flex-col">
         <BodyCard
           customHeader={<InventoryPageTableHeader activeView="inventory" />}
           className="h-fit"

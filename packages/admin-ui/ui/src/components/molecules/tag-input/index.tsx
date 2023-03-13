@@ -175,19 +175,20 @@ const TagInput: React.FC<TagInputProps> = ({
       >
         <div
           className={clsx(
-            "h-auto min-h-[40px] bg-grey-5 shadow-border focus-within:outline-4 focus-within:outline focus-within:outline-violet-60/10 transition-colors focus-within:shadow-focus-border rounded-rounded flex items-center px-3 box-border",
+            "bg-grey-5 shadow-border focus-within:outline-violet-60/10 focus-within:shadow-focus-border rounded-rounded box-border flex h-auto min-h-[40px] items-center px-3 transition-colors focus-within:outline focus-within:outline-4",
             {
-              "shadow-error-border focus-within:shadow-error-border focus-within:outline-rose-60/10": invalid,
+              "shadow-error-border focus-within:shadow-error-border focus-within:outline-rose-60/10":
+                invalid,
             }
           )}
         >
           <div className="h-full">
-            <div className="w-full gap-xsmall flex flex-wrap box-border h-28px py-1.5">
+            <div className="gap-xsmall h-28px box-border flex w-full flex-wrap py-1.5">
               {values.map((v, index) => (
                 <div
                   key={index}
                   className={clsx(
-                    "flex items-center justify-center whitespace-nowrap w-max bg-grey-20 rounded-rounded px-3 py-1 gap-x-1",
+                    "bg-grey-20 rounded-rounded flex w-max items-center justify-center gap-x-1 whitespace-nowrap px-3 py-1",
                     {
                       ["!bg-grey-90"]: index === highlighted,
                     }
@@ -195,7 +196,7 @@ const TagInput: React.FC<TagInputProps> = ({
                 >
                   <span
                     className={clsx(
-                      "inline-block text-grey-50 inter-small-semibold",
+                      "text-grey-50 inter-small-semibold inline-block",
                       {
                         ["text-grey-20"]: index === highlighted,
                       }
@@ -204,7 +205,7 @@ const TagInput: React.FC<TagInputProps> = ({
                     {v}
                   </span>
                   <CrossIcon
-                    className="inline cursor-pointer text-grey-40"
+                    className="text-grey-40 inline cursor-pointer"
                     size="16"
                     onClick={() => handleRemove(index)}
                   />
@@ -216,7 +217,7 @@ const TagInput: React.FC<TagInputProps> = ({
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 onChange={handleInput}
-                className={clsx("focus:outline-none bg-transparent flex-1")}
+                className={clsx("flex-1 bg-transparent focus:outline-none")}
                 placeholder={values?.length ? "" : placeholder} // only visible if no tags exist
                 {...props}
               />

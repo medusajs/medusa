@@ -45,7 +45,7 @@ const Taxes = () => {
             ]}
           >
             {isLoading || !regions ? (
-              <div className="flex-grow h-full flex items-center justify-center">
+              <div className="flex h-full flex-grow items-center justify-center">
                 <Spinner size="large" variant="secondary" />
               </div>
             ) : (

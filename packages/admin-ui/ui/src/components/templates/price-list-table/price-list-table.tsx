@@ -1,6 +1,5 @@
 import { PriceList } from "@medusajs/medusa"
-import { debounce } from "lodash"
-import React, { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Column,
   HeaderGroup,

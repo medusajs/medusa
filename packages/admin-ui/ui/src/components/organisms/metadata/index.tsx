@@ -58,7 +58,7 @@ const Metadata: React.FC<AddMetadataProps> = ({
   return (
     <div>
       <span className="inter-base-semibold">{heading}</span>
-      <div className="flex flex-col mt-base gap-y-base">
+      <div className="mt-base gap-y-base flex flex-col">
         {localData.map((field, index) => {
           return (
             <DeletableElement key={index} onDelete={deleteKeyPair(index)}>
@@ -95,7 +95,7 @@ type FieldProps = {
 
 const Field: React.FC<FieldProps> = ({ field, updateKey, updateValue }) => {
   return (
-    <div className="flex items-center w-full gap-x-xsmall">
+    <div className="gap-x-xsmall flex w-full items-center">
       <div className="maw-w-[200px]">
         <InputField
           label="Key"
@@ -130,12 +130,12 @@ const DeletableElement: React.FC<DeletableElementProps> = ({
   children,
 }) => {
   return (
-    <div className="flex items-end gap-x-xlarge">
+    <div className="gap-x-xlarge flex items-end">
       <div className="flex-grow">{children}</div>
       <Button
         variant="ghost"
         size="small"
-        className="text-grey-40 w-10 h-10"
+        className="text-grey-40 h-10 w-10"
         type="button"
         onClick={onDelete}
       >

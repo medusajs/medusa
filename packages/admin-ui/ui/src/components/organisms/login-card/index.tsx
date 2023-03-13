@@ -34,7 +34,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center">
-        <span className="inter-2xlarge-semibold mt-4 text-grey-90">
+        <span className="inter-2xlarge-semibold text-grey-90 mt-4">
           Welcome back!
         </span>
         <span className="inter-base-regular text-grey-50 mt-2">
@@ -55,12 +55,12 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
           autoComplete="current-password"
         />
         {isInvalidLogin && (
-          <span className="text-rose-50 w-full mt-2 inter-small-regular">
+          <span className="inter-small-regular mt-2 w-full text-rose-50">
             These credentials do not match our records
           </span>
         )}
         <Button
-          className="rounded-rounded mt-4 w-[320px] inter-base-regular"
+          className="rounded-rounded inter-base-regular mt-4 w-[320px]"
           variant="primary"
           size="large"
           type="submit"

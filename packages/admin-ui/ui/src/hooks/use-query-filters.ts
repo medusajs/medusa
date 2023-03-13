@@ -202,9 +202,10 @@ const useQueryFilters = (defaultFilters: Partial<FilterState>) => {
   /* ********* VALUES ********* */
 
   const queryObject = useMemo(() => getQueryObject(state), [state])
-  const representationObject = useMemo(() => getRepresentationObject(state), [
-    state,
-  ])
+  const representationObject = useMemo(
+    () => getRepresentationObject(state),
+    [state]
+  )
   const representationString = useMemo(() => getRepresentationString(), [state])
 
   return {

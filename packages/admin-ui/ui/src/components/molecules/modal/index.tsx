@@ -43,7 +43,7 @@ type ModalType = React.FC<ModalProps> & {
 
 const Overlay: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <Dialog.Overlay className="fixed top-0 bottom-0 left-0 right-0 z-50 grid overflow-y-auto bg-grey-90/40 place-items-center">
+    <Dialog.Overlay className="bg-grey-90/40 fixed top-0 bottom-0 left-0 right-0 z-50 grid place-items-center overflow-y-auto">
       {children}
     </Dialog.Overlay>
   )
@@ -57,7 +57,7 @@ const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Dialog.Content
       style={style}
-      className="overflow-x-hidden min-w-modal rounded-rounded bg-grey-0"
+      className="min-w-modal rounded-rounded bg-grey-0 overflow-x-hidden"
     >
       {children}
     </Dialog.Content>
@@ -125,7 +125,7 @@ Modal.Content = ({ children, className }) => {
 Modal.Header = ({ handleClose = undefined, children }) => {
   return (
     <div
-      className="flex items-center w-full px-8 py-6 border-b"
+      className="flex w-full items-center border-b px-8 py-6"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex flex-grow">{children}</div>

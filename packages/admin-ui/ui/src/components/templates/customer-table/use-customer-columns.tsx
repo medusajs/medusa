@@ -1,5 +1,5 @@
 import moment from "moment"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { getColor } from "../../../utils/color"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
 

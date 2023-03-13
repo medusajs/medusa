@@ -74,17 +74,17 @@ const SearchModal = ({ handleClose }) => {
       <RadixDialog.Portal>
         <RadixDialog.Overlay
           className={clsx(
-            "fixed pt-[140px] pb-[100px] z-50 inset-0 backdrop-blur-sm",
+            "fixed inset-0 z-50 pt-[140px] pb-[100px] backdrop-blur-sm",
             { flex: totalLength > 0 }
           )}
         >
           <RadixDialog.Content
             className={clsx(
-              "max-w-[640px] flex-1 flex mx-auto bg-grey-0 rounded-rounded shadow-searchModal"
+              "bg-grey-0 rounded-rounded shadow-searchModal mx-auto flex max-w-[640px] flex-1"
             )}
           >
-            <div className="py-large flex-1 flex flex-col">
-              <div className="flex items-center gap-x-4 pb-large border-solid px-xlarge border-b border-grey-20">
+            <div className="py-large flex flex-1 flex-col">
+              <div className="pb-large px-xlarge border-grey-20 flex items-center gap-x-4 border-b border-solid">
                 <SearchIcon className="text-grey-40" />
                 <Input
                   className="flex-1"
@@ -98,17 +98,17 @@ const SearchModal = ({ handleClose }) => {
                   onClick={handleClear}
                   content="Clear search"
                 >
-                  <CrossIcon className="flex text-grey-50" />
+                  <CrossIcon className="text-grey-50 flex" />
                 </Tooltip>
               </div>
-              <KeyboardShortcuts className="mt-xlarge px-xlarge flex items-center gap-x-3 text-grey-40 inter-small-regular" />
+              <KeyboardShortcuts className="mt-xlarge px-xlarge text-grey-40 inter-small-regular flex items-center gap-x-3" />
               {totalLength > 0 ? (
                 <ul
                   {...getULProps()}
-                  className="flex-1 overflow-y-auto mt-large px-xlarge"
+                  className="mt-large px-xlarge flex-1 overflow-y-auto"
                 >
                   {isFetching ? (
-                    <div className="w-full pt-2xlarge flex items-center justify-center">
+                    <div className="pt-2xlarge flex w-full items-center justify-center">
                       <Spinner size={"large"} variant={"secondary"} />
                     </div>
                   ) : (
