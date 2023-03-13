@@ -24,8 +24,6 @@ export default class ReservationItemService extends TransactionBaseService {
     CREATED: "reservation-item.created",
     UPDATED: "reservation-item.updated",
     DELETED: "reservation-item.deleted",
-    DELETED_BY_LOCATION: "reservation-item.deleted-by-location",
-    DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
   protected readonly eventBusService_: IEventBusService
@@ -248,7 +246,7 @@ export default class ReservationItemService extends TransactionBaseService {
 
       await this.eventBusService_
         .withTransaction(manager)
-        .emit(ReservationItemService.Events.DELETED_BY_LINE_ITEM, {
+        .emit(ReservationItemService.Events.DELETED, {
           line_item_id: lineItemId,
         })
     })
@@ -270,7 +268,7 @@ export default class ReservationItemService extends TransactionBaseService {
         .execute()
 
       await this.eventBusService_.emit(
-        ReservationItemService.Events.DELETED_BY_LOCATION,
+        ReservationItemService.Events.DELETED,
         {
           location_id: locationId,
         }

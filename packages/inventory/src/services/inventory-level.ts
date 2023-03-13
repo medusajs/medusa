@@ -21,7 +21,6 @@ export default class InventoryLevelService extends TransactionBaseService {
     CREATED: "inventory-level.created",
     UPDATED: "inventory-level.updated",
     DELETED: "inventory-level.deleted",
-    DELETED_BY_LOCATION: "inventory-level.deleted-by-location",
   }
 
   protected readonly eventBusService_: IEventBusService
@@ -220,7 +219,7 @@ export default class InventoryLevelService extends TransactionBaseService {
 
       await this.eventBusService_
         .withTransaction(manager)
-        .emit(InventoryLevelService.Events.DELETED_BY_LOCATION, {
+        .emit(InventoryLevelService.Events.DELETED, {
           location_id: locationId,
         })
     })
