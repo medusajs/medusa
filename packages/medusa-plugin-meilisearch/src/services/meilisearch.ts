@@ -1,7 +1,7 @@
 import { AbstractSearchService } from "@medusajs/medusa"
 import { indexTypes } from "medusa-core-utils"
 import { MeiliSearch, Settings } from "meilisearch"
-import { MeilisearchPluginOptions } from "../types"
+import { IndexSettings, MeilisearchPluginOptions } from "../types"
 import { transformProduct } from "../utils/transform-product"
 
 class MeiliSearchService extends AbstractSearchService {
@@ -14,6 +14,20 @@ class MeiliSearchService extends AbstractSearchService {
     super(_, options)
 
     this.config_ = options
+
+    if (process.env.NODE_ENV !== "development") {
+      if (!options.config?.apiKey) {
+        throw Error(
+          "Meilisearch API key is missing in plugin config. See https://docs.medusajs.com/add-plugins/meilisearch"
+        )
+      }
+    }
+
+    if (!options.config?.host) {
+      throw Error(
+        "Meilisearch host is missing in plugin config. See https://docs.medusajs.com/add-plugins/meilisearch"
+      )
+    }
 
     this.client_ = new MeiliSearch(options.config)
   }
@@ -63,22 +77,32 @@ class MeiliSearchService extends AbstractSearchService {
 
   async updateSettings(
     indexName: string,
-    settings: { indexSettings: Settings; primaryKey?: string }
+    settings: IndexSettings | Record<string, unknown>
   ) {
+    let settings_ = settings
+
+    // backward compatibility
+    if (!("indexSettings" in settings_)) {
+      settings_ = { indexSettings: settings_ }
+    }
+
+    await this.upsertIndex(indexName, settings_ as IndexSettings)
+
+    return await this.client_
+      .index(indexName)
+      .updateSettings(settings_.indexSettings as Settings)
+  }
+
+  async upsertIndex(indexName: string, settings: IndexSettings) {
     try {
       await this.client_.getIndex(indexName)
     } catch (error) {
       if (error.code === "index_not_found") {
-        // create index, if it doesn't exist
         await this.createIndex(indexName, {
           primaryKey: settings?.primaryKey ?? "id",
         })
       }
     }
-
-    return await this.client_
-      .index(indexName)
-      .updateSettings(settings.indexSettings)
   }
 
   getTransformedDocuments(type: string, documents: any[]) {
@@ -87,11 +111,11 @@ class MeiliSearchService extends AbstractSearchService {
         if (!documents?.length) {
           return []
         }
-        
+
         const productsTransformer =
-          this.config_.settings?.[indexTypes.products]
-            ?.transformer ?? transformProduct
-            
+          this.config_.settings?.[indexTypes.products]?.transformer ??
+          transformProduct
+
         return documents.map(productsTransformer)
       default:
         return documents
