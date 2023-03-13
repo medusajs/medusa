@@ -9,17 +9,12 @@ export async function createCli(): Promise<Command> {
   const buildCommand = program.command("build")
   buildCommand.description("Build the admin dashboard")
 
-  // Options for building the dashboard with default values depending on how the dashboard will be exposed.
   buildCommand.option(
     "--deployment",
     "Build for deploying to and external host (e.g. Vercel)"
   )
-  buildCommand.option("--server", "Build for serving on server")
 
-  buildCommand.option("-s, --serve", "Serve the dashboard")
-  buildCommand.option("-p, --path <path>", "Base path")
   buildCommand.option("-o, --out-dir <path>", "Output directory")
-  buildCommand.option("-a, --auto-rebuild", "Auto rebuild on changes")
   buildCommand.option("-b, --backend <url>", "Backend URL")
   buildCommand.option(
     "-i, --include [paths...]]",
