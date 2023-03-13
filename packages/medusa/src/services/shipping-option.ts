@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
@@ -226,27 +226,36 @@ class ShippingOptionService extends TransactionBaseService {
    * @param {object} update - the values to update the method with
    * @return {Promise<ShippingMethod>} the resulting shipping method
    */
-  async updateShippingMethod(
-    id: string,
-    update: ShippingMethodUpdate
-  ): Promise<ShippingMethod | undefined> {
+  async updateShippingMethod<
+    TInput extends string | string[],
+    TResult = TInput extends string[] ? ShippingMethod[] : ShippingMethod
+  >(id: TInput, update: ShippingMethodUpdate): Promise<TResult | undefined> {
+    const isMultiple = Array.isArray(id)
+    const ids = isMultiple ? id : [id]
+
     return await this.atomicPhase_(async (manager) => {
       const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
         this.methodRepository_
       )
-      const method = await methodRepo.findOne({ where: { id } })
+      let methods = await methodRepo.find({ where: { id: In(ids) } })
 
-      if (!method) {
-        return undefined
+      if (!methods.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Shipping methods with id: ${ids.join(", ")} was not found`
+        )
       }
 
-      for (const key of Object.keys(update).filter(
-        (k) => typeof update[k] !== `undefined`
+      for (const key of Object.keys(update).filter((k) =>
+        isDefined(update[k])
       )) {
-        method[key] = update[key]
+        methods.forEach((method) => {
+          method[key] = update[key]
+        })
       }
 
-      return methodRepo.save(method)
+      methods = await methodRepo.save(methods)
+      return (isMultiple ? methods : methods[0]) as unknown as TResult
     })
   }
 
