@@ -1,40 +1,22 @@
 import { EntityRepository, In, Repository } from "typeorm"
 import { Image } from "../models"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { RelationIdLoader } from "typeorm/query-builder/relation-id/RelationIdLoader"
-import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer"
 
 @EntityRepository(Image)
 export class ImageRepository extends Repository<Image> {
   async insertBulk(data: QueryDeepPartialEntity<Image>[]): Promise<Image[]> {
     const queryBuilder = this.createQueryBuilder()
-    const rawMoneyAmounts = await queryBuilder
       .insert()
       .into(Image)
       .values(data)
-      .returning("*")
-      .execute()
 
-    const relationIdLoader = new RelationIdLoader(
-      queryBuilder.connection,
-      this.queryRunner,
-      queryBuilder.expressionMap.relationIdAttributes
-    )
-    const rawRelationIdResults = await relationIdLoader.load(
-      rawMoneyAmounts.raw
-    )
-    const transformer = new RawSqlResultsToEntityTransformer(
-      queryBuilder.expressionMap,
-      queryBuilder.connection.driver,
-      rawRelationIdResults,
-      [],
-      this.queryRunner
-    )
+    if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+      const rawMoneyAmounts = await queryBuilder.execute()
+      return rawMoneyAmounts.generatedMaps.map((d) => this.create(d)) as Image[]
+    }
 
-    return transformer.transform(
-      rawMoneyAmounts.raw,
-      queryBuilder.expressionMap.mainAlias!
-    ) as Image[]
+    const rawMoneyAmounts = await queryBuilder.returning("*").execute()
+    return rawMoneyAmounts.generatedMaps.map((d) => this.create(d))
   }
 
   public async upsertImages(imageUrls: string[]) {
