@@ -59,7 +59,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
     >
       <Button
         size="small"
-        className="w-full border border-grey-20 mb-xsmall"
+        className="border-grey-20 mb-xsmall w-full border"
         variant="ghost"
         onClick={onCopyPaymentLinkClicked}
       >
@@ -67,7 +67,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
       </Button>
       <Button
         size="small"
-        className="w-full border border-grey-20"
+        className="border-grey-20 w-full border"
         variant="ghost"
         onClick={onMarkAsPaidClicked}
       >

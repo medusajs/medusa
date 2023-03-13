@@ -18,8 +18,8 @@ const TwoSplitPane: React.FC<TwoSplitPaneProps> = ({
 
   const heightClass = height
     ? {
-      gridTemplateRows: `${height}px`,
-    }
+        gridTemplateRows: `${height}px`,
+      }
     : undefined
 
   if (childrenCount > 2) {
@@ -28,7 +28,7 @@ const TwoSplitPane: React.FC<TwoSplitPaneProps> = ({
 
   return (
     <div
-      className={clsx("grid gap-xsmall grid-cols-1", className, {
+      className={clsx("gap-xsmall grid grid-cols-1", className, {
         "medium:grid-cols-2": !threeCols,
         "medium:grid-cols-3": threeCols,
       })}
@@ -38,7 +38,7 @@ const TwoSplitPane: React.FC<TwoSplitPaneProps> = ({
       {Children.map(children, (child, i) => {
         return (
           <div
-            className={clsx("w-full h-full", {
+            className={clsx("h-full w-full", {
               "col-span-2": threeCols && i === 1,
             })}
             key={i}

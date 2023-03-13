@@ -4,7 +4,7 @@ import {
   useAdminDeleteProductOption,
   useAdminUpdateProductOption,
 } from "medusa-react"
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
@@ -166,13 +166,13 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <h2 className="inter-large-semibold mb-base">Product options</h2>
-            <div className="flex flex-col gap-y-small">
+            <div className="gap-y-small flex flex-col">
               <p className="inter-small-semibold text-grey-50">Option title</p>
-              <div className="flex flex-col gap-y-xsmall">
+              <div className="gap-y-xsmall flex flex-col">
                 {fields.map((field, index) => {
                   return (
                     <div
-                      className="grid grid-cols-[1fr,40px] gap-x-xsmall"
+                      className="gap-x-xsmall grid grid-cols-[1fr,40px]"
                       key={field.id}
                     >
                       <InputField
@@ -180,16 +180,15 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                         placeholder="Color"
                         {...register(`options.${index}.title`, {
                           required: "Option title is required",
-                          minLength: FormValidator.minOneCharRule(
-                            "Option title"
-                          ),
+                          minLength:
+                            FormValidator.minOneCharRule("Option title"),
                           pattern: FormValidator.whiteSpaceRule("Option title"),
                         })}
                         errors={errors}
                       />
                       <Button
                         variant="secondary"
-                        className="px-2.5 py-2.5 max-h-[40px]"
+                        className="max-h-[40px] px-2.5 py-2.5"
                         type="button"
                         onClick={() => remove(index)}
                       >
@@ -202,7 +201,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
             </div>
             <Button
               variant="secondary"
-              className="w-full h-10 mt-base"
+              className="mt-base h-10 w-full"
               type="button"
               onClick={handleAddAnOption}
             >
@@ -210,8 +209,13 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
             </Button>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end gap-xsmall w-full">
-              <Button variant="secondary" size="small" type="button" onClick={handleClose}>
+            <div className="gap-xsmall flex w-full items-center justify-end">
+              <Button
+                variant="secondary"
+                size="small"
+                type="button"
+                onClick={handleClose}
+              >
                 Cancel
               </Button>
               <Button

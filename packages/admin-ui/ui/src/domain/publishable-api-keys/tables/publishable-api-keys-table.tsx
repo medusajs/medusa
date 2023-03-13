@@ -27,14 +27,14 @@ const PAGE_SIZE = 12
 const COLUMNS: Column<PublishableApiKey>[] = [
   {
     accessor: "title",
-    Header: <div className="text-gray-500 text-small font-semibold">Name</div>,
+    Header: <div className="text-small font-semibold text-gray-500">Name</div>,
     Cell: ({ row: { original } }) => {
       return <span className="text-gray-900">{original.title}</span>
     },
   },
   {
     accessor: "id",
-    Header: <div className="text-gray-500 text-small font-semibold">Token</div>,
+    Header: <div className="text-small font-semibold text-gray-500">Token</div>,
     Cell: ({ row: { original } }) => {
       const [copied, setCopied] = useState(false)
 
@@ -49,7 +49,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
           onMouseLeave={debounce(() => setCopied(false), 1000)}
           content={
             copied ? (
-              <span className="flex flex-row gap-1 justify-between items-center">
+              <span className="flex flex-row items-center justify-between gap-1">
                 <CheckIcon size={16} className="text-green-700" /> done
               </span>
             ) : (
@@ -67,7 +67,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
   {
     accessor: "created_at",
     Header: (
-      <div className="text-gray-500 text-small font-semibold">Created</div>
+      <div className="text-small font-semibold text-gray-500">Created</div>
     ),
     Cell: ({ row: { original } }) => {
       return (
@@ -80,11 +80,11 @@ const COLUMNS: Column<PublishableApiKey>[] = [
   {
     accessor: "revoked_at",
     Header: (
-      <div className="text-gray-500 text-small font-semibold">Status</div>
+      <div className="text-small font-semibold text-gray-500">Status</div>
     ),
     Cell: ({ row: { original } }) => {
       return (
-        <span className="text-gray-900 min-w-[50px]">
+        <span className="min-w-[50px] text-gray-900">
           {original.revoked_at ? (
             <StatusIndicator title="Revoked" variant="danger" />
           ) : (
@@ -292,7 +292,7 @@ function PublishableApiKeysTable(props: PublishableApiKeysTableProps) {
 
       {/* === PLACEHOLDER === */}
       {!keys?.length && !isLoading && (
-        <div className="flex justify-center items-center h-[480px] w-[100%]">
+        <div className="flex h-[480px] w-[100%] items-center justify-center">
           <span className="text-gray-400">
             No keys yet, use the above button to create your first publishable
             key

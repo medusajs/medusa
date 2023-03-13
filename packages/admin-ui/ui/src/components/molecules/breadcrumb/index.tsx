@@ -20,7 +20,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   return (
     <div
       className={clsx(
-        "w-full flex items-center inter-small-semibold text-grey-50 mb-4",
+        "inter-small-semibold text-grey-50 mb-4 flex w-full items-center",
         className
       )}
       {...props}

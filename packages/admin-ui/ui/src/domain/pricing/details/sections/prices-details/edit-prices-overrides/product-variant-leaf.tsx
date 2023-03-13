@@ -22,7 +22,7 @@ const ProductVariantLeaf = ({
         <span>{title}</span>
         {sku && <span className="text-grey-50 ml-xsmall">(SKU: {sku})</span>}
       </div>
-      <div className="flex items-center text-grey-50 flex-1 justify-end">
+      <div className="text-grey-50 flex flex-1 items-center justify-end">
         <div className="text-grey-50 mr-xsmall">
           {hasPrices ? (
             <span>{`${prices.length} price${
@@ -37,7 +37,7 @@ const ProductVariantLeaf = ({
         <Button
           variant="ghost"
           size="small"
-          className="w-[32px] h-[32px]"
+          className="h-[32px] w-[32px]"
           onClick={onClick}
         >
           <ChevronRightIcon className="text-grey-40" />

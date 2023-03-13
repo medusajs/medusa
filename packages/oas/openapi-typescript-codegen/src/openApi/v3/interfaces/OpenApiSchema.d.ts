@@ -4,11 +4,15 @@ import type { OpenApiDiscriminator } from "./OpenApiDiscriminator"
 import type { OpenApiExternalDocs } from "./OpenApiExternalDocs"
 import type { OpenApiReference } from "./OpenApiReference"
 import type { OpenApiXml } from "./OpenApiXml"
+import { WithExtendedRelationsExtension } from "./Extensions/WithDefaultRelationsExtension"
 
 /**
  * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schemaObject
  */
-export interface OpenApiSchema extends OpenApiReference, WithEnumExtension {
+export interface OpenApiSchema
+  extends OpenApiReference,
+    WithEnumExtension,
+    WithExtendedRelationsExtension {
   title?: string
   multipleOf?: number
   maximum?: number

@@ -27,12 +27,13 @@ const AddProductsModal = ({
   /* ************* Data ************  */
 
   const params = useQueryFilters(defaultQueryProps)
-  const { products, isLoading, count = 0 } = useAdminProducts(
-    params.queryObject,
-    {
-      keepPreviousData: true,
-    }
-  )
+  const {
+    products,
+    isLoading,
+    count = 0,
+  } = useAdminProducts(params.queryObject, {
+    keepPreviousData: true,
+  })
 
   /* ************* State ************  */
 
@@ -64,7 +65,7 @@ const AddProductsModal = ({
           <h2 className="inter-xlarge-semibold">Add Products</h2>
         </Modal.Header>
         <Modal.Content>
-          <div className="w-full flex flex-col justify-between min-h-[300px] h-full ">
+          <div className="flex h-full min-h-[300px] w-full flex-col justify-between ">
             <SelectableTable
               columns={columns}
               data={products || []}
@@ -84,7 +85,7 @@ const AddProductsModal = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="w-full flex justify-end gap-2">
+          <div className="flex w-full justify-end gap-2">
             <Button
               variant="ghost"
               className="rounded-rounded h-8 w-[128px]"

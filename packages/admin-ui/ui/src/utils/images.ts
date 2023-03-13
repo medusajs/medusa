@@ -1,5 +1,5 @@
-import Medusa from "../services/api";
-import { FormImage } from "../types/shared";
+import Medusa from "../services/api"
+import { FormImage } from "../types/shared"
 
 const splitImages = (
   images: FormImage[]

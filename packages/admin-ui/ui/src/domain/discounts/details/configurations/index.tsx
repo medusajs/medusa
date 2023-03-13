@@ -34,7 +34,7 @@ const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
               configurations.length / 2
             )}, minmax(0, 1fr))`,
           }}
-          className="grid grid-cols-2 grid-flow-col gap-y-base gap-x-xlarge"
+          className="gap-y-base gap-x-xlarge grid grid-flow-col grid-cols-2"
         >
           {configurations.map((setting, i) => (
             <NumberedItem

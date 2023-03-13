@@ -11,17 +11,17 @@ export const Thumbnail = ({ src, className, size = "small" }: Props) => {
   return (
     <div
       className={clsx(
-        "bg-grey-5 flex items-center justify-center overflow-hidden rounded-rounded",
+        "bg-grey-5 rounded-rounded flex items-center justify-center overflow-hidden",
         {
-          "w-[30px] h-10": size === "small",
-          "w-9 h-12": size === "medium",
-          "w-[170px] h-[226px]": size === "large",
+          "h-10 w-[30px]": size === "small",
+          "h-12 w-9": size === "medium",
+          "h-[226px] w-[170px]": size === "large",
         },
         className
       )}
     >
       {src ? (
-        <img src={src} className="object-cover object-center flex-1" />
+        <img src={src} className="flex-1 object-cover object-center" />
       ) : (
         <ImagePlaceholderIcon />
       )}

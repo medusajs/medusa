@@ -1,5 +1,5 @@
 import { useAdminCreateTaxRate } from "medusa-react"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -108,7 +108,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
               {(product_types.length > 0 ||
                 products.length > 0 ||
                 shipping_options.length > 0) && (
-                <div className="flex flex-col gap-base">
+                <div className="gap-base flex flex-col">
                   {products.length > 0 && (
                     <TaxRuleItem
                       onDelete={() =>
@@ -210,7 +210,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                       )
                     )
                   }}
-                  className="w-full mt-base"
+                  className="mt-base w-full"
                   size="medium"
                   variant="secondary"
                 >
@@ -220,7 +220,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end w-full">
+            <div className="flex w-full items-center justify-end">
               <Button
                 type="button"
                 onClick={onDismiss}

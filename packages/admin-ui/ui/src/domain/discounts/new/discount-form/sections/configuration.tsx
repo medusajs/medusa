@@ -63,7 +63,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
   return (
     <div className="flex flex-col">
       <Accordion
-        className="pt-7 text-grey-90"
+        className="text-grey-90 pt-7"
         type="multiple"
         value={openItems || []}
         onValueChange={(values) => {
@@ -88,7 +88,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
             >
               <div
                 className={clsx(
-                  "flex items-center gap-xsmall",
+                  "gap-xsmall flex items-center",
                   marginTransition,
                   {
                     "mt-4": openItems.indexOf("starts_at") > -1,
@@ -98,7 +98,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 <Controller
                   name="starts_at"
                   control={control}
-                  render={({ field: { value, onChange } }) => {
+                  render={({ field: { value, onChange } }) => {
                     const date = value || new Date()
                     return (
                       <>
@@ -132,7 +132,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
             >
               <div
                 className={clsx(
-                  "flex items-center gap-xsmall",
+                  "gap-xsmall flex items-center",
                   marginTransition,
                   {
                     "mt-4": openItems.indexOf("ends_at") > -1,
@@ -142,7 +142,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 <Controller
                   name="ends_at"
                   control={control}
-                  render={({ field: { value, onChange } }) => {
+                  render={({ field: { value, onChange } }) => {
                     const date =
                       value ||
                       new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -182,7 +182,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 })}
               >
                 <InputField
-                  {...register("usage_limit",{ valueAsNumber: true })}
+                  {...register("usage_limit", { valueAsNumber: true })}
                   label="Number of redemptions"
                   type="number"
                   placeholder="5"

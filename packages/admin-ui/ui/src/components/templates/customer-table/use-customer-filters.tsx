@@ -63,10 +63,10 @@ export const useCustomerFilters = (
     existing = existing.substring(1)
   }
 
-  const initial = useMemo(() => parseQueryString(existing, defaultFilters), [
-    existing,
-    defaultFilters,
-  ])
+  const initial = useMemo(
+    () => parseQueryString(existing, defaultFilters),
+    [existing, defaultFilters]
+  )
 
   const [state, dispatch] = useReducer(reducer, initial)
 

@@ -47,7 +47,7 @@ const SalesChannelsForm = ({
           Add sales channels
         </Button>
       ) : (
-        <div className="flex items-center justify-between w-full">
+        <div className="flex w-full items-center justify-between">
           <SalesChannelsList
             salesChannels={location?.sales_channels || fields}
             showMax={1}

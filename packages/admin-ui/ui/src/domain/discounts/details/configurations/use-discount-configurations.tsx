@@ -2,7 +2,7 @@ import { Discount } from "@medusajs/medusa"
 import { parse } from "iso8601-duration"
 import { useAdminUpdateDiscount } from "medusa-react"
 import moment from "moment"
-import React, { ReactNode } from "react"
+import { ReactNode } from "react"
 import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import { ActionType } from "../../../../components/molecules/actionables"
@@ -17,9 +17,9 @@ type displaySetting = {
 }
 
 const DisplaySettingsDateDescription = ({ date }: { date: Date }) => (
-  <div className="flex text-grey-50 inter-small-regular ">
+  <div className="text-grey-50 inter-small-regular flex ">
     {moment.utc(date).format("ddd, DD MMM YYYY")}
-    <span className="flex items-center ml-3">
+    <span className="ml-3 flex items-center">
       <ClockIcon size={16} />
       <span className="ml-2.5">{moment.utc(date).format("UTC HH:mm")}</span>
     </span>

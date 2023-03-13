@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import AmountField from "react-currency-input-field"
 import InputError from "../../../../components/atoms/input-error"
 import { currencies } from "../../../../utils/currencies"
@@ -19,9 +19,8 @@ const PriceFormInput = ({
   amount,
   onChange,
 }: Props) => {
-  const { symbol_native, decimal_digits } = currencies[
-    currencyCode.toUpperCase()
-  ]
+  const { symbol_native, decimal_digits } =
+    currencies[currencyCode.toUpperCase()]
 
   const getFormattedValue = (value: number) => {
     return `${value / 10 ** decimal_digits}`
@@ -55,7 +54,7 @@ const PriceFormInput = ({
     <div>
       <div
         className={clsx(
-          "w-full flex items-center bg-grey-5 border border-gray-20 px-small py-xsmall rounded-rounded h-10 focus-within:shadow-input focus-within:border-violet-60",
+          "bg-grey-5 border-gray-20 px-small py-xsmall rounded-rounded focus-within:shadow-input focus-within:border-violet-60 flex h-10 w-full items-center border",
           {
             "border-rose-50": errors && name && errors[name],
           }
@@ -72,7 +71,7 @@ const PriceFormInput = ({
           allowNegativeValue={false}
           placeholder="-"
           decimalScale={decimal_digits}
-          className="bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40 text-right"
+          className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent text-right font-normal outline-none outline-0"
         />
       </div>
       <InputError name={name} errors={errors} />

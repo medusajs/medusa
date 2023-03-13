@@ -3,7 +3,7 @@ import {
   useAdminAddDiscountConditionResourceBatch,
   useAdminDeleteDiscountConditionResourceBatch,
 } from "medusa-react"
-import React, { createContext, ReactNode, useContext } from "react"
+import { createContext, ReactNode, useContext } from "react"
 import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
 import useNotification from "../../../../../hooks/use-notification"
 
@@ -42,10 +42,8 @@ export const EditConditionProvider = ({
     condition.id
   )
 
-  const removeConditionResourceBatch = useAdminDeleteDiscountConditionResourceBatch(
-    discount.id,
-    condition.id
-  )
+  const removeConditionResourceBatch =
+    useAdminDeleteDiscountConditionResourceBatch(discount.id, condition.id)
 
   const addConditionResources = (
     resourcesToAdd: string[],

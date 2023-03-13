@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
 import {
@@ -78,14 +78,14 @@ function AddScreen(props: {
   }
 
   return (
-    <div className="flex flex-col justify-between h-full p-6">
+    <div className="flex h-full flex-col justify-between p-6">
       {/* === HEADER === */}
 
       <div className="flex items-center justify-between">
-        <h3 className="inter-large-semibold text-xl text-gray-900 flex items-center gap-2">
+        <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
           <Button
             variant="secondary"
-            className="w-8 h-8 p-2 text-grey-50"
+            className="text-grey-50 h-8 w-8 p-2"
             onClick={props.goBack}
           >
             <UTurnIcon size={18} />
@@ -94,7 +94,7 @@ function AddScreen(props: {
         </h3>
         <Button
           variant="secondary"
-          className="w-8 h-8 p-2"
+          className="h-8 w-8 p-2"
           onClick={props.close}
         >
           <CrossIcon size={20} className="text-grey-50" />
@@ -131,7 +131,7 @@ function AddScreen(props: {
       {/* === DIVIDER === */}
 
       <div
-        className="h-[1px] bg-gray-200 block"
+        className="block h-[1px] bg-gray-200"
         style={{ margin: "24px -24px" }}
       />
       {/* === FOOTER === */}
@@ -244,16 +244,16 @@ function EditScreen(props: {
   )
 
   return (
-    <div className="flex flex-col justify-between h-full p-6">
+    <div className="flex h-full flex-col justify-between p-6">
       {/* === HEADER === */}
 
       <div className="flex items-center justify-between">
-        <h3 className="inter-large-semibold text-xl text-gray-900 flex items-center gap-2">
+        <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
           Edit sales channels
         </h3>
         <Button
           variant="secondary"
-          className="w-8 h-8 p-2"
+          className="h-8 w-8 p-2"
           onClick={props.close}
         >
           <CrossIcon size={20} className="text-grey-50" />
@@ -262,7 +262,7 @@ function EditScreen(props: {
       {/* === DIVIDER === */}
 
       <div className="flex-grow">
-        <div className="flex justify-between items-center gap-2 my-6">
+        <div className="my-6 flex items-center justify-between gap-2">
           <InputField
             small
             name="name"
@@ -275,13 +275,13 @@ function EditScreen(props: {
           />
 
           {selectedCount ? (
-            <div className="flex gap-2 justify-between items-center h-[32px]">
-              <span className="whitespace-nowrap text-small text-grey-50 px-2">
+            <div className="flex h-[32px] items-center justify-between gap-2">
+              <span className="text-small text-grey-50 whitespace-nowrap px-2">
                 {selectedCount} selected
               </span>
               <Button
                 size="small"
-                className="flex-shrink-0 h-[32px]"
+                className="h-[32px] flex-shrink-0"
                 variant="secondary"
                 onClick={onDeselect}
               >
@@ -289,7 +289,7 @@ function EditScreen(props: {
               </Button>
               <Button
                 size="small"
-                className="flex-shrink-0 h-[32px] text-rose-500"
+                className="h-[32px] flex-shrink-0 text-rose-500"
                 variant="secondary"
                 onClick={onRemove}
               >
@@ -299,7 +299,7 @@ function EditScreen(props: {
           ) : (
             <Button
               size="small"
-              className="flex-shrink-0 h-[32px]"
+              className="h-[32px] flex-shrink-0"
               variant="secondary"
               onClick={props.goAdd}
             >
@@ -323,7 +323,7 @@ function EditScreen(props: {
       {/* === DIVIDER === */}
 
       <div
-        className="h-[1px] bg-gray-200 block"
+        className="block h-[1px] bg-gray-200"
         style={{ margin: "24px -24px" }}
       />
       {/* === FOOTER === */}
