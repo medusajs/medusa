@@ -1,11 +1,18 @@
+import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
 import MeiliSearchService from "../services/meilisearch"
 import { MeilisearchPluginOptions } from "../types"
 
-export default async (container, options) => {
+export default async (
+  container: MedusaContainer,
+  options: MeilisearchPluginOptions
+) => {
+  const logger: Logger = container.resolve("logger")
+
   try {
-    const meilisearchService: MeiliSearchService = container.resolve("meilisearchService")
-    
-    const { settings } = options as MeilisearchPluginOptions
+    const meilisearchService: MeiliSearchService =
+      container.resolve("meilisearchService")
+
+    const { settings } = options
 
     await Promise.all(
       Object.entries(settings ?? []).map(([indexName, value]) =>
@@ -14,6 +21,6 @@ export default async (container, options) => {
     )
   } catch (err) {
     // ignore
-    console.log(err)
+    logger.warn(err)
   }
 }

@@ -28344,7 +28344,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@*, medusa-interfaces@^1.3.6, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@*, medusa-interfaces@^1.3.5, medusa-interfaces@^1.3.6, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -28701,6 +28701,7 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.5
     meilisearch: ^0.31.1
     typescript: ^4.9.5
   peerDependencies:

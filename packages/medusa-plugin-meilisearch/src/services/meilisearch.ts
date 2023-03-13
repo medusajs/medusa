@@ -1,14 +1,14 @@
 import { AbstractSearchService } from "@medusajs/medusa"
 import { indexTypes } from "medusa-core-utils"
 import { MeiliSearch, Settings } from "meilisearch"
-import { IndexSettings, MeilisearchPluginOptions } from "../types"
+import { IndexSettings, meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
 import { transformProduct } from "../utils/transform-product"
 
 class MeiliSearchService extends AbstractSearchService {
   isDefault = false
 
   protected readonly config_: MeilisearchPluginOptions
-  protected client_: MeiliSearch
+  protected readonly client_: MeiliSearch
 
   constructor(_, options: MeilisearchPluginOptions) {
     super(_, options)
@@ -79,25 +79,23 @@ class MeiliSearchService extends AbstractSearchService {
     indexName: string,
     settings: IndexSettings | Record<string, unknown>
   ) {
-    let settings_ = settings
-
     // backward compatibility
-    if (!("indexSettings" in settings_)) {
-      settings_ = { indexSettings: settings_ }
+    if (!("indexSettings" in settings)) {
+      settings = { indexSettings: settings }
     }
 
-    await this.upsertIndex(indexName, settings_ as IndexSettings)
+    await this.upsertIndex(indexName, settings as IndexSettings)
 
     return await this.client_
       .index(indexName)
-      .updateSettings(settings_.indexSettings as Settings)
+      .updateSettings(settings.indexSettings as Settings)
   }
 
   async upsertIndex(indexName: string, settings: IndexSettings) {
     try {
       await this.client_.getIndex(indexName)
     } catch (error) {
-      if (error.code === "index_not_found") {
+      if (error.code === meilisearchErrorCodes.INDEX_NOT_FOUND) {
         await this.createIndex(indexName, {
           primaryKey: settings?.primaryKey ?? "id",
         })
