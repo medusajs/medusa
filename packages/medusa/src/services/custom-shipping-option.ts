@@ -1,12 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { CustomShippingOption } from "../models"
 import { CustomShippingOptionRepository } from "../repositories/custom-shipping-option"
 import { FindConfig, Selector } from "../types/common"
 import { CreateCustomShippingOptionInput } from "../types/shipping-options"
 import { buildQuery } from "../utils"
-import { DeepPartial } from "typeorm/common/DeepPartial"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -87,7 +86,6 @@ class CustomShippingOptionService extends TransactionBaseService {
     const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
-
     const data_ = (
       Array.isArray(data) ? data : [data]
     ) as DeepPartial<CustomShippingOption>[]
