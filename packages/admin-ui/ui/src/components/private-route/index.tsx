@@ -22,7 +22,7 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
   }
 
   return (
-    <div className="h-screen w-full flex items-center justify-center">
+    <div className="flex h-screen w-full items-center justify-center">
       <Spinner variant="secondary" />
     </div>
   )

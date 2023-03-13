@@ -1,6 +1,6 @@
 import { useAdminResetPassword } from "medusa-react"
 import qs from "qs"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { decodeToken } from "react-jwt"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -84,14 +84,14 @@ const ResetPasswordPage = () => {
     <LoginLayout>
       <SEO title="Reset Password" />
       <div className="flex h-full w-full items-center justify-center">
-        <div className="flex min-h-[540px] bg-grey-0 rounded-rounded justify-center">
+        <div className="bg-grey-0 rounded-rounded flex min-h-[540px] justify-center">
           <form
-            className="flex flex-col py-12 w-full px-[120px] items-center"
+            className="flex w-full flex-col items-center py-12 px-[120px]"
             onSubmit={handleSubmit(handleAcceptInvite)}
           >
             <MedusaIcon />
             {!token ? (
-              <div className="h-full flex flex-col gap-y-2 text-center items-center justify-center">
+              <div className="flex h-full flex-col items-center justify-center gap-y-2 text-center">
                 <span className="inter-large-semibold text-grey-90">
                   You reset link is invalid
                 </span>
@@ -101,10 +101,10 @@ const ResetPasswordPage = () => {
               </div>
             ) : (
               <>
-                <span className="inter-2xlarge-semibold mt-4 text-grey-90">
+                <span className="inter-2xlarge-semibold text-grey-90 mt-4">
                   Reset your password
                 </span>
-                <span className="inter-base-regular text-grey-50 mt-2 mb-xlarge">
+                <span className="inter-base-regular text-grey-50 mb-xlarge mt-2">
                   Choose a new password below 👇🏼
                 </span>
                 <SigninInput
@@ -127,12 +127,12 @@ const ResetPasswordPage = () => {
                   className="mb-0"
                 />
                 {error && (
-                  <span className="text-rose-50 w-full mt-xsmall inter-small-regular">
+                  <span className="mt-xsmall inter-small-regular w-full text-rose-50">
                     The two passwords are not the same
                   </span>
                 )}
                 {passwordMismatch && (
-                  <span className="text-rose-50 w-full mt-xsmall inter-small-regular">
+                  <span className="mt-xsmall inter-small-regular w-full text-rose-50">
                     The two passwords are not the same
                   </span>
                 )}
@@ -140,7 +140,7 @@ const ResetPasswordPage = () => {
                   variant="primary"
                   size="large"
                   type="submit"
-                  className="w-full mt-base rounded-rounded"
+                  className="mt-base rounded-rounded w-full"
                   loading={formState.isSubmitting}
                   disabled={!ready}
                 >

@@ -80,14 +80,14 @@ const useGiftCardTableColums = () => {
       },
       {
         Header: () => (
-          <div className="pr-2 flex rounded-rounded w-full justify-end">
+          <div className="rounded-rounded flex w-full justify-end pr-2">
             Created
           </div>
         ),
         accessor: "created_at",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell className="pr-2" key={index}>
-            <div className="flex rounded-rounded w-full justify-end">
+            <div className="rounded-rounded flex w-full justify-end">
               {moment(value).format("MMM Do YYYY")}
             </div>
           </Table.Cell>

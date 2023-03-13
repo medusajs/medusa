@@ -61,7 +61,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             <span className="inter-xlarge-semibold">Edit User</span>
           </Modal.Header>
           <Modal.Content>
-            <div className="w-full grid grid-cols-2 gap-large mb-base">
+            <div className="gap-large mb-base grid w-full grid-cols-2">
               <InputField
                 label="First Name"
                 placeholder="First name..."
@@ -88,7 +88,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             <InputField label="Email" disabled value={user.email} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="w-full flex justify-end">
+            <div className="flex w-full justify-end">
               <Button
                 variant="ghost"
                 size="small"

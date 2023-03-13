@@ -1,4 +1,3 @@
-import React from "react"
 import clsx from "clsx"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 
@@ -10,7 +9,7 @@ export const DisplayTotal = ({
   subtitle = "",
   totalColor = "text-grey-90",
 }) => (
-  <div className="flex justify-between mt-4 items-center">
+  <div className="mt-4 flex items-center justify-between">
     <div className="flex flex-col">
       <div
         className={clsx("text-grey-90", {

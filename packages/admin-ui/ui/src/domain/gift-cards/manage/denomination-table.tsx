@@ -90,7 +90,7 @@ const DenominationTable: React.FC<DenominationTableProps> = ({
   }
 
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className="h-full w-full overflow-y-auto">
       <Table>
         <Table.Head>
           <Table.HeadRow>

@@ -33,7 +33,7 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-large">
+      <div className="gap-large grid grid-cols-2">
         <InputField
           label="Title"
           placeholder="Europe"
@@ -114,7 +114,7 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
       </div>
       <FeatureToggle featureFlag="tax_inclusive_pricing">
         <div className="mt-xlarge flex items-start justify-between">
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             <h3 className="inter-base-semibold">Tax inclusive prices</h3>
             <p className="inter-base-regular text-grey-50">
               When enabled region prices will be tax inclusive.

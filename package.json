@@ -4,6 +4,7 @@
   "workspaces": {
     "packages": [
       "packages/*",
+      "packages/generated/*",
       "packages/oas/*",
       "integration-tests/**/*"
     ]

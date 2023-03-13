@@ -1,4 +1,3 @@
-import React from "react"
 import { useAdminDeleteDiscount, useAdminUpdateDiscount } from "medusa-react"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
@@ -55,7 +54,8 @@ const usePromotionActions = (promotion) => {
               onSuccess: () => {
                 notification(
                   "Success",
-                  `Successfully ${promotion.is_disabled ? "published" : "unpublished"
+                  `Successfully ${
+                    promotion.is_disabled ? "published" : "unpublished"
                   } discount`,
                   "success"
                 )

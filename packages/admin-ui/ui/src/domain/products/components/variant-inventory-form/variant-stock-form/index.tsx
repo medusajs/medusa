@@ -69,10 +69,10 @@ const VariantStockForm = ({
 
   return (
     <div>
-      <div className="flex flex-col gap-y-xlarge">
+      <div className="gap-y-xlarge flex flex-col">
         <div className="flex flex-col gap-y-4">
           <h3 className="inter-base-semibold">General</h3>
-          <div className="grid grid-cols-2 gap-large">
+          <div className="gap-large grid grid-cols-2">
             <InputField
               label="Stock keeping unit (SKU)"
               placeholder="SUN-G, JK1234..."
@@ -95,7 +95,7 @@ const VariantStockForm = ({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="inter-base-semibold mb-2xsmall">Manage inventory</h3>
             <Controller
@@ -111,7 +111,7 @@ const VariantStockForm = ({
             returns are made.
           </p>
         </div>
-        <div className="flex flex-col gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="inter-base-semibold mb-2xsmall">Allow backorders</h3>
             <Controller
@@ -127,11 +127,11 @@ const VariantStockForm = ({
             product being sold out
           </p>
         </div>
-        <div className="flex flex-col w-full text-base">
+        <div className="flex w-full flex-col text-base">
           <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
           {!isLoading && locations && (
-            <div className="flex flex-col w-full">
-              <div className="flex justify-between py-3 inter-base-regular text-grey-50">
+            <div className="flex w-full flex-col">
+              <div className="inter-base-regular text-grey-50 flex justify-between py-3">
                 <div className="">Location</div>
                 <div className="">In Stock</div>
               </div>
@@ -142,18 +142,18 @@ const VariantStockForm = ({
 
                 return (
                   <div key={level.id} className="flex items-center py-3">
-                    <div className="flex items-center inter-base-regular">
+                    <div className="inter-base-regular flex items-center">
                       <IconBadge className="mr-base">
                         <BuildingsIcon />
                       </IconBadge>
                       {locationDetails?.name}
                     </div>
-                    <div className="flex ml-auto">
-                      <div className="flex flex-col mr-base text-small text-grey-50">
-                        <span className="text-right whitespace-nowrap">
+                    <div className="ml-auto flex">
+                      <div className="mr-base text-small text-grey-50 flex flex-col">
+                        <span className="whitespace-nowrap text-right">
                           {`${level.reserved_quantity} reserved`}
                         </span>
-                        <span className="text-right whitespace-nowrap">{`${
+                        <span className="whitespace-nowrap text-right">{`${
                           level.stocked_quantity - level.reserved_quantity
                         } available`}</span>
                       </div>
@@ -284,11 +284,11 @@ const ManageLocationsForm = ({
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <form onSubmit={handleSubmit}>
         <Modal.Content>
           <div>
-            <div className="flex items-center justify-between w-full border-b border-grey-20 pb-base text-grey-50">
+            <div className="border-grey-20 pb-base text-grey-50 flex w-full items-center justify-between border-b">
               <div className="">
                 <p>Select locations that stock the selected variant</p>
                 <p>{`(${selectedLocations.length} of ${locationOptions.length} selected)`}</p>
@@ -307,7 +307,7 @@ const ManageLocationsForm = ({
 
               return (
                 <div
-                  className="flex items-center justify-between gap-6 border-b border-grey-20 py-base"
+                  className="border-grey-20 py-base flex items-center justify-between gap-6 border-b"
                   key={loc.id}
                 >
                   <div className="flex items-center">
@@ -326,7 +326,7 @@ const ManageLocationsForm = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex justify-end w-full gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full justify-end">
             <Button
               variant="ghost"
               size="small"

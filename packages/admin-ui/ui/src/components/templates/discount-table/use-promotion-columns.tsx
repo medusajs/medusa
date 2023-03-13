@@ -1,5 +1,5 @@
 import { end, parse } from "iso8601-duration"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import Badge from "../../fundamentals/badge"
 import StatusDot from "../../fundamentals/status-indicator"
@@ -20,10 +20,10 @@ const getPromotionStatus = (promotion) => {
       (promotion.ends_at && new Date(promotion.ends_at) < date) ||
       (promotion.valid_duration &&
         date >
-        end(
-          parse(promotion.valid_duration),
-          new Date(promotion.starts_at)
-        )) ||
+          end(
+            parse(promotion.valid_duration),
+            new Date(promotion.starts_at)
+          )) ||
       promotion.usage_count === promotion.usage_limit
     ) {
       return PromotionStatus.EXPIRED
@@ -111,7 +111,7 @@ export const usePromotionTableColumns = () => {
         Header: <div className="w-[60px]" />,
         id: "currency",
         Cell: ({ row: { original } }) => (
-          <div className="px-2 text-grey-40">{getCurrencySymbol(original)}</div>
+          <div className="text-grey-40 px-2">{getCurrencySymbol(original)}</div>
         ),
       },
       {

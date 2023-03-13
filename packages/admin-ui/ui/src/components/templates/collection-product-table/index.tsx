@@ -98,7 +98,7 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
           id: "selection",
           Cell: ({ row }) => {
             return (
-              <Table.Cell className="w-[5%] pl-base">
+              <Table.Cell className="pl-base w-[5%]">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Table.Cell>
             )

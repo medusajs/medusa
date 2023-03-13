@@ -76,7 +76,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
           id: "selection",
           Cell: ({ row }) => {
             return (
-              <Table.Cell className="w-[5%] pl-base">
+              <Table.Cell className="pl-base w-[5%]">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Table.Cell>
             )
@@ -205,7 +205,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
           </TableContainer>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex items-center justify-end gap-x-xsmall w-full">
+          <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button
               variant="ghost"
               size="small"
