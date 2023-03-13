@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import React from "react"
 import SectionCollapsible from "../section-collapsible"
 import { useAdminCustomers } from "medusa-react"
 import useKeyboardNavigationList from "../use-keyboard-navigation-list"
@@ -29,16 +28,16 @@ const CustomerResults = ({
                 index: offset + index,
               })}
               className={clsx(
-                "px-base group py-1.5 focus:bg-grey-5 rounded-rounded",
+                "px-base focus:bg-grey-5 rounded-rounded group py-1.5",
                 { "bg-grey-5": selected === offset + index }
               )}
             >
               <Link
                 to={`/a/customers/${customer.id}`}
-                className="py-1.5 flex items-center rounded-rounded justify-between"
+                className="rounded-rounded flex items-center justify-between py-1.5"
               >
                 <div className="flex items-center gap-x-3">
-                  <div className="w-[20px] h-[20px] shrink-0">
+                  <div className="h-[20px] w-[20px] shrink-0">
                     <Avatar user={customer} />
                   </div>
                   <p className="inter-small-regular text-grey-90">
@@ -49,7 +48,7 @@ const CustomerResults = ({
                 </div>
                 <span
                   className={clsx(
-                    "group-focus:visible text-grey-40 inter-small-regular",
+                    "text-grey-40 inter-small-regular group-focus:visible",
                     {
                       invisible: selected !== offset + index,
                     }

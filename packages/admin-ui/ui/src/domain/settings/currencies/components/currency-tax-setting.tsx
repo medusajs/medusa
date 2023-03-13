@@ -53,19 +53,19 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
 
   return (
     <form>
-      <div className="flex items-center justify-between inter-base-regular">
-        <div className="flex items-center gap-x-base">
-          <div className="flex items-center justify-center bg-grey-10 rounded-rounded w-xlarge h-xlarge">
+      <div className="inter-base-regular flex items-center justify-between">
+        <div className="gap-x-base flex items-center">
+          <div className="bg-grey-10 rounded-rounded w-xlarge h-xlarge flex items-center justify-center">
             <CoinsIcon size={20} className="text-grey-50" />
           </div>
-          <div className="flex items-center gap-x-xsmall">
+          <div className="gap-x-xsmall flex items-center">
             <p className="inter-base-semibold text-grey-90">
               {currency.code.toUpperCase()}
             </p>
             <p className="text-grey-50 inter-small-regular">{currency.name}</p>
           </div>
           {isDefault && (
-            <div className="bg-grey-10 rounded-rounded py-[2px] px-xsmall">
+            <div className="bg-grey-10 rounded-rounded px-xsmall py-[2px]">
               <p className="inter-small-semibold text-grey-50">Default</p>
             </div>
           )}

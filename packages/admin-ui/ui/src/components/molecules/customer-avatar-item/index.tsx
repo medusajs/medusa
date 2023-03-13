@@ -22,11 +22,11 @@ const CustomerAvatarItem: React.FC<CustomerAvatarItemProps> = ({
       : "-"
 
   return (
-    <div className="flex items-center py-1.5 w-full">
-      <div className="w-[24px] h-[24px]">
+    <div className="flex w-full items-center py-1.5">
+      <div className="h-[24px] w-[24px]">
         <Avatar user={customer} color={color} />
       </div>
-      <span className="pl-2.5 w-40 truncate">{identifier}</span>
+      <span className="w-40 truncate pl-2.5">{identifier}</span>
     </div>
   )
 }

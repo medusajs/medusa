@@ -115,14 +115,14 @@ const Items = () => {
   }, [])
 
   return (
-    <div className="flex flex-col min-h-[705px] pt-4">
+    <div className="flex min-h-[705px] flex-col pt-4">
       <span className="inter-base-semibold mb-4">Items for the order</span>
       {fields.length > 0 && region && (
         <Table>
           <Table.Head>
-            <Table.HeadRow className="text-grey-50 border-t inter-small-semibold">
+            <Table.HeadRow className="text-grey-50 inter-small-semibold border-t">
               <Table.HeadCell>Details</Table.HeadCell>
-              <Table.HeadCell className="text-right pr-8">
+              <Table.HeadCell className="pr-8 text-right">
                 Quantity
               </Table.HeadCell>
               <Table.HeadCell className="text-right">
@@ -139,18 +139,18 @@ const Items = () => {
                   className={clsx("border-b-grey-0 hover:bg-grey-0")}
                 >
                   <Table.Cell>
-                    <div className="min-w-[240px] flex items-center py-2">
-                      <div className="w-[30px] h-[40px] ">
+                    <div className="flex min-w-[240px] items-center py-2">
+                      <div className="h-[40px] w-[30px] ">
                         {item.thumbnail ? (
                           <img
-                            className="h-full w-full object-cover rounded"
+                            className="h-full w-full rounded object-cover"
                             src={item.thumbnail}
                           />
                         ) : (
                           <ImagePlaceholder />
                         )}
                       </div>
-                      <div className="inter-small-regular text-grey-50 flex flex-col ml-4">
+                      <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
                         {item.product_title && (
                           <span className="text-grey-90">
                             {item.product_title}
@@ -160,7 +160,7 @@ const Items = () => {
                       </div>
                     </div>
                   </Table.Cell>
-                  <Table.Cell className="text-right w-32 pr-8">
+                  <Table.Cell className="w-32 pr-8 text-right">
                     {editQuantity === index ? (
                       <InputField
                         type="number"
@@ -170,16 +170,16 @@ const Items = () => {
                         onBlur={() => setEditQuantity(-1)}
                       />
                     ) : (
-                      <div className="flex w-full text-right justify-end text-grey-50 ">
+                      <div className="text-grey-50 flex w-full justify-end text-right ">
                         <span
                           onClick={() => handleEditQuantity(index, -1)}
-                          className="w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 mr-2"
+                          className="hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                         >
                           <MinusIcon size={16} />
                         </span>
                         <button
                           type="button"
-                          className="px-1 hover:bg-grey-20 rounded cursor-pointer"
+                          className="hover:bg-grey-20 cursor-pointer rounded px-1"
                           onClick={() => setEditQuantity(index)}
                         >
                           <input
@@ -187,14 +187,14 @@ const Items = () => {
                             {...register(`items.${index}.quantity`, {
                               valueAsNumber: true,
                             })}
-                            className="bg-transparent w-full text-center text-grey-90"
+                            className="text-grey-90 w-full bg-transparent text-center"
                             disabled
                           />
                         </button>
                         <span
                           onClick={() => handleEditQuantity(index, 1)}
                           className={clsx(
-                            "w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 ml-2"
+                            "hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                           )}
                         >
                           <PlusIcon size={16} />
@@ -246,7 +246,7 @@ const Items = () => {
                       />
                     )}
                   </Table.Cell>
-                  <Table.Cell className="text-right text-grey-40 pr-1">
+                  <Table.Cell className="text-grey-40 pr-1 text-right">
                     {region!.currency_code.toUpperCase()}
                   </Table.Cell>
                   <Table.Cell>
@@ -264,11 +264,11 @@ const Items = () => {
           </Table.Body>
         </Table>
       )}
-      <div className="flex w-full justify-end mt-3 gap-x-xsmall">
+      <div className="gap-x-xsmall mt-3 flex w-full justify-end">
         <Button
           variant="ghost"
           size="small"
-          className="border border-grey-20"
+          className="border-grey-20 border"
           onClick={() => {
             layeredContext.push(
               CreateCustomProductScreen(
@@ -285,7 +285,7 @@ const Items = () => {
         <Button
           variant="ghost"
           size="small"
-          className="border border-grey-20"
+          className="border-grey-20 border"
           onClick={() => {
             layeredContext.push(
               SelectProductsScreen(

@@ -1,4 +1,3 @@
-import React from "react"
 import InputField from "../../../../components/molecules/input"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -27,7 +26,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
   } = form
 
   return (
-    <div className="grid grid-cols-4 gap-x-large">
+    <div className="gap-x-large grid grid-cols-4">
       <InputField
         label="Width"
         placeholder="100..."

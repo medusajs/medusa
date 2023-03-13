@@ -1,4 +1,3 @@
-import React from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { currencies } from "../../../utils/currencies"
 import Button from "../../fundamentals/button"
@@ -11,7 +10,7 @@ const PriceAmount = ({ value, onChange }) => {
 
   const currencyName = currencies[value.currency_code?.toUpperCase()]?.name
   return (
-    <div className="flex flex-col gap-3 py-3 first:border-t border-grey-20 border-solid border-b last:border-b-0">
+    <div className="border-grey-20 flex flex-col gap-3 border-b border-solid py-3 first:border-t last:border-b-0">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="inter-base-semibold">

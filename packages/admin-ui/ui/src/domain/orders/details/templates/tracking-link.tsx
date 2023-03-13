@@ -1,5 +1,3 @@
-import React from "react"
-
 export const TrackingLink = ({ trackingLink }) => {
   if (trackingLink.url) {
     return (
@@ -7,6 +5,7 @@ export const TrackingLink = ({ trackingLink }) => {
         style={{ textDecoration: "none" }}
         target="_blank"
         href={trackingLink.url}
+        rel="noreferrer"
       >
         <div className="text-blue-60 ml-2">{trackingLink.tracking_number} </div>
       </a>

@@ -54,21 +54,21 @@ const SaveNotification: React.FC<SaveNotificationProps> = ({
   }
 
   return (
-    <ToasterContainer visible={toast.visible} className="p-0 pl-base w-[448px]">
+    <ToasterContainer visible={toast.visible} className="pl-base w-[448px] p-0">
       <div className="py-base">{getIcon(icon)}</div>
-      <div className="flex flex-col ml-small mr-base gap-y-2xsmall flex-grow py-base">
+      <div className="ml-small mr-base gap-y-2xsmall py-base flex flex-grow flex-col">
         <span className="inter-small-semibold">{title}</span>
         <span className="inter-small-regular text-grey-50">{message}</span>
       </div>
-      <div className="flex flex-col inter-small-semibold border-l border-grey-20 h-full">
+      <div className="inter-small-semibold border-grey-20 flex h-full flex-col border-l">
         <button
           onClick={handleSave}
-          className="inter-small-semibold flex items-center justify-center h-1/2 border-b border-grey-20 px-base text-violet-60"
+          className="inter-small-semibold border-grey-20 px-base text-violet-60 flex h-1/2 items-center justify-center border-b"
         >
           Publish
         </button>
         <button
-          className="inter-small-semibold flex items-center justify-center h-1/2 px-base"
+          className="inter-small-semibold px-base flex h-1/2 items-center justify-center"
           onClick={onDismiss}
         >
           Discard

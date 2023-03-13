@@ -154,10 +154,10 @@ export const useProductFilters = (
     existing = existing.substring(1)
   }
 
-  const initial = useMemo(() => parseQueryString(existing, defaultFilters), [
-    existing,
-    defaultFilters,
-  ])
+  const initial = useMemo(
+    () => parseQueryString(existing, defaultFilters),
+    [existing, defaultFilters]
+  )
 
   const initialTabs = useMemo(() => {
     const storageString = localStorage.getItem("products::filters")

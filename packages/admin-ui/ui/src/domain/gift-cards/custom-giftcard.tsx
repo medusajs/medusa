@@ -78,7 +78,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
         <Modal.Content>
           <div className="flex flex-col">
             <span className="inter-base-semibold">Value</span>
-            <div className="flex gap-x-2xsmall mt-4">
+            <div className="gap-x-2xsmall mt-4 flex">
               <div className="w-[267px]">
                 <Select
                   label={"Region"}
@@ -116,7 +116,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
           </div>
           <div className="mt-8">
             <span className="inter-base-semibold">Receiver</span>
-            <div className="grid grid-cols-1 gap-y-xsmall mt-4">
+            <div className="gap-y-xsmall mt-4 grid grid-cols-1">
               <InputField
                 label={"Email"}
                 required
@@ -134,7 +134,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full justify-end gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full justify-end">
             <Button
               variant="ghost"
               onClick={onDismiss}

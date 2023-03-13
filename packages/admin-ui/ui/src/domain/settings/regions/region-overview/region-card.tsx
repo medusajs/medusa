@@ -1,5 +1,4 @@
 import { Region } from "@medusajs/medusa"
-import React from "react"
 import RadioGroup from "../../../../components/organisms/radio-group"
 import fulfillmentProvidersMapper from "../../../../utils/fulfillment-providers.mapper"
 import paymentProvidersMapper from "../../../../utils/payment-providers-mapper"
@@ -19,7 +18,7 @@ const RegionCard = ({ region }: Props) => {
           : undefined
       }
     >
-      <div className="flex flex-col gap-y-2xsmall inter-small-regular text-grey-50">
+      <div className="gap-y-2xsmall inter-small-regular text-grey-50 flex flex-col">
         <p>
           Payment providers:{" "}
           <span className="truncate">

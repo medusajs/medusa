@@ -9,7 +9,7 @@ const SalesChannelsSection = ({
 }) => {
   return (
     <div className="py-base">
-      <div className="flex items-center justify-between w-full">
+      <div className="flex w-full items-center justify-between">
         {!location.sales_channels?.length ? (
           <span className="inter-base-regular text-grey-40">
             Not connected to any sales channels yet

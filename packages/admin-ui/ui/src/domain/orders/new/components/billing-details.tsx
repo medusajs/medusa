@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import React from "react"
 import { useWatch } from "react-hook-form"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
 import AddressForm, {
@@ -46,11 +45,11 @@ const Billing = () => {
       <span className="inter-base-semibold">Billing Address</span>
       {!isNullishObject(shippingAddress) || shippingAddressId ? (
         <div
-          className="items-center flex mt-4 mb-6 cursor-pointer"
+          className="mt-4 mb-6 flex cursor-pointer items-center"
           onClick={updateSameAsShipping}
         >
           <div
-            className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border rounded-base ${
+            className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
               sameAsShipping && "bg-violet-60"
             }`}
           >
@@ -64,11 +63,11 @@ const Billing = () => {
             {...form.register("same_as_shipping")}
             tabIndex={-1}
           />
-          <span className="ml-3 text-grey-90">Use same as shipping</span>
+          <span className="text-grey-90 ml-3">Use same as shipping</span>
         </div>
       ) : null}
       <div
-        className={clsx({ "opacity-50 pointer-events-none": sameAsShipping })}
+        className={clsx({ "pointer-events-none opacity-50": sameAsShipping })}
         tabIndex={sameAsShipping ? -1 : undefined}
       >
         <AddressForm

@@ -1,4 +1,3 @@
-import React from "react"
 import InputField from "../../../../../components/molecules/input"
 import FormValidator from "../../../../../utils/form-validator"
 import { NestedForm } from "../../../../../utils/nested-form"
@@ -25,7 +24,7 @@ const VariantGeneralForm = ({ form }: Props) => {
         Configure the general information for this variant.
       </p>
       <div className="pt-large">
-        <div className="grid grid-cols-2 gap-x-large">
+        <div className="gap-x-large grid grid-cols-2">
           <InputField
             label="Custom title"
             placeholder="Green / XL..."

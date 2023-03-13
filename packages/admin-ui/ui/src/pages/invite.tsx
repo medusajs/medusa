@@ -1,7 +1,7 @@
 import ConfettiGenerator from "confetti-js"
 import { useAdminAcceptInvite } from "medusa-react"
 import qs from "qs"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { decodeToken } from "react-jwt"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -122,27 +122,27 @@ const InvitePage = () => {
         <LoginLayout>
           <SEO title="Create Account" />
           <div className="flex h-full w-full items-center justify-center">
-            <div className="flex min-h-[600px] bg-grey-0 rounded-rounded justify-center">
+            <div className="bg-grey-0 rounded-rounded flex min-h-[600px] justify-center">
               <form
-                className="flex flex-col py-12 w-full px-[120px] items-center"
+                className="flex w-full flex-col items-center py-12 px-[120px]"
                 onSubmit={handleSubmit(handleAcceptInvite)}
               >
                 <MedusaIcon />
                 {!token ? (
-                  <div className="h-full flex flex-col gap-y-2 text-center items-center justify-center">
+                  <div className="flex h-full flex-col items-center justify-center gap-y-2 text-center">
                     <span className="inter-large-semibold text-grey-90">
                       You signup link is invalid
                     </span>
-                    <span className="inter-base-regular mt-2 text-grey-50">
+                    <span className="inter-base-regular text-grey-50 mt-2">
                       Contact your administrator to obtain a valid signup link
                     </span>
                   </div>
                 ) : (
                   <>
-                    <span className="inter-2xlarge-semibold mt-4 text-grey-90">
+                    <span className="inter-2xlarge-semibold text-grey-90 mt-4">
                       Welcome to the team!
                     </span>
-                    <span className="inter-base-regular text-grey-50 mt-2 mb-large">
+                    <span className="inter-base-regular text-grey-50 mb-large mt-2">
                       Create your account below👇🏼
                     </span>
                     <SigninInput
@@ -168,7 +168,7 @@ const InvitePage = () => {
                       autoComplete="new-password"
                     />
                     {passwordMismatch && (
-                      <span className="text-rose-50 w-full mt-2 inter-small-regular">
+                      <span className="inter-small-regular mt-2 w-full text-rose-50">
                         The two passwords are not the same
                       </span>
                     )}
@@ -176,7 +176,7 @@ const InvitePage = () => {
                       variant="primary"
                       size="large"
                       type="submit"
-                      className="w-full mt-base"
+                      className="mt-base w-full"
                       loading={formState.isSubmitting}
                       disabled={!ready}
                     >
@@ -196,9 +196,9 @@ const InvitePage = () => {
         </LoginLayout>
       ) : (
         <div className="bg-grey-90 h-screen w-full overflow-hidden">
-          <div className="z-10 flex-grow flex flex-col items-center justify-center h-full absolute inset-0 max-w-[1080px] mx-auto">
+          <div className="absolute inset-0 z-10 mx-auto flex h-full max-w-[1080px] flex-grow flex-col items-center justify-center">
             <MedusaVice className="mb-3xlarge" />
-            <div className="flex flex-col items-center max-w-3xl text-center">
+            <div className="flex max-w-3xl flex-col items-center text-center">
               <h1 className="inter-3xlarge-semibold text-grey-0 mb-base">
                 You have been invited to join the team
               </h1>

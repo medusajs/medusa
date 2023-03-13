@@ -50,13 +50,13 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
       <PopoverPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
         <PopoverPrimitive.Trigger asChild>
           <button
-            className={clsx("w-full rounded-rounded border ", {
+            className={clsx("rounded-rounded w-full border ", {
               "shadow-input border-violet-60": isOpen,
               "border-grey-20": !isOpen,
             })}
           >
-            <InputContainer className="border-0 shadown-none focus-within:shadow-none">
-              <div className="w-full flex text-grey-50 pr-0.5 justify-between">
+            <InputContainer className="shadown-none border-0 focus-within:shadow-none">
+              <div className="text-grey-50 flex w-full justify-between pr-0.5">
                 <InputHeader
                   {...{
                     label,
@@ -76,15 +76,15 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
         <PopoverPrimitive.Content
           side="top"
           sideOffset={8}
-          className="rounded-rounded px-8  border border-grey-20 bg-grey-0 w-full shadow-dropdown"
+          className="rounded-rounded border-grey-20  bg-grey-0 shadow-dropdown w-full border px-8"
         >
           <CalendarComponent date={tempDate} onChange={setTempDate} />
-          <div className="flex w-full mb-8 mt-5">
+          <div className="mb-8 mt-5 flex w-full">
             <Button
               variant="ghost"
               size="medium"
               onClick={() => setIsOpen(false)}
-              className="mr-2 w-1/3 flex justify-center border border-grey-20"
+              className="border-grey-20 mr-2 flex w-1/3 justify-center border"
             >
               Cancel
             </Button>
@@ -92,7 +92,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
               size="medium"
               variant="primary"
               onClick={() => submitDate()}
-              className="w-2/3 flex justify-center"
+              className="flex w-2/3 justify-center"
             >{`Set ${label}`}</Button>
           </div>
         </PopoverPrimitive.Content>

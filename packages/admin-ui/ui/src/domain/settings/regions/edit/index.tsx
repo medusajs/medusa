@@ -1,5 +1,4 @@
 import { useAdminRegion } from "medusa-react"
-import React from "react"
 import Spinner from "../../../../components/atoms/spinner"
 import GeneralSection from "./general-section"
 import ReturnShippingOptions from "./return-shipping-options"
@@ -16,7 +15,7 @@ const EditRegion = ({ id }: Props) => {
 
   if (isLoading) {
     return (
-      <div className="h-full w-full flex items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <Spinner variant="secondary" />
       </div>
     )
@@ -24,7 +23,7 @@ const EditRegion = ({ id }: Props) => {
 
   if (isError) {
     return (
-      <div className="bg-grey-0 rounded-rounded border border-grey-20 flex flex-col gap-y-xsmall items-center justify-center w-full h-full text-center ">
+      <div className="bg-grey-0 rounded-rounded border-grey-20 gap-y-xsmall flex h-full w-full flex-col items-center justify-center border text-center ">
         <h1 className="inter-large-semibold">Something went wrong...</h1>
         <p className="inter-base-regular text-grey-50">
           We can't find a region with that ID, use the menu to the left to
@@ -39,7 +38,7 @@ const EditRegion = ({ id }: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-y-xsmall">
+    <div className="gap-y-xsmall flex flex-col">
       <GeneralSection region={region} />
       <ShippingOptions region={region} />
       <ReturnShippingOptions region={region} />

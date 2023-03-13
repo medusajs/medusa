@@ -1,4 +1,3 @@
-import React from "react"
 import InputField from "../../../../components/molecules/input"
 import TextArea from "../../../../components/molecules/textarea"
 import FormValidator from "../../../../utils/form-validator"
@@ -26,7 +25,7 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-x-large mb-small">
+      <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
           label="Title"
           placeholder="Winter Jacket"
@@ -55,7 +54,7 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
         <br />
         50-60 characters is the recommended length for search engines.
       </p>
-      <div className="grid grid-cols-2 gap-x-large mb-large">
+      <div className="gap-x-large mb-large grid grid-cols-2">
         <InputField
           label="Handle"
           tooltipContent={

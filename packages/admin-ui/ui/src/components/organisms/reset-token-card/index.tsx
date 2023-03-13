@@ -61,35 +61,36 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           <>
             <SigninInput
               placeholder="lebron@james.com..."
-              {...register('email', { required: true })}
-              className="mb-0 mt-xlarge" />
+              {...register("email", { required: true })}
+              className="mt-xlarge mb-0"
+            />
             {unrecognizedEmail && (
               <div className="mt-xsmall w-[318px]">
-                <span className="inter-small-regular text-rose-50 text-left">
+                <span className="inter-small-regular text-left text-rose-50">
                   We can't find a user with that email address
                 </span>
               </div>
             )}
             {invalidEmail && (
               <div className="mt-xsmall w-[318px]">
-                <span className="inter-small-regular text-rose-50 text-left">
+                <span className="inter-small-regular text-left text-rose-50">
                   Not a valid email address
                 </span>
               </div>
             )}
             <button
-              className="text-grey-0 w-[320px] h-[48px] border rounded-rounded mt-4 bg-violet-50 inter-base-regular py-3 px-4"
+              className="text-grey-0 rounded-rounded inter-base-regular mt-4 h-[48px] w-[320px] border bg-violet-50 py-3 px-4"
               type="submit"
             >
               Send reset instructions
             </button>
           </>
         ) : (
-          <div className="text-violet-60 rounded-rounded bg-violet-10 p-base flex gap-x-small mt-large">
+          <div className="text-violet-60 rounded-rounded bg-violet-10 p-base gap-x-small mt-large flex">
             <div>
               <CheckCircleIcon size={20} />
             </div>
-            <div className="flex flex-col gap-y-2xsmall">
+            <div className="gap-y-2xsmall flex flex-col">
               <span className="inter-small-semibold">
                 Succesfully sent you an email
               </span>
@@ -109,7 +110,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
         </span>
       </div>
     </form>
-  );
+  )
 }
 
 export default ResetTokenCard
