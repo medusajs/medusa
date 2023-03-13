@@ -36,7 +36,7 @@ const Item = ({
   return (
     <label
       className={clsx(
-        "rounded-rounded relative border border-grey-20 p-base flex items-start mb-xsmall gap-base cursor-pointer",
+        "rounded-rounded border-grey-20 p-base mb-xsmall gap-base relative flex cursor-pointer items-start border",
         { "bg-grey-5 text-grey-40": disabled },
         className
       )}
@@ -49,13 +49,13 @@ const Item = ({
           disabled={disabled}
           className={clsx(
             "radio-outer-ring outline-0",
-            "shrink-0 w-[20px] h-[20px] shadow-[0_0_0_1px] shadow-grey-20 rounded-circle"
+            "shadow-grey-20 rounded-circle h-[20px] w-[20px] shrink-0 shadow-[0_0_0_1px]"
           )}
         >
           <RadioGroupPrimitive.Indicator
             className={clsx(
-              "indicator flex items-center justify-center w-full h-full relative",
-              "after:absolute after:inset-0 after:m-auto after:block after:w-[12px] after:h-[12px] after:bg-violet-60 after:rounded-circle"
+              "indicator relative flex h-full w-full items-center justify-center",
+              "after:bg-violet-60 after:rounded-circle after:absolute after:inset-0 after:m-auto after:block after:h-[12px] after:w-[12px]"
             )}
           />
           {/* Outline indicator: purely stylistical */}
@@ -63,7 +63,7 @@ const Item = ({
             //  we want to hide this indicator from screen readers because the previous one is enough
             aria-hidden="true"
             className={clsx(
-              "absolute inset-0 shadow-violet-60 shadow-[0_0_0_2px] rounded-rounded"
+              "shadow-violet-60 rounded-rounded absolute inset-0 shadow-[0_0_0_2px]"
             )}
           />
         </RadioGroupPrimitive.Item>
@@ -110,9 +110,9 @@ const SimpleItem: React.FC<RadioGroupSimpleItemProps> = ({
   return (
     <label
       className={clsx(
-        "flex items-center mr-large last:mr-0",
+        "mr-large flex items-center last:mr-0",
         {
-          ["opacity-50 select-none pointer-events-none"]: rest.disabled,
+          ["pointer-events-none select-none opacity-50"]: rest.disabled,
         },
         className
       )}
@@ -123,17 +123,17 @@ const SimpleItem: React.FC<RadioGroupSimpleItemProps> = ({
         id={rest.value}
         className={clsx(
           "radio-outer-ring outline-0",
-          "shrink-0 w-[20px] h-[20px] shadow-[0_0_0_1px] shadow-[#D1D5DB] rounded-circle"
+          "rounded-circle h-[20px] w-[20px] shrink-0 shadow-[0_0_0_1px] shadow-[#D1D5DB]"
         )}
       >
         <RadioGroupPrimitive.Indicator
           className={clsx(
-            "flex items-center justify-center w-full h-full relative indicator",
-            "after:absolute after:inset-0 after:m-auto after:block after:w-[12px] after:h-[12px] after:bg-violet-60 after:rounded-circle"
+            "indicator relative flex h-full w-full items-center justify-center",
+            "after:bg-violet-60 after:rounded-circle after:absolute after:inset-0 after:m-auto after:block after:h-[12px] after:w-[12px]"
           )}
         />
       </RadioGroupPrimitive.Item>
-      <div className="ml-small inter-base-regular cursor-pointer w-full">
+      <div className="ml-small inter-base-regular w-full cursor-pointer">
         <span>{label && label}</span>
         <span>{description && description}</span>
       </div>
@@ -146,7 +146,7 @@ const Dot: React.FC<DotProps> = ({ className, ...rest }) => {
     <label
       className={clsx(
         {
-          ["opacity-50 select-none pointer-events-none"]: rest.disabled,
+          ["pointer-events-none select-none opacity-50"]: rest.disabled,
         },
         className
       )}
@@ -157,13 +157,13 @@ const Dot: React.FC<DotProps> = ({ className, ...rest }) => {
         id={rest.value}
         className={clsx(
           "radio-outer-ring outline-0",
-          "shrink-0 w-[20px] h-[20px] shadow-[0_0_0_1px] shadow-[#D1D5DB] rounded-circle"
+          "rounded-circle h-[20px] w-[20px] shrink-0 shadow-[0_0_0_1px] shadow-[#D1D5DB]"
         )}
       >
         <RadioGroupPrimitive.Indicator
           className={clsx(
-            "flex items-center justify-center w-full h-full relative indicator",
-            "after:absolute after:inset-0 after:m-auto after:block after:w-[12px] after:h-[12px] after:bg-violet-60 after:rounded-circle"
+            "indicator relative flex h-full w-full items-center justify-center",
+            "after:bg-violet-60 after:rounded-circle after:absolute after:inset-0 after:m-auto after:block after:h-[12px] after:w-[12px]"
           )}
         />
       </RadioGroupPrimitive.Item>

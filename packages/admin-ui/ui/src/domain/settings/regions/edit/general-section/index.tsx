@@ -68,11 +68,11 @@ const GeneralSection = ({ region }: Props) => {
           },
         ]}
       >
-        <div className="flex flex-col gap-y-xsmall mt-large">
+        <div className="gap-y-xsmall mt-large flex flex-col">
           <h2 className="inter-large-semibold">Details</h2>
-          <div className="flex flex-col gap-y-xsmall">
+          <div className="gap-y-xsmall flex flex-col">
             <RegionDetail title={"Currency"}>
-              <div className="flex items-center gap-x-xsmall">
+              <div className="gap-x-xsmall flex items-center">
                 <span className="inter-base-semibold text-grey-90">
                   {region.currency_code.toUpperCase()}
                 </span>
@@ -84,7 +84,7 @@ const GeneralSection = ({ region }: Props) => {
             <RegionDetail title={"Countries"}>
               <div>
                 {region.countries && region.countries.length ? (
-                  <div className="flex items-center gap-x-xsmall">
+                  <div className="gap-x-xsmall flex items-center">
                     <p>
                       {region.countries
                         .slice(0, 4)
@@ -116,7 +116,7 @@ const GeneralSection = ({ region }: Props) => {
             <RegionDetail title={"Payment providers"}>
               <div>
                 {region.payment_providers && region.payment_providers.length ? (
-                  <div className="flex items-center gap-x-xsmall">
+                  <div className="gap-x-xsmall flex items-center">
                     <p>
                       {region.payment_providers
                         .slice(0, 4)
@@ -152,7 +152,7 @@ const GeneralSection = ({ region }: Props) => {
             <RegionDetail title={"Fulfillment providers"}>
               <div>
                 {region.payment_providers && region.payment_providers.length ? (
-                  <div className="flex items-center gap-x-xsmall">
+                  <div className="gap-x-xsmall flex items-center">
                     <p>
                       {region.fulfillment_providers
                         .slice(0, 4)
@@ -200,7 +200,7 @@ type DetailProps = {
 
 const RegionDetail = ({ title, children }: DetailProps) => {
   return (
-    <div className="flex items-center justify-between inter-base-regular text-grey-50">
+    <div className="inter-base-regular text-grey-50 flex items-center justify-between">
       <p>{title}</p>
       {children}
     </div>

@@ -1,5 +1,5 @@
 import { useAdminProducts } from "medusa-react"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import Spinner from "../../../components/atoms/spinner"
 import Toaster from "../../../components/declarative-toaster"
@@ -28,7 +28,7 @@ const ManageGiftCard = () => {
 
   if (!giftCard) {
     return (
-      <div className="w-full h-screen flex items-center justify-center">
+      <div className="flex h-screen w-full items-center justify-center">
         <Spinner variant="secondary" size="large" />
       </div>
     )
@@ -39,7 +39,7 @@ const ManageGiftCard = () => {
       giftCard={giftCardToFormValuesMapper(giftCard)}
       giftCardId={giftCard.id}
     >
-      <div className="flex flex-col gap-y-large pb-xlarge">
+      <div className="gap-y-large pb-xlarge flex flex-col">
         <Information giftCard={giftCard} />
         <Denominations giftCard={giftCard} />
         <Images />

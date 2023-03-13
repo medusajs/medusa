@@ -18,11 +18,11 @@ const IconTooltip: React.FC<IconTooltipProps> = ({
   const icon = (type: IconTooltipProps["type"]) => {
     switch (type) {
       case "warning":
-        return <AlertIcon size={size} className="flex text-orange-40" />
+        return <AlertIcon size={size} className="text-orange-40 flex" />
       case "error":
-        return <XCircleIcon size={size} className="flex text-rose-40" />
+        return <XCircleIcon size={size} className="text-rose-40 flex" />
       default:
-        return <InfoIcon size={size} className="flex text-grey-40" />
+        return <InfoIcon size={size} className="text-grey-40 flex" />
     }
   }
 

@@ -37,7 +37,7 @@ const Fade: React.FC<FadeProps> = ({
 
   return (
     <div
-      className={clsx("transition-all duration-100 z-50", classes, classname)}
+      className={clsx("z-50 transition-all duration-100", classes, classname)}
     >
       {show ? children : null}
     </div>

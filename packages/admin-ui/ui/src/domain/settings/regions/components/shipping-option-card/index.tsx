@@ -1,7 +1,6 @@
 import { ShippingOption } from "@medusajs/medusa"
 import clsx from "clsx"
 import { useAdminDeleteShippingOption } from "medusa-react"
-import React from "react"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import FastDeliveryIcon from "../../../../../components/fundamentals/icons/fast-delivery-icon"
 import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
@@ -40,9 +39,9 @@ const ShippingOptionCard = ({ option }: Props) => {
 
   return (
     <>
-      <div className="bg-grey-0 rounded-rounded border border-grey-20 p-base flex items-center justify-between">
-        <div className="flex items-center gap-x-base">
-          <div className="bg-grey-10 p-2.5 rounded-rounded flex items-center justify-center h-10 w-10">
+      <div className="bg-grey-0 rounded-rounded border-grey-20 p-base flex items-center justify-between border">
+        <div className="gap-x-base flex items-center">
+          <div className="bg-grey-10 rounded-rounded flex h-10 w-10 items-center justify-center p-2.5">
             <FastDeliveryIcon size={20} className="text-grey-50" />
           </div>
           <div>
@@ -75,9 +74,9 @@ const ShippingOptionCard = ({ option }: Props) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-x-base">
+        <div className="gap-x-base flex items-center">
           <div
-            className={clsx("py-0.5 px-xsmall rounded-rounded", {
+            className={clsx("px-xsmall rounded-rounded py-0.5", {
               "bg-grey-10 text-grey-50": option.admin_only,
               "bg-emerald-10 text-emerald-50": !option.admin_only,
             })}

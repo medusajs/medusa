@@ -43,7 +43,7 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
     <Table>
       <Table.HeadRow className="text-grey-50 inter-small-semibold">
         <Table.HeadCell>Product Details</Table.HeadCell>
-        <Table.HeadCell className="text-right pr-8">Quantity</Table.HeadCell>
+        <Table.HeadCell className="pr-8 text-right">Quantity</Table.HeadCell>
         <Table.HeadCell className="text-right">
           {isAdditionalItems ? "Unit Price" : "Refundable"}
         </Table.HeadCell>
@@ -54,14 +54,14 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
         {itemsToAdd.map((item, index) => (
           <Table.Row className={clsx("border-b-grey-0 hover:bg-grey-0")}>
             <Table.Cell>
-              <div className="min-w-[240px] flex py-2">
-                <div className="w-[30px] h-[40px] ">
+              <div className="flex min-w-[240px] py-2">
+                <div className="h-[40px] w-[30px] ">
                   <img
-                    className="h-full w-full object-cover rounded"
+                    className="h-full w-full rounded object-cover"
                     src={item.product.thumbnail}
                   />
                 </div>
-                <div className="inter-small-regular text-grey-50 flex flex-col ml-4">
+                <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
                   <span>
                     <span className="text-grey-90">{item.product.title}</span>{" "}
                   </span>
@@ -69,11 +69,11 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
                 </div>
               </div>
             </Table.Cell>
-            <Table.Cell className="text-right w-32 pr-8">
-              <div className="flex w-full text-right justify-end text-grey-50 ">
+            <Table.Cell className="w-32 pr-8 text-right">
+              <div className="text-grey-50 flex w-full justify-end text-right ">
                 <span
                   onClick={() => handleToAddQuantity(-1, index)}
-                  className="w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 mr-2"
+                  className="hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                 >
                   <MinusIcon size={16} />
                 </span>
@@ -81,7 +81,7 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
                 <span
                   onClick={() => handleToAddQuantity(1, index)}
                   className={clsx(
-                    "w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 ml-2"
+                    "hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                   )}
                 >
                   <PlusIcon size={16} />
@@ -91,7 +91,7 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
             <Table.Cell className="text-right">
               {extractPrice(item.prices, order)}
             </Table.Cell>
-            <Table.Cell className="text-right text-grey-40 pr-1">
+            <Table.Cell className="text-grey-40 pr-1 text-right">
               {order.currency_code.toUpperCase()}
             </Table.Cell>
             <Table.Cell>
@@ -99,7 +99,7 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
                 onClick={() => handleRemoveItem(index)}
                 variant="ghost"
                 size="small"
-                className="w-8 h-8 text-grey-40"
+                className="text-grey-40 h-8 w-8"
               >
                 <TrashIcon size={20} />
               </Button>

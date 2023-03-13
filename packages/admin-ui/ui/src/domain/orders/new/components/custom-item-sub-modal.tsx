@@ -29,7 +29,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
   return (
     <>
       <Modal.Content>
-        <div className="min-h-[705px] gap-y-xsmall">
+        <div className="gap-y-xsmall min-h-[705px]">
           <InputField
             placeholder="E.g. Gift wrapping"
             label="Title"
@@ -59,7 +59,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full justify-end gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button
             variant="ghost"
             size="small"

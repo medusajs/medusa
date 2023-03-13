@@ -16,9 +16,9 @@ const EventItemContainer: React.FC<EventItemContainerProps> = ({ item }) => {
     return null
   }
   return (
-    <div className="flex items-center gap-x-small mb-base last:mb-0">
+    <div className="gap-x-small mb-base flex items-center last:mb-0">
       {item.thumbnail && (
-        <div className="h-10 w-[30px] rounded-base overflow-hidden">
+        <div className="rounded-base h-10 w-[30px] overflow-hidden">
           <img
             src={item.thumbnail}
             alt={`Thumbnail for ${item.title}`}
@@ -26,8 +26,8 @@ const EventItemContainer: React.FC<EventItemContainerProps> = ({ item }) => {
           />
         </div>
       )}
-      <div className="flex flex-col inter-small-regular w-full">
-        <div className="flex items-center justify-between w-full">
+      <div className="inter-small-regular flex w-full flex-col">
+        <div className="flex w-full items-center justify-between">
           <p>{item.title}</p>
           <span className="inter-small-semibold text-violet-60">{`x${item.quantity}`}</span>
         </div>

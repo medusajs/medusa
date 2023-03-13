@@ -1,5 +1,5 @@
 import { CustomerGroup } from "@medusajs/medusa"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { Column, HeaderGroup, Row } from "react-table"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import Table from "../../../../../../components/molecules/table"
@@ -42,7 +42,7 @@ export const useGroupColumns = () => {
     return [
       {
         Header: () => (
-          <div className="flex items-center gap-1 min-w-[540px]">
+          <div className="flex min-w-[540px] items-center gap-1">
             Title <SortingIcon size={16} />
           </div>
         ),
@@ -50,7 +50,7 @@ export const useGroupColumns = () => {
       },
       {
         Header: () => (
-          <div className="flex justify-end items-center gap-1">
+          <div className="flex items-center justify-end gap-1">
             Members <SortingIcon size={16} />
           </div>
         ),

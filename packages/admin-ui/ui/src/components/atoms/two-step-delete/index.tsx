@@ -60,10 +60,10 @@ const TwoStepDelete = forwardRef<HTMLButtonElement, Props>(
     return (
       <button
         className={clsx(
-          "transition-all rounded-lg border flex items-center justify-center",
+          "flex items-center justify-center rounded-lg border transition-all",
           {
-            "bg-rose-50 border-rose-50 px-3 py-1.5": armed,
-            "bg-transparent border-gray-20 p-1.5": !armed,
+            "border-rose-50 bg-rose-50 px-3 py-1.5": armed,
+            "border-gray-20 bg-transparent p-1.5": !armed,
           },
           {
             "!bg-grey-40 !border-grey-40 !p-1.5": deleting,
@@ -75,14 +75,14 @@ const TwoStepDelete = forwardRef<HTMLButtonElement, Props>(
         ref={innerRef}
       >
         <div
-          className={clsx("text-rose-50 inter-small-semibold", {
+          className={clsx("inter-small-semibold text-rose-50", {
             hidden: armed || deleting,
           })}
         >
           {children || <TrashIcon className="text-grey-50" size={20} />}
         </div>
         <span
-          className={clsx("text-white inter-small-semibold", {
+          className={clsx("inter-small-semibold text-white", {
             hidden: !armed || deleting,
           })}
         >

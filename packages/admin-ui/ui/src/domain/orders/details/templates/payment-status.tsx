@@ -1,5 +1,3 @@
-import React from "react"
-
 import StatusDot from "../../../../components/fundamentals/status-indicator"
 
 export const PaymentStatusComponent = ({ status }) => {

@@ -1,5 +1,4 @@
 import { Store } from "@medusajs/medusa"
-import React from "react"
 import Button from "../../../../../components/fundamentals/button"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import EditCurrenciesModal from "./edit-currencies-modal"

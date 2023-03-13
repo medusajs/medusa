@@ -1,4 +1,3 @@
-import React from "react"
 import { FieldArrayWithId, useFieldArray } from "react-hook-form"
 import FileUploadField from "../../../../components/atoms/file-upload-field"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
@@ -56,7 +55,7 @@ const ThumbnailForm = ({ form }: Props) => {
         <div className="mt-large">
           <h2 className="inter-large-semibold mb-small">Upload</h2>
 
-          <div className="flex flex-col gap-y-2xsmall">
+          <div className="gap-y-2xsmall flex flex-col">
             {fields.map((field, index) => {
               return (
                 <Image
@@ -91,16 +90,16 @@ const Image = ({ image, index, remove }: ThumbnailProps) => {
   ]
 
   return (
-    <div className="px-base py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between">
-      <div className="flex items-center gap-x-large">
-        <div className="w-16 h-16 flex items-center justify-center">
+    <div className="px-base py-xsmall hover:bg-grey-5 rounded-rounded group flex items-center justify-between">
+      <div className="gap-x-large flex items-center">
+        <div className="flex h-16 w-16 items-center justify-center">
           <img
             src={image.url}
             alt={image.name || "Uploaded image"}
-            className="max-w-[64px] max-h-[64px] rounded-rounded"
+            className="rounded-rounded max-h-[64px] max-w-[64px]"
           />
         </div>
-        <div className="flex flex-col inter-small-regular text-left">
+        <div className="inter-small-regular flex flex-col text-left">
           <p>{image.name}</p>
           <p className="text-grey-50">
             {image.size ? `${(image.size / 1024).toFixed(2)} KB` : ""}

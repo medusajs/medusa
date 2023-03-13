@@ -1,6 +1,5 @@
 import { Region } from "@medusajs/medusa"
 import { useAdminShippingOptions } from "medusa-react"
-import React from "react"
 import Section from "../../../../../components/organisms/section"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import ShippingOptionCard from "../../components/shipping-option-card"
@@ -29,11 +28,11 @@ const ReturnShippingOptions = ({ region }: Props) => {
           },
         ]}
       >
-        <div className="flex flex-col gap-y-large">
+        <div className="gap-y-large flex flex-col">
           <p className="inter-base-regular text-grey-50">
             Enter specifics about available regional return shipment methods.
           </p>
-          <div className="flex flex-col gap-y-small">
+          <div className="gap-y-small flex flex-col">
             {returnShippingOptions?.map((option) => {
               return <ShippingOptionCard option={option} key={option.id} />
             })}
