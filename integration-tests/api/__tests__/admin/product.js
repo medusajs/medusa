@@ -44,6 +44,7 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true }
     })
   })
 
@@ -1762,6 +1763,7 @@ describe("/admin/products", () => {
 
     it("successfully updates a variant's prices by replacing a price", async () => {
       const api = useApi()
+      const variantId = "test-variant"
       const data = {
         prices: [
           {
@@ -1773,7 +1775,7 @@ describe("/admin/products", () => {
 
       const response = await api
         .post(
-          "/admin/products/test-product/variants/test-variant",
+          `/admin/products/test-product/variants/${variantId}`,
           data,
           adminHeaders
         )
@@ -1782,9 +1784,9 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-
-      expect(response.data.product.variants[0].prices.length).toEqual(1)
-      expect(response.data.product.variants[0].prices).toEqual(
+      const variant = response.data.product.variants.find(v => v.id === variantId)
+      expect(variant.prices.length).toEqual(1)
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             amount: 4500,
