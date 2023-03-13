@@ -7,7 +7,7 @@ import React from "react"
  * @param {Object} options
  * @param {number} options.successDuration - Duration of the success state in milliseconds
  * @param {function} options.onCopied - Callback function to call after copying
- * @returns {Array} returns tuple containing isCopied state and handleCopy function
+ * @return {Array} returns tuple containing isCopied state and handleCopy function
  */
 const useClipboard = (text, options = {}) => {
   const [isCopied, setIsCopied] = React.useState(false)

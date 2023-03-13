@@ -12,7 +12,7 @@ const CustomHeader = ({
 
   const year = date.getFullYear()
   return (
-    <div className="flex w-full gap-4 items-center">
+    <div className="flex w-full items-center gap-4">
       <div className="flex flex-1 items-center justify-end gap-3">
         <NativeSelect
           defaultValue={monthName}

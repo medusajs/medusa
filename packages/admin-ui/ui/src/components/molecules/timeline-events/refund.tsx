@@ -22,14 +22,14 @@ const Refund: React.FC<RefundEventProps> = ({ event }) => {
       </span>
     ),
     children: (
-      <div className="flex w-full flex-col gap-y-xsmall">
+      <div className="gap-y-xsmall flex w-full flex-col">
         {event.reason && (
           <span className="text-grey-50">{`${event.reason
             .slice(0, 1)
             .toUpperCase()}${event.reason.slice(1)}`}</span>
         )}
         {event.note && (
-          <div className="rounded-2xl bg-grey-5 px-base py-base">
+          <div className="bg-grey-5 px-base py-base rounded-2xl">
             Note: {event.note}
           </div>
         )}

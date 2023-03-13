@@ -4,7 +4,6 @@ on:
     paths-ignore:
       - "docs/**"
       - "www/**"
-      - "packages/admin-ui/**"
 
 jobs:
   setup:

@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useMemo, useEffect, useState } from "react"
+import { useMemo, useEffect, useState } from "react"
 import { useAdminProductTags, useAdminCollections } from "medusa-react"
 import CheckIcon from "../../components/fundamentals/icons/check-icon"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
@@ -109,10 +109,10 @@ const ProductsFilter = ({
         triggerElement={
           <button
             className={clsx(
-              "flex rounded-rounded items-center space-x-1 focus-visible:outline-none focus-visible:shadow-input focus-visible:border-violet-60"
+              "rounded-rounded focus-visible:shadow-input focus-visible:border-violet-60 flex items-center space-x-1 focus-visible:outline-none"
             )}
           >
-            <div className="flex rounded-rounded items-center bg-grey-5 border border-grey-20 inter-small-semibold px-2 h-6">
+            <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
               Filters
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
@@ -120,7 +120,7 @@ const ProductsFilter = ({
                 </span>
               </div>
             </div>
-            <div className="flex items-center rounded-rounded bg-grey-5 border border-grey-20 inter-small-semibold p-1">
+            <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex items-center border p-1">
               <PlusIcon size={14} />
             </div>
           </button>
@@ -150,9 +150,9 @@ const ProductsFilter = ({
           open={tempState.collection.open}
           setFilter={(v) => setSingleFilter("collection", v)}
         />
-        <div className="flex flex-col w-full pb-2">
+        <div className="flex w-full flex-col pb-2">
           <div
-            className="flex w-full items-center px-3 mb-1 py-1.5 hover:bg-grey-5 rounded cursor-pointer"
+            className="hover:bg-grey-5 mb-1 flex w-full cursor-pointer items-center rounded px-3 py-1.5"
             onClick={() => {
               setSingleFilter("tags", {
                 open: !tempState.tags.open,
@@ -161,7 +161,7 @@ const ProductsFilter = ({
             }}
           >
             <div
-              className={`w-5 h-5 flex justify-center border-grey-30 border text-grey-0 rounded-base ${
+              className={`border-grey-30 text-grey-0 rounded-base flex h-5 w-5 justify-center border ${
                 tempState.tags.open && "bg-violet-60"
               }`}
             >

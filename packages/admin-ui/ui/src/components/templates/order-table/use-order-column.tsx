@@ -95,7 +95,7 @@ const useOrderTableColums = () => {
         Header: "",
         accessor: "currency_code",
         Cell: ({ cell: { value } }) => (
-          <div className="text-right text-grey-40">{value.toUpperCase()}</div>
+          <div className="text-grey-40 text-right">{value.toUpperCase()}</div>
         ),
       },
       {
@@ -103,7 +103,7 @@ const useOrderTableColums = () => {
         accessor: "country_code",
         Cell: ({ row }) => (
           <div className="pr-2">
-            <div className="flex rounded-rounded w-full justify-end">
+            <div className="rounded-rounded flex w-full justify-end">
               <Tooltip
                 content={
                   isoAlpha2Countries[

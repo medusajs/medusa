@@ -9,7 +9,11 @@ import { Product, ProductCategory, ProductVariant } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { ProductFilterOptions } from "../types/product"
-import { buildLegacyFieldsListFrom, isObject } from "../utils"
+import {
+  buildLegacyFieldsListFrom,
+  isObject,
+  fetchCategoryDescendantsIds,
+} from "../utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -106,6 +110,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     >
     const categoryId = options_.where.category_id as FindOperator<string[]>
     const discountConditionId = options_.where.discount_condition_id
+    const categoriesQuery = (options_.where.categories ||
+      {}) as FindOptionsWhere<ProductCategory>
     const includeCategoryChildren =
       options_.where.include_category_children ?? false
 
@@ -115,6 +121,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     delete options_.where.category_id
     delete options_.where.discount_condition_id
     delete options_.where.include_category_children
+    delete options_.where.categories
 
     // TODO: move back to the service layer
     if (q) {
@@ -198,7 +205,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (salesChannelId) {
-      const joinMethod = options_.relations.sales_channel_id
+      const joinMethod = options_.relations.sales_channels
         ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
         : queryBuilder.innerJoin.bind(queryBuilder)
 
@@ -215,7 +222,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (categoryId) {
-      const joinMethod = options_.relations.category_id
+      const joinMethod = options_.relations.categories
         ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
         : queryBuilder.innerJoin.bind(queryBuilder)
 
@@ -224,40 +231,48 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       if (includeCategoryChildren) {
         const categoryRepository =
           this.manager.getTreeRepository(ProductCategory)
+
         const categories = await categoryRepository.find({
-          where: { id: In(categoryIds) },
+          where: {
+            id: In(categoryIds),
+            ...categoriesQuery,
+          },
         })
 
-        categoryIds = []
         for (const category of categories) {
           const categoryChildren = await categoryRepository.findDescendantsTree(
             category
           )
 
-          const getAllIdsRecursively = (productCategory: ProductCategory) => {
-            let result = [productCategory.id]
-
-            ;(productCategory.category_children || []).forEach((child) => {
-              result = result.concat(getAllIdsRecursively(child))
-            })
-
-            return result
-          }
-
           categoryIds = categoryIds.concat(
-            getAllIdsRecursively(categoryChildren)
+            fetchCategoryDescendantsIds(categoryChildren, categoriesQuery)
           )
         }
       }
 
-      joinMethod(
-        `${productAlias}.categories`,
-        "categories",
-        "categories.id IN (:...categoryIds)",
-        {
-          categoryIds,
+      if (categoryIds.length) {
+        const categoryAlias = "categories"
+        const joinScope = {
+          ...categoriesQuery,
+          id: categoryIds,
         }
-      )
+        const joinWhere = Object.entries(joinScope)
+          .map((entry) => {
+            if (Array.isArray(entry[1])) {
+              return `${categoryAlias}.${entry[0]} IN (:...${entry[0]})`
+            } else {
+              return `${categoryAlias}.${entry[0]} = :${entry[0]}`
+            }
+          })
+          .join(" AND ")
+
+        joinMethod(
+          `${productAlias}.${categoryAlias}`,
+          categoryAlias,
+          joinWhere,
+          joinScope
+        )
+      }
     }
 
     if (discountConditionId) {

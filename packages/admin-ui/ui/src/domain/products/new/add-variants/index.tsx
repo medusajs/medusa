@@ -261,7 +261,7 @@ const AddVariantsForm = ({
   return (
     <>
       <div>
-        <div className="flex items-center gap-x-2xsmall">
+        <div className="gap-x-2xsmall flex items-center">
           <h3 className="inter-base-semibold">Product options</h3>
           <IconTooltip
             type="info"
@@ -275,7 +275,7 @@ const AddVariantsForm = ({
                 <span>Option title</span>
                 <span>Variations (comma separated)</span>
               </div>
-              <div className="grid grid-cols-1 gap-y-xsmall">
+              <div className="gap-y-xsmall grid grid-cols-1">
                 {options.map((field, index) => {
                   return (
                     <div
@@ -326,7 +326,7 @@ const AddVariantsForm = ({
           <Button
             variant="secondary"
             size="small"
-            className="w-full h-10 mt-base"
+            className="mt-base h-10 w-full"
             type="button"
             onClick={appendNewOption}
           >
@@ -334,7 +334,7 @@ const AddVariantsForm = ({
             <span>Add an option</span>
           </Button>
           <div className="mt-xlarge">
-            <div className="flex items-center gap-x-2xsmall">
+            <div className="gap-x-2xsmall flex items-center">
               <h3
                 className={clsx("inter-base-semibold", {
                   "opacity-50": !options.length,
@@ -356,7 +356,7 @@ const AddVariantsForm = ({
               <div className="mt-small">
                 <div className="inter-small-semibold pr-base text-grey-50 grid grid-cols-[1fr_90px_100px_48px]">
                   <p>Variant</p>
-                  <div className="flex justify-end mr-xlarge">
+                  <div className="mr-xlarge flex justify-end">
                     <p>Inventory</p>
                   </div>
                 </div>
@@ -384,7 +384,7 @@ const AddVariantsForm = ({
             <Button
               variant="secondary"
               size="small"
-              className="w-full h-10 mt-base"
+              className="mt-base h-10 w-full"
               type="button"
               disabled={!enableVariants}
               onClick={onToggleForm}
@@ -413,7 +413,7 @@ const AddVariantsForm = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end w-full gap-x-xsmall">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="secondary"
                 size="small"

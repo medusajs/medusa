@@ -1,6 +1,6 @@
 import { ShippingOption } from "@medusajs/medusa"
 import { useAdminUpdateShippingOption } from "medusa-react"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -75,7 +75,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
                 {option.data.id} via {option.provider_id}
               </p>
             </div>
-            <div className="w-full h-px bg-grey-20 my-xlarge" />
+            <div className="bg-grey-20 my-xlarge h-px w-full" />
             <ShippingOptionForm
               form={form}
               region={option.region}
@@ -83,7 +83,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center gap-x-xsmall justify-end w-full">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button variant="secondary" size="small" onClick={closeAndReset}>
                 Cancel
               </Button>

@@ -156,16 +156,11 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                         </div>
                         <div className="ml-auto flex">
                           <div className="mr-base text-small text-grey-50 flex flex-col">
-                            <span className="whitespace-nowrap">
-                              {`${
-                                0
-                                // level.stocked_quantity - level.available_quantity
-                              } reserved`}
+                            <span className="whitespace-nowrap text-right">
+                              {`${level.reserved_quantity} reserved`}
                             </span>
-                            <span className="whitespace-nowrap">{`${
-                              0
-                              // level.stocked_quantity -
-                              // (level.stocked_quantity - level.available_quantity)
+                            <span className="whitespace-nowrap text-right">{`${
+                              level.stocked_quantity - level.reserved_quantity
                             } available`}</span>
                           </div>
                           <InputField

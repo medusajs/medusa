@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import { ReactNode } from "react"
 
 type Props = {
   fileName: string
@@ -8,31 +8,27 @@ type Props = {
 }
 
 const BatchJobFileCard = ({ fileName, fileSize, icon, onClick }: Props) => {
-  const preparedOnClick = (onClick ?? (() => void 0))
+  const preparedOnClick = onClick ?? (() => void 0)
 
   return (
     <div
-      className="flex items-center w-full cursor-pointer mt-4"
+      className="mt-4 flex w-full cursor-pointer items-center"
       onClick={preparedOnClick}
     >
       <div
-        className="flex items-center justify-center p-2.5 border border-grey-20 rounded-lg"
+        className="border-grey-20 flex items-center justify-center rounded-lg border p-2.5"
         title={fileName}
       >
         {!!icon && icon}
       </div>
 
-      <div className="text-left relative w-full pl-4">
-        <div
-          className="overflow-hidden truncate inter-small-regular max-w-[80%]"
-        >
+      <div className="relative w-full pl-4 text-left">
+        <div className="inter-small-regular max-w-[80%] overflow-hidden truncate">
           {fileName}
         </div>
 
         {!!fileSize && (
-          <div className="text-grey-40 inter-small-regular">
-            {fileSize}
-          </div>
+          <div className="text-grey-40 inter-small-regular">{fileSize}</div>
         )}
       </div>
     </div>

@@ -31,7 +31,7 @@ const SearchBar: React.FC = () => {
     <>
       <button
         onClick={() => setShowSearchModal(true)}
-        className="flex basis-1/2 items-center px-small py-[6px]"
+        className="px-small flex basis-1/2 items-center py-[6px]"
       >
         <SearchIcon className="text-grey-40" />
         <div className="ml-5">

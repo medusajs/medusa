@@ -29,15 +29,15 @@ const Locations = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full grow">
-        <div className="flex flex-col w-full grow">
+      <div className="flex h-full grow flex-col">
+        <div className="flex w-full grow flex-col">
           <BodyCard
             customHeader={<InventoryPageTableHeader activeView="locations" />}
-            className="min-h-[85px] h-[85px]"
+            className="h-[85px] min-h-[85px]"
             customActionable={Actions}
           />
           {isLoading ? (
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex h-full w-full items-center justify-center">
               <Spinner variant="secondary" />
             </div>
           ) : (

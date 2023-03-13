@@ -69,7 +69,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
         </Modal.Header>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Modal.Content>
-            <div className="flex flex-col gap-y-xlarge">
+            <div className="gap-y-xlarge flex flex-col">
               <Controller
                 name="starts_at"
                 defaultValue={discount.starts_at}
@@ -88,7 +88,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                       title="Discount has a start date?"
                       description="Schedule the discount to activate in the future."
                     >
-                      <div className="flex gap-x-xsmall items-center">
+                      <div className="gap-x-xsmall flex items-center">
                         <DatePicker
                           date={value!}
                           label="Start date"
@@ -125,7 +125,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                       title="Discount has an expiry date?"
                       description="Schedule the discount to deactivate in the future."
                     >
-                      <div className="flex gap-x-xsmall items-center">
+                      <div className="gap-x-xsmall flex items-center">
                         <DatePicker
                           date={value!}
                           label="Expiry date"
@@ -202,7 +202,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex items-center justify-end w-full">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="ghost"
                 size="small"

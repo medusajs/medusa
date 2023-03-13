@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import React from "react"
 import SectionCollapsible from "../section-collapsible"
 import { useAdminOrders } from "medusa-react"
 import useKeyboardNavigationList from "../use-keyboard-navigation-list"
@@ -25,13 +24,13 @@ const OrderResults = ({
           {orders?.map((order, index) => (
             <li
               {...getLIProps({ index: offset + index })}
-              className={clsx("py-1.5 group focus:bg-grey-5 rounded-rounded", {
+              className={clsx("focus:bg-grey-5 rounded-rounded group py-1.5", {
                 "bg-grey-5": selected === offset + index,
               })}
             >
               <Link
                 to={`/a/orders/${order.id}`}
-                className="px-base py-1.5 flex items-center rounded-rounded justify-between"
+                className="px-base rounded-rounded flex items-center justify-between py-1.5"
               >
                 <div className="flex items-center gap-x-3">
                   <span className="inter-small-semibold">
@@ -43,7 +42,7 @@ const OrderResults = ({
                 </div>
                 <span
                   className={clsx(
-                    "group-focus:visible text-grey-40 inter-small-regular",
+                    "text-grey-40 inter-small-regular group-focus:visible",
                     {
                       invisible: selected !== offset + index,
                     }
