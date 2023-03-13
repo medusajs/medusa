@@ -21,6 +21,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     CREATED: "inventory-level.created",
     UPDATED: "inventory-level.updated",
     DELETED: "inventory-level.deleted",
+    DELETED_BY_LOCATION: "inventory-level.deleted-by-location",
   }
 
   protected readonly eventBusService_: IEventBusService
@@ -203,6 +204,24 @@ export default class InventoryLevelService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(InventoryLevelService.Events.DELETED, {
           id: inventoryLevelId,
+        })
+    })
+  }
+
+  /**
+   * Deletes inventory levels by location ID.
+   * @param locationId - The ID of the location to delete inventory levels for.
+   */
+  async deleteByLocationId(locationId: string): Promise<void> {
+    await this.atomicPhase_(async (manager) => {
+      const levelRepository = manager.getRepository(InventoryLevel)
+
+      await levelRepository.delete({ location_id: locationId })
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryLevelService.Events.DELETED_BY_LOCATION, {
+          location_id: locationId,
         })
     })
   }

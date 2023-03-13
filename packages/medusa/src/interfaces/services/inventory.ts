@@ -77,6 +77,10 @@ export interface IInventoryService {
 
   deleteInventoryItem(inventoryItemId: string): Promise<void>
 
+  deleteInventoryItemByLocationId(locationId: string): Promise<void>
+
+  deleteReservationItemByLocationId(locationId: string): Promise<void>
+
   deleteInventoryLevel(
     inventoryLevelId: string,
     locationId: string
