@@ -1,6 +1,6 @@
 import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
-import { DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, In } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { ulid } from "ulid"
 import { StagedJob } from "../models"
@@ -332,18 +332,17 @@ export default class EventBusService {
       )
       const jobs = await stagedJobRepo.find(listConfig)
 
-      await Promise.all(
-        jobs.map((job) => {
-          this.queue_
-            .add(
-              { eventName: job.event_name, data: job.data },
-              { jobId: job.id, ...job.options }
-            )
-            .then(async () => {
-              await stagedJobRepo.remove(job)
-            })
-        })
-      )
+      const eventsData = jobs.map((job) => {
+        return {
+          eventName: job.event_name,
+          data: job.data,
+          opts: { jobId: job.id, ...job.options },
+        }
+      })
+
+      await this.queue_.addBulk(eventsData).then(async () => {
+        return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
+      })
 
       await sleep(3000)
     }
