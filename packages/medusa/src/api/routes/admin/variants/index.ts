@@ -100,7 +100,7 @@ export type AdminVariantsListRes = PaginatedResponse & {
 }
 
 /**
- * @schema AdminVariantRes
+ * @schema AdminVariantsRes
  * type: object
  * required:
  *   - variant
