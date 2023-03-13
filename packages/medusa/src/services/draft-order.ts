@@ -21,6 +21,7 @@ import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
 import { FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
+import { GenerateInputData } from "../types/line-item"
 import { buildQuery } from "../utils"
 import CartService from "./cart"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -28,7 +29,6 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { GenerateInputData } from "../types/line-item"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -352,7 +352,7 @@ class DraftOrderService extends TransactionBaseService {
             cart_id: createdCart.id,
           }))
 
-          itemsToCreate.push(...toCreate)
+          promises.push(lineItemServiceTx.create(toCreate))
         }
 
         // custom line items can be added to a draft order

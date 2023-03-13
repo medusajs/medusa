@@ -1,0 +1,120 @@
+{
+  "redirects": [
+    {
+      "source": "/api",
+      "destination": "/api/store"
+    },
+    {
+      "source": "/api/store/auth/(.*)",
+      "destination": "/api/store/#tag/Auth"
+    },
+    {
+      "source": "/api/store/cart/(.*)",
+      "destination": "/api/store/#tag/Cart"
+    },
+    {
+      "source": "/api/store/collection/(.*)",
+      "destination": "/api/store/#tag/Collection"
+    },
+    {
+      "source": "/api/store/product/(.*)",
+      "destination": "/api/store/#tag/Product"
+    },
+    {
+      "source": "/api/admin/auth/(.*)",
+      "destination": "/api/admin/#tag/Auth"
+    },
+    {
+      "source": "/api/admin/users/(.*)",
+      "destination": "/api/admin/#tag/User"
+    },
+    {
+      "source": "/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
+      "destination": "/add-plugins/contentful"
+    },
+    {
+      "source": "/how-to/deploying-on-heroku",
+      "destination": "/deployments/server/deploying-on-heroku"
+    },
+    {
+      "source": "/admin/introduction",
+      "destination": "/admin/quickstart"
+    },
+    {
+      "source": "/admin/quickstart/quick-start",
+      "destination": "/admin/quickstart"
+    },
+    {
+      "source": "/admin/quickstart",
+      "destination": "/admin/quickstart"
+    },
+    {
+      "source": "/quickstart/starters/nextjs-medusa-starter",
+      "destination": "/starters/nextjs-medusa-starter"
+    },
+    {
+      "source": "/quickstart/starters/gatsby-medusa-starter",
+      "destination": "/starters/gatsby-medusa-starter"
+    },
+    {
+      "source": "/how-to/create-medusa-app",
+      "destination": "/usage/create-medusa-app"
+    },
+    {
+      "source": "/guides/plugins",
+      "destination": "/advanced/backend/plugins/overview"
+    },
+    {
+      "source": "/how-to/deploying-admin-on-netlify",
+      "destination": "/deployments/admin/deploying-on-netlify"
+    },
+    {
+      "source": "/how-to/deploying-on-digital-ocean/",
+      "destination": "/deployments/server/deploying-on-digital-ocean"
+    },
+    {
+      "source": "/how-to/deploying-on-qovery/",
+      "destination": "/deployments/server/deploying-on-qovery"
+    },
+    {
+      "source": "/guides/fulfillment-api",
+      "destination": "/advanced/backend/shipping/add-fulfillment-provider"
+    },
+    {
+      "source": "/guides/checkouts",
+      "destination": "/advanced/storefront/how-to-implement-checkout-flow"
+    },
+    {
+      "source": "/guides/checkouts",
+      "destination": "/advanced/storefront/how-to-implement-checkout-flow"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-7-3",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-7-3"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-7-1",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-7-1"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-7-0",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-7-0"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-6-1",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-6-1"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-3-8",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-8"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-3-6",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-6"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-3-0",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-0"
+    }
+  ]
+}
