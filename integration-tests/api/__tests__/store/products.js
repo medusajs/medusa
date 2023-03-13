@@ -28,7 +28,7 @@ describe("/store/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      env: { FF_PRODUCT_CATEGORIES: true }
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true }
     })
   })
 
