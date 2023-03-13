@@ -33,7 +33,7 @@ You want to add or use the following admin functionalities:
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### JS Client
 
@@ -87,7 +87,9 @@ medusa.admin.products.list({
 
 ```tsx
 import { Product } from "@medusajs/medusa"
-import { PricedProduct } from "@medusajs/medusa/dist/types/pricing"
+import { 
+  PricedProduct,
+} from "@medusajs/medusa/dist/types/pricing"
 import { useAdminProducts } from "medusa-react"
 
 const GiftCard = () => {
@@ -100,12 +102,16 @@ const GiftCard = () => {
       {isLoading && <span>Loading...</span>}
       {products && products.length > 0 && (
         <ul>
-          {products.map((product: (Product | PricedProduct)) => (
-            <li key={product.id}>{product.title}</li>
-          ))}
+          {products.map(
+            (product: (Product | PricedProduct)) => (
+              <li key={product.id}>{product.title}</li>
+            )
+          )}
         </ul>
       )}
-      {products && !products.length && <span>No Gift Cards</span>}
+      {products && !products.length && (
+        <span>No Gift Cards</span>
+      )}
     </div>
   )
 }
@@ -675,7 +681,9 @@ medusa.admin.giftCards.update(giftCardId, {
 import { useAdminUpdateGiftCard } from "medusa-react"
 
 const UpdateCustomGiftCards = () => {
-  const updateGiftCard = useAdminUpdateGiftCard(customGiftCardId)
+  const updateGiftCard = useAdminUpdateGiftCard(
+    customGiftCardId
+  )
   // ...
   
   const handleUpdate = (regionId: string) => {
@@ -752,7 +760,9 @@ medusa.admin.giftCards.delete(giftCardId)
 import { useAdminDeleteGiftCard } from "medusa-react"
 
 const CustomGiftCard = () => {
-  const deleteGiftCard = useAdminDeleteGiftCard(customGiftCardId)
+  const deleteGiftCard = useAdminDeleteGiftCard(
+    customGiftCardId
+  )
   // ...
   
   const handleDelete = () => {

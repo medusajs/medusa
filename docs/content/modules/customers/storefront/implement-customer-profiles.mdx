@@ -36,7 +36,7 @@ You can use Medusa’s Store APIs to achieve more functionalities as well. Check
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 It's also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
@@ -287,7 +287,7 @@ If the request has been processed successfully, it returns a `204` status code i
 
 :::note
 
-If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../add-plugins/sendgrid.mdx) successfully. You also need to add a subscriber that handles the [customer.password_reset](../../../advanced/backend/subscribers/events-list.md#customer-events) event and sends the email.
+If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../plugins/notifications/sendgrid.mdx) successfully. You also need to add a subscriber that handles the [customer.password_reset](../../../advanced/backend/subscribers/events-list.md#customer-events) event and sends the email.
 
 :::
 
@@ -529,16 +529,18 @@ medusa.customers.addresses.updateAddress(addressId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    first_name,
-  }),
-})
+fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      first_name,
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ customer }) => {
   console.log(customer.id)
@@ -570,10 +572,12 @@ medusa.customers.addresses.deleteAddress(addressId)
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`, {
-  method: "DELETE",
-  credentials: "include",
-})
+fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ customer }) => {
   console.log(customer.id)

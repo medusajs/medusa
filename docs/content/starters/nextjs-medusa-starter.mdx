@@ -22,7 +22,7 @@ Instead of manually following this guide to install then later deploy the Next.j
 
 ## Prerequisites
 
-This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../core/backend/install.mdx) to learn how to do it.
+This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../development/backend/install.mdx) to learn how to do it.
 
 ---
 
@@ -90,7 +90,7 @@ Then, restart your Next.js backend. Depending on whether you enabled or disabled
 
 ### MeiliSearch Integration
 
-If you have the search engine feature enabled, it is expected that you have installed the MeiliSearch plugin on your Medusa backend. If not, [follow this guide to install it](../add-plugins/meilisearch.md).
+If you have the search engine feature enabled, it is expected that you have installed the MeiliSearch plugin on your Medusa backend. If not, [follow this guide to install it](../plugins/search/meilisearch.md).
 
 In your Next.js storefront, set the environment variables necessary for the MeiliSearch integration:
 
@@ -133,7 +133,7 @@ To make sure the Next.js storefront properly displays the products in the search
 
 ### Algolia Integration
 
-Instead of using the default MeiliSearch search engine, you can switch to using Algolia. Make sure you start by installing the Algolia plugin on your Medusa backend. You can do it by [following this guide](../add-plugins/algolia.md).
+Instead of using the default MeiliSearch search engine, you can switch to using Algolia. Make sure you start by installing the Algolia plugin on your Medusa backend. You can do it by [following this guide](../plugins/search/algolia.md).
 
 In your Next.js storefront, set the environment variables necessary for the Algolia integration:
 
@@ -168,7 +168,7 @@ Then, restart the Next.js backend. You’ll be able to search through available 
 
 ### Stripe Payment Integration
 
-Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../add-plugins/stripe.md).
+Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/stripe.md).
 
 Then, in your Next.js storefront, set the environment variable necessary for the Stripe integration:
 
@@ -184,7 +184,7 @@ If you restart your Next.js backend you should be able to pay with Stripe on che
 
 ### PayPal Payment Integration
 
-PayPal integration is supported by default. Make sure you have PayPal installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../add-plugins/paypal.md).
+PayPal integration is supported by default. Make sure you have PayPal installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/paypal.md).
 
 Then, in your Next.js storefront, set the environment variable necessary for the PayPal integration:
 
@@ -253,4 +253,4 @@ You can learn more about development with Next.js through [their documentation](
 
 - [Storefront API reference](https://docs.medusajs.com/api/store)
 - [Install Medusa Admin](../admin/quickstart.mdx).
-- [Install Stripe as a payment provider](../add-plugins/stripe.md#add-to-nextjs-storefront)
+- [Install Stripe as a payment provider](../plugins/payment/stripe.md#add-to-nextjs-storefront)

@@ -27,22 +27,24 @@ import {
 
 import { EntityManager } from "typeorm"
 
-export default class MyStrategy extends AbstractPriceSelectionStrategy {
+export default class MyStrategy extends 
+  AbstractPriceSelectionStrategy {
+    withTransaction(
+      manager: EntityManager
+    ): IPriceSelectionStrategy {
+      if (!manager) {
+        return this
+      }
 
-  withTransaction(manager: EntityManager): IPriceSelectionStrategy {
-    if (!manager) {
-      return this
+      return new MyStrategy()
     }
 
-    return new MyStrategy()
-  }
-
-  async calculateVariantPrice(
-    variant_id: string,
-    context: PriceSelectionContext
-  ): Promise<PriceSelectionResult> {
-    // TODO
-  }
+    async calculateVariantPrice(
+      variant_id: string,
+      context: PriceSelectionContext
+    ): Promise<PriceSelectionResult> {
+      // TODO
+    }
 }
 ```
 
@@ -57,26 +59,29 @@ import {
   PriceSelectionResult, 
 } from "@medusajs/medusa"
 
-export default class MyStrategy extends AbstractPriceSelectionStrategy {
-  private customerService: CustomerService
+export default class MyStrategy extends 
+  AbstractPriceSelectionStrategy {
+    private customerService: CustomerService
 
-  constructor({
-    customerService,
-  }) {
-    super()
-    this.customerService = customerService
-  }
-
-  withTransaction(manager: EntityManager): IPriceSelectionStrategy {
-    if (!manager) {
-      return this
+    constructor({
+      customerService,
+    }) {
+      super()
+      this.customerService = customerService
     }
 
-    return new MyStrategy({
-      customerService: this.customerService,
-    })
-  }
-  // ...
+    withTransaction(
+      manager: EntityManager
+    ): IPriceSelectionStrategy {
+      if (!manager) {
+        return this
+      }
+
+      return new MyStrategy({
+        customerService: this.customerService,
+      })
+    }
+    // ...
 }
 ```
 

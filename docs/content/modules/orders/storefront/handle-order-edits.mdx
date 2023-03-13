@@ -46,7 +46,7 @@ You can perform other functionalities related to order editing. To learn more, c
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefronts.
 
@@ -161,7 +161,9 @@ Here’s an example of how you can use this data to show the customer the reques
         }
       </strong>
       {itemChange.type === "added" && <span>New Item</span>}
-      {itemChange.type === "removed" && <span>Removed Item</span>}
+      {itemChange.type === "removed" && (
+        <span>Removed Item</span>
+      )}
       {itemChange.type === "edited" && 
         <span>
           Edited Item
@@ -201,6 +203,8 @@ If `difference_due` is greater than 0, then additional payment from the customer
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
+<!-- eslint-disable max-len -->
+
 ```ts
 medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
   provider_id,
@@ -217,7 +221,9 @@ medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
 import { useManagePaymentSession } from "medusa-react"
 
 const OrderEditPayment = () => {
-  const managePaymentSession = useManagePaymentSession(paymentCollectionId)
+  const managePaymentSession = useManagePaymentSession(
+    paymentCollectionId
+  )
   // ...
 
   const handleAdditionalPayment = (provider_id: string) => {
@@ -234,6 +240,8 @@ export default OrderEditPayment
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(
@@ -265,8 +273,12 @@ fetch(
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.paymentCollection
-  .authorizePaymentSession(paymentCollectionId, paymentSessionId)
+medusa
+  .paymentCollection
+  .authorizePaymentSession(
+    paymentCollectionId, 
+    paymentSessionId
+  )
 .then(({ payment_session }) => {
   console.log(payment_session.id)
 })
@@ -296,6 +308,8 @@ export default OrderEditPayment
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(
@@ -355,6 +369,8 @@ export default OrderEdit
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(`<SERVER_URL>/store/order-edits/${orderEditId}/complete`, {

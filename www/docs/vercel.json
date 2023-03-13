@@ -150,7 +150,7 @@
     },
     {
       "source": "/quickstart/quick-start(.*)",
-      "destination": "/core/backend/install"
+      "destination": "/development/backend/install"
     },
     {
       "source": "/advanced/admin/import-products",
@@ -263,6 +263,30 @@
     {
       "source": "/advanced/storefront/use-sales-channels",
       "destination": "/modules/sales-channels/storefront/use-sales-channels"
+    },
+    {
+      "source": "/advanced/backend/endpoints/add",
+      "destination": "/development/endpoints/create"
+    },
+    {
+      "source": "/advanced/backend/endpoints/add-middleware",
+      "destination": "/development/endpoints/add-middleware"
+    },
+    {
+      "source": "/advanced/backend/scheduled-jobs/create",
+      "destination": "/development/scheduled-jobs/create"
+    },
+    {
+      "source": "/tutorial/set-up-your-development-environment",
+      "destination": "/development/backend/prepare-environment"
+    },
+    {
+      "source": "/usage/configurations",
+      "destination": "/development/backend/configurations"
+    },
+    {
+      "source": "/add-plugins/:path",
+      "destination": "/plugins/:path"
     }
   ]
 }

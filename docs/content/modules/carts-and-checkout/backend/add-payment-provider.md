@@ -68,7 +68,9 @@ class MyPaymentService extends AbstractPaymentService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
+  async getPaymentData(
+    paymentSession: PaymentSession
+  ): Promise<Data> {
     throw new Error("Method not implemented.")
   }
   async updatePaymentData(
@@ -94,7 +96,10 @@ class MyPaymentService extends AbstractPaymentService {
   async authorizePayment(
     paymentSession: PaymentSession,
     context: Data
-  ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }> {
+  ): Promise<{ 
+    data: PaymentSessionData; 
+    status: PaymentSessionStatus 
+  }> {
     throw new Error("Method not implemented.")
   }
   async capturePayment(payment: Payment): Promise<PaymentData> {
@@ -109,7 +114,9 @@ class MyPaymentService extends AbstractPaymentService {
   async cancelPayment(payment: Payment): Promise<PaymentData> {
     throw new Error("Method not implemented.")
   }
-  async deletePayment(paymentSession: PaymentSession): Promise<void> {
+  async deletePayment(
+    paymentSession: PaymentSession
+  ): Promise<void> {
     throw new Error("Method not implemented.")
   }
   async getStatus(data: Data): Promise<PaymentSessionStatus> {
@@ -192,7 +199,9 @@ This method must return an object of type `PaymentSessionResponse`. It should ha
 
 ```ts
 type PaymentSessionResponse = {
-  update_requests: { customer_metadata: Record<string, unknown> }
+  update_requests: {
+    customer_metadata: Record<string, unknown>
+  }
   session_data: Record<string, unknown>
 }
 ```
@@ -205,7 +214,10 @@ Where:
 An example of a minimal implementation of `createPayment`:
 
 ```ts
-import { PaymentContext, PaymentSessionResponse } from "@medusajs/medusa"
+import {
+  PaymentContext,
+  PaymentSessionResponse,
+} from "@medusajs/medusa"
 
 class MyPaymentService extends AbstractPaymentService {
   // ...
@@ -319,7 +331,9 @@ This method must return an object of type `PaymentSessionResponse`. It should ha
 
 ```ts
 type PaymentSessionResponse = {
-  update_requests: { customer_metadata: Record<string, unknown> }
+  update_requests: { 
+    customer_metadata: Record<string, unknown>
+  }
   session_data: Record<string, unknown>
 }
 ```
@@ -403,7 +417,9 @@ import { PaymentSession } from "@medusajs/medusa"
 
 class MyPaymentService extends AbstractPaymentService {
   // ...
-  async deletePayment(paymentSession: PaymentSession): Promise<void> {
+  async deletePayment(
+    paymentSession: PaymentSession
+  ): Promise<void> {
     return
   }
 }
@@ -452,7 +468,10 @@ class MyPaymentService extends AbstractPaymentService {
   async authorizePayment(
     paymentSession: PaymentSession,
     context: Data
-  ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }> {
+  ): Promise<{
+    data: PaymentSessionData;
+    status: PaymentSessionStatus
+  }> {
     return {
       status: PaymentSessionStatus.AUTHORIZED,
       data: {
@@ -479,7 +498,9 @@ import { Data, PaymentSession } from "@medusajs/medusa"
 
 class MyPaymentService extends AbstractPaymentService {
   // ...
-  async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
+  async getPaymentData(
+    paymentSession: PaymentSession
+  ): Promise<Data> {
     return paymentSession.data
   }
 }
@@ -604,11 +625,14 @@ import { Customer, Data } from "@medusajs/medusa"
 class MyPaymentService extends AbstractPaymentService {
   // ...
   /**
-  * Fetches a customers saved payment methods if registered in Stripe.
+  * Fetches a customers saved payment methods 
+  * if they're saved in Stripe.
   * @param {object} customer - customer to fetch saved cards for
   * @return {Promise<Array<object>>} saved payments methods
   */
-  async retrieveSavedMethods(customer: Customer): Promise<Data[]> {
+  async retrieveSavedMethods(
+    customer: Customer
+  ): Promise<Data[]> {
     if (customer.metadata && customer.metadata.stripe_id) {
       const methods = await this.stripe_.paymentMethods.list({
         customer: customer.metadata.stripe_id,

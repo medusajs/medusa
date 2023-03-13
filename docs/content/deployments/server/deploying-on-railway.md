@@ -19,9 +19,9 @@ Railway provides a free plan that allows you to deploy your Medusa backend along
 
 ### Medusa Server
 
-It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../core/backend/install.mdx).
+It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
-Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](./../../usage/configurations.md) to learn how to do that.
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](./../../development/backend/configurations.md) to learn how to do that.
 
 ### Needed Accounts
 
@@ -30,7 +30,7 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](./../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](./../../development/backend/prepare-environment.mdx#git).
 
 ---
 

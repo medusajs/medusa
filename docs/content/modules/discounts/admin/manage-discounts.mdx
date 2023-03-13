@@ -40,7 +40,7 @@ You can use Medusa’s Admin APIs to achieve more functionalities as well. Check
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### JS Client
 
@@ -70,7 +70,10 @@ You can create a discount by sending a request to the [Create Discount](/api/adm
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
+import { 
+  AllocationType,
+  DiscountRuleType,
+} from "@medusajs/medusa"
 // ...
 medusa.admin.discounts.create({
   code,
@@ -94,8 +97,13 @@ medusa.admin.discounts.create({
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminCreateDiscount } from "medusa-react"
-import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
+import { 
+  useAdminCreateDiscount,
+} from "medusa-react"
+import { 
+  AllocationType, 
+  DiscountRuleType,
+} from "@medusajs/medusa"
 
 const CreateDiscount = () => {
   const createDiscount = useAdminCreateDiscount()
@@ -313,7 +321,9 @@ import { useAdminDiscountCreateCondition } from "medusa-react"
 import { DiscountConditionOperator } from "@medusajs/medusa"
 
 const Discount = () => {
-  const createCondition = useAdminDiscountCreateCondition(discount_id)
+  const createCondition = useAdminDiscountCreateCondition(
+    discount_id
+  )
   // ...
 
   const handleCreateCondition = (
@@ -339,19 +349,21 @@ export default Discount
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    operator: "in",
-    products: [
-      productId,
-    ],
-  }),
-})
+fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      operator: "in",
+      products: [
+        productId,
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ discount }) => {
   console.log(discount.id)
@@ -401,11 +413,18 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.admin.discounts.getCondition(discountId, conditionId, {
-  expand: "products",
-})
+medusa.admin.discounts.getCondition(
+  discountId, 
+  conditionId,
+  {
+    expand: "products",
+  }
+)
 .then(({ discount_condition }) => {
-  console.log(discount_condition.id, discount_condition.products)
+  console.log(
+    discount_condition.id,
+    discount_condition.products
+  )
 })
 ```
 
@@ -417,7 +436,10 @@ import { useAdminGetDiscountCondition } from "medusa-react"
 import { Product } from "@medusajs/medusa"
 
 const DiscountCondition = () => {
-  const { discount_condition, isLoading } = useAdminGetDiscountCondition(
+  const { 
+    discount_condition, 
+    isLoading, 
+  } = useAdminGetDiscountCondition(
     discount_id, 
     conditionId
   )
@@ -430,9 +452,11 @@ const DiscountCondition = () => {
         <>
           <span>{discount_condition.id}</span>
           <ul>
-            {discount_condition.products.map((product: Product) => (
-              <li key={product.id}>{product.title}</li>
-            ))}
+            {discount_condition.products.map(
+              (product: Product) => (
+                <li key={product.id}>{product.title}</li>
+              )
+            )}
           </ul>
         </>
       )}
@@ -456,7 +480,10 @@ fetch(
 )
 .then((response) => response.json())
 .then(({ discount_condition }) => {
-  console.log(discount_condition.id, discount_condition.products)
+  console.log(
+    discount_condition.id,
+    discount_condition.products
+  )
 })
 ```
 
@@ -487,12 +514,15 @@ For example, to update the products in a condition:
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.admin.discounts.updateCondition(discountId, conditionId, {
-  products: [
-    productId1,
-    productId2,
-  ],
-})
+medusa.admin.discounts.updateCondition(
+  discountId, 
+  conditionId, {
+    products: [
+      productId1,
+      productId2,
+    ],
+  }
+)
 .then(({ discount }) => {
   console.log(discount.id)
 })
@@ -527,9 +557,11 @@ export default DiscountCondition
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(
-  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, 
+  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`,
   {
     method: "POST",
     credentials: "include",
@@ -582,7 +614,10 @@ You can delete a condition by sending a request to the [Delete Condition](/api/a
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.admin.discounts.deleteCondition(discountId, conditionId)
+medusa.admin.discounts.deleteCondition(
+  discountId, 
+  conditionId
+)
 .then(({ discount }) => {
   console.log(discount)
 })
@@ -595,7 +630,9 @@ medusa.admin.discounts.deleteCondition(discountId, conditionId)
 import { useAdminDiscountRemoveCondition } from "medusa-react"
 
 const Discount = () => {
-  const deleteCondition = useAdminDiscountRemoveCondition(discount_id)
+  const deleteCondition = useAdminDiscountRemoveCondition(
+    discount_id
+  )
   // ...
 
   const handleUpdateCondition = (conditionId: string) => {
@@ -610,6 +647,8 @@ export default Discount
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(

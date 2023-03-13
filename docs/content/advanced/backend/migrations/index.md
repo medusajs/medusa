@@ -59,4 +59,4 @@ If you check your database now you should see that the change defined by the mig
 
 ## What’s Next
 
-- [Set up your development server](../../../tutorial/0-set-up-your-development-environment.mdx).
+- [Set up your development server](../../../development/backend/prepare-environment.mdx).

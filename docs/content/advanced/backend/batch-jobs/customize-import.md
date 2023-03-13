@@ -19,15 +19,15 @@ Although this documentation specifically targets import strategies, you can use 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
 
 ### PostgreSQL
 
-If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../../../tutorial/0-set-up-your-development-environment.mdx#postgresql) and [configure it with your Medusa server](../../../usage/configurations.md#postgresql-configurations).
+If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../../../development/backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../../../development/backend/configurations.md#postgresql-configurations).
 
 ---
 

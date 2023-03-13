@@ -24,7 +24,7 @@ This guide covers how to use these APIs to perform these tasks.
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../core/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### JS Client
 
@@ -151,7 +151,10 @@ import { CustomerGroup } from "@medusajs/medusa"
 import { useAdminCustomerGroups } from "medusa-react"
 
 const CustomerGroups = () => {
-  const { customer_groups, isLoading } = useAdminCustomerGroups()
+  const { 
+    customer_groups,
+    isLoading,
+  } = useAdminCustomerGroups()
 
   return (
     <div>
@@ -161,9 +164,13 @@ const CustomerGroups = () => {
       )}
       {customer_groups && customer_groups.length > 0 && (
         <ul>
-          {customer_groups.map((customerGroup: CustomerGroup) => (
-            <li key={customerGroup.id}>{customerGroup.name}</li>
-          ))}
+          {customer_groups.map(
+            (customerGroup: CustomerGroup) => (
+              <li key={customerGroup.id}>
+                {customerGroup.name}
+              </li>
+            )
+          )}
         </ul>
       )}
     </div>
@@ -292,7 +299,9 @@ medusa.admin.customerGroups.update(customerGroupId, {
 import { useAdminUpdateCustomerGroup } from "medusa-react"
 
 const UpdateCustomerGroup = () => {
-  const updateCustomerGroup = useAdminUpdateCustomerGroup(customerGroupId)
+  const updateCustomerGroup = useAdminUpdateCustomerGroup(
+    customerGroupId
+  )
   // ..
 
   const handleUpdate = () => {
@@ -377,7 +386,9 @@ medusa.admin.customerGroups.delete(customerGroupId)
 import { useAdminDeleteCustomerGroup } from "medusa-react"
 
 const CustomerGroup = () => {
-  const deleteCustomerGroup = useAdminDeleteCustomerGroup(customerGroupId)
+  const deleteCustomerGroup = useAdminDeleteCustomerGroup(
+    customerGroupId
+  )
   // ...
 
   const handleDeleteCustomerGroup = () => {
@@ -445,10 +456,14 @@ medusa.admin.customerGroups.addCustomers(customerGroupId, {
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminAddCustomersToCustomerGroup } from "medusa-react"
+import { 
+  useAdminAddCustomersToCustomerGroup,
+} from "medusa-react"
 
 const CustomerGroup = () => {
-  const addCustomers = useAdminAddCustomersToCustomerGroup(customerGroupId)
+  const addCustomers = useAdminAddCustomersToCustomerGroup(
+    customerGroupId
+  )
   // ...
 
   const handleAddCustomers= (customerId: string) => {
@@ -469,6 +484,8 @@ export default CustomerGroup
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(
@@ -537,14 +554,19 @@ import { Customer } from "@medusajs/medusa"
 import { useAdminCustomerGroupCustomers } from "medusa-react"
 
 const CustomerGroup = () => {
-  const { customers, isLoading } = useAdminCustomerGroupCustomers(
+  const { 
+    customers, 
+    isLoading,
+  } = useAdminCustomerGroupCustomers(
     customerGroupId
   )
 
   return (
     <div>
       {isLoading && <span>Loading...</span>}
-      {customers && !customers.length && <span>No customers</span>}
+      {customers && !customers.length && (
+        <span>No customers</span>
+      )}
       {customers && customers.length > 0 && (
         <ul>
           {customers.map((customer: Customer) => (
@@ -561,6 +583,8 @@ export default CustomerGroup
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
@@ -599,13 +623,16 @@ You can remove customers from a customer group by sending a request to the Remov
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.admin.customerGroups.removeCustomers(customer_group_id, {
-  customer_ids: [
-    {
-      id: customer_id,
-    },
-  ],
-})
+medusa.admin.customerGroups.removeCustomers(
+  customer_group_id,
+  {
+    customer_ids: [
+      {
+        id: customer_id,
+      },
+    ],
+  }
+)
 .then(({ customer_group }) => {
   console.log(customer_group.id)
 })
@@ -616,12 +643,15 @@ medusa.admin.customerGroups.removeCustomers(customer_group_id, {
 
 ```tsx
 import { Customer } from "@medusajs/medusa"
-import { useAdminRemoveCustomersFromCustomerGroup } from "medusa-react"
+import { 
+  useAdminRemoveCustomersFromCustomerGroup,
+} from "medusa-react"
 
 const CustomerGroup = () => {
-  const removeCustomers = useAdminRemoveCustomersFromCustomerGroup(
-    customerGroupId
-  )
+  const removeCustomers = 
+    useAdminRemoveCustomersFromCustomerGroup(
+      customerGroupId
+    )
   // ...
 
   const handleRemoveCustomer = (customer_id: string) => {
@@ -642,6 +672,8 @@ export default CustomerGroup
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
 
 ```ts
 fetch(

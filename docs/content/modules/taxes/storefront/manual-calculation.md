@@ -33,8 +33,14 @@ You can, however, force calculating the taxes of the cart by passing in the thir
 
 For example:
 
-```jsx
-cartService.retrieve("cart_01G8Z...", { }, { force_taxes: true })
+```ts
+cartService.retrieve(
+  "cart_01G8Z...",
+  { },
+  {
+    force_taxes: true,
+  }
+)
 ```
 
 :::tip

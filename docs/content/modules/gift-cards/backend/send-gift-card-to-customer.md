@@ -17,7 +17,7 @@ This document shows you how to track when a gift card has been purchased so that
 
 :::tip
 
-You can alternatively use the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin, which handles sending the email automatically.
+You can alternatively use the [SendGrid](../../../plugins/notifications/sendgrid.mdx) plugin, which handles sending the email automatically.
 
 :::
 
@@ -27,11 +27,11 @@ You can alternatively use the [SendGrid](../../../add-plugins/sendgrid.mdx) plug
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../core/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
 
 ### Notification Provider
 
@@ -117,7 +117,10 @@ You can learn more about handling events with the Notification Service using [th
 If the notification provider you’re using isn’t configured to handle this event, or you want to implement some other custom logic, you can subscribe to the event using the `EventBusService`:
 
 ```ts title=src/subscribers/gift-card.ts
-import { EventBusService, GiftCardService } from "@medusajs/medusa"
+import { 
+  EventBusService,
+  GiftCardService,
+} from "@medusajs/medusa"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
@@ -127,13 +130,19 @@ type InjectedDependencies = {
 class GiftCardSubscriber {
   giftCardService: GiftCardService
 
-  constructor({ eventBusService, giftCardService }: InjectedDependencies) {
+  constructor({ 
+    eventBusService, 
+    giftCardService, 
+  }: InjectedDependencies) {
     this.giftCardService = giftCardService
-    eventBusService.subscribe("gift_card.created", this.handleGiftCard)
+    eventBusService.subscribe(
+      "gift_card.created", this.handleGiftCard)
   }
 
   handleGiftCard = async (data) => {
-    const giftCard = await this.giftCardService.retrieve(data.id)
+    const giftCard = await this.giftCardService.retrieve(
+      data.id
+    )
     // TODO send customer the gift card code
   }
 }

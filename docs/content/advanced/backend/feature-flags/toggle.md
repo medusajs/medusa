@@ -101,4 +101,4 @@ You can follow [this documentation to learn how to revert the last migration you
 ## See Also
 
 - [Migrations Overview](../migrations/overview.md).
-- [Configure your Medusa server](../../../usage/configurations.md).
+- [Configure your Medusa server](../../../development/backend/configurations.md).

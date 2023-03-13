@@ -12,7 +12,7 @@ In Medusa, there are events that are emitted when a certain action occurs. For e
 
 The purpose of these events is to allow other parts of the platform, or third-party integrations, to listen to those events and perform a certain action. That is done by creating subscribers.
 
-Medusa's queuing and events system is handled by Redis. So, you must have [Redis configured](../../../tutorial/0-set-up-your-development-environment.mdx#redis) on your backend to use subscribers.
+Medusa's queuing and events system is handled by Redis. So, you must have [Redis configured](../../../development/backend/prepare-environment.mdx#redis) on your backend to use subscribers.
 
 ---
 

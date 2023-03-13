@@ -48,7 +48,8 @@ export default class EventBusService {
  async emit<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown> & EmitOptions = { attempts: 1 }
+    options: Record<string, unknown> & 
+      EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void>
 }
 ```

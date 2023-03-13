@@ -15,6 +15,7 @@ export default function DocCardList(props) {
     return <DocCardListForCurrentSidebarCategory {...props} />;
   }
   const filteredItems = filterDocCardListItems(items);
+  console.log(filteredItems)
   return (
     <section className={clsx('cards-grid', `grid-${props.colSize || '4'}`, className)}>
       {filteredItems.map((item, index) => (

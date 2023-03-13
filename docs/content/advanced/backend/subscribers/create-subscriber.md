@@ -11,7 +11,7 @@ In this document, you’ll learn how to create a [Subscriber](overview.md) in yo
 
 Medusa's event system works by pushing data to a Queue that each handler then gets notified of. The queuing system is based on Redis, so it's required for subscribers to work.
 
-You can learn how to [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with Medusa](../../../usage/configurations.md#redis) before you get started.
+You can learn how to [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with Medusa](../../../development/backend/configurations.md#redis) before you get started.
 
 ---
 
@@ -60,7 +60,10 @@ class OrderNotifierSubscriber {
   constructor({ productService, eventBusService }) {
       this.productService = productService
 
-      eventBusService.subscribe("order.placed", this.handleOrder)
+      eventBusService.subscribe(
+        "order.placed", 
+        this.handleOrder
+      )
   }
   // ...
 }
