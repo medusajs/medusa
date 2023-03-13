@@ -35,7 +35,7 @@ const flow: TransactionStepsDefinition = {
 }
 
 const createInventoryItemStrategy = new TransactionOrchestrator(
-  "create-variant-with-inventory",
+  "create-inventory-item",
   flow
 )
 
@@ -43,7 +43,7 @@ type InjectedDependencies = {
   manager: EntityManager
   productVariantService: ProductVariantService
   productVariantInventoryService: ProductVariantInventoryService
-  inventoryService?: IInventoryService
+  inventoryService: IInventoryService
 }
 
 type CreateInventoryItemInput = {
@@ -71,8 +71,6 @@ export const createInventoryItemTransaction = async (
     productVariantInventoryService,
   } = dependencies
 
-  const inventoryServiceTx = inventoryService?.withTransaction(manager)
-
   const productVariantInventoryServiceTx =
     productVariantInventoryService.withTransaction(manager)
 
@@ -81,7 +79,7 @@ export const createInventoryItemTransaction = async (
   const variant = await productVariantServiceTx.retrieve(variantId)
 
   async function createInventoryItem(input: CreateInventoryItemInput) {
-    return await inventoryServiceTx!.createInventoryItem({
+    return await inventoryService!.createInventoryItem({
       sku: variant.sku,
       origin_country: variant.origin_country,
       hs_code: variant.hs_code,
@@ -96,7 +94,7 @@ export const createInventoryItemTransaction = async (
 
   async function removeInventoryItem(inventoryItem: InventoryItemDTO) {
     if (inventoryItem) {
-      await inventoryServiceTx!.deleteInventoryItem(inventoryItem.id)
+      await inventoryService!.deleteInventoryItem(inventoryItem.id)
     }
   }
 
