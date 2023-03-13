@@ -252,12 +252,14 @@ export default class EventBusService {
     const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
 
     const isBulkEmit = !isString(eventNameOrData)
-    const events: EmitData<T>[] = isBulkEmit
-      ? eventNameOrData
+    const events = isBulkEmit
+      ? eventNameOrData.map((event) => ({
+          data: { eventName: eventNameOrData, data: event.data },
+          opts: event.opts,
+        }))
       : [
           {
-            eventName: eventNameOrData,
-            data: data!,
+            data: { eventName: eventNameOrData, data },
             opts: options,
           },
         ]
@@ -295,8 +297,8 @@ export default class EventBusService {
 
       const jobsToCreate = events.map((event) => {
         return stagedJobRepository.create({
-          event_name: event.eventName,
-          data: event.data,
+          event_name: event.data.eventName,
+          data: event.data.data,
           options: event.opts,
         } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
       })
@@ -332,10 +334,14 @@ export default class EventBusService {
       )
       const jobs = await stagedJobRepo.find(listConfig)
 
+      if (!jobs.length) {
+        await sleep(3000)
+        continue
+      }
+
       const eventsData = jobs.map((job) => {
         return {
-          eventName: job.event_name,
-          data: job.data,
+          data: { eventName: job.event_name, data: job.data },
           opts: { jobId: job.id, ...job.options },
         }
       })
