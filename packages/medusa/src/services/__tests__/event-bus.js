@@ -141,6 +141,149 @@ describe("EventBusService", () => {
         expect(eventBus.queue_.add).toHaveBeenCalled()
       })
     })
+
+    describe("successfully adds job to queue with local options", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+        const stagedJobRepository = MockRepository({
+          find: () => Promise.resolve([]),
+        })
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: MockManager,
+          stagedJobRepository,
+        })
+
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+
+        job = eventBus.emit(
+          "eventName",
+          { hi: "1234" },
+          { removeOnComplete: 100 }
+        )
+      })
+      afterAll(async () => {
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.add", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalled()
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          { eventName: "eventName", data: { hi: "1234" } },
+          { removeOnComplete: 100 }
+        )
+      })
+    })
+
+    describe("successfully adds job to queue with global options", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+        const stagedJobRepository = MockRepository({
+          find: () => Promise.resolve([]),
+        })
+
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: MockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: { event_options: { removeOnComplete: 10 } },
+          }
+        )
+
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+
+        job = eventBus.emit("eventName", { hi: "1234" })
+      })
+      afterAll(async () => {
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.add", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalled()
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          { eventName: "eventName", data: { hi: "1234" } },
+          { removeOnComplete: 10, attempts: 1 }
+        )
+      })
+    })
+
+    describe("successfully adds job to queue with default options", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+        const stagedJobRepository = MockRepository({
+          find: () => Promise.resolve([]),
+        })
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: MockManager,
+          stagedJobRepository,
+        })
+
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+
+        job = eventBus.emit("eventName", { hi: "1234" })
+      })
+      afterAll(async () => {
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.add", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalled()
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          { eventName: "eventName", data: { hi: "1234" } },
+          { removeOnComplete: true, attempts: 1 }
+        )
+      })
+    })
+
+    describe("successfully adds job to queue with local options and global options merged", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+        const stagedJobRepository = MockRepository({
+          find: () => Promise.resolve([]),
+        })
+
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: MockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: { event_options: { removeOnComplete: 10 } },
+          }
+        )
+
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+
+        job = eventBus.emit(
+          "eventName",
+          { hi: "1234" },
+          { attempts: 10, delay: 1000, backoff: { type: "exponential" } }
+        )
+      })
+      afterAll(async () => {
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.add", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalled()
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          { eventName: "eventName", data: { hi: "1234" } },
+          {
+            removeOnComplete: 10, // global option
+            attempts: 10, // local option
+            delay: 1000, // local option
+            backoff: { type: "exponential" }, // local option
+          }
+        )
+      })
+    })
   })
 
   describe("worker", () => {

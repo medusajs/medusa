@@ -1,8 +1,5 @@
-import {
-  CacheService,
-  EventBusService,
-  ProductVariantService,
-} from "../services"
+import { EventBusService, ProductVariantService } from "../services"
+import { ICacheService } from "../interfaces"
 
 type ProductVariantUpdatedEventData = {
   id: string
@@ -12,7 +9,7 @@ type ProductVariantUpdatedEventData = {
 
 class PricingSubscriber {
   protected readonly eventBus_: EventBusService
-  protected readonly cacheService_: CacheService
+  protected readonly cacheService_: ICacheService
 
   constructor({ eventBusService, cacheService }) {
     this.eventBus_ = eventBusService
@@ -23,7 +20,7 @@ class PricingSubscriber {
       async (data) => {
         const { id, fields } = data as ProductVariantUpdatedEventData
         if (fields.includes("prices")) {
-          await this.cacheService_.invalidate(`ps:${id}*`)
+          await this.cacheService_.invalidate(`ps:${id}:*`)
         }
       }
     )

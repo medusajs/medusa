@@ -4,7 +4,7 @@ import { ProductServiceMock } from "../__mocks__/product-service"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { ShopifyClientServiceMock } from "../__mocks__/shopify-client"
-import { ShopifyRedisServiceMock } from "../__mocks__/shopify-redis"
+import { ShopifyCacheServiceMock } from "../__mocks__/shopify-cache"
 import { medusaProducts, shopifyProducts } from "../__mocks__/test-products"
 
 describe("ShopifyProductService", () => {
@@ -32,7 +32,7 @@ describe("ShopifyProductService", () => {
       manager: MockManager,
       shopifyClientService: ShopifyClientServiceMock,
       productService: ProductServiceMock,
-      shopifyRedisService: ShopifyRedisServiceMock,
+      shopifyCacheService: ShopifyCacheServiceMock,
       shippingProfileService: ShippingProfileServiceMock,
       productVariantService: ProductVariantServiceMock,
     })
@@ -46,8 +46,8 @@ describe("ShopifyProductService", () => {
 
       const product = await shopifyProductService.create(data)
 
-      expect(ShopifyRedisServiceMock.shouldIgnore).toHaveBeenCalledTimes(1)
-      expect(ShopifyRedisServiceMock.addIgnore).toHaveBeenCalledTimes(1)
+      expect(ShopifyCacheServiceMock.shouldIgnore).toHaveBeenCalledTimes(1)
+      expect(ShopifyCacheServiceMock.addIgnore).toHaveBeenCalledTimes(1)
       expect(ShippingProfileServiceMock.retrieveDefault).toHaveBeenCalledTimes(
         1
       )
@@ -66,7 +66,7 @@ describe("ShopifyProductService", () => {
       manager: MockManager,
       shopifyClientService: ShopifyClientServiceMock,
       productService: ProductServiceMock,
-      shopifyRedisService: ShopifyRedisServiceMock,
+      shopifyCacheService: ShopifyCacheServiceMock,
       shippingProfileService: ShippingProfileServiceMock,
       productVariantService: ProductVariantServiceMock,
     })

@@ -25,6 +25,18 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
       resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
+  {
+    key: "cacheService",
+    registrationName: "cacheService",
+    defaultPackage: "@medusajs/cache-inmemory",
+    label: "CacheService",
+    isRequired: true,
+    canOverride: true,
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
+  },
 ]
 
 export default MODULE_DEFINITIONS

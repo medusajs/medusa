@@ -18,7 +18,7 @@ import { ClaimTypeValue } from "../../../../types/claim"
 import { AddressPayload, FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /admin/order/{id}/claims
+ * @oas [post] /admin/orders/{id}/claims
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
  * description: "Creates a Claim."
@@ -383,9 +383,8 @@ export default async (req, res) => {
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  *   shipping_address:
- *      type: object
  *      description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
- *      $ref: "#/components/schemas/Address"
+ *      $ref: "#/components/schemas/AddressPayload"
  *   refund_amount:
  *      description: The amount to refund the Customer when the Claim type is `refund`.
  *      type: integer

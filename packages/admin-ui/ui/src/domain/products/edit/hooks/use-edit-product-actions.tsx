@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom"
 import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { removeNullish } from "../../../../utils/remove-nullish"
 
 const useEditProductActions = (productId: string) => {
   const dialog = useImperativeDialog()
@@ -47,14 +48,14 @@ const useEditProductActions = (productId: string) => {
 
   const onAddVariant = (
     payload: AdminPostProductsProductVariantsReq,
-    onSuccess: () => void,
+    onSuccess: (variantRes) => void,
     successMessage = "Variant was created successfully"
   ) => {
     addVariant.mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         notification("Success", successMessage, "success")
         getProduct.refetch()
-        onSuccess()
+        onSuccess(data.product)
       },
       onError: (err) => {
         notification("Error", getErrorMessage(err), "error")
@@ -70,7 +71,7 @@ const useEditProductActions = (productId: string) => {
   ) => {
     updateVariant.mutate(
       // @ts-ignore - TODO fix type on request
-      { variant_id: id, ...payload },
+      { variant_id: id, ...removeNullish(payload) },
       {
         onSuccess: () => {
           notification("Success", successMessage, "success")

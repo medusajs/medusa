@@ -8,7 +8,7 @@ import listProductCategories, {
 } from "./list-product-categories"
 
 import getProductCategory, {
-  StoreGetProductCategoryParams,
+  StoreGetProductCategoriesCategoryParams,
 } from "./get-product-category"
 
 const route = Router()
@@ -29,7 +29,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformStoreQuery(StoreGetProductCategoryParams, {
+    transformStoreQuery(StoreGetProductCategoriesCategoryParams, {
       defaultFields: defaultStoreProductCategoryFields,
       allowedFields: allowedStoreProductCategoryFields,
       defaultRelations: defaultStoreProductCategoryRelations,
@@ -58,6 +58,7 @@ export const defaultStoreProductCategoryFields = [
   "parent_category_id",
   "created_at",
   "updated_at",
+  "rank",
 ]
 
 export const allowedStoreProductCategoryFields = [
@@ -67,6 +68,7 @@ export const allowedStoreProductCategoryFields = [
   "parent_category_id",
   "created_at",
   "updated_at",
+  "rank",
 ]
 
 /**
@@ -83,7 +85,7 @@ export type StoreGetProductCategoriesCategoryRes = {
 }
 
 /**
- * @schema StoreProductCategoriesListRes
+ * @schema StoreGetProductCategoriesRes
  * type: object
  * required:
  *   - product_categories
@@ -105,7 +107,7 @@ export type StoreGetProductCategoriesCategoryRes = {
  *      type: integer
  *      description: The number of items per page
  */
-export type StoreProductCategoriesListRes = PaginatedResponse & {
+export type StoreGetProductCategoriesRes = PaginatedResponse & {
   product_categories: ProductCategory[]
 }
 
