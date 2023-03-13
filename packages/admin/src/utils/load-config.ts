@@ -24,10 +24,7 @@ export const loadConfig = () => {
       serve: options.serve ?? defaultConfig.serve,
       autoRebuild: options.autoRebuild ?? defaultConfig.autoRebuild,
       path: options.path ?? defaultConfig.path,
-      backend: options.backend ?? defaultConfig.backend,
-      buildDir: options.buildDir ?? defaultConfig.buildDir,
-      include: options.include ?? defaultConfig.include,
-      includeDist: options.includeDist ?? defaultConfig.includeDist,
+      outDir: options.outDir ?? defaultConfig.outDir,
     }
   }
 

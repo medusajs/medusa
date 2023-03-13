@@ -12,7 +12,7 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
   const globalReplacements = () => {
     const base = globals.base || "app"
 
-    let backend = "/"
+    let backend = undefined
 
     if (globals.backend) {
       try {
@@ -26,10 +26,17 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
       }
     }
 
-    return {
-      __BASE__: JSON.stringify(`/${base}`),
-      __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
+    const global = {}
+
+    if (base) {
+      global["__BASE__"] = JSON.stringify(`/${base}`)
     }
+
+    if (backend) {
+      global["__MEDUSA_BACKEND_URL__"] = JSON.stringify(backend)
+    }
+
+    return global
   }
 
   const buildConfig = (): BuildOptions => {
@@ -41,7 +48,7 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
       /**
        * Default build directory is at the root of the `@medusajs/admin-ui` package.
        */
-      destDir = resolve(__dirname, "..", "..", "build")
+      destDir = resolve(process.cwd(), "build")
     } else {
       /**
        * If a custom build directory is specified, it is resolved relative to the

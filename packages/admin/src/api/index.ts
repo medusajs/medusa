@@ -9,24 +9,19 @@ import { reporter } from "../utils"
 export default function (_rootDirectory: string, options: PluginOptions) {
   const app = Router()
 
-  const { serve = true, path = "app", buildDir: outDir } = options
+  const { serve = true, path = "app", outDir } = options
 
   if (serve) {
     let buildPath: string
-    let htmlPath: string
 
+    // If an outDir is provided we use that, otherwise we default to "build".
     if (outDir) {
       buildPath = resolve(process.cwd(), outDir)
-      htmlPath = resolve(buildPath, "index.html")
     } else {
-      buildPath = resolve(
-        require.resolve("@medusajs/admin-ui"),
-        "..",
-        "..",
-        "build"
-      )
-      htmlPath = resolve(buildPath, "index.html")
+      buildPath = resolve(process.cwd(), "build")
     }
+
+    const htmlPath = resolve(buildPath, "index.html")
 
     /**
      * The admin UI should always be built at this point, but in the

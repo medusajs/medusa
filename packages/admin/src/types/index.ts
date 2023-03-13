@@ -38,36 +38,10 @@ export type PluginOptions = {
 
   /**
    * The directory to output the build to. By default the plugin will build
-   * the dashboard to the `build` directory.
+   * the dashboard to the `build` directory in `/node_modules/@medusajs/admin-ui`.
    * @default undefined
    */
-  buildDir?: string
-
-  /**
-   * Backend to use for the admin dashboard. This should only be used if you
-   * intend on hosting the dashboard separately from your Medusa server.
-   * @default undefined
-   */
-  backend?: string
-
-  /**
-   * Optional array of paths to include in the build output. This can be used to
-   * include host specific assets, such a routing redirects, or additional HTML such
-   * as a `200.html` file if that is required by your host.
-   *
-   * Option is ignored if `outDir` is not specified.
-   * @default undefined
-   */
-  include?: string[]
-
-  /**
-   * Optional path for where to place the files specified in the `include` option.
-   * Useful if you want to include files in a subdirectory of the build output,
-   * such as `/public`.
-   *
-   * Option is ignored if `outDir` and `include` is not specified.
-   */
-  includeDist?: string
+  outDir?: string
 
   /**
    * Development options.

@@ -6,7 +6,7 @@ import { resolve } from "path"
 import { loadConfig, reporter, validatePath } from "../utils"
 
 export default async function setupAdmin() {
-  const { path, backend, buildDir, serve, autoRebuild } = loadConfig()
+  const { path, outDir, serve, autoRebuild } = loadConfig()
 
   // If the user has not specified that the admin UI should be served,
   // we should not build it. Furthermore, if the user has not specified that they want
@@ -24,11 +24,13 @@ export default async function setupAdmin() {
   let dir: string
   let shouldBuild = false
 
-  if (buildDir) {
-    dir = resolve(process.cwd(), buildDir)
+  /**
+   * If no outDir is provided we default to "build".
+   */
+  if (outDir) {
+    dir = resolve(process.cwd(), outDir)
   } else {
-    const uiPath = require.resolve("@medusajs/admin-ui")
-    dir = resolve(uiPath, "..", "..", "build")
+    dir = resolve(process.cwd(), "build")
   }
 
   try {
@@ -41,11 +43,16 @@ export default async function setupAdmin() {
 
   const buildOptions = {
     build: {
-      outDir: buildDir,
+      outDir,
     },
     globals: {
       base: path,
-      backend: backend,
+      /**
+       * We only build the admin UI as part of the Medusa startup process if
+       * the user has specified that they want to serve the admin UI. When this
+       * is the case, we should always set the backend to `undefined`.
+       */
+      backend: undefined,
     },
   }
 
@@ -74,13 +81,7 @@ export default async function setupAdmin() {
     )
 
     await build({
-      build: {
-        outDir: buildDir,
-      },
-      globals: {
-        base: path,
-        backend: backend,
-      },
+      ...buildOptions,
     }).catch((err) => {
       spinner.fail(`Failed to build Admin UI${EOL}`)
       reporter.panic(err)
