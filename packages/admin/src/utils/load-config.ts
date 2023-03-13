@@ -15,15 +15,19 @@ export const loadConfig = () => {
 
   let defaultConfig: PluginOptions = {
     serve: false,
+    autoRebuild: false,
   }
 
   if (typeof plugin !== "string") {
     const { options } = plugin as { options: PluginOptions }
     defaultConfig = {
       serve: options.serve ?? defaultConfig.serve,
+      autoRebuild: options.autoRebuild ?? defaultConfig.autoRebuild,
       path: options.path ?? defaultConfig.path,
       backend: options.backend ?? defaultConfig.backend,
-      outDir: options.outDir ?? defaultConfig.outDir,
+      buildDir: options.buildDir ?? defaultConfig.buildDir,
+      include: options.include ?? defaultConfig.include,
+      includeDist: options.includeDist ?? defaultConfig.includeDist,
     }
   }
 

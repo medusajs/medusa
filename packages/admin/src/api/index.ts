@@ -9,7 +9,7 @@ import { reporter } from "../utils"
 export default function (_rootDirectory: string, options: PluginOptions) {
   const app = Router()
 
-  const { serve = true, path = "app", outDir } = options
+  const { serve = true, path = "app", buildDir: outDir } = options
 
   if (serve) {
     let buildPath: string

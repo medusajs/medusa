@@ -6,7 +6,14 @@ import { resolve } from "path"
 import { loadConfig, reporter, validatePath } from "../utils"
 
 export default async function setupAdmin() {
-  const { path, backend, outDir } = loadConfig()
+  const { path, backend, buildDir, serve, autoRebuild } = loadConfig()
+
+  // If the user has not specified that the admin UI should be served,
+  // we should not build it. Furthermore, if the user has not specified that they want
+  // the admin UI to be rebuilt on changes, we should not build it here.
+  if (!serve || !autoRebuild) {
+    return
+  }
 
   try {
     validatePath(path)
@@ -17,8 +24,8 @@ export default async function setupAdmin() {
   let dir: string
   let shouldBuild = false
 
-  if (outDir) {
-    dir = resolve(process.cwd(), outDir)
+  if (buildDir) {
+    dir = resolve(process.cwd(), buildDir)
   } else {
     const uiPath = require.resolve("@medusajs/admin-ui")
     dir = resolve(uiPath, "..", "..", "build")
@@ -34,7 +41,7 @@ export default async function setupAdmin() {
 
   const buildOptions = {
     build: {
-      outDir: outDir,
+      outDir: buildDir,
     },
     globals: {
       base: path,
@@ -68,7 +75,7 @@ export default async function setupAdmin() {
 
     await build({
       build: {
-        outDir: outDir,
+        outDir: buildDir,
       },
       globals: {
         base: path,
