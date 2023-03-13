@@ -5694,6 +5694,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/cache-inmemory@*, @medusajs/cache-inmemory@workspace:packages/cache-inmemory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cache-inmemory@workspace:packages/cache-inmemory"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.11
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/cache-redis@workspace:packages/cache-redis":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cache-redis@workspace:packages/cache-redis"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.11
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/inventory@workspace:packages/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
@@ -5781,11 +5809,15 @@ __metadata:
     "@readme/openapi-parser": ^2.4.0
     "@types/lodash": ^4.14.191
     commander: ^10.0.0
+    jest: ^25.5.4
+    js-yaml: ^4.1.0
     lodash: ^4.17.21
     openapi3-ts: ^3.1.2
     swagger-inline: ^6.1.0
+    ts-jest: ^25.5.1
     ts-node: ^10.9.1
     typescript: 4.9.5
+    uuid: ^9.0.0
   bin:
     medusa-oas: ./dist/index.js
   languageName: unknown
@@ -16623,6 +16655,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< HEAD
+=======
+"create-react-class@npm:^15.6.0":
+  version: 15.7.0
+  resolution: "create-react-class@npm:15.7.0"
+  dependencies:
+    loose-envify: ^1.3.1
+    object-assign: ^4.1.1
+  checksum: bce4b46e6d85b424cb50ca8089266c7664fcecfd81abaafb829680fae2e2e60dc6999cac88f5a16a38473ed284859f2328935a42fc5cd1b7cc48888fdd8363c9
+  languageName: node
+  linkType: hard
+
+>>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "create-require@npm:^1.1.0":
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
@@ -20156,6 +20201,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"fbjs@npm:^0.8.9":
+  version: 0.8.18
+  resolution: "fbjs@npm:0.8.18"
+  dependencies:
+    core-js: ^1.0.0
+    isomorphic-fetch: ^2.1.1
+    loose-envify: ^1.0.0
+    object-assign: ^4.1.0
+    promise: ^7.1.1
+    setimmediate: ^1.0.5
+    ua-parser-js: ^0.7.30
+  checksum: a7e1c64c349cde000e5d94ce0289c59b725a95fbdacc22529155c4dacea1dde37a4dae7e16f0f6602dca566f15978b42acd7ee973b620eaac612b5228687ffe0
+  languageName: node
+  linkType: hard
+
+>>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "fbjs@npm:^3.0.0, fbjs@npm:^3.0.1":
   version: 3.0.4
   resolution: "fbjs@npm:3.0.4"
@@ -23178,6 +23241,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/cache-inmemory": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
@@ -23195,6 +23259,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/cache-inmemory": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
@@ -33355,6 +33420,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"react-addons-shallow-compare@npm:^15.6.3":
+  version: 15.6.3
+  resolution: "react-addons-shallow-compare@npm:15.6.3"
+  dependencies:
+    object-assign: ^4.1.0
+  checksum: ad1a2ef7adf1a307b55de58a99ccf40998a1f7c84dcaadb1a2dd40c0e21e911b84fe04ab5f3494a1118846fc7537043287d54bcaffc2daf819b6c45eef5635ce
+  languageName: node
+  linkType: hard
+
+"react-addons-update@npm:^15.6.3":
+  version: 15.6.3
+  resolution: "react-addons-update@npm:15.6.3"
+  dependencies:
+    object-assign: ^4.1.0
+  checksum: b6d98b459eb37393b8103309090b36649c0a0e95c7dbe010e692616eb025baf62b53cb187925ecce0c3ed0377357ce03c3a45a8ec2d91e6886f8d2eb55b0dfd1
+  languageName: node
+  linkType: hard
+
+>>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "react-base16-styling@npm:^0.6.0":
   version: 0.6.0
   resolution: "react-base16-styling@npm:0.6.0"
@@ -33522,6 +33608,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"react-dom@npm:^15.7.0":
+  version: 15.7.0
+  resolution: "react-dom@npm:15.7.0"
+  dependencies:
+    fbjs: ^0.8.9
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.0
+    prop-types: ^15.5.10
+  peerDependencies:
+    react: ^15.7.0
+  checksum: df53025b8e9a63a80c99cb066e9e9db879e97f8d45d204803bfd806829e43818aae16e5ee8e4d05443931562df2bc9c0bd688607398e25de6dca2879478f0212
+  languageName: node
+  linkType: hard
+
+>>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "react-dom@npm:^17.0.1, react-dom@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
@@ -33967,6 +34070,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"react@npm:^15.7.0":
+  version: 15.7.0
+  resolution: "react@npm:15.7.0"
+  dependencies:
+    create-react-class: ^15.6.0
+    fbjs: ^0.8.9
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.0
+    prop-types: ^15.5.10
+  checksum: 1b48cf636c1af90a15660ad024db1389716c495dcd19807700f0eb92678d8bd57fe362f40eb4d89a713e8db1c8ab8ac1e989cdf3b215d32ac1d3fbc4120f26d8
+  languageName: node
+  linkType: hard
+
+>>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "react@npm:^17.0.1, react@npm:^17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
@@ -35376,6 +35495,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
+=======
+"scheduler@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "scheduler@npm:0.20.2"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
+  languageName: node
+  linkType: hard
+
+>>>>>>> 7fa629f72b57a9ba1658e53e0a161b10e5cd2dd1
 "scheduler@npm:^0.23.0":
   version: 0.23.0
   resolution: "scheduler@npm:0.23.0"
