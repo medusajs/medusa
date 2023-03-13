@@ -1,5 +1,5 @@
 import { useAdminReturnReasons } from "medusa-react"
-import React, { useState } from "react"
+import { useState } from "react"
 import Spinner from "../../../components/atoms/spinner"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BreadCrumb from "../../../components/molecules/breadcrumb"

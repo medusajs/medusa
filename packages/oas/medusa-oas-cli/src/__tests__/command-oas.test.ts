@@ -21,7 +21,7 @@ const getTmpDirectory = async () => {
 }
 
 const runCLI = async (command: string, options: string[] = []) => {
-  const params = ["run", "cli", command, ...options]
+  const params = ["run", "medusa-oas", command, ...options]
   try {
     const { all: logs } = await execa("yarn", params, {
       cwd: basePath,

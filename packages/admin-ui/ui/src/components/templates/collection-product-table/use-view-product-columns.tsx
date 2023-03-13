@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { Column } from "react-table"
 import Table from "../../molecules/table"
@@ -11,7 +11,7 @@ const useViewProductColumns = () => {
         id: "selection",
         Cell: ({ row }) => {
           return (
-            <Table.Cell className="w-[0%] pl-base pr-large">
+            <Table.Cell className="pl-base pr-large w-[0%]">
               <div>{row.index + 1}</div>
             </Table.Cell>
           )
@@ -20,8 +20,8 @@ const useViewProductColumns = () => {
       {
         accessor: "thumbnail",
         Cell: ({ cell: { value } }) => (
-          <Table.Cell className="w-[0%] pr-base">
-            <div className="h-[40px] w-[30px] bg-grey-5 rounded-soft overflow-hidden my-xsmall">
+          <Table.Cell className="pr-base w-[0%]">
+            <div className="bg-grey-5 rounded-soft my-xsmall h-[40px] w-[30px] overflow-hidden">
               {value ? (
                 <img
                   src={value}

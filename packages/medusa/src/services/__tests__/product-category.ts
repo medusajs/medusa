@@ -32,7 +32,7 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.findOneWithDescendants).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.findOneWithDescendants).toHaveBeenCalledWith({
         where: { id: validID },
-      })
+      }, {})
     })
 
     it("fails on not-found product category id", async () => {

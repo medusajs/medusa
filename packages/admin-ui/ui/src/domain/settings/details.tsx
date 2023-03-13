@@ -1,6 +1,6 @@
 import { Store } from "@medusajs/medusa"
 import { useAdminStore, useAdminUpdateStore } from "medusa-react"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import BreadCrumb from "../../components/molecules/breadcrumb"
 import Input from "../../components/molecules/input"

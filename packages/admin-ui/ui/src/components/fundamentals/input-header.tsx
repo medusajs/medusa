@@ -20,14 +20,14 @@ const InputHeader: React.FC<InputHeaderProps> = ({
   return (
     <div
       className={clsx(
-        "w-full flex inter-small-semibold text-grey-50 items-center",
+        "inter-small-semibold text-grey-50 flex w-full items-center",
         className
       )}
     >
       <label>{label}</label>
       {required && <div className="text-rose-50 "> *</div>}
       {tooltip || tooltipContent ? (
-        <div className="flex ml-1.5">
+        <div className="ml-1.5 flex">
           {tooltip || <IconTooltip content={tooltipContent} />}
         </div>
       ) : null}

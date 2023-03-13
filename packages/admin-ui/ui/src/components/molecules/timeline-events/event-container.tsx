@@ -48,12 +48,12 @@ const EventContainer: React.FC<EventContainerProps> = ({
   return (
     <div className="mb-base">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-x-xsmall">
+        <div className="gap-x-xsmall flex items-center">
           <div className={clsx("h-5 w-5", iconColor)}>{icon}</div>
           <div className="inter-small-semibold">{title}</div>
           <div className="inter-small-regular text-grey-50"></div>
         </div>
-        <div className="flex items-center gap-x-xsmall">
+        <div className="gap-x-xsmall flex items-center">
           {noNotification && (
             <Tooltip content="Notifications related to this event are disabled">
               <BellOffIcon size={20} className="text-grey-40" />
@@ -71,8 +71,8 @@ const EventContainer: React.FC<EventContainerProps> = ({
           )}
         </div>
       </div>
-      <div className="flex gap-x-xsmall">
-        <div className="flex w-5 justify-center pt-base">
+      <div className="gap-x-xsmall flex">
+        <div className="pt-base flex w-5 justify-center">
           {!isFirst && <div className="min-h-[24px] w-px" />}
         </div>
         <div className="inter-small-regular mt-2xsmall w-full">
@@ -90,7 +90,7 @@ const EventContainer: React.FC<EventContainerProps> = ({
             {midNode}
           </div>
           {children && isExpanded && (
-            <div className="mt-small w-full pb-base">{children}</div>
+            <div className="mt-small pb-base w-full">{children}</div>
           )}
         </div>
       </div>

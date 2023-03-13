@@ -4,7 +4,7 @@ import {
   useAdminDiscountRemoveCondition,
   useAdminGetDiscountCondition,
 } from "medusa-react"
-import React, { useState } from "react"
+import { useState } from "react"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import { ActionType } from "../../../../components/molecules/actionables"

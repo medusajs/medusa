@@ -32,10 +32,10 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
   onEdit,
 }) => {
   return (
-    <div className="flex items-baseline justify-between p-base rounded-base border border-grey-20">
+    <div className="p-base rounded-base border-grey-20 flex items-baseline justify-between border">
       <div className="truncate">
         <div className="flex items-center">
-          <p className="inter-small-semibold truncate mr-xsmall">
+          <p className="inter-small-semibold mr-xsmall truncate">
             {option.name} {option.data.name && `(${option.data.name})`}{" "}
           </p>
           {option.admin_only && <Badge variant="primary">Not on website</Badge>}
@@ -45,7 +45,7 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
           {option.amount !== undefined &&
             `${option.amount / 100} ${currency_code.toUpperCase()}`}
           {option.requirements.length
-            ? option.requirements.map(r => {
+            ? option.requirements.map((r) => {
                 const type =
                   r.type === "max_subtotal" ? "Max. subtotal" : "Min. subtotal"
                 return ` - ${type}: ${

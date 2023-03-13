@@ -8,7 +8,7 @@ const SettingsOverview: React.FC<React.PropsWithChildren> = ({ children }) => {
         title={"Settings"}
         subtitle={"Manage the settings for your Medusa store"}
       />
-      <div className="grid medium:grid-cols-2 auto-cols-fr grid-cols-1 gap-x-base gap-y-xsmall">
+      <div className="medium:grid-cols-2 gap-x-base gap-y-xsmall grid auto-cols-fr grid-cols-1">
         {children}
       </div>
     </div>

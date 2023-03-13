@@ -1,4 +1,3 @@
-import React from "react"
 import { Controller } from "react-hook-form"
 import InputField from "../../../../components/molecules/input"
 import { NextSelect } from "../../../../components/molecules/select/next-select"
@@ -36,7 +35,7 @@ const CustomsForm = ({ form }: CustomsFormProps) => {
   }))
 
   return (
-    <div className="grid grid-cols-2 gap-large pb-2xsmall">
+    <div className="gap-large pb-2xsmall grid grid-cols-2">
       <InputField
         label="MID Code"
         placeholder="XDSKLAD9999..."

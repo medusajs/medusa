@@ -4,7 +4,6 @@ import {
   useAdminCancelFulfillment,
   useAdminCancelSwapFulfillment,
 } from "medusa-react"
-import React from "react"
 import CancelIcon from "../../../../components/fundamentals/icons/cancel-icon"
 import PackageIcon from "../../../../components/fundamentals/icons/package-icon"
 import Actionables from "../../../../components/molecules/actionables"
@@ -98,7 +97,7 @@ export const FormattedFulfillment = ({
                 fulfillment.provider_id
               )}`}
         </div>
-        <div className="flex text-grey-50">
+        <div className="text-grey-50 flex">
           {!fulfillment.shipped_at ? "Not shipped" : "Tracking"}
           {hasLinks &&
             fulfillment.tracking_links.map((tl, j) => (

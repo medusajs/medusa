@@ -1,5 +1,5 @@
 import { Store } from "@medusajs/medusa"
-import React, { createContext, useContext } from "react"
+import { createContext, useContext } from "react"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../../../../components/molecules/modal/layered-modal"
@@ -16,9 +16,8 @@ type EditCurrenciesModalContextType = {
   store: Store
 }
 
-const EditCurrenciesModalContext = createContext<EditCurrenciesModalContextType | null>(
-  null
-)
+const EditCurrenciesModalContext =
+  createContext<EditCurrenciesModalContextType | null>(null)
 
 const EditCurrenciesModal = ({ store, open, onClose }: Props) => {
   const context = useContext(LayeredModalContext)

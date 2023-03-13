@@ -63,7 +63,7 @@ const ItemsToSendForm = ({ form, order }: Props) => {
   return (
     <div
       className={clsx({
-        "flex flex-col gap-y-base": fields.length > 0,
+        "gap-y-base flex flex-col": fields.length > 0,
         "flex items-center justify-between": !fields.length,
       })}
     >

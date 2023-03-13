@@ -31,7 +31,7 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "cli": "ts-node src/index.ts",
+    "medusa-oas": "ts-node src/index.ts",
     "test": "jest src",
     "test:unit": "jest src"
   },

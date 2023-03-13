@@ -1,6 +1,6 @@
 import { Customer } from "@medusajs/medusa"
 import { useAdminUpdateCustomer } from "medusa-react"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
@@ -73,7 +73,7 @@ const EditCustomerModal = ({
         </Modal.Header>
         <Modal.Content>
           <div className="inter-base-semibold text-grey-90 mb-4">General</div>
-          <div className="w-full flex mb-4 space-x-2">
+          <div className="mb-4 flex w-full space-x-2">
             <InputField
               label="First Name"
               {...register("first_name")}
@@ -108,7 +108,7 @@ const EditCustomerModal = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="w-full flex justify-end">
+          <div className="flex w-full justify-end">
             <Button
               variant="ghost"
               size="small"

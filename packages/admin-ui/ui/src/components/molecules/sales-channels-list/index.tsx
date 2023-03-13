@@ -18,7 +18,7 @@ const SalesChannelsList = ({ salesChannels, showMax = 3 }: Props) => {
       {salesChannels
         .slice(0, showMax)
         .map((salesChannel, index, slicedArray) => (
-          <span className="ml-1 inter-base-regular text-grey-90 first-of-type:ml-0">
+          <span className="inter-base-regular text-grey-90 ml-1 first-of-type:ml-0">
             {salesChannel.name}
             {index < slicedArray.length - 1 && ", "}
           </span>
@@ -34,7 +34,7 @@ const SalesChannelsList = ({ salesChannels, showMax = 3 }: Props) => {
           }
           side="top"
         >
-          <span className="ml-1 text-grey-50">
+          <span className="text-grey-50 ml-1">
             + {salesChannels.length - showMax} more
           </span>
         </Tooltip>

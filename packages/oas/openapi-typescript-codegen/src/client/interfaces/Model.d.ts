@@ -1,6 +1,14 @@
 import type { Enum } from "./Enum"
 import type { Schema } from "./Schema"
 
+export type NestedRelation = {
+  field: string
+  nestedRelations: NestedRelation[]
+  base?: string
+  isArray?: boolean
+  hasDepth?: boolean
+}
+
 export interface Model extends Schema {
   name: string
   export:
@@ -24,4 +32,5 @@ export interface Model extends Schema {
   enum: Enum[]
   enums: Model[]
   properties: Model[]
+  nestedRelations?: NestedRelation[]
 }

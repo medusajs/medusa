@@ -44,8 +44,8 @@ const Users: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="w-full flex flex-col grow">
+    <div className="flex h-full flex-col">
+      <div className="flex w-full grow flex-col">
         <BreadCrumb
           previousRoute="/a/settings"
           previousBreadcrumb="Settings"
