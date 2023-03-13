@@ -46,7 +46,7 @@ export const defaultStoreProductCategoryRelations = [
   "category_children",
 ]
 
-export const defaultStoreScope = {
+export const defaultStoreCategoryScope = {
   is_internal: false,
   is_active: true,
 }
