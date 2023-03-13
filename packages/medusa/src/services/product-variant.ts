@@ -493,6 +493,7 @@ class ProductVariantService extends TransactionBaseService {
       const dataRegionPrices: {
         variantId: string
         price: {
+          currency_code: string
           region_id: string
           amount: number
         }
@@ -509,6 +510,7 @@ class ProductVariantService extends TransactionBaseService {
             dataRegionPrices.push({
               variantId,
               price: {
+                currency_code: region.currency_code,
                 region_id: price.region_id,
                 amount: price.amount,
               },
@@ -543,6 +545,7 @@ class ProductVariantService extends TransactionBaseService {
     data: {
       variantId: string
       price: {
+        currency_code: string
         region_id: string
         amount: number
       }
