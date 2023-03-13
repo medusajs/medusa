@@ -1,4 +1,4 @@
-import { build as buildAdmin } from "@medusajs/admin-ui"
+import { AdminBuildConfig, build as buildAdmin } from "@medusajs/admin-ui"
 import dotenv from "dotenv"
 import fse from "fs-extra"
 import ora from "ora"
@@ -14,80 +14,67 @@ type BuildArgs = {
   includeDist?: string
 }
 
+let ENV_FILE_NAME = ""
+switch (process.env.NODE_ENV) {
+  case "production":
+    ENV_FILE_NAME = ".env.production"
+    break
+  case "staging":
+    ENV_FILE_NAME = ".env.staging"
+    break
+  case "test":
+    ENV_FILE_NAME = ".env.test"
+    break
+  case "development":
+  default:
+    ENV_FILE_NAME = ".env"
+    break
+}
+
+try {
+  dotenv.config({ path: process.cwd() + "/" + ENV_FILE_NAME })
+} catch (e) {
+  reporter.warn(`Failed to load environment variables from ${ENV_FILE_NAME}`)
+}
+
 export default async function build(args: BuildArgs) {
-  let ENV_FILE_NAME = ""
-  switch (process.env.NODE_ENV) {
-    case "production":
-      ENV_FILE_NAME = ".env.production"
-      break
-    case "staging":
-      ENV_FILE_NAME = ".env.staging"
-      break
-    case "test":
-      ENV_FILE_NAME = ".env.test"
-      break
-    case "development":
-    default:
-      ENV_FILE_NAME = ".env"
-      break
-  }
-
-  try {
-    dotenv.config({ path: process.cwd() + "/" + ENV_FILE_NAME })
-  } catch (e) {
-    reporter.warn(`Failed to load environment variables from ${ENV_FILE_NAME}`)
-  }
-
   const { deployment, outDir: outDirArg, backend, include, includeDist } = args
 
-  let path: string | undefined = undefined
+  let config: AdminBuildConfig = {}
 
-  /**
-   * If no outDir is provided we default to "build".
-   */
-  let outDir: string | undefined = outDirArg || "build"
-
-  /**
-   * If we are not building the admin UI with the intention of deploying
-   * it to a external host, we load the plugin configuration and use the
-   * path and outDir specified there.
-   */
-  if (!deployment) {
-    const config = loadConfig()
+  if (deployment) {
+    config = {
+      build: {
+        outDir: outDirArg,
+      },
+      globals: {
+        backend: backend || process.env.MEDUSA_BACKEND_URL,
+      },
+    }
+  } else {
+    const { path, outDir } = loadConfig()
 
     try {
-      validatePath(config.path)
-      path = config.path
+      validatePath(path)
     } catch (err) {
       reporter.panic(err)
     }
 
-    if (!outDir) {
-      outDir = config.outDir
+    config = {
+      build: {
+        outDir: outDir,
+      },
+      globals: {
+        base: path,
+      },
     }
   }
 
   const time = Date.now()
   const spinner = ora().start(`Building Admin UI${EOL}`)
 
-  /**
-   * If a backend URL is provided we use that. If no URL is provided
-   * we default to the environment variable MEDUSA_BACKEND_URL.
-   */
-  const serverUrl = backend || process.env.MEDUSA_BACKEND_URL
-
-  if (!serverUrl) {
-    throw new Error("Server URL is not defined: " + serverUrl)
-  }
-
   await buildAdmin({
-    build: {
-      outDir,
-    },
-    globals: {
-      base: path,
-      backend: serverUrl,
-    },
+    ...config,
   }).catch((err) => {
     spinner.fail(`Failed to build Admin UI${EOL}`)
     reporter.panic(err)
@@ -98,18 +85,14 @@ export default async function build(args: BuildArgs) {
    * to the build directory.
    */
   if (include && include.length > 0) {
-    if (!outDir) {
-      reporter.warn(
-        "You have specified files to include in the build, but no output directory. The files will not be included in the build."
-      )
-    } else {
-      try {
-        for (const filePath of include) {
-          await fse.copy(filePath, resolve(outDir, includeDist, filePath))
-        }
-      } catch (err) {
-        reporter.panic(err)
+    const dist = outDirArg || resolve(process.cwd(), "build")
+
+    try {
+      for (const filePath of include) {
+        await fse.copy(filePath, resolve(dist, includeDist, filePath))
       }
+    } catch (err) {
+      reporter.panic(err)
     }
   }
 

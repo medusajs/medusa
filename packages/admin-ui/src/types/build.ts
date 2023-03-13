@@ -3,7 +3,6 @@ import { DeepPartial } from "./misc"
 type GlobalsConfig = {
   base?: string
   backend?: string
-  deployment?: boolean
 }
 
 type BuildConfig = {

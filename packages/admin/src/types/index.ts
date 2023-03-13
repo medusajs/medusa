@@ -1,33 +1,8 @@
-type DevPluginOptions = {
-  /**
-   * Determines whether the admin dashboard should be served in development.
-   * @default true
-   */
-  serve?: boolean
-
-  /**
-   * The path to the admin dashboard. Should not be prefixed or suffixed with a slash.
-   * The chosen path cannot be one of the reserved paths: "admin", "store".
-   * @default "app"
-   */
-  path?: string
-}
-
 export type PluginOptions = {
   /**
    * Determines whether the admin dashboard should be served.
    */
   serve?: boolean
-
-  /**
-   * Re-build the admin automatically when options have changed since the last server start.
-   * Be aware that building the dashboard is a memory intensive process. Therefore, this option should
-   * only be used in production if your server has the memory required to support it.
-   *
-   * Only used if `serve` is `true`.
-   * @default false
-   */
-  autoRebuild?: boolean
 
   /**
    * The path to the admin dashboard. Should not be prefixed or suffixed with a slash.
@@ -44,10 +19,14 @@ export type PluginOptions = {
   outDir?: string
 
   /**
-   * Development options.
-   * @default undefined
+   * Re-build the admin automatically when options have changed since the last server start.
+   * Be aware that building the dashboard is a memory intensive process. Therefore, this option should
+   * only be used in production if your server has the memory required to support it.
+   *
+   * Only used if `serve` is `true`.
+   * @default false
    */
-  dev?: DevPluginOptions
+  autoRebuild?: boolean
 }
 
 type PluginObject = {

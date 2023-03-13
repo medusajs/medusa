@@ -14,8 +14,9 @@ export const loadConfig = () => {
   )
 
   let defaultConfig: PluginOptions = {
-    serve: false,
+    serve: true,
     autoRebuild: false,
+    path: "app",
   }
 
   if (typeof plugin !== "string") {

@@ -10,8 +10,6 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
   const uiPath = resolve(__dirname, "..", "..", "ui")
 
   const globalReplacements = () => {
-    const base = globals.base || "app"
-
     let backend = undefined
 
     if (globals.backend) {
@@ -28,8 +26,8 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
 
     const global = {}
 
-    if (base) {
-      global["__BASE__"] = JSON.stringify(`/${base}`)
+    if (globals.base) {
+      global["__BASE__"] = JSON.stringify(`/${globals.base}`)
     }
 
     if (backend) {
