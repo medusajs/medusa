@@ -1,5 +1,12 @@
 # @medusajs/inventory
 
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`ce577f269`](https://github.com/medusajs/medusa/commit/ce577f2696aa2181bef8f3096b1a639feabe2714), [`aa0d1f321`](https://github.com/medusajs/medusa/commit/aa0d1f32153f82c6219efe5cfc08862db5e5a129), [`9f508c8bd`](https://github.com/medusajs/medusa/commit/9f508c8bd8bee63677504cc8b86f1643579945d8)]:
+  - @medusajs/medusa@1.7.12
+
 ## 1.0.8
 
 ### Patch Changes

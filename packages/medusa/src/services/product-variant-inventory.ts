@@ -1,6 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import {
+  ICacheService,
   IInventoryService,
   IStockLocationService,
   TransactionBaseService,
@@ -14,7 +15,6 @@ import {
 } from "../types/inventory"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 import {
-  CacheService,
   ProductVariantService,
   SalesChannelInventoryService,
   SalesChannelLocationService,
@@ -35,7 +35,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly productVariantService_: ProductVariantService
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
-  protected readonly cacheService_: CacheService
+  protected readonly cacheService_: ICacheService
 
   constructor({
     stockLocationService,
