@@ -254,7 +254,7 @@ export default class EventBusService {
     const isBulkEmit = !isString(eventNameOrData)
     const events = isBulkEmit
       ? eventNameOrData.map((event) => ({
-          data: { eventName: eventNameOrData, data: event.data },
+          data: { eventName: event.eventName, data: event.data },
           opts: event.opts,
         }))
       : [

@@ -155,8 +155,10 @@ describe("EventBusService", () => {
         expect(eventBus.queue_.addBulk).toHaveBeenCalled()
         expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            eventName,
-            data,
+            data: {
+              data,
+              eventName,
+            },
             opts: defaultOptions,
           },
         ])
@@ -216,13 +218,17 @@ describe("EventBusService", () => {
         expect(eventBus.queue_.addBulk).toHaveBeenCalledTimes(1)
         expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            eventName,
-            data: bulkData[0],
+            data: {
+              data: bulkData[0],
+              eventName,
+            },
             opts: defaultOptions,
           },
           {
-            eventName,
-            data: bulkData[1],
+            data: {
+              data: bulkData[1],
+              eventName,
+            },
             opts: defaultOptions,
           },
         ])
@@ -297,8 +303,10 @@ describe("EventBusService", () => {
         expect(eventBus.queue_.addBulk).toHaveBeenCalled()
         expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            eventName,
-            data,
+            data: {
+              data,
+              eventName,
+            },
             opts: { removeOnComplete: 10, attempts: 1 },
           },
         ])
@@ -335,8 +343,10 @@ describe("EventBusService", () => {
         expect(eventBus.queue_.addBulk).toHaveBeenCalled()
         expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            eventName: eventName,
-            data,
+            data: {
+              data,
+              eventName,
+            },
             opts: { removeOnComplete: true, attempts: 1 },
           },
         ])
@@ -382,8 +392,10 @@ describe("EventBusService", () => {
         expect(eventBus.queue_.addBulk).toHaveBeenCalled()
         expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            eventName,
-            data,
+            data: {
+              data,
+              eventName,
+            },
             opts: {
               removeOnComplete: 10, // global option
               attempts: 10, // local option
