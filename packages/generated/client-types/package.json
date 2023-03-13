@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/medusa-client-types",
+  "name": "@medusajs/client-types",
   "version": "0.1.0",
   "description": "Client types for Medusa Commerce Rest API",
   "main": "dist/index.js",
@@ -18,7 +18,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/generate/medusa-client-types"
+    "directory": "packages/generate/client-types"
   },
   "bugs": {
     "url": "https://github.com/medusajs/medusa/issues"
