@@ -16,7 +16,8 @@ export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
   .extend({
     async findOneWithDescendants(
-      query: FindOneOptions<ProductCategory>
+      query: FindOneOptions<ProductCategory>,
+      treeScope: QuerySelector<ProductCategory> = {}
     ): Promise<ProductCategory | null> {
       const productCategory = await this.findOne(query)
 
@@ -26,7 +27,8 @@ export const ProductCategoryRepository = dataSource
 
       return sortChildren(
         // Returns the productCategory with all of its descendants until the last child node
-        await this.findDescendantsTree(productCategory)
+        await this.findDescendantsTree(productCategory),
+        treeScope
       )
     },
 
