@@ -179,6 +179,7 @@ const EditAllocationDrawer = ({
                 className="my-1 w-full border text-rose-50"
                 size="small"
                 onClick={handleDelete}
+                type="button"
               >
                 Delete allocation
               </Button>
