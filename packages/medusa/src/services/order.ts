@@ -690,7 +690,11 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         [
-          cart.items.map((lineItem) => {
+          lineItemServiceTx.update(
+            { id: cart.items.map((lineItem) => lineItem.id) },
+            { order_id: order.id }
+          ),
+          cart.items.map(async (lineItem) => {
             if (lineItem.is_giftcard) {
               return this.createGiftCardsFromLineItem_(order, lineItem, manager)
             }
