@@ -38,9 +38,6 @@ export default class StockLocationService {
     options?: unknown,
     moduleDeclaration?: InternalModuleDeclaration
   ) {
-    // @ts-ignore
-    super(...arguments)
-
     this.manager_ = manager
     this.eventBusService_ = eventBusService
   }
