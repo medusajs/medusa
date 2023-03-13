@@ -8,7 +8,7 @@ In this document, you'll learn how to use Publishable API Keys in client request
 
 :::note
 
-[Publishable API keys](../index.md) are only for client-side use. They can be publicly accessible in your code, as they are not authorized for the Admin API.
+[Publishable API keys](../index.mdx) are only for client-side use. They can be publicly accessible in your code, as they are not authorized for the Admin API.
 
 :::
 
