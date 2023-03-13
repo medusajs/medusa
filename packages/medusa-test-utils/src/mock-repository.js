@@ -12,6 +12,7 @@ class MockRepo {
     save,
     findAndCount,
     del,
+    count,
     insertBulk
   }) {
     this.create_ = create;
@@ -39,7 +40,6 @@ class MockRepo {
     }
     return {};
   });
-
   create = jest.fn().mockImplementation((...args) => {
     if (this.create_) {
       return this.create_(...args);
