@@ -29,8 +29,8 @@ const JSONView = ({ data }: JSONViewProps) => {
     <div className="px-base py-xsmall rounded-rounded bg-grey-5 w-full">
       <Collapsible.Root open={expanded} onOpenChange={setExpanded}>
         <Collapsible.Trigger asChild>
-          <div className="flex items-center justify-between cursor-pointer">
-            <div className="flex items-center gap-x-xsmall inter-base-regular">
+          <div className="flex cursor-pointer items-center justify-between">
+            <div className="gap-x-xsmall inter-base-regular flex items-center">
               <p className="inter-base-semibold">
                 {expanded ? "{" : length > 0 ? "{ ... }" : "{}"}
               </p>
@@ -66,9 +66,9 @@ const JSONView = ({ data }: JSONViewProps) => {
               shouldExpandNode={() => false}
             />
           </div>
-          <div className="flex items-center justify-between w-full">
+          <div className="flex w-full items-center justify-between">
             {expanded && <p className="inter-base-semibold">{`}`}</p>}
-            <div className="flex items-center gap-x-xsmall text-grey-50 inter-small-regular">
+            <div className="gap-x-xsmall text-grey-50 inter-small-regular flex items-center">
               {isCopied && (
                 <span className="animate-fade-in-right">Copied!</span>
               )}

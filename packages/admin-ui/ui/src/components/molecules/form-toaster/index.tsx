@@ -39,7 +39,7 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
   const content = useMemo(() => {
     if (isLoading) {
       return (
-        <div className="flex items-center p-base gap-x-base">
+        <div className="p-base gap-x-base flex items-center">
           <span>
             <Spinner />
           </span>
@@ -49,7 +49,7 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
     } else {
       return (
         <>
-          <div className="flex items-center p-base gap-x-base">
+          <div className="p-base gap-x-base flex items-center">
             <span>{icon}</span>
             <span className="inter-small-regular">{unsavedChangesMessage}</span>
           </div>
@@ -67,7 +67,7 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
       })}
       {...toast?.ariaProps}
     >
-      <div className="flex items-center rounded-rounded bg-grey-90 h-[72px] w-[344px] text-grey-0 justify-between">
+      <div className="rounded-rounded bg-grey-90 text-grey-0 flex h-[72px] w-[344px] items-center justify-between">
         {content}
       </div>
     </div>
@@ -76,10 +76,10 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
 
 const Actions: React.FC = ({ children }) => {
   return (
-    <div className="border-l border-grey-70 h-full">
+    <div className="border-grey-70 h-full border-l">
       {Children.map(children, (child) => {
         return (
-          <div className="flex items-center justify-center border-b border-grey-70 last:border-none h-1/2 w-[72px]">
+          <div className="border-grey-70 flex h-1/2 w-[72px] items-center justify-center border-b last:border-none">
             {child}
           </div>
         )
@@ -96,7 +96,7 @@ const DiscardButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
   return (
     <button
       className={clsx(
-        "flex items-center justify-center text-white inter-small-semibold h-full w-full",
+        "inter-small-semibold flex h-full w-full items-center justify-center text-white",
         className
       )}
       {...props}
@@ -114,7 +114,7 @@ const ActionButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
   return (
     <button
       className={clsx(
-        "flex items-center justify-center text-white inter-small-semibold h-full w-full",
+        "inter-small-semibold flex h-full w-full items-center justify-center text-white",
         className
       )}
       {...props}
@@ -133,7 +133,7 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
     <Dropdown.Root>
       <Dropdown.Trigger
         className={clsx(
-          "inter-small-semibold flex items-center justify-center h-full w-full",
+          "inter-small-semibold flex h-full w-full items-center justify-center",
           className
         )}
       >
@@ -142,7 +142,7 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
       </Dropdown.Trigger>
 
       <Dropdown.Content
-        className="rounded-rounded flex bg-grey-90 text-white p-xsmall flex-col min-w-[208px]"
+        className="rounded-rounded bg-grey-90 p-xsmall flex min-w-[208px] flex-col text-white"
         sideOffset={10}
       >
         {actions.map((action, i) => {
@@ -150,7 +150,7 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
             <Dropdown.Item key={i}>
               <button
                 onClick={action.onClick}
-                className="p-2xsmall hover:bg-grey-80 hover:outline-none inter-small-semibold rounded-base text-left flex items-center w-full"
+                className="p-2xsmall hover:bg-grey-80 inter-small-semibold rounded-base flex w-full items-center text-left hover:outline-none"
               >
                 {action.icon && (
                   <span className="text-grey-0 mr-xsmall">

@@ -1,4 +1,3 @@
-import React from "react"
 import FocusModal from "../../../components/molecules/modal/focus-modal"
 import Accordion from "../../../components/organisms/accordion"
 import FormHeader from "./form-header"
@@ -15,7 +14,7 @@ const PriceListForm = (props: PriceListFormProps) => {
         <FormHeader {...props} />
       </FocusModal.Header>
       <FocusModal.Main>
-        <div className="flex justify-center mb-[25%]">
+        <div className="mb-[25%] flex justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 w-full pt-16">
             <h1 className="inter-xlarge-semibold mb-[28px]">
               {props.viewType === ViewType.CREATE

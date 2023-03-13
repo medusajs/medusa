@@ -18,17 +18,17 @@ const NumberedItem: React.FC<NumberedItemProps> = ({
   description,
 }) => {
   return (
-    <div className="p-base border rounded-rounded flex gap-base justify-between items-center">
-      <div className="flex overflow-hidden gap-base w-full">
+    <div className="p-base rounded-rounded gap-base flex items-center justify-between border">
+      <div className="gap-base flex w-full overflow-hidden">
         <div>
           <Badge
-            className="inter-base-semibold flex justify-center items-center w-[40px] h-[40px]"
+            className="inter-base-semibold flex h-[40px] w-[40px] items-center justify-center"
             variant="default"
           >
             §{index}
           </Badge>
         </div>
-        <div className="truncate flex flex-col justify-center flex-1 w-full">
+        <div className="flex w-full flex-1 flex-col justify-center truncate">
           <div className="inter-small-semibold">{title}</div>
           {description &&
             (typeof description === "string" ? (

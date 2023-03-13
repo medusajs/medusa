@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { Controller, useWatch } from "react-hook-form"
 import { NestedForm } from "../../../utils/nested-form"
 import Switch from "../../atoms/switch"
@@ -29,13 +29,13 @@ const AnalyticsConfigForm = ({ form }: Props) => {
   }, [watchOptOut])
 
   return (
-    <div className="flex flex-col gap-y-xlarge">
+    <div className="gap-y-xlarge flex flex-col">
       <div
         className={clsx("flex items-start transition-opacity", {
           "opacity-50": watchOptOut,
         })}
       >
-        <div className="flex flex-col flex-1 gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-1 flex-col">
           <h2 className="inter-base-semibold">Anonymize my usage data</h2>
           <p className="inter-base-regular text-grey-50">
             You can choose to anonymize your usage data. If this option is
@@ -58,7 +58,7 @@ const AnalyticsConfigForm = ({ form }: Props) => {
         />
       </div>
       <div className="flex items-start">
-        <div className="flex flex-col flex-1 gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-1 flex-col">
           <h2 className="inter-base-semibold">
             Opt out of sharing my usage data
           </h2>

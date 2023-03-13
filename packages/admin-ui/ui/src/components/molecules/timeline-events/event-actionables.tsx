@@ -8,7 +8,7 @@ type EventActionablesProps = {
 
 const EventActionables: React.FC<EventActionablesProps> = ({ actions }) => {
   const EventTrigger = (
-    <button className="btn-ghost py-0 px-2xsmall flex justify-center items-center focus:outline-none focus:ring-2 rounded-base focus:ring-violet-40">
+    <button className="btn-ghost px-2xsmall rounded-base focus:ring-violet-40 flex items-center justify-center py-0 focus:outline-none focus:ring-2">
       <MoreHorizontalIcon size={20} />
     </button>
   )

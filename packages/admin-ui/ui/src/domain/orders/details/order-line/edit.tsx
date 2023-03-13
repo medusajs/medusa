@@ -167,9 +167,9 @@ const OrderEditLine = ({
       open={isLocked ? undefined : false}
       content="This line item is part of a fulfillment and cannot be edited. Cancel the fulfillment to edit the line item."
     >
-      <div className="flex justify-between mb-1 h-[64px] py-2 mx-[-5px] px-[5px] hover:bg-grey-5 rounded-rounded">
-        <div className="flex space-x-4 justify-center flex-grow-1">
-          <div className="flex h-[48px] w-[36px] rounded-rounded overflow-hidden">
+      <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
+        <div className="flex-grow-1 flex justify-center space-x-4">
+          <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
             {item.thumbnail ? (
               <img src={item.thumbnail} className="object-cover" />
             ) : (
@@ -177,10 +177,10 @@ const OrderEditLine = ({
             )}
           </div>
           <div className="flex flex-col justify-center">
-            <div className="flex gap-2 items-center max-w-[310px]">
+            <div className="flex max-w-[310px] items-center gap-2">
               <span
                 className={clsx(
-                  "font-semibold text-grey-900 flex-shrink-0 flex-grow",
+                  "text-grey-900 flex-shrink-0 flex-grow font-semibold",
                   {
                     "text-gray-400": isLocked,
                   }
@@ -191,7 +191,7 @@ const OrderEditLine = ({
               {item?.variant?.options && (
                 <span
                   className={clsx(
-                    "text-gray-400 flex gap-3 flex-shrink-1 truncate",
+                    "flex-shrink-1 flex gap-3 truncate text-gray-400",
                     {
                       "text-gray-400": isLocked,
                     }
@@ -203,13 +203,13 @@ const OrderEditLine = ({
             </div>
             <div className="flex items-center">
               {isNew && (
-                <div className="text-small text-blue-500 bg-blue-10 h-[24px] w-[42px] mr-2 flex-shrink-0 flex items-center justify-center rounded-rounded">
+                <div className="text-small bg-blue-10 rounded-rounded mr-2 flex h-[24px] w-[42px] flex-shrink-0 items-center justify-center text-blue-500">
                   New
                 </div>
               )}
 
               {isModified && (
-                <div className="text-small text-orange-500 bg-orange-10 h-[24px] w-[68px] mr-2 flex-shrink-0 flex items-center justify-center rounded-rounded">
+                <div className="text-small bg-orange-10 rounded-rounded mr-2 flex h-[24px] w-[68px] flex-shrink-0 items-center justify-center text-orange-500">
                   Modified
                 </div>
               )}
@@ -220,7 +220,7 @@ const OrderEditLine = ({
                     value={item.variant?.sku}
                     displayValue={
                       <span
-                        className={clsx("text-gray-500 flex gap-3", {
+                        className={clsx("flex gap-3 text-gray-500", {
                           "text-gray-400": isLocked,
                         })}
                       >
@@ -234,9 +234,9 @@ const OrderEditLine = ({
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-between min-w-[312px]">
+        <div className="flex min-w-[312px] items-center justify-between">
           <div
-            className={clsx("flex items-center flex-grow-0 text-gray-400", {
+            className={clsx("flex flex-grow-0 items-center text-gray-400", {
               "pointer-events-none": isLocked,
             })}
           >
@@ -251,7 +251,7 @@ const OrderEditLine = ({
               }
             />
             <span
-              className={clsx("px-8 text-center text-gray-900 min-w-[74px]", {
+              className={clsx("min-w-[74px] px-8 text-center text-gray-900", {
                 "!text-gray-400": isLocked,
               })}
             >
@@ -265,16 +265,16 @@ const OrderEditLine = ({
             />
           </div>
 
-          <div className="flex gap-6 items-center h-full">
+          <div className="flex h-full items-center gap-6">
             <div
               className={clsx(
-                "flex small:space-x-2 medium:space-x-4 large:space-x-6",
-                { "!text-gray-400 pointer-events-none": isLocked }
+                "small:space-x-2 medium:space-x-4 large:space-x-6 flex",
+                { "pointer-events-none !text-gray-400": isLocked }
               )}
             >
               <div
-                className={clsx("text-gray-900 min-w-[60px] text-right", {
-                  "!text-gray-400 pointer-events-none": isLocked,
+                className={clsx("min-w-[60px] text-right text-gray-900", {
+                  "pointer-events-none !text-gray-400": isLocked,
                 })}
               >
                 {formatAmountWithSymbol({
@@ -283,7 +283,7 @@ const OrderEditLine = ({
                   tax: item.includes_tax ? 0 : item.tax_lines,
                   digits: 2,
                 })}
-                <span className="text-gray-400 ml-2">
+                <span className="ml-2 text-gray-400">
                   {currencyCode.toUpperCase()}
                 </span>
               </div>

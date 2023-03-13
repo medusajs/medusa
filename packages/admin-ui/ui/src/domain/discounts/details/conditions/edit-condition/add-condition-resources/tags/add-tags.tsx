@@ -1,5 +1,5 @@
 import { useAdminProductTags } from "medusa-react"
-import React, { useContext, useState } from "react"
+import { useContext, useState } from "react"
 import Button from "../../../../../../../components/fundamentals/button"
 import Modal from "../../../../../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../../../../../components/molecules/modal/layered-modal"
@@ -51,7 +51,7 @@ const AddTagsConditionsScreen = () => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex justify-end w-full space-x-xsmall">
+        <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
             Cancel
           </Button>

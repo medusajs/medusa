@@ -77,7 +77,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
           >
             <p className="select-none">Title</p>
             <div
-              className="flex h-large w-large items-center justify-center"
+              className="h-large w-large flex items-center justify-center"
               onClick={getToggleSortingHandler()}
             >
               <SortingIcon size={16} isSorted={getIsSorted()} />
@@ -96,7 +96,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
           return (
             <div
               className={clsx(
-                "inter-small-regular flex items-center gap-base py-xsmall",
+                "inter-small-regular gap-base py-xsmall flex items-center",
                 {
                   "opacity-50": !isSelectable,
                 }
@@ -157,7 +157,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
                   content="The price has been overridden in a price list, that is applicable to this order."
                   side="top"
                 >
-                  <p className="cursor-default text-grey-40 line-through">
+                  <p className="text-grey-40 cursor-default line-through">
                     {formatAmountWithSymbol({
                       amount: original_price_incl_tax || 0,
                       currency: order.currency_code,

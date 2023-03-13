@@ -9,7 +9,7 @@ export const useComputedHeight = (bottomPad: number) => {
 
   useLayoutEffect(() => {
     if (ref.current) {
-      let { top } = ref.current.getBoundingClientRect()
+      const { top } = ref.current.getBoundingClientRect()
       // take the inner height of the window, subtract 32 from it (for the bottom padding), then subtract that from the top position of our grid row (wherever that is)
       heightRef.current = height - bottomPad - top
     }

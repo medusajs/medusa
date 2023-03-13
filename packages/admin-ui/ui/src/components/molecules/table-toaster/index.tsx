@@ -19,7 +19,7 @@ export const TableToasterContainer = ({
       })}
       {...toast?.ariaProps}
     >
-      <div className="flex items-center rounded-rounded bg-grey-90 px-base py-3.5">
+      <div className="rounded-rounded bg-grey-90 px-base flex items-center py-3.5">
         {children}
       </div>
     </div>

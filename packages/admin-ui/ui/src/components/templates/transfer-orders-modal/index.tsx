@@ -127,10 +127,10 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
           <h2 className="inter-xlarge-semibold">Transfer order</h2>
         </Modal.Header>
         <Modal.Content>
-          <div className="flex flex-col space-y-xlarge">
+          <div className="space-y-xlarge flex flex-col">
             <div className="space-y-xsmall">
               <h3 className="inter-base-semibold">Order</h3>
-              <div className="flex items-center justify-between border-grey-20 border rounded-rounded py-xsmall px-2.5">
+              <div className="border-grey-20 rounded-rounded py-xsmall flex items-center justify-between border px-2.5">
                 <Badge variant="default">
                   <span className="text-grey-60">{`#${order.display_id}`}</span>
                 </Badge>
@@ -145,7 +145,7 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
                 />
               </div>
             </div>
-            <div className="w-full grid grid-cols-2">
+            <div className="grid w-full grid-cols-2">
               <div className="flex flex-col">
                 <span className="inter-base-semibold">Current Owner</span>
                 <span className="inter-base-regular">
@@ -172,7 +172,7 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
                 />
               </div>
             </div>
-            <div className="w-full grid grid-cols-2">
+            <div className="grid w-full grid-cols-2">
               <div className="flex flex-col">
                 <span className="inter-base-semibold">New Owner</span>
                 <span className="inter-base-regular">
@@ -199,11 +199,11 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
         </Modal.Content>
         <Modal.Footer>
           <div className="flex w-full justify-end">
-            <div className="flex gap-x-xsmall">
+            <div className="gap-x-xsmall flex">
               <Button
                 onClick={onDismiss}
                 size="small"
-                className="border border-grey-20"
+                className="border-grey-20 border"
                 variant="ghost"
               >
                 Cancel

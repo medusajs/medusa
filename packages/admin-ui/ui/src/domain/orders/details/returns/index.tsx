@@ -213,7 +213,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   <span>Shipping</span>
                   <div>
                     {displayAmount(order.currency_code, shippingPrice || 0)}{" "}
-                    <span className="ml-3 text-grey-40">
+                    <span className="text-grey-40 ml-3">
                       {order.currency_code.toUpperCase()}
                     </span>
                   </div>
@@ -225,7 +225,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   {!refundEdited && (
                     <>
                       <span
-                        className="mr-2 cursor-pointer text-grey-40"
+                        className="text-grey-40 mr-2 cursor-pointer"
                         onClick={() => setRefundEdited(true)}
                       >
                         <EditIcon size={20} />{" "}
@@ -262,7 +262,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
               onClick={() => setNoNotification(!noNotification)}
             >
               <div
-                className={`flex h-5 w-5 justify-center rounded-base border border-grey-30 text-grey-0 ${
+                className={`rounded-base border-grey-30 text-grey-0 flex h-5 w-5 justify-center border ${
                   !noNotification && "bg-violet-60"
                 }`}
               >
@@ -278,12 +278,12 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 onChange={() => setNoNotification(!noNotification)}
                 type="checkbox"
               />
-              <span className="ml-3 flex items-center gap-x-xsmall text-grey-90">
+              <span className="gap-x-xsmall text-grey-90 ml-3 flex items-center">
                 Send notifications
                 <IconTooltip content="Notify customer of created return" />
               </span>
             </div>
-            <div className="flex gap-x-xsmall">
+            <div className="gap-x-xsmall flex">
               <Button
                 onClick={() => onDismiss()}
                 className="w-[112px]"

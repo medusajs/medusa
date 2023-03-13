@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import React from "react"
 import { Controller } from "react-hook-form"
 import RadioGroup from "../../../../../components/organisms/radio-group"
 import { AllocationType } from "../../../types"
@@ -18,7 +17,7 @@ const DiscountAllocation = () => {
           <RadioGroup.Root
             value={value}
             onValueChange={onChange}
-            className={clsx("flex items-center gap-base mt-base px-1")}
+            className={clsx("gap-base mt-base flex items-center px-1")}
           >
             <RadioGroup.Item
               value={AllocationType.TOTAL}

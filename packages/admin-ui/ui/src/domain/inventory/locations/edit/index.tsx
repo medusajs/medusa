@@ -64,7 +64,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
         </Modal.Header>
         <Modal.Content>
           <form className="w-full">
-            <div className="flex flex-col mt-xlarge gap-y-xlarge">
+            <div className="mt-xlarge gap-y-xlarge flex flex-col">
               <GeneralForm form={nestedForm(form, "general")} />
               <AddressForm form={nestedForm(form, "address")} />
             </div>
@@ -72,7 +72,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
         </Modal.Content>
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end w-full space-x-2">
+        <div className="flex w-full justify-end space-x-2">
           <Button
             size="small"
             variant="secondary"

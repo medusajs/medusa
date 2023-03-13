@@ -54,7 +54,7 @@ const TableQuantitySelector = <
   return (
     <div className="flex items-center justify-end">
       {quantityFlag ? (
-        <div className="inter-small-regular grid grid-cols-3 gap-x-2xsmall text-grey-50">
+        <div className="inter-small-regular gap-x-2xsmall text-grey-50 grid grid-cols-3">
           <Button
             variant="ghost"
             size="small"

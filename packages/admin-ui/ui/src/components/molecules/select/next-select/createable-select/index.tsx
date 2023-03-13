@@ -1,5 +1,5 @@
 import type { MutableRefObject, ReactElement, RefAttributes } from "react"
-import React, { forwardRef } from "react"
+import { forwardRef } from "react"
 import type { GroupBase, SelectInstance } from "react-select"
 import type { CreatableProps } from "react-select/creatable"
 import CreatableReactSelect from "react-select/creatable"
