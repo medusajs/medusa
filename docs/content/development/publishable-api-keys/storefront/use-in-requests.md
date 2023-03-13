@@ -75,6 +75,6 @@ fetch(`<SERVER_URL>/store/products`, {
 
 ## See Also
 
-- [Publishable API keys overview](../index.md)
+- [Publishable API keys overview](../index.mdx)
 - [How to manage publishable keys as an admin](../admin/manage-publishable-api-keys.mdx)
 - [Publishable API keys admin API reference](/api/admin/#tag/PublishableApiKey)
