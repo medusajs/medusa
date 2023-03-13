@@ -70,15 +70,15 @@ const ProductsFilter = ({
               "rounded-rounded focus-visible:shadow-input focus-visible:border-violet-60 flex items-center space-x-1 focus-visible:outline-none"
             )}
           >
-            <div className="flex items-center h-6 px-2 border rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold">
+            <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
               Filters
-              <div className="flex items-center ml-1 rounded text-grey-40">
+              <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
                 </span>
               </div>
             </div>
-            <div className="flex items-center p-1 border rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold">
+            <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex items-center border p-1">
               <PlusIcon size={14} />
             </div>
           </button>

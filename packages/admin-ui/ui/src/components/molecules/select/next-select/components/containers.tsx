@@ -34,7 +34,7 @@ export const AdjacentContainer = forwardRef<
     ref
   ) => {
     return (
-      <div className="flex flex-col gap-y-xsmall w-full" ref={ref}>
+      <div className="gap-y-xsmall flex w-full flex-col" ref={ref}>
         {label && (
           <label
             className="inter-small-semibold text-grey-50"
@@ -77,7 +77,7 @@ export const SelectContainer = <
           "--has-value": hasValue,
         },
         clsx(
-          "relative pointer-events-auto",
+          "pointer-events-auto relative",
           { "text-grey-40": isDisabled },
           className
         )
@@ -116,7 +116,7 @@ export const ValueContainer = <
             "value-container--has-value": hasValue,
           },
           clsx(
-            "group flex items-center flex-wrap relative scrolling-touch overflow-hidden flex-1",
+            "scrolling-touch group relative flex flex-1 flex-wrap items-center overflow-hidden",
             {
               "gap-2xsmall": isMulti,
             },
@@ -125,14 +125,14 @@ export const ValueContainer = <
         )}
       >
         {value?.length > 0 && (
-          <div className="h-7 bg-grey-20 text-grey-50 px-small inter-small-semibold flex items-center rounded-rounded gap-x-2xsmall cursor-default">
+          <div className="bg-grey-20 text-grey-50 px-small inter-small-semibold rounded-rounded gap-x-2xsmall flex h-7 cursor-default items-center">
             <span>{value.length}</span>
           </div>
         )}
         <div className="relative grow">
           {children}
           {value?.length > 0 && inputValue === "" && (
-            <span className="absolute top-1/2 -translate-y-1/2 inter-base-regular text-grey-50">
+            <span className="inter-base-regular text-grey-50 absolute top-1/2 -translate-y-1/2">
               {selectedPlaceholder || label || "Selected"}
             </span>
           )}
@@ -151,7 +151,7 @@ export const ValueContainer = <
           "value-container--has-value": hasValue,
         },
         clsx(
-          "flex items-center flex-wrap relative scrolling-touch overflow-hidden flex-1",
+          "scrolling-touch relative flex flex-1 flex-wrap items-center overflow-hidden",
           {
             "gap-2xsmall": isMulti,
           },
@@ -181,7 +181,7 @@ export const IndicatorsContainer = <
         {
           "indicators-container": true,
         },
-        clsx("text-grey-50 flex items-center gap-x-small px-small", className)
+        clsx("text-grey-50 gap-x-small px-small flex items-center", className)
       )}
     >
       {children}

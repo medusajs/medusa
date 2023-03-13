@@ -1,5 +1,5 @@
 import { AdminPostGiftCardsGiftCardReq, Region } from "@medusajs/medusa"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
@@ -81,7 +81,7 @@ const EditGiftCardModal = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="w-full flex justify-end">
+            <div className="flex w-full justify-end">
               <Button
                 variant="ghost"
                 size="small"

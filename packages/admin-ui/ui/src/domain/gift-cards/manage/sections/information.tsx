@@ -116,7 +116,7 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
       ]}
     >
       <div className="flex flex-col space-y-6">
-        <div className="grid grid-cols-2 gap-large">
+        <div className="gap-large grid grid-cols-2">
           <Input
             label="Name"
             placeholder="Add name"
@@ -154,7 +154,7 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
             forceMount: true,
           }}
         >
-          <div className="grid grid-cols-2 gap-large">
+          <div className="gap-large grid grid-cols-2">
             <Input
               label="Handle"
               placeholder="Product handle"

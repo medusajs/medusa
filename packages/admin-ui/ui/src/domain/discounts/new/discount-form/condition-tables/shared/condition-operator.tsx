@@ -15,7 +15,7 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
     <RadioGroup.Root
       value={value}
       onValueChange={onChange}
-      className="grid grid-cols-2 gap-base mb-4"
+      className="gap-base mb-4 grid grid-cols-2"
     >
       <RadioGroup.Item
         className="w-full"

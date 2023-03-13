@@ -1,5 +1,5 @@
 import { useAdminDraftOrders } from "medusa-react"
-import React, { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
 import Table from "../../molecules/table"

@@ -171,6 +171,11 @@ export const writeClient = async (
   if (exportModels) {
     await rmdir(outputPathModels)
     await mkdir(outputPathModels)
+    await mkdir(outputPathCore)
+    await writeFile(
+      resolve(outputPathCore, "ModelUtils.ts"),
+      i(templates.core.modelUtils({}), indent)
+    )
     await writeClientModels(
       client.models,
       templates,

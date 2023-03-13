@@ -1,5 +1,5 @@
 import moment from "moment"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import Tooltip from "../../atoms/tooltip"
 
 const useCollectionTableColumn = () => {

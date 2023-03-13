@@ -1,6 +1,6 @@
 import { Store } from "@medusajs/medusa"
 import { useAdminUpdateStore } from "medusa-react"
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { NextSelect } from "../../../../../components/molecules/select/next-select"
 import useNotification from "../../../../../hooks/use-notification"
@@ -16,11 +16,10 @@ type DefaultStoreCurrencyFormType = {
 }
 
 const DefaultCurrencySelector = ({ store }: Props) => {
-  const { reset, control, handleSubmit } = useForm<
-    DefaultStoreCurrencyFormType
-  >({
-    defaultValues: getDefaultValue(store),
-  })
+  const { reset, control, handleSubmit } =
+    useForm<DefaultStoreCurrencyFormType>({
+      defaultValues: getDefaultValue(store),
+    })
 
   const { mutate } = useAdminUpdateStore()
   const notification = useNotification()

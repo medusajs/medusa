@@ -75,7 +75,7 @@ const ShippingAddressFormScreen = ({ form, order }: Props) => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full items-center justify-end gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button
             variant="secondary"
             size="small"

@@ -2,7 +2,7 @@ import React from "react"
 import { OrderPlacedEvent } from "../../../hooks/use-build-timeline"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import EventContainer, { EventIconColor } from "./event-container"
+import EventContainer from "./event-container"
 
 type OrderPlacedProps = {
   event: OrderPlacedEvent

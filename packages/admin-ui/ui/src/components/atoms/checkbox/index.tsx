@@ -12,13 +12,13 @@ const Checkbox = React.forwardRef(
     useImperativeHandle(ref, () => checkboxRef.current)
     return (
       <label
-        className={clsx("flex items-center cursor-pointer", className)}
+        className={clsx("flex cursor-pointer items-center", className)}
         htmlFor={id}
       >
         <input
           type="checkbox"
           ref={checkboxRef}
-          className="form-checkbox w-[20px] h-[20px] rounded-base text-violet-60 focus:ring-0 mr-small border-grey-30"
+          className="form-checkbox rounded-base text-violet-60 mr-small border-grey-30 h-[20px] w-[20px] focus:ring-0"
           value={value}
           id={id}
           {...rest}

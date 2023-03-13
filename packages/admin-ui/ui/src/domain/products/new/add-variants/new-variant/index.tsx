@@ -175,11 +175,11 @@ const NewVariant = ({
       >
         <div
           ref={ref}
-          className="flex items-center justify-center cursor-move text-grey-40"
+          className="text-grey-40 flex cursor-move items-center justify-center"
         >
           <GripIcon size={20} />
         </div>
-        <div className="flex flex-col justify-center ml-base">
+        <div className="ml-base flex flex-col justify-center">
           <p className="inter-base-semibold">
             {source.general.title}
             {source.stock.sku && (
@@ -194,7 +194,7 @@ const NewVariant = ({
             </span>
           )}
         </div>
-        <div className="flex items-center justify-end mr-xlarge">
+        <div className="mr-xlarge flex items-center justify-end">
           <p>{source.stock.inventory_quantity || "-"}</p>
         </div>
         <div className="flex items-center justify-center">
@@ -204,7 +204,7 @@ const NewVariant = ({
             productDimensions={productDimensions}
           />
         </div>
-        <div className="flex items-center justify-center ml-xlarge pr-base">
+        <div className="ml-xlarge pr-base flex items-center justify-center">
           <Actionables
             forceDropdown
             actions={[
@@ -223,7 +223,7 @@ const NewVariant = ({
             customTrigger={
               <Button
                 variant="ghost"
-                className="flex items-center justify-center p-0 h-xlarge w-xlarge text-grey-50"
+                className="h-xlarge w-xlarge text-grey-50 flex items-center justify-center p-0"
               >
                 <MoreHorizontalIcon size={20} />
               </Button>
@@ -255,7 +255,7 @@ const NewVariant = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex items-center justify-end w-full gap-x-xsmall">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="secondary"
                 size="small"
@@ -299,7 +299,7 @@ const VariantValidity = ({
       <IconTooltip
         type="error"
         content={
-          <div className="flex flex-col gap-y-2xsmall text-rose-50">
+          <div className="gap-y-2xsmall flex flex-col text-rose-50">
             <p>This variant has no options.</p>
           </div>
         }
@@ -314,9 +314,9 @@ const VariantValidity = ({
       <IconTooltip
         type="error"
         content={
-          <div className="flex flex-col gap-y-2xsmall text-rose-50">
+          <div className="gap-y-2xsmall flex flex-col text-rose-50">
             <p>You are missing options values for the following options:</p>
-            <ul className="list-disc list-inside">
+            <ul className="list-inside list-disc">
               {invalidOptions.map((io, index) => {
                 return <li key={index}>{io.title || `Option ${index + 1}`}</li>
               })}
@@ -350,12 +350,12 @@ const VariantValidity = ({
         type="warning"
         side="right"
         content={
-          <div className="flex flex-col gap-y-2xsmall text-orange-50">
+          <div className="gap-y-2xsmall flex flex-col text-orange-50">
             <p>
               Your variant is createable, but it's missing some important
               fields:
             </p>
-            <ul className="list-disc list-inside">
+            <ul className="list-inside list-disc">
               {!validPrices && <li>Pricing</li>}
               {!validDimensions && <li>Dimensions</li>}
               {!validCustoms && <li>Customs</li>}
