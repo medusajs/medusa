@@ -1,17 +1,16 @@
 import { EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  IEventBusService,
-  FilterableReservationItemProps,
   CreateReservationItemInput,
+  FilterableReservationItemProps,
+  FindConfig,
+  IEventBusService,
   TransactionBaseService,
   UpdateReservationItemInput,
 } from "@medusajs/medusa"
 
 import { ReservationItem } from "../models"
-import { CONNECTION_NAME } from "../config"
 import { InventoryLevelService } from "."
 
 type InjectedDependencies = {
@@ -278,10 +277,12 @@ export default class ReservationItemService extends TransactionBaseService {
             item.quantity * -1
           ),
       ])
-    })
 
-    await this.eventBusService_.emit(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.DELETED, {
+        id: reservationItemId,
+      })
     })
   }
 }
