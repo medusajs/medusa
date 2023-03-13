@@ -1,8 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 describe("OrderService", () => {
@@ -1251,17 +1251,10 @@ describe("OrderService", () => {
       save: jest.fn().mockImplementation((f) => f),
     })
 
-    const eventBus = {
-      emit: () =>
-        Promise.resolve({
-          finished: () => Promise.resolve({}),
-        }),
-    }
-
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
-      eventBusService: eventBus,
+      eventBusService: eventBusService,
     })
 
     beforeEach(async () => {
