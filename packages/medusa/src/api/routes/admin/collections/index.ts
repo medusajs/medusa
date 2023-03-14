@@ -72,6 +72,10 @@ export const defaultAdminCollectionsRelations = ["products"]
 /**
  * @schema AdminCollectionsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: collections
+ *   relations:
+ *     - products
  * required:
  *   - collections
  *   - count

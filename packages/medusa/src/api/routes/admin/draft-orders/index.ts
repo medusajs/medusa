@@ -103,10 +103,33 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
   order: Order
 }
-
 /**
  * @schema AdminDraftOrdersRes
  * type: object
+ * x-expanded-relations:
+ *   field: draft_order
+ *   relations:
+ *     - order
+ *     - cart
+ *     - cart.items
+ *     - cart.items.adjustments
+ *   eager:
+ *     - cart.region.fulfillment_providers
+ *     - cart.region.payment_providers
+ *   implicit:
+ *     - cart.billing_address
+ *     - cart.customer
+ *     - cart.discounts
+ *     - cart.discounts.rule
+ *     - cart.items
+ *     - cart.items.adjustments
+ *     - cart.payment
+ *     - cart.payment_sessions
+ *     - cart.region
+ *     - cart.region.payment_providers
+ *     - cart.shipping_address
+ *     - cart.shipping_methods
+ *     - cart.shipping_methods.shipping_option
  * required:
  *   - draft_order
  * properties:
@@ -142,6 +165,13 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
 /**
  * @schema AdminDraftOrdersListRes
  * type: object
+ * x-expanded-relations:
+ *   field: draft_orders
+ *   relations:
+ *     - order
+ *     - cart
+ *     - cart.items
+ *     - cart.items.adjustments
  * required:
  *   - draft_orders
  *   - count
