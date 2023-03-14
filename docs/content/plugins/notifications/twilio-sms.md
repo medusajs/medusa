@@ -73,7 +73,7 @@ const plugins = [
 
 ## Example Usage of the Plugin
 
-This plugin adds the service `twilioSmsService` to your Medusa backend. To send SMS using it, all you have to do is resolve it in your file as explained in the [Services](../../advanced/backend/services/create-service.md#using-your-custom-service) documentation.
+This plugin adds the service `twilioSmsService` to your Medusa backend. To send SMS using it, all you have to do is resolve it in your file as explained in the [Services](../../development/services/create-service.md#using-your-custom-service) documentation.
 
 In this example, you’ll create a subscriber that listens to the `order.placed` event and sends an SMS to the customer to confirm their order.
 
@@ -143,5 +143,5 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 ## See Also
 
-- [Notifications Overview](../../advanced/backend/notification/overview.md).
+- [Notifications Overview](../../development/notification/overview.md).
 - Install the [Medusa admin](../../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

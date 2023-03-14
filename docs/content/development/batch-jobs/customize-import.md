@@ -19,15 +19,15 @@ Although this documentation specifically targets import strategies, you can use 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../backend/configurations.md#redis).
 
 ### PostgreSQL
 
-If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../../../development/backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../../../development/backend/configurations.md#postgresql-configurations).
+If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../backend/configurations.md#postgresql-configurations).
 
 ---
 
@@ -111,21 +111,21 @@ npm run build
 
 Since you didn’t create a new batch job type and overwrote the functionality of the strategy, you can test out your functionality using the [same steps used with the default strategy](./create.mdx#test-your-batch-job-strategy).
 
-Specifically, since you create batch jobs using the [Create Batch Job](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint which accepts the batch job type as a body parameter, you just need to send the same type you used for this field. In the example of this documentation, the `type` would be `product-import`.
+Specifically, since you create batch jobs using the [Create Batch Job](/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint which accepts the batch job type as a body parameter, you just need to send the same type you used for this field. In the example of this documentation, the `type` would be `product-import`.
 
-If you overwrote the import functionality, you can follow [these steps to learn how to import products using the Admin APIs](../../../modules/products/admin/import-products.mdx).
+If you overwrote the import functionality, you can follow [these steps to learn how to import products using the Admin APIs](../../modules/products/admin/import-products.mdx).
 
 ---
 
 ## Create Custom Batch Job Strategy
 
-If you don’t want to overwrite Medusa’s batch job strategy, you can create a custom batch job strategy with a different `batchType` value. Then, use that type when you send a request to [Create a Batch Job](https://docs.medusajs.com/api/admin/#tag/Batch-Job).
+If you don’t want to overwrite Medusa’s batch job strategy, you can create a custom batch job strategy with a different `batchType` value. Then, use that type when you send a request to [Create a Batch Job](/api/admin/#tag/Batch-Job).
 
-For more details on creating custom batch job strategies, please check out the [Create Batch Job Strategy documentation](create.mdx).
+For more details on creating custom batch job strategies, please check out the [Create Batch Job Strategy documentation](./create.mdx).
 
 ---
 
 ## What’s Next
 
 - [Batch Jobs Overview](./index.md).
-- [Use the Import Product APIs](../../../modules/products/admin/import-products.mdx).
+- [Use the Import Product APIs](../../modules/products/admin/import-products.mdx).

@@ -5,7 +5,7 @@ addHowToData: true
 
 # Create an Entity
 
-In this document, you’ll learn how you can create an [Entity](overview.md).
+In this document, you’ll learn how you can create an [Entity](./overview.md).
 
 ## Create the Entity
 
@@ -56,7 +56,7 @@ You can learn more about what decorators and column types you can use in [Typeor
 
 Additionally, you must create a migration for your entity. Migrations are used to update the database schema with new tables or changes to existing tables.
 
-You can learn more about Migrations, how to create them, and how to run them in the [Migration documentation](../migrations/overview.md).
+You can learn more about Migrations, how to create them, and how to run them in the [Migration documentation](./migrations/overview.md).
 
 ### Create a Repository
 
@@ -142,6 +142,6 @@ await postRepository.softDelete(post.id)
 
 ## See Also
 
-- [Entities' reference](../../../references/entities/classes/Address.md)
-- [Migrations Overview](../migrations/overview.md)
+- [Entities' reference](../../references/entities/classes/Address.md)
+- [Migrations Overview](./migrations/overview.md)
 - [Create a Services](../services/create-service.md)

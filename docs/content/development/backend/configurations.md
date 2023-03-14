@@ -162,7 +162,7 @@ Where `<YOUR_REDIS_URL>` is the URL of your Redis backend.
 
 :::info
 
-You can learn more about Subscribers and events in the [Subscriber documentation](../../advanced/backend/subscribers/create-subscriber.md).
+You can learn more about Subscribers and events in the [Subscriber documentation](../events/create-subscriber.md).
 
 :::
 
@@ -335,7 +335,7 @@ On your Medusa backend, you can use Plugins to add custom features or integrate 
 
 :::info
 
-You can learn more about plugins in the [Plugins Overview documentation](../../advanced/backend/plugins/overview.md).
+You can learn more about plugins in the [Plugins Overview documentation](../plugins/overview.md).
 
 :::
 

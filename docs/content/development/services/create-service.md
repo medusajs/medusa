@@ -118,5 +118,5 @@ class MySubscriber {
 
 ## See Also
 
-- [Services Reference](/references/services/classes/AuthService)
-- [Create an Endpoint](../../../development/endpoints/create.md)
+- [Services Reference](../../references/services/classes/AuthService)
+- [Create an Endpoint](../endpoints/create.md)

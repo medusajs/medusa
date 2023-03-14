@@ -22,7 +22,7 @@ An example of a notification provider is SendGrid. When an order is placed, the 
 
 ### How Notification Provider is Created
 
-A Notification Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the [`NotificationService`](../../../references/services/classes/NotificationService.md) provided by the `medusa-interfaces` package. It can be created as part of a [Plugin](../plugins/overview.md), or it can be created just as a Service file in your Medusa backend.
+A Notification Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the [`NotificationService`](../../references/services/classes/NotificationService.md) provided by the `medusa-interfaces` package. It can be created as part of a [Plugin](../plugins/overview.md), or it can be created just as a Service file in your Medusa backend.
 
 As a developer, you mainly work with the Notification Provider when integrating a third-party service that handles notifications in Medusa.
 
@@ -55,7 +55,7 @@ A Notification also represents a resent notification. So, when a notification is
 
 ### Notification Entity Overview
 
-The two most important properties in the [`Notification`](../../../references/entities/classes/Notification.md) entity are the `to` and `data` properties.
+The two most important properties in the [`Notification`](../../references/entities/classes/Notification.md) entity are the `to` and `data` properties.
 
 The `to` property is a string that represents the receiver of the Notification. For example, if the Notification was sent to an email address, the `to` property holds the email address the Notification was sent to.
 
@@ -92,8 +92,8 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 
 ## See Also
 
-- [Create a Notification Provider](how-to-create-notification-provider.md)
-- [Events reference](../subscribers/events-list.md)
-- [SendGrid Plugin](../../../plugins/notifications/sendgrid.mdx)
-- [Subscribers Overview](../subscribers/create-subscriber.md)
+- [Create a Notification Provider](./create-notification-provider.md)
+- [Events reference](../events/events-list.md)
+- [SendGrid Plugin](../../plugins/notifications/sendgrid.mdx)
+- [Subscribers Overview](../events/create-subscriber.md)
 - [Services Overview](../services/create-service.md)

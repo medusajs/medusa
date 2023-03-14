@@ -5,13 +5,13 @@ addHowToData: true
 
 # How to Create a Subscriber
 
-In this document, you’ll learn how to create a [Subscriber](overview.md) in your Medusa backend that listens to events to perform an action.
+In this document, you’ll learn how to create a [Subscriber](./subscribers.md) in your Medusa backend that listens to events to perform an action.
 
 ## Prerequisites
 
 Medusa's event system works by pushing data to a Queue that each handler then gets notified of. The queuing system is based on Redis, so it's required for subscribers to work.
 
-You can learn how to [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with Medusa](../../../development/backend/configurations.md#redis) before you get started.
+You can learn how to [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with Medusa](../backend/configurations.md#redis) before you get started.
 
 ---
 
@@ -91,5 +91,5 @@ When using attributes defined in the subscriber, such as the `productService` in
 
 ## See Also
 
-- [Events reference](events-list.md)
-- [Create a Service](../services/create-service)
+- [Events reference](./events-list.md)
+- [Create a Service](../services/create-service.md)

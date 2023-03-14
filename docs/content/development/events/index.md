@@ -14,7 +14,7 @@ Those events can be subscribed to using subscribers. When you subscribe to an ev
 
 :::info
 
-You can learn more about subscribers and their use cases in the [Subscribers](../subscribers/overview.md) documentation.
+You can learn more about subscribers and their use cases in the [Subscribers](./subscribers.md) documentation.
 
 :::
 
@@ -112,7 +112,7 @@ In the constructor of a subscriber, you use the `EventBusService` to subscribe t
 
 :::note
 
-You can learn more about how to create a subscriber in [this documentation](../subscribers/create-subscriber.md)
+You can learn more about how to create a subscriber in [this documentation](./create-subscriber.md)
 
 :::
 
@@ -223,6 +223,6 @@ This pattern is heavily inspired by the [Transactionally-staged Job Drain descri
 
 ## See Also
 
-- [Events reference](../subscribers/events-list.md)
-- [Subscribers overview](../subscribers/overview.md)
-- [How to create a subscriber](../subscribers/create-subscriber.md)
+- [Events reference](./events-list.md)
+- [Subscribers overview](./subscribers.md)
+- [How to create a subscriber](./create-subscriber.md)
