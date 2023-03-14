@@ -291,7 +291,7 @@ class ProductVariantService extends TransactionBaseService {
       : ProductVariant
   >(
     variantOrVariantIdOrData: TInput,
-    update?: UpdateProductVariantInput
+    updateData?: UpdateProductVariantInput
   ): Promise<TResult> {
     let data = Array.isArray(variantOrVariantIdOrData)
       ? variantOrVariantIdOrData
@@ -302,7 +302,7 @@ class ProductVariantService extends TransactionBaseService {
         this.productVariantRepository_
       )
 
-      if (update) {
+      if (updateData) {
         let variant: Partial<ProductVariant> | null =
           variantOrVariantIdOrData as Partial<ProductVariant>
 
@@ -327,7 +327,7 @@ class ProductVariantService extends TransactionBaseService {
           )
         }
 
-        data = [{ variant: variant as ProductVariant, updateData: update }]
+        data = [{ variant: variant as ProductVariant, updateData: updateData }]
       }
 
       const result = await this.updateBatch(data)
@@ -385,9 +385,13 @@ class ProductVariantService extends TransactionBaseService {
               delete rest.metadata
             }
 
+            const toUpdate: QueryDeepPartialEntity<ProductVariant> = {}
+
             if (Object.keys(rest).length) {
               for (const [key, value] of Object.entries(rest)) {
-                variant[key] = value
+                if (variant[key] !== value) {
+                  toUpdate[key] = value
+                }
               }
             }
 
@@ -395,7 +399,10 @@ class ProductVariantService extends TransactionBaseService {
 
             // No need to update if the nothing on the variant has been changed
             if (shouldUpdate) {
-              result = await variantRepo.save(variant)
+              const { id } = variant
+              const rawResult = (await variantRepo.update({ id }, toUpdate))
+                .generatedMaps[0]
+              result = variantRepo.create(rawResult)
             }
 
             return [result, updateData, shouldEmitUpdateEvent]
@@ -404,7 +411,7 @@ class ProductVariantService extends TransactionBaseService {
 
       const events = results
         .filter(([, , shouldEmitUpdateEvent]) => shouldEmitUpdateEvent)
-        .map(([result, updatedData, shouldEmitUpdateEvent]) => {
+        .map(([result, updatedData]) => {
           return {
             eventName: ProductVariantService.Events.UPDATED,
             data: {
@@ -610,7 +617,8 @@ class ProductVariantService extends TransactionBaseService {
 
       if (dataToUpdate.length) {
         dataToUpdate.forEach((data) => {
-          promises.push(moneyAmountRepo.update({ id: data.id as string }, data))
+          const { id, ...rest } = data
+          promises.push(moneyAmountRepo.update({ id: data.id as string }, rest))
         })
       }
 
@@ -685,7 +693,8 @@ class ProductVariantService extends TransactionBaseService {
 
       if (dataToUpdate.length) {
         dataToUpdate.forEach((data) => {
-          promises.push(moneyAmountRepo.update({ id: data.id as string }, data))
+          const { id, ...rest } = data
+          promises.push(moneyAmountRepo.update({ id: data.id as string }, rest))
         })
       }
 

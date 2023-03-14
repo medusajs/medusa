@@ -216,29 +216,31 @@ export default async (req, res) => {
       promises.push(productVariantServiceTx.update(variantsToUpdate))
     }
 
-    promises.push(
-      ...variantsToCreate.map(async (data) => {
-        try {
-          const varTransaction = await createVariantTransaction(
-            transactionDependencies,
-            product.id,
-            data as CreateProductVariantInput
-          )
-          allVariantTransactions.push(varTransaction)
-        } catch (e) {
-          await Promise.all(
-            allVariantTransactions.map(async (transaction) => {
-              await revertVariantTransaction(
-                transactionDependencies,
-                transaction
-              ).catch(() => logger.warn("Transaction couldn't be reverted."))
-            })
-          )
+    if (variantsToCreate.length) {
+      promises.push(
+        ...variantsToCreate.map(async (data) => {
+          try {
+            const varTransaction = await createVariantTransaction(
+              transactionDependencies,
+              product.id,
+              data as CreateProductVariantInput
+            )
+            allVariantTransactions.push(varTransaction)
+          } catch (e) {
+            await Promise.all(
+              allVariantTransactions.map(async (transaction) => {
+                await revertVariantTransaction(
+                  transactionDependencies,
+                  transaction
+                ).catch(() => logger.warn("Transaction couldn't be reverted."))
+              })
+            )
 
-          throw e
-        }
-      })
-    )
+            throw e
+          }
+        })
+      )
+    }
 
     await Promise.all(promises)
   })
