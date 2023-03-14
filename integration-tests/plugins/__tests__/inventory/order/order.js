@@ -198,6 +198,65 @@ describe("/store/carts", () => {
         )
       })
 
+      it("increases stocked quantity when return is received at location", async () => {
+        const api = useApi()
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 1 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        const shipmentRes = await api.post(
+          `/admin/orders/${order.id}/shipment`,
+          {
+            fulfillment_id: fulfillmentRes.data.order.fulfillments[0].id,
+          },
+          adminHeaders
+        )
+
+        expect(shipmentRes.status).toBe(200)
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 0,
+            reserved_quantity: 0,
+            available_quantity: 0,
+          })
+        )
+
+        const requestReturnRes = await api.post(
+          `/admin/orders/${order.id}/return`,
+          {
+            receive_now: true,
+            location_id: locationId,
+            items: [{ item_id: lineItemId, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        expect(requestReturnRes.status).toBe(200)
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 1,
+            reserved_quantity: 0,
+            available_quantity: 1,
+          })
+        )
+      })
+
       it("adjusts inventory levels on successful fulfillment without reservation", async () => {
         const api = useApi()
 

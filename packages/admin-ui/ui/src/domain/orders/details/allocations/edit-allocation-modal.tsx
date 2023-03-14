@@ -72,11 +72,15 @@ const EditAllocationDrawer = ({
   const handleDelete = () => {
     deleteReservation(undefined, {
       onSuccess: () => {
-        notification("Success", "Allocation deleted successfully", "success")
+        notification(
+          "Allocation was deleted",
+          "The allocated items have been released.",
+          "success"
+        )
         close()
       },
       onError: () => {
-        notification("Errors", "Failed to deleted ", "success")
+        notification("Error", "Failed to delete the allocation ", "error")
       },
     })
   }
@@ -119,7 +123,11 @@ const EditAllocationDrawer = ({
       },
       {
         onSuccess: () => {
-          notification("Success", "Allocation updated successfully", "success")
+          notification(
+            "Allocation was updated",
+            "The allocation change was saved.",
+            "success"
+          )
           close()
         },
         onError: () => {
@@ -265,6 +273,7 @@ const EditAllocationDrawer = ({
                 className="my-1 w-full border text-rose-50"
                 size="small"
                 onClick={handleDelete}
+                type="button"
               >
                 Delete allocation
               </Button>
