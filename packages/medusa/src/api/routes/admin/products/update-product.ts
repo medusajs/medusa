@@ -47,6 +47,7 @@ import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "./index"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
 
 /**
  * @oas [post] /admin/products/{id}
@@ -117,6 +118,9 @@ export default async (req, res) => {
   const validated = await validator(AdminPostProductsProductReq, req.body)
 
   const logger: Logger = req.scope.resolve("logger")
+  const productVariantRepo: ProductVariantRepository = req.scope.resolve(
+    "productVariantRepository"
+  )
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
@@ -145,28 +149,9 @@ export default async (req, res) => {
       .list(
         { product_id: id },
         {
-          select: [
-            "id",
-            "title",
-            "product_id",
-            "sku",
-            "barcode",
-            "ean",
-            "upc",
-            "variant_rank",
-            "inventory_quantity",
-            "allow_backorder",
-            "manage_inventory",
-            "hs_code",
-            "origin_country",
-            "mid_code",
-            "material",
-            "weight",
-            "length",
-            "height",
-            "width",
-            "metadata",
-          ],
+          select: productVariantRepo.metadata.columns.map(
+            (c) => c.propertyName
+          ) as (keyof ProductVariant)[],
         }
       )
 

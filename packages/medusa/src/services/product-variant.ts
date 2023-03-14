@@ -307,9 +307,14 @@ class ProductVariantService extends TransactionBaseService {
           variantOrVariantIdOrData as Partial<ProductVariant>
 
         if (isString(variantOrVariantIdOrData)) {
-          const variantRes = await variantRepo.findOne({
-            where: { id: variantOrVariantIdOrData },
-          })
+          const variantRes = await variantRepo.findOne(
+            { id: variantOrVariantIdOrData },
+            {
+              select: variantRepo.metadata.columns.map(
+                (c) => c.propertyName
+              ) as (keyof ProductVariant)[],
+            }
+          )
           if (!isDefined(variantRes)) {
             throw new MedusaError(
               MedusaError.Types.NOT_FOUND,
@@ -402,7 +407,7 @@ class ProductVariantService extends TransactionBaseService {
               const { id } = variant
               const rawResult = (await variantRepo.update({ id }, toUpdate))
                 .generatedMaps[0]
-              result = variantRepo.create(rawResult)
+              result = variantRepo.create({ ...variant, ...rawResult })
             }
 
             return [result, updateData, shouldEmitUpdateEvent]
