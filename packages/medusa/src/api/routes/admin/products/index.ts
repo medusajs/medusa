@@ -17,6 +17,10 @@ export default (app, featureFlagRouter: FlagRouter) => {
     defaultAdminProductRelations.push("sales_channels")
   }
 
+  if (featureFlagRouter.isFeatureEnabled("product_categories")) {
+    defaultAdminProductRelations.push("categories")
+  }
+
   route.post(
     "/",
     validateSalesChannelsExist((req) => req.body?.sales_channels),
@@ -100,7 +104,6 @@ export const defaultAdminProductRelations = [
   "tags",
   "type",
   "collection",
-  "categories",
 ]
 
 export const defaultAdminProductFields: (keyof Product)[] = [

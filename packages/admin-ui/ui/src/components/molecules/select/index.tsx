@@ -23,7 +23,7 @@ export type SelectOption<T> = {
 
 type MultiSelectProps = InputHeaderProps & {
   // component props
-  label: string
+  label?: string
   required?: boolean
   name?: string
   className?: string
