@@ -1,4 +1,4 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
+import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   buildQuery,
@@ -190,14 +190,34 @@ export default class InventoryLevelService extends TransactionBaseService {
   }
 
   /**
-   * Deletes an inventory level by ID.
-   * @param inventoryLevelId - The ID of the inventory level to delete.
-   */
-  async delete(inventoryLevelId: string): Promise<void> {
+ * Deletes inventory levels by inventory Item ID.
+ * @param inventoryItemId - The ID or IDs of the inventory item to delete inventory levels for.
+ */
+  async deleteByInventoryItemId(inventoryItemId: string | string[]): Promise<void> {
+    const ids = Array.isArray(inventoryItemId) ? inventoryItemId : [inventoryItemId]
     await this.atomicPhase_(async (manager) => {
       const levelRepository = manager.getRepository(InventoryLevel)
 
-      await levelRepository.delete({ id: inventoryLevelId })
+      await levelRepository.delete({ inventory_item_id: In(ids) })
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryLevelService.Events.DELETED, {
+          inventory_item_id: inventoryItemId,
+        })
+    })
+  }
+
+  /**
+   * Deletes an inventory level by ID.
+   * @param inventoryLevelId - The ID or IDs of the inventory level to delete.
+   */
+  async delete(inventoryLevelId: string | string[]): Promise<void> {
+    const ids = Array.isArray(inventoryLevelId) ? inventoryLevelId : [inventoryLevelId]
+    await this.atomicPhase_(async (manager) => {
+      const levelRepository = manager.getRepository(InventoryLevel)
+
+      await levelRepository.delete({ id: In(ids) })
 
       await this.eventBusService_
         .withTransaction(manager)
