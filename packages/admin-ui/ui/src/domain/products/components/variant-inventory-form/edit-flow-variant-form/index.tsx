@@ -10,9 +10,7 @@ export type EditFlowVariantFormType = {
 type Props = {
   form: UseFormReturn<EditFlowVariantFormType, any>
   locationLevels: InventoryLevelDTO[]
-  refetchInventory: () => void
   isLoading: boolean
-  itemId: string
 }
 
 /**
@@ -34,13 +32,7 @@ type Props = {
  *   )
  * }
  */
-const EditFlowVariantForm = ({
-  form,
-  isLoading,
-  locationLevels,
-  refetchInventory,
-  itemId,
-}: Props) => {
+const EditFlowVariantForm = ({ form, isLoading, locationLevels }: Props) => {
   if (isLoading) {
     return null
   }
@@ -49,8 +41,6 @@ const EditFlowVariantForm = ({
     <>
       <VariantStockForm
         locationLevels={locationLevels}
-        refetchInventory={refetchInventory}
-        itemId={itemId}
         form={nestedForm(form, "stock")}
       />
     </>
