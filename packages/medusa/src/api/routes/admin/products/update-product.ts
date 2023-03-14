@@ -118,7 +118,7 @@ export default async (req, res) => {
   const validated = await validator(AdminPostProductsProductReq, req.body)
 
   const logger: Logger = req.scope.resolve("logger")
-  const productVariantRepo: ProductVariantRepository = req.scope.resolve(
+  const productVariantRepo: typeof ProductVariantRepository = req.scope.resolve(
     "productVariantRepository"
   )
   const productService: ProductService = req.scope.resolve("productService")
@@ -144,12 +144,13 @@ export default async (req, res) => {
       return
     }
 
+    const variantRepo = manager.getCustomRepository(productVariantRepo)
     const productVariants = await productVariantService
       .withTransaction(transactionManager)
       .list(
         { product_id: id },
         {
-          select: productVariantRepo.metadata.columns.map(
+          select: variantRepo.metadata.columns.map(
             (c) => c.propertyName
           ) as (keyof ProductVariant)[],
         }
