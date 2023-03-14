@@ -64,12 +64,12 @@ module.exports = {
 
 The plugin can be configured with the following options:
 
-| Option    | Type       | Description                                                                                                                                             | Default     |
-| --------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `serve`   | `boolean?` | Whether to serve the admin dashboard or not.                                                                                                            | `true`      |
-| `path`    | `string?`  | The path the admin server should run on. Should not be prefixed or suffixed with a slash. Cannot be one of the reserved paths: `"admin"` and `"store"`. | `"app"`     |
-| `outDir`  | `string?`  | Optional path for where to output the admin build files                                                                                                 | `undefined` |
-| `backend` | `string?`  | URL to server. Should only be set if you plan on hosting the admin dashboard separately from your server                                                | `undefined` |
+| Option        | Type       | Description                                                                                                                                             | Default     |
+| ------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `serve`       | `boolean?` | Whether to serve the admin dashboard or not.                                                                                                            | `true`      |
+| `path`        | `string?`  | The path the admin server should run on. Should not be prefixed or suffixed with a slash. Cannot be one of the reserved paths: `"admin"` and `"store"`. | `"app"`     |
+| `outDir`      | `string?`  | Optional path for where to output the admin build files                                                                                                 | `undefined` |
+| `autoRebuild` | `boolean?` | Decides whether the admin UI should be rebuild if any changes or a missing build is detected during server startup                                      | `false`     |
 
 **Hint**: You can import the PluginOptions type for inline documentation for the different options:
 
@@ -91,9 +91,9 @@ module.exports = {
 
 ## Building the admin dashboard
 
-The admin will be built automatically the first time you start your server. Any subsequent changes to the plugin options will result in a rebuild of the admin dashboard.
+The admin will be built automatically the first time you start your server if you have enabled `autoRebuild`. Any subsequent changes to the plugin options will result in a rebuild of the admin dashboard.
 
-You may need to manually trigger a rebuild sometimes, for example after you have upgraded to a newer version of `@medusajs/admin`. You can do so by adding the following script to your `package.json`:
+You may need to manually trigger a rebuild sometimes, for example after you have upgraded to a newer version of `@medusajs/admin`, or if you have disabled `autoRebuild`. You can do so by adding the following script to your `package.json`:
 
 ```json
 {
