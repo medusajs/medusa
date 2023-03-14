@@ -29,7 +29,7 @@ export async function loadInternalModule(
     return { error }
   }
 
-  if (!loadedModule?.services?.length) {
+  if (!loadedModule?.service) {
     container.register({
       [registrationName]: asValue(undefined),
     })
@@ -40,10 +40,6 @@ export async function loadInternalModule(
       ),
     }
   }
-
-  const moduleServices = Array.isArray(loadedModule?.services)
-    ? loadedModule.services
-    : [loadedModule.services]
 
   if (
     scope === MODULE_SCOPE.INTERNAL &&
@@ -73,7 +69,7 @@ export async function loadInternalModule(
     }
   }
 
-  const moduleLoaders = loadedModule?.loaders || []
+  const moduleLoaders = loadedModule?.loaders ?? []
   try {
     for (const loader of moduleLoaders) {
       await loader(
@@ -97,22 +93,16 @@ export async function loadInternalModule(
     }
   }
 
-  const hasSingleService = moduleServices.length === 1
-  for (const moduleService of moduleServices) {
-    const regName = hasSingleService
-      ? registrationName
-      : moduleService.name.charAt(0).toLowerCase() + moduleService.name.slice(1)
-
-    container.register({
-      [regName]: asFunction((cradle) => {
-        return new moduleService(
-          localContainer.cradle,
-          resolution.options,
-          resolution.moduleDeclaration
-        )
-      }).singleton(),
-    })
-  }
+  const moduleService = loadedModule.service
+  container.register({
+    [registrationName]: asFunction((cradle) => {
+      return new moduleService(
+        localContainer.cradle,
+        resolution.options,
+        resolution.moduleDeclaration
+      )
+    }).singleton(),
+  })
 
   trackInstallation(
     {

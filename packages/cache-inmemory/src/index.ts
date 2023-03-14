@@ -2,12 +2,10 @@ import { ModuleExports } from "@medusajs/modules-sdk"
 
 import InMemoryCacheService from "./services/inmemory-cache"
 
-const loaders = []
-const services = [InMemoryCacheService]
+const service = InMemoryCacheService
 
 const moduleDefinition: ModuleExports = {
-  services,
-  loaders,
+  service,
 }
 
 export default moduleDefinition

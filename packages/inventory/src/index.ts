@@ -1,18 +1,18 @@
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 
-import InventoryService from "./services/inventory"
-import * as InventoryModels from "./models"
 import migrations from "./migrations"
+import * as InventoryModels from "./models"
+import InventoryService from "./services/inventory"
 
 import { ModuleExports } from "@medusajs/modules-sdk"
 
-const services = [InventoryService]
+const service = InventoryService
 const loaders = [loadContainer, loadConnection]
 const models = Object.values(InventoryModels)
 
 const moduleDefinition: ModuleExports = {
-  services,
+  service,
   migrations,
   loaders,
   models,
