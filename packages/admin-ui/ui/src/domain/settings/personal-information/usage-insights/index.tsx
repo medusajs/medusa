@@ -1,5 +1,4 @@
 import { User } from "@medusajs/medusa"
-import React from "react"
 import Badge from "../../../../components/fundamentals/badge"
 import Button from "../../../../components/fundamentals/button"
 import useToggleState from "../../../../hooks/use-toggle-state"
@@ -17,11 +16,11 @@ const UsageInsights = ({ user }: Props) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-y-2xsmall">
-          <div className="flex items-center gap-x-xsmall">
+        <div className="gap-y-2xsmall flex flex-col">
+          <div className="gap-x-xsmall flex items-center">
             <h2 className="inter-base-semibold">Usage insights</h2>
             {isLoading ? (
-              <div className="badge bg-grey-10 animate-pulse w-16 h-large" />
+              <div className="badge bg-grey-10 h-large w-16 animate-pulse" />
             ) : !analytics_config || analytics_config?.opt_out ? (
               <Badge variant="disabled">Disabled</Badge>
             ) : (

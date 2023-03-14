@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import React from "react"
 import { useNavigate } from "react-router-dom"
 import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
 
@@ -18,7 +17,7 @@ const BackButton = ({ path, label = "Go back", className }: Props) => {
       }}
       className={clsx("px-small py-xsmall", className)}
     >
-      <div className="flex items-center gap-x-xsmall text-grey-50 inter-grey-40 inter-small-semibold">
+      <div className="gap-x-xsmall text-grey-50 inter-grey-40 inter-small-semibold flex items-center">
         <ArrowLeftIcon size={20} />
         <span className="ml-1">{label}</span>
       </div>

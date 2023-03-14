@@ -82,7 +82,7 @@ const GiftCardDetails = () => {
         previousRoute="/a/gift-cards"
       />
       {isLoading || !giftCard ? (
-        <div className="w-full bg-grey-0 border border-grey-20 rounded-rounded py-xlarge flex items-center justify-center">
+        <div className="bg-grey-0 border-grey-20 rounded-rounded py-xlarge flex w-full items-center justify-center border">
           <Spinner size={"large"} variant={"secondary"} />
         </div>
       ) : (
@@ -104,7 +104,7 @@ const GiftCardDetails = () => {
             actionables={actions}
           >
             <div className="flex justify-between">
-              <div className="flex mt-6 space-x-6 divide-x">
+              <div className="mt-6 flex space-x-6 divide-x">
                 <div className="flex flex-col">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
                     Original amount

@@ -7,9 +7,8 @@ type SalesChannelsModalContextType = {
   onSave: (channels: SalesChannel[]) => void
 }
 
-export const SalesChannelsModalContext = React.createContext<SalesChannelsModalContextType | null>(
-  null
-)
+export const SalesChannelsModalContext =
+  React.createContext<SalesChannelsModalContextType | null>(null)
 
 export const useSalesChannelsModal = () => {
   const context = useContext(SalesChannelsModalContext)

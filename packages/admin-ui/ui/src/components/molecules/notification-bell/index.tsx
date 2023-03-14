@@ -12,7 +12,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({
   ...attributes
 }) => {
   return (
-    <Button className="w-8 h-8" size="small" {...attributes}>
+    <Button className="h-8 w-8" size="small" {...attributes}>
       {hasNotifications ? <BellNotiIcon /> : <BellIcon />}
     </Button>
   )

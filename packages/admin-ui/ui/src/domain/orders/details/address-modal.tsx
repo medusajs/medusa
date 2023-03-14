@@ -105,10 +105,10 @@ const AddressModal = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex justify-end w-full h-8">
+            <div className="flex h-8 w-full justify-end">
               <Button
                 variant="ghost"
-                className="justify-center w-32 mr-2 text-small"
+                className="text-small mr-2 w-32 justify-center"
                 size="large"
                 onClick={handleClose}
                 type="button"
@@ -117,7 +117,7 @@ const AddressModal = ({
               </Button>
               <Button
                 size="large"
-                className="justify-center w-32 text-small"
+                className="text-small w-32 justify-center"
                 variant="primary"
                 type="submit"
                 loading={submitting}

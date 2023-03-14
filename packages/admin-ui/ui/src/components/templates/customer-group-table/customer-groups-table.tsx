@@ -1,6 +1,6 @@
 import { CustomerGroup } from "@medusajs/medusa"
 import { useAdminCustomerGroups } from "medusa-react"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   HeaderGroup,
@@ -36,7 +36,7 @@ const defaultQueryProps = {
  */
 function CustomerGroupsPlaceholder() {
   return (
-    <div className="h-full flex center justify-center items-center min-h-[756px]">
+    <div className="center flex h-full min-h-[756px] items-center justify-center">
       <span className="text-xs text-gray-400">No customer groups yet</span>
     </div>
   )
@@ -137,14 +137,8 @@ type CustomerGroupsTableProps = ReturnType<typeof useQueryFilters> & {
  * Root component of the customer groups table.
  */
 function CustomerGroupsTable(props: CustomerGroupsTableProps) {
-  const {
-    customerGroups,
-    queryObject,
-    count,
-    paginate,
-    setQuery,
-    isLoading,
-  } = props
+  const { customerGroups, queryObject, count, paginate, setQuery, isLoading } =
+    props
 
   const tableConfig: TableOptions<CustomerGroup> = {
     columns: CUSTOMER_GROUPS_TABLE_COLUMNS,

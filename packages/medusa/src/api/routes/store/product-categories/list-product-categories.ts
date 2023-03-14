@@ -5,7 +5,7 @@ import { Transform } from "class-transformer"
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { defaultStoreScope } from "."
+import { defaultStoreCategoryScope } from "."
 
 /**
  * @oas [get] /store/product-categories
@@ -68,14 +68,14 @@ export default async (req: Request, res: Response) => {
   )
 
   const selectors = Object.assign(
-    { ...defaultStoreScope },
+    { ...defaultStoreCategoryScope },
     req.filterableFields
   )
 
   const [data, count] = await productCategoryService.listAndCount(
     selectors,
     req.listConfig,
-    defaultStoreScope
+    defaultStoreCategoryScope
   )
 
   const { limit, offset } = req.validatedQuery

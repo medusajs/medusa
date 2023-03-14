@@ -1,6 +1,6 @@
 import { Customer } from "@medusajs/medusa"
 import { useAdminCustomerGroups, useAdminCustomers } from "medusa-react"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   HeaderGroup,
   Row,
@@ -74,26 +74,21 @@ type EditCustomersTableProps = {
  * Container for the "edit customers" table.
  */
 function EditCustomersTable(props: EditCustomersTableProps) {
-  const {
-    setSelectedCustomerIds,
-    selectedCustomerIds,
-    handleSubmit,
-    onClose,
-  } = props
+  const { setSelectedCustomerIds, selectedCustomerIds, handleSubmit, onClose } =
+    props
 
-  const {
-    paginate,
-    setQuery,
-    setFilters,
-    filters,
-    queryObject,
-  } = useQueryFilters(defaultQueryProps)
+  const { paginate, setQuery, setFilters, filters, queryObject } =
+    useQueryFilters(defaultQueryProps)
 
   const [numPages, setNumPages] = useState(0)
   const [activeGroupId, setActiveGroupId] = useState()
 
   const { customer_groups } = useAdminCustomerGroups({ expand: "customers" })
-  const { customers = [], count = 0, isLoading } = useAdminCustomers({
+  const {
+    customers = [],
+    count = 0,
+    isLoading,
+  } = useAdminCustomers({
     ...queryObject,
     groups: activeGroupId ? [activeGroupId] : null,
   })
@@ -226,7 +221,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
         </Modal.Content>
 
         <Modal.Footer>
-          <div className="flex items-center justify-end gap-x-xsmall w-full">
+          <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button
               variant="ghost"
               size="small"

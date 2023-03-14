@@ -1,6 +1,5 @@
 import { Region } from "@medusajs/medusa"
 import { useAdminCreateShippingOption } from "medusa-react"
-import React from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -76,7 +75,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
             <ShippingOptionForm form={form} region={region} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="w-full flex items-center gap-x-xsmall justify-end">
+            <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button
                 variant="secondary"
                 size="small"

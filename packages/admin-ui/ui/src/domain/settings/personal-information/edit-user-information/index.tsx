@@ -1,5 +1,5 @@
 import { User } from "@medusajs/medusa"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import Avatar from "../../../../components/atoms/avatar"
 import Button from "../../../../components/fundamentals/button"
 import useToggleState from "../../../../hooks/use-toggle-state"
@@ -21,10 +21,10 @@ const EditUserInformation = ({ user }: Props) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-x-base">
-          <div className="w-18 aspect-square rounded-full border border-grey-20 flex items-center justify-center box-border">
+        <div className="gap-x-base flex items-center">
+          <div className="w-18 border-grey-20 box-border flex aspect-square items-center justify-center rounded-full border">
             {user ? (
-              <div className="w-16 aspect-square">
+              <div className="aspect-square w-16">
                 <Avatar
                   user={{ ...user }}
                   color="bg-teal-40"
@@ -32,11 +32,11 @@ const EditUserInformation = ({ user }: Props) => {
                 />
               </div>
             ) : (
-              <div className="w-16 aspect-square animate-pulse bg-teal-40 rounded-full" />
+              <div className="bg-teal-40 aspect-square w-16 animate-pulse rounded-full" />
             )}
           </div>
           <div className="flex flex-col">
-            {!!name ? (
+            {name ? (
               <>
                 <p className="inter-base-semibold">{name}</p>
                 <p className="inter-base-regular text-grey-50">{user?.email}</p>

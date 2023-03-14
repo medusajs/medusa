@@ -34,18 +34,18 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <RadixAvatar.Root
       className={clsx(
-        "w-full h-full items-center justify-center overflow-hidden select-none rounded-circle",
+        "rounded-circle h-full w-full select-none items-center justify-center overflow-hidden",
         color
       )}
     >
       <RadixAvatar.Image
         src={user?.img}
         alt={username}
-        className="object-cover w-full h-full rounded-circle"
+        className="rounded-circle h-full w-full object-cover"
       />
       <RadixAvatar.Fallback
         className={clsx(
-          "w-full h-full flex items-center justify-center bg-inherit text-grey-0 rounded-circle",
+          "text-grey-0 rounded-circle flex h-full w-full items-center justify-center bg-inherit",
           font
         )}
       >

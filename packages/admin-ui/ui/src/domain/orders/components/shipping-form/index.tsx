@@ -108,7 +108,7 @@ const ShippingForm = ({
   }
 
   return (
-    <div className="flex flex-col gap-y-base">
+    <div className="gap-y-base flex flex-col">
       <div className="flex flex-col">
         <h2 className="inter-base-semibold">
           Shipping for {isReturn ? "return" : "replacement"} items
@@ -140,7 +140,7 @@ const ShippingForm = ({
         <div className="flex w-full items-center justify-end">
           {selectedOptionPrice !== undefined ? (
             <div className="flex w-full items-center justify-end">
-              <div className="grid grid-cols-[1fr_40px] gap-x-xsmall">
+              <div className="gap-x-xsmall grid grid-cols-[1fr_40px]">
                 <Controller
                   control={control}
                   name={path("price")}

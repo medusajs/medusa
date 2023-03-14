@@ -1,4 +1,3 @@
-import React from "react"
 import { UseFormReturn } from "react-hook-form"
 import InputError from "../../../../../components/atoms/input-error"
 import IconTooltip from "../../../../../components/molecules/icon-tooltip"
@@ -62,7 +61,7 @@ const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
         <div>
           <VariantGeneralForm form={nestedForm(form, "general")} />
           <div className="mt-xlarge">
-            <div className="flex items-center gap-x-2xsmall mb-base">
+            <div className="gap-x-2xsmall mb-base flex items-center">
               <h3 className="inter-base-semibold">Options</h3>
               <IconTooltip
                 type="info"

@@ -19,10 +19,10 @@ const Spinner: React.FC<SpinnerProps> = ({
         { "h-[16px] w-[16px]": size === "small" }
       )}
     >
-      <div className="flex items-center justify-center relative w-full h-full">
+      <div className="relative flex h-full w-full items-center justify-center">
         <div
           className={clsx(
-            "animate-ring border-2 h-4/5 w-4/5 rounded-circle border-transparent",
+            "animate-ring rounded-circle h-4/5 w-4/5 border-2 border-transparent",
             { "border-t-grey-0": variant === "primary" },
             { "border-t-violet-60": variant === "secondary" }
           )}

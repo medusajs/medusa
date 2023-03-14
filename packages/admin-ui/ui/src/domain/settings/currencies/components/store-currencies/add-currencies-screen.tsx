@@ -1,6 +1,6 @@
 import { Currency } from "@medusajs/medusa"
 import { useAdminCurrencies, useAdminUpdateStore } from "medusa-react"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { usePagination, useRowSelect, useSortBy, useTable } from "react-table"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -95,7 +95,7 @@ const AddCurrenciesScreen = () => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="w-full gap-x-xsmall flex items-center justify-end">
+        <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
             Cancel
           </Button>

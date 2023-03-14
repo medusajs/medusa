@@ -36,9 +36,8 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
 }) => {
   const { pop } = useContext(LayeredModalContext)
 
-  const { register, handleSubmit, control, reset } = useForm<
-    RMAEditAddressSubModalFormData
-  >()
+  const { register, handleSubmit, control, reset } =
+    useForm<RMAEditAddressSubModalFormData>()
 
   const { region } = useAdminRegion(order.region_id)
 
@@ -84,7 +83,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               <div>
                 <span className="inter-base-semibold">General</span>
 
-                <div className="grid grid-cols-2 gap-x-base gap-y-base">
+                <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input
                     {...register("first_name", {
                       required: true,
@@ -110,7 +109,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               </div>
               <div className="mt-8">
                 <span className="inter-base-semibold">Shipping Address</span>
-                <div className="grid gap-y-base my-4">
+                <div className="gap-y-base my-4 grid">
                   <Input
                     {...register("address_1", {
                       required: true,
@@ -125,7 +124,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
                     label="Address 2"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-x-base gap-y-base">
+                <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input
                     {...register("province")}
                     placeholder="Province"
@@ -170,7 +169,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full justify-end gap-x-xsmall">
+          <div className="gap-x-xsmall flex w-full justify-end">
             <Button
               variant="ghost"
               size="small"

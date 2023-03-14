@@ -54,7 +54,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
           </Modal.Header>
           <Modal.Content>
             <div className="space-y-4">
-              <div className="flex mt-4 space-x-4">
+              <div className="mt-4 flex space-x-4">
                 <Input
                   label="Email"
                   {...register("email")}
@@ -64,10 +64,10 @@ const EmailModal: React.FC<EmailModalProps> = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full h-8 justify-end">
+            <div className="flex h-8 w-full justify-end">
               <Button
                 variant="ghost"
-                className="mr-2 w-32 text-small justify-center"
+                className="text-small mr-2 w-32 justify-center"
                 size="large"
                 type="button"
                 onClick={handleClose}
@@ -76,7 +76,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
               </Button>
               <Button
                 size="large"
-                className="w-32 text-small justify-center"
+                className="text-small w-32 justify-center"
                 variant="primary"
                 loading={isLoading}
                 disabled={isLoading}
