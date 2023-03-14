@@ -433,6 +433,27 @@ class ProductVariantInventoryService extends TransactionBaseService {
         }
       )
 
+    if (quantity > 0) {
+      // if quantity is positive, we need to adjust the first reservation with the correct location
+      const firstReservation = reservations.find(
+        (r) => r.location_id === locationId
+      )
+      if (firstReservation) {
+        await this.inventoryService_
+          .withTransaction(this.activeManager_)
+          .updateReservationItem(firstReservation.id, {
+            quantity: firstReservation.quantity + quantity,
+          })
+      } else {
+        await this.reserveQuantity(variantId, quantity, {
+          lineItemId,
+          locationId,
+        })
+
+        return
+      }
+    }
+
     if (reservationCount) {
       const inventoryItems = await this.listByVariant(variantId)
       const productVariantInventory = inventoryItems[0]
