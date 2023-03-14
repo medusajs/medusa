@@ -1,26 +1,36 @@
+import {
+  AdminPostOrdersOrderReturnsReq,
+  LineItem as RawLineItem,
+  Order,
+  StockLocationDTO,
+} from "@medusajs/medusa"
+import {
+  useAdminRequestReturn,
+  useAdminShippingOptions,
+  useAdminStockLocations,
+} from "medusa-react"
+import React, { useContext, useEffect, useState } from "react"
+import Spinner from "../../../../components/atoms/spinner"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../../../components/molecules/modal/layered-modal"
-import { Order, LineItem as RawLineItem } from "@medusajs/medusa"
-import React, { useContext, useEffect, useState } from "react"
-import { useAdminRequestReturn, useAdminShippingOptions } from "medusa-react"
 
 import Button from "../../../../components/fundamentals/button"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import CurrencyInput from "../../../../components/organisms/currency-input"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import Modal from "../../../../components/molecules/modal"
-import { Option } from "../../../../types/shared"
-import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
 import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping"
-import Select from "../../../../components/molecules/select"
-import Spinner from "../../../../components/atoms/spinner"
-import { displayAmount } from "../../../../utils/prices"
-import { getAllReturnableItems } from "../utils/create-filtering"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { removeNullish } from "../../../../utils/remove-nullish"
+import Select from "../../../../components/molecules/select/next-select/select"
+import CurrencyInput from "../../../../components/organisms/currency-input"
+import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
 import useNotification from "../../../../hooks/use-notification"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { Option } from "../../../../types/shared"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { displayAmount } from "../../../../utils/prices"
+import { removeNullish } from "../../../../utils/remove-nullish"
+import { getAllReturnableItems } from "../utils/create-filtering"
 
 type ReturnMenuProps = {
   order: Order
@@ -31,11 +41,19 @@ type LineItem = Omit<RawLineItem, "beforeInsert">
 
 const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
   const layeredModalContext = useContext(LayeredModalContext)
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isLocationFulfillmentEnabled =
+    isFeatureEnabled("inventoryService") &&
+    isFeatureEnabled("stockLocationService")
 
   const [submitting, setSubmitting] = useState(false)
   const [refundEdited, setRefundEdited] = useState(false)
   const [refundable, setRefundable] = useState(0)
   const [refundAmount, setRefundAmount] = useState(0)
+  const [selectedLocation, setSelectedLocation] = useState<{
+    value: string
+    label: string
+  } | null>(null)
   const [toReturn, setToReturn] = useState<
     Record<string, { quantity: number }>
   >({})
@@ -48,6 +66,19 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
   const [allItems, setAllItems] = useState<Omit<LineItem, "beforeInsert">[]>([])
 
   const notification = useNotification()
+
+  const { stock_locations, refetch } = useAdminStockLocations(
+    {},
+    {
+      enabled: isLocationFulfillmentEnabled,
+    }
+  )
+
+  React.useEffect(() => {
+    if (isLocationFulfillmentEnabled) {
+      refetch()
+    }
+  }, [isLocationFulfillmentEnabled, refetch])
 
   const requestReturnOrder = useAdminRequestReturn(order.id)
 
@@ -92,15 +123,19 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       const clean = removeNullish(toSet)
       return {
         item_id: key,
-        ...clean,
+        ...(clean as { quantity: number }),
       }
     })
 
-    const data = {
+    const data: AdminPostOrdersOrderReturnsReq = {
       items,
       refund: Math.round(refundAmount),
       no_notification:
         noNotification !== order.no_notification ? noNotification : undefined,
+    }
+
+    if (selectedLocation && isLocationFulfillmentEnabled) {
+      data.location_id = selectedLocation.value
     }
 
     if (shippingMethod) {
@@ -173,15 +208,39 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
             />
           </div>
 
+          {isLocationFulfillmentEnabled && (
+            <div className="mb-8">
+              <h3 className="inter-base-semibold ">Location</h3>
+              <p className="inter-base-regular text-grey-50">
+                Choose which location you want to return the items to.
+              </p>
+              <Select
+                className="mt-2"
+                placeholder="Select Location to Return to"
+                value={selectedLocation}
+                isMulti={false}
+                onChange={setSelectedLocation}
+                options={
+                  stock_locations?.map((sl: StockLocationDTO) => ({
+                    label: sl.name,
+                    value: sl.id,
+                  })) || []
+                }
+              />
+            </div>
+          )}
+
           <div>
             <h3 className="inter-base-semibold ">Shipping</h3>
+            <p className="inter-base-regular text-grey-50">
+              Choose which shipping method you want to use for this return.
+            </p>
             {shippingLoading ? (
               <div className="flex justify-center">
                 <Spinner size="medium" variant="secondary" />
               </div>
             ) : (
               <Select
-                label="Shipping Method"
                 className="mt-2"
                 placeholder="Add a shipping method"
                 value={shippingMethod}

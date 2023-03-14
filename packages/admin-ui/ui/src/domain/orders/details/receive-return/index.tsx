@@ -1,10 +1,17 @@
-import { Order, Return } from "@medusajs/medusa"
+import React from "react"
+import {
+  AdminPostReturnsReturnReceiveReq,
+  Order,
+  Return,
+  StockLocationDTO,
+} from "@medusajs/medusa"
 import { useAdminOrder, useAdminReceiveReturn } from "medusa-react"
 import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
 import useNotification from "../../../../hooks/use-notification"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
 import { ItemsToReceiveFormType } from "../../components/items-to-receive-form"
@@ -13,6 +20,9 @@ import { RefundAmountFormType } from "../../components/refund-amount-form"
 import { ReceiveReturnSummary } from "../../components/rma-summaries/receive-return-summary"
 import { getDefaultReceiveReturnValues } from "../utils/get-default-values"
 import useOrdersExpandParam from "../utils/use-admin-expand-paramter"
+import { useAdminStockLocations } from "medusa-react"
+import Select from "../../../../components/molecules/select/next-select/select"
+import Spinner from "../../../../components/atoms/spinner"
 
 type Props = {
   order: Order
@@ -26,11 +36,52 @@ export type ReceiveReturnFormType = {
 }
 
 export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isLocationFulfillmentEnabled =
+    isFeatureEnabled("inventoryService") &&
+    isFeatureEnabled("stockLocationService")
+
   const { mutate, isLoading } = useAdminReceiveReturn(returnRequest.id)
   const { orderRelations } = useOrdersExpandParam()
   const { refetch } = useAdminOrder(order.id, {
     expand: orderRelations,
   })
+
+  const {
+    stock_locations,
+    refetch: refetchLocations,
+    isLoading: isLoadingLocations,
+  } = useAdminStockLocations(
+    {},
+    {
+      enabled: isLocationFulfillmentEnabled,
+    }
+  )
+
+  React.useEffect(() => {
+    if (isLocationFulfillmentEnabled) {
+      refetchLocations()
+    }
+  }, [isLocationFulfillmentEnabled, refetchLocations])
+
+  const [selectedLocation, setSelectedLocation] = React.useState<{
+    value: string
+    label: string
+  } | null>(null)
+
+  useEffect(() => {
+    if (isLocationFulfillmentEnabled && stock_locations?.length) {
+      const location = stock_locations.find(
+        (sl: StockLocationDTO) => sl.id === returnRequest.location_id
+      )
+      if (location) {
+        setSelectedLocation({
+          value: location.id,
+          label: location.name,
+        })
+      }
+    }
+  }, [isLocationFulfillmentEnabled, stock_locations, returnRequest.location_id])
 
   /**
    * If the return was refunded as part of a refund claim, we do not allow the user to
@@ -104,36 +155,39 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
       refundAmount = 0
     }
 
-    mutate(
-      {
-        items: data.receive_items.items.map((i) => ({
-          item_id: i.item_id,
-          quantity: i.quantity,
-        })),
-        refund: refundAmount,
+    const toCreate: AdminPostReturnsReturnReceiveReq = {
+      items: data.receive_items.items.map((i) => ({
+        item_id: i.item_id,
+        quantity: i.quantity,
+      })),
+      refund: refundAmount,
+    }
+
+    if (selectedLocation && isLocationFulfillmentEnabled) {
+      toCreate.location_id = selectedLocation.value
+    }
+
+    mutate(toCreate, {
+      onSuccess: () => {
+        notification(
+          "Successfully received return",
+          `Received return for order #${order.display_id}`,
+          "success"
+        )
+
+        // We need to refetch the order to get the updated state
+        refetch()
+
+        onClose()
       },
-      {
-        onSuccess: () => {
-          notification(
-            "Successfully received return",
-            `Received return for order #${order.display_id}`,
-            "success"
-          )
-
-          // We need to refetch the order to get the updated state
-          refetch()
-
-          onClose()
-        },
-        onError: (error) => {
-          notification(
-            "Failed to receive return",
-            getErrorMessage(error),
-            "error"
-          )
-        },
-      }
-    )
+      onError: (error) => {
+        notification(
+          "Failed to receive return",
+          getErrorMessage(error),
+          "error"
+        )
+      },
+    })
   })
 
   return (
@@ -149,6 +203,33 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
                 order={order}
                 form={nestedForm(form, "receive_items")}
               />
+
+              {isLocationFulfillmentEnabled && (
+                <div className="mb-8">
+                  <h3 className="inter-base-semibold ">Location</h3>
+                  <p className="inter-base-regular text-grey-50">
+                    Choose which location you want to return the items to.
+                  </p>
+                  {isLoadingLocations ? (
+                    <Spinner />
+                  ) : (
+                    <Select
+                      className="mt-2"
+                      placeholder="Select Location to Return to"
+                      value={selectedLocation}
+                      isMulti={false}
+                      onChange={setSelectedLocation}
+                      options={
+                        stock_locations?.map((sl: StockLocationDTO) => ({
+                          label: sl.name,
+                          value: sl.id,
+                        })) || []
+                      }
+                    />
+                  )}
+                </div>
+              )}
+
               {!isSwapOrRefundedClaim && (
                 <ReceiveReturnSummary
                   form={form}
