@@ -269,10 +269,12 @@ export default class ReservationItemService extends TransactionBaseService {
             item.quantity * -1
           ),
       ])
-    })
 
-    await this.eventBusService_.emit(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.DELETED, {
+        id: reservationItemId,
+      })
     })
   }
 }
