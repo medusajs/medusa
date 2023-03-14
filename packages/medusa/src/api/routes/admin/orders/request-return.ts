@@ -18,6 +18,8 @@ import { EntityManager } from "typeorm"
 import { Order, Return } from "../../../../models"
 import { OrdersReturnItem } from "../../../../types/orders"
 import { FindParams } from "../../../../types/common"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [post] /admin/orders/{id}/return
@@ -121,6 +123,9 @@ export default async (req, res) => {
 
   try {
     const orderService: OrderService = req.scope.resolve("orderService")
+    const inventoryServiceEnabled =
+      !!req.scope.resolve("inventoryService") &&
+      !!req.scope.resolve("stockLocationService")
     const returnService: ReturnService = req.scope.resolve("returnService")
     const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
@@ -140,7 +145,7 @@ export default async (req, res) => {
                     idempotency_key: idempotencyKey.idempotency_key,
                     items: value.items,
                   }
-                  if (isDefined(value.location_id)) {
+                  if (isDefined(value.location_id) && inventoryServiceEnabled) {
                     returnObj.location_id = value.location_id
                   }
 
