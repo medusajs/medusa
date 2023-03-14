@@ -5,27 +5,13 @@ addHowToData: true
 
 # How to Toggle Feature Flags
 
-In this document, you’ll learn about what feature flags are and how to toggle them.
-
-## Overview
-
-Feature flags are used in Medusa to guard beta features that aren’t ready for live and production servers. This allows the Medusa team to keep publishing releases more frequently, while also working on necessary future features behind the scenes.
-
-To use these beta features, you must enable their feature flags.
-
----
-
-## Available Feature Flags
-
-You can view a list of available feature flags that you can toggle in [the Medusa GitHub mono-repository](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags). In each feature flag file, you can find the default value of the feature flag, its name, environment variable name, and more.
+In this document, you’ll learn about how to toggle feature flags.
 
 :::info
 
 If a feature flag is enabled/disabled by default, you don’t need to manually enable/disable it. Only set the feature flag’s value if it’s different than the default.
 
 :::
-
----
 
 ## Enable Feature Flags
 
@@ -94,11 +80,11 @@ Once you disable a feature flag, all endpoints, entities, services, or other rel
 
 If you had the feature flag previously enabled, and you want to disable this feature flag completely, you might need to revert the migrations you ran when you enabled it.
 
-You can follow [this documentation to learn how to revert the last migration you ran](https://docs.medusajs.com/cli/reference#migrations).
+You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.md#migrations).
 
 ---
 
 ## See Also
 
-- [Migrations Overview](../migrations/overview.md).
-- [Configure your Medusa server](../../../development/backend/configurations.md).
+- [Migrations Overview](../../advanced/backend/migrations/overview.md).
+- [Configure your Medusa server](../backend/configurations.md).

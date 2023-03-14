@@ -285,3 +285,15 @@
 [[redirects]]
   from="/add-plugins/:path"
   to="/plugins/:path"
+
+[[redirects]]
+  from="/advanced/backend/feature-flags/toggle"
+  to="/development/feature-flags/toggle"
+
+[[redirects]]
+  from="/advanced/backend/publishable-api-keys"
+  to="/development/publishable-api-keys"
+
+[[redirects]]
+  from="/advanced/admin/manage-publishable-api-keys"
+  to="/development/publishable-api-keys/admin/manage-publishable-api-keys"
