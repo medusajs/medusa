@@ -136,6 +136,8 @@ export type ConfigModule = {
 
 
     /**
+     * ## Event Options
+     * 
      * Global options passed to all `EventBusService.emit` in the core as well as your own emitters. The options are forwarded to Bull's `Queue.add` method.
      *
      * The global options can be overridden by passing options to `EventBusService.emit` directly.
@@ -154,6 +156,23 @@ export type ConfigModule = {
      */
     event_options?: Record<string, unknown> & EmitOptions
     
+
+    /**
+     * ## Session Options
+     * The options passed to the session cookie.
+     * 
+     * ### Example
+     * ```js
+     * {
+     *   // Other configurations,
+     *  session_options: {
+     *   name: "connect.sid",
+     *   ttl: 86400, // 1 day
+     *   }
+     * }
+     * ```
+     * 
+     */
     session_options?: SessionOptions
 
     /**
@@ -335,6 +354,7 @@ export type ConfigModule = {
    * ## Module Resolutions
    * This refers to a collection of modules to be loaded and registered within the application container.
    * 
+   * 
    * @see https://github.com/jeffijoe/awilix#readme
    */
   moduleResolutions?: Record<string, ModuleResolution>
@@ -356,7 +376,7 @@ export type ConfigModule = {
    *        webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
    *      },
    *    },
-   *    ]
+   *  ]
    * }
    * ```
    * 
