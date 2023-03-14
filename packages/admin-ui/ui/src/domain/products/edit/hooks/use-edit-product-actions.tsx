@@ -11,11 +11,12 @@ import {
   useAdminUpdateProduct,
   useAdminUpdateVariant,
 } from "medusa-react"
-import { useNavigate } from "react-router-dom"
-import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
-import useNotification from "../../../../hooks/use-notification"
+
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { removeNullish } from "../../../../utils/remove-nullish"
+import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
+import { useNavigate } from "react-router-dom"
+import useNotification from "../../../../hooks/use-notification"
 
 const useEditProductActions = (productId: string) => {
   const dialog = useImperativeDialog()
@@ -70,8 +71,11 @@ const useEditProductActions = (productId: string) => {
     successMessage = "Variant was updated successfully"
   ) => {
     updateVariant.mutate(
-      // @ts-ignore - TODO fix type on request
-      { variant_id: id, ...removeNullish(payload) },
+      {
+        variant_id: id,
+        ...removeNullish(payload),
+        manage_inventory: payload.manage_inventory,
+      },
       {
         onSuccess: () => {
           notification("Success", successMessage, "success")

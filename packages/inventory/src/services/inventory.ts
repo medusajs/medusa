@@ -245,6 +245,10 @@ export default class InventoryService
    * @param inventoryItemId - the id of the inventory item to delete
    */
   async deleteInventoryItem(inventoryItemId: string): Promise<void> {
+    await this.inventoryLevelService_
+      .withTransaction(this.activeManager_)
+      .deleteByInventoryItemId(inventoryItemId)
+
     return await this.inventoryItemService_
       .withTransaction(this.activeManager_)
       .delete(inventoryItemId)
