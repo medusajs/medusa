@@ -1,5 +1,6 @@
-import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { DeepPartial, EntityManager, In } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { EmitData, TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { FindConfig } from "../types/common"
@@ -50,6 +51,31 @@ class StagedJobService extends TransactionBaseService {
       }
 
       return await stagedJobRepo.remove(job)
+    })
+  }
+
+  async deleteBulk(stagedJobIds: string[]): Promise<void> {
+    return this.atomicPhase_(async (manager) => {
+      const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
+
+      await stagedJobRepo.delete({ id: In(stagedJobIds) })
+    })
+  }
+
+  async insertBulk(stagedJobsInput: EmitData[]) {
+    return this.atomicPhase_(async (manager) => {
+      const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
+
+      const stagedJobs = stagedJobsInput.map(
+        (job) =>
+          stagedJobRepo.create({
+            event_name: job.eventName,
+            data: job.data,
+            options: job.options,
+          } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
+      )
+
+      return await stagedJobRepo.insertBulk(stagedJobs)
     })
   }
 }

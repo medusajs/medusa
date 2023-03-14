@@ -21,6 +21,12 @@ export type EventHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
+export type EmitData<T = unknown> = {
+  eventName: string
+  data: T
+  options?: Record<string, unknown>
+}
+
 export interface IEventBusService extends TransactionBaseService {
   emit<T>(
     eventName: string,
@@ -30,11 +36,7 @@ export interface IEventBusService extends TransactionBaseService {
 }
 
 export interface IEventBusModuleService {
-  emit<T>(
-    eventName: string,
-    data: T,
-    options?: unknown
-  ): Promise<StagedJob | void>
+  emit<T>(data: EmitData<T>[]): Promise<void>
 
   subscribe(
     event: string | symbol,
@@ -64,7 +66,7 @@ export abstract class AbstractEventBusModuleService
     return this.eventToSubscribersMap_
   }
 
-  abstract emit<T>(eventName: string, data: T, options?: unknown): Promise<void>
+  abstract emit<T>(data: EmitData<T>[]): Promise<void>
 
   public subscribe(
     event: string | symbol,

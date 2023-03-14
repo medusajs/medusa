@@ -154,6 +154,52 @@ export const defaultStoreCartRelations = [
 /**
  * @schema StoreCartsRes
  * type: object
+ * x-expanded-relations:
+ *   field: cart
+ *   relations:
+ *     - billing_address
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.variant
+ *     - payment
+ *     - payment_sessions
+ *     - region
+ *     - region.countries
+ *     - region.payment_providers
+ *     - shipping_address
+ *     - shipping_methods
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *     - items.tax_lines
+ *     - items.variant.product
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - region.tax_rates
+ *     - shipping_methods.shipping_option
+ *     - shipping_methods.tax_lines
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - item_tax_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_tax_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
  * required:
  *   - cart
  * properties:

@@ -35,7 +35,7 @@ export const useSalesChannelsTableColumns = () => {
         width: 30,
         id: "selection",
         Header: ({ getToggleAllPageRowsSelectedProps }) => (
-          <span className="flex justify-center w-[30px]">
+          <span className="flex w-[30px] justify-center">
             <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
           </span>
         ),
@@ -43,7 +43,7 @@ export const useSalesChannelsTableColumns = () => {
           return (
             <span
               onClick={(e) => e.stopPropagation()}
-              className="flex justify-center w-[30px]"
+              className="flex w-[30px] justify-center"
             >
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </span>
@@ -184,18 +184,18 @@ export const SalesChannelTableActions = ({
   const { push } = React.useContext(LayeredModalContext)
 
   return (
-    <div className="flex space-x-xsmall h-[34px] overflow-hidden">
+    <div className="space-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
-        <div className="divide-x flex items-center h-[34px] mb-2">
-          <span className="mr-3 inter-small-regular text-grey-50">
+        <div className="mb-2 flex h-[34px] items-center divide-x">
+          <span className="inter-small-regular text-grey-50 mr-3">
             {numberOfSelectedRows} selected
           </span>
-          <div className="flex space-x-xsmall pl-3">
+          <div className="space-x-xsmall flex pl-3">
             <Button
               onClick={onDeselect}
               size="small"
               variant="ghost"
-              className="border border-grey-20"
+              className="border-grey-20 border"
             >
               Deselect
             </Button>
@@ -203,17 +203,17 @@ export const SalesChannelTableActions = ({
               onClick={onRemove}
               size="small"
               variant="ghost"
-              className="border border-grey-20 text-rose-50"
+              className="border-grey-20 border text-rose-50"
             >
               Remove
             </Button>
           </div>
         </div>
-        <div className="flex justify-end h-[34px]">
+        <div className="flex h-[34px] justify-end">
           <Button
             size="small"
             variant="ghost"
-            className="border border-grey-20"
+            className="border-grey-20 border"
             onClick={() => push(addChannelModalScreen)}
           >
             <PlusIcon size={20} /> Add Channels

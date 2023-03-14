@@ -100,7 +100,8 @@ class ProductCategoryService extends TransactionBaseService {
   async retrieve(
     productCategoryId: string,
     config: FindConfig<ProductCategory> = {},
-    selector: Selector<ProductCategory> = {}
+    selector: Selector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<ProductCategory> {
     if (!isDefined(productCategoryId)) {
       throw new MedusaError(
@@ -116,7 +117,8 @@ class ProductCategoryService extends TransactionBaseService {
     )
 
     const productCategory = await productCategoryRepo.findOneWithDescendants(
-      query
+      query,
+      treeSelector
     )
 
     if (!productCategory) {
@@ -436,7 +438,7 @@ class ProductCategoryService extends TransactionBaseService {
         continue
       }
 
-      sibling.rank = shouldIncrementRank ? sibling.rank + 1 : sibling.rank - 1
+      sibling.rank = shouldIncrementRank ? ++sibling.rank : --sibling.rank
 
       await repository.save(sibling)
     }

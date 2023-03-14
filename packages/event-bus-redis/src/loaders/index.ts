@@ -21,6 +21,7 @@ export default async ({
   const connection = new Redis(redisUrl, {
     // Required config. See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
     maxRetriesPerRequest: null,
+    enableReadyCheck: false,
     // Lazy connect to properly handle connection errors
     lazyConnect: true,
     ...(redisOptions ?? {}),
@@ -34,6 +35,6 @@ export default async ({
   }
 
   container.register({
-    redisConnection: asValue(connection),
+    eventBusRedisConnection: asValue(connection),
   })
 }

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 import Spinner from "../../atoms/spinner"
 import { TablePagination } from "./pagination"
 import { PagingProps } from "./types"
@@ -32,7 +32,7 @@ const TableContainer = <T extends boolean>({
         }}
       >
         {isLoading && (
-          <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-50 z-50">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50">
             <Spinner variant="secondary" />
           </div>
         )}

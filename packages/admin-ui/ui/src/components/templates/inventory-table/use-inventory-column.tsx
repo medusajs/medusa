@@ -15,7 +15,7 @@ const useInventoryTableColumn = () => {
                 {original.variants[0]?.product?.thumbnail ? (
                   <img
                     src={original.variants[0].product.thumbnail}
-                    className="object-cover h-full rounded-soft"
+                    className="rounded-soft h-full object-cover"
                   />
                 ) : (
                   <ImagePlaceholder />

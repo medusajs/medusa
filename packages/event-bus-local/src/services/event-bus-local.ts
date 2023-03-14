@@ -1,5 +1,6 @@
 import {
   AbstractEventBusModuleService,
+  EmitData,
   Logger,
   MedusaContainer,
   Subscriber
@@ -18,7 +19,6 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
-
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
@@ -26,23 +26,25 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.logger_ = logger
   }
 
-  async emit<T>(eventName: string, data: T): Promise<void> {
-    const eventListenersCount = eventEmitter.listenerCount(eventName)
+  async emit<T>(data: EmitData<T>[]): Promise<void> {
+    for (const event of data) {
+      const eventListenersCount = eventEmitter.listenerCount(event.eventName)
 
-    if (eventListenersCount === 0) {
-      return
-    }
+      if (eventListenersCount === 0) {
+        return
+      }
 
-    this.logger_.info(
-      `Processing ${eventName} which has ${eventListenersCount} subscribers`
-    )
-
-    try {
-      eventEmitter.emit(eventName, data)
-    } catch (error) {
-      this.logger_.error(
-        `An error occurred while processing ${eventName}: ${error}`
+      this.logger_.info(
+        `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
       )
+
+      try {
+        eventEmitter.emit(event.eventName, event.data)
+      } catch (error) {
+        this.logger_.error(
+          `An error occurred while processing ${event.eventName}: ${error}`
+        )
+      }
     }
   }
 

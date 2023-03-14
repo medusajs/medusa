@@ -17,7 +17,6 @@ import Button from "../../fundamentals/button"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import InputField from "../../molecules/input"
 import InputHeader from "../../fundamentals/input-header"
-import InventoryFilter from "../../../domain/inventory/filter-dropdown"
 import Modal from "../../molecules/modal"
 import { NextSelect } from "../../molecules/select/next-select"
 import Spinner from "../../atoms/spinner"
@@ -28,7 +27,7 @@ import { isEmpty } from "lodash"
 import qs from "qs"
 import { useInventoryFilters } from "./use-inventory-filters"
 import useInventoryTableColumn from "./use-inventory-column"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 
@@ -237,19 +236,8 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
       isLoading={isLoading}
     >
       <Table
-        filteringOptions={
-          <InventoryFilter
-            filters={filters}
-            submitFilters={setFilters}
-            clearFilters={clearFilters}
-            tabs={filterTabs}
-            onTabClick={setTab}
-            activeTab={activeFilterTab}
-            onRemoveTab={removeTab}
-            onSaveTab={saveTab}
-          />
-        }
         enableSearch
+        searchClassName="h-[40px]"
         handleSearch={setQuery}
         searchValue={query}
         tableActions={
@@ -313,16 +301,46 @@ const InventoryRow = ({
 } & TableRowProps) => {
   const inventory = row.original
 
+  const navigate = useNavigate()
+
   const {
     state: isShowingAdjustAvailabilityModal,
     open: showAdjustAvailabilityModal,
     close: closeAdjustAvailabilityModal,
   } = useToggleState()
+
+  const getRowActionables = () => {
+    const productId = inventory.variants?.length
+      ? inventory.variants[0].product_id
+      : null
+
+    const actions = [
+      {
+        label: "Adjust Availability",
+        onClick: showAdjustAvailabilityModal,
+      },
+    ]
+
+    if (productId) {
+      return [
+        {
+          label: "View Product",
+          onClick: () => navigate(`/a/products/${productId}`),
+        },
+        ...actions,
+      ]
+    }
+
+    return actions
+  }
+
   return (
     <Table.Row
       color={"inherit"}
       onClick={showAdjustAvailabilityModal}
+      clickable
       forceDropdown
+      actions={getRowActionables()}
       {...rest}
     >
       {row.cells.map((cell: Cell, index: number) => {
@@ -413,7 +431,7 @@ const AdjustAvailabilityModal = ({
                     {variant?.product?.thumbnail ? (
                       <img
                         src={variant?.product?.thumbnail}
-                        className="object-cover h-full rounded-rounded"
+                        className="rounded-rounded h-full object-cover"
                       />
                     ) : (
                       <ImagePlaceholder />
@@ -422,7 +440,7 @@ const AdjustAvailabilityModal = ({
                   <div className="flex flex-col">
                     <span className="truncate">
                       {variant?.product?.title}
-                      <span className="truncate text-grey-50">
+                      <span className="text-grey-50 truncate">
                         ({inventory.sku})
                       </span>
                     </span>
@@ -445,7 +463,7 @@ const AdjustAvailabilityModal = ({
         </Modal.Content>
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end w-full gap-x-xsmall">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button
             size="small"
             variant="ghost"

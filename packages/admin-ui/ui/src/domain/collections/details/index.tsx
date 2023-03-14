@@ -107,15 +107,15 @@ const CollectionDetails = () => {
 
   return (
     <>
-      <div className="flex flex-col !pb-xlarge">
+      <div className="!pb-xlarge flex flex-col">
         <BackButton
           className="mb-xsmall"
           path="/a/products?view=collections"
           label="Back to Collections"
         />
-        <div className="rounded-rounded py-large px-xlarge border border-grey-20 bg-grey-0 mb-large">
+        <div className="rounded-rounded py-large px-xlarge border-grey-20 bg-grey-0 mb-large border">
           {isLoading || !collection ? (
-            <div className="flex items-center w-full h-12">
+            <div className="flex h-12 w-full items-center">
               <Spinner variant="secondary" size="large" />
             </div>
           ) : (
@@ -147,7 +147,7 @@ const CollectionDetails = () => {
                 </p>
               </div>
               {collection.metadata && (
-                <div className="mt-large flex flex-col gap-y-base">
+                <div className="mt-large gap-y-base flex flex-col">
                   <h3 className="inter-base-semibold">Metadata</h3>
                   <div>
                     <JSONView data={collection.metadata} />

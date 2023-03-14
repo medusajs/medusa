@@ -1,4 +1,3 @@
-import React from "react"
 import { Controller, useFieldArray } from "react-hook-form"
 import FileUploadField from "../../../../components/atoms/file-upload-field"
 import BodyCard from "../../../../components/organisms/body-card"

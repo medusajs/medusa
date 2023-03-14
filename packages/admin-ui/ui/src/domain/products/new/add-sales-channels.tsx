@@ -95,7 +95,7 @@ const AddSalesChannelsForm = ({ form }: Props) => {
           </div>
           <Button
             variant="secondary"
-            className="w-full h-[40px] mt-large"
+            className="mt-large h-[40px] w-full"
             type="button"
             onClick={toggleModal}
           >

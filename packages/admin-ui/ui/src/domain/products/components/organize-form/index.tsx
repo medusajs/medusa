@@ -1,4 +1,3 @@
-import React from "react"
 import { Controller } from "react-hook-form"
 import {
   NextCreateableSelect,
@@ -28,8 +27,11 @@ type Props = {
 
 const OrganizeForm = ({ form }: Props) => {
   const { control, path, setValue } = form
-  const { productTypeOptions, collectionOptions, categoriesOptions } =
-    useOrganizeData()
+  const {
+    productTypeOptions,
+    collectionOptions,
+    categoriesOptions = [],
+  } = useOrganizeData()
 
   const { isFeatureEnabled } = useFeatureFlag()
 
@@ -91,7 +93,7 @@ const OrganizeForm = ({ form }: Props) => {
             name={path("categories")}
             control={control}
             render={({ field: { value, onChange } }) => {
-              if (!categoriesOptions) {
+              if (categoriesOptions.length === 0) {
                 return null
               }
 

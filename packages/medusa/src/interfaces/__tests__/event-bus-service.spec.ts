@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { AbstractEventBusModuleService } from "../services/event-bus"
+import { AbstractEventBusModuleService, EmitData } from "../services/event-bus"
 
 class EventBus extends AbstractEventBusModuleService {
   protected manager_!: EntityManager
@@ -10,9 +10,13 @@ class EventBus extends AbstractEventBusModuleService {
     this.container = container
   }
 
-  async emit(eventName: string): Promise<void> {
+  async emit<T>(data: EmitData<T>[]): Promise<void>
+
+  async emit<T>(data: EmitData<T>[]): Promise<void> {
+    const event = data[0].eventName
+
     console.log(
-      `[${eventName}] Local Event Bus installed. Emitting events has no effect.`
+      `[${event}] Local Event Bus installed. Emitting events has no effect.`
     )
   }
 }

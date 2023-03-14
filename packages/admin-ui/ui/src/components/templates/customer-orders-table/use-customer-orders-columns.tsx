@@ -73,12 +73,12 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
           }
 
           return (
-            <div className="flex gap-x-2xsmall">
-              <div ref={containerRef} className="flex gap-x-xsmall">
+            <div className="gap-x-2xsmall flex">
+              <div ref={containerRef} className="gap-x-xsmall flex">
                 {visibleItems.map((item) => {
                   return (
                     <Tooltip content={item.title} key={item.id}>
-                      <div className="h-[35px] w-[25px] flex items-center justify-center rounded-rounded overflow-hidden">
+                      <div className="rounded-rounded flex h-[35px] w-[25px] items-center justify-center overflow-hidden">
                         {item.thumbnail ? (
                           <img
                             className="object-cover"

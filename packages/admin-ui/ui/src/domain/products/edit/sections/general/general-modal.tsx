@@ -1,5 +1,5 @@
 import { Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -141,7 +141,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
         ? { label: product.type.value, value: product.type.id }
         : null,
       tags: product.tags ? product.tags.map((t) => t.value) : null,
-      categories: product.categories.map((c) => c.id),
+      categories: product?.categories?.map((c) => c.id),
     },
     discountable: {
       value: product.discountable,

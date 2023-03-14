@@ -1,9 +1,13 @@
 import {
   AbstractEventBusModuleService,
   ConfigModule,
+  EmitData,
   Logger
 } from "@medusajs/medusa"
-import { ConfigurableModuleDeclaration, MODULE_RESOURCE_TYPE } from "@medusajs/modules-sdk"
+import {
+  ConfigurableModuleDeclaration,
+  MODULE_RESOURCE_TYPE
+} from "@medusajs/modules-sdk"
 import { Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { MedusaError } from "medusa-core-utils"
@@ -12,7 +16,7 @@ import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 type InjectedDependencies = {
   logger: Logger
   configModule: ConfigModule
-  redisConnection: Redis
+  eventBusRedisConnection: Redis
 }
 
 const COMPLETED_JOB_TTL = 10 // 10 seconds
@@ -30,7 +34,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected queue_: Queue
 
   constructor(
-    { configModule, logger, redisConnection }: InjectedDependencies,
+    { configModule, logger, eventBusRedisConnection }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
     moduleDeclaration: ConfigurableModuleDeclaration
   ) {
@@ -52,14 +56,14 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.queueOptions ?? {}),
-      connection: redisConnection,
+      connection: eventBusRedisConnection,
     })
 
     // Register our worker to handle emit calls
     new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
       prefix: `${this.constructor.name}`,
       ...(this.moduleOptions_.workerOptions ?? {}),
-      connection: redisConnection,
+      connection: eventBusRedisConnection,
     })
   }
 
@@ -70,26 +74,28 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    * @param options - options to add the job with
    * @return the job from our queue
    */
-  async emit<T>(
-    eventName: string,
-    data: T,
-    options: EmitOptions = { }
-  ): Promise<void> {
+  async emit<T>(data: EmitData<T>[]): Promise<void> {
     const globalJobOptions = this.moduleOptions_.jobOptions ?? {}
 
     const opts = {
       // default options
-      removeOnComplete: {
-        age: COMPLETED_JOB_TTL,
-      },
+      removeOnComplete: true,
       attempts: 1,
       // global options
       ...globalJobOptions,
-      // local options
-      ...options,
     } as EmitOptions
 
-    await this.queue_.add(eventName, { eventName, data }, opts)
+    const events = data.map((event) => ({
+      name: event.eventName,
+      data: { eventName: event.eventName, data: event.data },
+      opts: {
+        ...opts,
+        // local options
+        ...event.options,
+      },
+    }))
+
+    await this.queue_.addBulk(events)
   }
 
   /**

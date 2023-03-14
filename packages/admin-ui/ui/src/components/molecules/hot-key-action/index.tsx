@@ -13,7 +13,7 @@ const HotKeyAction = ({ label, hotKey, icon, onAction }: HotKeyActionProps) => {
   return (
     <div className="flex items-center gap-2">
       <span className="text-grey-0 inter-small-semibold">{label}</span>
-      <div className="inter-small-semibold text-grey-30 flex items-center justify-center w-[24px] h-[24px] rounded bg-grey-70">
+      <div className="inter-small-semibold text-grey-30 bg-grey-70 flex h-[24px] w-[24px] items-center justify-center rounded">
         {icon}
       </div>
     </div>

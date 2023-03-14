@@ -4,12 +4,12 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
 import {
   EventBusService,
   OrderService,
-  ReturnService,
+  ReturnService
 } from "../../../../services"
 
 import { Type } from "class-transformer"
@@ -97,7 +97,7 @@ import { OrdersReturnItem } from "../../../../types/orders"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = req.validatedBody
+  const value = req.validatedBody as AdminPostOrdersOrderReturnsReq
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
   const manager: EntityManager = req.scope.resolve("manager")
@@ -121,6 +121,9 @@ export default async (req, res) => {
 
   try {
     const orderService: OrderService = req.scope.resolve("orderService")
+    const inventoryServiceEnabled =
+      !!req.scope.resolve("inventoryService") &&
+      !!req.scope.resolve("stockLocationService")
     const returnService: ReturnService = req.scope.resolve("returnService")
     const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
@@ -139,6 +142,9 @@ export default async (req, res) => {
                     order_id: id,
                     idempotency_key: idempotencyKey.idempotency_key,
                     items: value.items,
+                  }
+                  if (isDefined(value.location_id) && inventoryServiceEnabled) {
+                    returnObj.location_id = value.location_id
                   }
 
                   if (value.return_shipping) {
@@ -284,6 +290,7 @@ type ReturnObj = {
   shipping_method?: ReturnShipping
   refund_amount?: number
   no_notification?: boolean
+  location_id?: string
 }
 
 /**
@@ -363,6 +370,10 @@ export class AdminPostOrdersOrderReturnsReq {
   @IsInt()
   @IsOptional()
   refund?: number
+
+  @IsOptional()
+  @IsString()
+  location_id?: string
 }
 
 class ReturnShipping {

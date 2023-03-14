@@ -8,10 +8,10 @@ const Regions = () => {
   const regId: string | undefined = params["*"]
 
   return (
-    <div className="flex flex-col gap-y-xsmall h-full">
+    <div className="gap-y-xsmall flex h-full flex-col">
       <BackButton label="Back to Settings" path="/a/settings" />
-      <div className="grid grid-cols-1 medium:grid-cols-3 gap-xsmall pb-xlarge">
-        <div className="w-full h-full">
+      <div className="medium:grid-cols-3 gap-xsmall pb-xlarge grid grid-cols-1">
+        <div className="h-full w-full">
           <RegionOverview id={regId} />
         </div>
         <div className="col-span-2">

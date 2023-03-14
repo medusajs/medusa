@@ -11,6 +11,7 @@ type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
   forceDropdown?: boolean
   actions?: ActionType[]
   linkTo?: string
+  clickable?: boolean
 }
 
 type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement> & {
@@ -28,6 +29,7 @@ export type TableProps = {
   filteringOptions?: FilteringOptionProps[] | React.ReactNode
   tableActions?: React.ReactNode
   enableSearch?: boolean
+  searchClassName?: string
   immediateSearchFocus?: boolean
   searchPlaceholder?: string
   searchValue?: string
@@ -55,6 +57,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
       children,
       tableActions,
       enableSearch,
+      searchClassName,
       immediateSearchFocus,
       searchPlaceholder,
       searchValue,
@@ -89,6 +92,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
                 placeholder={searchPlaceholder}
                 searchValue={searchValue}
                 onSearch={handleSearch!}
+                className={searchClassName}
               />
             )}
           </div>
@@ -217,7 +221,18 @@ Table.Cell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
 )
 
 Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
-  ({ className, actions, children, linkTo, forceDropdown, ...props }, ref) => {
+  (
+    {
+      className,
+      actions,
+      children,
+      linkTo,
+      forceDropdown,
+      clickable,
+      ...props
+    },
+    ref
+  ) => {
     const navigate = useNavigate()
     return (
       <tr
@@ -225,7 +240,9 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         className={clsx(
           "inter-small-regular border-grey-20 text-grey-90 border-t border-b",
           className,
-          { "hover:bg-grey-5 cursor-pointer": linkTo !== undefined }
+          {
+            "hover:bg-grey-5 cursor-pointer": linkTo !== undefined || clickable,
+          }
         )}
         {...props}
         {...(linkTo && {

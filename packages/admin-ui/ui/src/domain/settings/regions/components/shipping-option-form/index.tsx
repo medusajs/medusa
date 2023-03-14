@@ -48,7 +48,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
   return (
     <div>
       <div>
-        <div className="flex flex-col gap-y-2xsmall">
+        <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
             <h3 className="inter-base-semibold mb-2xsmall">Visible in store</h3>
             <Controller
@@ -64,10 +64,10 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
           </p>
         </div>
       </div>
-      <div className="h-px w-full bg-grey-20 my-xlarge" />
+      <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
         <h3 className="inter-base-semibold mb-base">Details</h3>
-        <div className="grid grid-cols-2 gap-large">
+        <div className="gap-large grid grid-cols-2">
           <InputField
             label="Title"
             required
@@ -78,7 +78,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
             })}
             errors={errors}
           />
-          <div className="flex items-center gap-large">
+          <div className="gap-large flex items-center">
             <Controller
               control={control}
               name="price_type"
@@ -178,10 +178,10 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
           )}
         </div>
       </div>
-      <div className="h-px w-full bg-grey-20 my-xlarge" />
+      <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
         <h3 className="inter-base-semibold mb-base">Requirements</h3>
-        <div className="grid grid-cols-2 gap-large">
+        <div className="gap-large grid grid-cols-2">
           <Controller
             control={control}
             name="requirements.min_subtotal.amount"

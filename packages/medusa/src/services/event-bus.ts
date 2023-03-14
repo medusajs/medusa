@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm"
 import {
   AbstractEventBusModuleService,
+  EmitData,
   IEventBusService,
   Subscriber,
   SubscriberContext,
@@ -8,6 +9,7 @@ import {
 } from "../interfaces"
 import { StagedJob } from "../models"
 import { ConfigModule } from "../types/global"
+import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
 
@@ -108,6 +110,13 @@ export default class EventBusService
 
   /**
    * Calls all subscribers when an event occurs.
+   * @param data - The data to use to process the events
+   * @return the jobs from our queue
+   */
+  async emit<T>(data: EmitData<T>[]): Promise<StagedJob[] | void>
+
+  /**
+   * Calls all subscribers when an event occurs.
    * @param {string} eventName - the name of the event to be process.
    * @param data - the data to send to the subscriber.
    * @param options - options to add the job with
@@ -117,7 +126,32 @@ export default class EventBusService
     eventName: string,
     data: T,
     options?: Record<string, unknown>
-  ): Promise<StagedJob | void> {
+  ): Promise<StagedJob | void>
+
+  async emit<
+    T,
+    TInput extends string | EmitData<T>[] = string,
+    TResult = TInput extends EmitData<T>[] ? StagedJob[] : StagedJob
+  >(
+    eventNameOrData: TInput,
+    data?: T,
+    options: Record<string, unknown> = {}
+  ): Promise<TResult | void> {
+    const isBulkEmit = !isString(eventNameOrData)
+    const events = isBulkEmit
+      ? eventNameOrData.map((event) => ({
+          eventName: event.eventName,
+          data: event.data,
+          options: event.options,
+        }))
+      : [
+          {
+            eventName: eventNameOrData,
+            data: data,
+            options: options,
+          },
+        ]
+
     /**
      * We store events in the database when in an ongoing transaction.
      *
@@ -131,16 +165,9 @@ export default class EventBusService
      * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
+    const stagedJobs = await this.stagedJobService_.insertBulk(events)
 
-    const jobToCreate = {
-      event_name: eventName,
-      data: data as unknown as Record<string, unknown>,
-      options,
-    } as Partial<StagedJob>
-
-    return await this.stagedJobService_
-      .withTransaction(this.activeManager_)
-      .create(jobToCreate)
+    return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
   }
 
   startEnqueuer(): void {
@@ -163,13 +190,22 @@ export default class EventBusService
     while (this.shouldEnqueuerRun) {
       const jobs = await this.stagedJobService_.list(listConfig)
 
-      await Promise.all(
-        jobs.map(async (job) => {
-          return await this.eventBusModuleService_
-            .emit(job.event_name, job.data, { jobId: job.id, ...job.options })
-            .then(async () => await this.stagedJobService_.remove(job))
-        })
-      )
+      if (!jobs.length) {
+        await sleep(3000)
+        continue
+      }
+
+      const eventsData = jobs.map((job) => {
+        return {
+          eventName: job.event_name,
+          data: job.data,
+          options: { jobId: job.id, ...job.options },
+        }
+      })
+
+      await this.eventBusModuleService_.emit(eventsData).then(async () => {
+        return await this.stagedJobService_.deleteBulk(jobs.map((j) => j.id))
+      })
 
       await sleep(3000)
     }

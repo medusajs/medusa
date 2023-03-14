@@ -43,7 +43,6 @@ const SidedMouthFaceIcon: React.FC<IconProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-
     </svg>
   )
 }

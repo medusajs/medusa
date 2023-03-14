@@ -1,5 +1,5 @@
 import { useAdminCustomerGroups } from "medusa-react"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Modal from "../../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
@@ -15,11 +15,8 @@ import ExistingConditionTableActions from "../../condition-table-actions"
 const CustomerGroupsConditionsTable = () => {
   const params = useQueryFilters(defaultQueryProps)
 
-  const {
-    condition,
-    removeConditionResources,
-    isLoading,
-  } = useEditConditionContext()
+  const { condition, removeConditionResources, isLoading } =
+    useEditConditionContext()
 
   const {
     isLoading: isLoadingCustomerGroups,
