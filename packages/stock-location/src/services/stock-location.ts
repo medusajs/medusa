@@ -153,9 +153,11 @@ export default class StockLocationService {
     }
     const result = await locationRepo.save(loc)
 
-    await this.eventBusService_.emit(StockLocationService.Events.CREATED, {
-      id: result.id,
-    })
+    await this.eventBusService_
+      .withTransaction(manager)
+      .emit(StockLocationService.Events.CREATED, {
+        id: result.id,
+      })
 
     return result
   }
@@ -199,9 +201,11 @@ export default class StockLocationService {
 
     await locationRepo.save(toSave)
 
-    await this.eventBusService_.emit(StockLocationService.Events.UPDATED, {
-      id: stockLocationId,
-    })
+    await this.eventBusService_
+      .withTransaction(manager)
+      .emit(StockLocationService.Events.UPDATED, {
+        id: stockLocationId,
+      })
 
     return item
   }
@@ -260,8 +264,10 @@ export default class StockLocationService {
 
     await locationRepo.softRemove({ id })
 
-    await this.eventBusService_.emit(StockLocationService.Events.DELETED, {
-      id,
-    })
+    await this.eventBusService_
+      .withTransaction(manager)
+      .emit(StockLocationService.Events.DELETED, {
+        id,
+      })
   }
 }
