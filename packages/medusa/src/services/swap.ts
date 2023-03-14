@@ -1,40 +1,42 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 
-import { buildQuery, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata, validateId } from "../utils"
 
-import LineItemAdjustmentService from "./line-item-adjustment"
-import { FindConfig, Selector } from "../types/common"
-import { SwapRepository } from "../repositories/swap"
-import CartService from "./cart"
-import {
-  CustomShippingOptionService,
-  EventBusService,
-  FulfillmentService,
-  InventoryService,
-  LineItemService,
-  OrderService,
-  PaymentProviderService,
-  ReturnService,
-  ShippingOptionService,
-  TotalsService,
-} from "./index"
 import {
   Cart,
   CartType,
   FulfillmentItem,
+  FulfillmentStatus,
   LineItem,
   Order,
   PaymentSessionStatus,
+  PaymentStatus,
   ReturnItem,
   ReturnStatus,
   Swap,
   SwapFulfillmentStatus,
   SwapPaymentStatus,
 } from "../models"
+import { SwapRepository } from "../repositories/swap"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
+import CartService from "./cart"
+import {
+  CustomShippingOptionService,
+  EventBusService,
+  FulfillmentService,
+  LineItemService,
+  OrderService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  ReturnService,
+  ShippingOptionService,
+  TotalsService,
+} from "./index"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -48,7 +50,7 @@ type InjectedProps = {
   totalsService: TotalsService
   eventBusService: EventBusService
   lineItemService: LineItemService
-  inventoryService: InventoryService
+  productVariantInventoryService: ProductVariantInventoryService
   fulfillmentService: FulfillmentService
   shippingOptionService: ShippingOptionService
   paymentProviderService: PaymentProviderService
@@ -83,12 +85,13 @@ class SwapService extends TransactionBaseService {
   protected readonly returnService_: ReturnService
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
-  protected readonly inventoryService_: InventoryService
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly customShippingOptionService_: CustomShippingOptionService
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -102,7 +105,7 @@ class SwapService extends TransactionBaseService {
     shippingOptionService,
     fulfillmentService,
     orderService,
-    inventoryService,
+    productVariantInventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
   }: InjectedProps) {
@@ -120,7 +123,7 @@ class SwapService extends TransactionBaseService {
     this.fulfillmentService_ = fulfillmentService
     this.orderService_ = orderService
     this.shippingOptionService_ = shippingOptionService
-    this.inventoryService_ = inventoryService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.eventBus_ = eventBusService
     this.customShippingOptionService_ = customShippingOptionService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
@@ -313,7 +316,7 @@ class SwapService extends TransactionBaseService {
    */
   async create(
     order: Order,
-    returnItems: Partial<ReturnItem>[],
+    returnItems: WithRequiredProperty<Partial<ReturnItem>, "item_id">[],
     additionalItems?: Pick<LineItem, "variant_id" | "quantity">[],
     returnShipping?: { option_id: string; price?: number },
     custom: {
@@ -324,32 +327,27 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
     return await this.atomicPhase_(async (manager) => {
-      if (
-        order.fulfillment_status === "not_fulfilled" ||
-        order.payment_status !== "captured"
-      ) {
+      if (order.payment_status !== PaymentStatus.CAPTURED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Order cannot be swapped"
+          "Cannot swap an order that has not been captured"
         )
       }
 
-      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      for (const item of returnItems) {
-        const line = await lineItemServiceTx.retrieve(item.item_id!, {
-          relations: ["order", "swap", "claim_order"],
-        })
+      if (order.fulfillment_status === FulfillmentStatus.NOT_FULFILLED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot swap an order that has not been fulfilled"
+        )
+      }
 
-        if (
-          line.order?.canceled_at ||
-          line.swap?.canceled_at ||
-          line.claim_order?.canceled_at
-        ) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Cannot create a swap on a canceled item.`
-          )
-        }
+      const areReturnItemsValid = await this.areReturnItemsValid(returnItems)
+
+      if (!areReturnItemsValid) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot create a swap on a canceled item.`
+        )
       }
 
       let newItems: LineItem[] = []
@@ -357,9 +355,19 @@ class SwapService extends TransactionBaseService {
       if (additionalItems) {
         newItems = await Promise.all(
           additionalItems.map(async ({ variant_id, quantity }) => {
-            return this.lineItemService_
-              .withTransaction(manager)
-              .generate(variant_id, order.region_id, quantity)
+            if (variant_id === null) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                "You must include a variant when creating additional items on a swap"
+              )
+            }
+            return this.lineItemService_.withTransaction(manager).generate(
+              { variantId: variant_id, quantity },
+              {
+                region_id: order.region_id,
+                cart: order.cart,
+              }
+            )
           })
         )
       }
@@ -734,29 +742,6 @@ class SwapService extends TransactionBaseService {
 
       const items = cart.items
 
-      if (!swap.allow_backorder) {
-        const inventoryServiceTx =
-          this.inventoryService_.withTransaction(manager)
-        const paymentProviderServiceTx =
-          this.paymentProviderService_.withTransaction(manager)
-        const cartServiceTx = this.cartService_.withTransaction(manager)
-
-        for (const item of items) {
-          try {
-            await inventoryServiceTx.confirmInventory(
-              item.variant_id,
-              item.quantity
-            )
-          } catch (err) {
-            if (payment) {
-              await paymentProviderServiceTx.cancelPayment(payment)
-            }
-            await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-            throw err
-          }
-        }
-      }
-
       const total = cart.total!
 
       if (total > 0) {
@@ -790,15 +775,20 @@ class SwapService extends TransactionBaseService {
             order_id: swap.order_id,
           })
 
-        const inventoryServiceTx =
-          this.inventoryService_.withTransaction(manager)
-
-        for (const item of items) {
-          await inventoryServiceTx.adjustInventory(
-            item.variant_id,
-            -item.quantity
-          )
-        }
+        await Promise.all(
+          items.map(async (item) => {
+            if (item.variant_id) {
+              await this.productVariantInventoryService_.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  lineItemId: item.id,
+                  salesChannelId: cart.sales_channel_id,
+                }
+              )
+            }
+          })
+        )
       }
 
       swap.difference_due = total
@@ -1231,6 +1221,33 @@ class SwapService extends TransactionBaseService {
 
       return result
     })
+  }
+
+  protected async areReturnItemsValid(
+    returnItems: WithRequiredProperty<Partial<ReturnItem>, "item_id">[]
+  ): Promise<boolean> {
+    const manager = this.transactionManager_ ?? this.manager_
+
+    const returnItemsEntities = await this.lineItemService_
+      .withTransaction(manager)
+      .list(
+        {
+          id: In(returnItems.map((r) => r.item_id)),
+        },
+        {
+          relations: ["order", "swap", "claim_order"],
+        }
+      )
+
+    const hasCanceledItem = returnItemsEntities.some((item) => {
+      return (
+        item.order?.canceled_at ||
+        item.swap?.canceled_at ||
+        item.claim_order?.canceled_at
+      )
+    })
+
+    return !hasCanceledItem
   }
 }
 

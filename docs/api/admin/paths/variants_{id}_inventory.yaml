@@ -1,0 +1,51 @@
+get:
+  operationId: GetVariantsVariantInventory
+  summary: Get inventory of Variant.
+  description: Returns the available inventory of a Variant.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The Product Variant id to get inventory for.
+      schema:
+        type: string
+  x-codegen:
+    method: getInventory
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/variants_{id}_inventory/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/variants_{id}_inventory/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Product Variant
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              variant:
+                type: object
+                $ref: ../components/schemas/AdminGetVariantsVariantInventoryRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

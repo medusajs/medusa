@@ -1,5 +1,5 @@
 import { IdMap } from "medusa-test-utils"
-import { defaultStoreProductsRelations } from ".."
+import { defaultStoreProductsFields, defaultStoreProductsRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
@@ -21,9 +21,9 @@ describe("GET /store/products", () => {
         { status: ["published"] },
         {
           relations: defaultStoreProductsRelations,
+          select: defaultStoreProductsFields,
           skip: 0,
           take: 100,
-          select: undefined,
           order: {
             created_at: "DESC",
           },
@@ -52,12 +52,12 @@ describe("GET /store/products", () => {
         { is_giftcard: true, status: ["published"] },
         {
           relations: defaultStoreProductsRelations,
+          select: defaultStoreProductsFields,
           skip: 0,
           take: 100,
           order: {
             created_at: "DESC",
           },
-          select: undefined,
         }
       )
     })

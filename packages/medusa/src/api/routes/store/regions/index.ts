@@ -13,10 +13,26 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema StoreRegionsListRes
+ * type: object
+ * properties:
+ *   regions:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Region"
+ */
 export type StoreRegionsListRes = {
   regions: Region[]
 }
 
+/**
+ * @schema StoreRegionsRes
+ * type: object
+ * properties:
+ *   region:
+ *     $ref: "#/components/schemas/Region"
+ */
 export type StoreRegionsRes = {
   region: Region
 }

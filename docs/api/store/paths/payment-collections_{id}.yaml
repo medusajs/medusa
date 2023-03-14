@@ -1,7 +1,7 @@
 get:
   operationId: GetPaymentCollectionsPaymentCollection
-  summary: Retrieve an PaymentCollection
-  description: Retrieves a PaymentCollection.
+  summary: Get a PaymentCollection
+  description: Get a Payment Collection
   x-authenticated: false
   parameters:
     - in: path
@@ -20,15 +20,18 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
+    queryParams: GetPaymentCollectionsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/payment-collections_{id}/getundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}/getundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -40,10 +43,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              payment_collection:
-                $ref: ../components/schemas/PaymentCollection.yaml
+            $ref: ../components/schemas/StorePaymentCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

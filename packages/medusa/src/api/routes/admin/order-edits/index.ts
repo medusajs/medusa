@@ -1,33 +1,27 @@
 import { Router } from "express"
 
-import middlewares, {
-  transformBody,
-  transformQuery,
-} from "../../../middlewares"
+import { OrderEdit } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
-import { OrderEdit } from "../../../../models"
-import { AdminPostOrderEditsOrderEditReq } from "./update-order-edit"
-import { AdminPostOrderEditsReq } from "./create-order-edit"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import { AdminPostOrderEditsEditLineItemsReq } from "./add-line-item"
-import { AdminPostOrderEditsEditLineItemsLineItemReq } from "./update-order-edit-line-item"
-import { GetOrderEditsParams } from "./list-order-edit"
+import { AdminPostOrderEditsReq } from "./create-order-edit"
 import { GetOrderEditsOrderEditParams } from "./get-order-edit"
+import { GetOrderEditsParams } from "./list-order-edit"
 import { AdminPostOrderEditsRequestConfirmationReq } from "./request-confirmation"
+import { AdminPostOrderEditsOrderEditReq } from "./update-order-edit"
+import { AdminPostOrderEditsEditLineItemsLineItemReq } from "./update-order-edit-line-item"
 
 const route = Router()
 
 export default (app) => {
-  app.use(
-    "/order-edits",
-    isFeatureFlagEnabled(OrderEditingFeatureFlag.key),
-    route
-  )
+  app.use("/order-edits", route)
 
   route.post(
     "/",
@@ -104,23 +98,83 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminOrderEditsRes
+ * type: object
+ * properties:
+ *   order_edit:
+ *     $ref: "#/components/schemas/OrderEdit"
+ */
 export type AdminOrderEditsRes = {
   order_edit: OrderEdit
 }
+
+/**
+ * @schema AdminOrderEditsListRes
+ * type: object
+ * properties:
+ *   order_edits:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/OrderEdit"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminOrderEditsListRes = PaginatedResponse & {
   order_edits: OrderEdit[]
 }
+
+/**
+ * @schema AdminOrderEditDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Order Edit.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: order_edit
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Order Edit was deleted.
+ *     default: true
+ */
 export type AdminOrderEditDeleteRes = DeleteResponse
+
+/**
+ * @schema AdminOrderEditItemChangeDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Order Edit Item Change.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: item_change
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Order Edit Item Change was deleted.
+ *     default: true
+ */
 export type AdminOrderEditItemChangeDeleteRes = {
   id: string
   object: "item_change"
   deleted: boolean
 }
 
-export * from "./update-order-edit"
-export * from "./update-order-edit-line-item"
+export * from "./add-line-item"
 export * from "./create-order-edit"
 export * from "./get-order-edit"
 export * from "./list-order-edit"
-export * from "./add-line-item"
 export * from "./request-confirmation"
+export * from "./update-order-edit"
+export * from "./update-order-edit-line-item"

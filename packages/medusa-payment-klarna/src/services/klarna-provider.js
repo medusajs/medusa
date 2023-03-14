@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
 
-  constructor({ logger, shippingProfileService, totalsService }, options) {
+  constructor({ logger, shippingProfileService }, options) {
     super()
 
     /**
@@ -42,15 +42,12 @@ class KlarnaProviderService extends PaymentService {
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
   }
 
   async lineItemsToOrderLines_(cart) {
     let order_lines = []
 
-    for (const item of cart.items) {
+    for (const item of cart.items ?? []) {
       // Withdraw discount from the total item amount
       const quantity = item.quantity
 
@@ -67,7 +64,7 @@ class KlarnaProviderService extends PaymentService {
       })
     }
 
-    if (cart.shipping_methods.length) {
+    if (cart.shipping_methods?.length) {
       const name = []
       let total = 0
       let tax = 0
@@ -103,7 +100,7 @@ class KlarnaProviderService extends PaymentService {
   async cartToKlarnaOrder(cart) {
     let order = {
       // Cart id is stored, such that we can use it for hooks
-      merchant_data: cart.id,
+      merchant_data: cart.resource_id ?? cart.id,
       locale: "en-US",
     }
 
@@ -147,8 +144,8 @@ class KlarnaProviderService extends PaymentService {
     }
 
     order.order_amount = total
-    order.order_tax_amount = tax_total - cart.gift_card_tax_total
-    order.purchase_currency = region.currency_code.toUpperCase()
+    order.order_tax_amount = tax_total - cart.gift_card_tax_total ?? 0
+    order.purchase_currency = region?.currency_code?.toUpperCase() ?? "SE"
 
     order.merchant_urls = {
       terms: this.options_.merchant_urls.terms,
@@ -329,33 +326,15 @@ class KlarnaProviderService extends PaymentService {
   /**
    * Creates Klarna PaymentIntent.
    * @param {string} cart - the cart to create a payment for
-   * @param {number} amount - the amount to create a payment for
    * @returns {string} id of payment intent
    */
   async createPayment(cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart)
 
-      const klarnaPayment = await this.klarna_
+      return await this.klarna_
         .post(this.klarnaOrderUrl_, order)
         .then(({ data }) => data)
-
-      return klarnaPayment
-    } catch (error) {
-      this.logger_.error(error)
-      throw error
-    }
-  }
-
-  async createPaymentNew(paymentInput) {
-    try {
-      const order = await this.paymentInputToKlarnaOrder(paymentInput)
-
-      const klarnaPayment = await this.klarna_
-        .post(this.klarnaOrderUrl_, order)
-        .then(({ data }) => data)
-
-      return klarnaPayment
     } catch (error) {
       this.logger_.error(error)
       throw error
@@ -481,29 +460,13 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Updates Klarna order.
-   * @param {string} order - the order to update
-   * @param {Object} data - the update object
+   * @param {string} paymentData
+   * @param {Object} cart
    * @returns {Object} updated order
    */
   async updatePayment(paymentData, cart) {
     if (cart.total !== paymentData.order_amount) {
       const order = await this.cartToKlarnaOrder(cart)
-      return this.klarna_
-        .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
-        .then(({ data }) => data)
-        .catch(async (_) => {
-          return this.klarna_
-            .post(this.klarnaOrderUrl_, order)
-            .then(({ data }) => data)
-        })
-    }
-
-    return paymentData
-  }
-
-  async updatePaymentNew(paymentData, paymentInput) {
-    if (paymentInput.amount !== paymentData.order_amount) {
-      const order = await this.paymentInputToKlarnaOrder(paymentInput)
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)

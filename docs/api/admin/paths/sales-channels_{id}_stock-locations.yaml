@@ -1,0 +1,107 @@
+post:
+  operationId: PostSalesChannelsSalesChannelStockLocation
+  summary: Associate a stock location to a Sales Channel
+  description: Associates a stock location to a Sales Channel.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Sales Channel.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/AdminPostSalesChannelsChannelStockLocationsReq.yaml
+  x-codegen:
+    method: addLocation
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/sales-channels_{id}_stock-locations/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels_{id}_stock-locations/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteSalesChannelsSalesChannelStockLocation
+  summary: Remove a stock location from a Sales Channel
+  description: Removes a stock location from a Sales Channel.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Sales Channel.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/AdminDeleteSalesChannelsChannelStockLocationsReq.yaml
+  x-codegen:
+    method: removeLocation
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/sales-channels_{id}_stock-locations/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels_{id}_stock-locations/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminSalesChannelsDeleteLocationRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

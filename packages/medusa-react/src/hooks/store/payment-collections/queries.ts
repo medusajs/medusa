@@ -1,9 +1,9 @@
-import { queryKeysFactory } from "../../utils"
 import { StorePaymentCollectionsRes } from "@medusajs/medusa"
-import { useQuery } from "react-query"
+import { Response } from "@medusajs/medusa-js"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import { Response } from "@medusajs/medusa-js"
+import { queryKeysFactory } from "../../utils"
 
 const PAYMENT_COLLECTION_QUERY_KEY = `paymentCollection` as const
 

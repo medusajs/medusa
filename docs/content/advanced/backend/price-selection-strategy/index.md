@@ -1,3 +1,7 @@
+---
+description: 'Learn what the price selection strategy is in the Medusa server. The price selection strategy retrieves the best price for a product variant for a specific context.'
+---
+
 # Price Selection Strategy
 
 In this document, you’ll learn what a price selection strategy is.
@@ -60,7 +64,7 @@ The context that is passed to the `calculateVariantPrice` method is an object th
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to override the price selection strategy](./override.md).
-- Learn more about [price lists](./../price-lists/index.md).
+- [Override the Price Selection Strategy](./override.md)
+- [Price Lists Overview](./../price-lists/index.md)

@@ -19,6 +19,8 @@ import { Type } from "class-transformer"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq"
+ * x-codegen:
+ *   method: removeProducts
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -60,10 +62,7 @@ import { Type } from "class-transformer"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             sales_channel:
- *               $ref: "#/components/schemas/SalesChannel"
+ *           $ref: "#/components/schemas/AdminSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

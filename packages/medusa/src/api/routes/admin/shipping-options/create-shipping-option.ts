@@ -26,6 +26,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostShippingOptionsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -68,10 +70,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             shipping_option:
- *               $ref: "#/components/schemas/ShippingOption"
+ *           $ref: "#/components/schemas/AdminShippingOptionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -157,6 +156,7 @@ class OptionRequirement {
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - type
  *         - amount

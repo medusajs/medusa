@@ -1,5 +1,5 @@
-import { StoreReturnsRes, StorePostReturnsReq } from "@medusajs/medusa"
-import { useMutation, UseMutationOptions } from "react-query"
+import { StorePostReturnsReq, StoreReturnsRes } from "@medusajs/medusa"
+import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 
 export const useCreateReturn = (

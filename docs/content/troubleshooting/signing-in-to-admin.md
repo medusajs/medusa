@@ -13,6 +13,8 @@ Alternatively, you can create your own users using the Medusa CLI tool:
 medusa user -e some@email.com -p somepassword
 ```
 
-## Additional Resources
+---
 
-Learn more about Medusa's CLI tool in the [CLI reference](../cli/reference.md).
+## See Also
+
+- [Medusa CLI tool reference](../cli/reference.md)

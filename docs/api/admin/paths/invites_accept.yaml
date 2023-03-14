@@ -7,15 +7,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostInvitesInviteAcceptReq.yaml
+  x-codegen:
+    method: accept
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/invites_accept/postundefined
+        $ref: ../code_samples/JavaScript/invites_accept/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/invites_accept/postundefined
+        $ref: ../code_samples/Shell/invites_accept/post.sh
   security:
     - api_token: []
     - cookie_auth: []

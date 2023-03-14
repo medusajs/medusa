@@ -11,6 +11,8 @@ import { SalesChannelService } from "../../../../services/"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,19 +40,7 @@ import { SalesChannelService } from "../../../../services/"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted sales channel
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: sales-channel
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminSalesChannelsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

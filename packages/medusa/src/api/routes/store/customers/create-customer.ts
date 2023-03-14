@@ -17,6 +17,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostCustomersReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -51,10 +53,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/Customer"
+ *           $ref: "#/components/schemas/StoreCustomersRes"
  *   422:
  *     description: A customer with the same email exists
  *     content:

@@ -1,0 +1,4 @@
+type: object
+properties:
+  product_category:
+    $ref: ./ProductCategory.yaml

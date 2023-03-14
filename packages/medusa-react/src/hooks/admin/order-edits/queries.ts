@@ -4,11 +4,11 @@ import {
   GetOrderEditsOrderEditParams,
   GetOrderEditsParams,
 } from "@medusajs/medusa"
-import { queryKeysFactory } from "../../utils"
-import { UseQueryOptionsWrapper } from "../../../types"
 import { Response } from "@medusajs/medusa-js"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
-import { useQuery } from "react-query"
+import { UseQueryOptionsWrapper } from "../../../types"
+import { queryKeysFactory } from "../../utils"
 
 const ADMIN_ORDER_EDITS_QUERY_KEY = `admin_order_edits` as const
 

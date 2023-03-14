@@ -1,0 +1,60 @@
+post:
+  operationId: PostOrdersOrderLineItemReservations
+  summary: Create a Reservation for a line item
+  description: >-
+    Creates a Reservation for a line item at a specified location, optionally
+    for a partial quantity.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: path
+      name: line_item_id
+      required: true
+      description: The ID of the Line item.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminOrdersOrderLineItemReservationReq.yaml
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/orders_{id}_line-items_{line_item_id}_reserve/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/orders_{id}_line-items_{line_item_id}_reserve/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPostReservationsReq.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

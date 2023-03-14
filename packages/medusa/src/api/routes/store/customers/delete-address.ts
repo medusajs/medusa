@@ -11,6 +11,8 @@ import CustomerService from "../../../../services/customer"
  * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {string} The id of the Address to remove.
+ * x-codegen:
+ *   method: deleteAddress
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -37,10 +39,7 @@ import CustomerService from "../../../../services/customer"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/Customer"
+ *           $ref: "#/components/schemas/StoreCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

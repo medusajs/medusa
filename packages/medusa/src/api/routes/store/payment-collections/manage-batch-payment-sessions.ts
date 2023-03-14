@@ -7,7 +7,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions/batch
  * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
- * summary: "Manage Multiple Payment Sessions from Payment Collections"
+ * summary: "Manage Payment Sessions"
  * description: "Manages Multiple Payment Sessions from Payment Collections."
  * x-authenticated: false
  * parameters:
@@ -17,6 +17,8 @@ import { PaymentCollectionService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostPaymentCollectionsBatchSessionsReq"
+ * x-codegen:
+ *   method: managePaymentSessionsBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -61,16 +63,14 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Payment
+ *   - PaymentCollection
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/PaymentCollection"
+ *           $ref: "#/components/schemas/StorePaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -129,6 +129,7 @@ export class StorePostPaymentCollectionsSessionsReq {
  *     description: "An array of payment sessions related to the Payment Collection. If the session_id is not provided, existing sessions not present will be deleted and the provided ones will be created."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - provider_id
  *         - amount

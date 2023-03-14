@@ -9,6 +9,7 @@ properties:
       and the provided ones will be created.
     type: array
     items:
+      type: object
       required:
         - provider_id
         - amount

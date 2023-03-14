@@ -1,6 +1,6 @@
 post:
   operationId: PostDiscountsDiscountConditionsConditionBatch
-  summary: Add a batch of resources to a discount condition
+  summary: Add Batch Resources
   description: Add a batch of resources to a discount condition.
   x-authenticated: true
   parameters:
@@ -36,17 +36,20 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq.yaml
+  x-codegen:
+    method: addConditionResourceBatch
+    queryParams: AdminPostDiscountsDiscountConditionsConditionBatchParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/postundefined
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/postundefined
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -58,10 +61,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              discount:
-                $ref: ../components/schemas/Discount.yaml
+            $ref: ../components/schemas/AdminDiscountsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -76,7 +76,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteDiscountsDiscountConditionsConditionBatch
-  summary: Delete a batch of resources from a discount condition
+  summary: Delete Batch Resources
   description: Delete a batch of resources from a discount condition.
   x-authenticated: true
   parameters:
@@ -112,17 +112,19 @@ delete:
         schema:
           $ref: >-
             ../components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq.yaml
+  x-codegen:
+    method: deleteConditionResourceBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/deleteundefined
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}_batch/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/deleteundefined
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -134,10 +136,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              discount:
-                $ref: ../components/schemas/Discount.yaml
+            $ref: ../components/schemas/AdminDiscountsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

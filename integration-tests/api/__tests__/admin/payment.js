@@ -21,7 +21,7 @@ const adminHeaders = {
   },
 }
 
-describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
+describe("/admin/payment", () => {
   let medusaProcess
   let dbConnection
 
@@ -30,7 +30,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_ORDER_EDITING: true },
     })
     dbConnection = connection
     medusaProcess = process

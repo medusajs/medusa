@@ -5,11 +5,10 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /orders/{id}/refund
@@ -19,11 +18,16 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderRefundsReq"
+ * x-codegen:
+ *   method: refundPayment
+ *   params: AdminPostOrdersOrderRefundsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -59,10 +63,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/Order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -79,7 +80,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderRefundsReq, req.body)
+  const validated = req.validatedBody
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -92,9 +93,8 @@ export default async (req, res) => {
       })
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
   res.status(200).json({ order })
@@ -137,3 +137,5 @@ export class AdminPostOrdersOrderRefundsReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderRefundsParams extends FindParams {}

@@ -1,0 +1,6 @@
+type: object
+properties:
+  notifications:
+    type: array
+    items:
+      $ref: ./Notification.yaml

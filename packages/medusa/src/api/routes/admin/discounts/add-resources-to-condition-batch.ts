@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add a batch of resources to a discount condition"
+ * summary: "Add Batch Resources"
  * description: "Add a batch of resources to a discount condition."
  * x-authenticated: true
  * parameters:
@@ -25,6 +25,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: addConditionResourceBatch
+ *   queryParams: AdminPostDiscountsDiscountConditionsConditionBatchParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -58,10 +61,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/Discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -121,6 +121,7 @@ export default async (req: Request, res: Response) => {
  *     description: The resources to be added to the discount condition
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

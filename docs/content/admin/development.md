@@ -1,3 +1,8 @@
+---
+description: 'Learn how to set up the Medusa Admin repository for local development and customization. This includes cloning the GitHub repository and adding an upstream repository.'
+addHowToData: true
+---
+
 # Customize Medusa Admin
 
 In this document, you’ll learn how to customize the Medusa admin by forking it, and how to keep it updated with changes from the main repository.
@@ -94,7 +99,7 @@ If your forked repository doesn’t have any conflicts with the changes from the
 
 ---
 
-## What’s Next
+## See Also
 
-- Check out the [Admin API reference](/api/admin).
-- Learn about [local development of the Medusa server](../usage/local-development.md).
+- [Admin API reference](/api/admin).
+- [Local development of the Medusa server](../usage/local-development.md).

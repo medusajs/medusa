@@ -1,0 +1,15 @@
+type: object
+required:
+  - product_ids
+properties:
+  product_ids:
+    description: The IDs of the products to delete from the Product Category.
+    type: array
+    items:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: The ID of a product
+          type: string

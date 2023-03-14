@@ -5,15 +5,16 @@ import {
   In,
   IsNull,
   Not,
+  ObjectLiteral,
   Repository,
   WhereExpressionBuilder,
 } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { MoneyAmount } from "../models/money-amount"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -23,6 +24,11 @@ type Price = Partial<
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
+  /**
+   * Will be removed in a future release.
+   * Use `deleteVariantPricesNotIn` instead.
+   * @deprecated
+   */
   public async findVariantPricesNotIn(
     variantId: string,
     prices: Price[]
@@ -41,6 +47,44 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       )
       .getMany()
     return pricesNotInPricesPayload
+  }
+
+  public async deleteVariantPricesNotIn(
+    variantId: string,
+    prices: Price[]
+  ): Promise<void> {
+    const where = {
+      variant_id: variantId,
+      price_list_id: IsNull(),
+    }
+
+    const orWhere: ObjectLiteral[] = []
+
+    for (const price of prices) {
+      if (price.currency_code) {
+        orWhere.push(
+          {
+            currency_code: Not(price.currency_code),
+          },
+          {
+            region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
+            currency_code: price.currency_code,
+          }
+        )
+      }
+
+      if (price.region_id) {
+        orWhere.push({
+          region_id: Not(price.region_id),
+        })
+      }
+    }
+
+    await this.createQueryBuilder()
+      .delete()
+      .where(where)
+      .andWhere(orWhere)
+      .execute()
   }
 
   public async upsertVariantCurrencyPrice(

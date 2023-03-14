@@ -15,6 +15,9 @@ import { FindParams } from "../../../../types/common"
  *   - (path) condition_id=* {string} The ID of the DiscountCondition
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: deleteCondition
+ *   queryParams: AdminDeleteDiscountsDiscountConditionsConditionParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,22 +45,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted DiscountCondition
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: discount-condition
- *             deleted:
- *               type: boolean
- *               description: Whether the discount condition was deleted successfully or not.
- *               default: true
- *             discount:
- *               description: The Discount to which the condition used to belong
- *               $ref: "#/components/schemas/Discount"
+ *           $ref: "#/components/schemas/AdminDiscountConditionsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

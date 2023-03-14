@@ -7,15 +7,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostReturnsReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/returns/postundefined
+        $ref: ../code_samples/JavaScript/returns/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/returns/postundefined
+        $ref: ../code_samples/Shell/returns/post.sh
   tags:
     - Return
   responses:
@@ -24,10 +26,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              return:
-                $ref: ../components/schemas/Return.yaml
+            $ref: ../components/schemas/StoreReturnsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

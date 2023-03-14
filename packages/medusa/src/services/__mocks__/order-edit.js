@@ -117,18 +117,6 @@ export const orderEditServiceMock = {
       declined_at: new Date(),
     })
   }),
-  getTotals: jest.fn().mockImplementation((id) => {
-    return Promise.resolve({
-      shipping_total: 10,
-      gift_card_total: 0,
-      gift_card_tax_total: 0,
-      discount_total: 0,
-      tax_total: 1,
-      subtotal: 2000,
-      difference_due: 1000,
-      total: 1000,
-    })
-  }),
   delete: jest.fn().mockImplementation((_) => {
     return Promise.resolve()
   }),

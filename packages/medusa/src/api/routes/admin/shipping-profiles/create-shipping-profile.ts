@@ -1,7 +1,8 @@
-import { IsString } from "class-validator"
+import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
+import { EntityManager } from "typeorm"
+import { ShippingProfileType } from "../../../../models"
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /shipping-profiles
@@ -14,6 +15,8 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostShippingProfilesReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -47,10 +50,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             shipping_profile:
- *               $ref: "#/components/schemas/ShippingProfile"
+ *           $ref: "#/components/schemas/AdminShippingProfilesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -85,12 +85,26 @@ export default async (req, res) => {
  * type: object
  * required:
  *   - name
+ *   - type
  * properties:
  *   name:
- *     description: "The name of the Shipping Profile"
+ *     description: The name of the Shipping Profile
  *     type: string
+ *   type:
+ *     description: The type of the Shipping Profile
+ *     type: string
+ *     enum: [default, gift_card, custom]
  */
 export class AdminPostShippingProfilesReq {
   @IsString()
   name: string
+
+  @IsEnum(ShippingProfileType, {
+    message: "type must be one of 'default', 'custom', 'gift_card'",
+  })
+  type: ShippingProfileType
+
+  @IsOptional()
+  @IsObject()
+  metadata?: Record<string, unknown>
 }

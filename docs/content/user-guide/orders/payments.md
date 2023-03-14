@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 sidebar_label: Manage Payments
+addHowToData: true
 ---
 
 # Manage Order's Payments
@@ -46,7 +47,8 @@ To refund an order’s payment:
 3. Click on the Refund button.
 4. In the new window that opens:
     - Enter the Refund amount. It must be less than the Total Paid amount specified in the Payment section.
-    - Choose a reason for the refund and optionally provide a note.
+    - Choose a reason for the refund.
+    - Optionally provide a note for the customer to see.
     - If you don’t want the customer to receive an email that the refund has been made, uncheck the “Send notifications” checkbox.
 5. Once you’re done, click on the Complete button.
 

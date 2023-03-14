@@ -5,29 +5,22 @@ import middlewares, {
   transformQuery,
 } from "../../../middlewares"
 
-import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-
-import { StorePostPaymentCollectionsBatchSessionsReq } from "./manage-batch-payment-sessions"
-import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { PaymentCollection, PaymentSession } from "../../../../models"
-import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
 import { StorePostPaymentCollectionsBatchSessionsAuthorizeReq } from "./authorize-batch-payment-sessions"
+import { GetPaymentCollectionsParams } from "./get-payment-collection"
+import { StorePostPaymentCollectionsBatchSessionsReq } from "./manage-batch-payment-sessions"
+import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
 
 const route = Router()
 
 export default (app, container) => {
-  app.use(
-    "/payment-collections",
-    isFeatureFlagEnabled(OrderEditingFeatureFlag.key),
-    route
-  )
+  app.use("/payment-collections", route)
 
   route.get(
     "/:id",
     transformQuery(GetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
-      defaultRelations: defaulPaymentCollectionRelations,
+      defaultRelations: defaultPaymentCollectionRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-payment-collection").default)
@@ -76,18 +69,32 @@ export const defaultPaymentCollectionFields = [
   "metadata",
 ]
 
-export const defaulPaymentCollectionRelations = ["region", "payment_sessions"]
+export const defaultPaymentCollectionRelations = ["region", "payment_sessions"]
 
+/**
+ * @schema StorePaymentCollectionsRes
+ * type: object
+ * properties:
+ *   payment_collection:
+ *     $ref: "#/components/schemas/PaymentCollection"
+ */
 export type StorePaymentCollectionsRes = {
   payment_collection: PaymentCollection
 }
 
+/**
+ * @schema StorePaymentCollectionsSessionRes
+ * type: object
+ * properties:
+ *   payment_session:
+ *     $ref: "#/components/schemas/PaymentSession"
+ */
 export type StorePaymentCollectionsSessionRes = {
   payment_session: PaymentSession
 }
 
-export * from "./get-payment-collection"
-export * from "./manage-payment-session"
-export * from "./manage-batch-payment-sessions"
-export * from "./refresh-payment-session"
 export * from "./authorize-batch-payment-sessions"
+export * from "./get-payment-collection"
+export * from "./manage-batch-payment-sessions"
+export * from "./manage-payment-session"
+export * from "./refresh-payment-session"

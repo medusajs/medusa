@@ -20,6 +20,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteCustomerGroupsGroupCustomerBatchReq"
+ * x-codegen:
+ *   method: removeCustomers
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -61,10 +63,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer_group:
- *               $ref: "#/components/schemas/CustomerGroup"
+ *           $ref: "#/components/schemas/AdminCustomerGroupsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -115,6 +114,7 @@ export default async (req: Request, res: Response) => {
  *     description: "The ids of the customers to remove"
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

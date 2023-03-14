@@ -1,7 +1,7 @@
-import { Request, Response } from "express"
-import { OrderEditService } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { OrderEditService } from "../../../../services"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
@@ -18,6 +18,8 @@ import {
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrderEditsReq"
  * x-authenticated: true
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -47,10 +49,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -71,13 +70,13 @@ export default async (req: Request, res: Response) => {
   const manager = req.scope.resolve("manager") as EntityManager
 
   const data = req.validatedBody as AdminPostOrderEditsReq
-  const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
+  const createdBy = (req.user?.id ?? req.user?.userId) as string
 
   const createdOrderEdit = await manager.transaction(
     async (transactionManager) => {
       return await orderEditService
         .withTransaction(transactionManager)
-        .create(data, { loggedInUserId })
+        .create(data, { createdBy })
     }
   )
 
@@ -110,4 +109,8 @@ export class AdminPostOrderEditsReq {
   @IsOptional()
   @IsString()
   internal_note?: string
+
+  @IsOptional()
+  @IsString()
+  created_by?: string
 }

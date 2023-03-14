@@ -68,67 +68,83 @@ export class GiftCard extends SoftDeletableEntity {
  * description: "Gift Cards are redeemable and represent a value that can be used towards the payment of an Order."
  * type: object
  * required:
- *   - code
- *   - value
  *   - balance
+ *   - code
+ *   - created_at
+ *   - deleted_at
+ *   - ends_at
+ *   - id
+ *   - is_disabled
+ *   - metadata
+ *   - order_id
  *   - region_id
+ *   - tax_rate
+ *   - updated_at
+ *   - value
  * properties:
  *   id:
+ *     description: The gift card's ID
  *     type: string
- *     description: The cart's ID
  *     example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
  *   code:
- *     description: "The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card."
+ *     description: The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.
  *     type: string
  *     example: 3RFT-MH2C-Y4YZ-XMN4
  *   value:
- *     description: "The value that the Gift Card represents."
+ *     description: The value that the Gift Card represents.
  *     type: integer
  *     example: 10
  *   balance:
- *     description: "The remaining value on the Gift Card."
+ *     description: The remaining value on the Gift Card.
  *     type: integer
  *     example: 10
  *   region_id:
+ *     description: The id of the Region in which the Gift Card is available.
  *     type: string
- *     description: "The id of the Region in which the Gift Card is available."
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: A region object. Available if the relation `region` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/Region"
  *   order_id:
+ *     description: The id of the Order that the Gift Card was purchased in.
+ *     nullable: true
  *     type: string
- *     description: "The id of the Order that the Gift Card was purchased in."
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/Order"
  *   is_disabled:
- *     description: "Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts."
+ *     description: Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.
  *     type: boolean
- *     example: false
+ *     default: false
  *   ends_at:
- *     description: "The time at which the Gift Card can no longer be used."
+ *     description: The time at which the Gift Card can no longer be used.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   tax_rate:
- *     description: The gift cards's tax rate that will be applied on calculating totals
+ *     description: The gift card's tax rate that will be applied on calculating totals
+ *     nullable: true
  *     type: number
  *     example: 0
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

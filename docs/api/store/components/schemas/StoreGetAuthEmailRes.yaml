@@ -1,0 +1,5 @@
+type: object
+properties:
+  exists:
+    type: boolean
+    description: Whether email exists or not.

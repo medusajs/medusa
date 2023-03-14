@@ -1,4 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
   TaxCalculationContext,
@@ -25,14 +26,10 @@ import {
   LineDiscountAmount,
   SubtotalOptions,
 } from "../types/totals"
-import {
-  TaxProviderService,
-  NewTotalsService,
-} from "./index"
-import { EntityManager } from "typeorm"
+import { NewTotalsService, TaxProviderService } from "./index"
 
-import { calculatePriceTaxAmount } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { calculatePriceTaxAmount } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 
 type ShippingMethodTotals = {
@@ -132,7 +129,7 @@ class TotalsService extends TransactionBaseService {
   }
 
   /**
-   * Calculates subtotal of a given cart or order.
+   * Calculates total of a given cart or order.
    * @param cartOrOrder - object to calculate total for
    * @param options - options to calculate by
    * @return the calculated subtotal
@@ -450,26 +447,34 @@ class TotalsService extends TransactionBaseService {
     const allocationMap: LineAllocationsMap = {}
 
     if (!options.exclude_discounts) {
-      let lineDiscounts: LineDiscountAmount[] = []
-
       const discount = orderOrCart.discounts?.find(
         ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
-      if (discount) {
-        lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
-      }
+
+      const lineDiscounts: LineDiscountAmount[] = this.getLineDiscounts(
+        orderOrCart,
+        discount
+      )
 
       for (const ld of lineDiscounts) {
+        const adjustmentAmount = ld.amount + ld.customAdjustmentsAmount
+
         if (allocationMap[ld.item.id]) {
           allocationMap[ld.item.id].discount = {
-            amount: ld.amount,
-            unit_amount: Math.round(ld.amount / ld.item.quantity),
+            amount: adjustmentAmount,
+            /**
+             * Used for the refund computation
+             */
+            unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
           }
         } else {
           allocationMap[ld.item.id] = {
             discount: {
-              amount: ld.amount,
-              unit_amount: Math.round(ld.amount / ld.item.quantity),
+              amount: adjustmentAmount,
+              /**
+               * Used for the refund computation
+               */
+              unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
             },
           }
         }
@@ -720,7 +725,7 @@ class TotalsService extends TransactionBaseService {
       swaps?: Swap[]
       claims?: ClaimOrder[]
     },
-    discount: Discount
+    discount?: Discount
   ): LineDiscountAmount[] {
     let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
@@ -739,18 +744,24 @@ class TotalsService extends TransactionBaseService {
 
     return merged.map((item) => {
       const adjustments = item?.adjustments || []
-      const discountAdjustments = adjustments.filter(
-        (adjustment) => adjustment.discount_id === discount.id
+      const discountAdjustments = discount
+        ? adjustments.filter(
+            (adjustment) => adjustment.discount_id === discount.id
+          )
+        : []
+
+      const customAdjustments = adjustments.filter(
+        (adjustment) => adjustment.discount_id === null
       )
+
+      const sumAdjustments = (total, adjustment) => total + adjustment.amount
 
       return {
         item,
         amount: item.allow_discounts
-          ? discountAdjustments.reduce(
-              (total, adjustment) => total + adjustment.amount,
-              0
-            )
+          ? discountAdjustments.reduce(sumAdjustments, 0)
           : 0,
+        customAdjustmentsAmount: customAdjustments.reduce(sumAdjustments, 0),
       }
     })
   }
@@ -789,8 +800,7 @@ class TotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total =
-      (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
+    const discount_total = lineItemAllocation.discount?.amount ?? 0
 
     const lineItemTotals: LineItemTotals = {
       unit_price: lineItem.unit_price,
@@ -806,7 +816,7 @@ class TotalsService extends TransactionBaseService {
 
     // Tax Information
     if (options.include_tax) {
-      // When we have an order with a nulled or undefined tax rate we know that it is an
+      // When we have an order with a tax rate we know that it is an
       // order from the old tax system. The following is a backward compat
       // calculation.
       if (isOrder(cartOrOrder) && cartOrOrder.tax_rate != null) {
@@ -843,7 +853,7 @@ class TotalsService extends TransactionBaseService {
          * items we have to get the line items from the tax provider.
          */
         if (options.use_tax_lines || isOrder(cartOrOrder)) {
-          if (typeof lineItem.tax_lines === "undefined") {
+          if (!isDefined(lineItem.tax_lines) && lineItem.variant_id) {
             throw new MedusaError(
               MedusaError.Types.UNEXPECTED_STATE,
               "Tax Lines must be joined on items to calculate taxes"
@@ -853,7 +863,7 @@ class TotalsService extends TransactionBaseService {
           taxLines = lineItem.tax_lines
         } else {
           if (lineItem.is_return) {
-            if (typeof lineItem.tax_lines === "undefined") {
+            if (!isDefined(lineItem.tax_lines) && lineItem.variant_id) {
               throw new MedusaError(
                 MedusaError.Types.UNEXPECTED_STATE,
                 "Return Line Items must join tax lines"
@@ -979,14 +989,11 @@ class TotalsService extends TransactionBaseService {
       giftCardable = subtotal - discountTotal
     }
 
-    return await this.newTotalsService_.getGiftCardTotals(
-      giftCardable,
-      {
-        region: cartOrOrder.region,
-        giftCards: cartOrOrder.gift_cards || [],
-        giftCardTransactions: cartOrOrder['gift_card_transactions'] || []
-      }
-    )
+    return await this.newTotalsService_.getGiftCardTotals(giftCardable, {
+      region: cartOrOrder.region,
+      giftCards: cartOrOrder.gift_cards || [],
+      giftCardTransactions: cartOrOrder["gift_card_transactions"] || [],
+    })
   }
 
   /**
@@ -999,16 +1006,6 @@ class TotalsService extends TransactionBaseService {
     const subtotal = await this.getSubtotal(cartOrOrder, {
       excludeNonDiscounts: true,
     })
-
-    // we only support having free shipping and one other discount, so first
-    // find the discount, which is not free shipping.
-    const discount = cartOrOrder.discounts?.find(
-      ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
-    )
-
-    if (!discount) {
-      return 0
-    }
 
     const discountTotal = this.getLineItemAdjustmentsTotal(cartOrOrder)
 

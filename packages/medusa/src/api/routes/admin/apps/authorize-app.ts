@@ -14,6 +14,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostAppsReq"
+ * x-codegen:
+ *   method: authorize
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -37,10 +39,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            apps:
- *              $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

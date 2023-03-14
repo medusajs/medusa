@@ -4,7 +4,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
- * summary: "Authorize Payment Sessions of a Payment Collection"
+ * summary: "Authorize PaymentSessions"
  * description: "Authorizes Payment Sessions of a Payment Collection."
  * x-authenticated: false
  * parameters:
@@ -14,6 +14,8 @@ import { PaymentCollectionService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostPaymentCollectionsBatchSessionsAuthorizeReq"
+ * x-codegen:
+ *   method: authorizePaymentSessionsBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +35,14 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Payment
+ *   - PaymentCollection
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/PaymentCollection"
+ *           $ref: "#/components/schemas/StorePaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -4,6 +4,8 @@
  * summary: "Customer Log out"
  * description: "Destroys a Customer's authenticated session."
  * x-authenticated: true
+ * x-codegen:
+ *   method: deleteSession
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

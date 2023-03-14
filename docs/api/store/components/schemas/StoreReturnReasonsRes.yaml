@@ -1,0 +1,4 @@
+type: object
+properties:
+  return_reason:
+    $ref: ./ReturnReason.yaml

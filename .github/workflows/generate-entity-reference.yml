@@ -1,17 +1,9 @@
 name: Generate Entity Reference
 on: 
-  push:
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/models/**
-  pull_request:
-    types:
-      - closed
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/models/**
+  workflow_dispatch:
+  release:
+    types: [published]
+
 jobs:
   services:
     runs-on: ubuntu-latest

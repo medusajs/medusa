@@ -9,15 +9,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostSwapsReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/swaps/postundefined
+        $ref: ../code_samples/JavaScript/swaps/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/swaps/postundefined
+        $ref: ../code_samples/Shell/swaps/post.sh
   tags:
     - Swap
   responses:
@@ -26,10 +28,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              swap:
-                $ref: ../components/schemas/Swap.yaml
+            $ref: ../components/schemas/StoreSwapsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

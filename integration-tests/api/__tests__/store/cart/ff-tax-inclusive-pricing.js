@@ -13,6 +13,7 @@ const {
   simpleProductFactory,
   simplePriceListFactory,
   simpleDiscountFactory,
+  simpleSalesChannelFactory,
 } = require("../../../factories")
 const { IdMap } = require("medusa-test-utils")
 
@@ -155,9 +156,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       tax_rate: 20,
       name: "region test",
     }
-    const buildProductData = (productId, variantId) => {
+
+    const buildProductData = (productId, variantId, salesChannelId) => {
       return {
         id: productId,
+        sales_channels: [{ id: salesChannelId }],
         variants: [
           {
             id: variantId,
@@ -203,10 +206,14 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
     describe("with a cart with full tax exclusive variant pricing", () => {
       beforeEach(async () => {
+        const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          id: "test-channel",
+          is_default: true,
+        })
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
-          buildProductData(productId1, variantId1)
+          buildProductData(productId1, variantId1, salesChannel.id)
         )
         await simplePriceListFactory(
           dbConnection,
@@ -214,7 +221,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         )
         await simpleProductFactory(
           dbConnection,
-          buildProductData(productId2, variantId2)
+          buildProductData(productId2, variantId2, salesChannel.id)
         )
         await simplePriceListFactory(
           dbConnection,
@@ -280,10 +287,15 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       }
 
       beforeEach(async () => {
+        const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          id: "test-channel",
+          is_default: true,
+        })
+
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
-          buildProductData(productId1, variantId1)
+          buildProductData(productId1, variantId1, salesChannel.id)
         )
         await simplePriceListFactory(
           dbConnection,
@@ -291,7 +303,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         )
         await simpleProductFactory(
           dbConnection,
-          buildProductData(productId2, variantId2)
+          buildProductData(productId2, variantId2, salesChannel.id)
         )
         await simplePriceListFactory(
           dbConnection,
@@ -357,10 +369,15 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       }
 
       beforeEach(async () => {
+        const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          id: "test-channel",
+          is_default: true,
+        })
+
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
-          buildProductData(productId1, variantId1)
+          buildProductData(productId1, variantId1, salesChannel.id)
         )
         await simplePriceListFactory(
           dbConnection,
@@ -368,7 +385,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         )
         await simpleProductFactory(
           dbConnection,
-          buildProductData(productId2, variantId2)
+          buildProductData(productId2, variantId2, salesChannel.id)
         )
         await simplePriceListFactory(
           dbConnection,

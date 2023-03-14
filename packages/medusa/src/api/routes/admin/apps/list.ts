@@ -6,6 +6,8 @@ import { OauthService } from "../../../../services"
  * summary: "List Applications"
  * description: "Retrieve a list of applications."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -23,12 +25,7 @@ import { OauthService } from "../../../../services"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            apps:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

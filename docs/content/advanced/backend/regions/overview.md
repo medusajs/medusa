@@ -1,3 +1,7 @@
+---
+description: 'Learn about what Regions are and how they are used in a Medusa server. Regions represent at least one country on the Medusa server.'
+---
+
 # Regions Overview
 
 In this document, you’ll learn about Regions and their importance in your Medusa server.
@@ -111,7 +115,7 @@ The relation between the `Region` and `TaxRate` entities is available on both en
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to use regions in a storefront using the store REST APIs](../../storefront/use-regions.mdx).
-- Learn how to [manage regions using the admin REST APIs](../../admin/manage-regions.mdx).
+- [Use Regions in a storefront](../../storefront/use-regions.mdx).
+- [Use Regions in the admin](../../admin/manage-regions.mdx).

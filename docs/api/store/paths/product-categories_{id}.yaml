@@ -1,0 +1,62 @@
+get:
+  operationId: GetProductCategoriesCategory
+  summary: Get a Product Category
+  description: Retrieves a Product Category.
+  x-authenticated: false
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product Category
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each product
+        category.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be retrieved in each product
+        category.
+      schema:
+        type: string
+  x-codegen:
+    method: retrieve
+    queryParams: StoreGetProductCategoryParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/product-categories_{id}/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/product-categories_{id}/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Product Category
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreGetProductCategoriesCategoryRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

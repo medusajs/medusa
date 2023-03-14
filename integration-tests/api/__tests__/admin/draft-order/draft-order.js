@@ -6,10 +6,7 @@ const { initDb, useDb } = require("../../../../helpers/use-db")
 
 const draftOrderSeeder = require("../../../helpers/draft-order-seeder")
 const adminSeeder = require("../../../helpers/admin-seeder")
-const {
-  simpleRegionFactory,
-  simpleDiscountFactory,
-} = require("../../../factories")
+const { simpleDiscountFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -514,6 +511,102 @@ describe("/admin/draft-orders", () => {
             ]),
           }),
         ])
+      )
+    })
+
+    it("creates a draft order with fixed discount amount allocated to the total", async () => {
+      const api = useApi()
+
+      const testVariantId = "test-variant"
+      const testVariant2Id = "test-variant-2"
+      const discountAmount = 1000
+
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: "test-fixed",
+        regions: ["test-region"],
+        rule: {
+          type: "fixed",
+          allocation: "total",
+          value: discountAmount,
+        },
+      })
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        discounts: [{ code: discount.code }],
+        items: [
+          {
+            variant_id: testVariantId,
+            quantity: 2,
+            metadata: {},
+          },
+          {
+            variant_id: testVariant2Id,
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      const draftOrder = response.data.draft_order
+      const lineItem1 = draftOrder.cart.items.find(
+        (item) => item.variant_id === testVariantId
+      )
+      const lineItem2 = draftOrder.cart.items.find(
+        (item) => item.variant_id === testVariant2Id
+      )
+
+      const lineItem1WeightInTotal = 0.444 // line item amount / amount
+      const lineItem2WeightInTotal = 0.556 // line item amount / amount
+
+      expect(draftOrder.cart.items).toHaveLength(2)
+
+      expect(lineItem1).toEqual(
+        expect.objectContaining({
+          variant_id: testVariantId,
+          unit_price: lineItem1.unit_price,
+          quantity: lineItem1.quantity,
+          adjustments: expect.arrayContaining([
+            expect.objectContaining({
+              item_id: lineItem1.id,
+              amount: discountAmount * lineItem1WeightInTotal,
+              description: "discount",
+              discount_id: discount.id,
+            }),
+          ]),
+        })
+      )
+
+      expect(lineItem2).toEqual(
+        expect.objectContaining({
+          variant_id: testVariant2Id,
+          unit_price: lineItem2.unit_price,
+          quantity: lineItem2.quantity,
+          adjustments: expect.arrayContaining([
+            expect.objectContaining({
+              item_id: lineItem2.id,
+              amount: discountAmount * lineItem2WeightInTotal,
+              description: "discount",
+              discount_id: discount.id,
+            }),
+          ]),
+        })
       )
     })
 

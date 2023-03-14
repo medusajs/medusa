@@ -66,6 +66,13 @@ describe("PaymentCollectionService", () => {
     region_id: IdMap.getId("region1"),
     amount: 35000,
     status: PaymentCollectionStatus.AUTHORIZED,
+    region: {
+      payment_providers: [
+        {
+          id: IdMap.getId("region1_provider1"),
+        },
+      ],
+    },
   }
 
   const zeroSample = {

@@ -40,6 +40,9 @@ import { isDefined } from "medusa-core-utils"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostTaxRatesTaxRateParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -73,10 +76,7 @@ import { isDefined } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/TaxRate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

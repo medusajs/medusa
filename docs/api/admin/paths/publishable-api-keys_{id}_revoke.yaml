@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKeysPublishableApiKeyRevoke
-  summary: Revoke a PublishableApiKey
+  summary: Revoke PublishableApiKey
   description: Revokes a PublishableApiKey.
   parameters:
     - in: path
@@ -10,16 +10,17 @@ post:
       schema:
         type: string
   x-authenticated: true
+  x-codegen:
+    method: revoke
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/publishable-api-keys_{id}_revoke/postundefined
+        $ref: ../code_samples/JavaScript/publishable-api-keys_{id}_revoke/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/publishable-api-keys_{id}_revoke/postundefined
+        $ref: ../code_samples/Shell/publishable-api-keys_{id}_revoke/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -31,10 +32,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              publishable_api_key:
-                $ref: ../components/schemas/PublishableApiKey.yaml
+            $ref: ../components/schemas/AdminPublishableApiKeysRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKeySalesChannelsChannelsBatch
-  summary: Add sales channel to a publishable api key scope
+  summary: Add SalesChannels
   description: Assign a batch of sales channels to a publishable api key.
   x-authenticated: true
   parameters:
@@ -16,17 +16,19 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostPublishableApiKeySalesChannelsBatchReq.yaml
+  x-codegen:
+    method: addSalesChannelsBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/postundefined
+          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/postundefined
+          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -38,9 +40,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              publishable_api_key:
-                $ref: ../components/schemas/PublishableApiKey.yaml
+            $ref: ../components/schemas/AdminPublishableApiKeysRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -55,7 +55,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeletePublishableApiKeySalesChannelsChannelsBatch
-  summary: Remove sales channel from a publishable api key scope
+  summary: Delete SalesChannels
   description: Remove a batch of sales channels from a publishable api key.
   x-authenticated: true
   parameters:
@@ -71,17 +71,19 @@ delete:
         schema:
           $ref: >-
             ../components/schemas/AdminDeletePublishableApiKeySalesChannelsBatchReq.yaml
+  x-codegen:
+    method: deleteSalesChannelsBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/deleteundefined
+          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/deleteundefined
+          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -93,9 +95,7 @@ delete:
       content:
         application/json:
           schema:
-            properties:
-              publishable_api_key:
-                $ref: ../components/schemas/PublishableApiKey.yaml
+            $ref: ../components/schemas/AdminPublishableApiKeysRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

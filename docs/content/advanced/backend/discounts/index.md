@@ -1,3 +1,7 @@
+---
+description: 'Learn about the discount architecture in the Medusa server. Discounts are used to offer promotions to the user for marketing purposes.'
+---
+
 # Discounts Architecture
 
 In this document, you’ll learn about Discounts architecture and how it works.
@@ -98,7 +102,7 @@ Based on the value of `type`, one of the following relations can be used to retr
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to create a discount using the admin APIs](../../admin/manage-discounts.mdx)
-- Learn [how to use discounts on the storefront](../../storefront/use-discounts-in-checkout.mdx)
+- [Create a discount using the admin APIs](../../admin/manage-discounts.mdx)
+- [Use discounts on the storefront](../../storefront/use-discounts-in-checkout.mdx)

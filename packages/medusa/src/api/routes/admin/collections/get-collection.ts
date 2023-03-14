@@ -11,6 +11,8 @@ import { defaultAdminCollectionsRelations } from "."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Collection
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,10 +40,7 @@ import { defaultAdminCollectionsRelations } from "."
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/ProductCollection"
+ *          $ref: "#/components/schemas/AdminCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -220,16 +220,87 @@ export const defaultAdminDiscountConditionFields: (keyof DiscountCondition)[] =
 
 export const defaultAdminDiscountConditionRelations = ["discount_rule"]
 
+/**
+ * @schema AdminDiscountsRes
+ * type: object
+ * properties:
+ *   discount:
+ *     $ref: "#/components/schemas/Discount"
+ */
 export type AdminDiscountsRes = {
   discount: Discount
 }
 
+/**
+ * @schema AdminDiscountConditionsRes
+ * type: object
+ * properties:
+ *   discount_condition:
+ *     $ref: "#/components/schemas/DiscountCondition"
+ */
 export type AdminDiscountConditionsRes = {
   discount_condition: DiscountCondition
 }
 
+/**
+ * @schema AdminDiscountsDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Discount
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: discount
+ *   deleted:
+ *     type: boolean
+ *     description: Whether the discount was deleted successfully or not.
+ *     default: true
+ */
 export type AdminDiscountsDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminDiscountConditionsDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted DiscountCondition
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: discount-condition
+ *   deleted:
+ *     type: boolean
+ *     description: Whether the discount condition was deleted successfully or not.
+ *     default: true
+ *   discount:
+ *     description: The Discount to which the condition used to belong
+ *     $ref: "#/components/schemas/Discount"
+ */
+export type AdminDiscountConditionsDeleteRes = DeleteResponse & {
+  discount: Discount
+}
+
+/**
+ * @schema AdminDiscountsListRes
+ * type: object
+ * properties:
+ *   discounts:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Discount"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminDiscountsListRes = PaginatedResponse & {
   discounts: Discount[]
 }

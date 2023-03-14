@@ -14,8 +14,14 @@ import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
 } from "../interfaces"
+import {
+  PaymentProviderService,
+  ProductVariantInventoryService,
+} from "../services"
 
 type InjectedDependencies = {
+  productVariantInventoryService: ProductVariantInventoryService
+  paymentProviderService: PaymentProviderService
   idempotencyKeyService: IdempotencyKeyService
   cartService: CartService
   orderService: OrderService
@@ -26,12 +32,17 @@ type InjectedDependencies = {
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   protected manager_: EntityManager
 
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly paymentProviderService_: PaymentProviderService
   protected readonly idempotencyKeyService_: IdempotencyKeyService
   protected readonly cartService_: CartService
   protected readonly orderService_: OrderService
   protected readonly swapService_: SwapService
 
   constructor({
+    productVariantInventoryService,
+    paymentProviderService,
     idempotencyKeyService,
     cartService,
     orderService,
@@ -40,6 +51,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   }: InjectedDependencies) {
     super()
 
+    this.paymentProviderService_ = paymentProviderService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.idempotencyKeyService_ = idempotencyKeyService
     this.cartService_ = cartService
     this.orderService_ = orderService
@@ -245,26 +258,90 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
 
     const orderServiceTx = this.orderService_.withTransaction(manager)
+    const swapServiceTx = this.swapService_.withTransaction(manager)
+    const cartServiceTx = this.cartService_.withTransaction(manager)
 
-    const cart = await this.cartService_
-      .withTransaction(manager)
-      .retrieveWithTotals(id, {
-        relations: ["region", "payment", "payment_sessions"],
-      })
+    const cart = await cartServiceTx.retrieveWithTotals(id, {
+      relations: ["region", "payment", "payment_sessions"],
+    })
+
+    let allowBackorder = false
+    let swapId: string
+
+    if (cart.type === "swap") {
+      const swap = await swapServiceTx.retrieveByCartId(id)
+      allowBackorder = swap.allow_backorder
+      swapId = swap.id
+    }
+
+    if (!allowBackorder) {
+      const productVariantInventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
+      try {
+        await Promise.all(
+          cart.items.map(async (item) => {
+            if (item.variant_id) {
+              const inventoryConfirmed =
+                await productVariantInventoryServiceTx.confirmInventory(
+                  item.variant_id,
+                  item.quantity,
+                  { salesChannelId: cart.sales_channel_id }
+                )
+
+              if (!inventoryConfirmed) {
+                throw new MedusaError(
+                  MedusaError.Types.NOT_ALLOWED,
+                  `Variant with id: ${item.variant_id} does not have the required inventory`,
+                  MedusaError.Codes.INSUFFICIENT_INVENTORY
+                )
+              }
+
+              await productVariantInventoryServiceTx.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  lineItemId: item.id,
+                  salesChannelId: cart.sales_channel_id,
+                }
+              )
+            }
+          })
+        )
+      } catch (error) {
+        if (error && error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY) {
+          if (cart.payment) {
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .cancelPayment(cart.payment)
+          }
+          await cartServiceTx.update(cart.id, {
+            payment_authorized_at: null,
+          })
+
+          return {
+            response_code: 409,
+            response_body: {
+              message: error.message,
+              type: error.type,
+              code: error.code,
+            },
+          }
+        } else {
+          throw error
+        }
+      }
+    }
 
     // If cart is part of swap, we register swap as complete
     if (cart.type === "swap") {
       try {
         const swapId = cart.metadata?.swap_id
-        let swap = await this.swapService_
-          .withTransaction(manager)
-          .registerCartCompletion(swapId as string)
+        let swap = await swapServiceTx.registerCartCompletion(swapId as string)
 
-        swap = await this.swapService_
-          .withTransaction(manager)
-          .retrieve(swap.id, {
-            relations: ["shipping_address"],
-          })
+        swap = await swapServiceTx.retrieve(swap.id, {
+          relations: ["shipping_address"],
+        })
 
         return {
           response_code: 200,

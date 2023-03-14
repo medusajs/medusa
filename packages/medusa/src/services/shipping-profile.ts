@@ -15,7 +15,7 @@ import {
   CreateShippingProfile,
   UpdateShippingProfile,
 } from "../types/shipping-profile"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import ProductService from "./product"
 import ShippingOptionService from "./shipping-option"
@@ -260,7 +260,14 @@ class ShippingProfileService extends TransactionBaseService {
         )
       }
 
-      const created = profileRepository.create(profile)
+      const { metadata, ...rest } = profile
+
+      const created = profileRepository.create(rest)
+
+      if (metadata) {
+        created.metadata = setMetadata(created, metadata)
+      }
+
       const result = await profileRepository.save(created)
       return result
     })
@@ -284,7 +291,7 @@ class ShippingProfileService extends TransactionBaseService {
         this.shippingProfileRepository_
       )
 
-      const profile = await this.retrieve(profileId, {
+      let profile = await this.retrieve(profileId, {
         relations: [
           "products",
           "products.profile",
@@ -295,27 +302,16 @@ class ShippingProfileService extends TransactionBaseService {
 
       const { metadata, products, shipping_options, ...rest } = update
 
-      if (metadata) {
-        profile.metadata = setMetadata(profile, metadata)
-      }
-
       if (products) {
-        const productServiceTx = this.productService_.withTransaction(manager)
-        for (const pId of products) {
-          await productServiceTx.update(pId, {
-            profile_id: profile.id,
-          })
-        }
+        profile = await this.addProduct(profile.id, products)
       }
 
       if (shipping_options) {
-        const shippingOptionServiceTx =
-          this.shippingOptionService_.withTransaction(manager)
-        for (const oId of shipping_options) {
-          await shippingOptionServiceTx.update(oId, {
-            profile_id: profile.id,
-          })
-        }
+        profile = await this.addShippingOption(profile.id, shipping_options)
+      }
+
+      if (metadata) {
+        profile.metadata = setMetadata(profile, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -352,22 +348,31 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds a product to a profile. The method is idempotent, so multiple calls
-   * with the same product variant will have the same result.
-   * @param profileId - the profile to add the product to.
-   * @param productId - the product to add.
+   * Adds a product of an array of products to the profile.
+   * @param profileId - the profile to add the products to.
+   * @param productId - the ID of the product or multiple products to add.
    * @return the result of update
    */
   async addProduct(
     profileId: string,
-    productId: string
+    productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      await this.productService_
-        .withTransaction(manager)
-        .update(productId, { profile_id: profileId })
+      const productServiceTx = this.productService_.withTransaction(manager)
 
-      return await this.retrieve(profileId)
+      await productServiceTx.updateShippingProfile(
+        isString(productId) ? [productId] : productId,
+        profileId
+      )
+
+      return await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
     })
   }
 
@@ -375,20 +380,30 @@ class ShippingProfileService extends TransactionBaseService {
    * Adds a shipping option to the profile. The shipping option can be used to
    * fulfill the products in the products field.
    * @param profileId - the profile to apply the shipping option to
-   * @param optionId - the option to add to the profile
+   * @param optionId - the ID of the option or multiple options to add to the profile
    * @return the result of the model update operation
    */
   async addShippingOption(
     profileId: string,
-    optionId: string
+    optionId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      await this.shippingOptionService_
-        .withTransaction(manager)
-        .update(optionId, { profile_id: profileId })
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
 
-      const updated = await this.retrieve(profileId)
-      return updated
+      await shippingOptionServiceTx.updateShippingProfile(
+        isString(optionId) ? [optionId] : optionId,
+        profileId
+      )
+
+      return await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
     })
   }
 

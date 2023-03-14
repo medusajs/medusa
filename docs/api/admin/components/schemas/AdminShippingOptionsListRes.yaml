@@ -1,0 +1,9 @@
+type: object
+properties:
+  shipping_options:
+    type: array
+    items:
+      $ref: ./ShippingOption.yaml
+  count:
+    type: integer
+    description: The total number of items available

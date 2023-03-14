@@ -12,6 +12,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
  *   - (path) code=* {string} The ID of the Discount
+ * x-codegen:
+ *   method: deleteDynamicCode
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -39,10 +41,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/Discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

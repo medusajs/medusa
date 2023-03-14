@@ -21,7 +21,7 @@ import {
   UpdateShippingOptionInput,
   ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
@@ -157,12 +157,12 @@ class ShippingOptionService extends TransactionBaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {object} config - config object
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - config object
+   * @return the result of the find operation
    */
   async listAndCount(
-    selector: Selector<ShippingMethod>,
+    selector: Selector<ShippingOption>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
     const manager = this.manager_
@@ -663,6 +663,10 @@ class ShippingOptionService extends TransactionBaseService {
         optionWithValidatedPrice.admin_only = update.admin_only
       }
 
+      if (isDefined(update.profile_id)) {
+        optionWithValidatedPrice.profile_id = update.profile_id
+      }
+
       if (
         this.featureFlagRouter_.isFeatureEnabled(
           TaxInclusivePricingFeatureFlag.key
@@ -751,6 +755,25 @@ class ShippingOptionService extends TransactionBaseService {
       }
 
       return await reqRepo.softRemove(requirement)
+    })
+  }
+
+  /**
+   *
+   * @param optionIds ID or IDs of the shipping options to update
+   * @param profileId Shipping profile ID to update the shipping options with
+   * @returns updated shipping options
+   */
+  async updateShippingProfile(
+    optionIds: string | string[],
+    profileId: string
+  ): Promise<ShippingOption[]> {
+    return await this.atomicPhase_(async (manager) => {
+      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+
+      const ids = isString(optionIds) ? [optionIds] : optionIds
+
+      return await optionRepo.upsertShippingProfile(ids, profileId)
     })
   }
 

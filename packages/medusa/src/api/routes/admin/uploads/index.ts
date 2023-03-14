@@ -39,12 +39,50 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminUploadsRes
+ * type: object
+ * properties:
+ *   uploads:
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         url:
+ *           type: string
+ *           description: The URL of the uploaded file.
+ *           format: uri
+ */
 export type AdminUploadsRes = {
   uploads: { url: string }[]
 }
 
+/**
+ * @schema AdminDeleteUploadsRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The file key of the upload deleted
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: file
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminDeleteUploadsRes = DeleteResponse
 
+/**
+ * @schema AdminUploadsDownloadUrlRes
+ * type: object
+ * properties:
+ *   download_url:
+ *     type: string
+ *     description: The Download URL of the file
+ */
 export type AdminUploadsDownloadUrlRes = {
   download_url: string
 }

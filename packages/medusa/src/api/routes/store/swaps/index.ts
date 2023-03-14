@@ -45,6 +45,13 @@ export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
   "idempotency_key",
 ]
 
+/**
+ * @schema StoreSwapsRes
+ * type: object
+ * properties:
+ *   swap:
+ *     $ref: "#/components/schemas/Swap"
+ */
 export type StoreSwapsRes = {
   swap: Swap
 }

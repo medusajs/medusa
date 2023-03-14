@@ -1,12 +1,27 @@
 import _ from "lodash"
+import { asClass, asValue, createContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FlagRouter } from "../../utils/flag-router"
 import CartService from "../cart"
-import { InventoryServiceMock } from "../__mocks__/inventory"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import { PaymentSessionStatus } from "../../models"
+import { NewTotalsService, TaxProviderService } from "../index"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { ProductServiceMock } from "../__mocks__/product"
+import { ProductVariantServiceMock } from "../__mocks__/product-variant"
+import { RegionServiceMock } from "../__mocks__/region"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
+import { CustomerServiceMock } from "../__mocks__/customer"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import SystemTaxService from "../system-tax"
+import { IsNull, Not } from "typeorm"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -314,18 +329,20 @@ describe("CartService", () => {
       },
     }
 
-    const inventoryService = {
-      ...InventoryServiceMock,
-      confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
-        if (variantId !== IdMap.getId("cannot-cover")) {
-          return true
-        } else {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            `Variant with id: ${variantId} does not have the required inventory`
-          )
-        }
-      }),
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
+      confirmInventory: jest
+        .fn()
+        .mockImplementation((variantId, _quantity, options) => {
+          if (variantId !== IdMap.getId("cannot-cover")) {
+            return true
+          } else {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Variant with id: ${variantId} does not have the required inventory`
+            )
+          }
+        }),
     }
 
     const cartRepository = MockRepository({
@@ -387,7 +404,7 @@ describe("CartService", () => {
       newTotalsService: newTotalsServiceMock,
       eventBusService,
       shippingOptionService,
-      inventoryService,
+      productVariantInventoryService,
       productVariantService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
@@ -499,6 +516,7 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("merger")],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -508,24 +526,6 @@ describe("CartService", () => {
         LineItemAdjustmentServiceMock.createAdjustments
       ).toHaveBeenCalledWith(
         expect.objectContaining({ id: IdMap.getId("cartWithLine") })
-      )
-    })
-
-    it("throws if inventory isn't covered", async () => {
-      const lineItem = {
-        title: "merge line",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-        quantity: 1,
-        variant_id: IdMap.getId("cannot-cover"),
-      }
-
-      await expect(
-        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      ).rejects.toThrow(
-        `Variant with id: ${IdMap.getId(
-          "cannot-cover"
-        )} does not have the required inventory`
       )
     })
 
@@ -572,8 +572,8 @@ describe("CartService", () => {
       },
     }
 
-    const inventoryService = {
-      ...InventoryServiceMock,
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
       confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
         if (variantId !== IdMap.getId("cannot-cover")) {
           return true
@@ -625,7 +625,7 @@ describe("CartService", () => {
       newTotalsService: newTotalsServiceMock,
       eventBusService,
       shippingOptionService,
-      inventoryService,
+      productVariantInventoryService,
       productVariantService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
@@ -747,6 +747,7 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("itemToRemove")],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -788,6 +789,7 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("itemToRemove")],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -876,12 +878,26 @@ describe("CartService", () => {
           quantity: 1,
         })
       ),
+      retrieve: jest.fn().mockImplementation((lineItemId) => {
+        if (lineItemId === IdMap.getId("existing")) {
+          return Promise.resolve({
+            id: lineItemId,
+            cart_id: IdMap.getId("cannot"),
+            variant_id: IdMap.getId("cannot-cover"),
+          })
+        }
+        return Promise.resolve({
+          id: lineItemId,
+          cart_id: IdMap.getId("cartWithLine"),
+          is_return: false,
+        })
+      }),
       withTransaction: function () {
         return this
       },
     }
-    const inventoryService = {
-      ...InventoryServiceMock,
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
       confirmInventory: jest
         .fn()
         .mockImplementation((id) => id !== IdMap.getId("cannot-cover")),
@@ -905,7 +921,7 @@ describe("CartService", () => {
           total: 100,
           items: [
             {
-              id: IdMap.getId("existing"),
+              id: IdMap.getId("existingUpdate"),
               variant_id: IdMap.getId("good"),
               subtotal: 100,
               quantity: 1,
@@ -921,7 +937,7 @@ describe("CartService", () => {
       lineItemService,
       eventBusService,
       newTotalsService: newTotalsServiceMock,
-      inventoryService,
+      productVariantInventoryService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
       featureFlagRouter: new FlagRouter({}),
@@ -934,7 +950,7 @@ describe("CartService", () => {
     it("successfully updates existing line item", async () => {
       await cartService.updateLineItem(
         IdMap.getId("cartWithLine"),
-        IdMap.getId("existing"),
+        IdMap.getId("existingUpdate"),
         { quantity: 2 }
       )
 
@@ -946,13 +962,14 @@ describe("CartService", () => {
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
       expect(lineItemService.update).toHaveBeenCalledWith(
-        IdMap.getId("existing"),
+        IdMap.getId("existingUpdate"),
         { quantity: 2 }
       )
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
-        item_id: [IdMap.getId("existing")],
+        item_id: [IdMap.getId("existingUpdate")],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -1244,6 +1261,7 @@ describe("CartService", () => {
           items: [
             {
               id: IdMap.getId("testitem"),
+              variant_id: IdMap.getId("good"),
             },
             {
               id: IdMap.getId("fail"),
@@ -1360,32 +1378,71 @@ describe("CartService", () => {
 
   describe("setPaymentSession", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: () => {
-        return Promise.resolve({
-          region: {
-            payment_providers: [
+      findOneWithRelations: (rels, q) => {
+        if (q.where.id === IdMap.getId("cartWithLine")) {
+          return Promise.resolve({
+            total: 100,
+            customer: {},
+            region: {
+              currency_code: "usd",
+              payment_providers: [
+                {
+                  id: "test-provider",
+                },
+              ],
+            },
+            items: [],
+            shipping_methods: [],
+            payment_sessions: [
               {
-                id: "test-provider",
+                id: IdMap.getId("test-session"),
+                provider_id: "test-provider",
               },
             ],
-          },
-          items: [],
-          shipping_methods: [],
-          payment_sessions: [
-            {
-              id: IdMap.getId("test-session"),
-              provider_id: "test-provider",
+          })
+        } else if (q.where.id === IdMap.getId("cartWithLine2")) {
+          return Promise.resolve({
+            total: 100,
+            customer: {},
+            region: {
+              currency_code: "usd",
+              payment_providers: [
+                {
+                  id: "test-provider",
+                },
+              ],
             },
-          ],
-        })
+            items: [],
+            shipping_methods: [],
+            payment_sessions: [
+              {
+                id: IdMap.getId("test-session"),
+                provider_id: "test-provider",
+                is_initiated: true,
+              },
+            ],
+          })
+        }
       },
     })
 
     const paymentSessionRepository = MockRepository({})
 
+    const paymentProviderService = {
+      deleteSession: jest.fn(),
+      updateSession: jest.fn(),
+      createSession: jest.fn().mockImplementation(() => {
+        return { id: IdMap.getId("test-session") }
+      }),
+      withTransaction: function () {
+        return this
+      },
+    }
+
     const cartService = new CartService({
       manager: MockManager,
       paymentSessionRepository,
+      paymentProviderService,
       totalsService,
       cartRepository,
       eventBusService,
@@ -1398,22 +1455,64 @@ describe("CartService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully sets a payment method", async () => {
+    it("successfully sets a payment method and create it remotely", async () => {
+      const providerId = "test-provider"
+
       await cartService.setPaymentSession(
         IdMap.getId("cartWithLine"),
-        "test-provider"
+        providerId
       )
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "cart.updated",
+        CartService.Events.UPDATED,
         expect.any(Object)
       )
-      expect(paymentSessionRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-session"),
-        provider_id: "test-provider",
-        is_selected: true,
+
+      expect(paymentProviderService.createSession).toHaveBeenCalledWith({
+        cart: expect.any(Object),
+        customer: expect.any(Object),
+        amount: expect.any(Number),
+        currency_code: expect.any(String),
+        provider_id: providerId,
+        payment_session_id: IdMap.getId("test-session"),
       })
+      expect(paymentSessionRepository.update).toHaveBeenCalledWith(
+        IdMap.getId("test-session"),
+        {
+          is_selected: true,
+          is_initiated: true,
+        }
+      )
+    })
+
+    it("successfully sets a payment method and update it remotely", async () => {
+      const providerId = "test-provider"
+
+      await cartService.setPaymentSession(
+        IdMap.getId("cartWithLine2"),
+        providerId
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        CartService.Events.UPDATED,
+        expect.any(Object)
+      )
+
+      expect(paymentProviderService.updateSession).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId("test-session"),
+        }),
+        {
+          cart: expect.any(Object),
+          customer: expect.any(Object),
+          amount: expect.any(Number),
+          currency_code: expect.any(String),
+          provider_id: providerId,
+          payment_session_id: IdMap.getId("test-session"),
+        }
+      )
     })
 
     it("fails if the region does not contain the provider_id", async () => {
@@ -1424,13 +1523,16 @@ describe("CartService", () => {
   })
 
   describe("setPaymentSessions", () => {
+    const provider1Id = "provider_1"
+    const provider2Id = "provider_2"
+
     const cart1 = {
       total: 100,
       items: [{ subtotal: 100 }],
       shipping_methods: [],
       payment_sessions: [],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1438,9 +1540,9 @@ describe("CartService", () => {
       total: 100,
       items: [],
       shipping_methods: [],
-      payment_sessions: [{ provider_id: "provider_1" }],
+      payment_sessions: [{ provider_id: provider1Id }],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1449,11 +1551,11 @@ describe("CartService", () => {
       items: [{ subtotal: 100 }],
       shipping_methods: [{ subtotal: 100 }],
       payment_sessions: [
-        { provider_id: "provider_1" },
+        { provider_id: provider1Id },
         { provider_id: "not_in_region" },
       ],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1462,22 +1564,24 @@ describe("CartService", () => {
       items: [{ total: 0 }],
       shipping_methods: [],
       payment_sessions: [
-        { provider_id: "provider_1" },
-        { provider_id: "provider_2" },
+        { provider_id: provider1Id },
+        { provider_id: provider2Id },
       ],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
     const cart5 = {
-      total: -1,
+      total: 100,
+      items: [{ subtotal: 100 }],
+      shipping_methods: [],
       payment_sessions: [
-        { provider_id: "provider_1" },
-        { provider_id: "provider_2" },
+        { provider_id: provider1Id, is_initiated: true },
+        { provider_id: provider2Id, is_selected: true, is_initiated: true },
       ],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1495,6 +1599,11 @@ describe("CartService", () => {
         if (q.where.id === IdMap.getId("cart-negative")) {
           return Promise.resolve(cart4)
         }
+        if (
+          q.where.id === IdMap.getId("cartWithMixedSelectedInitiatedSessions")
+        ) {
+          return Promise.resolve(cart5)
+        }
         return Promise.resolve(cart1)
       },
     })
@@ -1508,8 +1617,11 @@ describe("CartService", () => {
       },
     }
 
+    const paymentSessionRepositoryMock = MockRepository({})
+
     const cartService = new CartService({
       manager: MockManager,
+      paymentSessionRepository: paymentSessionRepositoryMock,
       totalsService,
       cartRepository,
       paymentProviderService,
@@ -1526,34 +1638,58 @@ describe("CartService", () => {
     it("initializes payment sessions for each of the providers", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
-      expect(paymentProviderService.createSession).toHaveBeenCalledWith(
-        {
-          cart: cart1,
-          customer: cart1.customer,
-          amount: cart1.total,
-          currency_code: cart1.region.currency_code,
-          provider_id: "provider_1",
-        }
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2)
+
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledWith({
+        cart_id: IdMap.getId("cartWithLine"),
+        status: PaymentSessionStatus.PENDING,
+        amount: cart1.total,
+        provider_id: provider1Id,
+        data: {},
+      })
+
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledWith({
+        cart_id: IdMap.getId("cartWithLine"),
+        status: PaymentSessionStatus.PENDING,
+        amount: cart1.total,
+        provider_id: provider2Id,
+        data: {},
+      })
+    })
+
+    it("delete or update payment sessions remotely depending if they are selected and/or initiated", async () => {
+      await cartService.setPaymentSessions(
+        IdMap.getId("cartWithMixedSelectedInitiatedSessions")
       )
-      expect(paymentProviderService.createSession).toHaveBeenCalledWith(
-        {
-          cart: cart1,
-          customer: cart1.customer,
-          amount: cart1.total,
-          currency_code: cart1.region.currency_code,
-          provider_id: "provider_2",
-        }
+
+      // Selected, update
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updateSession).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.objectContaining({
+          provider_id: provider2Id,
+        })
       )
+
+      // Not selected, but initiated, delete
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith(
+        expect.objectContaining({
+          provider_id: provider1Id,
+        })
+      )
+
+      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(1)
     })
 
     it("filters sessions not available in the region", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-to-filter"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(1)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(1)
+      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2) // create and update
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(1)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: "not_in_region",
       })
     })
@@ -1561,28 +1697,26 @@ describe("CartService", () => {
     it("removes if cart total === 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-remove"))
 
-      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(0)
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(0)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_1",
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
+
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
+        provider_id: provider1Id,
       })
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_2",
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
+        provider_id: provider2Id,
       })
     })
 
     it("removes if cart total < 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-negative"))
 
-      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(0)
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(0)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_1",
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
+
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
+        provider_id: provider1Id,
       })
-      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_2",
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
+        provider_id: provider2Id,
       })
     })
   })
@@ -1928,126 +2062,141 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      retrieveByCode: jest.fn().mockImplementation((code) => {
-        if (code === "US10") {
-          return Promise.resolve({
-            regions: [{ id: IdMap.getId("bad") }],
-          })
+      listByCodes: jest.fn().mockImplementation((code) => {
+        const codes = Array.isArray(code) ? code : [code]
+
+        const data = []
+
+        for (const code of codes) {
+          if (code === "US10") {
+            data.push({
+              regions: [{ id: IdMap.getId("bad") }],
+            })
+          }
+          if (code === "limit-reached") {
+            data.push({
+              id: IdMap.getId("limit-reached"),
+              code: "limit-reached",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {},
+              usage_count: 2,
+              usage_limit: 2,
+            })
+          }
+          if (code === "null-count") {
+            data.push({
+              id: IdMap.getId("null-count"),
+              code: "null-count",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {},
+              usage_count: null,
+              usage_limit: 2,
+            })
+          }
+          if (code === "FREESHIPPING") {
+            data.push({
+              id: IdMap.getId("freeship"),
+              code: "FREESHIPPING",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "free_shipping",
+              },
+            })
+          }
+          if (code === "EarlyDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(1),
+              ends_at: getOffsetDate(10),
+            })
+          }
+          if (code === "ExpiredDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              ends_at: getOffsetDate(-1),
+              starts_at: getOffsetDate(-10),
+            })
+          }
+          if (code === "ExpiredDynamicDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              is_dynamic: true,
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(-1),
+            })
+          }
+          if (code === "ExpiredDynamicDiscountEndDate") {
+            data.push({
+              id: IdMap.getId("10off"),
+              is_dynamic: true,
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(-3),
+              valid_duration: "P0Y0M1D",
+            })
+          }
+          if (code === "ValidDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(10),
+            })
+          }
+          if (code === "ApplicableForCustomer") {
+            data.push({
+              id: "ApplicableForCustomer",
+              code: "ApplicableForCustomer",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                id: "test-rule",
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(10),
+            })
+          }
+
+          if (!data.length) {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+            })
+          }
         }
-        if (code === "limit-reached") {
-          return Promise.resolve({
-            id: IdMap.getId("limit-reached"),
-            code: "limit-reached",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {},
-            usage_count: 2,
-            usage_limit: 2,
-          })
+
+        if (Array.isArray(code)) {
+          return Promise.resolve(data)
         }
-        if (code === "null-count") {
-          return Promise.resolve({
-            id: IdMap.getId("null-count"),
-            code: "null-count",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {},
-            usage_count: null,
-            usage_limit: 2,
-          })
-        }
-        if (code === "FREESHIPPING") {
-          return Promise.resolve({
-            id: IdMap.getId("freeship"),
-            code: "FREESHIPPING",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "free_shipping",
-            },
-          })
-        }
-        if (code === "EarlyDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(1),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        if (code === "ExpiredDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            ends_at: getOffsetDate(-1),
-            starts_at: getOffsetDate(-10),
-          })
-        }
-        if (code === "ExpiredDynamicDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            is_dynamic: true,
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(-1),
-          })
-        }
-        if (code === "ExpiredDynamicDiscountEndDate") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            is_dynamic: true,
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(-3),
-            valid_duration: "P0Y0M1D",
-          })
-        }
-        if (code === "ValidDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        if (code === "ApplicableForCustomer") {
-          return Promise.resolve({
-            id: "ApplicableForCustomer",
-            code: "ApplicableForCustomer",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              id: "test-rule",
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        return Promise.resolve({
-          id: IdMap.getId("10off"),
-          code: "10%OFF",
-          regions: [{ id: IdMap.getId("good") }],
-          rule: {
-            type: "percentage",
-          },
-        })
+
+        return Promise.resolve(data[0])
       }),
       canApplyForCustomer: jest
         .fn()
@@ -2130,6 +2279,7 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: ["li1", "li2"],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -2180,6 +2330,7 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: ["li1", "li2"],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -2197,7 +2348,7 @@ describe("CartService", () => {
         discounts: [{ code: "10%OFF" }, { code: "FREESHIPPING" }],
       })
 
-      expect(discountService.retrieveByCode).toHaveBeenCalledTimes(2)
+      expect(discountService.listByCodes).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -2239,6 +2390,7 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: ["li1", "li2"],
+        discount_id: expect.objectContaining(Not(IsNull())),
       })
 
       expect(
@@ -2293,7 +2445,9 @@ describe("CartService", () => {
       })
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
-      expect(LineItemAdjustmentServiceMock.createAdjustments).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
@@ -2368,7 +2522,9 @@ describe("CartService", () => {
       await cartService.removeDiscount(IdMap.getId("fr-cart"), "1234")
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
-      expect(LineItemAdjustmentServiceMock.createAdjustments).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
@@ -2390,6 +2546,98 @@ describe("CartService", () => {
           },
         ],
       })
+    })
+  })
+
+  describe("decorateTotals integration", () => {
+    const legacyTotalServiceMock = {
+      ...totalsService,
+      getCalculationContext: () => ({
+        shipping_methods: [],
+        region: {
+          tax_rate: 10,
+          currency_code: "eur",
+        },
+        allocation_map: {},
+      }),
+    }
+    // TODO: extract that to a fixture to be used in this file in the rest of the tests. Needs some update on the registration
+    // as it is for now adapted to this case
+    const container = createContainer()
+    container
+      .register("manager", asValue(MockManager))
+      .register("paymentSessionRepository", asValue(MockRepository({})))
+      .register("addressRepository", asValue(MockRepository({})))
+      .register("cartRepository", asValue(MockRepository({})))
+      .register("lineItemRepository", asValue(MockRepository({})))
+      .register("shippingMethodRepository", asValue(MockRepository({})))
+      .register("paymentProviderService", asValue(PaymentProviderServiceMock))
+      .register("productService", asValue(ProductServiceMock))
+      .register("productVariantService", asValue(ProductVariantServiceMock))
+      .register("regionService", asValue(RegionServiceMock))
+      .register("lineItemService", asValue(LineItemServiceMock))
+      .register("shippingOptionService", asValue(ShippingOptionServiceMock))
+      .register("customerService", asValue(CustomerServiceMock))
+      .register("discountService", asValue({}))
+      .register("giftCardService", asValue({}))
+      .register("totalsService", asValue(legacyTotalServiceMock))
+      .register("customShippingOptionService", asValue({}))
+      .register("lineItemAdjustmentService", asValue({}))
+      .register("priceSelectionStrategy", asValue({}))
+      .register("productVariantInventoryService", asValue({}))
+      .register("salesChannelService", asValue({}))
+      .register("storeService", asValue({}))
+      .register("featureFlagRouter", asValue(new FlagRouter({})))
+      .register("taxRateService", asValue({}))
+      .register("systemTaxService", asValue(new SystemTaxService()))
+      .register("tp_test", asValue("good"))
+      .register("cacheService", asValue(cacheServiceMock))
+      .register("taxProviderRepository", asValue(MockRepository))
+      .register(
+        "lineItemTaxLineRepository",
+        asValue(MockRepository({ create: (d) => d }))
+      )
+      .register("shippingMethodTaxLineRepository", asValue(MockRepository))
+      .register("eventBusService", asValue(EventBusServiceMock))
+      // Register the real class for the service below to do the integration tests
+      .register("taxCalculationStrategy", asClass(TaxCalculationStrategy))
+      .register("taxProviderService", asClass(TaxProviderService))
+      .register("newTotalsService", asClass(NewTotalsService))
+      .register("cartService", asClass(CartService))
+
+    const cartService = container.resolve("cartService")
+
+    it("should decorate totals with a cart containing custom items", async () => {
+      const cart = {
+        id: IdMap.getId("cartWithPaySessions"),
+        region_id: IdMap.getId("testRegion"),
+        items: [
+          {
+            id: IdMap.getId("existingLine"),
+            title: "merge line",
+            description: "This is a new line",
+            thumbnail: "test-img-yeah.com/thumb",
+            variant_id: null,
+            unit_price: 100,
+            quantity: 10,
+          },
+        ],
+        shipping_address: {},
+        billing_address: {},
+        discounts: [],
+        region: {
+          tax_rate: 10,
+          currency_code: "eur",
+        },
+        gift_cards: [],
+      }
+
+      const totals = await cartService.decorateTotals(cart, {
+        force_taxes: true,
+      })
+
+      expect(totals.total).toEqual(1000)
+      expect(totals.subtotal).toEqual(1000)
     })
   })
 })

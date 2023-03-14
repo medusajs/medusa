@@ -9,13 +9,15 @@ import {
 /**
  * @oas [post] /orders/customer/confirm
  * operationId: "PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept"
- * summary: "Verify a claim to orders"
+ * summary: "Verify an Order Claim"
  * description: "Verifies the claim order token provided to the customer upon request of order ownership"
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostCustomersCustomerAcceptClaimReq"
+ * x-codegen:
+ *   method: confirmRequest
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -44,7 +46,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Order
  * responses:
  *   200:
  *     description: OK

@@ -16,17 +16,18 @@ delete:
       description: The ID of the Draft Order.
       schema:
         type: string
+  x-codegen:
+    method: removeLineItem
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/draft-orders_{id}_line-items_{line_id}/deleteundefined
+          ../code_samples/JavaScript/draft-orders_{id}_line-items_{line_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/draft-orders_{id}_line-items_{line_id}/deleteundefined
+        $ref: ../code_samples/Shell/draft-orders_{id}_line-items_{line_id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -38,10 +39,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              draft_order:
-                $ref: ../components/schemas/DraftOrder.yaml
+            $ref: ../components/schemas/AdminDraftOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -78,17 +76,18 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostDraftOrdersDraftOrderLineItemsItemReq.yaml
+  x-codegen:
+    method: updateLineItem
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/draft-orders_{id}_line-items_{line_id}/postundefined
+          ../code_samples/JavaScript/draft-orders_{id}_line-items_{line_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/draft-orders_{id}_line-items_{line_id}/postundefined
+        $ref: ../code_samples/Shell/draft-orders_{id}_line-items_{line_id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -100,10 +99,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              draft_order:
-                $ref: ../components/schemas/DraftOrder.yaml
+            $ref: ../components/schemas/AdminDraftOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -1,0 +1,17 @@
+type: object
+required:
+  - name
+properties:
+  name:
+    description: the name of the stock location
+    type: string
+  address_id:
+    description: the stock location address ID
+    type: string
+  metadata:
+    type: object
+    description: An optional key-value map with additional details
+    example:
+      car: white
+  address:
+    $ref: ./StockLocationAddressInput.yaml

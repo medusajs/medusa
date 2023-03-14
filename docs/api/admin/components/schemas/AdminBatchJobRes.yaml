@@ -1,0 +1,4 @@
+type: object
+properties:
+  batch_job:
+    $ref: ./BatchJob.yaml

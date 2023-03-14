@@ -3,7 +3,7 @@ const path = require("path")
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useDb, initDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
   getClientAuthenticationCookie,
@@ -22,21 +22,20 @@ const {
   simpleCustomerFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType } = require("@medusajs/medusa")
+const setupServer = require("../../../helpers/setup-server")
 
 jest.setTimeout(30000)
 
-describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
+describe("/store/order-edits", () => {
   let medusaProcess
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({
       cwd,
-      env: { MEDUSA_FF_ORDER_EDITING: true },
     })
-    dbConnection = connection
-    medusaProcess = process
 
     await simpleCustomerFactory(dbConnection, {
       id: "customer",

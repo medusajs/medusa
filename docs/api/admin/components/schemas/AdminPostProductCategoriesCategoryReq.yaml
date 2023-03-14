@@ -1,0 +1,17 @@
+type: object
+properties:
+  name:
+    type: string
+    description: The name to identify the Product Category by.
+  handle:
+    type: string
+    description: A handle to be used in slugs.
+  is_internal:
+    type: boolean
+    description: A flag to make product category an internal category for admins
+  is_active:
+    type: boolean
+    description: A flag to make product category visible/hidden in the store front
+  parent_category_id:
+    type: string
+    description: The ID of the parent product category

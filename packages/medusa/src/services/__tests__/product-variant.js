@@ -477,7 +477,7 @@ describe("ProductVariantService", () => {
       },
     ]
 
-    moneyAmountRepository.findVariantPricesNotIn = jest
+    moneyAmountRepository.deleteVariantPricesNotIn = jest
       .fn()
       .mockImplementation(() => Promise.resolve(oldPrices))
 
@@ -641,7 +641,7 @@ describe("ProductVariantService", () => {
       },
     ]
 
-    moneyAmountRepository.findVariantPricesNotIn = jest
+    moneyAmountRepository.deleteVariantPricesNotIn = jest
       .fn()
       .mockImplementation(() => Promise.resolve(oldPrices))
 
@@ -650,6 +650,9 @@ describe("ProductVariantService", () => {
       .mockImplementation(() => Promise.resolve())
 
     const regionService = {
+      withTransaction: function () {
+        return this
+      },
       list: jest.fn().mockImplementation((config) => {
         const idOrIds = config.id
 
@@ -689,7 +692,7 @@ describe("ProductVariantService", () => {
       ])
 
       expect(
-        moneyAmountRepository.findVariantPricesNotIn
+        moneyAmountRepository.deleteVariantPricesNotIn
       ).toHaveBeenCalledTimes(1)
 
       expect(
@@ -701,9 +704,6 @@ describe("ProductVariantService", () => {
         currency_code: "usd",
         amount: 4000,
       })
-
-      expect(moneyAmountRepository.remove).toHaveBeenCalledTimes(1)
-      expect(moneyAmountRepository.remove).toHaveBeenCalledWith(oldPrices)
     })
 
     it("successfully creates new a region price", async () => {

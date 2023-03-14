@@ -95,7 +95,7 @@ describe("PaymentProviderService", () => {
         withTransaction: function () {
           return this
         },
-        updatePayment: jest.fn().mockReturnValue(Promise.resolve()),
+        updatePayment: jest.fn().mockReturnValue(Promise.resolve({})),
       })
     )
 

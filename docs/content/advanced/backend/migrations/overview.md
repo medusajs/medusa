@@ -1,3 +1,7 @@
+---
+description: 'Learn what Migrations are in the Medusa server and how to run them. Migrations are used to make changes to the database schema the Medusa server is linked to.'
+---
+
 # Migrations
 
 In this document, you'll learn what Migrations are in Medusa.
@@ -21,6 +25,8 @@ When a new Medusa version introduces changes to the database schema, you'll have
 Migrations are used to apply changes to the database schema. However, there are some version updates of Medusa that require updating the data in your database to fit the new schema. Those are specific to each version and you should check out the version under Upgrade Guides for details on the steps.
 
 :::
+
+---
 
 ## How to Run Migrations
 
@@ -48,7 +54,9 @@ npm run seed
 
 This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa server.
 
-## What's Next
+---
 
-- Learn [how to create a migration](index.md)
-- Learn more about [setting up your development server](../../../tutorial/set-up-your-development-environment).
+## See Also
+
+- [Create a migration](index.md)
+- [Set up your development environment](../../../tutorial/set-up-your-development-environment)

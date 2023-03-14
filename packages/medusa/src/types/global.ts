@@ -3,6 +3,7 @@ import { Request } from "express"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
+import { EmitOptions } from "../services/event-bus"
 import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
@@ -16,6 +17,7 @@ declare global {
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
+      allowedProperties: string[]
       errors: string[]
     }
   }
@@ -37,10 +39,38 @@ export type Logger = _Logger & {
   warn: (msg: string) => void
 }
 
+export enum MODULE_SCOPE {
+  INTERNAL = "internal",
+  EXTERNAL = "external",
+}
+
+export enum MODULE_RESOURCE_TYPE {
+  SHARED = "shared",
+  ISOLATED = "isolated",
+}
+
+export type ConfigurableModuleDeclaration = {
+  scope: MODULE_SCOPE.INTERNAL
+  resources: MODULE_RESOURCE_TYPE
+  resolve?: string
+  options?: Record<string, unknown>
+}
+/*
+| {
+    scope: MODULE_SCOPE.external
+    server: {
+      type: "built-in" | "rest" | "tsrpc" | "grpc" | "gql"
+      url: string
+      options?: Record<string, unknown>
+    }
+  }
+*/
+
 export type ModuleResolution = {
   resolutionPath: string | false
   definition: ModuleDefinition
   options?: Record<string, unknown>
+  moduleDeclaration?: ConfigurableModuleDeclaration
 }
 
 export type ModuleDefinition = {
@@ -50,16 +80,61 @@ export type ModuleDefinition = {
   label: string
   canOverride?: boolean
   isRequired?: boolean
+  defaultModuleDeclaration: ConfigurableModuleDeclaration
 }
 
-export type ConfigurableModuleDeclaration = {
-  resolve?: string
+export type LoaderOptions = {
+  container: MedusaContainer
+  configModule: ConfigModule
   options?: Record<string, unknown>
+  logger?: Logger
+}
+
+export type Constructor<T> = new (...args: any[]) => T
+
+export type ModuleExports = {
+  loaders: ((
+    options: LoaderOptions,
+    moduleDeclaration?: ConfigurableModuleDeclaration
+  ) => Promise<void>)[]
+  service: Constructor<any>
+  migrations?: any[] // TODO: revisit migrations type
+  models?: Constructor<any>[]
+}
+
+type SessionOptions = {
+  name?: string
+  resave?: boolean
+  rolling?: boolean
+  saveUninitialized?: boolean
+  secret?: string
+  ttl?: number
 }
 
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
+
+    /**
+     * Global options passed to all `EventBusService.emit` in the core as well as your own emitters. The options are forwarded to Bull's `Queue.add` method.
+     *
+     * The global options can be overridden by passing options to `EventBusService.emit` directly.
+     *
+     * Note: This will be deprecated as we move to Event Bus module in 1.8
+     *
+     *
+     * Example
+     * ```js
+     * {
+     *    removeOnComplete: { age: 10 },
+     * }
+     * ```
+     *
+     * @see https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueadd
+     */
+    event_options?: Record<string, unknown> & EmitOptions
+
+    session_options?: SessionOptions
 
     jwt_secret?: string
     cookie_secret?: string
@@ -77,7 +152,10 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<string, false | string | ConfigurableModuleDeclaration>
+  modules?: Record<
+    string,
+    false | string | Partial<ConfigurableModuleDeclaration>
+  >
   moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {

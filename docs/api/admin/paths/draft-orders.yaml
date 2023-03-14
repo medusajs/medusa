@@ -8,15 +8,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostDraftOrdersReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/draft-orders/postundefined
+        $ref: ../code_samples/JavaScript/draft-orders/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/draft-orders/postundefined
+        $ref: ../code_samples/Shell/draft-orders/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -28,10 +30,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              draft_order:
-                $ref: ../components/schemas/DraftOrder.yaml
+            $ref: ../components/schemas/AdminDraftOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -69,15 +68,18 @@ get:
         display IDs of draft orders
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetDraftOrdersParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/draft-orders/getundefined
+        $ref: ../code_samples/JavaScript/draft-orders/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/draft-orders/getundefined
+        $ref: ../code_samples/Shell/draft-orders/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -89,21 +91,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              draft_orders:
-                type: array
-                items:
-                  $ref: ../components/schemas/DraftOrder.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminDraftOrdersListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

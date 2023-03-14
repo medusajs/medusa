@@ -5,18 +5,24 @@ description: >-
 type: object
 required:
   - claim_order_id
+  - created_at
+  - deleted_at
+  - id
   - item_id
-  - variant_id
-  - reason
+  - metadata
+  - note
   - quantity
+  - reason
+  - updated_at
+  - variant_id
 properties:
   id:
-    type: string
     description: The claim item's ID
+    type: string
     example: citm_01G8ZH853Y6TFXWPG5EYE81X63
   images:
-    type: array
     description: Available if the relation `images` is expanded.
+    type: array
     items:
       $ref: ./ClaimImage.yaml
   claim_order_id:
@@ -24,6 +30,7 @@ properties:
     type: string
   claim_order:
     description: A claim order object. Available if the relation `claim_order` is expanded.
+    nullable: true
     type: object
   item_id:
     description: The ID of the line item that the claim item refers to.
@@ -31,6 +38,7 @@ properties:
     example: item_01G8ZM25TN49YV9EQBE2NC27KC
   item:
     description: Available if the relation `item` is expanded.
+    nullable: true
     $ref: ./LineItem.yaml
   variant_id:
     description: The ID of the product variant that is claimed.
@@ -38,7 +46,8 @@ properties:
     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
   variant:
     description: A variant object. Available if the relation `variant` is expanded.
-    type: object
+    nullable: true
+    $ref: ./ProductVariant.yaml
   reason:
     description: The reason for the claim
     type: string
@@ -49,6 +58,7 @@ properties:
       - other
   note:
     description: An optional note about the claim, for additional information
+    nullable: true
     type: string
     example: I don't like it.
   quantity:
@@ -65,19 +75,21 @@ properties:
     items:
       $ref: ./ClaimTag.yaml
   created_at:
-    type: string
     description: The date with timezone at which the resource was created.
+    type: string
     format: date-time
   updated_at:
-    type: string
     description: The date with timezone at which the resource was updated.
+    type: string
     format: date-time
   deleted_at:
-    type: string
     description: The date with timezone at which the resource was deleted.
+    nullable: true
+    type: string
     format: date-time
   metadata:
-    type: object
     description: An optional key-value map with additional details
+    nullable: true
+    type: object
     example:
       car: white

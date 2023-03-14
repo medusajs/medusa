@@ -1,0 +1,145 @@
+post:
+  operationId: PostProductCategories
+  summary: Create a Product Category
+  description: Creates a Product Category.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: (Comma separated) Which fields should be retrieved in the results.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostProductCategoriesReq.yaml
+  x-codegen:
+    method: create
+    queryParams: AdminPostProductCategoriesParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/product-categories/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/product-categories/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Product Category
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductCategoriesCategoryRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+get:
+  operationId: GetProductCategories
+  summary: List Product Categories
+  description: Retrieve a list of product categories.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: q
+      description: Query used for searching product category names orhandles.
+      schema:
+        type: string
+    - in: query
+      name: is_internal
+      description: Search for only internal categories.
+      schema:
+        type: boolean
+    - in: query
+      name: is_active
+      description: Search for only active categories
+      schema:
+        type: boolean
+    - in: query
+      name: parent_category_id
+      description: Returns categories scoped by parent
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many product categories to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of product categories returned.
+      schema:
+        type: integer
+        default: 100
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in the product
+        category.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in the product
+        category.
+      schema:
+        type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetProductCategoriesParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/product-categories/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/product-categories/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Product Category
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductCategoriesListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

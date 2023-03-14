@@ -11,13 +11,15 @@ import { TokenEvents } from "../../../../types/token"
 /**
  * @oas [post] /orders/batch/customer/token
  * operationId: "PostOrdersCustomerOrderClaim"
- * summary: "Claim orders for signed in account"
+ * summary: "Claim an Order"
  * description: "Sends an email to emails registered to orders provided with link to transfer order ownership"
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostCustomersCustomerOrderClaimReq"
+ * x-codegen:
+ *   method: requestCustomerOrders
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

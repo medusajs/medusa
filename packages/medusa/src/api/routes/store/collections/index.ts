@@ -34,10 +34,35 @@ export const allowedFields = [
   ...defaultStoreCollectionRelations,
 ]
 
+/**
+ * @schema StoreCollectionsListRes
+ * type: object
+ * properties:
+ *   collections:
+ *      type: array
+ *      items:
+ *        $ref: "#/components/schemas/ProductCollection"
+ *   count:
+ *      type: integer
+ *      description: The total number of items available
+ *   offset:
+ *      type: integer
+ *      description: The number of items skipped before these items
+ *   limit:
+ *      type: integer
+ *      description: The number of items per page
+ */
 export type StoreCollectionsListRes = PaginatedResponse & {
   collections: ProductCollection[]
 }
 
+/**
+ * @schema StoreCollectionsRes
+ * type: object
+ * properties:
+ *   collection:
+ *     $ref: "#/components/schemas/ProductCollection"
+ */
 export type StoreCollectionsRes = {
   collection: ProductCollection
 }

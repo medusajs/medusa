@@ -8,15 +8,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostNotesReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/notes/postundefined
+        $ref: ../code_samples/JavaScript/notes/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/notes/postundefined
+        $ref: ../code_samples/Shell/notes/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -28,10 +30,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              note:
-                $ref: ../components/schemas/Note.yaml
+            $ref: ../components/schemas/AdminNotesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -67,15 +66,18 @@ get:
       description: The ID which the notes belongs to
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetNotesParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/notes/getundefined
+        $ref: ../code_samples/JavaScript/notes/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/notes/getundefined
+        $ref: ../code_samples/Shell/notes/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -87,21 +89,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              notes:
-                type: array
-                items:
-                  $ref: ../components/schemas/Note.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminNotesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

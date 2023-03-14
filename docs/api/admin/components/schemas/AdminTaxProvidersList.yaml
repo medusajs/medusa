@@ -1,0 +1,6 @@
+type: object
+properties:
+  tax_providers:
+    type: array
+    items:
+      $ref: ./TaxProvider.yaml

@@ -16,6 +16,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostCollectionsCollectionReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -49,10 +51,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/ProductCollection"
+ *          $ref: "#/components/schemas/AdminCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -11,7 +11,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
- * summary: "Delete a batch of resources from a discount condition"
+ * summary: "Delete Batch Resources"
  * description: "Delete a batch of resources from a discount condition."
  * x-authenticated: true
  * parameters:
@@ -24,6 +24,8 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: deleteConditionResourceBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -57,10 +59,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/Discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -123,6 +122,7 @@ export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends 
  *     description: The resources to be deleted from the discount condition
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

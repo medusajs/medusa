@@ -11,7 +11,7 @@ import {
 /**
  * @oas [post] /order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
- * summary: "Updates an OrderEdit"
+ * summary: "Update an OrderEdit"
  * description: "Updates a OrderEdit."
  * x-authenticated: true
  * parameters:
@@ -21,6 +21,8 @@ import {
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrderEditsOrderEditReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -54,10 +56,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

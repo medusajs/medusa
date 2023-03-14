@@ -8,6 +8,8 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  * description: "Retrieves a list of Shipping Options available to a cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart.
+ * x-codegen:
+ *   method: listCartOptions
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,12 +32,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             shipping_options:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/ShippingOption"
+ *           $ref: "#/components/schemas/StoreShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

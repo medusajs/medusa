@@ -168,15 +168,18 @@ get:
         resulting orders.
       schema:
         type: string
+  x-codegen:
+    method: listOrders
+    queryParams: StoreGetCustomersCustomerOrdersParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers_me_orders/getundefined
+        $ref: ../code_samples/JavaScript/customers_me_orders/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers_me_orders/getundefined
+        $ref: ../code_samples/Shell/customers_me_orders/get.sh
   security:
     - cookie_auth: []
   tags:
@@ -187,21 +190,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              orders:
-                type: array
-                items:
-                  $ref: ../components/schemas/Order.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/StoreCustomersListOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

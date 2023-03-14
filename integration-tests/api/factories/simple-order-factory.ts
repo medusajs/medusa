@@ -1,10 +1,11 @@
 import { Connection } from "typeorm"
 import faker from "faker"
 import {
-  Customer,
+  Discount,
+  FulfillmentStatus,
   Order,
   PaymentStatus,
-  FulfillmentStatus,
+  Refund,
 } from "@medusajs/medusa"
 import {
   DiscountFactoryData,
@@ -46,11 +47,12 @@ export type OrderFactoryData = {
   shipping_address?: AddressFactoryData
   shipping_methods?: ShippingMethodFactoryData[]
   sales_channel?: SalesChannelFactoryData
+  refunds: Refund[]
 }
 
 export const simpleOrderFactory = async (
   connection: Connection,
-  data: OrderFactoryData = {},
+  data: OrderFactoryData = {} as OrderFactoryData,
   seed?: number
 ): Promise<Order> => {
   if (typeof seed !== "undefined") {
@@ -62,17 +64,19 @@ export const simpleOrderFactory = async (
   let currencyCode: string
   let regionId: string
   let taxRate: number
+
   if (typeof data.region === "string") {
-    currencyCode = data.currency_code
+    currencyCode = data.currency_code as string
     regionId = data.region
-    taxRate = data.tax_rate
+    taxRate = data.tax_rate as number
   } else {
     const region = await simpleRegionFactory(connection, data.region)
     taxRate =
-      typeof data.tax_rate !== "undefined" ? data.tax_rate : region.tax_rate
+      (typeof data.tax_rate !== "undefined" ? data.tax_rate : region.tax_rate) as number
     currencyCode = region.currency_code
     regionId = region.id
   }
+
   const address = await simpleAddressFactory(connection, data.shipping_address)
 
   const customer = await simpleCustomerFactory(connection, {
@@ -80,7 +84,7 @@ export const simpleOrderFactory = async (
     email: data.email ?? undefined,
   })
 
-  let discounts = []
+  let discounts: Discount[] = []
   if (typeof data.discounts !== "undefined") {
     discounts = await Promise.all(
       data.discounts.map((d) => simpleDiscountFactory(connection, d, seed))
@@ -109,6 +113,7 @@ export const simpleOrderFactory = async (
     tax_rate: taxRate,
     shipping_address_id: address.id,
     sales_channel_id: sales_channel?.id ?? null,
+    refunds: data.refunds ?? []
   })
 
   const order = await manager.save(toSave)
@@ -131,7 +136,7 @@ export const simpleOrderFactory = async (
     }) || []
 
   for (const item of items) {
-    await simpleLineItemFactory(connection, { ...item, order_id: id })
+    await simpleLineItemFactory(connection, { ...item, order_id: id } as unknown as LineItemFactoryData)
   }
 
   return order

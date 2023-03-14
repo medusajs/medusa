@@ -1,3 +1,8 @@
+---
+description: 'Learn how to implement region-related functionalities on your storefront using the REST APIs. This includes showing the customer available regions, showing product prices, and setting the region of a cart.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -23,15 +28,23 @@ You want to implement the following in your storefront:
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.md) or [Gatsby](../../starters/gatsby-medusa-starter.md) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
+For requests that use the cart, it's also assumed you already have [used CartProvider higher in your component tree](../../medusa-react/overview.md#cartprovider).
 
 ---
 
@@ -44,26 +57,55 @@ You can retrieve available regions by sending a request to the [List Regions](/a
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.regions.list()
 .then(({ regions }) => {
-  console.log(regions.length);
-  //show customers available regions
-});
+  console.log(regions.length)
+  // show customers available regions
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Region } from "@medusajs/medusa"
+import { useRegions } from "medusa-react"
+
+const Regions = () => {
+  const { regions, isLoading } = useRegions()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {regions?.length && (
+        <ul>
+          {regions.map((region: Region) => (
+            <li key={region.id}>
+              {region.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Regions
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```tsx
+```ts
 fetch(`<SERVER_URL>/store/regions`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ regions }) => {
-  console.log(regions.length);
-  //show customers available regions
-});
+  console.log(regions.length)
+  // show customers available regions
+})
 ```
 
 </TabItem>
@@ -84,28 +126,51 @@ For example:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.products.list({
-  region_id: regionId
+  region_id: regionId,
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-  //show customer the products
-});
+  console.log(products.length)
+  // show customer the products
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { formatVariantPrice } from "medusa-react"
+
+const Product = () => {
+  // retrieve the region and variant(s)
+  // ...
+
+  return (
+    <span>
+      {formatVariantPrice({
+        variant, // ProductVariant
+        region, // Region
+      })}
+    </span>
+  )
+}
+
+export default Product
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```tsx
+```ts
 fetch(`<SERVER_URL>/store/products?region_id=${regionId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-  //show customer the products
-});
+  console.log(products.length)
+  // show customer the products
+})
 ```
 
 </TabItem>
@@ -134,30 +199,53 @@ For example:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.carts.update(cartId, {
-  region_id: regionId
+  region_id: regionId,
 })
 .then(({ cart }) => {
-  console.log(cart.id);
-});
+  console.log(cart.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const changeRegionId = (region_id: string) => {
+    updateCart.mutate({
+      region_id,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```tsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    region_id: regionId
-  })
+    region_id: regionId,
+  }),
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.id);
-});
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -169,7 +257,7 @@ This request returns the full object of the updated cart.
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to implement cart functionalities in your storefront](../../guides/carts-in-medusa.mdx)
-- Learn [how to implement checkout in your storefront](./how-to-implement-checkout-flow.mdx)
+- [Implement cart functionalities in your storefront](../../guides/carts-in-medusa.mdx)
+- [Implement checkout in your storefront](./how-to-implement-checkout-flow.mdx)

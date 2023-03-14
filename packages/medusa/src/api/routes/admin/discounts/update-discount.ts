@@ -37,6 +37,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDiscountsDiscountReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostDiscountsDiscountParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -70,10 +73,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/Discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

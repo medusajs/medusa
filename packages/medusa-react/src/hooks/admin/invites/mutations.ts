@@ -1,11 +1,15 @@
-import { buildOptions } from "../../utils/buildOptions"
 import {
   AdminInviteDeleteRes,
   AdminPostInvitesInviteAcceptReq,
 } from "@medusajs/medusa"
-import { Response, AdminPostInvitesPayload } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import { AdminPostInvitesPayload, Response } from "@medusajs/medusa-js"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
+import { buildOptions } from "../../utils/buildOptions"
 import { adminInviteKeys } from "./queries"
 
 export const useAdminAcceptInvite = (

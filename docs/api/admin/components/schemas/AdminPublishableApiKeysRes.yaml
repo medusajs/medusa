@@ -1,0 +1,4 @@
+type: object
+properties:
+  publishable_api_key:
+    $ref: ./PublishableApiKey.yaml

@@ -1,0 +1,9 @@
+type: object
+properties:
+  id:
+    description: The id of the location
+  location_levels:
+    description: List of stock levels at a given location
+    type: array
+    items:
+      $ref: ./InventoryLevelDTO.yaml

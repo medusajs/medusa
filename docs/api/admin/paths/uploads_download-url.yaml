@@ -1,0 +1,43 @@
+post:
+  operationId: PostUploadsDownloadUrl
+  summary: Get a File's Download URL
+  description: Creates a presigned download url for a file
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostUploadsDownloadUrlReq.yaml
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/uploads_download-url/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/uploads_download-url/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Upload
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminUploadsDownloadUrlRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

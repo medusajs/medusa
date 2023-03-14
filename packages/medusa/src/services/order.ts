@@ -17,35 +17,39 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink,
+  TrackingLink
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType,
+  FulFillmentItemType
 } from "../types/fulfillment"
-import { UpdateOrderInput } from "../types/orders"
+import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import CartService from "./cart"
-import CustomerService from "./customer"
-import DiscountService from "./discount"
-import DraftOrderService from "./draft-order"
-import EventBusService from "./event-bus"
-import FulfillmentService from "./fulfillment"
-import FulfillmentProviderService from "./fulfillment-provider"
-import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ShippingOptionService from "./shipping-option"
-import ShippingProfileService from "./shipping-profile"
-import TotalsService from "./totals"
-import { NewTotalsService, TaxProviderService } from "./index"
+
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  EventBusService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService
+} from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -68,13 +72,9 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
-  inventoryService: InventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
-}
-
-type TotalsConfig = {
-  force_taxes?: boolean
+  productVariantInventoryService: ProductVariantInventoryService
 }
 
 class OrderService extends TransactionBaseService {
@@ -117,9 +117,10 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
-  protected readonly inventoryService_: InventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -140,9 +141,9 @@ class OrderService extends TransactionBaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
-    inventoryService,
     eventBusService,
     featureFlagRouter,
+    productVariantInventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -166,8 +167,8 @@ class OrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
-    this.inventoryService_ = inventoryService
     this.featureFlagRouter_ = featureFlagRouter
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**
@@ -220,6 +221,7 @@ class OrderService extends TransactionBaseService {
         alias: "order",
         innerJoin: {
           shipping_address: "order.shipping_address",
+          customer: "order.customer",
         },
       }
 
@@ -233,6 +235,9 @@ class OrderService extends TransactionBaseService {
             })
               .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+              .orWhere(`customer.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.phone ILIKE :q`, { q: `%${q}%` })
           })
         )
       }
@@ -313,7 +318,7 @@ class OrderService extends TransactionBaseService {
       select = select.filter((v) => !totalFields.includes(v))
     }
 
-    const toSelect = select
+    const toSelect = [...select]
     if (toSelect.length > 0 && toSelect.indexOf("tax_rate") === -1) {
       toSelect.push("tax_rate")
     }
@@ -413,12 +418,12 @@ class OrderService extends TransactionBaseService {
   async retrieveWithTotals(
     orderId: string,
     options: FindConfig<Order> = {},
-    totalsConfig: TotalsConfig = {}
+    context: TotalsContext = {}
   ): Promise<Order> {
     const relations = this.getTotalsRelations(options)
     const order = await this.retrieve(orderId, { ...options, relations })
 
-    return await this.decorateTotals(order, totalsConfig)
+    return await this.decorateTotals(order, context)
   }
 
   /**
@@ -516,10 +521,12 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      await this.eventBus_.emit(OrderService.Events.COMPLETED, {
-        id: orderId,
-        no_notification: order.no_notification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.COMPLETED, {
+          id: orderId,
+          no_notification: order.no_notification,
+        })
 
       order.status = OrderStatus.COMPLETED
 
@@ -536,7 +543,6 @@ class OrderService extends TransactionBaseService {
   async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
       const exists = !!(await this.retrieveByCartId(
         isString(cartOrId) ? cartOrId : cartOrId?.id,
@@ -566,23 +572,6 @@ class OrderService extends TransactionBaseService {
       }
 
       const { payment, region, total } = cart
-
-      await Promise.all(
-        cart.items.map(async (lineItem) => {
-          return await inventoryServiceTx.confirmInventory(
-            lineItem.variant_id,
-            lineItem.quantity
-          )
-        })
-      ).catch(async (err) => {
-        if (payment) {
-          await this.paymentProviderService_
-            .withTransaction(manager)
-            .cancelPayment(payment)
-        }
-        await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-        throw err
-      })
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -703,22 +692,18 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         [
-          cart.items.map((lineItem) => {
-            const lineItemPromises: unknown[] = [
+          cart.items.map((lineItem): unknown[] => {
+            const toReturn: unknown[] = [
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
-              inventoryServiceTx.adjustInventory(
-                lineItem.variant_id,
-                -lineItem.quantity
-              ),
             ]
 
             if (lineItem.is_giftcard) {
-              lineItemPromises.push(
+              toReturn.push(
                 this.createGiftCardsFromLineItem_(order, lineItem, manager)
               )
             }
 
-            return lineItemPromises
+            return toReturn
           }),
           cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
@@ -916,8 +901,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.billing_address = addrRepo.create({ ...address })
     }
   }
 
@@ -954,8 +938,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.shipping_address = addrRepo.create({ ...address })
     }
   }
 
@@ -1115,6 +1098,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "refunds",
           "fulfillments",
           "payments",
           "returns",
@@ -1155,10 +1139,20 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
-      for (const item of order.items) {
-        await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
-      }
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
+      await Promise.all(
+        order.items.map(async (item) => {
+          if (item.variant_id) {
+            return await inventoryServiceTx.deleteReservationsByLineItem(
+              item.id,
+              item.variant_id,
+              item.quantity
+            )
+          }
+        })
+      )
 
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)
@@ -1272,7 +1266,7 @@ class OrderService extends TransactionBaseService {
       return null
     }
 
-    if (quantity > item.quantity - item.fulfilled_quantity) {
+    if (quantity > item.quantity - item.fulfilled_quantity!) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot fulfill more items than have been purchased"
@@ -1299,13 +1293,11 @@ class OrderService extends TransactionBaseService {
     itemsToFulfill: FulFillmentItemType[],
     config: {
       no_notification?: boolean
+      location_id?: string
       metadata?: Record<string, unknown>
-    } = {
-      no_notification: undefined,
-      metadata: {},
-    }
+    } = {}
   ): Promise<Order> {
-    const { metadata, no_notification } = config
+    const { metadata, no_notification, location_id } = config
 
     return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
@@ -1358,9 +1350,12 @@ class OrderService extends TransactionBaseService {
           order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
-            metadata,
+            metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
+          },
+          {
+            locationId: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
@@ -1403,14 +1398,15 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const eventBusTx = this.eventBus_.withTransaction(manager)
-      for (const fulfillment of fulfillments) {
-        await eventBusTx.emit(OrderService.Events.FULFILLMENT_CREATED, {
+      const eventsToEmit = fulfillments.map((fulfillment) => ({
+        eventName: OrderService.Events.FULFILLMENT_CREATED,
+        data: {
           id: orderId,
           fulfillment_id: fulfillment.id,
           no_notification: evaluatedNoNotification,
-        })
-      }
+        },
+      }))
+      await this.eventBus_.withTransaction(manager).emit(eventsToEmit)
 
       return result
     })
@@ -1567,11 +1563,13 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      await this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-        id: result.id,
-        refund_id: refund.id,
-        no_notification: evaluatedNoNotification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.REFUND_CREATED, {
+          id: result.id,
+          refund_id: refund.id,
+          no_notification: evaluatedNoNotification,
+        })
       return result
     })
   }
@@ -1705,17 +1703,24 @@ class OrderService extends TransactionBaseService {
     return order
   }
 
+  async decorateTotals(order: Order, totalsFields?: string[]): Promise<Order>
+
+  async decorateTotals(order: Order, context?: TotalsContext): Promise<Order>
+
   /**
    * Calculate and attach the different total fields on the object
    * @param order
-   * @param totalsFieldsOrConfig
+   * @param totalsFieldsOrContext
    */
   async decorateTotals(
     order: Order,
-    totalsFieldsOrConfig?: string[] | TotalsConfig
+    totalsFieldsOrContext?: string[] | TotalsContext
   ): Promise<Order> {
-    if (Array.isArray(totalsFieldsOrConfig)) {
-      return await this.decorateTotalsLegacy(order, totalsFieldsOrConfig)
+    if (Array.isArray(totalsFieldsOrContext)) {
+      if (totalsFieldsOrContext.length) {
+        return await this.decorateTotalsLegacy(order, totalsFieldsOrContext)
+      }
+      totalsFieldsOrContext = {}
     }
 
     const manager = this.transactionManager_ ?? this.manager_
@@ -1724,10 +1729,31 @@ class OrderService extends TransactionBaseService {
     const calculationContext = await this.totalsService_.getCalculationContext(
       order
     )
-    const orderItems = [...(order.items ?? [])]
+
+    const { returnable_items } = totalsFieldsOrContext?.includes ?? {}
+
+    const returnableItems: LineItem[] | undefined = isDefined(returnable_items)
+      ? []
+      : undefined
+
+    const isReturnableItem = (item) =>
+      returnable_items &&
+      (item.returned_quantity ?? 0) < (item.shipped_quantity ?? 0)
+
+    const allItems: LineItem[] = [...(order.items ?? [])]
+
+    if (returnable_items) {
+      // All items must receive their totals and if some of them are returnable
+      // They will be pushed to `returnable_items` at a later point
+      allItems.push(
+        ...(order.swaps?.map((s) => s.additional_items ?? []).flat() ?? []),
+        ...(order.claims?.map((c) => c.additional_items ?? []).flat() ?? [])
+      )
+    }
+
     const orderShippingMethods = [...(order.shipping_methods ?? [])]
 
-    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(orderItems, {
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(allItems, {
       taxRate: order.tax_rate,
       includeTax: true,
       calculationContext,
@@ -1755,28 +1781,23 @@ class OrderService extends TransactionBaseService {
     let shipping_tax_total = 0
 
     order.items = (order.items || []).map((item) => {
-      const refundable = newTotalsServiceTx.getLineItemRefund(
-        {
-          ...item,
-          quantity: item.quantity - (item.returned_quantity || 0),
-        },
-        {
-          calculationContext,
-          taxRate: order.tax_rate,
-        }
-      )
+      item.quantity = item.quantity - (item.returned_quantity || 0)
+      const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+        calculationContext,
+        taxRate: order.tax_rate,
+      })
 
-      const itemWithTotals = {
-        ...item,
-        ...(itemsTotals[item.id] ?? {}),
-        refundable,
+      Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
+
+      order.subtotal += item.subtotal ?? 0
+      order.discount_total += item.discount_total ?? 0
+      item_tax_total += item.tax_total ?? 0
+
+      if (isReturnableItem(item)) {
+        returnableItems?.push(item)
       }
 
-      order.subtotal += itemWithTotals.subtotal ?? 0
-      order.discount_total += itemWithTotals.discount_total ?? 0
-      item_tax_total += itemWithTotals.tax_total ?? 0
-
-      return itemWithTotals as LineItem
+      return item
     })
 
     order.shipping_methods = (order.shipping_methods || []).map(
@@ -1809,32 +1830,36 @@ class OrderService extends TransactionBaseService {
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
-        item.refundable = newTotalsServiceTx.getLineItemRefund(
-          {
-            ...item,
-            quantity: item.quantity - (item.returned_quantity || 0),
-          },
-          {
-            calculationContext,
-            taxRate: order.tax_rate,
-          }
-        )
+        item.quantity = item.quantity - (item.returned_quantity || 0)
+        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+          calculationContext,
+          taxRate: order.tax_rate,
+        })
+
+        Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
+
+        if (isReturnableItem(item)) {
+          returnableItems?.push(item)
+        }
+
         return item
       })
     }
 
     for (const claim of order.claims ?? []) {
       claim.additional_items = claim.additional_items.map((item) => {
-        item.refundable = newTotalsServiceTx.getLineItemRefund(
-          {
-            ...item,
-            quantity: item.quantity - (item.returned_quantity || 0),
-          },
-          {
-            calculationContext,
-            taxRate: order.tax_rate,
-          }
-        )
+        item.quantity = item.quantity - (item.returned_quantity || 0)
+        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+          calculationContext,
+          taxRate: order.tax_rate,
+        })
+
+        Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
+
+        if (isReturnableItem(item)) {
+          returnableItems?.push(item)
+        }
+
         return item
       })
     }
@@ -1844,6 +1869,8 @@ class OrderService extends TransactionBaseService {
       order.shipping_total +
       order.tax_total -
       (order.gift_card_total + order.discount_total)
+
+    order.returnable_items = returnableItems
 
     return order
   }
@@ -1886,7 +1913,7 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const refundAmount = customRefundAmount || receivedReturn.refund_amount
+      const refundAmount = customRefundAmount ?? receivedReturn.refund_amount
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
@@ -1910,10 +1937,10 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      if (receivedReturn.refund_amount > 0) {
+      if (refundAmount > 0) {
         const refund = await this.paymentProviderService_
           .withTransaction(manager)
-          .refundPayment(order.payments, receivedReturn.refund_amount, "return")
+          .refundPayment(order.payments, refundAmount, "return")
 
         order.refunds = [...(order.refunds || []), refund]
       }

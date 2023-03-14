@@ -15,15 +15,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostRegionsRegionCountriesReq.yaml
+  x-codegen:
+    method: addCountry
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/regions_{id}_countries/postundefined
+        $ref: ../code_samples/JavaScript/regions_{id}_countries/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/regions_{id}_countries/postundefined
+        $ref: ../code_samples/Shell/regions_{id}_countries/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -35,10 +37,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              region:
-                $ref: ../components/schemas/Region.yaml
+            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

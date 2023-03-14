@@ -1,6 +1,6 @@
 post:
   operationId: PostPaymentCollectionsSessionsBatchAuthorize
-  summary: Authorize Payment Sessions of a Payment Collection
+  summary: Authorize PaymentSessions
   description: Authorizes Payment Sessions of a Payment Collection.
   x-authenticated: false
   parameters:
@@ -16,31 +16,31 @@ post:
         schema:
           $ref: >-
             ../components/schemas/StorePostPaymentCollectionsBatchSessionsAuthorizeReq.yaml
+  x-codegen:
+    method: authorizePaymentSessionsBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/payment-collections_{id}_sessions_batch_authorize/postundefined
+          ../code_samples/JavaScript/payment-collections_{id}_sessions_batch_authorize/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/payment-collections_{id}_sessions_batch_authorize/postundefined
+          ../code_samples/Shell/payment-collections_{id}_sessions_batch_authorize/post.sh
   security:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Payment
+    - PaymentCollection
   responses:
     '200':
       description: OK
       content:
         application/json:
           schema:
-            properties:
-              payment_collection:
-                $ref: ../components/schemas/PaymentCollection.yaml
+            $ref: ../components/schemas/StorePaymentCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -19,6 +19,8 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminResetPasswordRequest"
+ * x-codegen:
+ *   method: resetPassword
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -54,10 +56,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             user:
- *               $ref: "#/components/schemas/User"
+ *           $ref: "#/components/schemas/AdminUserRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

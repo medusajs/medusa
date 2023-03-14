@@ -1,16 +1,19 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-
 import SwapService from "../swap"
-import { InventoryServiceMock } from "../__mocks__/inventory"
-import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import {
+  ProductVariantInventoryServiceMock
+} from "../__mocks__/product-variant-inventory"
+import {
+  LineItemAdjustmentServiceMock
+} from "../__mocks__/line-item-adjustment"
 import {
   CustomShippingOptionService,
   EventBusService,
   FulfillmentService,
-  InventoryService,
   LineItemService,
   OrderService,
   PaymentProviderService,
+  ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
   TotalsService,
@@ -66,6 +69,7 @@ const lineItemService = {
   create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
   update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
   retrieve: () => Promise.resolve({}),
+  list: () => Promise.resolve([]),
   createReturnLines: jest.fn(() => Promise.resolve()),
   withTransaction: function () {
     return this
@@ -104,7 +108,8 @@ const paymentProviderService = {
 
 const orderService = {} as unknown as OrderService
 const returnService = {} as unknown as ReturnService
-const inventoryService = {} as unknown as InventoryService
+const productVariantInventoryService =
+  {} as unknown as ProductVariantInventoryService
 const fulfillmentService = {} as unknown as FulfillmentService
 const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
 
@@ -119,7 +124,7 @@ const defaultProps = {
   totalsService: totalsService,
   eventBusService: eventBusService,
   lineItemService: lineItemService,
-  inventoryService: inventoryService,
+  productVariantInventoryService: productVariantInventoryService,
   fulfillmentService: fulfillmentService,
   shippingOptionService: shippingOptionService,
   paymentProviderService: paymentProviderService,
@@ -240,6 +245,7 @@ describe("SwapService", () => {
         create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         retrieve: () => Promise.resolve({}),
+        list: () => Promise.resolve([]),
         createReturnLines: jest.fn(() => Promise.resolve()),
         withTransaction: function () {
           return this
@@ -319,9 +325,14 @@ describe("SwapService", () => {
         expect(
           LineItemAdjustmentServiceMock.createAdjustmentForLineItem
         ).toHaveBeenCalledWith(
-          { id: "cart", items: [{
-            id: "test-item",
-          }] },
+          {
+            id: "cart",
+            items: [
+              {
+                id: "test-item",
+              },
+            ],
+          },
           {
             id: "test-item",
           }
@@ -395,7 +406,7 @@ describe("SwapService", () => {
       const lineItemService = {
         generate: jest
           .fn()
-          .mockImplementation((variantId, regionId, quantity) => {
+          .mockImplementation(({ variantId, quantity }) => {
             return {
               unit_price: 100,
               variant_id: variantId,
@@ -403,6 +414,7 @@ describe("SwapService", () => {
             }
           }),
         retrieve: () => Promise.resolve({}),
+        list: () => Promise.resolve([]),
         withTransaction: function () {
           return this
         },
@@ -436,11 +448,13 @@ describe("SwapService", () => {
         )
 
         expect(lineItemService.generate).toHaveBeenCalledTimes(1)
-        expect(lineItemService.generate).toHaveBeenCalledWith(
-          IdMap.getId("new-variant"),
-          IdMap.getId("region"),
-          1
-        )
+        expect(lineItemService.generate).toHaveBeenCalledWith({
+          quantity: 1,
+          variantId: IdMap.getId("new-variant")
+        }, {
+          "cart": undefined,
+          region_id: IdMap.getId("region")
+        })
       })
 
       it("creates swap", async () => {
@@ -533,6 +547,7 @@ describe("SwapService", () => {
       const lineItemService = {
         update: jest.fn(),
         retrieve: () => Promise.resolve({}),
+        list: () => Promise.resolve([]),
         withTransaction: function () {
           return this
         },
@@ -852,12 +867,12 @@ describe("SwapService", () => {
       },
     } as unknown as PaymentProviderService
 
-    const inventoryService = {
-      ...InventoryServiceMock,
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
       withTransaction: function () {
         return this
       },
-    } as unknown as InventoryService
+    } as unknown as ProductVariantInventoryService
 
     describe("success", () => {
       const cart = {
@@ -889,7 +904,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        inventoryService,
+        productVariantInventoryService,
       })
 
       it("creates a shipment", async () => {
@@ -899,14 +914,12 @@ describe("SwapService", () => {
           good: "yes",
         })
 
-        expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
-          "variant",
-          2
-        )
-        expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-          "variant",
-          -2
-        )
+        expect(
+          productVariantInventoryService.reserveQuantity
+        ).toHaveBeenCalledWith("variant", 2, {
+          lineItemId: "1",
+          salesChannelId: undefined,
+        })
 
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing,
@@ -950,7 +963,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        inventoryService,
+        productVariantInventoryService,
       })
 
       it("fails to register cart completion when swap is canceled", async () => {

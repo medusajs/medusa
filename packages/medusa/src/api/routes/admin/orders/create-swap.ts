@@ -16,12 +16,11 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /order/{id}/swaps
@@ -31,11 +30,16 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded the order of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included the order of the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsReq"
+ * x-codegen:
+ *   method: createSwap
+ *   queryParams: AdminPostOrdersOrderSwapsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -79,10 +83,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/Order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -99,7 +100,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderSwapsReq, req.body)
+  const validated = req.validatedBody
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
@@ -139,9 +140,9 @@ export default async (req, res) => {
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
                 const order = await orderService
                   .withTransaction(manager)
-                  .retrieve(id, {
-                    select: ["refunded_total", "total"],
+                  .retrieveWithTotals(id, {
                     relations: [
+                      "cart",
                       "items",
                       "items.tax_lines",
                       "swaps",
@@ -209,9 +210,8 @@ export default async (req, res) => {
 
                 const order = await orderService
                   .withTransaction(transactionManager)
-                  .retrieve(id, {
-                    select: defaultAdminOrdersFields,
-                    relations: defaultAdminOrdersRelations,
+                  .retrieveWithTotals(id, req.retrieveConfig, {
+                    includes: req.includes,
                   })
 
                 return {
@@ -263,6 +263,7 @@ export default async (req, res) => {
  *     description: The Line Items to return as part of the Swap.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -295,6 +296,7 @@ export default async (req, res) => {
  *     description: The new items to send to the Customer.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity
@@ -309,6 +311,7 @@ export default async (req, res) => {
  *     description: The custom shipping options to potentially create a Shipping Method from.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - option_id
  *         - price
@@ -409,3 +412,5 @@ class AdditionalItem {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderSwapsParams extends FindParams {}

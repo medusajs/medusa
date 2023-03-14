@@ -1,0 +1,150 @@
+delete:
+  operationId: DeleteInventoryItemsInventoryItem
+  summary: Delete an Inventory Item
+  description: Delete an Inventory Item
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Inventory Item to delete.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/inventory-items_{id}/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/inventory-items_{id}/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - InventoryItem
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminInventoryItemsDeleteRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+get:
+  operationId: GetInventoryItemsInventoryItem
+  summary: Retrive an Inventory Item.
+  description: Retrives an Inventory Item.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Inventory Item.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/inventory-items_{id}/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/inventory-items_{id}/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Inventory Items
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostInventoryItemsInventoryItem
+  summary: Update an Inventory Item.
+  description: Updates an Inventory Item.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Inventory Item.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostInventoryItemsInventoryItemReq.yaml
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/inventory-items_{id}/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/inventory-items_{id}/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Inventory Items
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminInventoryItemsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

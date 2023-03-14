@@ -8,6 +8,8 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Gift Card to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -35,19 +37,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Gift Card
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: gift-card
- *             deleted:
- *               type: boolean
- *               description: Whether the gift card was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminGiftCardsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

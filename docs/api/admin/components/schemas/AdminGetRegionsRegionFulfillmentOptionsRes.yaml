@@ -1,0 +1,17 @@
+type: object
+properties:
+  fulfillment_options:
+    type: array
+    items:
+      type: object
+      properties:
+        provider_id:
+          type: string
+          description: ID of the fulfillment provider
+        options:
+          type: array
+          description: fulfillment provider options
+          example:
+            - id: manual-fulfillment
+            - id: manual-fulfillment-return
+              is_return: true

@@ -1,0 +1,6 @@
+type: object
+properties:
+  return_reasons:
+    type: array
+    items:
+      $ref: ./ReturnReason.yaml

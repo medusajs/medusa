@@ -8,6 +8,8 @@ import UserService from "../../../../services/user"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the User.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -35,10 +37,7 @@ import UserService from "../../../../services/user"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             user:
- *               $ref: "#/components/schemas/User"
+ *           $ref: "#/components/schemas/AdminUserRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

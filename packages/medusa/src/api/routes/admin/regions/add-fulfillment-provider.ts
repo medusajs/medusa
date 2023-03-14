@@ -19,6 +19,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostRegionsRegionFulfillmentProvidersReq"
+ * x-codegen:
+ *   method: addFulfillmentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -52,10 +54,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/Region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

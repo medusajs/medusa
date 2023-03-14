@@ -1,0 +1,4 @@
+type: object
+properties:
+  stock_location:
+    $ref: ./StockLocationDTO.yaml

@@ -1,0 +1,4 @@
+type: object
+properties:
+  customer:
+    $ref: ./Customer.yaml

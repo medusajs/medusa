@@ -14,6 +14,7 @@ const {
   ShippingProfile,
   Swap,
 } = require("@medusajs/medusa")
+const { simpleSalesChannelFactory } = require("../factories")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -22,12 +23,21 @@ module.exports = async (connection, data = {}) => {
     type: "default",
   })
 
+  const salesChannel = await simpleSalesChannelFactory(connection, {
+    id: "test-channel",
+    is_default: true,
+  })
+
   await manager.insert(Product, {
     id: "test-product",
     title: "test product",
     profile_id: defaultProfile.id,
     options: [{ id: "test-option", title: "Size" }],
   })
+
+  await manager.query(
+    `insert into product_sales_channel values ('test-product', '${salesChannel.id}');`
+  )
 
   await manager.insert(ProductVariant, {
     id: "test-variant",

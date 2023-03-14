@@ -22,6 +22,8 @@ import { PaymentService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPaymentRefundsReq"
+ * x-codegen:
+ *   method: refundPayment
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -59,10 +61,7 @@ import { PaymentService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             refund:
- *               $ref: "#/components/schemas/Refund"
+ *           $ref: "#/components/schemas/AdminRefundRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

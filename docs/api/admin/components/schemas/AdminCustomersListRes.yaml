@@ -1,0 +1,15 @@
+type: object
+properties:
+  customers:
+    type: array
+    items:
+      $ref: ./Customer.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of items skipped before these items
+  limit:
+    type: integer
+    description: The number of items per page

@@ -1,26 +1,30 @@
 import MedusaError from "./error"
-import Client, { Config } from "./request"
-import Admin from "./resources/admin"
-import AuthResource from "./resources/auth"
-import CartsResource from "./resources/carts"
-import CollectionsResource from "./resources/collections"
-import CustomersResource from "./resources/customers"
-import GiftCardsResource from "./resources/gift-cards"
-import OrdersResource from "./resources/orders"
-import OrderEditsResource from "./resources/order-edits"
-import PaymentCollectionsResource from "./resources/payment-collections"
-import PaymentMethodsResource from "./resources/payment-methods"
-import ProductsResource from "./resources/products"
-import ProductTypesResource from "./resources/product-types"
-import RegionsResource from "./resources/regions"
-import ReturnReasonsResource from "./resources/return-reasons"
-import ReturnsResource from "./resources/returns"
-import ShippingOptionsResource from "./resources/shipping-options"
-import SwapsResource from "./resources/swaps"
 import KeyManager from "./key-manager"
+import Client, { Config } from "./request"
+import {
+  Admin,
+  AuthResource,
+  CartsResource,
+  CollectionsResource,
+  CustomersResource,
+  GiftCardsResource,
+  OrderEditsResource,
+  OrdersResource,
+  PaymentCollectionsResource,
+  PaymentMethodsResource,
+  ProductCategoriesResource,
+  ProductsResource,
+  ProductTagsResource,
+  ProductTypesResource,
+  RegionsResource,
+  ReturnReasonsResource,
+  ReturnsResource,
+  ShippingOptionsResource,
+  SwapsResource,
+} from "./resources"
 
 class Medusa {
-  private client: Client
+  public client: Client
   public admin: Admin
 
   public auth: AuthResource
@@ -40,6 +44,8 @@ class Medusa {
   public giftCards: GiftCardsResource
   public paymentMethods: PaymentMethodsResource
   public paymentCollections: PaymentCollectionsResource
+  public productTags: ProductTagsResource
+  public productCategories: ProductCategoriesResource
 
   constructor(config: Config) {
     this.client = new Client(config)
@@ -63,6 +69,8 @@ class Medusa {
     this.giftCards = new GiftCardsResource(this.client)
     this.paymentMethods = new PaymentMethodsResource(this.client)
     this.paymentCollections = new PaymentCollectionsResource(this.client)
+    this.productTags = new ProductTagsResource(this.client)
+    this.productCategories = new ProductCategoriesResource(this.client)
   }
 
   /**
@@ -77,6 +85,8 @@ class Medusa {
 }
 
 export default Medusa
+export { default as MedusaError } from "./error"
 export { default as KeyManager } from "./key-manager"
-
+export { Config, default as Client } from "./request"
+export * from "./resources"
 export * from "./typings"

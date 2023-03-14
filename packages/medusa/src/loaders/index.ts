@@ -115,17 +115,6 @@ export default async ({
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
-  const dbActivity = Logger.activity(`Initializing database${EOL}`)
-  track("DATABASE_INIT_STARTED")
-  const dbConnection = await databaseLoader({
-    container,
-    configModule,
-  })
-  const dbAct = Logger.success(dbActivity, "Database initialized") || {}
-  track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
-
-  container.register({ manager: asValue(dbConnection.manager) })
-
   const stratActivity = Logger.activity(`Initializing strategies${EOL}`)
   track("STRATEGIES_INIT_STARTED")
   strategiesLoader({ container, configModule, isTest })
@@ -137,6 +126,17 @@ export default async ({
   await moduleLoader({ container, configModule, logger: Logger })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+
+  const dbActivity = Logger.activity(`Initializing database${EOL}`)
+  track("DATABASE_INIT_STARTED")
+  const dbConnection = await databaseLoader({
+    container,
+    configModule,
+  })
+  const dbAct = Logger.success(dbActivity, "Database initialized") || {}
+  track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
+
+  container.register({ manager: asValue(dbConnection.manager) })
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")

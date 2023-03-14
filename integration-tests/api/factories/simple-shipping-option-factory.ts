@@ -7,28 +7,29 @@ import {
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
+import { simpleRegionFactory } from "./simple-region-factory"
 
 export type ShippingOptionFactoryData = {
   id?: string
   name?: string
-  region_id: string
+  region_id?: string
   is_return?: boolean
   is_giftcard?: boolean
   price?: number
   price_type?: ShippingOptionPriceType
   includes_tax?: boolean
   data?: object
-  requirements: ShippingOptionRequirementData[]
+  requirements?: ShippingOptionRequirementData[]
 }
 
 type ShippingOptionRequirementData = {
-  type: 'min_subtotal' | 'max_subtotal'
+  type: "min_subtotal" | "max_subtotal"
   amount: number
 }
 
 export const simpleShippingOptionFactory = async (
   connection: Connection,
-  data: ShippingOptionFactoryData,
+  data: ShippingOptionFactoryData = {},
   seed?: number
 ): Promise<ShippingOption> => {
   if (typeof seed !== "undefined") {
@@ -44,11 +45,18 @@ export const simpleShippingOptionFactory = async (
     type: ShippingProfileType.GIFT_CARD,
   })
 
+  let region_id = data.region_id
+
+  if (!region_id) {
+    const { id } = await simpleRegionFactory(connection)
+    region_id = id
+  }
+
   const shippingOptionData = {
     id: data.id ?? `simple-so-${Math.random() * 1000}`,
     name: data.name || "Test Method",
     is_return: data.is_return ?? false,
-    region_id: data.region_id,
+    region_id: region_id,
     provider_id: "test-ful",
     profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
     price_type: data.price_type ?? ShippingOptionPriceType.FLAT_RATE,

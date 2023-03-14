@@ -9,15 +9,17 @@ get:
       description: The id of the Cart.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/carts_{id}/getundefined
+        $ref: ../code_samples/JavaScript/carts_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}/getundefined
+        $ref: ../code_samples/Shell/carts_{id}/get.sh
   tags:
     - Cart
   responses:
@@ -26,10 +28,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              cart:
-                $ref: ../components/schemas/Cart.yaml
+            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':
@@ -56,15 +55,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostCartsCartReq.yaml
+  x-codegen:
+    method: update
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/carts_{id}/postundefined
+        $ref: ../code_samples/JavaScript/carts_{id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}/postundefined
+        $ref: ../code_samples/Shell/carts_{id}/post.sh
   tags:
     - Cart
   responses:
@@ -73,10 +74,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              cart:
-                $ref: ../components/schemas/Cart.yaml
+            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

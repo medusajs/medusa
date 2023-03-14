@@ -10,16 +10,17 @@ get:
       description: The ID of the Region.
       schema:
         type: string
+  x-codegen:
+    method: retrieveFulfillmentOptions
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/regions_{id}_fulfillment-options/getundefined
+        $ref: ../code_samples/JavaScript/regions_{id}_fulfillment-options/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/regions_{id}_fulfillment-options/getundefined
+        $ref: ../code_samples/Shell/regions_{id}_fulfillment-options/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -31,22 +32,8 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              fulfillment_options:
-                type: array
-                items:
-                  properties:
-                    provider_id:
-                      type: string
-                      description: ID of the fulfillment provider
-                    options:
-                      type: array
-                      description: fulfillment provider options
-                      example:
-                        - id: manual-fulfillment
-                        - id: manual-fulfillment-return
-                          is_return: true
+            $ref: >-
+              ../components/schemas/AdminGetRegionsRegionFulfillmentOptionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

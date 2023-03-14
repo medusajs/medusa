@@ -1,9 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-
-export const featureFlag = OrderEditingFeatureFlag.key
-
 export class lineItemOriginalItemRelation1663059812400
   implements MigrationInterface
 {

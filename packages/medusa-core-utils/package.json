@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.1.37",
+  "version": "1.1.39",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -14,13 +14,16 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "tsc --watch"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.1",
+    "class-validator": "^0.13.2",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.2",
+    "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },

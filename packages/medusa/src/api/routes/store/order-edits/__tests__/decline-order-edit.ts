@@ -1,7 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
-import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
 describe("GET /store/order-edits/:id/decline", () => {
   describe("successfully decline an order edit", () => {
@@ -18,7 +17,6 @@ describe("GET /store/order-edits/:id/decline", () => {
         `/store/order-edits/${orderEditId}/decline`,
         {
           payload,
-          flags: [OrderEditingFeatureFlag],
         }
       )
     })

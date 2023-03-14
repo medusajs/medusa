@@ -1,0 +1,205 @@
+post:
+  operationId: PostStockLocations
+  summary: Create a Stock Location
+  description: Creates a Stock Location.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostStockLocationsReq.yaml
+  x-codegen:
+    method: create
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/stock-locations/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/stock-locations/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Stock Location
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminStockLocationsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+get:
+  operationId: GetStockLocations
+  summary: List Stock Locations
+  description: Retrieves a list of stock locations
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: id
+      description: ID of the stock location
+      schema:
+        type: string
+    - in: query
+      name: name
+      description: Name of the stock location
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: The field to order the results by.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting collections were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting collections were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: deleted_at
+      description: Date comparison for when resulting collections were deleted.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: offset
+      description: How many stock locations to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of stock locations returned.
+      schema:
+        type: integer
+        default: 20
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each stock location
+        of the result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each stock location
+        of the result.
+      schema:
+        type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetStockLocationsParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/stock-locations/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/stock-locations/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminStockLocationsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

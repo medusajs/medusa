@@ -1,3 +1,8 @@
+---
+description: 'Learn how to import products into Medusa using the Admin REST APIs. The steps include uploading a CSV file, creating a batch job for the import, and confirming the batch job.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -9,11 +14,13 @@ In this document, you’ll learn how to use the Admin APIs to bulk import produc
 
 Using Medusa’s [Batch Job Admin APIs](https://docs.medusajs.com/api/admin/#tag/Batch-Job), you can import products into your Medusa server. This will either add new products or update existing products.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 
@@ -38,15 +45,23 @@ If you have Sales Channels enabled on your server, you must use [this CSV exampl
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
 You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
+
+---
 
 ## 1. Upload CSV File
 
@@ -57,32 +72,52 @@ You can do that by sending the following request to the [Upload Files](https://d
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.uploads.create(file) //file is an instance of File
+```ts
+medusa.admin.uploads.create(file) // file is an instance of File
 .then(({ uploads }) => {
-  const key = uploads[0].key;
-});
+  const key = uploads[0].key
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUploadFile } from "medusa-react"
+
+const ImportProducts = () => {
+  const uploadFile = useAdminUploadFile()
+  // ...
+
+  const handleFileUpload = (file: File) => {
+    uploadFile.mutate(file)
+  }
+
+  // ...
+}
+
+export default ImportProducts
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
-const formData = new FormData();
-formData.append('files', file); //file is an instance of File
+```ts
+const formData = new FormData()
+formData.append("files", file) // file is an instance of File
 
 fetch(`<YOUR_SERVER>/admin/uploads`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'multipart/form-data',
+    "Content-Type": "multipart/form-data",
   },
-  body: formData
+  body: formData,
 })
 .then((response) => response.json())
 .then(({ uploads }) => {
-  const key = uploads[0].key;
-});
+  const key = uploads[0].key
+})
 ```
 
 </TabItem>
@@ -100,6 +135,8 @@ curl -L -X POST '<YOUR_SERVER>/admin/uploads' \
 
 This request returns an array of uploads. Each item in the array is an object that includes the properties `url` and `key`. You’ll need the `key` to import the products next.
 
+---
+
 ## 2. Create a Batch Job for Product Import
 
 To start a new product import, you must create a batch job.
@@ -109,41 +146,67 @@ You can do that by sending the following request to the [Create a Batch Job](htt
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.batchJobs.create({
-  type: 'product-import',
+  type: "product-import",
   context: {
-    fileKey: key //obtained from previous step
+    fileKey: key, // obtained from previous step
   },
-  dry_run: true
+  dry_run: true,
 })
 .then(( batch_job ) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateBatchJob } from "medusa-react"
+
+const ImportProducts = () => {
+  const createBatchJob = useAdminCreateBatchJob()
+  // ...
+
+  const handleCreateBatchJob = () => {
+    createBatchJob.mutate({
+      type: "product-import",
+      context: {
+        fileKey: key, // obtained from previous step
+      },
+      dry_run: true,
+    })
+  }
+
+  // ...
+}
+
+export default ImportProducts
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    type: 'product-import',
+    type: "product-import",
     context: {
-      fileKey: key //obtained from previous step
+      fileKey: key, // obtained from previous step
     },
-    dry_run: true
-  })
+    dry_run: true,
+  }),
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
 ```
 
 </TabItem>
@@ -180,6 +243,8 @@ If you don’t set `dry_run` or you set it to `false`, you don’t need to follo
 
 :::
 
+---
+
 ## (Optional) Retrieve Batch Job
 
 After creating the batch job, it will be pre-processed. At this point, the CSV file will be validated, and the number of products to add and update, or that are rejected are counted.
@@ -189,24 +254,51 @@ You can retrieve all the details of the batch job, including its status and the 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.batchJobs.retrieve(batchJobId)
 .then(( batch_job ) => {
-  console.log(batch_job.status, batch_job.result);
-});
+  console.log(batch_job.status, batch_job.result)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminBatchJob } from "medusa-react"
+
+const ImportProducts = () => {
+  const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+  // ...
+
+  return (
+    <div>
+      {/* ... */}
+      {isLoading && <span>Loading</span>}
+      {batch_job && (
+        <span>
+          Status: {batch_job.status}. 
+          Number of Products: {batch_job.result.count}
+        </span>
+      )}
+    </div>
+  )
+}
+
+export default ImportProducts
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
-  console.log(batch_job.status, batch_job.result);
-});
+  console.log(batch_job.status, batch_job.result)
+})
 ```
 
 </TabItem>
@@ -234,12 +326,14 @@ Here’s an example of the `result` property:
         {
             "key": "product-import-count",
             "name": "Products/variants to import",
-            "message": "There will be 2 products created (0  updated).\n 3 variants will be created and 0 updated"
+            "message": "There will be 2 products created..."
         }
     ],
-    "advancement_count": 0 //number of products processed so far. Will be 0 before the import is confirmed.
+    "advancement_count": 0 //number of products processed so far.
 },
 ```
+
+---
 
 ## 3. Confirm Batch Job
 
@@ -250,25 +344,45 @@ To confirm a batch job send the following request:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.batchJobs.confirm(batchJobId)
 .then(( batch_job ) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminConfirmBatchJob } from "medusa-react"
+
+const ImportProducts = () => {
+  const confirmBatchJob = useAdminConfirmBatchJob(batchJobId)
+  // ...
+
+  const handleConfirmJob = () => {
+    confirmBatchJob.mutate()
+  }
+  
+  // ...
+}
+
+export default ImportProducts
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
 ```
 
 </TabItem>
@@ -293,7 +407,9 @@ After confirming the batch job, you can check the status while it is processing 
 - If the status is `failed`, it means an error has occurred during the import. You can check the error in `result.errors`.
 - If the status is `completed`, it means the import has finished successfully.
 
-## What’s Next
+---
 
-- Learn more about [Batch Jobs and how they work](../backend/batch-jobs/index.md).
-- Check out the [Batch Jobs API Reference](https://docs.medusajs.com/api/admin/#tag/Batch-Job).
+## See Also
+
+- [Batch Jobs Overview](../backend/batch-jobs/index.md)
+- [Batch Jobs API Reference](https://docs.medusajs.com/api/admin/#tag/Batch-Job)

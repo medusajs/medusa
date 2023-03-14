@@ -1,0 +1,15 @@
+type: object
+properties:
+  publishable_api_keys:
+    type: array
+    items:
+      $ref: ./PublishableApiKey.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of items skipped before these items
+  limit:
+    type: integer
+    description: The number of items per page

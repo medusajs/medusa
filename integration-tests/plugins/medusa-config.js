@@ -28,4 +28,16 @@ module.exports = {
     jwt_secret: "test",
     cookie_secret: "test",
   },
+  modules: {
+    stockLocationService: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/stock-location",
+    },
+    inventoryService: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/inventory",
+    },
+  },
 }

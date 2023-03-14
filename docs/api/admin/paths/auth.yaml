@@ -19,15 +19,17 @@ post:
             password:
               type: string
               description: The User's password.
+  x-codegen:
+    method: createSession
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/auth/postundefined
+        $ref: ../code_samples/JavaScript/auth/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/auth/postundefined
+        $ref: ../code_samples/Shell/auth/post.sh
   tags:
     - Auth
   responses:
@@ -36,10 +38,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              user:
-                $ref: ../components/schemas/User.yaml
+            $ref: ../components/schemas/AdminAuthRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -57,15 +56,17 @@ delete:
   summary: User Logout
   x-authenticated: true
   description: Deletes the current session for the logged in user.
+  x-codegen:
+    method: deleteSession
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/auth/deleteundefined
+        $ref: ../code_samples/JavaScript/auth/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/auth/deleteundefined
+        $ref: ../code_samples/Shell/auth/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -91,15 +92,17 @@ get:
   summary: Get Current User
   x-authenticated: true
   description: Gets the currently logged in User.
+  x-codegen:
+    method: getSession
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/auth/getundefined
+        $ref: ../code_samples/JavaScript/auth/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/auth/getundefined
+        $ref: ../code_samples/Shell/auth/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -111,10 +114,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              user:
-                $ref: ../components/schemas/User.yaml
+            $ref: ../components/schemas/AdminAuthRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

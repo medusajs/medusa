@@ -112,13 +112,6 @@ export default class NewTotalsService extends TransactionBaseService {
           lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
         })
       } else {
-        if (items.some((item) => !item.variant)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Unable to fetch tax lines to compute line item totals as one of the item variant is missing but required for the tax lines to be computed. Might be due to a missing relation items.variant"
-          )
-        }
-
         const { lineItemsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
           .getTaxLinesMap(items, calculationContext)
@@ -179,8 +172,7 @@ export default class NewTotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total =
-      (lineItemAllocation.discount?.unit_amount || 0) * item.quantity
+    const discount_total = lineItemAllocation.discount?.amount ?? 0
 
     const totals: LineItemTotals = {
       unit_price: item.unit_price,
@@ -199,7 +191,7 @@ export default class NewTotalsService extends TransactionBaseService {
         ? totals.tax_lines
         : (taxLines as LineItemTaxLine[])
 
-      if (!totals.tax_lines) {
+      if (!totals.tax_lines && item.variant_id) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           "Tax Lines must be joined to calculate taxes"
@@ -208,7 +200,7 @@ export default class NewTotalsService extends TransactionBaseService {
     }
 
     if (item.is_return) {
-      if (!isDefined(item.tax_lines)) {
+      if (!isDefined(item.tax_lines) && item.variant_id) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           "Return Line Items must join tax lines"
@@ -216,7 +208,7 @@ export default class NewTotalsService extends TransactionBaseService {
       }
     }
 
-    if (totals.tax_lines.length > 0) {
+    if (totals.tax_lines?.length > 0) {
       totals.tax_total = await this.taxCalculationStrategy_.calculate(
         [item],
         totals.tax_lines,
@@ -282,8 +274,7 @@ export default class NewTotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total =
-      (lineItemAllocation.discount?.unit_amount || 0) * item.quantity
+    const discount_total = lineItemAllocation.discount?.amount ?? 0
 
     const totals: LineItemTotals = {
       unit_price: item.unit_price,
@@ -435,8 +426,7 @@ export default class NewTotalsService extends TransactionBaseService {
         )
 
     const discountAmount =
-      (calculationContext.allocation_map[lineItem.id]?.discount?.unit_amount ||
-        0) * lineItem.quantity
+      calculationContext.allocation_map[lineItem.id]?.discount?.amount ?? 0
 
     const lineSubtotal =
       (lineItem.unit_price - taxAmountIncludedInPrice) * lineItem.quantity -

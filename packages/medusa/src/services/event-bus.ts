@@ -1,11 +1,14 @@
-import Bull from "bull"
+import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, In } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { ulid } from "ulid"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
+import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
-import JobSchedulerService from "./job-scheduler"
+import JobSchedulerService, { CreateJobOptions } from "./job-scheduler"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -18,13 +21,39 @@ type InjectedDependencies = {
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
 
-type EmitOptions = {
+type SubscriberContext = {
+  subscriberId: string
+}
+
+type BullJob<T> = {
+  update: (data: unknown) => void
+  attemptsMade: number
+  opts: EmitOptions
+  data: {
+    eventName: string
+    data: T
+    completedSubscriberIds: string[] | undefined
+  }
+}
+
+type SubscriberDescriptor = {
+  id: string
+  subscriber: Subscriber
+}
+
+export type EmitOptions = {
   delay?: number
-  attempts?: number
+  attempts: number
   backoff?: {
     type: "fixed" | "exponential"
     delay: number
   }
+} & JobOptions
+
+export type EmitData<T = unknown> = {
+  eventName: string
+  data: T
+  opts?: Record<string, unknown> & EmitOptions
 }
 
 /**
@@ -37,7 +66,10 @@ export default class EventBusService {
   protected readonly logger_: Logger
   protected readonly stagedJobRepository_: typeof StagedJobRepository
   protected readonly jobSchedulerService_: JobSchedulerService
-  protected readonly observers_: Map<string | symbol, Subscriber[]>
+  protected readonly eventToSubscribersMap_: Map<
+    string | symbol,
+    SubscriberDescriptor[]
+  >
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
   protected queue_: Bull
@@ -80,7 +112,7 @@ export default class EventBusService {
         },
       }
 
-      this.observers_ = new Map()
+      this.eventToSubscribersMap_ = new Map()
       this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
       this.redisClient_ = redisClient
       this.redisSubscriber_ = redisSubscriber
@@ -121,16 +153,42 @@ export default class EventBusService {
    * Adds a function to a list of event subscribers.
    * @param event - the event that the subscriber will listen for.
    * @param subscriber - the function to be called when a certain event
+   * @param context - context to use when attaching subscriber
    * happens. Subscribers must return a Promise.
    * @return this
    */
-  subscribe(event: string | symbol, subscriber: Subscriber): this {
+  subscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: SubscriberContext
+  ): this {
     if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
     }
 
-    const observers = this.observers_.get(event) ?? []
-    this.observers_.set(event, [...observers, subscriber])
+    /**
+     * If context is provided, we use the subscriberId from it
+     * otherwise we generate a random using a ulid
+     */
+    const subscriberId =
+      context?.subscriberId ?? `${event.toString()}-${ulid()}`
+
+    const newSubscriberDescriptor = { subscriber, id: subscriberId }
+
+    const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
+
+    const subscriberAlreadyExists = existingSubscribers.find(
+      (sub) => sub.id === subscriberId
+    )
+
+    if (subscriberAlreadyExists) {
+      throw Error(`Subscriber with id ${subscriberId} already exists`)
+    }
+
+    this.eventToSubscribersMap_.set(event, [
+      ...existingSubscribers,
+      newSubscriberDescriptor,
+    ])
 
     return this
   }
@@ -147,15 +205,27 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
-    if (this.observers_.get(event)?.length) {
-      const index = this.observers_.get(event)?.indexOf(subscriber)
-      if (index !== -1) {
-        this.observers_.get(event)?.splice(index as number, 1)
+    const existingSubscribers = this.eventToSubscribersMap_.get(event)
+
+    if (existingSubscribers?.length) {
+      const subIndex = existingSubscribers?.findIndex(
+        (sub) => sub.subscriber === subscriber
+      )
+
+      if (subIndex !== -1) {
+        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
       }
     }
 
     return this
   }
+
+  /**
+   * Calls all subscribers when an event occurs.
+   * @param data - The data to use to process the events
+   * @return the jobs from our queue
+   */
+  async emit<T>(data: EmitData<T>[]): Promise<StagedJob[] | void>
 
   /**
    * Calls all subscribers when an event occurs.
@@ -167,33 +237,78 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions = {}
-  ): Promise<StagedJob | void> {
+    options?: Record<string, unknown> & EmitOptions
+  ): Promise<StagedJob | void>
+
+  async emit<
+    T,
+    TInput extends string | EmitData<T>[] = string,
+    TResult = TInput extends EmitData<T>[] ? StagedJob[] : StagedJob
+  >(
+    eventNameOrData: TInput,
+    data?: T,
+    options: Record<string, unknown> & EmitOptions = {}
+  ): Promise<TResult | void> {
+    const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
+
+    const isBulkEmit = !isString(eventNameOrData)
+    const events = isBulkEmit
+      ? eventNameOrData.map((event) => ({
+          data: { eventName: event.eventName, data: event.data },
+          opts: event.opts,
+        }))
+      : [
+          {
+            data: { eventName: eventNameOrData, data },
+            opts: options,
+          },
+        ]
+
+    // The order of precedence for job options is:
+    // 1. local options
+    // 2. global options
+    // 3. default options
+    const defaultOptions: EmitOptions = {
+      attempts: 1, // default
+      removeOnComplete: true, // default
+      ...globalEventOptions, // global
+    }
+
+    for (const event of events) {
+      event.opts = {
+        ...defaultOptions,
+        ...(event.opts ?? {}), // local
+      }
+    }
+
+    /**
+     * If we are in an ongoing transaction, we store the jobs in the database
+     * instead of processing them immediately. We only want to process those
+     * events, if the transaction successfully commits. This is to avoid jobs
+     * being processed if the transaction fails.
+     *
+     * In case of a failing transaction, kobs stored in the database are removed
+     * as part of the rollback.
+     */
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
         this.stagedJobRepository_
       )
 
-      const stagedJobInstance = stagedJobRepository.create({
-        event_name: eventName,
-        data,
-      } as StagedJob)
-      return await stagedJobRepository.save(stagedJobInstance)
-    } else {
-      const opts: { removeOnComplete: boolean } & EmitOptions = {
-        removeOnComplete: true,
-      }
-      if (typeof options.attempts === "number") {
-        opts.attempts = options.attempts
-        if (typeof options.backoff !== "undefined") {
-          opts.backoff = options.backoff
-        }
-      }
-      if (typeof options.delay === "number") {
-        opts.delay = options.delay
-      }
-      this.queue_.add({ eventName, data }, opts)
+      const jobsToCreate = events.map((event) => {
+        return stagedJobRepository.create({
+          event_name: event.data.eventName,
+          data: event.data.data,
+          options: event.opts,
+        } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
+      })
+
+      const stagedJobs = await stagedJobRepository.insertBulk(jobsToCreate)
+
+      return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
     }
+
+    await this.queue_.addBulk(events)
   }
 
   startEnqueuer(): void {
@@ -219,18 +334,21 @@ export default class EventBusService {
       )
       const jobs = await stagedJobRepo.find(listConfig)
 
-      await Promise.all(
-        jobs.map((job) => {
-          this.queue_
-            .add(
-              { eventName: job.event_name, data: job.data },
-              { removeOnComplete: true }
-            )
-            .then(async () => {
-              await stagedJobRepo.remove(job)
-            })
-        })
-      )
+      if (!jobs.length) {
+        await sleep(3000)
+        continue
+      }
+
+      const eventsData = jobs.map((job) => {
+        return {
+          data: { eventName: job.event_name, data: job.data },
+          opts: { jobId: job.id, ...job.options },
+        }
+      })
+
+      await this.queue_.addBulk(eventsData).then(async () => {
+        return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
+      })
 
       await sleep(3000)
     }
@@ -241,30 +359,96 @@ export default class EventBusService {
    * @param job The job object
    * @return resolves to the results of the subscriber calls.
    */
-  worker_ = async <T>(job: {
-    data: { eventName: string; data: T }
-  }): Promise<unknown[]> => {
+  worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
     const { eventName, data } = job.data
-    const eventObservers = this.observers_.get(eventName) || []
-    const wildcardObservers = this.observers_.get("*") || []
+    const eventSubscribers = this.eventToSubscribersMap_.get(eventName) || []
+    const wildcardSubscribers = this.eventToSubscribersMap_.get("*") || []
 
-    const observers = eventObservers.concat(wildcardObservers)
+    const allSubscribers = eventSubscribers.concat(wildcardSubscribers)
 
-    this.logger_.info(
-      `Processing ${eventName} which has ${eventObservers.length} subscribers`
+    // Pull already completed subscribers from the job data
+    const completedSubscribers = job.data.completedSubscriberIds || []
+
+    // Filter out already completed subscribers from the all subscribers
+    const subscribersInCurrentAttempt = allSubscribers.filter(
+      (subscriber) =>
+        subscriber.id && !completedSubscribers.includes(subscriber.id)
     )
 
-    return await Promise.all(
-      observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occurred while processing ${eventName}: ${err}`
-          )
-          console.error(err)
-          return err
-        })
+    const isRetry = job.attemptsMade > 0
+    const currentAttempt = job.attemptsMade + 1
+
+    const isFinalAttempt = job?.opts?.attempts === currentAttempt
+
+    if (isRetry) {
+      if (isFinalAttempt) {
+        this.logger_.info(`Final retry attempt for ${eventName}`)
+      }
+
+      this.logger_.info(
+        `Retrying ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
+      )
+    } else {
+      this.logger_.info(
+        `Processing ${eventName} which has ${eventSubscribers.length} subscribers`
+      )
+    }
+
+    const completedSubscribersInCurrentAttempt: string[] = []
+
+    const subscribersResult = await Promise.all(
+      subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
+        return subscriber(data, eventName)
+          .then((data) => {
+            // For every subscriber that completes successfully, add their id to the list of completed subscribers
+            completedSubscribersInCurrentAttempt.push(id)
+            return data
+          })
+          .catch((err) => {
+            this.logger_.warn(
+              `An error occurred while processing ${eventName}: ${err}`
+            )
+            return err
+          })
       })
     )
+
+    // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
+    const didSubscribersFail =
+      completedSubscribersInCurrentAttempt.length !==
+      subscribersInCurrentAttempt.length
+
+    const isRetriesConfigured = job?.opts?.attempts > 1
+
+    // Therefore, if retrying is configured, we try again
+    const shouldRetry =
+      didSubscribersFail && isRetriesConfigured && !isFinalAttempt
+
+    if (shouldRetry) {
+      const updatedCompletedSubscribers = [
+        ...completedSubscribers,
+        ...completedSubscribersInCurrentAttempt,
+      ]
+
+      job.data.completedSubscriberIds = updatedCompletedSubscribers
+
+      job.update(job.data)
+
+      const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
+
+      this.logger_.warn(errorMessage)
+
+      return Promise.reject(Error(errorMessage))
+    }
+
+    if (didSubscribersFail && !isFinalAttempt) {
+      // If retrying is not configured, we log a warning to allow server admins to recover manually
+      this.logger_.warn(
+        `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
+      )
+    }
+
+    return Promise.resolve(subscribersResult)
   }
 
   /**
@@ -276,12 +460,19 @@ export default class EventBusService {
    * @param handler - the handler to call on each cron job
    * @return void
    */
-  createCronJob<T>(
+  async createCronJob<T>(
     eventName: string,
     data: T,
     cron: string,
-    handler: Subscriber
-  ): void {
-    this.jobSchedulerService_.create(eventName, data, cron, handler)
+    handler: Subscriber,
+    options?: CreateJobOptions
+  ): Promise<void> {
+    await this.jobSchedulerService_.create(
+      eventName,
+      data,
+      cron,
+      handler,
+      options ?? {}
+    )
   }
 }

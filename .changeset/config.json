@@ -7,7 +7,7 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["integration-tests-api", "integration-tests-plugins"],
+  "ignore": ["integration-tests-api", "integration-tests-plugins", "integration-tests-repositories"],
   "snapshot": {
     "useCalculatedVersion": true
   }

@@ -1,0 +1,5 @@
+type: object
+properties:
+  download_url:
+    type: string
+    description: The Download URL of the file

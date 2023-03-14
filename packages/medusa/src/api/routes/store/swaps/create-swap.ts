@@ -28,6 +28,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostSwapsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -80,10 +82,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             swap:
- *               $ref: "#/components/schemas/Swap"
+ *           $ref: "#/components/schemas/StoreSwapsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -297,6 +296,7 @@ class AdditionalItem {
  *     description: "The items to include in the Return."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -320,6 +320,7 @@ class AdditionalItem {
  *     description: "The items to exchange the returned items to."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

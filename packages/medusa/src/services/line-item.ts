@@ -2,20 +2,22 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
-import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
-import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   LineItem,
   LineItemAdjustment,
   LineItemTaxLine,
   ProductVariant,
 } from "../models"
+import { CartRepository } from "../repositories/cart"
+import { LineItemRepository } from "../repositories/line-item"
+import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { FindConfig, Selector } from "../types/common"
+import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
+import { ProductVariantPricing } from "../types/pricing"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import LineItemAdjustmentService from "./line-item-adjustment"
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   PricingService,
   ProductService,
@@ -23,10 +25,7 @@ import {
   RegionService,
   TaxProviderService,
 } from "./index"
-import { buildQuery, isString, setMetadata } from "../utils"
-import { TransactionBaseService } from "../interfaces"
-import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
-import { ProductVariantPricing } from "../types/pricing"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -70,6 +69,7 @@ class LineItemService extends TransactionBaseService {
     taxProviderService,
     featureFlagRouter,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -159,6 +159,7 @@ class LineItemService extends TransactionBaseService {
                 unit_price: -1 * lineItem.unit_price,
                 quantity: lineItem.return_item.quantity,
                 allow_discounts: lineItem.allow_discounts,
+                includes_tax: !!lineItem.includes_tax,
                 tax_lines: lineItem.tax_lines.map((taxLine) => {
                   return itemTaxLineRepo.create({
                     name: taxLine.name,
@@ -200,7 +201,7 @@ class LineItemService extends TransactionBaseService {
       ? LineItem
       : LineItem[]
   >(
-    variantIdOrData: string | T,
+    variantIdOrData: T,
     regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number,
     context: GenerateLineItemContext = {}
@@ -219,9 +220,11 @@ class LineItemService extends TransactionBaseService {
               quantity: quantity as number,
             }
           : variantIdOrData
+
         const resolvedContext = isString(variantIdOrData)
           ? context
           : (regionIdOrContext as GenerateLineItemContext)
+
         const regionId = (
           isString(variantIdOrData)
             ? regionIdOrContext
@@ -231,6 +234,10 @@ class LineItemService extends TransactionBaseService {
         const resolvedData = (
           Array.isArray(data) ? data : [data]
         ) as GenerateInputData[]
+
+        const resolvedDataMap = new Map(
+          resolvedData.map((d) => [d.variantId, d])
+        )
 
         const variants = await this.productVariantService_.list(
           {
@@ -246,7 +253,11 @@ class LineItemService extends TransactionBaseService {
 
         for (const variant of variants) {
           variantsMap.set(variant.id, variant)
-          if (resolvedContext.unit_price == null) {
+          const variantResolvedData = resolvedDataMap.get(variant.id)
+          if (
+            resolvedContext.unit_price == null &&
+            variantResolvedData?.unit_price == null
+          ) {
             variantIdsToCalculatePricingFor.push(variant.id)
           }
         }
@@ -273,6 +284,8 @@ class LineItemService extends TransactionBaseService {
             variantData.quantity,
             {
               ...resolvedContext,
+              unit_price: variantData.unit_price ?? resolvedContext.unit_price,
+              metadata: variantData.metadata ?? resolvedContext.metadata,
               variantPricing,
             }
           )
@@ -312,8 +325,6 @@ class LineItemService extends TransactionBaseService {
       variantPricing: ProductVariantPricing
     }
   ): Promise<LineItem> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
     let unitPriceIncludesTax = false
     let shouldMerge = false
@@ -347,13 +358,10 @@ class LineItemService extends TransactionBaseService {
       rawLineItem.includes_tax = unitPriceIncludesTax
     }
 
-    if (this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)) {
-      rawLineItem.order_edit_id = context.order_edit_id || null
-    }
+    rawLineItem.order_edit_id = context.order_edit_id || null
 
-    const lineItemRepo = transactionManager.getCustomRepository(
-      this.lineItemRepository_
-    )
+    const manager = this.transactionManager_ ?? this.manager_
+    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
 
     const lineItem = lineItemRepo.create(rawLineItem)
     lineItem.variant = variant as ProductVariant
@@ -368,7 +376,7 @@ class LineItemService extends TransactionBaseService {
    */
   async create<
     T = LineItem | LineItem[],
-    TResult = T extends LineItem ? LineItem : LineItem[]
+    TResult = T extends LineItem[] ? LineItem[] : LineItem
   >(data: T): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {

@@ -247,20 +247,6 @@ describe("ProductService", () => {
     })
     productTypeRepository.upsertType = mockUpsertType
 
-    const productVariantRepository = MockRepository()
-
-    const productVariantService = {
-      withTransaction: function () {
-        return this
-      },
-      update: (variant, update) => {
-        if (variant.id) {
-          return update
-        }
-        return Promise.resolve()
-      },
-    }
-
     const productTagRepository = MockRepository({
       findOne: (data) => {
         if (data.where.value === "test") {
@@ -295,8 +281,6 @@ describe("ProductService", () => {
     const productService = new ProductService({
       manager: MockManager,
       productRepository,
-      productVariantService,
-      productVariantRepository,
       productTagRepository,
       productTypeRepository,
       eventBusService,
@@ -325,17 +309,6 @@ describe("ProductService", () => {
         id: IdMap.getId("ironman"),
         metadata: { some_key: "some_value" },
       })
-    })
-
-    it("successfully updates product variants", async () => {
-      await productService.update(IdMap.getId("ironman&co"), {
-        variants: [{ id: IdMap.getId("green"), title: "Greener" }],
-      })
-
-      // The update of variants will be tested in product variant test file
-      // Here we just test, that the function reaches its end when updating
-      // variants
-      expect(productRepository.save).toHaveBeenCalledTimes(1)
     })
 
     it("successfully updates product status", async () => {
@@ -376,30 +349,6 @@ describe("ProductService", () => {
       })
     })
 
-    it("successfully updates variant ranking", async () => {
-      await productService.update("ranking test", {
-        variants: [
-          { id: "test_321", title: "Greener", variant_rank: 1 },
-          { id: "test_123", title: "Blueer", variant_rank: 0 },
-        ],
-      })
-
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product.updated",
-        expect.any(Object)
-      )
-
-      expect(productRepository.save).toHaveBeenCalledTimes(1)
-      expect(productRepository.save).toHaveBeenCalledWith({
-        id: "ranking test",
-        variants: [
-          { id: "test_321", title: "Greener", variant_rank: 0 },
-          { id: "test_123", title: "Blueer", variant_rank: 1 },
-        ],
-      })
-    })
-
     it("successfully updates tags", async () => {
       await productService.update(IdMap.getId("ironman"), {
         tags: [
@@ -429,23 +378,6 @@ describe("ProductService", () => {
         await productService.update("123", { title: "new title" })
       } catch (err) {
         expect(err.message).toEqual("Product with id: 123 was not found")
-      }
-    })
-
-    it("throws on wrong variant in update", async () => {
-      try {
-        await productService.update(IdMap.getId("ironman&co"), {
-          variants: [
-            { id: IdMap.getId("yellow") },
-            { id: IdMap.getId("green") },
-          ],
-        })
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Variant with id: ${IdMap.getId(
-            "yellow"
-          )} is not associated with this product`
-        )
       }
     })
   })

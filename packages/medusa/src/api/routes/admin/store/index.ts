@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { Store, PaymentProvider, TaxProvider } from "./../../../../"
+import { PaymentProvider, Store, TaxProvider } from "./../../../../"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -29,14 +29,39 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminStoresRes
+ * type: object
+ * properties:
+ *   store:
+ *     $ref: "#/components/schemas/Store"
+ */
 export type AdminStoresRes = {
   store: Store
 }
 
+/**
+ * @schema AdminTaxProvidersList
+ * type: object
+ * properties:
+ *   tax_providers:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/TaxProvider"
+ */
 export type AdminTaxProvidersList = {
   tax_providers: TaxProvider[]
 }
 
+/**
+ * @schema AdminPaymentProvidersList
+ * type: object
+ * properties:
+ *   payment_providers:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/PaymentProvider"
+ */
 export type AdminPaymentProvidersList = {
   payment_providers: PaymentProvider[]
 }

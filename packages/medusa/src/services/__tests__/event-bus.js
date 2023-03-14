@@ -45,27 +45,44 @@ describe("EventBusService", () => {
 
   describe("subscribe", () => {
     let eventBus
-    describe("successfully adds subscriber", () => {
-      beforeAll(() => {
-        jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
-        eventBus = new EventBusService({
-          manager: MockManager,
-          stagedJobRepository,
-          logger: loggerMock,
-        })
-        eventBus.subscribe("eventName", () => "test")
+    beforeEach(() => {
+      jest.resetAllMocks()
+
+      eventBus = new EventBusService({
+        manager: MockManager,
+        logger: loggerMock,
       })
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
+    })
+
+    afterAll(async () => {
+      await eventBus.stopEnqueuer()
+    })
+
+    it("throws when subscriber already exists", async () => {
+      expect.assertions(1)
+
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber",
       })
 
-      it("added the subscriber to the queue", () => {
-        expect(eventBus.observers_.get("eventName").length).toEqual(1)
+      try {
+        eventBus.subscribe("eventName", () => "new", {
+          subscriberId: "my-subscriber",
+        })
+      } catch (error) {
+        expect(error.message).toBe(
+          "Subscriber with id my-subscriber already exists"
+        )
+      }
+    })
+
+    it("successfully adds subscriber", () => {
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber",
       })
+
+      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(1)
     })
 
     describe("fails when adding non-function subscriber", () => {
@@ -97,31 +114,296 @@ describe("EventBusService", () => {
   })
 
   describe("emit", () => {
-    let eventBus
-    let job
+    const eventName = "eventName"
+    const defaultOptions = {
+      attempts: 1,
+      removeOnComplete: true,
+    }
+
+    const data = { hi: "1234" }
+    const bulkData = [{ hi: "1234" }, { hi: "12345" }]
+
+    const mockManager = MockManager
+
     describe("successfully adds job to queue", () => {
-      beforeAll(() => {
-        jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
+      let eventBus
+      let stagedJobRepository
+
+      beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
         })
 
         eventBus = new EventBusService({
           logger: loggerMock,
-          manager: MockManager,
+          manager: mockManager,
           stagedJobRepository,
         })
 
-        eventBus.queue_.add.mockImplementationOnce(() => "hi")
-
-        job = eventBus.emit("eventName", { hi: "1234" })
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
       })
-      afterAll(async () => {
+
+      afterEach(async () => {
+        await eventBus.stopEnqueuer()
+        jest.clearAllMocks()
+      })
+
+      it("calls queue.addBulk", async () => {
+        await eventBus.emit(eventName, data)
+
+        expect(eventBus.queue_.addBulk).toHaveBeenCalled()
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
+          {
+            data: {
+              data,
+              eventName,
+            },
+            opts: defaultOptions,
+          },
+        ])
+      })
+
+      it("calls stagedJob repository insertBulk", async () => {
+        await eventBus.withTransaction(mockManager).emit(eventName, data)
+
+        expect(stagedJobRepository.create).toHaveBeenCalled()
+        expect(stagedJobRepository.create).toHaveBeenCalledWith({
+          event_name: eventName,
+          data: data,
+          options: defaultOptions,
+        })
+
+        expect(stagedJobRepository.insertBulk).toHaveBeenCalled()
+        expect(stagedJobRepository.insertBulk).toHaveBeenCalledWith([
+          {
+            event_name: eventName,
+            data,
+            options: defaultOptions,
+          },
+        ])
+      })
+    })
+
+    describe("successfully adds jobs in bulk to queue", () => {
+      let eventBus
+      let stagedJobRepository
+
+      beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: mockManager,
+          stagedJobRepository,
+        })
+
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
+      })
+
+      afterEach(async () => {
+        jest.clearAllMocks()
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.addBulk", async () => {
+        await eventBus.emit([
+          { eventName, data: bulkData[0] },
+          { eventName, data: bulkData[1] },
+        ])
+
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
+          {
+            data: {
+              data: bulkData[0],
+              eventName,
+            },
+            opts: defaultOptions,
+          },
+          {
+            data: {
+              data: bulkData[1],
+              eventName,
+            },
+            opts: defaultOptions,
+          },
+        ])
+      })
+
+      it("calls stagedJob repository insertBulk", async () => {
+        await eventBus.withTransaction(mockManager).emit([
+          { eventName, data: bulkData[0] },
+          { eventName, data: bulkData[1] },
+        ])
+
+        expect(stagedJobRepository.create).toHaveBeenCalledTimes(2)
+        expect(stagedJobRepository.create).toHaveBeenNthCalledWith(1, {
+          data: bulkData[0],
+          event_name: eventName,
+          options: defaultOptions,
+        })
+        expect(stagedJobRepository.create).toHaveBeenNthCalledWith(2, {
+          data: bulkData[1],
+          event_name: eventName,
+          options: defaultOptions,
+        })
+
+        expect(stagedJobRepository.insertBulk).toHaveBeenCalledTimes(1)
+        expect(stagedJobRepository.insertBulk).toHaveBeenCalledWith([
+          {
+            data: bulkData[0],
+            event_name: eventName,
+            options: defaultOptions,
+          },
+          {
+            data: bulkData[1],
+            event_name: eventName,
+            options: defaultOptions,
+          },
+        ])
+      })
+    })
+
+    describe("successfully adds job to queue with global options", () => {
+      let eventBus
+      let stagedJobRepository
+
+      beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: mockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: { event_options: { removeOnComplete: 10 } },
+          }
+        )
+
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
+
+        eventBus.emit(eventName, data)
+      })
+
+      afterEach(async () => {
+        jest.clearAllMocks()
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.addBulk", () => {
+        expect(eventBus.queue_.addBulk).toHaveBeenCalled()
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
+          {
+            data: {
+              data,
+              eventName,
+            },
+            opts: { removeOnComplete: 10, attempts: 1 },
+          },
+        ])
+      })
+    })
+
+    describe("successfully adds job to queue with default options", () => {
+      let eventBus
+      let stagedJobRepository
+
+      beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: mockManager,
+          stagedJobRepository,
+        })
+
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
+
+        eventBus.emit(eventName, data)
+      })
+
+      afterEach(async () => {
+        jest.clearAllMocks()
+        await eventBus.stopEnqueuer()
+      })
+
+      it("calls queue.addBulk", () => {
+        expect(eventBus.queue_.addBulk).toHaveBeenCalled()
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
+          {
+            data: {
+              data,
+              eventName,
+            },
+            opts: { removeOnComplete: true, attempts: 1 },
+          },
+        ])
+      })
+    })
+
+    describe("successfully adds job to queue with local options and global options merged", () => {
+      let eventBus
+      let stagedJobRepository
+
+      beforeEach(() => {
+        stagedJobRepository = MockRepository({
+          insertBulk: async (data) => data,
+          create: (data) => data,
+        })
+
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: MockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: { event_options: { removeOnComplete: 10 } },
+          }
+        )
+
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
+
+        eventBus.emit(eventName, data, {
+          attempts: 10,
+          delay: 1000,
+          backoff: { type: "exponential" },
+        })
+      })
+
+      afterEach(async () => {
+        jest.clearAllMocks()
         await eventBus.stopEnqueuer()
       })
 
       it("calls queue.add", () => {
-        expect(eventBus.queue_.add).toHaveBeenCalled()
+        expect(eventBus.queue_.addBulk).toHaveBeenCalled()
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
+          {
+            data: {
+              data,
+              eventName,
+            },
+            opts: {
+              removeOnComplete: 10, // global option
+              attempts: 10, // local option
+              delay: 1000, // local option
+              backoff: { type: "exponential" }, // local option
+            },
+          },
+        ])
       })
     })
   })
@@ -169,15 +451,12 @@ describe("EventBusService", () => {
       let eventBus
       beforeAll(async () => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           manager: MockManager,
-          stagedJobRepository,
           logger: loggerMock,
         })
+
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
         eventBus.subscribe("eventName", () => Promise.resolve("hi2"))
         eventBus.subscribe("eventName", () => Promise.resolve("hi3"))
@@ -187,14 +466,17 @@ describe("EventBusService", () => {
 
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
+          update: (data) => data,
+          opts: { attempts: 1 },
         })
       })
 
       afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
+
       it("calls logger warn on rejections", () => {
-        expect(loggerMock.warn).toHaveBeenCalledTimes(3)
+        expect(loggerMock.warn).toHaveBeenCalledTimes(4)
         expect(loggerMock.warn).toHaveBeenCalledWith(
           "An error occurred while processing eventName: fail1"
         )
@@ -206,8 +488,10 @@ describe("EventBusService", () => {
         )
       })
 
-      it("returns result from all subscribers", async () => {
-        expect(result.length).toEqual(6)
+      it("calls logger warn from retry not kicking in", () => {
+        expect(loggerMock.warn).toHaveBeenCalledWith(
+          "One or more subscribers of eventName failed. Retrying is not configured. Use 'attempts' option when emitting events."
+        )
       })
     })
   })
