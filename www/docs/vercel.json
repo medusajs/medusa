@@ -285,8 +285,68 @@
       "destination": "/development/backend/configurations"
     },
     {
-      "source": "/add-plugins/:path",
-      "destination": "/plugins/:path"
+      "source": "/add-plugins/segement",
+      "destination": "/plugins/analytics/segment"
+    },
+    {
+      "source": "/add-plugins/contentful",
+      "destination": "/plugins/cms/contentful"
+    },
+    {
+      "source": "/add-plugins/contentful/customize-contentful",
+      "destination": "/plugins/cms/contentful/customize-contentful"
+    },
+    {
+      "source": "/add-plugins/strapi",
+      "destination": "/plugins/cms/strapi"
+    },
+    {
+      "source": "/add-plugins/sendgrid",
+      "destination": "/plugins/notifications/sendgrid"
+    },
+    {
+      "source": "/add-plugins/mailchimp",
+      "destination": "/plugins/notifications/mailchimp"
+    },
+    {
+      "source": "/add-plugins/twilio-sms",
+      "destination": "/plugins/notifications/twilio-sms"
+    },
+    {
+      "source": "/add-plugins/slack",
+      "destination": "/plugins/notifications/slack"
+    },
+    {
+      "source": "/add-plugins/klarna",
+      "destination": "/plugins/payment/klarna"
+    },
+    {
+      "source": "/add-plugins/paypal",
+      "destination": "/plugins/payment/paypal"
+    },
+    {
+      "source": "/add-plugins/stripe",
+      "destination": "/plugins/payment/stripe"
+    },
+    {
+      "source": "/add-plugins/algolia",
+      "destination": "/plugins/search/algolia"
+    },
+    {
+      "source": "/add-plugins/meilisearch",
+      "destination": "/plugins/search/meilisearch"
+    },
+    {
+      "source": "/add-plugins/minio",
+      "destination": "/plugins/file-service/minio"
+    },
+    {
+      "source": "/add-plugins/s3",
+      "destination": "/plugins/file-service/s3"
+    },
+    {
+      "source": "/add-plugins/spaces",
+      "destination": "/plugins/file-service/spaces"
     },
     {
       "source": "/advanced/backend/feature-flags/toggle",

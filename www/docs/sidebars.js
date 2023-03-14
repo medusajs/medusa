@@ -1533,12 +1533,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
+          type: 'doc',
+          id: 'development/strategies/overview',
           label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
         },
         {
           type: 'html',
@@ -1551,6 +1548,14 @@ module.exports = {
           type: 'link',
           href: '#',
           label: 'Create a Strategy',
+          customProps: {
+            sidebar_is_soon: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Override a Strategy',
           customProps: {
             sidebar_is_soon: true
           }
