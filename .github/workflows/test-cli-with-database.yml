@@ -60,14 +60,14 @@ jobs:
       - name: Create Medusa project
         # TODO: Remove the branch when typeorm is no longer a dependency for starter
         run: |
-          medusa new cli-test 'https://github.com/medusajs/medusa-starter-default/tree/typeorm-upgrade'
+          medusa new cli-test 'https://github.com/medusajs/medusa-starter-default/tree/ci'
         working-directory: ..
 
       - name: Install postgres config
         if: matrix.db == 'postgres'
         run: |
           curl \
-          https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/postgres-config/medusa-config.js \
+          https://raw.githubusercontent.com/medusajs/medusa-starter-default/ci/medusa-config.js \
           --output medusa-config.js
         working-directory: ../cli-test
 
