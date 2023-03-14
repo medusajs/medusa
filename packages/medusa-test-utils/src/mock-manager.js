@@ -4,8 +4,10 @@ export default {
   },
 
   getCustomRepository: function (repo) {
-    repo["metadata"] = repo["metadata"] ?? {
-      columns: []
+    if (repo) {
+      repo["metadata"] = repo["metadata"] ?? {
+        columns: []
+      }
     }
     return repo;
   },

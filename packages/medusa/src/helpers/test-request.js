@@ -90,8 +90,8 @@ testApp.use((req, res, next) => {
 })
 
 featureFlagLoader(config)
-models({ container, configModule: config })
-repositories({ container })
+models({ container, configModule: config, isTest: true })
+repositories({ container, isTest: true })
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })

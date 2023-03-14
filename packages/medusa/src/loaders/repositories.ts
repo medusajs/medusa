@@ -4,7 +4,6 @@ import { asClass } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 import { ClassConstructor, MedusaContainer } from "../types/global"
-import { isDefined } from "medusa-core-utils"
 
 /**
  * Registers all models in the model directory
@@ -16,9 +15,7 @@ export default ({
   container: MedusaContainer
   isTest?: boolean
 }): void => {
-  const targetTs = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
-
-  const corePath = targetTs ? "../repositories/*.ts" : "../repositories/*.js"
+  const corePath = isTest ? "../repositories/*.ts" : "../repositories/*.js"
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })
