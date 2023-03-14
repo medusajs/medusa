@@ -278,6 +278,62 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
+    it.only("Creates an inventory item using the api", async () => {
+      const product = await simpleProductFactory(dbConnection, {})
+
+      const api = useApi()
+
+      const productRes = await api.get(
+        `/admin/products/${product.id}`,
+        adminHeaders
+      )
+
+      const variantId = productRes.data.product.variants[0].id
+
+      let variantInventoryRes = await api.get(
+        `/admin/variants/${variantId}/inventory`,
+        adminHeaders
+      )
+
+      expect(variantInventoryRes.data).toEqual({
+        variant: {
+          id: variantId,
+          inventory: [],
+          sales_channel_availability: [],
+        },
+      })
+      expect(variantInventoryRes.status).toEqual(200)
+
+      const inventoryItemCreateRes = await api.post(
+        `/admin/inventory-items`,
+        { variant_id: variantId },
+        adminHeaders
+      )
+
+      variantInventoryRes = await api.get(
+        `/admin/variants/${variantId}/inventory`,
+        adminHeaders
+      )
+
+      expect(variantInventoryRes.data).toEqual({
+        variant: {
+          id: variantId,
+          inventory: [
+            expect.objectContaining({
+              ...inventoryItemCreateRes.data.inventory_item,
+            }),
+          ],
+          sales_channel_availability: [
+            expect.objectContaining({
+              available_quantity: 0,
+              channel_name: "Default Sales Channel",
+            }),
+          ],
+        },
+      })
+      expect(variantInventoryRes.status).toEqual(200)
+    })
+
     describe("List inventory items", () => {
       it("Lists inventory items with location", async () => {
         const api = useApi()
