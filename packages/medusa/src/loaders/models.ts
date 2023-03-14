@@ -3,16 +3,19 @@ import glob from "glob"
 import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
-import { asClass, asValue, AwilixContainer } from "awilix"
+import { asClass, asValue } from "awilix"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * Registers all models in the model directory
  */
 export default (
-  { container }: { container: MedusaContainer },
+  { container, isTest }: { container: MedusaContainer; isTest?: boolean },
   config = { register: true }
 ) => {
-  const corePath = "../models/*.js"
+  const targetTs = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
+
+  const corePath = targetTs ? "../models/*.ts" : "../models/*.js"
   const coreFull = path.join(__dirname, corePath)
 
   const models: (ClassConstructor<unknown> | EntitySchema)[] = []

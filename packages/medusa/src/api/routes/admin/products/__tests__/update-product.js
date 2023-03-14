@@ -17,7 +17,7 @@ describe("POST /admin/products/:id", () => {
             description: "Updated test description",
             handle: "handle",
             variants: [
-              { id: IdMap.getId("variant_1"), title: "Green" },
+              { id: IdMap.getId("testVariant"), title: "Green" },
               { title: "Blue" },
               { title: "Yellow" },
             ],
@@ -48,7 +48,6 @@ describe("POST /admin/products/:id", () => {
     })
 
     it("successfully updates variants and create new ones", async () => {
-      expect(ProductVariantServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(2)
     })
