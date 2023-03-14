@@ -134,17 +134,43 @@ export default async (req, res) => {
     const { variants } = validated
     delete validated.variants
 
-    await productServiceTx.update(id, validated)
+    const product = await productServiceTx.update(id, validated)
 
     if (!variants) {
       return
     }
 
-    const product = await productServiceTx.retrieve(id, {
-      relations: ["variants"],
-    })
+    const productVariants = await productVariantService
+      .withTransaction(transactionManager)
+      .list(
+        { product_id: id },
+        {
+          select: [
+            "id",
+            "title",
+            "product_id",
+            "sku",
+            "barcode",
+            "ean",
+            "upc",
+            "variant_rank",
+            "inventory_quantity",
+            "allow_backorder",
+            "manage_inventory",
+            "hs_code",
+            "origin_country",
+            "mid_code",
+            "material",
+            "weight",
+            "length",
+            "height",
+            "width",
+            "metadata",
+          ],
+        }
+      )
 
-    const productVariantMap = new Map(product.variants.map((v) => [v.id, v]))
+    const productVariantMap = new Map(productVariants.map((v) => [v.id, v]))
     const variantWithIdSet = new Set()
 
     const variantIdsNotBelongingToProduct: string[] = []
