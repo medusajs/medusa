@@ -168,7 +168,6 @@ export default class ReservationItemService extends TransactionBaseService {
 
       const shouldUpdateLocation =
         isDefined(data.location_id) &&
-        isDefined(data.quantity) &&
         data.location_id !== item.location_id
 
       const ops: Promise<unknown>[] = []
@@ -187,7 +186,7 @@ export default class ReservationItemService extends TransactionBaseService {
             .adjustReservedQuantity(
               item.inventory_item_id,
               data.location_id!,
-              data.quantity!
+              data.quantity || item.quantity!
             )
         )
       } else if (shouldUpdateQuantity) {
@@ -295,10 +294,12 @@ export default class ReservationItemService extends TransactionBaseService {
             item.quantity * -1
           ),
       ])
-    })
 
-    await this.eventBusService_.emit(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.DELETED, {
+        id: reservationItemId,
+      })
     })
   }
 }
