@@ -10,7 +10,7 @@ import {
 } from "@medusajs/medusa"
 import { useAdminOrder, useAdminReceiveReturn, useMedusa } from "medusa-react"
 import { useEffect, useMemo } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
 import useNotification from "../../../../hooks/use-notification"
@@ -50,6 +50,18 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
   const { refetch } = useAdminOrder(order.id, {
     expand: orderRelations,
   })
+
+  const form = useForm<ReceiveReturnFormType>({
+    defaultValues: getDefaultReceiveReturnValues(order, returnRequest),
+    reValidateMode: "onBlur",
+  })
+
+  const {
+    handleSubmit,
+    reset,
+    setError,
+    formState: { isDirty },
+  } = form
 
   const {
     stock_locations,
@@ -116,11 +128,22 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
     returnRequest.items,
   ])
 
+  const { items: receiveItems } = useWatch({
+    control: form.control,
+    name: "receive_items",
+  })
+
+  const noOfReturnItems = receiveItems.filter((item) => item.receive).length
+
   const locationsHasInventoryLevels = React.useMemo(() => {
-    return returnRequest.items
+    if (!noOfReturnItems) {
+      return true
+    }
+
+    return receiveItems
       .map((returnItem) => {
         const item = itemMap.get(returnItem.item_id)
-        if (!item?.variant_id) {
+        if (!item?.variant_id || !returnItem.receive) {
           return true
         }
         const hasInventoryLevel = inventoryMap
@@ -133,7 +156,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
         return true
       })
       .every(Boolean)
-  }, [returnRequest.items, itemMap, inventoryMap, selectedLocation?.value])
+  }, [receiveItems, itemMap, noOfReturnItems, inventoryMap, selectedLocation])
 
   useEffect(() => {
     if (isLocationFulfillmentEnabled && stock_locations?.length) {
@@ -175,17 +198,6 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
   const isSwapOrRefundedClaim = useMemo(() => {
     return isRefundedClaim || Boolean(returnRequest.swap_id)
   }, [isRefundedClaim, returnRequest.swap_id])
-
-  const form = useForm<ReceiveReturnFormType>({
-    defaultValues: getDefaultReceiveReturnValues(order, returnRequest),
-  })
-
-  const {
-    handleSubmit,
-    reset,
-    setError,
-    formState: { isDirty },
-  } = form
 
   const notification = useNotification()
 
