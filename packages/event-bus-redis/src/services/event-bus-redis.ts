@@ -19,8 +19,6 @@ type InjectedDependencies = {
   eventBusRedisConnection: Redis
 }
 
-const COMPLETED_JOB_TTL = 10 // 10 seconds
-
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.

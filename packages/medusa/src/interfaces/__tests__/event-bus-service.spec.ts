@@ -3,7 +3,6 @@ import { AbstractEventBusModuleService, EmitData } from "../services/event-bus"
 
 class EventBus extends AbstractEventBusModuleService {
   protected manager_!: EntityManager
-  protected transactionManager_!: EntityManager
 
   constructor(protected readonly container) {
     super()

@@ -14,10 +14,8 @@ type InjectedDependencies = {
 const eventEmitter = new EventEmitter()
 
 export default class LocalEventBusService extends AbstractEventBusModuleService {
-  protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly logger_: Logger
   protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
