@@ -276,6 +276,10 @@ describe("ProductVariantService", () => {
 
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
+      update: (data) => ({
+        generatedMaps: [data],
+      }),
+      create: (data) => data,
     })
 
     const moneyAmountRepository = MockRepository({
@@ -325,11 +329,13 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        title: "new title",
-      })
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
+        {
+          title: "new title",
+        }
+      )
     })
 
     it("successfully updates variant", async () => {
@@ -351,11 +357,13 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        title: "new title 2",
-      })
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
+        {
+          title: "new title 2",
+        }
+      )
     })
 
     it("successfully avoid to update variant if the data have not changed", async () => {
@@ -403,14 +411,16 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        title: "new title",
-        metadata: {
-          testing: "this",
-        },
-      })
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
+        {
+          title: "new title",
+          metadata: {
+            testing: "this",
+          },
+        }
+      )
     })
 
     it("successfully updates variant inventory_quantity", async () => {
@@ -430,12 +440,14 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        inventory_quantity: 98,
-        title: "new title",
-      })
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("ironman") },
+        {
+          inventory_quantity: 98,
+          title: "new title",
+        }
+      )
     })
 
     it("successfully updates variant prices", async () => {
@@ -462,7 +474,7 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
     })
 
     it("successfully updates variant options", async () => {
@@ -483,7 +495,7 @@ describe("ProductVariantService", () => {
         "red"
       )
 
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
+      expect(productVariantRepository.update).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -776,7 +788,6 @@ describe("ProductVariantService", () => {
       expect(moneyAmountRepository.update).toHaveBeenCalledWith(
         { id: IdMap.getId("dkk") },
         {
-          id: IdMap.getId("dkk"),
           amount: 850,
         }
       )

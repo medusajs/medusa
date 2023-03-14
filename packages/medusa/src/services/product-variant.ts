@@ -377,15 +377,15 @@ class ProductVariantService extends TransactionBaseService {
               )
             }
 
+            const toUpdate: QueryDeepPartialEntity<ProductVariant> = {}
+
             if (isObject(rest.metadata)) {
-              variant.metadata = setMetadata(
+              toUpdate["metadata"] = setMetadata(
                 variant as ProductVariant,
                 rest.metadata
-              )
+              ) as QueryDeepPartialEntity<Record<string, unknown>>
               delete rest.metadata
             }
-
-            const toUpdate: QueryDeepPartialEntity<ProductVariant> = {}
 
             if (Object.keys(rest).length) {
               for (const [key, value] of Object.entries(rest)) {
