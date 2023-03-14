@@ -30,7 +30,13 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
         : ["ignore", "ignore", "ignore", "ipc"],
     })
 
+    medusaProcess.on("error", (err) => {
+      console.log(err)
+      process.exit()
+    })
+
     medusaProcess.on("uncaughtException", (err) => {
+      console.log(err)
       medusaProcess.kill()
     })
 

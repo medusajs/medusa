@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "*",
+    "@medusajs/utils": "^0.0.1",
     "awilix": "^8.0.0",
     "typeorm": "^0.3.11"
   },
