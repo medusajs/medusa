@@ -427,6 +427,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       .listReservationItems(
         {
           line_item_id: lineItemId,
+          location_id: locationId,
         },
         {
           order: { created_at: "DESC" },
@@ -435,9 +436,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     if (quantity > 0) {
       // if quantity is positive, we need to adjust the first reservation with the correct location
-      const firstReservation = reservations.find(
-        (r) => r.location_id === locationId
-      )
+      const firstReservation = reservations[0]
       if (firstReservation) {
         await this.inventoryService_
           .withTransaction(this.activeManager_)
@@ -463,7 +462,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
       const exactReservation = reservations.find(
-        (r) => r.location_id === locationId && r.quantity === deltaUpdate
+        (r) => r.quantity === deltaUpdate
       )
       if (exactReservation) {
         await this.inventoryService_
@@ -473,7 +472,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       }
 
       const largerReservation = reservations.find(
-        (r) => r.location_id === locationId && r.quantity > deltaUpdate
+        (r) => r.quantity > deltaUpdate
       )
       if (largerReservation) {
         await this.inventoryService_
