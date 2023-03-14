@@ -130,6 +130,25 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
     })
   }, [allItems, client.admin.variants, isLocationFulfillmentEnabled])
 
+  const locationsHasInventoryLevels = React.useMemo(() => {
+    return Object.entries(toReturn)
+      .map(([itemId]) => {
+        const item = itemMap.get(itemId)
+        if (!item?.variant_id) {
+          return true
+        }
+        const hasInventoryLevel = inventoryMap
+          .get(item.variant_id)
+          ?.find((l) => l.location_id === selectedLocation?.value)
+
+        if (!hasInventoryLevel && selectedLocation?.value) {
+          return false
+        }
+        return true
+      })
+      .every(Boolean)
+  }, [toReturn, itemMap, selectedLocation?.value, inventoryMap])
+
   const { isLoading: shippingLoading, shipping_options: shippingOptions } =
     useAdminShippingOptions({
       region_id: order.region_id,
@@ -233,26 +252,6 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
     }
   }
 
-  const locationsHasInventoryLevels = React.useMemo(() => {
-    return Object.entries(toReturn)
-      .map(([itemId]) => {
-        const item = itemMap.get(itemId)
-        if (!item?.variant_id) {
-          return true
-        }
-        const hasInventoryLevel = inventoryMap
-          .get(item.variant_id)
-          ?.find((l) => l.location_id === selectedLocation?.value)
-
-        if (!hasInventoryLevel && selectedLocation?.value) {
-          return false
-        }
-        return true
-      })
-      .every(Boolean)
-  }, [toReturn, itemMap, selectedLocation?.value, inventoryMap])
-
-  console.log(locationsHasInventoryLevels)
   return (
     <LayeredModal context={layeredModalContext} handleClose={onDismiss}>
       <Modal.Body>
