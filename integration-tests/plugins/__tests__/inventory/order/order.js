@@ -295,7 +295,7 @@ describe("/store/carts", () => {
         )
       })
 
-      it("Adjusts reservations on successful fulfillment with reservation", async () => {
+      it("Adjusts reservation on successful fulfillment with reservation", async () => {
         const api = useApi()
 
         await prodVarInventoryService.reserveQuantity(variantId, 1, {
@@ -345,6 +345,191 @@ describe("/store/carts", () => {
           expect.objectContaining({
             stocked_quantity: 0,
             reserved_quantity: 0,
+            available_quantity: 0,
+          })
+        )
+      })
+
+      it("Deletes multiple reservations on successful fulfillment with reservation", async () => {
+        const api = useApi()
+
+        const a = await inventoryService.updateInventoryLevel(
+          invItemId,
+          locationId,
+          { stocked_quantity: 2 }
+        )
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 2,
+            reserved_quantity: 2,
+            available_quantity: 0,
+          })
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(0)
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 0,
+            reserved_quantity: 0,
+            available_quantity: 0,
+          })
+        )
+      })
+
+      it("Deletes single reservation on successful fulfillment with partial reservation", async () => {
+        const api = useApi()
+
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 2,
+        })
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 2,
+            reserved_quantity: 1,
+            available_quantity: 1,
+          })
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(0)
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 0,
+            reserved_quantity: 0,
+            available_quantity: 0,
+          })
+        )
+      })
+
+      it("Adjusts single reservation on successful fulfillment with over-reserved line item", async () => {
+        const api = useApi()
+
+        const a = await inventoryService.updateInventoryLevel(
+          invItemId,
+          locationId,
+          { stocked_quantity: 3 }
+        )
+
+        await prodVarInventoryService.reserveQuantity(variantId, 3, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 3,
+            reserved_quantity: 3,
+            available_quantity: 0,
+          })
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(1)
+        expect(reservations.data.reservations).toEqual([
+          expect.objectContaining({
+            quantity: 1,
+          }),
+        ])
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 1,
+            reserved_quantity: 1,
             available_quantity: 0,
           })
         )

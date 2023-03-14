@@ -434,32 +434,51 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
     if (reservationCount) {
-      let reservation = reservations[0]
+      const inventoryItems = await this.listByVariant(variantId)
+      const productVariantInventory = inventoryItems[0]
 
-      reservation =
-        reservations.find(
-          (r) => r.location_id === locationId && r.quantity >= quantity
-        ) ?? reservation
-
-      const productVariantInventory = await this.retrieve(
-        reservation.inventory_item_id,
-        variantId
+      const deltaUpdate = Math.abs(
+        quantity * productVariantInventory.required_quantity
       )
 
-      const reservationQtyUpdate =
-        reservation.quantity +
-        quantity * productVariantInventory.required_quantity
+      const exactReservation = reservations.find(
+        (r) => r.location_id === locationId && r.quantity === deltaUpdate
+      )
+      if (exactReservation) {
+        await this.inventoryService_
+          .withTransaction(this.activeManager_)
+          .deleteReservationItem(exactReservation.id)
+        return
+      }
 
-      if (reservationQtyUpdate === 0) {
+      const largerReservation = reservations.find(
+        (r) => r.location_id === locationId && r.quantity > deltaUpdate
+      )
+      if (largerReservation) {
         await this.inventoryService_
           .withTransaction(this.activeManager_)
-          .deleteReservationItem(reservation.id)
-      } else {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .updateReservationItem(reservation.id, {
-            quantity: reservationQtyUpdate,
+          .updateReservationItem(largerReservation.id, {
+            quantity: largerReservation.quantity - deltaUpdate,
           })
+        return
+      }
+
+      // take reservations and delete until we reach the quantity
+      let remainingQuantity = deltaUpdate
+      for (const r of reservations) {
+        if (r.quantity <= remainingQuantity) {
+          remainingQuantity -= r.quantity
+          await this.inventoryService_
+            .withTransaction(this.activeManager_)
+            .deleteReservationItem(r.id)
+        } else {
+          await this.inventoryService_
+            .withTransaction(this.activeManager_)
+            .updateReservationItem(r.id, {
+              quantity: r.quantity - remainingQuantity,
+            })
+          return
+        }
       }
     }
   }
