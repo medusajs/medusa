@@ -134,7 +134,7 @@ mailchimpService.subscribeNewsletter(
 
 :::tip
 
-You can learn more about how you can use services in your endpoints, services, and subscribers in the [Services documentation](../../advanced/backend/services/create-service.md#using-your-custom-service).
+You can learn more about how you can use services in your endpoints, services, and subscribers in the [Services documentation](../../development/services/create-service.md#using-your-custom-service).
 
 :::
 
@@ -206,4 +206,4 @@ If you try entering an email and clicking Subscribe, the email will be subscribe
 ## See Also
 
 - Check out [SendGrid plugin](./sendgrid.mdx) for more Email functionalities.
-- [Plugins Overview](../../advanced/backend/plugins/overview.md)
+- [Plugins Overview](../../development/plugins/overview.md)

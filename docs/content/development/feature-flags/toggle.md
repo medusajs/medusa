@@ -86,5 +86,5 @@ You can follow [this documentation to learn how to revert the last migration you
 
 ## See Also
 
-- [Migrations Overview](../../advanced/backend/migrations/overview.md).
+- [Migrations Overview](../../development/entities/migrations/overview.md).
 - [Configure your Medusa server](../backend/configurations.md).

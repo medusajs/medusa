@@ -68,4 +68,4 @@ If you want to remove a property from the `metadata` object, you can pass the `m
 ## See Also
 
 - [Create an entity](./index.md)
-- [Entities' reference](../../../references/entities/classes/Address.md)
+- [Entities' reference](../../references/entities/classes/Address.md)

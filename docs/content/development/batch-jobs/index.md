@@ -8,9 +8,9 @@ In this document, you’ll learn what Batch Jobs are and how they work in Medusa
 
 ## What are Batch Jobs
 
-Batch Jobs are tasks that can be performed asynchronously and iteratively. They can be [created using the Admin API](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs), then, once confirmed, they are processed asynchronously.
+Batch Jobs are tasks that can be performed asynchronously and iteratively. They can be [created using the Admin API](/api/admin/#tag/Batch-Job/operation/PostBatchJobs), then, once confirmed, they are processed asynchronously.
 
-Batch jobs require Redis, which Medusa uses as a queuing system to register and handle events. Every status change of a batch job triggers an event that can be handled using [subscribers](../subscribers/overview.md).
+Batch jobs require Redis, which Medusa uses as a queuing system to register and handle events. Every status change of a batch job triggers an event that can be handled using [subscribers](../events/subscribers.md).
 
 Medusa uses batch jobs in its core to perform some asynchronous tasks. For example, the Export Products functionality uses batch jobs.
 
@@ -18,7 +18,7 @@ You can also create a custom batch job or overwrite Medusa’s batch jobs.
 
 ### BatchJob Entity Overview
 
-A batch job is stored in the database as a [BatchJob](https://docs.medusajs.com/references/entities/classes/BatchJob) entity. Some of its important attributes are:
+A batch job is stored in the database as a [BatchJob](../../references/entities/classes/BatchJob) entity. Some of its important attributes are:
 
 - `status`: A string that determines the current status of the Batch Job.
 - `context`: An object that can be used to store configurations related to the batch job. For example, you can use it to store listing configurations such as the limit or offset of the list to be retrieved during the processing of the batch job.
@@ -46,15 +46,15 @@ When you create a batch job strategy, the `batchType` class property indicates t
 
 A batch job’s flow from creation to completion is:
 
-1. A batch job is created using the [Create Batch Job API endpoint](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs).
+1. A batch job is created using the [Create Batch Job API endpoint](/api/admin/#tag/Batch-Job/operation/PostBatchJobs).
 2. Once the batch job is created, the batch job’s status is changed to `created` and the `batch.created` event is triggered by the `BatchJobService`.
 3. The `BatchJobSubscriber` handles the `created` event. It resolves the batch job strategy based on the `type` of the batch job, then uses it to pre-process the batch job. After this, the batch job’s status is changed to `pre_processed`. Only when the batch job has the status `pre_processed` can be confirmed.
-4. If `dry_run` is not set in the Create Batch Job request in step one or if it is set to `false`, the batch job will automatically be confirmed after processing. Otherwise, if `dry_run` is set to `true`, the batch job can be confirmed using the [Confirm Batch Job API](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing) endpoint.
+4. If `dry_run` is not set in the Create Batch Job request in step one or if it is set to `false`, the batch job will automatically be confirmed after processing. Otherwise, if `dry_run` is set to `true`, the batch job can be confirmed using the [Confirm Batch Job API](/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing) endpoint.
 5. Once the batch job is confirmed, the batch job’s status is changed to `confirmed` and the `batch.confirmed` event is triggered by the `BatchJobService`.
 6. The `BatchJobSubscriber` handles the `confirmed` event. It resolves the batch job strategy, then uses it to process the batch job. 
 7. Once the batch job is processed succesfully, the batch job has the status `completed`.
 
-You can track the progress of the batch job at any point using the [Retrieve Batch Job](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/GetBatchJobsBatchJob) endpoint.
+You can track the progress of the batch job at any point using the [Retrieve Batch Job](/api/admin/#tag/Batch-Job/operation/GetBatchJobsBatchJob) endpoint.
 
 :::info
 
@@ -68,4 +68,4 @@ If the batch job fails at any point in this flow, its status is changed to `fail
 
 ## What’s Next
 
-- [Batch Job’s Events Reference](../subscribers/events-list.md#batch-jobs-events).
+- [Batch Job’s Events Reference](../events/events-list.md#batch-jobs-events).

@@ -27,4 +27,4 @@ The registration name of the service is important, as you’ll be referring to i
 ## See Also
 
 - [Create a Service](./create-service.md)
-- [Services Reference](/references/services/classes/AuthService)
+- [Services Reference](../../references/services/classes/AuthService)

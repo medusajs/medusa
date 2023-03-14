@@ -8,7 +8,7 @@ This document details all events in Medusa, when they are triggered, and what da
 
 ## Prerequisites
 
-It is assumed you’re already familiar with [Subscribers in Medusa and how to listen to events](create-subscriber.md). You can then use the name of events from this documentation in your subscriber to listen to events.
+It is assumed you’re already familiar with [Subscribers in Medusa and how to listen to events](./create-subscriber.md). You can then use the name of events from this documentation in your subscriber to listen to events.
 
 ---
 
@@ -1761,7 +1761,7 @@ Triggered when a payment is created.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1779,7 +1779,7 @@ Triggered when a payment is updated.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1797,7 +1797,7 @@ Triggered when a payment is captured.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1815,7 +1815,7 @@ Triggered when the capturing of a payment fails.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
 In addition, an error object is passed within the same object as the Payment provider:
 
@@ -1847,7 +1847,7 @@ Triggered when a refund of a payment is created.
 </td>
 <td>
 
-The entire refund passed as an object. You can refer to the [Refund entity](../../../references/entities/classes/Refund.md) for an idea of what fields to expect.
+The entire refund passed as an object. You can refer to the [Refund entity](../../references/entities/classes/Refund.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1865,7 +1865,7 @@ Triggered when a payment's refund fails.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1908,7 +1908,7 @@ Triggered when a payment collection is created.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1926,7 +1926,7 @@ Triggered when a payment collection is update.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1944,7 +1944,7 @@ Triggered when a payment collection is deleted.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1962,7 +1962,7 @@ Triggered when a payment collection is either marked authorized or its payment s
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2029,7 +2029,7 @@ Triggered when a product and data associated with it (options, variant orders, e
 </td>
 <td>
 
-The entire product passed as an object. You can refer to the [Product entity](../../../references/entities/classes/Product.md) for an idea of what fields to expect.
+The entire product passed as an object. You can refer to the [Product entity](../../references/entities/classes/Product.md) for an idea of what fields to expect.
 
 In one case, when the `/admin/products/{id}` endpoint is used to update the product, the payload is an object of the following format:
 
@@ -2280,7 +2280,7 @@ As of Medusa v1.6.3, Publishable API Keys are available but guarded by a feature
 1. Enable the `MEDUSA_FF_PUBLISHABLE_API_KEYS` environment variable;
 2. Or enable the `publishable_api_keys` key in the Medusa server's settings.
 
-You can learn more about enabling it in the [feature flags](../../../development/feature-flags/toggle.md) documentation.
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
 
 :::
 
@@ -2460,7 +2460,7 @@ As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag.
 1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
 2. Or enable the `sales_channels` key in the Medusa server's settings.
 
-You can learn more about enabling it in the [feature flags](../../../development/feature-flags/toggle.md) documentation.
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
 
 :::
 
@@ -2980,6 +2980,6 @@ Object of the following format:
 
 ## See Also
 
-- [Events architecture overview](../events/architecture.md)
-- [Use services in subscribers](create-subscriber.md#using-services-in-subscribers)
+- [Events architecture overview](./index.md)
+- [Use services in subscribers](./create-subscriber.md#using-services-in-subscribers)
 - [Create a notification provider](../notification/overview.md)

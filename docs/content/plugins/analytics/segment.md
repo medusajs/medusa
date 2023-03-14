@@ -37,7 +37,7 @@ By default, the Segment plugin tracks the following events:
 
 :::tip
 
-Check out the [Event Reference](../../advanced/backend/subscribers/events-list.md) to learn about all available events in Medusa.
+Check out the [Event Reference](../../development/events/events-list.md) to learn about all available events in Medusa.
 
 :::
 
@@ -187,7 +187,7 @@ You resolve the `SegmentService` using dependency injection. Then, when the `cus
 
 :::info
 
-Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../advanced/backend/services/create-service.md#using-your-custom-service).
+Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.md#using-your-custom-service).
 
 :::
 
@@ -207,7 +207,7 @@ After adding the above subscriber, run your backend again if it isn’t running 
 
 ## See Also
 
-- [Services Overview](../../advanced/backend/services/create-service.md)
-- [Subscribers Overview](../../advanced/backend/subscribers/create-subscriber.md)
-- [Events Reference](../../advanced/backend/subscribers/events-list.md)
+- [Services Overview](../../development/services/create-service.md)
+- [Subscribers Overview](../../development/events/create-subscriber.md)
+- [Events Reference](../../development/events/events-list.md)
 - [Deploy the Medusa server](../../deployments/server/index.mdx)

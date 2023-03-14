@@ -14,4 +14,4 @@ This ensures your backend has the latest database structure required. Then, try 
 
 ## See Also
 
-- [Migrations](../advanced/backend/migrations/index.md)
+- [Migrations](../development/entities/migrations/index.md)

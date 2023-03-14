@@ -13,7 +13,7 @@ A Payment Provider is the payment method used to authorize, capture, and refund 
 
 By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
 
-Adding a Payment Provider is as simple as creating a [service](../../../advanced/backend/services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
+Adding a Payment Provider is as simple as creating a [service](../../../development/services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
 
 Payment Provider Services must have a static property `identifier`. It's the name that will be used to install and refer to the Payment Provider in the Medusa backend.
 
@@ -134,7 +134,7 @@ Payment Providers must extend `AbstractPaymentService` from the core Medusa pack
 
 :::tip
 
-Following the naming convention of Services, the name of the file should be the slug name of the Payment Provider, and the name of the class should be the camel case name of the Payment Provider suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../../../advanced/backend/services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the Payment Provider, and the name of the class should be the camel case name of the Payment Provider suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../../../development/services/create-service.md).
 
 :::
 

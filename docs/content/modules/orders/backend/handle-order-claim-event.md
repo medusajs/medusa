@@ -33,7 +33,7 @@ Redis is required for batch jobs to work. Make sure you [install Redis](../../.
 
 ### Notification Provider
 
-To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../advanced/backend/notification/how-to-create-notification-provider.md).
+To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../development/notification/create-notification-provider.md).
 
 This document has an example using the [SendGrid](../../../plugins/notifications/sendgrid.mdx) plugin.
 
@@ -45,7 +45,7 @@ To subscribe to and handle an event, you must create a subscriber.
 
 :::tip
 
-You can learn more about subscribers in the [Subscribers](../../../advanced/backend/subscribers/overview.md) documentation.
+You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.md) documentation.
 
 :::
 
@@ -69,7 +69,7 @@ You’ll be adding in the next step the necessary dependencies to the subscriber
 
 :::info
 
-You can learn more about [dependency injection](../../../advanced/backend/dependency-container/index.md) in this documentation.
+You can learn more about [dependency injection](../../../development/fundamentals/dependency-injection.md) in this documentation.
 
 :::
 
@@ -108,7 +108,7 @@ Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notificati
 
 :::info
 
-You can learn more about handling events with the Notification Service using [this documentation](../../../advanced/backend/notification/how-to-create-notification-provider.md).
+You can learn more about handling events with the Notification Service using [this documentation](../../../development/notification/create-notification-provider.md).
 
 :::
 

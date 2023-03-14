@@ -363,6 +363,94 @@
     {
       "source": "/advanced/backend/upgrade-guides/:package/:version",
       "destination": "/upgrade-guides/:package/:version"
+    },
+    {
+      "source": "/advanced/backend/batch-jobs/create",
+      "destination": "/development/batch-jobs/create"
+    },
+    {
+      "source": "/advanced/backend/batch-jobs/customize-import",
+      "destination": "/development/batch-jobs/customize-import"
+    },
+    {
+      "source": "/advanced/backend/batch-jobs",
+      "destination": "/development/batch-jobs"
+    },
+    {
+      "source": "/advanced/backend/dependency-container",
+      "destination": "/development/fundamentals/dependency-injection"
+    },
+    {
+      "source": "/advanced/backend/entities",
+      "destination": "/development/entities"
+    },
+    {
+      "source": "/advanced/backend/entities/overview",
+      "destination": "/development/entities/overview"
+    },
+    {
+      "source": "/advanced/backend/migrations/overview",
+      "destination": "/development/entities/migrations/overview"
+    },
+    {
+      "source": "/advanced/backend/migrations",
+      "destination": "/development/entities/migrations"
+    },
+    {
+      "source": "/advanced/backend/events/architecture",
+      "destination": "/development/events"
+    },
+    {
+      "source": "/advanced/backend/subscribers/overview",
+      "destination": "/development/events/subscribers"
+    },
+    {
+      "source": "/advanced/backend/subscribers/create-subscriber",
+      "destination": "/development/events/create-subscriber"
+    },
+    {
+      "source": "/advanced/backend/subscribers/events-list",
+      "destination": "/development/events/events-list"
+    },
+    {
+      "source": "/advanced/backend/subscribers/events-list",
+      "destination": "/development/events/events-list"
+    },
+    {
+      "source": "/advanced/backend/notification/overview",
+      "destination": "/development/notification/overview"
+    },
+    {
+      "source": "/advanced/backend/notification/how-to-create-notification-provider",
+      "destination": "/development/notification/create-notification-provider"
+    },
+    {
+      "source": "/advanced/backend/plugins/overview",
+      "destination": "/development/plugins/overview"
+    },
+    {
+      "source": "/advanced/backend/plugins/create",
+      "destination": "/development/plugins/create"
+    },
+    {
+      "source": "/advanced/backend/plugins/publish",
+      "destination": "/development/plugins/publish"
+    },
+    {
+      "source": "/advanced/backend/services/overview",
+      "destination": "/development/services/overview"
+    },
+    {
+      "source": "/advanced/backend/services/create-service",
+      "destination": "/development/services/create-service"
+    },
+    {
+      "source": "/usage/create-medusa-app",
+      "destination": "/create-medusa-app"
+    },
+    {
+      "source": "/usage/local-development",
+      "destination": "/development/fundamentals/local-development"
     }
   ]
 }

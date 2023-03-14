@@ -29,7 +29,7 @@ module.exports = {
     },
     {
       type: 'doc',
-      id: 'usage/create-medusa-app',
+      id: 'create-medusa-app',
       label: 'Create Medusa App',
       customProps: {
         sidebar_icon: 'rocket-launch',
@@ -151,7 +151,7 @@ module.exports = {
     },
     {
       type: 'doc',
-      id: 'usage/local-development',
+      id: 'development/fundamentals/local-development',
       label: 'Medusa Dev CLI',
       customProps: {
         sidebar_icon: 'tools'
@@ -1247,410 +1247,390 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Fundamentals',
+      label: 'Architectural Concepts',
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true
       },
       items: [
         {
+          type: 'link',
+          href: '#',
+          label: 'Overview',
+          customProps: {
+            sidebar_is_soon: true
+          }
+        },
+        {
           type: 'doc',
-          id: 'advanced/backend/dependency-container/index',
+          id: 'development/fundamentals/dependency-injection',
           label: 'Dependency Injection'
         },
         {
           type: 'doc',
-          id: 'usage/local-development',
+          id: 'development/fundamentals/local-development',
           label: 'Local Development'
         }
       ]
     },
     {
       type: 'category',
-      label: 'Entities',
-      collapsible: false,
+      label: 'Basics',
       customProps: {
-        sidebar_is_group_headline: true
+        sidebar_is_group_headline: true,
       },
+      collapsible: false,
       items: [
         {
-          type: 'doc',
-          id: 'advanced/backend/entities/overview',
-          label: 'Overview'
+          type: 'category',
+          label: 'Entities',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/entities/overview',
+              label: 'Overview'
+            },
+            {
+              type: 'doc',
+              id: 'development/entities/migrations/overview',
+              label: 'Migrations'
+            },
+            {
+              type: 'ref',
+              id: 'references/entities/classes/Address',
+              label: 'Entities Reference'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/entities/index',
+              label: 'Create an Entity'
+            },
+            {
+              type: 'doc',
+              id: 'development/entities/migrations/index',
+              label: 'Create a Migration'
+            },
+          ]
         },
         {
-          type: 'doc',
-          id: 'advanced/backend/migrations/overview',
-          label: 'Migrations'
+          type: 'category',
+          label: 'Endpoints',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/endpoints/overview',
+              label: 'Overview',
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/endpoints/create',
+              label: 'Create an Endpoint'
+            },
+            {
+              type: 'doc',
+              id: 'development/endpoints/add-middleware',
+              label: 'Add a Middleware'
+            },
+          ]
         },
         {
-          type: 'ref',
-          id: 'references/entities/classes/Address',
-          label: 'Entities Reference'
+          type: 'category',
+          label: 'Services',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/services/overview',
+              label: 'Overview'
+            },
+            {
+              type: 'doc',
+              id: 'references/services/classes/AuthService',
+              label: 'Services Reference'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/services/create-service',
+              label: 'Create a Service'
+            },
+          ]
         },
         {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
+          type: 'category',
+          label: 'Events',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/events/index',
+              label: 'Overview'
+            },
+            {
+              type: 'doc',
+              id: 'development/events/subscribers',
+              label: 'Subscribers'
+            },
+            {
+              type: 'doc',
+              id: 'development/events/events-list',
+              label: 'Events Reference'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/events/create-subscriber',
+              label: 'Create a Subscriber'
+            },
+          ]
         },
         {
-          type: 'doc',
-          id: 'advanced/backend/entities/index',
-          label: 'Create an Entity'
+          type: 'category',
+          label: 'Scheduled Jobs',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/scheduled-jobs/overview',
+              label: 'Overview',
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/scheduled-jobs/create',
+              label: 'Create a Scheduled Job'
+            },
+          ]
         },
         {
-          type: 'doc',
-          id: 'advanced/backend/migrations/index',
-          label: 'Create a Migration'
+          type: 'category',
+          label: 'Plugins',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/plugins/overview',
+              label: 'Overview'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/plugins/create',
+              label: 'Create a Plugin'
+            },
+            {
+              type: 'doc',
+              id: 'development/plugins/publish',
+              label: 'Publish a Plugin'
+            },
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Publishable API Keys',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/publishable-api-keys/index',
+              label: 'Overview'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/publishable-api-keys/admin/manage-publishable-api-keys',
+              label: 'Admin: Manage Publishable API Keys'
+            },
+            {
+              type: 'doc',
+              id: 'development/publishable-api-keys/storefront/use-in-requests',
+              label: 'Storefront: Use in Requests'
+            }
+          ]
         },
       ]
     },
     {
       type: 'category',
-      label: 'Endpoints',
-      collapsible: false,
+      label: 'Advanced Concepts',
       customProps: {
-        sidebar_is_group_headline: true
+        sidebar_is_group_headline: true,
       },
+      collapsible: false,
       items: [
         {
-          type: 'doc',
-          id: 'development/endpoints/overview',
-          label: 'Overview',
+          type: 'category',
+          label: 'Notifications',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/notification/overview',
+              label: 'Overview'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/notification/create-notification-provider',
+              label: 'Create a Notification Provider'
+            },
+          ]
         },
         {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
+          type: 'category',
+          label: 'File Service',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/file-service/overview',
+              label: 'Overview',
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'link',
+              href: '#',
+              label: 'Create a File Service',
+              customProps: {
+                sidebar_is_soon: true
+              }
+            },
+          ]
         },
         {
-          type: 'doc',
-          id: 'development/endpoints/create',
-          label: 'Create an Endpoint'
+          type: 'category',
+          label: 'Batch Jobs',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/batch-jobs/index',
+              label: 'Overview'
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/batch-jobs/create',
+              label: 'Create Batch Job Strategy'
+            },
+            {
+              type: 'doc',
+              id: 'development/batch-jobs/customize-import',
+              label: 'Customize Import Strategy'
+            },
+          ]
         },
         {
-          type: 'doc',
-          id: 'development/endpoints/add-middleware',
-          label: 'Add a Middleware'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Services',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'advanced/backend/services/overview',
-          label: 'Overview'
-        },
-        {
-          type: 'doc',
-          id: 'references/services/classes/AuthService',
-          label: 'Services Reference'
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/services/create-service',
-          label: 'Create a Service'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Events',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'advanced/backend/events/architecture',
-          label: 'Overview'
+          type: 'category',
+          label: 'Strategies',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/strategies/overview',
+              label: 'Overview',
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'link',
+              href: '#',
+              label: 'Create a Strategy',
+              customProps: {
+                sidebar_is_soon: true
+              }
+            },
+            {
+              type: 'link',
+              href: '#',
+              label: 'Override a Strategy',
+              customProps: {
+                sidebar_is_soon: true
+              }
+            },
+          ]
         },
         {
-          type: 'doc',
-          id: 'advanced/backend/subscribers/overview',
-          label: 'Subscribers'
+          type: 'category',
+          label: 'Feature Flags',
+          items: [
+            {
+              type: 'doc',
+              id: 'development/feature-flags/overview',
+              label: 'Overview',
+            },
+            {
+              type: 'html',
+              value: 'How-to',
+              customProps: {
+                sidebar_is_group_divider: true
+              }
+            },
+            {
+              type: 'doc',
+              id: 'development/feature-flags/toggle',
+              label: 'Toggle Feature Flags'
+            },
+          ]
         },
-        {
-          type: 'doc',
-          id: 'advanced/backend/subscribers/events-list',
-          label: 'Events Reference'
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/subscribers/create-subscriber',
-          label: 'Create a Subscriber'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Scheduled Jobs',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'development/scheduled-jobs/overview',
-          label: 'Overview',
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'development/scheduled-jobs/create',
-          label: 'Create a Scheduled Job'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Notifications',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'advanced/backend/notification/overview',
-          label: 'Overview'
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/notification/how-to-create-notification-provider',
-          label: 'Create a Notification Provider'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'File Service',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'development/file-service/overview',
-          label: 'Overview',
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'link',
-          href: '#',
-          label: 'Create a File Service',
-          customProps: {
-            sidebar_is_soon: true
-          }
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Batch Jobs',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'advanced/backend/batch-jobs/index',
-          label: 'Overview'
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/batch-jobs/create',
-          label: 'Create Batch Job Strategy'
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/batch-jobs/customize-import',
-          label: 'Customize Import Strategy'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Strategies',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'development/strategies/overview',
-          label: 'Overview',
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'link',
-          href: '#',
-          label: 'Create a Strategy',
-          customProps: {
-            sidebar_is_soon: true
-          }
-        },
-        {
-          type: 'link',
-          href: '#',
-          label: 'Override a Strategy',
-          customProps: {
-            sidebar_is_soon: true
-          }
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Feature Flags',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'development/feature-flags/overview',
-          label: 'Overview',
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'development/feature-flags/toggle',
-          label: 'Toggle Feature Flags'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Plugins',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'advanced/backend/plugins/overview',
-          label: 'Overview'
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/plugins/create',
-          label: 'Create a Plugin'
-        },
-        {
-          type: 'doc',
-          id: 'advanced/backend/plugins/publish',
-          label: 'Publish a Plugin'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'Publishable API Keys',
-      collapsible: false,
-      customProps: {
-        sidebar_is_group_headline: true
-      },
-      items: [
-        {
-          type: 'doc',
-          id: 'development/publishable-api-keys/index',
-          label: 'Overview'
-        },
-        {
-          type: 'html',
-          value: 'How-to',
-          customProps: {
-            sidebar_is_group_divider: true
-          }
-        },
-        {
-          type: 'doc',
-          id: 'development/publishable-api-keys/admin/manage-publishable-api-keys',
-          label: 'Admin: Manage Publishable API Keys'
-        },
-        {
-          type: 'doc',
-          id: 'development/publishable-api-keys/storefront/use-in-requests',
-          label: 'Storefront: Use in Requests'
-        }
       ]
     },
   ],
@@ -1995,7 +1975,7 @@ module.exports = {
     {
       type: 'ref',
       id: 'development/overview',
-      label: 'Back to core concepts',
+      label: 'Back to Medusa Development',
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: 'back-arrow'
@@ -2011,7 +1991,7 @@ module.exports = {
     },
     {
       type: 'autogenerated',
-      dirName: 'references/services/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
+      dirName: 'references/services/classes',
     },
   ],
   jsClientSidebar: [
@@ -2317,7 +2297,7 @@ module.exports = {
     {
       type: 'ref',
       id: 'development/overview',
-      label: 'Back to core concepts',
+      label: 'Back to Medusa Development',
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: 'back-arrow'
@@ -2333,7 +2313,7 @@ module.exports = {
     },
     {
       type: 'autogenerated',
-      dirName: 'references/entities/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
+      dirName: 'references/entities/classes',
     },
   ],
 }

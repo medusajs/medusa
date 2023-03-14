@@ -9,15 +9,15 @@ In this document, you’ll learn how to add a Notification Provider to your Medu
 
 :::note
 
-If you’re unfamiliar with the Notification architecture in Medusa, it is recommended to check out the [architecture overview](overview.md) first.
+If you’re unfamiliar with the Notification architecture in Medusa, it is recommended to check out the [architecture overview](./overview.md) first.
 
 :::
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../../../development/backend/install.mdx).
+Before you start creating a Notification Provider, you need to install a [Medusa server](../backend/install.mdx).
 
-You also need to [setup Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with the Medusa server](../../../development/backend/configurations.md#redis).
+You also need to [setup Redis](../backend/prepare-environment.mdx#redis) and [configure it with the Medusa server](../backend/configurations.md#redis).
 
 ---
 
@@ -104,7 +104,7 @@ You can learn more about plugins and how to create them in the [Plugins](../plug
 
 :::
 
-Continuing on with the previous example, if you want to use the [`OrderService`](../../../references/services/classes/OrderService.md) later when sending notifications, you can inject it into the constructor:
+Continuing on with the previous example, if you want to use the [`OrderService`](../../references/services/classes/OrderService.md) later when sending notifications, you can inject it into the constructor:
 
 ```ts
 import { 
@@ -132,7 +132,7 @@ class EmailSenderService extends AbstractNotificationService {
 
 ### sendNotification
 
-When an event is triggered that your Notification Provider is registered as a handler for, the [`NotificationService`](../../../references/services/classes/NotificationService.md) in Medusa’s core will execute the `sendNotification` method of your Notification Provider.
+When an event is triggered that your Notification Provider is registered as a handler for, the [`NotificationService`](../../references/services/classes/NotificationService.md) in Medusa’s core will execute the `sendNotification` method of your Notification Provider.
 
 In this method, you can perform the necessary operation to send the Notification. Following the example above, you can send an email to the customer when they place an order.
 
@@ -140,11 +140,11 @@ This method receives three parameters:
 
 1. `eventName`: This is the name of the event that was triggered. For example, `order.placed`.
 2. `eventData`: This is the data payload of the event that was triggered. For example, if the `order.placed` event is triggered, the `eventData` object contains the property `id` which is the ID of the order that was placed.
-3. `attachmentGenerator`: If you’ve previously attached a generator to the `NotificationService` using the [`registerAttachmentGenerator`](../../../references/services/classes/NotificationService.md#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
+3. `attachmentGenerator`: If you’ve previously attached a generator to the `NotificationService` using the [`registerAttachmentGenerator`](../../references/services/classes/NotificationService.md#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
 
 :::info
 
-You can learn more about what events are triggered in Medusa and their data payload in the [Events List](../subscribers/events-list.md) documentation.
+You can learn more about what events are triggered in Medusa and their data payload in the [Events List](../events/events-list.md) documentation.
 
 :::
 
@@ -196,19 +196,19 @@ Finally, you return an object with the `to` property set to the customer email a
 
 :::note
 
-The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. You can learn more about the `Notification` entity in the [Architecture Overview](overview.md#notification-entity-overview) documentation.
+The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. You can learn more about the `Notification` entity in the [Architecture Overview](./overview.md#notification-entity-overview) documentation.
 
 :::
 
 ### resendNotification
 
-Using the [Resend Notification endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
+Using the [Resend Notification endpoint](/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
 
 This method receives three parameters:
 
-1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](overview.md#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
+1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](./overview.md#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
 2. `config`: In the Resend Notification endpoint you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
-3. `attachmentGenerator`: If you’ve previously attached a generator to the Notification Service using the [`registerAttachmentGenerator`](../../../references/services/classes/NotificationService.md#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
+3. `attachmentGenerator`: If you’ve previously attached a generator to the Notification Service using the [`registerAttachmentGenerator`](../../references/services/classes/NotificationService.md#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
 
 Similarly to the `sendNotification` method, this method must return an object containing two properties:
 
@@ -253,7 +253,7 @@ Finally, you return an object with the `to` property set to the email (either ne
 
 :::note
 
-The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. No changes are made to the original `Notification` record created after the `sendNotification` method. This new record is associated with the original `Notification` record using the `parent_id` attribute in the entity. You can learn more about the `Notification` entity in the [Architecture Overview](overview.md#notification-entity-overview) documentation.
+The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. No changes are made to the original `Notification` record created after the `sendNotification` method. This new record is associated with the original `Notification` record using the `parent_id` attribute in the entity. You can learn more about the `Notification` entity in the [Architecture Overview](./overview.md#notification-entity-overview) documentation.
 
 :::
 
@@ -265,7 +265,7 @@ After creating your Notification Provider Service, you must create a Subscriber 
 
 :::note
 
-This section will not cover the basics of Subscribers. You can read the [Subscribers](../subscribers/create-subscriber.md) documentation to learn more about them and how to create them.
+This section will not cover the basics of Subscribers. You can read the [Subscribers](../events/create-subscriber.md) documentation to learn more about them and how to create them.
 
 :::
 
@@ -305,11 +305,11 @@ Then, start by running your Medusa server:
 npm run start
 ```
 
-Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the storefront.
+Then, place an order either using the [REST APIs](/api/store) or using the storefront.
 
 :::tip
 
-If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) starter storefronts in minutes.
+If you don’t have a storefront installed you can get started with either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) starter storefronts in minutes.
 
 :::
 
@@ -319,17 +319,17 @@ After placing an order, you can see in your console the message “Notification 
 
 ## Test Resending Notifications with your Notification Provider
 
-To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications admin endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/GetNotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
+To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications admin endpoint](/api/admin/#tag/Notification/operation/GetNotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
 
 :::tip
 
-You must be authenticated as an admin user before sending this request. You can use the [Authenticate a User](https://docs.medusajs.com/api/admin) endpoint to get authenticated.
+You must be authenticated as an admin user before sending this request. You can use the [Authenticate a User](/api/admin) endpoint to get authenticated.
 
 :::
 
 ![List Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001650/Medusa%20Docs/Screenshots/iF1rZX1_msps2t.png)
 
-Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
+Then, send a request to the [Resend Notification](/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
 
 ![Resend Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001659/Medusa%20Docs/Screenshots/0zFfPed_og7one.png)
 
@@ -339,8 +339,8 @@ This request returns the same notification object as the List Notifications endp
 
 ## See Also
 
-- [Events reference](../subscribers/events-list.md)
-- [SendGrid Plugin](../../../plugins/notifications/sendgrid.mdx)
-- [Create a Subscriber](../subscribers/create-subscriber.md)
+- [Events reference](../events/events-list.md)
+- [SendGrid Plugin](../../plugins/notifications/sendgrid.mdx)
+- [Create a Subscriber](../events/create-subscriber.md)
 - [Create a Service](../services/create-service.md)
 - [Create a Plugin](../plugins/create.md)

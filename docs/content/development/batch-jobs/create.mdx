@@ -28,15 +28,15 @@ This documentation helps you learn how to create a batch job strategy. The batch
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../backend/install.mdx) to get started.
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../backend/configurations.md#redis).
 
 ### PostgreSQL
 
-If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../../../development/backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../../../development/backend/configurations.md#postgresql-configurations).
+If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../backend/configurations.md#postgresql-configurations).
 
 ---
 
@@ -102,7 +102,7 @@ class PublishStrategy extends AbstractBatchJobStrategy {
 
 ### (Optional) prepareBatchJobForProcessing
 
-Medusa runs this method before it creates the batch job to prepare the content of the batch job record in the database. It accepts two parameters: the batch job data sent in the body of the [Create Batch Job request](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs), and the request instance.
+Medusa runs this method before it creates the batch job to prepare the content of the batch job record in the database. It accepts two parameters: the batch job data sent in the body of the [Create Batch Job request](/api/admin/#tag/Batch-Job/operation/PostBatchJobs), and the request instance.
 
 Implementing this method is optional. For example:
 
@@ -296,13 +296,13 @@ If your `start` script uses the `medusa develop` command, whenever you make chan
 
 :::
 
-You must also use an authenticated user to send batch job requests. You can refer to the [authentication guide in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication) for more details.
+You must also use an authenticated user to send batch job requests. You can refer to the [authentication guide in the API reference](/api/admin/#section/Authentication) for more details.
 
-If you follow along with the JS Client code snippets, make sure to [install and set it up first](../../../js-client/overview.md).
+If you follow along with the JS Client code snippets, make sure to [install and set it up first](../../js-client/overview.md).
 
 ### Create Batch Job
 
-The first step is to create a batch job using the [Create Batch Job endpoint](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs). In the body of the request, you must set the `type` to the value of `batchType` in the batch job strategy you created.
+The first step is to create a batch job using the [Create Batch Job endpoint](/api/admin/#tag/Batch-Job/operation/PostBatchJobs). In the body of the request, you must set the `type` to the value of `batchType` in the batch job strategy you created.
 
 For example, this creates a batch job of the type `publish-products`:
 
@@ -420,7 +420,7 @@ Based on the batch job strategy implemented in this documentation, the `result` 
 
 ### Confirm Batch Job
 
-To process the batch job, send a request to [confirm the batch job](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing):
+To process the batch job, send a request to [confirm the batch job](/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing):
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -467,4 +467,4 @@ You can [retrieve the batch job](#optional-retrieve-batch-job) at any given poin
 ## See Also
 
 - [Batch Jobs Overview](./index.md).
-- [Import products using the Admin API](../../../modules/products/admin/import-products.mdx).
+- [Import products using the Admin API](../../modules/products/admin/import-products.mdx).

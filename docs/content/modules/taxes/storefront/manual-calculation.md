@@ -45,7 +45,7 @@ cartService.retrieve(
 
 :::tip
 
-You can learn how to [retrieve and use services](../../../advanced/backend/services/create-service.md#using-your-custom-service) in this documentation.
+You can learn how to [retrieve and use services](../../../development/services/create-service.md#using-your-custom-service) in this documentation.
 
 :::
 
@@ -89,7 +89,7 @@ const itemTotals = await totalsService
 
 :::tip
 
-You can learn how to [retrieve and use services](../../../advanced/backend/services/create-service.md#using-your-custom-service) in this documentation.
+You can learn how to [retrieve and use services](../../../development/services/create-service.md#using-your-custom-service) in this documentation.
 
 :::
 
