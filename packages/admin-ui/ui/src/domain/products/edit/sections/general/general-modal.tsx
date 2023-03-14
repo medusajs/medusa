@@ -141,7 +141,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
         ? { label: product.type.value, value: product.type.id }
         : null,
       tags: product.tags ? product.tags.map((t) => t.value) : null,
-      categories: product.categories.map((c) => c.id),
+      categories: product?.categories?.map((c) => c.id),
     },
     discountable: {
       value: product.discountable,
