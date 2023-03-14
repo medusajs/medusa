@@ -361,8 +361,8 @@
       "destination": "/development/publishable-api-keys/admin/manage-publishable-api-keys"
     },
     {
-      "source": "/advanced/backend/upgrade-guides/:path",
-      "destination": "/upgrade-guides/:path"
+      "source": "/advanced/backend/upgrade-guides/:package/:version",
+      "destination": "/upgrade-guides/:package/:version"
     }
   ]
 }
