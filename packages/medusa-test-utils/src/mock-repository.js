@@ -13,7 +13,8 @@ class MockRepo {
     findAndCount,
     del,
     count,
-    insertBulk
+    insertBulk,
+    metadata
   }) {
     this.create_ = create
     this.update_ = update
@@ -28,6 +29,10 @@ class MockRepo {
     this.findAndCount_ = findAndCount
     this.findOneWithRelations_ = findOneWithRelations
     this.insertBulk_ = insertBulk
+
+    this.metadata = metadata ?? {
+      columns: []
+    }
   }
 
   setFindOne(fn) {
