@@ -402,22 +402,22 @@ class ProductVariantService extends TransactionBaseService {
           })
         )
 
-      const eventBusServiceTx = this.eventBus_.withTransaction(manager)
-
-      await Promise.all(
-        results.map(async ([result, updatedData, shouldEmitUpdateEvent]) => {
-          if (shouldEmitUpdateEvent) {
-            return eventBusServiceTx.emit(
-              ProductVariantService.Events.UPDATED,
-              {
-                id: result.id,
-                product_id: result.product_id,
-                fields: Object.keys(updatedData),
-              }
-            )
+      const events = results
+        .filter(([, , shouldEmitUpdateEvent]) => shouldEmitUpdateEvent)
+        .map(([result, updatedData, shouldEmitUpdateEvent]) => {
+          return {
+            eventName: ProductVariantService.Events.UPDATED,
+            data: {
+              id: result.id,
+              product_id: result.product_id,
+              fields: Object.keys(updatedData),
+            },
           }
         })
-      )
+
+      if (events.length) {
+        await this.eventBus_.withTransaction(manager).emit(events)
+      }
 
       return results.map(([variant]) => variant)
     })
@@ -473,8 +473,8 @@ class ProductVariantService extends TransactionBaseService {
         data
           .map((data_) =>
             data_.prices
-              .map((price) => price.region_id)
-              .filter((v): v is string => !!v)
+              .filter((price) => price.region_id)
+              .map((price) => price.region_id!)
           )
           .flat()
       )
@@ -574,13 +574,13 @@ class ProductVariantService extends TransactionBaseService {
       })
 
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
-      const dataToUpdate: MoneyAmount[] = []
+      const dataToUpdate: QueryDeepPartialEntity<MoneyAmount>[] = []
 
       data.forEach(({ price, variantId }) => {
         const variantMoneyAmounts =
           moneyAmountsMapToVariantId.get(variantId) ?? []
 
-        const moneyAmount = variantMoneyAmounts.find(
+        const moneyAmount: MoneyAmount = variantMoneyAmounts.find(
           (ma) => ma.region_id === price.region_id
         )
 
@@ -588,7 +588,7 @@ class ProductVariantService extends TransactionBaseService {
           // No need to update if the amount is the same
           if (moneyAmount.amount !== price.amount) {
             dataToUpdate.push({
-              ...moneyAmount,
+              id: moneyAmount.id,
               amount: price.amount,
             })
           }
@@ -609,7 +609,9 @@ class ProductVariantService extends TransactionBaseService {
       }
 
       if (dataToUpdate.length) {
-        promises.push(moneyAmountRepo.save(dataToUpdate))
+        dataToUpdate.forEach((data) => {
+          promises.push(moneyAmountRepo.update({ id: data.id as string }, data))
+        })
       }
 
       await Promise.all(promises)
@@ -646,13 +648,13 @@ class ProductVariantService extends TransactionBaseService {
       })
 
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
-      const dataToUpdate: MoneyAmount[] = []
+      const dataToUpdate: QueryDeepPartialEntity<MoneyAmount>[] = []
 
       data.forEach(({ price, variantId }) => {
         const variantMoneyAmounts =
           moneyAmountsMapToVariantId.get(variantId) ?? []
 
-        const moneyAmount = variantMoneyAmounts.find(
+        const moneyAmount: MoneyAmount = variantMoneyAmounts.find(
           (ma) => ma.currency_code === price.currency_code
         )
 
@@ -660,7 +662,7 @@ class ProductVariantService extends TransactionBaseService {
           // No need to update if the amount is the same
           if (moneyAmount.amount !== price.amount) {
             dataToUpdate.push({
-              ...moneyAmount,
+              id: moneyAmount.id,
               amount: price.amount,
             })
           }
@@ -682,7 +684,9 @@ class ProductVariantService extends TransactionBaseService {
       }
 
       if (dataToUpdate.length) {
-        promises.push(moneyAmountRepo.save(dataToUpdate))
+        dataToUpdate.forEach((data) => {
+          promises.push(moneyAmountRepo.update({ id: data.id as string }, data))
+        })
       }
 
       await Promise.all(promises)
@@ -995,17 +999,18 @@ class ProductVariantService extends TransactionBaseService {
 
       await variantRepo.softRemove(variants)
 
-      await Promise.all(
-        variants.map(async (variant) =>
-          this.eventBus_
-            .withTransaction(manager)
-            .emit(ProductVariantService.Events.DELETED, {
-              id: variant.id,
-              product_id: variant.product_id,
-              metadata: variant.metadata,
-            })
-        )
-      )
+      const events = variants.map((variant) => {
+        return {
+          eventName: ProductVariantService.Events.DELETED,
+          data: {
+            id: variant.id,
+            product_id: variant.product_id,
+            metadata: variant.metadata,
+          },
+        }
+      })
+
+      await this.eventBus_.withTransaction(manager).emit(events)
     })
   }
 

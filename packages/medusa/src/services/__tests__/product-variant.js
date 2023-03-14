@@ -315,13 +315,15 @@ describe("ProductVariantService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
         {
-          id: IdMap.getId("ironman"),
-          fields: ["title"],
-        }
-      )
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title"],
+          },
+        },
+      ])
 
       expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.save).toHaveBeenCalledWith({
@@ -339,13 +341,15 @@ describe("ProductVariantService", () => {
       )
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
         {
-          id: IdMap.getId("ironman"),
-          fields: ["title"],
-        }
-      )
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title"],
+          },
+        },
+      ])
 
       expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.save).toHaveBeenCalledWith({
@@ -389,13 +393,15 @@ describe("ProductVariantService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
         {
-          id: IdMap.getId("ironman"),
-          fields: ["title", "metadata"],
-        }
-      )
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title", "metadata"],
+          },
+        },
+      ])
 
       expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.save).toHaveBeenCalledWith({
@@ -414,13 +420,15 @@ describe("ProductVariantService", () => {
       })
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
         {
-          id: IdMap.getId("ironman"),
-          fields: ["title", "inventory_quantity"],
-        }
-      )
+          eventName: "product-variant.updated",
+          data: {
+            id: IdMap.getId("ironman"),
+            fields: ["title", "inventory_quantity"],
+          },
+        },
+      ])
 
       expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
       expect(productVariantRepository.save).toHaveBeenCalledWith({
@@ -746,6 +754,7 @@ describe("ProductVariantService", () => {
       expect(moneyAmountRepository.create).toHaveBeenCalledWith({
         variant_id: IdMap.getId("ironman"),
         region_id: IdMap.getId("cali"),
+        currency_code: "usd",
         amount: 100,
       })
 
@@ -763,15 +772,14 @@ describe("ProductVariantService", () => {
 
       expect(moneyAmountRepository.create).toHaveBeenCalledTimes(0)
 
-      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
-      expect(moneyAmountRepository.save).toHaveBeenCalledWith([
+      expect(moneyAmountRepository.update).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.update).toHaveBeenCalledWith(
+        { id: IdMap.getId("dkk") },
         {
-          variant_id: IdMap.getId("ironman"),
           id: IdMap.getId("dkk"),
-          currency_code: "dkk",
           amount: 850,
-        },
-      ])
+        }
+      )
     })
   })
 
@@ -942,13 +950,15 @@ describe("ProductVariantService", () => {
       ])
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.deleted",
+      expect(eventBusService.emit).toHaveBeenCalledWith([
         {
-          id: IdMap.getId("ironman"),
-          product_id: IdMap.getId("product-test"),
-        }
-      )
+          eventName: "product-variant.deleted",
+          data: {
+            id: IdMap.getId("ironman"),
+            product_id: IdMap.getId("product-test"),
+          },
+        },
+      ])
     })
 
     it("successfully resolves if variant does not exist", async () => {

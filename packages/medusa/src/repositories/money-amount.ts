@@ -10,13 +10,11 @@ import {
   WhereExpressionBuilder,
 } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { RelationIdLoader } from "typeorm/query-builder/relation-id/RelationIdLoader"
 import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-import { RawSqlResultsToEntityTransformer } from "typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer"
 import { isString } from "../utils"
 import { ProductVariantPrice } from "../types/product-variant"
 
@@ -32,33 +30,20 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     data: QueryDeepPartialEntity<MoneyAmount>[]
   ): Promise<MoneyAmount[]> {
     const queryBuilder = this.createQueryBuilder()
-    const rawMoneyAmounts = await queryBuilder
       .insert()
       .into(MoneyAmount)
       .values(data)
-      .returning("*")
-      .execute()
 
-    const relationIdLoader = new RelationIdLoader(
-      queryBuilder.connection,
-      this.queryRunner,
-      queryBuilder.expressionMap.relationIdAttributes
-    )
-    const rawRelationIdResults = await relationIdLoader.load(
-      rawMoneyAmounts.raw
-    )
-    const transformer = new RawSqlResultsToEntityTransformer(
-      queryBuilder.expressionMap,
-      queryBuilder.connection.driver,
-      rawRelationIdResults,
-      [],
-      this.queryRunner
-    )
+    // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
+    if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+      const rawMoneyAmounts = await queryBuilder.execute()
+      return rawMoneyAmounts.generatedMaps.map((d) =>
+        this.create(d)
+      ) as MoneyAmount[]
+    }
 
-    return transformer.transform(
-      rawMoneyAmounts.raw,
-      queryBuilder.expressionMap.mainAlias!
-    ) as MoneyAmount[]
+    const rawMoneyAmounts = await queryBuilder.returning("*").execute()
+    return rawMoneyAmounts.generatedMaps.map((d) => this.create(d))
   }
 
   /**
