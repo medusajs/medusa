@@ -119,9 +119,11 @@ export default class CurrencyService extends TransactionBaseService {
       )
       await currencyRepo.save(currency)
 
-      await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
-        code,
-      })
+      await this.eventBusService_
+        .withTransaction(transactionManager)
+        .emit(CurrencyService.Events.UPDATED, {
+          code,
+        })
 
       return currency
     })
