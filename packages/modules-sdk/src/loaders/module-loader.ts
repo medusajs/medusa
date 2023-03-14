@@ -1,5 +1,5 @@
-import { EOL } from "os"
 import { asValue } from "awilix"
+import { EOL } from "os"
 import { loadInternalModule } from "./utils"
 
 import {
@@ -18,7 +18,7 @@ async function loadModule(
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
-  const containerName = resolution.definition.registrationName
+  const registrationName = resolution.definition.registrationName
 
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
 
@@ -35,7 +35,7 @@ async function loadModule(
     }
 
     container.register({
-      [containerName]: asValue(undefined),
+      [registrationName]: asValue(undefined),
     })
 
     return {
@@ -45,7 +45,7 @@ async function loadModule(
 
   if (!resolution.resolutionPath) {
     container.register({
-      [containerName]: asValue(undefined),
+      [registrationName]: asValue(undefined),
     })
 
     return
