@@ -153,7 +153,7 @@ describe("/store/carts", () => {
     describe("Fulfillments", () => {
       const lineItemId = "line-item-id"
 
-      it.only("Adjusts reservations on successful fulfillment on updated reservation item", async () => {
+      it("Adjusts reservations on successful fulfillment on updated reservation item", async () => {
         const api = useApi()
 
         const lineItemId1 = "line-item-id-1"
