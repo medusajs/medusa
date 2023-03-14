@@ -63,7 +63,7 @@ details summary {
 kbd {
   font: 100% var(--ifm-font-family-monospace) !important;
   background-color: var(--medusa-bg-component) !important;
-  color: var(--medusa-text-secondary) !important;
+  color: var(--medusa-text-subtle) !important;
   border-radius: 6px !important;
   border-color: var(--medusa-border-strong) !important;
   box-shadow: none !important;

@@ -49,41 +49,13 @@ p {
   font-weight: var(--ifm-font-weight-base);
 }
 
-.theme-doc-markdown a:hover {
-  text-decoration: none;
-}
-
 .markdown > p {
   margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
-}
-
-.markdown a,
-.markdown a:hover {
-  color: var(--ifm-link-color);
 }
 
 .markdown a:not(.hash-link),
 .DocSearch-Prefill {
   font-weight: var(--ifm-link-weight);
-}
-
-.markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after,
-.DocSearch-Prefill:after {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  content: '';
-  vertical-align: middle;
-}
-
-html:not([data-theme="dark"]) .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after,
-html:not([data-theme="dark"]) .DocSearch-Prefill:after {
-  background-image: url('/img/link-icon-light.svg');
-}
-
-[data-theme="dark"] .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after,
-[data-theme="dark"] .DocSearch-Prefill:after {
-  background-image: url('/img/link-icon.svg');
 }
 
 .markdown p + img,

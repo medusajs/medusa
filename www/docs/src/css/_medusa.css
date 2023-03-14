@@ -23,8 +23,8 @@
   --medusa-border-interactive: #6E56CF;
 
   /** Text **/
-  --medusa-text-primary: #11181C;
-  --medusa-text-secondary: #687076;
+  --medusa-text-base: #11181C;
+  --medusa-text-subtle: #687076;
   --medusa-text-placeholder: #889096;
   --medusa-text-disabled: #C1C8CD;
   --medusa-text-on-color: #FFFFFF;
@@ -81,7 +81,7 @@
   --medusa-tooltip: var(--medusa-bg-base);
   --medusa-tooltip-border: var(--medusa-border-base);
   --medusa-tooltip-shadow: var(--medusa-shadow-overlay);
-  --medusa-tooltip-text: var(--medusa-text-secondary);
+  --medusa-tooltip-text: var(--medusa-text-subtle);
 
   /** Shadow **/
   --medusa-shadow-overlay: 0px 2px 16px rgba(0, 0, 0, 0.08);
@@ -89,6 +89,9 @@
   --medusa-shadow-button-focused: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF;
 
   /** Typography **/
+  --medusa-body-regular-plus-size: 14px;
+  --medusa-body-regular-plus-line-height: 24px;
+  --medusa-body-regular-plus-font-weight: 500;
   --medusa-body-regular-size: 14px;
   --medusa-body-regular-line-height: 24px;
   --medusa-body-regular-font-weight: 400;
@@ -153,8 +156,8 @@ html[data-theme="dark"] {
   --medusa-border-interactive: #6E56CF;
 
   /** Text **/
-  --medusa-text-primary: #EDEDEF;
-  --medusa-text-secondary: #7E7D86;
+  --medusa-text-base: #EDEDEF;
+  --medusa-text-subtle: #7E7D86;
   --medusa-text-placeholder: #706F78;
   --medusa-text-disabled: #504F57;
   --medusa-text-on-color: #FFFFFF;

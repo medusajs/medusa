@@ -19,5 +19,6 @@
 [class*=alert--] {
   --ifm-code-background: var(--medusa-bg-base) !important;
   --ifm-alert-background-color-highlight: var(--ifm-background-surface-color) !important;
-  --ifm-link-color: var(--medusa-text-interactive) !important;
+  --ifm-link-color: var(--ifm-color-primary) !important;
+  --ifm-link-hover-color: var(--ifm-color-content) !important;
 }
