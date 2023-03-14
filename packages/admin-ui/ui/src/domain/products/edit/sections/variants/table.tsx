@@ -108,7 +108,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
     const inventoryManagementActions = []
     if (hasInventoryService) {
       inventoryManagementActions.push({
-        label: "Manage inventory", // TODO: Only add this item if variant.manageInventory is true
+        label: "Manage inventory",
         icon: <BuildingsIcon size="20" />,
         onClick: () => updateVariantInventory(variant),
       })
