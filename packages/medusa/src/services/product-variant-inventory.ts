@@ -386,7 +386,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         )
       }
 
-      locationId = locations[0].id
+      locationId = locations[0].location_id
     }
 
     return await Promise.all(
