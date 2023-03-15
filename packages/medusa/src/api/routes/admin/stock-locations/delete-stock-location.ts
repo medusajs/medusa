@@ -75,7 +75,7 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .removeLocation(id)
 
-    await stockLocationService.withTransaction(transactionManager).delete(id)
+    await stockLocationService.delete(id)
 
     if (inventoryService) {
       await Promise.all([

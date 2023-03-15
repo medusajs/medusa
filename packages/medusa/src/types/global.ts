@@ -1,8 +1,5 @@
-import {
-  ConfigurableModuleDeclaration,
-  ModuleResolution,
-} from "@medusajs/modules-sdk"
-import { AwilixContainer } from "awilix"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
+import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { Request } from "express"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
@@ -34,9 +31,7 @@ export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
 
-export type MedusaContainer = AwilixContainer & {
-  registerAdd: <T>(name: string, registration: T) => MedusaContainer
-}
+export type MedusaContainer = coreMedusaContainer
 
 export type Logger = _Logger & {
   progress: (activityId: string, msg: string) => void
@@ -96,11 +91,7 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<
-    string,
-    false | string | Partial<ConfigurableModuleDeclaration>
-  >
-  moduleResolutions?: Record<string, ModuleResolution>
+  modules?: Record<string, false | string | Partial<InternalModuleDeclaration>>
   plugins: (
     | {
         resolve: string
