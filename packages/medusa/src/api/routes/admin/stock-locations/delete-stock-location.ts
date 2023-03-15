@@ -81,7 +81,7 @@ export default async (req, res) => {
       await Promise.all([
         inventoryService
           .withTransaction(transactionManager)
-          .deleteInventoryItemByLocationId(id),
+          .deleteInventoryItemLevelByLocationId(id),
         inventoryService
           .withTransaction(transactionManager)
           .deleteReservationItemByLocationId(id),

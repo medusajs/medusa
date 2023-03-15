@@ -232,7 +232,7 @@ export default class InventoryLevelService extends TransactionBaseService {
    * @param locationId - The ID of the location to delete inventory levels for.
    */
   async deleteByLocationId(locationId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const levelRepository = manager.getRepository(InventoryLevel)
 
       await levelRepository.delete({ location_id: locationId })

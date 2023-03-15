@@ -167,8 +167,7 @@ export default class ReservationItemService extends TransactionBaseService {
         isDefined(data.quantity) && data.quantity !== item.quantity
 
       const shouldUpdateLocation =
-        isDefined(data.location_id) &&
-        data.location_id !== item.location_id
+        isDefined(data.location_id) && data.location_id !== item.location_id
 
       const ops: Promise<unknown>[] = []
 
@@ -256,7 +255,7 @@ export default class ReservationItemService extends TransactionBaseService {
    * @param locationId - The ID of the location to delete reservations for.
    */
   async deleteByLocationId(locationId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const itemRepository = manager.getRepository(ReservationItem)
 
       await itemRepository
@@ -266,12 +265,11 @@ export default class ReservationItemService extends TransactionBaseService {
         .andWhere("deleted_at IS NULL")
         .execute()
 
-      await this.eventBusService_.emit(
-        ReservationItemService.Events.DELETED,
-        {
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.DELETED, {
           location_id: locationId,
-        }
-      )
+        })
     })
   }
 
@@ -298,8 +296,8 @@ export default class ReservationItemService extends TransactionBaseService {
       await this.eventBusService_
         .withTransaction(manager)
         .emit(ReservationItemService.Events.DELETED, {
-        id: reservationItemId,
-      })
+          id: reservationItemId,
+        })
     })
   }
 }

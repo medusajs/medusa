@@ -254,7 +254,7 @@ export default class InventoryService
       .delete(inventoryItemId)
   }
 
-  async deleteInventoryItemByLocationId(locationId: string): Promise<void> {
+  async deleteInventoryItemLevelByLocationId(locationId: string): Promise<void> {
     return await this.inventoryLevelService_
       .withTransaction(this.activeManager_)
       .deleteByLocationId(locationId)
