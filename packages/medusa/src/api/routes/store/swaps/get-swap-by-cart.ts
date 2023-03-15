@@ -1,5 +1,5 @@
 import SwapService from "../../../../services/swap"
-import { defaultStoreSwapRelations } from "./index"
+import { defaultStoreSwapRelations } from "."
 
 /**
  * @oas [get] /store/swaps/{cart_id}
