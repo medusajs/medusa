@@ -308,7 +308,9 @@ export default class EventBusService {
       return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
     }
 
-    await this.queue_.addBulk(events)
+    if (this.config_?.projectConfig?.redis_url) {
+      await this.queue_.addBulk(events)
+    }
   }
 
   startEnqueuer(): void {
