@@ -37,7 +37,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Location",
-      text: "Are you sure you want to delete this location",
+      text: "Are you sure you want to delete this location. This will also delete all inventory levels and reservations associated with this location.",
       extraConfirmation: true,
       entityName: location.name,
     })

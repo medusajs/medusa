@@ -92,3 +92,10 @@ export type Merge<Destination, Source> = EnforceOptional<
   SimpleMerge<PickIndexSignature<Destination>, PickIndexSignature<Source>>
   & SimpleMerge<OmitIndexSignature<Destination>, OmitIndexSignature<Source>>
 >;
+
+/**
+ * SetRelation
+ * Alias combining SetRequire and SetNonNullable.
+ */
+export type SetRelation<BaseType, Keys extends keyof BaseType> =
+  SetRequired<SetNonNullable<BaseType, Keys>, Keys>;
