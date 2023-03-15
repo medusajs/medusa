@@ -1,10 +1,10 @@
-const services = [class TestService {}]
+const service = class TestService {}
 const migrations = []
 const loaders = []
 const models = []
 
 export default {
-  services,
+  service,
   migrations,
   loaders,
   models,

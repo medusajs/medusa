@@ -36,7 +36,7 @@ export async function loadInternalModule(
 
     return {
       error: new Error(
-        "No service found in module. Make sure your module exports at least one service."
+        "No service found in module. Make sure your module exports a service."
       ),
     }
   }
