@@ -10,7 +10,7 @@ import {
 } from "@medusajs/medusa"
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import { SharedContext } from "@medusajs/types"
-import { InjectEntityManager } from "@medusajs/utils"
+import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { StockLocation, StockLocationAddress } from "../models"
@@ -53,7 +53,7 @@ export default class StockLocationService {
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation[]> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
@@ -72,7 +72,7 @@ export default class StockLocationService {
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[StockLocation[], number]> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
@@ -92,7 +92,7 @@ export default class StockLocationService {
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(
@@ -125,7 +125,7 @@ export default class StockLocationService {
   @InjectEntityManager()
   async create(
     data: CreateStockLocationInput,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation> {
     const manager = context.transactionManager!
 
@@ -172,7 +172,7 @@ export default class StockLocationService {
   async update(
     stockLocationId: string,
     updateData: UpdateStockLocationInput,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
@@ -220,7 +220,7 @@ export default class StockLocationService {
   protected async updateAddress(
     addressId: string,
     address: StockLocationAddressInput,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocationAddress> {
     if (!isDefined(addressId)) {
       throw new MedusaError(
@@ -258,7 +258,10 @@ export default class StockLocationService {
    * @returns An empty promise.
    */
   @InjectEntityManager()
-  async delete(id: string, context: SharedContext = {}): Promise<void> {
+  async delete(
+    id: string,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
 
