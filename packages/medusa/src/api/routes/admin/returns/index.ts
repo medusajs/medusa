@@ -1,13 +1,12 @@
 import { Router } from "express"
 import "reflect-metadata"
+import { Order, Return } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 import {
   defaultAdminOrdersFields,
   defaultAdminOrdersRelations,
-  Order,
-  Return,
-} from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+} from "../../../../types/orders"
 
 const route = Router()
 
