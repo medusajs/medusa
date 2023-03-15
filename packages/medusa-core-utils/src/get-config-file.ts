@@ -9,7 +9,7 @@ import { join } from "path"
 function getConfigFile<TConfig = unknown>(
   rootDir: string,
   configName: string
-): { configModule: TConfig; configFilePath: string, error?: any } {
+): { configModule: TConfig; configFilePath: string; error?: any } {
   const configPath = join(rootDir, configName)
   let configFilePath = ``
   let configModule
@@ -20,6 +20,10 @@ function getConfigFile<TConfig = unknown>(
     configModule = require(configFilePath)
   } catch (e) {
     err = e
+  }
+
+  if (configModule && typeof configModule.default === "object") {
+    configModule = configModule.default
   }
 
   return { configModule, configFilePath, error: err }

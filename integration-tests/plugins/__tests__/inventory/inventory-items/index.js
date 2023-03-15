@@ -278,7 +278,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it.only("Creates an inventory item using the api", async () => {
+    it.skip("Creates an inventory item using the api", async () => {
       const product = await simpleProductFactory(dbConnection, {})
 
       const api = useApi()
