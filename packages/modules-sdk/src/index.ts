@@ -1,5 +1,4 @@
 export * from "./definitions"
-export * from "./get-files-from-path"
 export * from "./loaders"
 export * from "./medusa-module"
 export * from "./module-helper"
