@@ -4,5 +4,6 @@ export interface WithExtendedRelationsExtension {
     relations?: string[]
     totals?: string[]
     implicit?: string[]
+    eager?: string[]
   }
 }
