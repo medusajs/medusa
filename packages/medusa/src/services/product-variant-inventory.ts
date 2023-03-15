@@ -501,7 +501,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         )
       }
 
-      if (reservationToUpdate !== null) {
+      if (reservationToUpdate) {
         await inventoryServiceTx.updateReservationItem(
           (reservationToUpdate as ReservationItemDTO).id,
           {
