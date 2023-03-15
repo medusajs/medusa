@@ -1,14 +1,7 @@
+import { EOL } from "os"
+import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
+import { createMedusaContainer } from "medusa-core-utils"
 import {
-  asFunction,
-  asValue,
-  AwilixContainer,
-  ClassOrFunctionReturning,
-  createContainer,
-  Resolver,
-} from "awilix"
-import {
-  ConfigModule,
-  MedusaContainer,
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
@@ -28,46 +21,9 @@ function asArray(
 
 const logger = {
   warn: jest.fn(),
+  error: jest.fn(),
 } as any
 
-const buildConfigModule = (
-  configParts: Partial<ConfigModule>
-): ConfigModule => {
-  return {
-    modules: {},
-    moduleResolutions: {},
-    ...configParts,
-  }
-}
-
-const buildContainer = () => {
-  const container = createContainer() as MedusaContainer
-
-  container.registerAdd = function (
-    this: MedusaContainer,
-    name: string,
-    registration: typeof asFunction | typeof asValue
-  ): MedusaContainer {
-    const storeKey = name + "_STORE"
-
-    if (this.registrations[storeKey] === undefined) {
-      this.register(storeKey, asValue([] as Resolver<unknown>[]))
-    }
-    const store = this.resolve(storeKey) as (
-      | ClassOrFunctionReturning<unknown>
-      | Resolver<unknown>
-    )[]
-
-    if (this.registrations[name] === undefined) {
-      this.register(name, asArray(store))
-    }
-    store.unshift(registration)
-
-    return this
-  }.bind(container)
-
-  return container
-}
 describe("modules loader", () => {
   let container
 
@@ -76,7 +32,7 @@ describe("modules loader", () => {
   })
 
   beforeEach(() => {
-    container = buildContainer()
+    container = createMedusaContainer()
   })
 
   it("registers service as undefined in container when no resolution path is given", async () => {
@@ -100,10 +56,7 @@ describe("modules loader", () => {
       },
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
-    await moduleLoader({ container, configModule, logger })
+    await moduleLoader({ container, moduleResolutions, logger })
 
     const testService = container.resolve(
       moduleResolutions.testService.definition.key
@@ -132,11 +85,7 @@ describe("modules loader", () => {
       },
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
-
-    await moduleLoader({ container, configModule, logger })
+    await moduleLoader({ container, moduleResolutions, logger })
 
     const testService = container.resolve(
       moduleResolutions.testService.definition.key,
@@ -175,14 +124,10 @@ describe("modules loader", () => {
       },
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
-
-    await moduleLoader({ container, configModule, logger })
+    await moduleLoader({ container, moduleResolutions, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
-      "Could not resolve module: TestService. Error: Loaders for module TestService failed: loader"
+      `Could not resolve module: TestService. Error: Loaders for module TestService failed: loader${EOL}`
     )
   })
 
@@ -207,14 +152,10 @@ describe("modules loader", () => {
       },
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
-
-    await moduleLoader({ container, configModule, logger })
+    await moduleLoader({ container, moduleResolutions, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
-      "Could not resolve module: TestService. Error: No service found in module. Make sure that your module exports a service."
+      `Could not resolve module: TestService. Error: No service found in module. Make sure your module exports at least one service.${EOL}`
     )
   })
 
@@ -241,14 +182,11 @@ describe("modules loader", () => {
       },
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
     try {
-      await moduleLoader({ container, configModule, logger })
+      await moduleLoader({ container, moduleResolutions, logger })
     } catch (err) {
       expect(err.message).toEqual(
-        "No service found in module. Make sure that your module exports a service."
+        "No service found in module. Make sure your module exports at least one service."
       )
     }
   })
@@ -276,11 +214,8 @@ describe("modules loader", () => {
       },
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
     try {
-      await moduleLoader({ container, configModule, logger })
+      await moduleLoader({ container, moduleResolutions, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService has to define its scope (internal | external)"
@@ -308,14 +243,11 @@ describe("modules loader", () => {
         moduleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
         },
-      },
+      } as any,
     }
 
-    const configModule = buildConfigModule({
-      moduleResolutions,
-    })
     try {
-      await moduleLoader({ container, configModule, logger })
+      await moduleLoader({ container, moduleResolutions, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService is missing its resources config"

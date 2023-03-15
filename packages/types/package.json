@@ -1,12 +1,12 @@
 {
-  "name": "@medusajs/modules-sdk",
+  "name": "@medusajs/types",
   "version": "0.0.1",
-  "description": "SDK for medusa modules",
+  "description": "Medusa Types definition",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/modules-sdk"
+    "directory": "packages/types"
   },
   "publishConfig": {
     "access": "public"
@@ -18,21 +18,12 @@
   "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.2.1",
-    "jest": "^25.5.4",
-    "ts-jest": "^25.5.1",
+    "typeorm": "^0.3.11",
     "typescript": "^4.4.4"
-  },
-  "dependencies": {
-    "awilix": "^8.0.0",
-    "glob": "7.1.6",
-    "medusa-core-utils": "^1.1.39",
-    "medusa-telemetry": "^0.0.16",
-    "resolve-cwd": "^3.0.0"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "exit 0"
   }
 }
