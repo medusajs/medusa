@@ -23,6 +23,10 @@ import {
 } from "./update-location-level"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 import { ProductVariant } from "../../../../models"
+import {
+  AdminPostInventoryItemsParams,
+  AdminPostInventoryItemsReq,
+} from "./create-inventory-item"
 
 const route = Router()
 
@@ -71,6 +75,17 @@ export default (app) => {
     }),
     transformBody(AdminPostInventoryItemsItemLocationLevelsReq),
     middlewares.wrap(require("./create-location-level").default)
+  )
+
+  route.post(
+    "/",
+    transformQuery(AdminPostInventoryItemsParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostInventoryItemsReq),
+    middlewares.wrap(require("./create-inventory-item").default)
   )
 
   route.get(
@@ -264,6 +279,7 @@ export type AdminInventoryItemsLocationLevelsRes = {
 }
 
 export * from "./list-inventory-items"
+export * from "./create-inventory-item"
 export * from "./get-inventory-item"
 export * from "./update-inventory-item"
 export * from "./list-location-levels"

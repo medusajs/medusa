@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { PaymentProvider, TaxProvider } from "./../../../../"
+import { PaymentProvider, Store, TaxProvider } from "./../../../../"
 import middlewares from "../../../middlewares"
 import { ExtendedStoreDTO } from "../../../../types/store"
 
@@ -30,8 +30,10 @@ export default (app) => {
   return app
 }
 
+export const defaultRelationsExtended = ["currencies", "default_currency"]
+
 /**
- * @schema AdminStoresRes
+ * @schema AdminExtendedStoresRes
  * type: object
  * required:
  *   - store
@@ -39,8 +41,21 @@ export default (app) => {
  *   store:
  *     $ref: "#/components/schemas/ExtendedStoreDTO"
  */
-export type AdminStoresRes = {
+export type AdminExtendedStoresRes = {
   store: ExtendedStoreDTO
+}
+
+/**
+ * @schema AdminStoresRes
+ * type: object
+ * required:
+ *   - store
+ * properties:
+ *   store:
+ *     $ref: "#/components/schemas/Store"
+ */
+export type AdminStoresRes = {
+  store: Store
 }
 
 /**

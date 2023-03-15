@@ -121,6 +121,7 @@ export default async (req, res) => {
     await orderServiceTx.createFulfillment(id, validatedBody.items, {
       metadata: validatedBody.metadata,
       no_notification: validatedBody.no_notification,
+      location_id: validatedBody.location_id,
     })
 
     if (validatedBody.location_id) {

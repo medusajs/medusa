@@ -1,20 +1,24 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
 import {
-  useAdminUpdateLocationLevel,
-  useAdminVariantsInventory,
-} from "medusa-react"
-import React, { useContext } from "react"
+  InventoryLevelDTO,
+  Product,
+  ProductVariant,
+  VariantInventory,
+} from "@medusajs/medusa"
+import { useMedusa } from "medusa-react"
+import { useAdminVariantsInventory } from "medusa-react"
+import { useContext } from "react"
 import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../components/variant-inventory-form/edit-flow-variant-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../../components/molecules/modal/layered-modal"
+import Button from "../../../../../components/fundamentals/button"
+import Modal from "../../../../../components/molecules/modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { removeNullish } from "../../../../../utils/remove-nullish"
 
 type Props = {
   onClose: () => void
@@ -24,6 +28,7 @@ type Props = {
 }
 
 const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
+  const { client } = useMedusa()
   const layeredModalContext = useContext(LayeredModalContext)
   const {
     // @ts-ignore
@@ -32,30 +37,93 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     refetch,
   } = useAdminVariantsInventory(variant.id)
 
-  const itemId = variantInventory?.inventory[0]?.id
+  const variantInventoryItem = variantInventory?.inventory[0]
+  const itemId = variantInventoryItem?.id
 
-  const { mutate: updateLocationLevel } = useAdminUpdateLocationLevel(
-    itemId || ""
-  )
   const handleClose = () => {
     onClose()
   }
 
   const { onUpdateVariant, updatingVariant } = useEditProductActions(product.id)
 
-  const onSubmit = async (data) => {
-    const { location_levels } = data.stock
-
-    await Promise.all(
-      location_levels.map(async (level) => {
-        await updateLocationLevel({
-          stockLocationId: level.location_id,
-          stocked_quantity: level.stocked_quantity,
-        })
-      })
-    )
-    // / TODO: Call update location level with new values
+  const onSubmit = async (data: EditFlowVariantFormType) => {
+    const locationLevels = data.stock.location_levels || []
+    const manageInventory = data.stock.manage_inventory
+    delete data.stock.manage_inventory
     delete data.stock.location_levels
+
+    let inventoryItemId: string | undefined = itemId
+
+    const upsertPayload = removeNullish(data.stock)
+
+    if (variantInventoryItem) {
+      // variant inventory exists and we can remove location levels
+      // (it's important to do this before potentially deleting the inventory item)
+      const deleteLocations = manageInventory
+        ? variantInventoryItem?.location_levels?.filter(
+            (itemLevel: InventoryLevelDTO) => {
+              return !locationLevels.find(
+                (level) => level.location_id === itemLevel.location_id
+              )
+            }
+          ) ?? []
+        : []
+
+      if (inventoryItemId) {
+        await Promise.all(
+          deleteLocations.map(async (location: InventoryLevelDTO) => {
+            await client.admin.inventoryItems.deleteLocationLevel(
+              inventoryItemId!,
+              location.id
+            )
+          })
+        )
+      }
+
+      if (!manageInventory) {
+        // has an inventory item but no longer wants to manage inventory
+        await client.admin.inventoryItems.delete(itemId!)
+        inventoryItemId = undefined
+      } else {
+        // has an inventory item and wants to update inventory
+        await client.admin.inventoryItems.update(itemId!, upsertPayload)
+      }
+    } else if (manageInventory) {
+      // does not have an inventory item but wants to manage inventory
+      const { inventory_item } = await client.admin.inventoryItems.create({
+        variant_id: variant.id,
+        ...upsertPayload,
+      })
+      inventoryItemId = inventory_item.id
+    }
+
+    // If some inventory Item exists update location levels
+    if (inventoryItemId) {
+      await Promise.all(
+        locationLevels.map(async (level) => {
+          if (!level.location_id) {
+            return
+          }
+          if (level.id) {
+            await client.admin.inventoryItems.updateLocationLevel(
+              inventoryItemId!,
+              level.location_id,
+              {
+                stocked_quantity: level.stocked_quantity,
+              }
+            )
+          } else {
+            await client.admin.inventoryItems.createLocationLevel(
+              inventoryItemId!,
+              {
+                location_id: level.location_id,
+                stocked_quantity: level.stocked_quantity!,
+              }
+            )
+          }
+        })
+      )
+    }
 
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
@@ -71,8 +139,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       </Modal.Header>
       {!isLoadingInventory && (
         <StockForm
-          variantInventory={variantInventory}
-          refetchInventory={refetch}
+          variantInventory={variantInventory!}
           onSubmit={onSubmit}
           isLoadingInventory={isLoadingInventory}
           handleClose={handleClose}
@@ -86,10 +153,15 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
 const StockForm = ({
   variantInventory,
   onSubmit,
-  refetchInventory,
   isLoadingInventory,
   handleClose,
   updatingVariant,
+}: {
+  variantInventory: VariantInventory
+  onSubmit: (data: EditFlowVariantFormType) => void
+  isLoadingInventory: boolean
+  handleClose: () => void
+  updatingVariant: boolean
 }) => {
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getEditVariantDefaultValues(variantInventory),
@@ -99,32 +171,20 @@ const StockForm = ({
     formState: { isDirty },
     handleSubmit,
     reset,
-    watch,
   } = form
 
-  const locationLevels = watch("stock.location_levels")
-
-  const { location_levels } = variantInventory.inventory[0]
-
-  React.useEffect(() => {
-    form.setValue("stock.location_levels", location_levels)
-  }, [form, location_levels])
+  const locationLevels = variantInventory.inventory[0]?.location_levels || []
 
   const handleOnSubmit = handleSubmit((data) => {
-    // @ts-ignore
     onSubmit(data)
   })
-
-  const itemId = variantInventory.inventory[0].id
 
   return (
     <form onSubmit={handleOnSubmit} noValidate>
       <Modal.Content>
         <EditFlowVariantForm
           form={form}
-          refetchInventory={refetchInventory}
-          locationLevels={locationLevels || []}
-          itemId={itemId}
+          locationLevels={locationLevels}
           isLoading={isLoadingInventory}
         />
       </Modal.Content>
