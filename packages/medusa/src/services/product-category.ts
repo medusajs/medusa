@@ -310,7 +310,9 @@ class ProductCategoryService extends TransactionBaseService {
     const targetRank = input.rank
     const shouldChangeParent =
       targetParentId !== undefined && targetParentId !== originalParentId
-    const shouldChangeRank = shouldChangeParent || originalRank !== targetRank
+    const shouldChangeRank =
+      shouldChangeParent ||
+      (isDefined(targetRank) && originalRank !== targetRank)
 
     return {
       targetCategoryId: productCategory.id,
