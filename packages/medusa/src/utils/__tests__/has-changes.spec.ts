@@ -1,6 +1,6 @@
 import { hasChanges } from "../has-changes"
 
-describe('hasChanges', function () {
+describe("hasChanges", function () {
   it("should return true the data differ and false otherwise", () => {
     const objToCompareTo = {
       prop1: "test",
