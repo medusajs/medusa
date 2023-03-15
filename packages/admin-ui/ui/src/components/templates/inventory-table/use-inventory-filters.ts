@@ -154,6 +154,7 @@ export const useInventoryFilters = (
 
   const setLocationFilter = (loc: string) => {
     dispatch({ type: "setLocation", payload: loc })
+    dispatch({ type: "setOffset", payload: 0 })
   }
 
   const paginate = (direction: 1 | -1) => {
