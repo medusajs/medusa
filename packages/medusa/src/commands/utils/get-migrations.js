@@ -1,4 +1,4 @@
-import { registerModules } from "@medusajs/modules-sdk"
+import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
