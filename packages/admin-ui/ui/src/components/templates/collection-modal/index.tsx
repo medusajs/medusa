@@ -7,9 +7,14 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { nestedForm } from "../../../utils/nested-form"
 import Button from "../../fundamentals/button"
 import IconTooltip from "../../molecules/icon-tooltip"
 import InputField from "../../molecules/input"
+import {
+  Metadata as MetadataForm,
+  MetadataFormType,
+} from "../../molecules/metadata/metadata"
 import Modal from "../../molecules/modal"
 import Metadata, { MetadataField } from "../../organisms/metadata"
 
@@ -23,6 +28,7 @@ type CollectionModalProps = {
 type CollectionModalFormData = {
   title: string
   handle: string | undefined
+  metadata: MetadataFormType
 }
 
 const CollectionModal: React.FC<CollectionModalProps> = ({
@@ -35,7 +41,8 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
   )
   const { mutate: create, isLoading: creating } = useAdminCreateCollection()
 
-  const { register, handleSubmit, reset } = useForm<CollectionModalFormData>()
+  const form = useForm<CollectionModalFormData>()
+  const { register, handleSubmit, reset } = form
 
   const notification = useNotification()
   const [metadata, setMetadata] = useState<MetadataField[]>([])
@@ -161,6 +168,9 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
             </div>
             <div className="mt-xlarge w-full">
               <Metadata setMetadata={setMetadata} metadata={metadata} />
+            </div>
+            <div className="mt-large">
+              <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </Modal.Content>
           <Modal.Footer>
