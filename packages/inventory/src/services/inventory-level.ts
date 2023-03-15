@@ -228,6 +228,24 @@ export default class InventoryLevelService extends TransactionBaseService {
   }
 
   /**
+   * Deletes inventory levels by location ID.
+   * @param locationId - The ID of the location to delete inventory levels for.
+   */
+  async deleteByLocationId(locationId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const levelRepository = manager.getRepository(InventoryLevel)
+
+      await levelRepository.delete({ location_id: locationId })
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryLevelService.Events.DELETED, {
+          location_id: locationId,
+        })
+    })
+  }
+
+  /**
    * Gets the total stocked quantity for a specific inventory item at multiple locations.
    * @param inventoryItemId - The ID of the inventory item.
    * @param locationIds - The IDs of the locations.
