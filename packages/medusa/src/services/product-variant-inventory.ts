@@ -112,16 +112,18 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationIds = stockLocations.map((l) => l.id)
     }
 
+    const inventoryServiceTx = this.inventoryService_.withTransaction(
+      this.activeManager_
+    )
+
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .confirmInventory(
-            inventoryPart.inventory_item_id,
-            locationIds,
-            itemQuantity
-          )
+        return await inventoryServiceTx.confirmInventory(
+          inventoryPart.inventory_item_id,
+          locationIds,
+          itemQuantity
+        )
       })
     )
 
@@ -376,17 +378,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0]
     }
 
+    const inventoryServiceTx = this.inventoryService_.withTransaction(
+      this.activeManager_
+    )
+
     return await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .createReservationItem({
-            ...toReserve,
-            location_id: locationId as string,
-            inventory_item_id: inventoryPart.inventory_item_id,
-            quantity: itemQuantity,
-          })
+        return await inventoryServiceTx.createReservationItem({
+          ...toReserve,
+          location_id: locationId as string,
+          inventory_item_id: inventoryPart.inventory_item_id,
+          quantity: itemQuantity,
+        })
       })
     )
   }
@@ -440,15 +444,17 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return 0
     })
 
+    const inventoryServiceTx = this.inventoryService_.withTransaction(
+      this.activeManager_
+    )
+
     if (quantity > 0) {
       // if quantity is positive, we need to adjust the first reservation with the correct location
       const firstReservation = reservations[0]
       if (firstReservation) {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .updateReservationItem(firstReservation.id, {
-            quantity: firstReservation.quantity + quantity,
-          })
+        await inventoryServiceTx.updateReservationItem(firstReservation.id, {
+          quantity: firstReservation.quantity + quantity,
+        })
       } else {
         await this.reserveQuantity(variantId, quantity, {
           lineItemId,
@@ -471,9 +477,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         (r) => r.quantity === deltaUpdate && r.location_id === locationId
       )
       if (exactReservation) {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .deleteReservationItem(exactReservation.id)
+        await inventoryServiceTx.deleteReservationItem(exactReservation.id)
         return
       }
 
@@ -492,22 +496,20 @@ class ProductVariantInventoryService extends TransactionBaseService {
       }
 
       if (reservationsToDelete.length) {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .deleteReservationItem(reservationsToDelete.map((r) => r.id))
+        await inventoryServiceTx.deleteReservationItem(
+          reservationsToDelete.map((r) => r.id)
+        )
       }
 
       if (reservationToUpdate !== null) {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .updateReservationItem(
-            (reservationToUpdate as ReservationItemDTO).id,
-            {
-              quantity:
-                (reservationToUpdate as ReservationItemDTO).quantity -
-                remainingQuantity,
-            }
-          )
+        await inventoryServiceTx.updateReservationItem(
+          (reservationToUpdate as ReservationItemDTO).id,
+          {
+            quantity:
+              (reservationToUpdate as ReservationItemDTO).quantity -
+              remainingQuantity,
+          }
+        )
       }
     }
   }
@@ -619,26 +621,28 @@ class ProductVariantInventoryService extends TransactionBaseService {
           inventory_quantity: variant.inventory_quantity + quantity,
         })
       })
-    } else {
-      const variantInventory = await this.listByVariant(variantId)
-
-      if (variantInventory.length === 0) {
-        return
-      }
-
-      await Promise.all(
-        variantInventory.map(async (inventoryPart) => {
-          const itemQuantity = inventoryPart.required_quantity * quantity
-          return await this.inventoryService_
-            .withTransaction(this.activeManager_)
-            .adjustInventory(
-              inventoryPart.inventory_item_id,
-              locationId,
-              itemQuantity
-            )
-        })
-      )
     }
+
+    const variantInventory = await this.listByVariant(variantId)
+
+    if (variantInventory.length === 0) {
+      return
+    }
+
+    const inventoryServiceTx = this.inventoryService_.withTransaction(
+      this.activeManager_
+    )
+
+    await Promise.all(
+      variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.required_quantity * quantity
+        return await inventoryServiceTx.adjustInventory(
+          inventoryPart.inventory_item_id,
+          locationId,
+          itemQuantity
+        )
+      })
+    )
   }
 
   async setVariantAvailability(
@@ -720,6 +724,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
     }
 
+    const salesChannelInventoryServiceTx =
+      this.salesChannelInventoryService_.withTransaction(this.activeManager_)
+
     return Math.min(
       ...(await Promise.all(
         variantInventoryItems.map(async (variantInventory) => {
@@ -729,12 +736,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
           // can fulfill and set that as quantity
           return (
             // eslint-disable-next-line max-len
-            (await this.salesChannelInventoryService_
-              .withTransaction(this.activeManager_)
-              .retrieveAvailableItemQuantity(
-                channelId,
-                variantInventory.inventory_item_id
-              )) / variantInventory.required_quantity
+            (await salesChannelInventoryServiceTx.retrieveAvailableItemQuantity(
+              channelId,
+              variantInventory.inventory_item_id
+            )) / variantInventory.required_quantity
           )
         })
       ))
