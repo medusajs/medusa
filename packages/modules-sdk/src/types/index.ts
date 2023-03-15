@@ -1,5 +1,5 @@
-import { Logger as _Logger } from "winston"
 import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
+import { Logger as _Logger } from "winston"
 
 export type MedusaContainer = coreMedusaContainer
 export type Constructor<T> = new (...args: any[]) => T
@@ -85,8 +85,8 @@ export type ModulesResponse = {
 }[]
 
 export type ModuleExports = {
-  loaders: ModuleLoaderFunction[]
-  services: Constructor<any>[]
+  service: Constructor<any>
+  loaders?: ModuleLoaderFunction[]
   migrations?: any[]
   models?: Constructor<any>[]
   runMigrations?(

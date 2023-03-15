@@ -17,9 +17,9 @@
     "allowJs": true,
     "skipLibCheck": true
   },
-  "include": ["./src/**/*"],
+  "include": ["src"],
   "exclude": [
-    "./dist/**/*",
+    "dist",
     "./src/**/__tests__",
     "./src/**/__mocks__",
     "node_modules"

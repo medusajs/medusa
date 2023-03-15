@@ -1,14 +1,15 @@
-import { Discount } from "@medusajs/medusa"
-import { parse } from "iso8601-duration"
-import { useAdminUpdateDiscount } from "medusa-react"
-import moment from "moment"
 import { ReactNode } from "react"
-import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
+
 import { ActionType } from "../../../../components/molecules/actionables"
-import useNotification from "../../../../hooks/use-notification"
+import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
+import { Discount } from "@medusajs/medusa"
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import moment from "moment"
+import { parse } from "iso8601-duration"
 import { removeNullish } from "../../../../utils/remove-nullish"
+import { useAdminUpdateDiscount } from "medusa-react"
+import useNotification from "../../../../hooks/use-notification"
 
 type displaySetting = {
   title: string

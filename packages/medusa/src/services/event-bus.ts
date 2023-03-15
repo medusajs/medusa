@@ -1,11 +1,12 @@
 import Bull, { JobOptions } from "bull"
 import Redis from "ioredis"
-import { isDefined } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, In } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { ulid } from "ulid"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
+import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
 import JobSchedulerService, { CreateJobOptions } from "./job-scheduler"
 
@@ -48,6 +49,12 @@ export type EmitOptions = {
     delay: number
   }
 } & JobOptions
+
+export type EmitData<T = unknown> = {
+  eventName: string
+  data: T
+  opts?: Record<string, unknown> & EmitOptions
+}
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -215,6 +222,13 @@ export default class EventBusService {
 
   /**
    * Calls all subscribers when an event occurs.
+   * @param data - The data to use to process the events
+   * @return the jobs from our queue
+   */
+  async emit<T>(data: EmitData<T>[]): Promise<StagedJob[] | void>
+
+  /**
+   * Calls all subscribers when an event occurs.
    * @param {string} eventName - the name of the event to be process.
    * @param data - the data to send to the subscriber.
    * @param options - options to add the job with
@@ -223,28 +237,48 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown> & EmitOptions = { attempts: 1 }
-  ): Promise<StagedJob | void> {
+    options?: Record<string, unknown> & EmitOptions
+  ): Promise<StagedJob | void>
+
+  async emit<
+    T,
+    TInput extends string | EmitData<T>[] = string,
+    TResult = TInput extends EmitData<T>[] ? StagedJob[] : StagedJob
+  >(
+    eventNameOrData: TInput,
+    data?: T,
+    options: Record<string, unknown> & EmitOptions = {}
+  ): Promise<TResult | void> {
     const globalEventOptions = this.config_?.projectConfig?.event_options ?? {}
+
+    const isBulkEmit = !isString(eventNameOrData)
+    const events = isBulkEmit
+      ? eventNameOrData.map((event) => ({
+          data: { eventName: event.eventName, data: event.data },
+          opts: event.opts,
+        }))
+      : [
+          {
+            data: { eventName: eventNameOrData, data },
+            opts: options,
+          },
+        ]
 
     // The order of precedence for job options is:
     // 1. local options
     // 2. global options
     // 3. default options
-    const opts: EmitOptions = {
-      removeOnComplete: true,
-      ...globalEventOptions,
-      ...options,
+    const defaultOptions: EmitOptions = {
+      attempts: 1, // default
+      removeOnComplete: true, // default
+      ...globalEventOptions, // global
     }
 
-    if (typeof options.attempts === "number") {
-      opts.attempts = options.attempts
-      if (isDefined(options.backoff)) {
-        opts.backoff = options.backoff
+    for (const event of events) {
+      event.opts = {
+        ...defaultOptions,
+        ...(event.opts ?? {}), // local
       }
-    }
-    if (typeof options.delay === "number") {
-      opts.delay = options.delay
     }
 
     /**
@@ -261,18 +295,20 @@ export default class EventBusService {
         this.stagedJobRepository_
       )
 
-      const jobToCreate = {
-        event_name: eventName,
-        data: data as unknown as Record<string, unknown>,
-        options: opts,
-      } as Partial<StagedJob>
+      const jobsToCreate = events.map((event) => {
+        return stagedJobRepository.create({
+          event_name: event.data.eventName,
+          data: event.data.data,
+          options: event.opts,
+        } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
+      })
 
-      const stagedJobInstance = stagedJobRepository.create(jobToCreate)
+      const stagedJobs = await stagedJobRepository.insertBulk(jobsToCreate)
 
-      return await stagedJobRepository.save(stagedJobInstance)
+      return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
     }
 
-    this.queue_.add({ eventName, data }, opts)
+    await this.queue_.addBulk(events)
   }
 
   startEnqueuer(): void {
@@ -298,18 +334,21 @@ export default class EventBusService {
       )
       const jobs = await stagedJobRepo.find(listConfig)
 
-      await Promise.all(
-        jobs.map((job) => {
-          this.queue_
-            .add(
-              { eventName: job.event_name, data: job.data },
-              { jobId: job.id, ...job.options }
-            )
-            .then(async () => {
-              await stagedJobRepo.remove(job)
-            })
-        })
-      )
+      if (!jobs.length) {
+        await sleep(3000)
+        continue
+      }
+
+      const eventsData = jobs.map((job) => {
+        return {
+          data: { eventName: job.event_name, data: job.data },
+          opts: { jobId: job.id, ...job.options },
+        }
+      })
+
+      await this.queue_.addBulk(eventsData).then(async () => {
+        return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
+      })
 
       await sleep(3000)
     }

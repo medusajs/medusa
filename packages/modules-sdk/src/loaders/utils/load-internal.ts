@@ -17,7 +17,7 @@ export async function loadInternalModule(
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
-  const constainerName = resolution.definition.registrationName
+  const registrationName = resolution.definition.registrationName
 
   const { scope, resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
@@ -29,9 +29,9 @@ export async function loadInternalModule(
     return { error }
   }
 
-  if (!loadedModule?.services?.length) {
+  if (!loadedModule?.service) {
     container.register({
-      [constainerName]: asValue(undefined),
+      [registrationName]: asValue(undefined),
     })
 
     return {
@@ -40,10 +40,6 @@ export async function loadInternalModule(
       ),
     }
   }
-
-  const moduleServices = Array.isArray(loadedModule?.services)
-    ? loadedModule.services
-    : [loadedModule.services]
 
   if (
     scope === MODULE_SCOPE.INTERNAL &&
@@ -68,17 +64,12 @@ export async function loadInternalModule(
     for (const dependency of moduleDependencies) {
       localContainer.register(
         dependency,
-        asFunction(() => {
-          if (container.hasRegistration(dependency)) {
-            return container.resolve(dependency)
-          }
-          return
-        })
+        asFunction(() => container.resolve(dependency))
       )
     }
   }
 
-  const moduleLoaders = loadedModule?.loaders || []
+  const moduleLoaders = loadedModule?.loaders ?? []
   try {
     for (const loader of moduleLoaders) {
       await loader(
@@ -92,7 +83,7 @@ export async function loadInternalModule(
     }
   } catch (err) {
     container.register({
-      [constainerName]: asValue(undefined),
+      [registrationName]: asValue(undefined),
     })
 
     return {
@@ -102,20 +93,16 @@ export async function loadInternalModule(
     }
   }
 
-  for (const moduleService of moduleServices) {
-    const regName =
-      moduleService.name.charAt(0).toLowerCase() + moduleService.name.slice(1)
-
-    container.register({
-      [regName]: asFunction((cradle) => {
-        return new moduleService(
-          localContainer.cradle,
-          resolution.options,
-          resolution.moduleDeclaration
-        )
-      }).singleton(),
-    })
-  }
+  const moduleService = loadedModule.service
+  container.register({
+    [registrationName]: asFunction((cradle) => {
+      return new moduleService(
+        localContainer.cradle,
+        resolution.options,
+        resolution.moduleDeclaration
+      )
+    }).singleton(),
+  })
 
   trackInstallation(
     {
@@ -124,16 +111,4 @@ export async function loadInternalModule(
     },
     "module"
   )
-}
-
-export async function loadModuleMigrations(
-  resolution: ModuleResolution
-): Promise<[Function | undefined, Function | undefined]> {
-  let loadedModule: ModuleExports
-  try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
-    return [loadedModule.runMigrations, loadedModule.revertMigration]
-  } catch {
-    return [undefined, undefined]
-  }
 }

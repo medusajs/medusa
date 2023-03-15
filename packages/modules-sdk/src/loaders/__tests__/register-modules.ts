@@ -1,3 +1,4 @@
+import MODULE_DEFINITIONS from "../../definitions"
 import {
   InternalModuleDeclaration,
   ModuleDefinition,
@@ -5,7 +6,6 @@ import {
   MODULE_SCOPE,
 } from "../../types"
 import { registerModules } from "../register-modules"
-import MODULE_DEFINITIONS from "../../definitions"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
 jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))

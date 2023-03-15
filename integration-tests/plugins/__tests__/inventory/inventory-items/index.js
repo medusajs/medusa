@@ -278,6 +278,62 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
+    it.skip("Creates an inventory item using the api", async () => {
+      const product = await simpleProductFactory(dbConnection, {})
+
+      const api = useApi()
+
+      const productRes = await api.get(
+        `/admin/products/${product.id}`,
+        adminHeaders
+      )
+
+      const variantId = productRes.data.product.variants[0].id
+
+      let variantInventoryRes = await api.get(
+        `/admin/variants/${variantId}/inventory`,
+        adminHeaders
+      )
+
+      expect(variantInventoryRes.data).toEqual({
+        variant: {
+          id: variantId,
+          inventory: [],
+          sales_channel_availability: [],
+        },
+      })
+      expect(variantInventoryRes.status).toEqual(200)
+
+      const inventoryItemCreateRes = await api.post(
+        `/admin/inventory-items`,
+        { variant_id: variantId },
+        adminHeaders
+      )
+
+      variantInventoryRes = await api.get(
+        `/admin/variants/${variantId}/inventory`,
+        adminHeaders
+      )
+
+      expect(variantInventoryRes.data).toEqual({
+        variant: {
+          id: variantId,
+          inventory: [
+            expect.objectContaining({
+              ...inventoryItemCreateRes.data.inventory_item,
+            }),
+          ],
+          sales_channel_availability: [
+            expect.objectContaining({
+              available_quantity: 0,
+              channel_name: "Default Sales Channel",
+            }),
+          ],
+        },
+      })
+      expect(variantInventoryRes.status).toEqual(200)
+    })
+
     describe("List inventory items", () => {
       it("Lists inventory items with location", async () => {
         const api = useApi()
@@ -417,6 +473,71 @@ describe("Inventory Items endpoints", () => {
           })
         )
       })
+    })
+
+    it("When deleting an inventory item it removes associated levels and reservations", async () => {
+      const api = useApi()
+      const inventoryService = appContainer.resolve("inventoryService")
+
+      const invItem2 = await inventoryService.createInventoryItem({
+        sku: "1234567",
+      })
+
+      const stockRes = await api.post(
+        `/admin/stock-locations`,
+        {
+          name: "Fake Warehouse 1",
+        },
+        adminHeaders
+      )
+
+      locationId = stockRes.data.stock_location.id
+
+      const level = await inventoryService.createInventoryLevel({
+        inventory_item_id: invItem2.id,
+        location_id: locationId,
+        stocked_quantity: 10,
+      })
+
+      const reservation = await inventoryService.createReservationItem({
+        inventory_item_id: invItem2.id,
+        location_id: locationId,
+        quantity: 5,
+      })
+
+      const [, reservationCount] = await inventoryService.listReservationItems({
+        location_id: locationId,
+      })
+
+      expect(reservationCount).toEqual(1)
+
+      const [, inventoryLevelCount] =
+        await inventoryService.listInventoryLevels({
+          location_id: locationId,
+        })
+
+      expect(inventoryLevelCount).toEqual(1)
+
+      const res = await api.delete(
+        `/admin/stock-locations/${locationId}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+
+      const [, reservationCountPostDelete] =
+        await inventoryService.listReservationItems({
+          location_id: locationId,
+        })
+
+      expect(reservationCountPostDelete).toEqual(0)
+
+      const [, inventoryLevelCountPostDelete] =
+        await inventoryService.listInventoryLevels({
+          location_id: locationId,
+        })
+
+      expect(inventoryLevelCountPostDelete).toEqual(0)
     })
 
     it("When deleting an inventory item it removes the product variants associated to it", async () => {

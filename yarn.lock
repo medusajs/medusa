@@ -5742,10 +5742,13 @@ __metadata:
   dependencies:
     "@medusajs/medusa": "workspace:^"
     "@medusajs/modules-sdk": "*"
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.7.13
   languageName: unknown
   linkType: soft
 
@@ -5877,7 +5880,7 @@ __metadata:
     medusa-core-utils: ^1.1.39
     medusa-interfaces: ^1.3.6
     medusa-telemetry: ^0.0.16
-    medusa-test-utils: ^1.1.38
+    medusa-test-utils: ^1.1.39
     morgan: ^1.9.1
     multer: ^1.4.4
     node-schedule: ^2.1.1
@@ -5981,11 +5984,14 @@ __metadata:
     "@medusajs/medusa": "workspace:^"
     "@medusajs/modules-sdk": "*"
     "@medusajs/types": "*"
+    "@medusajs/utils": ^0.0.1
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
+    "@medusajs/medusa": ^1.7.7
     "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
@@ -5997,6 +6003,21 @@ __metadata:
     cross-env: ^5.2.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/utils@workspace:packages/utils"
+  dependencies:
+    "@medusajs/types": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typeorm: ^0.3.11
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -28986,7 +29007,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@^1.1.39, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:

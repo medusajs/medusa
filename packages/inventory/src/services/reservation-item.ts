@@ -5,7 +5,7 @@ import {
   FindConfig,
   IEventBusService,
   TransactionBaseService,
-  UpdateReservationItemInput,
+  UpdateReservationItemInput
 } from "@medusajs/medusa"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindManyOptions } from "typeorm"
@@ -23,7 +23,6 @@ export default class ReservationItemService extends TransactionBaseService {
     CREATED: "reservation-item.created",
     UPDATED: "reservation-item.updated",
     DELETED: "reservation-item.deleted",
-    DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
   protected readonly eventBusService_: IEventBusService | undefined
@@ -170,9 +169,7 @@ export default class ReservationItemService extends TransactionBaseService {
         isDefined(data.quantity) && data.quantity !== item.quantity
 
       const shouldUpdateLocation =
-        isDefined(data.location_id) &&
-        isDefined(data.quantity) &&
-        data.location_id !== item.location_id
+        isDefined(data.location_id) && data.location_id !== item.location_id
 
       const ops: Promise<unknown>[] = []
 
@@ -190,7 +187,7 @@ export default class ReservationItemService extends TransactionBaseService {
             .adjustReservedQuantity(
               item.inventory_item_id,
               data.location_id!,
-              data.quantity!
+              data.quantity || item.quantity!
             )
         )
       } else if (shouldUpdateQuantity) {
@@ -248,12 +245,31 @@ export default class ReservationItemService extends TransactionBaseService {
       }
       await Promise.all(ops)
 
-      await this.eventBusService_?.emit?.(
-        ReservationItemService.Events.DELETED_BY_LINE_ITEM,
-        {
+      await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
           line_item_id: lineItemId,
         }
       )
+    })
+  }
+
+  /**
+   * Deletes reservation items by location ID.
+   * @param locationId - The ID of the location to delete reservations for.
+   */
+  async deleteByLocationId(locationId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const itemRepository = manager.getRepository(ReservationItem)
+
+      await itemRepository
+        .createQueryBuilder("reservation_item")
+        .softDelete()
+        .where("location_id = :locationId", { locationId })
+        .andWhere("deleted_at IS NULL")
+        .execute()
+
+      await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+          location_id: locationId,
+        })
     })
   }
 
@@ -276,10 +292,10 @@ export default class ReservationItemService extends TransactionBaseService {
             item.quantity * -1
           ),
       ])
-    })
 
-    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+      await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+          id: reservationItemId,
+        })
     })
   }
 }

@@ -3,10 +3,10 @@ import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 import {
   InventoryItemService,
   InventoryLevelService,
-  ReservationItemService,
+  ReservationItemService
 } from "../services"
 
-import { asClass, asValue } from "awilix"
+import { asClass } from "awilix"
 
 export default async (
   { container }: LoaderOptions,

@@ -2,13 +2,13 @@ import {
   InternalModuleDeclaration,
   LoaderOptions,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
+  MODULE_SCOPE
 } from "@medusajs/modules-sdk"
 import { DataSource, DataSourceOptions } from "typeorm"
 
-import * as InventoryModels from "../models"
-import { MedusaError } from "medusa-core-utils"
 import { asValue } from "awilix"
+import { MedusaError } from "medusa-core-utils"
+import * as InventoryModels from "../models"
 import { InventoryServiceInitializeOptions } from "../types"
 
 export default async (

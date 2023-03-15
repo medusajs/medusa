@@ -26,7 +26,9 @@ const route = Router()
 export default (app, container, config) => {
   app.use("/store", route)
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
   const storeCors = config.store_cors || ""
+
   route.use(
     cors({
       origin: parseCorsOrigins(storeCors),
@@ -39,7 +41,7 @@ export default (app, container, config) => {
   authRoutes(route)
   collectionRoutes(route)
   customerRoutes(route, container)
-  productRoutes(route)
+  productRoutes(route, featureFlagRouter)
   productTagsRoutes(route)
   productTypesRoutes(route)
   orderRoutes(route)

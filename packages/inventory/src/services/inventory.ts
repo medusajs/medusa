@@ -14,16 +14,16 @@ import {
   InventoryLevelDTO,
   ReservationItemDTO,
   UpdateInventoryLevelInput,
-  UpdateReservationItemInput,
+  UpdateReservationItemInput
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
 
+import { EntityManager } from "typeorm"
 import {
   InventoryItemService,
   InventoryLevelService,
-  ReservationItemService,
+  ReservationItemService
 } from "./"
-import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -214,7 +214,21 @@ export default class InventoryService implements IInventoryService {
    * @param inventoryItemId - the id of the inventory item to delete
    */
   async deleteInventoryItem(inventoryItemId: string): Promise<void> {
-    return await this.inventoryItemService_.delete(inventoryItemId)
+    await this.inventoryLevelService_
+      .deleteByInventoryItemId(inventoryItemId)
+
+    return await this.inventoryItemService_
+      .delete(inventoryItemId)
+  }
+
+  async deleteInventoryItemLevelByLocationId(locationId: string): Promise<void> {
+    return await this.inventoryLevelService_
+      .deleteByLocationId(locationId)
+  }
+
+  async deleteReservationItemByLocationId(locationId: string): Promise<void> {
+    return await this.reservationItemService_
+      .deleteByLocationId(locationId)
   }
 
   /**

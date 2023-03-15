@@ -1,15 +1,15 @@
-import glob from "glob"
-import path from "path"
+import { registerModules } from "@medusajs/modules-sdk"
 import fs from "fs"
-import { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import { isString } from "lodash"
 import {
-  isDefined,
-  getConfigFile,
   createRequireFromPath,
+  getConfigFile,
+  isDefined,
 } from "medusa-core-utils"
+import path from "path"
 import { handleConfigError } from "../../loaders/config"
-import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -183,10 +183,7 @@ export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {
   return allMigrations
     .map((file) => {
       const loaded = require(file)
-      if (
-        typeof loaded.featureFlag === "undefined" ||
-        isFlagEnabled(loaded.featureFlag)
-      ) {
+      if (!isDefined(loaded.featureFlag) || isFlagEnabled(loaded.featureFlag)) {
         delete loaded.featureFlag
         return Object.values(loaded)
       }

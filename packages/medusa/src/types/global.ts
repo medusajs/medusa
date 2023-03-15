@@ -2,8 +2,8 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
 } from "@medusajs/modules-sdk"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { Request } from "express"
+import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"

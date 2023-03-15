@@ -1,13 +1,13 @@
 import resolveCwd from "resolve-cwd"
 
+import MODULE_DEFINITIONS from "../definitions"
 import {
+  ExternalModuleDeclaration,
   InternalModuleDeclaration,
   ModuleDefinition,
   ModuleResolution,
   MODULE_SCOPE,
-  ExternalModuleDeclaration,
 } from "../types"
-import MODULE_DEFINITIONS from "../definitions"
 
 export const registerModules = (
   modules?: Record<
@@ -22,7 +22,6 @@ export const registerModules = (
 
   for (const definition of MODULE_DEFINITIONS) {
     const customConfig = projectModules[definition.key]
-
     const isObj = typeof customConfig === "object"
 
     if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
