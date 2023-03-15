@@ -348,9 +348,11 @@ export default class EventBusService {
         }
       })
 
-      await this.queue_.addBulk(eventsData).then(async () => {
-        return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
-      })
+      if (this.config_?.projectConfig?.redis_url) {
+        await this.queue_.addBulk(eventsData).then(async () => {
+          return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
+        })
+      }
 
       await sleep(3000)
     }
