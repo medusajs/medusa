@@ -535,7 +535,7 @@ describe("/store/carts", () => {
         )
       })
 
-      it.only("Prioritizes adjusting reservations at the chosen location", async () => {
+      it("Prioritizes adjusting reservations at the chosen location", async () => {
         const api = useApi()
 
         const sl = await stockLocationService.create({

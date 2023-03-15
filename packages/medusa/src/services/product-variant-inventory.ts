@@ -477,22 +477,37 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return
       }
 
-      // take reservations and delete until we reach the quantity
       let remainingQuantity = deltaUpdate
-      for (const r of reservations) {
-        if (r.quantity <= remainingQuantity) {
-          remainingQuantity -= r.quantity
-          await this.inventoryService_
-            .withTransaction(this.activeManager_)
-            .deleteReservationItem(r.id)
+
+      const reservationsToDelete: ReservationItemDTO[] = []
+      let reservationToUpdate: ReservationItemDTO | null = null
+      for (const reservation of reservations) {
+        if (reservation.quantity <= remainingQuantity) {
+          remainingQuantity -= reservation.quantity
+          reservationsToDelete.push(reservation)
         } else {
-          await this.inventoryService_
-            .withTransaction(this.activeManager_)
-            .updateReservationItem(r.id, {
-              quantity: r.quantity - remainingQuantity,
-            })
-          return
+          reservationToUpdate = reservation
+          break
         }
+      }
+
+      if (reservationsToDelete.length) {
+        await this.inventoryService_
+          .withTransaction(this.activeManager_)
+          .deleteReservationItem(reservationsToDelete.map((r) => r.id))
+      }
+
+      if (reservationToUpdate !== null) {
+        await this.inventoryService_
+          .withTransaction(this.activeManager_)
+          .updateReservationItem(
+            (reservationToUpdate as ReservationItemDTO).id,
+            {
+              quantity:
+                (reservationToUpdate as ReservationItemDTO).quantity -
+                remainingQuantity,
+            }
+          )
       }
     }
   }
