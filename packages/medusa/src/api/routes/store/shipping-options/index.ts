@@ -16,12 +16,14 @@ export default (app) => {
   return app
 }
 
+export const defaultRelations = ["requirements"]
+
 /**
  * @schema StoreShippingOptionsListRes
  * type: object
  * x-expanded-relations:
  *   field: shipping_options
- *   implicit:
+ *   relations:
  *     - requirements
  * required:
  *   - shipping_options
