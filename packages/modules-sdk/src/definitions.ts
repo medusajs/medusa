@@ -8,6 +8,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "StockLocationService",
     isRequired: false,
     canOverride: true,
+    dependencies: ["eventBusService"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -20,6 +21,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "InventoryService",
     isRequired: false,
     canOverride: true,
+    dependencies: ["eventBusService"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

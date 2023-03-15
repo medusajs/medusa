@@ -1,10 +1,10 @@
 import {
-  ConfigModule,
+  InternalModuleDeclaration,
   ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "../../types"
-import { registerModules } from "../module-definition"
+import { registerModules } from "../register-modules"
 import MODULE_DEFINITIONS from "../../definitions"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
@@ -35,17 +35,19 @@ describe("module definitions loader", () => {
   it("Resolves module with default definition given empty config", () => {
     MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-    const res = registerModules({ modules: {} } as ConfigModule)
+    const res = registerModules({ modules: {} })
 
-    expect(res[defaultDefinition.key]).toEqual({
-      resolutionPath: defaultDefinition.defaultPackage,
-      definition: defaultDefinition,
-      options: {},
-      moduleDeclaration: {
-        scope: "internal",
-        resources: "shared",
-      },
-    })
+    expect(res[defaultDefinition.key]).toEqual(
+      expect.objectContaining({
+        resolutionPath: defaultDefinition.defaultPackage,
+        definition: defaultDefinition,
+        options: {},
+        moduleDeclaration: {
+          scope: "internal",
+          resources: "shared",
+        },
+      })
+    )
   })
 
   describe("boolean config", () => {
@@ -54,13 +56,15 @@ describe("module definitions loader", () => {
 
       const res = registerModules({
         modules: { [defaultDefinition.key]: false },
-      } as ConfigModule)
-
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: false,
-        definition: defaultDefinition,
-        options: {},
       })
+
+      expect(res[defaultDefinition.key]).toEqual(
+        expect.objectContaining({
+          resolutionPath: false,
+          definition: defaultDefinition,
+          options: {},
+        })
+      )
     })
 
     it("Fails to resolve module with no resolution path when given false for a required module", () => {
@@ -70,7 +74,7 @@ describe("module definitions loader", () => {
       try {
         registerModules({
           modules: { [defaultDefinition.key]: false },
-        } as ConfigModule)
+        })
       } catch (err) {
         expect(err.message).toEqual(
           `Module: ${defaultDefinition.label} is required`
@@ -88,17 +92,19 @@ describe("module definitions loader", () => {
 
       const res = registerModules({
         modules: {},
-      } as ConfigModule)
-
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: false,
-        definition: definition,
-        options: {},
-        moduleDeclaration: {
-          scope: "internal",
-          resources: "shared",
-        },
       })
+
+      expect(res[defaultDefinition.key]).toEqual(
+        expect.objectContaining({
+          resolutionPath: false,
+          definition: definition,
+          options: {},
+          moduleDeclaration: {
+            scope: "internal",
+            resources: "shared",
+          },
+        })
+      )
     })
   })
 
@@ -110,17 +116,19 @@ describe("module definitions loader", () => {
         modules: {
           [defaultDefinition.key]: defaultDefinition.defaultPackage,
         },
-      } as ConfigModule)
-
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: RESOLVED_PACKAGE,
-        definition: defaultDefinition,
-        options: {},
-        moduleDeclaration: {
-          scope: "internal",
-          resources: "shared",
-        },
       })
+
+      expect(res[defaultDefinition.key]).toEqual(
+        expect.objectContaining({
+          resolutionPath: RESOLVED_PACKAGE,
+          definition: defaultDefinition,
+          options: {},
+          moduleDeclaration: {
+            scope: "internal",
+            resources: "shared",
+          },
+        })
+      )
     })
   })
 
@@ -131,22 +139,25 @@ describe("module definitions loader", () => {
       const res = registerModules({
         modules: {
           [defaultDefinition.key]: {
+            scope: MODULE_SCOPE.INTERNAL,
             resolve: defaultDefinition.defaultPackage,
             resources: MODULE_RESOURCE_TYPE.ISOLATED,
-          },
-        },
-      } as ConfigModule)
-
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: RESOLVED_PACKAGE,
-        definition: defaultDefinition,
-        options: {},
-        moduleDeclaration: {
-          scope: "internal",
-          resources: "isolated",
-          resolve: defaultDefinition.defaultPackage,
+          } as InternalModuleDeclaration,
         },
       })
+
+      expect(res[defaultDefinition.key]).toEqual(
+        expect.objectContaining({
+          resolutionPath: RESOLVED_PACKAGE,
+          definition: defaultDefinition,
+          options: {},
+          moduleDeclaration: {
+            scope: "internal",
+            resources: "isolated",
+            resolve: defaultDefinition.defaultPackage,
+          },
+        })
+      )
     })
 
     it("Resolves default resolution path and provides options when only options are provided", () => {
@@ -158,18 +169,20 @@ describe("module definitions loader", () => {
             options: { test: 123 },
           },
         },
-      } as unknown as ConfigModule)
+      } as any)
 
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: defaultDefinition.defaultPackage,
-        definition: defaultDefinition,
-        options: { test: 123 },
-        moduleDeclaration: {
-          scope: "internal",
-          resources: "shared",
+      expect(res[defaultDefinition.key]).toEqual(
+        expect.objectContaining({
+          resolutionPath: defaultDefinition.defaultPackage,
+          definition: defaultDefinition,
           options: { test: 123 },
-        },
-      })
+          moduleDeclaration: {
+            scope: "internal",
+            resources: "shared",
+            options: { test: 123 },
+          },
+        })
+      )
     })
 
     it("Resolves resolution path and provides options when only options are provided", () => {
@@ -184,19 +197,21 @@ describe("module definitions loader", () => {
             resources: "isolated",
           },
         },
-      } as unknown as ConfigModule)
+      } as any)
 
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: RESOLVED_PACKAGE,
-        definition: defaultDefinition,
-        options: { test: 123 },
-        moduleDeclaration: {
-          scope: "internal",
-          resources: "isolated",
-          resolve: defaultDefinition.defaultPackage,
+      expect(res[defaultDefinition.key]).toEqual(
+        expect.objectContaining({
+          resolutionPath: RESOLVED_PACKAGE,
+          definition: defaultDefinition,
           options: { test: 123 },
-        },
-      })
+          moduleDeclaration: {
+            scope: "internal",
+            resources: "isolated",
+            resolve: defaultDefinition.defaultPackage,
+            options: { test: 123 },
+          },
+        })
+      )
     })
   })
 })

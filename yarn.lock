@@ -5742,6 +5742,7 @@ __metadata:
   dependencies:
     "@medusajs/medusa": "*"
     "@medusajs/modules-sdk": "*"
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
@@ -5749,7 +5750,6 @@ __metadata:
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": 1.7.13
-    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -5919,7 +5919,9 @@ __metadata:
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    glob: 7.1.6
     jest: ^25.5.4
+    medusa-core-utils: ^1.1.39
     medusa-telemetry: ^0.0.16
     resolve-cwd: ^3.0.0
     ts-jest: ^25.5.1
@@ -5982,6 +5984,9 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": "*"
+    "@medusajs/types": "*"
+    "@medusajs/utils": ^0.0.1
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
@@ -5989,7 +5994,32 @@ __metadata:
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.7.7
+    "@medusajs/types": ^0.0.1
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/types@*, @medusajs/types@workspace:packages/types":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/types@workspace:packages/types"
+  dependencies:
+    cross-env: ^5.2.1
     typeorm: ^0.3.11
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/utils@workspace:packages/utils"
+  dependencies:
+    "@medusajs/types": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typeorm: ^0.3.11
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -26283,14 +26313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi-objectid@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "joi-objectid@npm:3.0.1"
-  checksum: 4820534ddff8779a7128661b8ed21bc7d552d53a8def60095db6e38f410c5893da21d7b91211d3af5dd5f6e4eda90a2f11b24a2e69efcef74c1a8249240ad83d
-  languageName: node
-  linkType: hard
-
-"joi@npm:^17.3.0, joi@npm:^17.4.2":
+"joi@npm:^17.4.2":
   version: 17.6.0
   resolution: "joi@npm:17.6.0"
   dependencies:
@@ -28185,12 +28208,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
-    class-transformer: ^0.5.1
-    class-validator: ^0.13.2
     cross-env: ^5.2.1
     jest: ^25.5.4
-    joi: ^17.3.0
-    joi-objectid: ^3.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
