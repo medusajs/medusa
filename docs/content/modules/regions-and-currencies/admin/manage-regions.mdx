@@ -105,7 +105,7 @@ export default Regions
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/regions`, {
+fetch(`<BACKEND_URL>/admin/regions`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -119,7 +119,7 @@ fetch(`<SERVER_URL>/admin/regions`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/regions' \
+curl -L -X GET '<BACKEND_URL>/admin/regions' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -196,7 +196,7 @@ export default CreateRegion
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/regions`, {
+fetch(`<BACKEND_URL>/admin/regions`, {
   credentials: "include",
   method: "POST",
   body: JSON.stringify({
@@ -224,7 +224,7 @@ fetch(`<SERVER_URL>/admin/regions`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/regions' \
+curl -L -X POST '<BACKEND_URL>/admin/regions' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -311,7 +311,7 @@ export default UpdateRegion
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
+fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
   credentials: "include",
   method: "POST",
   body: JSON.stringify({
@@ -331,7 +331,7 @@ fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/regions/<REGION_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -413,7 +413,7 @@ export default Region
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/shipping-options`, {
+fetch(`<BACKEND_URL>/admin/shipping-options`, {
   credentials: "include",
   method: "POST",
   body: JSON.stringify({
@@ -436,7 +436,7 @@ fetch(`<SERVER_URL>/admin/shipping-options`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/shipping-options' \
+curl -L -X POST '<BACKEND_URL>/admin/shipping-options' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -513,7 +513,7 @@ export default Region
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
+fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
   credentials: "include",
   method: "DELETE",
 })
@@ -527,7 +527,7 @@ fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/regions/<REGION_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/regions/<REGION_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 

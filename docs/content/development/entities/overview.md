@@ -1,5 +1,5 @@
 ---
-description: 'Learn what entities are in the Medusa backend. There are entities in the Medusa backend, and developers can create custom entities.'
+description: 'Learn what entities are in Medusa. There are entities defined in the Medusa backend, and developers can create custom entities.'
 ---
 
 # Entities
@@ -10,7 +10,7 @@ In this document, you'll learn what Entities are in Medusa.
 
 Entities in medusa represent tables in the database as classes. An example of this would be the `Order` entity which represents the `order` table in the database. Entities provide a uniform way of defining and interacting with data retrieved from the database.
 
-Aside from Medusa’s core entities, you can also create your own entities to use in your Medusa backend. Custom entities are TypeScript or JavaScript files located in the `src/models` directory of your Medusa backend.
+Aside from the entities in the Medusa core package, you can also create your own entities to use in your Medusa backend. Custom entities are TypeScript or JavaScript files located in the `src/models` directory of your Medusa backend. These entities are then transpiled to the `dist/models` directory to be used during the backend's runtime.
 
 Entities are TypeScript files and they are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators.
 

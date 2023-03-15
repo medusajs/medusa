@@ -2,7 +2,7 @@
 
 If you run into errors after updating Medusa and its dependencies, it's highly recommended to check the [Upgrade Guides](../upgrade-guides/index.mdx) if there is a specific guide for your version. These guides include steps required to perform after upgrading Medusa.
 
-If there's no upgrade guide for your version, make sure that you ran the `migrations` command in the root directory of your Medusa server:
+If there's no upgrade guide for your version, make sure that you ran the `migrations` command in the root directory of your Medusa backend:
 
 ```bash
 medusa migrations run

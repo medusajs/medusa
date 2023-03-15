@@ -98,7 +98,7 @@ export default Regions
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/regions`, {
+fetch(`<BACKEND_URL>/store/regions`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -163,7 +163,7 @@ export default Product
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/products?region_id=${regionId}`, {
+fetch(`<BACKEND_URL>/store/products?region_id=${regionId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -235,7 +235,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({

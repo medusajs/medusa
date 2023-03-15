@@ -119,7 +119,7 @@ export default OrderEdit
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits`, {
+fetch(`<BACKEND_URL>/admin/order-edits`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -139,7 +139,7 @@ fetch(`<YOUR_SERVER>/admin/order-edits`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/order-edits' \
+curl -L -X POST '<BACKEND_URL>/admin/order-edits' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -216,7 +216,7 @@ export default OrderEdit
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items`, {
+fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -237,7 +237,7 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/items' \
+curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -303,7 +303,7 @@ export default OrderEdit
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
+fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -323,7 +323,7 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -382,7 +382,7 @@ export default OrderEdit
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
+fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -396,7 +396,7 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -454,7 +454,7 @@ export default OrderEdit
 
 ```ts
 fetch(
-  `<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`,
+  `<BACKEND_URL>/admin/order-edits/${orderEditId}/changes/${changeId}`,
   {
     method: "DELETE",
     credentials: "include",
@@ -470,7 +470,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -536,7 +536,7 @@ export default OrderEdit
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/request`, {
+fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/request`, {
   method: "POST",
   credentials: "include",
 })
@@ -550,7 +550,7 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/request`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/request' \
+curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/request' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -624,7 +624,7 @@ export default OrderEdit
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/confirm`, {
+fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/confirm`, {
   method: "POST",
   credentials: "include",
 })
@@ -638,7 +638,7 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/confirm`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/confirm' \
+curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/confirm' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -707,7 +707,7 @@ export default OrderEditPayment
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/payments/${paymentId}/capture`, {
+fetch(`<BACKEND_URL>/admin/payments/${paymentId}/capture`, {
   method: "POST",
   credentials: "include",
 })
@@ -721,7 +721,7 @@ fetch(`<YOUR_SERVER>/admin/payments/${paymentId}/capture`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/payments/<PAYMENT_ID>/capture' \
+curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/capture' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -782,7 +782,7 @@ export default OrderEditPayment
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/payments/${paymentId}/refund`, {
+fetch(`<BACKEND_URL>/admin/payments/${paymentId}/refund`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -803,7 +803,7 @@ fetch(`<YOUR_SERVER>/admin/payments/${paymentId}/refund`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/payments/<PAYMENT_ID>/refund' \
+curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/refund' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{

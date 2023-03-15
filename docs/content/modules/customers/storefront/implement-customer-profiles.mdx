@@ -111,7 +111,7 @@ export default RegisterCustomer
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers`, {
+fetch(`<BACKEND_URL>/store/customers`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -169,7 +169,7 @@ medusa.auth.authenticate({
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/auth`, {
+fetch(`<BACKEND_URL>/store/auth`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -215,7 +215,7 @@ medusa.auth.deleteSession()
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/auth`, {
+fetch(`<BACKEND_URL>/store/auth`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -260,7 +260,7 @@ medusa.customers.generatePasswordToken({
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/password-token`, {
+fetch(`<BACKEND_URL>/store/customers/password-token`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -315,7 +315,7 @@ medusa.customers.resetPassword({
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/password-reset`, {
+fetch(`<BACKEND_URL>/store/customers/password-reset`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -398,7 +398,7 @@ export default UpdateCustomer
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me`, {
+fetch(`<BACKEND_URL>/store/customers/me`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -465,7 +465,7 @@ medusa.customers.addresses.addAddress({
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me/addresses`, {
+fetch(`<BACKEND_URL>/store/customers/me/addresses`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -529,7 +529,7 @@ medusa.customers.addresses.updateAddress(addressId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`,
+fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
   {
     method: "POST",
     credentials: "include",
@@ -572,7 +572,7 @@ medusa.customers.addresses.deleteAddress(addressId)
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`,
+fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
   {
     method: "DELETE",
     credentials: "include",
@@ -640,7 +640,7 @@ export default Orders
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/customers/me/orders`, {
+fetch(`<BACKEND_URL>/store/customers/me/orders`, {
   credentials: "include",
 })
 .then((response) => response.json())

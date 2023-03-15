@@ -30,7 +30,7 @@ Then, the order notificaiton is sent to Slack using Webhooks. So, you'll need to
 
 To follow along with this guide, you need to have a Slack account with a connected workspace. If you don’t have one, you can [create a free account on Slack](https://slack.com/).
 
-### Medusa Server
+### Medusa Backend
 
 This tutorial assumes you already have a Medusa backend installed. If you don’t, please follow along with the [quickstart guide](../../development/backend/install.mdx).
 
@@ -78,7 +78,7 @@ This will create a new Webhook with a URL which you can see in the table at the 
 
 The next step is to install Medusa’s [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) into your Medusa backend.
 
-Open the terminal in the Medusa server’s directory and run the following command:
+Open the terminal in the Medusa backend’s directory and run the following command:
 
 ```bash npm2yarn
 npm install medusa-plugin-slack-notification

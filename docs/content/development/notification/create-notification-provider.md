@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a notification provider in the Medusa backend. This guide explains the different methods available in a Notification provider.'
+description: 'Learn how to create a notification provider in Medusa. This guide explains the different methods available in a Notification provider.'
 addHowToData: true
 ---
 
 # How to Create a Notification Provider
 
-In this document, you’ll learn how to add a Notification Provider to your Medusa backend.
+In this document, you’ll learn how to create a Notification Provider in Medusa.
 
 :::note
 
@@ -15,9 +15,9 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../backend/install.mdx).
+Before you start creating a Notification Provider, you need to either install a [Medusa backend](../backend/install.mdx), or create it in a [plugin](../plugins/overview.md).
 
-You also need to [setup Redis](../backend/prepare-environment.mdx#redis) and [configure it with the Medusa server](../backend/configurations.md#redis).
+You also need to [setup Redis](../backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../backend/configurations.md#redis) to test out the Notification provider.
 
 ---
 
@@ -297,9 +297,9 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 ## Test Sending Notifications with your Notification Provider
 
-Make sure you've configured Redis with your Medusa backend as explained in the Prerequisites section and that the Redis service is running.
+Make sure you've configured Redis with your Medusa backend as explained in the [Prerequisites](#prerequisites) section and that the Redis service is running.
 
-Then, start by running your Medusa server:
+Then, start by running your Medusa backend:
 
 ```bash npm2yarn
 npm run start

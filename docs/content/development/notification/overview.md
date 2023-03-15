@@ -26,7 +26,7 @@ A Notification Provider is essentially a Medusa [Service](../services/create-se
 
 As a developer, you mainly work with the Notification Provider when integrating a third-party service that handles notifications in Medusa.
 
-When you run your Medusa backend, the Notification Provider is registered on your backend if it isn’t already. This means that it will be inserted into the `notification_provider` table in your database.
+When you run your Medusa backend, the Notification Provider is registered in your backend. If it's a new Notification Provider, it will be inserted into the `notification_provider` table in your database.
 
 ### NotificationProvider Entity Overview
 

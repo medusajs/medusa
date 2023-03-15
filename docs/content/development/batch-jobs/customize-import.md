@@ -23,11 +23,11 @@ It's assumed that you already have a Medusa backend installed and set up. If not
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa backend](../backend/configurations.md#redis).
 
 ### PostgreSQL
 
-If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../backend/configurations.md#postgresql-configurations).
+If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa backend](../backend/configurations.md#postgresql-configurations).
 
 ---
 

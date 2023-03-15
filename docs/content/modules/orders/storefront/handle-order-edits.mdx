@@ -102,7 +102,7 @@ export default OrderEdit
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/order-edits/${orderEditId}`)
+fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}`)
 .then((response) => response.json())
 .then(({ order_edit }) => {
   console.log(order_edit.changes)
@@ -245,7 +245,7 @@ export default OrderEditPayment
 
 ```ts
 fetch(
-  `<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`,
+  `<BACKEND_URL>/store/payment-collections/${paymentCollectionId}/sessions`,
   {
     method: "POST",
     credentials: "include",
@@ -313,7 +313,7 @@ export default OrderEditPayment
 
 ```ts
 fetch(
-  `<SERVER_URL>/store/payment-collection/${paymentCollectionId}` + 
+  `<BACKEND_URL>/store/payment-collection/${paymentCollectionId}` + 
   `/sessions/${paymentSessionId}/authorize`, 
   {
     method: "POST",
@@ -373,7 +373,7 @@ export default OrderEdit
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/store/order-edits/${orderEditId}/complete`, {
+fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}/complete`, {
   method: "POST",
   credentials: "include",
 })
@@ -442,7 +442,7 @@ export default OrderEdit
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/order-edits/${orderEditId}/decline`, {
+fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}/decline`, {
   method: "POST",
   credentials: "include",
   headers: {

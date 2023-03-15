@@ -26,4 +26,4 @@ If you wish to run your storefront or Medusa admin on other ports, you should up
 
 ## See Also
 
-- [Configure your Medusa server](../development/backend/configurations.md)
+- [Configure your Medusa backend](../development/backend/configurations.md)

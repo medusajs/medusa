@@ -16,7 +16,7 @@ Generally, all resources are registered in a container. Then, whenever a class d
 
 ### Medusa’s Dependency Container
 
-Medusa uses a dependency container to register essential resources of your backend. You can then access these resources in classes and endpoints using the dependency container.
+Medusa uses a dependency container to register essential resources of the backend. You can then access these resources in classes and endpoints using the dependency container.
 
 For example, if you create a custom service, you can access any other service registered in Medusa in your service’s constructor. That includes Medusa’s core services, services defined in plugins, or other services that you create on your backend.
 

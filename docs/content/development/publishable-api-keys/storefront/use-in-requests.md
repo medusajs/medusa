@@ -63,7 +63,7 @@ Then, the API key will be passed in the header parameter `x-publishable-api-key`
 For other ways of sending requests to your Medusa backend, such as using the Fetch API, you must pass `x-publishable-api-key` in the header of every request. Its value is the publishable API key’s `id`.
 
 ```ts
-fetch(`<SERVER_URL>/store/products`, {
+fetch(`<BACKEND_URL>/store/products`, {
   credentials: "include",
   headers: {
     "x-publishable-api-key": publishableApiKey,

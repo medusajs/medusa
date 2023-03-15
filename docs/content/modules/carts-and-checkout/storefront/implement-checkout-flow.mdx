@@ -124,7 +124,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -219,7 +219,7 @@ export default ShippingOptions
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/shipping-options/${cartId}`, {
+fetch(`<BACKEND_URL>/store/shipping-options/${cartId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -276,7 +276,7 @@ export default ShippingOptions
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/shipping-methods`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}/shipping-methods`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -361,7 +361,7 @@ export default PaymentProviders
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}/payment-sessions`, {
   method: "POST",
   credentials: "include",
 })
@@ -419,7 +419,7 @@ export default PaymentProviders
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/payment-session`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}/payment-session`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -506,7 +506,7 @@ export default PaymentProviders
 
 ```ts
 fetch(
-  `<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, 
+  `<BACKEND_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, 
   {
     method: "POST",
     credentials: "include",
@@ -576,7 +576,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/complete`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}/complete`, {
   method: "POST",
   credentials: "include",
   headers: {

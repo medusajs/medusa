@@ -1,5 +1,5 @@
 ---
-description: 'Learn what batch jobs in the Medusa backend are and their flow. Batch jobs are tasks that can be performed asynchronously and iteratively in the Medusa backend.'
+description: 'Learn what batch jobs in Medusa are and their flow. Batch jobs are tasks that can be performed asynchronously and iteratively in Medusa.'
 ---
 
 # Batch Jobs

@@ -94,7 +94,7 @@ export default CreateCustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customer-groups`, {
+fetch(`<BACKEND_URL>/admin/customer-groups`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -114,7 +114,7 @@ fetch(`<SERVER_URL>/admin/customer-groups`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/customer-groups' \
+curl -L -X POST '<BACKEND_URL>/admin/customer-groups' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -184,7 +184,7 @@ export default CustomerGroups
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customer-groups`, {
+fetch(`<BACKEND_URL>/admin/customer-groups`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -197,7 +197,7 @@ fetch(`<SERVER_URL>/admin/customer-groups`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/customer-groups' \
+curl -L -X GET '<BACKEND_URL>/admin/customer-groups' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -250,7 +250,7 @@ export default CustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
+fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -263,7 +263,7 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -326,7 +326,7 @@ export default UpdateCustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
+fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -348,7 +348,7 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -405,7 +405,7 @@ export default CustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
+fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, {
 	method: "DELETE",
   credentials: "include",
 })
@@ -419,7 +419,7 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -489,7 +489,7 @@ export default CustomerGroup
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
   {
     method: "POST",
     credentials: "include",
@@ -515,7 +515,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -587,7 +587,7 @@ export default CustomerGroup
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
+fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -600,7 +600,7 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
+curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -677,7 +677,7 @@ export default CustomerGroup
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
   {
     method: "DELETE",
     credentials: "include",
@@ -703,7 +703,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{

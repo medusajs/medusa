@@ -19,7 +19,7 @@ This tutorial explains how to deploy Medusa to a Qovery organization with an AWS
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
@@ -29,7 +29,7 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 
 - A [Qovery](https://start.qovery.com/) account with a created organization. Qovery provides a free plan that you can use.
 - An [AWS](https://aws.amazon.com/) account that you’ll connect to a Qovery cluster.
-- A [GitHub](https://github.com/) account to create a repository to host your server’s codebase.
+- A [GitHub](https://github.com/) account to create a repository to host your backend's codebase.
 
 :::tip
 
@@ -441,10 +441,10 @@ The `Dockerfile` runs the file `develop.sh` to start the backend. Change the con
 ```bash
 #!/bin/bash
 
-#Run migrations to ensure the database is updated
+# Run migrations to ensure the database is updated
 medusa migrations run
 
-#Start production server
+# Run backend
 medusa start
 ```
 
@@ -480,7 +480,7 @@ If you run into any errors while running this command, you can just re-run it af
 
 ---
 
-## Test your Server
+## Test the Backend
 
 Once the command finishes and the deployment is successful, you can access your backend in the [Qovery Console](https://console.qovery.com/). Go to the project, environment, then the app that you created using Terraform and Qovery. In the app, click the Open button at the top right to open your website in a new tab.
 
@@ -490,9 +490,9 @@ You can access any of the endpoints on your backend using the backend URL. For e
 
 ---
 
-## Run Commands on Your Server
+## Run Commands on the Backend
 
-To run commands on your backend, run the following command:
+To run commands on the backend, run the following command:
 
 ```bash
 qovery shell

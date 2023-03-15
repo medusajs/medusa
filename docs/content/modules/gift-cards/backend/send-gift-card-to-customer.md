@@ -31,7 +31,7 @@ It's assumed that you already have a Medusa backend installed and set up. If not
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../../../development/backend/configurations.md#redis).
 
 ### Notification Provider
 

@@ -1,6 +1,6 @@
 # Error 409 in checkout
 
-To provide the most frictionless onboarding and quickstart, Medusa uses SQLite as the server's database by default. SQLite runs on all machines and operating systems. So, it allows you to get quickly started without installing PostgreSQL.
+To provide the most frictionless onboarding and quickstart, Medusa uses SQLite as the backend's database by default. SQLite runs on all machines and operating systems. So, it allows you to get quickly started without installing PostgreSQL.
 
 However, this comes at the expense of important features that are needed in a production environment.
 
@@ -59,5 +59,5 @@ npm run seed
 ## See Also
 
 - [Set up your development environment](../development/backend/prepare-environment.mdx)
-- [Configure your server](../development/backend/configurations.md)
+- [Configure the Medusa backend](../development/backend/configurations.md)
 - [Medusa CLI tool reference](../cli/reference.md)

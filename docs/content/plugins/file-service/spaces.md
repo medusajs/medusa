@@ -17,13 +17,13 @@ In this document, you’ll learn how to install the [Spaces plugin](https://git
 
 To manage images in Medusa, you need a file service plugin responsible for hosting the images. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
 
-Medusa provides three different options to handle your file storage. This document focuses on using [Spaces](https://www.digitalocean.com/products/spaces) to store your Medusa server’s images.
+Medusa provides three different options to handle your file storage. This document focuses on using [Spaces](https://www.digitalocean.com/products/spaces) to store images and files uploaded to the Medusa backend.
 
 ---
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
 

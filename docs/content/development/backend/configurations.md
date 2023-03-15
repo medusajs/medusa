@@ -8,7 +8,7 @@ In this document, you’ll learn what configurations you can add to your Medusa 
 
 ## Prerequisites
 
-This document assumes you already followed along with the [“Set up your development environment” documentation](./prepare-environment.mdx) and have [installed a Medusa server](./install.mdx#create-a-medusa-server).
+This document assumes you already followed along with the [“Set up your development environment” documentation](./prepare-environment.mdx) and have [installed a Medusa backend](./install.mdx#create-a-medusa-backend).
 
 ---
 
@@ -271,7 +271,7 @@ The examples above apply to both Admin and Store CORS.
 
 ### Admin CORS
 
-To make sure your Admin dashboard can access the Medusa server’s admin endpoints, set this configuration:
+To make sure your Admin dashboard can access the Medusa backend’s admin endpoints, set this configuration:
 
 ```jsx
 module.exports = {
@@ -389,4 +389,4 @@ It is recommended to use environment variables to store values of options instea
 
 - Check out the [Next.js](../../starters/nextjs-medusa-starter.mdx) and [Gatsby](../../starters/gatsby-medusa-starter.mdx) starter storefronts
 - [Install the Medusa admin](../../admin/quickstart.mdx)
-- [Deploy the Medusa server](../../deployments/server/index.mdx)
+- [Deploy the Medusa backend](../../deployments/server/index.mdx)

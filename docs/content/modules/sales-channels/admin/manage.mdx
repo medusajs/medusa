@@ -94,7 +94,7 @@ export default CreateSalesChannel
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/sales-channels`, {
+fetch(`<BACKEND_URL>/admin/sales-channels`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -115,7 +115,7 @@ fetch(`<SERVER_URL>/admin/sales-channels`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/sales-channels' \
+curl -L -X POST '<BACKEND_URL>/admin/sales-channels' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -181,7 +181,7 @@ export default SalesChannels
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/sales-channels`, {
+fetch(`<BACKEND_URL>/admin/sales-channels`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -194,7 +194,7 @@ fetch(`<SERVER_URL>/admin/sales-channels`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/sales-channels' \
+curl -L -X GET '<BACKEND_URL>/admin/sales-channels' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -246,7 +246,7 @@ export default SalesChannel
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
+fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -259,7 +259,7 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+curl -L -X GET '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -314,7 +314,7 @@ export default UpdateSalesChannel
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
+fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -334,7 +334,7 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -393,7 +393,7 @@ export default SalesChannel
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
+fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -407,7 +407,7 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -475,7 +475,7 @@ export default SalesChannel
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  `<BACKEND_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
   {
     method: "POST",
     credentials: "include",
@@ -501,7 +501,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -582,7 +582,7 @@ export default SalesChannelProducts
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`,
+  `<BACKEND_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`,
   {
     credentials: "include",
   }
@@ -597,7 +597,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+curl -L -X GET '<BACKEND_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -671,7 +671,7 @@ export default SalesChannel
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  `<BACKEND_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
   {
     method: "DELETE",
     credentials: "include",
@@ -697,7 +697,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -776,7 +776,7 @@ export default SalesChannelOrders
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
+fetch(`<BACKEND_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -789,7 +789,7 @@ fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 

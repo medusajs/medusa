@@ -113,7 +113,7 @@ export default GiftCard
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/products?is_giftcard=true`, {
+fetch(`<BACKEND_URL>/store/products?is_giftcard=true`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -188,7 +188,7 @@ export default GiftCard
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/gift-cards/${code}`, {
+fetch(`<BACKEND_URL>/store/gift-cards/${code}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -275,7 +275,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/cart/${cartId}`, {
+fetch(`<BACKEND_URL>/store/cart/${cartId}`, {
   method: "POST",
   credentials: "include",
   headers: {

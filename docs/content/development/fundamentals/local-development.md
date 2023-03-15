@@ -14,7 +14,7 @@ Whether you want to implement something differently, introduce a new future as p
 
 ### Medusa Repository Overview
 
-[Medusa’s repository on GitHub](https://github.com/medusajs/medusa) includes all packages related to Medusa under the [`packages` directory](https://github.com/medusajs/medusa/tree/master/packages). This includes the [core Medusa server](https://github.com/medusajs/medusa/tree/master/packages/medusa), the [JS Client](https://github.com/medusajs/medusa/tree/master/packages/medusa-js), the CLI tools, and much more.
+[Medusa’s repository on GitHub](https://github.com/medusajs/medusa) includes all packages related to Medusa under the [`packages` directory](https://github.com/medusajs/medusa/tree/master/packages). This includes the [core Medusa package](https://github.com/medusajs/medusa/tree/master/packages/medusa), the [JS Client](https://github.com/medusajs/medusa/tree/master/packages/medusa-js), the CLI tools, and much more.
 
 All the packages are part of a [Yarn workspace](https://classic.yarnpkg.com/lang/en/docs/workspaces/). So, when you run a command in the root of the project, such as `yarn build`, it goes through all registered packages in the workspace under the `packages` directory and runs the `build` command in each of those packages.
 
@@ -114,7 +114,7 @@ yarn test:integration:plugins
 
 ---
 
-## Test in a Local Server
+## Test in a Local Backend
 
 Using Medusa’s dev CLI tool, you can test any changes you make to Medusa’s packages in a local backend installation. This eliminates the need to publish these packages on NPM publicly to be able to use them.
 
@@ -126,14 +126,14 @@ Medusa’s Dev CLI tool uses the [path you specified earlier](#set-the-location-
 
 :::
 
-### Copy Files to Local Server
+### Copy Files to Local Backend
 
-To test in a local server:
+To test in a local backend:
 
 1. Change to the directory of the backend you want to test your changes in:
 
 ```bash
-cd medusa-server
+cd medusa-backend
 ```
 
 2\. Run the following command to copy the files from the `packages` directory of your Medusa repository into `node_modules`:

@@ -1,5 +1,5 @@
 ---
-description: 'Learn what subscribers are in the Medusa backend. Subscribers are used to listen to triggered events to perform an action.'
+description: 'Learn what subscribers are in Medusa. Subscribers are used to listen to triggered events to perform an action.'
 ---
 
 # Subscribers

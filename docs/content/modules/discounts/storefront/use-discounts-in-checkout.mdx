@@ -115,7 +115,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -269,7 +269,7 @@ medusa.carts.deleteDiscount(cartId, code)
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/discounts/${code}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}/discounts/${code}`, {
   method: "DELETE",
   credentials: "include",
 })

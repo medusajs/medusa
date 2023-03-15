@@ -23,7 +23,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
 
-Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa server](../../development/backend/configurations.md#redis).
+Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa backend](../../development/backend/configurations.md#redis).
 
 :::caution
 
@@ -47,7 +47,7 @@ In the directory of your Medusa backend, run the following command to install th
 npm install medusa-plugin-meilisearch
 ```
 
-Then, add the following environment variables to your Medusa server:
+Then, add the following environment variables to your Medusa backend:
 
 ```bash
 MEILISEARCH_HOST=<YOUR_MEILISEARCH_HOST>
@@ -104,7 +104,7 @@ You can change the `searchableAttributes` and `displayedAttributes` as you see f
 
 Make sure your MeiliSearch instance is running. If you’re unsure how to run it, you can check the [installation documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) for the command to run the MeiliSearch instance.
 
-Then, run the Medusa server:
+Then, run the Medusa backend:
 
 ```bash npm2yarn
 npm run start
@@ -328,5 +328,5 @@ If you run your Gatsby storefront while the Medusa backend and the MeiliSearch i
 
 ## See Also
 
-- [Deploy your Medusa server](../../deployments/server/index.mdx).
+- [Deploy your Medusa backend](../../deployments/server/index.mdx).
 - [Deploy your Gatsby storefront](../../deployments/storefront/deploying-gatsby-on-netlify.md).

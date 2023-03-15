@@ -31,7 +31,7 @@ Before you proceed with this guide, make sure you create a [Stripe account](http
 
 ---
 
-## Medusa Server
+## Medusa Backend
 
 This section guides you over the steps necessary to add Stripe as a payment provider to your Medusa backend.
 
@@ -94,7 +94,7 @@ Next, if you’re installing this plugin for production use, you need to retriev
 
 Go to Webhooks on Stripe’s developer dashboard. Then, choose the Add an Endpoint button.
 
-The endpoint for Stripe’s webhook on your Medusa backend is `{SERVER_URL}/stripe/hooks`. So, add that endpoint in its field. Make sure to replace `{SERVER_URL}` with the URL to your backend.
+The endpoint for Stripe’s webhook on your Medusa backend is `{BACKEND_URL}/stripe/hooks`. So, add that endpoint in its field. Make sure to replace `{BACKEND_URL}` with the URL to your backend.
 
 Then, you can add a description. You must select at least one event to listen to. Once you’re done, click “Add endpoint”.
 

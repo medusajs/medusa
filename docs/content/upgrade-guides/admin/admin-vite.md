@@ -27,7 +27,7 @@ Following the change to Vite 3, the required Node.js version for the Admin has c
 
 ## Changed Environment Variables
 
-Previously, the Medusa Admin used the environment variables `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` to store the Medusa server’s URL.
+Previously, the Medusa Admin used the environment variables `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` to store the Medusa backend’s URL.
 
 After the update to Vite, the environment variable name changed to `MEDUSA_BACKEND_URL`.
 
@@ -38,7 +38,7 @@ The Medusa admin remains backward compatible, which means you can still use the 
 Change your `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` environment variables to be `MEDUSA_BACKEND_URL`:
 
 ```bash
-MEDUSA_BACKEND_URL=<YOUR_MEDUSA_SERVER_URL>
+MEDUSA_BACKEND_URL=<YOUR_BACKEND_URL>
 ```
 
 ---

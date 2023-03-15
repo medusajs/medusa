@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a scheduled job in the Medusa backend. The scheduled job in this example will simply change the status of draft products to published.'
+description: 'Learn how to create a scheduled job in Medusa. The scheduled job in this example will simply change the status of draft products to published.'
 addHowToData: true
 ---
 
@@ -9,7 +9,7 @@ In this document, you’ll learn how to create a scheduled job in Medusa.
 
 ## Overview
 
-Medusa allows you to create scheduled jobs that run at specific times during your server’s lifetime. For example, you can synchronize your inventory with an Enterprise Resource Planning (ERP) system once a day.
+Medusa allows you to create scheduled jobs that run at specific times during your backend's lifetime. For example, you can synchronize your inventory with an Enterprise Resource Planning (ERP) system once a day.
 
 This guide explains how to create a scheduled job on your Medusa backend. The scheduled job in this example will simply change the status of draft products to `published`.
 
@@ -23,7 +23,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ### Redis
 
-Redis is required for scheduled jobs to work. Make sure you [install Redis](../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../development/backend/configurations.md#redis).
+Redis is required for scheduled jobs to work. Make sure you [install Redis](../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa backend](../../development/backend/configurations.md#redis).
 
 ---
 
@@ -108,7 +108,7 @@ jobSchedulerService.create("publish-products", {
 
 ---
 
-## 3. Run Medusa Server
+## 3. Run Medusa Backend
 
 :::info
 
@@ -116,7 +116,7 @@ Cron Jobs only run while the Medusa backend is running.
 
 :::
 
-In your terminal run the following command to run your Medusa server:
+In your terminal run the following command to run your Medusa backend:
 
 ```bash npm2yarn
 npm run start
@@ -124,7 +124,7 @@ npm run start
 
 This builds your code under the `src` directory into the `dist` directory, then runs the Medusa backend.
 
-If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa server:
+If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa backend:
 
 ```bash
 Registering publish-products
@@ -134,7 +134,7 @@ Where `publish-products` is the unique name you provided to the scheduled job.
 
 Once it is time to run your scheduled job based on the scheduled job expression pattern, the scheduled job will run and you can see it logged on your Medusa backend.
 
-For example, the above scheduled job will run at 12 AM and, when it runs, you can see the following logged on your Medusa server:
+For example, the above scheduled job will run at 12 AM and, when it runs, you can see the following logged on your Medusa backend:
 
 ```bash noReport
 info:    Processing scheduled job: publish-products

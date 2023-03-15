@@ -11,7 +11,7 @@ DigitalOcean is a reliable hosting provider that provides different ways to host
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
@@ -20,7 +20,7 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 ### Needed Accounts
 
 - A [DigitalOcean](https://cloud.digitalocean.com/registrations/new) account. You need to provide a payment method on sign up.
-- A [GitHub](https://github.com/) account to create a repository to host your server’s codebase.
+- A [GitHub](https://github.com/) account to create a repository to host your Medusa backend’s codebase.
 
 :::tip
 
@@ -148,7 +148,7 @@ In the next step, you’ll see the resources to create.
 
 ![List of resources showing a docker resource and web service resource](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002067/Medusa%20Docs/Digital%20Ocean/6TlpWB9_wfppc7.png)
 
-If you have a Dockerfile available in the server’s codebase (which is available by default), you’ll have two resources showing. You can remove it by clicking on the trash icon at the right of the resource.
+If you have a Dockerfile available in the backend’s codebase (which is available by default), you’ll have two resources showing. You can remove it by clicking on the trash icon at the right of the resource.
 
 By default, DigitalOcean hosts the web service in a sub-path of the domain name of the created App. To change it to the root of the domain, click on the edit icon at the right of the Web Service resource.
 
@@ -253,7 +253,7 @@ Once you’re done click Attach Database. This will add the Redis database to th
 
 ---
 
-## Test your Server
+## Test your Backend
 
 Once the redeployment is complete, copy the URL of the App which can be found under the App’s name.
 
@@ -265,7 +265,7 @@ Then, go to `<YOUR_APP_URL>/store/products`. If the deployment was successful, y
 
 ---
 
-## Run Commands on Your Server
+## Run Commands on Your Backend
 
 To run commands on your backend, you can access the console on the App’s page by choosing the Console tab. This opens a console in your browser where you can run commands on your backend.
 

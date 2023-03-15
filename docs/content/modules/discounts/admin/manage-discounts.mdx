@@ -136,7 +136,7 @@ export default CreateDiscount
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/discounts`, {
+fetch(`<BACKEND_URL>/admin/discounts`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -166,7 +166,7 @@ fetch(`<YOUR_SERVER>/admin/discounts`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/discounts' \
+curl -L -X POST '<BACKEND_URL>/admin/discounts' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -245,7 +245,7 @@ export default UpdateDiscount
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
+fetch(`<BACKEND_URL>/admin/discounts/${discountId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -265,7 +265,7 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -349,7 +349,7 @@ export default Discount
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`,
+fetch(`<BACKEND_URL>/admin/discounts/${discountId}/conditions`,
   {
     method: "POST",
     credentials: "include",
@@ -374,7 +374,7 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`,
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions' \
+curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -472,7 +472,7 @@ export default DiscountCondition
 
 ```ts
 fetch(
-  `<YOUR_SERVER>/admin/discounts/${discountId}` + 
+  `<BACKEND_URL>/admin/discounts/${discountId}` + 
   `/conditions/${conditionId}&expand=products`,
   {
     credentials: "include",
@@ -491,7 +491,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
+curl -L -X GET '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -561,7 +561,7 @@ export default DiscountCondition
 
 ```ts
 fetch(
-  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`,
+  `<BACKEND_URL>/admin/discounts/${discountId}/conditions/${conditionId}`,
   {
     method: "POST",
     credentials: "include",
@@ -586,7 +586,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -652,7 +652,7 @@ export default Discount
 
 ```ts
 fetch(
-  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`,
+  `<BACKEND_URL>/admin/discounts/${discountId}/conditions/${conditionId}`,
   {
     method: "DELETE",
     credentials: "include",
@@ -668,7 +668,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -719,7 +719,7 @@ export default Discount
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
+fetch(`<BACKEND_URL>/admin/discounts/${discountId}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -733,7 +733,7 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 

@@ -1,5 +1,5 @@
 ---
-description: "Learn what endpoints are in the Medusa Backend. Endpoints are REST APIs that allow a frontend or external system to interact with the Backend."
+description: "Learn what endpoints are in Medusa. Endpoints are REST APIs that allow a frontend or external system to interact with the Backend."
 ---
 
 import DocCardList from '@theme/DocCardList';
@@ -7,7 +7,7 @@ import Icons from '@theme/Icon';
 
 # Endpoints
 
-In this document, you’ll learn what endpoints are in the Medusa Backend.
+In this document, you’ll learn what endpoints are in Medusa.
 
 ## Introduction
 
@@ -15,7 +15,7 @@ The Medusa Backend is a web server built on top of [Express](https://expressjs.c
 
 Endpoints are REST APIs that allow a frontend or an external system to interact with the Medusa Backend to retrieve and process data, or perform business logic. Endpoints are [Express routes](https://expressjs.com/en/starter/basic-routing.html).
 
-Each [Commerce Module](../../modules/overview.mdx) contains a set of endpoints specific to the functionalities that it provides. Since the Medusa Backend acts as an orchestrator of Commerce Modules and exposes their endpoints, the endpoints of each of these Commerce Modules are available within the Medusa Backend’s server.
+Each [Commerce Module](../../modules/overview.mdx) contains a set of endpoints specific to the functionalities that it provides. Since the core package that powers the Medusa Backend acts as an orchestrator of Commerce Modules and exposes their endpoints, the endpoints of each of these Commerce Modules are available within the Medusa Backend.
 
 The Commerce Modules provide two types of endpoints: Store APIs and Admin APIs. The Store APIs are typically accessed from the storefront. For example, you can use the Store APIs to show customers available products or implement a cart and checkout flow.
 
@@ -50,7 +50,7 @@ Aside from using the endpoints that Commerce Modules, developers can create thei
 
 :::tip
 
-As the Medusa Backend is completely customizable, developers can also extend the functionality even further to implement GraphQL endpoints.
+As the core Medusa package is completely customizable, developers can also extend the functionality even further to implement GraphQL endpoints.
 
 :::
 
@@ -61,7 +61,7 @@ As the Medusa Backend is completely customizable, developers can also extend the
     label: 'Create an Endpoint',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create an endpoint in the Medusa Backend.'
+      description: 'Learn how to create an endpoint in Medusa.'
     }
   },
   {
@@ -70,7 +70,7 @@ As the Medusa Backend is completely customizable, developers can also extend the
     label: 'Add a Middleware',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to add a middleware in the Medusa Backend.'
+      description: 'Learn how to add a middleware in Medusa.'
     }
   },
 ]} />

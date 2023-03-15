@@ -113,7 +113,7 @@ export default PublishabelApiKeys
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/publishable-api-keys`, {
+fetch(`<BACKEND_URL>/admin/publishable-api-keys`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -126,7 +126,7 @@ fetch(`<SERVER_URL>/admin/publishable-api-keys`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/publishable-api-keys' \
+curl -L -X GET '<BACKEND_URL>/admin/publishable-api-keys' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -192,7 +192,7 @@ export default CreatePublishableApiKey
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/publishable-api-keys`, {
+fetch(`<BACKEND_URL>/admin/publishable-api-keys`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -212,7 +212,7 @@ fetch(`<SERVER_URL>/admin/publishable-api-keys`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/publishable-api-keys' \
+curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -275,7 +275,7 @@ export default UpdatePublishableApiKey
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
+fetch(`<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -295,7 +295,7 @@ fetch(`<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
+curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -357,7 +357,7 @@ export default PublishableApiKey
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}/revoke`, 
+  `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/revoke`, 
   {
     method: "POST",
     credentials: "include",
@@ -373,7 +373,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/revoke' \
+curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/revoke' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -426,7 +426,7 @@ export default PublishableApiKey
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
+fetch(`<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -440,7 +440,7 @@ fetch(`<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -518,7 +518,7 @@ export default SalesChannels
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels`,
+  `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels`,
   {
     credentials: "include",
   }
@@ -533,7 +533,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels' \
+curl -L -X GET '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -605,7 +605,7 @@ export default PublishableApiKey
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels/batch`, 
+  `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels/batch`, 
   {
     method: "POST",
     credentials: "include",
@@ -631,7 +631,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
+curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -715,7 +715,7 @@ export default PublishableApiKey
 
 ```ts
 fetch(
-  `<SERVER_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels/batch`,
+  `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels/batch`,
   {
     method: "DELETE",
     credentials: "include",
@@ -741,7 +741,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
+curl -L -X DELETE '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{

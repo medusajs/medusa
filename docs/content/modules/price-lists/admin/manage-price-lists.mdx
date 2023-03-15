@@ -157,7 +157,7 @@ export default CreatePriceList
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists`, {
+fetch(`<BACKEND_URL>/admin/price-lists`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -194,7 +194,7 @@ fetch(`<SERVER_URL>/admin/price-lists`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER_URL>/admin/price-lists' \
+curl -L -X POST '<YOUR_BACKEND_URL>/admin/price-lists' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -270,7 +270,7 @@ export default PriceList
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
+fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -283,7 +283,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/price-lists/{id}' \
+curl -L -X GET '<BACKEND_URL>/admin/price-lists/{id}' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -340,7 +340,7 @@ export default CreatePriceList
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
+fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -360,7 +360,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -439,7 +439,7 @@ export default PriceList
 <!-- eslint-disable max-len -->
 
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
+fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}/prices/batch`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -465,7 +465,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -535,7 +535,7 @@ export default PriceList
 
 ```jsx
 fetch(
-  `<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`,
+  `<BACKEND_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`,
   {
     method: "DELETE",
     credentials: "include",
@@ -551,7 +551,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
+curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -610,7 +610,7 @@ export default PriceList
 
 ```jsx
 fetch(
-  `<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`,
+  `<BACKEND_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`,
   {
     method: "DELETE",
     credentials: "include",
@@ -626,7 +626,7 @@ fetch(
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
+curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -675,7 +675,7 @@ export default PriceList
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
+fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -689,7 +689,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 

@@ -45,7 +45,7 @@ Check out the [Event Reference](../../development/events/events-list.md) to lear
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 It is assumed you already have a Medusa backend installed. If not, please follow the [Quickstart guide](../../development/backend/install.mdx) to get started in minutes.
 
@@ -195,7 +195,7 @@ Services can be resolved and used in Subscribers, endpoints, and other Services.
 
 If you want to pass additional data to Segment, pass them under the `properties` object key.
 
-The `SegmentServer` also provides the method `identify` to tie a user to their actions or specific traits.
+The `SegmentService` also provides the method `identify` to tie a user to their actions or specific traits.
 
 ### Test Custom Tracking
 
@@ -210,4 +210,4 @@ After adding the above subscriber, run your backend again if it isn’t running 
 - [Services Overview](../../development/services/create-service.md)
 - [Subscribers Overview](../../development/events/create-subscriber.md)
 - [Events Reference](../../development/events/events-list.md)
-- [Deploy the Medusa server](../../deployments/server/index.mdx)
+- [Deploy the Medusa backend](../../deployments/server/index.mdx)

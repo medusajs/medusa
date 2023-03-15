@@ -31,7 +31,7 @@ You also need [Medusa Admin](../../admin/quickstart.mdx) installed to enable Pay
 
 ---
 
-## Medusa Server
+## Medusa Backend
 
 ### Install the PayPal Plugin
 
@@ -75,7 +75,7 @@ const plugins = [
 ]
 ```
 
-That’s all you need to install PayPal on your Medusa server!
+That’s all you need to install PayPal on your Medusa backend!
 
 ---
 

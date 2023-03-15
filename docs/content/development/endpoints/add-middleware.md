@@ -62,7 +62,7 @@ You can learn more about Middlewares and their capabilities in [Express’s docu
 
 Similar to custom endpoints, you must transpile the files under `src` into the `dist` directory for the backend to load them.
 
-To do that, run the following command before running the Medusa server:
+To do that, run the following command before running the Medusa backend:
 
 ```bash npm2yarn
 npm run build

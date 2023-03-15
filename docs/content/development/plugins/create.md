@@ -271,9 +271,9 @@ npm run start
 Please make sure that your plugin is following the correct structure. If the error persists then please try the following fix:
 
 ```bash npm2yarn
-cd <SERVER_PATH>/node_modules/medusa-interfaces
+cd <BACKEND_PATH>/node_modules/medusa-interfaces
 npm link
-cd <SERVER_PATH>/node_modules/@medusajs/medusa
+cd <BACKEND_PATH>/node_modules/@medusajs/medusa
 npm link
 cd <PLUGIN_PATH>
 rm -rf node_modules/medusa-interfaces
@@ -281,11 +281,11 @@ rm -rf node_modules/@medusajs/medusa
 npm link medusa-interfaces
 npm link @medusajs/medusa
 npm link
-cd <SERVER_PATH>
+cd <BACKEND_PATH>
 npm link your-plugin
 ```
 
-Where `<SERVER_PATH>` is the path to your Medusa backend and `<PLUGIN_PATH>` is the path to your plugin.
+Where `<BACKEND_PATH>` is the path to your Medusa backend and `<PLUGIN_PATH>` is the path to your plugin.
 
 This links the `medusa-interfaces` and `@medusajs/medusa` packages from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
 
@@ -296,15 +296,15 @@ If the APIs you added to your Medussa backend are not loading then please try th
 ```bash npm2yarn
 cd <PLUGIN_PATH>
 rm -rf node_modules
-cd <SERVER_PATH>/node_modules/<PLUGIN_NAME>
+cd <BACKEND_PATH>/node_modules/<PLUGIN_NAME>
 npm install
 cd <PLUGIN_PATH>
 npm run build
-cd <SERVER_PATH>
+cd <BACKEND_PATH>
 npm run start
 ```
 
-Where `<SERVER_PATH>` is the path to your Medusa backend, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
+Where `<BACKEND_PATH>` is the path to your Medusa backend, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
 
 :::note
 

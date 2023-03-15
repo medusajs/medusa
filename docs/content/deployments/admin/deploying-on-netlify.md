@@ -19,7 +19,7 @@ Alternatively, you can use this button to deploy the Medusa Admin to Netlify dir
 
 Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../../admin/quickstart.mdx) first.
 
-Additionally, this documentation does not cover how to deploy the Medusa backend. If you want to deploy the Medusa backend, check out one of the [deployment documentation related to the Medusa server](../server/index.mdx).
+Additionally, this documentation does not cover how to deploy the Medusa backend. If you want to deploy the Medusa backend, check out one of the [deployment documentation related to the Medusa backend](../server/index.mdx).
 
 ### Needed Accounts
 
@@ -150,7 +150,7 @@ If you click on it, you’ll be redirected to the deployed admin website.
 
 :::note
 
-Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa backend. Follow along in the [Configure Cross-Origin Resource Sharing (CORS) on the Medusa Server](#configure-cors-variable-on-the-medusa-server) section.
+Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa backend. Follow along in the [Configure Cross-Origin Resource Sharing (CORS) on the Medusa Backend](#configure-cors-variable-on-the-medusa-backend) section.
 
 :::
 
@@ -254,10 +254,10 @@ If you haven’t deployed your Medusa backend yet, you can leave the value blank
 Run the following command to add the environment variable:
 
 ```bash
-netlify env:set MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
+netlify env:set MEDUSA_BACKEND_URL "<YOUR_BACKEND_URL>"
 ```
 
-Where `<YOUR_SERVER_URL>` is the URL of your Medusa backend.
+Where `<YOUR_BACKEND_URL>` is the URL of your Medusa backend.
 
 :::note
 
@@ -291,7 +291,7 @@ Before you can use Medusa Admin, you must add the URL as an environment variable
 
 ---
 
-## Configure CORS Variable on the Medusa Server
+## Configure CORS Variable on the Medusa Backend
 
 To send requests to the Medusa backend from the Medusa Admin, you must set the `ADMIN_CORS` environment variable on your backend to the Medusa Admin’s URL.
 
@@ -315,5 +315,5 @@ Then, restart your Medusa backend. Once the backend is running again, you can lo
 
 ## See Also
 
-- [Deploy your storefront](../storefront/index.mdx)
-- [Configure your Medusa server](../../development/backend/configurations.md)
+- [Deploy storefront](../storefront/index.mdx)
+- [Configure Medusa backend](../../development/backend/configurations.md)

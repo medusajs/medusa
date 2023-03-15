@@ -2278,7 +2278,7 @@ This section holds all events related to publishable API keys.
 As of Medusa v1.6.3, Publishable API Keys are available but guarded by a feature flag. To use Publishable API Keys either:
 
 1. Enable the `MEDUSA_FF_PUBLISHABLE_API_KEYS` environment variable;
-2. Or enable the `publishable_api_keys` key in the Medusa server's settings.
+2. Or enable the `publishable_api_keys` key in the Medusa backend's settings.
 
 You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
 
@@ -2452,17 +2452,6 @@ Object of the following format:
 ## Sales Channel Events
 
 This section holds all events related to sales channels.
-
-:::note
-
-As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag. To use Sales Channels either:
-
-1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
-2. Or enable the `sales_channels` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
-
-:::
 
 <table class="reference-table">
 <thead>

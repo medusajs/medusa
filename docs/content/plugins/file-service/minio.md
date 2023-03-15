@@ -139,7 +139,7 @@ To create a private bucket, follow along the [steps mentioned earlier](#create-a
 
 ### Add Private Bucket Environment Variable
 
-Add the following environment variable on your Medusa server:
+Add the following environment variable on your Medusa backend:
 
 ```bash
 MINIO_PRIVATE_BUCKET=exports

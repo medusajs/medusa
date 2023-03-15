@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Migrations are in the Medusa backend and how to run them. Migrations are used to make changes to the database schema the Medusa backend is linked to.'
+description: 'Learn what Migrations are in Medusa and how to run them. Migrations are used to make changes to the database schema that Medusa is linked to.'
 ---
 
 # Migrations
@@ -8,7 +8,7 @@ In this document, you'll learn what Migrations are in Medusa.
 
 :::note
 
-Medusa’s Migrations do not work with SQLite databases. They are intended to be used with PostgreSQL databases, which is the recommended Database for your Medusa production backend.
+Medusa’s Migrations do not work with SQLite databases. They are intended to be used with PostgreSQL databases, which is the recommended database for using Medusa in production.
 
 :::
 
