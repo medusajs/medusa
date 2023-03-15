@@ -11,6 +11,7 @@ import {
   useAdminNotifications,
   useAdminOrder,
   useAdminOrderEdits,
+  useAdminStockLocations,
 } from "medusa-react"
 import { useMemo } from "react"
 import useOrdersExpandParam from "../domain/orders/details/utils/use-admin-expand-paramter"
@@ -92,6 +93,7 @@ interface FulfillmentEvent extends TimelineEvent {
 
 export interface ItemsFulfilledEvent extends FulfillmentEvent {
   items: OrderItem[]
+  location_name?: string
 }
 
 export interface ItemsShippedEvent extends FulfillmentEvent {
@@ -174,6 +176,12 @@ export const useBuildTimeline = (orderId: string) => {
   })
 
   const { notifications } = useAdminNotifications({ resource_id: orderId })
+
+  const { stock_locations } = useAdminStockLocations()
+
+  const getLocationNameById = (locationId: string | null) =>
+    stock_locations?.find((stock_location) => stock_location.id === locationId)
+      ?.name
 
   const events: TimelineEvent[] | undefined = useMemo(() => {
     if (!order) {
@@ -321,6 +329,7 @@ export const useBuildTimeline = (orderId: string) => {
         items: event.items.map((item) => getLineItem(allItems, item.item_id)),
         noNotification: event.no_notification,
         orderId: order.id,
+        location_name: getLocationNameById(event.location_id),
       } as ItemsFulfilledEvent)
 
       if (event.shipped_at) {
