@@ -37,10 +37,6 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 import { MedusaError } from "medusa-core-utils"
 import { DistributedTransaction } from "../../../../utils/transaction"
-import {
-  createVariantTransaction,
-  revertVariantTransaction,
-} from "./transaction/create-product-variant"
 import { IInventoryService } from "../../../../interfaces"
 import { Logger } from "../../../../types/global"
 import {
@@ -48,6 +44,10 @@ import {
   defaultAdminProductRelations,
 } from "./index"
 import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import {
+  createVariantTransaction,
+  revertVariantTransaction,
+} from "./transaction/create-product-variant"
 
 /**
  * @oas [post] /admin/products/{id}
@@ -221,16 +221,16 @@ export default async (req, res) => {
     )
 
     if (variantIdsToDelete) {
-      promises.push(productVariantServiceTx.delete(variantIdsToDelete))
+      await productVariantServiceTx.delete(variantIdsToDelete)
     }
 
     if (variantsToUpdate.length) {
-      promises.push(productVariantServiceTx.update(variantsToUpdate))
+      await productVariantServiceTx.update(variantsToUpdate)
     }
 
     if (variantsToCreate.length) {
-      promises.push(
-        ...variantsToCreate.map(async (data) => {
+      await Promise.all(
+        variantsToCreate.map(async (data) => {
           try {
             const varTransaction = await createVariantTransaction(
               transactionDependencies,
@@ -253,8 +253,6 @@ export default async (req, res) => {
         })
       )
     }
-
-    await Promise.all(promises)
   })
 
   const rawProduct = await productService.retrieve(id, {

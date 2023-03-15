@@ -571,11 +571,9 @@ class ProductService extends TransactionBaseService {
 
         if (categories?.length) {
           const categoryIds = categories.map((c) => c.id)
-          const categoryRecords = categoryIds.map(
+          product.categories = categoryIds.map(
             (id) => ({ id } as ProductCategory)
           )
-
-          product.categories = categoryRecords
         }
       }
 
@@ -609,6 +607,7 @@ class ProductService extends TransactionBaseService {
           id: result.id,
           fields: Object.keys(update),
         })
+
       return result
     })
   }
