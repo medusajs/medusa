@@ -370,7 +370,10 @@ describe("EventBusService", () => {
             stagedJobRepository,
           },
           {
-            projectConfig: { event_options: { removeOnComplete: 10 } },
+            projectConfig: {
+              event_options: { removeOnComplete: 10 },
+              redis_url: "localhost",
+            },
           }
         )
 
