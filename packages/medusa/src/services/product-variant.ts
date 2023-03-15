@@ -34,7 +34,9 @@ import {
   ProductVariantPrice,
   UpdateProductVariantData,
   UpdateProductVariantInput,
+  UpdateVariantCurrencyPriceData,
   UpdateVariantPricesData,
+  UpdateVariantRegionPriceData,
 } from "../types/product-variant"
 import {
   buildQuery,
@@ -285,8 +287,11 @@ class ProductVariantService extends TransactionBaseService {
   ): Promise<ProductVariant>
 
   async update<
-    TInput extends string | Partial<ProductVariant> | UpdateProductVariantData,
-    TResult = TInput extends UpdateProductVariantData
+    TInput extends
+      | string
+      | Partial<ProductVariant>
+      | UpdateProductVariantData[],
+    TResult = TInput extends UpdateProductVariantData[]
       ? ProductVariant[]
       : ProductVariant
   >(
@@ -295,7 +300,7 @@ class ProductVariantService extends TransactionBaseService {
   ): Promise<TResult> {
     let data = Array.isArray(variantOrVariantIdOrData)
       ? variantOrVariantIdOrData
-      : ([] as UpdateProductVariantData)
+      : ([] as UpdateProductVariantData[])
 
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const variantRepo = manager.getCustomRepository(
@@ -333,10 +338,7 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   protected async updateBatch(
-    variantData: {
-      variant: ProductVariant
-      updateData: UpdateProductVariantInput
-    }[]
+    variantData: UpdateProductVariantData[]
   ): Promise<ProductVariant[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const variantRepo = manager.getCustomRepository(
@@ -391,7 +393,7 @@ class ProductVariantService extends TransactionBaseService {
 
             let result = variant
 
-            // No need to update if the nothing on the variant has been changed
+            // No need to update if nothing on the variant has changed
             if (shouldUpdate) {
               const { id } = variant
               const rawResult = await variantRepo.update({ id }, toUpdate)
@@ -432,7 +434,7 @@ class ProductVariantService extends TransactionBaseService {
    * @param data
    * @returns empty promise
    */
-  async updateVariantPrices(data: UpdateVariantPricesData): Promise<void>
+  async updateVariantPrices(data: UpdateVariantPricesData[]): Promise<void>
 
   /**
    * Updates a variant's prices.
@@ -447,12 +449,12 @@ class ProductVariantService extends TransactionBaseService {
   ): Promise<void>
 
   async updateVariantPrices(
-    variantIdOrData: string | UpdateVariantPricesData,
+    variantIdOrData: string | UpdateVariantPricesData[],
     prices?: ProductVariantPrice[]
   ): Promise<void> {
     let data = !isString(variantIdOrData)
       ? variantIdOrData
-      : ([] as UpdateVariantPricesData)
+      : ([] as UpdateVariantPricesData[])
 
     if (prices && isString(variantIdOrData)) {
       data = [{ variantId: variantIdOrData, prices }]
@@ -493,18 +495,8 @@ class ProductVariantService extends TransactionBaseService {
 
       const regionsMap = new Map(regions.map((r) => [r.id, r]))
 
-      const dataRegionPrices: {
-        variantId: string
-        price: {
-          currency_code: string
-          region_id: string
-          amount: number
-        }
-      }[] = []
-      const dataCurrencyPrices: {
-        variantId: string
-        price: WithRequiredProperty<ProductVariantPrice, "currency_code">
-      }[] = []
+      const dataRegionPrices: UpdateVariantRegionPriceData[] = []
+      const dataCurrencyPrices: UpdateVariantCurrencyPriceData[] = []
 
       data.forEach(({ prices, variantId }) => {
         prices.forEach((price) => {
@@ -545,14 +537,7 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   async addOrUpdateRegionPrices(
-    data: {
-      variantId: string
-      price: {
-        currency_code: string
-        region_id: string
-        amount: number
-      }
-    }[]
+    data: UpdateVariantRegionPriceData[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(

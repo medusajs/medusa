@@ -12,6 +12,7 @@ import {
   DateComparisonOperator,
   NumericalComparisonOperator,
   StringComparisonOperator,
+  WithRequiredProperty,
 } from "./common"
 import { XorConstraint } from "./validators/xor"
 import { ProductVariant } from "../models"
@@ -88,12 +89,26 @@ export type UpdateProductVariantInput = {
 export type UpdateProductVariantData = {
   variant: ProductVariant
   updateData: UpdateProductVariantInput
-}[]
+}
 
 export type UpdateVariantPricesData = {
   variantId: string
   prices: ProductVariantPrice[]
-}[]
+}
+
+export type UpdateVariantRegionPriceData = {
+  variantId: string
+  price: {
+    currency_code: string
+    region_id: string
+    amount: number
+  }
+}
+
+export type UpdateVariantCurrencyPriceData = {
+  variantId: string
+  price: WithRequiredProperty<ProductVariantPrice, "currency_code">
+}
 
 export class FilterableProductVariantProps {
   @ValidateNested()
