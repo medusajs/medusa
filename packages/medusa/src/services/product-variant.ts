@@ -266,11 +266,6 @@ class ProductVariantService extends TransactionBaseService {
     }[]
   ): Promise<ProductVariant[]>
 
-  async update(
-    variantOrVariantId: string | Partial<ProductVariant>,
-    update: UpdateProductVariantInput
-  ): Promise<ProductVariant>
-
   /**
    * Updates a variant.
    * Price updates should use dedicated methods.
@@ -279,6 +274,11 @@ class ProductVariantService extends TransactionBaseService {
    * @param update - an object with the update values.
    * @return resolves to the update result.
    */
+  async update(
+    variantOrVariantId: string | Partial<ProductVariant>,
+    update: UpdateProductVariantInput
+  ): Promise<ProductVariant>
+
   async update(
     variantOrVariantId: string | Partial<ProductVariant>,
     update: UpdateProductVariantInput
@@ -405,9 +405,11 @@ class ProductVariantService extends TransactionBaseService {
             // No need to update if the nothing on the variant has been changed
             if (shouldUpdate) {
               const { id } = variant
-              const rawResult = (await variantRepo.update({ id }, toUpdate))
-                .generatedMaps[0]
-              result = variantRepo.create({ ...variant, ...rawResult })
+              const rawResult = await variantRepo.update({ id }, toUpdate)
+              result = variantRepo.create({
+                ...variant,
+                ...rawResult.generatedMaps[0],
+              })
             }
 
             return [result, updateData, shouldEmitUpdateEvent]

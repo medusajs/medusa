@@ -50,7 +50,7 @@ import {
 } from "./transaction/create-product-variant"
 
 /**
- * @oas [post] /admin/products/{id}
+ * @oas [post] /products/{id}
  * operationId: "PostProductsProduct"
  * summary: "Update a Product"
  * description: "Updates a Product"
@@ -91,7 +91,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Products
+ *   - Product
  * responses:
  *   200:
  *     description: OK
@@ -211,7 +211,6 @@ export default async (req, res) => {
       productVariantService,
     }
 
-    const promises: Promise<any>[] = []
     const productVariantServiceTx =
       productVariantService.withTransaction(transactionManager)
 

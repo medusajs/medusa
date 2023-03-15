@@ -33,7 +33,7 @@ export class ImageRepository extends Repository<Image> {
     const upsertedImgs: Image[] = []
     const imageToCreate: QueryDeepPartialEntity<Image>[] = []
 
-    imageUrls.map(async (url) => {
+    imageUrls.map((url) => {
       const aImg = existingImagesMap.get(url)
       if (aImg) {
         upsertedImgs.push(aImg)
