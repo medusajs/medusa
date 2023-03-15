@@ -19,5 +19,5 @@ www/**/.yarn/*
 
 .idea
 .turbo
-**/build
+build/**
 **/dist
