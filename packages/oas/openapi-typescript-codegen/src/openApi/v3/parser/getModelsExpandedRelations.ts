@@ -9,13 +9,14 @@ export const handleExpandedRelations = (model: Model, allModels: Model[]) => {
   const relations = xExpandedRelation.relations ?? []
   const totals = xExpandedRelation.totals ?? []
   const implicit = xExpandedRelation.implicit ?? []
+  const eager = xExpandedRelation.eager ?? []
 
   const nestedRelation: NestedRelation = {
     field,
     nestedRelations: [],
   }
 
-  for (const relation of [...relations, ...totals, ...implicit]) {
+  for (const relation of [...relations, ...totals, ...implicit, ...eager]) {
     const splitRelation = relation.split(".")
     walkSplitRelations(nestedRelation, splitRelation, 0)
   }
@@ -24,9 +25,13 @@ export const handleExpandedRelations = (model: Model, allModels: Model[]) => {
   model.imports = [...new Set(model.imports)]
 
   const prop = getPropertyByName(nestedRelation.field, model)
-  if (prop) {
-    prop.nestedRelations = [nestedRelation]
+  if (!prop) {
+    throw new Error(`x-expanded-relations error - field not found
+      Schema: ${model.name}
+      NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
+      Model: ${JSON.stringify(model.spec, null, 2)}`)
   }
+  prop.nestedRelations = [nestedRelation]
 }
 
 const walkSplitRelations = (
@@ -59,12 +64,20 @@ const walkNestedRelations = (
   nestedRelation: NestedRelation,
   parentNestedRelation?: NestedRelation
 ) => {
-  const prop =
-    model.export === "all-of"
-      ? findPropInAllOf(nestedRelation.field, model, allModels)
-      : getPropertyByName(nestedRelation.field, model)
+  const prop = ["all-of", "any-of", "one-of"].includes(model.export)
+    ? findPropInCombination(nestedRelation.field, model, allModels)
+    : getPropertyByName(nestedRelation.field, model)
   if (!prop) {
-    return
+    throw new Error(`x-expanded-relations - field not found
+      Schema: ${rootModel.name}
+      NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
+      Model: ${JSON.stringify(model.spec, null, 2)}`)
+  }
+  if (["all-of", "any-of", "one-of"].includes(prop.export)) {
+    throw new Error(`x-expanded-relations - unsupported - field referencing multiple models
+      Schema: ${rootModel.name}
+      NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
+      Model: ${JSON.stringify(model.spec, null, 2)}`)
   }
   if (!["reference", "array"].includes(prop.export)) {
     return
@@ -73,15 +86,21 @@ const walkNestedRelations = (
   nestedRelation.base = prop.type
   nestedRelation.isArray = prop.export === "array"
 
+  if (!nestedRelation.nestedRelations.length) {
+    return
+  }
+  const childModel = getModelByName(prop.type, allModels)
+  if (!childModel) {
+    throw new Error(`x-expanded-relations - field referencing unknown model
+      Schema: ${rootModel.name}
+      NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
+      Model: ${JSON.stringify(model.spec, null, 2)}`)
+  }
+  rootModel.imports.push(prop.type)
+  if (parentNestedRelation) {
+    parentNestedRelation.hasDepth = true
+  }
   for (const childNestedRelation of nestedRelation.nestedRelations) {
-    const childModel = getModelByName(prop.type, allModels)
-    if (!childModel) {
-      return
-    }
-    rootModel.imports.push(prop.type)
-    if (parentNestedRelation) {
-      parentNestedRelation.hasDepth = true
-    }
     walkNestedRelations(
       allModels,
       rootModel,
@@ -92,7 +111,7 @@ const walkNestedRelations = (
   }
 }
 
-const findPropInAllOf = (
+const findPropInCombination = (
   fieldName: string,
   model: Model,
   allModels: Model[]

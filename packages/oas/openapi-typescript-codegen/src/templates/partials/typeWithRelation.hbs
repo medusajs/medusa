@@ -1,6 +1,6 @@
 {{~#if isArray}}Array<{{/if~}}
 {{~#if hasDepth}}Merge<{{/if~}}
-SetRequired<{{>base}}, {{#each nestedRelations}}'{{{field}}}'{{#unless @last}} | {{/unless}}{{/each}}>{{#if hasDepth}}, {
+SetRelation<{{>base}}, {{#each nestedRelations}}'{{{field}}}'{{#unless @last}} | {{/unless}}{{/each}}>{{#if hasDepth}}, {
 {{/if}}
 {{~#each nestedRelations~}}
   {{#if nestedRelations~}}
