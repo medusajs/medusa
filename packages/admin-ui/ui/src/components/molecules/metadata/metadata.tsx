@@ -1,6 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import clsx from "clsx"
-import React from "react"
+import React, { useMemo } from "react"
 import { useFieldArray, useWatch } from "react-hook-form"
 import { NestedForm } from "../../../utils/nested-form"
 import Button from "../../fundamentals/button"
@@ -11,34 +11,28 @@ import EllipsisVerticalIcon from "../../fundamentals/icons/ellipsis-vertical-ico
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
 
-type ValueType = "string" | "number" | "boolean" | "object"
-
 export type MetadataField = {
   key: string
-  value: unknown
-  state?: "existing" | "deleted"
+  value: string
+  state?: "existing" | "new"
 }
 
 export type MetadataFormType = {
   metadata: MetadataField[]
+  deleted?: string[]
 }
 
 type MetadataProps = {
   form: NestedForm<MetadataFormType>
 }
 
-export const Metadata = ({ form }: MetadataProps) => {
-  const { control, path, register, setValue } = form
+export const MetadataForm = ({ form }: MetadataProps) => {
+  const { control, path, register, setValue, getValues } = form
 
   const { fields, remove, insert } = useFieldArray({
     control,
     name: path("metadata"),
     keyName: "fieldKey",
-  })
-
-  const arr = useWatch({
-    control,
-    name: path("metadata"),
   })
 
   const handleInsertAbove = (index: number) => {
@@ -47,19 +41,27 @@ export const Metadata = ({ form }: MetadataProps) => {
 
   const handleInsertBelow = (index: number) => {
     insert(index + 1, { key: "", value: "" })
-    console.log("insert below")
   }
 
   const handleDelete = (index: number) => {
-    const state = fields[index].state
+    if (fields[index].state === "existing") {
+      const deleted = getValues(path(`deleted`)) || []
 
-    if (!state) {
-      remove(index)
-      return
+      setValue(path(`deleted`), [...deleted, fields[index].key], {
+        shouldDirty: true,
+      })
     }
 
-    setValue(path(`metadata.${index}.state`), "deleted")
-    setValue(path(`metadata.${index}.value`), "")
+    if (index === 0 && fields.length === 1) {
+      setValue(path(`metadata.${index}.value`), "", {
+        shouldDirty: true,
+      })
+      setValue(path(`metadata.${index}.key`), "", {
+        shouldDirty: true,
+      })
+    } else {
+      remove(index)
+    }
   }
 
   const handleDuplicate = (index: number) => {
@@ -67,80 +69,101 @@ export const Metadata = ({ form }: MetadataProps) => {
   }
 
   const handleClearContents = (index: number) => {
-    setValue(path(`metadata.${index}.value`), "")
-    setValue(path(`metadata.${index}.key`), "")
+    setValue(path(`metadata.${index}.value`), "", {
+      shouldDirty: true,
+    })
+    setValue(path(`metadata.${index}.key`), "", {
+      shouldDirty: true,
+    })
   }
+
+  const subscriber = useWatch({
+    control,
+    name: path("metadata"),
+  })
+
+  // If there is only one row and it is empty or there are no rows, disable the delete button
+  const isDisabled = useMemo(() => {
+    if (!subscriber?.length) {
+      return true
+    }
+
+    if (subscriber?.length === 1) {
+      return (
+        (subscriber[0].key === "" && subscriber[0].value === "") ||
+        (subscriber[0].key === undefined && subscriber[0].value === undefined)
+      )
+    }
+
+    return false
+  }, [subscriber])
 
   const rowClasses =
     "divide-grey-20 grid grid-cols-[165px_1fr] divide-x divide-solid [&>div]:px-base [&>div]:py-xsmall"
 
   return (
-    <>
-      <div className="rounded-rounded border-grey-20 divide-grey-20 inter-base-regular divide-y border">
-        <div className={clsx("bg-grey-5 rounded-t-rounded", rowClasses)}>
-          <div className="">
-            <p>Key</p>
-          </div>
-          <div className="">
-            <p>Value</p>
-          </div>
+    <div className="rounded-rounded border-grey-20 divide-grey-20 inter-base-regular divide-y border">
+      <div className={clsx("bg-grey-5 rounded-t-rounded", rowClasses)}>
+        <div className="">
+          <p>Key</p>
         </div>
-        <div className="divide-grey-20 divide-y">
-          {!fields?.length ? (
-            <MetadataRow
-              onClearContents={() => handleClearContents(0)}
-              onDelete={() => handleDelete(0)}
-              onDuplicate={() => handleDuplicate(0)}
-              onInsertAbove={() => handleInsertAbove(0)}
-              onInsertBelow={() => handleInsertBelow(0)}
-              isPlaceholder={true}
-            >
-              <div>
-                <MetadataInput
-                  {...register(path(`metadata.${0}.key`))}
-                  placeholder="Key"
-                />
-              </div>
-              <div>
-                <MetadataInput
-                  {...register(path(`metadata.${0}.value`))}
-                  placeholder="Value"
-                />
-              </div>
-            </MetadataRow>
-          ) : (
-            fields.map((field, index) => {
-              return (
-                <MetadataRow
-                  key={field.fieldKey}
-                  onClearContents={() => handleClearContents(index)}
-                  onDelete={() => handleDelete(index)}
-                  onDuplicate={() => handleDuplicate(index)}
-                  onInsertAbove={() => handleInsertAbove(index)}
-                  onInsertBelow={() => handleInsertBelow(index)}
-                >
-                  <div>
-                    <MetadataInput
-                      {...register(path(`metadata.${index}.key`))}
-                      placeholder="Key"
-                    />
-                  </div>
-                  <div>
-                    <MetadataInput
-                      {...register(path(`metadata.${index}.value`))}
-                      placeholder="Value"
-                    />
-                  </div>
-                </MetadataRow>
-              )
-            })
-          )}
+        <div className="">
+          <p>Value</p>
         </div>
       </div>
-      <div>
-        <pre>{JSON.stringify(arr, null, 2)}</pre>
+      <div className="divide-grey-20 divide-y">
+        {!fields.length ? (
+          <MetadataRow
+            onClearContents={() => handleClearContents(0)}
+            onDelete={() => handleDelete(0)}
+            onDuplicate={() => handleDuplicate(0)}
+            onInsertAbove={() => handleInsertAbove(0)}
+            onInsertBelow={() => handleInsertBelow(0)}
+            isDisabled={isDisabled}
+          >
+            <div>
+              <MetadataInput
+                {...register(path(`metadata.${0}.key`))}
+                placeholder="Key"
+              />
+            </div>
+            <div>
+              <MetadataInput
+                {...register(path(`metadata.${0}.value`))}
+                placeholder="Value"
+              />
+            </div>
+          </MetadataRow>
+        ) : (
+          fields.map((field, index) => {
+            return (
+              <MetadataRow
+                key={field.fieldKey}
+                onClearContents={() => handleClearContents(index)}
+                onDelete={() => handleDelete(index)}
+                onDuplicate={() => handleDuplicate(index)}
+                onInsertAbove={() => handleInsertAbove(index)}
+                onInsertBelow={() => handleInsertBelow(index)}
+                isDisabled={isDisabled}
+              >
+                <div>
+                  <MetadataInput
+                    {...register(path(`metadata.${index}.key`))}
+                    placeholder="Key"
+                  />
+                </div>
+                <div>
+                  <MetadataInput
+                    {...register(path(`metadata.${index}.value`))}
+                    placeholder="Value"
+                  />
+                </div>
+              </MetadataRow>
+            )
+          })
+        )}
       </div>
-    </>
+    </div>
   )
 }
 
@@ -168,7 +191,7 @@ type MetadataRowProps = React.PropsWithChildren<{
   onInsertBelow: () => void
   onDelete: () => void
   onClearContents: () => void
-  isPlaceholder?: boolean
+  isDisabled?: boolean
 }>
 
 const MetadataRow = ({
@@ -177,7 +200,7 @@ const MetadataRow = ({
   onInsertBelow,
   onDelete,
   onClearContents,
-  isPlaceholder = false,
+  isDisabled = false,
   children,
 }: MetadataRowProps) => {
   const itemClasses =
@@ -224,10 +247,14 @@ const MetadataRow = ({
             <DropdownMenu.DropdownMenuSeparator className="bg-grey-20 h-px w-full" />
             <DropdownMenu.Item
               onClick={onDelete}
-              disabled={isPlaceholder}
+              disabled={isDisabled}
               className={clsx(
-                "disabled:text-grey-50 text-rose-50",
-                itemClasses
+                {
+                  "text-grey-40": isDisabled,
+                  "text-rose-50": !isDisabled,
+                },
+                itemClasses,
+                "hover:bg-grey-0"
               )}
             >
               <TrashIcon size={20} />
@@ -238,4 +265,43 @@ const MetadataRow = ({
       </DropdownMenu.Root>
     </div>
   )
+}
+
+export const formatMetadata = (
+  data: MetadataFormType
+): Record<string, unknown> => {
+  const metadata = data.metadata.reduce((acc, { key, value }) => {
+    if (key) {
+      acc[key] = value
+    }
+
+    return acc
+  }, {} as Record<string, unknown>)
+
+  if (data.deleted?.length) {
+    data.deleted.forEach((key) => {
+      metadata[key] = ""
+    })
+  }
+
+  return metadata
+}
+
+export const getMetadataFormValues = (
+  metadata?: Record<string, unknown> | null
+): MetadataFormType => {
+  const data: MetadataFormType = {
+    metadata: [],
+    deleted: [],
+  }
+
+  if (metadata) {
+    data.metadata = Object.entries(metadata).map(([key, value]) => ({
+      key,
+      value: value as string,
+      state: "existing",
+    }))
+  }
+
+  return data
 }

@@ -54,9 +54,12 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
     keyName: "fieldId",
   })
 
-  const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-    move(dragIndex, hoverIndex)
-  }, [])
+  const moveCard = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      move(dragIndex, hoverIndex)
+    },
+    [move]
+  )
 
   const renderCard = useCallback(
     (
@@ -77,12 +80,12 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
         />
       )
     },
-    [product]
+    [moveCard, product]
   )
 
-  const handleFormReset = () => {
+  const handleFormReset = useCallback(() => {
     reset(getDefaultValues(product))
-  }
+  }, [product, reset])
 
   const resetAndClose = () => {
     handleFormReset()
@@ -92,7 +95,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
 
   useEffect(() => {
     handleFormReset()
-  }, [product])
+  }, [product, handleFormReset])
 
   const onSubmit = handleSubmit((data) => {
     onUpdate(

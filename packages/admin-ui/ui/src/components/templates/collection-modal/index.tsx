@@ -3,7 +3,7 @@ import {
   useAdminCreateCollection,
   useAdminUpdateCollection,
 } from "medusa-react"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -12,11 +12,12 @@ import Button from "../../fundamentals/button"
 import IconTooltip from "../../molecules/icon-tooltip"
 import InputField from "../../molecules/input"
 import {
-  Metadata as MetadataForm,
+  formatMetadata,
+  MetadataForm,
   MetadataFormType,
 } from "../../molecules/metadata/metadata"
 import Modal from "../../molecules/modal"
-import Metadata, { MetadataField } from "../../organisms/metadata"
+import { MetadataField } from "../../organisms/metadata"
 
 type CollectionModalProps = {
   onClose: () => void
@@ -41,39 +42,46 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
   )
   const { mutate: create, isLoading: creating } = useAdminCreateCollection()
 
-  const form = useForm<CollectionModalFormData>()
+  const form = useForm<CollectionModalFormData>({
+    defaultValues: {
+      title: collection?.title,
+      handle: collection?.handle,
+      metadata: {
+        metadata: Object.entries(collection?.metadata || {}).map(
+          ([key, value]) => ({
+            key,
+            value: value as string,
+            state: "existing",
+          })
+        ),
+      },
+    },
+  })
   const { register, handleSubmit, reset } = form
 
+  useEffect(() => {
+    if (collection) {
+      reset({
+        title: collection.title,
+        handle: collection.handle,
+        metadata: {
+          metadata: Object.entries(collection.metadata || {}).map(
+            ([key, value]) => ({
+              key,
+              value: value as string,
+              state: "existing",
+            })
+          ),
+        },
+      })
+    }
+  }, [collection, reset])
+
   const notification = useNotification()
-  const [metadata, setMetadata] = useState<MetadataField[]>([])
 
   if (isEdit && !collection) {
     throw new Error("Collection is required for edit")
   }
-
-  useEffect(() => {
-    register("title", { required: true })
-    register("handle")
-  }, [])
-
-  useEffect(() => {
-    if (isEdit && collection) {
-      reset({
-        title: collection.title,
-        handle: collection.handle,
-      })
-
-      if (collection.metadata) {
-        Object.entries(collection.metadata).map(([key, value]) => {
-          if (typeof value === "string") {
-            const newMeta = metadata
-            newMeta.push({ key, value })
-            setMetadata(newMeta)
-          }
-        })
-      }
-    }
-  }, [collection, isEdit])
 
   const submit = (data: CollectionModalFormData) => {
     if (isEdit) {
@@ -81,12 +89,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           title: data.title,
           handle: data.handle,
-          metadata: metadata.reduce((acc, next) => {
-            return {
-              ...acc,
-              [next.key]: next.value,
-            }
-          }, {}),
+          metadata: formatMetadata(data.metadata),
         },
         {
           onSuccess: () => {
@@ -107,12 +110,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           title: data.title,
           handle: data.handle,
-          metadata: metadata.reduce((acc, next) => {
-            return {
-              ...acc,
-              [next.key]: next.value,
-            }
-          }, {}),
+          metadata: formatMetadata(data.metadata),
         },
         {
           onSuccess: () => {
@@ -166,10 +164,8 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
                 />
               </div>
             </div>
-            <div className="mt-xlarge w-full">
-              <Metadata setMetadata={setMetadata} metadata={metadata} />
-            </div>
-            <div className="mt-large">
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">Metadata</h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </Modal.Content>

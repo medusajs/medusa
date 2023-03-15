@@ -2,6 +2,12 @@ import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
+import {
+  formatMetadata,
+  getMetadataFormValues,
+  MetadataForm,
+  MetadataFormType,
+} from "../../../../../components/molecules/metadata/metadata"
 import Modal from "../../../../../components/molecules/modal"
 import { nestedForm } from "../../../../../utils/nested-form"
 import DiscountableForm, {
@@ -23,6 +29,7 @@ type GeneralFormWrapper = {
   general: GeneralFormType
   organize: OrganizeFormType
   discountable: DiscountableFormType
+  metadata: MetadataFormType
 }
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
@@ -39,7 +46,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
 
   useEffect(() => {
     reset(getDefaultValues(product))
-  }, [product])
+  }, [product, reset])
 
   const onReset = () => {
     reset(getDefaultValues(product))
@@ -75,6 +82,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
 
         categories: data.organize.categories?.map((id) => ({ id })),
         discountable: data.discountable.value,
+        metadata: formatMetadata(data.metadata),
       },
       onReset
     )
@@ -96,6 +104,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               <OrganizeForm form={nestedForm(form, "organize")} />
             </div>
             <DiscountableForm form={nestedForm(form, "discountable")} />
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">Metadata</h2>
+              <MetadataForm form={nestedForm(form, "metadata")} />
+            </div>
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end gap-x-2">
@@ -146,6 +158,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
     discountable: {
       value: product.discountable,
     },
+    metadata: getMetadataFormValues(product.metadata),
   }
 }
 

@@ -4,15 +4,15 @@ import ChannelsIcon from "../../../../../components/fundamentals/icons/channels-
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
 import { ActionType } from "../../../../../components/molecules/actionables"
+import DelimitedList from "../../../../../components/molecules/delimited-list"
 import SalesChannelsDisplay from "../../../../../components/molecules/sales-channels-display"
 import StatusSelector from "../../../../../components/molecules/status-selector"
-import DelimitedList from "../../../../../components/molecules/delimited-list"
 import Section from "../../../../../components/organisms/section"
-import {
-  useFeatureFlag,
-  FeatureFlag,
-} from "../../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../../hooks/use-toggle-state"
+import {
+  FeatureFlag,
+  useFeatureFlag,
+} from "../../../../../providers/feature-flag-provider"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
 import ChannelsModal from "./channels-modal"
 import GeneralModal from "./general-modal"
@@ -140,6 +140,14 @@ const ProductDetails = ({ product }: Props) => {
       <Detail
         title="Discountable"
         value={product.discountable ? "True" : "False"}
+      />
+      <Detail
+        title="Metadata"
+        value={
+          Object.entries(product.metadata || {}).length > 0
+            ? `${Object.entries(product.metadata || {}).length} keys`
+            : undefined
+        }
       />
     </div>
   )

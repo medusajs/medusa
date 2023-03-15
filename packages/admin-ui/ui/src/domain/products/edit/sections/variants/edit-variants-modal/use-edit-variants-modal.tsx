@@ -1,11 +1,11 @@
 import React, { useContext } from "react"
 
-type EditVariantsModalContext = {
+type EditVariantsModalContextType = {
   onClose: () => void
 }
 
 export const EditVariantsModalContext =
-  React.createContext<EditVariantsModalContext | null>(null)
+  React.createContext<EditVariantsModalContextType | null>(null)
 
 export const useEditVariantsModal = () => {
   const context = useContext(EditVariantsModalContext)
