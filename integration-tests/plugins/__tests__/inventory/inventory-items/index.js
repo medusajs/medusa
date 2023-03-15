@@ -475,6 +475,71 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
+    it("When deleting an inventory item it removes associated levels and reservations", async () => {
+      const api = useApi()
+      const inventoryService = appContainer.resolve("inventoryService")
+
+      const invItem2 = await inventoryService.createInventoryItem({
+        sku: "1234567",
+      })
+
+      const stockRes = await api.post(
+        `/admin/stock-locations`,
+        {
+          name: "Fake Warehouse 1",
+        },
+        adminHeaders
+      )
+
+      locationId = stockRes.data.stock_location.id
+
+      const level = await inventoryService.createInventoryLevel({
+        inventory_item_id: invItem2.id,
+        location_id: locationId,
+        stocked_quantity: 10,
+      })
+
+      const reservation = await inventoryService.createReservationItem({
+        inventory_item_id: invItem2.id,
+        location_id: locationId,
+        quantity: 5,
+      })
+
+      const [, reservationCount] = await inventoryService.listReservationItems({
+        location_id: locationId,
+      })
+
+      expect(reservationCount).toEqual(1)
+
+      const [, inventoryLevelCount] =
+        await inventoryService.listInventoryLevels({
+          location_id: locationId,
+        })
+
+      expect(inventoryLevelCount).toEqual(1)
+
+      const res = await api.delete(
+        `/admin/stock-locations/${locationId}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+
+      const [, reservationCountPostDelete] =
+        await inventoryService.listReservationItems({
+          location_id: locationId,
+        })
+
+      expect(reservationCountPostDelete).toEqual(0)
+
+      const [, inventoryLevelCountPostDelete] =
+        await inventoryService.listInventoryLevels({
+          location_id: locationId,
+        })
+
+      expect(inventoryLevelCountPostDelete).toEqual(0)
+    })
+
     it("When deleting an inventory item it removes the product variants associated to it", async () => {
       const api = useApi()
 

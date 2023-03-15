@@ -254,6 +254,18 @@ export default class InventoryService
       .delete(inventoryItemId)
   }
 
+  async deleteInventoryItemLevelByLocationId(locationId: string): Promise<void> {
+    return await this.inventoryLevelService_
+      .withTransaction(this.activeManager_)
+      .deleteByLocationId(locationId)
+  }
+
+  async deleteReservationItemByLocationId(locationId: string): Promise<void> {
+    return await this.reservationItemService_
+      .withTransaction(this.activeManager_)
+      .deleteByLocationId(locationId)
+  }
+
   /**
    * Deletes an inventory level
    * @param inventoryItemId - the id of the inventory item associated with the level
