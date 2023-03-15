@@ -307,22 +307,11 @@ class ProductVariantService extends TransactionBaseService {
           variantOrVariantIdOrData as Partial<ProductVariant>
 
         if (isString(variantOrVariantIdOrData)) {
-          const variantRes = await variantRepo.findOne(
-            { id: variantOrVariantIdOrData },
-            {
-              select: variantRepo.metadata.columns.map(
-                (c) => c.propertyName
-              ) as (keyof ProductVariant)[],
-            }
-          )
-          if (!isDefined(variantRes)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_FOUND,
-              `Variant with id ${variantOrVariantIdOrData} was not found`
-            )
-          } else {
-            variant = variantRes
-          }
+          variant = await this.retrieve(variantOrVariantIdOrData, {
+            select: variantRepo.metadata.columns.map(
+              (c) => c.propertyName
+            ) as (keyof ProductVariant)[],
+          })
         }
 
         if (!variant?.id) {

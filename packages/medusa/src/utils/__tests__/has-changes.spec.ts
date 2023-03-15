@@ -1,4 +1,4 @@
-import { hasChanges } from "../has-changes";
+import { hasChanges } from "../has-changes"
 
 describe('hasChanges', function () {
   it("should return true the data differ and false otherwise", () => {
@@ -56,4 +56,4 @@ describe('hasChanges', function () {
     res = hasChanges(objToCompareTo, obj4)
     expect(res).toBeFalsy()
   })
-});
+})
