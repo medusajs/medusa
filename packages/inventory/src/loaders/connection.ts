@@ -2,7 +2,7 @@ import {
   InternalModuleDeclaration,
   LoaderOptions,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE
+  MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
 import { DataSource, DataSourceOptions } from "typeorm"
 

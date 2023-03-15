@@ -17,6 +17,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
+    "@medusajs/types": "*",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
@@ -25,6 +26,7 @@
   "dependencies": {
     "@medusajs/medusa": "^1.7.7",
     "@medusajs/modules-sdk": "*",
+    "@medusajs/utils": "^0.0.1",
     "awilix": "^8.0.0",
     "typeorm": "^0.3.11"
   },
@@ -34,5 +36,8 @@
     "build": "tsc --build",
     "test": "jest --passWithNoTests",
     "test:unit": "jest --passWithNoTests"
+  },
+  "peerDependencies": {
+    "@medusajs/types": "^0.0.1"
   }
 }

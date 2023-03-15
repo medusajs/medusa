@@ -5740,15 +5740,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
-    "@medusajs/medusa": "workspace:^"
+    "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": "*"
+    "@medusajs/types": "*"
+    "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
+    typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.7.13
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5840,7 +5843,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -5981,7 +5984,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": "workspace:^"
+    "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": "*"
     "@medusajs/types": "*"
     "@medusajs/utils": ^0.0.1
@@ -5989,6 +5992,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
+    typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.7.7
