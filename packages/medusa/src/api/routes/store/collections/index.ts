@@ -27,6 +27,7 @@ export const allowedFields = [
   "id",
   "title",
   "handle",
+  "product",
   "metadata",
   "created_at",
   "updated_at",
