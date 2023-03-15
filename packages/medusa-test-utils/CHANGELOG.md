@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.40
+
+### Patch Changes
+
+- [#3417](https://github.com/medusajs/medusa/pull/3417) [`fa4049cb5`](https://github.com/medusajs/medusa/commit/fa4049cb51232b2ed7091b1322c3fc14cd23e451) Thanks [@adrien2p](https://github.com/adrien2p)! - chores(medusa): Refactoring product update flow to improve handling and performances
+
 ## 1.1.39
 
 ### Patch Changes
