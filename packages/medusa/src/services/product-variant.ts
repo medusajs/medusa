@@ -464,7 +464,7 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   protected async updateVariantPricesBatch(
-    data: { variantId: string; prices: ProductVariantPrice[] }[]
+    data: UpdateVariantPricesData[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
