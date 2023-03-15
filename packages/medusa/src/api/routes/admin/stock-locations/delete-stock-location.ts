@@ -1,5 +1,8 @@
 import { EntityManager } from "typeorm"
-import { IStockLocationService } from "../../../../interfaces"
+import {
+  IInventoryService,
+  IStockLocationService,
+} from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**
@@ -60,6 +63,9 @@ export default async (req, res) => {
     "stockLocationService"
   )
 
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+
   const salesChannelLocationService: SalesChannelLocationService =
     req.scope.resolve("salesChannelLocationService")
 
@@ -70,6 +76,17 @@ export default async (req, res) => {
       .removeLocation(id)
 
     await stockLocationService.withTransaction(transactionManager).delete(id)
+
+    if (inventoryService) {
+      await Promise.all([
+        inventoryService
+          .withTransaction(transactionManager)
+          .deleteInventoryItemLevelByLocationId(id),
+        inventoryService
+          .withTransaction(transactionManager)
+          .deleteReservationItemByLocationId(id),
+      ])
+    }
   })
 
   res.status(200).send({
