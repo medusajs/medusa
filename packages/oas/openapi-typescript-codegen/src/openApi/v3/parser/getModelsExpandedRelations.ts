@@ -64,8 +64,8 @@ const walkNestedRelations = (
   nestedRelation: NestedRelation,
   parentNestedRelation?: NestedRelation
 ) => {
-  const prop = ["all-of", "any-of", "all-of"].includes(model.export)
-    ? findPropInAllOf(nestedRelation.field, model, allModels)
+  const prop = ["all-of", "any-of", "one-of"].includes(model.export)
+    ? findPropInCombination(nestedRelation.field, model, allModels)
     : getPropertyByName(nestedRelation.field, model)
   if (!prop) {
     throw new Error(`x-expanded-relations - field not found
@@ -73,7 +73,7 @@ const walkNestedRelations = (
       NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
       Model: ${JSON.stringify(model.spec, null, 2)}`)
   }
-  if (["all-of", "any-of", "all-of"].includes(prop.export)) {
+  if (["all-of", "any-of", "one-of"].includes(prop.export)) {
     throw new Error(`x-expanded-relations - unsupported - field referencing multiple models
       Schema: ${rootModel.name}
       NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
@@ -111,7 +111,7 @@ const walkNestedRelations = (
   }
 }
 
-const findPropInAllOf = (
+const findPropInCombination = (
   fieldName: string,
   model: Model,
   allModels: Model[]
