@@ -184,7 +184,7 @@ export default class StockLocationService {
     if (address) {
       if (item.address_id) {
         await this.updateAddress(item.address_id, address, context)
-
+      } else {
         const locAddressRepo = manager.getRepository(StockLocationAddress)
         const locAddress = locAddressRepo.create(address)
         const addressResult = await locAddressRepo.save(locAddress)
