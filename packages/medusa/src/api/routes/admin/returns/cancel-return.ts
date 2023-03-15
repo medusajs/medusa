@@ -1,6 +1,6 @@
 import { OrderService, ReturnService } from "../../../../services"
 import { EntityManager } from "typeorm"
-import { defaultFieldsReturnCancel, defaultRelationsReturnCancel } from "."
+import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
 
 /**
  * @oas [post] /admin/returns/{id}/cancel
@@ -72,8 +72,8 @@ export default async (req, res) => {
   }
 
   const order = await orderService.retrieve(result.order_id!, {
-    select: defaultFieldsReturnCancel,
-    relations: defaultRelationsReturnCancel,
+    select: defaultReturnCancelFields,
+    relations: defaultReturnCancelRelations,
   })
 
   res.status(200).json({ order })
