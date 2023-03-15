@@ -8999,24 +8999,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/paypal__checkout-server-sdk@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "@types/paypal__checkout-server-sdk@npm:1.0.5"
-  dependencies:
-    "@types/paypal__paypalhttp": "*"
-  checksum: 6caa3d8b30c0af6f144b03eb373acd59bc8c4511b7f5e3e51b7f6304c009f8c7139fb618df13b2b33ea891bfc5b33e00354402b392ee2687de7f8e7e29f27ca9
-  languageName: node
-  linkType: hard
-
-"@types/paypal__paypalhttp@npm:*":
-  version: 1.0.0
-  resolution: "@types/paypal__paypalhttp@npm:1.0.0"
-  dependencies:
-    "@types/node": "*"
-  checksum: 415253469f6b62e0d01285375adb0c23baecc5be4f62410f67a291854013603541693c5f98d1df47c446b808bc97e35ce38719e2a356f3d2e580cd1d59c43065
-  languageName: node
-  linkType: hard
-
 "@types/prettier@npm:^1.19.0":
   version: 1.19.1
   resolution: "@types/prettier@npm:1.19.1"
@@ -25719,7 +25701,6 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.7.7
     "@paypal/checkout-server-sdk": ^1.0.3
-    "@types/paypal__checkout-server-sdk": ^1.0.5
     "@types/stripe": ^8.0.417
     body-parser: ^1.19.0
     cross-env: ^5.2.1

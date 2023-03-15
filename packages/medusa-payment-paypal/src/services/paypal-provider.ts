@@ -183,7 +183,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
       await this.paypal_.execute(request)
       return this.retrievePayment(paymentSessionData)
     } catch (error) {
-      return this.buildError("An error occurred in deletePayment", error)
+      return this.buildError("An error occurred in capturePayment", error)
     }
   }
 
@@ -234,7 +234,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       return this.retrievePayment(paymentSessionData)
     } catch (error) {
-      return this.buildError("An error occurred in refundPayment", e)
+      return this.buildError("An error occurred in refundPayment", error)
     }
   }
 
@@ -256,50 +256,35 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   async updatePayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void> {
-    const { amount, customer, paymentSessionData } = context
-    const stripeId = customer?.metadata?.stripe_id
+    try {
+      const { currency_code, amount } = context
+      const id = context.paymentSessionData.id as string
 
-    if (stripeId !== paymentSessionData.customer) {
-      const result = await this.initiatePayment(context)
-      if (isPaymentProcessorError(result)) {
-        return this.buildError(
-          "An error occurred in updatePayment during the initiate of the new payment for the new customer",
-          result
-        )
-      }
+      const request = new PayPal.orders.OrdersPatchRequest(id)
+      request.requestBody([
+        {
+          op: "replace",
+          path: "/purchase_units/@reference_id=='default'",
+          value: {
+            amount: {
+              currency_code: currency_code.toUpperCase(),
+              value: roundToTwo(
+                humanizeAmount(amount, currency_code),
+                currency_code
+              ),
+            },
+          },
+        },
+      ])
 
-      return result
-    } else {
-      if (amount && paymentSessionData.amount === Math.round(amount)) {
-        return
-      }
+      await this.paypal_.execute(request)
 
-      try {
-        const id = paymentSessionData.id as string
-        const sessionData = (await this.stripe_.paymentIntents.update(id, {
-          amount: Math.round(amount),
-        })) as unknown as PaymentProcessorSessionResponse["session_data"]
-
-        return { session_data: sessionData }
-      } catch (e) {
+      return { session_data: context.paymentSessionData }
+    } catch (error) {
+      return this.initiatePayment(context).catch(e => {
         return this.buildError("An error occurred in updatePayment", e)
-      }
+      })
     }
-  }
-
-  /**
-   * Constructs Stripe Webhook event
-   * @param {object} data - the data of the webhook request: req.body
-   * @param {object} signature - the Stripe signature on the event, that
-   *    ensures integrity of the webhook event
-   * @return {object} Stripe Webhook event
-   */
-  constructWebhookEvent(data, signature) {
-    return this.stripe_.webhooks.constructEvent(
-      data,
-      signature,
-      this.options_.webhook_secret
-    )
   }
 
   protected buildError(
