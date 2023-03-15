@@ -1,6 +1,11 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Order, Return } from "../../../.."
+import {
+  defaultAdminOrdersFields,
+  defaultAdminOrdersRelations,
+  Order,
+  Return,
+} from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
@@ -29,6 +34,8 @@ export default (app) => {
 
 export const defaultRelations = ["swap"]
 export const defaultRelationsList = ["swap", "order"]
+export const defaultRelationsReturnCancel = [...defaultAdminOrdersRelations]
+export const defaultFieldsReturnCancel = [...defaultAdminOrdersFields]
 
 /**
  * @schema AdminReturnsCancelRes
