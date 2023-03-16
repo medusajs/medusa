@@ -67,4 +67,3 @@ The context that is passed to the `calculateVariantPrice` method is an object th
 ## See Also
 
 - [Override the Price Selection Strategy](./backend/override-price-selection-strategy.md)
-- [Price Lists Overview](./price-lists.md)

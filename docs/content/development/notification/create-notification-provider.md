@@ -9,13 +9,13 @@ In this document, you’ll learn how to create a Notification Provider in Medusa
 
 :::note
 
-If you’re unfamiliar with the Notification architecture in Medusa, it is recommended to check out the [architecture overview](./overview.md) first.
+If you’re unfamiliar with the Notification architecture in Medusa, it is recommended to check out the [architecture overview](./overview.mdx) first.
 
 :::
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to either install a [Medusa backend](../backend/install.mdx), or create it in a [plugin](../plugins/overview.md).
+Before you start creating a Notification Provider, you need to either install a [Medusa backend](../backend/install.mdx), or create it in a [plugin](../plugins/overview.mdx).
 
 You also need to [setup Redis](../backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../backend/configurations.md#redis) to test out the Notification provider.
 
@@ -100,7 +100,7 @@ Additionally, if you’re creating your Notification Provider as an external plu
 
 :::info
 
-You can learn more about plugins and how to create them in the [Plugins](../plugins/overview.md) documentation.
+You can learn more about plugins and how to create them in the [Plugins](../plugins/overview.mdx) documentation.
 
 :::
 
@@ -196,7 +196,7 @@ Finally, you return an object with the `to` property set to the customer email a
 
 :::note
 
-The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. You can learn more about the `Notification` entity in the [Architecture Overview](./overview.md#notification-entity-overview) documentation.
+The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. You can learn more about the `Notification` entity in the [Architecture Overview](./overview.mdx#notification-entity-overview) documentation.
 
 :::
 
@@ -206,7 +206,7 @@ Using the [Resend Notification endpoint](/api/admin/#tag/Notification/operation/
 
 This method receives three parameters:
 
-1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](./overview.md#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
+1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](./overview.mdx#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
 2. `config`: In the Resend Notification endpoint you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
 3. `attachmentGenerator`: If you’ve previously attached a generator to the Notification Service using the [`registerAttachmentGenerator`](../../references/services/classes/NotificationService.md#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
 
@@ -253,7 +253,7 @@ Finally, you return an object with the `to` property set to the email (either ne
 
 :::note
 
-The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. No changes are made to the original `Notification` record created after the `sendNotification` method. This new record is associated with the original `Notification` record using the `parent_id` attribute in the entity. You can learn more about the `Notification` entity in the [Architecture Overview](./overview.md#notification-entity-overview) documentation.
+The `to` and `data` properties are used in the `NotificationService` in Medusa’s core to create a new `Notification` record in the database. No changes are made to the original `Notification` record created after the `sendNotification` method. This new record is associated with the original `Notification` record using the `parent_id` attribute in the entity. You can learn more about the `Notification` entity in the [Architecture Overview](./overview.mdx#notification-entity-overview) documentation.
 
 :::
 
@@ -339,8 +339,4 @@ This request returns the same notification object as the List Notifications endp
 
 ## See Also
 
-- [Events reference](../events/events-list.md)
-- [SendGrid Plugin](../../plugins/notifications/sendgrid.mdx)
-- [Create a Subscriber](../events/create-subscriber.md)
-- [Create a Service](../services/create-service.md)
 - [Create a Plugin](../plugins/create.md)

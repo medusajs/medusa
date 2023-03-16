@@ -1,6 +1,8 @@
 ---
 description: 'Actions Required for Vite Update'
 sidebar_label: 'Medusa Admin: Vite'
+sidebar_custom_props:
+  iconName: 'computer-desktop-solid'
 ---
 
 # Updating Medusa Admin from Gatsby to Vite

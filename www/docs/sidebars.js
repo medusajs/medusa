@@ -1254,12 +1254,9 @@ module.exports = {
       },
       items: [
         {
-          type: 'link',
-          href: '#',
-          label: 'Overview',
-          customProps: {
-            sidebar_is_soon: true
-          }
+          type: 'doc',
+          id: 'development/fundamentals/architecture-overview',
+          label: 'Medusa Architecture'
         },
         {
           type: 'doc',
@@ -1309,12 +1306,12 @@ module.exports = {
             },
             {
               type: 'doc',
-              id: 'development/entities/index',
+              id: 'development/entities/create',
               label: 'Create an Entity'
             },
             {
               type: 'doc',
-              id: 'development/entities/migrations/index',
+              id: 'development/entities/migrations/create',
               label: 'Create a Migration'
             },
           ]

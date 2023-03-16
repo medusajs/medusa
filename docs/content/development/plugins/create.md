@@ -5,7 +5,7 @@ addHowToData: true
 
 # How to Create a Plugin
 
-In this document, you’ll learn how to create a plugin and some tips for develoment. If you’re interested to learn more about what plugins are and where to find available official and community plugins, check out the [overview document](./overview.md).
+In this document, you’ll learn how to create a plugin and some tips for develoment. If you’re interested to learn more about what plugins are and where to find available official and community plugins, check out the [overview document](./overview.mdx).
 
 ## Prerequisites
 
@@ -142,8 +142,8 @@ This guide doesn't cover how to create different files and components. If you’
 - How to [create endpoints](../endpoints/create.md)
 - How to [create a service](../services/create-service.md)
 - How to [create a subscriber](../events/create-subscriber.md)
-- How to [create an entity](../entities/index.md)
-- How to [create a migration](../entities/migrations/index.md)
+- How to [create an entity](../entities/create.md)
+- How to [create a migration](../entities/migrations/create.md)
 
 ---
 
@@ -254,7 +254,7 @@ const plugins = [
 
 :::note
 
-If your plugin has migrations, you must run them before you start the backend. Check out the [Migrations guide](../entities/migrations/overview.md#migrate-command) for more details.
+If your plugin has migrations, you must run them before you start the backend. Check out the [Migrations guide](../entities/migrations/overview.mdx#migrate-command) for more details.
 
 :::
 
@@ -319,11 +319,3 @@ It is safe to ignore any `cross-env: command not found` error you may receive.
 Once you're done with the development of the plugin, you can publish it to NPM so that other Medusa developers and users can use it.
 
 Please refer to [this guide on required steps to publish a plugin](./publish.md).
-
----
-
-## See Also
-
-- [Available official plugins](../../plugins/overview.mdx)
-- [Services reference](../../references/services/classes/AuthService.md)
-- [Events reference](../events/events-list.md)

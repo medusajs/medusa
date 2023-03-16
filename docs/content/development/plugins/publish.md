@@ -152,9 +152,3 @@ Then, publish the new update:
 ```bash
 npm publish
 ```
-
----
-
-## See Also
-
-- [Available official plugins](https://github.com/medusajs/medusa/tree/master/packages)

@@ -45,7 +45,7 @@ To subscribe to and handle an event, you must create a subscriber.
 
 :::tip
 
-You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.md) documentation.
+You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.mdx) documentation.
 
 :::
 

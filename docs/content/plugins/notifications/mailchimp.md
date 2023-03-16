@@ -206,4 +206,4 @@ If you try entering an email and clicking Subscribe, the email will be subscribe
 ## See Also
 
 - Check out [SendGrid plugin](./sendgrid.mdx) for more Email functionalities.
-- [Plugins Overview](../../development/plugins/overview.md)
+- [Plugins Overview](../../development/plugins/overview.mdx)

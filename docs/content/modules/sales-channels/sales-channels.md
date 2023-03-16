@@ -63,5 +63,5 @@ The relation is implemented in the [Order](../../references/entities/classes/Ord
 
 ## See Also
 
-- [Manage Sales Channels using the Admin APIs](./admin/manage.mdx)
-- [Sales Channel’s Admin APIs Reference](/api/admin/#tag/Sales-Channel)
+- [Manage sales channels using the admin APIs](./admin/manage.mdx)
+- [Use sales channels in the storefront](./storefront/use-sales-channels.mdx)

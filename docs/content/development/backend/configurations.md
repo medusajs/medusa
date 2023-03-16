@@ -335,7 +335,7 @@ On your Medusa backend, you can use Plugins to add custom features or integrate 
 
 :::info
 
-You can learn more about plugins in the [Plugins Overview documentation](../plugins/overview.md).
+You can learn more about plugins in the [Plugins Overview documentation](../plugins/overview.mdx).
 
 :::
 
@@ -387,6 +387,5 @@ It is recommended to use environment variables to store values of options instea
 
 ## See Also
 
-- Check out the [Next.js](../../starters/nextjs-medusa-starter.mdx) and [Gatsby](../../starters/gatsby-medusa-starter.mdx) starter storefronts
-- [Install the Medusa admin](../../admin/quickstart.mdx)
-- [Deploy the Medusa backend](../../deployments/server/index.mdx)
+- [Medusa architecture overview](../fundamentals/architecture-overview.md)
+- [Plugins](../plugins/overview.mdx)

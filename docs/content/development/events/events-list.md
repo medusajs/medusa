@@ -2971,4 +2971,4 @@ Object of the following format:
 
 - [Events architecture overview](./index.md)
 - [Use services in subscribers](./create-subscriber.md#using-services-in-subscribers)
-- [Create a notification provider](../notification/overview.md)
+- [Create a notification provider](../notification/overview.mdx)

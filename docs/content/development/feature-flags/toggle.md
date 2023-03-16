@@ -81,10 +81,3 @@ Once you disable a feature flag, all endpoints, entities, services, or other rel
 If you had the feature flag previously enabled, and you want to disable this feature flag completely, you might need to revert the migrations you ran when you enabled it.
 
 You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.md#migrations).
-
----
-
-## See Also
-
-- [Migrations Overview](../../development/entities/migrations/overview.md).
-- [Configure the Medusa backend](../backend/configurations.md).

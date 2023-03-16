@@ -5,7 +5,7 @@ addHowToData: true
 
 # How to Create Migrations
 
-In this document, you’ll learn how to create a [Migration](./overview.md) using [Typeorm](https://typeorm.io) in Medusa.
+In this document, you’ll learn how to create a [Migration](./overview.mdx) using [Typeorm](https://typeorm.io) in Medusa.
 
 ## Create Migration File
 
@@ -57,6 +57,6 @@ If you check your database now you should see that the change defined by the mig
 
 ---
 
-## What’s Next
+## See Also
 
-- [Prepare development environment](../../backend/prepare-environment.mdx).
+- [Create a Plugin](../../plugins/create.md)

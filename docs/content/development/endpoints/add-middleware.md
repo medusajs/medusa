@@ -72,6 +72,5 @@ npm run build
 
 ## See Also
 
-- [Create an Endpoint](./create.md)
 - [Store API reference](/api/store)
 - [Admin API reference](/api/admin)

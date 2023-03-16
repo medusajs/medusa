@@ -435,4 +435,4 @@ Refunding or Capturing payments is reflected in your PayPal dashboard as well.
 
 ## See Also
 
-- Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
+- Check out [more plugins](../overview.mdx) you can add to your store.

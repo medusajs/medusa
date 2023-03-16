@@ -204,4 +204,3 @@ During the calculation of the totals of different components of the cart or orde
 ## See Also
 
 - [Calculate taxes manually](./storefront/manual-calculation.md)
-- [Storefront API reference](/api/store)

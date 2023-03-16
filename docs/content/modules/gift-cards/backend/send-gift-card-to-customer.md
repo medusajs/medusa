@@ -45,7 +45,7 @@ To subscribe to and handle an event, you must create a subscriber.
 
 :::info
 
-You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.md) documentation.
+You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.mdx) documentation.
 
 :::
 
@@ -153,11 +153,3 @@ export default GiftCardSubscriber
 When using this method, you’ll have to handle the logic of sending the code to the customer inside the handler function, which in this case is `handleGiftCard`.
 
 The `handleGiftCard` event receives a `data` object as a parameter. This object holds the `id` property which is the ID of the gift card. You can retrieve the full gift card object using the [GiftCardService](../../../references/services/classes/GiftCardService.md)
-
----
-
-## See Also
-
-- [Subscribers overview](../../../development/events/subscribers.md)
-- [Notification architecture overview](../../../development/notification/overview.md)
-- [Gift cards overview](../gift-cards.md)

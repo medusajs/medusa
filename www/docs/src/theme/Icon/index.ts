@@ -22,6 +22,7 @@ import IconClockSolidMini from './ClockSolidMini';
 import IconClose from './Close';
 import IconCloudArrowUp from './CloudArrowUp';
 import IconCogSixTooth from './CogSixTooth';
+import IconCogSixToothSolid from './CogSixToothSolid';
 import IconCommandLine from './CommandLine';
 import IconCommandLineSolid from './CommandLineSolid';
 import IconComponentSolid from './ComponentSolid';
@@ -103,6 +104,7 @@ export default {
   'close': IconClose,
   'cloud-arrow-up': IconCloudArrowUp,
   'cog-six-tooth': IconCogSixTooth,
+  'cog-six-tooth-solid': IconCogSixToothSolid,
   'command-line': IconCommandLine,
   'command-line-solid': IconCommandLineSolid,
   'component-solid': IconComponentSolid,

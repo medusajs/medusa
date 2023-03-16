@@ -223,4 +223,4 @@ Where `127.0.0.1` is the domain of your local MinIO backend.
 
 ## See Also
 
-- Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
+- Check out [more plugins](../overview.mdx) you can add to your store.

@@ -143,5 +143,5 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 ## See Also
 
-- [Notifications Overview](../../development/notification/overview.md).
+- [Notifications Overview](../../development/notification/overview.mdx).
 - Install the [Medusa admin](../../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

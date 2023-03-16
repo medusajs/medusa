@@ -72,7 +72,7 @@ Configurations
 </td>
 <td>
 
-The configurations that are exported from medusa-config.js.
+The configurations that are exported from `medusa-config.js`.
 
 </td>
 <td>
@@ -596,5 +596,5 @@ class OrderSubscriber {
 
 ## See Also
 
-- [Create services](../services/create-service.md).
-- [Create subscribers](../events/create-subscriber.md).
+- [Create services](../services/create-service.md)
+- [Create subscribers](../events/create-subscriber.md)

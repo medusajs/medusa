@@ -125,7 +125,6 @@ For more details on creating custom batch job strategies, please check out the [
 
 ---
 
-## What’s Next
+## See Also
 
-- [Batch Jobs Overview](./index.md).
 - [Use the Import Product APIs](../../modules/products/admin/import-products.mdx).

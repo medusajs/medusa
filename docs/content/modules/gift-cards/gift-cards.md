@@ -70,7 +70,6 @@ You can also access the gift cards used in an order by expanding the `gift_cards
 
 ## See Also
 
-- Gift cards [store](/api/store/#tag/Gift-Card) and [admin](/api/admin/#tag/Gift-Card) APIs
-- [How to manage gift cards using admin APIs](./admin/manage-gift-cards.mdx)
-- [How to use gift cards in the storefront](./storefront/use-gift-cards.mdx)
-- [How to send the customer a gift card](./backend/send-gift-card-to-customer.md)
+- [Manage gift cards using admin APIs](./admin/manage-gift-cards.mdx)
+- [Use gift cards in the storefront](./storefront/use-gift-cards.mdx)
+- [Send the customer a gift card](./backend/send-gift-card-to-customer.md)
