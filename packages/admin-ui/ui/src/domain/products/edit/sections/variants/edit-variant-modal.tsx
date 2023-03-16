@@ -1,20 +1,20 @@
-import EditFlowVariantForm, {
-  EditFlowVariantFormType,
-} from "../../../components/variant-form/edit-flow-variant-form"
+import { Product, ProductVariant } from "@medusajs/medusa"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../../../../components/molecules/modal/layered-modal"
-import { Product, ProductVariant } from "@medusajs/medusa"
+import EditFlowVariantForm, {
+  EditFlowVariantFormType,
+} from "../../../components/variant-form/edit-flow-variant-form"
 
+import { useMedusa } from "medusa-react"
+import { useContext } from "react"
+import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { countries } from "../../../../../utils/countries"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
 import { createAddPayload } from "./add-variant-modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
-import { useContext } from "react"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
-import { useForm } from "react-hook-form"
-import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void
@@ -51,13 +51,17 @@ const EditVariantModal = ({
   const { client } = useMedusa()
 
   const createStockLocationsForVariant = async (
-    productRes,
+    productRes: Product,
     stock_locations: { stocked_quantity: number; location_id: string }[]
   ) => {
     const { variants } = productRes
 
     const pvMap = new Map(product.variants.map((v) => [v.id, true]))
     const addedVariant = variants.find((variant) => !pvMap.get(variant.id))
+
+    if (!addedVariant) {
+      return
+    }
 
     const inventory = await client.admin.variants.getInventory(addedVariant.id)
 

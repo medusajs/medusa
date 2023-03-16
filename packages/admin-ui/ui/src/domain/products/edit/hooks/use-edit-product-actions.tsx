@@ -2,6 +2,7 @@ import {
   AdminPostProductsProductReq,
   AdminPostProductsProductVariantsReq,
   AdminPostProductsProductVariantsVariantReq,
+  Product,
 } from "@medusajs/medusa"
 import {
   useAdminCreateVariant,
@@ -12,11 +13,11 @@ import {
   useAdminUpdateVariant,
 } from "medusa-react"
 
+import { useNavigate } from "react-router-dom"
+import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
+import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { removeNullish } from "../../../../utils/remove-nullish"
-import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
-import { useNavigate } from "react-router-dom"
-import useNotification from "../../../../hooks/use-notification"
 
 const useEditProductActions = (productId: string) => {
   const dialog = useImperativeDialog()
@@ -49,7 +50,7 @@ const useEditProductActions = (productId: string) => {
 
   const onAddVariant = (
     payload: AdminPostProductsProductVariantsReq,
-    onSuccess: (variantRes) => void,
+    onSuccess: (prodictRes: Product) => void,
     successMessage = "Variant was created successfully"
   ) => {
     addVariant.mutate(payload, {

@@ -1,17 +1,17 @@
 import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
+import { useEffect } from "react"
+import LayeredModal, {
+  useLayeredModal,
+} from "../../../../../components/molecules/modal/layered-modal"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../components/variant-form/edit-flow-variant-form"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
-import { useContext, useEffect } from "react"
 
+import { useMedusa } from "medusa-react"
+import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
-import { useForm } from "react-hook-form"
-import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void
@@ -20,7 +20,8 @@ type Props = {
 }
 
 const AddVariantModal = ({ open, onClose, product }: Props) => {
-  const context = useContext(LayeredModalContext)
+  const context = useLayeredModal()
+
   const { client } = useMedusa()
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getDefaultValues(product),
@@ -32,7 +33,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
 
   useEffect(() => {
     reset(getDefaultValues(product))
-  }, [product])
+  }, [product, reset])
 
   const resetAndClose = () => {
     reset(getDefaultValues(product))
@@ -40,7 +41,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
   }
 
   const createStockLocationsForVariant = async (
-    productRes,
+    productRes: Product,
     stock_locations: { stocked_quantity: number; location_id: string }[]
   ) => {
     const { variants } = productRes
@@ -48,9 +49,11 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
     const pvMap = new Map(product.variants.map((v) => [v.id, true]))
     const addedVariant = variants.find((variant) => !pvMap.get(variant.id))
 
-    const inventory = await client.admin.variants.getInventory(addedVariant.id)
+    if (!addedVariant) {
+      return
+    }
 
-    console.log(inventory)
+    const inventory = await client.admin.variants.getInventory(addedVariant.id)
 
     await Promise.all(
       inventory.variant.inventory
