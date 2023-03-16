@@ -323,7 +323,7 @@ export const useBuildTimeline = (orderId: string) => {
         id: event.id,
         time: event.created_at,
         type: "fulfilled",
-        items: event.items.map((item) => getLineItem(allItems, item.item_id)),
+        items: event.items.map((item) => getFulfilmentItem(allItems, item)),
         noNotification: event.no_notification,
         orderId: order.id,
         locationName: getLocationNameById(event.location_id),
@@ -598,4 +598,19 @@ function getWasRefundClaim(claimId, order) {
   }
 
   return claim.type === "refund"
+}
+
+function getFulfilmentItem(allItems, item) {
+  const line = allItems.find((line) => line.id === item.item_id)
+
+  if (!line) {
+    return
+  }
+
+  return {
+    title: line.title,
+    quantity: item.quantity,
+    thumbnail: line.thumbnail,
+    variant: { title: line?.variant?.title || "-" },
+  }
 }
