@@ -38,6 +38,14 @@ class ProductCollectionService extends TransactionBaseService {
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
   protected readonly productRepository_: typeof ProductRepository
 
+  static readonly Events = {
+    CREATED: "product-collection.created",
+    UPDATED: "product-collection.updated",
+    DELETED: "product-collection.deleted",
+    PRODUCTS_ADDED: "product-collection.products_added",
+    PRODUCTS_REMOVED: "product-collection.products_removed",
+  }
+
   constructor({
     productCollectionRepository,
     productRepository,
@@ -124,9 +132,16 @@ class ProductCollectionService extends TransactionBaseService {
       const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
+      let productCollection = collectionRepo.create(collection)
+      productCollection = await collectionRepo.save(productCollection);
 
-      const productCollection = collectionRepo.create(collection)
-      return await collectionRepo.save(productCollection)
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.CREATED, {
+          id: productCollection.id,
+        })
+
+      return productCollection
     })
   }
 
@@ -145,19 +160,27 @@ class ProductCollectionService extends TransactionBaseService {
         this.productCollectionRepository_
       )
 
-      const collection = await this.retrieve(collectionId)
+      let productCollection = await this.retrieve(collectionId)
 
       const { metadata, ...rest } = update
 
       if (metadata) {
-        collection.metadata = setMetadata(collection, metadata)
+        productCollection.metadata = setMetadata(productCollection, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        collection[key] = value
+        productCollection[key] = value
       }
 
-      return collectionRepo.save(collection)
+      productCollection = await collectionRepo.save(productCollection)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.UPDATED, {
+          id: productCollection.id,
+        })
+
+      return productCollection
     })
   }
 
@@ -172,13 +195,19 @@ class ProductCollectionService extends TransactionBaseService {
         this.productCollectionRepository_
       )
 
-      const collection = await this.retrieve(collectionId)
+      const productCollection = await this.retrieve(collectionId)
 
-      if (!collection) {
+      if (!productCollection) {
         return Promise.resolve()
       }
 
-      await productCollectionRepo.softRemove(collection)
+      await productCollectionRepo.softRemove(productCollection)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.DELETED, {
+          id: productCollection.id,
+      })
 
       return Promise.resolve()
     })
@@ -195,9 +224,18 @@ class ProductCollectionService extends TransactionBaseService {
 
       await productRepo.bulkAddToCollection(productIds, id)
 
-      return await this.retrieve(id, {
+      const productCollection = await this.retrieve(id, {
         relations: ["products"],
       })
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.PRODUCTS_ADDED, {
+          productCollection: productCollection,
+          productIds: productIds, 
+        })
+
+      return productCollection
     })
   }
 
@@ -211,6 +249,17 @@ class ProductCollectionService extends TransactionBaseService {
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
       await productRepo.bulkRemoveFromCollection(productIds, id)
+
+      const productCollection = await this.retrieve(id, {
+        relations: ["products"],
+      })
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductCollectionService.Events.PRODUCTS_REMOVED, {
+          productCollection: productCollection,
+          productIds: productIds, 
+        })
 
       return Promise.resolve()
     })
