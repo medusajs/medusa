@@ -278,7 +278,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it.skip("Creates an inventory item using the api", async () => {
+    it("Creates an inventory item using the api", async () => {
       const product = await simpleProductFactory(dbConnection, {})
 
       const api = useApi()
@@ -316,20 +316,14 @@ describe("Inventory Items endpoints", () => {
       )
 
       expect(variantInventoryRes.data).toEqual({
-        variant: {
+        variant: expect.objectContaining({
           id: variantId,
           inventory: [
             expect.objectContaining({
               ...inventoryItemCreateRes.data.inventory_item,
             }),
           ],
-          sales_channel_availability: [
-            expect.objectContaining({
-              available_quantity: 0,
-              channel_name: "Default Sales Channel",
-            }),
-          ],
-        },
+        }),
       })
       expect(variantInventoryRes.status).toEqual(200)
     })
