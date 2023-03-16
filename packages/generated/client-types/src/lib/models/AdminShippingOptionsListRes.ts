@@ -3,10 +3,21 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+import type { Region } from "./Region"
 import type { ShippingOption } from "./ShippingOption"
 
 export interface AdminShippingOptionsListRes {
-  shipping_options: Array<ShippingOption>
+  shipping_options: Array<
+    Merge<
+      SetRelation<ShippingOption, "profile" | "region" | "requirements">,
+      {
+        region: SetRelation<
+          Region,
+          "fulfillment_providers" | "payment_providers"
+        >
+      }
+    >
+  >
   /**
    * The total number of items available
    */

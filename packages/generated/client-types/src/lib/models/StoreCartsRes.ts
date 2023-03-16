@@ -62,11 +62,11 @@ export interface StoreCartsRes {
         Region,
         | "countries"
         | "payment_providers"
-        | "fulfillment_providers"
         | "tax_rates"
+        | "fulfillment_providers"
       >
       shipping_methods: Array<
-        SetRelation<ShippingMethod, "shipping_option" | "tax_lines">
+        SetRelation<ShippingMethod, "tax_lines" | "shipping_option">
       >
     }
   >

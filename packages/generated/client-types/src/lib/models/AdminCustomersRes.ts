@@ -6,5 +6,5 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Customer } from "./Customer"
 
 export interface AdminCustomersRes {
-  customer: Customer
+  customer: SetRelation<Customer, "orders" | "shipping_addresses">
 }

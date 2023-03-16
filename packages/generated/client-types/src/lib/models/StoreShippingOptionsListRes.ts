@@ -3,8 +3,8 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { ShippingOption } from "./ShippingOption"
+import type { PricedShippingOption } from "./PricedShippingOption"
 
 export interface StoreShippingOptionsListRes {
-  shipping_options: Array<ShippingOption>
+  shipping_options: Array<SetRelation<PricedShippingOption, "requirements">>
 }

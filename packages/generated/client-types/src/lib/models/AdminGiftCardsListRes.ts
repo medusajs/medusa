@@ -4,9 +4,20 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { GiftCard } from "./GiftCard"
+import type { Region } from "./Region"
 
 export interface AdminGiftCardsListRes {
-  gift_cards: Array<GiftCard>
+  gift_cards: Array<
+    Merge<
+      SetRelation<GiftCard, "order" | "region">,
+      {
+        region: SetRelation<
+          Region,
+          "fulfillment_providers" | "payment_providers"
+        >
+      }
+    >
+  >
   /**
    * The total number of items available
    */

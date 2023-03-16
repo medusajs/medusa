@@ -6,5 +6,5 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Notification } from "./Notification"
 
 export interface AdminNotificationsRes {
-  notification: Notification
+  notification: SetRelation<Notification, "resends">
 }

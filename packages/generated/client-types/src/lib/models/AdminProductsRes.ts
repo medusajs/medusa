@@ -3,8 +3,17 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { Product } from "./Product"
+import type { PricedProduct } from "./PricedProduct"
+import type { ProductVariant } from "./ProductVariant"
 
 export interface AdminProductsRes {
-  product: Product
+  product: Merge<
+    SetRelation<
+      PricedProduct,
+      "collection" | "images" | "options" | "tags" | "type" | "variants"
+    >,
+    {
+      variants: Array<SetRelation<ProductVariant, "options" | "prices">>
+    }
+  >
 }

@@ -6,5 +6,5 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductCollection } from "./ProductCollection"
 
 export interface AdminCollectionsRes {
-  collection: ProductCollection
+  collection: SetRelation<ProductCollection, "products">
 }

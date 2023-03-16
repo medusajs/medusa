@@ -3,10 +3,10 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { ProductVariant } from "./ProductVariant"
+import type { PricedVariant } from "./PricedVariant"
 
 export interface AdminVariantsListRes {
-  variants: Array<ProductVariant>
+  variants: Array<SetRelation<PricedVariant, "options" | "prices" | "product">>
   /**
    * The total number of items available
    */

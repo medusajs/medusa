@@ -6,7 +6,12 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Region } from "./Region"
 
 export interface AdminRegionsListRes {
-  regions: Array<Region>
+  regions: Array<
+    SetRelation<
+      Region,
+      "countries" | "fulfillment_providers" | "payment_providers"
+    >
+  >
   /**
    * The total number of items available
    */

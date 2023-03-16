@@ -13,6 +13,10 @@ export interface StoreGetCollectionsParams {
    */
   limit?: number
   /**
+   * Filter by the collection handle
+   */
+  handle?: Array<string>
+  /**
    * Date comparison for when resulting collections were created.
    */
   created_at?: {

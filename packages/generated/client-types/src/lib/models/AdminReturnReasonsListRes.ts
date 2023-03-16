@@ -6,5 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ReturnReason } from "./ReturnReason"
 
 export interface AdminReturnReasonsListRes {
-  return_reasons: Array<ReturnReason>
+  return_reasons: Array<
+    SetRelation<ReturnReason, "parent_return_reason" | "return_reason_children">
+  >
 }

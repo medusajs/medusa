@@ -6,5 +6,8 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Region } from "./Region"
 
 export interface AdminRegionsRes {
-  region: Region
+  region: SetRelation<
+    Region,
+    "countries" | "fulfillment_providers" | "payment_providers"
+  >
 }

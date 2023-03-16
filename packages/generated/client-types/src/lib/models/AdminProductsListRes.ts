@@ -4,10 +4,20 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { PricedProduct } from "./PricedProduct"
-import type { Product } from "./Product"
+import type { ProductVariant } from "./ProductVariant"
 
 export interface AdminProductsListRes {
-  products: Array<Product | PricedProduct>
+  products: Array<
+    Merge<
+      SetRelation<
+        PricedProduct,
+        "collection" | "images" | "options" | "tags" | "type" | "variants"
+      >,
+      {
+        variants: Array<SetRelation<ProductVariant, "options" | "prices">>
+      }
+    >
+  >
   /**
    * The total number of items available
    */

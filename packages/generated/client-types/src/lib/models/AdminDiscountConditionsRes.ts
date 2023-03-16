@@ -6,5 +6,5 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { DiscountCondition } from "./DiscountCondition"
 
 export interface AdminDiscountConditionsRes {
-  discount_condition: DiscountCondition
+  discount_condition: SetRelation<DiscountCondition, "discount_rule">
 }

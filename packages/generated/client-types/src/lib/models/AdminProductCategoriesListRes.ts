@@ -6,7 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductCategory } from "./ProductCategory"
 
 export interface AdminProductCategoriesListRes {
-  product_categories: Array<ProductCategory>
+  product_categories: Array<
+    SetRelation<ProductCategory, "category_children" | "parent_category">
+  >
   /**
    * The total number of items available
    */
