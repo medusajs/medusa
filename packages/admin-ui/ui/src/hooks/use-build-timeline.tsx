@@ -15,6 +15,7 @@ import {
 import { useMemo } from "react"
 import useOrdersExpandParam from "../domain/orders/details/utils/use-admin-expand-paramter"
 import { useFeatureFlag } from "../providers/feature-flag-provider"
+import useStockLocations from "./use-stock-locations"
 
 export interface TimelineEvent {
   id: string
@@ -92,10 +93,12 @@ interface FulfillmentEvent extends TimelineEvent {
 
 export interface ItemsFulfilledEvent extends FulfillmentEvent {
   items: OrderItem[]
+  locationName?: string
 }
 
 export interface ItemsShippedEvent extends FulfillmentEvent {
   items: OrderItem[]
+  locationName?: string
 }
 
 export interface RefundEvent extends TimelineEvent {
@@ -174,6 +177,8 @@ export const useBuildTimeline = (orderId: string) => {
   })
 
   const { notifications } = useAdminNotifications({ resource_id: orderId })
+
+  const { getLocationNameById } = useStockLocations()
 
   const events: TimelineEvent[] | undefined = useMemo(() => {
     if (!order) {
@@ -318,9 +323,10 @@ export const useBuildTimeline = (orderId: string) => {
         id: event.id,
         time: event.created_at,
         type: "fulfilled",
-        items: event.items.map((item) => getLineItem(allItems, item.item_id)),
+        items: event.items.map((item) => getFulfilmentItem(allItems, item)),
         noNotification: event.no_notification,
         orderId: order.id,
+        locationName: getLocationNameById(event.location_id),
       } as ItemsFulfilledEvent)
 
       if (event.shipped_at) {
@@ -328,9 +334,10 @@ export const useBuildTimeline = (orderId: string) => {
           id: event.id,
           time: event.shipped_at,
           type: "shipped",
-          items: event.items.map((item) => getLineItem(allItems, item.item_id)),
+          items: event.items.map((item) => getFulfilmentItem(allItems, item)),
           noNotification: event.no_notification,
           orderId: order.id,
+          locationName: getLocationNameById(event.location_id),
         } as ItemsShippedEvent)
       }
     }
@@ -591,4 +598,19 @@ function getWasRefundClaim(claimId, order) {
   }
 
   return claim.type === "refund"
+}
+
+function getFulfilmentItem(allItems, item) {
+  const line = allItems.find((line) => line.id === item.item_id)
+
+  if (!line) {
+    return
+  }
+
+  return {
+    title: line.title,
+    quantity: item.quantity,
+    thumbnail: line.thumbnail,
+    variant: { title: line?.variant?.title || "-" },
+  }
 }
