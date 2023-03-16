@@ -79,7 +79,7 @@ export default class EventBusService
    * @param context - subscriber context
    * @return this
    */
-  public subscribe(
+  subscribe(
     event: string | symbol,
     subscriber: Subscriber,
     context?: SubscriberContext
