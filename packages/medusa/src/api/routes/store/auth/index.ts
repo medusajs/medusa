@@ -19,9 +19,17 @@ export default (app) => {
   return app
 }
 
+export const defaultRelations = ["orders", "orders.items", "shipping_addresses"]
+
 /**
  * @schema StoreAuthRes
  * type: object
+ * x-expanded-relations:
+ *   field: customer
+ *   relations:
+ *     - orders
+ *     - orders.items
+ *     - shipping_addresses
  * required:
  *   - customer
  * properties:

@@ -49,7 +49,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/StoreCustomersRes"
+ *           $ref: "#/components/schemas/StoreCustomersResetPasswordRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
