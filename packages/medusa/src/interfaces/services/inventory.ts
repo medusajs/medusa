@@ -75,7 +75,7 @@ export interface IInventoryService {
 
   deleteReservationItemsByLineItem(lineItemId: string): Promise<void>
 
-  deleteReservationItem(reservationItemId: string): Promise<void>
+  deleteReservationItem(reservationItemId: string | string[]): Promise<void>
 
   deleteInventoryItem(inventoryItemId: string): Promise<void>
 
