@@ -49,7 +49,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

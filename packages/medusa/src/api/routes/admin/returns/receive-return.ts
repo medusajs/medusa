@@ -11,6 +11,7 @@ import { Type } from "class-transformer"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
  * @oas [post] /admin/returns/{id}/receive
@@ -124,7 +125,9 @@ export default async (req, res) => {
     }
   })
 
-  receivedReturn = await returnService.retrieve(id, { relations: ["swap"] })
+  receivedReturn = await returnService.retrieve(id, {
+    relations: defaultRelations,
+  })
 
   res.status(200).json({ return: receivedReturn })
 }

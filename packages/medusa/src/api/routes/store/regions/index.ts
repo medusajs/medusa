@@ -13,6 +13,12 @@ export default (app) => {
   return app
 }
 
+export const defaultRelations = [
+  "countries",
+  "payment_providers",
+  "fulfillment_providers",
+]
+
 /**
  * @schema StoreRegionsListRes
  * type: object
@@ -20,6 +26,9 @@ export default (app) => {
  *   field: regions
  *   relations:
  *     - countries
+ *     - payment_providers
+ *     - fulfillment_providers
+ *   eager:
  *     - payment_providers
  *     - fulfillment_providers
  * required:
@@ -41,6 +50,9 @@ export type StoreRegionsListRes = {
  *   field: region
  *   relations:
  *     - countries
+ *     - payment_providers
+ *     - fulfillment_providers
+ *   eager:
  *     - payment_providers
  *     - fulfillment_providers
  * required:

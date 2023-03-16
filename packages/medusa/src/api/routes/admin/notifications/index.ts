@@ -39,6 +39,10 @@ export const defaultAdminNotificationsFields = [
 /**
  * @schema AdminNotificationsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: notifications
+ *   relations:
+ *     - resends
  * required:
  *   - notifications
  * properties:
@@ -54,6 +58,10 @@ export type AdminNotificationsListRes = {
 /**
  * @schema AdminNotificationsRes
  * type: object
+ * x-expanded-relations:
+ *   field: notification
+ *   relations:
+ *     - resends
  * required:
  *   - notification
  * properties:

@@ -2,6 +2,7 @@ import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { defaultAdminCollectionsRelations } from "."
 
 /**
  * @oas [post] /admin/collections
@@ -77,7 +78,9 @@ export default async (req: Request, res: Response) => {
       .create(validatedBody)
   })
 
-  const collection = await productCollectionService.retrieve(created.id)
+  const collection = await productCollectionService.retrieve(created.id, {
+    relations: defaultAdminCollectionsRelations,
+  })
 
   res.status(200).json({ collection })
 }

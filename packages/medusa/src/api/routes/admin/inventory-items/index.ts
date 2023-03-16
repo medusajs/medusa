@@ -11,7 +11,10 @@ import middlewares, {
 } from "../../../middlewares"
 import { AdminGetInventoryItemsParams } from "./list-inventory-items"
 import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
-import { AdminPostInventoryItemsInventoryItemReq } from "./update-inventory-item"
+import {
+  AdminPostInventoryItemsInventoryItemParams,
+  AdminPostInventoryItemsInventoryItemReq,
+} from "./update-inventory-item"
 import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
 import {
   AdminPostInventoryItemsItemLocationLevelsParams,
@@ -52,7 +55,7 @@ export default (app) => {
 
   route.post(
     "/:id",
-    transformQuery(AdminGetInventoryItemsItemParams, {
+    transformQuery(AdminPostInventoryItemsInventoryItemParams, {
       defaultFields: defaultAdminInventoryItemFields,
       defaultRelations: defaultAdminInventoryItemRelations,
       isList: false,
