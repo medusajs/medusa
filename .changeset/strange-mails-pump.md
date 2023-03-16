@@ -1,5 +1,5 @@
 ---
-"medusa-plugin-meilisearch": patch
+"medusa-plugin-meilisearch": major
 "@medusajs/medusa": patch
 ---
 
