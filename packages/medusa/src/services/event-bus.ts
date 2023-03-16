@@ -1,10 +1,5 @@
-import {
-  EmitData,
-  IEventBusService,
-  Subscriber,
-  SubscriberContext,
-} from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EventBusTypes } from "@medusajs/types"
+import { EventBusUtils } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
@@ -15,7 +10,7 @@ import StagedJobService from "./staged-job"
 
 type InjectedDependencies = {
   stagedJobService: StagedJobService
-  eventBusModuleService: AbstractEventBusModuleService
+  eventBusModuleService: EventBusUtils.AbstractEventBusModuleService
 }
 
 /**
@@ -24,11 +19,12 @@ type InjectedDependencies = {
  */
 export default class EventBusService
   extends TransactionBaseService
-  implements IEventBusService
+  implements EventBusTypes.IEventBusService
 {
   protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
-  protected readonly eventBusModuleService_: AbstractEventBusModuleService
+  // eslint-disable-next-line max-len
+  protected readonly eventBusModuleService_: EventBusUtils.AbstractEventBusModuleService
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
@@ -81,8 +77,8 @@ export default class EventBusService
    */
   subscribe(
     event: string | symbol,
-    subscriber: Subscriber,
-    context?: SubscriberContext
+    subscriber: EventBusTypes.Subscriber,
+    context?: EventBusTypes.SubscriberContext
   ): this {
     if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
@@ -101,8 +97,8 @@ export default class EventBusService
    */
   unsubscribe(
     event: string | symbol,
-    subscriber: Subscriber,
-    context: SubscriberContext
+    subscriber: EventBusTypes.Subscriber,
+    context: EventBusTypes.SubscriberContext
   ): this {
     this.eventBusModuleService_.unsubscribe(event, subscriber, context)
     return this
@@ -113,7 +109,7 @@ export default class EventBusService
    * @param data - The data to use to process the events
    * @return the jobs from our queue
    */
-  async emit<T>(data: EmitData<T>[]): Promise<StagedJob[] | void>
+  async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<StagedJob[] | void>
 
   /**
    * Calls all subscribers when an event occurs.
@@ -130,8 +126,10 @@ export default class EventBusService
 
   async emit<
     T,
-    TInput extends string | EmitData<T>[] = string,
-    TResult = TInput extends EmitData<T>[] ? StagedJob[] : StagedJob
+    TInput extends string | EventBusTypes.EmitData<T>[] = string,
+    TResult = TInput extends EventBusTypes.EmitData<T>[]
+      ? StagedJob[]
+      : StagedJob
   >(
     eventNameOrData: TInput,
     data?: T,

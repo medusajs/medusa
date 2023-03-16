@@ -1,5 +1,5 @@
-export * from "./event-bus"
-export * from "./interfaces"
+export * as EventBusTypes from "./event-bus"
 export * from "./shared-context"
+export * as TransactionBaseTypes from "./transaction-base"
 
 

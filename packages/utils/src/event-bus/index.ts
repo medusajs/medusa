@@ -1,23 +1,17 @@
-import {
-    EmitData,
-    IEventBusModuleService,
-    Subscriber,
-    SubscriberContext,
-    SubscriberDescriptor
-} from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { ulid } from "ulid"
 
 export abstract class AbstractEventBusModuleService
-  implements IEventBusModuleService
+  implements EventBusTypes.IEventBusModuleService
 {
   protected eventToSubscribersMap_: Map<
     string | symbol,
-    SubscriberDescriptor[]
+    EventBusTypes.SubscriberDescriptor[]
   > = new Map()
 
   public get eventToSubscribersMap(): Map<
     string | symbol,
-    SubscriberDescriptor[]
+    EventBusTypes.SubscriberDescriptor[]
   > {
     return this.eventToSubscribersMap_
   }
@@ -27,12 +21,12 @@ export abstract class AbstractEventBusModuleService
     data: T,
     options: Record<string, unknown>
   ): Promise<void>
-  abstract emit<T>(data: EmitData<T>[]): Promise<void>
+  abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
   public subscribe(
     eventName: string | symbol,
-    subscriber: Subscriber,
-    context?: SubscriberContext
+    subscriber: EventBusTypes.Subscriber,
+    context?: EventBusTypes.SubscriberContext
   ): this {
     if (typeof subscriber !== `function`) {
       throw new Error("Subscriber must be a function")
@@ -69,8 +63,8 @@ export abstract class AbstractEventBusModuleService
 
   unsubscribe(
     eventName: string | symbol,
-    subscriber: Subscriber,
-    context: SubscriberContext
+    subscriber: EventBusTypes.Subscriber,
+    context: EventBusTypes.SubscriberContext
   ): this {
     if (typeof subscriber !== `function`) {
       throw new Error("Subscriber must be a function")
@@ -84,7 +78,9 @@ export abstract class AbstractEventBusModuleService
       )
 
       if (subIndex !== -1) {
-        this.eventToSubscribersMap_.get(eventName)?.splice(subIndex as number, 1)
+        this.eventToSubscribersMap_
+          .get(eventName)
+          ?.splice(subIndex as number, 1)
       }
     }
 

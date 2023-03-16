@@ -1,7 +1,7 @@
-import { TransactionBaseService } from "@medusajs/medusa"
-import { EmitData, Subscriber, SubscriberContext } from "../event-bus"
+import { EmitData, Subscriber, SubscriberContext } from "."
+import { ITransactionBaseService } from "../transaction-base/transaction-base"
 
-export interface IEventBusService extends TransactionBaseService {
+export interface IEventBusService extends ITransactionBaseService  {
   emit<T>(event: string, data: T, options?: unknown): Promise<unknown | void>
 }
 

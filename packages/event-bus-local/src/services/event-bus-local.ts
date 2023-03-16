@@ -1,6 +1,6 @@
 import { Logger, MedusaContainer } from "@medusajs/medusa"
-import { EmitData, Subscriber } from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EventBusTypes } from "@medusajs/types"
+import { EventBusUtils } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import { EntityManager } from "typeorm"
 
@@ -9,7 +9,7 @@ type InjectedDependencies = {
 }
 const eventEmitter = new EventEmitter()
 
-export default class LocalEventBusService extends AbstractEventBusModuleService {
+export default class LocalEventBusService extends EventBusUtils.AbstractEventBusModuleService {
   protected readonly logger_: Logger
   protected readonly manager_: EntityManager
 
@@ -30,16 +30,16 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
    * Emit a number of events
    * @param {EmitData} data - the data to send to the subscriber.
    */
-  async emit<T>(data: EmitData<T>[]): Promise<void>
+  async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EmitData<T>[] = string>(
+  async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
     eventOrData: TInput,
     data?: T,
     options: Record<string, unknown> = {}
   ): Promise<void> {
     const isBulkEmit = Array.isArray(eventOrData)
 
-    const events: EmitData[] = isBulkEmit
+    const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventOrData
       : [{ eventName: eventOrData, data }]
 

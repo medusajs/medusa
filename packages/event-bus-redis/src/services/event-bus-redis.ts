@@ -1,7 +1,7 @@
 import { ConfigModule, Logger } from "@medusajs/medusa"
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { EmitData } from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EventBusTypes } from "@medusajs/types"
+import { EventBusUtils } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
@@ -16,7 +16,7 @@ type InjectedDependencies = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class RedisEventBusService extends AbstractEventBusModuleService {
+export default class RedisEventBusService extends EventBusUtils.AbstractEventBusModuleService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
@@ -66,9 +66,9 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    * Emit a number of events
    * @param {EmitData} data - the data to send to the subscriber.
    */
-  async emit<T>(data: EmitData<T>[]): Promise<void>
+  async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EmitData<T>[] = string>(
+  async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
     eventNameOrData: TInput,
     data?: T,
     options: BulkJobOptions | JobsOptions = {}
