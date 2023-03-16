@@ -269,7 +269,7 @@ export class Order extends BaseEntity {
 /**
  * @schema Order
  * title: "Order"
- * description: "Represents an order - FOOBAR"
+ * description: "Represents an order"
  * type: object
  * required:
  *   - billing_address_id
