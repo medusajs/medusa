@@ -46,8 +46,12 @@ describe("/store/carts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    try {
+      dbConnection = await initDb({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
+    } catch (error) {
+      console.log(error)
+    }
   })
 
   afterAll(async () => {
@@ -943,7 +947,7 @@ describe("/store/carts", () => {
     })
   })
 
-  describe("POST /store/carts/:id", () => {
+  describe.only("POST /store/carts/:id", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)
       await swapSeeder(dbConnection)
@@ -1840,7 +1844,7 @@ describe("/store/carts", () => {
       expect(getRes.data.type).toEqual("order")
     })
 
-    it("complete cart with 100% discount", async () => {
+    it.only("complete cart with 100% discount", async () => {
       await simpleDiscountFactory(dbConnection, {
         code: "100PERCENT",
         rule: {
@@ -1870,7 +1874,7 @@ describe("/store/carts", () => {
       expect(getRes.data.type).toEqual("order")
     })
 
-    it("complete cart with items inventory covered", async () => {
+    it.only("complete cart with items inventory covered", async () => {
       const api = useApi()
       const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`)
 

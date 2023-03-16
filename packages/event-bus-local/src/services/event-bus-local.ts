@@ -2,7 +2,6 @@ import { Logger, MedusaContainer } from "@medusajs/medusa"
 import { EventBusTypes } from "@medusajs/types"
 import { EventBusUtils } from "@medusajs/utils"
 import { EventEmitter } from "events"
-import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   logger: Logger
@@ -11,7 +10,6 @@ const eventEmitter = new EventEmitter()
 
 export default class LocalEventBusService extends EventBusUtils.AbstractEventBusModuleService {
   protected readonly logger_: Logger
-  protected readonly manager_: EntityManager
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
