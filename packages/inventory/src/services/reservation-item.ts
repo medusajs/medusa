@@ -6,7 +6,7 @@ import {
   TransactionBaseService,
   UpdateReservationItemInput
 } from "@medusajs/medusa"
-import { IEventBusService } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 
@@ -14,7 +14,7 @@ import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   manager: EntityManager
   inventoryLevelService: InventoryLevelService
 }
@@ -26,7 +26,7 @@ export default class ReservationItemService extends TransactionBaseService {
     DELETED: "reservation-item.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({

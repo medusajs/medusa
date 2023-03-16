@@ -5,14 +5,14 @@ import {
   FindConfig,
   TransactionBaseService
 } from "@medusajs/medusa"
-import { IEventBusService } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 
 import { InventoryLevel } from "../models"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   manager: EntityManager
 }
 
@@ -23,7 +23,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     DELETED: "inventory-level.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
 
   constructor({ eventBusService }: InjectedDependencies) {
     super(arguments[0])

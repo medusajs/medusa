@@ -15,7 +15,7 @@ import {
   UpdateInventoryLevelInput,
   UpdateReservationItemInput
 } from "@medusajs/medusa"
-import { IEventBusService } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 
 import { EntityManager } from "typeorm"
@@ -27,7 +27,7 @@ import {
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   inventoryItemService: InventoryItemService
   inventoryLevelService: InventoryLevelService
   reservationItemService: ReservationItemService
@@ -36,7 +36,7 @@ export default class InventoryService
   extends TransactionBaseService
   implements IInventoryService
 {
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService

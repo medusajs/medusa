@@ -1,4 +1,4 @@
-import { IEventBusService } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -13,7 +13,7 @@ import TaxProviderService from "./tax-provider"
 type InjectedDependencies = {
   manager: EntityManager
   orderItemChangeRepository: typeof OrderItemChangeRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   lineItemService: LineItemService
   taxProviderService: TaxProviderService
 }
@@ -26,7 +26,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
   // eslint-disable-next-line max-len
   protected readonly orderItemChangeRepository_: typeof OrderItemChangeRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusTypes.IEventBusService
   protected readonly lineItemService_: LineItemService
   protected readonly taxProviderService_: TaxProviderService
 

@@ -6,7 +6,7 @@ import {
   InventoryItemDTO,
   TransactionBaseService
 } from "@medusajs/medusa"
-import { IEventBusService } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 
@@ -14,7 +14,7 @@ import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   manager: EntityManager
 }
 
@@ -25,7 +25,7 @@ export default class InventoryItemService extends TransactionBaseService {
     DELETED: "inventory-item.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
 
   constructor({ eventBusService }: InjectedDependencies) {
     super(arguments[0])

@@ -1,4 +1,4 @@
-import { EmitData } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { TransactionBaseService } from "../interfaces"
@@ -63,7 +63,7 @@ class StagedJobService extends TransactionBaseService {
     })
   }
 
-  async insertBulk(stagedJobsInput: EmitData[]) {
+  async insertBulk(stagedJobsInput: EventBusTypes.EmitData[]) {
     return this.atomicPhase_(async (manager) => {
       const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
 
