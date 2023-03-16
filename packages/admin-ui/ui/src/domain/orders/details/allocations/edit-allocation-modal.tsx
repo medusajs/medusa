@@ -26,26 +26,19 @@ const EditAllocationDrawer = ({
   close,
   reservation,
   item,
-  sales_channel_id,
   totalReservedQuantity,
 }: {
   close: () => void
   reservation?: ReservationItemDTO
   item: LineItem
   totalReservedQuantity: number
-  sales_channel_id?: string
 }) => {
   const form = useForm<EditAllocationLineItemForm>()
 
   const { control, setValue, handleSubmit } = form
 
-  // if not sales channel is present fetch all locations
-  const stockLocationsFilter: { sales_channel_id?: string } = {}
-  if (sales_channel_id) {
-    stockLocationsFilter.sales_channel_id = sales_channel_id
-  }
-
-  const { stock_locations } = useAdminStockLocations(stockLocationsFilter)
+  const { stock_locations, isLoading: isLoadingStockLocations } =
+    useAdminStockLocations()
 
   const { variant, isLoading } = useAdminVariantsInventory(
     item.variant_id as string
@@ -59,14 +52,14 @@ const EditAllocationDrawer = ({
   )
 
   const locationOptions = useMemo(() => {
-    if (!stock_locations) {
+    if (!stock_locations || isLoadingStockLocations) {
       return []
     }
     return stock_locations.map((sl) => ({
       value: sl.id,
       label: sl.name,
     }))
-  }, [stock_locations])
+  }, [isLoadingStockLocations, stock_locations])
 
   const notification = useNotification()
   const handleDelete = () => {
