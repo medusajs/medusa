@@ -23,6 +23,11 @@ export default (app) => {
 /**
  * @schema AdminCustomersRes
  * type: object
+ * x-expanded-relations:
+ *   field: customer
+ *   relations:
+ *     - orders
+ *     - shipping_addresses
  * required:
  *   - customer
  * properties:
