@@ -250,9 +250,12 @@ export default CustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, {
-  credentials: "include",
-})
+fetch(
+  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
+  {
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
@@ -326,18 +329,21 @@ export default UpdateCustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    metadata: {
-			is_seller: true,
-		},
-  }),
-})
+fetch(
+  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      metadata: {
+        is_seller: true,
+      },
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
@@ -405,10 +411,13 @@ export default CustomerGroup
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, {
-	method: "DELETE",
-  credentials: "include",
-})
+fetch(
+  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, 
+  {
+	  method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
   console.log(id)
