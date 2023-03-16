@@ -1,8 +1,8 @@
-import { EmitData } from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EventBusTypes } from "@medusajs/types"
+import { EventBusUtils } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 
-class EventBus extends AbstractEventBusModuleService {
+class EventBus extends EventBusUtils.AbstractEventBusModuleService {
   protected manager_!: EntityManager
 
   constructor(protected readonly container) {
@@ -15,9 +15,9 @@ class EventBus extends AbstractEventBusModuleService {
     data: T,
     options: Record<string, unknown>
   ): Promise<void>
-  async emit<T>(data: EmitData<T>[]): Promise<void>
+  async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EmitData<T>[] = string>(
+  async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
     eventOrData: TInput,
     data?: T,
     options: Record<string, unknown> = {}
