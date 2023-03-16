@@ -1,4 +1,4 @@
-name: OAS Codegen Build Check
+name: OAS Codegen Build Check - BETA
 on:
   pull_request:
     paths-ignore:
