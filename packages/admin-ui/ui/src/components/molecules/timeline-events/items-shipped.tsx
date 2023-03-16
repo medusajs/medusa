@@ -16,6 +16,10 @@ const ItemsShipped: React.FC<ItemsShippedProps> = ({ event }) => {
       ? "Exchange Items Shipped"
       : "Items Shipped"
 
+  const detail = event.locationName
+    ? `Shipped from ${event.locationName}`
+    : undefined
+
   const args = {
     icon: <TruckIcon size={20} />,
     time: event.time,
@@ -25,6 +29,7 @@ const ItemsShipped: React.FC<ItemsShippedProps> = ({ event }) => {
     )),
     noNotification: event.noNotification,
     isFirst: event.first,
+    detail,
   }
   return <EventContainer {...args} />
 }
