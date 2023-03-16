@@ -7,10 +7,14 @@ import {
   cancelPaymentRefundAlreadyCanceledSuccessData,
   cancelPaymentRefundAlreadyCaptureSuccessData,
   cancelPaymentSuccessData,
+  capturePaymentContextFailData,
+  capturePaymentContextSuccessData,
   initiatePaymentContextFail,
   initiatePaymentContextSuccess,
+  refundPaymentSuccessData,
 } from "../__fixtures__/data"
 import PayPalMock, {
+  INVOICE_ID,
   PayPalClientMock,
 } from "../../__mocks__/@paypal/checkout-server-sdk"
 import { roundToTwo } from "../utils/utils"
@@ -206,7 +210,7 @@ describe("PaypalProvider", () => {
 
       expect(result).toEqual({
         id: cancelPaymentSuccessData.id,
-        invoice_id: "invoice_id",
+        invoice_id: INVOICE_ID,
         status: PaymentIntentDataByStatus[cancelPaymentSuccessData.id].status,
       })
     })
@@ -224,7 +228,7 @@ describe("PaypalProvider", () => {
 
       expect(result).toEqual({
         id: cancelPaymentRefundAlreadyCaptureSuccessData.id,
-        invoice_id: "invoice_id",
+        invoice_id: INVOICE_ID,
         status:
           PaymentIntentDataByStatus[
             cancelPaymentRefundAlreadyCaptureSuccessData.id
@@ -244,7 +248,7 @@ describe("PaypalProvider", () => {
 
       expect(result).toEqual({
         id: cancelPaymentRefundAlreadyCanceledSuccessData.id,
-        invoice_id: "invoice_id",
+        invoice_id: INVOICE_ID,
         status:
           PaymentIntentDataByStatus[
             cancelPaymentRefundAlreadyCanceledSuccessData.id
@@ -261,5 +265,91 @@ describe("PaypalProvider", () => {
         error: "An error occurred in retrievePayment",
       })
     })
+  })
+
+  describe("capturePayment", function () {
+    let paypalProvider
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      paypalProvider = new PaypalProvider(scopedContainer, {
+        sandbox: true,
+        client_id: "fake",
+        client_secret: "fake",
+      })
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed", async () => {
+      const result = await paypalProvider.capturePayment(
+        capturePaymentContextSuccessData
+      )
+
+      expect(result).toEqual({
+        id: capturePaymentContextSuccessData.paymentSessionData.id,
+        invoice_id: INVOICE_ID,
+        status:
+          PaymentIntentDataByStatus[
+            capturePaymentContextSuccessData.paymentSessionData.id
+          ].status,
+      })
+    })
+
+    it("should fail", async () => {
+      const result = await paypalProvider.capturePayment(
+        capturePaymentContextFailData
+      )
+
+      expect(result).toEqual({
+        error: "An error occurred in capturePayment",
+        code: "",
+        detail: "Error.",
+      })
+    })
+  })
+
+  describe("refundPayment", function () {
+    let paypalProvider
+    const refundAmount = 500
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      paypalProvider = new PaypalProvider(scopedContainer, {
+        sandbox: true,
+        client_id: "fake",
+        client_secret: "fake",
+      })
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed", async () => {
+      const result = await paypalProvider.refundPayment(
+        refundPaymentSuccessData,
+        refundAmount
+      )
+
+      expect(result).toEqual({
+        id: refundPaymentSuccessData.id,
+      })
+    })
+    /*
+    it("should fail on refund creation", async () => {
+      const result = await paypalProvider.refundPayment(
+        refundPaymentFailData,
+        refundAmount
+      )
+
+      expect(result).toEqual({
+        error: "An error occurred in refundPayment",
+        code: "",
+        detail: "Error",
+      })
+    })*/
   })
 })

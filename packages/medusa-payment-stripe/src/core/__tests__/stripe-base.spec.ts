@@ -330,7 +330,7 @@ describe("StripeTest", () => {
       )
 
       expect(result).toEqual({
-        error: "An error occurred in deletePayment",
+        error: "An error occurred in capturePayment",
         code: "",
         detail: "Error",
       })

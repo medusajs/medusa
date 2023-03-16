@@ -95,7 +95,84 @@ export const cancelPaymentFailData = {
   ],
 }
 
-/*
-export const cancelPaymentPartiallyFailData = {
-  id: PARTIALLY_FAIL_INTENT_ID,
-}*/
+// CAPTURE PAYMENT DATA
+
+export const capturePaymentContextSuccessData = {
+  paymentSessionData: {
+    id: PaymentIntentDataByStatus.APPROVED.id,
+    purchase_units: [
+      {
+        payments: {
+          authorizations: [
+            {
+              id: SUCCESS_INTENT,
+            },
+          ],
+        },
+      },
+    ],
+  },
+}
+
+export const capturePaymentContextFailData = {
+  paymentSessionData: {
+    id: PaymentIntentDataByStatus.APPROVED.id,
+    purchase_units: [
+      {
+        payments: {
+          authorizations: [
+            {
+              id: FAIL_INTENT_ID,
+            },
+          ],
+        },
+      },
+    ],
+  },
+}
+
+// REFUND PAYMENT DATA
+
+export const refundPaymentSuccessData = {
+  id: PaymentIntentDataByStatus.APPROVED.id,
+  purchase_units: [
+    {
+      payments: {
+        captures: [
+          {
+            id: "id",
+          },
+        ],
+        authorizations: [
+          {
+            id: FAIL_INTENT_ID,
+          },
+        ],
+      },
+    },
+  ],
+}
+
+export const refundPaymentFailNotYetCapturedData = {
+  id: PaymentIntentDataByStatus.APPROVED.id,
+  purchase_units: [
+    {
+      payments: {
+        captures: [
+          {
+            id: "id",
+          },
+        ],
+        authorizations: [
+          {
+            id: FAIL_INTENT_ID,
+          },
+        ],
+      },
+    },
+  ],
+}
+
+export const refundPaymentFailData = {
+  id: FAIL_INTENT_ID,
+}

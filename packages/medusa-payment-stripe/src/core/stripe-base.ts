@@ -201,7 +201,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         }
       }
 
-      return this.buildError("An error occurred in deletePayment", error)
+      return this.buildError("An error occurred in capturePayment", error)
     }
   }
 

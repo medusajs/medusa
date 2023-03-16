@@ -2,6 +2,7 @@ import { PaymentIntentDataByStatus } from "../../__fixtures__/data";
 
 export const SUCCESS_INTENT = "right@test.fr"
 export const FAIL_INTENT_ID = "unknown"
+export const INVOICE_ID = "invoice_id"
 
 export const PayPalClientMock = {
   execute: jest.fn().mockImplementation((r) => {
@@ -38,7 +39,11 @@ export const PayPalMock = {
         status: "VOIDED"
       }
     }),
-    AuthorizationsCaptureRequest: jest.fn().mockImplementation(() => {
+    AuthorizationsCaptureRequest: jest.fn().mockImplementation((id) => {
+      if (id === FAIL_INTENT_ID) {
+        throw new Error("Error.")
+      }
+
       return {
         result: {
           id: "test",
@@ -52,7 +57,7 @@ export const PayPalMock = {
           id: "test",
         },
         status: "COMPLETED",
-        invoice_id: 'invoice_id',
+        invoice_id: INVOICE_ID,
         body: null,
         requestBody: function (d) {
           this.body = d
