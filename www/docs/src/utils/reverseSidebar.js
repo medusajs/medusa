@@ -9,7 +9,15 @@ function reverseSidebarItems(sidebarItems, categoryItem) {
       return item;
     });
     // Reverse items at current level
-    result.reverse();
+    // use localeCompare since the reverse array method doesn't account for
+    // numeric strings
+    result.sort((a, b) => {
+      const aToCompare = a.id || a.href || a.value || ""
+      const bToCompare = b.id || b.href || b.value || ""
+      const comparison = aToCompare.localeCompare(bToCompare, undefined, { numeric: true })
+
+      return comparison < 0 ? 1 : (comparison > 0 ? -1 : 0)
+    })
   }
   return result;
 }
