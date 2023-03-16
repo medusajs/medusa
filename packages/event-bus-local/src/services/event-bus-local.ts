@@ -47,7 +47,7 @@ export default class LocalEventBusService extends EventBusUtils.AbstractEventBus
       const eventListenersCount = eventEmitter.listenerCount(event.eventName)
 
       if (eventListenersCount === 0) {
-        return
+        continue
       }
 
       this.logger_.info(
@@ -64,12 +64,18 @@ export default class LocalEventBusService extends EventBusUtils.AbstractEventBus
     }
   }
 
-  subscribe(event: string | symbol, subscriber: EventBusTypes.Subscriber): this {
+  subscribe(
+    event: string | symbol,
+    subscriber: EventBusTypes.Subscriber
+  ): this {
     eventEmitter.on(event, subscriber)
     return this
   }
 
-  unsubscribe(event: string | symbol, subscriber: EventBusTypes.Subscriber): this {
+  unsubscribe(
+    event: string | symbol,
+    subscriber: EventBusTypes.Subscriber
+  ): this {
     eventEmitter.off(event, subscriber)
     return this
   }
