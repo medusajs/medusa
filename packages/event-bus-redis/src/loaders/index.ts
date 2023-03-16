@@ -6,9 +6,8 @@ import { EventBusRedisModuleOptions } from "../types"
 
 export default async ({
   container,
-  configModule,
   logger,
-  options
+  options,
 }: LoaderOptions): Promise<void> => {
   const { redisUrl, redisOptions } = options as EventBusRedisModuleOptions
 
@@ -31,7 +30,9 @@ export default async ({
     await connection.connect()
     logger?.info(`Connection to Redis in module 'event-bus-redis' established`)
   } catch (err) {
-    logger?.error(`An error occurred while connecting to Redis in module 'event-bus-redis':${EOL} ${err}`)
+    logger?.error(
+      `An error occurred while connecting to Redis in module 'event-bus-redis':${EOL} ${err}`
+    )
   }
 
   container.register({

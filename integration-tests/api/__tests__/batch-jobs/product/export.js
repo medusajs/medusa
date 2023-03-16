@@ -31,6 +31,7 @@ describe("Batch job of product-export type", () => {
     medusaProcess = await setupServer({
       cwd,
       uploadDir: __dirname,
+      verbose: true,
     })
   })
 
