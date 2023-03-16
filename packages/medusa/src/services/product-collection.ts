@@ -126,22 +126,22 @@ class ProductCollectionService extends TransactionBaseService {
    * @return created collection
    */
   async create(
-    collectionObject: CreateProductCollection
+    collection: CreateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
-      let collection = collectionRepo.create(collectionObject)
-      collection = await collectionRepo.save(collection);
+      let productCollection = collectionRepo.create(collection)
+      productCollection = await collectionRepo.save(productCollection);
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.CREATED, {
-          id: collection.id,
+          id: productCollection.id,
         })
 
-      return collection
+      return productCollection
     })
   }
 
@@ -160,27 +160,27 @@ class ProductCollectionService extends TransactionBaseService {
         this.productCollectionRepository_
       )
 
-      let collection = await this.retrieve(collectionId)
+      let productCollection = await this.retrieve(collectionId)
 
       const { metadata, ...rest } = update
 
       if (metadata) {
-        collection.metadata = setMetadata(collection, metadata)
+        productCollection.metadata = setMetadata(productCollection, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        collection[key] = value
+        productCollection[key] = value
       }
 
-      collection = await collectionRepo.save(collection)
+      productCollection = await collectionRepo.save(productCollection)
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.UPDATED, {
-          id: collection.id,
+          id: productCollection.id,
         })
 
-      return collection
+      return productCollection
     })
   }
 
@@ -195,18 +195,18 @@ class ProductCollectionService extends TransactionBaseService {
         this.productCollectionRepository_
       )
 
-      const collection = await this.retrieve(collectionId)
+      const productCollection = await this.retrieve(collectionId)
 
-      if (!collection) {
+      if (!productCollection) {
         return Promise.resolve()
       }
 
-      await productCollectionRepo.softRemove(collection)
+      await productCollectionRepo.softRemove(productCollection)
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.DELETED, {
-          id: collection.id,
+          id: productCollection.id,
       })
 
       return Promise.resolve()
@@ -224,18 +224,18 @@ class ProductCollectionService extends TransactionBaseService {
 
       await productRepo.bulkAddToCollection(productIds, id)
 
-      const collection = await this.retrieve(id, {
+      const productCollection = await this.retrieve(id, {
         relations: ["products"],
       })
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.PRODUCTS_ADDED, {
-          productCollection: collection,
+          productCollection: productCollection,
           productIds: productIds, 
         })
 
-      return collection
+      return productCollection
     })
   }
 
@@ -250,14 +250,14 @@ class ProductCollectionService extends TransactionBaseService {
 
       await productRepo.bulkRemoveFromCollection(productIds, id)
 
-      const collection = await this.retrieve(id, {
+      const productCollection = await this.retrieve(id, {
         relations: ["products"],
       })
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.PRODUCTS_REMOVED, {
-          productCollection: collection,
+          productCollection: productCollection,
           productIds: productIds, 
         })
 

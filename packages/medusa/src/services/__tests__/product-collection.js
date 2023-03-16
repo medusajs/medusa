@@ -1,6 +1,6 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductCollectionService from "../product-collection"
-import {EventBusServiceMock} from "../__mocks__/event-bus"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("ProductCollectionService", () => {
   describe("retrieve", () => {
@@ -16,7 +16,7 @@ describe("ProductCollectionService", () => {
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
-      eventBusService: EventBusServiceMock
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(async () => {
@@ -56,7 +56,7 @@ describe("ProductCollectionService", () => {
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
-      eventBusService: EventBusServiceMock
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(async () => {
@@ -74,7 +74,7 @@ describe("ProductCollectionService", () => {
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
       expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
         ProductCollectionService.Events.CREATED, {
-          "id": entity.id
+          id: entity.id,
         }
       )
     })
@@ -93,7 +93,7 @@ describe("ProductCollectionService", () => {
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
-      eventBusService: EventBusServiceMock
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(async () => {
@@ -114,7 +114,7 @@ describe("ProductCollectionService", () => {
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
       expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
         ProductCollectionService.Events.UPDATED, {
-          "id": IdMap.getId("bathrobe")
+          id: IdMap.getId("bathrobe"),
         }
       )
     })
@@ -145,7 +145,7 @@ describe("ProductCollectionService", () => {
     const productCollectionService = new ProductCollectionService({
       manager: MockManager,
       productCollectionRepository,
-      eventBusService: EventBusServiceMock
+      eventBusService: EventBusServiceMock,
     })
 
     beforeEach(async () => {
@@ -163,7 +163,7 @@ describe("ProductCollectionService", () => {
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
       expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
         ProductCollectionService.Events.DELETED, {
-          "id": IdMap.getId("bathrobe")
+          id: IdMap.getId("bathrobe"),
         }
       )
     })
