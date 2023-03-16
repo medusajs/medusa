@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import {useThemeConfig} from '@docusaurus/theme-common';
-import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
 import styles from './styles.module.css';
-import DocSidebarItem from '@theme/DocSidebarItem';
-import SearchBar from '../../SearchBar';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import AnnouncementBar from '@theme/AnnouncementBar';
-import {useWindowSize} from '@docusaurus/theme-common';
+import {useLocation} from '@docusaurus/router';
 
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   const {
@@ -17,27 +14,26 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
     docs: {
       sidebar: {hideable},
     },
-    sidebarFooter = [],
   } = useThemeConfig();
   const isBrowser = useIsBrowser()
   const sidebarRef = useRef(null)
-  const windowSize = useWindowSize();
+  const location = useLocation();
 
   useEffect(() => {
     if (isBrowser && sidebarRef.current) {
       function handleScroll () {
-        if (!sidebarRef.current.classList.contains('scrolling')) {
-          sidebarRef.current.classList.add('scrolling');
+        if (!sidebarRef.current?.classList.contains('scrolling')) {
+          sidebarRef.current?.classList.add('scrolling');
           const intervalId = setInterval(() => {
-            if (!sidebarRef.current.matches(':hover')) {
-              sidebarRef.current.classList.remove('scrolling');
+            if (!sidebarRef.current?.matches(':hover')) {
+              sidebarRef.current?.classList.remove('scrolling');
               clearInterval(intervalId);
             }
           }, 300)
         }
       }
 
-      const navElement = sidebarRef.current.querySelector('nav');
+      const navElement = sidebarRef.current.querySelector('.main-sidebar');
       navElement.addEventListener('scroll', handleScroll);
 
       return () => {
@@ -45,6 +41,42 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
       }
     }
   }, [isBrowser, sidebarRef.current])
+
+  useEffect(() => {
+    const navElement = sidebarRef.current.querySelector('.main-sidebar'),
+      navElementBoundingRect = navElement.getBoundingClientRect();
+
+    //logic to scroll to current active item
+    const activeItem = document.querySelector('.sidebar-desktop [aria-current=page]'),
+      activeItemBoundingReact = activeItem?.getBoundingClientRect(),
+      //the extra 160 is due to the sticky elements in the sidebar
+      isActiveItemVisible = activeItemBoundingReact.top >= 0 && activeItemBoundingReact.bottom + 160 <= navElementBoundingRect.height
+
+    // alert(isActiveItemVisible);
+    
+    if (activeItem && !isActiveItemVisible) {
+      //check if it has a parent list item element
+      // let parentListItem = activeItem.parentElement
+
+      //search only to reach the main sidebar element
+      // while (parentListItem && !parentListItem.classList.contains('sidebar-desktop')) {
+      //   if (parentListItem.classList.contains('menu__list-item')) {
+      //     break;
+      //   }
+
+      //   parentListItem = parentListItem.parentElement
+      // }
+
+      const elementToScrollTo = activeItem,
+        elementBounding = elementToScrollTo.getBoundingClientRect()
+      //scroll to element
+      navElement.scroll({
+        //the extra 160 is due to the sticky elements in the sidebar
+        top: elementBounding.top - navElementBoundingRect.top + navElement.scrollTop - 160,
+        behaviour: 'smooth'
+      })
+    }
+  }, [location])
 
   return (
     <div
@@ -55,23 +87,8 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
         isHidden && styles.sidebarHidden,
       )}
       ref={sidebarRef}>
-      {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
-      <div className={styles.sidebarSearchContainer}>
-        {windowSize !== 'mobile' && <SearchBar />}
-      </div>
       <AnnouncementBar />
-      <Content path={path} sidebar={sidebar} />
-      {sidebarFooter.length > 0 && (
-        <ul className={
-          clsx(
-            styles.sidebarFooterList
-          )
-        }>
-          {sidebarFooter.map((item, index) => (
-            <DocSidebarItem key={index} item={item} index={index} level={1} />
-          ))}
-        </ul>
-      )}
+      <Content path={path} sidebar={sidebar} className="main-sidebar" />
       {hideable && <CollapseButton onClick={onCollapse} />}
     </div>
   );

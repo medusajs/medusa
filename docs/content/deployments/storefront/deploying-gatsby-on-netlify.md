@@ -21,7 +21,7 @@ Alternatively, you can use this button to deploy the Gatsby Storefront to Netlif
 
 Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.mdx) first.
 
-Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, [check out one of the deployment documentation related to the Medusa server](../server/index.mdx).
+Additionally, this documentation does not cover how to deploy the Medusa backend. If you want to deploy the Medusa backend, [check out one of the deployment documentation related to the Medusa backend](../server/index.mdx).
 
 ### Needed Accounts
 
@@ -36,7 +36,7 @@ If you want to use another Git Provider, it’s possible to follow along with th
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../development/backend/prepare-environment.mdx#git).
 
 ---
 
@@ -113,11 +113,11 @@ In the form that shows, keep all fields the same and click on the “Show advanc
 
 Under the “Advanced build settings” section click on the “New variable” button. This will show two inputs for the key and value of the environment variable.
 
-For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
+For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa backend.
 
 :::caution
 
-If you haven’t deployed your Medusa server yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
+If you haven’t deployed your Medusa backend yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
 
 :::
 
@@ -141,9 +141,9 @@ Once the deployment is done, you’ll find the URL in the place of the “Site d
 
 :::tip
 
-If you haven’t added any products to your Medusa server, the build process might fail. It’s recommended to add some products to the server first in that case.
+If you haven’t added any products to your Medusa backend, the build process might fail. It’s recommended to add some products to the backend first in that case.
 
-Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
+Alternatively, you can seed the backend with demo data by running this command in the root directory of the backend:
 
 ```bash noReport
 medusa seed -f data/seed.json
@@ -159,7 +159,7 @@ If you click on it, you’ll be redirected to the deployed storefront website.
 
 :::caution
 
-At this point, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Server section](#configure-cors-variable-on-the-medusa-server).
+At this point, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Backend section](#configure-cors-variable-on-the-medusa-backend).
 
 :::
 
@@ -240,21 +240,21 @@ For the rest of the steps, you can keep the default values provided by Netlify a
 
 #### Set Environment Variables
 
-After the previous command has finished running, your Netlify website will be created. The next step is to add an environment variable that points to your Medusa server.
+After the previous command has finished running, your Netlify website will be created. The next step is to add an environment variable that points to your Medusa backend.
 
 :::caution
 
-If you haven’t deployed your Medusa server yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
+If you haven’t deployed your Medusa backend yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
 
 :::
 
 Run the following command to add the environment variable:
 
 ```bash
-netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
+netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_BACKKEND_URL>"
 ```
 
-Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+Where `<YOUR_BACKKEND_URL>` is the URL of your Medusa backend.
 
 :::note
 
@@ -274,9 +274,9 @@ After the deployment has been completed, you should see a message saying “Depl
 
 :::tip
 
-If you haven’t added any products to your Medusa server, the build process might fail. It’s recommended to add some products to the server first in that case.
+If you haven’t added any products to your Medusa backend, the build process might fail. It’s recommended to add some products to the backend first in that case.
 
-Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
+Alternatively, you can seed the backend with demo data by running this command in the root directory of the backend:
 
 ```bash noReport
 medusa seed -f data/seed.json
@@ -296,13 +296,13 @@ The Gatsby storefront will then open in your browser.
 
 ![Gatsby Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003089/Medusa%20Docs/Netlify/l08cBSA_yfj2rz.png)
 
-Before you can use the Gatsby storefront, you must add the URL as an environment variable on your deployed Medusa server.
+Before you can use the Gatsby storefront, you must add the URL as an environment variable on your deployed Medusa backend.
 
 ---
 
-## Configure CORS Variable on the Medusa Server
+## Configure CORS Variable on the Medusa Backend
 
-To send requests to the Medusa server from the Gatsby storefront, you must set the `STORE_CORS` environment variable on your server to the Gatsby storefront’s URL.
+To send requests to the Medusa backend from the Gatsby storefront, you must set the `STORE_CORS` environment variable on your backend to the Gatsby storefront’s URL.
 
 :::caution
 
@@ -310,7 +310,7 @@ If you want to set a custom domain to your Gatsby storefront website on Netlify,
 
 :::
 
-On your Medusa server, add the following environment variable:
+On your Medusa backend, add the following environment variable:
 
 ```bash
 STORE_CORS=<STOREFRONT_URL>
@@ -318,11 +318,11 @@ STORE_CORS=<STOREFRONT_URL>
 
 Where `<STOREFRONT_URL>` is the URL of your Gatsby storefront that you just deployed.
 
-Then, restart your Medusa server. Once the server is running again, you can use your Gatsby storefront.
+Then, restart your Medusa backend. Once the backend is running again, you can use your Gatsby storefront.
 
 ---
 
 ## See Also
 
 - [Deploy the Medusa Admin](../admin/index.mdx)
-- [Configure your Medusa server](../../usage/configurations.md)
+- [Configure your Medusa backend](../../development/backend/configurations.md)

@@ -6,7 +6,7 @@ import Feedback from '@site/src/components/Feedback';
 
 # Next.js Storefront Quickstart
 
-This document guides you to install and set up the Next.js Storefront for your Medusa Server.
+This document guides you to install and set up the Next.js Starter Storefront.
 
 ![Next.js Storefront Demo](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003177/Medusa%20Docs/Screenshots/koJl8uR_n3gvii.gif)
 
@@ -14,15 +14,15 @@ This document guides you to install and set up the Next.js Storefront for your M
 
 Instead of manually following this guide to install then later deploy the Next.js Storefront, you can deploy the Next.js Storefront to Netlify with this button:
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/nextjs-starter-medusa" class="img-url">
-  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/nextjs-starter-medusa" className="img-url">
+  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" className="no-zoom-img" />
 </a>
 
 ---
 
 ## Prerequisites
 
-This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.mdx) to learn how to do it.
+This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Quickstart guide for the Medusa backend](../development/backend/install.mdx) to learn how to do it.
 
 ---
 
@@ -47,7 +47,7 @@ cd my-medusa-storefront
 mv .env.template .env.local
 ```
 
-3\. Make sure the Medusa server is running, then run the local Next.js server:
+3\. Make sure the Medusa backend is running, then run the local Next.js server:
 
 ```bash
 npm run dev
@@ -86,11 +86,11 @@ To enable or disable the search engine, change the value of the feature in `stor
 }
 ```
 
-Then, restart your Next.js server. Depending on whether you enabled or disabled the search engine, the search bar will appear or disappear in the navigation bar accordingly.
+Then, restart your Next.js backend. Depending on whether you enabled or disabled the search engine, the search bar will appear or disappear in the navigation bar accordingly.
 
 ### MeiliSearch Integration
 
-If you have the search engine feature enabled, it is expected that you have installed the MeiliSearch plugin on your Medusa server. If not, [follow this guide to install it](../add-plugins/meilisearch.md).
+If you have the search engine feature enabled, it is expected that you have installed the MeiliSearch plugin on your Medusa backend. If not, [follow this guide to install it](../plugins/search/meilisearch.md).
 
 In your Next.js storefront, set the environment variables necessary for the MeiliSearch integration:
 
@@ -121,11 +121,11 @@ curl \
 
 Make sure to replace `<MEILISEARCH_URL>` with the URL MeiliSearch is running on and `<MEILISEARCH_MASTER_KEY>` with your MeiliSearch [master key](https://docs.meilisearch.com/learn/security/master_api_keys.html#protecting-a-meilisearch-instance).
 
-Then, restart the Next.js server. You’ll be able to search through available products by clicking the search icon in the navigation bar.
+Then, restart the Next.js backend. You’ll be able to search through available products by clicking the search icon in the navigation bar.
 
 :::note
 
-To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa server at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
@@ -133,7 +133,7 @@ To make sure the Next.js storefront properly displays the products in the search
 
 ### Algolia Integration
 
-Instead of using the default MeiliSearch search engine, you can switch to using Algolia. Make sure you start by installing the Algolia plugin on your Medusa server. You can do it by [following this guide](../add-plugins/algolia.md).
+Instead of using the default MeiliSearch search engine, you can switch to using Algolia. Make sure you start by installing the Algolia plugin on your Medusa backend. You can do it by [following this guide](../plugins/search/algolia.md).
 
 In your Next.js storefront, set the environment variables necessary for the Algolia integration:
 
@@ -162,13 +162,13 @@ export const SEARCH_INDEX_NAME =
   process.env.NEXT_PUBLIC_INDEX_NAME || "products"
 ```
 
-Then, restart the Next.js server. You’ll be able to search through available products by clicking the search icon in the navigation bar.
+Then, restart the Next.js backend. You’ll be able to search through available products by clicking the search icon in the navigation bar.
 
 ![Search Pop-up in Next.js Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003205/Medusa%20Docs/Screenshots/ZLgX5Ad_po6a4n.png)
 
 ### Stripe Payment Integration
 
-Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa server first. You can [follow this guide to learn how to install it](../add-plugins/stripe.md).
+Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/stripe.md).
 
 Then, in your Next.js storefront, set the environment variable necessary for the Stripe integration:
 
@@ -178,13 +178,13 @@ NEXT_PUBLIC_STRIPE_KEY=<YOUR_PUBLISHABLE_KEY>
 
 Make sure to replace `<YOUR_PUBLISHABLE_KEY>` with your Stripe publishable key. It can be retrieved from your [Stripe dashboard](https://dashboard.stripe.com/) by going to Developers → API Keys.
 
-If you restart your Next.js server you should be able to pay with Stripe on checkout.
+If you restart your Next.js backend you should be able to pay with Stripe on checkout.
 
 ![Pay with Stripe on Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003250/Medusa%20Docs/Screenshots/h5mWdJT_yjogcq.png)
 
 ### PayPal Payment Integration
 
-PayPal integration is supported by default. Make sure you have PayPal installed and enabled on your Medusa server first. You can [follow this guide to learn how to install it](../add-plugins/paypal.md).
+PayPal integration is supported by default. Make sure you have PayPal installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/paypal.md).
 
 Then, in your Next.js storefront, set the environment variable necessary for the PayPal integration:
 
@@ -194,7 +194,7 @@ NEXT_PUBLIC_PAYPAL_CLIENT_ID=<YOUR_CLIENT_ID>
 
 Make sure to replace `<YOUR_CLIENT_ID>` with your PayPal client ID. You can retrieve it from the [PayPal developer dashboard](https://developer.paypal.com/developer/applications/).
 
-If you restart your Next.js server you should be able to pay with PayPal on checkout.
+If you restart your Next.js backend you should be able to pay with PayPal on checkout.
 
 ![Pay with PayPal on Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003264/Medusa%20Docs/Screenshots/F8OvsOJ_mlx0le.png)
 
@@ -221,7 +221,7 @@ To change the port, change the `develop` command in `package.json` to the follow
 
 Make sure to replace `<PORT>` with the port number you want the storefront to run on. For example, `3000`.
 
-Then, on your server, update the environment variable `STORE_CORS` to the URL with the new port:
+Then, on your backend, update the environment variable `STORE_CORS` to the URL with the new port:
 
 ```bash
 STORE_CORS=http://localhost:<PORT>
@@ -253,4 +253,4 @@ You can learn more about development with Next.js through [their documentation](
 
 - [Storefront API reference](https://docs.medusajs.com/api/store)
 - [Install Medusa Admin](../admin/quickstart.mdx).
-- [Install Stripe as a payment provider](../add-plugins/stripe.md#add-to-nextjs-storefront)
+- [Install Stripe as a payment provider](../plugins/payment/stripe.md#add-to-nextjs-storefront)

@@ -9,18 +9,18 @@ import {
 import {useKeyboardNavigation} from '@docusaurus/theme-common/internal';
 import SkipToContent from '@theme/SkipToContent';
 import Navbar from '@theme/Navbar';
-import Footer from '@theme/Footer';
 import LayoutProvider from '@theme/Layout/Provider';
 import ErrorPageContent from '@theme/ErrorPageContent';
 import styles from './styles.module.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import {useLocation} from '@docusaurus/router';
 import StructuredDataSearchbox from '../StructuredData/Searchbox';
+import 'animate.css';
 
 export default function Layout(props) {
   const {
     children,
-    noFooter,
+    // noFooter,
     wrapperClassName,
     // Not really layout-related, but kept for convenience/retro-compatibility
     title,
@@ -70,8 +70,6 @@ export default function Layout(props) {
           {children}
         </ErrorBoundary>
       </div>
-
-      {!noFooter && <Footer />}
     </LayoutProvider>
   );
 }

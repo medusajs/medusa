@@ -1,12 +1,12 @@
 ---
-description: 'Learn how to install the Gatsby starter storefront to use with the Medusa Server. The Gatsby storefront includes features related to customer profiles, order returns and exchanges, and more.'
+description: 'Learn how to install the Gatsby starter storefront to use with the Medusa Backend. The Gatsby storefront includes features related to customer profiles, order returns and exchanges, and more.'
 ---
 
 import Feedback from '@site/src/components/Feedback';
 
 # Gatsby Storefront Quickstart
 
-This document guides you to install and set up the Gatsby Storefront for your Medusa Server.
+This document guides you to install and set up the Gatsby Starter Storefront.
 
 ![Gatsby Storefront Quick Look](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003111/Medusa%20Docs/Screenshots/LcAsi8r_yivcro.gif)
 
@@ -14,15 +14,15 @@ This document guides you to install and set up the Gatsby Storefront for your Me
 
 Instead of manually following this guide to install then later deploy the Gatsby Storefront, you can deploy the Gatsby Storefront to Netlify with this button:
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa" class="img-url">
-    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa" className="img-url">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" className="no-zoom-img" />
 </a>
 
 ---
 
 ## Prerequisites
 
-This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.mdx) to learn how to do it.
+This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Quickstart guide for the Medusa backend](../development/backend/install.mdx) to learn how to do it.
 
 You should also have the Gatsby CLI installed:
 
@@ -53,7 +53,7 @@ cd my-medusa-storefront
 mv .env.template .env.development
 ```
 
-3\. Make sure the Medusa server is running, then run the local Gatsby server:
+3\. Make sure the Medusa backend is running, then run the local Gatsby server:
 
 ```bash npm2yarn
 npm run start
@@ -84,7 +84,7 @@ To customize the components, pages, and UI of your Gatsby storefront, just edit 
 
 ### Data Refresh
 
-The Gatsby storefront uses the [gatsby-source-medusa](https://github.com/medusajs/medusa/tree/master/packages/gatsby-source-medusa) plugin to source data from your Medusa server. This data includes products, collections, and regions, and as a result, you can query this data in the storefront starter using GraphQL queries. You can also explore the data in your store on `localhost:8000/___graphql`.
+The Gatsby storefront uses the [gatsby-source-medusa](https://github.com/medusajs/medusa/tree/master/packages/gatsby-source-medusa) plugin to source data from your Medusa backend. This data includes products, collections, and regions, and as a result, you can query this data in the storefront starter using GraphQL queries. You can also explore the data in your store on `localhost:8000/___graphql`.
 
 Because of this, you must rebuild the site every time you update any of this data for it to be reflected in your storefront. The Medusa team will soon be releasing a new version of the plugin which adds incremental builds, which will improve build times.
 
@@ -103,7 +103,7 @@ To change the port, change the `develop` command in `package.json` to the follow
 
 Make sure to replace `<PORT>` with the port number you want the storefront to run on. For example, `3000`.
 
-Then, on your server, update the environment variable `STORE_CORS` to the URL with the new port:
+Then, on your backend, update the environment variable `STORE_CORS` to the URL with the new port:
 
 ```bash
 STORE_CORS=http://localhost:<PORT>
@@ -111,7 +111,7 @@ STORE_CORS=http://localhost:<PORT>
 
 :::info
 
-For more details about the Store Cross-Origin Resource Sharing (CORS) configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+For more details about the Store Cross-Origin Resource Sharing (CORS) configuration, check out the [Configure your Backend documentation](../development/backend/configurations.md#storefront-cors).
 
 :::
 
@@ -148,4 +148,4 @@ The Gatsby storefront comes with a lot of features out of the box including:
 
 - [Storefront API reference](https://docs.medusajs.com/api/store)
 - [Deploy the Gatsby storefront on Netlify](../deployments/storefront/deploying-gatsby-on-netlify.md)
-- [Install Stripe as a payment provider](../add-plugins/stripe.md#add-to-gatsby-storefront)
+- [Install Stripe as a payment provider](../plugins/payment/stripe.md#add-to-gatsby-storefront)

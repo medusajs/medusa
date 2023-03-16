@@ -1,0 +1,815 @@
+---
+description: 'Learn how to implement gift card functionalities for admins using the REST APIs. This includes how to create, update, and delete gift cards, as well as custom gift cards.'
+addHowToData: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Manage Gift Cards
+
+In this document, you’ll learn how to manage gift cards using the admin APIs.
+
+:::note
+
+You can learn more about what gift cards are and how they’re used in [this documentation](../gift-cards.md)
+
+:::
+
+## Overview
+
+Using the gift cards’ admin APIs, you can manage gift cards including listing, updating, and deleting them.
+
+### Scenario
+
+You want to add or use the following admin functionalities:
+
+- Manage the gift card product including retrieving, adding, updating, and deleting it.
+- Managing custom gift cards including retrieving, adding, updating and deleting them.
+
+---
+
+## Prerequisites
+
+### Medusa Components
+
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### Authenticated Admin User
+
+You must be an authenticated admin user before following along with the steps in the tutorial.
+
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
+
+---
+
+## Manage Gift Card Product
+
+This section covers managing the gift card product. There can only be one gift card product in a store. The gift card can have unlimited denominations.
+
+As gift cards are, before purchase, essentially products, you’ll be using product endpoints to manage them.
+
+### Retrieve Gift Card Product
+
+You can retrieve the gift card product by sending a request to the [List Products](/api/admin/#tag/Product/operation/GetProducts) endpoint, but filtering by the `is_giftcard` flag:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.products.list({
+  is_giftcard: true,
+})
+.then(({ products, limit, offset, count }) => {
+  if (products.length) {
+    // gift card product exists
+    const giftcard = products[0]
+  } else {
+    // no gift card product is created
+  }
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Product } from "@medusajs/medusa"
+import { 
+  PricedProduct,
+} from "@medusajs/medusa/dist/types/pricing"
+import { useAdminProducts } from "medusa-react"
+
+const GiftCard = () => {
+  const { products, isLoading } = useAdminProducts({
+    is_giftcard: true,
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map(
+            (product: (Product | PricedProduct)) => (
+              <li key={product.id}>{product.title}</li>
+            )
+          )}
+        </ul>
+      )}
+      {products && !products.length && (
+        <span>No Gift Cards</span>
+      )}
+    </div>
+  )
+}
+
+export default GiftCard
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/products?is_giftcard=true`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ products, limit, offset, count }) => {
+  if (products.length) {
+    // gift card product exists
+    const giftcard = products[0]
+  } else {
+    // no gift card product is created
+  }
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/admin/products?is_giftcard=true' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+The List Products endpoint accepts a variety of query parameters that can be used to filter the products. One of them is `is_giftcard`. When set to `true`, it will only retrieve the gift card product.
+
+The request returns the `products` array in the response which holds the gift card in it, if it’s available. It also returns [pagination fields](/api/admin/#section/Pagination).
+
+### Create Gift Card Product
+
+You can create only one gift card product in a store. To create a gift card product, send a request to the [Create a Product](/api/admin/#tag/Product/operation/PostProducts) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+import { ProductStatus } from "@medusajs/medusa"
+// ...
+
+medusa.admin.products.create({
+  title: "My Gift Card",
+  is_giftcard: true,
+  discountable: false,
+  status: ProductStatus.PUBLISHED,
+  options: [
+    {
+      title: "Denomination",
+    },
+  ],
+  variants: [
+    {
+      title: "1",
+      inventory_quantity: 0,
+      manage_inventory: false,
+      prices: [
+          {
+              amount: 2000,
+              currency_code: "usd",
+          },
+      ],
+      options: [
+          {
+              value: "2000",
+          },
+      ],
+    },
+  ],
+})
+.then(({ product }) => {
+  console.log(product.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateProduct } from "medusa-react"
+import { ProductStatus } from "@medusajs/medusa"
+
+const CreateGiftCard = () => {
+  const createGiftCard = useAdminCreateProduct()
+  // ...
+
+  const handleCreate = () => {
+    createGiftCard.mutate({
+      title: "My Gift Card",
+      is_giftcard: true,
+      discountable: false,
+      status: ProductStatus.PUBLISHED,
+      options: [
+        {
+          title: "Denomination",
+        },
+      ],
+      variants: [
+        {
+          title: "1",
+          inventory_quantity: 0,
+          manage_inventory: false,
+          prices: [
+              {
+                  amount: 2000,
+                  currency_code: "usd",
+              },
+          ],
+          options: [
+              {
+                  value: "2000",
+              },
+          ],
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CreateGiftCard
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/products`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    title: "My Gift Card",
+    is_giftcard: true,
+    discountable: false,
+    status: "published",
+    options: [
+      {
+        title: "Denomination",
+      },
+    ],
+    variants: [
+      {
+        title: "1",
+        inventory_quantity: 0,
+        manage_inventory: false,
+        prices: [
+            {
+                amount: 2000,
+                currency_code: "usd",
+            },
+        ],
+        options: [
+            {
+                value: "2000",
+            },
+        ],
+      },
+    ],
+  }),
+})
+.then((response) => response.json())
+.then(({ product }) => {
+  console.log(product.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/products' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "title": "My Gift Card",
+    "is_giftcard": true,
+    "discountable": false,
+    "status": "published",
+    "options": [
+      {
+        "title": "Denomination"
+      }
+    ],
+    "variants": [
+      {
+        "title": "1",
+        "inventory_quantity": 0,
+        "manage_inventory": false,
+        "prices": [
+            {
+                "amount": 2000,
+                "currency_code": "usd"
+            }
+        ],
+        "options": [
+            {
+                "value": "2000"
+            }
+        ]
+      }
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the `title` body parameter, which is the name given to the gift card. To add the gift card product, you need to supply the following parameters:
+
+- `is_giftcard` set to `true`.
+- `discountable` set to `false`. It indicates that discounts don’t apply on this product.
+- `status`: a string indicating the status of the product. Can be `published`, `draft`, `proposed`, or `rejected`.
+- `options`: An array that includes available options of the product. For a gift card, you should add one option with the title “Denomination”.
+- `variants`: An array that includes the different variations of the product using the available options. For a gift card, you should pass each denomination value as an item in this array. The value is passed in the `prices` and `options` array. If you want to add prices for different currencies, you can pass them under `prices` and `options` as well.
+
+You can pass other body parameters to change the handle, add images, and more. Check the [API reference](/api/admin/#tag/Product/operation/PostProducts) for available body parameters.
+
+This request returns the created gift card product in the response.
+
+### Update Gift Card Product
+
+After creating a gift card, merchants can update it or its denomination.
+
+You can update a gift card product’s details by sending a request to the [Update a Product](/api/admin/#tag/Product/operation/PostProductsProduct) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.products.update(giftCardId, {
+  description: "The best gift card",
+})
+.then(({ product }) => {
+  console.log(product.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateProduct } from "medusa-react"
+
+const UpdateGiftCard = () => {
+  const createGiftCard = useAdminUpdateProduct(giftCardId)
+  // ...
+
+  const handleUpdate = () => {
+    createGiftCard.mutate({
+      description: "The best gift card",
+    })
+  }
+
+  // ...
+}
+
+export default UpdateGiftCard
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/products/${giftCardId}`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    description: "The best gift card",
+  }),
+})
+.then((response) => response.json())
+.then(({ product }) => {
+  console.log(product.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/products/<GIFT_CARD_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "description": "The best gift card"
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the ID of the gift card product as a path parameter. You can pass in its body parameters, any of the gift card’s properties to update.
+
+In this example, you update the description of the gift card. You can check the [API reference](/api/admin/#tag/Product/operation/PostProductsProduct) for all the body parameters you can pass to this request.
+
+This request returns the updated gift card product in the response.
+
+### Delete Gift Card Product
+
+You can delete the gift card product by sending a request to the [Delete a Product](/api/admin/#tag/Product/operation/DeleteProductsProduct) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.products.delete(giftCardId)
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteProduct } from "medusa-react"
+
+const GiftCard = () => {
+  const deleteGiftCard = useAdminDeleteProduct(giftCardId)
+  // ...
+
+  const handleDelete = () => {
+    deleteGiftCard.mutate()
+  }
+
+  // ...
+}
+
+export default GiftCard
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/products/${giftCardId}`, {
+  method: "DELETE",
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X DELETE '<BACKEND_URL>/admin/products/<GIFT_CARD_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the ID of the gift card product as a path parameter.
+
+It returns the following fields in the response:
+
+- `id`: The ID of the deleted gift card.
+- `object`: A string indicating the type of object deleted. By default, its value is `product`.
+- `deleted`: A boolean value indicating whether the gift card was deleted or not.
+
+---
+
+## Manage Custom Gift Cards
+
+This section covers how to manage custom gift cards. You can create an unlimited number of custom gift cards.
+
+### List Custom Gift Cards
+
+You can retrieve all custom gift cards by sending a request to the [List Gift Cards](/api/admin/#tag/Gift-Card/operation/GetGiftCards) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.giftCards.list()
+.then(({ gift_cards, limit, offset, count }) => {
+  console.log(gift_cards.length)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { GiftCard } from "@medusajs/medusa"
+import { useAdminGiftCards } from "medusa-react"
+
+const CustomGiftCards = () => {
+  const { gift_cards, isLoading } = useAdminGiftCards()
+  
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {gift_cards && !gift_cards.length && (
+        <span>No custom gift cards...</span>
+      )}
+      {gift_cards && gift_cards.length > 0 && (
+        <ul>
+          {gift_cards.map((giftCard: GiftCard) => (
+            <li key={giftCard.id}>{giftCard.code}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default CustomGiftCards
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/gift-cards`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ gift_cards, limit, offset, count }) => {
+  console.log(gift_cards.length)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/admin/gift-cards' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request does not require any parameters. It accepts parameters related to pagination, which you can check out in the [API reference](/api/admin/#tag/Gift-Card/operation/GetGiftCards).
+
+This request returns an array of `gift_cards` and [pagination fields](/api/admin/#section/Pagination) in the response.
+
+### Create a Custom Gift Card
+
+Merchants can create custom gift cards to send a reward or gift to the customer.
+
+You can create a custom gift card by sending a request to the [Create a Gift Card](/api/admin/#tag/Gift-Card/operation/PostGiftCards) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.giftCards.create({
+  region_id,
+  value,
+})
+.then(({ gift_card }) => {
+  console.log(gift_card.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateGiftCard } from "medusa-react"
+
+const CreateCustomGiftCards = () => {
+  const createGiftCard = useAdminCreateGiftCard()
+  // ...
+  
+  const handleCreate = (regionId: string, value: number) => {
+    createGiftCard.mutate({
+      region_id: regionId,
+      value,
+    })
+  }
+
+  // ...
+}
+
+export default CreateCustomGiftCards
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/gift-cards`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    region_id,
+    value,
+  }),
+})
+.then((response) => response.json())
+.then(({ gift_card }) => {
+  console.log(gift_card.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/gift-cards' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "region_id": "<REGION_ID>",
+    "value": 2000
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the `region_id` body parameter. Its value should be the ID of the region that this gift card can be used in.
+
+It optionally accepts other body parameters, including the `value` parameter, which is the amount of the gift card. You can check the [API reference](/api/admin/#tag/Gift-Card/operation/PostGiftCards) for the rest of the body parameters.
+
+This request returns the created gift card object in the response.
+
+### Update Custom Gift Card
+
+Merchants can update any of the gift card’s properties, except for the value of the gift card.
+
+You can update a gift card by sending a request to the [Update a Gift Card](/api/admin/#tag/Gift-Card/operation/PostGiftCardsGiftCard) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.giftCards.update(giftCardId, {
+  balance,
+})
+.then(({ gift_card }) => {
+  console.log(gift_card.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateGiftCard } from "medusa-react"
+
+const UpdateCustomGiftCards = () => {
+  const updateGiftCard = useAdminUpdateGiftCard(
+    customGiftCardId
+  )
+  // ...
+  
+  const handleUpdate = (regionId: string) => {
+    updateGiftCard.mutate({
+      region_id: regionId,
+    })
+  }
+
+  // ...
+}
+
+export default UpdateCustomGiftCards
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/gift-cards/${giftCardId}`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    balance,
+  }),
+})
+.then((response) => response.json())
+.then(({ gift_card }) => {
+  console.log(gift_card.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/gift-cards/<GIFT_CARD_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "balance": 2000
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the ID of the gift card as a path parameter. It accepts in its body parameters the gift card’s properties that you want to update.
+
+In this example, you update the balance of the gift card. The balance is the remaining amount in the gift card that the customer can use. You can check the [API reference](/api/admin/#tag/Gift-Card/operation/PostGiftCardsGiftCard) to learn what other parameters are allowed.
+
+This request returns the updated gift card object in the response.
+
+### Delete Custom Gift Card
+
+You can delete a custom gift card by sending a request to the [Delete a Gift Card](/api/admin/#tag/Gift-Card/operation/DeleteGiftCardsGiftCard) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.giftCards.delete(giftCardId)
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteGiftCard } from "medusa-react"
+
+const CustomGiftCard = () => {
+  const deleteGiftCard = useAdminDeleteGiftCard(
+    customGiftCardId
+  )
+  // ...
+  
+  const handleDelete = () => {
+    deleteGiftCard.mutate()
+  }
+
+  // ...
+}
+
+export default CustomGiftCard
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/gift-cards/${giftCardId}`, {
+  method: "DELETE",
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X DELETE '<BACKEND_URL>/admin/gift-card/<GIFT_CARD_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the ID of the gift card as a path parameter.
+
+It returns the following fields in the response:
+
+- `id`: The ID of the deleted gift card.
+- `object`: A string indicating the type of object deleted. By default, its value is `gift-card`.
+- `deleted`: A boolean value indicating whether the gift card was deleted or not.
+
+---
+
+## See Also
+
+- [Use gift cards on the storefront](../storefront/use-gift-cards.mdx)
