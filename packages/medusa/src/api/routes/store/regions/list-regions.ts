@@ -5,6 +5,7 @@ import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/regions
@@ -104,7 +105,7 @@ export default async (req, res) => {
   const filterableFields = omit(validated, ["limit", "offset"])
 
   const listConfig = {
-    relations: ["countries", "payment_providers", "fulfillment_providers"],
+    relations: defaultRelations,
     skip: offset,
     take: limit,
   }

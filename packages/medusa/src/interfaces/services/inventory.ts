@@ -43,6 +43,8 @@ export interface IInventoryService {
     locationId: string
   ): Promise<InventoryLevelDTO>
 
+  retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO>
+
   createReservationItem(
     input: CreateReservationItemInput
   ): Promise<ReservationItemDTO>
@@ -73,7 +75,7 @@ export interface IInventoryService {
 
   deleteReservationItemsByLineItem(lineItemId: string): Promise<void>
 
-  deleteReservationItem(reservationItemId: string): Promise<void>
+  deleteReservationItem(reservationItemId: string | string[]): Promise<void>
 
   deleteInventoryItem(inventoryItemId: string): Promise<void>
 

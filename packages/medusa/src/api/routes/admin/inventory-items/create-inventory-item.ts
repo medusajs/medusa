@@ -25,7 +25,10 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostInventoryItemsItemLocationLevelsReq"
+ *         $ref: "#/components/schemas/AdminPostInventoryItemsReq"
+ * x-codegen:
+ *   method: create
+ *   queryParams: AdminPostInventoryItemsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
