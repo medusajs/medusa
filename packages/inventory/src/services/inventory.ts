@@ -151,6 +151,17 @@ export default class InventoryService
     return inventoryLevel
   }
 
+    /**
+   * Retrieves a reservation item
+   * @param inventoryItemId - the id of the reservation item
+   * @return the retrieved reservation level
+   */
+  async retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO> {
+    return await this.reservationItemService_
+      .withTransaction(this.activeManager_)
+      .retrieve(reservationId)
+  }
+
   /**
    * Creates a reservation item
    * @param input - the input object
@@ -338,7 +349,7 @@ export default class InventoryService
    * Deletes a reservation item
    * @param reservationItemId - the id of the reservation item to delete
    */
-  async deleteReservationItem(reservationItemId: string): Promise<void> {
+  async deleteReservationItem(reservationItemId: string | string[]): Promise<void> {
     return await this.reservationItemService_
       .withTransaction(this.activeManager_)
       .delete(reservationItemId)
