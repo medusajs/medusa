@@ -3,13 +3,12 @@ import {
   CreateStockLocationInput,
   FilterableStockLocationProps,
   FindConfig,
-  IEventBusService,
   setMetadata,
   StockLocationAddressInput,
   UpdateStockLocationInput
 } from "@medusajs/medusa"
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { SharedContext } from "@medusajs/types"
+import { IEventBusService, SharedContext } from "@medusajs/types"
 import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"

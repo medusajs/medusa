@@ -1,5 +1,6 @@
+import { EmitData } from "@medusajs/types"
+import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
-import { AbstractEventBusModuleService, EmitData } from "../services/event-bus"
 
 class EventBus extends AbstractEventBusModuleService {
   protected manager_!: EntityManager
@@ -9,10 +10,20 @@ class EventBus extends AbstractEventBusModuleService {
     this.container = container
   }
 
+  async emit<T>(
+    eventName: string,
+    data: T,
+    options: Record<string, unknown>
+  ): Promise<void>
   async emit<T>(data: EmitData<T>[]): Promise<void>
 
-  async emit<T>(data: EmitData<T>[]): Promise<void> {
-    const event = data[0].eventName
+  async emit<T, TInput extends string | EmitData<T>[] = string>(
+    eventOrData: TInput,
+    data?: T,
+    options: Record<string, unknown> = {}
+  ): Promise<void> {
+    const isBulkEmit = Array.isArray(eventOrData)
+    const event = isBulkEmit ? eventOrData[0].eventName : eventOrData
 
     console.log(
       `[${event}] Local Event Bus installed. Emitting events has no effect.`

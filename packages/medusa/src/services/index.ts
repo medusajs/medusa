@@ -56,4 +56,3 @@ export { default as TaxRateService } from "./tax-rate"
 export { default as TokenService } from "./token"
 export { default as TotalsService } from "./totals"
 export { default as UserService } from "./user"
-

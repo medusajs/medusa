@@ -1,6 +1,7 @@
+import { IEventBusService } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { OrderItemChange } from "../models"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
 import { FindConfig, Selector } from "../types/common"

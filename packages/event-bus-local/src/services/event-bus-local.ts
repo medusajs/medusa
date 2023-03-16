@@ -1,10 +1,6 @@
-import {
-  AbstractEventBusModuleService,
-  EmitData,
-  Logger,
-  MedusaContainer,
-  Subscriber
-} from "@medusajs/medusa"
+import { Logger, MedusaContainer } from "@medusajs/medusa"
+import { EmitData, Subscriber } from "@medusajs/types"
+import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import { EntityManager } from "typeorm"
 
@@ -24,8 +20,30 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.logger_ = logger
   }
 
-  async emit<T>(data: EmitData<T>[]): Promise<void> {
-    for (const event of data) {
+  async emit<T>(
+    eventName: string,
+    data: T,
+    options: Record<string, unknown>
+  ): Promise<void>
+
+  /**
+   * Emit a number of events
+   * @param {EmitData} data - the data to send to the subscriber.
+   */
+  async emit<T>(data: EmitData<T>[]): Promise<void>
+
+  async emit<T, TInput extends string | EmitData<T>[] = string>(
+    eventOrData: TInput,
+    data?: T,
+    options: Record<string, unknown> = {}
+  ): Promise<void> {
+    const isBulkEmit = Array.isArray(eventOrData)
+
+    const events: EmitData[] = isBulkEmit
+      ? eventOrData
+      : [{ eventName: eventOrData, data }]
+
+    for (const event of events) {
       const eventListenersCount = eventEmitter.listenerCount(event.eventName)
 
       if (eventListenersCount === 0) {

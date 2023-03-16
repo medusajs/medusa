@@ -3,10 +3,10 @@ import {
   CreateInventoryItemInput,
   FilterableInventoryItemProps,
   FindConfig,
-  IEventBusService,
   InventoryItemDTO,
   TransactionBaseService
 } from "@medusajs/medusa"
+import { IEventBusService } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 

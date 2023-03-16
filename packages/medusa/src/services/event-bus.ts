@@ -1,12 +1,12 @@
-import { EntityManager } from "typeorm"
 import {
-  AbstractEventBusModuleService,
   EmitData,
   IEventBusService,
   Subscriber,
   SubscriberContext,
-  TransactionBaseService,
-} from "../interfaces"
+} from "@medusajs/types"
+import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
 import { ConfigModule } from "../types/global"
 import { isString } from "../utils"

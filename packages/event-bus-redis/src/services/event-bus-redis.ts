@@ -1,16 +1,9 @@
-import {
-  AbstractEventBusModuleService,
-  ConfigModule,
-  EmitData,
-  Logger
-} from "@medusajs/medusa"
-import {
-  ConfigurableModuleDeclaration,
-  MODULE_RESOURCE_TYPE
-} from "@medusajs/modules-sdk"
-import { Queue, Worker } from "bullmq"
+import { ConfigModule, Logger } from "@medusajs/medusa"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
+import { EmitData } from "@medusajs/types"
+import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
-import { MedusaError } from "medusa-core-utils"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 
 type InjectedDependencies = {
@@ -27,53 +20,62 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
-  protected readonly moduleDeclaration_: ConfigurableModuleDeclaration
+  protected readonly moduleDeclaration_: InternalModuleDeclaration
 
   protected queue_: Queue
 
   constructor(
     { configModule, logger, eventBusRedisConnection }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
-    moduleDeclaration: ConfigurableModuleDeclaration
+    moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
-    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "At the moment this module can only be used with shared resources"
-      )
-    }
-
     this.moduleOptions_ = moduleOptions
-    this.moduleDeclaration_ = moduleDeclaration
     this.config_ = configModule
     this.logger_ = logger
 
-    this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
+    this.queue_ = new Queue(moduleOptions.queueName ?? `events-queue`, {
       prefix: `${this.constructor.name}`,
-      ...(this.moduleOptions_.queueOptions ?? {}),
+      ...(moduleOptions.queueOptions ?? {}),
       connection: eventBusRedisConnection,
     })
 
     // Register our worker to handle emit calls
-    new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
+    new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
       prefix: `${this.constructor.name}`,
-      ...(this.moduleOptions_.workerOptions ?? {}),
+      ...(moduleOptions.workerOptions ?? {}),
       connection: eventBusRedisConnection,
     })
   }
 
   /**
-   * Calls all subscribers when an event occurs.
+   * Emit a single event
    * @param {string} eventName - the name of the event to be process.
    * @param data - the data to send to the subscriber.
    * @param options - options to add the job with
-   * @return the job from our queue
    */
-  async emit<T>(data: EmitData<T>[]): Promise<void> {
+  async emit<T>(
+    eventName: string,
+    data: T,
+    options: Record<string, unknown>
+  ): Promise<void>
+
+  /**
+   * Emit a number of events
+   * @param {EmitData} data - the data to send to the subscriber.
+   */
+  async emit<T>(data: EmitData<T>[]): Promise<void>
+
+  async emit<T, TInput extends string | EmitData<T>[] = string>(
+    eventNameOrData: TInput,
+    data?: T,
+    options: BulkJobOptions | JobsOptions = {}
+  ): Promise<void> {
     const globalJobOptions = this.moduleOptions_.jobOptions ?? {}
+
+    const isBulkEmit = Array.isArray(eventNameOrData)
 
     const opts = {
       // default options
@@ -83,15 +85,27 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       ...globalJobOptions,
     } as EmitOptions
 
-    const events = data.map((event) => ({
-      name: event.eventName,
-      data: { eventName: event.eventName, data: event.data },
-      opts: {
-        ...opts,
-        // local options
-        ...event.options,
-      },
-    }))
+    const events = isBulkEmit
+      ? eventNameOrData.map((event) => ({
+          name: event.eventName,
+          data: { eventName: event.eventName, data: event.data },
+          opts: {
+            ...opts,
+            // local options
+            ...event.options,
+          },
+        }))
+      : [
+          {
+            name: eventNameOrData as string,
+            data: { eventName: eventNameOrData, data },
+            opts: {
+              ...opts,
+              // local options
+              ...options,
+            },
+          },
+        ]
 
     await this.queue_.addBulk(events)
   }

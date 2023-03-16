@@ -3,10 +3,10 @@ import {
   CreateReservationItemInput,
   FilterableReservationItemProps,
   FindConfig,
-  IEventBusService,
   TransactionBaseService,
   UpdateReservationItemInput
 } from "@medusajs/medusa"
+import { IEventBusService } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 

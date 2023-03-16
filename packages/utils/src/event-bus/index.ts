@@ -1,55 +1,11 @@
+import {
+    EmitData,
+    IEventBusModuleService,
+    Subscriber,
+    SubscriberContext,
+    SubscriberDescriptor
+} from "@medusajs/types"
 import { ulid } from "ulid"
-import { StagedJob } from "../../models"
-import { TransactionBaseService } from "../transaction-base-service"
-
-export type Subscriber<T = unknown> = (
-  data: T,
-  eventName: string
-) => Promise<void>
-
-export type SubscriberContext = {
-  subscriberId: string
-}
-
-export type SubscriberDescriptor = {
-  id: string
-  subscriber: Subscriber
-}
-
-export type EventHandler<T = unknown> = (
-  data: T,
-  eventName: string
-) => Promise<void>
-
-export type EmitData<T = unknown> = {
-  eventName: string
-  data: T
-  options?: Record<string, unknown>
-}
-
-export interface IEventBusService extends TransactionBaseService {
-  emit<T>(
-    eventName: string,
-    data: T,
-    options?: unknown
-  ): Promise<StagedJob | void>
-}
-
-export interface IEventBusModuleService {
-  emit<T>(data: EmitData<T>[]): Promise<void>
-
-  subscribe(
-    event: string | symbol,
-    subscriber: Subscriber,
-    context?: SubscriberContext
-  ): this
-
-  unsubscribe(
-    event: string | symbol,
-    subscriber: Subscriber,
-    context?: SubscriberContext
-  ): this
-}
 
 export abstract class AbstractEventBusModuleService
   implements IEventBusModuleService
@@ -66,10 +22,15 @@ export abstract class AbstractEventBusModuleService
     return this.eventToSubscribersMap_
   }
 
+  abstract emit<T>(
+    eventName: string,
+    data: T,
+    options: Record<string, unknown>
+  ): Promise<void>
   abstract emit<T>(data: EmitData<T>[]): Promise<void>
 
   public subscribe(
-    event: string | symbol,
+    eventName: string | symbol,
     subscriber: Subscriber,
     context?: SubscriberContext
   ): this {
@@ -80,8 +41,11 @@ export abstract class AbstractEventBusModuleService
      * If context is provided, we use the subscriberId from it
      * otherwise we generate a random using a ulid
      */
-    const subscriberId =
-      context?.subscriberId ?? `${event.toString()}-${ulid()}`
+
+    const randId = ulid()
+    const event = eventName.toString()
+
+    const subscriberId = context?.subscriberId ?? `${event}-${randId}`
 
     const newSubscriberDescriptor = { subscriber, id: subscriberId }
 
@@ -104,7 +68,7 @@ export abstract class AbstractEventBusModuleService
   }
 
   unsubscribe(
-    event: string | symbol,
+    eventName: string | symbol,
     subscriber: Subscriber,
     context: SubscriberContext
   ): this {
@@ -112,7 +76,7 @@ export abstract class AbstractEventBusModuleService
       throw new Error("Subscriber must be a function")
     }
 
-    const existingSubscribers = this.eventToSubscribersMap_.get(event)
+    const existingSubscribers = this.eventToSubscribersMap_.get(eventName)
 
     if (existingSubscribers?.length) {
       const subIndex = existingSubscribers?.findIndex(
@@ -120,7 +84,7 @@ export abstract class AbstractEventBusModuleService
       )
 
       if (subIndex !== -1) {
-        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
+        this.eventToSubscribersMap_.get(eventName)?.splice(subIndex as number, 1)
       }
     }
 

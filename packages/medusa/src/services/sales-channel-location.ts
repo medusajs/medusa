@@ -1,10 +1,8 @@
 import { EntityManager, In } from "typeorm"
-import {
-  IEventBusService,
-  IStockLocationService,
-  TransactionBaseService,
-} from "../interfaces"
+import { IStockLocationService, TransactionBaseService } from "../interfaces"
 import { SalesChannelService } from "./"
+
+import { IEventBusService } from "@medusajs/types"
 
 import { MedusaError } from "medusa-core-utils"
 import { SalesChannelLocation } from "../models/sales-channel-location"

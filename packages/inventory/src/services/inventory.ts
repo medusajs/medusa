@@ -7,7 +7,6 @@ import {
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
   FindConfig,
-  IEventBusService,
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
@@ -16,14 +15,15 @@ import {
   UpdateInventoryLevelInput,
   UpdateReservationItemInput
 } from "@medusajs/medusa"
+import { IEventBusService } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
 
+import { EntityManager } from "typeorm"
 import {
   InventoryItemService,
   InventoryLevelService,
   ReservationItemService
 } from "./"
-import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   manager: EntityManager

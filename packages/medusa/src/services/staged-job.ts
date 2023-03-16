@@ -1,6 +1,7 @@
+import { EmitData } from "@medusajs/types"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { EmitData, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { FindConfig } from "../types/common"
