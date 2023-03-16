@@ -5,6 +5,7 @@ import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { FindConfig } from "../types/common"
+import { isString } from "../utils"
 
 type StagedJobServiceProps = {
   manager: EntityManager
@@ -32,25 +33,28 @@ class StagedJobService extends TransactionBaseService {
     return await stagedJobRepo.find(config)
   }
 
-  async deleteBulk(stagedJobIds: string[]): Promise<void> {
+  async delete(stagedJobIds: string | string[]): Promise<void> {
     return this.atomicPhase_(async (manager) => {
+      const sjIds = isString(stagedJobIds) ? [stagedJobIds] : stagedJobIds
+
       const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
 
-      await stagedJobRepo.delete({ id: In(stagedJobIds) })
+      await stagedJobRepo.delete({ id: In(sjIds) })
     })
   }
 
-  async insertBulk(stagedJobsInput: EventBusTypes.EmitData[]) {
+  async create(data: EventBusTypes.EmitData[] | EventBusTypes.EmitData) {
     return this.atomicPhase_(async (manager) => {
       const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
 
-      const stagedJobs = stagedJobsInput.map(
-        (job) =>
-          ({
-            event_name: job.eventName,
-            data: job.data,
-            options: job.options,
-          } as DeepPartial<StagedJob>)
+      const data_ = Array.isArray(data) ? data : [data]
+
+      const stagedJobs = data_.map((job) =>
+        stagedJobRepo.create({
+          event_name: job.eventName,
+          data: job.data,
+          options: job.options,
+        } as DeepPartial<StagedJob>)
       ) as QueryDeepPartialEntity<StagedJob>[]
 
       return await stagedJobRepo.insertBulk(stagedJobs)

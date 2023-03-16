@@ -135,6 +135,7 @@ export default class EventBusService
     data?: T,
     options: Record<string, unknown> = {}
   ): Promise<TResult | void> {
+    const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
     const events = isBulkEmit
       ? eventNameOrData.map((event) => ({
@@ -163,7 +164,10 @@ export default class EventBusService
      * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
-    const stagedJobs = await this.stagedJobService_.insertBulk(events)
+    console.error(events)
+    const stagedJobs = await this.stagedJobService_
+      .withTransaction(manager)
+      .create(events)
 
     return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
   }
@@ -202,7 +206,7 @@ export default class EventBusService
       })
 
       await this.eventBusModuleService_.emit(eventsData).then(async () => {
-        return await this.stagedJobService_.deleteBulk(jobs.map((j) => j.id))
+        return await this.stagedJobService_.delete(jobs.map((j) => j.id))
       })
 
       await sleep(3000)

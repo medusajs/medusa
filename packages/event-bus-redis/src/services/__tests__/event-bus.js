@@ -13,6 +13,13 @@ const loggerMock = {
   error: jest.fn().mockReturnValue(console.log),
 }
 
+const simpleModuleOptions = { redisUrl: "test-url" }
+const moduleDeps = {
+  manager: MockManager,
+  logger: loggerMock,
+  eventBusRedisConnection: {},
+}
+
 describe("RedisEventBusService", () => {
   let eventBus
 
@@ -22,19 +29,9 @@ describe("RedisEventBusService", () => {
     })
 
     it("Creates a queue + worker", () => {
-      eventBus = new RedisEventBusService(
-        {
-          manager: MockManager,
-          logger: loggerMock,
-          redisConnection: {},
-        },
-        {
-          redisUrl: "test-url",
-        },
-        {
-          resources: "shared",
-        }
-      )
+      eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
+        resources: "shared",
+      })
 
       expect(Queue).toHaveBeenCalledTimes(1)
       expect(Queue).toHaveBeenCalledWith("events-queue", {
@@ -55,18 +52,9 @@ describe("RedisEventBusService", () => {
 
     it("Throws on isolated module declaration", () => {
       try {
-        eventBus = new RedisEventBusService(
-          {
-            manager: MockManager,
-            logger: loggerMock,
-          },
-          {
-            redisUrl: "test-url",
-          },
-          {
-            resources: "isolated",
-          }
-        )
+        eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
+          resources: "isolated",
+        })
       } catch (error) {
         expect(error.message).toEqual(
           "At the moment this module can only be used with shared resources"
@@ -82,82 +70,58 @@ describe("RedisEventBusService", () => {
       })
 
       it("Adds job to queue with default options", () => {
-        eventBus = new RedisEventBusService(
-          {
-            manager: MockManager,
-            logger: loggerMock,
-            redisConnection: {},
-          },
-          {
-            redisUrl: "test-url",
-          },
-          {
-            resources: "shared",
-          }
-        )
+        eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
+          resources: "shared",
+        })
 
-        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
         eventBus.emit("eventName", { hi: "1234" })
 
-        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
-        expect(eventBus.queue_.add).toHaveBeenCalledWith(
-          "eventName",
-          { eventName: "eventName", data: { hi: "1234" } },
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            attempts: 1,
-            removeOnComplete: {
-              age: 10,
+            name: "eventName",
+            data: { eventName: "eventName", data: { hi: "1234" } },
+            opts: {
+              attempts: 1,
+              removeOnComplete: true,
             },
-          }
-        )
+          },
+        ])
       })
 
-      it("Adds job to queue with custom options", () => {
-        eventBus = new RedisEventBusService(
-          {
-            manager: MockManager,
-            logger: loggerMock,
-            redisConnection: {},
-          },
-          {
-            redisUrl: "test-url",
-          },
-          {
-            resources: "shared",
-          }
-        )
+      it("Adds job to queue with custom options passed directly upon emitting", () => {
+        eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
+          resources: "shared",
+        })
 
-        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
         eventBus.emit(
           "eventName",
           { hi: "1234" },
           { attempts: 3, backoff: 5000, delay: 1000 }
         )
 
-        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
-        expect(eventBus.queue_.add).toHaveBeenCalledWith(
-          "eventName",
-          { eventName: "eventName", data: { hi: "1234" } },
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            attempts: 3,
-            backoff: 5000,
-            delay: 1000,
-            removeOnComplete: {
-              age: 10,
+            name: "eventName",
+            data: { eventName: "eventName", data: { hi: "1234" } },
+            opts: {
+              attempts: 3,
+              backoff: 5000,
+              delay: 1000,
+              removeOnComplete: true,
             },
-          }
-        )
+          },
+        ])
       })
 
-      it("Adds job to queue with custom options", () => {
+      it("Adds job to queue with module job options", () => {
         eventBus = new RedisEventBusService(
+          moduleDeps,
           {
-            manager: MockManager,
-            logger: loggerMock,
-            redisConnection: {},
-          },
-          {
-            redisUrl: "test-url",
+            ...simpleModuleOptions,
             jobOptions: {
               removeOnComplete: {
                 age: 5,
@@ -170,31 +134,29 @@ describe("RedisEventBusService", () => {
           }
         )
 
-        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
         eventBus.emit("eventName", { hi: "1234" })
 
-        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
-        expect(eventBus.queue_.add).toHaveBeenCalledWith(
-          "eventName",
-          { eventName: "eventName", data: { hi: "1234" } },
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            attempts: 7,
-            removeOnComplete: {
-              age: 5,
+            name: "eventName",
+            data: { eventName: "eventName", data: { hi: "1234" } },
+            opts: {
+              attempts: 7,
+              removeOnComplete: {
+                age: 5,
+              },
             },
-          }
-        )
+          },
+        ])
       })
 
       it("Adds job to queue with default, local, and global options merged", () => {
         eventBus = new RedisEventBusService(
+          moduleDeps,
           {
-            manager: MockManager,
-            logger: loggerMock,
-            redisConnection: {},
-          },
-          {
-            redisUrl: "test-url",
+            ...simpleModuleOptions,
             jobOptions: {
               removeOnComplete: 5,
             },
@@ -204,19 +166,21 @@ describe("RedisEventBusService", () => {
           }
         )
 
-        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
         eventBus.emit("eventName", { hi: "1234" }, { delay: 1000 })
 
-        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
-        expect(eventBus.queue_.add).toHaveBeenCalledWith(
-          "eventName",
-          { eventName: "eventName", data: { hi: "1234" } },
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.addBulk).toHaveBeenCalledWith([
           {
-            attempts: 1,
-            removeOnComplete: 5,
-            delay: 1000,
-          }
-        )
+            name: "eventName",
+            data: { eventName: "eventName", data: { hi: "1234" } },
+            opts: {
+              attempts: 1,
+              removeOnComplete: 5,
+              delay: 1000,
+            },
+          },
+        ])
       })
     })
   })
@@ -228,19 +192,9 @@ describe("RedisEventBusService", () => {
       beforeEach(async () => {
         jest.resetAllMocks()
 
-        eventBus = new RedisEventBusService(
-          {
-            manager: MockManager,
-            logger: loggerMock,
-            redisConnection: {},
-          },
-          {
-            redisUrl: "test-url",
-          },
-          {
-            resources: "shared",
-          }
-        )
+        eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
+          resources: "shared",
+        })
       })
 
       it("Processes a simple event with no options", async () => {
