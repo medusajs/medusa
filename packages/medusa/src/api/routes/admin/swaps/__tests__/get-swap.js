@@ -3,18 +3,18 @@ import { request } from "../../../../../helpers/test-request"
 import { SwapServiceMock } from "../../../../../services/__mocks__/swap"
 
 const defaultRelations = [
-  "order",
   "additional_items",
   "additional_items.adjustments",
-  "return_order",
-  "fulfillments",
-  "payment",
-  "shipping_address",
-  "shipping_methods",
   "cart",
   "cart.items",
-  "cart.items.variant",
   "cart.items.adjustments",
+  "cart.items.variant",
+  "fulfillments",
+  "order",
+  "payment",
+  "return_order",
+  "shipping_address",
+  "shipping_methods",
 ]
 
 const defaultFields = [

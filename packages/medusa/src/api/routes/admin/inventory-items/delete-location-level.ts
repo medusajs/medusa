@@ -12,8 +12,8 @@ import { IInventoryService } from "../../../../interfaces"
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
  *   - (path) location_id=* {string} The ID of the location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: deleteLocationLevel
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

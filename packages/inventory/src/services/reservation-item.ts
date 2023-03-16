@@ -285,24 +285,29 @@ export default class ReservationItemService {
    * Deletes a reservation item by id.
    * @param reservationItemId - the id of the reservation item to delete.
    */
-  @InjectEntityManager()
   async delete(
-    reservationItemId: string,
+    reservationItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
+    const ids = Array.isArray(reservationItemId)
+      ? reservationItemId
+      : [reservationItemId]
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
-    const item = await this.retrieve(reservationItemId)
+    const items = await this.list({ id: ids })
 
-    await Promise.all([
-      itemRepository.softRemove({ id: reservationItemId }),
+    const promises: Promise<unknown>[] = items.map(async (item) => {
       this.inventoryLevelService_.adjustReservedQuantity(
         item.inventory_item_id,
         item.location_id,
         item.quantity * -1,
         context
-      ),
-    ])
+      )
+    })
+
+    promises.push(itemRepository.softRemove(items))
+
+    await Promise.all(promises)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       id: reservationItemId,

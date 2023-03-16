@@ -5,14 +5,14 @@ import {
   PaymentProviderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import {
-  defaultAdminOrdersFields as defaultOrderFields,
-  defaultAdminOrdersRelations as defaultOrderRelations,
-} from "../orders/index"
 
 import { EntityManager } from "typeorm"
 import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
+import {
+  defaultAdminOrdersFields as defaultOrderFields,
+  defaultAdminOrdersRelations as defaultOrderRelations,
+} from "../../../../types/orders"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/pay

@@ -170,6 +170,23 @@ export default class InventoryService implements IInventoryService {
   }
 
   /**
+   * Retrieves a reservation item
+   * @param inventoryItemId - the id of the reservation item
+   * @return the retrieved reservation level
+   */
+  @InjectEntityManager()
+  async retrieveReservationItem(
+    reservationId: string,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<ReservationItemDTO> {
+    return await this.reservationItemService_.retrieve(
+      reservationId,
+      undefined,
+      context
+    )
+  }
+
+  /**
    * Creates a reservation item
    * @param input - the input object
    * @return The created reservation item
@@ -391,7 +408,7 @@ export default class InventoryService implements IInventoryService {
    */
   @InjectEntityManager()
   async deleteReservationItem(
-    reservationItemId: string,
+    reservationItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.reservationItemService_.delete(reservationItemId, context)
