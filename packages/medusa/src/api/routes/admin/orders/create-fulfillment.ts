@@ -115,7 +115,7 @@ export default async (req, res) => {
         relations: ["fulfillments"],
       })
     const existingFulfillmentMap = new Map(
-      existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
+      existingFulfillments.map((fulfillment) => [fulfillment.id, true])
     )
 
     await orderServiceTx.createFulfillment(id, validatedBody.items, {
@@ -137,7 +137,7 @@ export default async (req, res) => {
         pvInventoryService.withTransaction(transactionManager)
 
       await updateInventoryAndReservations(
-        fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
+        fulfillments.filter((f) => !existingFulfillmentMap.get(f.id)),
         {
           inventoryService: pvInventoryServiceTx,
           locationId: validatedBody.location_id,
