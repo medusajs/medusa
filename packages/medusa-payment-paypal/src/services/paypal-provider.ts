@@ -14,8 +14,8 @@ import {
   PaypalOrderStatus,
   PurchaseUnits,
 } from "../types"
-import { humanizeAmount } from "medusa-core-utils";
-import { roundToTwo } from "./utils/utils";
+import { humanizeAmount } from "medusa-core-utils"
+import { roundToTwo } from "./utils/utils"
 
 class PayPalProviderService extends AbstractPaymentProcessor {
   static identifier = "paypal"
@@ -28,8 +28,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     super(_, options)
 
     this.options_ = options
-
-
+    this.init()
   }
 
   protected init(): void {
@@ -52,7 +51,9 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   async getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus> {
-    const order = await this.retrievePayment(paymentSessionData) as PaypalOrder
+    const order = (await this.retrievePayment(
+      paymentSessionData
+    )) as PaypalOrder
 
     switch (order.status) {
       case PaypalOrderStatus.CREATED:
@@ -73,11 +74,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   async initiatePayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
-    const {
-      currency_code,
-      amount,
-      resource_id,
-    } = context
+    const { currency_code, amount, resource_id } = context
 
     let session_data
 
@@ -104,11 +101,11 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       session_data = await this.paypal_.execute(request)
     } catch (e) {
-      return this.buildError("An error occurred in InitiatePayment", e)
+      return this.buildError("An error occurred in initiatePayment", e)
     }
 
     return {
-      session_data
+      session_data,
     }
   }
 
@@ -122,9 +119,8 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         data: PaymentProcessorSessionResponse["session_data"]
       }
   > {
-    const stat = await this.getPaymentStatus(paymentSessionData)
-
     try {
+      const stat = await this.getPaymentStatus(paymentSessionData)
       return { data: paymentSessionData, status: stat }
     } catch (error) {
       return this.buildError("An error occurred in authorizePayment", error)
@@ -132,11 +128,13 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   }
 
   async cancelPayment(
-    paymentSessionData: Record<string, unknown>,
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    const order = await this.retrievePayment(paymentSessionData) as PaypalOrder
+    const order = (await this.retrievePayment(
+      paymentSessionData
+    )) as PaypalOrder
 
     const isAlreadyCanceled = order.status === PaypalOrderStatus.VOIDED
     const isCanceledAndFullyRefund =
@@ -147,8 +145,12 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     }
 
     try {
-      const { purchase_units } = paymentSessionData as { purchase_units: PurchaseUnits }
-      const isAlreadyCaptured = purchase_units.some(pu => pu.payments.captures?.length)
+      const { purchase_units } = paymentSessionData as {
+        purchase_units: PurchaseUnits
+      }
+      const isAlreadyCaptured = purchase_units.some(
+        (pu) => pu.payments.captures?.length
+      )
 
       if (isAlreadyCaptured) {
         const payments = purchase_units[0].payments
@@ -162,7 +164,9 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         await this.paypal_.execute(request)
       }
 
-      return await this.retrievePayment(paymentSessionData) as unknown as PaymentProcessorSessionResponse["session_data"]
+      return (await this.retrievePayment(
+        paymentSessionData
+      )) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
       return this.buildError("An error occurred in cancelPayment", error)
     }
@@ -174,7 +178,9 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
     const paymentSessionData = context.paymentSessionData
-    const { purchase_units } = paymentSessionData as { purchase_units: PurchaseUnits}
+    const { purchase_units } = paymentSessionData as {
+      purchase_units: PurchaseUnits
+    }
 
     const id = purchase_units[0].payments.authorizations[0].id
 
@@ -205,12 +211,16 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    const { purchase_units } = paymentSessionData as { purchase_units: PurchaseUnits }
+    const { purchase_units } = paymentSessionData as {
+      purchase_units: PurchaseUnits
+    }
 
     try {
       const purchaseUnit = purchase_units[0]
       const payments = purchaseUnit.payments
-      const isAlreadyCaptured = purchase_units.some(pu => pu.payments.captures?.length)
+      const isAlreadyCaptured = purchase_units.some(
+        (pu) => pu.payments.captures?.length
+      )
 
       if (!isAlreadyCaptured) {
         throw new Error("The order has not yet been captured. Unable to refund")
@@ -222,7 +232,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       request.requestBody({
         amount: {
-          currency_code:currencyCode,
+          currency_code: currencyCode,
           value: roundToTwo(
             humanizeAmount(refundAmount, currencyCode),
             currencyCode
@@ -281,7 +291,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       return { session_data: context.paymentSessionData }
     } catch (error) {
-      return this.initiatePayment(context).catch(e => {
+      return this.initiatePayment(context).catch((e) => {
         return this.buildError("An error occurred in updatePayment", e)
       })
     }

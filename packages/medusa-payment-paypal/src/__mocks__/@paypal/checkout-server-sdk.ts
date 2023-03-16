@@ -1,9 +1,6 @@
 import { PaymentIntentDataByStatus } from "../../__fixtures__/data";
 
-export const WRONG_CUSTOMER_EMAIL = "wrong@test.fr"
-export const EXISTING_CUSTOMER_EMAIL = "right@test.fr"
-export const STRIPE_ID = "test"
-export const PARTIALLY_FAIL_INTENT_ID = "partially_unknown"
+export const SUCCESS_INTENT = "right@test.fr"
 export const FAIL_INTENT_ID = "unknown"
 
 export const PayPalClientMock = {
@@ -73,8 +70,12 @@ export const PayPalMock = {
         order: true,
         body: null,
         requestBody: function (d) {
-          this.body = d
-        },
+          if (d.purchase_units[0].custom_id === SUCCESS_INTENT) {
+            this.body = d
+            return
+          }
+          throw new Error("Error.")
+        }
       }
     }),
     OrdersPatchRequest: jest.fn().mockImplementation(() => {
@@ -89,14 +90,16 @@ export const PayPalMock = {
         },
       }
     }),
-    OrdersGetRequest: jest.fn().mockImplementation(async (paymentId) => {
+    OrdersGetRequest: jest.fn().mockImplementation((paymentId) => {
       if (paymentId === FAIL_INTENT_ID) {
         throw new Error("Error")
       }
 
-      return Object.values(PaymentIntentDataByStatus).find(value => {
-        return value.id === paymentId
-      }) ?? {}
+      return {
+        result: Object.values(PaymentIntentDataByStatus).find(value => {
+          return value.id === paymentId
+        }) ?? {}
+      }
     }),
   },
 }

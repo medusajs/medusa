@@ -101,7 +101,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -232,7 +231,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -257,7 +255,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -300,7 +297,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -347,7 +343,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -391,7 +386,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -429,7 +423,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -464,7 +457,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
