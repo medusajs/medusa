@@ -36,7 +36,7 @@ describe("AbstractEventBusService", () => {
 
   describe("subscribe", () => {
     beforeAll(() => {
-      jest.resetAllMocks()
+      jest.clearAllMocks()
     })
 
     beforeEach(() => {
@@ -102,7 +102,7 @@ describe("AbstractEventBusService", () => {
 
   describe("unsubscribe", () => {
     beforeAll(() => {
-      jest.resetAllMocks()
+      jest.clearAllMocks()
     })
 
     beforeEach(() => {
