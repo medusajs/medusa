@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/medusa-js",
+  "name": "@lambdacurry/medusa-js",
   "version": "1.3.10",
   "description": "Client for Medusa Commerce Rest API",
   "main": "dist/index.js",
