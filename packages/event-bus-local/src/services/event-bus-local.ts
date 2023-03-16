@@ -64,12 +64,12 @@ export default class LocalEventBusService extends EventBusUtils.AbstractEventBus
     }
   }
 
-  subscribe(event: string | symbol, subscriber: Subscriber): this {
+  subscribe(event: string | symbol, subscriber: EventBusTypes.Subscriber): this {
     eventEmitter.on(event, subscriber)
     return this
   }
 
-  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
+  unsubscribe(event: string | symbol, subscriber: EventBusTypes.Subscriber): this {
     eventEmitter.off(event, subscriber)
     return this
   }
