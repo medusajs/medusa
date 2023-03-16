@@ -10,11 +10,13 @@ import {
   WhereExpressionBuilder,
 } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { MoneyAmount } from "../models/money-amount"
+import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
+import { isString } from "../utils"
+import { ProductVariantPrice } from "../types/product-variant"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -24,6 +26,26 @@ type Price = Partial<
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
+  async insertBulk(
+    data: QueryDeepPartialEntity<MoneyAmount>[]
+  ): Promise<MoneyAmount[]> {
+    const queryBuilder = this.createQueryBuilder()
+      .insert()
+      .into(MoneyAmount)
+      .values(data)
+
+    // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
+    if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+      const rawMoneyAmounts = await queryBuilder.execute()
+      return rawMoneyAmounts.generatedMaps.map((d) =>
+        this.create(d)
+      ) as MoneyAmount[]
+    }
+
+    const rawMoneyAmounts = await queryBuilder.returning("*").execute()
+    return rawMoneyAmounts.generatedMaps.map((d) => this.create(d))
+  }
+
   /**
    * Will be removed in a future release.
    * Use `deleteVariantPricesNotIn` instead.
@@ -50,41 +72,58 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
   }
 
   public async deleteVariantPricesNotIn(
-    variantId: string,
-    prices: Price[]
+    variantIdOrData:
+      | string
+      | { variantId: string; prices: ProductVariantPrice[] }[],
+    prices?: Price[]
   ): Promise<void> {
-    const where = {
-      variant_id: variantId,
-      price_list_id: IsNull(),
-    }
-
-    const orWhere: ObjectLiteral[] = []
-
-    for (const price of prices) {
-      if (price.currency_code) {
-        orWhere.push(
+    const data = isString(variantIdOrData)
+      ? [
           {
-            currency_code: Not(price.currency_code),
+            variantId: variantIdOrData,
+            prices: prices!,
           },
-          {
-            region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
-            currency_code: price.currency_code,
-          }
-        )
+        ]
+      : variantIdOrData
+
+    const queryBuilder = this.createQueryBuilder().delete()
+
+    for (const data_ of data) {
+      const where = {
+        variant_id: data_.variantId,
+        price_list_id: IsNull(),
       }
 
-      if (price.region_id) {
-        orWhere.push({
-          region_id: Not(price.region_id),
-        })
+      const orWhere: ObjectLiteral[] = []
+
+      for (const price of data_.prices) {
+        if (price.currency_code) {
+          orWhere.push(
+            {
+              currency_code: Not(price.currency_code),
+            },
+            {
+              region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
+              currency_code: price.currency_code,
+            }
+          )
+        }
+
+        if (price.region_id) {
+          orWhere.push({
+            region_id: Not(price.region_id),
+          })
+        }
       }
+
+      queryBuilder.orWhere(
+        new Brackets((localQueryBuild) => {
+          localQueryBuild.where(where).andWhere(orWhere)
+        })
+      )
     }
 
-    await this.createQueryBuilder()
-      .delete()
-      .where(where)
-      .andWhere(orWhere)
-      .execute()
+    await queryBuilder.execute()
   }
 
   public async upsertVariantCurrencyPrice(
