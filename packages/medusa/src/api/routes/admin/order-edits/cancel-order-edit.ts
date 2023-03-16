@@ -70,10 +70,11 @@ export default async (req: Request, res: Response) => {
       .cancel(id, { canceledBy: userId })
   })
 
-  const orderEdit = await orderEditService.retrieve(id, {
+  let orderEdit = await orderEditService.retrieve(id, {
     select: defaultOrderEditFields,
     relations: defaultOrderEditRelations,
   })
+  orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   return res.json({ order_edit: orderEdit })
 }

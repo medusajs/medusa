@@ -3,6 +3,7 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { PricingService } from "../../../../services"
 
 /**
  * @oas [post] /admin/products/{id}/metadata
@@ -77,6 +78,8 @@ export default async (req, res) => {
   )
 
   const productService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await productService.withTransaction(transactionManager).update(id, {
@@ -84,10 +87,12 @@ export default async (req, res) => {
     })
   })
 
-  const product = await productService.retrieve(id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.status(200).json({ product })
 }
