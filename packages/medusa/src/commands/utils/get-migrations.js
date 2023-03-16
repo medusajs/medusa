@@ -1,11 +1,15 @@
-import glob from "glob"
-import path from "path"
-import fs from "fs"
-import { isString } from "lodash"
-import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
-import { handleConfigError } from "../../loaders/config"
 import { registerModules } from "@medusajs/modules-sdk"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import { isString } from "lodash"
+import {
+  createRequireFromPath,
+  getConfigFile,
+  isDefined,
+} from "medusa-core-utils"
+import path from "path"
+import { handleConfigError } from "../../loaders/config"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -104,7 +108,7 @@ export function getInternalModules(configModule) {
 
     let loadedModule = null
     try {
-      loadedModule = require(moduleResolution.moduleDeclaration.resolve).default
+      loadedModule = require(moduleResolution.resolutionPath).default
     } catch (error) {
       console.log("Error loading Module", error)
       continue
@@ -179,15 +183,12 @@ export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {
   return allMigrations
     .map((file) => {
       const loaded = require(file)
-      if (
-        typeof loaded.featureFlag === "undefined" ||
-        isFlagEnabled(loaded.featureFlag)
-      ) {
-        return file
+      if (!isDefined(loaded.featureFlag) || isFlagEnabled(loaded.featureFlag)) {
+        delete loaded.featureFlag
+        return Object.values(loaded)
       }
-
-      return false
     })
+    .flat()
     .filter(Boolean)
 }
 
@@ -201,22 +202,17 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
 
     const isolatedMigrations = {}
     const moduleMigrations = (mod.migrations ?? [])
-      .map((migrations) => {
-        const all = []
-        for (const migration of Object.values(migrations)) {
-          // TODO: revisit how Modules export their migration entrypoints up/down
-          if (["up", "down"].includes(migration.name)) {
-            isolatedMigrations[migration.name] = migration
-          } else if (
-            typeof migration.featureFlag === "undefined" ||
-            isFlagEnabled(migration.featureFlag)
-          ) {
-            all.push(migration)
-          }
+      .map((migration) => {
+        if (
+          !isDefined(migration.featureFlag) ||
+          isFlagEnabled(migration.featureFlag)
+        ) {
+          delete migration.featureFlag
+          return Object.values(migration)
         }
-        return all
       })
       .flat()
+      .filter(Boolean)
 
     allModules.push({
       moduleDeclaration: loadedModule.moduleDeclaration,

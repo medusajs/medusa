@@ -36,7 +36,6 @@ const config = {
     admin_cors: "",
     store_cors: "",
   },
-  moduleResolutions,
 }
 
 const testApp = express()
@@ -70,7 +69,7 @@ featureFlagLoader(config)
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
-moduleLoader({ container, configModule: config })
+moduleLoader({ container, moduleResolutions })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()

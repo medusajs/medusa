@@ -96,6 +96,11 @@ export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
 /**
  * @schema AdminPriceListRes
  * type: object
+ * x-expanded-relations:
+ *   field: price_list
+ *   relations:
+ *     - customer_groups
+ *     - prices
  * required:
  *   - price_list
  * properties:
@@ -234,6 +239,17 @@ export type AdminPriceListsListRes = PaginatedResponse & {
 /**
  * @schema AdminPriceListsProductsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - categories
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
  * required:
  *   - products
  *   - count

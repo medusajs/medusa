@@ -1,4 +1,5 @@
 import SwapService from "../../../../services/swap"
+import { defaultStoreSwapRelations } from "."
 
 /**
  * @oas [get] /store/swaps/{cart_id}
@@ -48,7 +49,10 @@ export default async (req, res) => {
 
   const swapService: SwapService = req.scope.resolve("swapService")
 
-  const swap = await swapService.retrieveByCartId(cart_id)
+  const swap = await swapService.retrieveByCartId(
+    cart_id,
+    defaultStoreSwapRelations
+  )
 
   res.json({ swap })
 }

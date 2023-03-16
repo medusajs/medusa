@@ -626,6 +626,35 @@ describe("/admin/product-categories", () => {
 
       expect(errorFetchingDeleted.response.status).toEqual(404)
     })
+
+    it("deleting a product category reorders siblings accurately", async () => {
+      const api = useApi()
+
+      const deleteResponse = await api.delete(
+        `/admin/product-categories/${productCategory.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(deleteResponse.status).toEqual(200)
+
+      const siblingsResponse = await api.get(
+        `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(siblingsResponse.data.product_categories).toEqual(
+        [
+          expect.objectContaining({
+            id: productCategory1.id,
+            rank: 0
+          }),
+          expect.objectContaining({
+            id: productCategory2.id,
+            rank: 1
+          }),
+        ]
+      )
+    })
   })
 
   describe("POST /admin/product-categories/:id", () => {
@@ -777,6 +806,22 @@ describe("/admin/product-categories", () => {
           }),
         })
       )
+    })
+
+    it("updating properties other than rank should not change its rank", async () => {
+      const api = useApi()
+
+      expect(productCategory.rank).toEqual(0)
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategory.id}`,
+        {
+          name: "different-name",
+        },
+        adminHeaders
+      )
+      expect(response.status).toEqual(200)
+      expect(response.data.product_category.rank).toEqual(productCategory.rank)
     })
 
     it("root parent returns children correctly on updating new category", async () => {

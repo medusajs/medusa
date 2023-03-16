@@ -1,17 +1,15 @@
 import {
-  asFunction,
   asValue,
   AwilixContainer,
   ClassOrFunctionReturning,
-  createContainer,
   Resolver,
 } from "awilix"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
-import { MedusaContainer } from "../../types/global"
-import { Connection, EntityManager } from "typeorm";
+import { DataSource, EntityManager } from "typeorm"
+import { createMedusaContainer } from "medusa-core-utils"
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
@@ -37,10 +35,10 @@ const buildBatchJobStrategyTemplate = (name: string, type: string): string => {
   class ${name}BatchStrategy extends AbstractBatchJobStrategy{
     static identifier = '${name}-identifier';
     static batchType = '${type}';
-  
+
     manager_
     transactionManager_
-  
+
     validateContext(context) {
       throw new Error("Method not implemented.")
     }
@@ -57,7 +55,7 @@ const buildBatchJobStrategyTemplate = (name: string, type: string): string => {
       throw new Error("Method not implemented.")
     }
   }
-  
+
   export default  ${name}BatchStrategy
   `
 }
@@ -65,7 +63,7 @@ const buildBatchJobStrategyTemplate = (name: string, type: string): string => {
 const buildPriceSelectionStrategyTemplate = (name: string): string => {
   return `
   import { AbstractPriceSelectionStrategy } from "../../../../interfaces/price-selection-strategy"
-  
+
   class ${name}PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     withTransaction() {
       throw new Error("Method not implemented.");
@@ -74,7 +72,7 @@ const buildPriceSelectionStrategyTemplate = (name: string): string => {
       throw new Error("Method not implemented.");
     }
   }
-  
+
   export default ${name}PriceSelectionStrategy
   `
 }
@@ -111,32 +109,10 @@ function asArray(
 // ***** TESTS *****
 
 describe("plugins loader", () => {
-  const container = createContainer() as MedusaContainer
-  container.registerAdd = function (
-    this: MedusaContainer,
-    name: string,
-    registration: typeof asFunction | typeof asValue
-  ): MedusaContainer {
-    const storeKey = name + "_STORE"
-
-    if (this.registrations[storeKey] === undefined) {
-      this.register(storeKey, asValue([] as Resolver<unknown>[]))
-    }
-    const store = this.resolve(storeKey) as (
-      | ClassOrFunctionReturning<unknown>
-      | Resolver<unknown>
-    )[]
-
-    if (this.registrations[name] === undefined) {
-      this.register(name, asArray(store))
-    }
-    store.unshift(registration)
-
-    return this
-  }.bind(container)
+  const container = createMedusaContainer()
 
   container.register("logger", asValue(Logger))
-  container.register("manager", asValue(new EntityManager({} as Connection)))
+  container.register("manager", asValue(new EntityManager({} as DataSource)))
 
   const pluginsDetails = {
     resolve: resolve(__dirname, "__pluginsLoaderTest__"),
@@ -207,8 +183,9 @@ describe("plugins loader", () => {
     })
 
     it("registers price selection strategy", () => {
-      const priceSelectionStrategy =
-        container.resolve("priceSelectionStrategy") as (...args: unknown[]) => any
+      const priceSelectionStrategy = container.resolve(
+        "priceSelectionStrategy"
+      ) as (...args: unknown[]) => any
 
       expect(priceSelectionStrategy).toBeTruthy()
       expect(priceSelectionStrategy.constructor.name).toBe(
@@ -217,8 +194,9 @@ describe("plugins loader", () => {
     })
 
     it("registers tax calculation strategy", () => {
-      const taxCalculationStrategy =
-        container.resolve("taxCalculationStrategy") as (...args: unknown[]) => any
+      const taxCalculationStrategy = container.resolve(
+        "taxCalculationStrategy"
+      ) as (...args: unknown[]) => any
 
       expect(taxCalculationStrategy).toBeTruthy()
       expect(taxCalculationStrategy.constructor.name).toBe(
@@ -227,8 +205,9 @@ describe("plugins loader", () => {
     })
 
     it("registers batch job strategies as single array", () => {
-      const batchJobStrategies =
-        container.resolve("batchJobStrategies") as (...args: unknown[]) => any
+      const batchJobStrategies = container.resolve("batchJobStrategies") as (
+        ...args: unknown[]
+      ) => any
 
       expect(batchJobStrategies).toBeTruthy()
       expect(Array.isArray(batchJobStrategies)).toBeTruthy()
@@ -236,8 +215,9 @@ describe("plugins loader", () => {
     })
 
     it("registers batch job strategies by type and only keep the last", () => {
-      const batchJobStrategy =
-        container.resolve("batchType_type-1") as (...args: unknown[]) => any
+      const batchJobStrategy = container.resolve("batchType_type-1") as (
+        ...args: unknown[]
+      ) => any
 
       expect(batchJobStrategy).toBeTruthy()
       expect(batchJobStrategy.constructor.name).toBe("testBatch2BatchStrategy")

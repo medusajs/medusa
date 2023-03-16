@@ -24,7 +24,6 @@ export default class ReservationItemService extends TransactionBaseService {
     CREATED: "reservation-item.created",
     UPDATED: "reservation-item.updated",
     DELETED: "reservation-item.deleted",
-    DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
   protected readonly eventBusService_: IEventBusService
@@ -95,7 +94,10 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.activeManager_
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery({ id: reservationItemId }, config) as FindManyOptions
+    const query = buildQuery(
+      { id: reservationItemId },
+      config
+    ) as FindManyOptions
     const [reservationItem] = await reservationItemRepository.find(query)
 
     if (!reservationItem) {
@@ -165,8 +167,7 @@ export default class ReservationItemService extends TransactionBaseService {
         isDefined(data.quantity) && data.quantity !== item.quantity
 
       const shouldUpdateLocation =
-        isDefined(data.location_id) &&
-        data.location_id !== item.location_id
+        isDefined(data.location_id) && data.location_id !== item.location_id
 
       const ops: Promise<unknown>[] = []
 
@@ -243,8 +244,31 @@ export default class ReservationItemService extends TransactionBaseService {
 
       await this.eventBusService_
         .withTransaction(manager)
-        .emit(ReservationItemService.Events.DELETED_BY_LINE_ITEM, {
+        .emit(ReservationItemService.Events.DELETED, {
           line_item_id: lineItemId,
+        })
+    })
+  }
+
+  /**
+   * Deletes reservation items by location ID.
+   * @param locationId - The ID of the location to delete reservations for.
+   */
+  async deleteByLocationId(locationId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const itemRepository = manager.getRepository(ReservationItem)
+
+      await itemRepository
+        .createQueryBuilder("reservation_item")
+        .softDelete()
+        .where("location_id = :locationId", { locationId })
+        .andWhere("deleted_at IS NULL")
+        .execute()
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.DELETED, {
+          location_id: locationId,
         })
     })
   }
@@ -253,27 +277,35 @@ export default class ReservationItemService extends TransactionBaseService {
    * Deletes a reservation item by id.
    * @param reservationItemId - the id of the reservation item to delete.
    */
-  async delete(reservationItemId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
+  async delete(reservationItemId: string | string[]): Promise<void> {
+    const ids = Array.isArray(reservationItemId)
+      ? reservationItemId
+      : [reservationItemId]
+    return await this.atomicPhase_(async (manager) => {
       const itemRepository = manager.getRepository(ReservationItem)
-      const item = await this.retrieve(reservationItemId)
 
-      await Promise.all([
-        itemRepository.softRemove({ id: reservationItemId }),
-        this.inventoryLevelService_
-          .withTransaction(manager)
-          .adjustReservedQuantity(
+      const items = await this.list({ id: ids })
+
+      await itemRepository.softRemove(items)
+
+      const inventoryServiceTx =
+        this.inventoryLevelService_.withTransaction(manager)
+
+      await Promise.all(
+        items.map(async (item) => {
+          return inventoryServiceTx.adjustReservedQuantity(
             item.inventory_item_id,
             item.location_id,
             item.quantity * -1
-          ),
-      ])
+          )
+        })
+      )
 
       await this.eventBusService_
         .withTransaction(manager)
         .emit(ReservationItemService.Events.DELETED, {
-        id: reservationItemId,
-      })
+          id: reservationItemId,
+        })
     })
   }
 }

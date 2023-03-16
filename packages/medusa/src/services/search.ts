@@ -10,8 +10,6 @@ type InjectedDependencies = {
 export default class DefaultSearchService extends AbstractSearchService {
   isDefault = true
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly logger_: Logger
   protected readonly options_: Record<string, unknown>
 
@@ -25,7 +23,6 @@ export default class DefaultSearchService extends AbstractSearchService {
 
     this.options_ = options
     this.logger_ = logger
-    this.manager_ = manager
   }
 
   async createIndex(indexName: string, options: unknown): Promise<void> {
