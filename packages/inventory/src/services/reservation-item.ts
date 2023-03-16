@@ -277,21 +277,29 @@ export default class ReservationItemService extends TransactionBaseService {
    * Deletes a reservation item by id.
    * @param reservationItemId - the id of the reservation item to delete.
    */
-  async delete(reservationItemId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
+  async delete(reservationItemId: string | string[]): Promise<void> {
+    const ids = Array.isArray(reservationItemId)
+      ? reservationItemId
+      : [reservationItemId]
+    return await this.atomicPhase_(async (manager) => {
       const itemRepository = manager.getRepository(ReservationItem)
-      const item = await this.retrieve(reservationItemId)
 
-      await Promise.all([
-        itemRepository.softRemove({ id: reservationItemId }),
-        this.inventoryLevelService_
-          .withTransaction(manager)
-          .adjustReservedQuantity(
+      const items = await this.list({ id: ids })
+
+      await itemRepository.softRemove(items)
+
+      const inventoryServiceTx =
+        this.inventoryLevelService_.withTransaction(manager)
+
+      await Promise.all(
+        items.map(async (item) => {
+          return inventoryServiceTx.adjustReservedQuantity(
             item.inventory_item_id,
             item.location_id,
             item.quantity * -1
-          ),
-      ])
+          )
+        })
+      )
 
       await this.eventBusService_
         .withTransaction(manager)

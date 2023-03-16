@@ -88,6 +88,15 @@ export const defaultAdminRegionRelations = [
 /**
  * @schema AdminRegionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: region
+ *   relations:
+ *     - countries
+ *     - fulfillment_providers
+ *     - payment_providers
+ *   eager:
+ *     - fulfillment_providers
+ *     - payment_providers
  * required:
  *   - region
  * properties:
@@ -101,6 +110,15 @@ export class AdminRegionsRes {
 /**
  * @schema AdminRegionsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: regions
+ *   relations:
+ *     - countries
+ *     - fulfillment_providers
+ *     - payment_providers
+ *   eager:
+ *     - fulfillment_providers
+ *     - payment_providers
  * required:
  *   - regions
  *   - count

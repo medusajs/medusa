@@ -75,6 +75,12 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
 /**
  * @schema AdminVariantsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: variants
+ *   relations:
+ *     - options
+ *     - prices
+ *     - product
  * required:
  *   - variants
  *   - count
@@ -84,7 +90,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *   variants:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/ProductVariant"
+ *       $ref: "#/components/schemas/PricedVariant"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -102,6 +108,12 @@ export type AdminVariantsListRes = PaginatedResponse & {
 /**
  * @schema AdminVariantsRes
  * type: object
+ * x-expanded-relations:
+ *   field: variant
+ *   relations:
+ *     - options
+ *     - prices
+ *     - product
  * required:
  *   - variant
  * properties:
