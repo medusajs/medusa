@@ -86,7 +86,7 @@ export default () => {
       // check customer has wishlist else throw 400 bad request
       if (!customer?.metadata?.wishlist) {
         throw new MedusaError(
-          Medusa.Types.INVALID_DATA,
+          MedusaError.Types.INVALID_DATA,
           "Invalid data - Customer doesn't have a wishlist"
         )
       }
