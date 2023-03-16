@@ -28,7 +28,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:37](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L37)
+[packages/medusa/src/services/discount-condition.ts:37](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L37)
 
 ## Properties
 
@@ -42,7 +42,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -56,7 +56,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -70,7 +70,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:31](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L31)
+[packages/medusa/src/services/discount-condition.ts:31](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L31)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:32](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L32)
+[packages/medusa/src/services/discount-condition.ts:32](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L32)
 
 ___
 
@@ -104,7 +104,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L34)
+[packages/medusa/src/services/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L34)
 
 ___
 
@@ -118,7 +118,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:35](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L35)
+[packages/medusa/src/services/discount-condition.ts:35](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L35)
 
 ## Methods
 
@@ -157,7 +157,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -177,7 +177,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:220](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L220)
+[packages/medusa/src/services/discount-condition.ts:220](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L220)
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:188](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L188)
+[packages/medusa/src/services/discount-condition.ts:188](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L188)
 
 ___
 
@@ -218,7 +218,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:49](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L49)
+[packages/medusa/src/services/discount-condition.ts:49](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L49)
 
 ___
 
@@ -242,7 +242,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:116](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L116)
+[packages/medusa/src/services/discount-condition.ts:116](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L116)
 
 ___
 
@@ -287,7 +287,7 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -307,4 +307,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:79](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/discount-condition.ts#L79)
+[packages/medusa/src/services/discount-condition.ts:79](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/discount-condition.ts#L79)

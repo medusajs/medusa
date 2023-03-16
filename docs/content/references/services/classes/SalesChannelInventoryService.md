@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:21](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/sales-channel-inventory.ts#L21)
+[packages/medusa/src/services/sales-channel-inventory.ts:21](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/sales-channel-inventory.ts#L21)
 
 ## Properties
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:18](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/sales-channel-inventory.ts#L18)
+[packages/medusa/src/services/sales-channel-inventory.ts:18](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/sales-channel-inventory.ts#L18)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:19](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/sales-channel-inventory.ts#L19)
+[packages/medusa/src/services/sales-channel-inventory.ts:19](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/sales-channel-inventory.ts#L19)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:15](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/sales-channel-inventory.ts#L15)
+[packages/medusa/src/services/sales-channel-inventory.ts:15](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/sales-channel-inventory.ts#L15)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:17](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/sales-channel-inventory.ts#L17)
+[packages/medusa/src/services/sales-channel-inventory.ts:17](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/sales-channel-inventory.ts#L17)
 
 ## Methods
 
@@ -79,4 +79,4 @@ available quantity of item across all sales channel locations
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:39](https://github.com/medusajs/medusa/blob/77fd361ce/packages/medusa/src/services/sales-channel-inventory.ts#L39)
+[packages/medusa/src/services/sales-channel-inventory.ts:39](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/sales-channel-inventory.ts#L39)
