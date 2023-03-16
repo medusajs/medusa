@@ -15,8 +15,12 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
     "[indexName]": "[meilisearch settings passed to meilisearch's `updateSettings()` method]"
     // example
     products: {
-      searchableAttributes: ["title", "description", "variant_sku"],
-      displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
+      indexSettings: {
+        searchableAttributes: ["title", "description", "variant_sku"],
+        displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
+      },
+      primaryKey: "some_id"
+      transformer: (product: Product) => ({ id: product.id })
     }
   }
 }
