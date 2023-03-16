@@ -65,16 +65,16 @@ export const useAdminUpdateProductCategory = (
   return useMutation(
     (payload: AdminPostProductCategoriesCategoryReq) =>
       client.admin.productCategories.update(id, payload),
-    buildOptions(
-      queryClient,
-      [
-        adminProductCategoryKeys.lists(),
-        adminProductCategoryKeys.detail(id),
-        adminProductKeys.details(),
-      ],
-      options
+      buildOptions(
+        queryClient,
+        [
+          adminProductCategoryKeys.lists(),
+          adminProductCategoryKeys.detail(id),
+          adminProductKeys.details(),
+        ],
+        options
+      )
     )
-  )
 }
 
 /**
@@ -95,11 +95,16 @@ export const useAdminDeleteProductCategory = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
+
   return useMutation(
     () => client.admin.productCategories.delete(id),
     buildOptions(
       queryClient,
-      [adminProductCategoryKeys.lists(), adminProductCategoryKeys.detail(id)],
+      [
+        adminProductCategoryKeys.lists(),
+        adminProductCategoryKeys.detail(id),
+        adminProductKeys.all
+      ],
       options
     )
   )

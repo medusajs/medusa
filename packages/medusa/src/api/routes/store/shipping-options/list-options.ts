@@ -2,6 +2,7 @@ import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import { PricingService, ProductService } from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/shipping-options
@@ -80,7 +81,7 @@ export default async (req, res) => {
   }
 
   const options = await shippingOptionService.list(query, {
-    relations: ["requirements"],
+    relations: defaultRelations,
   })
 
   const data = await pricingService.setShippingOptionPrices(options)
