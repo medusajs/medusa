@@ -36,12 +36,14 @@ type CreateFulfillmentModalProps = {
   email?: string
   orderToFulfill: Order | ClaimOrder | Swap
   orderId: string
+  onComplete?: () => void
 }
 
 const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   handleCancel,
   orderToFulfill,
   orderId,
+  onComplete,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
@@ -187,6 +189,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
       onSuccess: () => {
         notification("Success", successText, "success")
         handleCancel()
+        onComplete && onComplete()
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
     })
