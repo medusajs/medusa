@@ -334,7 +334,7 @@ export const useBuildTimeline = (orderId: string) => {
           id: event.id,
           time: event.shipped_at,
           type: "shipped",
-          items: event.items.map((item) => getLineItem(allItems, item.item_id)),
+          items: event.items.map((item) => getFulfilmentItem(allItems, item)),
           noNotification: event.no_notification,
           orderId: order.id,
           locationName: getLocationNameById(event.location_id),
