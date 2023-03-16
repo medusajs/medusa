@@ -21,8 +21,8 @@ const EventItemContainer: React.FC<EventItemContainerProps> = ({
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="gap-x-small mb-base flex items-center last:mb-0">
+    <div className="mb-base flex flex-col last:mb-0 ">
+      <div className="gap-x-small flex items-center">
         {item.thumbnail && (
           <div className="rounded-base h-10 w-[30px] overflow-hidden">
             <img

@@ -3,7 +3,6 @@ import {
   useAdminCancelClaimFulfillment,
   useAdminCancelFulfillment,
   useAdminCancelSwapFulfillment,
-  useAdminStockLocations,
 } from "medusa-react"
 import IconBadge from "../../../../components/fundamentals/icon-badge"
 import BuildingsIcon from "../../../../components/fundamentals/icons/buildings-icon"
@@ -12,6 +11,7 @@ import PackageIcon from "../../../../components/fundamentals/icons/package-icon"
 import Actionables from "../../../../components/molecules/actionables"
 import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
 import useNotification from "../../../../hooks/use-notification"
+import useStockLocations from "../../../../hooks/use-stock-locations"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { TrackingLink } from "./tracking-link"
 
@@ -26,7 +26,7 @@ export const FormattedFulfillment = ({
   const cancelFulfillment = useAdminCancelFulfillment(order.id)
   const cancelSwapFulfillment = useAdminCancelSwapFulfillment(order.id)
   const cancelClaimFulfillment = useAdminCancelClaimFulfillment(order.id)
-  const { stock_locations } = useAdminStockLocations()
+  const { getLocationNameById } = useStockLocations()
 
   const { fulfillment } = fulfillmentObj
   const hasLinks = !!fulfillment.tracking_links?.length
@@ -90,10 +90,6 @@ export const FormattedFulfillment = ({
         })
     }
   }
-
-  const getLocationNameById = (locationId: string) =>
-    stock_locations?.find((stock_location) => stock_location.id === locationId)
-      ?.name
 
   return (
     <div className="flex w-full justify-between">
