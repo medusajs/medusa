@@ -350,7 +350,7 @@ export default class InventoryService
    * Deletes a reservation item
    * @param reservationItemId - the id of the reservation item to delete
    */
-  async deleteReservationItem(reservationItemId: string): Promise<void> {
+  async deleteReservationItem(reservationItemId: string | string[]): Promise<void> {
     return await this.reservationItemService_
       .withTransaction(this.activeManager_)
       .delete(reservationItemId)

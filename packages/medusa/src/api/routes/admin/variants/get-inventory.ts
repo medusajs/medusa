@@ -4,7 +4,6 @@ import {
 } from "../../../../types/inventory"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import {
-  SalesChannelInventoryService,
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
@@ -76,8 +75,7 @@ export default async (req, res) => {
   const channelLocationService: SalesChannelLocationService = req.scope.resolve(
     "salesChannelLocationService"
   )
-  const salesChannelInventoryService: SalesChannelInventoryService =
-    req.scope.resolve("salesChannelInventoryService")
+
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
