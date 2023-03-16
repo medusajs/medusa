@@ -74,7 +74,7 @@ export const createVariantTransaction = async (
     productVariantInventoryService,
   } = dependencies
 
-  const inventoryServiceTx = inventoryService?.withTransaction(manager)
+  const inventoryServiceTx = inventoryService
 
   const productVariantInventoryServiceTx =
     productVariantInventoryService.withTransaction(manager)

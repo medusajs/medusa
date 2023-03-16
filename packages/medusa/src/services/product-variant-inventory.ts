@@ -429,6 +429,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
+    if (quantity > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "You can only reduce reservation quantities using adjustReservationsQuantityByLineItem. If you wish to reserve more use update or create."
+      )
+    }
+
     const [reservations, reservationCount] =
       await this.inventoryService_.listReservationItems(
         {
@@ -445,26 +452,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
       }
       return 0
     })
-
-    if (quantity > 0) {
-      // if quantity is positive, we need to adjust the first reservation with the correct location
-      const firstReservation = reservations[0]
-      if (firstReservation) {
-        await this.inventoryService_.updateReservationItem(
-          firstReservation.id,
-          {
-            quantity: firstReservation.quantity + quantity,
-          }
-        )
-      } else {
-        await this.reserveQuantity(variantId, quantity, {
-          lineItemId,
-          locationId,
-        })
-
-        return
-      }
-    }
 
     if (reservationCount) {
       const inventoryItems = await this.listByVariant(variantId)
