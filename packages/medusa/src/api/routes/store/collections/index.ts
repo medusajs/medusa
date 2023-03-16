@@ -22,11 +22,12 @@ export default (app) => {
   return app
 }
 
-export const defaultStoreCollectionRelations = ["products"]
+export const defaultStoreCollectionRelations = []
 export const allowedFields = [
   "id",
   "title",
   "handle",
+  "products",
   "metadata",
   "created_at",
   "updated_at",

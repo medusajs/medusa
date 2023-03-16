@@ -1,0 +1,35 @@
+{
+  "name": "@medusajs/utils",
+  "version": "0.0.1",
+  "description": "Medusa utilities functions shared by Medusa core and Modules",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/utils"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "devDependencies": {
+    "@medusajs/types": "*",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
+    "typeorm": "^0.3.11",
+    "typescript": "^4.4.4"
+  },
+  "peerDependencies": {
+    "@medusajs/types": "^0.0.1"
+  },
+  "scripts": {
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "build": "tsc --build",
+    "test": "jest --passWithNoTests src"
+  }
+}

@@ -22,18 +22,18 @@ export default (app) => {
 }
 
 export const defaultAdminSwapRelations = [
-  "order",
   "additional_items",
   "additional_items.adjustments",
-  "return_order",
-  "fulfillments",
-  "payment",
-  "shipping_address",
-  "shipping_methods",
   "cart",
   "cart.items",
-  "cart.items.variant",
   "cart.items.adjustments",
+  "cart.items.variant",
+  "fulfillments",
+  "order",
+  "payment",
+  "return_order",
+  "shipping_address",
+  "shipping_methods",
 ]
 
 export const defaultAdminSwapFields = [
@@ -84,6 +84,24 @@ export type AdminSwapsListRes = PaginatedResponse & {
 /**
  * @schema AdminSwapsRes
  * type: object
+ * x-expanded-relations:
+ *   field: swap
+ *   relations:
+ *     - additional_items
+ *     - additional_items.adjustments
+ *     - cart
+ *     - cart.items
+ *     - cart.items.adjustments
+ *     - cart.items.variant
+ *     - fulfillments
+ *     - order
+ *     - payment
+ *     - return_order
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ *     - shipping_methods.shipping_option
  * required:
  *   - swap
  * properties:

@@ -32,7 +32,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/StoreShippingOptionsListRes"
+ *           $ref: "#/components/schemas/StoreCartShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

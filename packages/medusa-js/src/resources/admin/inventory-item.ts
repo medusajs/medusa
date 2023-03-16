@@ -9,6 +9,8 @@ import {
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
   AdminPostInventoryItemsItemLocationLevelsReq,
+  AdminPostInventoryItemsReq,
+  AdminPostInventoryItemsParams,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -73,6 +75,28 @@ class AdminInventoryItemsResource extends BaseResource {
   ): ResponsePromise<AdminInventoryItemsDeleteRes> {
     const path = `/admin/inventory-items/${inventoryItemId}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
+  }
+
+  /**
+   * Create an Inventory Item
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please install @medusajs/inventory
+   * @description creates an Inventory Item
+   * @returns the created Inventory Item
+   */
+  create(
+    payload: AdminPostInventoryItemsReq,
+    query?: AdminPostInventoryItemsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminInventoryItemsRes> {
+    let path = `/admin/inventory-items`
+    
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**

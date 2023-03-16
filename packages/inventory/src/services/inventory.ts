@@ -1,7 +1,4 @@
-import {
-  ConfigurableModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
-} from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 
 import {
   CreateInventoryItemInput,
@@ -22,18 +19,20 @@ import {
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
 
-import { EntityManager } from "typeorm"
 import {
   InventoryItemService,
   InventoryLevelService,
   ReservationItemService,
 } from "./"
+import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: IEventBusService
+  inventoryItemService: InventoryItemService
+  inventoryLevelService: InventoryLevelService
+  reservationItemService: ReservationItemService
 }
-
 export default class InventoryService
   extends TransactionBaseService
   implements IInventoryService
@@ -44,34 +43,23 @@ export default class InventoryService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor(
-    { eventBusService, manager }: InjectedDependencies,
+    {
+      eventBusService,
+      manager,
+      inventoryItemService,
+      inventoryLevelService,
+      reservationItemService,
+    }: InjectedDependencies,
     options?: unknown,
-    moduleDeclaration?: ConfigurableModuleDeclaration
+    moduleDeclaration?: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
-    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "At the moment this module can only be used with shared resources"
-      )
-    }
-
     this.eventBusService_ = eventBusService
-    this.inventoryItemService_ = new InventoryItemService({
-      eventBusService,
-      manager,
-    })
-    this.inventoryLevelService_ = new InventoryLevelService({
-      eventBusService,
-      manager,
-    })
-    this.reservationItemService_ = new ReservationItemService({
-      eventBusService,
-      manager,
-      inventoryLevelService: this.inventoryLevelService_,
-    })
+    this.inventoryItemService_ = inventoryItemService
+    this.inventoryLevelService_ = inventoryLevelService
+    this.reservationItemService_ = reservationItemService
   }
 
   /**
@@ -164,6 +152,17 @@ export default class InventoryService
     return inventoryLevel
   }
 
+    /**
+   * Retrieves a reservation item
+   * @param inventoryItemId - the id of the reservation item
+   * @return the retrieved reservation level
+   */
+  async retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO> {
+    return await this.reservationItemService_
+      .withTransaction(this.activeManager_)
+      .retrieve(reservationId)
+  }
+
   /**
    * Creates a reservation item
    * @param input - the input object
@@ -245,9 +244,25 @@ export default class InventoryService
    * @param inventoryItemId - the id of the inventory item to delete
    */
   async deleteInventoryItem(inventoryItemId: string): Promise<void> {
+    await this.inventoryLevelService_
+      .withTransaction(this.activeManager_)
+      .deleteByInventoryItemId(inventoryItemId)
+
     return await this.inventoryItemService_
       .withTransaction(this.activeManager_)
       .delete(inventoryItemId)
+  }
+
+  async deleteInventoryItemLevelByLocationId(locationId: string): Promise<void> {
+    return await this.inventoryLevelService_
+      .withTransaction(this.activeManager_)
+      .deleteByLocationId(locationId)
+  }
+
+  async deleteReservationItemByLocationId(locationId: string): Promise<void> {
+    return await this.reservationItemService_
+      .withTransaction(this.activeManager_)
+      .deleteByLocationId(locationId)
   }
 
   /**
@@ -335,7 +350,7 @@ export default class InventoryService
    * Deletes a reservation item
    * @param reservationItemId - the id of the reservation item to delete
    */
-  async deleteReservationItem(reservationItemId: string): Promise<void> {
+  async deleteReservationItem(reservationItemId: string | string[]): Promise<void> {
     return await this.reservationItemService_
       .withTransaction(this.activeManager_)
       .delete(reservationItemId)

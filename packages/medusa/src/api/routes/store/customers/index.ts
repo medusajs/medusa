@@ -114,6 +114,11 @@ export const allowedStoreCustomersFields = [
 /**
  * @schema StoreCustomersRes
  * type: object
+ * x-expanded-relations:
+ *   field: customer
+ *   relations:
+ *     - billing_address
+ *     - shipping_addresses
  * required:
  *   - customer
  * properties:
@@ -125,8 +130,102 @@ export type StoreCustomersRes = {
 }
 
 /**
+ * @schema StoreCustomersResetPasswordRes
+ * type: object
+ * required:
+ *   - customer
+ * properties:
+ *   customer:
+ *     $ref: "#/components/schemas/Customer"
+ */
+export type StoreCustomersResetPasswordRes = {
+  customer: Omit<Customer, "password_hash">
+}
+
+/**
  * @schema StoreCustomersListOrdersRes
  * type: object
+ * x-expanded-relations:
+ *   field: orders
+ *   relations:
+ *     - customer
+ *     - discounts
+ *     - discounts.rule
+ *     - fulfillments
+ *     - fulfillments.tracking_links
+ *     - items
+ *     - items.variant
+ *     - payments
+ *     - region
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *     - claims
+ *     - claims.additional_items
+ *     - claims.additional_items.adjustments
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.tax_lines
+ *     - customer
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_card_transactions
+ *     - gift_card_transactions.gift_card
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.refundable
+ *     - items.tax_lines
+ *     - items.variant
+ *     - items.variant.product
+ *     - refunds
+ *     - region
+ *     - shipping_address
+ *     - shipping_methods
+ *     - shipping_methods.tax_lines
+ *     - swaps
+ *     - swaps.additional_items
+ *     - swaps.additional_items.adjustments
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.tax_lines
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - paid_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - claims.additional_items.discount_total
+ *     - claims.additional_items.gift_card_total
+ *     - claims.additional_items.original_tax_total
+ *     - claims.additional_items.original_total
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.subtotal
+ *     - claims.additional_items.tax_total
+ *     - claims.additional_items.total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ *     - swaps.additional_items.discount_total
+ *     - swaps.additional_items.gift_card_total
+ *     - swaps.additional_items.original_tax_total
+ *     - swaps.additional_items.original_total
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.subtotal
+ *     - swaps.additional_items.tax_total
+ *     - swaps.additional_items.total
  * required:
  *   - orders
  *   - count

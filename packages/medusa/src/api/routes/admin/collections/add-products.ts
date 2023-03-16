@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import ProductCollectionService from "../../../../services/product-collection"
+import { defaultAdminCollectionsRelations } from "./index"
 
 /**
  * @oas [post] /admin/collections/{id}/products/batch
@@ -67,10 +68,14 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const collection = await manager.transaction(async (transactionManager) => {
+  const updated = await manager.transaction(async (transactionManager) => {
     return await productCollectionService
       .withTransaction(transactionManager)
       .addProducts(id, validatedBody.product_ids)
+  })
+
+  const collection = await productCollectionService.retrieve(updated.id, {
+    relations: defaultAdminCollectionsRelations,
   })
 
   res.status(200).json({ collection })
