@@ -46,7 +46,6 @@
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.13",
     "clsx": "^1.2.1",
-    "confetti-js": "^0.0.18",
     "copy-to-clipboard": "^3.3.1",
     "emoji-picker-react": "^4.4.3",
     "framer-motion": "^9.1.6",
