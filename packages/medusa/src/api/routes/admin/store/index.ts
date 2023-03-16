@@ -35,6 +35,11 @@ export const defaultRelationsExtended = ["currencies", "default_currency"]
 /**
  * @schema AdminExtendedStoresRes
  * type: object
+ * x-expanded-relations:
+ *   field: store
+ *   relations:
+ *     - currencies
+ *     - default_currency
  * required:
  *   - store
  * properties:

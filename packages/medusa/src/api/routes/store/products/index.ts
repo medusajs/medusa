@@ -110,6 +110,18 @@ export * from "./search"
 /**
  * @schema StoreProductsRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - options.values
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - product
  * properties:
@@ -139,6 +151,18 @@ export type StorePostSearchRes = {
 /**
  * @schema StoreProductsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - options.values
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - products
  *   - count

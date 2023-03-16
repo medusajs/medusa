@@ -171,15 +171,24 @@ export const defaultStoreCartRelations = [
  *     - region.payment_providers
  *     - shipping_address
  *     - shipping_methods
- *     - shipping_methods.shipping_option
- *   implicit:
- *     - items.tax_lines
- *     - items.variant.product
+ *   eager:
  *     - region.fulfillment_providers
  *     - region.payment_providers
- *     - region.tax_rates
  *     - shipping_methods.shipping_option
- *     - shipping_methods.tax_lines
+ *   implicit:
+ *      - items
+ *      - items.variant
+ *      - items.variant.product
+ *      - items.tax_lines
+ *      - items.adjustments
+ *      - gift_cards
+ *      - discounts
+ *      - discounts.rule
+ *      - shipping_methods
+ *      - shipping_methods.tax_lines
+ *      - shipping_address
+ *      - region
+ *      - region.tax_rates
  *   totals:
  *     - discount_total
  *     - gift_card_tax_total

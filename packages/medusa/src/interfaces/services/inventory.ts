@@ -43,6 +43,8 @@ export interface IInventoryService {
     locationId: string
   ): Promise<InventoryLevelDTO>
 
+  retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO>
+
   createReservationItem(
     input: CreateReservationItemInput
   ): Promise<ReservationItemDTO>

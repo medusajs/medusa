@@ -152,6 +152,17 @@ export default class InventoryService
     return inventoryLevel
   }
 
+    /**
+   * Retrieves a reservation item
+   * @param inventoryItemId - the id of the reservation item
+   * @return the retrieved reservation level
+   */
+  async retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO> {
+    return await this.reservationItemService_
+      .withTransaction(this.activeManager_)
+      .retrieve(reservationId)
+  }
+
   /**
    * Creates a reservation item
    * @param input - the input object
