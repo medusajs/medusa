@@ -3,7 +3,8 @@ import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
-  CreateReservationItemInput, FilterableInventoryItemProps,
+  CreateReservationItemInput,
+  FilterableInventoryItemProps,
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
   FindConfig,
@@ -151,12 +152,14 @@ export default class InventoryService
     return inventoryLevel
   }
 
-    /**
+  /**
    * Retrieves a reservation item
    * @param inventoryItemId - the id of the reservation item
    * @return the retrieved reservation level
    */
-  async retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO> {
+  async retrieveReservationItem(
+    reservationId: string
+  ): Promise<ReservationItemDTO> {
     return await this.reservationItemService_
       .withTransaction(this.activeManager_)
       .retrieve(reservationId)
@@ -252,7 +255,9 @@ export default class InventoryService
       .delete(inventoryItemId)
   }
 
-  async deleteInventoryItemLevelByLocationId(locationId: string): Promise<void> {
+  async deleteInventoryItemLevelByLocationId(
+    locationId: string
+  ): Promise<void> {
     return await this.inventoryLevelService_
       .withTransaction(this.activeManager_)
       .deleteByLocationId(locationId)
@@ -349,7 +354,9 @@ export default class InventoryService
    * Deletes a reservation item
    * @param reservationItemId - the id of the reservation item to delete
    */
-  async deleteReservationItem(reservationItemId: string | string[]): Promise<void> {
+  async deleteReservationItem(
+    reservationItemId: string | string[]
+  ): Promise<void> {
     return await this.reservationItemService_
       .withTransaction(this.activeManager_)
       .delete(reservationItemId)

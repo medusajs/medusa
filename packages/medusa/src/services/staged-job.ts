@@ -69,12 +69,12 @@ class StagedJobService extends TransactionBaseService {
 
       const stagedJobs = stagedJobsInput.map(
         (job) =>
-          stagedJobRepo.create({
+          ({
             event_name: job.eventName,
             data: job.data,
             options: job.options,
-          } as DeepPartial<StagedJob>) as QueryDeepPartialEntity<StagedJob>
-      )
+          } as DeepPartial<StagedJob>)
+      ) as QueryDeepPartialEntity<StagedJob>[]
 
       return await stagedJobRepo.insertBulk(stagedJobs)
     })

@@ -20,7 +20,7 @@
   },
   "include": ["src"],
   "exclude": [
-    "./dist/**/*",
+    "dist",
     "./src/**/__tests__",
     "./src/**/__mocks__",
     "./src/**/__fixtures__",
