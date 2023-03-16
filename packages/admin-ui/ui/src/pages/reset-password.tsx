@@ -137,7 +137,7 @@ const ResetPasswordPage = () => {
               </p>
             </div>
             <a href="/login?reset-password=true">
-              <Button variant="secondary" size="large" className="w-full">
+              <Button variant="secondary" size="medium" className="w-[280px]">
                 Go to reset password
               </Button>
             </a>
