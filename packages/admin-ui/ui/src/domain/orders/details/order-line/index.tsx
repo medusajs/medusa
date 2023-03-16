@@ -124,7 +124,7 @@ const ReservationIndicator = ({
               </div>
             ) : (
               <span className="flex w-full items-center">
-                All items have been allocated
+                This item has been fulfilled.
               </span>
             )}
           </div>
