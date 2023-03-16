@@ -17,13 +17,13 @@ In this document, you’ll learn how to install the [Spaces plugin](https://git
 
 To manage images in Medusa, you need a file service plugin responsible for hosting the images. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
 
-Medusa provides three different options to handle your file storage. This document focuses on using [Spaces](https://www.digitalocean.com/products/spaces) to store your Medusa server’s images.
+Medusa provides three different options to handle your file storage. This document focuses on using [Spaces](https://www.digitalocean.com/products/spaces) to store images and files uploaded to the Medusa backend.
 
 ---
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
 
@@ -182,6 +182,6 @@ Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retri
 
 ## See Also
 
-- Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
+- Check out [more plugins](../overview.mdx) you can add to your store.
 - [Deploy the Medusa backend on DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
 - Install the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefront.

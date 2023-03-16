@@ -29,7 +29,7 @@ It's assumed that you already have a Medusa backend installed and set up. If not
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../../../development/backend/configurations.md#redis).
 
 ### Notification Provider
 
@@ -45,7 +45,7 @@ To subscribe to and handle an event, you must create a subscriber.
 
 :::tip
 
-You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.md) documentation.
+You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.mdx) documentation.
 
 :::
 

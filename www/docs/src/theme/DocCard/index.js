@@ -15,11 +15,13 @@ import Icons from '../Icon';
 
 function CardContainer({href, children, className}) {
   return (
-    <Link
-      href={href}
-      className={clsx('card', styles.cardContainer, className)}>
-      {children}
-    </Link>
+    <article className={`card-wrapper margin-bottom--lg`}>
+      <Link
+        href={href}
+        className={clsx('card', styles.cardContainer, className)}>
+        {children}
+      </Link>
+    </article>
   );
 }
 

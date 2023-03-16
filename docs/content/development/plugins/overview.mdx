@@ -2,6 +2,9 @@
 description: 'Learn what Plugins are and how they are used in Medusa. Plugins are re-usable customizations that can be added to a Medusa backend.'
 ---
 
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
 # Plugins
 
 In this document, you’ll get an overview of plugins in Medusa, where to find them, and how to install them. If you want to learn how to create a plugin, check out [this guide](create.md) instead.
@@ -24,7 +27,7 @@ Plugins run within the same process as the core Medusa backend eliminating the n
 
 ### Official Plugins
 
-Medusa has official plugins that cover different aspects and functionalities such as payment, Content Management System (CMS), fulfillment, and notifications. You can check out the available plugins under the [packages directory in the Medusa repository on GitHub](https://github.com/medusajs/medusa/tree/master/packages).
+Medusa has official plugins that cover different aspects and functionalities such as payment, Content Management System (CMS), fulfillment, and notifications. You can check out the available plugins under the [Plugins section of this documentation](../../plugins/overview.mdx).
 
 :::tip
 
@@ -56,8 +59,27 @@ For community plugins, please refer to the installation instructions of that plu
 
 ---
 
-## See Also
+## Custom Development
 
-- [Create a plugin](create.md)
-- [Publish a plugin](publish.md)
-- [Create a fulfillment provider](../../modules/carts-and-checkout/backend/add-fulfillment-provider.md) or a [payment provider](../../modules/carts-and-checkout/backend/add-payment-provider.md)
+Developers can create plugins and reuse them across different Medusa backends. They can also share them with the community to help out other developers.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/plugins/create',
+    label: 'Create a Plugin',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create plugins in Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/plugins/publish',
+    label: 'Publish a Plugin',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to publish a plugin to NPM.'
+    }
+  },
+]} />

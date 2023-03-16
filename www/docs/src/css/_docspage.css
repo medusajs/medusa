@@ -30,14 +30,29 @@ details summary {
   cursor: pointer;
 }
 
+.reference-table {
+  display: table !important;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.reference-table p {
+  --ifm-paragraph-margin-bottom: 0;
+}
+
+.reference-table th:nth-child(1),
+.reference-table td:nth-child(1) {
+  width: 30%;
+}
+
 .reference-table th:nth-child(2),
 .reference-table td:nth-child(2) {
-  width: 40%;
+  width: 30%;
 }
 
 .reference-table th:nth-child(3),
 .reference-table td:nth-child(3) {
-  width: 50%;
+  width: 40%;
 }
 
 .reference-table .tooltip-container code {
@@ -48,6 +63,10 @@ details summary {
   max-width: 100%;
   word-break: break-word;
   white-space: break-spaces;
+}
+
+.reference-table [class*=codeBlockLinesWithNumbering] {
+  display: block !important;
 }
 
 .container:not(.footer-container) {

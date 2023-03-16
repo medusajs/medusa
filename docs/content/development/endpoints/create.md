@@ -1,15 +1,17 @@
 ---
-description: 'Learn how to create endpoints in the Medusa backend. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
+description: 'Learn how to create endpoints in Medusa. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
 addHowToData: true
 ---
 
 # How to Create Endpoints
 
-In this document, you’ll learn how to create endpoints in your Medusa backend.
+In this document, you’ll learn how to create endpoints in Medusa.
 
 ## Overview
 
-Custom endpoints reside under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file that is named `index` (for example, `index.ts`). This file should export a function that returns an Express router.
+Custom endpoints are created under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file named `index` (for example, `index.ts`). This file should export a function that returns an Express router
+
+They're then transpiled into the `/dist/api` directory to be consumed.
 
 ---
 
@@ -321,7 +323,9 @@ The `productService` has a `count` method that returns a Promise. This Promi
 
 ## Building Files
 
-Custom endpoints must be transpiled and moved to the `dist` directory. This happens when you run your backend using `medusa develop` and while it’s running, and when you run the following command:
+Custom endpoints must be transpiled and moved to the `dist` directory before you can start consuming them. When you run your backend using the `medusa develop` command, it watches the files under `src` for any changes, then triggers the `build` command and restarts the server.
+
+The build isn't triggerd though when the backend first starts running. So, make sure to run the `build` command before starting the backend:
 
 ```bash npm2yarn
 npm run build
@@ -331,7 +335,5 @@ npm run build
 
 ## See Also
 
-- [Add a Middleware](./add-middleware.md)
 - [Storefront API Reference](/api/store)
 - [Admin API Reference](/api/admin)
-- [Create a Service](../services/create-service.md).

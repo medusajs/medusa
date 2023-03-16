@@ -74,7 +74,7 @@ video {
   margin-top: var(--ifm-base-margin-vertical);
 }
 
-.markdown p + .card {
+.markdown p + .card-wrapper {
   margin-top: 24px;
 }
 
@@ -91,10 +91,10 @@ p + img:not(.ui-icon) {
 }
 
 h1 + .cards-grid,
-h1 + .card,
+h1 + .card-wrapper,
 h2 + .cards-grid,
-h2 + .card,
+h2 + .card-wrapper,
 h3 + .cards-grid,
-h3 + .card {
+h3 + .card-wrapper {
   margin-top: calc(var(--ifm-hr-margin-vertical) - 8px);
 }

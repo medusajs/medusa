@@ -14,7 +14,7 @@ Those events can be subscribed to using subscribers. When you subscribe to an ev
 
 :::info
 
-You can learn more about subscribers and their use cases in the [Subscribers](./subscribers.md) documentation.
+You can learn more about subscribers and their use cases in the [Subscribers](./subscribers.mdx) documentation.
 
 :::
 
@@ -197,7 +197,7 @@ Transactions in Medusa ensure atomicity, consistency, isolation, and durability,
 
 <!-- vale docs.Acronyms = YES -->
 
-In many cases, [services](../services/overview.md) typically update resources in the database and emit an event within a transactional operation. To ensure that these events don't cause data inconsistencies (for example, a plugin subscribes to an event to contact a third-party service, but the transaction fails) the concept of a staged job is introduced.
+In many cases, [services](../services/overview.mdx) typically update resources in the database and emit an event within a transactional operation. To ensure that these events don't cause data inconsistencies (for example, a plugin subscribes to an event to contact a third-party service, but the transaction fails) the concept of a staged job is introduced.
 
 Instead of events being processed immediately, they're stored in the database as a staged job until they're ready. In other words, until the transaction has succeeded.
 
@@ -224,5 +224,4 @@ This pattern is heavily inspired by the [Transactionally-staged Job Drain descri
 ## See Also
 
 - [Events reference](./events-list.md)
-- [Subscribers overview](./subscribers.md)
-- [How to create a subscriber](./create-subscriber.md)
+- [Create a subscriber](./create-subscriber.md)

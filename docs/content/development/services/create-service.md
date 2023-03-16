@@ -5,7 +5,7 @@ addHowToData: true
 
 # Create a Service
 
-In this document, you’ll learn how you can create a [Service](./overview.md) and use it across your Medusa backend just like any of the core services.
+In this document, you’ll learn how you can create a [Service](./overview.mdx) and use it across your Medusa backend just like any of the core services.
 
 ## Implementation
 
@@ -118,5 +118,4 @@ class MySubscriber {
 
 ## See Also
 
-- [Services Reference](../../references/services/classes/AuthService)
-- [Create an Endpoint](../endpoints/create.md)
+- [Create a Plugin](../plugins/create.md)

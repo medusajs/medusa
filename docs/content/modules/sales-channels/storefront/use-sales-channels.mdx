@@ -107,7 +107,7 @@ export default Products
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
+fetch(`<BACKEND_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
@@ -174,7 +174,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts`, {
+fetch(`<BACKEND_URL>/store/carts`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -237,7 +237,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -254,10 +254,3 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 </Tabs>
 
 The request returns the updated cart.
-
----
-
-## See Also
-
-- [Implement the Cart functionality in a storefront](../../carts-and-checkout/storefront/implement-cart.mdx)
-- [Implement the Checkout functionality in a storefront](../../carts-and-checkout/storefront/implement-checkout-flow.mdx)

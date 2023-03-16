@@ -102,4 +102,4 @@ If your forked repository doesn’t have any conflicts with the changes from the
 ## See Also
 
 - [Admin API reference](/api/admin).
-- [Local development of the Medusa server](../development/fundamentals/local-development.md).
+- [Local development with Medusa](../development/fundamentals/local-development.md).

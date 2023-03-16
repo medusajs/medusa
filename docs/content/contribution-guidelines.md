@@ -140,7 +140,7 @@ medusa.admin.uploads.create(file) // file is an instance of File
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/uploads' \
+curl -L -X POST '<BACKEND_URL>/admin/uploads' \
   -H 'Authorization: Bearer <API_TOKEN>' \
   -H 'Content-Type: text/csv' \
   -F 'files=@"<FILE_PATH_1>"'

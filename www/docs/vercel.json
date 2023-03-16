@@ -58,7 +58,7 @@
     },
     {
       "source": "/how-to/create-medusa-app",
-      "destination": "/usage/create-medusa-app"
+      "destination": "/create-medusa-app"
     },
     {
       "source": "/guides/plugins",
@@ -150,6 +150,10 @@
     },
     {
       "source": "/quickstart/quick-start(.*)",
+      "destination": "/development/backend/install"
+    },
+    {
+      "source": "/quickstart/quick-start-docker",
       "destination": "/development/backend/install"
     },
     {
@@ -285,7 +289,7 @@
       "destination": "/development/backend/configurations"
     },
     {
-      "source": "/add-plugins/segement",
+      "source": "/add-plugins/segment",
       "destination": "/plugins/analytics/segment"
     },
     {
@@ -382,7 +386,7 @@
     },
     {
       "source": "/advanced/backend/entities",
-      "destination": "/development/entities"
+      "destination": "/development/entities/create"
     },
     {
       "source": "/advanced/backend/entities/overview",
@@ -394,7 +398,7 @@
     },
     {
       "source": "/advanced/backend/migrations",
-      "destination": "/development/entities/migrations"
+      "destination": "/development/entities/migrations/create"
     },
     {
       "source": "/advanced/backend/events/architecture",
@@ -451,6 +455,14 @@
     {
       "source": "/usage/local-development",
       "destination": "/development/fundamentals/local-development"
+    },
+    {
+      "source": "/introduction",
+      "destination": "/development/fundamentals/architecture-overview"
+    },
+    {
+      "source": "/introduction",
+      "destination": "/development/fundamentals/architecture-overview"
     }
   ]
 }

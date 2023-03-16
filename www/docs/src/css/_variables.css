@@ -232,6 +232,13 @@
   --bordered-padding: 3px;
   --bordered-inside-padding: 2px;
   --bordered-margin-right: calc(var(--ifm-base-margin-vertical) / 2);
+
+  /** Tables **/
+  --ifm-table-border-color: var(--medusa-border-base);
+  --ifm-table-head-background: var(--ifm-background-surface-color);
+  --ifm-table-head-color: var(--ifm-color-primary);
+  --ifm-table-head-font-weight: var(--medusa-body-regular-plus-font-weight);
+  --ifm-table-stripe-background: var(--ifm-background-surface-color) !important;
 }
 
 html[data-theme="dark"] {

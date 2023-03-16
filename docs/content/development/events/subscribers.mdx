@@ -1,6 +1,9 @@
 ---
-description: 'Learn what subscribers are in the Medusa backend. Subscribers are used to listen to triggered events to perform an action.'
+description: 'Learn what subscribers are in Medusa. Subscribers are used to listen to triggered events to perform an action.'
 ---
+
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
 
 # Subscribers
 
@@ -36,8 +39,17 @@ Subscribers are useful in many use cases, including:
 
 ---
 
-## See Also
+## Custom Development
 
-- [Create a Subscriber](./create-subscriber.md).
-- [Events architecture overview](./index.md)
-- [Events reference](./events-list.md).
+Developers can create custom subscribers in the Medusa backend, a plugin, or in a Commerce Module.
+
+<DocCard item={{
+    type: 'link',
+    href: '/development/events/create-subscriber',
+    label: 'Create a Subscriber',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a subscriber in Medusa.'
+    }
+  }}
+/>

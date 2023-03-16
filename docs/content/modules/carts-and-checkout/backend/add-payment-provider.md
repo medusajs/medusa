@@ -652,4 +652,3 @@ class MyPaymentService extends AbstractPaymentService {
 ## See Also
 
 - Implementation Examples: [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) payment providers.
-- [Implement checkout flow on the storefront](../storefront/implement-checkout-flow.mdx).

@@ -24,7 +24,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../../../development/backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../../../development/backend/configurations.md#redis).
 
 ### File Service Plugin
 
@@ -106,7 +106,7 @@ export default ImportProducts
 const formData = new FormData()
 formData.append("files", file) // file is an instance of File
 
-fetch(`<YOUR_SERVER>/admin/uploads`, {
+fetch(`<BACKEND_URL>/admin/uploads`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -124,7 +124,7 @@ fetch(`<YOUR_SERVER>/admin/uploads`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/uploads' \
+curl -L -X POST '<BACKEND_URL>/admin/uploads' \
   -H 'Authorization: Bearer <API_TOKEN>' \
   -H 'Content-Type: text/csv' \
   -F 'files=@"<FILE_PATH_1>"'
@@ -189,7 +189,7 @@ export default ImportProducts
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
+fetch(`<BACKEND_URL>/admin/batch-jobs`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -213,7 +213,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
+curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -292,7 +292,7 @@ export default ImportProducts
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
+fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -305,7 +305,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
+curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
@@ -375,7 +375,7 @@ export default ImportProducts
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
+fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
   method: "POST",
   credentials: "include",
 })
@@ -389,7 +389,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
 -H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
@@ -411,5 +411,4 @@ After confirming the batch job, you can check the status while it is processing 
 
 ## See Also
 
-- [Batch Jobs Overview](../../../development/batch-jobs/index.md)
-- [Batch Jobs API Reference](/api/admin/#tag/Batch-Job)
+- [Batch Jobs Overview](../../../development/batch-jobs/index.mdx)

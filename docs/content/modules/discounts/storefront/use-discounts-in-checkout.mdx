@@ -115,7 +115,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -269,7 +269,7 @@ medusa.carts.deleteDiscount(cartId, code)
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/discounts/${code}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}/discounts/${code}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -285,10 +285,3 @@ fetch(`<SERVER_URL>/store/carts/${cartId}/discounts/${code}`, {
 This request accepts the cart ID and the code of the discount to remove. If the discount is removed successfully, the request returns the updated cart object, where you won’t find the discount in the `discounts` array anymore.
 
 The totals of the cart and its items will be updated as well.
-
----
-
-## See Also
-
-- [Implement the checkout flow in a storefront](../../carts-and-checkout/storefront/implement-checkout-flow.mdx).
-- [Manage discounts using the admin APIs](../admin/manage-discounts.mdx).

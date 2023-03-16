@@ -39,7 +39,7 @@ Fulfillment Providers can also be related to a custom way of handling fulfillmen
 
 ### How Fulfillment Provider is Created
 
-A Fulfillment Provider is essentially a Medusa [Service](../../development/services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../../development/plugins/overview.md), or it can be created just as a Service file in your Medusa backend.
+A Fulfillment Provider is essentially a Medusa [Service](../../development/services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../../development/plugins/overview.mdx), or it can be created just as a Service file in your Medusa backend.
 
 As a developer, you will mainly work with the Fulfillment Provider when integrating a fulfillment method in Medusa.
 

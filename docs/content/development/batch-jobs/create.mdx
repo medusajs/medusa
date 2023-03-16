@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a batch job strategy in the Medusa backend. This guide also includes how to test your batch job strategy.'
+description: 'Learn how to create a batch job strategy in Medusa. This guide also includes how to test your batch job strategy.'
 addHowToData: true
 ---
 
@@ -8,11 +8,11 @@ import TabItem from '@theme/TabItem';
 
 # Create a Batch Job Strategy
 
-In this document, you’ll learn how to create a batch job strategy on your Medusa backend.
+In this document, you’ll learn how to create a batch job strategy in Medusa.
 
 :::info
 
-If you’re interested to learn more about what Batch Jobs are and how they work, check out [this documentation](./index.md).
+If you’re interested to learn more about what Batch Jobs are and how they work, check out [this documentation](./index.mdx).
 
 :::
 
@@ -32,11 +32,11 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ### Redis
 
-Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa server](../backend/configurations.md#redis).
+Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa backend](../backend/configurations.md#redis).
 
 ### PostgreSQL
 
-If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa server](../backend/configurations.md#postgresql-configurations).
+If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa backend](../backend/configurations.md#postgresql-configurations).
 
 ---
 
@@ -274,7 +274,7 @@ class PublishStrategy extends AbstractBatchJobStrategy {
 
 ## 5. Run Build Command
 
-After you create the batch job and before testing it out, you must run the build command in the directory of your Medusa server:
+After you create the batch job and before testing it out, you must run the build command in the directory of your Medusa backend:
 
 ```bash
 npm run build
@@ -324,7 +324,7 @@ medusa.admin.batchJobs.create({
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
+fetch(`<BACKEND_URL>/admin/batch-jobs`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -346,7 +346,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
+curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -361,7 +361,7 @@ curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
 
 You set the `dry_run` to `true` to disable automatic confirmation and running of the batch job. If you want the batch job to run automatically, you can remove this body parameter.
 
-Make sure to replace `<YOUR_SERVER>` with the backend URL where applicable.
+Make sure to replace `<BACKEND_URL>` with the backend URL where applicable.
 
 ### (Optional) Retrieve Batch Job
 
@@ -381,7 +381,7 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
+fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -394,7 +394,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
+curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
@@ -436,7 +436,7 @@ medusa.admin.batchJobs.confirm(batchJobId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
+fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
   method: "POST",
   credentials: "include",
 })
@@ -450,7 +450,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
 -H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
@@ -461,10 +461,3 @@ curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
 The batch job will start processing afterward. Based on the batch job strategy implemented in this documentation, draft products will be published.
 
 You can [retrieve the batch job](#optional-retrieve-batch-job) at any given point to check its status.
-
----
-
-## See Also
-
-- [Batch Jobs Overview](./index.md).
-- [Import products using the Admin API](../../modules/products/admin/import-products.mdx).

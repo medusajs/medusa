@@ -94,7 +94,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts`, {
+fetch(`<BACKEND_URLL>/store/carts`, {
   method: "POST",
   credentials: "include",
 })
@@ -161,7 +161,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts`, {
+fetch(`<BACKEND_URLL>/store/carts`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -232,7 +232,7 @@ export default Cart
 const id = localStorage.getItem("cart_id")
 
 if (id) {
-  fetch(`<SERVER_URL>/store/carts/${id}`, {
+  fetch(`<BACKEND_URLL>/store/carts/${id}`, {
     credentials: "include",
   })
   .then((response) => response.json())
@@ -298,7 +298,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URLL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -364,7 +364,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URLL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -426,7 +426,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URLL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -488,7 +488,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cartId}/line-items`, {
+fetch(`<BACKEND_URLL>/store/carts/${cartId}/line-items`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -564,7 +564,7 @@ export default Cart
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
+fetch(`<BACKEND_URLL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -628,7 +628,7 @@ export default Cart
 <!-- eslint-disable max-len -->
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
+fetch(`<BACKEND_URLL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: "DELETE",
   credentials: "include",
 })
@@ -648,4 +648,3 @@ It returns the updated cart.
 ## See Also
 
 - [Implement the checkout flow in your storefront](./implement-checkout-flow.mdx)
-- [Medusa JS Client Overview](../../../js-client/overview.md)

@@ -126,9 +126,3 @@ npm run start
 ```
 
 Then, try out your strategy using any of the [Products](/api/store/#tag/Product) or [Carts](/api/store/#tag/Cart) endpoints which include retrieving product variants and line items respectively. You should then see the prices in the response based on your implemented strategy.
-
----
-
-## See Also
-
-- [Price List Selection Strategy Overview](../price-selection-strategy.md)

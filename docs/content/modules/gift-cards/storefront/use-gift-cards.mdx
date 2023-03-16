@@ -113,7 +113,7 @@ export default GiftCard
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/products?is_giftcard=true`, {
+fetch(`<BACKEND_URL>/store/products?is_giftcard=true`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -188,7 +188,7 @@ export default GiftCard
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/gift-cards/${code}`, {
+fetch(`<BACKEND_URL>/store/gift-cards/${code}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -275,7 +275,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/cart/${cartId}`, {
+fetch(`<BACKEND_URL>/store/cart/${cartId}`, {
   method: "POST",
   credentials: "include",
   headers: {
@@ -321,12 +321,3 @@ You can also use the following properties to display changes on the cart’s tot
 
 - `gift_card_total`: The total amount applied by all the gift cards.
 - `gift_card_tax_total`: The total tax applied for all gift cards.
-
----
-
-## See Also
-
-- [Gift cards overview](../gift-cards.md)
-- [Manage gift cards using admin APIs](../admin/manage-gift-cards.mdx)
-- [Send the customer a gift card](../backend/send-gift-card-to-customer.md)
-- Gift cards [store](/api/store/#tag/Gift-Card) and [admin](/api/admin/#tag/Gift-Card) APIs

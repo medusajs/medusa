@@ -46,33 +46,33 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
     const navElement = sidebarRef.current.querySelector('.main-sidebar'),
       navElementBoundingRect = navElement.getBoundingClientRect();
 
-    //scroll to current active item
-    const activeItem = document.querySelector('.sidebar-desktop .menu__link--active'),
+    //logic to scroll to current active item
+    const activeItem = document.querySelector('.sidebar-desktop [aria-current=page]'),
       activeItemBoundingReact = activeItem?.getBoundingClientRect(),
-      isActiveItemVisible = activeItemBoundingReact.top >= 0 && activeItemBoundingReact.bottom <= navElementBoundingRect.height
+      //the extra 160 is due to the sticky elements in the sidebar
+      isActiveItemVisible = activeItemBoundingReact.top >= 0 && activeItemBoundingReact.bottom + 160 <= navElementBoundingRect.height
+
+    // alert(isActiveItemVisible);
     
     if (activeItem && !isActiveItemVisible) {
       //check if it has a parent list item element
-      let parentListItem = activeItem.parentElement
+      // let parentListItem = activeItem.parentElement
 
       //search only to reach the main sidebar element
-      while (parentListItem && !parentListItem.classList.contains('sidebar-desktop')) {
-        if (parentListItem.classList.contains('menu__list-item')) {
-          // if (parentListItem.firstElementChild?.classList.contains('menu__list-item-collapsible')) {
-          //   parentListItem = parentListItem.firstElementChild
-          // }
-          break;
-        }
+      // while (parentListItem && !parentListItem.classList.contains('sidebar-desktop')) {
+      //   if (parentListItem.classList.contains('menu__list-item')) {
+      //     break;
+      //   }
 
-        parentListItem = parentListItem.parentElement
-      }
+      //   parentListItem = parentListItem.parentElement
+      // }
 
-      const elementToScrollTo = parentListItem || activeItem,
+      const elementToScrollTo = activeItem,
         elementBounding = elementToScrollTo.getBoundingClientRect()
       //scroll to element
       navElement.scroll({
-        //the extra 120 is due to the sticky elements in the sidebar
-        top: elementBounding.top - navElementBoundingRect.top + navElement.scrollTop - 120,
+        //the extra 160 is due to the sticky elements in the sidebar
+        top: elementBounding.top - navElementBoundingRect.top + navElement.scrollTop - 160,
         behaviour: 'smooth'
       })
     }

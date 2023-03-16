@@ -104,5 +104,5 @@ Based on the value of `type`, one of the following relations can be used to retr
 
 ## See Also
 
-- [Create a discount using the admin APIs](./admin/manage-discounts.mdx)
+- [Manage discounts using the admin APIs](./admin/manage-discounts.mdx)
 - [Use discounts on the storefront](./storefront/use-discounts-in-checkout.mdx)

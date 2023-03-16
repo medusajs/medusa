@@ -11,13 +11,13 @@ This document will guide you through setting up the Medusa admin in minutes, as 
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
-The Medusa admin is connected to the Medusa backend. So, make sure to install the Medusa backend first before proceeding with the admin. You can check out the [quickstart guide to install the Medusa server](../development/backend/install.mdx).
+The Medusa admin is connected to the Medusa backend. So, make sure to install the Medusa backend first before proceeding with the admin. You can check out the [quickstart guide to install the Medusa backend](../development/backend/install.mdx).
 
 :::tip
 
-If you’re not very familiar with Medusa’s architecture, you can learn more about it in the [Architecture Overview](#).
+If you’re not very familiar with Medusa’s architecture, you can learn more about it in the [Architecture Overview](../development/fundamentals/architecture-overview.md).
 
 :::
 
@@ -125,7 +125,7 @@ Passwords in Medusa are hashed using the [scrypt-kdf](https://www.npmjs.com/pack
 
 ## Create a New Admin User
 
-To create a new admin user from the command line, run the following command in the directory holding your Medusa server:
+To create a new admin user from the command line, run the following command in the directory holding your Medusa backend:
 
 ```bash
 medusa user -e some@email.com -p some-password

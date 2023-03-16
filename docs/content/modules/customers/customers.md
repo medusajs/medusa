@@ -79,4 +79,3 @@ The relation between the `Customer` and `Address` entities is available on both 
 
 - [Implement customer profiles in the storefront](./storefront/implement-customer-profiles.mdx)
 - [Manage customers using the admin APIs](./admin/manage-customers.mdx)
-- Customers [Admin](/api/admin/#tag/Customer) and [Storefront](/api/store/#tag/Customer) API References

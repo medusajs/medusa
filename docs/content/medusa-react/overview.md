@@ -46,7 +46,7 @@ To use the hooks exposed by Medusa React, you need to include  the `MedusaProvi
 
 The `MedusaProvider` requires two props:
 
-1. `baseUrl`: The URL to your Medusa server
+1. `baseUrl`: The URL to your Medusa backend
 2. `queryClientProviderProps`: An object used to set the Tanstack Query client. The object requires a `client` property, which should be an instance of [QueryClient](https://tanstack.com/query/v4/docs/react/reference/QueryClient).
 
 For example:
@@ -90,7 +90,7 @@ You can also pass the following props to Medusa Provider:
 
 To fetch data from the Medusa backend (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your medusa backend.
 
-For example, to fetch products from your Medusa server:
+For example, to fetch products from your Medusa backend:
 
 ```tsx title=src/Products.ts
 import { Product } from "@medusajs/medusa"

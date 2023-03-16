@@ -33,9 +33,9 @@ Collecting this data allows us to understand certain details such as:
 
 This section covers which data in the backend are collected and how to opt out of it.
 
-### Collected Data in Server
+### Collected Data in the Backend
 
-The following data is being collected on your server:
+The following data is being collected on your backend:
 
 - Unique project ID generated with UUID.
 - Unique machine ID generated with UUID.

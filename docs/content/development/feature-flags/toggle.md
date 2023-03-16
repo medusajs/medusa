@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to toggle feature flags in the Medusa backend. This guide explains the steps required to toggle a feature flag.'
+description: 'Learn how to toggle feature flags in Medusa. This guide explains the steps required to toggle a feature flag.'
 addHowToData: true
 ---
 
@@ -33,9 +33,9 @@ For example, to enable the Tax-Inclusive Pricing beta feature, add the following
 MEDUSA_FF_TAX_INCLUSIVE_PRICING=true
 ```
 
-### Method Two: Using Backend Settings
+### Method Two: Using Backend Configurations
 
-You can enable a feature by using the backend settings in `medusa-config.js`. You can find [a feature flag’s key in the loader file](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags) it’s defined in. It is defined under the property `key` in the exported object.
+You can enable a feature by using the backend configurations in `medusa-config.js`. You can find [a feature flag’s key in the loader file](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags) it’s defined in. It is defined under the property `key` in the exported object.
 
 For example, to enable the Tax-Inclusive Pricing beta feature, add the following to the exported object in `medusa-config.js`:
 
@@ -50,9 +50,9 @@ module.exports = {
 
 ### Note About Precedence
 
-The environment variable’s value has higher precedence over the backend settings. So, if you use both these methods on your backend, the value of the environment variable will be used.
+The environment variable’s value has higher precedence over the backend configurations. So, if you use both these methods on your backend, the value of the environment variable will be used.
 
-For example, if the value of the environment variable is set to `false`, but the value of the feature flag in the backend settings is set to `true`, the feature flag will take the value of the environment variable and will be disabled.
+For example, if the value of the environment variable is set to `false`, but the value of the feature flag in the backend configurations is set to `true`, the feature flag will take the value of the environment variable and will be disabled.
 
 ### Running Migrations
 
@@ -72,7 +72,7 @@ You can learn more about migrations in this documentation.
 
 ## Disable Feature Flags
 
-Disabling feature flags follows the same process as enabling the feature flags. All you have to do is change the value in the environment variables or the backend settings to `false`.
+Disabling feature flags follows the same process as enabling the feature flags. All you have to do is change the value in the environment variables or the backend configurations to `false`.
 
 Once you disable a feature flag, all endpoints, entities, services, or other related classes and functionalities are disabled.
 
@@ -81,10 +81,3 @@ Once you disable a feature flag, all endpoints, entities, services, or other rel
 If you had the feature flag previously enabled, and you want to disable this feature flag completely, you might need to revert the migrations you ran when you enabled it.
 
 You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.md#migrations).
-
----
-
-## See Also
-
-- [Migrations Overview](../../development/entities/migrations/overview.md).
-- [Configure your Medusa server](../backend/configurations.md).

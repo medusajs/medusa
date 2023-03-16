@@ -25,7 +25,7 @@ Alternatively, you can use this button to deploy the Medusa backend to Heroku di
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
@@ -97,7 +97,7 @@ This uses the lowest plan in Stackhero Redis. You can check out [the plans and p
 
 ### 4. Configure Environment Variables on Heroku
 
-Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa Server](../../development/backend/configurations.md) document.
+Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa backend](../../development/backend/configurations.md) document.
 
 Run the following commands in the root directory of your Medusa backend to set some environment variables:
 
@@ -150,7 +150,7 @@ However, if you use another add-on, make sure to set the environment variable `D
 
 #### (Optional) Configure CORS Variables
 
-Optionally, if you've deployed the admin dashboard and you want to ensure it can use the server's REST APIs, you must set the following environment variable:
+Optionally, if you've deployed the admin dashboard and you want to ensure it can use the backend's REST APIs, you must set the following environment variable:
 
 ```bash
 heroku config:set ADMIN_CORS=<YOUR_ADMIN_URL>
@@ -158,7 +158,7 @@ heroku config:set ADMIN_CORS=<YOUR_ADMIN_URL>
 
 Where `<YOUR_ADMIN_URL>` is the URL of your admin dashboard.
 
-Similarly, if you've deployed the storefront and you want to ensure it can use the server's REST APIs, you must set the following environment variable:
+Similarly, if you've deployed the storefront and you want to ensure it can use the backend's REST APIs, you must set the following environment variable:
 
 ```bash
 heroku config:set STORE_CORS=<YOUR_STOREFRONT_URL>
@@ -166,7 +166,7 @@ heroku config:set STORE_CORS=<YOUR_STOREFRONT_URL>
 
 Where `<YOUR_STOREFRONT_URL>` is the URL of your storefront.
 
-### 5. Configure Medusa Server
+### 5. Configure Medusa Backend
 
 Before jumping into the deployment, you need to configure your Medusa backend to ensure it uses the previous environment variables and the recommended production configurations.
 
@@ -205,7 +205,7 @@ Update `scripts` to include the following scripts:
 },
 ```
 
-### 6. Launch your Medusa Server
+### 6. Launch your Medusa Backend
 
 Finally, commit and push all changes to Heroku:
 
@@ -217,9 +217,9 @@ git push heroku HEAD:master
 
 This triggers a redeploy of the Medusa backend with all the new configurations.
 
-## Test your Server
+## Test your Backend
 
-To test your backend, run the following command to retrieve the server's URL:
+To test your backend, run the following command to retrieve the backend's URL:
 
 ```bash
 heroku apps:info -a <APP_NAME>
@@ -227,13 +227,13 @@ heroku apps:info -a <APP_NAME>
 
 Where `<APP_NAME>` is the name of the app. You should see as the output a bunch of info of the app.
 
-The server's URL is available under "Web URL". You can copy it and perform requests to it to test it out.
+The backend's URL is available under "Web URL". You can copy it and perform requests to it to test it out.
 
-For example, you can send a request to `<YOUR_SERVER_URL>/store/products` and you should receive a JSON response with the products in your store.
+For example, you can send a request to `<YOUR_BACKEND_URL>/store/products` and you should receive a JSON response with the products in your store.
 
 ### Troubleshooting: Inspect Build Logs
 
-If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa server:
+If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa backend:
 
 ```bash
 heroku logs -n 500000 --remote heroku --tail -a <APP_NAME>
@@ -243,7 +243,7 @@ Where `<APP_NAME>` is the name of the app.
 
 ---
 
-## Run Commands on Your Server
+## Run Commands on Your Backend
 
 To run commands on your backend, you can use the following command:
 

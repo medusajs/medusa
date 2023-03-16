@@ -57,7 +57,7 @@ Turn on verbose output for detailed logs.
 **Default:** `false`
 
 ```bash
-medusa new test-server --verbose
+medusa new my-backend --verbose
 ```
 
 ### --no-color
@@ -69,7 +69,7 @@ Turn off colors in the output.
 **Default:** `false`
 
 ```bash
-medusa new test-server --no-color
+medusa new my-backend --no-color
 ```
 
 ### --json
@@ -79,7 +79,7 @@ Turn on JSON logger.
 **Default:** `false`
 
 ```bash
-medusa new test-server --json
+medusa new my-backend --json
 ```
 
 ### --version
@@ -101,14 +101,14 @@ medusa --version
 Create a new Medusa backend.
 
 ```bash
-medusa new [<server_name> [<starter_url>]]
+medusa new [<backend_name> [<starter_url>]]
 ```
 
 #### Arguments
 
 | Name | Description | Default |
 | --- | --- | --- |
-| `server_name` | The name of the Medusa backend. It will be used as the name of the directory created. | If not provided, you’ll be prompted to enter it. |
+| `backend_name` | The name of the Medusa backend. It will be used as the name of the directory created. | If not provided, you’ll be prompted to enter it. |
 | `starter_url` | The URL of the starter to create the backend from. | The default starter is used. |
 
 #### Options
@@ -220,5 +220,5 @@ medusa telemetry
 
 ## See Also
 
-- [Configure your Medusa server](../development/backend/configurations.md)
+- [Configure Medusa](../development/backend/configurations.md)
 - [Set up your development environment](../development/backend/prepare-environment.mdx)

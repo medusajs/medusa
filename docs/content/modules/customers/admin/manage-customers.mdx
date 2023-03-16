@@ -98,7 +98,7 @@ export default Customers
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customers`, {
+fetch(`<BACKEND_URL>/admin/customers`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -111,7 +111,7 @@ fetch(`<SERVER_URL>/admin/customers`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X GET '<SERVER_URL>/admin/customers' \
+curl -L -X GET '<BACKEND_URL>/admin/customers' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
 
@@ -192,7 +192,7 @@ export default CreateCustomer
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customers`, {
+fetch(`<BACKEND_URL>/admin/customers`, {
   method: "POST",
   credentials: "include",
 	headers: {
@@ -215,7 +215,7 @@ fetch(`<SERVER_URL>/admin/customers`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/customers' \
+curl -L -X POST '<BACKEND_URL>/admin/customers' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -296,7 +296,7 @@ export default UpdateCustomer
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/admin/customers/${customerId}`, {
+fetch(`<BACKEND_URL>/admin/customers/${customerId}`, {
   method: "POST",
   credentials: "include",
 	headers: {
@@ -316,7 +316,7 @@ fetch(`<SERVER_URL>/admin/customers/${customerId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<SERVER_URL>/admin/customers/<CUSTOMER_ID>' \
+curl -L -X POST '<BACKEND_URL>/admin/customers/<CUSTOMER_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
@@ -335,7 +335,4 @@ This request returns the updated customer object in the response.
 
 ## See Also
 
-- [Manage customer groups](./manage-customer-groups.mdx)
-- [Customers admin API reference](/api/admin)
-- [Customers overview](../customers.md)
 - [Implement customer profiles in the storefront](../storefront/implement-customer-profiles.mdx)

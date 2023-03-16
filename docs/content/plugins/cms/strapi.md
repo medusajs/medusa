@@ -75,7 +75,7 @@ Once you’re done, click the Save button at the top right.
 
 ---
 
-## Create Medusa Server
+## Create Medusa Backend
 
 :::note
 
@@ -86,14 +86,14 @@ You can use the Strapi plugin on an existing Medusa backend, however, existing d
 To create your Medusa backend, run the following command:
 
 ```bash
-medusa new medusa-server --seed
+medusa new medusa-backend --seed
 ```
 
 The `--seed` flag creates an SQLite database and seeds it with some demo data.
 
-### Configure your Server
+### Configure your Backend
 
-Once the command is done executing, change to the newly created `medusa-server` directory. Then, in `medusa-config.js`, change the exported object at the end of the file to enable Redis:
+Once the command is done executing, change to the newly created `medusa-backend` directory. Then, in `medusa-config.js`, change the exported object at the end of the file to enable Redis:
 
 ```jsx title=medusa-config.js
 module.exports = {
@@ -161,7 +161,7 @@ const plugins = [
 
 ---
 
-## Run Medusa Server
+## Run Medusa Backend
 
 Make sure the Strapi backend is still running. If not, you can run the following command to run the Strapi backend in the directory of the Strapi project:
 
@@ -169,7 +169,7 @@ Make sure the Strapi backend is still running. If not, you can run the following
 npm run develop
 ```
 
-Then, in the directory of your Medusa backend, run the following command to start the Medusa server:
+Then, in the directory of your Medusa backend, run the following command to start the Medusa backend:
 
 ```bash npm2yarn
 npm run start
@@ -195,5 +195,5 @@ If you try to update products on Medusa either using the [REST APIs](/api/admin/
 
 ## See Also
 
-- [Deploy the Medusa server](../../deployments/server/index.mdx)
+- [Deploy the Medusa backend](../../deployments/server/index.mdx)
 - [Create your own plugin](../../development/plugins/create.md)

@@ -98,7 +98,7 @@ export default Regions
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/regions`, {
+fetch(`<BACKEND_URL>/store/regions`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -163,7 +163,7 @@ export default Product
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/products?region_id=${regionId}`, {
+fetch(`<BACKEND_URL>/store/products?region_id=${regionId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -235,7 +235,7 @@ export default Cart
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/carts/${cartId}`, {
+fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -254,10 +254,3 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 In this example, you send a request to the [Update Cart](/api/store/#tag/Cart/operation/PostCartsCart) endpoint. In the request’s body, you pass the parameter `region_id` and set its value to the selected region’s ID. It is assumed that you have the ID of the region stored in the variable `regionId`.
 
 This request returns the full object of the updated cart.
-
----
-
-## See Also
-
-- [Implement cart functionalities in your storefront](../../carts-and-checkout/storefront/implement-cart.mdx)
-- [Implement checkout in your storefront](../../carts-and-checkout/storefront/implement-checkout-flow.mdx)

@@ -17,7 +17,7 @@ Railway provides a free plan that allows you to deploy your Medusa backend along
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
@@ -26,7 +26,7 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 ### Needed Accounts
 
 - A [Railway](https://railway.app/) account.
-- A [GitHub](https://github.com/) account to create a repository to host your server’s codebase.
+- A [GitHub](https://github.com/) account to create a repository to host your backend's codebase.
 
 ### Required Tools
 
@@ -137,7 +137,7 @@ It will take the backend a few minutes to deploy successfully.
 
 ### Configure Environment Variables
 
-To configure the environment variables of your Medusa server:
+To configure the environment variables of your Medusa backend:
 
 1. Click on the GitHub repository’s card.
 2. Choose the Variables tab.
@@ -163,7 +163,7 @@ It’s highly recommended to use strong, randomly generated secrets for `JWT_SE
 
 The start command is the command used to run the backend. You’ll change it to run any available migrations, then run the Medusa backend. This way if you create your own migrations or update the Medusa backend, it's guaranteed that these migrations are run first before the backend starts.
 
-To change the start command of your Medusa server:
+To change the start command of your Medusa backend:
 
 1. Click on the GitHub repository’s card.
 2. Click on the Settings tab and scroll down to the Service section.
@@ -183,7 +183,7 @@ The last step is to add a domain name to your Medusa backend. To do that:
 
 ---
 
-## Test your Server
+## Test the Backend
 
 Every change you make to the settings redeploys the backend. You can check the Deployments of the backend by clicking on the GitHub repository’s card and choosing the Deployments tab.
 
@@ -207,7 +207,7 @@ If you run into any issues or a problem with your deployed backend, you can chec
 
 ---
 
-## Run Commands on Server
+## Run Commands on the Backend
 
 To run commands on your backend, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
 

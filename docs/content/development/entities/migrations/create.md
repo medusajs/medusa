@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a migration in the Medusa backend. This guide explains how to write and run migrations.'
+description: 'Learn how to create a migration in Medusa. This guide explains how to write and run migrations.'
 addHowToData: true
 ---
 
 # How to Create Migrations
 
-In this document, you’ll learn how to create a [Migration](./overview.md) using [Typeorm](https://typeorm.io) on your Medusa backend.
+In this document, you’ll learn how to create a [Migration](./overview.mdx) using [Typeorm](https://typeorm.io) in Medusa.
 
 ## Create Migration File
 
@@ -57,6 +57,6 @@ If you check your database now you should see that the change defined by the mig
 
 ---
 
-## What’s Next
+## See Also
 
-- [Set up your development server](../../backend/prepare-environment.mdx).
+- [Create a Plugin](../../plugins/create.md)

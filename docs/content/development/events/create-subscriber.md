@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a subscriber in the Medusa backend. You can use subscribers to implement functionalities like sending an order confirmation email.'
+description: 'Learn how to create a subscriber in Medusa. You can use subscribers to implement functionalities like sending an order confirmation email.'
 addHowToData: true
 ---
 
 # How to Create a Subscriber
 
-In this document, you’ll learn how to create a [Subscriber](./subscribers.md) in your Medusa backend that listens to events to perform an action.
+In this document, you’ll learn how to create a [Subscriber](./subscribers.mdx) in Medusa that listens to events to perform an action.
 
 ## Prerequisites
 
@@ -91,5 +91,4 @@ When using attributes defined in the subscriber, such as the `productService` in
 
 ## See Also
 
-- [Events reference](./events-list.md)
-- [Create a Service](../services/create-service.md)
+- [Create a Plugin](../plugins/create.md)

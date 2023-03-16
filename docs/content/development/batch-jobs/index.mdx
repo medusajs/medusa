@@ -1,6 +1,9 @@
 ---
-description: 'Learn what batch jobs in the Medusa backend are and their flow. Batch jobs are tasks that can be performed asynchronously and iteratively in the Medusa backend.'
+description: 'Learn what batch jobs in Medusa are and their flow. Batch jobs are tasks that can be performed asynchronously and iteratively in Medusa.'
 ---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
 
 # Batch Jobs
 
@@ -10,7 +13,7 @@ In this document, you’ll learn what Batch Jobs are and how they work in Medusa
 
 Batch Jobs are tasks that can be performed asynchronously and iteratively. They can be [created using the Admin API](/api/admin/#tag/Batch-Job/operation/PostBatchJobs), then, once confirmed, they are processed asynchronously.
 
-Batch jobs require Redis, which Medusa uses as a queuing system to register and handle events. Every status change of a batch job triggers an event that can be handled using [subscribers](../events/subscribers.md).
+Batch jobs require Redis, which Medusa uses as a queuing system to register and handle events. Every status change of a batch job triggers an event that can be handled using [subscribers](../events/subscribers.mdx).
 
 Medusa uses batch jobs in its core to perform some asynchronous tasks. For example, the Export Products functionality uses batch jobs.
 
@@ -66,6 +69,27 @@ If the batch job fails at any point in this flow, its status is changed to `fail
 
 ---
 
-## What’s Next
+## Custom Development
 
-- [Batch Job’s Events Reference](../events/events-list.md#batch-jobs-events).
+Developers can create custom batch jobs in the Medusa backend, a plugin, or in a Commerce Module. Developers can also customize existing batch job strategies in the core, such as the import strategy.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/batch-jobs/create',
+    label: 'Create a Batch Job Strategy',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a batch job strategy in Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/batch-jobs/customize-import',
+    label: 'Customize Import Strategy',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to customize the import strategy in Medusa.'
+    }
+  },
+]} />

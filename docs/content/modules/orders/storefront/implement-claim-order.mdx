@@ -100,7 +100,7 @@ medusa.orders.claimOrders({
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/orders/batch/customer/token`, {
+fetch(`<BACKEND_URL>/store/orders/batch/customer/token`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({
@@ -178,7 +178,7 @@ export default ClaimOrder
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/orders/customer/confirm`, {
+fetch(`<BACKEND_URL>/store/orders/customer/confirm`, {
   method: "POST",
   credentials: "include",
   body: JSON.stringify({

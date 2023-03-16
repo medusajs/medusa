@@ -92,10 +92,3 @@ const itemTotals = await totalsService
 You can learn how to [retrieve and use services](../../../development/services/create-service.md#using-your-custom-service) in this documentation.
 
 :::
-
----
-
-## See Also
-
-- [Tax-Inclusive Pricing Overview](../inclusive-pricing.md)
-- [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md)
