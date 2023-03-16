@@ -308,7 +308,9 @@ export default class EventBusService {
       return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
     }
 
-    await this.queue_.addBulk(events)
+    if (this.config_?.projectConfig?.redis_url) {
+      await this.queue_.addBulk(events)
+    }
   }
 
   startEnqueuer(): void {
@@ -346,9 +348,11 @@ export default class EventBusService {
         }
       })
 
-      await this.queue_.addBulk(eventsData).then(async () => {
-        return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
-      })
+      if (this.config_?.projectConfig?.redis_url) {
+        await this.queue_.addBulk(eventsData).then(async () => {
+          return await stagedJobRepo.delete({ id: In(jobs.map((j) => j.id)) })
+        })
+      }
 
       await sleep(3000)
     }
