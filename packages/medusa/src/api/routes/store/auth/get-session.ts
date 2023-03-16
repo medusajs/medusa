@@ -1,4 +1,5 @@
 import CustomerService from "../../../../services/customer"
+import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/auth
@@ -52,7 +53,7 @@ export default async (req, res) => {
   const customerService: CustomerService = req.scope.resolve("customerService")
 
   const customer = await customerService.retrieve(req.user.customer_id, {
-    relations: ["shipping_addresses", "orders", "orders.items"],
+    relations: defaultRelations,
   })
 
   res.json({ customer })

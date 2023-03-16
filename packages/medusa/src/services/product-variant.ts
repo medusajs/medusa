@@ -1,4 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -11,34 +10,36 @@ import {
   SelectQueryBuilder,
 } from "typeorm"
 import {
-  IPriceSelectionStrategy,
-  PriceSelectionContext,
-  TransactionBaseService,
-} from "../interfaces"
-import {
-  MoneyAmount,
-  Product,
-  ProductOptionValue,
-  ProductVariant,
-} from "../models"
-import { CartRepository } from "../repositories/cart"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductRepository } from "../repositories/product"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
-import {
-  FindWithRelationsOptions,
-  ProductVariantRepository,
-} from "../repositories/product-variant"
-import { FindConfig } from "../types/common"
-import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
   GetRegionPriceContext,
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
+import {
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+  TransactionBaseService,
+} from "../interfaces"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import {
+  MoneyAmount,
+  Product,
+  ProductOptionValue,
+  ProductVariant,
+} from "../models"
 import { buildQuery, buildRelations, setMetadata } from "../utils"
+
+import { CartRepository } from "../repositories/cart"
 import EventBusService from "./event-bus"
+import { FindConfig } from "../types/common"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { ProductRepository } from "../repositories/product"
 import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {

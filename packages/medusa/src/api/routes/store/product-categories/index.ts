@@ -74,6 +74,11 @@ export const allowedStoreProductCategoryFields = [
 /**
  * @schema StoreGetProductCategoriesCategoryRes
  * type: object
+ * x-expanded-relations:
+ *   field: product_category
+ *   relations:
+ *     - category_children
+ *     - parent_category
  * required:
  *   - product_category
  * properties:
@@ -87,6 +92,11 @@ export type StoreGetProductCategoriesCategoryRes = {
 /**
  * @schema StoreGetProductCategoriesRes
  * type: object
+ * x-expanded-relations:
+ *   field: product_categories
+ *   relations:
+ *     - category_children
+ *     - parent_category
  * required:
  *   - product_categories
  *   - count

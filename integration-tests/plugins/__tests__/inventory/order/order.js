@@ -6,11 +6,15 @@ const { setPort, useApi } = require("../../../../helpers/use-api")
 
 const adminSeeder = require("../../../helpers/admin-seeder")
 const cartSeeder = require("../../../helpers/cart-seeder")
-const { simpleProductFactory } = require("../../../../api/factories")
+const {
+  simpleProductFactory,
+  simpleCustomerFactory,
+} = require("../../../../api/factories")
 const { simpleSalesChannelFactory } = require("../../../../api/factories")
 const {
   simpleOrderFactory,
   simpleRegionFactory,
+  simpleCartFactory,
 } = require("../../../factories")
 
 jest.setTimeout(30000)
@@ -57,6 +61,10 @@ describe("/store/carts", () => {
     let invItemId
     let variantId
     let prodVarInventoryService
+    let inventoryService
+    let stockLocationService
+    let salesChannelLocationService
+    let regionId
 
     beforeEach(async () => {
       const api = useApi()
@@ -64,13 +72,14 @@ describe("/store/carts", () => {
       prodVarInventoryService = appContainer.resolve(
         "productVariantInventoryService"
       )
-      const inventoryService = appContainer.resolve("inventoryService")
-      const stockLocationService = appContainer.resolve("stockLocationService")
-      const salesChannelLocationService = appContainer.resolve(
+      inventoryService = appContainer.resolve("inventoryService")
+      stockLocationService = appContainer.resolve("stockLocationService")
+      salesChannelLocationService = appContainer.resolve(
         "salesChannelLocationService"
       )
 
       const r = await simpleRegionFactory(dbConnection, {})
+      regionId = r.id
       await simpleSalesChannelFactory(dbConnection, {
         id: "test-channel",
         is_default: true,
@@ -143,6 +152,149 @@ describe("/store/carts", () => {
 
     describe("Fulfillments", () => {
       const lineItemId = "line-item-id"
+
+      it("Adjusts reservations on successful fulfillment on updated reservation item", async () => {
+        const api = useApi()
+
+        const lineItemId1 = "line-item-id-1"
+
+        // create new location for the inventoryItem with a quantity
+        const loc = await stockLocationService.create({ name: "test-location" })
+
+        const customer = await simpleCustomerFactory(dbConnection, {})
+
+        const cart = await simpleCartFactory(dbConnection, {
+          email: "adrien@test.com",
+          region: regionId,
+          line_items: [
+            {
+              id: lineItemId1,
+              variant_id: variantId,
+              quantity: 1,
+              unit_price: 1000,
+            },
+          ],
+          sales_channel_id: "test-channel",
+          shipping_address: {},
+          shipping_methods: [
+            {
+              shipping_option: {
+                region_id: regionId,
+              },
+            },
+          ],
+        })
+
+        await appContainer
+          .resolve("cartService")
+          .update(cart.id, { customer_id: customer.id })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 1,
+            reserved_quantity: 0,
+            available_quantity: 1,
+          })
+        )
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+        const orderId = completeRes.data.data.id
+        await salesChannelLocationService.associateLocation(
+          "test-channel",
+          locationId
+        )
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: invItemId,
+          location_id: loc.id,
+          stocked_quantity: 1,
+        })
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              stocked_quantity: 1,
+              reserved_quantity: 1,
+              available_quantity: 0,
+            }),
+            expect.objectContaining({
+              stocked_quantity: 1,
+              reserved_quantity: 0,
+              available_quantity: 1,
+            }),
+          ])
+        )
+
+        // update reservation item
+        const reservationItems = await api.get(
+          `/admin/reservations?line_item_id[]=${lineItemId1}`,
+          adminHeaders
+        )
+
+        const reservationItem = reservationItems.data.reservations[0]
+
+        const res = await api.post(
+          `/admin/reservations/${reservationItem.id}`,
+          { location_id: loc.id },
+          adminHeaders
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${orderId}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId1, quantity: 1 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(
+          fulfillmentRes.data.order.fulfillments[0].location_id
+        ).toBeTruthy()
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(0)
+        expect(inventoryItem.data.inventory_item.location_levels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              location_id: locationId,
+              stocked_quantity: 0,
+              reserved_quantity: 0,
+              available_quantity: 0,
+            }),
+            expect.objectContaining({
+              location_id: loc.id,
+              stocked_quantity: 1,
+              reserved_quantity: 0,
+              available_quantity: 1,
+            }),
+          ])
+        )
+      })
+
       it("Adjusts reservations on successful fulfillment with reservation", async () => {
         const api = useApi()
 

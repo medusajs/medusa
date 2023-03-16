@@ -362,18 +362,31 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     let locationId = context.locationId
     if (!isDefined(locationId) && context.salesChannelId) {
-      const locations = await this.salesChannelLocationService_
+      const locationIds = await this.salesChannelLocationService_
         .withTransaction(this.activeManager_)
         .listLocationIds(context.salesChannelId)
 
-      if (!locations.length) {
+      if (!locationIds.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Must provide location_id or sales_channel_id to a Sales Channel that has associated Stock Locations"
         )
       }
 
-      locationId = locations[0]
+      const [locations, count] =
+        await this.inventoryService_.listInventoryLevels({
+          location_id: locationIds,
+          inventory_item_id: variantInventory[0].inventory_item_id,
+        })
+
+      if (count === 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Must provide location_id or sales_channel_id to a Sales Channel that has associated locations with inventory levels"
+        )
+      }
+
+      locationId = locations[0].location_id
     }
 
     return await Promise.all(
