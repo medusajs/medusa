@@ -1,13 +1,12 @@
 import qs from "query-string"
 import { useContext, useEffect, useMemo, useState } from "react"
-import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
 import AddressForm, {
   AddressType,
 } from "../../../../components/templates/address-form"
 import Medusa from "../../../../services/api"
 
-import { useAdminCustomer, useAdminCustomers } from "medusa-react"
+import { useAdminCustomer } from "medusa-react"
 import { Controller, useWatch } from "react-hook-form"
 import LockIcon from "../../../../components/fundamentals/icons/lock-icon"
 import InputField from "../../../../components/molecules/input"
@@ -23,8 +22,6 @@ import { useNewOrderForm } from "../form"
 const ShippingDetails = () => {
   const [addNew, setAddNew] = useState(false)
   const { disableNextPage, enableNextPage } = useContext(SteppedContext)
-
-  const { customers } = useAdminCustomers()
 
   const {
     context: { validCountries },
@@ -57,7 +54,7 @@ const ShippingDetails = () => {
     name: "customer_id",
   })
 
-  const { customer, isLoading } = useAdminCustomer(customerId?.value!, {
+  let { customer } = useAdminCustomer(customerId?.value!, {
     enabled: !!customerId?.value,
   })
 
@@ -72,13 +69,15 @@ const ShippingDetails = () => {
       ({ country_code }) =>
         !country_code || validCountryCodes.includes(country_code)
     )
-  }, [customer])
+  }, [customer, validCountries])
 
   const onCustomerSelect = (val: Option) => {
     const email = /\(([^()]*)\)$/.exec(val?.label)
 
     if (email) {
       form.setValue("email", email[1])
+    } else {
+      form.setValue("email", "")
     }
   }
 
@@ -104,14 +103,6 @@ const ShippingDetails = () => {
     name: "email",
   })
 
-  useEffect(() => {
-    if (!email) {
-      disableNextPage()
-    } else {
-      enableNextPage()
-    }
-  }, [email])
-
   const shippingAddress = useWatch({
     control: form.control,
     name: "shipping_address",
@@ -120,7 +111,11 @@ const ShippingDetails = () => {
   const [requiredFields, setRequiredFields] = useState(false)
 
   useEffect(() => {
-    if (!email) {
+    const isEmailValid = email?.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+
+    if (!email || !isEmailValid) {
       disableNextPage()
       return
     }
@@ -139,11 +134,16 @@ const ShippingDetails = () => {
       } else {
         enableNextPage()
       }
-    } else {
-      enableNextPage()
-      setRequiredFields(false)
     }
   }, [shippingAddress, email])
+
+  useEffect(() => {
+    form.setValue("shipping_address", undefined) // TODO: reset this
+  }, [addNew])
+
+  useEffect(() => {
+    setAddNew(false)
+  }, [customerId?.value])
 
   return (
     <div className="flex min-h-[705px] flex-col gap-y-8">
@@ -192,11 +192,7 @@ const ShippingDetails = () => {
         />
       </div>
 
-      {isLoading ? (
-        <div>
-          <Spinner variant="primary" />
-        </div>
-      ) : validAddresses.length && !addNew ? (
+      {validAddresses.length && !addNew ? (
         <div>
           <span className="inter-base-semibold">Choose existing addresses</span>
           <Controller
