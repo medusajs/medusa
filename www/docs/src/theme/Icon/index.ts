@@ -1,3 +1,4 @@
+import React from "react"
 import IconAcademicCapSolid from "./AcademicCapSolid"
 import IconAdjustments from "./Adjustments"
 import IconAlert from "./Alert"
@@ -78,6 +79,8 @@ import IconToolsSolid from "./ToolsSolid"
 import IconTwitter from "./Twitter"
 import IconUser from "./User"
 import IconUsersSolid from "./UsersSolid"
+
+export type IconProps = React.HTMLAttributes<SVGAElement>
 
 export default {
   "academic-cap-solid": IconAcademicCapSolid,

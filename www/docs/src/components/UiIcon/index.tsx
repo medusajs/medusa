@@ -1,7 +1,17 @@
 import React from "react"
 import ThemedImage from "@theme/ThemedImage"
 
-export default function UiIcon({ lightIcon, darkIcon = "", alt = "" }) {
+type UiIconProps = {
+  lightIcon: string
+  darkIcon?: string
+  alt?: string
+}
+
+const UiIcon: React.FC<UiIconProps> = ({
+  lightIcon,
+  darkIcon = "",
+  alt = "",
+}) => {
   return (
     <ThemedImage
       alt={alt}
@@ -13,3 +23,5 @@ export default function UiIcon({ lightIcon, darkIcon = "", alt = "" }) {
     />
   )
 }
+
+export default UiIcon
