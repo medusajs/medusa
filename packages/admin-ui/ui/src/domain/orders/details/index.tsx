@@ -14,6 +14,7 @@ import {
   useAdminCapturePayment,
   useAdminOrder,
   useAdminRegion,
+  useAdminReservations,
   useAdminUpdateOrder,
 } from "medusa-react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -55,8 +56,9 @@ import useClipboard from "../../../hooks/use-clipboard"
 import { useHotkeys } from "react-hotkeys-hook"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 type OrderDetailFulfillment = {
   title: string
@@ -145,6 +147,23 @@ const OrderDetails = () => {
   const { region } = useAdminRegion(order?.region_id!, {
     enabled: !!order?.region_id,
   })
+  const { isFeatureEnabled } = useFeatureFlag()
+  const inventoryEnabled = isFeatureEnabled("inventoryService")
+
+  const { reservations, refetch: refetchReservations } = useAdminReservations(
+    {
+      line_item_id: order?.items.map((item) => item.id),
+    },
+    {
+      enabled: inventoryEnabled,
+    }
+  )
+
+  useEffect(() => {
+    if (inventoryEnabled) {
+      refetchReservations()
+    }
+  }, [inventoryEnabled, refetchReservations])
 
   const navigate = useNavigate()
   const notification = useNotification()
@@ -316,7 +335,7 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
 
-                <SummaryCard order={order} />
+                <SummaryCard order={order} reservations={reservations || []} />
 
                 <BodyCard
                   className={"mb-4 h-auto min-h-0 w-full"}
@@ -513,6 +532,7 @@ const OrderDetails = () => {
                 orderToFulfill={order as any}
                 handleCancel={() => setShowFulfillment(false)}
                 orderId={order.id}
+                onComplete={refetchReservations}
               />
             )}
             {showRefund && (

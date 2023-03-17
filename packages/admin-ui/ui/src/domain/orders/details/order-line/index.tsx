@@ -94,30 +94,39 @@ const ReservationIndicator = ({
   const locationMap = new Map(stock_locations?.map((l) => [l.id, l.name]) || [])
 
   const reservationsSum = sum(reservations?.map((r) => r.quantity) || [])
-  const awaitingAllocation = lineItem.quantity - reservationsSum
+
+  const allocatableSum = lineItem.quantity - (lineItem?.fulfilled_quantity || 0)
+
+  const awaitingAllocation = allocatableSum - reservationsSum
 
   return (
     <div className={awaitingAllocation ? "text-rose-50" : "text-grey-40"}>
       <Tooltip
         content={
           <div className="inter-small-regular flex flex-col items-center px-1 pt-1 pb-2">
-            <div className="gap-y-base grid grid-cols-1 divide-y">
-              {!!awaitingAllocation && (
-                <span className="flex w-full items-center">
-                  {awaitingAllocation} items await allocation
-                </span>
-              )}
-              {reservations?.map((reservation) => (
-                <EditAllocationButton
-                  key={reservation.id}
-                  locationName={locationMap.get(reservation.location_id)}
-                  totalReservedQuantity={reservationsSum}
-                  reservation={reservation}
-                  lineItem={lineItem}
-                  onClick={() => setReservation(reservation)}
-                />
-              ))}
-            </div>
+            {reservationsSum || awaitingAllocation ? (
+              <div className="gap-y-base grid grid-cols-1 divide-y">
+                {!!awaitingAllocation && (
+                  <span className="flex w-full items-center">
+                    {awaitingAllocation} items await allocation
+                  </span>
+                )}
+                {reservations?.map((reservation) => (
+                  <EditAllocationButton
+                    key={reservation.id}
+                    locationName={locationMap.get(reservation.location_id)}
+                    totalReservedQuantity={reservationsSum}
+                    reservation={reservation}
+                    lineItem={lineItem}
+                    onClick={() => setReservation(reservation)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <span className="flex w-full items-center">
+                This item has been fulfilled.
+              </span>
+            )}
           </div>
         }
         side="bottom"

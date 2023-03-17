@@ -11,19 +11,15 @@ import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
-import { useAdminReservations } from "medusa-react"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../hooks/use-toggle-state"
 
 type SummaryCardProps = {
   order: Order
+  reservations: ReservationItemDTO[]
 }
 
-const SummaryCard: React.FC<SummaryCardProps> = ({
-  order,
-}: {
-  order: Order
-}) => {
+const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
   const {
     state: allocationModalIsOpen,
     open: showAllocationModal,
@@ -34,23 +30,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
   const { isFeatureEnabled } = useFeatureFlag()
   const inventoryEnabled = isFeatureEnabled("inventoryService")
 
-  const { reservations, isLoading, refetch } = useAdminReservations(
-    {
-      line_item_id: order.items.map((item) => item.id),
-    },
-    {
-      enabled: inventoryEnabled,
-    }
-  )
-
-  React.useEffect(() => {
-    if (inventoryEnabled) {
-      refetch()
-    }
-  }, [inventoryEnabled, refetch])
-
   const reservationItemsMap = useMemo(() => {
-    if (!reservations?.length || !inventoryEnabled || isLoading) {
+    if (!reservations?.length || !inventoryEnabled) {
       return {}
     }
 
@@ -66,15 +47,17 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
       },
       {}
     )
-  }, [reservations, inventoryEnabled, isLoading])
+  }, [reservations, inventoryEnabled])
 
   const allItemsReserved = useMemo(() => {
     return order.items.every((item) => {
       const reservations = reservationItemsMap[item.id]
-      if (!reservations) {
-        return false
-      }
-      return sum(reservations.map((r) => r.quantity)) === item.quantity
+
+      return (
+        item.quantity === item.fulfilled_quantity ||
+        (reservations &&
+          sum(reservations.map((r) => r.quantity)) === item.quantity)
+      )
     })
   }, [reservationItemsMap, order])
 

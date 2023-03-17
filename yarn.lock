@@ -5841,7 +5841,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.12, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -28729,25 +28729,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-meilisearch@workspace:packages/medusa-plugin-meilisearch"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.7.12
     body-parser: ^1.19.0
-    client-sessions: ^0.8.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.39
     medusa-interfaces: ^1.3.6
-    meilisearch: 0.27.0
+    meilisearch: ^0.31.1
+    typescript: ^4.9.5
   peerDependencies:
-    medusa-interfaces: 1.3.6
+    "@medusajs/medusa": ^1.7.12
+    medusa-interfaces: ^1.3.6
   languageName: unknown
   linkType: soft
 
@@ -29027,12 +29020,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"meilisearch@npm:0.27.0":
-  version: 0.27.0
-  resolution: "meilisearch@npm:0.27.0"
+"meilisearch@npm:^0.31.1":
+  version: 0.31.1
+  resolution: "meilisearch@npm:0.31.1"
   dependencies:
     cross-fetch: ^3.1.5
-  checksum: 81903e8e5048eed7f32db0304c9829f4e9ff162a260830675b936f18223ffc0b3ca6b6f1e169563ea3cb5b39adb46a1506d96dc7ad5a1888c3a893e0e415c7ac
+  checksum: 142f3c401b56723f28376d1e323eeb9bdffecfbf880d239f38c8950663dc97c3f82cd2ef1af0b5e91cb013f63b7fa0628d63980036a1db351a27101097666237
   languageName: node
   linkType: hard
 
