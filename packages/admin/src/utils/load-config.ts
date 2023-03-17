@@ -15,6 +15,7 @@ export const loadConfig = () => {
 
   let defaultConfig: PluginOptions = {
     serve: true,
+    autoRebuild: false,
     path: "app",
   }
 
@@ -22,8 +23,8 @@ export const loadConfig = () => {
     const { options } = plugin as { options: PluginOptions }
     defaultConfig = {
       serve: options.serve ?? defaultConfig.serve,
+      autoRebuild: options.autoRebuild ?? defaultConfig.autoRebuild,
       path: options.path ?? defaultConfig.path,
-      backend: options.backend ?? defaultConfig.backend,
       outDir: options.outDir ?? defaultConfig.outDir,
     }
   }
