@@ -70,12 +70,13 @@ export default async (req, res) => {
   )) as StorePostCustomersResetPasswordReq
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  let customer = await customerService.retrieveRegisteredByEmail(
-    validated.email,
-    {
+  let customer
+
+  customer = await customerService
+    .retrieveRegisteredByEmail(validated.email, {
       select: ["id", "password_hash"],
-    }
-  )
+    })
+    .catch(() => undefined)
 
   const decodedToken = jwt.verify(
     validated.token,

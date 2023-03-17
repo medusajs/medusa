@@ -66,17 +66,19 @@ export default async (req, res) => {
     "customerService"
   ) as CustomerService
 
-  const customer = await customerService.retrieveRegisteredByEmail(
-    validated.email
-  )
+  const customer = await customerService
+    .retrieveRegisteredByEmail(validated.email)
+    .catch(() => undefined)
 
-  // Will generate a token and send it to the customer via an email provider
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await customerService
-      .withTransaction(transactionManager)
-      .generateResetPasswordToken(customer.id)
-  })
+  if (customer) {
+    // Will generate a token and send it to the customer via an email provider
+    const manager: EntityManager = req.scope.resolve("manager")
+    await manager.transaction(async (transactionManager) => {
+      return await customerService
+        .withTransaction(transactionManager)
+        .generateResetPasswordToken(customer.id)
+    })
+  }
 
   res.sendStatus(204)
 }
