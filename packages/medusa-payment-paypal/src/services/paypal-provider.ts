@@ -311,6 +311,76 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         : e.message ?? "",
     }
   }
+
+  /**
+   * Checks if a webhook is verified.
+   * @param {object} data - the verficiation data.
+   * @returns {Promise<object>} the response of the verification request.
+   */
+  async verifyWebhook(data) {
+    const verifyReq = {
+      verb: "POST",
+      path: "/v1/notifications/verify-webhook-signature",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        webhook_id: this.options_.auth_webhook_id,
+        ...data,
+      },
+    }
+
+    return this.paypal_.execute(verifyReq)
+  }
+
+  /**
+   * Upserts a webhook that listens for order authorizations.
+   */
+  async ensureWebhooks() {
+    if (!this.options_.backend_url) {
+      return
+    }
+
+    const webhookReq = {
+      verb: "GET",
+      path: "/v1/notifications/webhooks",
+    }
+    const webhookRes = await this.paypal_.execute(webhookReq)
+
+    let found
+    if (webhookRes.result && webhookRes.result.webhooks) {
+      found = webhookRes.result.webhooks.find((w) => {
+        const notificationType = w.event_types.find(
+          (e) => e.name === "PAYMENT.AUTHORIZATION.CREATED"
+        )
+        return (
+          !!notificationType &&
+          w.url === `${this.options_.backend_url}/paypal/hooks`
+        )
+      })
+    }
+
+    if (!found) {
+      const whCreateReq = {
+        verb: "POST",
+        path: "/v1/notifications/webhooks",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          id: "medusa-auth-notification",
+          url: `${this.options_.backend_url}/paypal/hooks`,
+          event_types: [
+            {
+              name: "PAYMENT.AUTHORIZATION.CREATED",
+            },
+          ],
+        },
+      }
+
+      await this.paypal_.execute(whCreateReq)
+    }
+  }
 }
 
 export default PayPalProviderService

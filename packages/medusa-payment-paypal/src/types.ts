@@ -6,17 +6,21 @@ export interface PaypalOptions {
   client_id: string
   client_secret: string
   auth_webhook_id: string
+  backend_url: string
 }
 
-export type PaypalOrder = { status: keyof typeof PaypalOrderStatus, invoice_id: string }
+export type PaypalOrder = {
+  status: keyof typeof PaypalOrderStatus
+  invoice_id: string
+}
 
 export type PurchaseUnits = {
   payments: {
     captures: { id: string }[]
     authorizations: { id: string }[]
-  },
+  }
   amount: {
-    currency_code: string,
+    currency_code: string
     value: string
   }
 }[]
