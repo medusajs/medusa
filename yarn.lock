@@ -5741,8 +5741,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
-    "@medusajs/medusa": "*"
+    "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": "*"
+    "@medusajs/types": "*"
+    "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
@@ -5750,7 +5752,7 @@ __metadata:
     typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.7.13
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
