@@ -59,6 +59,14 @@ export const defaultAdminGiftCardRelations = ["region", "order"]
 /**
  * @schema AdminGiftCardsRes
  * type: object
+ * x-expanded-relations:
+ *   field: gift_card
+ *   relations:
+ *     - order
+ *     - region
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
  * required:
  *   - gift_card
  * properties:
@@ -94,6 +102,14 @@ export type AdminGiftCardsDeleteRes = DeleteResponse
 /**
  * @schema AdminGiftCardsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: gift_cards
+ *   relations:
+ *     - order
+ *     - region
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
  * required:
  *   - gift_cards
  *   - count

@@ -114,13 +114,14 @@ export default async (req, res) => {
       await orderServiceTx.retrieve(id, {
         relations: ["fulfillments"],
       })
-    const existingFulfillmentMap = new Map(
-      existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
+    const existingFulfillmentSet = new Set(
+      existingFulfillments.map((fulfillment) => fulfillment.id)
     )
 
     await orderServiceTx.createFulfillment(id, validatedBody.items, {
       metadata: validatedBody.metadata,
       no_notification: validatedBody.no_notification,
+      location_id: validatedBody.location_id,
     })
 
     if (validatedBody.location_id) {
@@ -136,7 +137,7 @@ export default async (req, res) => {
         pvInventoryService.withTransaction(transactionManager)
 
       await updateInventoryAndReservations(
-        fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
+        fulfillments.filter((f) => !existingFulfillmentSet.has(f.id)),
         {
           inventoryService: pvInventoryServiceTx,
           locationId: validatedBody.location_id,

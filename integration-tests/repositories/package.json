@@ -17,6 +17,7 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "babel-preset-medusa-package": "*",
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "jest-environment-node": "26.6.2"
   }
 }

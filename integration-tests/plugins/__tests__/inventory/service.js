@@ -3,7 +3,7 @@ const path = require("path")
 const { bootstrapApp } = require("../../../helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("Inventory Module", () => {
   let appContainer

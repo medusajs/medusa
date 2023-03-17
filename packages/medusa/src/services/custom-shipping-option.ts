@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { CustomShippingOption } from "../models"
 import { CustomShippingOptionRepository } from "../repositories/custom-shipping-option"
@@ -75,25 +75,29 @@ class CustomShippingOptionService extends TransactionBaseService {
   /**
    * Creates a custom shipping option
    * @param data - the custom shipping option to create
-   * @param config - any configurations if needed, including meta data
    * @return resolves to the creation result
    */
-  async create(
-    data: CreateCustomShippingOptionInput
-  ): Promise<CustomShippingOption> {
-    const { cart_id, shipping_option_id, price, metadata } = data
-
+  async create<
+    T = CreateCustomShippingOptionInput | CreateCustomShippingOptionInput[],
+    TResult = T extends CreateCustomShippingOptionInput[]
+      ? CustomShippingOption[]
+      : CustomShippingOption
+  >(data: T): Promise<TResult> {
     const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
+    const data_ = (
+      Array.isArray(data) ? data : [data]
+    ) as DeepPartial<CustomShippingOption>[]
 
-    const customShippingOption = customShippingOptionRepo.create({
-      cart_id,
-      shipping_option_id,
-      price,
-      metadata,
-    })
-    return await customShippingOptionRepo.save(customShippingOption)
+    const customShippingOptions = customShippingOptionRepo.create(data_)
+    const shippingOptions = await customShippingOptionRepo.save(
+      customShippingOptions
+    )
+
+    return (Array.isArray(data)
+      ? shippingOptions
+      : shippingOptions[0]) as unknown as TResult
   }
 }
 

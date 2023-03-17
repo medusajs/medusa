@@ -12,7 +12,7 @@
     "dist"
   ],
   "author": "Medusa",
-  "license": "MIT",
+  "license": "MIT",s
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",

@@ -149,6 +149,10 @@ export type AdminDeleteProductsFromCollectionRes = {
 /**
  * @schema AdminCollectionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: collection
+ *   relations:
+ *     - products
  * required:
  *   - collection
  * properties:
