@@ -30,14 +30,17 @@ export default function (_rootDirectory: string, options: PluginOptions) {
      * build files exist, and if not, we throw an error, providing the
      * user with instructions on how to fix their build.
      */
-    try {
-      fse.ensureFileSync(htmlPath)
-    } catch (_err) {
+
+    const indexExists = fse.existsSync(htmlPath)
+
+    if (!indexExists) {
       reporter.panic(
         new Error(
           `Could not find the admin UI build files. Please run ${colors.bold(
             "`medusa-admin build`"
-          )} to build the admin UI.`
+          )} or enable ${colors.bold(
+            `autoRebuild`
+          )} in the plugin options to build the admin UI.`
         )
       )
     }

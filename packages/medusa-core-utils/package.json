@@ -25,6 +25,5 @@
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },
-  "dependencies": {},
   "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
 }
