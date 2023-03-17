@@ -1,6 +1,6 @@
+import { SearchTypes } from "@medusajs/types"
 import { SearchUtils } from "@medusajs/utils"
 import Algolia, { SearchClient } from "algoliasearch"
-import { indexTypes } from "medusa-core-utils"
 import { AlgoliaPluginOptions, SearchOptions } from "../types"
 
 class AlgoliaService extends SearchUtils.AbstractSearchService {
@@ -148,10 +148,10 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
     }
 
     switch (type) {
-      case indexTypes.products:
+      case SearchTypes.indexTypes.products:
         const productsTransformer =
-          this.config_.settings?.[indexTypes.products]?.transformer ??
-          SearchUtils.transformProduct
+          this.config_.settings?.[SearchTypes.indexTypes.products]
+            ?.transformer ?? SearchUtils.transformProduct
 
         return documents.map(productsTransformer)
       default:

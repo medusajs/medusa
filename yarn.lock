@@ -5840,7 +5840,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.12, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6007,7 +6007,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@*, @medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -28528,26 +28528,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
+    "@medusajs/types": "*"
+    "@medusajs/utils": "*"
     algoliasearch: ^4.15.0
-    body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
     jest: ^25.5.4
-    lodash: ^4.17.21
-    medusa-core-utils: ^1.1.39
-    medusa-interfaces: ^1.3.6
-  peerDependencies:
-    medusa-interfaces: 1.3.6
-    typeorm: 0.x
   languageName: unknown
   linkType: soft
 
@@ -28721,18 +28707,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-meilisearch@workspace:packages/medusa-plugin-meilisearch"
   dependencies:
-    "@medusajs/medusa": ^1.7.12
-    body-parser: ^1.19.0
+    "@medusajs/types": "*"
+    "@medusajs/utils": "*"
     cross-env: ^5.2.1
     jest: ^25.5.4
-    lodash: ^4.17.21
-    medusa-core-utils: ^1.1.39
-    medusa-interfaces: ^1.3.6
     meilisearch: ^0.31.1
     typescript: ^4.9.5
-  peerDependencies:
-    "@medusajs/medusa": ^1.7.12
-    medusa-interfaces: ^1.3.6
   languageName: unknown
   linkType: soft
 

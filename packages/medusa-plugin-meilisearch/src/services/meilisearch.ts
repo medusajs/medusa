@@ -1,6 +1,5 @@
 import { SearchTypes } from "@medusajs/types"
 import { SearchUtils } from "@medusajs/utils"
-import { indexTypes } from "medusa-core-utils"
 import { MeiliSearch, Settings } from "meilisearch"
 import { meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
 
@@ -109,10 +108,10 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
     }
 
     switch (type) {
-      case indexTypes.products:
+      case SearchTypes.indexTypes.products:
         const productsTransformer =
-          this.config_.settings?.[indexTypes.products]?.transformer ??
-          SearchUtils.transformProduct
+          this.config_.settings?.[SearchTypes.indexTypes.products]
+            ?.transformer ?? SearchUtils.transformProduct
 
         return documents.map(productsTransformer)
       default:
