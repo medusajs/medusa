@@ -5,12 +5,17 @@ import { omit } from "lodash"
 import {
   CartService,
   PricingService,
+  ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
 import ProductVariantService from "../../../../services/product-variant"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
 import { IsType } from "../../../../utils/validators/is-type"
+import { joinLevels } from "../inventory-items/utils/join-levels"
+import { IInventoryService } from "../../../../interfaces"
+import { PricedVariant } from "../../../../types/pricing"
+import { ResponseInventoryItem } from "./get-inventory"
 
 /**
  * @oas [get] /admin/variants
@@ -113,6 +118,10 @@ export default async (req, res) => {
     "productVariantService"
   )
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
@@ -125,6 +134,12 @@ export default async (req, res) => {
     "customer_id",
   ])
 
+  const indexOfAvailable = req.listConfig.relations.indexOf("available")
+
+  if (indexOfAvailable > -1) {
+    req.listConfig.relations.splice(indexOfAvailable, 1)
+  }
+
   const [rawVariants, count] = await variantService.listAndCount(
     cleanFilterableFields,
     req.listConfig
@@ -132,6 +147,7 @@ export default async (req, res) => {
 
   let regionId = req.validatedQuery.region_id
   let currencyCode = req.validatedQuery.currency_code
+
   if (req.validatedQuery.cart_id) {
     const cart = await cartService.retrieve(req.validatedQuery.cart_id, {
       select: ["id", "region_id"],
@@ -151,12 +167,29 @@ export default async (req, res) => {
     include_discount_prices: true,
   })
 
+  if (indexOfAvailable > -1 && inventoryService) {
+    await Promise.all(
+      variants.map(async (variant: VariantWithInventory) => {
+        const inventory =
+          await productVariantInventoryService.listInventoryItemsByVariant(
+            variant.id!
+          )
+        variant.inventory = await joinLevels(inventory, [], inventoryService)
+        return variant
+      })
+    )
+  }
+
   res.json({
     variants,
     count,
     offset: req.listConfig.offset,
     limit: req.listConfig.limit,
   })
+}
+
+type VariantWithInventory = PricedVariant & {
+  inventory?: ResponseInventoryItem[]
 }
 
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {
