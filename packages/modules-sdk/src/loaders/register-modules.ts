@@ -1,17 +1,22 @@
 import resolveCwd from "resolve-cwd"
 
+import MODULE_DEFINITIONS from "../definitions"
 import {
-  MedusaModuleConfig,
+  ExternalModuleDeclaration,
   InternalModuleDeclaration,
   ModuleDefinition,
   ModuleResolution,
   MODULE_SCOPE,
 } from "../types"
-import MODULE_DEFINITIONS from "../definitions"
 
-export const registerModules = ({
-  modules,
-}: MedusaModuleConfig): Record<string, ModuleResolution> => {
+export const registerModules = (
+  modules?: Record<
+    string,
+    | false
+    | string
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+  >
+): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
   const projectModules = modules ?? {}
 
@@ -26,10 +31,32 @@ export const registerModules = ({
 
     moduleResolutions[definition.key] = getInternalModuleResolution(
       definition,
-      projectModules[definition.key] as
-        | InternalModuleDeclaration
-        | false
-        | string
+      customConfig as InternalModuleDeclaration
+    )
+  }
+
+  return moduleResolutions
+}
+
+export const registerMedusaModule = (
+  moduleKey: string,
+  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+): Record<string, ModuleResolution> => {
+  const moduleResolutions = {} as Record<string, ModuleResolution>
+
+  for (const definition of MODULE_DEFINITIONS) {
+    if (definition.key !== moduleKey) {
+      continue
+    }
+
+    if (moduleDeclaration.scope === MODULE_SCOPE.EXTERNAL) {
+      // TODO: getExternalModuleResolution(...)a
+      throw new Error("External Modules are not supported yet.")
+    }
+
+    moduleResolutions[definition.key] = getInternalModuleResolution(
+      definition,
+      moduleDeclaration as InternalModuleDeclaration
     )
   }
 

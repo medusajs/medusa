@@ -2,6 +2,7 @@ import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 
 import migrations from "./migrations"
+import { revertMigration, runMigrations } from "./migrations/run-migration"
 import * as InventoryModels from "./models"
 import InventoryService from "./services/inventory"
 
@@ -16,6 +17,12 @@ const moduleDefinition: ModuleExports = {
   migrations,
   loaders,
   models,
+  runMigrations,
+  revertMigration,
 }
 
 export default moduleDefinition
+
+export * from "./initialize"
+export * from "./types"
+

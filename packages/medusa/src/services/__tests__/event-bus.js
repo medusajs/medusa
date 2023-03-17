@@ -24,11 +24,18 @@ describe("EventBusService", () => {
         find: () => Promise.resolve([]),
       })
 
-      eventBus = new EventBusService({
-        manager: MockManager,
-        stagedJobRepository,
-        logger: loggerMock,
-      })
+      eventBus = new EventBusService(
+        {
+          manager: MockManager,
+          stagedJobRepository,
+          logger: loggerMock,
+        },
+        {
+          projectConfig: {
+            redis_url: "localhost",
+          },
+        }
+      )
     })
 
     afterAll(async () => {
@@ -49,10 +56,17 @@ describe("EventBusService", () => {
     beforeEach(() => {
       jest.resetAllMocks()
 
-      eventBus = new EventBusService({
-        manager: MockManager,
-        logger: loggerMock,
-      })
+      eventBus = new EventBusService(
+        {
+          manager: MockManager,
+          logger: loggerMock,
+        },
+        {
+          projectConfig: {
+            redis_url: "localhost",
+          },
+        }
+      )
     })
 
     afterAll(async () => {
@@ -135,11 +149,18 @@ describe("EventBusService", () => {
           create: (data) => data,
         })
 
-        eventBus = new EventBusService({
-          logger: loggerMock,
-          manager: mockManager,
-          stagedJobRepository,
-        })
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: mockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: {
+              redis_url: "localhost",
+            },
+          }
+        )
 
         eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
       })
@@ -195,11 +216,18 @@ describe("EventBusService", () => {
           create: (data) => data,
         })
 
-        eventBus = new EventBusService({
-          logger: loggerMock,
-          manager: mockManager,
-          stagedJobRepository,
-        })
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: mockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: {
+              redis_url: "localhost",
+            },
+          }
+        )
 
         eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
       })
@@ -285,7 +313,10 @@ describe("EventBusService", () => {
             stagedJobRepository,
           },
           {
-            projectConfig: { event_options: { removeOnComplete: 10 } },
+            projectConfig: {
+              event_options: { removeOnComplete: 10 },
+              redis_url: "localhost",
+            },
           }
         )
 
@@ -323,11 +354,18 @@ describe("EventBusService", () => {
           create: (data) => data,
         })
 
-        eventBus = new EventBusService({
-          logger: loggerMock,
-          manager: mockManager,
-          stagedJobRepository,
-        })
+        eventBus = new EventBusService(
+          {
+            logger: loggerMock,
+            manager: mockManager,
+            stagedJobRepository,
+          },
+          {
+            projectConfig: {
+              redis_url: "localhost",
+            },
+          }
+        )
 
         eventBus.queue_.addBulk.mockImplementationOnce(() => "hi")
 
@@ -370,7 +408,10 @@ describe("EventBusService", () => {
             stagedJobRepository,
           },
           {
-            projectConfig: { event_options: { removeOnComplete: 10 } },
+            projectConfig: {
+              event_options: { removeOnComplete: 10 },
+              redis_url: "localhost",
+            },
           }
         )
 
@@ -418,14 +459,11 @@ describe("EventBusService", () => {
           find: () => Promise.resolve([]),
         })
 
-        eventBus = new EventBusService(
-          {
-            manager: MockManager,
-            stagedJobRepository,
-            logger: loggerMock,
-          },
-          {}
-        )
+        eventBus = new EventBusService({
+          manager: MockManager,
+          stagedJobRepository,
+          logger: loggerMock,
+        })
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
