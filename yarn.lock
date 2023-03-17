@@ -4053,6 +4053,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ioredis/commands@npm:^1.1.1":
+  version: 1.2.0
+  resolution: "@ioredis/commands@npm:1.2.0"
+  checksum: a5d3c29dd84d8a28b7c67a441ac1715cbd7337a7b88649c0f17c345d89aa218578d2b360760017c48149ef8a70f44b051af9ac0921a0622c2b479614c4f65b36
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -5699,13 +5706,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/cache-inmemory"
   dependencies:
-    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.11
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5713,13 +5721,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-redis@workspace:packages/cache-redis"
   dependencies:
-    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
     cross-env: ^5.2.1
+    ioredis: ^5.3.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.11
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5743,7 +5753,7 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": "*"
-    "@medusajs/types": "*"
+    "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -5852,7 +5862,9 @@ __metadata:
     "@babel/core": ^7.14.3
     "@babel/preset-typescript": ^7.13.0
     "@medusajs/medusa-cli": ^1.3.8
-    "@medusajs/modules-sdk": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jest": ^27.5.2
@@ -5909,6 +5921,7 @@ __metadata:
     uuid: ^8.3.2
     winston: ^3.8.2
   peerDependencies:
+    "@medusajs/types": ^0.0.1
     medusa-interfaces: 1.3.6
     typeorm: ^0.3.11
   bin:
@@ -5916,7 +5929,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@*, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@*, @medusajs/modules-sdk@^0.0.1, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
@@ -5986,8 +5999,8 @@ __metadata:
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
     "@medusajs/medusa": ^1.7.7
-    "@medusajs/modules-sdk": "*"
-    "@medusajs/types": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -6001,7 +6014,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -6015,7 +6028,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
-    "@medusajs/types": "*"
+    "@medusajs/types": ^0.0.1
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
@@ -17560,6 +17573,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"denque@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "denque@npm:2.1.0"
+  checksum: f9ef81aa0af9c6c614a727cb3bd13c5d7db2af1abf9e6352045b86e85873e629690f6222f4edd49d10e4ccf8f078bbeec0794fafaf61b659c0589d0c511ec363
+  languageName: node
+  linkType: hard
+
 "depd@npm:2.0.0, depd@npm:~2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
@@ -23393,6 +23413,23 @@ __metadata:
     redis-parser: ^3.0.0
     standard-as-callback: ^2.1.0
   checksum: 6fd12957d2906f83d8aa662ba78d084df16dc7c1a0e6e18c512302ac94339dcd5936d2e7cd6f89e9e7b511e3cf96617ca2fdea63aa4679bfdf48aa2be441ad76
+  languageName: node
+  linkType: hard
+
+"ioredis@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "ioredis@npm:5.3.1"
+  dependencies:
+    "@ioredis/commands": ^1.1.1
+    cluster-key-slot: ^1.1.0
+    debug: ^4.3.4
+    denque: ^2.1.0
+    lodash.defaults: ^4.2.0
+    lodash.isarguments: ^3.1.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+    standard-as-callback: ^2.1.0
+  checksum: 52277fd278e1a29fed020c1fb6238dd82e1b0f7b2b9bd052787ba6d6785fb153d7ce8276b354ba542cdb6005b5d9a3b439f7c811ef5852223b8367332acebe12
   languageName: node
   linkType: hard
 

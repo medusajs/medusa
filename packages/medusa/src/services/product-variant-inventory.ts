@@ -1,11 +1,7 @@
+import { ICacheService, IStockLocationService } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
-import {
-  ICacheService,
-  IInventoryService,
-  IStockLocationService,
-  TransactionBaseService,
-} from "../interfaces"
+import { IInventoryService, TransactionBaseService } from "../interfaces"
 import { LineItem, Product, ProductVariant } from "../models"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import {

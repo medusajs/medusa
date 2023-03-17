@@ -1,10 +1,13 @@
-import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
+import { MedusaError } from "medusa-core-utils"
 import { In } from "typeorm"
 
-import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
-import { TaxProviderRepository } from "../repositories/tax-provider"
+import {
+  ITaxService,
+  ItemTaxCalculationLine,
+  TaxCalculationContext,
+  TransactionBaseService,
+} from "../interfaces"
 import {
   Cart,
   LineItem,
@@ -14,19 +17,16 @@ import {
   ShippingMethodTaxLine,
   TaxProvider,
 } from "../models"
+import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
+import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
+import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
-import {
-  ICacheService,
-  ITaxService,
-  ItemTaxCalculationLine,
-  TaxCalculationContext,
-  TransactionBaseService,
-} from "../interfaces"
 
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
 
-import TaxRateService from "./tax-rate"
+import { ICacheService } from "@medusajs/types"
 import EventBusService from "./event-bus"
+import TaxRateService from "./tax-rate"
 
 type RegionDetails = {
   id: string

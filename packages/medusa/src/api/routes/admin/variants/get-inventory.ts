@@ -1,15 +1,15 @@
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-} from "../../../../types/inventory"
-import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
+import { IInventoryService } from "../../../../interfaces"
+import { SalesChannel } from "../../../../models"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
-import { SalesChannel } from "../../../../models"
-import { IInventoryService } from "../../../../interfaces"
 import ProductVariantService from "../../../../services/product-variant"
+import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
+import {
+  InventoryItemDTO,
+  InventoryLevelDTO,
+} from "../../../../types/inventory"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
