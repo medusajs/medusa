@@ -1,4 +1,8 @@
-export const validatePath = (path: string) => {
+export const validatePath = (path?: string) => {
+  if (!path) {
+    return
+  }
+
   if (path.startsWith("/")) {
     throw new Error(`Path cannot start with a slash.`)
   }
