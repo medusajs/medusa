@@ -56,7 +56,7 @@ const ShippingDetails = () => {
     name: "customer_id",
   })
 
-  let { customer } = useAdminCustomer(customerId?.value!, {
+  const { customer } = useAdminCustomer(customerId?.value!, {
     enabled: !!customerId?.value,
   })
 
