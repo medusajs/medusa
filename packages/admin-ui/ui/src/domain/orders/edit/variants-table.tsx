@@ -103,9 +103,9 @@ const VariantsTable: React.FC<Props> = (props) => {
           </div>
         ),
         accessor: "inventory_quantity",
-        Cell: ({ row: { original } }) => (
-          <div className="text-right">{original.inventory_quantity}</div>
-        ),
+        Cell: ({ row: { original } }) => {
+          return <div className="text-right">{original.inventory_quantity}</div>
+        },
       },
       {
         Header: (
