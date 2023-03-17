@@ -91,9 +91,7 @@ export default async (req, res) => {
   }
 
   const result = await manager.transaction(async (manager) => {
-    await inventoryService
-      .withTransaction(manager)
-      .updateReservationItem(id, validatedBody)
+    await inventoryService.updateReservationItem(id, validatedBody)
   })
 
   res.status(200).json({ reservation: result })

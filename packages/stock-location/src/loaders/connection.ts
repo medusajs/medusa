@@ -2,13 +2,13 @@ import {
   InternalModuleDeclaration,
   LoaderOptions,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
+  MODULE_SCOPE
 } from "@medusajs/modules-sdk"
-import { DataSource, DataSourceOptions } from "typeorm"
-
-import * as StockLocationModels from "../models"
-import { MedusaError } from "medusa-core-utils"
 import { asValue } from "awilix"
+import { MedusaError } from "medusa-core-utils"
+import { DataSource, DataSourceOptions } from "typeorm"
+import * as StockLocationModels from "../models"
+import { StockLocationServiceInitializeOptions } from "../types"
 
 export default async (
   { options, container }: LoaderOptions,
@@ -21,7 +21,8 @@ export default async (
     return
   }
 
-  const dbData = options?.database as Record<string, string>
+  const dbData =
+    options?.database as StockLocationServiceInitializeOptions["database"]
 
   if (!dbData) {
     throw new MedusaError(
@@ -32,13 +33,13 @@ export default async (
 
   const entities = Object.values(StockLocationModels)
   const dataSource = new DataSource({
-    type: dbData.database_type,
-    url: dbData.database_url,
-    database: dbData.database_database,
-    extra: dbData.database_extra || {},
-    schema: dbData.database_schema,
+    type: dbData.type,
+    url: dbData.url,
+    database: dbData.database,
+    extra: dbData.extra || {},
+    schema: dbData.schema,
     entities,
-    logging: dbData.database_logging,
+    logging: dbData.logging,
   } as DataSourceOptions)
 
   await dataSource.initialize()

@@ -20,8 +20,8 @@ type InjectedDependencies = {
 
 class SalesChannelLocationService extends TransactionBaseService {
   protected readonly salesChannelService_: SalesChannelService
-  protected readonly eventBusService: EventBusTypes.IEventBusService
-  protected readonly stockLocationService: IStockLocationService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
+  protected readonly stockLocationService_: IStockLocationService
 
   constructor({
     salesChannelService,
@@ -32,8 +32,8 @@ class SalesChannelLocationService extends TransactionBaseService {
     super(arguments[0])
 
     this.salesChannelService_ = salesChannelService
-    this.eventBusService = eventBusService
-    this.stockLocationService = stockLocationService
+    this.eventBusService_ = eventBusService
+    this.stockLocationService_ = stockLocationService
   }
 
   /**
@@ -79,9 +79,9 @@ class SalesChannelLocationService extends TransactionBaseService {
       .withTransaction(this.activeManager_)
       .retrieve(salesChannelId)
 
-    if (this.stockLocationService) {
+    if (this.stockLocationService_) {
       // trhows error if not found
-      await this.stockLocationService.retrieve(locationId)
+      await this.stockLocationService_.retrieve(locationId)
     }
 
     const salesChannelLocation = this.activeManager_.create(
@@ -131,7 +131,7 @@ class SalesChannelLocationService extends TransactionBaseService {
    */
   async listSalesChannelIds(locationId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
-    const location = await this.stockLocationService.retrieve(locationId)
+    const location = await this.stockLocationService_.retrieve(locationId)
 
     const salesChannelLocations = await manager.find(SalesChannelLocation, {
       where: { location_id: location.id },
