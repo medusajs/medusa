@@ -1,23 +1,13 @@
 import { EOL } from "os"
-import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
+import { ContainerUtils } from "@medusajs/utils"
 import {
-  ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleResolution,
 } from "../../types"
 
 import { moduleLoader } from "../module-loader"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
-
-function asArray(
-  resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
-): { resolve: (container: AwilixContainer) => unknown[] } {
-  return {
-    resolve: (container: AwilixContainer): unknown[] =>
-      resolvers.map((resolver) => container.build(resolver)),
-  }
-}
 
 const logger = {
   warn: jest.fn(),
@@ -32,7 +22,7 @@ describe("modules loader", () => {
   })
 
   beforeEach(() => {
-    container = createMedusaContainer()
+    container = ContainerUtils.createMedusaContainer()
   })
 
   it("registers service as undefined in container when no resolution path is given", async () => {

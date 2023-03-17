@@ -4,7 +4,7 @@ import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
@@ -24,7 +24,7 @@ import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 
 import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
-import { createMedusaContainer } from "medusa-core-utils"
+import { ContainerUtils } from "@medusajs/utils"
 
 type Options = {
   directory: string
@@ -38,12 +38,12 @@ export default async ({
   isTest,
 }: Options): Promise<{
   container: MedusaContainer
-  dbConnection: Connection
+  dbConnection: DataSource
   app: Express
 }> => {
   const configModule = loadConfig(rootDirectory)
 
-  const container = createMedusaContainer()
+  const container = ContainerUtils.createMedusaContainer()
   container.register("configModule", asValue(configModule))
 
   // Add additional information to context of request

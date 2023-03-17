@@ -1,19 +1,19 @@
 import { asFunction, asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
+import { ContainerUtils } from "@medusajs/utils"
 import { trackInstallation } from "medusa-telemetry"
 import {
   Constructor,
   InternalModuleDeclaration,
   Logger,
-  MedusaContainer,
-  ModuleExports,
-  ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleExports,
+  ModuleResolution,
 } from "../../types"
+import { ContainerTypes } from "@medusajs/types";
 
 export async function loadInternalModule(
-  container: MedusaContainer,
+  container: ContainerTypes.MedusaContainer,
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
@@ -55,8 +55,8 @@ export async function loadInternalModule(
 
   const localContainer =
     resources === MODULE_RESOURCE_TYPE.ISOLATED
-      ? createMedusaContainer()
-      : (container.createScope() as MedusaContainer)
+      ? ContainerUtils.createMedusaContainer()
+      : (container.createScope() as ContainerTypes.MedusaContainer)
 
   if (resources === MODULE_RESOURCE_TYPE.ISOLATED) {
     const moduleDependencies = resolution?.dependencies ?? []
@@ -95,7 +95,7 @@ export async function loadInternalModule(
 
   const moduleService = loadedModule.service
   container.register({
-    [registrationName]: asFunction((cradle) => {
+    [registrationName]: asFunction(() => {
       return new moduleService(
         localContainer.cradle,
         resolution.options,

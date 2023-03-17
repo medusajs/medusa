@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
+import { ContainerTypes } from "@medusajs/types"
 import { Request } from "express"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
@@ -31,7 +31,7 @@ export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
 
-export type MedusaContainer = coreMedusaContainer
+export type MedusaContainer = ContainerTypes.MedusaContainer
 
 export type Logger = _Logger & {
   progress: (activityId: string, msg: string) => void

@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@medusajs/medusa": "^1.7.12",
+    "@medusajs/types": "*",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-interfaces": "^1.3.6",

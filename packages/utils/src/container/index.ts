@@ -1,3 +1,4 @@
+import { ContainerTypes } from "@medusajs/types";
 import {
   asFunction,
   asValue,
@@ -6,11 +7,6 @@ import {
   createContainer,
   Resolver,
 } from "awilix"
-
-export type MedusaContainer = AwilixContainer & {
-  registerAdd: <T>(name: string, registration: T) => MedusaContainer
-  createScope: () => MedusaContainer
-}
 
 function asArray(
   resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
@@ -22,7 +18,7 @@ function asArray(
 }
 
 function registerAdd(
-  this: MedusaContainer,
+  this: ContainerTypes.MedusaContainer,
   name: string,
   registration: typeof asFunction | typeof asValue
 ) {
@@ -44,14 +40,14 @@ function registerAdd(
   return this
 }
 
-export function createMedusaContainer(...args): MedusaContainer {
-  const container = createContainer.apply(null, args) as MedusaContainer
+export function createMedusaContainer(...args): ContainerTypes.MedusaContainer {
+  const container = createContainer.apply(null, args) as ContainerTypes.MedusaContainer
 
   container.registerAdd = registerAdd.bind(container)
 
   const originalScope = container.createScope
   container.createScope = () => {
-    const scoped = originalScope() as MedusaContainer
+    const scoped = originalScope() as ContainerTypes.MedusaContainer
     scoped.registerAdd = registerAdd.bind(scoped)
 
     return scoped

@@ -1,7 +1,6 @@
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
+import { ContainerTypes } from "@medusajs/types"
 import { Logger as _Logger } from "winston"
 
-export type MedusaContainer = coreMedusaContainer
 export type Constructor<T> = new (...args: any[]) => T
 
 export type LogLevel =
@@ -69,7 +68,7 @@ export type ModuleDefinition = {
 }
 
 export type LoaderOptions = {
-  container: MedusaContainer
+  container: ContainerTypes.MedusaContainer
   options?: Record<string, unknown>
   logger?: Logger
 }
