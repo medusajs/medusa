@@ -11,7 +11,13 @@ import {
   capturePaymentContextSuccessData,
   initiatePaymentContextFail,
   initiatePaymentContextSuccess,
+  refundPaymentFailData,
+  refundPaymentFailNotYetCapturedData,
   refundPaymentSuccessData,
+  retrievePaymentFailData,
+  retrievePaymentSuccessData,
+  updatePaymentFailData,
+  updatePaymentSuccessData,
 } from "../__fixtures__/data"
 import PayPalMock, {
   INVOICE_ID,
@@ -21,6 +27,11 @@ import { roundToTwo } from "../utils/utils"
 import { humanizeAmount } from "medusa-core-utils"
 
 const container = {}
+const paypalConfig = {
+  sandbox: true,
+  client_id: "fake",
+  client_secret: "fake",
+}
 
 describe("PaypalProvider", () => {
   describe("getPaymentStatus", function () {
@@ -28,11 +39,7 @@ describe("PaypalProvider", () => {
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
-      paypalProvider = new PaypalProvider(scopedContainer, {
-        sandbox: true,
-        client_id: "fake",
-        client_secret: "fake",
-      })
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
     })
 
     beforeEach(() => {
@@ -84,11 +91,7 @@ describe("PaypalProvider", () => {
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
-      paypalProvider = new PaypalProvider(scopedContainer, {
-        sandbox: true,
-        client_id: "fake",
-        client_secret: "fake",
-      })
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
     })
 
     beforeEach(() => {
@@ -155,11 +158,7 @@ describe("PaypalProvider", () => {
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
-      paypalProvider = new PaypalProvider(scopedContainer, {
-        sandbox: true,
-        client_id: "fake",
-        client_secret: "fake",
-      })
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
     })
 
     beforeEach(() => {
@@ -183,11 +182,7 @@ describe("PaypalProvider", () => {
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
-      paypalProvider = new PaypalProvider(scopedContainer, {
-        sandbox: true,
-        client_id: "fake",
-        client_secret: "fake",
-      })
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
     })
 
     beforeEach(() => {
@@ -272,11 +267,7 @@ describe("PaypalProvider", () => {
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
-      paypalProvider = new PaypalProvider(scopedContainer, {
-        sandbox: true,
-        client_id: "fake",
-        client_secret: "fake",
-      })
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
     })
 
     beforeEach(() => {
@@ -317,11 +308,7 @@ describe("PaypalProvider", () => {
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
-      paypalProvider = new PaypalProvider(scopedContainer, {
-        sandbox: true,
-        client_id: "fake",
-        client_secret: "fake",
-      })
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
     })
 
     beforeEach(() => {
@@ -334,22 +321,131 @@ describe("PaypalProvider", () => {
         refundAmount
       )
 
+      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalled()
+      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalledWith(
+        refundPaymentSuccessData.purchase_units[0].payments.captures[0].id
+      )
+
       expect(result).toEqual({
         id: refundPaymentSuccessData.id,
+        invoice_id: INVOICE_ID,
+        status: PaymentIntentDataByStatus[refundPaymentSuccessData.id].status,
       })
     })
-    /*
-    it("should fail on refund creation", async () => {
+
+    it("should fail if not already captured", async () => {
+      const result = await paypalProvider.refundPayment(
+        refundPaymentFailNotYetCapturedData,
+        refundAmount
+      )
+
+      expect(PayPalMock.payments.CapturesRefundRequest).not.toHaveBeenCalled()
+
+      expect(result).toEqual({
+        code: "",
+        detail: "The order has not yet been captured. Unable to refund",
+        error: "An error occurred in refundPayment",
+      })
+    })
+
+    it("should fail", async () => {
       const result = await paypalProvider.refundPayment(
         refundPaymentFailData,
         refundAmount
       )
 
+      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalled()
+      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalledWith(
+        refundPaymentFailData.purchase_units[0].payments.captures[0].id
+      )
+
       expect(result).toEqual({
-        error: "An error occurred in refundPayment",
+        code: "",
+        detail: "Error",
+        error: "An error occurred in retrievePayment",
+      })
+    })
+  })
+
+  describe("retrievePayment", function () {
+    let paypalProvider
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed", async () => {
+      const result = await paypalProvider.retrievePayment(
+        retrievePaymentSuccessData
+      )
+
+      expect(result).toEqual({
+        id: retrievePaymentSuccessData.id,
+        invoice_id: INVOICE_ID,
+        status: PaymentIntentDataByStatus[retrievePaymentSuccessData.id].status,
+      })
+    })
+
+    it("should fail on refund creation", async () => {
+      const result = await paypalProvider.retrievePayment(
+        retrievePaymentFailData
+      )
+
+      expect(result).toEqual({
+        error: "An error occurred in retrievePayment",
         code: "",
         detail: "Error",
       })
-    })*/
+    })
+  })
+
+  describe("updatePayment", function () {
+    let paypalProvider
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      paypalProvider = new PaypalProvider(scopedContainer, paypalConfig)
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed", async () => {
+      const result = await paypalProvider.updatePayment(
+        updatePaymentSuccessData
+      )
+
+      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalled()
+      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalledWith(
+        updatePaymentSuccessData.paymentSessionData.id
+      )
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          session_data: expect.any(Object),
+        })
+      )
+    })
+
+    it("should fail", async () => {
+      const result = await paypalProvider.updatePayment(updatePaymentFailData)
+
+      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalled()
+      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalledWith(
+        updatePaymentFailData.paymentSessionData.id
+      )
+
+      expect(result).toEqual({
+        code: "",
+        detail: "Error.",
+        error: "An error occurred in initiatePayment",
+      })
+    })
   })
 })

@@ -51,7 +51,11 @@ export const PayPalMock = {
         capture: true,
       }
     }),
-    CapturesRefundRequest: jest.fn().mockImplementation(() => {
+    CapturesRefundRequest: jest.fn().mockImplementation((paymentId) => {
+      if (paymentId === FAIL_INTENT_ID) {
+        throw new Error("Error")
+      }
+
       return {
         result: {
           id: "test",
@@ -75,15 +79,19 @@ export const PayPalMock = {
         order: true,
         body: null,
         requestBody: function (d) {
-          if (d.purchase_units[0].custom_id === SUCCESS_INTENT) {
-            this.body = d
-            return
+          if (d.purchase_units[0].custom_id === FAIL_INTENT_ID) {
+            throw new Error("Error.")
           }
-          throw new Error("Error.")
+
+          this.body = d
         }
       }
     }),
-    OrdersPatchRequest: jest.fn().mockImplementation(() => {
+    OrdersPatchRequest: jest.fn().mockImplementation((id) => {
+      if (id === FAIL_INTENT_ID) {
+        throw new Error("Error.")
+      }
+
       return {
         result: {
           id: "test",

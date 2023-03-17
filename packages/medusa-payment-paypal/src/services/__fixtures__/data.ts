@@ -137,6 +137,10 @@ export const refundPaymentSuccessData = {
   id: PaymentIntentDataByStatus.APPROVED.id,
   purchase_units: [
     {
+      amount: {
+        currency_code: "USD",
+        value: "100.00",
+      },
       payments: {
         captures: [
           {
@@ -158,6 +162,26 @@ export const refundPaymentFailNotYetCapturedData = {
   purchase_units: [
     {
       payments: {
+        captures: [],
+        authorizations: [
+          {
+            id: FAIL_INTENT_ID,
+          },
+        ],
+      },
+    },
+  ],
+}
+
+export const refundPaymentFailData = {
+  id: FAIL_INTENT_ID,
+  purchase_units: [
+    {
+      amount: {
+        currency_code: "USD",
+        value: "100.00",
+      },
+      payments: {
         captures: [
           {
             id: "id",
@@ -173,6 +197,37 @@ export const refundPaymentFailNotYetCapturedData = {
   ],
 }
 
-export const refundPaymentFailData = {
+// RETRIEVE PAYMENT DATA
+
+export const retrievePaymentSuccessData = {
+  id: PaymentIntentDataByStatus.APPROVED.id,
+}
+
+export const retrievePaymentFailData = {
   id: FAIL_INTENT_ID,
+}
+
+// UPDATE PAYMENT DATA
+
+export const updatePaymentSuccessData = {
+  paymentSessionData: {
+    id: PaymentIntentDataByStatus.APPROVED.id,
+  },
+  currency_code: "usd",
+  amount: 1000,
+}
+
+export const updatePaymentFailData = {
+  currency_code: "usd",
+  amount: 1000,
+  resource_id: FAIL_INTENT_ID,
+  customer: {
+    metadata: {
+      stripe_id: "test",
+    },
+  },
+  context: {},
+  paymentSessionData: {
+    id: FAIL_INTENT_ID,
+  },
 }
