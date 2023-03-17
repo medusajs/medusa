@@ -1,15 +1,10 @@
-import {
-  asValue,
-  AwilixContainer,
-  ClassOrFunctionReturning,
-  Resolver,
-} from "awilix"
+import { asValue, } from "awilix"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
 import { DataSource, EntityManager } from "typeorm"
-import { ContainerUtils } from "@medusajs/utils" // ***** TEMPLATES *****
+import { CommonUtils } from "@medusajs/utils"
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
@@ -95,15 +90,6 @@ const distTestTargetDirectorPath = resolve(__dirname, "__pluginsLoaderTest__")
 
 const getFolderTestTargetDirectoryPath = (folderName: string): string => {
   return resolve(distTestTargetDirectorPath, folderName)
-}
-
-function asArray(
-  resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
-): { resolve: (container: AwilixContainer) => unknown[] } {
-  return {
-    resolve: (container: AwilixContainer): unknown[] =>
-      resolvers.map((resolver) => container.build(resolver)),
-  }
 }
 
 // ***** TESTS *****
