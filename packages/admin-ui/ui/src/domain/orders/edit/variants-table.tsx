@@ -40,7 +40,7 @@ const VariantsTable: React.FC<Props> = (props) => {
     offset,
     region_id: regionId,
     customer_id: customerId,
-    expand: "available,product,prices,options",
+    expand: "inventory,product,prices,options",
   })
 
   useEffect(() => {

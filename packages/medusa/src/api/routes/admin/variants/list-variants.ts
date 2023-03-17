@@ -134,10 +134,10 @@ export default async (req, res) => {
     "customer_id",
   ])
 
-  const indexOfAvailable = req.listConfig.relations.indexOf("available")
+  const indexOfInventory = req.listConfig.relations.indexOf("inventory")
 
-  if (indexOfAvailable > -1) {
-    req.listConfig.relations.splice(indexOfAvailable, 1)
+  if (indexOfInventory > -1) {
+    req.listConfig.relations.splice(indexOfInventory, 1)
   }
 
   const [rawVariants, count] = await variantService.listAndCount(
@@ -167,7 +167,7 @@ export default async (req, res) => {
     include_discount_prices: true,
   })
 
-  if (indexOfAvailable > -1 && inventoryService) {
+  if (indexOfInventory > -1 && inventoryService) {
     await Promise.all(
       variants.map(async (variant: VariantWithInventory) => {
         const inventory =
