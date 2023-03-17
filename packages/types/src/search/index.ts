@@ -1,5 +1,3 @@
-import { SearchService } from "medusa-interfaces"
-
 export interface ISearchService {
   options: Record<string, unknown>
 
@@ -71,50 +69,18 @@ export interface ISearchService {
   updateSettings(indexName: string, settings: unknown): unknown
 }
 
-export abstract class AbstractSearchService implements ISearchService {
-  abstract readonly isDefault
-  protected readonly options_: Record<string, unknown>
-
-  get options(): Record<string, unknown> {
-    return this.options_
-  }
-
-  protected constructor(container, options) {
-    this.options_ = options
-  }
-
-  abstract createIndex(indexName: string, options: unknown): unknown
-
-  abstract getIndex(indexName: string): unknown
-
-  abstract addDocuments(
-    indexName: string,
-    documents: unknown,
-    type: string
-  ): unknown
-
-  abstract replaceDocuments(
-    indexName: string,
-    documents: unknown,
-    type: string
-  ): unknown
-
-  abstract deleteDocument(
-    indexName: string,
-    document_id: string | number
-  ): unknown
-
-  abstract deleteAllDocuments(indexName: string): unknown
-
-  abstract search(
-    indexName: string,
-    query: string | null,
-    options: unknown
-  ): unknown
-
-  abstract updateSettings(indexName: string, settings: unknown): unknown
+export type IndexSettings = {
+  /**
+   * Settings specific to the provider. E.g. `searchableAttributes`.
+   */
+  indexSettings: Record<string, unknown>
+  /**
+   * Primary key for the index. Used to enforce unique documents in an index. See more in Meilisearch' https://docs.meilisearch.com/learn/core_concepts/primary_key.html.
+   */
+  primaryKey?: string
+  /**
+   * Document transformer. Used to transform documents before they are added to the index.
+   */
+  transformer?: (document: any) => any
 }
 
-export function isSearchService(obj: unknown): boolean {
-  return obj instanceof AbstractSearchService || obj instanceof SearchService
-}

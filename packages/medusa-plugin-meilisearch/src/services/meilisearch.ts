@@ -1,10 +1,10 @@
-import { AbstractSearchService } from "@medusajs/medusa"
+import { SearchTypes } from "@medusajs/types"
+import { SearchUtils } from "@medusajs/utils"
 import { indexTypes } from "medusa-core-utils"
 import { MeiliSearch, Settings } from "meilisearch"
-import { IndexSettings, meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
-import { transformProduct } from "../utils/transform-product"
+import { meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
 
-class MeiliSearchService extends AbstractSearchService {
+class MeiliSearchService extends SearchUtils.AbstractSearchService {
   isDefault = false
 
   protected readonly config_: MeilisearchPluginOptions
@@ -77,21 +77,21 @@ class MeiliSearchService extends AbstractSearchService {
 
   async updateSettings(
     indexName: string,
-    settings: IndexSettings | Record<string, unknown>
+    settings: SearchTypes.IndexSettings & Settings
   ) {
     // backward compatibility
     if (!("indexSettings" in settings)) {
       settings = { indexSettings: settings }
     }
 
-    await this.upsertIndex(indexName, settings as IndexSettings)
+    await this.upsertIndex(indexName, settings)
 
     return await this.client_
       .index(indexName)
       .updateSettings(settings.indexSettings as Settings)
   }
 
-  async upsertIndex(indexName: string, settings: IndexSettings) {
+  async upsertIndex(indexName: string, settings: SearchTypes.IndexSettings) {
     try {
       await this.client_.getIndex(indexName)
     } catch (error) {
@@ -104,15 +104,15 @@ class MeiliSearchService extends AbstractSearchService {
   }
 
   getTransformedDocuments(type: string, documents: any[]) {
+    if (!documents?.length) {
+      return []
+    }
+
     switch (type) {
       case indexTypes.products:
-        if (!documents?.length) {
-          return []
-        }
-
         const productsTransformer =
           this.config_.settings?.[indexTypes.products]?.transformer ??
-          transformProduct
+          SearchUtils.transformProduct
 
         return documents.map(productsTransformer)
       default:
