@@ -47,26 +47,17 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
       navElementBoundingRect = navElement.getBoundingClientRect();
 
     //logic to scroll to current active item
-    const activeItem = document.querySelector('.sidebar-desktop [aria-current=page]'),
-      activeItemBoundingReact = activeItem?.getBoundingClientRect(),
+    const activeItem = document.querySelector('.sidebar-desktop [aria-current=page]')
+
+    if (!activeItem) {
+      return
+    }
+
+    const activeItemBoundingReact = activeItem.getBoundingClientRect(),
       //the extra 160 is due to the sticky elements in the sidebar
       isActiveItemVisible = activeItemBoundingReact.top >= 0 && activeItemBoundingReact.bottom + 160 <= navElementBoundingRect.height
-
-    // alert(isActiveItemVisible);
     
-    if (activeItem && !isActiveItemVisible) {
-      //check if it has a parent list item element
-      // let parentListItem = activeItem.parentElement
-
-      //search only to reach the main sidebar element
-      // while (parentListItem && !parentListItem.classList.contains('sidebar-desktop')) {
-      //   if (parentListItem.classList.contains('menu__list-item')) {
-      //     break;
-      //   }
-
-      //   parentListItem = parentListItem.parentElement
-      // }
-
+    if (!isActiveItemVisible) {
       const elementToScrollTo = activeItem,
         elementBounding = elementToScrollTo.getBoundingClientRect()
       //scroll to element
