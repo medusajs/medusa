@@ -14,8 +14,7 @@ import { AdminPriceSelectionParams } from "../../../../types/price-selection"
 import { IsType } from "../../../../utils/validators/is-type"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 import { IInventoryService } from "../../../../interfaces"
-import { PricedVariant } from "../../../../types/pricing"
-import { ResponseInventoryItem } from "./get-inventory"
+import { PricedVariantWithInventory } from "."
 
 /**
  * @oas [get] /admin/variants
@@ -169,7 +168,7 @@ export default async (req, res) => {
 
   if (indexOfInventory > -1 && inventoryService) {
     await Promise.all(
-      variants.map(async (variant: VariantWithInventory) => {
+      variants.map(async (variant: PricedVariantWithInventory) => {
         const inventory =
           await productVariantInventoryService.listInventoryItemsByVariant(
             variant.id!
@@ -186,10 +185,6 @@ export default async (req, res) => {
     offset: req.listConfig.offset,
     limit: req.listConfig.limit,
   })
-}
-
-type VariantWithInventory = PricedVariant & {
-  inventory?: ResponseInventoryItem[]
 }
 
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {

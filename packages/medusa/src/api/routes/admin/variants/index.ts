@@ -5,6 +5,7 @@ import { PaginatedResponse } from "../../../../types/common"
 import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { ResponseInventoryItem } from "./get-inventory"
 import { AdminGetVariantParams } from "./get-variant"
 import { AdminGetVariantsParams } from "./list-variants"
 
@@ -118,10 +119,27 @@ export type AdminVariantsListRes = PaginatedResponse & {
  *   - variant
  * properties:
  *   variant:
- *     $ref: "#/components/schemas/PricedVariant"
+ *     $ref: "#/components/schemas/PricedVariantWithInventory"
  */
 export type AdminVariantsRes = {
-  variant: PricedVariant
+  variant: PricedVariantWithInventory
+}
+
+/**
+ * @schema PricedVariantWithInventory
+ * title: "Priced Product Variant With inventory decorated"
+ * type: object
+ * allOf:
+ *  - $ref: "#/components/schemas/PricedVariant"
+ *  - type: object
+ *    properties:
+ *      inventory:
+ *       type: array
+ *       items:
+ *         $ref: "#/components/schemas/ResponseInventoryItem"
+ */
+export type PricedVariantWithInventory = PricedVariant & {
+  inventory?: ResponseInventoryItem[]
 }
 
 export * from "./list-variants"
