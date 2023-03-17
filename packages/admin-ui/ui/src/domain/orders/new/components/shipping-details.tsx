@@ -110,8 +110,6 @@ const ShippingDetails = () => {
     name: "shipping_address",
   })
 
-  const [requiredFields, setRequiredFields] = useState(false)
-
   /**
    * Effect used to enable next step.
    * A user can go to the next step if valid email is provided and all required address info is filled.
@@ -132,7 +130,6 @@ const ShippingDetails = () => {
         !shippingAddress.postal_code
       ) {
         disableNextPage()
-        setRequiredFields(true)
       } else {
         enableNextPage()
       }
@@ -149,6 +146,7 @@ const ShippingDetails = () => {
     form.setValue("shipping_address.address_2", "")
     form.setValue("shipping_address.city", "")
     form.setValue("shipping_address.country_code", null)
+    form.setValue("shipping_address.province", "")
     form.setValue("shipping_address.postal_code", "")
   }, [customerId?.value, addNew])
 
@@ -251,7 +249,6 @@ const ShippingDetails = () => {
             form={nestedForm(form, "shipping_address")}
             countryOptions={validCountries}
             type={AddressType.SHIPPING}
-            required={requiredFields}
           />
         </div>
       )}
