@@ -1,4 +1,4 @@
-import { ContainerTypes } from "@medusajs/types";
+import { CommonTypes } from "@medusajs/types";
 import {
   asFunction,
   asValue,
@@ -18,7 +18,7 @@ function asArray(
 }
 
 function registerAdd(
-  this: ContainerTypes.MedusaContainer,
+  this: CommonTypes.MedusaContainer,
   name: string,
   registration: typeof asFunction | typeof asValue
 ) {
@@ -40,14 +40,14 @@ function registerAdd(
   return this
 }
 
-export function createMedusaContainer(...args): ContainerTypes.MedusaContainer {
-  const container = createContainer.apply(null, args) as ContainerTypes.MedusaContainer
+export function createMedusaContainer(...args): CommonTypes.MedusaContainer {
+  const container = createContainer.apply(null, args) as CommonTypes.MedusaContainer
 
   container.registerAdd = registerAdd.bind(container)
 
   const originalScope = container.createScope
   container.createScope = () => {
-    const scoped = originalScope() as ContainerTypes.MedusaContainer
+    const scoped = originalScope() as CommonTypes.MedusaContainer
     scoped.registerAdd = registerAdd.bind(scoped)
 
     return scoped

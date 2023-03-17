@@ -1,7 +1,7 @@
 import { asValue } from "awilix"
 import { EOL } from "os"
 import { loadInternalModule } from "./utils"
-import { ContainerTypes } from "@medusajs/types"
+import { CommonTypes } from "@medusajs/types"
 
 import { Logger, MODULE_SCOPE, ModuleResolution, } from "../types"
 
@@ -10,7 +10,7 @@ import { ModulesHelper } from "../module-helper"
 export const moduleHelper = new ModulesHelper()
 
 async function loadModule(
-  container: ContainerTypes.MedusaContainer,
+  container: CommonTypes.MedusaContainer,
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
@@ -55,7 +55,7 @@ export const moduleLoader = async ({
   moduleResolutions,
   logger,
 }: {
-  container: ContainerTypes.MedusaContainer
+  container: CommonTypes.MedusaContainer
   moduleResolutions: Record<string, ModuleResolution>
   logger: Logger
 }): Promise<void> => {

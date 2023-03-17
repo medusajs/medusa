@@ -24,7 +24,7 @@ import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 
 import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
-import { ContainerUtils } from "@medusajs/utils"
+import { CommonUtils } from "@medusajs/utils"
 
 type Options = {
   directory: string
@@ -43,7 +43,7 @@ export default async ({
 }> => {
   const configModule = loadConfig(rootDirectory)
 
-  const container = ContainerUtils.createMedusaContainer()
+  const container = CommonUtils.createMedusaContainer()
   container.register("configModule", asValue(configModule))
 
   // Add additional information to context of request

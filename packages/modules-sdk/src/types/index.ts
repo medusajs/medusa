@@ -1,4 +1,4 @@
-import { ContainerTypes } from "@medusajs/types"
+import { CommonTypes } from "@medusajs/types"
 import { Logger as _Logger } from "winston"
 
 export type Constructor<T> = new (...args: any[]) => T
@@ -68,7 +68,7 @@ export type ModuleDefinition = {
 }
 
 export type LoaderOptions = {
-  container: ContainerTypes.MedusaContainer
+  container: CommonTypes.MedusaContainer
   options?: Record<string, unknown>
   logger?: Logger
 }

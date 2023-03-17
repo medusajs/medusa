@@ -9,7 +9,7 @@ import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
 import { DataSource, EntityManager } from "typeorm"
-import { ContainerUtils } from "@medusajs/utils"
+import { ContainerUtils } from "@medusajs/utils" // ***** TEMPLATES *****
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
@@ -109,7 +109,7 @@ function asArray(
 // ***** TESTS *****
 
 describe("plugins loader", () => {
-  const container = ContainerUtils.createMedusaContainer()
+  const container = CommonUtils.createMedusaContainer()
 
   container.register("logger", asValue(Logger))
   container.register("manager", asValue(new EntityManager({} as DataSource)))

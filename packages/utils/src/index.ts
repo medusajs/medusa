@@ -1,2 +1,2 @@
 export * from "./decorators"
-export * as ContainerUtils from "./container"
+export * as CommonUtils from "./common"

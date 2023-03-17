@@ -1,5 +1,5 @@
 import { EOL } from "os"
-import { ContainerUtils } from "@medusajs/utils"
+import { CommonUtils } from "@medusajs/utils"
 import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
@@ -22,7 +22,7 @@ describe("modules loader", () => {
   })
 
   beforeEach(() => {
-    container = ContainerUtils.createMedusaContainer()
+    container = CommonUtils.createMedusaContainer()
   })
 
   it("registers service as undefined in container when no resolution path is given", async () => {
