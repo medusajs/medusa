@@ -5639,7 +5639,6 @@ __metadata:
     "@vitejs/plugin-react": ^3.1.0
     autoprefixer: ^10.4.13
     clsx: ^1.2.1
-    confetti-js: ^0.0.18
     copy-to-clipboard: ^3.3.1
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
@@ -16206,13 +16205,6 @@ __metadata:
   dependencies:
     source-map: ^0.6.1
   checksum: d30cec83a320d20d7e9482a4d011fa84319a0a8f9107acb632c48493d608be3a2b879608866d9edba2ce304ee52bc798138c26ad16eda6fbe7ec5e7bec99a683
-  languageName: node
-  linkType: hard
-
-"confetti-js@npm:^0.0.18":
-  version: 0.0.18
-  resolution: "confetti-js@npm:0.0.18"
-  checksum: 06dd454eab703a72e0189a2923bee22dc54adfff73fb99075e6c3202f18faf40aef0d081c9993b7acc640949d80306d93b433d228a9683be93f2790427304cef
   languageName: node
   linkType: hard
 
