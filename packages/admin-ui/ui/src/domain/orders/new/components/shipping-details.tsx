@@ -1,13 +1,14 @@
 import qs from "query-string"
 import { useContext, useEffect, useMemo, useState } from "react"
+import { Controller, useWatch } from "react-hook-form"
+
+import { useAdminCustomer } from "medusa-react"
+
 import Button from "../../../../components/fundamentals/button"
 import AddressForm, {
   AddressType,
 } from "../../../../components/templates/address-form"
 import Medusa from "../../../../services/api"
-
-import { useAdminCustomer } from "medusa-react"
-import { Controller, useWatch } from "react-hook-form"
 import LockIcon from "../../../../components/fundamentals/icons/lock-icon"
 import InputField from "../../../../components/molecules/input"
 import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
@@ -17,6 +18,7 @@ import { Option } from "../../../../types/shared"
 import isNullishObject from "../../../../utils/is-nullish-object"
 import mapAddressToForm from "../../../../utils/map-address-to-form"
 import { nestedForm } from "../../../../utils/nested-form"
+import { isValidEmail } from "../../../../utils/email"
 import { useNewOrderForm } from "../form"
 
 const ShippingDetails = () => {
@@ -110,12 +112,12 @@ const ShippingDetails = () => {
 
   const [requiredFields, setRequiredFields] = useState(false)
 
+  /**
+   * Effect used to enable next step.
+   * A user can go to the next step if valid email is provided and all required address info is filled.
+   */
   useEffect(() => {
-    const isEmailValid = email?.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
-
-    if (!email || !isEmailValid) {
+    if (!email || !isValidEmail(email)) {
       disableNextPage()
       return
     }
@@ -138,8 +140,17 @@ const ShippingDetails = () => {
   }, [shippingAddress, email])
 
   useEffect(() => {
-    form.setValue("shipping_address", undefined) // TODO: reset this
-  }, [addNew])
+    // reset shipping address info when a different customer is selected
+    // or when "Create new" is clicked
+    form.setValue("shipping_address.first_name", "")
+    form.setValue("shipping_address.last_name", "")
+    form.setValue("shipping_address.phone", "")
+    form.setValue("shipping_address.address_1", "")
+    form.setValue("shipping_address.address_2", "")
+    form.setValue("shipping_address.city", "")
+    form.setValue("shipping_address.country_code", null)
+    form.setValue("shipping_address.postal_code", "")
+  }, [customerId?.value, addNew])
 
   useEffect(() => {
     setAddNew(false)
