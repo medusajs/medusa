@@ -547,9 +547,14 @@ describe("/store/customers", () => {
           token: "token",
           password: "password",
         })
-        .catch(console.log)
-
-      expect(response.status).toEqual(204)
+        .catch((error) => {
+          return error
+        })
+      expect(response.response.status).toEqual(401)
+      expect(response.response.data).toEqual({
+        type: "unauthorized",
+        message: "Invalid or expired password reset token",
+      })
     })
   })
 })
