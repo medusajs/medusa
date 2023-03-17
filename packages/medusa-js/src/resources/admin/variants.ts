@@ -1,9 +1,8 @@
 import {
-  AdminGetVariantsVariantInventoryRes,
-  AdminGetVariantsParams,
-  AdminVariantsListRes,
-  StoreGetVariantsVariantParams,
   AdminGetVariantParams,
+  AdminGetVariantsParams,
+  AdminGetVariantsVariantInventoryRes,
+  AdminVariantsListRes,
   AdminVariantsRes,
 } from "@medusajs/medusa"
 import qs from "qs"
