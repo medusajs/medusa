@@ -5,9 +5,21 @@ import "./index.css"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import uuid from "react-uuid"
-import { request } from "@octokit/request"
+import Solutions from "./Solutions/index"
 
-export default function Feedback({
+type FeedbackProps = {
+  event?: string
+  question?: string
+  positiveBtn?: string
+  negativeBtn?: string
+  positiveQuestion?: string
+  negativeQuestion?: string
+  submitBtn?: string
+  submitMessage?: string
+  showPossibleSolutions?: boolean
+} & React.HTMLAttributes<HTMLDivElement>
+
+const Feedback: React.FC<FeedbackProps> = ({
   event,
   question = "Was this page helpful?",
   positiveBtn = "Yes",
@@ -17,7 +29,7 @@ export default function Feedback({
   submitBtn = "Submit",
   submitMessage = "Thank you for helping improve our documentation!",
   showPossibleSolutions = true,
-}) {
+}) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -27,8 +39,6 @@ export default function Feedback({
   const [positiveFeedback, setPositiveFeedback] = useState(false)
   const [message, setMessage] = useState("")
   const [id, setId] = useState(null)
-  const [possibleSolutionsQuery, setPossibleSolutionsQuery] = useState("")
-  const [possibleSolutions, setPossibleSolutions] = useState([])
   const nodeRef = submittedFeedback
     ? inlineMessageRef
     : showForm
@@ -67,7 +77,6 @@ export default function Feedback({
           function () {
             if (showForm) {
               setLoading(false)
-              checkAvailableSolutions(positiveFeedback, message)
               resetForm()
             }
           }
@@ -85,36 +94,6 @@ export default function Feedback({
     setSubmittedFeedback(true)
     if (message) {
       setId(null)
-    }
-  }
-
-  function constructQuery(searchQuery) {
-    return `${searchQuery} repo:medusajs/medusa is:closed is:issue` // Github does not allow queries longer than 256 characters
-  }
-
-  function searchGitHub(query) {
-    return request(`GET /search/issues`, {
-      q: query,
-      sort: "updated",
-      per_page: 3,
-    })
-  }
-
-  async function checkAvailableSolutions(feedback, message) {
-    if (showPossibleSolutions && !feedback) {
-      // fetch some possible solutions related to the answer.
-      let query = constructQuery(
-        message ? message.substring(0, 256) : document.title
-      )
-      let result = await searchGitHub(query)
-
-      if (!result.data.items.length && message) {
-        query = constructQuery(document.title)
-        result = await searchGitHub(query)
-      }
-
-      setPossibleSolutionsQuery(query)
-      setPossibleSolutions(result.data.items)
     }
   }
 
@@ -180,36 +159,8 @@ export default function Feedback({
               <div className="feedback-message-wrapper">
                 <div className="feedback-message" ref={inlineMessageRef}>
                   <span>{submitMessage}</span>
-                  {possibleSolutions.length > 0 && (
-                    <div className="solutions-wrapper">
-                      <span className="solutions-message">
-                        If you faced a problem, here are some possible solutions
-                        from GitHub:
-                      </span>
-                      <ul>
-                        {possibleSolutions.map((solution) => (
-                          <li key={solution.url}>
-                            <a
-                              href={solution.html_url}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {solution.title}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                      <span>
-                        Explore more issues in{" "}
-                        <a
-                          href={`https://github.com/medusajs/medusa/issues?q=${possibleSolutionsQuery}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          the GitHub repository
-                        </a>
-                      </span>
-                    </div>
+                  {showPossibleSolutions && (
+                    <Solutions message={message} feedback={positiveFeedback} />
                   )}
                 </div>
               </div>
@@ -220,3 +171,5 @@ export default function Feedback({
     </div>
   )
 }
+
+export default Feedback

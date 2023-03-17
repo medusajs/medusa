@@ -3,15 +3,29 @@ import "./index.css"
 import BorderedIcon from "../BorderedIcon"
 import clsx from "clsx"
 import Badge from "../Badge"
+import { IconProps } from "@site/src/theme/Icon/index"
 
-export default function LargeCard({
+type LargeCardProps = {
+  Icon: React.FC<IconProps>
+  image: {
+    light: string
+    dark?: string
+  }
+  title: string
+  action: {
+    href: string
+  }
+  isSoon?: boolean
+} & React.HTMLAttributes<HTMLDivElement>
+
+const LargeCard: React.FC<LargeCardProps> = ({
   Icon,
   image,
   title,
   action: { href },
   isSoon = false,
   children,
-}) {
+}) => {
   return (
     <article className={clsx("large-card", isSoon && "large-card-soon")}>
       <div>
@@ -38,3 +52,5 @@ export default function LargeCard({
     </article>
   )
 }
+
+export default LargeCard
