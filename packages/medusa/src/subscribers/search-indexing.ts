@@ -1,5 +1,5 @@
+import { SearchTypes } from "@medusajs/types"
 import { indexTypes } from "medusa-core-utils"
-import { ISearchService } from "../interfaces"
 import ProductCategoryFeatureFlag from "../loaders/feature-flags/product-categories"
 import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
 import { Product } from "../models"
@@ -9,14 +9,14 @@ import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
-  searchService: ISearchService
+  searchService: SearchTypes.ISearchService
   productService: ProductService
   featureFlagRouter: FlagRouter
 }
 
 class SearchIndexingSubscriber {
   private readonly eventBusService_: EventBusService
-  private readonly searchService_: ISearchService
+  private readonly searchService_: SearchTypes.ISearchService
   private readonly productService_: ProductService
   private readonly featureFlagRouter_: FlagRouter
 
