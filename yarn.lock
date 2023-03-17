@@ -5680,11 +5680,13 @@ __metadata:
     "@medusajs/admin-ui": "*"
     "@types/express": ^4.17.13
     commander: ^10.0.0
+    dotenv: ^16.0.3
     express: ^4.17.1
     fs-extra: ^11.1.0
     medusa-core-utils: "*"
     ora: 5.4.0
     picocolors: ^1.0.0
+    ts-dedent: ^2.2.0
     typescript: ^4.9.3
   peerDependencies:
     "@medusajs/medusa": "*"
@@ -18025,7 +18027,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.0":
+"dotenv@npm:^16.0.0, dotenv@npm:^16.0.3":
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
   checksum: 109457ac5f9e930ca8066ea33887b6f839ab24d647a7a8b49ddcd1f32662e2c35591c5e5b9819063e430148a664d0927f0cbe60cf9575d89bc524f47ff7e78f0
@@ -38219,7 +38221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-dedent@npm:^2.0.0":
+"ts-dedent@npm:^2.0.0, ts-dedent@npm:^2.2.0":
   version: 2.2.0
   resolution: "ts-dedent@npm:2.2.0"
   checksum: 175adea838468cc2ff7d5e97f970dcb798bbcb623f29c6088cb21aa2880d207c5784be81ab1741f56b9ac37840cbaba0c0d79f7f8b67ffe61c02634cafa5c303
