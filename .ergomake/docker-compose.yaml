@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: medusa
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  medusa:
+    build:
+      context: ../
+      dockerfile: .ergomake/Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres/medusa
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "9000:9000"
