@@ -153,7 +153,7 @@ export default async (req, res) => {
   res.json({ order })
 }
 
-const updateInventoryAndReservations = async (
+export const updateInventoryAndReservations = async (
   fulfillments: Fulfillment[],
   context: {
     inventoryService: ProductVariantInventoryService

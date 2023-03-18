@@ -897,7 +897,9 @@ class SwapService extends TransactionBaseService {
    */
   async createFulfillment(
     swapId: string,
-    config: CreateShipmentConfig = {
+    config: CreateShipmentConfig & {
+      location_id?: string
+    } = {
       metadata: {},
       no_notification: undefined,
     }
@@ -975,7 +977,8 @@ class SwapService extends TransactionBaseService {
             item_id: i.id,
             quantity: i.quantity,
           })),
-          { swap_id: swapId, metadata }
+          { swap_id: swapId, metadata },
+          { locationId: config.location_id }
         )
 
       let successfullyFulfilled: FulfillmentItem[] = []
