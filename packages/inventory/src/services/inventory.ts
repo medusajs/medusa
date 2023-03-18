@@ -409,6 +409,9 @@ export default class InventoryService
         select: ["id"],
       })
 
+    if(locationIds.length === 0 ){
+      return 0
+    }
     const availableQuantity = await this.inventoryLevelService_
       .withTransaction(this.activeManager_)
       .getAvailableQuantity(inventoryItemId, locationIds)
@@ -434,6 +437,10 @@ export default class InventoryService
         select: ["id"],
       })
 
+    if(locationIds.length === 0 ){
+      return 0
+    }
+
     const stockedQuantity = await this.inventoryLevelService_
       .withTransaction(this.activeManager_)
       .getStockedQuantity(inventoryItemId, locationIds)
@@ -458,6 +465,10 @@ export default class InventoryService
       .retrieve(inventoryItemId, {
         select: ["id"],
       })
+
+    if(locationIds.length === 0 ){
+      return 0
+    }
 
     const reservedQuantity = await this.inventoryLevelService_
       .withTransaction(this.activeManager_)
