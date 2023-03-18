@@ -36,7 +36,7 @@ export async function loadInternalModule(
 
     return {
       error: new Error(
-        "No service found in module. Make sure your module exports at least one service."
+        "No service found in module. Make sure your module exports a service."
       ),
     }
   }
@@ -111,4 +111,16 @@ export async function loadInternalModule(
     },
     "module"
   )
+}
+
+export async function loadModuleMigrations(
+  resolution: ModuleResolution
+): Promise<[Function | undefined, Function | undefined]> {
+  let loadedModule: ModuleExports
+  try {
+    loadedModule = (await import(resolution.resolutionPath as string)).default
+    return [loadedModule.runMigrations, loadedModule.revertMigration]
+  } catch {
+    return [undefined, undefined]
+  }
 }

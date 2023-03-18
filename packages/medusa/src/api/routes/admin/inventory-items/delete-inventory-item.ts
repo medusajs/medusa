@@ -59,9 +59,7 @@ export default async (req: Request, res: Response) => {
       .withTransaction(transactionManager)
       .detachInventoryItem(id)
 
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryItem(id)
+    await inventoryService.deleteInventoryItem(id)
   })
 
   res.status(200).send({
