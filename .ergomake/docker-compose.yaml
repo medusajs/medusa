@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  storefront:
+    build:
+      context: ../
+      dockerfile: .ergomake/storefront.Dockerfile
+      args:
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://localhost:9000
+    ports:
+      - "8000:8000"
+    labels:
+      dev.ergomake.preview.replace-arg.NEXT_PUBLIC_MEDUSA_BACKEND_URL: "https://{{ ergomake.previewUrls.backend }}"
+  backend:
+    build:
+      context: ../
+      dockerfile: .ergomake/backend.Dockerfile
+      args:
+        STORE_CORS: http://localhost:8000
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres/medusa
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "9000:9000"
+    labels:
+      dev.ergomake.preview.replace-arg.STORE_CORS: "https://{{ ergomake.previewUrls.storefront }}"
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: medusa
+    ports:
+      - "5432"
+  redis:
+    image: redis
+    ports:
+      - "6379"
