@@ -521,5 +521,40 @@ describe("/store/customers", () => {
 
       expect(response.status).toEqual(204)
     })
+
+    it("Returns 204 for non-existent customer", async () => {
+      const api = useApi()
+
+      const response = await api.post(`/store/customers/password-token`, {
+        email: "non-existent@test.com",
+      })
+
+      expect(response.status).toEqual(204)
+    })
+  })
+
+  describe("POST /store/customers/password-reset", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("Returns 204 for non-existent customer", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(`/store/customers/password-reset`, {
+          email: "non-existent@test.com",
+          token: "token",
+          password: "password",
+        })
+        .catch((error) => {
+          return error
+        })
+      expect(response.response.status).toEqual(401)
+      expect(response.response.data).toEqual({
+        type: "unauthorized",
+        message: "Invalid or expired password reset token",
+      })
+    })
   })
 })

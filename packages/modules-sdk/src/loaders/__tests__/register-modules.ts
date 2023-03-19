@@ -1,3 +1,4 @@
+import MODULE_DEFINITIONS from "../../definitions"
 import {
   InternalModuleDeclaration,
   ModuleDefinition,
@@ -5,7 +6,6 @@ import {
   MODULE_SCOPE,
 } from "../../types"
 import { registerModules } from "../register-modules"
-import MODULE_DEFINITIONS from "../../definitions"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
 jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))
@@ -35,7 +35,7 @@ describe("module definitions loader", () => {
   it("Resolves module with default definition given empty config", () => {
     MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-    const res = registerModules({ modules: {} })
+    const res = registerModules({})
 
     expect(res[defaultDefinition.key]).toEqual(
       expect.objectContaining({
@@ -54,9 +54,7 @@ describe("module definitions loader", () => {
     it("Resolves module with no resolution path when given false", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
-      const res = registerModules({
-        modules: { [defaultDefinition.key]: false },
-      })
+      const res = registerModules({ [defaultDefinition.key]: false })
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
@@ -72,9 +70,7 @@ describe("module definitions loader", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition, isRequired: true })
 
       try {
-        registerModules({
-          modules: { [defaultDefinition.key]: false },
-        })
+        registerModules({ [defaultDefinition.key]: false })
       } catch (err) {
         expect(err.message).toEqual(
           `Module: ${defaultDefinition.label} is required`
@@ -90,9 +86,7 @@ describe("module definitions loader", () => {
 
       MODULE_DEFINITIONS.push(definition)
 
-      const res = registerModules({
-        modules: {},
-      })
+      const res = registerModules({})
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
@@ -113,9 +107,7 @@ describe("module definitions loader", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
       const res = registerModules({
-        modules: {
-          [defaultDefinition.key]: defaultDefinition.defaultPackage,
-        },
+        [defaultDefinition.key]: defaultDefinition.defaultPackage,
       })
 
       expect(res[defaultDefinition.key]).toEqual(
@@ -137,13 +129,11 @@ describe("module definitions loader", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
       const res = registerModules({
-        modules: {
-          [defaultDefinition.key]: {
-            scope: MODULE_SCOPE.INTERNAL,
-            resolve: defaultDefinition.defaultPackage,
-            resources: MODULE_RESOURCE_TYPE.ISOLATED,
-          } as InternalModuleDeclaration,
-        },
+        [defaultDefinition.key]: {
+          scope: MODULE_SCOPE.INTERNAL,
+          resolve: defaultDefinition.defaultPackage,
+          resources: MODULE_RESOURCE_TYPE.ISOLATED,
+        } as InternalModuleDeclaration,
       })
 
       expect(res[defaultDefinition.key]).toEqual(
@@ -164,10 +154,8 @@ describe("module definitions loader", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
       const res = registerModules({
-        modules: {
-          [defaultDefinition.key]: {
-            options: { test: 123 },
-          },
+        [defaultDefinition.key]: {
+          options: { test: 123 },
         },
       } as any)
 
@@ -189,13 +177,11 @@ describe("module definitions loader", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
       const res = registerModules({
-        modules: {
-          [defaultDefinition.key]: {
-            resolve: defaultDefinition.defaultPackage,
-            options: { test: 123 },
-            scope: "internal",
-            resources: "isolated",
-          },
+        [defaultDefinition.key]: {
+          resolve: defaultDefinition.defaultPackage,
+          options: { test: 123 },
+          scope: "internal",
+          resources: "isolated",
         },
       } as any)
 
