@@ -81,11 +81,7 @@ export default async (req: Request, res: Response) => {
   const validatedBody =
     req.validatedBody as AdminPostInventoryItemsItemLocationLevelsLevelReq
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .updateInventoryLevel(id, location_id, validatedBody)
-  })
+  await inventoryService.updateInventoryLevel(id, location_id, validatedBody)
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,

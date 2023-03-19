@@ -1,3 +1,4 @@
+import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -10,36 +11,35 @@ import {
   SelectQueryBuilder,
 } from "typeorm"
 import {
-  CreateProductVariantInput,
-  FilterableProductVariantProps,
-  GetRegionPriceContext,
-  ProductVariantPrice,
-  UpdateProductVariantInput,
-} from "../types/product-variant"
-import {
-  FindWithRelationsOptions,
-  ProductVariantRepository,
-} from "../repositories/product-variant"
-import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
   TransactionBaseService,
 } from "../interfaces"
-import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   MoneyAmount,
   Product,
   ProductOptionValue,
   ProductVariant,
 } from "../models"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
+import {
+  CreateProductVariantInput,
+  FilterableProductVariantProps,
+  GetRegionPriceContext,
+  ProductVariantPrice,
+  UpdateProductVariantInput,
+} from "../types/product-variant"
 import { buildQuery, buildRelations, setMetadata } from "../utils"
 
 import { CartRepository } from "../repositories/cart"
-import EventBusService from "./event-bus"
-import { FindConfig } from "../types/common"
 import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import { ProductRepository } from "../repositories/product"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { FindConfig } from "../types/common"
+import EventBusService from "./event-bus"
 import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
@@ -173,7 +173,9 @@ class ProductVariantService extends TransactionBaseService {
             "options",
           ]),
         })) as Product
-      } else if (!product.id) {
+      }
+
+      if (!product?.id) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Product id missing`

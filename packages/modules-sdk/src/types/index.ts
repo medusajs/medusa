@@ -68,9 +68,9 @@ export type ModuleDefinition = {
     | ExternalModuleDeclaration
 }
 
-export type LoaderOptions = {
+export type LoaderOptions<TOptions = Record<string, unknown>> = {
   container: MedusaContainer
-  options?: Record<string, unknown>
+  options?: TOptions
   logger?: Logger
 }
 
@@ -89,13 +89,12 @@ export type ModuleExports = {
   loaders?: ModuleLoaderFunction[]
   migrations?: any[]
   models?: Constructor<any>[]
-}
-
-export type MedusaModuleConfig = {
-  modules?: Record<
-    string,
-    | false
-    | string
-    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-  >
+  runMigrations?(
+    options: LoaderOptions,
+    moduleDeclaration: InternalModuleDeclaration
+  ): Promise<void>
+  revertMigration?(
+    options: LoaderOptions,
+    moduleDeclaration: InternalModuleDeclaration
+  ): Promise<void>
 }

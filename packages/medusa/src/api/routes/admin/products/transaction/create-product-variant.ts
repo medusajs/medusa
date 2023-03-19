@@ -1,3 +1,14 @@
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { ulid } from "ulid"
+import { IInventoryService } from "../../../../../interfaces"
+import { ProductVariant } from "../../../../../models"
+import {
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../../services"
+import { InventoryItemDTO } from "../../../../../types/inventory"
+import { CreateProductVariantInput } from "../../../../../types/product-variant"
 import {
   DistributedTransaction,
   TransactionHandlerType,
@@ -6,17 +17,6 @@ import {
   TransactionState,
   TransactionStepsDefinition,
 } from "../../../../../utils/transaction"
-import { ulid } from "ulid"
-import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../../interfaces"
-import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../../services"
-import { CreateProductVariantInput } from "../../../../../types/product-variant"
-import { InventoryItemDTO } from "../../../../../types/inventory"
-import { ProductVariant } from "../../../../../models"
-import { MedusaError } from "medusa-core-utils"
 
 enum actions {
   createVariant = "createVariant",
