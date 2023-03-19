@@ -2,6 +2,7 @@ import { SearchTypes } from "@medusajs/types"
 import { SearchUtils } from "@medusajs/utils"
 import Algolia, { SearchClient } from "algoliasearch"
 import { AlgoliaPluginOptions, SearchOptions } from "../types"
+import { transformProduct } from "../utils/transformer"
 
 class AlgoliaService extends SearchUtils.AbstractSearchService {
   isDefault = false
@@ -64,10 +65,19 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
    * @return {*}
    */
   async addDocuments(indexName: string, documents: any, type: string) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents)
-    return await this.client_
-      .initIndex(indexName)
-      .saveObjects(transformedDocuments)
+    const transformedDocuments = await this.getTransformedDocuments(
+      type,
+      documents
+    )
+
+    try {
+      return await this.client_
+        .initIndex(indexName)
+        .saveObjects(transformedDocuments)
+    } catch (error) {
+      console.log(error)
+      return
+    }
   }
 
   /**
@@ -78,7 +88,10 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   async replaceDocuments(indexName: string, documents: any, type: string) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents)
+    const transformedDocuments = await this.getTransformedDocuments(
+      type,
+      documents
+    )
     return await this.client_
       .initIndex(indexName)
       .replaceAllObjects(transformedDocuments)
@@ -138,20 +151,26 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
    * @param {object} settings  - settings object
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  async updateSettings(indexName: string, settings: Record<string, unknown>) {
-    return await this.client_.initIndex(indexName).setSettings(settings)
+  async updateSettings(
+    indexName: string,
+    settings: SearchTypes.IndexSettings & Record<string, unknown>
+  ) {
+    // backward compatibility
+    const indexSettings = settings.indexSettings ?? settings ?? {}
+
+    return await this.client_.initIndex(indexName).setSettings(indexSettings)
   }
 
-  getTransformedDocuments(type: string, documents: any[]) {
+  async getTransformedDocuments(type: string, documents: any[]) {
     if (!documents?.length) {
       return []
     }
 
     switch (type) {
-      case SearchTypes.indexTypes.products:
+      case SearchTypes.indexTypes.PRODUCTS:
         const productsTransformer =
-          this.config_.settings?.[SearchTypes.indexTypes.products]
-            ?.transformer ?? SearchUtils.transformProduct
+          this.config_.settings?.[SearchTypes.indexTypes.PRODUCTS]
+            ?.transformer ?? transformProduct
 
         return documents.map(productsTransformer)
       default:

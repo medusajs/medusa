@@ -2,6 +2,7 @@ import { SearchTypes } from "@medusajs/types"
 import { SearchUtils } from "@medusajs/utils"
 import { MeiliSearch, Settings } from "meilisearch"
 import { meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
+import { transformProduct } from "../utils/transformer"
 
 class MeiliSearchService extends SearchUtils.AbstractSearchService {
   isDefault = false
@@ -79,15 +80,11 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
     settings: SearchTypes.IndexSettings & Settings
   ) {
     // backward compatibility
-    if (!("indexSettings" in settings)) {
-      settings = { indexSettings: settings }
-    }
+    const indexSettings = settings.indexSettings ?? settings ?? {}
 
     await this.upsertIndex(indexName, settings)
 
-    return await this.client_
-      .index(indexName)
-      .updateSettings(settings.indexSettings as Settings)
+    return await this.client_.index(indexName).updateSettings(indexSettings)
   }
 
   async upsertIndex(indexName: string, settings: SearchTypes.IndexSettings) {
@@ -108,10 +105,10 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
     }
 
     switch (type) {
-      case SearchTypes.indexTypes.products:
+      case SearchTypes.indexTypes.PRODUCTS:
         const productsTransformer =
-          this.config_.settings?.[SearchTypes.indexTypes.products]
-            ?.transformer ?? SearchUtils.transformProduct
+          this.config_.settings?.[SearchTypes.indexTypes.PRODUCTS]
+            ?.transformer ?? transformProduct
 
         return documents.map(productsTransformer)
       default:

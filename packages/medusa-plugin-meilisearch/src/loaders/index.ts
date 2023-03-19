@@ -15,9 +15,9 @@ export default async (
     const { settings } = options
 
     await Promise.all(
-      Object.entries(settings ?? []).map(([indexName, value]) =>
+      Object.entries(settings || {}).map(([indexName, value]) => {
         meilisearchService.updateSettings(indexName, value)
-      )
+      })
     )
   } catch (err) {
     // ignore

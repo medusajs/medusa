@@ -1,4 +1,4 @@
-export * from "./indexes"
+export * from "./index-types"
 export * from "./interface"
 export * from "./settings"
 
