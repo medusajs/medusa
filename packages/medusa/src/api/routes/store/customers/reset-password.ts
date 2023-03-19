@@ -4,6 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /store/customers/password-reset
@@ -70,20 +71,25 @@ export default async (req, res) => {
   )) as StorePostCustomersResetPasswordReq
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  let customer = await customerService.retrieveRegisteredByEmail(
-    validated.email,
-    {
-      select: ["id", "password_hash"],
-    }
-  )
+  let customer
 
-  const decodedToken = jwt.verify(
-    validated.token,
-    customer.password_hash
-  ) as JwtPayload
-  if (!decodedToken || customer.id !== decodedToken.customer_id) {
-    res.status(401).send("Invalid or expired password reset token")
-    return
+  customer = await customerService
+    .retrieveRegisteredByEmail(validated.email, {
+      select: ["id", "password_hash"],
+    })
+    .catch(() => undefined)
+
+  const decodedToken = customer
+    ? jwt.verify(validated.token, customer.password_hash)
+    : undefined
+  if (
+    !decodedToken ||
+    customer.id !== (decodedToken as JwtPayload)?.customer_id
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Invalid or expired password reset token"
+    )
   }
 
   const manager: EntityManager = req.scope.resolve("manager")
