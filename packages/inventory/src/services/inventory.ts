@@ -474,7 +474,7 @@ export default class InventoryService implements IInventoryService {
       context
     )
 
-    if(locationIds.length === 0 ){
+    if (locationIds.length === 0) {
       return 0
     }
 
@@ -510,10 +510,10 @@ export default class InventoryService implements IInventoryService {
       context
     )
 
-    if(locationIds.length === 0 ){
+    if (locationIds.length === 0) {
       return 0
     }
-    
+
     const stockedQuantity =
       await this.inventoryLevelService_.getStockedQuantity(
         inventoryItemId,
@@ -546,10 +546,10 @@ export default class InventoryService implements IInventoryService {
       context
     )
 
-    if(locationIds.length === 0 ){
+    if (locationIds.length === 0) {
       return 0
     }
-    
+
     const reservedQuantity =
       await this.inventoryLevelService_.getReservedQuantity(
         inventoryItemId,

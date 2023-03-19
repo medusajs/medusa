@@ -791,7 +791,7 @@ class SwapService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       swap.shipping_methods = cart.shipping_methods.map((method) => {
-        ;(method.tax_lines as any) = undefined
+        (method.tax_lines as any) = undefined
         return method
       })
       swap.confirmed_at = new Date()
@@ -897,9 +897,7 @@ class SwapService extends TransactionBaseService {
    */
   async createFulfillment(
     swapId: string,
-    config: CreateShipmentConfig & {
-      location_id?: string
-    } = {
+    config: CreateShipmentConfig = {
       metadata: {},
       no_notification: undefined,
     }
