@@ -43,8 +43,6 @@ class SearchIndexingSubscriber {
     while (hasMore) {
       const products = await this.retrieveNextProducts(lastSeenId, TAKE)
 
-      console.log(`Indexing ${products.length} products`)
-
       if (products.length > 0) {
         await this.searchService_.addDocuments(
           ProductService.IndexName,

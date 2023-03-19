@@ -1,4 +1,4 @@
-import { SearchService } from "medusa-interfaces"
+import { SearchUtils } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { Logger } from "../types/global"
 
@@ -7,7 +7,8 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-export default class DefaultSearchService extends SearchService {
+// eslint-disable-next-line max-len
+export default class DefaultSearchService extends SearchUtils.AbstractSearchService {
   isDefault = true
 
   protected readonly logger_: Logger
