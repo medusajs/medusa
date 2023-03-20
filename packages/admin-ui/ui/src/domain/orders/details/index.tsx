@@ -425,9 +425,7 @@ const OrderDetails = () => {
                     />
                   }
                   customActionable={
-                    order.fulfillment_status !== "fulfilled" &&
                     order.status !== "canceled" &&
-                    order.fulfillment_status !== "shipped" &&
                     anyItemsToFulfil && (
                       <Button
                         variant="secondary"
