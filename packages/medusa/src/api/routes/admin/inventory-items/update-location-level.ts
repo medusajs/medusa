@@ -104,10 +104,12 @@ export default async (req: Request, res: Response) => {
 export class AdminPostInventoryItemsItemLocationLevelsLevelReq {
   @IsOptional()
   @IsNumber()
+  @Min(0)
   incoming_quantity?: number
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   stocked_quantity?: number
 }
 
