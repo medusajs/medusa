@@ -100,7 +100,9 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const userService: UserService = container.resolve("userService")
   const regionService: RegionService = container.resolve("regionService")
   const productService: ProductService = container.resolve("productService")
-  const productCategoryService: ProductCategoryService = container.resolve("productCategoryService")
+  const productCategoryService: ProductCategoryService = container.resolve(
+    "productCategoryService"
+  )
 
   /* eslint-disable */
   const productVariantService: ProductVariantService = container.resolve(
@@ -211,7 +213,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
     const createProductCategory = async (
       parameters,
-      parentCategory: (ProductCategory | null) = null
+      parentCategory: ProductCategory | null = null
     ) => {
       // default to the categories being visible and public
       parameters.is_active = parameters.is_active || true
