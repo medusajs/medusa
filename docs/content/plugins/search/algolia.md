@@ -171,7 +171,7 @@ This feature is only available if you have Redis installed and configured with y
 
 ## Add Search to your Storefront
 
-In this section, you’ll learn how to add the UI on your storefront to allow searching with Algolia. This section has instructions for Medusa’s [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront as well as React-based frameworks such as the [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefront.
+In this section, you’ll learn how to add the UI on your storefront to allow searching with Algolia. This section has instructions for Medusa’s [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront as well as React-based frameworks.
 
 ### Storefront Prerequisites
 
@@ -179,7 +179,7 @@ It is assumed you already have a storefront set up and working with the Medusa b
 
 :::tip
 
-If you don’t have a storefront set up, you can use the [Gatsby](../../starters/gatsby-medusa-starter.mdx) or [Next.js](../../starters/nextjs-medusa-starter.mdx) storefronts Medusa provides.
+If you don’t have a storefront set up, you can use the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx) that Medusa provides.
 
 :::
 

@@ -5,6 +5,12 @@ addHowToData: true
 
 # Deploy Gatsby Storefront on Netlify
 
+:::note
+
+The Gatsby storefront has been deprecated and it's not recommended to use it moving forward. You can use the [Next.js storefront](../../starters/nextjs-medusa-starter.mdx) instead or build your own.
+
+:::
+
 In this document, you’ll learn how to deploy the Gatsby Storefront on [Netlify](https://www.netlify.com/).
 
 Alternatively, you can use this button to deploy the Gatsby Storefront to Netlify directly:
@@ -19,7 +25,7 @@ Alternatively, you can use this button to deploy the Gatsby Storefront to Netlif
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.mdx) first.
+Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally.
 
 Additionally, this documentation does not cover how to deploy the Medusa backend. If you want to deploy the Medusa backend, [check out one of the deployment documentation related to the Medusa backend](../server/index.mdx).
 

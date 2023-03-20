@@ -464,6 +464,10 @@
     {
       "source": "/introduction",
       "destination": "/development/fundamentals/architecture-overview"
+    },
+    {
+      "source": "/starters/gatsby-medusa-starter",
+      "destination": "/starters/nextjs-medusa-starter?ref=gatsby-medusa-starter"
     }
   ]
 }

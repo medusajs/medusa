@@ -184,4 +184,4 @@ Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retri
 
 - Check out [more plugins](../overview.mdx) you can add to your store.
 - [Deploy the Medusa backend on DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
-- Install the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefront.
+- Install the [Next.js](../../starters/nextjs-medusa-starter.mdx) starter storefront.
