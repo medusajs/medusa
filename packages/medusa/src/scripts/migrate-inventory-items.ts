@@ -2,8 +2,7 @@ import { AwilixContainer } from "awilix"
 import dotenv from "dotenv"
 import express from "express"
 
-import { IStockLocationService } from "@medusajs/types"
-import { IInventoryService } from "../interfaces"
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import loaders from "../loaders"
 import { ProductVariant } from "../models"
 import {

@@ -1,5 +1,5 @@
+import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
 import { moduleLoader, registerMedusaModule } from "./loaders"
 import { loadModuleMigrations } from "./loaders/utils"
 import {

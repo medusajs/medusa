@@ -1,5 +1,5 @@
+import { createMedusaContainer } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
 import { trackInstallation } from "medusa-telemetry"
 import {
   Constructor,

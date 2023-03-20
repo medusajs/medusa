@@ -1,5 +1,4 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-
 import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
@@ -13,18 +12,19 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
   ReservationItemDTO,
+  SharedContext,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
-} from "@medusajs/medusa"
-import { SharedContext } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+} from "@medusajs/types"
 import {
-  InventoryItemService,
-  InventoryLevelService,
-  ReservationItemService,
-} from "./"
+  InjectEntityManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
+import { EntityManager } from "typeorm"
+import InventoryItemService from "./inventory-item"
+import InventoryLevelService from "./inventory-level"
+import ReservationItemService from "./reservation-item"
 
 type InjectedDependencies = {
   manager: EntityManager

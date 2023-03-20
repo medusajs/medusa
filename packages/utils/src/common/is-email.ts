@@ -1,5 +1,5 @@
 import { isEmail } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "./errors"
 
 /**
  * Used to validate user email.

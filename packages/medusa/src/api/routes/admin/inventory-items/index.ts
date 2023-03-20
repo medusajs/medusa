@@ -1,35 +1,32 @@
+import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
 import { Router } from "express"
 import "reflect-metadata"
+import { ProductVariant } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-} from "../../../../types/inventory"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetInventoryItemsParams } from "./list-inventory-items"
-import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
-import {
-  AdminPostInventoryItemsInventoryItemParams,
-  AdminPostInventoryItemsInventoryItemReq,
-} from "./update-inventory-item"
-import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
-import {
-  AdminPostInventoryItemsItemLocationLevelsParams,
-  AdminPostInventoryItemsItemLocationLevelsReq,
-} from "./create-location-level"
-import {
-  AdminPostInventoryItemsItemLocationLevelsLevelParams,
-  AdminPostInventoryItemsItemLocationLevelsLevelReq,
-} from "./update-location-level"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { ProductVariant } from "../../../../models"
 import {
   AdminPostInventoryItemsParams,
   AdminPostInventoryItemsReq,
 } from "./create-inventory-item"
+import {
+  AdminPostInventoryItemsItemLocationLevelsParams,
+  AdminPostInventoryItemsItemLocationLevelsReq,
+} from "./create-location-level"
+import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
+import { AdminGetInventoryItemsParams } from "./list-inventory-items"
+import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
+import {
+  AdminPostInventoryItemsInventoryItemParams,
+  AdminPostInventoryItemsInventoryItemReq,
+} from "./update-inventory-item"
+import {
+  AdminPostInventoryItemsItemLocationLevelsLevelParams,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
+} from "./update-location-level"
 
 const route = Router()
 
@@ -281,10 +278,10 @@ export type AdminInventoryItemsLocationLevelsRes = {
   }
 }
 
-export * from "./list-inventory-items"
 export * from "./create-inventory-item"
-export * from "./get-inventory-item"
-export * from "./update-inventory-item"
-export * from "./list-location-levels"
 export * from "./create-location-level"
+export * from "./get-inventory-item"
+export * from "./list-inventory-items"
+export * from "./list-location-levels"
+export * from "./update-inventory-item"
 export * from "./update-location-level"

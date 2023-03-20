@@ -1,6 +1,5 @@
-import { IStockLocationService } from "@medusajs/types"
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**

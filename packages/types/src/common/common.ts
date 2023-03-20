@@ -27,6 +27,10 @@ export interface BaseEntity {
   updated_at: Date
 }
 
+export interface SoftDeletableEntity extends BaseEntity {
+  deleted_at: Date | null
+}
+
 export type Writable<T> = {
   -readonly [key in keyof T]:
     | T[key]

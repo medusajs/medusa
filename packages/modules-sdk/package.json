@@ -23,9 +23,9 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@medusajs/utils": "^0.0.1",
     "awilix": "^8.0.0",
     "glob": "7.1.6",
-    "medusa-core-utils": "^1.1.39",
     "medusa-telemetry": "^0.0.16",
     "resolve-cwd": "^3.0.0"
   },

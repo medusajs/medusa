@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "./errors"
 
 /**
  * Dedicated method to set metadata.

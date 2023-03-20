@@ -1,4 +1,8 @@
-import { IInventoryService } from "../../../../interfaces"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  InventoryLevelDTO,
+} from "@medusajs/types"
 import { SalesChannel } from "../../../../models"
 import {
   SalesChannelLocationService,
@@ -6,10 +10,6 @@ import {
 } from "../../../../services"
 import ProductVariantService from "../../../../services/product-variant"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-} from "../../../../types/inventory"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
@@ -126,6 +126,7 @@ export default async (req, res) => {
         }
 
         const quantity =
+          // eslint-disable-next-line max-len
           await productVariantInventoryService.getVariantQuantityFromVariantInventoryItems(
             variantInventoryItems,
             channel.id

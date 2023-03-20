@@ -1,7 +1,6 @@
-import { IStockLocationService } from "@medusajs/types"
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**

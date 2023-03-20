@@ -25,7 +25,7 @@ export const MedusaErrorCodes = {
  * Standardized error to be used across Medusa project.
  * @extends Error
  */
-class MedusaError extends Error {
+export class MedusaError extends Error {
   public type: string
   public message: string
   public code?: string
@@ -53,5 +53,3 @@ class MedusaError extends Error {
     this.date = new Date()
   }
 }
-
-export default MedusaError

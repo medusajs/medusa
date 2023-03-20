@@ -19,7 +19,11 @@
     "downlevelIteration": true, // to use ES5 specific tooling
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*", "index.d.ts"],
+  "include": [
+    "./src/**/*",
+    "index.d.ts",
+    "../types/src/inventory/inventory.ts"
+  ],
   "exclude": [
     "./dist/**/*",
     "./src/**/__tests__",
