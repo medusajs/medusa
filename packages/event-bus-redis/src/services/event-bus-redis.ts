@@ -1,5 +1,5 @@
-import { ConfigModule, Logger } from "@medusajs/medusa"
-import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
+import { ConfigModule } from "@medusajs/medusa"
+import { InternalModuleDeclaration, Logger } from "@medusajs/modules-sdk"
 import { EventBusTypes } from "@medusajs/types"
 import { EventBusUtils } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
