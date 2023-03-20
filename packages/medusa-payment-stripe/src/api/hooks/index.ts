@@ -1,7 +1,7 @@
-import stripeHooks from "./stripe"
-import { Router } from "express"
+import { wrapHandler } from "@medusajs/utils"
 import bodyParser from "body-parser"
-import { wrapHandler } from "@medusajs/medusa"
+import { Router } from "express"
+import stripeHooks from "./stripe"
 
 const route = Router()
 
