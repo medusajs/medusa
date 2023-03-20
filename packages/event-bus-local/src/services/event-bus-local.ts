@@ -1,6 +1,6 @@
 
 import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
-import { EmitData } from "@medusajs/types"
+import { EmitData, Subscriber } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
 
@@ -65,7 +65,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
   subscribe(
     event: string | symbol,
-    subscriber: EventBusTypes.Subscriber
+    subscriber: Subscriber
   ): this {
     eventEmitter.on(event, subscriber)
     return this
@@ -73,7 +73,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
   unsubscribe(
     event: string | symbol,
-    subscriber: EventBusTypes.Subscriber
+    subscriber: Subscriber
   ): this {
     eventEmitter.off(event, subscriber)
     return this
