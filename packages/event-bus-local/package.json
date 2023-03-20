@@ -31,6 +31,7 @@
     "test:unit": "jest --passWithNoTests"
   },
   "dependencies": {
+    "@medusajs/modules-sdk": "*",
     "@medusajs/utils": "^0.0.1"
   },
   "peerDependencies": {

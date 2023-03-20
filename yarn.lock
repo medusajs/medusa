@@ -5746,10 +5746,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-local@workspace:packages/event-bus-local":
+"@medusajs/event-bus-local@*, @medusajs/event-bus-local@workspace:packages/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
   dependencies:
+    "@medusajs/modules-sdk": "*"
     "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     cross-env: ^5.2.1
@@ -5765,6 +5766,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/event-bus-redis"
   dependencies:
+    "@medusajs/modules-sdk": "*"
     "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     bullmq: ^3.5.6
@@ -23362,6 +23364,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "*"
+    "@medusajs/event-bus-local": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
@@ -23380,6 +23383,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "*"
+    "@medusajs/event-bus-local": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
