@@ -596,8 +596,7 @@ export default class ClaimService extends TransactionBaseService {
               item_id: i.id,
               quantity: i.quantity,
             })),
-            { claim_order_id: id, metadata },
-            { locationId: config.location_id }
+            { claim_order_id: id, metadata, location_id: config.location_id }
           )
 
         let successfullyFulfilledItems: FulfillmentItem[] = []

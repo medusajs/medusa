@@ -975,8 +975,7 @@ class SwapService extends TransactionBaseService {
             item_id: i.id,
             quantity: i.quantity,
           })),
-          { swap_id: swapId, metadata },
-          { locationId: config.location_id }
+          { swap_id: swapId, metadata, location_id: config.location_id }
         )
 
       let successfullyFulfilled: FulfillmentItem[] = []
