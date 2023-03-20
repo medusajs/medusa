@@ -1,4 +1,10 @@
-import { Address, ClaimOrder, Fulfillment, Swap } from "@medusajs/medusa"
+import {
+  Address,
+  ClaimOrder,
+  Fulfillment,
+  LineItem,
+  Swap,
+} from "@medusajs/medusa"
 import {
   DisplayTotal,
   FormattedAddress,
@@ -261,6 +267,10 @@ const OrderDetails = () => {
     navigate("/404")
   }
 
+  const anyItemsToFulfil = order.items.some(
+    (item: LineItem) => item.quantity > (item.fulfilled_quantity ?? 0)
+  )
+
   return (
     <div>
       <OrderEditProvider orderId={id!}>
@@ -415,9 +425,8 @@ const OrderDetails = () => {
                     />
                   }
                   customActionable={
-                    order.fulfillment_status !== "fulfilled" &&
                     order.status !== "canceled" &&
-                    order.fulfillment_status !== "shipped" && (
+                    anyItemsToFulfil && (
                       <Button
                         variant="secondary"
                         size="small"

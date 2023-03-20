@@ -1410,9 +1410,7 @@ class OrderService extends TransactionBaseService {
             metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
-          },
-          {
-            locationId: location_id,
+            location_id: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
