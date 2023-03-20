@@ -5755,7 +5755,6 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
-    typeorm: ^0.2.45
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/types": ^0.0.1
@@ -5772,7 +5771,7 @@ __metadata:
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     jest: ^25.5.2
-    medusa-test-utils: "workspace:^"
+    medusa-test-utils: ^1.1.39
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
@@ -5896,7 +5895,7 @@ __metadata:
     "@babel/preset-typescript": ^7.13.0
     "@medusajs/medusa-cli": ^1.3.8
     "@medusajs/modules-sdk": "*"
-    "@medusajs/types": "*"
+    "@medusajs/types": ^0.0.1
     "@medusajs/utils": "*"
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
@@ -29078,7 +29077,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@^1.1.39, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@^1.1.39, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
@@ -38986,88 +38985,6 @@ __metadata:
   bin:
     typedoc: bin/typedoc
   checksum: 634e805a608c699811a0fa10944823504f0023afd599037298700179f2293cd717a937b32cf885c6bcf4808334f3132aaa9c946e63b9131789a9a9b240cb0115
-  languageName: node
-  linkType: hard
-
-"typeorm@npm:^0.2.45":
-  version: 0.2.45
-  resolution: "typeorm@npm:0.2.45"
-  dependencies:
-    "@sqltools/formatter": ^1.2.2
-    app-root-path: ^3.0.0
-    buffer: ^6.0.3
-    chalk: ^4.1.0
-    cli-highlight: ^2.1.11
-    date-fns: ^2.28.0
-    debug: ^4.3.3
-    dotenv: ^16.0.0
-    glob: ^7.2.0
-    js-yaml: ^4.1.0
-    mkdirp: ^1.0.4
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.3.1
-    uuid: ^8.3.2
-    xml2js: ^0.4.23
-    yargs: ^17.3.1
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^3.6.0
-    mssql: ^7.3.0
-    mysql2: ^2.2.5
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: cli.js
-    typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: a72d406658754ca9cfd67a075ec234740bf4f96fb8a9ee283fe0eb92872357a977233dbde009063280fe059cd2af3ef72cd38dbc29631eed0c2e5f9355867bfc
   languageName: node
   linkType: hard
 
