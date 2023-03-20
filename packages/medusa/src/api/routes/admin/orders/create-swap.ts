@@ -164,6 +164,7 @@ export default async (req, res) => {
                       idempotency_key: idempotencyKey.idempotency_key,
                       no_notification: validated.no_notification,
                       allow_backorder: validated.allow_backorder,
+                      location_id: validated.return_location_id,
                     }
                   )
 
@@ -360,6 +361,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsBoolean()
   @IsOptional()
   no_notification?: boolean
+
+  @IsOptional()
+  @IsString()
+  return_location_id?: string
 
   @IsBoolean()
   @IsOptional()
