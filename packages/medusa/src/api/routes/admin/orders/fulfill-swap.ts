@@ -1,9 +1,14 @@
-import { IsBoolean, IsObject, IsOptional } from "class-validator"
-import { OrderService, SwapService } from "../../../../services"
+import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  OrderService,
+  ProductVariantInventoryService,
+  SwapService,
+} from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
+import { updateInventoryAndReservations } from "./create-fulfillment"
 
 /**
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments
@@ -76,12 +81,53 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const swapService: SwapService = req.scope.resolve("swapService")
   const entityManager: EntityManager = req.scope.resolve("manager")
+  const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
+    "productVariantInventoryService"
+  )
 
   await entityManager.transaction(async (manager) => {
-    await swapService.withTransaction(manager).createFulfillment(swap_id, {
+    const swapServiceTx = swapService.withTransaction(manager)
+
+    const { fulfillments: existingFulfillments } = await swapServiceTx.retrieve(
+      swap_id,
+      {
+        relations: [
+          "fulfillments",
+          "fulfillments.items",
+          "fulfillments.items.item",
+        ],
+      }
+    )
+
+    const existingFulfillmentSet = new Set(
+      existingFulfillments.map((fulfillment) => fulfillment.id)
+    )
+
+    await swapServiceTx.createFulfillment(swap_id, {
       metadata: validated.metadata,
       no_notification: validated.no_notification,
+      location_id: validated.location_id,
     })
+
+    if (validated.location_id) {
+      const { fulfillments } = await swapServiceTx.retrieve(swap_id, {
+        relations: [
+          "fulfillments",
+          "fulfillments.items",
+          "fulfillments.items.item",
+        ],
+      })
+
+      const pvInventoryServiceTx = pvInventoryService.withTransaction(manager)
+
+      await updateInventoryAndReservations(
+        fulfillments.filter((f) => !existingFulfillmentSet.has(f.id)),
+        {
+          inventoryService: pvInventoryServiceTx,
+          locationId: validated.location_id,
+        }
+      )
+    }
   })
 
   const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
@@ -110,6 +156,10 @@ export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
   @IsBoolean()
   @IsOptional()
   no_notification?: boolean
+
+  @IsString()
+  @IsOptional()
+  location_id?: string
 }
 
 // eslint-disable-next-line max-len
