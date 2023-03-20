@@ -437,6 +437,10 @@ export class AdminPostOrdersOrderClaimsReq {
   @IsOptional()
   no_notification?: boolean
 
+  @IsOptional()
+  @IsString()
+  return_location_id?: string
+
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
