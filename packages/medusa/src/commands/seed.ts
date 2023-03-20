@@ -121,7 +121,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       store: seededStore,
       regions,
       products,
-      categories,
+      categories = [],
       shipping_options,
       users,
     } = JSON.parse(fs.readFileSync(resolvedPath, `utf-8`))
