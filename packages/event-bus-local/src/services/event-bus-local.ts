@@ -7,15 +7,18 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+const eventEmitter = new EventEmitter()
+
 export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_: Logger
-  protected readonly eventEmitter_: EventEmitter = new EventEmitter()
+  protected readonly eventEmitter_: EventEmitter
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
 
     this.logger_ = logger
+    this.eventEmitter_ = eventEmitter
   }
 
   async emit<T>(

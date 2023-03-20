@@ -164,7 +164,6 @@ export default class EventBusService
      * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
-    console.error(events)
     const stagedJobs = await this.stagedJobService_
       .withTransaction(manager)
       .create(events)
