@@ -2,7 +2,7 @@ import {
   AdminPostProductsProductReq,
   AdminPostProductsProductVariantsReq,
   AdminPostProductsProductVariantsVariantReq,
-  Product
+  Product,
 } from "@medusajs/medusa"
 import {
   useAdminCreateVariant,
@@ -10,7 +10,7 @@ import {
   useAdminDeleteVariant,
   useAdminProduct,
   useAdminUpdateProduct,
-  useAdminUpdateVariant
+  useAdminUpdateVariant,
 } from "medusa-react"
 
 import { useNavigate } from "react-router-dom"

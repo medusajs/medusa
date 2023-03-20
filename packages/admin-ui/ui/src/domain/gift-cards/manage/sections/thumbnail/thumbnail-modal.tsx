@@ -2,7 +2,7 @@ import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import ThumbnailForm, {
-  ThumbnailFormType
+  ThumbnailFormType,
 } from "../../../../../components/forms/product/thumbnail-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -123,10 +123,10 @@ const getDefaultValues = (product: Product): ThumbnailFormWrapper => {
     thumbnail: {
       images: product.thumbnail
         ? [
-          {
-            url: product.thumbnail,
-          },
-        ]
+            {
+              url: product.thumbnail,
+            },
+          ]
         : [],
     },
   }

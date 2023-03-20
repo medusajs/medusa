@@ -1,9 +1,11 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import CustomsForm, { CustomsFormType } from "../../../../../components/forms/product/customs-form"
+import CustomsForm, {
+  CustomsFormType,
+} from "../../../../../components/forms/product/customs-form"
 import DimensionsForm, {
-  DimensionsFormType
+  DimensionsFormType,
 } from "../../../../../components/forms/product/dimensions-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"

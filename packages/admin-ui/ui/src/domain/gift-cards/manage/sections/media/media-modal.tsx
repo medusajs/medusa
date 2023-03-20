@@ -1,7 +1,9 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import MediaForm, { MediaFormType } from "../../../../../components/forms/product/media-form"
+import MediaForm, {
+  MediaFormType,
+} from "../../../../../components/forms/product/media-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useNotification from "../../../../../hooks/use-notification"
