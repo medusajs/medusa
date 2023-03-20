@@ -5750,14 +5750,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
   dependencies:
-    "@medusajs/medusa": ^1.6.5
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     cross-env: ^5.2.1
     typeorm: ^0.2.45
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.6.5
-    medusa-interfaces: ^1.3.3
-    typeorm: ^0.2.45
+    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5886,7 +5885,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.6.5, @medusajs/medusa@^1.7.12, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.12, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
