@@ -512,6 +512,7 @@ export default class ClaimService extends TransactionBaseService {
     config: {
       metadata?: Record<string, unknown>
       no_notification?: boolean
+      location_id?: string
     } = {
       metadata: {},
     }
@@ -595,7 +596,7 @@ export default class ClaimService extends TransactionBaseService {
               item_id: i.id,
               quantity: i.quantity,
             })),
-            { claim_order_id: id, metadata }
+            { claim_order_id: id, metadata, location_id: config.location_id }
           )
 
         let successfullyFulfilledItems: FulfillmentItem[] = []
