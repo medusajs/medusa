@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
 import { InventoryLevelDTO, ProductVariant } from "@medusajs/medusa"
 import clsx from "clsx"
-
+import pluralize from "pluralize"
 import { useDebounce } from "../../../hooks/use-debounce"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import Table from "../../../components/molecules/table"
@@ -95,7 +95,8 @@ const VariantsTable: React.FC<Props> = (props) => {
     return (
       <Tooltip content={LocationTooltip} side="top" className="translate-x-1/4">
         <div className="text-right">
-          {total} in {inventory[0].location_levels.length} location(s)
+          {total} in {inventory[0].location_levels.length}{" "}
+          {pluralize("location", inventory[0].location_levels.length)}
         </div>
       </Tooltip>
     )
