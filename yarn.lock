@@ -5960,7 +5960,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@*, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@*, @medusajs/modules-sdk@^0.0.1, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
@@ -6049,6 +6049,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
+    "@medusajs/modules-sdk": ^0.0.1
     cross-env: ^5.2.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
