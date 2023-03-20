@@ -1,6 +1,9 @@
-import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
+import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
+} from "@medusajs/modules-sdk"
 import { Request } from "express"
+import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
@@ -91,7 +94,12 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<string, false | string | Partial<InternalModuleDeclaration>>
+  modules?: Record<
+    string,
+    | false
+    | string
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+  >
   plugins: (
     | {
         resolve: string

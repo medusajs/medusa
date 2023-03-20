@@ -1,6 +1,5 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { isDefined } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
@@ -66,8 +65,6 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
 export default async (req, res) => {
   const { validatedBody } = req as { validatedBody: AdminPostReservationsReq }
 
-  const manager: EntityManager = req.scope.resolve("manager")
-
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
@@ -82,11 +79,9 @@ export default async (req, res) => {
     )
   }
 
-  const reservation = await manager.transaction(async (manager) => {
-    return await inventoryService
-      .withTransaction(manager)
-      .createReservationItem(validatedBody)
-  })
+  const reservation = await inventoryService.createReservationItem(
+    validatedBody
+  )
 
   res.status(200).json({ reservation })
 }

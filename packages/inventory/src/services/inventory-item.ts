@@ -1,5 +1,3 @@
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   buildQuery,
   CreateInventoryItemInput,
@@ -7,9 +5,11 @@ import {
   FindConfig,
   IEventBusService,
   InventoryItemDTO,
-  TransactionBaseService,
 } from "@medusajs/medusa"
-
+import { SharedContext } from "@medusajs/types"
+import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 
@@ -18,18 +18,18 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-export default class InventoryItemService extends TransactionBaseService {
+export default class InventoryItemService {
   static Events = {
     CREATED: "inventory-item.created",
     UPDATED: "inventory-item.updated",
     DELETED: "inventory-item.deleted",
   }
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly manager_: EntityManager
+  protected readonly eventBusService_: IEventBusService | undefined
 
-  constructor({ eventBusService }: InjectedDependencies) {
-    super(arguments[0])
-
+  constructor({ eventBusService, manager }: InjectedDependencies) {
+    this.manager_ = manager
     this.eventBusService_ = eventBusService
   }
 
@@ -38,11 +38,17 @@ export default class InventoryItemService extends TransactionBaseService {
    * @param config - Configuration for query.
    * @return Resolves to the list of inventory items that match the filter.
    */
+  @InjectEntityManager()
   async list(
     selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
+    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
-    const queryBuilder = getListQuery(this.activeManager_, selector, config)
+    const queryBuilder = getListQuery(
+      context.transactionManager!,
+      selector,
+      config
+    )
     return await queryBuilder.getMany()
   }
 
@@ -51,11 +57,17 @@ export default class InventoryItemService extends TransactionBaseService {
    * @param config - Configuration for query.
    * @return - Resolves to the list of inventory items that match the filter and the count of all matching items.
    */
+  @InjectEntityManager()
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
+    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[InventoryItemDTO[], number]> {
-    const queryBuilder = getListQuery(this.activeManager_, selector, config)
+    const queryBuilder = getListQuery(
+      context.transactionManager!,
+      selector,
+      config
+    )
     return await queryBuilder.getManyAndCount()
   }
 
@@ -66,9 +78,11 @@ export default class InventoryItemService extends TransactionBaseService {
    * @return The retrieved inventory item.
    * @throws If the inventory item id is not defined or if the inventory item is not found.
    */
+  @InjectEntityManager()
   async retrieve(
     inventoryItemId: string,
-    config: FindConfig<InventoryItem> = {}
+    config: FindConfig<InventoryItem> = {},
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItem> {
     if (!isDefined(inventoryItemId)) {
       throw new MedusaError(
@@ -77,7 +91,7 @@ export default class InventoryItemService extends TransactionBaseService {
       )
     }
 
-    const manager = this.activeManager_
+    const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
 
     const query = buildQuery({ id: inventoryItemId }, config) as FindManyOptions
@@ -97,34 +111,35 @@ export default class InventoryItemService extends TransactionBaseService {
    * @param input - Input for creating a new inventory item.
    * @return The newly created inventory item.
    */
-  async create(data: CreateInventoryItemInput): Promise<InventoryItem> {
-    return await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(InventoryItem)
+  @InjectEntityManager()
+  async create(
+    data: CreateInventoryItemInput,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<InventoryItem> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(InventoryItem)
 
-      const inventoryItem = itemRepository.create({
-        sku: data.sku,
-        origin_country: data.origin_country,
-        metadata: data.metadata,
-        hs_code: data.hs_code,
-        mid_code: data.mid_code,
-        material: data.material,
-        weight: data.weight,
-        length: data.length,
-        height: data.height,
-        width: data.width,
-        requires_shipping: data.requires_shipping,
-      })
-
-      const result = await itemRepository.save(inventoryItem)
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(InventoryItemService.Events.CREATED, {
-          id: result.id,
-        })
-
-      return result
+    const inventoryItem = itemRepository.create({
+      sku: data.sku,
+      origin_country: data.origin_country,
+      metadata: data.metadata,
+      hs_code: data.hs_code,
+      mid_code: data.mid_code,
+      material: data.material,
+      weight: data.weight,
+      length: data.length,
+      height: data.height,
+      width: data.width,
+      requires_shipping: data.requires_shipping,
     })
+
+    const result = await itemRepository.save(inventoryItem)
+
+    await this.eventBusService_?.emit?.(InventoryItemService.Events.CREATED, {
+      id: result.id,
+    })
+
+    return result
   }
 
   /**
@@ -132,51 +147,51 @@ export default class InventoryItemService extends TransactionBaseService {
    * @param update - The updates to apply to the inventory item.
    * @return The updated inventory item.
    */
+  @InjectEntityManager()
   async update(
     inventoryItemId: string,
     data: Omit<
       DeepPartial<InventoryItem>,
       "id" | "created_at" | "metadata" | "deleted_at"
-    >
+    >,
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItem> {
-    return await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(InventoryItem)
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(InventoryItem)
 
-      const item = await this.retrieve(inventoryItemId)
+    const item = await this.retrieve(inventoryItemId, undefined, context)
 
-      const shouldUpdate = Object.keys(data).some((key) => {
-        return item[key] !== data[key]
-      })
-
-      if (shouldUpdate) {
-        itemRepository.merge(item, data)
-        await itemRepository.save(item)
-
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(InventoryItemService.Events.UPDATED, {
-            id: item.id,
-          })
-      }
-
-      return item
+    const shouldUpdate = Object.keys(data).some((key) => {
+      return item[key] !== data[key]
     })
+
+    if (shouldUpdate) {
+      itemRepository.merge(item, data)
+      await itemRepository.save(item)
+
+      await this.eventBusService_?.emit?.(InventoryItemService.Events.UPDATED, {
+        id: item.id,
+      })
+    }
+
+    return item
   }
 
   /**
    * @param inventoryItemId - The id of the inventory item to delete.
    */
-  async delete(inventoryItemId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(InventoryItem)
+  @InjectEntityManager()
+  async delete(
+    inventoryItemId: string,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(InventoryItem)
 
-      await itemRepository.softRemove({ id: inventoryItemId })
+    await itemRepository.softRemove({ id: inventoryItemId })
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(InventoryItemService.Events.DELETED, {
-          id: inventoryItemId,
-        })
+    await this.eventBusService_?.emit?.(InventoryItemService.Events.DELETED, {
+      id: inventoryItemId,
     })
   }
 }
