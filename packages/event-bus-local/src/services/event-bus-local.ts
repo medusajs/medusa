@@ -1,4 +1,3 @@
-
 import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
 import { EmitData, Subscriber } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
@@ -7,10 +6,11 @@ import { EventEmitter } from "events"
 type InjectedDependencies = {
   logger: Logger
 }
-const eventEmitter = new EventEmitter()
+// const eventEmitter = new EventEmitter()
 
 export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_: Logger
+  protected readonly eventEmitter_: EventEmitter = new EventEmitter()
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
@@ -43,7 +43,9 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       : [{ eventName: eventOrData, data }]
 
     for (const event of events) {
-      const eventListenersCount = eventEmitter.listenerCount(event.eventName)
+      const eventListenersCount = this.eventEmitter_.listenerCount(
+        event.eventName
+      )
 
       if (eventListenersCount === 0) {
         continue
@@ -54,7 +56,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       )
 
       try {
-        eventEmitter.emit(event.eventName, event.data)
+        this.eventEmitter_.emit(event.eventName, event.data)
       } catch (error) {
         this.logger_.error(
           `An error occurred while processing ${event.eventName}: ${error}`
@@ -63,19 +65,13 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     }
   }
 
-  subscribe(
-    event: string | symbol,
-    subscriber: Subscriber
-  ): this {
-    eventEmitter.on(event, subscriber)
+  subscribe(event: string | symbol, subscriber: Subscriber): this {
+    this.eventEmitter_.on(event, subscriber)
     return this
   }
 
-  unsubscribe(
-    event: string | symbol,
-    subscriber: Subscriber
-  ): this {
-    eventEmitter.off(event, subscriber)
+  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
+    this.eventEmitter_.off(event, subscriber)
     return this
   }
 }
