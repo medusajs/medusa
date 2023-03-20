@@ -346,7 +346,7 @@ export default class ClaimService extends TransactionBaseService {
           shipping_address,
           shipping_address_id,
           no_notification,
-          location_id,
+          return_location_id,
           ...rest
         } = data
 
@@ -486,7 +486,7 @@ export default class ClaimService extends TransactionBaseService {
             ),
             shipping_method: return_shipping,
             no_notification: evaluatedNoNotification,
-            location_id: location_id,
+            location_id: return_location_id,
           })
         }
 

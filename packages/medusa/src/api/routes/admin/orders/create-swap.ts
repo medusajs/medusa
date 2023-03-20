@@ -164,7 +164,7 @@ export default async (req, res) => {
                       idempotency_key: idempotencyKey.idempotency_key,
                       no_notification: validated.no_notification,
                       allow_backorder: validated.allow_backorder,
-                      location_id: validated.location_id,
+                      location_id: validated.return_location_id,
                     }
                   )
 

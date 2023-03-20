@@ -177,7 +177,7 @@ describe("/store/carts", () => {
                 quantity: 1,
               },
             ],
-            location_id: locationId,
+            return_location_id: locationId,
           },
           adminHeaders
         )
@@ -209,7 +209,7 @@ describe("/store/carts", () => {
               },
             ],
             return_shipping: { option_id: "test-return-option", price: 0 },
-            location_id: locationId,
+            return_location_id: locationId,
           },
           adminHeaders
         )
