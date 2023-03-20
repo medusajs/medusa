@@ -1,10 +1,9 @@
+import { ModuleExports } from "@medusajs/modules-sdk"
 import loadConnection from "./loaders/connection"
-
 import migrations from "./migrations"
+import { revertMigration, runMigrations } from "./migrations/run-migration"
 import * as StockLocationModels from "./models"
 import StockLocationService from "./services/stock-location"
-
-import { ModuleExports } from "@medusajs/modules-sdk"
 
 const service = StockLocationService
 const loaders = [loadConnection]
@@ -15,6 +14,8 @@ const moduleDefinition: ModuleExports = {
   migrations,
   loaders,
   models,
+  runMigrations,
+  revertMigration,
 }
 
 export default moduleDefinition

@@ -4,16 +4,16 @@ export function MedusaContext() {
     propertyKey: string | symbol,
     parameterIndex: number
   ) {
-    if (!target.MedusaContext_) {
-      target.MedusaContext_ = {}
+    if (!target.MedusaContextIndex_) {
+      target.MedusaContextIndex_ = {}
     }
 
-    if (propertyKey in target.MedusaContext_) {
+    if (propertyKey in target.MedusaContextIndex_) {
       throw new Error(
         `Only one MedusaContext is allowed on method "${String(propertyKey)}".`
       )
     }
 
-    target.MedusaContext_[propertyKey] = parameterIndex
+    target.MedusaContextIndex_[propertyKey] = parameterIndex
   }
 }

@@ -207,6 +207,40 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
+    it.only("fails to update location level to negative quantity", async () => {
+      const api = useApi()
+
+      const inventoryItemId = inventoryItems[0].id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/location-levels`,
+        {
+          location_id: locationId,
+          stocked_quantity: 17,
+          incoming_quantity: 2,
+        },
+        adminHeaders
+      )
+
+      const res = await api
+        .post(
+          `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`,
+          {
+            incoming_quantity: -1,
+            stocked_quantity: -1,
+          },
+          adminHeaders
+        )
+        .catch((error) => error)
+
+      expect(res.response.status).toEqual(400)
+      expect(res.response.data).toEqual({
+        type: "invalid_data",
+        message:
+          "incoming_quantity must not be less than 0, stocked_quantity must not be less than 0",
+      })
+    })
+
     it("Retrieve an inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
