@@ -14,6 +14,7 @@ import featureFlagLoader from "../loaders/feature-flags"
 
 import {
   ProductService,
+  ProductCategoryService,
   ProductVariantService,
   RegionService,
   ShippingOptionService,
@@ -21,8 +22,10 @@ import {
   StoreService,
   UserService,
 } from "../services"
+import { ProductCategory } from "../models"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
+import { CreateProductCategoryInput } from "../types/product-category"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
 
 type SeedOptions = {
@@ -97,6 +100,10 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const userService: UserService = container.resolve("userService")
   const regionService: RegionService = container.resolve("regionService")
   const productService: ProductService = container.resolve("productService")
+  const productCategoryService: ProductCategoryService = container.resolve(
+    "productCategoryService"
+  )
+
   /* eslint-disable */
   const productVariantService: ProductVariantService = container.resolve(
     "productVariantService"
@@ -114,6 +121,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       store: seededStore,
       regions,
       products,
+      categories = [],
       shipping_options,
       users,
     } = JSON.parse(fs.readFileSync(resolvedPath, `utf-8`))
@@ -201,6 +209,33 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
             .create(newProd.id, variant)
         }
       }
+    }
+
+    const createProductCategory = async (
+      parameters,
+      parentCategory: ProductCategory | null = null
+    ) => {
+      // default to the categories being visible and public
+      parameters.is_active = parameters.is_active || true
+      parameters.is_internal = parameters.is_internal || false
+      parameters.parent_category = parentCategory || null
+
+      const categoryChildren = parameters.category_children || []
+      delete parameters.category_children
+
+      const category = await productCategoryService
+        .withTransaction(tx)
+        .create(parameters as CreateProductCategoryInput)
+
+      if (categoryChildren.length) {
+        for (const categoryChild of categoryChildren) {
+          await createProductCategory(categoryChild, category)
+        }
+      }
+    }
+
+    for (const c of categories) {
+      await createProductCategory(c, null)
     }
   })
 
