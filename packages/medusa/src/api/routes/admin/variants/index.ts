@@ -5,7 +5,6 @@ import { PaginatedResponse } from "../../../../types/common"
 import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { ResponseInventoryItem } from "./get-inventory"
 import { AdminGetVariantParams } from "./get-variant"
 import { AdminGetVariantsParams } from "./list-variants"
 
