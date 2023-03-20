@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from "axios"
-import { PAYPAL_API_PATH, PaypalSdkOptions } from "./types"
+import { PaypalApiPath, PaypalSdkOptions } from "./types"
 import { Logger } from "@medusajs/medusa"
 
 export class PaypalHttpClient {
@@ -114,7 +114,7 @@ export class PaypalHttpClient {
     const res: { data: { access_token: string } } =
       await this.httpClient_.request({
         method: "POST",
-        url: PAYPAL_API_PATH.AUTH,
+        url: PaypalApiPath.AUTH,
         auth: {
           username: this.options_.clientId,
           password: this.options_.clientSecret,

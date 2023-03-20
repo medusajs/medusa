@@ -9,12 +9,46 @@ export interface CapturesRefund {
 
 export interface CapturesRefundResponse {
   id: string
-  amount: MoneyAmount
-  status: string
-  note: string
-  seller_payable_breakdown: any
-  invoice_id: string
-  create_time: string
-  update_time: string
-  links: Links
+  status: "CANCELLED" | "FAILED" | "PENDING" | "COMPLETED"
+  status_details?: any
+  amount?: MoneyAmount
+  note_to_payer?: string
+  seller_payable_breakdown?: any
+  invoice_id?: string
+  create_time?: string
+  update_time?: string
+  links?: Links
+}
+
+export interface CapturesAuthorization {
+  amount?: MoneyAmount
+  final_capture?: boolean
+  invoice_id?: string
+  note_to_payer?: string
+  payment_instruction?: PaymentInstruction
+  soft_descriptor?: string
+}
+
+export interface CapturesAuthorizationResponse {
+  id: string
+  status:
+    | "COMPLETED"
+    | "DECLINED"
+    | "PARTIALLY_REFUNDED"
+    | "PENDING"
+    | "REFUNDED"
+    | "FAILED"
+  status_details?: any
+  amount?: MoneyAmount
+  created_time?: string
+  update_time?: string
+  custom_id?: string
+  disbursement_mode?: "INSTANT" | "DELAYED"
+  final_capture?: boolean
+  invoice_id?: string
+  links?: Links
+  processor_response?: any
+  seller_protection?: any
+  seller_receivable_breakdown?: any
+  supplementary_data?: any
 }

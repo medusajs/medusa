@@ -1,40 +1,52 @@
 import {
   CreateOrder,
   CreateOrderResponse,
-  PAYPAL_API_PATH,
+  GetOrderResponse,
+  PatchOrder,
+  PaypalApiPath,
   PaypalSdkOptions,
 } from "./types"
-import { Logger } from "@medusajs/medusa"
-import { CapturesRefund, CapturesRefundResponse } from "./types/payment"
+import {
+  CapturesAuthorization,
+  CapturesAuthorizationResponse,
+  CapturesRefund,
+  CapturesRefundResponse,
+} from "./types/payment"
 import { PaypalHttpClient } from "./paypal-http-client"
 
 export class PaypalSdk {
-  protected readonly baseUrl_: string = "https://api-m.paypal.com/v2"
   protected readonly httpClient_: PaypalHttpClient
-  protected readonly options_: PaypalSdkOptions
-  protected readonly logger_?: Logger
-
-  protected accessToken_: string
 
   constructor(options: PaypalSdkOptions) {
-    this.options_ = options
-
-    this.logger_ = options.logger
-
-    if (options.useSandbox) {
-      this.baseUrl_ = "https://api-m.sandbox.paypal.com"
-    }
-
     this.httpClient_ = new PaypalHttpClient(options)
   }
 
   /**
-   * Create a new order
+   * Create a new order.
    * @param data
    */
-  async createOrder(data: CreateOrder): Promise<CreateOrderResponse> {
-    const url = PAYPAL_API_PATH.CREATE_ORDER
+  async createOrders(data: CreateOrder): Promise<CreateOrderResponse> {
+    const url = PaypalApiPath.CREATE_ORDER
     return await this.httpClient_.request({ url, data })
+  }
+
+  /**
+   * Retrieve an order.
+   * @param orderId
+   */
+  async getOrders(orderId: string): Promise<GetOrderResponse> {
+    const url = PaypalApiPath.GET_ORDER.replace("{id}", orderId)
+    return await this.httpClient_.request({ url, method: "GET" })
+  }
+
+  /**
+   * Patch an order.
+   * @param orderId
+   * @param data
+   */
+  async patchOrders(orderId: string, data?: PatchOrder): Promise<void> {
+    const url = PaypalApiPath.PATCH_ORDER.replace("{id}", orderId)
+    return await this.httpClient_.request({ url, method: "PATCH" })
   }
 
   /**
@@ -48,7 +60,36 @@ export class PaypalSdk {
     paymentId: string,
     data?: CapturesRefund
   ): Promise<CapturesRefundResponse> {
-    const url = PAYPAL_API_PATH.CAPTURE_REFUND.replace("{id}", paymentId)
+    const url = PaypalApiPath.CAPTURE_REFUND.replace("{id}", paymentId)
+    return await this.httpClient_.request({ url, data })
+  }
+
+  /**
+   * Voids, or cancels, an authorized payment, by ID. You cannot void an authorized payment that has been fully captured.
+   * @param authorizationId
+   */
+  async authorizationsVoid(authorizationId: string): Promise<void> {
+    const url = PaypalApiPath.AUTHORIZATION_VOID.replace(
+      "{id}",
+      authorizationId
+    )
+
+    return await this.httpClient_.request({ url })
+  }
+
+  /**
+   * Captures an authorized payment, by ID.
+   * @param authorizationId
+   * @param data
+   */
+  async authorizationsCapture(
+    authorizationId: string,
+    data?: CapturesAuthorization
+  ): Promise<CapturesAuthorizationResponse> {
+    const url = PaypalApiPath.AUTHORIZATION_CAPTURE.replace(
+      "{id}",
+      authorizationId
+    )
 
     return await this.httpClient_.request({ url, data })
   }
