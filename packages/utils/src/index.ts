@@ -1,3 +1,3 @@
-export * from "./decorators"
-export * as EventBusUtils from "./event-bus"
+export * from "./bundles"
+export * from "./event-bus"
 

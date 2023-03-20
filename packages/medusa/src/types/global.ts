@@ -1,10 +1,6 @@
-import {
-  ExternalModuleDeclaration,
-  InternalModuleDeclaration,
-} from "@medusajs/modules-sdk"
+import { CommonTypes } from "@medusajs/types"
 import { Request } from "express"
 import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
-import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
 import { FindConfig, RequestQueryFields } from "./common"
@@ -43,48 +39,4 @@ export type Logger = _Logger & {
 
 export type Constructor<T> = new (...args: any[]) => T
 
-type SessionOptions = {
-  name?: string
-  resave?: boolean
-  rolling?: boolean
-  saveUninitialized?: boolean
-  secret?: string
-  ttl?: number
-}
-
-export type ConfigModule = {
-  projectConfig: {
-    redis_url?: string
-
-    session_options?: SessionOptions
-
-    jwt_secret?: string
-    cookie_secret?: string
-
-    database_url?: string
-    database_type: string
-    database_database?: string
-    database_schema?: string
-    database_logging: LoggerOptions
-
-    database_extra?: Record<string, unknown> & {
-      ssl: { rejectUnauthorized: false }
-    }
-    store_cors?: string
-    admin_cors?: string
-  }
-  featureFlags: Record<string, boolean | string>
-  modules?: Record<
-    string,
-    | false
-    | string
-    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-  >
-  plugins: (
-    | {
-        resolve: string
-        options: Record<string, unknown>
-      }
-    | string
-  )[]
-}
+export type ConfigModule = CommonTypes.ConfigModule
