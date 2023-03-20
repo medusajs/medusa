@@ -11,10 +11,11 @@ import {
 import {
   buildQuery,
   InjectEntityManager,
+  isDefined,
   MedusaContext,
+  MedusaError,
   setMetadata,
 } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { StockLocation, StockLocationAddress } from "../models"
 
