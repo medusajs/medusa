@@ -1,17 +1,17 @@
 import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
-import EditFlowVariantForm, {
-  EditFlowVariantFormType,
-} from "../../../components/variant-form/edit-flow-variant-form"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
 import { useContext, useEffect } from "react"
+import EditFlowVariantForm, {
+  EditFlowVariantFormType
+} from "../../../../../components/forms/product/variant-form/edit-flow-variant-form"
+import LayeredModal, {
+  LayeredModalContext
+} from "../../../../../components/molecules/modal/layered-modal"
 
+import { useMedusa } from "medusa-react"
+import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useEditProductActions from "../../hooks/use-edit-product-actions"
-import { useForm } from "react-hook-form"
-import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void

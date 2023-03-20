@@ -1,20 +1,20 @@
-import EditFlowVariantForm, {
-  EditFlowVariantFormType,
-} from "../../../components/variant-form/edit-flow-variant-form"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
 import { Product, ProductVariant } from "@medusajs/medusa"
+import EditFlowVariantForm, {
+  EditFlowVariantFormType
+} from "../../../../../components/forms/product/variant-form/edit-flow-variant-form"
+import LayeredModal, {
+  LayeredModalContext
+} from "../../../../../components/molecules/modal/layered-modal"
 
+import { useMedusa } from "medusa-react"
+import { useContext } from "react"
+import { useForm } from "react-hook-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { countries } from "../../../../../utils/countries"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
 import { createAddPayload } from "./add-variant-modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
-import { useContext } from "react"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
-import { useForm } from "react-hook-form"
-import { useMedusa } from "medusa-react"
 
 type Props = {
   onClose: () => void

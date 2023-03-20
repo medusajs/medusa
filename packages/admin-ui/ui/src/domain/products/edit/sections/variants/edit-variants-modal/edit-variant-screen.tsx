@@ -1,20 +1,20 @@
 import {
   AdminPostProductsProductVariantsVariantReq,
   Product,
-  ProductVariant,
+  ProductVariant
 } from "@medusajs/medusa"
-import EditFlowVariantForm, {
-  EditFlowVariantFormType,
-} from "../../../../components/variant-form/edit-flow-variant-form"
 import React, { useContext, useEffect, useMemo } from "react"
+import EditFlowVariantForm, {
+  EditFlowVariantFormType
+} from "../../../../../../components/forms/product/variant-form/edit-flow-variant-form"
 
-import Button from "../../../../../../components/fundamentals/button"
-import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
-import Modal from "../../../../../../components/molecules/modal"
-import { getEditVariantDefaultValues } from "../edit-variant-modal"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import { useEditVariantsModal } from "./use-edit-variants-modal"
 import { useForm } from "react-hook-form"
+import Button from "../../../../../../components/fundamentals/button"
+import Modal from "../../../../../../components/molecules/modal"
+import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { getEditVariantDefaultValues } from "../edit-variant-modal"
+import { useEditVariantsModal } from "./use-edit-variants-modal"
 
 type Props = {
   variant: ProductVariant

@@ -1,21 +1,20 @@
+import { Product } from "@medusajs/medusa"
 import { useAdminProducts } from "medusa-react"
-import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
-import Toaster from "../../../components/declarative-toaster"
-import FormToasterContainer from "../../../components/molecules/form-toaster"
-import { checkForDirtyState } from "../../../utils/form-helpers"
-import {
-  GiftCardFormProvider,
-  useGiftCardForm,
-} from "./form/gift-card-form-context"
-import { giftCardToFormValuesMapper } from "./form/mappers"
+import { getErrorStatus } from "../../../utils/get-error-status"
+import AttributesSection from "./sections/attributes"
 import Denominations from "./sections/denominations"
-import Images from "./sections/images"
-import Information from "./sections/information"
+import GeneralSection from "./sections/general"
+import MediaSection from "./sections/media"
+import RawSection from "./sections/raw"
+import ThumbnailSection from "./sections/thumbnail"
 
-const ManageGiftCard = () => {
-  const { products } = useAdminProducts(
+const Manage = () => {
+  const navigate = useNavigate()
+
+  const { products, error } = useAdminProducts(
     {
       is_giftcard: true,
     },
@@ -24,7 +23,7 @@ const ManageGiftCard = () => {
     }
   )
 
-  const giftCard = products?.[0]
+  const giftCard = products?.[0] as Product | undefined
 
   if (!giftCard) {
     return (
@@ -34,72 +33,46 @@ const ManageGiftCard = () => {
     )
   }
 
+  if (error) {
+    let message = "An unknown error occurred"
+
+    const errorStatus = getErrorStatus(error)
+
+    if (errorStatus) {
+      message = errorStatus.message
+
+      // If the product is not found, redirect to the 404 page
+      if (errorStatus.status === 404) {
+        navigate("/404")
+        return null
+      }
+    }
+
+    // Let the error boundary handle the error
+    throw error
+  }
+
   return (
-    <GiftCardFormProvider
-      giftCard={giftCardToFormValuesMapper(giftCard)}
-      giftCardId={giftCard.id}
-    >
-      <div className="gap-y-large pb-xlarge flex flex-col">
-        <Information giftCard={giftCard} />
-        <Denominations giftCard={giftCard} />
-        <Images />
+    <div className="pb-5xlarge">
+      <BackButton
+        path="/a/products"
+        label="Back to Gift Cards"
+        className="mb-xsmall"
+      />
+      <div className="gap-x-base grid grid-cols-12">
+        <div className="gap-y-xsmall col-span-8 flex flex-col">
+          <GeneralSection product={giftCard} />
+          <Denominations giftCard={giftCard} />
+          <AttributesSection product={giftCard} />
+          <RawSection product={giftCard} />
+        </div>
+        <div className="gap-y-xsmall col-span-4 flex flex-col">
+          <ThumbnailSection product={giftCard} />
+          <MediaSection product={giftCard} />
+        </div>
       </div>
-      <UpdateNotification />
-    </GiftCardFormProvider>
+    </div>
   )
 }
 
-const TOAST_ID = "edit-gc-dirty"
-
-const UpdateNotification = ({ isLoading = false }) => {
-  const {
-    form: { formState },
-    onUpdate,
-    resetForm,
-    additionalDirtyState,
-  } = useGiftCardForm()
-  const [visible, setVisible] = useState(false)
-  const [blocking, setBlocking] = useState(true)
-
-  useEffect(() => {
-    const timeout = setTimeout(setBlocking, 300, false)
-    return () => clearTimeout(timeout)
-  }, [])
-
-  const isDirty = checkForDirtyState(
-    formState.dirtyFields,
-    additionalDirtyState
-  )
-
-  useEffect(() => {
-    if (!blocking) {
-      setVisible(isDirty)
-    }
-
-    return () => {
-      toast.dismiss(TOAST_ID)
-    }
-  }, [isDirty])
-
-  return (
-    <Toaster
-      visible={visible}
-      duration={Infinity}
-      id={TOAST_ID}
-      position="bottom-right"
-    >
-      <FormToasterContainer isLoading={isLoading}>
-        <FormToasterContainer.Actions>
-          <FormToasterContainer.ActionButton onClick={onUpdate}>
-            Save
-          </FormToasterContainer.ActionButton>
-          <FormToasterContainer.DiscardButton onClick={resetForm}>
-            Discard
-          </FormToasterContainer.DiscardButton>
-        </FormToasterContainer.Actions>
-      </FormToasterContainer>
-    </Toaster>
-  )
-}
-
-export default ManageGiftCard
+export default Manage

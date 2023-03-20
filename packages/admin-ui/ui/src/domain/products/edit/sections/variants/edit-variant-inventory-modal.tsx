@@ -2,23 +2,20 @@ import {
   InventoryLevelDTO,
   Product,
   ProductVariant,
-  VariantInventory,
+  VariantInventory
 } from "@medusajs/medusa"
-import { useMedusa } from "medusa-react"
-import { useAdminVariantsInventory } from "medusa-react"
+import { useAdminVariantsInventory, useMedusa } from "medusa-react"
 import { useContext } from "react"
 import { useForm } from "react-hook-form"
-import EditFlowVariantForm, {
-  EditFlowVariantFormType,
-} from "../../../components/variant-inventory-form/edit-flow-variant-form"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../../components/molecules/modal/layered-modal"
+import EditFlowVariantForm, { EditFlowVariantFormType } from "../../../../../components/forms/product/variant-form/edit-flow-variant-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
-import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+import LayeredModal, {
+  LayeredModalContext
+} from "../../../../../components/molecules/modal/layered-modal"
 import { removeNullish } from "../../../../../utils/remove-nullish"
+import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
 
 type Props = {
   onClose: () => void
@@ -61,12 +58,12 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       // (it's important to do this before potentially deleting the inventory item)
       const deleteLocations = manageInventory
         ? variantInventoryItem?.location_levels?.filter(
-            (itemLevel: InventoryLevelDTO) => {
-              return !locationLevels.find(
-                (level) => level.location_id === itemLevel.location_id
-              )
-            }
-          ) ?? []
+          (itemLevel: InventoryLevelDTO) => {
+            return !locationLevels.find(
+              (level) => level.location_id === itemLevel.location_id
+            )
+          }
+        ) ?? []
         : []
 
       if (inventoryItemId) {
