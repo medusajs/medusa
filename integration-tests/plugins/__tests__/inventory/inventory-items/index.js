@@ -207,7 +207,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it.only("fails to update location level to negative quantity", async () => {
+    it("fails to update location level to negative quantity", async () => {
       const api = useApi()
 
       const inventoryItemId = inventoryItems[0].id
