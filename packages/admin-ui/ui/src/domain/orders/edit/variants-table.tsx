@@ -1,15 +1,18 @@
-import { useAdminVariants } from "medusa-react"
+import { useAdminVariants, useAdminVariantsInventory } from "medusa-react"
 import React, { useEffect, useMemo, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
-import { ProductVariant } from "@medusajs/medusa"
+import { InventoryLevelDTO, ProductVariant } from "@medusajs/medusa"
 import clsx from "clsx"
-
+import pluralize from "pluralize"
 import { useDebounce } from "../../../hooks/use-debounce"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import Table from "../../../components/molecules/table"
 import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import TableContainer from "../../../components/organisms/table-container"
+import Tooltip from "../../../components/atoms/tooltip"
+import useStockLocations from "../../../hooks/use-stock-locations"
+import Skeleton from "../../../components/atoms/skeleton"
 
 const PAGE_SIZE = 12
 
@@ -45,6 +48,59 @@ const VariantsTable: React.FC<Props> = (props) => {
       setNumPages(Math.ceil(count / PAGE_SIZE))
     }
   }, [count])
+
+  const VariantInventoryCell = ({ row: { original } }) => {
+    const { getLocationNameById } = useStockLocations()
+
+    const { variant, isLoading } = useAdminVariantsInventory(original.id)
+
+    if (isLoading) {
+      return (
+        <div className="flex justify-end">
+          <Skeleton isLoading={true}>
+            <div className="h-[20px] w-[50px]" />
+          </Skeleton>
+        </div>
+      )
+    }
+
+    if (!isLoading && (!variant || !variant.inventory)) {
+      return <div className="text-right">{original.inventory_quantity}</div>
+    }
+
+    const { inventory } = variant
+
+    const total = inventory[0].location_levels.reduce(
+      (sum: number, location_level: InventoryLevelDTO) =>
+        (sum += location_level.stocked_quantity),
+      0
+    )
+
+    const LocationTooltip = (
+      <>
+        {inventory[0].location_levels.map(
+          (location_level: InventoryLevelDTO) => (
+            <div key={location_level.id} className="font-normal">
+              <span className="font-semibold">
+                {location_level.stocked_quantity}
+              </span>
+              {" in "}
+              {getLocationNameById(location_level.location_id)}
+            </div>
+          )
+        )}
+      </>
+    )
+
+    return (
+      <Tooltip content={LocationTooltip} side="top" className="translate-x-1/4">
+        <div className="text-right">
+          {total} in {inventory[0].location_levels.length}{" "}
+          {pluralize("location", inventory[0].location_levels.length)}
+        </div>
+      </Tooltip>
+    )
+  }
 
   const columns = useMemo(() => {
     return [
@@ -103,9 +159,7 @@ const VariantsTable: React.FC<Props> = (props) => {
           </div>
         ),
         accessor: "inventory_quantity",
-        Cell: ({ row: { original } }) => (
-          <div className="text-right">{original.inventory_quantity}</div>
-        ),
+        Cell: VariantInventoryCell,
       },
       {
         Header: (
