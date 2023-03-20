@@ -98,15 +98,6 @@ module.exports = {
       className: 'homepage-sidebar-item'
     },
     {
-      type: 'doc',
-      id: 'starters/gatsby-medusa-starter',
-      label: 'Gatsby Storefront',
-      customProps: {
-        sidebar_icon: 'gatsby'
-      },
-      className: 'homepage-sidebar-item'
-    },
-    {
       type: 'html',
       value: 'SDKs',
       customProps: {
