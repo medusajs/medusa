@@ -205,7 +205,6 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
   }
 
   const onSubmit = () => {
-    console.log(selectedLocation)
     const items = Object.entries(toReturn).map(([key, value]) => {
       return {
         item_id: key,
@@ -226,7 +225,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
     }
 
     if (isLocationFulfillmentEnabled && selectedLocation) {
-      data.location_id = selectedLocation.value
+      data.return_location_id = selectedLocation.value
     }
 
     if (shippingMethod) {

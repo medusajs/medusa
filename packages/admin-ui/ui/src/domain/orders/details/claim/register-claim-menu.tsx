@@ -215,7 +215,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                 province: data.shipping_address.province || undefined,
               }
             : undefined,
-        location_id: returnLocation,
+        return_location_id: returnLocation,
         shipping_methods: replacementShipping
           ? [replacementShipping]
           : undefined,

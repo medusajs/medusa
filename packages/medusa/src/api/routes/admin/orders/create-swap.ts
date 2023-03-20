@@ -364,7 +364,7 @@ export class AdminPostOrdersOrderSwapsReq {
 
   @IsOptional()
   @IsString()
-  location_id?: string
+  return_location_id?: string
 
   @IsBoolean()
   @IsOptional()

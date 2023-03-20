@@ -439,7 +439,7 @@ export class AdminPostOrdersOrderClaimsReq {
 
   @IsOptional()
   @IsString()
-  location_id?: string
+  return_location_id?: string
 
   @IsObject()
   @IsOptional()
