@@ -119,27 +119,10 @@ export type AdminVariantsListRes = PaginatedResponse & {
  *   - variant
  * properties:
  *   variant:
- *     $ref: "#/components/schemas/PricedVariantWithInventory"
+ *     $ref: "#/components/schemas/PricedVariant"
  */
 export type AdminVariantsRes = {
-  variant: PricedVariantWithInventory
-}
-
-/**
- * @schema PricedVariantWithInventory
- * title: "Priced Product Variant With inventory decorated"
- * type: object
- * allOf:
- *  - $ref: "#/components/schemas/PricedVariant"
- *  - type: object
- *    properties:
- *      inventory:
- *       type: array
- *       items:
- *         $ref: "#/components/schemas/ResponseInventoryItem"
- */
-export type PricedVariantWithInventory = PricedVariant & {
-  inventory?: ResponseInventoryItem[]
+  variant: PricedVariant
 }
 
 export * from "./list-variants"
