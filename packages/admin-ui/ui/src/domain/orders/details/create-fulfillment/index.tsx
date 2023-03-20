@@ -172,10 +172,6 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
           no_notification: noNotis,
         } as AdminPostOrdersOrderFulfillmentsReq
 
-        if (isLocationFulfillmentEnabled) {
-          requestObj.location_id = locationSelectValue.value
-        }
-
         requestObj.items = Object.entries(quantities)
           .filter(([, value]) => !!value)
           .map(([key, value]) => ({
@@ -183,6 +179,10 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
             quantity: value,
           }))
         break
+    }
+
+    if (isLocationFulfillmentEnabled) {
+      requestObj.location_id = locationSelectValue.value
     }
 
     action.mutate(requestObj, {
