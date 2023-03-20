@@ -66,15 +66,19 @@ export default async (req, res) => {
   const validated = await validator(AdminResetPasswordTokenRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")
-  const user = await userService.retrieveByEmail(validated.email)
+  const user = await userService
+    .retrieveByEmail(validated.email)
+    .catch(() => undefined)
 
-  // Should call a email service provider that sends the token to the user
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await userService
-      .withTransaction(transactionManager)
-      .generateResetPasswordToken(user.id)
-  })
+  if (user) {
+    // Should call a email service provider that sends the token to the user
+    const manager: EntityManager = req.scope.resolve("manager")
+    await manager.transaction(async (transactionManager) => {
+      return await userService
+        .withTransaction(transactionManager)
+        .generateResetPasswordToken(user.id)
+    })
+  }
 
   res.sendStatus(204)
 }
