@@ -35,13 +35,13 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     let environment
     if (this.options_.sandbox) {
       environment = new PayPal.core.SandboxEnvironment(
-        this.options_.client_id,
-        this.options_.client_secret
+        this.options_.client_id || this.options_.clientId,
+        this.options_.client_secret || this.options_.clientSecret
       )
     } else {
       environment = new PayPal.core.LiveEnvironment(
-        this.options_.client_id,
-        this.options_.client_secret
+        this.options_.client_id || this.options_.clientId,
+        this.options_.client_secret || this.options_.clientSecret
       )
     }
 
@@ -187,7 +187,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     try {
       const request = new PayPal.payments.AuthorizationsCaptureRequest(id)
       await this.paypal_.execute(request)
-      return this.retrievePayment(paymentSessionData)
+      return await this.retrievePayment(paymentSessionData)
     } catch (error) {
       return this.buildError("An error occurred in capturePayment", error)
     }
@@ -223,7 +223,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
       )
 
       if (!isAlreadyCaptured) {
-        throw new Error("The order has not yet been captured. Unable to refund")
+        throw new Error("Cannot refund an uncaptured payment")
       }
 
       const paymentId = payments.captures[0].id
@@ -242,7 +242,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       await this.paypal_.execute(request)
 
-      return this.retrievePayment(paymentSessionData)
+      return await this.retrievePayment(paymentSessionData)
     } catch (error) {
       return this.buildError("An error occurred in refundPayment", error)
     }
@@ -291,7 +291,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       return { session_data: context.paymentSessionData }
     } catch (error) {
-      return this.initiatePayment(context).catch((e) => {
+      return await this.initiatePayment(context).catch((e) => {
         return this.buildError("An error occurred in updatePayment", e)
       })
     }
@@ -325,61 +325,13 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         "Content-Type": "application/json",
       },
       body: {
-        webhook_id: this.options_.auth_webhook_id,
+        webhook_id:
+          this.options_.auth_webhook_id || this.options_.authWebhookId,
         ...data,
       },
     }
 
     return this.paypal_.execute(verifyReq)
-  }
-
-  /**
-   * Upserts a webhook that listens for order authorizations.
-   */
-  async ensureWebhooks() {
-    if (!this.options_.backend_url) {
-      return
-    }
-
-    const webhookReq = {
-      verb: "GET",
-      path: "/v1/notifications/webhooks",
-    }
-    const webhookRes = await this.paypal_.execute(webhookReq)
-
-    let found
-    if (webhookRes.result && webhookRes.result.webhooks) {
-      found = webhookRes.result.webhooks.find((w) => {
-        const notificationType = w.event_types.find(
-          (e) => e.name === "PAYMENT.AUTHORIZATION.CREATED"
-        )
-        return (
-          !!notificationType &&
-          w.url === `${this.options_.backend_url}/paypal/hooks`
-        )
-      })
-    }
-
-    if (!found) {
-      const whCreateReq = {
-        verb: "POST",
-        path: "/v1/notifications/webhooks",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: {
-          id: "medusa-auth-notification",
-          url: `${this.options_.backend_url}/paypal/hooks`,
-          event_types: [
-            {
-              name: "PAYMENT.AUTHORIZATION.CREATED",
-            },
-          ],
-        },
-      }
-
-      await this.paypal_.execute(whCreateReq)
-    }
   }
 }
 

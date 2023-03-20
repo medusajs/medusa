@@ -343,7 +343,7 @@ describe("PaypalProvider", () => {
 
       expect(result).toEqual({
         code: "",
-        detail: "The order has not yet been captured. Unable to refund",
+        detail: "Cannot refund an uncaptured payment",
         error: "An error occurred in refundPayment",
       })
     })

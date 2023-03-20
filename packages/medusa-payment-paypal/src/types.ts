@@ -3,10 +3,26 @@ export interface PaypalOptions {
    * Indicate if it should run as sandbox, default false
    */
   sandbox?: boolean
+  clientId: string
+  clientSecret: string
+  authWebhookId: string
+
+  /**
+   * Backward compatibility options below
+   */
+
+  /**
+   * @deprecated use clientId instead
+   */
   client_id: string
+  /**
+   * @deprecated use clientSecret instead
+   */
   client_secret: string
+  /**
+   * @deprecated use authWebhookId instead
+   */
   auth_webhook_id: string
-  backend_url: string
 }
 
 export type PaypalOrder = {
