@@ -1,32 +1,14 @@
-import {
-  Bancontact,
-  Blik,
-  Card,
-  EPS,
-  Ideal,
-  MyBank,
-  P24,
-  Paypal,
-  PurchaseUnit,
-  Sofort,
-  Token,
-  Trustly,
-} from "./common"
+import { Links, PaymentSource, PurchaseUnit } from "./common"
 
 export interface CreateOrder {
   intent: "CAPTURE" | "AUTHORIZE"
   purchase_units: Array<PurchaseUnit>
-  payment_source?: {
-    bancontact?: Bancontact
-    blik?: Blik
-    card?: Card
-    eps?: EPS
-    ideal?: Ideal
-    myBank?: MyBank
-    p24?: P24
-    paypal?: Paypal
-    sofort?: Sofort
-    token?: Token
-    trustly?: Trustly
-  }
+  payment_source?: PaymentSource
+}
+
+export interface CreateOrderResponse {
+  id: string
+  status: string
+  payment_source: PaymentSource
+  links: Links
 }

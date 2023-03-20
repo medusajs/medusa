@@ -1,3 +1,5 @@
+export type Links = { href: string; rel: string; method: string }[]
+
 export interface Address {
   country_code: string
   address_line_1?: string
@@ -20,6 +22,13 @@ export interface MoneyBreakdown {
   shipping: MoneyAmount
   shipping_discount: MoneyAmount
   tax_total: MoneyAmount
+}
+
+export interface PaymentInstruction {
+  disbursement_mode: "INSTANT" | "DELAYED"
+  payee_pricing_tier_id: string
+  payee_receivable_fx_rate_id: string
+  platform_fees: Array<PlatformFee>
 }
 
 export interface Payee {
@@ -49,12 +58,7 @@ export interface PurchaseUnit {
   invoice_id?: string
   items?: Array<PurchaseUnitItem>
   payee?: Payee
-  payment_instruction?: {
-    disbursement_mode: "INSTANT" | "DELAYED"
-    payee_pricing_tier_id: string
-    payee_receivable_fx_rate_id: string
-    platform_fees: Array<PlatformFee>
-  }
+  payment_instruction?: PaymentInstruction
   reference_id?: string
   shipping?: {
     address?: Address
@@ -157,4 +161,18 @@ export interface Trustly {
   country_code?: string
   iban_last_chars?: string
   name?: string
+}
+
+export interface PaymentSource {
+  bancontact?: Bancontact
+  blik?: Blik
+  card?: Card
+  eps?: EPS
+  ideal?: Ideal
+  myBank?: MyBank
+  p24?: P24
+  paypal?: Paypal
+  sofort?: Sofort
+  token?: Token
+  trustly?: Trustly
 }
