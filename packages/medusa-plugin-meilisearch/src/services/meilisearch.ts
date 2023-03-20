@@ -1,7 +1,10 @@
-import { AbstractSearchService } from "@medusajs/medusa"
-import { indexTypes } from "medusa-core-utils"
+import { AbstractSearchService, indexTypes } from "@medusajs/utils"
 import { MeiliSearch, Settings } from "meilisearch"
-import { IndexSettings, meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
+import {
+  IndexSettings,
+  meilisearchErrorCodes,
+  MeilisearchPluginOptions,
+} from "../types"
 import { transformProduct } from "../utils/transform-product"
 
 class MeiliSearchService extends AbstractSearchService {
