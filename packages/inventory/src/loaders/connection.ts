@@ -6,8 +6,8 @@ import {
 } from "@medusajs/modules-sdk"
 import { DataSource, DataSourceOptions } from "typeorm"
 
+import { MedusaError } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { MedusaError } from "medusa-core-utils"
 import * as InventoryModels from "../models"
 import { InventoryServiceInitializeOptions } from "../types"
 
