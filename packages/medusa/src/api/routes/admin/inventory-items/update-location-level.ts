@@ -1,5 +1,5 @@
 import { IInventoryService } from "@medusajs/types"
-import { IsNumber, IsOptional } from "class-validator"
+import { IsNumber, IsOptional, Min } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
