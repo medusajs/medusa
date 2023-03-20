@@ -309,6 +309,7 @@ class SwapService extends TransactionBaseService {
       no_notification?: boolean
       idempotency_key?: string
       allow_backorder?: boolean
+      location_id?: string
     } = { no_notification: undefined }
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
@@ -379,6 +380,7 @@ class SwapService extends TransactionBaseService {
         items: returnItems as OrdersReturnItem[],
         shipping_method: returnShipping,
         no_notification: evaluatedNoNotification,
+        location_id: custom.location_id,
       })
 
       await this.eventBus_

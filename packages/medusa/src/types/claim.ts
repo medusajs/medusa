@@ -18,6 +18,7 @@ export type CreateClaimInput = {
   order: Order
   claim_order_id?: string
   shipping_address_id?: string
+  location_id?: string
 }
 
 type CreateClaimReturnShippingInput = {
