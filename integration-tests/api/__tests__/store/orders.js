@@ -177,6 +177,17 @@ describe("/store/carts", () => {
         "customer",
         "payments",
         "region",
+        // default
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
       ])
     })
 
@@ -197,6 +208,17 @@ describe("/store/carts", () => {
         "customer",
         "payments",
         "region",
+        // default
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
       ])
     })
 
@@ -212,6 +234,17 @@ describe("/store/carts", () => {
         "status",
         // selected relations
         "billing_address",
+        // default
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
       ])
     })
 

@@ -1,5 +1,42 @@
 # @medusajs/inventory
 
+## 1.0.10
+
+### Patch Changes
+
+- [#3407](https://github.com/medusajs/medusa/pull/3407) [`f0a1355fe`](https://github.com/medusajs/medusa/commit/f0a1355feb5160ff7de1f3d3da769efe29d0d8ed) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Bulk emit events
+
+- Updated dependencies [[`601d20e7a`](https://github.com/medusajs/medusa/commit/601d20e7ab293728cd81f0723805841016812120), [`f0a1355fe`](https://github.com/medusajs/medusa/commit/f0a1355feb5160ff7de1f3d3da769efe29d0d8ed)]:
+  - @medusajs/medusa@1.7.13
+
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`ce577f269`](https://github.com/medusajs/medusa/commit/ce577f2696aa2181bef8f3096b1a639feabe2714), [`aa0d1f321`](https://github.com/medusajs/medusa/commit/aa0d1f32153f82c6219efe5cfc08862db5e5a129), [`9f508c8bd`](https://github.com/medusajs/medusa/commit/9f508c8bd8bee63677504cc8b86f1643579945d8)]:
+  - @medusajs/medusa@1.7.12
+
+## 1.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`c43248131`](https://github.com/medusajs/medusa/commit/c432481319cc205938081c3fcf60e75053b659ca)]:
+  - @medusajs/medusa@1.7.11
+
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`b458615ed`](https://github.com/medusajs/medusa/commit/b458615ed50a7c637e9e77f29f21c7ab300ed5d8), [`4b114cc41`](https://github.com/medusajs/medusa/commit/4b114cc4191ba20832b66072ec82386b22a3533c)]:
+  - @medusajs/medusa@1.7.10
+
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`370bd472e`](https://github.com/medusajs/medusa/commit/370bd472ed8c9038f66defd012a886e0f83c32cf)]:
+  - @medusajs/medusa@1.7.9
+
 ## 1.0.5
 
 ### Patch Changes

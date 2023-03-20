@@ -1,6 +1,5 @@
-export * from "./types"
-export * from "./loaders"
-
-export * from "./module-helper"
-
 export * from "./definitions"
+export * from "./loaders"
+export * from "./medusa-module"
+export * from "./module-helper"
+export * from "./types"

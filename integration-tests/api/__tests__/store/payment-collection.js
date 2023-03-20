@@ -440,7 +440,7 @@ describe("/store/payment-collections", () => {
         })
       )
 
-      expect(response.status).toEqual(207)
+      expect(response.status).toEqual(200)
     })
   })
 })

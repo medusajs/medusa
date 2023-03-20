@@ -100,7 +100,9 @@ export default async (req, res) => {
 
   const order = orders[0]
 
-  res.json({ order: cleanResponseData(order, req.allowedProperties || []) })
+  res.json({
+    order: cleanResponseData(order, req.allowedProperties || []),
+  })
 }
 
 export class ShippingAddressPayload {

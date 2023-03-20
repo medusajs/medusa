@@ -21,15 +21,10 @@ import {
   ProductOptionValue,
   ProductVariant,
 } from "../models"
-import { CartRepository } from "../repositories/cart"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductRepository } from "../repositories/product"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
@@ -38,6 +33,12 @@ import {
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import { buildQuery, buildRelations, setMetadata } from "../utils"
+
+import { CartRepository } from "../repositories/cart"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductRepository } from "../repositories/product"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { FindConfig } from "../types/common"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
 
@@ -172,7 +173,9 @@ class ProductVariantService extends TransactionBaseService {
             "options",
           ]),
         })) as Product
-      } else if (!product.id) {
+      }
+
+      if (!product?.id) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Product id missing`

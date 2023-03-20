@@ -2,7 +2,7 @@ import { Router } from "express"
 import "reflect-metadata"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 
 import { PaymentCollection, PaymentSession } from "../../../../models"
@@ -18,7 +18,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetPaymentCollectionsParams, {
+    transformStoreQuery(StoreGetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
       defaultRelations: defaultPaymentCollectionRelations,
       isList: false,
@@ -74,6 +74,14 @@ export const defaultPaymentCollectionRelations = ["region", "payment_sessions"]
 /**
  * @schema StorePaymentCollectionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: payment_collection
+ *   relations:
+ *     - payment_sessions
+ *     - region
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
  * required:
  *   - payment_collection
  * properties:

@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import {
   defaultStoreProductCategoryRelations,
-  defaultStoreScope,
+  defaultStoreCategoryScope,
   defaultStoreProductCategoryFields
 } from ".."
 import {
@@ -31,7 +31,7 @@ describe("GET /store/product-categories/:id", () => {
           relations: defaultStoreProductCategoryRelations,
           select: defaultStoreProductCategoryFields,
         },
-        defaultStoreScope
+        defaultStoreCategoryScope
       )
     })
 
@@ -59,7 +59,7 @@ describe("GET /store/product-categories/:id", () => {
           relations: defaultStoreProductCategoryRelations,
           select: defaultStoreProductCategoryFields,
         },
-        defaultStoreScope
+        defaultStoreCategoryScope
       )
     })
 

@@ -1,12 +1,13 @@
 import {
-  ConfigurableModuleDeclaration,
-  ModuleResolution,
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
 } from "@medusajs/modules-sdk"
-import { AwilixContainer } from "awilix"
 import { Request } from "express"
+import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
+import { EmitOptions } from "../services/event-bus"
 import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
@@ -21,6 +22,7 @@ declare global {
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
       allowedProperties: string[]
+      includes?: Record<string, boolean>
       errors: string[]
     }
   }
@@ -32,9 +34,7 @@ export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
 
-export type MedusaContainer = AwilixContainer & {
-  registerAdd: <T>(name: string, registration: T) => MedusaContainer
-}
+export type MedusaContainer = coreMedusaContainer
 
 export type Logger = _Logger & {
   progress: (activityId: string, msg: string) => void
@@ -57,6 +57,25 @@ export type ConfigModule = {
   projectConfig: {
     redis_url?: string
 
+    /**
+     * Global options passed to all `EventBusService.emit` in the core as well as your own emitters. The options are forwarded to Bull's `Queue.add` method.
+     *
+     * The global options can be overridden by passing options to `EventBusService.emit` directly.
+     *
+     * Note: This will be deprecated as we move to Event Bus module in 1.8
+     *
+     *
+     * Example
+     * ```js
+     * {
+     *    removeOnComplete: { age: 10 },
+     * }
+     * ```
+     *
+     * @see https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueadd
+     */
+    event_options?: Record<string, unknown> & EmitOptions
+
     session_options?: SessionOptions
 
     jwt_secret?: string
@@ -77,9 +96,10 @@ export type ConfigModule = {
   featureFlags: Record<string, boolean | string>
   modules?: Record<
     string,
-    false | string | Partial<ConfigurableModuleDeclaration>
+    | false
+    | string
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
   >
-  moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {
         resolve: string

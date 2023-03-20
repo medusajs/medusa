@@ -5,14 +5,14 @@ import {
   PaymentProviderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import {
-  defaultAdminOrdersFields as defaultOrderFields,
-  defaultAdminOrdersRelations as defaultOrderRelations,
-} from "../orders/index"
 
 import { EntityManager } from "typeorm"
 import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
+import {
+  defaultAdminOrdersFields as defaultOrderFields,
+  defaultAdminOrdersRelations as defaultOrderRelations,
+} from "../../../../types/orders"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/pay
@@ -85,9 +85,6 @@ export default async (req, res) => {
     const orderServiceTx = orderService.withTransaction(manager)
     const cartServiceTx = cartService.withTransaction(manager)
 
-    const productVariantInventoryServiceTx =
-      productVariantInventoryService.withTransaction(manager)
-
     const draftOrder = await draftOrderServiceTx.retrieve(id)
 
     const cart = await cartServiceTx.retrieveWithTotals(draftOrder.cart_id)
@@ -116,7 +113,7 @@ export default async (req, res) => {
       })
 
     await reserveQuantityForDraftOrder(order, {
-      productVariantInventoryService: productVariantInventoryServiceTx,
+      productVariantInventoryService,
     })
 
     return order

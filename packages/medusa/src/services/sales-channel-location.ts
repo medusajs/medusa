@@ -1,8 +1,9 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { IStockLocationService, TransactionBaseService } from "../interfaces"
 import { EventBusService, SalesChannelService } from "./"
 
 import { SalesChannelLocation } from "../models/sales-channel-location"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
@@ -17,8 +18,8 @@ type InjectedDependencies = {
 
 class SalesChannelLocationService extends TransactionBaseService {
   protected readonly salesChannelService_: SalesChannelService
-  protected readonly eventBusService: EventBusService
-  protected readonly stockLocationService: IStockLocationService
+  protected readonly eventBusService_: EventBusService
+  protected readonly stockLocationService_: IStockLocationService
 
   constructor({
     salesChannelService,
@@ -29,8 +30,8 @@ class SalesChannelLocationService extends TransactionBaseService {
     super(arguments[0])
 
     this.salesChannelService_ = salesChannelService
-    this.eventBusService = eventBusService
-    this.stockLocationService = stockLocationService
+    this.eventBusService_ = eventBusService
+    this.stockLocationService_ = stockLocationService
   }
 
   /**
@@ -76,9 +77,9 @@ class SalesChannelLocationService extends TransactionBaseService {
       .withTransaction(this.activeManager_)
       .retrieve(salesChannelId)
 
-    if (this.stockLocationService) {
+    if (this.stockLocationService_) {
       // trhows error if not found
-      await this.stockLocationService.retrieve(locationId)
+      await this.stockLocationService_.retrieve(locationId)
     }
 
     const salesChannelLocation = this.activeManager_.create(
@@ -97,13 +98,24 @@ class SalesChannelLocationService extends TransactionBaseService {
    * @param salesChannelId - The ID of the sales channel.
    * @returns A promise that resolves with an array of location IDs.
    */
-  async listLocationIds(salesChannelId: string): Promise<string[]> {
-    const salesChannel = await this.salesChannelService_
+  async listLocationIds(salesChannelId: string | string[]): Promise<string[]> {
+    const ids = Array.isArray(salesChannelId)
+      ? salesChannelId
+      : [salesChannelId]
+
+    const [salesChannels, count] = await this.salesChannelService_
       .withTransaction(this.activeManager_)
-      .retrieve(salesChannelId)
+      .listAndCount({ id: ids }, { select: ["id"], skip: 0 })
+
+    if (!count) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with id: ${ids.join(", ")} was not found`
+      )
+    }
 
     const locations = await this.activeManager_.find(SalesChannelLocation, {
-      where: { sales_channel_id: salesChannel.id },
+      where: { sales_channel_id: In(salesChannels.map((sc) => sc.id)) },
       select: ["location_id"],
     })
 
@@ -117,7 +129,7 @@ class SalesChannelLocationService extends TransactionBaseService {
    */
   async listSalesChannelIds(locationId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
-    const location = await this.stockLocationService.retrieve(locationId)
+    const location = await this.stockLocationService_.retrieve(locationId)
 
     const salesChannelLocations = await manager.find(SalesChannelLocation, {
       where: { location_id: location.id },

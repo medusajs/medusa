@@ -5,6 +5,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Return } from "../../../../models"
+import { defaultRelationsList } from "."
 
 /**
  * @oas [get] /admin/returns
@@ -66,7 +67,7 @@ export default async (req, res) => {
   const selector = {}
 
   const listConfig = {
-    relations: ["swap", "order"],
+    relations: defaultRelationsList,
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },

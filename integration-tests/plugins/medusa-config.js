@@ -39,5 +39,9 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/inventory",
     },
+    cacheService: {
+      resolve: "@medusajs/cache-inmemory",
+      options: { ttl: 5 },
+    },
   },
 }

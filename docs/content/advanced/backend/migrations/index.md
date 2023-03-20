@@ -7,7 +7,7 @@ addHowToData: true
 
 In this document, you’ll learn how to create a [Migration](overview.md) using [Typeorm](https://typeorm.io) on your Medusa server.
 
-## Create Migration File
+## Step 1: Create Migration File
 
 To create a migration that makes changes to your Medusa schema, run the following command:
 
@@ -19,15 +19,62 @@ This will create the migration file in the path you specify. You can use this wi
 
 The migration file must be inside the `src/migrations` directory. When you run the build command, it will be transpiled into the directory `dist/migrations`. The `migrations run` command can only pick up migrations under the `dist/migrations` directory on a Medusa server. This applies to migrations created in a Medusa server, and not in a Medusa plugin. For plugins, check out the [Plugin's Structure section](../plugins/create.md).
 
-:::tip
+<details>
+  <summary>Generating Migrations for Entities</summary>
 
-You can alternatively use Typeorm's `generate` command to generate a Migration file from existing database tables, which requires setting up a data source in Typeorm. Check out Typeorm's documentation to learn [how to create a data source](https://typeorm.io/data-source#creating-a-new-datasource), then use the [generate command](https://typeorm.io/using-cli#generate-a-migration-from-existing-table-schema).
+  You can alternatively use Typeorm's `generate` command to generate a Migration file from existing entity classes. As Medusa uses v0.2.45 of Typeorm, you have to create a `ormconfig.json` first before using the `generate` command.
+
+:::note
+
+Typeorm will be updated to the latest version in v1.8.0 of Medusa.
 
 :::
 
+  For example, create the file `ormconfig.json` in the root of your Medusa server with the following content:
+
+  ```json
+  {
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "<YOUR_DB_USERNAME>",
+    "password": "<YOUR_DB_PASSWORD>",
+    "database": "<YOUR_DB_NAME>",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+      "dist/models/**/*.js"
+    ],
+    "migrations": [
+      "dist/migrations/**/*.js"
+    ],
+    "cli": {
+        "entitiesDir": "src/models",
+        "migrationsDir": "src/migrations"
+    }
+  }
+  ```
+
+  Make sure to replace `<YOUR_DB_USERNAME>`, `<YOUR_DB_PASSWORD>`, and `<YOUR_DB_NAME>` with the necessary values for your database connection.
+
+  Then, after creating your entity, run the `build` command:
+
+  ```bash npm2yarn
+  npm run build
+  ```
+
+  Finally, run the following command to generate a Migration for your new entity:
+
+  ```bash
+  npx typeorm@0.2.45 migration:generate -n PostCreate
+  ```
+
+  Where `PostCreate` is just an example of the name of the migration to generate. The migration will then be generated in `src/migrations/<TIMESTAMP>-PostCreate.ts`. You can then skip to step 3 of this guide.
+</details>
+
 ---
 
-## Write Migration File
+## Step 2: Write Migration File
 
 The migration file contains the necessary commands to create the database columns, foreign keys, and more.
 
@@ -35,7 +82,7 @@ You can learn more about writing the migration file in You can learn more about 
 
 ---
 
-## Build Files
+## Step 3: Build Files
 
 Before you can run the migrations you need to run the build command to transpile the TypeScript files to JavaScript files:
 
@@ -45,7 +92,7 @@ npm run build
 
 ---
 
-## Run Migration
+## Step 4: Run Migration
 
 The last step is to run the migration with the command detailed earlier
 

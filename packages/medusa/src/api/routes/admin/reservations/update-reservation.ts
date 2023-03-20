@@ -1,6 +1,9 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
+import { LineItemService } from "../../../../services"
+import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
  * @oas [post] /admin/reservations/{id}
@@ -48,7 +51,7 @@ import { IInventoryService } from "../../../../interfaces"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -69,14 +72,26 @@ export default async (req, res) => {
   }
 
   const manager: EntityManager = req.scope.resolve("manager")
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const reservation = await inventoryService.retrieveReservationItem(id)
+
+  if (reservation.line_item_id && isDefined(validatedBody.quantity)) {
+    await validateUpdateReservationQuantity(
+      reservation.line_item_id,
+      validatedBody.quantity - reservation.quantity,
+      {
+        lineItemService,
+        inventoryService,
+      }
+    )
+  }
+
   const result = await manager.transaction(async (manager) => {
-    await inventoryService
-      .withTransaction(manager)
-      .updateReservationItem(id, validatedBody)
+    await inventoryService.updateReservationItem(id, validatedBody)
   })
 
   res.status(200).json({ reservation: result })
