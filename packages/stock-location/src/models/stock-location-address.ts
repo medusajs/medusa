@@ -1,4 +1,4 @@
-import { SoftDeletableEntity } from "@medusajs/utils"
+import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
 
 @Entity()
