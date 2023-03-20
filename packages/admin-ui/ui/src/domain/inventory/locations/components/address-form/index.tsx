@@ -14,6 +14,7 @@ const AddressForm = ({
 }) => {
   const {
     register,
+    unregister,
     path,
     formState: { errors },
     control,
@@ -40,6 +41,11 @@ const AddressForm = ({
   useEffect(() => {
     setAddressFieldsRequired(!!anyAddressFieldsFilled)
   }, [anyAddressFieldsFilled])
+
+  useEffect(() => {
+    unregister(path("address_1"), { keepValue: true })
+    unregister(path("country_code"), { keepValue: true })
+  }, [addressFieldsRequired, path, unregister])
 
   const countries = useMemo(() => {
     if (!regions) {
