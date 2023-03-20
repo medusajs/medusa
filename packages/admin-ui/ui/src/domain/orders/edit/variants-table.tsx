@@ -1,4 +1,4 @@
-import { useAdminVariants } from "medusa-react"
+import { useAdminVariants, useAdminVariantsInventory } from "medusa-react"
 import React, { useEffect, useMemo, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
 import { InventoryLevelDTO, ProductVariant } from "@medusajs/medusa"
@@ -12,6 +12,7 @@ import { formatAmountWithSymbol } from "../../../utils/prices"
 import TableContainer from "../../../components/organisms/table-container"
 import Tooltip from "../../../components/atoms/tooltip"
 import useStockLocations from "../../../hooks/use-stock-locations"
+import Skeleton from "../../../components/atoms/skeleton"
 
 const PAGE_SIZE = 12
 
@@ -40,7 +41,6 @@ const VariantsTable: React.FC<Props> = (props) => {
     offset,
     region_id: regionId,
     customer_id: customerId,
-    expand: "inventory,product,prices,options",
   })
 
   useEffect(() => {
@@ -52,11 +52,25 @@ const VariantsTable: React.FC<Props> = (props) => {
   const VariantInventoryCell = ({ row: { original } }) => {
     const { getLocationNameById } = useStockLocations()
 
-    if (!original.inventory) {
+    const { variant, isLoading } = useAdminVariantsInventory(original.id)
+
+    if (isLoading) {
+      return (
+        <div className="flex justify-end">
+          <Skeleton isLoading={true}>
+            <div className="h-[20px] w-[50px]" />
+          </Skeleton>
+        </div>
+      )
+    }
+
+    if (!isLoading && (!variant || !variant.inventory)) {
       return <div className="text-right">{original.inventory_quantity}</div>
     }
 
-    const total = original.inventory[0].location_levels.reduce(
+    const { inventory } = variant
+
+    const total = inventory[0].location_levels.reduce(
       (sum: number, location_level: InventoryLevelDTO) =>
         (sum += location_level.stocked_quantity),
       0
@@ -64,7 +78,7 @@ const VariantsTable: React.FC<Props> = (props) => {
 
     const LocationTooltip = (
       <>
-        {original.inventory[0].location_levels.map(
+        {inventory[0].location_levels.map(
           (location_level: InventoryLevelDTO) => (
             <div key={location_level.id} className="font-normal">
               <span className="font-semibold">
@@ -81,7 +95,7 @@ const VariantsTable: React.FC<Props> = (props) => {
     return (
       <Tooltip content={LocationTooltip} side="top" className="translate-x-1/4">
         <div className="text-right">
-          {total} in {original.inventory[0].location_levels.length} location(s)
+          {total} in {inventory[0].location_levels.length} location(s)
         </div>
       </Tooltip>
     )
