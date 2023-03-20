@@ -510,9 +510,12 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.retrieve(IdMap.getId("test-order"))
       expect(orderRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith({}, {
-        where: { id: IdMap.getId("test-order") },
-      })
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith(
+        {},
+        {
+          where: { id: IdMap.getId("test-order") },
+        }
+      )
     })
   })
 
@@ -934,8 +937,7 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        { metadata: {}, order_id: "test-order" },
-        { location_id: undefined }
+        { metadata: {}, order_id: "test-order", location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -967,8 +969,7 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        { metadata: {}, order_id: "partial" },
-        { location_id: undefined }
+        { metadata: {}, order_id: "partial", location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -1000,8 +1001,7 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        { metadata: {}, order_id: "test" },
-        { location_id: undefined }
+        { metadata: {}, order_id: "test", location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -1039,8 +1039,12 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        { metadata: {}, order_id: "test", no_notification: undefined },
-        { locationId: "loc_1" }
+        {
+          metadata: {},
+          order_id: "test",
+          no_notification: undefined,
+          location_id: "loc_1",
+        }
       )
     })
 

@@ -5633,6 +5633,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^14.0.0
     "@testing-library/user-event": ^14.4.3
+    "@types/pluralize": ^0.0.29
     "@types/react": ^18.0.27
     "@types/react-dom": ^18.0.10
     "@types/react-table": ^7.7.9
@@ -5643,6 +5644,7 @@ __metadata:
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
     medusa-react: "*"
+    pluralize: ^8.0.0
     postcss: ^8.4.21
     query-string: ^8.1.0
     react: ^18.2.0
@@ -11369,6 +11371,13 @@ __metadata:
   version: 1.0.1
   resolution: "@types/pascalcase@npm:1.0.1"
   checksum: beb5e1568f9dc2335c20c1f7df1332b0a357c6492e3ba04e14e0b908ff2e10509c94a991d1f90a384a0dae7c862d8c1107141dacab80532738fadd085cdbb26e
+  languageName: node
+  linkType: hard
+
+"@types/pluralize@npm:^0.0.29":
+  version: 0.0.29
+  resolution: "@types/pluralize@npm:0.0.29"
+  checksum: 840796fa1db158eb4d9787758d134736e29d9a8035f5b0cbad06e3801fc64b79112ba944c83f9a1a5b94da08703f505b8315b7e0f28bfc0f8e9e1ccfead7b083
   languageName: node
   linkType: hard
 
