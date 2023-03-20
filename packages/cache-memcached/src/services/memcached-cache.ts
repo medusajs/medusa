@@ -11,9 +11,8 @@ type InjectedDependencies = {
 }
 
 class MemcachedCacheService implements ICacheService {
+  protected readonly TTL: number
   protected readonly memcached: Memcached
-
-  protected TTL: number
 
   constructor(
     { cacheMemcachedConnection }: InjectedDependencies,
