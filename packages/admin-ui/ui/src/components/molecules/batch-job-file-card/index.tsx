@@ -42,11 +42,10 @@ const BatchJobFileCard = ({
         <Tooltip
           side="top"
           open={hasError ? undefined : false}
+          maxWidth={320}
           content={
             hasError && errorMessage ? (
-              <span className="break-words font-normal text-rose-500">
-                {errorMessage}
-              </span>
+              <span className="font-normal text-rose-500">{errorMessage}</span>
             ) : null
           }
         >

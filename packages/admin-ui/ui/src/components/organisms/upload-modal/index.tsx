@@ -36,13 +36,11 @@ function FileSummary(props: FileSummaryProps) {
     <div className="relative">
       <Tooltip
         side="top"
+        maxWidth={320}
         open={hasError ? undefined : false}
         content={
           hasError && errorMessage ? (
-            <span className="font-normal text-rose-500">
-              [Description of the failure] <br />
-              {errorMessage}
-            </span>
+            <span className="font-normal text-rose-500">{errorMessage}</span>
           ) : null
         }
       >
