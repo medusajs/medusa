@@ -197,26 +197,22 @@ describe("/store/carts", () => {
           fulfilled_quantity: 1,
         })
 
-        const response = await api
-          .post(
-            `/admin/orders/${orderId}/claims`,
-            {
-              type: "refund",
-              claim_items: [
-                {
-                  item_id: "line-item-id",
-                  quantity: 1,
-                  reason: "production_failure",
-                },
-              ],
-              return_shipping: { option_id: "test-return-option", price: 0 },
-              location_id: locationId,
-            },
-            adminHeaders
-          )
-          .catch(console.log)
-
-        console.log(response.data.order.claims[0])
+        const response = await api.post(
+          `/admin/orders/${orderId}/claims`,
+          {
+            type: "refund",
+            claim_items: [
+              {
+                item_id: "line-item-id",
+                quantity: 1,
+                reason: "production_failure",
+              },
+            ],
+            return_shipping: { option_id: "test-return-option", price: 0 },
+            location_id: locationId,
+          },
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.order.claims[0].return_order.location_id).toEqual(
