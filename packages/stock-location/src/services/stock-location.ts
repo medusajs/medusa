@@ -1,14 +1,19 @@
-import { buildQuery, IEventBusService, setMetadata } from "@medusajs/medusa"
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   CreateStockLocationInput,
   FilterableStockLocationProps,
   FindConfig,
+  IEventBusService,
   SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
 } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import {
+  buildQuery,
+  InjectEntityManager,
+  MedusaContext,
+  setMetadata,
+} from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { StockLocation, StockLocationAddress } from "../models"

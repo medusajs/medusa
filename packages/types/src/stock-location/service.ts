@@ -1,4 +1,4 @@
-import { FindConfig } from "../medusa"
+import { FindConfig } from "../common/common"
 import {
   CreateStockLocationInput,
   FilterableStockLocationProps,

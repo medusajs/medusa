@@ -5998,7 +5998,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": ^0.0.1
     "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
@@ -6009,7 +6008,6 @@ __metadata:
     typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.7
     "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft

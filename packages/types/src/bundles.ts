@@ -1,3 +1,5 @@
 export * as CacheTypes from "./cache"
-export * as CoreTypes from "./medusa"
+export * as CommonTypes from "./common"
+export * as EventBusTypes from "./event-bus"
 export * as StockLocationTypes from "./stock-location"
+export * as TransactionBaseTypes from "./transaction-base"
