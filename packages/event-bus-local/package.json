@@ -21,7 +21,6 @@
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
     "ts-jest": "^25.5.1",
-    "typeorm": "^0.2.45",
     "typescript": "^4.4.4"
   },
   "scripts": {

@@ -6,7 +6,6 @@ import { EventEmitter } from "events"
 type InjectedDependencies = {
   logger: Logger
 }
-// const eventEmitter = new EventEmitter()
 
 export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_: Logger
