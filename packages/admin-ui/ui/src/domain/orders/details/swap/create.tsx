@@ -3,7 +3,9 @@ import {
   Order,
   ProductVariant,
   ReturnReason,
+  StockLocationDTO,
 } from "@medusajs/medusa"
+import { useAdminStockLocations } from "medusa-react"
 import {
   useAdminCreateSwap,
   useAdminOrder,
@@ -23,6 +25,7 @@ import Select from "../../../../components/molecules/select"
 import RMAReturnProductsTable from "../../../../components/organisms/rma-return-product-table"
 import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
 import useNotification from "../../../../hooks/use-notification"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { Option } from "../../../../types/shared"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
@@ -62,6 +65,32 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
     undefined
   )
   const [noNotification, setNoNotification] = useState(order.no_notification)
+  const [selectedLocation, setSelectedLocation] = React.useState<{
+    value: string
+    label: string
+  } | null>(null)
+
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isLocationFulfillmentEnabled =
+    isFeatureEnabled("inventoryService") &&
+    isFeatureEnabled("stockLocationService")
+
+  const {
+    stock_locations,
+    refetch: refetchLocations,
+    isLoading: isLoadingLocations,
+  } = useAdminStockLocations(
+    {},
+    {
+      enabled: isLocationFulfillmentEnabled,
+    }
+  )
+
+  React.useEffect(() => {
+    if (isLocationFulfillmentEnabled) {
+      refetchLocations()
+    }
+  }, [isLocationFulfillmentEnabled, refetchLocations])
 
   const notification = useNotification()
 
@@ -176,6 +205,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
   }
 
   const onSubmit = () => {
+    console.log(selectedLocation)
     const items = Object.entries(toReturn).map(([key, value]) => {
       return {
         item_id: key,
@@ -193,6 +223,10 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
       })),
       no_notification:
         noNotification !== order.no_notification ? noNotification : undefined,
+    }
+
+    if (isLocationFulfillmentEnabled && selectedLocation) {
+      data.location_id = selectedLocation.value
     }
 
     if (shippingMethod) {
@@ -263,6 +297,32 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               />
             )}
           </div>
+          {isLocationFulfillmentEnabled && (
+            <div className="my-8">
+              <h3 className="inter-base-semibold ">Location</h3>
+              <p className="inter-base-regular text-grey-50">
+                Choose which location you want to return the items to.
+              </p>
+              {isLoadingLocations ? (
+                <Spinner />
+              ) : (
+                <Select
+                  className="mt-2"
+                  placeholder="Select Location to Return to"
+                  value={selectedLocation}
+                  isMulti={false}
+                  onChange={setSelectedLocation}
+                  options={
+                    stock_locations?.map((sl: StockLocationDTO) => ({
+                      label: sl.name,
+                      value: sl.id,
+                    })) || []
+                  }
+                />
+              )}
+            </div>
+          )}
+
           <div className="mt-8 flex items-center justify-between">
             <h3 className="inter-base-semibold ">Items to send</h3>
             {itemsToAdd.length === 0 ? (
