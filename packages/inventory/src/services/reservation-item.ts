@@ -242,9 +242,10 @@ export default class ReservationItemService {
       context
     )
 
-    const ops: Promise<unknown>[] = []
+    const ops: Promise<unknown>[] = [
+      itemRepository.softDelete({ line_item_id: lineItemId })
+    ]
     for (const item of items) {
-      ops.push(itemRepository.softRemove({ line_item_id: lineItemId }))
       ops.push(
         this.inventoryLevelService_.adjustReservedQuantity(
           item.inventory_item_id,
