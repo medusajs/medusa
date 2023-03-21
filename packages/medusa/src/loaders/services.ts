@@ -1,8 +1,8 @@
 import { asFunction } from "awilix"
 import glob from "glob"
+import { isDefined } from "medusa-core-utils"
 import path from "path"
 import { ConfigModule, MedusaContainer } from "../types/global"
-import { isDefined } from "medusa-core-utils"
 import formatRegistrationName from "../utils/format-registration-name"
 
 type Options = {
@@ -14,11 +14,7 @@ type Options = {
 /**
  * Registers all services in the services directory
  */
-export default async ({
-  container,
-  configModule,
-  isTest,
-}: Options): Promise<void> => {
+export default ({ container, configModule, isTest }: Options): void => {
   const useMock = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
 
   const corePath = useMock ? "../services/__mocks__/*.js" : "../services/*.js"

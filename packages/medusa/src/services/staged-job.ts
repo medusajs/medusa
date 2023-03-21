@@ -34,17 +34,15 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async delete(stagedJobIds: string | string[]): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
-      const sjIds = isString(stagedJobIds) ? [stagedJobIds] : stagedJobIds
+    const manager = this.activeManager_
+    const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
+    const sjIds = isString(stagedJobIds) ? [stagedJobIds] : stagedJobIds
 
-      const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
-
-      await stagedJobRepo.delete({ id: In(sjIds) })
-    })
+    await stagedJobRepo.delete({ id: In(sjIds) })
   }
 
   async create(data: EventBusTypes.EmitData[] | EventBusTypes.EmitData) {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
 
       const data_ = Array.isArray(data) ? data : [data]
