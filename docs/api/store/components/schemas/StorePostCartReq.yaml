@@ -38,3 +38,9 @@ properties:
     example:
       ip: '::1'
       user_agent: Chrome
+  metadata:
+    description: >-
+      An optional object to allows additional information to be stored with the Cart.
+    type: object
+    example:
+      car: 'white'
