@@ -87,7 +87,7 @@ const OrganizeForm = ({ form }: Props) => {
       </div>
 
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) &&
-      categoriesOptions.length === 0 ? (
+      categoriesOptions?.length ? (
         <>
           <InputHeader label="Categories" className="mb-2" />
           <Controller
