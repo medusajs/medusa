@@ -1,47 +1,78 @@
-# medusa-plugin-sendgrid
+# SendGrid
 
-Sendgrid Plugin for Medusa to send transactional emails.
+Handle sending emails to customers related to orders, restock notifications, users, or custom events.
 
-Learn more about how you can use this plugin in the [documentaion](https://docs.medusajs.com/add-plugins/sendgrid).
+[SendGrid Plugin Documentation](https://docs.medusajs.com/plugins/notifications/sendgrid) | [Medusa Website](https://medusajs.com) | [Medusa Repository](https://github.com/medusajs/medusa)
 
-## Options
+## Features
 
-If no values are defined for a given option, the plugin will not try to send an email for that event.
+- Send emails when an event related to orders, restock notifications, or users is triggered.
+- Use dynamic templates in SendGrid to build the emails to be sent.
+- Send emails with SendGrid for custom events.
 
-```js
-{
-  api_key: "SENDGRID_API_KEY", //required
-  from: "[the from field, i.e. ACME <acme@mail.com>]", //required
-  gift_card_created_template: "[used on gift_card.created]",
-  order_placed_template: "[used on order.placed]",
-  order_canceled_template: "[used on order.canceled]",
-  order_shipped_template: "[used on order.shipment_created]",
-  order_completed_template: "[used on order.completed]",
-  user_password_reset_template: "[used on user.password_reset]",
-  customer_password_reset_template: "[used on customer.password_reset]",
-  localization: {
-    "de-DE": { // locale key
-      gift_card_created_template: "[used on gift_card.created]",
-      order_placed_template: "[used on order.placed]",
-      order_canceled_template: "[used on order.canceled]",
-      order_shipped_template: "[used on order.shipment_created]",
-      order_completed_template: "[used on order.completed]",
-      user_password_reset_template: "[used on user.password_reset]",
-      customer_password_reset_template: "[used on customer.password_reset]",
-    }
-  }
-}
-```
+---
 
-## Dynamic usage
+## Prerequisites
 
-You can resolve the SendGrid service to dynamically send emails via sendgrid.
+- [Medusa backend](https://docs.medusajs.com/development/backend/install)
+- [SendGrid account](https://signup.sendgrid.com/)
 
-Example:
+---
 
-```js
+## How to Install
 
-const sendgridService = scope.resolve("sendgridService")
-sendgridService.sendEmail("d-123....", "ACME <acme@mail.com>", "customer@mail.com", { dynamic: "data" })
+1\. Run the following command in the directory of the Medusa backend:
 
-```
+  ```bash
+  npm install medusa-plugin-sendgrid
+  ```
+
+2\. Set the following environment variable in `.env`:
+
+  ```bash
+  SENDGRID_API_KEY=<API_KEY>
+  SENDGRID_FROM=<SEND_FROM_EMAIL>
+  # IDs for different email templates
+  SENDGRID_ORDER_PLACED_ID=<ORDER_PLACED_TEMPLATE_ID> # example
+  ```
+
+3\. In `medusa-config.js` add the following at the end of the `plugins` array:
+
+  ```js
+  const plugins = [
+    // ...,
+    {
+      resolve: `medusa-plugin-sendgrid`,
+      options: {
+        api_key: process.env.SENDGRID_API_KEY,
+        from: process.env.SENDGRID_FROM,
+        order_placed_template: 
+          process.env.SENDGRID_ORDER_PLACED_ID,
+        localization: {
+          "de-DE": { // locale key
+            order_placed_template:
+              process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+          },
+        },
+      },
+    },
+  ]
+  ```
+
+---
+
+## Test the Plugin
+
+1\. Run the following command in the directory of the Medusa backend to run the backend:
+
+  ```bash
+  npm run start
+  ```
+
+2\. Place an order using a storefront or the [Store APIs](https://docs.medusajs.com/api/store). You should receive a confirmation email.
+
+---
+
+## Additional Resources
+
+- [SendGrid Plugin Documentation](https://docs.medusajs.com/plugins/notifications/sendgrid)
