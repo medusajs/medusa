@@ -82,7 +82,7 @@ const PricesForm = ({ form }: Props) => {
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [regions, store])
+  }, [regions, store, fields])
 
   // Ensure that prices are up to date with their respective tax inclusion setting
   useEffect(() => {
