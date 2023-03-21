@@ -20,3 +20,6 @@ fix(admin-ui): Admin UI fixes / enhancements
 - move tailwind to direct dependency
 - display error messages for batch jobs
 - draft order shipping details
+- Implements redesigned public facing pages of admin UI.
+- Add location names to fulfilment rows and timeline events
+- Encode location id in URL on location table
