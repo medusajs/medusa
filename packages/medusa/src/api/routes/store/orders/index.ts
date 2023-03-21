@@ -3,13 +3,14 @@ import "reflect-metadata"
 import { Order } from "../../../.."
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
 import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
 import { StoreGetOrderParams } from "./get-order"
 import { StoreGetOrdersParams } from "./lookup-order"
+import { FindParams } from "../../../../types/common"
 
 const route = Router()
 
@@ -21,7 +22,7 @@ export default (app) => {
    */
   route.get(
     "/",
-    transformQuery(StoreGetOrdersParams, {
+    transformStoreQuery(StoreGetOrdersParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,
@@ -36,7 +37,7 @@ export default (app) => {
    */
   route.get(
     "/:id",
-    transformQuery(StoreGetOrderParams, {
+    transformStoreQuery(StoreGetOrderParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,
@@ -50,6 +51,12 @@ export default (app) => {
    */
   route.get(
     "/cart/:cart_id",
+    transformStoreQuery(FindParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
+    }),
     middlewares.wrap(require("./get-order-by-cart").default)
   )
 
