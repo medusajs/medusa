@@ -1,6 +1,6 @@
 import { InventoryLevelDTO } from "@medusajs/medusa"
 import { UseFormReturn } from "react-hook-form"
-import { nestedForm } from "../../../../utils/nested-form"
+import { nestedForm } from "../../../../../utils/nested-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
 
 export type EditFlowVariantFormType = {

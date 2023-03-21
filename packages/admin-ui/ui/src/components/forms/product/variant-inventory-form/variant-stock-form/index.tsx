@@ -160,8 +160,9 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                             <span className="whitespace-nowrap text-right">
                               {`${level.reserved_quantity} reserved`}
                             </span>
-                            <span className="whitespace-nowrap text-right">{`${level.stocked_quantity - level.reserved_quantity
-                              } available`}</span>
+                            <span className="whitespace-nowrap text-right">{`${
+                              level.stocked_quantity - level.reserved_quantity
+                            } available`}</span>
                           </div>
                           <InputField
                             placeholder={"0"}
@@ -254,7 +255,7 @@ const ManageLocationsForm = ({
     )
     setIsDirty(
       !selectedIsExisting ||
-      selectedLocations.length !== existingLocations.length
+        selectedLocations.length !== existingLocations.length
     )
   }, [existingLocations, selectedLocations])
 

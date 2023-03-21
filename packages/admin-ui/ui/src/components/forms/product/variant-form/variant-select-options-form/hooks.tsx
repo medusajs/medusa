@@ -2,8 +2,8 @@ import { isEqual } from "lodash"
 import { useMemo } from "react"
 import { useWatch } from "react-hook-form"
 import { VariantOptionValueType } from "."
-import { AddVariantsFormType } from "../../../../domain/products/new/add-variants"
-import { NestedForm } from "../../../../utils/nested-form"
+import { AddVariantsFormType } from "../../../../../domain/products/new/add-variants"
+import { NestedForm } from "../../../../../utils/nested-form"
 
 const useCheckOptions = (variantForm: NestedForm<AddVariantsFormType>) => {
   const { control: variantControl, path: variantPath } = variantForm

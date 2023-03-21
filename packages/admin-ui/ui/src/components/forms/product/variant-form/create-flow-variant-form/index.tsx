@@ -7,12 +7,12 @@ import { PricesFormType } from "../../../general/prices-form"
 import CustomsForm, { CustomsFormType } from "../../customs-form"
 import DimensionsForm, { DimensionsFormType } from "../../dimensions-form"
 import VariantGeneralForm, {
-  VariantGeneralFormType
+  VariantGeneralFormType,
 } from "../variant-general-form"
 import VariantPricesForm from "../variant-prices-form"
 import VariantSelectOptionsForm, {
   VariantOptionValueType,
-  VariantSelectOptionsFormType
+  VariantSelectOptionsFormType,
 } from "../variant-select-options-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
 
