@@ -1,4 +1,4 @@
-import { wrapHandler } from "@medusajs/utils"
+import { wrapHandler } from "@medusajs/medusa"
 import bodyParser from "body-parser"
 import { Router } from "express"
 import stripeHooks from "./stripe"

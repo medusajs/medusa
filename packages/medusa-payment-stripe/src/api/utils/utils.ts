@@ -1,13 +1,13 @@
-import { AwilixContainer } from "awilix"
-import Stripe from "stripe"
 import {
   AbstractCartCompletionStrategy,
   CartService,
   IdempotencyKeyService,
   PostgresError,
 } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { AwilixContainer } from "awilix"
 import { EOL } from "os"
-import { MedusaError } from "medusa-core-utils"
+import Stripe from "stripe"
 
 const PAYMENT_PROVIDER_KEY = "pp_stripe"
 
