@@ -243,6 +243,7 @@ describe("CartService", () => {
         email: "email@test.com",
         customer: expect.any(Object),
         context: expect.any(Object),
+        metadata: expect.any(Object),
       })
 
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
@@ -288,6 +289,7 @@ describe("CartService", () => {
       expect(cartRepository.create).toHaveBeenCalledTimes(1)
       expect(cartRepository.create).toHaveBeenCalledWith({
         context: {},
+        metadata: {},
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
           first_name: "LeBron",

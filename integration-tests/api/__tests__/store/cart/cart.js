@@ -223,6 +223,24 @@ describe("/store/carts", () => {
         test_id: "test",
       })
     })
+
+    it("creates a cart with metadata", async () => {
+      const api = useApi()
+      const response = await api.post("/store/carts", {
+        metadata: {
+          test_id: "test",
+        },
+      })
+      expect(response.status).toEqual(200)
+
+      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      expect(getRes.status).toEqual(200)
+
+      const cart = getRes.data.cart
+      expect(cart.metadata).toEqual({
+        test_id: "test",
+      })
+    })
   })
 
   describe("POST /store/carts/:id/line-items", () => {
