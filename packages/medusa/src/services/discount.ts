@@ -615,12 +615,13 @@ class DiscountService extends TransactionBaseService {
     discountId: string,
     lineItem: LineItem,
     calculationContextData: CalculationContextData
-  ): Promise<{ adjustment: number; multiplierFactor: number }> {
+  ): Promise<number> {
     return await this.atomicPhase_(async (transactionManager) => {
       let adjustment = 0
 
       if (!lineItem.allow_discounts) {
-        return { adjustment, multiplierFactor: 0 }
+        // return { adjustment, multiplierFactor: 0 }
+        return adjustment
       }
 
       const discount = await this.retrieve(discountId, { relations: ["rule"] })
@@ -634,7 +635,10 @@ class DiscountService extends TransactionBaseService {
         })
 
       let fullItemPrice = lineItem.unit_price * lineItem.quantity
-      const includesTax = this.featureFlagRouter_.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key) && lineItem.includes_tax
+      const includesTax =
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) && lineItem.includes_tax
 
       if (includesTax) {
         const lineItemTotals = await this.newTotalsService_
@@ -646,7 +650,7 @@ class DiscountService extends TransactionBaseService {
         fullItemPrice = lineItemTotals[lineItem.id].subtotal
       }
 
-      let multiplierFactor = 1
+      /* let multiplierFactor = 1*/
 
       if (type === DiscountRuleType.PERCENTAGE) {
         adjustment = Math.round((fullItemPrice / 100) * value)
@@ -677,7 +681,7 @@ class DiscountService extends TransactionBaseService {
         // Original adjustment with decimals
         adjustment = nominator * totalItemPercentage
 
-        const stringifiedAdjustment = adjustment.toString()
+        /* const stringifiedAdjustment = adjustment.toString()
         const pointIndex = stringifiedAdjustment.indexOf(".")
 
         if (pointIndex !== -1) {
@@ -692,21 +696,22 @@ class DiscountService extends TransactionBaseService {
               return acc + v
             }, "1")
           )
-        }
+        }*/
       } else {
         adjustment = value * lineItem.quantity
       }
 
+      return adjustment
       // if the amount of the discount exceeds the total price of the item,
       // we return the total item price, else the fixed amount
-      return {
+      /* return {
         adjustment:
           adjustment / multiplierFactor >= fullItemPrice
             ? fullItemPrice
             : adjustment,
         multiplierFactor:
           adjustment / multiplierFactor >= fullItemPrice ? 1 : multiplierFactor,
-      }
+      }*/
     })
   }
 

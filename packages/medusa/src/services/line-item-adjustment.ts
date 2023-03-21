@@ -233,12 +233,11 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
       // In case of a generated line item the id is not available, it is mocked instead to be used for totals calculations
       lineItem.id = lineItem.id ?? new Date().getTime()
-      const { adjustment: amount, multiplierFactor } =
-        await discountServiceTx.calculateDiscountForLineItem(
-          discount.id,
-          lineItem,
-          calculationContextData
-        )
+      const amount = await discountServiceTx.calculateDiscountForLineItem(
+        discount.id,
+        lineItem,
+        calculationContextData
+      )
 
       // if discounted amount is 0, then do nothing
       if (amount === 0) {
@@ -250,7 +249,6 @@ class LineItemAdjustmentService extends TransactionBaseService {
           amount,
           discount_id: discount.id,
           description: "discount",
-          multiplier_factor: multiplierFactor,
         },
       ]
     })

@@ -170,6 +170,10 @@
  *     type: integer
  *     example: 1000
  *   discount_total:
+ *     description: The total of discount rounded
+ *     type: integer
+ *     example: 800
+ *   raw_discount_total:
  *     description: The total of discount
  *     type: integer
  *     example: 800
@@ -376,6 +380,7 @@ export class Cart extends SoftDeletableEntity {
 
   shipping_total?: number
   discount_total?: number
+  raw_discount_total?: number
   item_tax_total?: number | null
   shipping_tax_total?: number | null
   tax_total?: number | null

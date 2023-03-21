@@ -1,5 +1,4 @@
 import {
-  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -9,10 +8,9 @@ import {
   PrimaryColumn,
 } from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { Discount } from "./discount"
 import { LineItem } from "./line-item"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Index(["discount_id", "item_id"], {
@@ -42,11 +40,8 @@ export class LineItemAdjustment {
   @Column({ nullable: true })
   discount_id: string
 
-  @Column({ type: "bigint" })
+  @Column({ type: "numeric", transformer: { to: (value) => value, from: (value) => parseFloat(value) } })
   amount: number
-
-  @Column({ type: "bigint" })
-  multiplier_factor: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
@@ -54,12 +49,6 @@ export class LineItemAdjustment {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "lia")
-  }
-
-  @AfterLoad()
-  afterLoad() {
-    this.multiplier_factor = Number(this.multiplier_factor)
-    this.amount = Number(this.amount)
   }
 }
 
@@ -70,7 +59,6 @@ export class LineItemAdjustment {
  * type: object
  * required:
  *   - amount
- *   - multiplier_factor
  *   - description
  *   - discount_id
  *   - id
@@ -104,9 +92,6 @@ export class LineItemAdjustment {
  *     $ref: "#/components/schemas/Discount"
  *   amount:
  *     description: The adjustment amount
- *     type: bigint
- *     example: 1000
- *   multiplier_factor: the factor used to move from int to decimals. It represents the number of decimals
  *     type: bigint
  *     example: 1000
  *   metadata:
