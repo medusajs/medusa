@@ -38,7 +38,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
 
   useEffect(() => {
     reset(getDefaultValues(product))
-  }, [product])
+  }, [product, reset])
 
   const onReset = () => {
     reset(getDefaultValues(product))

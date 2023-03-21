@@ -21,7 +21,7 @@ type Props = {
    */
   onClose: () => void
   /**
-   * ID of the gift card
+   * Gift card
    */
   giftCard: Product
 }

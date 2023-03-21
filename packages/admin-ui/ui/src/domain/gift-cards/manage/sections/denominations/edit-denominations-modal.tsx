@@ -1,5 +1,10 @@
 import { MoneyAmount, ProductVariant, Store } from "@medusajs/medusa"
-import { useAdminStore, useAdminUpdateVariant } from "medusa-react"
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  adminProductKeys,
+  useAdminStore,
+  useAdminUpdateVariant,
+} from "medusa-react"
 import { useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import DenominationForm, {
@@ -28,6 +33,8 @@ const EditDenominationsModal = ({
 }: EditDenominationsModalProps) => {
   const { store } = useAdminStore()
   const { mutate, isLoading } = useAdminUpdateVariant(denomination.product_id)
+
+  const queryClient = useQueryClient()
 
   const form = useForm<EditDenominationModalFormType>({
     defaultValues: getDefaultValues(store, denomination.prices),
@@ -85,6 +92,7 @@ const EditDenominationsModal = ({
             "A new denomination was succesfully updated",
             "success"
           )
+          queryClient.invalidateQueries(adminProductKeys.all)
           handleClose()
         },
         onError: (error) => {

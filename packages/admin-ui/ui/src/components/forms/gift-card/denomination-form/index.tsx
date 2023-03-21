@@ -102,8 +102,8 @@ const DenominationForm = ({ form }: Props) => {
               Use value for all currencies?
             </h2>
             <p className="inter-small-regular text-grey-50 max-w-[60%]">
-              If enabled the value used for the store's default currency code
-              will also be applied to all other currencies in your store.
+              If enabled the value used for the store&apos;s default currency
+              code will also be applied to all other currencies in your store.
             </p>
           </div>
           <Controller

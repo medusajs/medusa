@@ -1,11 +1,11 @@
 import {
   AdminPostProductsProductVariantsVariantReq,
   Product,
-  ProductVariant
+  ProductVariant,
 } from "@medusajs/medusa"
 import React, { useContext, useEffect, useMemo } from "react"
 import EditFlowVariantForm, {
-  EditFlowVariantFormType
+  EditFlowVariantFormType,
 } from "../../../../../../components/forms/product/variant-form/edit-flow-variant-form"
 
 import { useForm } from "react-hook-form"
@@ -27,23 +27,25 @@ const EditVariantScreen = ({ variant, product }: Props) => {
     defaultValues: getEditVariantDefaultValues(variant, product),
   })
 
+  const { reset: formReset } = form
+
   const { pop, reset } = useContext(LayeredModalContext)
   const { updatingVariant, onUpdateVariant } = useEditProductActions(product.id)
 
   const popAndReset = () => {
-    form.reset(getEditVariantDefaultValues(variant, product))
+    formReset(getEditVariantDefaultValues(variant, product))
     pop()
   }
 
   const closeAndReset = () => {
-    form.reset(getEditVariantDefaultValues(variant, product))
+    formReset(getEditVariantDefaultValues(variant, product))
     reset()
     onClose()
   }
 
   useEffect(() => {
-    form.reset(getEditVariantDefaultValues(variant, product))
-  }, [variant, product])
+    formReset(getEditVariantDefaultValues(variant, product))
+  }, [variant, product, formReset])
 
   const onSubmitAndBack = form.handleSubmit((data) => {
     // @ts-ignore

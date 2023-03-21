@@ -1,13 +1,24 @@
 import { ProductVariant } from "@medusajs/medusa"
-import { flexRender, Table as Instance } from "@tanstack/react-table"
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
 import Table from "../../../../../components/molecules/table"
+import { useDenominationColumns } from "./use-denominations-columns"
 
-type DenominationTableProps = {
-  instance: Instance<ProductVariant>
+type DenominationsTableProps = {
+  denominations: ProductVariant[]
 }
 
-const DenominationTable = ({ instance }: DenominationTableProps) => {
-  const { getHeaderGroups, getRowModel } = instance
+const DenominationsTable = ({ denominations }: DenominationsTableProps) => {
+  const columns = useDenominationColumns()
+
+  const { getHeaderGroups, getRowModel } = useReactTable({
+    columns,
+    data: denominations,
+    getCoreRowModel: getCoreRowModel(),
+  })
 
   return (
     <Table>
@@ -61,4 +72,4 @@ const DenominationTable = ({ instance }: DenominationTableProps) => {
   )
 }
 
-export default DenominationTable
+export default DenominationsTable

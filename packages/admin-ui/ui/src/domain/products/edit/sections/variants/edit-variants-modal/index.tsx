@@ -56,6 +56,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
 
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
     move(dragIndex, hoverIndex)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const renderCard = useCallback(

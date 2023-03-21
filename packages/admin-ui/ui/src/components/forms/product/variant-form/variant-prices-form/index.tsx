@@ -1,4 +1,4 @@
-import { NestedForm } from "../../../../utils/nested-form"
+import { NestedForm } from "../../../../../utils/nested-form"
 import PricesForm, { PricesFormType } from "../../../general/prices-form"
 
 type Props = {

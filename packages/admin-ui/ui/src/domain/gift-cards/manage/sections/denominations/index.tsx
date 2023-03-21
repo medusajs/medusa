@@ -1,12 +1,10 @@
 import { Product } from "@medusajs/medusa"
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import React, { useMemo } from "react"
+import React from "react"
 import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
 import Section from "../../../../../components/organisms/section"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import AddDenominationModal from "./add-denominations-modal"
-import DenominationTable from "./denomination-table"
-import { useDenominationColumns } from "./use-denominations-columns"
+import DenominationsTable from "./denominations-table"
 
 type DenominationsProps = {
   giftCard: Product
@@ -18,16 +16,6 @@ const Denominations: React.FC<DenominationsProps> = ({ giftCard }) => {
     close: closeAddDenomination,
     open: openAddDenomination,
   } = useToggleState()
-
-  const columns = useDenominationColumns()
-
-  const data = useMemo(() => giftCard.variants, [giftCard])
-
-  const instance = useReactTable({
-    columns,
-    data,
-    getCoreRowModel: getCoreRowModel(),
-  })
 
   return (
     <>
@@ -42,7 +30,7 @@ const Denominations: React.FC<DenominationsProps> = ({ giftCard }) => {
           },
         ]}
       >
-        <DenominationTable instance={{ ...instance }} />
+        <DenominationsTable denominations={[...giftCard.variants]} />
       </Section>
 
       <AddDenominationModal

@@ -45,18 +45,7 @@ const PricesForm = ({ form }: Props) => {
   const { store } = useAdminStore()
   const { regions } = useAdminRegions()
 
-  const { control, path, setError } = form
-
-  setError(
-    path("prices"),
-    {
-      type: "manual",
-      message: "Please specify at least one price",
-    },
-    {
-      shouldFocus: false,
-    }
-  )
+  const { control, path } = form
 
   const { append, update, fields } = useFieldArray({
     control,
@@ -93,7 +82,7 @@ const PricesForm = ({ form }: Props) => {
     })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [regions, store, fields])
+  }, [regions, store])
 
   // Ensure that prices are up to date with their respective tax inclusion setting
   useEffect(() => {
