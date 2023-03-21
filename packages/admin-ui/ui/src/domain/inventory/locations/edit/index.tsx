@@ -37,11 +37,11 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
   })
   const notification = useNotification()
 
-  const { mutate } = useAdminUpdateStockLocation(location.id)
+  const { mutate, isLoading } = useAdminUpdateStockLocation(location.id)
 
   const { handleSubmit, formState } = form
 
-  const { isDirty, isValid } = formState
+  const { isDirty } = formState
 
   const onSubmit = handleSubmit(async (data) => {
     const payload = createPayload(data)
@@ -85,7 +85,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
             size="small"
             variant="primary"
             type="button"
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty || isLoading}
             onClick={onSubmit}
           >
             Save and close
