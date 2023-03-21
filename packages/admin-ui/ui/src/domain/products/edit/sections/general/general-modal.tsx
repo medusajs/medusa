@@ -1,12 +1,6 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import {
-  formatMetadata,
-  getMetadataFormValues,
-  MetadataForm,
-  MetadataFormType,
-} from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { nestedForm } from "../../../../../utils/nested-form"
@@ -29,7 +23,6 @@ type GeneralFormWrapper = {
   general: GeneralFormType
   organize: OrganizeFormType
   discountable: DiscountableFormType
-  metadata: MetadataFormType
 }
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
@@ -104,10 +97,6 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               <OrganizeForm form={nestedForm(form, "organize")} />
             </div>
             <DiscountableForm form={nestedForm(form, "discountable")} />
-            <div className="mt-xlarge">
-              <h2 className="inter-base-semibold mb-base">Metadata</h2>
-              <MetadataForm form={nestedForm(form, "metadata")} />
-            </div>
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end gap-x-2">
@@ -158,7 +147,6 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
     discountable: {
       value: product.discountable,
     },
-    metadata: getMetadataFormValues(product.metadata),
   }
 }
 
