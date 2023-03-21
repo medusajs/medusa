@@ -17,12 +17,14 @@ A webhook listener is exposed at `/webshipper/shipments` to listen for shipment 
   weight_unit: [package weight unit] (default: "g") (options: "oz", "g", "lbs", "kg")
   dimensions_unit: [package dimensions unit] (default: "cm") (options: "cm", "m", "in", "ft")
   default_weight: [package default weight] (default: 500)
+  auto_calculate_weight: [discard package default weight and dynamically calculate it taking into account all products in package] (default: false)
+  
   default_dimensions: { 
     width: [package default width] (default: 15)
     height: [package default height] (default: 15)
     length: [package default length] (default: 15)
   } 
-  auto_calculate: [discard package defaults and dynamically calculate package overall weight and dimension taking in count all products in package] (default: false)
+  auto_calculate_dimensions: [discard package default dimensions and dynamically calculate them taking into account all products in package] (default: false)
 ```
 
 ## Personal Customs Numbers

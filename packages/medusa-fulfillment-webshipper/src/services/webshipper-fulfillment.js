@@ -23,14 +23,24 @@ class WebshipperFulfillmentService extends FulfillmentService {
       this.options_.coo_countries = [options.coo_countries]
     }
 
-    // Enable auto_calculate, default is false
+    // Enable auto_calculate_dimensions, default is false
     if (
-      typeof options.auto_calculate === "boolean" &&
-      options.auto_calculate
+      typeof options.auto_calculate_dimensions === "boolean" &&
+      options.auto_calculate_dimensions
     ) {
-      this.options_.auto_calculate = options.auto_calculate
+      this.options_.auto_calculate_dimensions = options.auto_calculate_dimensions
     } else {
-      this.options_.auto_calculate = false
+      this.options_.auto_calculate_dimensions = false
+    }
+
+    // Enable auto_calculate_weight, default is false
+    if (
+      typeof options.auto_calculate_weight === "boolean" &&
+      options.auto_calculate_weight
+    ) {
+      this.options_.auto_calculate_weight = options.auto_calculate_weight
+    } else {
+      this.options_.auto_calculate_weight = false
     }
 
     // Define weight unit, default is grams (g)
@@ -172,8 +182,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
    */
   preparePackage(items) {
     return {
-      // If auto_calculate is true Concat all items weight (if variant weight is not set, use variant product weight), else use default weight
-      weight: this.options_.auto_calculate 
+      // If auto_calculate_weight is true Concat all items weight (if variant weight is not set, use variant product weight), else use default weight
+      weight: this.options_.auto_calculate_weight
         ? items.map(({item, quantity}) =>  (item.variant?.weight ?? item.variant?.product?.weight ?? 0) * quantity)
           .reduce((total, itemWeight) =>  total + itemWeight, 0) || this.options_.default_weight
         : this.options_.default_weight,
@@ -183,14 +193,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
       dimensions: {
         unit: this.options_.dimensions_unit, 
 
-        // If auto_calculate is true concat all items height (if variant height is not set, use variant product height), else use default height
-        height: this.options_.auto_calculate 
-          ? items.map(({item, quantity}) => ({ height: item.variant?.height ?? item.variant?.product?.height ?? 0, quantity }))
-            .reduce((total, item) =>  total + (item.height * item.quantity), 0) || this.options_.default_dimensions.height
+        // If auto_calculate_dimensions is true take the largest item height (if variant height is not set, use variant product height), else use default height
+        height: this.options_.auto_calculate_dimensions
+          ? Math.max(
+              ...items.map(
+                ({ item }) => item.variant?.height ?? item.variant?.product?.height ?? 0,
+              ),
+            ) || this.options_.default_dimensions.height
           : this.options_.default_dimensions.height,
 
-        // If auto_calculate is true take the largest item width (if variant width is not set, use variant product width), else use default width
-        width: this.options_.auto_calculate
+        // If auto_calculate_dimensions is true take the largest item width (if variant width is not set, use variant product width), else use default width
+        width: this.options_.auto_calculate_dimensions
           ? Math.max(
               ...items.map(
                 ({ item }) => item.variant?.width ?? item.variant?.product?.width ?? 0,
@@ -198,8 +211,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
             ) || this.options_.default_dimensions.width
           : this.options_.default_dimensions.width,
 
-        // If auto_calculate is true take the largest item length (if variant length is not set, use variant product length), else use default length
-        length: this.options_.auto_calculate
+        // If auto_calculate_dimensions is true take the largest item length (if variant length is not set, use variant product length), else use default length
+        length: this.options_.auto_calculate_dimensions
           ? Math.max(
               ...items.map(
                 ({ item }) => item.variant?.length ?? item.variant?.product?.length ?? 0,

@@ -252,7 +252,7 @@ describe("WebshipperFulfillmentService", () => {
       }
     ];
 
-    it("prepare package without auto_calculate and with default options", async () => {
+    it("prepare package with default options", async () => {
       const webshipper = new WebshipperFulfillmentService(
         {
           orderService,
@@ -274,7 +274,7 @@ describe("WebshipperFulfillmentService", () => {
       });
     })
 
-    it("prepare package without auto_calculate and with options", async () => {
+    it("prepare package without auto_calculate_dimensions and auto_calculate_weight, with options", async () => {
       const webshipper = new WebshipperFulfillmentService(
         {
           orderService,
@@ -284,13 +284,14 @@ describe("WebshipperFulfillmentService", () => {
         { 
           weight_unit: 'oz',
           dimensions_unit: 'in',
-          auto_calculate: false,
           default_weight: 600,
+          auto_calculate_weight: false,
           default_dimensions: {
             width: 20,
             height: 20,
             length: 20,
           },
+          auto_calculate_dimensions: false,
         }
       )
       
@@ -306,7 +307,7 @@ describe("WebshipperFulfillmentService", () => {
       });
     })
 
-    it("prepare package without auto_calculate and with invalid options", async () => {
+    it("prepare package without auto_calculate_dimensions and auto_calculate_weight, with invalid options", async () => {
       const webshipper = new WebshipperFulfillmentService(
         {
           orderService,
@@ -316,14 +317,14 @@ describe("WebshipperFulfillmentService", () => {
         { 
           weight_unit: "ozzzz",
           dimensions_unit: "innnn",
-          auto_calculate: 34,
           default_weight: false,
-          auto_calculate: null,
+          auto_calculate_weight: 23,
           default_dimensions: {
             width: '20',
             height: '20',
             length: '20',
           },
+          auto_calculate_dimensions: 34,
         }
       )
       
@@ -339,8 +340,7 @@ describe("WebshipperFulfillmentService", () => {
       });
     })
 
-
-    it("prepare package with auto_calculate and with options", async () => {
+    it("prepare package with auto_calculate_dimensions and without auto_calculate_weight, with options", async () => {
       const webshipper = new WebshipperFulfillmentService(
         {
           orderService,
@@ -350,22 +350,56 @@ describe("WebshipperFulfillmentService", () => {
         { 
           weight_unit: "g",
           dimensions_unit: "cm",
-          auto_calculate: true,
           default_weight: 600,
+          auto_calculate_weight: false,
           default_dimensions: {
             width: 20,
             height: 20,
             length: 20,
           },
+          auto_calculate_dimensions: true,
         }
       )
 
       expect(webshipper.preparePackage(items)).toEqual({
         dimensions: {
-          height: 83,
+          height: 16,
           length: 16,
           unit: "cm",
           width: 16,
+        },
+        weight: 600,
+        weight_unit: "g",
+      });
+    })
+
+    it("prepare package without auto_calculate_dimensions and with auto_calculate_weight, with options", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          orderService,
+          claimService,
+          swapService,
+        },
+        { 
+          weight_unit: "g",
+          dimensions_unit: "cm",
+          default_weight: 600,
+          auto_calculate_weight: true,
+          default_dimensions: {
+            width: 20,
+            height: 20,
+            length: 20,
+          },
+          auto_calculate_dimensions: false,
+        }
+      )
+
+      expect(webshipper.preparePackage(items)).toEqual({
+        dimensions: {
+          height: 20,
+          length: 20,
+          unit: "cm",
+          width: 20,
         },
         weight: 93,
         weight_unit: "g",
