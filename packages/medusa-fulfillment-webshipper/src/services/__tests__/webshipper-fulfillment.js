@@ -208,4 +208,168 @@ describe("WebshipperFulfillmentService", () => {
       )
     })
   })
+
+  describe("preparePackage", () => {
+    const items = [
+      {
+        quantity: 1,
+        item:{
+          variant : {
+            weight: null, 
+            length: null,
+            height: null,
+            width: null,
+            product: {
+              weight: 11,
+              length: 11,
+              height: 11,
+              width: 11,
+            }
+          }
+        }
+      },
+      {
+        quantity: 2,
+        item: {
+          variant : { 
+            weight: 9,
+            length: 4,
+            height: 4,
+            width: 4,
+          }
+        }
+      },
+      {
+        quantity: 4,
+        item: {
+          variant : {
+            weight: 16,
+            length: 16,
+            height: 16,
+            width: 16,
+          }
+        }
+      }
+    ];
+
+    it("prepare package without auto_calculate and with default options", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          orderService,
+          claimService,
+          swapService,
+        },
+        {}
+      )
+
+      expect(webshipper.preparePackage(items)).toEqual({
+        dimensions: {
+          height: 15,
+          length: 15,
+          unit: "cm",
+          width: 15,
+        },
+        weight: 500,
+        weight_unit: "g",
+      });
+    })
+
+    it("prepare package without auto_calculate and with options", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          orderService,
+          claimService,
+          swapService,
+        },
+        { 
+          weight_unit: 'oz',
+          dimensions_unit: 'in',
+          auto_calculate: false,
+          default_weight: 600,
+          default_dimensions: {
+            width: 20,
+            height: 20,
+            length: 20,
+          },
+        }
+      )
+      
+      expect(webshipper.preparePackage(items)).toEqual({
+        dimensions: {
+          height: 20,
+          length: 20,
+          unit: "in",
+          width: 20,
+        },
+        weight: 600,
+        weight_unit: "oz",
+      });
+    })
+
+    it("prepare package without auto_calculate and with invalid options", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          orderService,
+          claimService,
+          swapService,
+        },
+        { 
+          weight_unit: "ozzzz",
+          dimensions_unit: "innnn",
+          auto_calculate: 34,
+          default_weight: false,
+          auto_calculate: null,
+          default_dimensions: {
+            width: '20',
+            height: '20',
+            length: '20',
+          },
+        }
+      )
+      
+      expect(webshipper.preparePackage(items)).toEqual({
+        dimensions: {
+          height: 15,
+          length: 15,
+          unit: "cm",
+          width: 15,
+        },
+        weight: 500,
+        weight_unit: "g",
+      });
+    })
+
+
+    it("prepare package with auto_calculate and with options", async () => {
+      const webshipper = new WebshipperFulfillmentService(
+        {
+          orderService,
+          claimService,
+          swapService,
+        },
+        { 
+          weight_unit: "g",
+          dimensions_unit: "cm",
+          auto_calculate: true,
+          default_weight: 600,
+          default_dimensions: {
+            width: 20,
+            height: 20,
+            length: 20,
+          },
+        }
+      )
+
+      expect(webshipper.preparePackage(items)).toEqual({
+        dimensions: {
+          height: 83,
+          length: 16,
+          unit: "cm",
+          width: 16,
+        },
+        weight: 93,
+        weight_unit: "g",
+      });
+    })
+  })
 })
