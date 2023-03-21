@@ -241,6 +241,9 @@ export class StorePostCartReq {
   @IsOptional()
   context?: object
 
+  @IsOptional()
+  metadata?: Record<string, unknown>
+
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
     IsString(),
     IsOptional(),
