@@ -1,0 +1,12 @@
+{{#with operation}}
+curl --location --request {{{method}}} 'https://medusa-url.com{{{path}}}'
+{{~#if @root.hasAuthentication}} \
+--header 'Cookie: connect.sid={sid}'
+{{~/if}}
+{{~#if parametersBody}}
+{{#with parametersBody}} \
+--header 'Content-Type: application/json' \
+--data-raw '{{{@root.payloadReqExampleString}}}'
+{{~/with}}
+{{~/if}}
+{{~/with}}

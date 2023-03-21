@@ -1,0 +1,41 @@
+{{#with operation}}
+{{~#if @root.hasTypeImports}}
+import { {{#each @root.typeImports}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}} } from "{{{@root.modelsPackageName}}}"
+{{/if}}
+import {{{@root.clientName}}} from "{{{@root.clientPackageName}}}"
+const {{{camelCase @root.clientName}}} = new {{{@root.clientName}}}({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+{{#if @root.hasAuthentication}}
+// must be previously logged
+{{/if}}
+{{#if parametersBody}}
+const payloadReq{{#if @root.payloadReqType}}: {{{@root.payloadReqType}}}{{/if}} = {{{@root.payloadReqExampleString}}}
+{{/if}}
+{{#if parametersPath}}
+{{/if}}
+{{#if parametersQuery}}
+const queryParams{{#if @root.queryParamsType}}: {{{@root.queryParamsType}}}{{/if}} = {/* your query data */}
+{{/if}}
+{{{camelCase @root.clientName}}}.{{{@root.serviceName}}}.{{{@root.methodName}}}(
+  {{~#if parameters}}
+    {{~#if parametersPath}}
+      {{#each parametersPath}}
+
+          {{{name}}}{{#unless @last}}, {{/unless}}
+      {{~/each}}
+    {{~/if}}
+    {{~#if parametersBody}}
+      {{~#if parametersPath}},{{/if}}
+      payloadReq
+      {{~#if parametersQuery}},{{/if}}
+    {{~/if}}
+    {{~#if parametersQuery}}
+      {{~#if parametersPath}}{{#unless parametersBody}},{{/unless}}{{/if}}
+      queryParams
+    {{~/if}}
+
+  {{/if~}}
+)
+.then(response{{#if @root.responseType}}: {{{@root.responseType}}}{{/if}}) => {
+  console.log(response)
+}
+{{~/with}}

@@ -22,6 +22,7 @@ import { writeClientServices } from "./writeClientServices"
 import { writeUseClient } from "./writeUseClient"
 import { PackageNames } from "../index"
 import { formatIndentation as i } from "./formatIndentation"
+import { writeClientSamples } from "./writeClientSamples"
 
 /**
  * Write our OpenAPI client, using the given templates at the given output
@@ -36,7 +37,7 @@ import { formatIndentation as i } from "./formatIndentation"
  * @param exportModels Generate models
  * @param exportHooks Generate hooks
  * @param exportSchemas Generate schemas
- * @param exportSchemas Generate schemas
+ * @param exportSamples Generate code samples
  * @param indent Indentation options (4, 2 or tab)
  * @param packageNames Package name to use in import statements.
  * @param postfixServices Service name postfix
@@ -56,6 +57,7 @@ export const writeClient = async (
   exportModels: boolean,
   exportHooks: boolean,
   exportSchemas: boolean,
+  exportSamples: boolean,
   indent: Indent,
   packageNames: PackageNames,
   postfixServices: string,
@@ -69,6 +71,7 @@ export const writeClient = async (
   const outputPathSchemas = resolve(outputPath, "schemas")
   const outputPathServices = resolve(outputPath, "services")
   const outputPathHooks = resolve(outputPath, "hooks")
+  const outputPathSamples = resolve(outputPath, "samples")
 
   if (!isSubDirectory(process.cwd(), output)) {
     throw new Error(
@@ -197,6 +200,20 @@ export const writeClient = async (
       postfixServices,
       postfixModels,
       clientName
+    )
+  }
+
+  if (exportSamples) {
+    await rmdir(outputPathSamples)
+    await mkdir(outputPathSamples)
+    await writeClientSamples(
+      client.models,
+      client.services,
+      templates,
+      outputPathSamples,
+      indent,
+      clientName,
+      packageNames
     )
   }
 

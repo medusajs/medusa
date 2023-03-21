@@ -19,7 +19,7 @@ export const commandOptions: Option[] = [
   new Option(
     "-t, --type <type>",
     "Namespace for the generated client. Usually `admin` or `store`."
-  ).makeOptionMandatory(),
+  ),
 
   new Option(
     "-s, --src-file <srcFile>",
@@ -35,7 +35,7 @@ export const commandOptions: Option[] = [
     "-c, --component <component>",
     "Client component types to generate."
   )
-    .choices(["all", "types", "client", "hooks"])
+    .choices(["all", "types", "client", "hooks", "samples"])
     .default("all"),
 
   new Option(
@@ -79,7 +79,7 @@ export async function execute(cliParams: OptionValues) {
       `--types-package must be declared when using --component=${cliParams.component}`
     )
   }
-  if (cliParams.component === "hooks" && !cliParams.clientPackage) {
+  if (["hooks"].includes(cliParams.component) && !cliParams.clientPackage) {
     throw new Error(
       `--client-package must be declared when using --component=${cliParams.component}`
     )
@@ -88,7 +88,7 @@ export async function execute(cliParams: OptionValues) {
   const shouldClean = !!cliParams.clean
   const srcFile = path.resolve(cliParams.srcFile)
   const outDir = path.resolve(cliParams.outDir)
-  const apiName = cliParams.type
+  const apiName = cliParams.type ?? ""
   const packageNames: PackageNames = {
     models: cliParams.typesPackage,
     client: cliParams.clientPackage,
@@ -126,7 +126,7 @@ const generateClientSDK = async (
   oas: OpenAPIObject,
   targetDir: string,
   apiName: string,
-  exportComponent: "all" | "types" | "client" | "hooks",
+  exportComponent: "all" | "types" | "client" | "hooks" | "samples",
   packageNames: PackageNames = {}
 ) => {
   const exports = {
@@ -134,6 +134,7 @@ const generateClientSDK = async (
     exportServices: false,
     exportModels: false,
     exportHooks: false,
+    exportSamples: false,
   }
 
   switch (exportComponent) {
@@ -146,6 +147,9 @@ const generateClientSDK = async (
       break
     case "hooks":
       exports.exportHooks = true
+      break
+    case "samples":
+      exports.exportSamples = true
       break
     default:
       exports.exportCore = true
@@ -165,6 +169,7 @@ const generateClientSDK = async (
     exportModels: exports.exportModels,
     exportHooks: exports.exportHooks,
     exportSchemas: false,
+    exportSamples: exports.exportSamples,
     indent: Indent.SPACE_2,
     postfixServices: "Service",
     postfixModels: "",

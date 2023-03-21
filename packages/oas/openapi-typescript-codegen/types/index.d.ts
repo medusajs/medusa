@@ -29,6 +29,7 @@ export type Options = {
   exportModels?: boolean
   exportHooks?: boolean
   exportSchemas?: boolean
+  exportSamples?: boolean
   indent?: Indent | "4" | "2" | "tab"
   packageNames?: PackageNames
   postfixServices?: string

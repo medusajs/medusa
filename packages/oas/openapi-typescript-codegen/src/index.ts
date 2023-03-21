@@ -28,6 +28,7 @@ export type Options = {
   exportModels?: boolean
   exportHooks?: boolean
   exportSchemas?: boolean
+  exportSamples?: boolean
   indent?: Indent
   packageNames?: PackageNames
   postfixServices?: string
@@ -51,6 +52,7 @@ export type Options = {
  * @param exportModels Generate models
  * @param exportHooks Generate hooks
  * @param exportSchemas Generate schemas
+ * @param exportSamples Generate code samples
  * @param indent Indentation options (4, 2 or tab)
  * @param packageNames Package name to use in import statements.
  * @param postfixServices Service name postfix
@@ -70,6 +72,7 @@ export const generate = async ({
   exportModels = true,
   exportHooks = true,
   exportSchemas = false,
+  exportSamples = false,
   indent = Indent.SPACE_4,
   packageNames = {},
   postfixServices = "Service",
@@ -100,6 +103,7 @@ export const generate = async ({
       exportModels,
       exportHooks,
       exportSchemas,
+      exportSamples,
       indent,
       packageNames,
       postfixServices,

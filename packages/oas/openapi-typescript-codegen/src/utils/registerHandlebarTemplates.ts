@@ -53,6 +53,7 @@ import templateExportModel from "../templates/exportModel.hbs"
 import templateExportSchema from "../templates/exportSchema.hbs"
 import templateExportService from "../templates/exportService.hbs"
 import templateExportHook from "../templates/exportHook.hbs"
+import templateExportSample from "../templates/exportSample.hbs"
 import templateIndex from "../templates/indexes/index.hbs"
 import templateIndexModels from "../templates/indexes/indexModels.hbs"
 import templateIndexServices from "../templates/indexes/indexServices.hbs"
@@ -76,6 +77,9 @@ import partialSchemaDictionary from "../templates/partials/schemaDictionary.hbs"
 import partialSchemaEnum from "../templates/partials/schemaEnum.hbs"
 import partialSchemaGeneric from "../templates/partials/schemaGeneric.hbs"
 import partialSchemaInterface from "../templates/partials/schemaInterface.hbs"
+import partialSampleJavaScript from "../templates/partials/sampleJavaScript.hbs"
+import partialSampleShell from "../templates/partials/sampleShell.hbs"
+import partialSampleTypeScript from "../templates/partials/sampleTypeScript.hbs"
 import partialType from "../templates/partials/type.hbs"
 import partialTypeArray from "../templates/partials/typeArray.hbs"
 import partialTypeDictionary from "../templates/partials/typeDictionary.hbs"
@@ -102,6 +106,7 @@ export interface Templates {
     schema: Handlebars.TemplateDelegate
     service: Handlebars.TemplateDelegate
     hook: Handlebars.TemplateDelegate
+    sample: Handlebars.TemplateDelegate
   }
   core: {
     settings: Handlebars.TemplateDelegate
@@ -143,6 +148,7 @@ export const registerHandlebarTemplates = (root: {
       schema: Handlebars.template(templateExportSchema),
       service: Handlebars.template(templateExportService),
       hook: Handlebars.template(templateExportHook),
+      sample: Handlebars.template(templateExportSample),
     },
     core: {
       settings: Handlebars.template(templateCoreSettings),
@@ -222,6 +228,19 @@ export const registerHandlebarTemplates = (root: {
     "schemaComposition",
     Handlebars.template(partialSchemaComposition)
   )
+  Handlebars.registerPartial(
+    "sampleJavaScript",
+    Handlebars.template(partialSampleJavaScript)
+  )
+  Handlebars.registerPartial(
+    "sampleShell",
+    Handlebars.template(partialSampleShell)
+  )
+  Handlebars.registerPartial(
+    "sampleTypeScript",
+    Handlebars.template(partialSampleTypeScript)
+  )
+
   Handlebars.registerPartial("type", Handlebars.template(partialType))
   Handlebars.registerPartial("typeArray", Handlebars.template(partialTypeArray))
   Handlebars.registerPartial(
