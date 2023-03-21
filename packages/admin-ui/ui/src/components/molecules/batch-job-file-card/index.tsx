@@ -1,13 +1,25 @@
 import { ReactNode } from "react"
+import clsx from "clsx"
+
+import Tooltip from "../../atoms/tooltip"
 
 type Props = {
   fileName: string
   fileSize?: string
+  errorMessage?: string
+  hasError?: boolean
   icon?: ReactNode
   onClick?: () => void
 }
 
-const BatchJobFileCard = ({ fileName, fileSize, icon, onClick }: Props) => {
+const BatchJobFileCard = ({
+  fileName,
+  fileSize,
+  icon,
+  onClick,
+  hasError,
+  errorMessage,
+}: Props) => {
   const preparedOnClick = onClick ?? (() => void 0)
 
   return (
@@ -27,9 +39,26 @@ const BatchJobFileCard = ({ fileName, fileSize, icon, onClick }: Props) => {
           {fileName}
         </div>
 
-        {!!fileSize && (
-          <div className="text-grey-40 inter-small-regular">{fileSize}</div>
-        )}
+        <Tooltip
+          side="top"
+          open={hasError ? undefined : false}
+          maxWidth={320}
+          content={
+            hasError && errorMessage ? (
+              <span className="font-normal text-rose-500">{errorMessage}</span>
+            ) : null
+          }
+        >
+          {!!fileSize && (
+            <div
+              className={clsx("text-grey-40 inter-small-regular", {
+                "text-rose-500": hasError,
+              })}
+            >
+              {fileSize}
+            </div>
+          )}
+        </Tooltip>
       </div>
     </div>
   )

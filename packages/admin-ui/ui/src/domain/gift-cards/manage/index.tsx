@@ -51,7 +51,7 @@ const Manage = () => {
   return (
     <div className="pb-5xlarge">
       <BackButton
-        path="/a/products"
+        path="/a/gift-cards"
         label="Back to Gift Cards"
         className="mb-xsmall"
       />
