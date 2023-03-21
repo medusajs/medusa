@@ -14,9 +14,10 @@ export type GeneralFormType = {
 type Props = {
   form: NestedForm<GeneralFormType>
   requireHandle?: boolean
+  isGiftCard?: boolean
 }
 
-const GeneralForm = ({ form, requireHandle = true }: Props) => {
+const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
   const {
     register,
     path,
@@ -28,7 +29,7 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
       <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
           label="Title"
-          placeholder="Winter Jacket"
+          placeholder={isGiftCard ? "Gift Card" : "Winter Jacket"}
           required
           {...register(path("title"), {
             required: "Title is required",
@@ -50,7 +51,8 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
         />
       </div>
       <p className="inter-base-regular text-grey-50 mb-large">
-        Give your product a short and clear title.
+        Give your {isGiftCard ? "gift card" : "product"} a short and clear
+        title.
         <br />
         50-60 characters is the recommended length for search engines.
       </p>
@@ -59,10 +61,12 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
           label="Handle"
           tooltipContent={
             !requireHandle
-              ? "The handle is the part of the URL that identifies the product. If not specified, it will be generated from the title."
+              ? `The handle is the part of the URL that identifies the ${
+                  isGiftCard ? "gift card" : "product"
+                }. If not specified, it will be generated from the title.`
               : undefined
           }
-          placeholder="winter-jacket"
+          placeholder={isGiftCard ? "gift-card" : "winter-jacket"}
           required={requireHandle}
           {...register(path("handle"), {
             required: requireHandle ? "Handle is required" : undefined,
@@ -74,7 +78,7 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
         />
         <InputField
           label="Material"
-          placeholder="100% cotton"
+          placeholder={isGiftCard ? "Paper" : "100% Cotton"}
           {...register(path("material"), {
             minLength: FormValidator.minOneCharRule("Material"),
             pattern: FormValidator.whiteSpaceRule("Material"),
@@ -84,14 +88,17 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
       </div>
       <TextArea
         label="Description"
-        placeholder="A warm and cozy jacket..."
+        placeholder={
+          isGiftCard ? "The gift card is..." : "A warm and cozy jacket..."
+        }
         rows={3}
         className="mb-small"
         {...register(path("description"))}
         errors={errors}
       />
       <p className="inter-base-regular text-grey-50">
-        Give your product a short and clear description.
+        Give your {isGiftCard ? "gift card" : "product"} a short and clear
+        description.
         <br />
         120-160 characters is the recommended length for search engines.
       </p>

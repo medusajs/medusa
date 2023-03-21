@@ -8,9 +8,10 @@ export type DiscountableFormType = {
 
 type Props = {
   form: NestedForm<DiscountableFormType>
+  isGiftCard?: boolean
 }
 
-const DiscountableForm = ({ form }: Props) => {
+const DiscountableForm = ({ form, isGiftCard }: Props) => {
   const { control, path } = form
   return (
     <div>
@@ -25,7 +26,8 @@ const DiscountableForm = ({ form }: Props) => {
         />
       </div>
       <p className="inter-base-regular text-grey-50">
-        When unchecked discounts will not be applied to this product.
+        When unchecked discounts will not be applied to this{" "}
+        {isGiftCard ? "gift card" : "product"}.
       </p>
     </div>
   )

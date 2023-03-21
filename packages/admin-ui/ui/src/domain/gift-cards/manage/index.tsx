@@ -3,13 +3,13 @@ import { useAdminProducts } from "medusa-react"
 import { useNavigate } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
+import GiftCardDenominationsSection from "../../../components/organisms/gift-card-denominations-section"
+import ProductAttributesSection from "../../../components/organisms/product-attributes-section"
+import ProductGeneralSection from "../../../components/organisms/product-general-section"
+import ProductMediaSection from "../../../components/organisms/product-media-section"
+import ProductRawSection from "../../../components/organisms/product-raw-section"
+import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
 import { getErrorStatus } from "../../../utils/get-error-status"
-import AttributesSection from "./sections/attributes"
-import Denominations from "./sections/denominations"
-import GeneralSection from "./sections/general"
-import MediaSection from "./sections/media"
-import RawSection from "./sections/raw"
-import ThumbnailSection from "./sections/thumbnail"
 
 const Manage = () => {
   const navigate = useNavigate()
@@ -57,14 +57,14 @@ const Manage = () => {
       />
       <div className="gap-x-base grid grid-cols-12">
         <div className="gap-y-xsmall col-span-8 flex flex-col">
-          <GeneralSection product={giftCard} />
-          <Denominations giftCard={giftCard} />
-          <AttributesSection product={giftCard} />
-          <RawSection product={giftCard} />
+          <ProductGeneralSection product={giftCard} />
+          <GiftCardDenominationsSection giftCard={giftCard} />
+          <ProductAttributesSection product={giftCard} />
+          <ProductRawSection product={giftCard} />
         </div>
         <div className="gap-y-xsmall col-span-4 flex flex-col">
-          <ThumbnailSection product={giftCard} />
-          <MediaSection product={giftCard} />
+          <ProductThumbnailSection product={giftCard} />
+          <ProductMediaSection product={giftCard} />
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import {
   Controller,
   FieldArrayWithId,
   useFieldArray,
-  useWatch
+  useWatch,
 } from "react-hook-form"
 import { FormImage } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -12,9 +12,7 @@ import FileUploadField from "../../../atoms/file-upload-field"
 import Button from "../../../fundamentals/button"
 import CheckCircleFillIcon from "../../../fundamentals/icons/check-circle-fill-icon"
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
-import Actionables, {
-  ActionType
-} from "../../../molecules/actionables"
+import Actionables, { ActionType } from "../../../molecules/actionables"
 
 type ImageType = { selected: boolean } & FormImage
 
