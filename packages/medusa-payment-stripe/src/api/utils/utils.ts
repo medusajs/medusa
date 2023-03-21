@@ -4,8 +4,8 @@ import {
   IdempotencyKeyService,
   PostgresError,
 } from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
+import { MedusaError } from "medusa-core-utils"
 import { EOL } from "os"
 import Stripe from "stripe"
 

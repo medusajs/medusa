@@ -19,7 +19,6 @@
     "watch": "tsc --watch"
   },
   "peerDependencies": {
-    "@medusajs/client-types": "^0.1.0",
     "@medusajs/medusa": "^1.7.12",
     "@medusajs/types": "^0.0.1"
   },
@@ -29,7 +28,6 @@
     "meilisearch": "^0.31.1"
   },
   "devDependencies": {
-    "@medusajs/client-types": "^0.1.0",
     "@medusajs/medusa": "^1.7.12",
     "@medusajs/types": "^0.0.1",
     "cross-env": "^5.2.1",
