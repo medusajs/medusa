@@ -79,12 +79,8 @@ export default async (req, res) => {
 
     if (inventoryService) {
       await Promise.all([
-        inventoryService
-          .withTransaction(transactionManager)
-          .deleteInventoryItemLevelByLocationId(id),
-        inventoryService
-          .withTransaction(transactionManager)
-          .deleteReservationItemByLocationId(id),
+        inventoryService.deleteInventoryItemLevelByLocationId(id),
+        inventoryService.deleteReservationItemByLocationId(id),
       ])
     }
   })

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IsNumber, IsOptional } from "class-validator"
+import { IsNumber, IsOptional, Min } from "class-validator"
 
 import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
@@ -81,11 +81,7 @@ export default async (req: Request, res: Response) => {
   const validatedBody =
     req.validatedBody as AdminPostInventoryItemsItemLocationLevelsLevelReq
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .updateInventoryLevel(id, location_id, validatedBody)
-  })
+  await inventoryService.updateInventoryLevel(id, location_id, validatedBody)
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,
@@ -109,10 +105,12 @@ export default async (req: Request, res: Response) => {
 export class AdminPostInventoryItemsItemLocationLevelsLevelReq {
   @IsOptional()
   @IsNumber()
+  @Min(0)
   incoming_quantity?: number
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   stocked_quantity?: number
 }
 

@@ -56,7 +56,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
       return (
         item.quantity === item.fulfilled_quantity ||
         (reservations &&
-          sum(reservations.map((r) => r.quantity)) === item.quantity)
+          sum(reservations.map((r) => r.quantity)) ===
+            item.quantity - (item.fulfilled_quantity || 0))
       )
     })
   }, [reservationItemsMap, order])

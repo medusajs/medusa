@@ -8,7 +8,7 @@ export function InjectEntityManager(
     propertyKey: string | symbol,
     descriptor: any
   ): void {
-    if (!target.MedusaContext_) {
+    if (!target.MedusaContextIndex_) {
       throw new Error(
         `To apply @InjectEntityManager you have to flag a parameter using @MedusaContext`
       )
@@ -16,7 +16,7 @@ export function InjectEntityManager(
 
     const originalMethod = descriptor.value
 
-    const argIndex = target.MedusaContext_[propertyKey]
+    const argIndex = target.MedusaContextIndex_[propertyKey]
     descriptor.value = async function (...args: any[]) {
       const context: SharedContext = args[argIndex] ?? {}
 

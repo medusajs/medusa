@@ -205,10 +205,8 @@ class FulfillmentService extends TransactionBaseService {
   async createFulfillment(
     order: CreateFulfillmentOrder,
     itemsToFulfill: FulFillmentItemType[],
-    custom: Partial<Fulfillment> = {},
-    context: { locationId?: string } = {}
+    custom: Partial<Fulfillment> = {}
   ): Promise<Fulfillment[]> {
-    const { locationId } = context
     return await this.atomicPhase_(async (manager) => {
       const fulfillmentRepository = manager.withRepository(
         this.fulfillmentRepository_
@@ -231,7 +229,6 @@ class FulfillmentService extends TransactionBaseService {
             provider_id: shipping_method.shipping_option.provider_id,
             items: items.map((i) => ({ item_id: i.id, quantity: i.quantity })),
             data: {},
-            location_id: locationId,
           })
 
           const result = await fulfillmentRepository.save(ful)

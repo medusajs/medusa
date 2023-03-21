@@ -60,7 +60,7 @@ const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
           {isFeatureEnabled("inventoryService") && (
             <ReservationIndicator reservations={reservations} lineItem={item} />
           )}
-          <div className="inter-small-regular text-grey-90">
+          <div className="inter-small-regular text-grey-90 min-w-[55px] text-right">
             {formatAmountWithSymbol({
               amount: item.total ?? 0,
               currency: currencyCode,

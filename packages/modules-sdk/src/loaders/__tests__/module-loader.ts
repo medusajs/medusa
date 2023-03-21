@@ -1,6 +1,6 @@
-import { EOL } from "os"
 import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
+import { EOL } from "os"
 import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
@@ -155,7 +155,7 @@ describe("modules loader", () => {
     await moduleLoader({ container, moduleResolutions, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
-      `Could not resolve module: TestService. Error: No service found in module. Make sure your module exports at least one service.${EOL}`
+      `Could not resolve module: TestService. Error: No service found in module. Make sure your module exports a service.${EOL}`
     )
   })
 
@@ -186,7 +186,7 @@ describe("modules loader", () => {
       await moduleLoader({ container, moduleResolutions, logger })
     } catch (err) {
       expect(err.message).toEqual(
-        "No service found in module. Make sure your module exports at least one service."
+        "No service found in module. Make sure your module exports a service."
       )
     }
   })
