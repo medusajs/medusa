@@ -30,8 +30,11 @@ export interface CreateOrderResponse {
 export interface GetOrderResponse extends CreateOrderResponse {}
 
 export interface PatchOrder {
-  intent?: CreateOrder["intent"]
-  payer?: any
-  purchase_units?: Array<PurchaseUnit>
-  application_context?: { client_configuration?: any }
+  op: "replace" | "add" | "remove"
+  path: string
+  value:
+    | CreateOrder["intent"]
+    | PurchaseUnit
+    | { client_configuration?: any }
+    | Record<string, unknown>
 }

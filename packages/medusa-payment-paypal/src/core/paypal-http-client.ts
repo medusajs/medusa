@@ -1,9 +1,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from "axios"
-import { PaypalApiPath, PaypalSdkOptions } from "./types"
+import {
+  PaypalApiPath,
+  PaypalEnvironmentPaths,
+  PaypalSdkOptions,
+} from "./types"
 import { Logger } from "@medusajs/medusa"
 
 export class PaypalHttpClient {
-  protected readonly baseUrl_: string = "https://api-m.paypal.com/v2"
+  protected readonly baseUrl_: string = PaypalEnvironmentPaths.LIVE
   protected readonly httpClient_: AxiosInstance
   protected readonly options_: PaypalSdkOptions
   protected readonly logger_?: Logger
@@ -15,14 +19,12 @@ export class PaypalHttpClient {
     this.logger_ = options.logger
 
     if (options.useSandbox) {
-      this.baseUrl_ = "https://api-m.sandbox.paypal.com"
+      this.baseUrl_ = PaypalEnvironmentPaths.SANDBOX
     }
 
     const axiosInstance = axios.create({
       baseURL: this.baseUrl_,
     })
-
-    const proxifiyMethodTarget = ["request", "post", "get"]
 
     this.httpClient_ = new Proxy(axiosInstance, {
       // Handle automatic retry mechanism
@@ -31,7 +33,7 @@ export class PaypalHttpClient {
         // eslint-disable-next-line prefer-rest-params
         const original = Reflect.get(...arguments)
 
-        if (proxifiyMethodTarget.includes(prop as string)) {
+        if ("request" === (prop as string)) {
           return this.retryIfNecessary(original)
         }
 
@@ -56,17 +58,15 @@ export class PaypalHttpClient {
     data?: T
     method?: Method
   }): Promise<TResponse> {
-    return await this.httpClient_
-      .request({
-        method: "POST",
-        url,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${this.accessToken_}`,
-        },
-        data,
-      })
-      .then((res) => res.data)
+    return await this.httpClient_.request({
+      method: "POST",
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.accessToken_}`,
+      },
+      data,
+    })
   }
 
   /**
@@ -76,21 +76,26 @@ export class PaypalHttpClient {
    */
   protected retryIfNecessary<T = unknown>(originalMethod: Function) {
     return async (...args: unknown[]) => {
-      if (!args[args.length - 1]) {
+      // Explicitly check false equality to avoid matching another type object
+      // if the value is not present
+      const shouldRetry = !(args[args.length - 1] === false)
+
+      if (!shouldRetry) {
         return
       }
 
       return await originalMethod
         .apply(this.httpClient_, [...args, false])
+        .then((res) => res.data)
         .catch(async (err) => {
           if (err.response.status === 401) {
             await this.authenticate()
 
-            const reqOptions = args[0] as AxiosRequestConfig
+            const axiosRequestConfig = args[0] as AxiosRequestConfig
             args[0] = {
-              ...(reqOptions ?? {}),
+              ...(axiosRequestConfig ?? {}),
               headers: {
-                ...(reqOptions?.headers ?? {}),
+                ...(axiosRequestConfig?.headers ?? {}),
                 Authorization: `Bearer ${this.accessToken_}`,
               },
             }
@@ -102,6 +107,7 @@ export class PaypalHttpClient {
           }
 
           this.logger_?.error(err.response.message)
+          throw err
         })
     }
   }

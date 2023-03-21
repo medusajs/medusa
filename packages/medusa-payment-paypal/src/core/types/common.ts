@@ -10,7 +10,7 @@ export interface Address {
 }
 
 export interface MoneyAmount {
-  value: number
+  value: string | number
   currency_code: string
 }
 

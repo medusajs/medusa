@@ -1,4 +1,3 @@
-import PayPal from "@paypal/checkout-server-sdk"
 import { EOL } from "os"
 import {
   AbstractPaymentProcessor,
@@ -16,12 +15,13 @@ import {
 } from "../types"
 import { humanizeAmount } from "medusa-core-utils"
 import { roundToTwo } from "./utils/utils"
+import { CreateOrder, PaypalSdk } from "../core"
 
 class PayPalProviderService extends AbstractPaymentProcessor {
   static identifier = "paypal"
 
   protected readonly options_: PaypalOptions
-  protected paypal_: PayPal
+  protected paypal_: PaypalSdk
 
   constructor(_, options) {
     // @ts-ignore
@@ -32,20 +32,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   }
 
   protected init(): void {
-    let environment
-    if (this.options_.sandbox) {
-      environment = new PayPal.core.SandboxEnvironment(
-        this.options_.client_id || this.options_.clientId,
-        this.options_.client_secret || this.options_.clientSecret
-      )
-    } else {
-      environment = new PayPal.core.LiveEnvironment(
-        this.options_.client_id || this.options_.clientId,
-        this.options_.client_secret || this.options_.clientSecret
-      )
-    }
-
-    this.paypal_ = new PayPal.core.PayPalHttpClient(environment)
+    this.paypal_ = new PaypalSdk(this.options_)
   }
 
   async getPaymentStatus(
@@ -79,12 +66,12 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     let session_data
 
     try {
-      const request = new PayPal.orders.OrdersCreateRequest()
-      request.requestBody({
-        intent: "AUTHORIZE",
-        application_context: {
-          shipping_preference: "NO_SHIPPING",
-        },
+      const intent: CreateOrder["intent"] = this.options_.capture
+        ? "CAPTURE"
+        : "AUTHORIZE"
+
+      session_data = await this.paypal_.createOrders({
+        intent,
         purchase_units: [
           {
             custom_id: resource_id,
@@ -98,8 +85,6 @@ class PayPalProviderService extends AbstractPaymentProcessor {
           },
         ],
       })
-
-      session_data = await this.paypal_.execute(request)
     } catch (e) {
       return this.buildError("An error occurred in initiatePayment", e)
     }
@@ -156,12 +141,10 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         const payments = purchase_units[0].payments
 
         const payId = payments.captures[0].id
-        const request = new PayPal.payments.CapturesRefundRequest(payId)
-        await this.paypal_.execute(request)
+        await this.paypal_.capturesRefund(payId)
       } else {
         const id = purchase_units[0].payments.authorizations[0].id
-        const request = new PayPal.payments.AuthorizationsVoidRequest(id)
-        await this.paypal_.execute(request)
+        await this.paypal_.authorizationsVoid(id)
       }
 
       return (await this.retrievePayment(
@@ -185,8 +168,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     const id = purchase_units[0].payments.authorizations[0].id
 
     try {
-      const request = new PayPal.payments.AuthorizationsCaptureRequest(id)
-      await this.paypal_.execute(request)
+      await this.paypal_.authorizationsCapture(id)
       return await this.retrievePayment(paymentSessionData)
     } catch (error) {
       return this.buildError("An error occurred in capturePayment", error)
@@ -228,9 +210,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       const paymentId = payments.captures[0].id
       const currencyCode = purchaseUnit.amount.currency_code
-      const request = new PayPal.payments.CapturesRefundRequest(paymentId)
-
-      request.requestBody({
+      await this.paypal_.capturesRefund(paymentId, {
         amount: {
           currency_code: currencyCode,
           value: roundToTwo(
@@ -239,8 +219,6 @@ class PayPalProviderService extends AbstractPaymentProcessor {
           ),
         },
       })
-
-      await this.paypal_.execute(request)
 
       return await this.retrievePayment(paymentSessionData)
     } catch (error) {
@@ -255,9 +233,9 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   > {
     try {
       const id = paymentSessionData.id as string
-      const request = new PayPal.orders.OrdersGetRequest(id)
-      const res = await this.paypal_.execute(request)
-      return res.result
+      return (await this.paypal_.getOrders(
+        id
+      )) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (e) {
       return this.buildError("An error occurred in retrievePayment", e)
     }
@@ -270,8 +248,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
       const { currency_code, amount } = context
       const id = context.paymentSessionData.id as string
 
-      const request = new PayPal.orders.OrdersPatchRequest(id)
-      request.requestBody([
+      await this.paypal_.patchOrders(id, [
         {
           op: "replace",
           path: "/purchase_units/@reference_id=='default'",
@@ -286,9 +263,6 @@ class PayPalProviderService extends AbstractPaymentProcessor {
           },
         },
       ])
-
-      await this.paypal_.execute(request)
-
       return { session_data: context.paymentSessionData }
     } catch (error) {
       return await this.initiatePayment(context).catch((e) => {
@@ -318,20 +292,10 @@ class PayPalProviderService extends AbstractPaymentProcessor {
    * @returns {Promise<object>} the response of the verification request.
    */
   async verifyWebhook(data) {
-    const verifyReq = {
-      verb: "POST",
-      path: "/v1/notifications/verify-webhook-signature",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {
-        webhook_id:
-          this.options_.auth_webhook_id || this.options_.authWebhookId,
-        ...data,
-      },
-    }
-
-    return this.paypal_.execute(verifyReq)
+    return await this.paypal_.verifyWebhook({
+      webhook_id: this.options_.auth_webhook_id || this.options_.authWebhookId,
+      ...data,
+    })
   }
 }
 

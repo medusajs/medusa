@@ -13,6 +13,7 @@ import {
   CapturesRefundResponse,
 } from "./types/payment"
 import { PaypalHttpClient } from "./paypal-http-client"
+import { VerifyWebhookSignature } from "./types/webhook"
 
 export class PaypalSdk {
   protected readonly httpClient_: PaypalHttpClient
@@ -44,7 +45,7 @@ export class PaypalSdk {
    * @param orderId
    * @param data
    */
-  async patchOrders(orderId: string, data?: PatchOrder): Promise<void> {
+  async patchOrders(orderId: string, data?: PatchOrder[]): Promise<void> {
     const url = PaypalApiPath.PATCH_ORDER.replace("{id}", orderId)
     return await this.httpClient_.request({ url, method: "PATCH" })
   }
@@ -91,6 +92,11 @@ export class PaypalSdk {
       authorizationId
     )
 
+    return await this.httpClient_.request({ url, data })
+  }
+
+  async verifyWebhook(data: VerifyWebhookSignature) {
+    const url = PaypalApiPath.VERIFY_WEBHOOK_SIGNATURE
     return await this.httpClient_.request({ url, data })
   }
 }

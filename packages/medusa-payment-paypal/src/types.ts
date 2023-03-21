@@ -6,6 +6,7 @@ export interface PaypalOptions {
   clientId: string
   clientSecret: string
   authWebhookId: string
+  capture?: boolean
 
   /**
    * Backward compatibility options below
