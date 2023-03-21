@@ -78,7 +78,9 @@ const AddressForm = ({
             required={addressFieldsRequired}
             {...register(path("address_1"), {
               pattern: FormValidator.whiteSpaceRule("Address 1"),
-              required: addressFieldsRequired,
+              required: addressFieldsRequired
+                ? "This field is required"
+                : undefined,
             })}
           />
           <InputField
@@ -113,7 +115,9 @@ const AddressForm = ({
             control={control}
             name={path("country_code")}
             rules={{
-              required: addressFieldsRequired,
+              required: addressFieldsRequired
+                ? "This field is required"
+                : undefined,
             }}
             render={({ field: { value, onChange } }) => {
               let fieldValue:
