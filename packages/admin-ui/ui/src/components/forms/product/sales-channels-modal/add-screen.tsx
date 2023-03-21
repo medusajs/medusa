@@ -1,10 +1,10 @@
 import { useAdminSalesChannels } from "medusa-react"
-import React, { useContext, useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
-import { LayeredModalContext } from "../../../molecules/modal/layered-modal"
+import { useLayeredModal } from "../../../molecules/modal/layered-modal"
 import SalesChannelTable, { useSalesChannelsTableColumns } from "./table"
 import { useSalesChannelsModal } from "./use-sales-channels-modal"
 
@@ -33,7 +33,7 @@ const AddScreen = () => {
     return salesChannels?.filter(({ id }) => !ids.includes(id)) || []
   }, [salesChannels, source])
 
-  const { pop, reset } = useContext(LayeredModalContext)
+  const { pop, reset } = useLayeredModal()
 
   const state = useTable(
     {
@@ -120,7 +120,7 @@ const AddScreen = () => {
 }
 
 export const useAddChannelsModalScreen = () => {
-  const { pop } = React.useContext(LayeredModalContext)
+  const { pop } = useLayeredModal()
 
   return {
     title: "Add Sales Channels",

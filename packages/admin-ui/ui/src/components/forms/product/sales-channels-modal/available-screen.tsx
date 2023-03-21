@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
 import SalesChannelTable, {
   SalesChannelTableActions,
-  useSalesChannelsTableColumns
+  useSalesChannelsTableColumns,
 } from "./table"
 
 import { useDebounce } from "../../../../hooks/use-debounce"

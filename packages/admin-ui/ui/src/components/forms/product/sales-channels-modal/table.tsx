@@ -5,7 +5,7 @@ import { TableInstance } from "react-table"
 import Button from "../../../fundamentals/button"
 import PlusIcon from "../../../fundamentals/icons/plus-icon"
 import IndeterminateCheckbox from "../../../molecules/indeterminate-checkbox"
-import { LayeredModalContext } from "../../../molecules/modal/layered-modal"
+import { useLayeredModal } from "../../../molecules/modal/layered-modal"
 import Table from "../../../molecules/table"
 import TableContainer from "../../../organisms/table-container"
 import { useAddChannelsModalScreen } from "./add-screen"
@@ -181,7 +181,7 @@ export const SalesChannelTableActions = ({
     "translate-y-[0px]": showAddChannels,
   }
 
-  const { push } = React.useContext(LayeredModalContext)
+  const { push } = useLayeredModal()
 
   return (
     <div className="space-x-xsmall flex h-[34px] overflow-hidden">
