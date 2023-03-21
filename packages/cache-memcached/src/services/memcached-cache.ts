@@ -18,8 +18,6 @@ class MemcachedCacheService implements ICacheService {
     { cacheMemcachedConnection }: InjectedDependencies,
     options: MemcachedCacheModuleOptions
   ) {
-    // this.memcached = new Memcached(options.location, options.options)
-
     this.memcached = cacheMemcachedConnection
     this.TTL = options.ttl || DEFAULT_CACHE_TIME
   }
