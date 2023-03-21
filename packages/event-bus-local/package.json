@@ -33,8 +33,5 @@
   "dependencies": {
     "@medusajs/modules-sdk": "*",
     "@medusajs/utils": "^0.0.1"
-  },
-  "peerDependencies": {
-    "@medusajs/types": "^0.0.1"
   }
 }

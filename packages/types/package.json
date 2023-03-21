@@ -16,8 +16,10 @@
   ],
   "author": "Medusa",
   "license": "MIT",
+  "dependencies": {
+    "@medusajs/modules-sdk": "^0.0.1"
+  },
   "devDependencies": {
-    "@medusajs/modules-sdk": "^0.0.1",
     "cross-env": "^5.2.1",
     "typeorm": "^0.3.11",
     "typescript": "^4.4.4"

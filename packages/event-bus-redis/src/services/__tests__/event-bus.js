@@ -25,7 +25,7 @@ describe("RedisEventBusService", () => {
 
   describe("constructor", () => {
     beforeAll(() => {
-      jest.resetAllMocks()
+      jest.clearAllMocks()
     })
 
     it("Creates a queue + worker", () => {
@@ -66,7 +66,7 @@ describe("RedisEventBusService", () => {
   describe("emit", () => {
     describe("Successfully emits events", () => {
       beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
       })
 
       it("Adds job to queue with default options", () => {
@@ -190,7 +190,7 @@ describe("RedisEventBusService", () => {
 
     describe("Successfully processes the jobs", () => {
       beforeEach(async () => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
 
         eventBus = new RedisEventBusService(moduleDeps, simpleModuleOptions, {
           resources: "shared",

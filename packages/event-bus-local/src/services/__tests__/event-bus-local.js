@@ -19,7 +19,7 @@ describe("LocalEventBusService", () => {
   describe("emit", () => {
     describe("Successfully emits events", () => {
       beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
       })
 
       it("Emits an event", () => {
