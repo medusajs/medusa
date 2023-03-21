@@ -19,6 +19,7 @@ import MedusaIcon from "../../fundamentals/icons/medusa-icon"
 import { ActivityCard } from "../../molecules/activity-card"
 import BatchJobFileCard from "../../molecules/batch-job-file-card"
 import { batchJobDescriptionBuilder, BatchJobOperation } from "./utils"
+import CrossIcon from "../../fundamentals/icons/cross-icon"
 
 /**
  * Retrieve a batch job and refresh the data depending on the last batch job status
@@ -97,6 +98,8 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
     batchJob.status !== "failed" &&
     batchJob.status !== "canceled"
 
+  const hasError = batchJob.status === "failed"
+
   const canDownload =
     batchJob.status === "completed" && batchJob.result?.file_key
 
@@ -157,7 +160,11 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
 
     const icon =
       batchJob.status !== "completed" && batchJob.status !== "canceled" ? (
-        <Spinner size={"medium"} variant={"secondary"} />
+        batchJob.status === "failed" ? (
+          <CrossIcon size={18} />
+        ) : (
+          <Spinner size={"medium"} variant={"secondary"} />
+        )
       ) : (
         <FileIcon
           className={clsx({
@@ -175,7 +182,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
           preprocessing: `Preparing ${operation.toLowerCase()}...`,
           processing: `Processing ${operation.toLowerCase()}...`,
           completed: `Successful ${operation.toLowerCase()}`,
-          failed: `Failed batch ${operation.toLowerCase()} job`,
+          failed: `Job failed`,
           canceled: `Canceled batch ${operation.toLowerCase()} job`,
         }[batchJob.status]
 
@@ -185,6 +192,8 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
         fileName={fileName}
         icon={icon}
         fileSize={fileSize}
+        hasError={hasError}
+        errorMessage={batchJob?.result?.errors?.join(" \n")}
       />
     )
   }
