@@ -156,7 +156,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                   </div>
                   {selectedLocations.map((level, i) => {
                     const locationDetails = locationsMap.get(level.location_id)
-                    const levelFromMap = levelMap.get(level.location_id)
+                    const locationLevel = levelMap.get(level.location_id)
 
                     return (
                       <div key={level.id} className="flex items-center py-3">
@@ -169,11 +169,11 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                         <div className="ml-auto flex">
                           <div className="mr-base text-small text-grey-50 flex flex-col">
                             <span className="whitespace-nowrap text-right">
-                              {`${levelFromMap!.reserved_quantity} reserved`}
+                              {`${locationLevel!.reserved_quantity} reserved`}
                             </span>
                             <span className="whitespace-nowrap text-right">{`${
-                              levelFromMap!.stocked_quantity! -
-                              levelFromMap!.reserved_quantity!
+                              locationLevel!.stocked_quantity! -
+                              locationLevel!.reserved_quantity!
                             } available`}</span>
                           </div>
                           <InputField
