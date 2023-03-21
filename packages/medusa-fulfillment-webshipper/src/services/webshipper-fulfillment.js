@@ -174,8 +174,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
     return {
       // If auto_calculate is true Concat all items weight (if variant weight is not set, use variant product weight), else use default weight
       weight: this.options_.auto_calculate 
-        ? items.map(({item, quantity}) => ({ weight: item.variant?.weight ?? item.variant?.product?.weight ?? 0, quantity }))
-          .reduce((total, item) =>  total + (item.weight * item.quantity), 0) || this.options_.default_weight
+        ? items.map(({item, quantity}) =>  (item.variant?.weight ?? item.variant?.product?.weight ?? 0) * quantity)
+          .reduce((total, itemWeight) =>  total + itemWeight, 0) || this.options_.default_weight
         : this.options_.default_weight,
 
       weight_unit: this.options_.weight_unit,
