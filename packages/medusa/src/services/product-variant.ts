@@ -396,7 +396,10 @@ class ProductVariantService extends TransactionBaseService {
             // No need to update if nothing on the variant has changed
             if (shouldUpdate) {
               const { id } = variant
-              const rawResult = await variantRepo.update({ id }, toUpdate)
+              const rawResult = await variantRepo.update(
+                { id },
+                { id, ...toUpdate }
+              )
               result = variantRepo.create({
                 ...variant,
                 ...rawResult.generatedMaps[0],
