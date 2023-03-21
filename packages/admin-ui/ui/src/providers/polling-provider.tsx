@@ -56,8 +56,8 @@ export const PollingProvider = ({ children }: PropsWithChildren) => {
     refetch,
   } = useAdminBatchJobs(
     {
+      limit: 100,
       created_at: { gte: oneMonthAgo },
-      failed_at: null,
     } as AdminGetBatchParams,
     {
       refetchOnWindowFocus: true,
