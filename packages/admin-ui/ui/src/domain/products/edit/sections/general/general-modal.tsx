@@ -1,13 +1,13 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
 import {
   formatMetadata,
   getMetadataFormValues,
   MetadataForm,
   MetadataFormType,
-} from "../../../../../components/molecules/metadata/metadata"
+} from "../../../../../components/forms/general/metadata-form"
+import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { nestedForm } from "../../../../../utils/nested-form"
 import DiscountableForm, {

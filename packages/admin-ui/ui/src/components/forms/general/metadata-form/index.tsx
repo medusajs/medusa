@@ -2,14 +2,14 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import clsx from "clsx"
 import React, { useMemo } from "react"
 import { useFieldArray, useWatch } from "react-hook-form"
-import { NestedForm } from "../../../utils/nested-form"
-import Button from "../../fundamentals/button"
-import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon"
-import ArrowUpIcon from "../../fundamentals/icons/arrow-up-icon"
-import DuplicateIcon from "../../fundamentals/icons/duplicate-icon"
-import EllipsisVerticalIcon from "../../fundamentals/icons/ellipsis-vertical-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
+import { NestedForm } from "../../../../utils/nested-form"
+import Button from "../../../fundamentals/button"
+import ArrowDownIcon from "../../../fundamentals/icons/arrow-down-icon"
+import ArrowUpIcon from "../../../fundamentals/icons/arrow-up-icon"
+import DuplicateIcon from "../../../fundamentals/icons/duplicate-icon"
+import EllipsisVerticalIcon from "../../../fundamentals/icons/ellipsis-vertical-icon"
+import TrashIcon from "../../../fundamentals/icons/trash-icon"
+import XCircleIcon from "../../../fundamentals/icons/x-circle-icon"
 
 export type MetadataField = {
   key: string
@@ -26,7 +26,7 @@ type MetadataProps = {
   form: NestedForm<MetadataFormType>
 }
 
-export const MetadataForm = ({ form }: MetadataProps) => {
+const MetadataForm = ({ form }: MetadataProps) => {
   const { control, path, register, setValue, getValues } = form
 
   const { fields, remove, insert } = useFieldArray({
@@ -166,6 +166,8 @@ export const MetadataForm = ({ form }: MetadataProps) => {
     </div>
   )
 }
+
+export default MetadataForm
 
 const MetadataInput = React.forwardRef<
   HTMLInputElement,

@@ -8,14 +8,13 @@ import { useForm } from "react-hook-form"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
+import MetadataForm, {
+  formatMetadata,
+  MetadataFormType,
+} from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import IconTooltip from "../../molecules/icon-tooltip"
 import InputField from "../../molecules/input"
-import {
-  formatMetadata,
-  MetadataForm,
-  MetadataFormType,
-} from "../../molecules/metadata/metadata"
 import Modal from "../../molecules/modal"
 import { MetadataField } from "../../organisms/metadata"
 
