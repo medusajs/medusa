@@ -7,7 +7,6 @@
 "@medusajs/medusa": patch
 "@medusajs/types": patch
 "@medusajs/utils": patch
-"@medusajs/medusa-payment-stripe": patch
 "@medusajs/admin-ui": patch
 "@medusajs/medusa-plugin-meilisearch": patch
 ---
