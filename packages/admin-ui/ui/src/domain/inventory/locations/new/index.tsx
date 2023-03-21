@@ -47,7 +47,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   })
   const {
     handleSubmit,
-    formState: { isDirty, isValid },
+    formState: { isDirty },
   } = form
 
   const {
