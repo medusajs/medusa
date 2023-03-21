@@ -129,7 +129,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 heading="Are you sure you want to cancel with unsaved changes"
                 confirmText="Yes, cancel"
                 cancelText="No, continue creating"
-                successText={undefined}
+                successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
               />
