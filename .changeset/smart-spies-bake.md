@@ -1,7 +1,7 @@
 ---
 "@medusajs/admin-ui": patch
 "@medusajs/medusa": patch
-"@medusajs/medusa-react": patch
+"medusa-react": patch
 ---
 
 feat(medusa, admin-ui, medusa-react): Improvements to product categories
