@@ -213,12 +213,12 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
     const createProductCategory = async (
       parameters,
-      parentCategory: ProductCategory | null = null
+      parentCategoryId: string | null = null
     ) => {
       // default to the categories being visible and public
       parameters.is_active = parameters.is_active || true
       parameters.is_internal = parameters.is_internal || false
-      parameters.parent_category = parentCategory || null
+      parameters.parent_category_id = parentCategoryId
 
       const categoryChildren = parameters.category_children || []
       delete parameters.category_children
@@ -229,7 +229,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
       if (categoryChildren.length) {
         for (const categoryChild of categoryChildren) {
-          await createProductCategory(categoryChild, category)
+          await createProductCategory(categoryChild, category.id)
         }
       }
     }
