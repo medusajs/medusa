@@ -1,10 +1,10 @@
 ---
-description: 'Learn how to install Medusa React in a React storefront. Medusa React is a React library that provides a set of utilities and hooks for interactive with the Medusa server.'
+description: 'Learn how to install Medusa React in a React storefront. Medusa React is a React library that provides a set of utilities and hooks for interactive with the Medusa backend.'
 ---
 
 # Medusa React
 
-[Medusa React](https://www.npmjs.com/package/medusa-react) is a React library that provides a set of utilities and hooks for interacting seamlessly with the Medusa server. It can be used to build custom React-based storefronts or admin dashboards.
+[Medusa React](https://www.npmjs.com/package/medusa-react) is a React library that provides a set of utilities and hooks for interacting seamlessly with the Medusa backend. It can be used to build custom React-based storefronts or admin dashboards.
 
 :::tip
 
@@ -46,7 +46,7 @@ To use the hooks exposed by Medusa React, you need to include  the `MedusaProvi
 
 The `MedusaProvider` requires two props:
 
-1. `baseUrl`: The URL to your Medusa server
+1. `baseUrl`: The URL to your Medusa backend
 2. `queryClientProviderProps`: An object used to set the Tanstack Query client. The object requires a `client` property, which should be an instance of [QueryClient](https://tanstack.com/query/v4/docs/react/reference/QueryClient).
 
 For example:
@@ -88,9 +88,9 @@ You can also pass the following props to Medusa Provider:
 
 ### Queries
 
-To fetch data from the Medusa server (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your medusa server.
+To fetch data from the Medusa backend (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your medusa backend.
 
-For example, to fetch products from your Medusa server:
+For example, to fetch products from your Medusa backend:
 
 ```tsx title=src/Products.ts
 import { Product } from "@medusajs/medusa"
@@ -133,7 +133,7 @@ You can learn more about using queries in [Tanstack Query’s documentation](htt
 
 ### Mutations
 
-To create, update, or delete data on the Medusa server (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your medusa server.
+To create, update, or delete data on the Medusa backend (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your medusa backend.
 
 For example, to create a cart:
 
@@ -166,7 +166,7 @@ export default Cart
 
 In the example above, you import the `useCreateCart` hook from `medusa-react`. This hook, and every other mutation hook exposed by `medusa-react`, returns everything that [useMutation](https://tanstack.com/query/v4/docs/react/reference/useMutation) returns. You can also pass the same options you would pass to `useMutation` to mutation hooks exposed by `medusa-react`.
 
-To create a cart, you call the `createCart.mutate` method. In the underlying logic, this method sends a `POST` request to the Medusa server to create a cart.
+To create a cart, you call the `createCart.mutate` method. In the underlying logic, this method sends a `POST` request to the Medusa backend to create a cart.
 
 If the request accepts any parameters, they can be passed as parameters to the `mutate` request. For example:
 
@@ -200,8 +200,8 @@ This utility function can be used to compute the price of a variant for a region
 
 It accepts an object with the following properties:
 
-- `variant`: A variant object retrieved from the Medusa server. It should mainly include the `prices` array in the object.
-- `region`: A region object retrieved from the Medusa server.
+- `variant`: A variant object retrieved from the Medusa backend. It should mainly include the `prices` array in the object.
+- `region`: A region object retrieved from the Medusa backend.
 - `includeTaxes`: (optional) A boolean value that indicates whether the computed price should include taxes or not. The default value is `true`.
 - `minimumFractionDigits`: (optional) The minimum number of fraction digits to use when formatting the price. This is passed as an option to `Intl.NumberFormat` in the underlying layer. You can learn more about this method’s options in [MDN’s documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters).
 - `maximumFractionDigits`: (optional) The maximum number of fraction digits to use when formatting the price. This is passed as an option to `Intl.NumberFormat` which is used within the utility method. You can learn more about this method’s options in [MDN’s documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters).
@@ -243,8 +243,8 @@ This utility function can be used to compute the price of a variant for a region
 
 It accepts an object with the following properties:
 
-- `variant`: A variant object retrieved from the Medusa server. It should mainly include the `prices` array in the variant.
-- `region`: A region object retrieved from the Medusa server.
+- `variant`: A variant object retrieved from the Medusa backend. It should mainly include the `prices` array in the variant.
+- `region`: A region object retrieved from the Medusa backend.
 - `includeTaxes`: (optional) A boolean value that indicates whether the computed price should include taxes or not. The default value is `true`.
 
 For example:
@@ -286,7 +286,7 @@ The main difference between this utility function and `formatVariantPrice` is th
 It accepts an object with the following properties:
 
 - `amount`: A number that should be used for computation.
-- `region`: A region object retrieved from the Medusa server.
+- `region`: A region object retrieved from the Medusa backend.
 - `includeTaxes`: (optional) A boolean value that indicates whether the computed price should include taxes or not. The default value is `true`.
 - `minimumFractionDigits`: (optional) The minimum number of fraction digits to use when formatting the price. This is passed as an option to `Intl.NumberFormat` in the underlying layer. You can learn more about this method’s options in [MDN’s documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters).
 - `maximumFractionDigits`: (optional) The maximum number of fraction digits to use when formatting the price. This is passed as an option to `Intl.NumberFormat` which is used within the utility method. You can learn more about this method’s options in [MDN’s documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters).
@@ -319,7 +319,7 @@ The main difference between this utility function and `computeVariantPrice` is t
 It accepts an object with the following properties:
 
 - `amount`: A number that should be used for computation.
-- `region`: A region object retrieved from the Medusa server.
+- `region`: A region object retrieved from the Medusa backend.
 - `includeTaxes`: (optional) A boolean value that indicates whether the computed price should include taxes or not. The default value is `true`.
 
 For example:
@@ -354,7 +354,7 @@ To facilitate building custom storefronts, `medusa-react` also exposes a `CartP
 
 ### CartProvider
 
-`CartProvider` makes use of some of the hooks already exposed by `medusa-react` to perform cart operations on the Medusa server. You can use it to create a cart, start the checkout flow, authorize payment sessions, and so on.
+`CartProvider` makes use of some of the hooks already exposed by `medusa-react` to perform cart operations on the Medusa backend. You can use it to create a cart, start the checkout flow, authorize payment sessions, and so on.
 
 It also manages one single global piece of state which represents a cart, exactly like the one created on your medusa backend.
 
@@ -432,7 +432,7 @@ const Cart = () => {
 export default Cart
 ```
 
-In the example above, you retrieve the `createCart` mutation and `cart` state object using the `useCart` hook. If the `cart` is not set, a button is shown. When the button is clicked, the `createCart` mutation is executed, which interacts with the server and creates a new cart.
+In the example above, you retrieve the `createCart` mutation and `cart` state object using the `useCart` hook. If the `cart` is not set, a button is shown. When the button is clicked, the `createCart` mutation is executed, which interacts with the backend and creates a new cart.
 
 After the cart is created, the `cart` state variable is set and its ID is shown instead of the button.
 
@@ -444,9 +444,9 @@ The example above does not store in the browser the ID of the cart created, so t
 
 ### SessionProvider
 
-Unlike the `CartProvider`, `SessionProvider` never interacts with the Medusa server. It can be used to implement the user experience related to managing a cart’s items. Its state variables are JavaScript objects living in the browser, but are in no way communicated with the server.
+Unlike the `CartProvider`, `SessionProvider` never interacts with the Medusa backend. It can be used to implement the user experience related to managing a cart’s items. Its state variables are JavaScript objects living in the browser, but are in no way communicated with the backend.
 
-You can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa server.
+You can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa backend.
 
 To use `SessionProvider`, you first have to insert it somewhere in your component tree below the `MedusaProvider`.
 

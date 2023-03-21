@@ -1,0 +1,15 @@
+.badge {
+  font-size: var(--medusa-label-x-small-plus-size);
+  line-height: var(--medusa-label-x-small-plus-line-height);
+  font-weight: var(--medusa-label-x-small-plus-font-weight);
+  padding: 1px 7px;
+  border-radius: var(--ifm-global-radius);
+  border: 1px solid;
+  text-align: center;
+}
+
+.purpleBadge {
+  background-color: var(--medusa-tag-purple-bg);
+  border-color: var(--medusa-tag-purple-border);
+  color: var(--medusa-tag-purple-text);
+}

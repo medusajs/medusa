@@ -30,5 +30,5 @@ In the Medusa Admin go to Settings > Regions and for each region scroll down to 
 
 ## See Also
 
-- [Install Stripe](../add-plugins/stripe.md)
-- [Payment Architecture Overview](../advanced/backend/payment/overview.md)
+- [Install Stripe](../plugins/payment/stripe.md)
+- [Payment Architecture Overview](../modules/carts-and-checkout/payment.md)

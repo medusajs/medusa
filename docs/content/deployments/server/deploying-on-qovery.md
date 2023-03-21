@@ -3,9 +3,9 @@ description: 'Learn step-by-step.'
 addHowToData: true
 ---
 
-# Deploy Your Medusa Server on Qovery
+# Deploy Your Medusa Backend on Qovery
 
-In this document, you'll learn how to deploy your Medusa server on Qovery with the help of Terraform. 
+In this document, you'll learn how to deploy your Medusa backend on Qovery with the help of Terraform. 
 
 [Qovery](https://www.qovery.com/) is a Continuous Deployment Platform that provides you with the developer experience of Heroku on top of your cloud provider (For example, AWS, DigitalOcean).
 
@@ -19,17 +19,17 @@ This tutorial explains how to deploy Medusa to a Qovery organization with an AWS
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.mdx).
+It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
-Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](../../development/backend/configurations.md) to learn how to do that.
 
 ### Needed Accounts
 
 - A [Qovery](https://start.qovery.com/) account with a created organization. Qovery provides a free plan that you can use.
 - An [AWS](https://aws.amazon.com/) account that you’ll connect to a Qovery cluster.
-- A [GitHub](https://github.com/) account to create a repository to host your server’s codebase.
+- A [GitHub](https://github.com/) account to create a repository to host your backend's codebase.
 
 :::tip
 
@@ -39,7 +39,7 @@ If you want to use another [Git Provider supported by Qovery](https://hub.qovery
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../development/backend/prepare-environment.mdx#git).
 - Terraform’s CLI tool. You can follow [this guide to install it based on your operating system](https://www.terraform.io/downloads).
 - Qovery’s CLI tool. You can follow [this guide to install it based on your operating system](https://hub.qovery.com/docs/using-qovery/interface/cli/#install).
 
@@ -47,7 +47,7 @@ If you want to use another [Git Provider supported by Qovery](https://hub.qovery
 
 ## Create GitHub Repository
 
-Before you can deploy your Medusa server you need to create a GitHub repository and push the code base to it.
+Before you can deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
@@ -65,7 +65,7 @@ After creating the repository, you’ll be redirected to the repository’s page
 
 ![An image of the GitHub URL in a new repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
-Copy the link. Then, open your terminal in the directory that holds your Medusa server codebase and run the following commands:
+Copy the link. Then, open your terminal in the directory that holds your Medusa backend codebase and run the following commands:
 
 ```bash
 git init
@@ -88,7 +88,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ## Deploy to Qovery
 
-In this section, you’ll learn how to deploy your Medusa server to Qovery with the help of Terraform.
+In this section, you’ll learn how to deploy your Medusa backend to Qovery with the help of Terraform.
 
 ### Sign in Using Qovery CLI
 
@@ -116,7 +116,7 @@ You’ll be prompted to choose an organization and add a name and description fo
 
 You need to add some variables to use for your Medusa deployment to Qovery. 
 
-In the root directory of your Medusa server, create the file `variables.tf` with the following content:
+In the root directory of your Medusa backend, create the file `variables.tf` with the following content:
 
 ```
 variable "qovery_organization_id" {
@@ -245,19 +245,19 @@ git_root_path = "/"
 
 Here’s an explanation of each of the variables and how to retrieve their variables:
 
-- `qovery_organization_id`: The ID of the Qovery organization to deploy the server to. It can be found by logging into your [Qovery Console](https://console.qovery.com/). You’ll be redirected to the organization’s main page with a URL of the format `https://console.qovery.com/platform/organization/<ORGANIZATION_ID>/projects`. Copy the `<ORGANIZATION_ID>` in the URL to use as the value of this field.
+- `qovery_organization_id`: The ID of the Qovery organization to deploy the backend to. It can be found by logging into your [Qovery Console](https://console.qovery.com/). You’ll be redirected to the organization’s main page with a URL of the format `https://console.qovery.com/platform/organization/<ORGANIZATION_ID>/projects`. Copy the `<ORGANIZATION_ID>` in the URL to use as the value of this field.
 - `qovery_create_cluster`: A boolean value indicating whether a new cluster should be created or not. If you already have a cluster that you want to use, you can set the value to `false` and set the value of `qovery_cluster_id`. Otherwise, set the value to `true` and set the values of `aws_access_key_id`, `aws_secret_access_key`, and `aws_region`.
 - `qovery_cluster_id`: The ID of the existing cluster to use (if `qovery_create_cluster` is set to `false`). You can use [Qovery’s REST API](https://api-doc.qovery.com/#tag/Clusters/operation/listOrganizationCluster) to retrieve the cluster ID. You can use the token you generated earlier for the Bearer authorization token as explained [here](https://hub.qovery.com/docs/using-qovery/interface/cli/#generate-api-token).
 - `aws_access_key_id`, `aws_secret_access_key`, and `aws_region`: The credentials used to create the cluster (if `qovery_create_cluster` is set to `true`). You can refer to [this guide](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys) to learn how to retrieve the `aws_access_key_id` and `aws_secret_access_key`.
-- `medusa_jwt_secret`: The value of the JSON Web Token (JWT) Secret on your Medusa server. It’s recommended to use a strong randomly generated string.
-- `medusa_cookie_secret`: The value of the Cookie Secret on your Medusa server. It’s recommended to use a strong randomly generated string.
+- `medusa_jwt_secret`: The value of the JSON Web Token (JWT) Secret on your Medusa backend. It’s recommended to use a strong randomly generated string.
+- `medusa_cookie_secret`: The value of the Cookie Secret on your Medusa backend. It’s recommended to use a strong randomly generated string.
 - `git_url`: The URL of the Git repository you created earlier. Make sure it ends with `.git`.
 - `git_branch`: The branch to use in the GitHub repo. By default it’s `master`.
-- `git_root_path`: The root path of the Medusa server. By default, it’s `/`. If you are hosting your Medusa server in a monorepo in a nested directory, you need to change the value of this variable.
+- `git_root_path`: The root path of the Medusa backend. By default, it’s `/`. If you are hosting your Medusa backend in a monorepo in a nested directory, you need to change the value of this variable.
 
 ### Add Terraform Configuration File
 
-In the root directory of your Medusa server, create the file `main.tf` with the following content:
+In the root directory of your Medusa backend, create the file `main.tf` with the following content:
 
 ```bash
 # Install the Qovery Terraform provider
@@ -430,25 +430,25 @@ Finally, it creates the Medusa app and sets all the necessary environment variab
 
 :::tip
 
-This deployment uses Docker. By default, you should have the files [`Dockerfile`](https://github.com/medusajs/medusa-starter-default/blob/master/Dockerfile) and [`docker-compose.yml`](https://github.com/medusajs/medusa-starter-default/blob/master/docker-compose.yml)` in the root of your Medusa server.
+This deployment uses Docker. By default, you should have the files [`Dockerfile`](https://github.com/medusajs/medusa-starter-default/blob/master/Dockerfile) and [`docker-compose.yml`](https://github.com/medusajs/medusa-starter-default/blob/master/docker-compose.yml)` in the root of your Medusa backend.
 
 :::
 
 ### Change develop.sh
 
-The `Dockerfile` runs the file `develop.sh` to start the server. Change the content of `develop.sh` to the following:
+The `Dockerfile` runs the file `develop.sh` to start the backend. Change the content of `develop.sh` to the following:
 
 ```bash
 #!/bin/bash
 
-#Run migrations to ensure the database is updated
+# Run migrations to ensure the database is updated
 medusa migrations run
 
-#Start production server
+# Run backend
 medusa start
 ```
 
-This makes sure the production server is started and not a development server.
+This makes sure the production backend is started and not a development backend.
 
 ### Initialize Terraform
 
@@ -480,19 +480,19 @@ If you run into any errors while running this command, you can just re-run it af
 
 ---
 
-## Test your Server
+## Test the Backend
 
-Once the command finishes and the deployment is successful, you can access your server in the [Qovery Console](https://console.qovery.com/). Go to the project, environment, then the app that you created using Terraform and Qovery. In the app, click the Open button at the top right to open your website in a new tab.
+Once the command finishes and the deployment is successful, you can access your backend in the [Qovery Console](https://console.qovery.com/). Go to the project, environment, then the app that you created using Terraform and Qovery. In the app, click the Open button at the top right to open your website in a new tab.
 
 ![open button at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002245/Medusa%20Docs/Qovery/Ji59ZSJ_nrkpvb.png)
 
-You can access any of the endpoints on your server using the server URL. For example, you can get the list of products using the endpoint `/store/products`.
+You can access any of the endpoints on your backend using the backend URL. For example, you can get the list of products using the endpoint `/store/products`.
 
 ---
 
-## Run Commands on Your Server
+## Run Commands on the Backend
 
-To run commands on your server, run the following command:
+To run commands on the backend, run the following command:
 
 ```bash
 qovery shell
@@ -500,7 +500,7 @@ qovery shell
 
 You’ll be asked to either confirm the existing context or choose a new context.
 
-After choosing your Medusa app in the context, you should be able to execute any command in the directory of your Medusa server. For example, you can run the [`user` command using Medusa’s CLI tool to create a new user](../../cli/reference.md#user):
+After choosing your Medusa app in the context, you should be able to execute any command in the directory of your Medusa backend. For example, you can run the [`user` command using Medusa’s CLI tool to create a new user](../../cli/reference.md#user):
 
 ```bash
 npm install @medusajs/medusa-cli -g
