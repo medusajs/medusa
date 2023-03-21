@@ -63,7 +63,10 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   const { mutateAsync: associateSalesChannel } =
     useAdminAddLocationToSalesChannel()
 
-  const createSalesChannelAssociationPromise = (salesChannelId, locationId) =>
+  const createSalesChannelAssociationPromise = (
+    salesChannelId: string,
+    locationId: string
+  ) =>
     associateSalesChannel({
       sales_channel_id: salesChannelId,
       location_id: locationId,
@@ -136,7 +139,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 size="small"
                 variant="primary"
                 type="button"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty}
                 onClick={onSubmit()}
               >
                 Add location
