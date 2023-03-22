@@ -10,20 +10,20 @@ do
     --output /dev/null\
     http://localhost:9000/store/products)
 
-echo $status_code
+  echo $status_code
   if [[ "$status_code" -ne 000 ]] ; then
     echo "exiting"
     exit 0
   else
-    sleep 5
+    sleep 10
   fi
 done
 
 echo $status_code
 
-if [[ "$status_code" =  000 ]] ; then 
-  echo "Site status changed to $status_code" 
+if [[ "$status_code" =  000 ]] ; then
+  echo "Site status changed to $status_code"
   exit 1
-else 
+else
   exit 0
 fi
