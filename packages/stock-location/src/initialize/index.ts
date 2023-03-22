@@ -1,15 +1,16 @@
-import { IEventBusService, IStockLocationService } from "@medusajs/medusa"
+import { IStockLocationService } from "@medusajs/medusa"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MedusaModule,
+  MedusaModule
 } from "@medusajs/modules-sdk"
+import { EventBusTypes } from "@medusajs/types"
 import { StockLocationServiceInitializeOptions } from "../types"
 
 export const initialize = async (
   options?: StockLocationServiceInitializeOptions | ExternalModuleDeclaration,
   injectedDependencies?: {
-    eventBusService: IEventBusService
+    eventBusService: EventBusTypes.IEventBusService
   }
 ): Promise<IStockLocationService> => {
   const serviceKey = "stockLocationService"

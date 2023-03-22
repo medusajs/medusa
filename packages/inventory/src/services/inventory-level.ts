@@ -2,17 +2,16 @@ import {
   buildQuery,
   CreateInventoryLevelInput,
   FilterableInventoryLevelProps,
-  FindConfig,
-  IEventBusService,
+  FindConfig
 } from "@medusajs/medusa"
-import { SharedContext } from "@medusajs/types"
+import { EventBusTypes, SharedContext } from "@medusajs/types"
 import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   manager: EntityManager
 }
 
@@ -24,7 +23,7 @@ export default class InventoryLevelService {
   }
 
   protected readonly manager_: EntityManager
-  protected readonly eventBusService_: IEventBusService | undefined
+  protected readonly eventBusService_: EventBusTypes.IEventBusService | undefined
 
   constructor({ eventBusService, manager }: InjectedDependencies) {
     this.manager_ = manager

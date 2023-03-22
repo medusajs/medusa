@@ -1,4 +1,7 @@
+import { Request } from "express"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
@@ -10,11 +13,9 @@ import {
   FilterableBatchJobProps,
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
-import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EventBusService, StrategyResolverService } from "./index"
-import { Request } from "express"
+import EventBusService from "./event-bus"
+import { StrategyResolverService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager

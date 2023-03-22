@@ -1,15 +1,16 @@
-import { IEventBusService, IInventoryService } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/medusa"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MedusaModule,
+  MedusaModule
 } from "@medusajs/modules-sdk"
+import { EventBusTypes } from "@medusajs/types"
 import { InventoryServiceInitializeOptions } from "../types"
 
 export const initialize = async (
   options?: InventoryServiceInitializeOptions | ExternalModuleDeclaration,
   injectedDependencies?: {
-    eventBusService: IEventBusService
+    eventBusService: EventBusTypes.IEventBusService
   }
 ): Promise<IInventoryService> => {
   const serviceKey = "inventoryService"
