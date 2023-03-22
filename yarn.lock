@@ -2348,16 +2348,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/polyfill@npm:^7.8.7":
-  version: 7.12.1
-  resolution: "@babel/polyfill@npm:7.12.1"
-  dependencies:
-    core-js: ^2.6.5
-    regenerator-runtime: ^0.13.4
-  checksum: f5d233d2958582e8678838c32c42ba780965119ebb3771d9b9735f85efabc7b8b49161e7d908477486e0aaf8508410e957be764c27a6a828714fb9d1b7f80bc3
-  languageName: node
-  linkType: hard
-
 "@babel/preset-env@npm:7.11.5":
   version: 7.11.5
   resolution: "@babel/preset-env@npm:7.11.5"
@@ -5802,11 +5792,8 @@ __metadata:
     "@babel/cli": ^7.7.5
     "@babel/core": ^7.7.5
     "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
     "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/polyfill": ^7.8.7
     "@babel/preset-env": ^7.7.5
-    "@babel/runtime": ^7.9.6
     axios: ^0.21.4
     chalk: ^4.0.0
     configstore: 5.0.1
@@ -5823,13 +5810,13 @@ __metadata:
     meant: ^1.0.3
     medusa-core-utils: ^1.1.39
     medusa-telemetry: 0.0.16
-    netrc-parser: ^3.1.6
     open: ^8.0.6
     ora: ^5.4.1
     pg-god: ^1.0.12
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
+    sqlite3: ^5.0.2
     stack-trace: ^0.0.10
     ulid: ^2.3.0
     url: ^0.11.0
@@ -5893,12 +5880,10 @@ __metadata:
     "@medusajs/utils": ^0.0.1
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
-    "@types/jest": ^27.5.2
     "@types/jsonwebtoken": ^8.5.9
     "@types/lodash": ^4.14.191
     "@types/multer": ^1.4.7
     awilix: ^8.0.0
-    babel-preset-medusa-package: ^1.1.19
     body-parser: ^1.19.0
     boxen: ^6.2.1
     bullmq: ^3.5.6
@@ -5940,7 +5925,6 @@ __metadata:
     regenerator-runtime: ^0.13.11
     request-ip: ^2.1.3
     scrypt-kdf: ^2.0.1
-    sqlite3: ^5.0.2
     supertest: ^4.0.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
@@ -11210,7 +11194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^27.0.1, @types/jest@npm:^27.0.3, @types/jest@npm:^27.5.2":
+"@types/jest@npm:^27.0.1, @types/jest@npm:^27.0.3":
   version: 27.5.2
   resolution: "@types/jest@npm:27.5.2"
   dependencies:
@@ -16626,13 +16610,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^2.6.5":
-  version: 2.6.12
-  resolution: "core-js@npm:2.6.12"
-  checksum: 00128efe427789120a06b819adc94cc72b96955acb331cb71d09287baf9bd37bebd191d91f1ee4939c893a050307ead4faea08876f09115112612b6a05684b63
-  languageName: node
-  linkType: hard
-
 "core-js@npm:^3.0.4, core-js@npm:^3.22.1, core-js@npm:^3.22.3, core-js@npm:^3.6.5, core-js@npm:^3.7.0, core-js@npm:^3.8.2":
   version: 3.23.4
   resolution: "core-js@npm:3.23.4"
@@ -19812,21 +19789,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "execa@npm:0.10.0"
-  dependencies:
-    cross-spawn: ^6.0.0
-    get-stream: ^3.0.0
-    is-stream: ^1.1.0
-    npm-run-path: ^2.0.0
-    p-finally: ^1.0.0
-    signal-exit: ^3.0.0
-    strip-eof: ^1.0.0
-  checksum: 3e8562b78f1552ff629770aa81cdb98dac927b6b7f7adc10815ecf13b6917bbabc0468d7d81494f0bb05c59b83a22639e879ef15a17c0dc3434cc32e90e85ab3
-  languageName: node
-  linkType: hard
-
 "execa@npm:^1.0.0":
   version: 1.0.0
   resolution: "execa@npm:1.0.0"
@@ -21838,13 +21800,6 @@ __metadata:
   version: 4.0.1
   resolution: "get-stdin@npm:4.0.1"
   checksum: 68fc39a0af6050bcad791fb3df72999e7636401f11f574bf24af07b1c640d30c01cf38aa39ee55665a93ee7a7753eeb6d1fce6c434dd1f458ee0f8fd02775809
-  languageName: node
-  linkType: hard
-
-"get-stream@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "get-stream@npm:3.0.0"
-  checksum: 003f5f3b8870da59c6aafdf6ed7e7b07b48c2f8629cd461bd3900726548b6b8cfa2e14d6b7814fbb08f07a42f4f738407fa70b989928b2783a76b278505bba22
   languageName: node
   linkType: hard
 
@@ -30166,16 +30121,6 @@ __metadata:
   version: 2.1.1
   resolution: "nested-error-stacks@npm:2.1.1"
   checksum: feec00417e4778661cfbbe657e6add6ca9918dcc026cd697ac330b4a56a79e4882b36dde8abc138167566b1ce4c5baa17d2d4df727a96f8b96aebace1c3ffca7
-  languageName: node
-  linkType: hard
-
-"netrc-parser@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "netrc-parser@npm:3.1.6"
-  dependencies:
-    debug: ^3.1.0
-    execa: ^0.10.0
-  checksum: 53eae3d0ac5a2849189f284769263fe2c3a94252cf2a4749969e542a88a8e708f459fa5b8e4347149ef3db81b9ca7bb5ab1b44633ba001bf5126cffd6ea2737a
   languageName: node
   linkType: hard
 
