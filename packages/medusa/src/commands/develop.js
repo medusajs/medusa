@@ -54,6 +54,7 @@ export default async function ({ port, directory }) {
   })
   child.on("error", function (err) {
     console.log("Error ", err)
+    process.exit(1)
   })
 
   chokidar.watch(`${directory}/src`).on("change", (file) => {
@@ -80,6 +81,7 @@ export default async function ({ port, directory }) {
     })
     child.on("error", function (err) {
       console.log("Error ", err)
+      process.exit(1)
     })
   })
 }
