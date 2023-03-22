@@ -1,6 +1,5 @@
 import { ReservationItemDTO } from "@medusajs/types"
 import { Router } from "express"
-import "reflect-metadata"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
