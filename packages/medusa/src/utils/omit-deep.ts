@@ -1,3 +1,5 @@
+import { isObject } from "./is-object"
+
 export function omitDeep<T extends object = object>(
   input: object,
   excludes: Array<number | string>
@@ -13,15 +15,14 @@ export function omitDeep<T extends object = object>(
     }
 
     if (Array.isArray(value)) {
-      const nextValue = value.map((arrItem) => {
-        if (arrItem && typeof arrItem === "object") {
+      nextInput[key] = value.map((arrItem) => {
+        if (isObject(arrItem)) {
           return omitDeep(arrItem, excludes)
         }
         return arrItem
       })
-      nextInput[key] = nextValue
       return nextInput
-    } else if (typeof value === "object") {
+    } else if (isObject(value)) {
       nextInput[key] = omitDeep(value, excludes)
       return nextInput
     }

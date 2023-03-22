@@ -92,10 +92,7 @@ export default async (req, res) => {
   )
 
   if (response_body.data) {
-    response_body.data = cleanResponseData(
-      response_body.data,
-      req.allowedProperties
-    )
+    response_body.data = cleanResponseData(response_body.data, [])
   }
 
   res.status(response_code).json(response_body)

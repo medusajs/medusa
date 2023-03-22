@@ -64,5 +64,5 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: cleanResponseData(data, req.allowedProperties) })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

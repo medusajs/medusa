@@ -101,7 +101,7 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  res.json({ cart: cleanResponseData(data, req.allowedProperties) })
+  res.json({ cart: cleanResponseData(data, []) })
 }
 
 class GiftCard {

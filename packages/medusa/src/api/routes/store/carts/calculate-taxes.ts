@@ -122,7 +122,7 @@ export default async (req, res) => {
   if (idempotencyKey.response_body.cart) {
     idempotencyKey.response_body.cart = cleanResponseData(
       idempotencyKey.response_body.cart,
-      req.allowedProperties
+      []
     )
   }
 

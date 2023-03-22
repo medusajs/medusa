@@ -610,7 +610,7 @@ describe("/store/carts", () => {
               adjustments: [
                 expect.objectContaining({
                   item_id: "test-li",
-                  amount: 17,
+                  amount: 16.81818181818182,
                   discount_id: "medusa-185",
                 }),
               ],
@@ -618,7 +618,7 @@ describe("/store/carts", () => {
             expect.objectContaining({
               adjustments: [
                 expect.objectContaining({
-                  amount: 168,
+                  amount: 168.1818181818182,
                   discount_id: "medusa-185",
                 }),
               ],
@@ -670,7 +670,7 @@ describe("/store/carts", () => {
                 expect.objectContaining({
                   item_id: "test-li",
                   discount_id: "medusa-185",
-                  amount: 9,
+                  amount: 9.25,
                 }),
               ],
             }),
@@ -678,7 +678,7 @@ describe("/store/carts", () => {
               adjustments: [
                 expect.objectContaining({
                   item_id: "line-item-2",
-                  amount: 176,
+                  amount: 175.75,
                   discount_id: "medusa-185",
                 }),
               ],

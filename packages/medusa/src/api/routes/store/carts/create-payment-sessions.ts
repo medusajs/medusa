@@ -137,7 +137,7 @@ export default async (req, res) => {
   if (idempotencyKey.response_body.cart) {
     idempotencyKey.response_body.data = cleanResponseData(
       idempotencyKey.response_body.cart,
-      req.allowedProperties
+      []
     )
   }
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)

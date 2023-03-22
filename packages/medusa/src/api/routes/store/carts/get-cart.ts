@@ -71,5 +71,5 @@ export default async (req, res) => {
   }
 
   const data = await cartService.retrieveWithTotals(id, req.retrieveConfig)
-  res.json({ cart: cleanResponseData(data, req.allowedProperties) })
+  res.json({ cart: cleanResponseData(data, []) })
 }

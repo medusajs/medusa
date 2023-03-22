@@ -55,5 +55,5 @@ export default async (req, res) => {
     relations: defaultStoreOrdersRelations,
   })
 
-  res.json({ order: cleanResponseData(order, req.allowedProperties) })
+  res.json({ order: cleanResponseData(order, []) })
 }
