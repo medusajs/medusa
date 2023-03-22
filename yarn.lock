@@ -5885,7 +5885,7 @@ __metadata:
     "@types/multer": ^1.4.7
     awilix: ^8.0.0
     body-parser: ^1.19.0
-    boxen: ^6.2.1
+    boxen: ^5.0.1
     bullmq: ^3.5.6
     chokidar: ^3.4.2
     class-transformer: ^0.5.1
@@ -12953,7 +12953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-align@npm:^3.0.0, ansi-align@npm:^3.0.1":
+"ansi-align@npm:^3.0.0":
   version: 3.0.1
   resolution: "ansi-align@npm:3.0.1"
   dependencies:
@@ -13070,7 +13070,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^6.0.0, ansi-styles@npm:^6.1.0":
+"ansi-styles@npm:^6.0.0":
   version: 6.2.1
   resolution: "ansi-styles@npm:6.2.1"
   checksum: 5d1ec38c123984bcedd996eac680d548f31828bd679a66db2bdf11844634dde55fec3efa9c6bb1d89056a5e79c1ac540c4c784d592ea1d25028a92227d2f2d5c
@@ -14705,22 +14705,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"boxen@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "boxen@npm:6.2.1"
-  dependencies:
-    ansi-align: ^3.0.1
-    camelcase: ^6.2.0
-    chalk: ^4.1.2
-    cli-boxes: ^3.0.0
-    string-width: ^5.0.1
-    type-fest: ^2.5.0
-    widest-line: ^4.0.1
-    wrap-ansi: ^8.0.1
-  checksum: 2a50d059c950a50d9f3c873093702747740814ce8819225c4f8cbe92024c9f5a9219d2b7128f5cfa17c022644d929bbbc88b9591de67249c6ebe07f7486bdcfd
-  languageName: node
-  linkType: hard
-
 "bplist-parser@npm:^0.1.0":
   version: 0.1.1
   resolution: "bplist-parser@npm:0.1.1"
@@ -15761,13 +15745,6 @@ __metadata:
   version: 2.2.1
   resolution: "cli-boxes@npm:2.2.1"
   checksum: 6111352edbb2f62dbc7bfd58f2d534de507afed7f189f13fa894ce5a48badd94b2aa502fda28f1d7dd5f1eb456e7d4033d09a76660013ef50c7f66e7a034f050
-  languageName: node
-  linkType: hard
-
-"cli-boxes@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "cli-boxes@npm:3.0.0"
-  checksum: 4db3e8fbfaf1aac4fb3a6cbe5a2d3fa048bee741a45371b906439b9ffc821c6e626b0f108bdcd3ddf126a4a319409aedcf39a0730573ff050fdd7b6731e99fb9
   languageName: node
   linkType: hard
 
@@ -37009,7 +36986,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string-width@npm:^5.0.0, string-width@npm:^5.0.1":
+"string-width@npm:^5.0.0":
   version: 5.1.2
   resolution: "string-width@npm:5.1.2"
   dependencies:
@@ -38844,13 +38821,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.5.0":
-  version: 2.19.0
-  resolution: "type-fest@npm:2.19.0"
-  checksum: a5a7ecf2e654251613218c215c7493574594951c08e52ab9881c9df6a6da0aeca7528c213c622bc374b4e0cb5c443aa3ab758da4e3c959783ce884c3194e12cb
-  languageName: node
-  linkType: hard
-
 "type-fest@npm:^3.6.0":
   version: 3.6.0
   resolution: "type-fest@npm:3.6.0"
@@ -40630,15 +40600,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"widest-line@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "widest-line@npm:4.0.1"
-  dependencies:
-    string-width: ^5.0.1
-  checksum: 7da9525ba45eaf3e4ed1a20f3dcb9b85bd9443962450694dae950f4bdd752839747bbc14713522b0b93080007de8e8af677a61a8c2114aa553ad52bde72d0f9c
-  languageName: node
-  linkType: hard
-
 "wildcard@npm:^2.0.0":
   version: 2.0.0
   resolution: "wildcard@npm:2.0.0"
@@ -40727,17 +40688,6 @@ __metadata:
     string-width: ^4.1.0
     strip-ansi: ^6.0.0
   checksum: d15fc12c11e4cbc4044a552129ebc75ee3f57aa9c1958373a4db0292d72282f54373b536103987a4a7594db1ef6a4f10acf92978f79b98c49306a4b58c77d4da
-  languageName: node
-  linkType: hard
-
-"wrap-ansi@npm:^8.0.1":
-  version: 8.1.0
-  resolution: "wrap-ansi@npm:8.1.0"
-  dependencies:
-    ansi-styles: ^6.1.0
-    string-width: ^5.0.1
-    strip-ansi: ^7.0.1
-  checksum: 138ff58a41d2f877eae87e3282c0630fc2789012fc1af4d6bd626eeb9a2f9a65ca92005e6e69a75c7b85a68479fe7443c7dbe1eb8fbaa681a4491364b7c55c60
   languageName: node
   linkType: hard
 

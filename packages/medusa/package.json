@@ -51,7 +51,7 @@
     "@types/lodash": "^4.14.191",
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
-    "boxen": "^6.2.1",
+    "boxen": "^5.0.1",
     "bullmq": "^3.5.6",
     "chokidar": "^3.4.2",
     "class-transformer": "^0.5.1",
