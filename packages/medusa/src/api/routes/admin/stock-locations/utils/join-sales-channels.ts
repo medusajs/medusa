@@ -14,9 +14,14 @@ const joinSalesChannels = async (
       const salesChannelIds = await channelLocationService.listSalesChannelIds(
         location.id
       )
-      const [salesChannels] = await salesChannelService.listAndCount({
-        id: salesChannelIds,
-      })
+      const [salesChannels] = await salesChannelService.listAndCount(
+        {
+          id: salesChannelIds,
+        },
+        {
+          take: salesChannelIds.length,
+        }
+      )
 
       location.sales_channels = salesChannels
 
