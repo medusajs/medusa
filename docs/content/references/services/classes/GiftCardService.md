@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:47](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L47)
+[packages/medusa/src/services/gift-card.ts:47](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L47)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -68,7 +68,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:38](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L38)
+[packages/medusa/src/services/gift-card.ts:38](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L38)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:34](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L34)
+[packages/medusa/src/services/gift-card.ts:34](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L34)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:36](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L36)
+[packages/medusa/src/services/gift-card.ts:36](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L36)
 
 ___
 
@@ -112,7 +112,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:40](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L40)
+[packages/medusa/src/services/gift-card.ts:40](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L40)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:37](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L37)
+[packages/medusa/src/services/gift-card.ts:37](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L37)
 
 ___
 
@@ -136,7 +136,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:41](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L41)
+[packages/medusa/src/services/gift-card.ts:41](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L41)
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:43](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L43)
+[packages/medusa/src/services/gift-card.ts:43](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L43)
 
 ## Methods
 
@@ -191,7 +191,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -215,7 +215,7 @@ the result of the create operation
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:153](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L153)
+[packages/medusa/src/services/gift-card.ts:153](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L153)
 
 ___
 
@@ -235,7 +235,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:138](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L138)
+[packages/medusa/src/services/gift-card.ts:138](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L138)
 
 ___
 
@@ -259,7 +259,7 @@ the result of the delete operation
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:322](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L322)
+[packages/medusa/src/services/gift-card.ts:322](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L322)
 
 ___
 
@@ -282,7 +282,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:114](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L114)
+[packages/medusa/src/services/gift-card.ts:114](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L114)
 
 ___
 
@@ -305,7 +305,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:85](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L85)
+[packages/medusa/src/services/gift-card.ts:85](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L85)
 
 ___
 
@@ -330,7 +330,7 @@ the gift card
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:242](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L242)
+[packages/medusa/src/services/gift-card.ts:242](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L242)
 
 ___
 
@@ -351,7 +351,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:256](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L256)
+[packages/medusa/src/services/gift-card.ts:256](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L256)
 
 ___
 
@@ -372,7 +372,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:208](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L208)
+[packages/medusa/src/services/gift-card.ts:208](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L208)
 
 ___
 
@@ -396,7 +396,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -421,7 +421,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:276](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L276)
+[packages/medusa/src/services/gift-card.ts:276](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L276)
 
 ___
 
@@ -445,7 +445,7 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -463,7 +463,7 @@ the generated gift card code
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:69](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L69)
+[packages/medusa/src/services/gift-card.ts:69](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L69)
 
 ___
 
@@ -489,4 +489,4 @@ the tax rate for the gift card
 
 #### Defined in
 
-[packages/medusa/src/services/gift-card.ts:189](https://github.com/medusajs/medusa/blob/360ae16c2/packages/medusa/src/services/gift-card.ts#L189)
+[packages/medusa/src/services/gift-card.ts:189](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/gift-card.ts#L189)
