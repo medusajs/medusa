@@ -1,10 +1,10 @@
-import { EOL } from "os"
 import boxen from "boxen"
-import path from "path"
 import { execSync } from "child_process"
-import spawn from "cross-spawn"
 import chokidar from "chokidar"
+import spawn from "cross-spawn"
 import Store from "medusa-telemetry/dist/store"
+import { EOL } from "os"
+import path from "path"
 
 import Logger from "../loaders/logger"
 
@@ -52,6 +52,9 @@ export default async function ({ port, directory }) {
     env: process.env,
     stdio: ["pipe", process.stdout, process.stderr],
   })
+  child.on("error", function (err) {
+    console.log("Error ", err)
+  })
 
   chokidar.watch(`${directory}/src`).on("change", (file) => {
     const f = file.split("src")[1]
@@ -74,6 +77,9 @@ export default async function ({ port, directory }) {
       cwd: directory,
       env: process.env,
       stdio: ["pipe", process.stdout, process.stderr],
+    })
+    child.on("error", function (err) {
+      console.log("Error ", err)
     })
   })
 }
