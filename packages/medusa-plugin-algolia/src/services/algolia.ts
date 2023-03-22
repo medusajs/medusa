@@ -70,14 +70,9 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
       documents
     )
 
-    try {
-      return await this.client_
-        .initIndex(indexName)
-        .saveObjects(transformedDocuments)
-    } catch (error) {
-      console.log(error)
-      return
-    }
+    return await this.client_
+      .initIndex(indexName)
+      .saveObjects(transformedDocuments)
   }
 
   /**
@@ -133,7 +128,7 @@ class AlgoliaService extends SearchUtils.AbstractSearchService {
     const { paginationOptions, filter, additionalOptions } = options
 
     // fit our pagination options to what Algolia expects
-    if ("limit" in paginationOptions) {
+    if ("limit" in paginationOptions && paginationOptions.limit != null) {
       paginationOptions["length"] = paginationOptions.limit
       delete paginationOptions.limit
     }

@@ -20,13 +20,14 @@
   },
   "dependencies": {
     "@medusajs/types": "*",
-    "@medusajs/utils": "*",
     "algoliasearch": "^4.15.0"
   },
   "devDependencies": {
+    "@medusajs/utils": "*",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.4"
+    "jest": "^25.5.4",
+    "typescript": "^4.4.4"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
   "keywords": [

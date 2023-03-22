@@ -1,6 +1,7 @@
 export * from "./index-types"
 export * from "./interface"
 export * from "./settings"
+export * from "./variant-keys"
 
 export type IndexSettings = {
   /**

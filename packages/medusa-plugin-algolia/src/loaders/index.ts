@@ -1,4 +1,5 @@
 import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
+import AlgoliaService from "../services/algolia"
 import { AlgoliaPluginOptions } from "../types"
 
 export default async (
@@ -7,13 +8,13 @@ export default async (
 ) => {
   const logger: Logger = container.resolve("logger")
   try {
-    const algoliaService = container.resolve("algoliaService")
+    const algoliaService: AlgoliaService = container.resolve("algoliaService")
 
     const { settings } = options
 
     await Promise.all(
-      Object.entries(settings || {}).map(([indexName, value]) => {
-        algoliaService.updateSettings(indexName, value)
+      Object.entries(settings || {}).map(async ([indexName, value]) => {
+        return await algoliaService.updateSettings(indexName, value)
       })
     )
   } catch (err) {

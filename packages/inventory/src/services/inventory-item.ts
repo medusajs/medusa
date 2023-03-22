@@ -3,10 +3,9 @@ import {
   CreateInventoryItemInput,
   FilterableInventoryItemProps,
   FindConfig,
-  IEventBusService,
-  InventoryItemDTO,
+  InventoryItemDTO
 } from "@medusajs/medusa"
-import { SharedContext } from "@medusajs/types"
+import { EventBusTypes, SharedContext } from "@medusajs/types"
 import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
@@ -14,7 +13,7 @@ import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
   manager: EntityManager
 }
 
@@ -26,7 +25,7 @@ export default class InventoryItemService {
   }
 
   protected readonly manager_: EntityManager
-  protected readonly eventBusService_: IEventBusService | undefined
+  protected readonly eventBusService_: EventBusTypes.IEventBusService | undefined
 
   constructor({ eventBusService, manager }: InjectedDependencies) {
     this.manager_ = manager

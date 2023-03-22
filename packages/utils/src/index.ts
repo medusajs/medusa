@@ -1,2 +1,5 @@
+export * from "./bundles"
 export * from "./decorators"
-export * as SearchUtils from "./search"
+export * from "./event-bus"
+export * from "./search"
+
