@@ -166,6 +166,19 @@ describe("/store/carts", () => {
         // fields
         "status",
         "email",
+
+        // totals
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
+
         // relations
         "shipping_address",
         "fulfillments",
@@ -186,6 +199,19 @@ describe("/store/carts", () => {
       expect(Object.keys(response.data.order)).toEqual([
         // fields
         "status",
+
+        // totals
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
+
         // default relations
         "shipping_address",
         "fulfillments",
@@ -208,6 +234,19 @@ describe("/store/carts", () => {
       expect(Object.keys(response.data.order)).toEqual([
         // fields
         "status",
+
+        // totals
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
+
         // selected relations
         "billing_address",
       ])
