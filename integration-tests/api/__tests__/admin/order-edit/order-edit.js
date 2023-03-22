@@ -2482,8 +2482,8 @@ describe("/admin/order-edits", () => {
       )
       expect(item2.adjustments).toHaveLength(1)
 
-      expect(item1.adjustments[0]).toBeCloseTo(1333, 0)
-      expect(item2.adjustments[0]).toBeCloseTo(667, 0)
+      expect(item1.adjustments[0].amount).toBeCloseTo(1333, 0)
+      expect(item2.adjustments[0].amount).toBeCloseTo(667, 0)
 
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
