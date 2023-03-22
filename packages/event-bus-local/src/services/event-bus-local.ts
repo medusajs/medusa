@@ -1,21 +1,24 @@
-import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
 import { EmitData, Subscriber } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
 
 type InjectedDependencies = {
-  logger: Logger
+  logger: ModulesSdkTypes.Logger
 }
 
 const eventEmitter = new EventEmitter()
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
-  protected readonly logger_: Logger
+  protected readonly logger_: ModulesSdkTypes.Logger
   protected readonly eventEmitter_: EventEmitter
 
-  constructor({ logger }: MedusaContainer & InjectedDependencies) {
+  constructor({
+    logger,
+  }: ModulesSdkTypes.MedusaContainer & InjectedDependencies) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
     this.logger_ = logger

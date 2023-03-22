@@ -1,10 +1,10 @@
-import { ModuleExports } from "@medusajs/modules-sdk"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
 
 import InMemoryCacheService from "./services/inmemory-cache"
 
 const service = InMemoryCacheService
 
-const moduleDefinition: ModuleExports = {
+const moduleDefinition: ModulesSdkTypes.ModuleExports = {
   service,
 }
 

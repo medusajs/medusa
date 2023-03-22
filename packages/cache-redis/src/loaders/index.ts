@@ -1,4 +1,4 @@
-import { LoaderOptions } from "@medusajs/modules-sdk"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
 import { asValue } from "awilix"
 import Redis from "ioredis"
 import { RedisCacheModuleOptions } from "../types"
@@ -7,7 +7,7 @@ export default async ({
   container,
   logger,
   options,
-}: LoaderOptions): Promise<void> => {
+}: ModulesSdkTypes.LoaderOptions): Promise<void> => {
   const { redisUrl, redisOptions } = options as RedisCacheModuleOptions
 
   if (!redisUrl) {

@@ -1,11 +1,11 @@
-import { ModuleExports } from "@medusajs/modules-sdk"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
 import Loader from "./loaders"
 import RedisEventBusService from "./services/event-bus-redis"
 
 const service = RedisEventBusService
 const loaders = [Loader]
 
-const moduleDefinition: ModuleExports = {
+const moduleDefinition: ModulesSdkTypes.ModuleExports = {
   service,
   loaders,
 }

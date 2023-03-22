@@ -1,6 +1,6 @@
-import { Store, PaymentProvider, FulfillmentProvider } from "../models"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { FulfillmentProvider, PaymentProvider, Store } from "../models"
 import { FeatureFlagsResponse } from "./feature-flags"
-import { ModulesResponse as sdkModulesResponse } from "@medusajs/modules-sdk"
 
 export type UpdateStoreInput = {
   name?: string
@@ -29,7 +29,7 @@ export type UpdateStoreInput = {
  *       description: The resolution path of the module or false if module is not installed.
  *       type: string
  */
-export type ModulesResponse = sdkModulesResponse
+export type ModulesResponse = ModulesSdkTypes.ModulesResponse
 
 /**
  * @schema ExtendedStoreDTO

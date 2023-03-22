@@ -1,9 +1,4 @@
-import {
-  InternalModuleDeclaration,
-  LoaderOptions,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/modules-sdk"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
 import { DataSource, DataSourceOptions } from "typeorm"
 
 import { MedusaError } from "@medusajs/utils"
@@ -12,12 +7,12 @@ import * as InventoryModels from "../models"
 import { InventoryServiceInitializeOptions } from "../types"
 
 export default async (
-  { options, container }: LoaderOptions,
-  moduleDeclaration?: InternalModuleDeclaration
+  { options, container }: ModulesSdkTypes.LoaderOptions,
+  moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
 ): Promise<void> => {
   if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    moduleDeclaration?.scope === ModulesSdkTypes.MODULE_SCOPE.INTERNAL &&
+    moduleDeclaration.resources === ModulesSdkTypes.MODULE_RESOURCE_TYPE.SHARED
   ) {
     return
   }

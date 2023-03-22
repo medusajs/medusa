@@ -6,13 +6,13 @@ import { revertMigration, runMigrations } from "./migrations/run-migration"
 import * as InventoryModels from "./models"
 import InventoryService from "./services/inventory"
 
-import { ModuleExports } from "@medusajs/modules-sdk"
+import { ModulesSdkTypes } from "@medusajs/modules-sdk"
 
 const service = InventoryService
 const loaders = [loadContainer, loadConnection]
 const models = Object.values(InventoryModels)
 
-const moduleDefinition: ModuleExports = {
+const moduleDefinition: ModulesSdkTypes.ModuleExports = {
   service,
   migrations,
   loaders,
@@ -25,4 +25,3 @@ export default moduleDefinition
 
 export * from "./initialize"
 export * from "./types"
-

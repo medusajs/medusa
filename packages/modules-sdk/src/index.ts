@@ -1,4 +1,4 @@
-export * from "@medusajs/types/dist/modules-sdk"
+export { ModulesSdkTypes } from "@medusajs/types"
 export * from "./definitions"
 export * from "./loaders"
 export * from "./medusa-module"
