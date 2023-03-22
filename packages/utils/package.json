@@ -31,9 +31,6 @@
     "typeorm": "^0.3.11",
     "ulid": "^2.3.0"
   },
-  "peerDependencies": {
-    "@medusajs/types": "^0.0.1"
-  },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
