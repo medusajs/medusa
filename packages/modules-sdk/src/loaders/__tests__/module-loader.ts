@@ -1,12 +1,11 @@
-import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
-import { EOL } from "os"
 import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types"
-
+} from "@medusajs/types"
+import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
+import { createMedusaContainer } from "medusa-core-utils"
+import { EOL } from "os"
 import { moduleLoader } from "../module-loader"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
 
