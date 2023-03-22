@@ -19,11 +19,11 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/types": "*",
+    "@medusajs/utils": "*",
     "algoliasearch": "^4.15.0"
   },
   "devDependencies": {
-    "@medusajs/utils": "*",
+    "@medusajs/types": "*",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
