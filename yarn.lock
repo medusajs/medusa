@@ -5881,7 +5881,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.12, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6038,7 +6038,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -6050,7 +6050,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@*, @medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -28790,6 +28790,7 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.7.12
     "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     jest: ^25.5.4
