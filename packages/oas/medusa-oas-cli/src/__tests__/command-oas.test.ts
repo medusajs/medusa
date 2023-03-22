@@ -95,7 +95,7 @@ describe("command oas", () => {
       expect(routes.includes("/store/products")).toBeFalsy()
     })
 
-    it.only("generates oas using admin.oas.base.yaml", async () => {
+    it("generates oas using admin.oas.base.yaml", async () => {
       const yamlFilePath = path.resolve(
         medusaPackagePath,
         "oas",
