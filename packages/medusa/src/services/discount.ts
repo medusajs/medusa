@@ -678,40 +678,12 @@ class DiscountService extends TransactionBaseService {
         const nominator = Math.min(value, subtotal)
         const totalItemPercentage = fullItemPrice / subtotal
 
-        // Original adjustment with decimals
         adjustment = nominator * totalItemPercentage
-
-        /* const stringifiedAdjustment = adjustment.toString()
-        const pointIndex = stringifiedAdjustment.indexOf(".")
-
-        if (pointIndex !== -1) {
-          // Get the big int value of the adjustment
-          adjustment = Number(
-            Math.trunc(adjustment) + stringifiedAdjustment.slice(pointIndex + 1)
-          )
-
-          const zeroCount = stringifiedAdjustment.slice(pointIndex + 1).length
-          multiplierFactor = Number(
-            new Array(zeroCount).fill("0").reduce(function (acc, v) {
-              return acc + v
-            }, "1")
-          )
-        }*/
       } else {
         adjustment = value * lineItem.quantity
       }
 
-      return adjustment
-      // if the amount of the discount exceeds the total price of the item,
-      // we return the total item price, else the fixed amount
-      /* return {
-        adjustment:
-          adjustment / multiplierFactor >= fullItemPrice
-            ? fullItemPrice
-            : adjustment,
-        multiplierFactor:
-          adjustment / multiplierFactor >= fullItemPrice ? 1 : multiplierFactor,
-      }*/
+      return Math.min(adjustment, fullItemPrice)
     })
   }
 

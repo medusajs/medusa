@@ -14,7 +14,7 @@ export function omitDeep<T extends object = object>(
 
     if (Array.isArray(value)) {
       const nextValue = value.map((arrItem) => {
-        if (typeof arrItem === "object") {
+        if (arrItem && typeof arrItem === "object") {
           return omitDeep(arrItem, excludes)
         }
         return arrItem

@@ -92,7 +92,7 @@ export class LineItemAdjustment {
  *     $ref: "#/components/schemas/Discount"
  *   amount:
  *     description: The adjustment amount
- *     type: bigint
+ *     type: number
  *     example: 1000
  *   metadata:
  *     description: An optional key-value map with additional details
