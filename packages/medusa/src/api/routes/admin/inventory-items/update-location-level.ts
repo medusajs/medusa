@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IsNumber, IsOptional } from "class-validator"
+import { IsNumber, IsOptional, Min } from "class-validator"
 
 import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
@@ -105,10 +105,12 @@ export default async (req: Request, res: Response) => {
 export class AdminPostInventoryItemsItemLocationLevelsLevelReq {
   @IsOptional()
   @IsNumber()
+  @Min(0)
   incoming_quantity?: number
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   stocked_quantity?: number
 }
 

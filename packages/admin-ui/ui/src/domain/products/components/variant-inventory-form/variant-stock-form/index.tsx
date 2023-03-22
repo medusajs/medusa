@@ -1,15 +1,16 @@
-import React, { useMemo, useState, useContext } from "react"
-import Modal from "../../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
-import { useAdminStockLocations } from "medusa-react"
-import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/medusa"
 import { Controller, useFieldArray } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Switch from "../../../../../components/atoms/switch"
-import InputField from "../../../../../components/molecules/input"
-import { NestedForm } from "../../../../../utils/nested-form"
-import IconBadge from "../../../../../components/fundamentals/icon-badge"
+import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/medusa"
+import React, { useContext, useMemo, useState } from "react"
+
 import BuildingsIcon from "../../../../../components/fundamentals/icons/buildings-icon"
+import Button from "../../../../../components/fundamentals/button"
+import IconBadge from "../../../../../components/fundamentals/icon-badge"
+import InputField from "../../../../../components/molecules/input"
+import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
+import Modal from "../../../../../components/molecules/modal"
+import { NestedForm } from "../../../../../utils/nested-form"
+import Switch from "../../../../../components/atoms/switch"
+import { useAdminStockLocations } from "medusa-react"
 
 export type VariantStockFormType = {
   manage_inventory?: boolean
@@ -64,6 +65,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
       append({
         location_id: added,
         stocked_quantity: locationLevelMap.get(added)?.stocked_quantity ?? 0,
+        reserved_quantity: locationLevelMap.get(added)?.reserved_quantity ?? 0,
       })
     })
   }

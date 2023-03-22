@@ -456,6 +456,8 @@ const AdjustAvailabilityModal = ({
                 onChange={(e) => setStockedQuantity(e.target.valueAsNumber)}
                 autoFocus
                 type="number"
+                placeholder="0"
+                min={0}
                 value={stockedQuantity}
               />
             </div>
