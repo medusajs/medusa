@@ -650,8 +650,6 @@ class DiscountService extends TransactionBaseService {
         fullItemPrice = lineItemTotals[lineItem.id].subtotal
       }
 
-      /* let multiplierFactor = 1*/
-
       if (type === DiscountRuleType.PERCENTAGE) {
         adjustment = Math.round((fullItemPrice / 100) * value)
       } else if (

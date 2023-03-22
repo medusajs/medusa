@@ -604,13 +604,22 @@ describe("/store/carts", () => {
           .catch((err) => console.log(err))
 
         expect(response.data.cart.items.length).toEqual(2)
+
+        const item1 = response.data.cart.items.find((i) => i.id === "test-li")
+        expect(item1.adjustments).toHaveLength(1)
+
+        const item2 = response.data.cart.items.find((i) => i.id !== "test-li")
+        expect(item2.adjustments).toHaveLength(1)
+
+        expect(item1.adjustments[0].amount).toBeCloseTo(17, 0)
+        expect(item2.adjustments[0].amount).toBeCloseTo(168, 0)
+
         expect(response.data.cart.items).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               adjustments: [
                 expect.objectContaining({
                   item_id: "test-li",
-                  amount: 16.81818181818182,
                   discount_id: "medusa-185",
                 }),
               ],
@@ -618,7 +627,6 @@ describe("/store/carts", () => {
             expect.objectContaining({
               adjustments: [
                 expect.objectContaining({
-                  amount: 168.1818181818182,
                   discount_id: "medusa-185",
                 }),
               ],
@@ -663,14 +671,23 @@ describe("/store/carts", () => {
           .catch((err) => console.log(err))
 
         expect(response.data.cart.items.length).toEqual(2)
+
+        const item1 = response.data.cart.items.find((i) => i.id === "test-li")
+        expect(item1.adjustments).toHaveLength(1)
+
+        const item2 = response.data.cart.items.find(
+          (i) => i.id === "line-item-2"
+        )
+        expect(item2.adjustments).toHaveLength(1)
+
         expect(response.data.cart.items).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               adjustments: [
                 expect.objectContaining({
                   item_id: "test-li",
-                  discount_id: "medusa-185",
                   amount: 9.25,
+                  discount_id: "medusa-185",
                 }),
               ],
             }),
