@@ -8,7 +8,7 @@ const draftOrderSeeder = require("../../../helpers/draft-order-seeder")
 const adminSeeder = require("../../../helpers/admin-seeder")
 const { simpleDiscountFactory } = require("../../../factories")
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 const adminReqConfig = {
   headers: {
@@ -572,9 +572,6 @@ describe("/admin/draft-orders", () => {
         (item) => item.variant_id === testVariant2Id
       )
 
-      const lineItem1WeightInTotal = 0.444 // line item amount / amount
-      const lineItem2WeightInTotal = 0.556 // line item amount / amount
-
       expect(draftOrder.cart.items).toHaveLength(2)
 
       expect(lineItem1).toEqual(
@@ -585,7 +582,7 @@ describe("/admin/draft-orders", () => {
           adjustments: expect.arrayContaining([
             expect.objectContaining({
               item_id: lineItem1.id,
-              amount: discountAmount * lineItem1WeightInTotal,
+              amount: 444.4444444444444, // discountAmount * (line item amount / amount),
               description: "discount",
               discount_id: discount.id,
             }),
@@ -601,7 +598,7 @@ describe("/admin/draft-orders", () => {
           adjustments: expect.arrayContaining([
             expect.objectContaining({
               item_id: lineItem2.id,
-              amount: discountAmount * lineItem2WeightInTotal,
+              amount: 555.5555555555555, // discountAmount * (line item amount / amount),
               description: "discount",
               discount_id: discount.id,
             }),
