@@ -2,6 +2,8 @@
 
 Receive payments on your Medusa commerce application using Adyen.
 
+> This plugin is not ready for production use. Community contributions are highly appreciated. You can learn more about contributing in [our repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
+
 [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
 
 ## Features
