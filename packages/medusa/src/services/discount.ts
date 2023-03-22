@@ -9,7 +9,6 @@ import {
   In,
 } from "typeorm"
 import {
-  EventBusService,
   NewTotalsService,
   ProductService,
   RegionService,
@@ -36,12 +35,13 @@ import {
   UpdateDiscountInput,
   UpdateDiscountRuleInput,
 } from "../types/discount"
+import { CalculationContextData } from "../types/totals"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
-import { CalculationContextData } from "../types/totals"
+import EventBusService from "./event-bus"
 
 /**
  * Provides layer to manipulate discounts.

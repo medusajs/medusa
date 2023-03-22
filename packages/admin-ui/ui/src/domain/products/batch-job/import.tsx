@@ -125,7 +125,7 @@ function ImportProducts(props: ImportProductsProps) {
       return undefined
     }
 
-    const res = batchJob.result?.stat_descriptors[0].message.match(/\d+/g)
+    const res = batchJob.result?.stat_descriptors?.[0].message.match(/\d+/g)
 
     if (!res) {
       return undefined
@@ -182,6 +182,7 @@ function ImportProducts(props: ImportProductsProps) {
       type="products"
       status={status}
       progress={progress}
+      hasError={hasError}
       canImport={isPreprocessed}
       onSubmit={onSubmit}
       onClose={onClose}
@@ -190,6 +191,7 @@ function ImportProducts(props: ImportProductsProps) {
       processUpload={processUpload}
       fileTitle={"products list"}
       templateLink="/temp/product-import-template.csv"
+      errorMessage={batchJob?.result?.errors?.join(" \n")}
       description2Title="Unsure about how to arrange your list?"
       description2Text="Download the template below to ensure you are following the correct format."
       description1Text="Through imports you can add or update products. To update existing products/variants you must set an existing id in the Product/Variant id columns. If the value is unset a new record will be created. You will be asked for confirmation before we import products."

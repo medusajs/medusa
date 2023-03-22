@@ -16,6 +16,9 @@
   ],
   "author": "Medusa",
   "license": "MIT",
+  "dependencies": {
+    "@medusajs/modules-sdk": "^0.0.1"
+  },
   "devDependencies": {
     "cross-env": "^5.2.1",
     "typeorm": "^0.3.11",
@@ -24,6 +27,7 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
+    "watch": "tsc --build --watch",
     "test": "exit 0"
   }
 }

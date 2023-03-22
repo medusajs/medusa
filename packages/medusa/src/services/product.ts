@@ -1,5 +1,3 @@
-import { FlagRouter } from "../utils/flag-router"
-
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
@@ -31,6 +29,7 @@ import {
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {

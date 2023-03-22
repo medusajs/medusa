@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react"
+import clsx from "clsx"
 
 import Button from "../../fundamentals/button"
 import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
@@ -8,12 +9,13 @@ import FileIcon from "../../fundamentals/icons/file-icon"
 import Modal from "../../molecules/modal"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
-import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
-import clsx from "clsx"
+import Tooltip from "../../atoms/tooltip"
 
 type FileSummaryProps = {
   name: string
   size: number
+  hasError?: boolean
+  errorMessage?: string
   action: ReactNode
   progress?: number
   status?: string
@@ -23,7 +25,7 @@ type FileSummaryProps = {
  * Render an upload file summary (& upload progress).
  */
 function FileSummary(props: FileSummaryProps) {
-  const { action, name, progress, size, status } = props
+  const { action, name, progress, size, status, hasError, errorMessage } = props
 
   const formattedSize =
     size / 1024 < 10
@@ -32,32 +34,46 @@ function FileSummary(props: FileSummaryProps) {
 
   return (
     <div className="relative">
-      <div
-        style={{ width: `${progress}%` }}
-        className="bg-grey-5 transition-width absolute h-full duration-150 ease-in-out"
-      />
-      <div className="border-1 relative mt-6 flex items-center rounded-xl border">
-        <div className="m-4">
-          <FileIcon size={30} fill={progress ? "#9CA3AF" : "#2DD4BF"} />
-        </div>
-
-        <div className="my-6 flex-1">
-          <div className="text-small text-grey-90 leading-5">{name}</div>
-          <div className="text-xsmall text-grey-50 leading-4">
-            {status || formattedSize}
+      <Tooltip
+        side="top"
+        maxWidth={320}
+        open={hasError ? undefined : false}
+        content={
+          hasError && errorMessage ? (
+            <span className="font-normal text-rose-500">{errorMessage}</span>
+          ) : null
+        }
+      >
+        <div
+          style={{ width: `${progress}%` }}
+          className="bg-grey-5 transition-width absolute h-full duration-150 ease-in-out"
+        />
+        <div className="border-1 relative mt-6 flex items-center rounded-xl border">
+          <div className="m-4">
+            <FileIcon size={30} fill={progress ? "#9CA3AF" : "#2DD4BF"} />
           </div>
-        </div>
 
-        <div className="m-6">{action}</div>
-      </div>
+          <div className="my-6 flex-1">
+            <div className="text-small text-grey-90 leading-5">{name}</div>
+            <div
+              className={clsx("text-xsmall text-grey-50 leading-4", {
+                "text-rose-500": hasError,
+              })}
+            >
+              {status || formattedSize}
+            </div>
+          </div>
+
+          <div className="m-6">{action}</div>
+        </div>
+      </Tooltip>
     </div>
   )
 }
 
 type UploadSummaryProps = {
-  creations: number
-  updates: number
-  rejections?: number
+  creations?: number
+  updates?: number
   type: string
 }
 
@@ -65,25 +81,18 @@ type UploadSummaryProps = {
  * Render a batch update request summary.
  */
 function UploadSummary(props: UploadSummaryProps) {
-  const { creations, updates, rejections, type } = props
+  const { creations, updates, type } = props
   return (
     <div className="flex gap-6">
       <div className="text-small text-grey-90 flex items-center">
         <CheckCircleIcon color="#9CA3AF" className="mr-2" />
-        <span className="font-semibold"> {creations}&nbsp;</span> new {type}
+        <span className="font-semibold"> {creations || 0}&nbsp;</span> new{" "}
+        {type}
       </div>
-      {updates && (
-        <div className="text-small text-grey-90 flex items-center">
-          <WarningCircleIcon fill="#9CA3AF" className="mr-2" />
-          <span className="font-semibold">{updates}&nbsp;</span> updates
-        </div>
-      )}
-      {rejections && (
-        <div className="text-small text-grey-90 flex items-center">
-          <XCircleIcon color="#9CA3AF" className="mr-2" />
-          <span className="font-semibold">{rejections}&nbsp;</span> rejections
-        </div>
-      )}
+      <div className="text-small text-grey-90 flex items-center">
+        <WarningCircleIcon fill="#9CA3AF" className="mr-2" />
+        <span className="font-semibold">{updates || 0}&nbsp;</span> updates
+      </div>
     </div>
   )
 }
@@ -155,6 +164,8 @@ function DropArea(props: DropAreaProps) {
 type UploadModalProps = {
   type: string
   status?: string
+  hasError?: boolean
+  errorMessage?: string
   fileTitle: string
   description1Text: string
   description2Title: string
@@ -184,8 +195,9 @@ function UploadModal(props: UploadModalProps) {
     onSubmit,
     onFileRemove,
     templateLink,
-    progress,
     summary,
+    hasError,
+    errorMessage,
     status,
     type,
   } = props
@@ -237,6 +249,8 @@ function UploadModal(props: UploadModalProps) {
               size={size!}
               name={name!}
               status={status}
+              hasError={hasError}
+              errorMessage={errorMessage}
               // progress={progress}
               // TODO: change this to actual progress once this we can track upload
               progress={100}
@@ -284,7 +298,7 @@ function UploadModal(props: UploadModalProps) {
 
               <Button
                 size="small"
-                disabled={!canImport}
+                disabled={!canImport || hasError}
                 variant="primary"
                 className="text-small"
                 onClick={onSubmit}

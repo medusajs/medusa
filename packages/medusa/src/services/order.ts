@@ -8,7 +8,7 @@ import {
   Not,
   Raw,
 } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IInventoryService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -50,7 +50,6 @@ import {
   CustomerService,
   DiscountService,
   DraftOrderService,
-  EventBusService,
   FulfillmentProviderService,
   FulfillmentService,
   GiftCardService,
@@ -64,6 +63,7 @@ import {
   TaxProviderService,
   TotalsService
 } from "."
+import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -86,6 +86,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
+  inventoryService: IInventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
   productVariantInventoryService: ProductVariantInventoryService
@@ -128,6 +129,7 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
+  protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len

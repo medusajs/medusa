@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@medusajs/cache-inmemory": "*",
+    "@medusajs/event-bus-local": "*",
     "@medusajs/medusa": "*",
     "faker": "^5.5.3",
     "medusa-interfaces": "*",
