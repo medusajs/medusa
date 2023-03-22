@@ -1,3 +1,4 @@
+import { MedusaContainer } from "@medusajs/types"
 import {
   asFunction,
   asValue,
@@ -6,11 +7,6 @@ import {
   createContainer,
   Resolver,
 } from "awilix"
-
-export type MedusaContainer = AwilixContainer & {
-  registerAdd: <T>(name: string, registration: T) => MedusaContainer
-  createScope: () => MedusaContainer
-}
 
 function asArray(
   resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]

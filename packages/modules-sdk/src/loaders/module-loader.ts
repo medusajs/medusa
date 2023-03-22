@@ -1,15 +1,13 @@
-import { asValue } from "awilix"
-import { EOL } from "os"
-import { loadInternalModule } from "./utils"
-
 import {
   Logger,
   MedusaContainer,
   ModuleResolution,
   MODULE_SCOPE,
-} from "../types"
-
+} from "@medusajs/types"
+import { asValue } from "awilix"
+import { EOL } from "os"
 import { ModulesHelper } from "../module-helper"
+import { loadInternalModule } from "./utils"
 
 export const moduleHelper = new ModulesHelper()
 

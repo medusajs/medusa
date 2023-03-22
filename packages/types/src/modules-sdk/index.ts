@@ -1,7 +1,5 @@
-import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { Logger as _Logger } from "winston"
-
-export type MedusaContainer = coreMedusaContainer
+import { MedusaContainer } from "../common/medusa-container"
 export type Constructor<T> = new (...args: any[]) => T
 
 export type LogLevel =

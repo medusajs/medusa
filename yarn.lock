@@ -5960,6 +5960,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
+    "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -6041,12 +6042,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
-    "@medusajs/modules-sdk": ^0.0.1
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/modules-sdk": ^0.0.1
+    winston: ^3.8.2
   languageName: unknown
   linkType: soft
 

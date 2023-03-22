@@ -1,6 +1,3 @@
-import { createMedusaContainer } from "@medusajs/utils"
-import { asFunction, asValue } from "awilix"
-import { trackInstallation } from "medusa-telemetry"
 import {
   Constructor,
   InternalModuleDeclaration,
@@ -10,7 +7,10 @@ import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types"
+} from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asFunction, asValue } from "awilix"
+import { trackInstallation } from "medusa-telemetry"
 
 export async function loadInternalModule(
   container: MedusaContainer,

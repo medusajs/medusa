@@ -1,8 +1,8 @@
-import {
-    ExternalModuleDeclaration,
-    InternalModuleDeclaration
-} from "@medusajs/modules-sdk"
 import { LoggerOptions } from "typeorm"
+import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
+} from "../modules-sdk"
 
 type SessionOptions = {
   name?: string
