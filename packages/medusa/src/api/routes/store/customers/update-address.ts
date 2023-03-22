@@ -45,7 +45,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *  "200":
  *    description: OK
@@ -98,7 +98,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerAddressesAddressReq
  * anyOf:
- *   - $ref: "#/components/schemas/AddressFields"
+ *   - $ref: "#/components/schemas/AddressPayload"
  */
 // eslint-disable-next-line max-len
 export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}

@@ -20,6 +20,9 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostInventoryItemsInventoryItemReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostInventoryItemsInventoryItemParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,14 +77,10 @@ export default async (req: Request, res: Response) => {
     req.scope.resolve("inventoryService")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .updateInventoryItem(
-        id,
-        req.validatedBody as AdminPostInventoryItemsInventoryItemReq
-      )
-  })
+  await inventoryService.updateInventoryItem(
+    id,
+    req.validatedBody as AdminPostInventoryItemsInventoryItemReq
+  )
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,

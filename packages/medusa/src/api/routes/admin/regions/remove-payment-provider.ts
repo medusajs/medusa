@@ -34,7 +34,7 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

@@ -29,14 +29,14 @@ import { IInventoryService } from "../../../../interfaces"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

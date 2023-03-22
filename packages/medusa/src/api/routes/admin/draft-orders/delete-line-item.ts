@@ -40,7 +40,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK

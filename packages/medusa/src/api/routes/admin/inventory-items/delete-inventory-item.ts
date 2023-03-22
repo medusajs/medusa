@@ -11,6 +11,8 @@ import { ProductVariantInventoryService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,7 +33,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - InventoryItem
+ *   - Inventory Items
  * responses:
  *   200:
  *     description: OK
@@ -57,9 +59,7 @@ export default async (req: Request, res: Response) => {
       .withTransaction(transactionManager)
       .detachInventoryItem(id)
 
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryItem(id)
+    await inventoryService.deleteInventoryItem(id)
   })
 
   res.status(200).send({

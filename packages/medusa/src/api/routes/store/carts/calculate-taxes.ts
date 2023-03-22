@@ -19,7 +19,7 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

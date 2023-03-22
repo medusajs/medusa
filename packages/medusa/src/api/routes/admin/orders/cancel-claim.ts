@@ -38,7 +38,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

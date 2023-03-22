@@ -38,7 +38,7 @@ import { IsString } from "class-validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK

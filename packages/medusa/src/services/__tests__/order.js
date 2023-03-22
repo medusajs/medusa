@@ -1,8 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 describe("OrderService", () => {
@@ -510,9 +510,12 @@ describe("OrderService", () => {
     it("calls order model functions", async () => {
       await orderService.retrieve(IdMap.getId("test-order"))
       expect(orderRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith({}, {
-        where: { id: IdMap.getId("test-order") },
-      })
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith(
+        {},
+        {
+          where: { id: IdMap.getId("test-order") },
+        }
+      )
     })
   })
 
@@ -934,8 +937,7 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        { metadata: {}, order_id: "test-order" },
-        { location_id: undefined }
+        { metadata: {}, order_id: "test-order", location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -967,8 +969,7 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        { metadata: {}, order_id: "partial" },
-        { location_id: undefined }
+        { metadata: {}, order_id: "partial", location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -1000,8 +1001,7 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        { metadata: {}, order_id: "test" },
-        { location_id: undefined }
+        { metadata: {}, order_id: "test", location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -1039,8 +1039,12 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        { metadata: {}, order_id: "test", no_notification: undefined },
-        { locationId: "loc_1" }
+        {
+          metadata: {},
+          order_id: "test",
+          no_notification: undefined,
+          location_id: "loc_1",
+        }
       )
     })
 
@@ -1072,10 +1076,15 @@ describe("OrderService", () => {
           { no_notification: input }
         )
 
-        expect(eventBusService.emit).toHaveBeenCalledWith(expect.any(String), {
-          id: expect.any(String),
-          no_notification: expected,
-        })
+        expect(eventBusService.emit).toHaveBeenCalledWith([
+          {
+            eventName: expect.any(String),
+            data: {
+              id: expect.any(String),
+              no_notification: expected,
+            },
+          },
+        ])
       }
     )
   })
@@ -1246,17 +1255,10 @@ describe("OrderService", () => {
       save: jest.fn().mockImplementation((f) => f),
     })
 
-    const eventBus = {
-      emit: () =>
-        Promise.resolve({
-          finished: () => Promise.resolve({}),
-        }),
-    }
-
     const orderService = new OrderService({
       manager: MockManager,
       orderRepository: orderRepo,
-      eventBusService: eventBus,
+      eventBusService: eventBusService,
     })
 
     beforeEach(async () => {

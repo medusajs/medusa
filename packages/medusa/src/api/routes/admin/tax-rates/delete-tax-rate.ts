@@ -31,7 +31,7 @@ import { TaxRateService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK

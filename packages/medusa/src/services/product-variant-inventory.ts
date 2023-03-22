@@ -1,6 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import {
+  ICacheService,
   IInventoryService,
   IStockLocationService,
   TransactionBaseService,
@@ -14,7 +15,6 @@ import {
 } from "../types/inventory"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 import {
-  CacheService,
   ProductVariantService,
   SalesChannelInventoryService,
   SalesChannelLocationService,
@@ -35,7 +35,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly productVariantService_: ProductVariantService
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
-  protected readonly cacheService_: CacheService
+  protected readonly cacheService_: ICacheService
 
   constructor({
     stockLocationService,
@@ -115,13 +115,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .confirmInventory(
-            inventoryPart.inventory_item_id,
-            locationIds,
-            itemQuantity
-          )
+        return await this.inventoryService_.confirmInventory(
+          inventoryPart.inventory_item_id,
+          locationIds,
+          itemQuantity
+        )
       })
     )
 
@@ -179,7 +177,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param variantId variant id
    * @returns variant inventory items for the variant id
    */
-  private async listByVariant(
+  public async listByVariant(
     variantId: string | string[]
   ): Promise<ProductVariantInventoryItem[]> {
     const variantInventoryRepo = this.activeManager_.getRepository(
@@ -253,11 +251,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
 
     // Verify that item exists
-    await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .retrieveInventoryItem(inventoryItemId, {
-        select: ["id"],
-      })
+    await this.inventoryService_.retrieveInventoryItem(inventoryItemId, {
+      select: ["id"],
+    })
 
     const variantInventoryRepo = this.activeManager_.getRepository(
       ProductVariantInventoryItem
@@ -362,31 +358,42 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     let locationId = context.locationId
     if (!isDefined(locationId) && context.salesChannelId) {
-      const locations = await this.salesChannelLocationService_
+      const locationIds = await this.salesChannelLocationService_
         .withTransaction(this.activeManager_)
         .listLocationIds(context.salesChannelId)
 
-      if (!locations.length) {
+      if (!locationIds.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Must provide location_id or sales_channel_id to a Sales Channel that has associated Stock Locations"
         )
       }
 
-      locationId = locations[0]
+      const [locations, count] =
+        await this.inventoryService_.listInventoryLevels({
+          location_id: locationIds,
+          inventory_item_id: variantInventory[0].inventory_item_id,
+        })
+
+      if (count === 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Must provide location_id or sales_channel_id to a Sales Channel that has associated locations with inventory levels"
+        )
+      }
+
+      locationId = locations[0].location_id
     }
 
     return await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .createReservationItem({
-            ...toReserve,
-            location_id: locationId as string,
-            inventory_item_id: inventoryPart.inventory_item_id,
-            quantity: itemQuantity,
-          })
+        return await this.inventoryService_.createReservationItem({
+          ...toReserve,
+          location_id: locationId as string,
+          inventory_item_id: inventoryPart.inventory_item_id,
+          quantity: itemQuantity,
+        })
       })
     )
   }
@@ -422,9 +429,15 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    const [reservations, reservationCount] = await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .listReservationItems(
+    if (quantity > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "You can only reduce reservation quantities using adjustReservationsQuantityByLineItem. If you wish to reserve more use update or create."
+      )
+    }
+
+    const [reservations, reservationCount] =
+      await this.inventoryService_.listReservationItems(
         {
           line_item_id: lineItemId,
         },
@@ -433,33 +446,56 @@ class ProductVariantInventoryService extends TransactionBaseService {
         }
       )
 
+    reservations.sort((a, _) => {
+      if (a.location_id === locationId) {
+        return -1
+      }
+      return 0
+    })
+
     if (reservationCount) {
-      let reservation = reservations[0]
+      const inventoryItems = await this.listByVariant(variantId)
+      const productVariantInventory = inventoryItems[0]
 
-      reservation =
-        reservations.find(
-          (r) => r.location_id === locationId && r.quantity >= quantity
-        ) ?? reservation
-
-      const productVariantInventory = await this.retrieve(
-        reservation.inventory_item_id,
-        variantId
+      const deltaUpdate = Math.abs(
+        quantity * productVariantInventory.required_quantity
       )
 
-      const reservationQtyUpdate =
-        reservation.quantity -
-        quantity * productVariantInventory.required_quantity
+      const exactReservation = reservations.find(
+        (r) => r.quantity === deltaUpdate && r.location_id === locationId
+      )
+      if (exactReservation) {
+        await this.inventoryService_.deleteReservationItem(exactReservation.id)
+        return
+      }
 
-      if (reservationQtyUpdate === 0) {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .deleteReservationItem(reservation.id)
-      } else {
-        await this.inventoryService_
-          .withTransaction(this.activeManager_)
-          .updateReservationItem(reservation.id, {
-            quantity: reservationQtyUpdate,
-          })
+      let remainingQuantity = deltaUpdate
+
+      const reservationsToDelete: ReservationItemDTO[] = []
+      let reservationToUpdate: ReservationItemDTO | null = null
+      for (const reservation of reservations) {
+        if (reservation.quantity <= remainingQuantity) {
+          remainingQuantity -= reservation.quantity
+          reservationsToDelete.push(reservation)
+        } else {
+          reservationToUpdate = reservation
+          break
+        }
+      }
+
+      if (reservationsToDelete.length) {
+        await this.inventoryService_.deleteReservationItem(
+          reservationsToDelete.map((r) => r.id)
+        )
+      }
+
+      if (reservationToUpdate) {
+        await this.inventoryService_.updateReservationItem(
+          reservationToUpdate.id,
+          {
+            quantity: reservationToUpdate.quantity - remainingQuantity,
+          }
+        )
       }
     }
   }
@@ -494,11 +530,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
       for (const inventoryLevel of inventoryLevels) {
-        const pvInventoryItem = pviMap[inventoryLevel.inventory_item_id]
+        const pvInventoryItem = pviMap.get(inventoryLevel.inventory_item_id)
 
         if (
           !pvInventoryItem ||
-          pvInventoryItem.quantity * item.quantity >
+          pvInventoryItem.required_quantity * item.quantity >
             inventoryLevel.stocked_quantity
         ) {
           throw new MedusaError(
@@ -539,9 +575,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .deleteReservationItemsByLineItem(lineItemId)
+    await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
   }
 
   /**
@@ -571,26 +605,24 @@ class ProductVariantInventoryService extends TransactionBaseService {
           inventory_quantity: variant.inventory_quantity + quantity,
         })
       })
-    } else {
-      const variantInventory = await this.listByVariant(variantId)
-
-      if (variantInventory.length === 0) {
-        return
-      }
-
-      await Promise.all(
-        variantInventory.map(async (inventoryPart) => {
-          const itemQuantity = inventoryPart.required_quantity * quantity
-          return await this.inventoryService_
-            .withTransaction(this.activeManager_)
-            .adjustInventory(
-              inventoryPart.inventory_item_id,
-              locationId,
-              itemQuantity
-            )
-        })
-      )
     }
+
+    const variantInventory = await this.listByVariant(variantId)
+
+    if (variantInventory.length === 0) {
+      return
+    }
+
+    await Promise.all(
+      variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.required_quantity * quantity
+        return await this.inventoryService_.adjustInventory(
+          inventoryPart.inventory_item_id,
+          locationId,
+          itemQuantity
+        )
+      })
+    )
   }
 
   async setVariantAvailability(
@@ -615,30 +647,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
         // first get all inventory items required for a variant
         const variantInventory = await this.listByVariant(variant.id)
 
-        const salesChannelInventoryServiceTx =
-          this.salesChannelInventoryService_.withTransaction(
-            this.activeManager_
+        variant.inventory_quantity =
+          await this.getVariantQuantityFromVariantInventoryItems(
+            variantInventory,
+            salesChannelId
           )
-        // the inventory quantity of the variant should be equal to the inventory
-        // item with the smallest stock, adjusted for quantity required to fulfill
-        // the given variant
-        variant.inventory_quantity = Math.min(
-          ...(await Promise.all(
-            variantInventory.map(async (variantInventory) => {
-              // get the total available quantity for the given sales channel
-              // divided by the required quantity to account for how many of the
-              // variant we can fulfill at the current time. Take the minimum we
-              // can fulfill and set that as quantity
-              return (
-                // eslint-disable-next-line max-len
-                (await salesChannelInventoryServiceTx.retrieveAvailableItemQuantity(
-                  salesChannelId,
-                  variantInventory.inventory_item_id
-                )) / variantInventory.required_quantity
-              )
-            })
-          ))
-        )
 
         return variant
       })
@@ -662,6 +675,54 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
         return product
       })
+    )
+  }
+
+  /**
+   * Get the quantity of a variant from a list of variantInventoryItems
+   * The inventory quantity of the variant should be equal to the inventory
+   * item with the smallest stock, adjusted for quantity required to fulfill
+   * the given variant.
+   *
+   * @param variantInventoryItems List of inventoryItems for a given variant, These must all be for the same variant
+   * @param channelId Sales channel id to fetch availability for
+   * @returns The available quantity of the variant from the inventoryItems
+   */
+  async getVariantQuantityFromVariantInventoryItems(
+    variantInventoryItems: ProductVariantInventoryItem[],
+    channelId: string
+  ): Promise<number> {
+    const variantItemsAreMixed = variantInventoryItems.some(
+      (inventoryItem) =>
+        inventoryItem.variant_id !== variantInventoryItems[0].variant_id
+    )
+
+    if (variantInventoryItems.length && variantItemsAreMixed) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "All variant inventory items must belong to the same variant"
+      )
+    }
+
+    const salesChannelInventoryServiceTx =
+      this.salesChannelInventoryService_.withTransaction(this.activeManager_)
+
+    return Math.min(
+      ...(await Promise.all(
+        variantInventoryItems.map(async (variantInventory) => {
+          // get the total available quantity for the given sales channel
+          // divided by the required quantity to account for how many of the
+          // variant we can fulfill at the current time. Take the minimum we
+          // can fulfill and set that as quantity
+          return (
+            // eslint-disable-next-line max-len
+            (await salesChannelInventoryServiceTx.retrieveAvailableItemQuantity(
+              channelId,
+              variantInventory.inventory_item_id
+            )) / variantInventory.required_quantity
+          )
+        })
+      ))
     )
   }
 }

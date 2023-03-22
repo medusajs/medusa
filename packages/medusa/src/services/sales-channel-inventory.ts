@@ -1,18 +1,20 @@
 import { EntityManager } from "typeorm"
 
-import { EventBusService, SalesChannelLocationService } from "./"
 import { IInventoryService, TransactionBaseService } from "../interfaces"
+
+import { EventBusTypes } from "@medusajs/types"
+import { SalesChannelLocationService } from "./"
 
 type InjectedDependencies = {
   inventoryService: IInventoryService
   salesChannelLocationService: SalesChannelLocationService
-  eventBusService: EventBusService
+  eventBusService: EventBusTypes.IEventBusService
   manager: EntityManager
 }
 
 class SalesChannelInventoryService extends TransactionBaseService {
   protected readonly salesChannelLocationService_: SalesChannelLocationService
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
   protected readonly inventoryService_: IInventoryService
 
   constructor({
@@ -42,9 +44,10 @@ class SalesChannelInventoryService extends TransactionBaseService {
       .withTransaction(this.activeManager_)
       .listLocationIds(salesChannelId)
 
-    return await this.inventoryService_
-      .withTransaction(this.activeManager_)
-      .retrieveAvailableQuantity(inventoryItemId, locationIds)
+    return await this.inventoryService_.retrieveAvailableQuantity(
+      inventoryItemId,
+      locationIds
+    )
   }
 }
 

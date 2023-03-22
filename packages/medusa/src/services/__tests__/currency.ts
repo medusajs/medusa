@@ -1,36 +1,35 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { EventBusService } from "../index"
-import { Currency } from "../../models"
-import CurrencyService from "../currency"
-import { FlagRouter } from "../../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import { Currency } from "../../models"
+import { FlagRouter } from "../../utils/flag-router"
+import CurrencyService from "../currency"
+import EventBusService from "../event-bus"
 
 const currencyCode = IdMap.getId("currency-1")
 const eventBusServiceMock = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 } as unknown as EventBusService
 const currencyRepositoryMock = MockRepository({
   findOne: jest.fn().mockImplementation(() => {
     return {
-      code: currencyCode
+      code: currencyCode,
     }
   }),
   save: jest.fn().mockImplementation((data) => {
     return Object.assign(new Currency(), data)
-  })
+  }),
 })
 
-
-describe('CurrencyService', () => {
+describe("CurrencyService", () => {
   const currencyService = new CurrencyService({
     manager: MockManager,
     currencyRepository: currencyRepositoryMock,
     eventBusService: eventBusServiceMock,
     featureFlagRouter: new FlagRouter({
-      [TaxInclusivePricingFeatureFlag.key]: true
+      [TaxInclusivePricingFeatureFlag.key]: true,
     }),
   })
 

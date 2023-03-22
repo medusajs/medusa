@@ -9,6 +9,7 @@ import {
 } from "class-validator"
 import { Type } from "class-transformer"
 import {
+  PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
@@ -92,7 +93,7 @@ import { createVariantTransaction } from "./transaction/create-product-variant"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -146,10 +147,14 @@ export default async (req, res) => {
   })
 
   const productService: ProductService = req.scope.resolve("productService")
-  const product = await productService.retrieve(id, {
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }

@@ -1,11 +1,11 @@
 import "reflect-metadata"
-import { RequestHandler, Router } from "express"
+import { Router } from "express"
 
 import { Cart, Order, Swap } from "../../../../"
 import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
@@ -33,7 +33,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(FindParams, {
+    transformStoreQuery(FindParams, {
       defaultRelations: defaultStoreCartRelations,
       defaultFields: defaultStoreCartFields,
       isList: false,
@@ -154,6 +154,61 @@ export const defaultStoreCartRelations = [
 /**
  * @schema StoreCartsRes
  * type: object
+ * x-expanded-relations:
+ *   field: cart
+ *   relations:
+ *     - billing_address
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.variant
+ *     - payment
+ *     - payment_sessions
+ *     - region
+ *     - region.countries
+ *     - region.payment_providers
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *      - items
+ *      - items.variant
+ *      - items.variant.product
+ *      - items.tax_lines
+ *      - items.adjustments
+ *      - gift_cards
+ *      - discounts
+ *      - discounts.rule
+ *      - shipping_methods
+ *      - shipping_methods.tax_lines
+ *      - shipping_address
+ *      - region
+ *      - region.tax_rates
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - item_tax_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_tax_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
  * required:
  *   - cart
  * properties:

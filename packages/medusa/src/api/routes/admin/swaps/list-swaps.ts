@@ -38,7 +38,7 @@ import { Swap } from "../../../../models"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK

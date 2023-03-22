@@ -34,7 +34,7 @@ import { Selector } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

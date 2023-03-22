@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm"
 import { FindConfig } from "../../types/common"
 
 import {
@@ -16,8 +15,6 @@ import {
 } from "../../types/inventory"
 
 export interface IInventoryService {
-  withTransaction(transactionManager?: EntityManager): this
-
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>
@@ -42,6 +39,8 @@ export interface IInventoryService {
     inventoryItemId: string,
     locationId: string
   ): Promise<InventoryLevelDTO>
+
+  retrieveReservationItem(reservationId: string): Promise<ReservationItemDTO>
 
   createReservationItem(
     input: CreateReservationItemInput
@@ -73,9 +72,13 @@ export interface IInventoryService {
 
   deleteReservationItemsByLineItem(lineItemId: string): Promise<void>
 
-  deleteReservationItem(reservationItemId: string): Promise<void>
+  deleteReservationItem(reservationItemId: string | string[]): Promise<void>
 
   deleteInventoryItem(inventoryItemId: string): Promise<void>
+
+  deleteInventoryItemLevelByLocationId(locationId: string): Promise<void>
+
+  deleteReservationItemByLocationId(locationId: string): Promise<void>
 
   deleteInventoryLevel(
     inventoryLevelId: string,

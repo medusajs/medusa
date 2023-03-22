@@ -15,6 +15,7 @@ import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
  * @oas [post] /store/returns
@@ -61,7 +62,7 @@ import { validator } from "../../../../utils/validator"
  *           ]
  *       }'
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
@@ -172,7 +173,7 @@ export default async (req, res) => {
                         idempotency_key: idempotencyKey.idempotency_key,
                       },
                       {
-                        relations: ["items", "items.reason"],
+                        relations: defaultRelations,
                       }
                     )
                   if (!returnOrders.length) {

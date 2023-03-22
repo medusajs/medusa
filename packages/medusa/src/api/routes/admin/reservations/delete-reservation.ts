@@ -31,7 +31,7 @@ import { IInventoryService } from "../../../../interfaces"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK
@@ -54,12 +54,11 @@ import { IInventoryService } from "../../../../interfaces"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const inventoryService: IInventoryService = req.resolve("inventoryService")
-  const manager: EntityManager = req.resolve("manager")
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
-  await manager.transaction(async (manager) => {
-    await inventoryService.withTransaction(manager).deleteReservationItem(id)
-  })
+  await inventoryService.deleteReservationItem(id)
 
   res.json({
     id,

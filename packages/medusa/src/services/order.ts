@@ -8,7 +8,7 @@ import {
   Not,
   Raw,
 } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IInventoryService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -25,14 +25,14 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink,
+  TrackingLink
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType,
+  FulFillmentItemType
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -50,7 +50,6 @@ import {
   CustomerService,
   DiscountService,
   DraftOrderService,
-  EventBusService,
   FulfillmentProviderService,
   FulfillmentService,
   GiftCardService,
@@ -62,8 +61,9 @@ import {
   ShippingOptionService,
   ShippingProfileService,
   TaxProviderService,
-  TotalsService,
+  TotalsService
 } from "."
+import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -86,6 +86,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
+  inventoryService: IInventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
   productVariantInventoryService: ProductVariantInventoryService
@@ -128,6 +129,7 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
+  protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
@@ -578,10 +580,12 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      await this.eventBus_.emit(OrderService.Events.COMPLETED, {
-        id: orderId,
-        no_notification: order.no_notification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.COMPLETED, {
+          id: orderId,
+          no_notification: order.no_notification,
+        })
 
       order.status = OrderStatus.COMPLETED
 
@@ -1408,9 +1412,7 @@ class OrderService extends TransactionBaseService {
             metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
-          },
-          {
-            locationId: location_id,
+            location_id: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
@@ -1453,14 +1455,15 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const eventBusTx = this.eventBus_.withTransaction(manager)
-      for (const fulfillment of fulfillments) {
-        await eventBusTx.emit(OrderService.Events.FULFILLMENT_CREATED, {
+      const eventsToEmit = fulfillments.map((fulfillment) => ({
+        eventName: OrderService.Events.FULFILLMENT_CREATED,
+        data: {
           id: orderId,
           fulfillment_id: fulfillment.id,
           no_notification: evaluatedNoNotification,
-        })
-      }
+        },
+      }))
+      await this.eventBus_.withTransaction(manager).emit(eventsToEmit)
 
       return result
     })
@@ -1617,11 +1620,13 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      await this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-        id: result.id,
-        refund_id: refund.id,
-        no_notification: evaluatedNoNotification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.REFUND_CREATED, {
+          id: result.id,
+          refund_id: refund.id,
+          no_notification: evaluatedNoNotification,
+        })
       return result
     })
   }

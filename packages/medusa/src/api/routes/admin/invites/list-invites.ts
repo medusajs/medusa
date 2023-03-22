@@ -28,7 +28,7 @@ import InviteService from "../../../../services/invite"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Invites
  * responses:
  *   200:
  *     description: OK

@@ -107,7 +107,7 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK

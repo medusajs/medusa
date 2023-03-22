@@ -101,7 +101,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/product-tags'
  * tags:
- *   - Product Tag
+ *   - Product Tags
  * responses:
  *  "200":
  *    description: OK

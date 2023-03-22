@@ -5,7 +5,8 @@ import {
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
 import { FlagRouter } from "../../../../utils/flag-router"
-import { ModulesHelper } from "../../../../utils/module-helper"
+import { ModulesHelper } from "@medusajs/modules-sdk"
+import { defaultRelationsExtended } from "."
 
 /**
  * @oas [get] /admin/store
@@ -42,7 +43,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminStoresRes"
+ *           $ref: "#/components/schemas/AdminExtendedStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -68,7 +69,7 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
 
-  const relations = ["currencies", "default_currency"]
+  const relations = [...defaultRelationsExtended]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
     relations.push("default_sales_channel")
   }

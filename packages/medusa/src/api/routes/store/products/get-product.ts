@@ -1,5 +1,4 @@
 import { IsOptional, IsString } from "class-validator"
-import { defaultStoreProductsRelations } from "."
 import {
   CartService,
   PricingService,
@@ -50,7 +49,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/products/{id}'
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

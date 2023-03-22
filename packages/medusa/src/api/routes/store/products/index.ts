@@ -1,25 +1,30 @@
-import { RequestHandler, Router } from "express"
+import { Router } from "express"
 import "reflect-metadata"
 
 import { Product } from "../../../.."
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { PaginatedResponse } from "../../../../types/common"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { StoreGetProductsParams } from "./list-products"
 import { StoreGetProductsProductParams } from "./get-product"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
+  if (featureFlagRouter.isFeatureEnabled("product_categories")) {
+    allowedStoreProductsRelations.push("categories")
+  }
+
   app.use("/products", extendRequestParams, validateSalesChannelParam, route)
 
   route.use("/:id", validateProductSalesChannelAssociation)
 
   route.get(
     "/",
-    transformQuery(StoreGetProductsParams, {
+    transformStoreQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
@@ -31,7 +36,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetProductsProductParams, {
+    transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
@@ -105,6 +110,18 @@ export * from "./search"
 /**
  * @schema StoreProductsRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - options.values
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - product
  * properties:
@@ -134,6 +151,18 @@ export type StorePostSearchRes = {
 /**
  * @schema StoreProductsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - options.values
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - products
  *   - count

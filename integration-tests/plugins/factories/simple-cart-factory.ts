@@ -23,6 +23,7 @@ export type CartFactoryData = {
   line_items?: LineItemFactoryData[]
   shipping_address?: AddressFactoryData
   shipping_methods?: ShippingMethodFactoryData[]
+  sales_channel_id?: string
 }
 
 export const simpleCartFactory = async (
@@ -52,6 +53,7 @@ export const simpleCartFactory = async (
       typeof data.email !== "undefined" ? data.email : faker.internet.email(),
     region_id: regionId,
     shipping_address_id: address.id,
+    sales_channel_id: data.sales_channel_id || null,
   })
 
   const cart = await manager.save(toSave)

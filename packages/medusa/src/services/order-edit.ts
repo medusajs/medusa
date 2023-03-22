@@ -22,8 +22,8 @@ import {
   CreateOrderEditInput,
 } from "../types/order-edit"
 import { buildQuery, isString } from "../utils"
+import EventBusService from "./event-bus"
 import {
-  EventBusService,
   LineItemAdjustmentService,
   LineItemService,
   NewTotalsService,

@@ -28,7 +28,7 @@ import { ProductService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Tag
+ *   - Products
  * responses:
  *   200:
  *     description: OK

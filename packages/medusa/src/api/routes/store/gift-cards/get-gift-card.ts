@@ -26,7 +26,7 @@ import GiftCardService from "../../../../services/gift-card"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK

@@ -5,7 +5,7 @@ import {
   isPaymentProcessor,
   isPaymentService,
 } from "../../interfaces"
-import { aliasTo, asFunction } from "awilix"
+import { aliasTo, asFunction, Lifetime, LifetimeType } from "awilix"
 
 type Context = {
   container: MedusaContainer
@@ -14,7 +14,9 @@ type Context = {
 }
 
 export function registerPaymentServiceFromClass(
-  klass: ClassConstructor<AbstractPaymentService>,
+  klass: ClassConstructor<AbstractPaymentService> & {
+    LIFE_TIME?: LifetimeType
+  },
   context: Context
 ): void {
   if (!isPaymentService(klass.prototype)) {
@@ -25,12 +27,17 @@ export function registerPaymentServiceFromClass(
 
   container.registerAdd(
     "paymentProviders",
-    asFunction((cradle) => new klass(cradle, pluginDetails.options))
+    asFunction((cradle) => new klass(cradle, pluginDetails.options), {
+      lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+    })
   )
 
   container.register({
     [registrationName]: asFunction(
-      (cradle) => new klass(cradle, pluginDetails.options)
+      (cradle) => new klass(cradle, pluginDetails.options),
+      {
+        lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+      }
     ),
     [`pp_${(klass as unknown as typeof AbstractPaymentService).identifier}`]:
       aliasTo(registrationName),
@@ -38,7 +45,9 @@ export function registerPaymentServiceFromClass(
 }
 
 export function registerPaymentProcessorFromClass(
-  klass: ClassConstructor<AbstractPaymentProcessor>,
+  klass: ClassConstructor<AbstractPaymentProcessor> & {
+    LIFE_TIME?: LifetimeType
+  },
   context: Context
 ): void {
   if (!isPaymentProcessor(klass.prototype)) {
@@ -49,12 +58,17 @@ export function registerPaymentProcessorFromClass(
 
   container.registerAdd(
     "paymentProviders",
-    asFunction((cradle) => new klass(cradle, pluginDetails.options))
+    asFunction((cradle) => new klass(cradle, pluginDetails.options), {
+      lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+    })
   )
 
   container.register({
     [registrationName]: asFunction(
-      (cradle) => new klass(cradle, pluginDetails.options)
+      (cradle) => new klass(cradle, pluginDetails.options),
+      {
+        lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+      }
     ),
     [`pp_${(klass as unknown as typeof AbstractPaymentProcessor).identifier}`]:
       aliasTo(registrationName),

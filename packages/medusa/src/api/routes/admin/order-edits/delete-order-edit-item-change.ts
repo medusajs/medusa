@@ -32,7 +32,7 @@ import { OrderEditService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

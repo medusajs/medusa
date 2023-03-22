@@ -87,7 +87,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -181,12 +181,12 @@ enum Status {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   shipping_address:
  *     description: "The Address to be used for shipping."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   items:
  *     description: The Line Items that have been received.

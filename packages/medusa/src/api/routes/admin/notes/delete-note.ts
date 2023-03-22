@@ -31,7 +31,7 @@ import NoteService from "../../../../services/note"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Note
+ *   - Notes
  * responses:
  *   200:
  *     description: OK

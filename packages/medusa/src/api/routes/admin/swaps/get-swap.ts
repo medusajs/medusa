@@ -32,7 +32,7 @@ import { SwapService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK

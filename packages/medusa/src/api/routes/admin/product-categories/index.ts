@@ -144,6 +144,7 @@ export const defaultProductCategoryFields = [
   "handle",
   "is_active",
   "is_internal",
+  "rank",
   "parent_category_id",
   "created_at",
   "updated_at",
@@ -152,6 +153,11 @@ export const defaultProductCategoryFields = [
 /**
  * @schema AdminProductCategoriesCategoryRes
  * type: object
+ * x-expanded-relations:
+ *   field: product_category
+ *   relations:
+ *     - category_children
+ *     - parent_category
  * required:
  *   - product_category
  * properties:
@@ -187,6 +193,11 @@ export type AdminProductCategoriesCategoryDeleteRes = DeleteResponse
 /**
  * @schema AdminProductCategoriesListRes
  * type: object
+ * x-expanded-relations:
+ *   field: product_categories
+ *   relations:
+ *     - category_children
+ *     - parent_category
  * required:
  *   - product_categories
  *   - count

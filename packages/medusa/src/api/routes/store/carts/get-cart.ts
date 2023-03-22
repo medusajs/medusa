@@ -25,7 +25,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/carts/{id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

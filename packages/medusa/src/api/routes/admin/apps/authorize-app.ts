@@ -32,7 +32,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - App
+ *   - Apps
  * responses:
  *  "200":
  *    description: OK

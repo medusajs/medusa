@@ -45,7 +45,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
@@ -100,7 +100,7 @@ export default async (req, res) => {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *         description: The full billing address object
  *       - type: string
  *         description: The ID of an existing billing address

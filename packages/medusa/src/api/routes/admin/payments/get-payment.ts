@@ -32,7 +32,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Payment
+ *   - Payments
  * responses:
  *   200:
  *     description: OK

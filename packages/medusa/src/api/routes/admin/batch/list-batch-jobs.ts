@@ -233,7 +233,7 @@ import { isDefined } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK

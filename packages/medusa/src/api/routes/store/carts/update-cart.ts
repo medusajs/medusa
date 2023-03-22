@@ -50,7 +50,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           "email": "user@example.com"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -136,14 +136,14 @@ class Discount {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/Address"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *         description: A full billing address object.
  *       - type: string
  *         description: The billing address ID
  *   shipping_address:
  *     description: "The Address to be used for shipping."
  *     anyOf:
- *       - $ref: "#/components/schemas/Address"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *         description: A full shipping address object.
  *       - type: string
  *         description: The shipping address ID
