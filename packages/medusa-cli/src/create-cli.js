@@ -397,6 +397,12 @@ module.exports = (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
+      if (process.env.NODE_ENV !== "production") {
+        console.log("--------------- ERROR ---------------------")
+        console.log(err)
+        console.log("-------------------------------------------")
+      }
+
       cli.showHelp()
       reporter.info(suggestion)
       reporter.info(msg)
