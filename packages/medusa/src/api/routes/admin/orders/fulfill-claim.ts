@@ -85,9 +85,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res
-    .status(200)
-    .json({ order: cleanResponseData(order, req.allowedProperties) })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 /**

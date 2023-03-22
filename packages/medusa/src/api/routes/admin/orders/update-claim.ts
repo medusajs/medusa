@@ -104,7 +104,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order: cleanResponseData(data, req.allowedProperties) })
+  res.json({ order: cleanResponseData(data, []) })
 }
 
 /**

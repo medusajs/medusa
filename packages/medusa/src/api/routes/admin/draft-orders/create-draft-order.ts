@@ -155,9 +155,7 @@ export default async (req, res) => {
       select: defaultAdminDraftOrdersCartFields,
     })
 
-  res
-    .status(200)
-    .json({ draft_order: cleanResponseData(draftOrder, req.allowedProperties) })
+  res.status(200).json({ draft_order: cleanResponseData(draftOrder, []) })
 }
 
 enum Status {

@@ -70,7 +70,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order: cleanResponseData(order, req.allowedProperties) })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export class AdminPostOrdersOrderCancel extends FindParams {}

@@ -216,7 +216,7 @@ export default async (req, res) => {
   }
 
   res.json({
-    orders: cleanResponseData(data, req.allowedProperties),
+    orders: cleanResponseData(data, []),
     count,
     offset: skip,
     limit: take,

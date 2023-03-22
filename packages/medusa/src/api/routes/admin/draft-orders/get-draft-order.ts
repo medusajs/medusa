@@ -79,6 +79,6 @@ export default async (req, res) => {
   })
 
   res.json({
-    draft_order: cleanResponseData(draftOrder, req.allowedProperties),
+    draft_order: cleanResponseData(draftOrder, []),
   })
 }

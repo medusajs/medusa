@@ -74,7 +74,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order: cleanResponseData(order, req.allowedProperties) })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 // eslint-disable-next-line max-len

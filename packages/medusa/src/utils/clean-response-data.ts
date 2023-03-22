@@ -5,7 +5,7 @@ import { omitDeep } from "./omit-deep"
 // We will be able to only compute the totals if one of the total fields is present
 // and therefore avoid totals computation if the user don't want them to appear in the response
 // and therefore the below const will be removed
-const EXCLUDED_FIELDS = [
+const INCLUDED_FIELDS = [
   "shipping_total",
   "discount_total",
   "tax_total",
@@ -23,7 +23,7 @@ const EXCLUDED_FIELDS = [
   "original_tax_total",
 ]
 
-const ALWAYS_REMOVE_FIELDS = ["raw_discount_total"]
+const EXCLUDED_FIELDS = ["raw_discount_total"]
 
 /**
  * Filter response data to contain props specified in the `allowedProperties`.
@@ -42,20 +42,18 @@ function cleanResponseData<T extends unknown | unknown[]>(
   let arrayData: Partial<T>[] = isDataArray ? data : [data]
 
   if (!fields.length) {
-    arrayData = arrayData.map((record) =>
-      omitDeep(record, ALWAYS_REMOVE_FIELDS)
-    )
+    arrayData = arrayData.map((record) => omitDeep(record, EXCLUDED_FIELDS))
     return (isDataArray ? arrayData : arrayData[0]) as T extends []
       ? Partial<T>[]
       : Partial<T>
   }
 
-  const fieldsSet = new Set([...fields, ...EXCLUDED_FIELDS])
+  const fieldsSet = new Set([...fields, ...INCLUDED_FIELDS])
 
   fields = [...fieldsSet]
 
   arrayData = arrayData.map((record) =>
-    pick(omitDeep(record, ALWAYS_REMOVE_FIELDS), fields)
+    pick(omitDeep(record, EXCLUDED_FIELDS), fields)
   )
 
   return (isDataArray ? arrayData : arrayData[0]) as T extends []

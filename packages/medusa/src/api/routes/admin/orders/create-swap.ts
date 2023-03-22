@@ -218,7 +218,7 @@ export default async (req, res) => {
                 return {
                   response_code: 200,
                   response_body: {
-                    order: cleanResponseData(order, req.allowedProperties),
+                    order: cleanResponseData(order, []),
                   },
                 }
               })

@@ -256,7 +256,7 @@ export default async (req, res) => {
                 return {
                   response_code: 200,
                   response_body: {
-                    order: cleanResponseData(order, req.allowedProperties),
+                    order,
                   },
                 }
               })
@@ -289,6 +289,13 @@ export default async (req, res) => {
 
   if (err) {
     throw err
+  }
+
+  if (idempotencyKey.response_body.order) {
+    idempotencyKey.response_body.order = cleanResponseData(
+      idempotencyKey.response_body.order,
+      []
+    )
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)

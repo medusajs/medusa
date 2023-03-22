@@ -123,9 +123,7 @@ export default async (req, res) => {
     return order
   })
 
-  res
-    .status(200)
-    .json({ order: cleanResponseData(order, req.allowedProperties) })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 export const reserveQuantityForDraftOrder = async (
