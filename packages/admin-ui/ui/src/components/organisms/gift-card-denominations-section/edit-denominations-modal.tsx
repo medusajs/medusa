@@ -70,7 +70,10 @@ const EditDenominationsModal = ({
     }
 
     data.denominations.currencyDenominations.forEach((currency) => {
-      if (currency.amount || data.denominations.useSameValue) {
+      if (
+        (currency.amount !== undefined && currency.amount !== null) ||
+        data.denominations.useSameValue
+      ) {
         payload.prices.push({
           amount: data.denominations.useSameValue
             ? data.denominations.defaultDenomination.amount

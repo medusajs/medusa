@@ -98,7 +98,10 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
     }
 
     data.denominations.currencyDenominations.forEach((currency) => {
-      if (currency.amount || data.denominations.useSameValue) {
+      if (
+        (currency.amount !== null && currency.amount !== undefined) ||
+        data.denominations.useSameValue
+      ) {
         payload.prices.push({
           amount: data.denominations.useSameValue
             ? data.denominations.defaultDenomination.amount
