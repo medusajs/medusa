@@ -5724,6 +5724,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": ^0.0.1
     "@medusajs/types": ^0.0.1
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     ioredis: ^5.3.1
     jest: ^25.5.4

@@ -14,7 +14,10 @@ packages/*
 !packages/event-bus-local
 !packages/medusa-plugin-meilisearch
 !packages/medusa-plugin-algolia
-
+!packages/inventory
+!packages/stock-location
+!packages/cache-redis
+!packages/cache-inmemory
 
 
 **/models/*

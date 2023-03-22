@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^0.0.1",
+    "awilix": "^8.0.0",
     "ioredis": "^5.3.1"
   }
 }
