@@ -49,13 +49,14 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         event.eventName
       )
 
+      this.logger_.info(
+        `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
+      )
+      
       if (eventListenersCount === 0) {
         continue
       }
 
-      this.logger_.info(
-        `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
-      )
 
       try {
         this.eventEmitter_.emit(event.eventName, event.data)
