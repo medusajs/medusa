@@ -46,10 +46,6 @@
       "destination": "/admin/quickstart"
     },
     {
-      "source": "/admin/quickstart",
-      "destination": "/admin/quickstart"
-    },
-    {
       "source": "/quickstart/starters/nextjs-medusa-starter",
       "destination": "/starters/nextjs-medusa-starter"
     },

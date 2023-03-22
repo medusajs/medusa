@@ -333,6 +333,7 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.update).toHaveBeenCalledWith(
         { id: IdMap.getId("ironman") },
         {
+          id: IdMap.getId("ironman"),
           title: "new title",
         }
       )
@@ -361,6 +362,7 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.update).toHaveBeenCalledWith(
         { id: IdMap.getId("ironman") },
         {
+          id: IdMap.getId("ironman"),
           title: "new title 2",
         }
       )
@@ -415,6 +417,7 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.update).toHaveBeenCalledWith(
         { id: IdMap.getId("ironman") },
         {
+          id: IdMap.getId("ironman"),
           title: "new title",
           metadata: {
             testing: "this",
@@ -444,6 +447,7 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.update).toHaveBeenCalledWith(
         { id: IdMap.getId("ironman") },
         {
+          id: IdMap.getId("ironman"),
           inventory_quantity: 98,
           title: "new title",
         }
