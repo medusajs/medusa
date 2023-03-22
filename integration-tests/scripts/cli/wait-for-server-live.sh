@@ -10,12 +10,12 @@ do
     --output /dev/null\
     http://localhost:9000/store/products)
 
-  echo $status_code
+echo $status_code
   if [[ "$status_code" -ne 000 ]] ; then
     echo "exiting"
     exit 0
   else
-    sleep 10
+    sleep 5
   fi
 done
 
