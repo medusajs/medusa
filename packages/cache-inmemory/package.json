@@ -30,9 +30,6 @@
     "test": "jest --passWithNoTests",
     "test:unit": "jest --passWithNoTests"
   },
-  "peerDependencies": {
-    "@medusajs/types": "^0.0.1"
-  },
   "dependencies": {
     "@medusajs/modules-sdk": "^0.0.1"
   }

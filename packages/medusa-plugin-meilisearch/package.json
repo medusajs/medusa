@@ -18,10 +18,6 @@
     "build": "tsc",
     "watch": "tsc --watch"
   },
-  "peerDependencies": {
-    "@medusajs/medusa": "^1.7.12",
-    "@medusajs/types": "^0.0.1"
-  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",

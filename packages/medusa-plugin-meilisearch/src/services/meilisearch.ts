@@ -1,4 +1,5 @@
-import { AbstractSearchService, indexTypes } from "@medusajs/utils"
+import { indexTypes } from "@medusajs/types"
+import { AbstractSearchService } from "@medusajs/utils"
 import { MeiliSearch, Settings } from "meilisearch"
 import {
   IndexSettings,

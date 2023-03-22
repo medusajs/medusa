@@ -5715,8 +5715,6 @@ __metadata:
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5731,8 +5729,6 @@ __metadata:
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5763,8 +5759,6 @@ __metadata:
     ts-jest: ^25.5.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -6009,8 +6003,6 @@ __metadata:
     ts-jest: ^25.5.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -28782,9 +28774,6 @@ __metadata:
     lodash: ^4.17.21
     meilisearch: ^0.31.1
     typescript: ^4.9.5
-  peerDependencies:
-    "@medusajs/medusa": ^1.7.12
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
