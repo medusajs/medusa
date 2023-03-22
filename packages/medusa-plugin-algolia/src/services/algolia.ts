@@ -1,24 +1,31 @@
-import algoliasearch from "algoliasearch"
-import { indexTypes } from "medusa-core-utils"
-import { SearchService } from "medusa-interfaces"
-import { transformProduct } from "../utils/transform-product"
+import { SearchTypes } from "@medusajs/types"
+import { SearchUtils } from "@medusajs/utils"
+import Algolia, { SearchClient } from "algoliasearch"
+import { AlgoliaPluginOptions, SearchOptions } from "../types"
+import { transformProduct } from "../utils/transformer"
 
-class AlgoliaService extends SearchService {
-  constructor(container, options) {
-    super()
+class AlgoliaService extends SearchUtils.AbstractSearchService {
+  isDefault = false
 
-    this.options_ = options
-    const { application_id, admin_api_key } = this.options_
+  protected readonly config_: AlgoliaPluginOptions
+  protected readonly client_: SearchClient
 
-    if (!application_id) {
+  constructor(_, options: AlgoliaPluginOptions) {
+    super(_, options)
+
+    this.config_ = options
+
+    const { applicationId, adminApiKey } = options
+
+    if (!applicationId) {
       throw new Error("Please provide a valid Application ID")
     }
 
-    if (!admin_api_key) {
+    if (!adminApiKey) {
       throw new Error("Please provide a valid Admin Api Key")
     }
 
-    this.client_ = algoliasearch(application_id, admin_api_key)
+    this.client_ = Algolia(applicationId, adminApiKey)
   }
 
   /**
@@ -27,7 +34,7 @@ class AlgoliaService extends SearchService {
    * @param {*} options - not required just to match the schema we are used it
    * @return {*}
    */
-  createIndex(indexName, options = {}) {
+  createIndex(indexName: string, options: Record<string, unknown> = {}) {
     return this.client_.initIndex(indexName)
   }
 
@@ -36,8 +43,9 @@ class AlgoliaService extends SearchService {
    * @param {string} indexName  - the index name.
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  async getIndex(indexName) {
-    let hits = []
+  async getIndex(indexName: string) {
+    let hits: Record<string, unknown>[] = []
+
     return await this.client_
       .initIndex(indexName)
       .browseObjects({
@@ -56,8 +64,12 @@ class AlgoliaService extends SearchService {
    * @param {*} type
    * @return {*}
    */
-  async addDocuments(indexName, documents, type) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents)
+  async addDocuments(indexName: string, documents: any, type: string) {
+    const transformedDocuments = await this.getTransformedDocuments(
+      type,
+      documents
+    )
+
     return await this.client_
       .initIndex(indexName)
       .saveObjects(transformedDocuments)
@@ -70,8 +82,11 @@ class AlgoliaService extends SearchService {
    * @param {Array.<Object>} type  - type of documents to be replaced (e.g: products, regions, orders, etc)
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  async replaceDocuments(indexName, documents, type) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents)
+  async replaceDocuments(indexName: string, documents: any, type: string) {
+    const transformedDocuments = await this.getTransformedDocuments(
+      type,
+      documents
+    )
     return await this.client_
       .initIndex(indexName)
       .replaceAllObjects(transformedDocuments)
@@ -80,11 +95,11 @@ class AlgoliaService extends SearchService {
   /**
    * Used to delete document
    * @param {string} indexName  - the index name
-   * @param {string} document_id  - the id of the document
+   * @param {string} documentId  - the id of the document
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  async deleteDocument(indexName, document_id) {
-    return await this.client_.initIndex(indexName).deleteObject(document_id)
+  async deleteDocument(indexName: string, documentId: string) {
+    return await this.client_.initIndex(indexName).deleteObject(documentId)
   }
 
   /**
@@ -92,7 +107,7 @@ class AlgoliaService extends SearchService {
    * @param {string} indexName  - the index name
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  async deleteAllDocuments(indexName) {
+  async deleteAllDocuments(indexName: string) {
     return await this.client_.initIndex(indexName).delete()
   }
 
@@ -105,9 +120,15 @@ class AlgoliaService extends SearchService {
    * - additionalOptions contain any provider specific options
    * @return {*} - returns response from search engine provider
    */
-  async search(indexName, query, options) {
+  async search(
+    indexName: string,
+    query: string,
+    options: SearchOptions & Record<string, unknown>
+  ) {
     const { paginationOptions, filter, additionalOptions } = options
-    if ("limit" in paginationOptions) {
+
+    // fit our pagination options to what Algolia expects
+    if ("limit" in paginationOptions && paginationOptions.limit != null) {
       paginationOptions["length"] = paginationOptions.limit
       delete paginationOptions.limit
     }
@@ -125,24 +146,31 @@ class AlgoliaService extends SearchService {
    * @param {object} settings  - settings object
    * @return {Promise<{object}>} - returns response from search engine provider
    */
-  async updateSettings(indexName, settings) {
-    return await this.client_.initIndex(indexName).setSettings(settings)
+  async updateSettings(
+    indexName: string,
+    settings: SearchTypes.IndexSettings & Record<string, unknown>
+  ) {
+    // backward compatibility
+    const indexSettings = settings.indexSettings ?? settings ?? {}
+
+    return await this.client_.initIndex(indexName).setSettings(indexSettings)
   }
 
-  getTransformedDocuments(type, documents) {
+  async getTransformedDocuments(type: string, documents: any[]) {
+    if (!documents?.length) {
+      return []
+    }
+
     switch (type) {
-      case indexTypes.products:
-        return this.transformProducts(documents)
+      case SearchTypes.indexTypes.PRODUCTS:
+        const productsTransformer =
+          this.config_.settings?.[SearchTypes.indexTypes.PRODUCTS]
+            ?.transformer ?? transformProduct
+
+        return documents.map(productsTransformer)
       default:
         return documents
     }
-  }
-
-  transformProducts(products) {
-    if (!products) {
-      return []
-    }
-    return products.map(transformProduct)
   }
 }
 

@@ -1,18 +1,8 @@
-import { Product } from "@medusajs/medusa"
-
-const variantKeys = [
-  "sku",
-  "title",
-  "upc",
-  "ean",
-  "mid_code",
-  "hs_code",
-  "options",
-]
+import { variantKeys } from "@medusajs/types"
 
 const prefix = `variant`
 
-export const transformProduct = (product: Product) => {
+export const transformProduct = (product: any) => {
   let transformedProduct = { ...product } as Record<string, unknown>
 
   const initialObj = variantKeys.reduce((obj, key) => {
@@ -42,10 +32,10 @@ export const transformProduct = (product: Product) => {
   transformedProduct.tags_value = product.tags
     ? product.tags.map((t) => t.value)
     : []
-  transformedProduct.categories = (product?.categories || []).map(c => c.name)
+  transformedProduct.categories = (product?.categories || []).map((c) => c.name)
 
   const prod = {
-    ...product,
+    ...transformedProduct,
     ...flattenedVariantFields,
   }
 

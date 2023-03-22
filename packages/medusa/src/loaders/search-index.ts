@@ -1,4 +1,4 @@
-import { AbstractSearchService } from "../interfaces"
+import { AbstractSearchService } from "@medusajs/utils"
 import { EventBusService } from "../services"
 import { Logger, MedusaContainer } from "../types/global"
 

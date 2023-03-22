@@ -12,6 +12,8 @@ packages/*
 !packages/medusa-payment-stripe
 !packages/event-bus-redis
 !packages/event-bus-local
+!packages/medusa-plugin-meilisearch
+!packages/medusa-plugin-algolia
 
 
 
