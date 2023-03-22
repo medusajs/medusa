@@ -253,18 +253,20 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   }
 
   protected async removeReservations(reservations) {
-    await Promise.all(
-      reservations.map(async ([reservations, error]) => {
-        if (reservations) {
-          return reservations.map(async (reservation) => {
-            return await this.inventoryService_.deleteReservationItem(
-              reservation.id
-            )
-          })
-        }
-        return Promise.resolve()
-      })
-    )
+    if (this.inventoryService_) {
+      await Promise.all(
+        reservations.map(async ([reservations]) => {
+          if (reservations) {
+            return reservations.map(async (reservation) => {
+              return await this.inventoryService_.deleteReservationItem(
+                reservation.id
+              )
+            })
+          }
+          return Promise.resolve()
+        })
+      )
+    }
   }
 
   protected async handlePaymentAuthorized(
