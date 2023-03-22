@@ -3,6 +3,7 @@ import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
+  ICacheService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
@@ -51,11 +52,13 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
     const cacheKey = this.getCacheKey(variant_id, context)
-    const cached = await this.cacheService_
-      .get<PriceSelectionResult>(cacheKey)
-      .catch(() => void 0)
-    if (cached) {
-      return cached
+    if (!context.ignore_cache) {
+      const cached = await this.cacheService_
+        .get<PriceSelectionResult>(cacheKey)
+        .catch(() => void 0)
+      if (cached) {
+        return cached
+      }
     }
 
     let result

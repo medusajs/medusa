@@ -134,7 +134,9 @@ export default async (req, res) => {
     ...validatedQueryParams,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setProductPrices([rawProduct], {
+    ignore_cache: true,
+  })
 
   res.json({ product })
 }

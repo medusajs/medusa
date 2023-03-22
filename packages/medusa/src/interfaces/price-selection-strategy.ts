@@ -57,6 +57,7 @@ export type PriceSelectionContext = {
   currency_code?: string
   include_discount_prices?: boolean
   tax_rates?: TaxServiceRate[]
+  ignore_cache?: boolean
 }
 
 enum DefaultPriceType {
