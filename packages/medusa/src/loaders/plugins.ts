@@ -1,3 +1,4 @@
+import { SearchUtils } from "@medusajs/utils"
 import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
@@ -20,7 +21,6 @@ import {
   isFileService,
   isNotificationService,
   isPriceSelectionStrategy,
-  isSearchService,
   isTaxCalculationStrategy,
 } from "../interfaces"
 import { MiddlewareService } from "../services"
@@ -443,7 +443,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (isSearchService(loaded.prototype)) {
+      } else if (SearchUtils.isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({

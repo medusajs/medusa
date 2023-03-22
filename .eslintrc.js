@@ -85,6 +85,8 @@ module.exports = {
           "./packages/medusa-payment-stripe/tsconfig.spec.json",
           "./packages/event-bus-local/tsconfig.spec.json",
           "./packages/event-bus-redis/tsconfig.spec.json",
+          "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
+          "./packages/medusa-plugin-algolia/tsconfig.spec.json",
           "./packages/admin-ui/tsconfig.json",
         ],
       },

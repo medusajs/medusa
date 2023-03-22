@@ -19,6 +19,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@medusajs/utils": "^0.0.1",
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
     "meilisearch": "^0.31.1"
