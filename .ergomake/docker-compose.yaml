@@ -12,12 +12,22 @@ services:
     image: redis
     ports:
       - "6379:6379"
-  medusa:
+  backend:
     build:
       context: ../
-      dockerfile: .ergomake/Dockerfile
+      dockerfile: .ergomake/backend.Dockerfile
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres/medusa
       REDIS_URL: redis://redis:6379
     ports:
       - "9000:9000"
+  storefront:
+    build:
+      context: ../
+      dockerfile: .ergomake/storefront.Dockerfile
+      args:
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://backend:9000
+    ports:
+      - "8000:8000"
+    labels:
+      dev.ergomake.preview.replace-arg.NEXT_PUBLIC_MEDUSA_BACKEND_URL: "https://{{ ergomake.previewUrls.backend }}"
