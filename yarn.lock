@@ -6048,7 +6048,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@*, @medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -23468,7 +23468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.3.1":
+"ioredis@npm:^5.2.2, ioredis@npm:^5.2.5, ioredis@npm:^5.3.1":
   version: 5.3.1
   resolution: "ioredis@npm:5.3.1"
   dependencies:
