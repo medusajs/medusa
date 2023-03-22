@@ -6038,7 +6038,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -6050,7 +6050,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@*, @medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -28608,8 +28608,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia"
   dependencies:
-    "@medusajs/types": "*"
-    "@medusajs/utils": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     algoliasearch: ^4.15.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
