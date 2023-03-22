@@ -589,9 +589,9 @@ async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
       try {
         await loaded()
       } catch (err) {
-        throw new Error(`A setup function from ${pluginDetails.name} failed`, {
-          cause: err,
-        })
+        throw new Error(
+          `A setup function from ${pluginDetails.name} failed. ${err}`
+        )
       }
     })
   )
