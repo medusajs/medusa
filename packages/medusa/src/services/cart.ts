@@ -313,6 +313,7 @@ class CartService extends TransactionBaseService {
 
         const rawCart: DeepPartial<Cart> = {
           context: data.context ?? {},
+          metadata: data.metadata ?? {}
         }
 
         if (
