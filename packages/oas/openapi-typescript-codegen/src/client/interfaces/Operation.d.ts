@@ -16,4 +16,5 @@ export interface Operation extends OperationParameters {
   results: OperationResponse[]
   responseHeader: string | null
   codegen: OperationCodegen
+  security: OperationSecurity[]
 }
