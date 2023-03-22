@@ -48,7 +48,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
- *               format: stock_location
+ *               default: stock_location
  *             deleted:
  *               type: boolean
  *               description: Whether or not the Stock Location was deleted.
