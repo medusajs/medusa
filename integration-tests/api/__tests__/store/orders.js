@@ -167,6 +167,16 @@ describe("/store/carts", () => {
         "status",
         "email",
 
+        // relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+
         // totals
         "shipping_total",
         "discount_total",
@@ -178,16 +188,6 @@ describe("/store/carts", () => {
         "refundable_amount",
         "gift_card_total",
         "gift_card_tax_total",
-
-        // relations
-        "shipping_address",
-        "fulfillments",
-        "items",
-        "shipping_methods",
-        "discounts",
-        "customer",
-        "payments",
-        "region",
       ])
     })
 
@@ -200,6 +200,16 @@ describe("/store/carts", () => {
         // fields
         "status",
 
+        // default relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+
         // totals
         "shipping_total",
         "discount_total",
@@ -211,16 +221,6 @@ describe("/store/carts", () => {
         "refundable_amount",
         "gift_card_total",
         "gift_card_tax_total",
-
-        // default relations
-        "shipping_address",
-        "fulfillments",
-        "items",
-        "shipping_methods",
-        "discounts",
-        "customer",
-        "payments",
-        "region",
       ])
     })
 
@@ -235,6 +235,9 @@ describe("/store/carts", () => {
         // fields
         "status",
 
+        // selected relations
+        "billing_address",
+
         // totals
         "shipping_total",
         "discount_total",
@@ -246,9 +249,6 @@ describe("/store/carts", () => {
         "refundable_amount",
         "gift_card_total",
         "gift_card_tax_total",
-
-        // selected relations
-        "billing_address",
       ])
     })
 
