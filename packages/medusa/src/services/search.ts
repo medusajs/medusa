@@ -1,4 +1,4 @@
-import { SearchService } from "medusa-interfaces"
+import { AbstractSearchService } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { Logger } from "../types/global"
 
@@ -7,7 +7,7 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-export default class DefaultSearchService extends SearchService {
+export default class DefaultSearchService extends AbstractSearchService {
   isDefault = true
 
   protected readonly logger_: Logger
