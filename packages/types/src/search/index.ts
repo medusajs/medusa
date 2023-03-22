@@ -1,6 +1,5 @@
 export * from "./index-types"
 export * from "./interface"
-export * from "./search-service"
 export * from "./settings"
 export * from "./variant-keys"
 
