@@ -1,12 +1,12 @@
-import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
 import AlgoliaService from "../services/algolia"
 import { AlgoliaPluginOptions } from "../types"
 
 export default async (
-  container: ModulesSdkTypes.MedusaContainer,
+  container: MedusaContainer,
   options: AlgoliaPluginOptions
 ) => {
-  const logger: ModulesSdkTypes.Logger = container.resolve("logger")
+  const logger: Logger = container.resolve("logger")
   try {
     const algoliaService: AlgoliaService = container.resolve("algoliaService")
 

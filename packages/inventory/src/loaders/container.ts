@@ -1,4 +1,4 @@
-import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 
 import {
   InventoryItemService,
@@ -9,8 +9,8 @@ import {
 import { asClass } from "awilix"
 
 export default async (
-  { container }: ModulesSdkTypes.LoaderOptions,
-  moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
+  { container }: LoaderOptions,
+  moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
   container.register({
     inventoryItemService: asClass(InventoryItemService).singleton(),

@@ -1,4 +1,4 @@
-import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
@@ -49,7 +49,7 @@ export default class InventoryService implements IInventoryService {
       reservationItemService,
     }: InjectedDependencies,
     options?: unknown,
-    moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
+    moduleDeclaration?: InternalModuleDeclaration
   ) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService

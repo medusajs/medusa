@@ -1,4 +1,4 @@
-import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   CreateStockLocationInput,
   FilterableStockLocationProps,
@@ -41,7 +41,7 @@ export default class StockLocationService {
   constructor(
     { eventBusService, manager }: InjectedDependencies,
     options?: unknown,
-    moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
+    moduleDeclaration?: InternalModuleDeclaration
   ) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService

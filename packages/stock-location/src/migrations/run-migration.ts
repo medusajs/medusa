@@ -1,4 +1,4 @@
-import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 import { DataSource, DataSourceOptions } from "typeorm"
 import { StockLocationServiceInitializeOptions } from "../types"
 
@@ -25,8 +25,8 @@ function getDataSource(
 }
 
 export async function runMigrations(
-  { options, logger }: Omit<ModulesSdkTypes.LoaderOptions, "container">,
-  moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
+  { options, logger }: Omit<LoaderOptions, "container">,
+  moduleDeclaration?: InternalModuleDeclaration
 ) {
   const dbData =
     options?.database as StockLocationServiceInitializeOptions["database"]
@@ -45,8 +45,8 @@ export async function runMigrations(
 }
 
 export async function revertMigration(
-  { options, logger }: Omit<ModulesSdkTypes.LoaderOptions, "container">,
-  moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
+  { options, logger }: Omit<LoaderOptions, "container">,
+  moduleDeclaration?: InternalModuleDeclaration
 ) {
   const dbData =
     options?.database as StockLocationServiceInitializeOptions["database"]

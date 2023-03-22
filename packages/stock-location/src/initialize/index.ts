@@ -1,11 +1,13 @@
-import { MedusaModule, ModulesSdkTypes } from "@medusajs/modules-sdk"
+import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
+  MedusaModule,
+} from "@medusajs/modules-sdk"
 import { IEventBusService, IStockLocationService } from "@medusajs/types"
 import { StockLocationServiceInitializeOptions } from "../types"
 
 export const initialize = async (
-  options?:
-    | StockLocationServiceInitializeOptions
-    | ModulesSdkTypes.ExternalModuleDeclaration,
+  options?: StockLocationServiceInitializeOptions | ExternalModuleDeclaration,
   injectedDependencies?: {
     eventBusService: IEventBusService
   }
@@ -14,9 +16,7 @@ export const initialize = async (
   const loaded = await MedusaModule.bootstrap(
     serviceKey,
     "@medusajs/stock-location",
-    options as
-      | ModulesSdkTypes.InternalModuleDeclaration
-      | ModulesSdkTypes.ExternalModuleDeclaration,
+    options as InternalModuleDeclaration | ExternalModuleDeclaration,
     injectedDependencies
   )
 

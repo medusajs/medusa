@@ -1,4 +1,4 @@
-import { ModulesSdkTypes } from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration, Logger } from "@medusajs/modules-sdk"
 import { ConfigModule, EmitData } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
@@ -6,7 +6,7 @@ import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 
 type InjectedDependencies = {
-  logger: ModulesSdkTypes.Logger
+  logger: Logger
   configModule: ConfigModule
   eventBusRedisConnection: Redis
 }
@@ -18,17 +18,17 @@ type InjectedDependencies = {
 // eslint-disable-next-line max-len
 export default class RedisEventBusService extends AbstractEventBusModuleService {
   protected readonly config_: ConfigModule
-  protected readonly logger_: ModulesSdkTypes.Logger
+  protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   // eslint-disable-next-line max-len
-  protected readonly moduleDeclaration_: ModulesSdkTypes.InternalModuleDeclaration
+  protected readonly moduleDeclaration_: InternalModuleDeclaration
 
   protected queue_: Queue
 
   constructor(
     { configModule, logger, eventBusRedisConnection }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
-    moduleDeclaration: ModulesSdkTypes.InternalModuleDeclaration
+    moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
