@@ -300,5 +300,5 @@ Once you click Save, the environment variables will be saved and a redeployment 
 
 ## See Also
 
-- [Deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
+- [Deploy the Medusa Admin](../admin/index.mdx).
 - [Deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).

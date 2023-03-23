@@ -219,10 +219,13 @@ module.exports = {
           items: [
             {
               type: 'doc',
-              id: 'deployments/admin/deploying-on-netlify',
-              label: 'Deploy on Netlify',
+              id: 'deployments/admin/deploying-on-vercel',
+              label: 'Deploy on Vercel',
               customProps: {
-                image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png'
+                themedImage: {
+                  light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574115/Medusa%20Docs/Other/vercel-icon-dark_llkb7l.png',
+                  dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574132/Medusa%20Docs/Other/vercel-icon-light_obvtno.png'
+                }
               }
             },
           ]
