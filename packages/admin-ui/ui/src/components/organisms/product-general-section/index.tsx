@@ -145,7 +145,11 @@ const ProductDetails = ({ product }: Props) => {
         title="Metadata"
         value={
           Object.entries(product.metadata || {}).length > 0
-            ? `${Object.entries(product.metadata || {}).length} keys`
+            ? `${Object.entries(product.metadata || {}).length} ${
+                Object.keys(product.metadata || {}).length === 1
+                  ? "item"
+                  : "items"
+              }`
             : undefined
         }
       />

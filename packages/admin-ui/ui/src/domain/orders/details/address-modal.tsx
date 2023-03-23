@@ -6,6 +6,11 @@ import {
 } from "@medusajs/medusa"
 import { MutateOptions } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
+import {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../../components/forms/general/metadata-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
 import AddressForm, {
@@ -13,6 +18,7 @@ import AddressForm, {
   AddressType,
 } from "../../../components/templates/address-form"
 import useNotification from "../../../hooks/use-notification"
+import { Option } from "../../../types/shared"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
@@ -22,6 +28,20 @@ type AddressPayloadType =
   | Partial<AdminPostOrdersOrderReq["shipping_address"]>
   | AdminPostDraftOrdersReq["shipping_address"]
   | Partial<AdminPostDraftOrdersReq["shipping_address"]>
+
+type AddressFormType = {
+  first_name: string
+  last_name: string
+  company: string | null
+  phone: string | null
+  address_1: string
+  address_2: string | null
+  city: string
+  province: string | null
+  postal_code: string
+  country_code: Option
+  metadata: MetadataFormType
+}
 
 type TVariables = {
   shipping_address?: AddressPayloadType
@@ -64,18 +84,24 @@ const AddressModal = ({
 
   const handleUpdateAddress = (data: AddressPayload) => {
     const updateObj: TVariables = {}
+    const { country_code, metadata: meta, ...rest } = data
+
+    const countryCode = country_code.value
+    const metadata = getSubmittableMetadata(meta)
 
     if (type === "shipping") {
       // @ts-ignore
       updateObj["shipping_address"] = {
-        ...data,
-        country_code: data.country_code.value,
+        ...rest,
+        country_code: countryCode,
+        metadata: metadata,
       }
     } else {
       // @ts-ignore
       updateObj["billing_address"] = {
-        ...data,
-        country_code: data.country_code.value,
+        ...rest,
+        country_code: countryCode,
+        metadata: metadata,
       }
     }
 
@@ -105,25 +131,23 @@ const AddressModal = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-end">
+            <div className="gap-x-xsmall flex w-full justify-end">
               <Button
-                variant="ghost"
-                className="text-small mr-2 w-32 justify-center"
-                size="large"
+                variant="secondary"
+                size="small"
                 onClick={handleClose}
                 type="button"
               >
                 Cancel
               </Button>
               <Button
-                size="large"
-                className="text-small w-32 justify-center"
+                size="small"
                 variant="primary"
                 type="submit"
                 loading={submitting}
                 disabled={submitting || !isDirty}
               >
-                Save
+                Save and close
               </Button>
             </div>
           </Modal.Footer>
@@ -134,8 +158,11 @@ const AddressModal = ({
 }
 
 const mapAddressToFormData = (address?: Address): AddressPayload => {
-  const countryDisplayName =
-    isoAlpha2Countries[address?.country_code?.toUpperCase()]
+  const countryDisplayName = address?.country_code
+    ? isoAlpha2Countries[
+        address.country_code.toUpperCase() as keyof typeof isoAlpha2Countries
+      ]
+    : ""
 
   return {
     first_name: address?.first_name || "",
@@ -150,6 +177,7 @@ const mapAddressToFormData = (address?: Address): AddressPayload => {
       ? { label: countryDisplayName, value: address.country_code }
       : { label: "", value: "" },
     postal_code: address?.postal_code || "",
+    metadata: getMetadataFormValues(address?.metadata),
   }
 }
 

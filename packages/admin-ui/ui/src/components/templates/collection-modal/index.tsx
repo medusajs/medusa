@@ -9,7 +9,7 @@ import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
 import MetadataForm, {
-  formatMetadata,
+  getSubmittableMetadata,
   MetadataFormType,
 } from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
@@ -46,7 +46,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
       title: collection?.title,
       handle: collection?.handle,
       metadata: {
-        metadata: Object.entries(collection?.metadata || {}).map(
+        entries: Object.entries(collection?.metadata || {}).map(
           ([key, value]) => ({
             key,
             value: value as string,
@@ -64,7 +64,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         title: collection.title,
         handle: collection.handle,
         metadata: {
-          metadata: Object.entries(collection.metadata || {}).map(
+          entries: Object.entries(collection.metadata || {}).map(
             ([key, value]) => ({
               key,
               value: value as string,
@@ -88,7 +88,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           title: data.title,
           handle: data.handle,
-          metadata: formatMetadata(data.metadata),
+          metadata: getSubmittableMetadata(data.metadata),
         },
         {
           onSuccess: () => {
@@ -109,7 +109,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           title: data.title,
           handle: data.handle,
-          metadata: formatMetadata(data.metadata),
+          metadata: getSubmittableMetadata(data.metadata),
         },
         {
           onSuccess: () => {

@@ -3,6 +3,11 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { nestedForm } from "../../../utils/nested-form"
+import MetadataForm, {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../forms/general/metadata-form"
 import DiscountableForm, {
   DiscountableFormType,
 } from "../../forms/product/discountable-form"
@@ -23,6 +28,7 @@ type GeneralFormWrapper = {
   general: GeneralFormType
   organize: OrganizeFormType
   discountable: DiscountableFormType
+  metadata: MetadataFormType
 }
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
@@ -75,7 +81,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
 
         categories: data.organize.categories?.map((id) => ({ id })),
         discountable: data.discountable.value,
-        metadata: formatMetadata(data.metadata),
+        metadata: getSubmittableMetadata(data.metadata),
       },
       onReset
     )
@@ -105,6 +111,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               form={nestedForm(form, "discountable")}
               isGiftCard={product.is_giftcard}
             />
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">Metadata</h2>
+              <MetadataForm form={nestedForm(form, "metadata")} />
+            </div>
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end gap-x-2">
@@ -155,6 +165,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
     discountable: {
       value: product.discountable,
     },
+    metadata: getMetadataFormValues(product.metadata),
   }
 }
 

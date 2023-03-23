@@ -1,6 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import clsx from "clsx"
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { useFieldArray, useWatch } from "react-hook-form"
 import { NestedForm } from "../../../../utils/nested-form"
 import Button from "../../../fundamentals/button"
@@ -18,7 +18,7 @@ export type MetadataField = {
 }
 
 export type MetadataFormType = {
-  metadata: MetadataField[]
+  entries: MetadataField[]
   deleted?: string[]
 }
 
@@ -31,7 +31,7 @@ const MetadataForm = ({ form }: MetadataProps) => {
 
   const { fields, remove, insert } = useFieldArray({
     control,
-    name: path("metadata"),
+    name: path("entries"),
     keyName: "fieldKey",
   })
 
@@ -53,10 +53,10 @@ const MetadataForm = ({ form }: MetadataProps) => {
     }
 
     if (index === 0 && fields.length === 1) {
-      setValue(path(`metadata.${index}.value`), "", {
+      setValue(path(`entries.${index}.value`), "", {
         shouldDirty: true,
       })
-      setValue(path(`metadata.${index}.key`), "", {
+      setValue(path(`entries.${index}.key`), "", {
         shouldDirty: true,
       })
     } else {
@@ -69,18 +69,22 @@ const MetadataForm = ({ form }: MetadataProps) => {
   }
 
   const handleClearContents = (index: number) => {
-    setValue(path(`metadata.${index}.value`), "", {
+    setValue(path(`entries.${index}.value`), "", {
       shouldDirty: true,
     })
-    setValue(path(`metadata.${index}.key`), "", {
+    setValue(path(`entries.${index}.key`), "", {
       shouldDirty: true,
     })
   }
 
   const subscriber = useWatch({
     control,
-    name: path("metadata"),
+    name: path("entries"),
   })
+
+  useEffect(() => {
+    console.log(subscriber)
+  }, [subscriber])
 
   // If there is only one row and it is empty or there are no rows, disable the delete button
   const isDisabled = useMemo(() => {
@@ -103,8 +107,13 @@ const MetadataForm = ({ form }: MetadataProps) => {
 
   return (
     <div className="rounded-rounded border-grey-20 divide-grey-20 inter-base-regular divide-y border">
-      <div className={clsx("bg-grey-5 rounded-t-rounded", rowClasses)}>
-        <div className="">
+      <div
+        className={clsx(
+          "inter-small-semibold bg-grey-5 rounded-t-rounded",
+          rowClasses
+        )}
+      >
+        <div>
           <p>Key</p>
         </div>
         <div className="">
@@ -123,13 +132,13 @@ const MetadataForm = ({ form }: MetadataProps) => {
           >
             <div>
               <MetadataInput
-                {...register(path(`metadata.${0}.key`))}
+                {...register(path(`entries.${0}.key`))}
                 placeholder="Key"
               />
             </div>
             <div>
               <MetadataInput
-                {...register(path(`metadata.${0}.value`))}
+                {...register(path(`entries.${0}.value`))}
                 placeholder="Value"
               />
             </div>
@@ -148,13 +157,13 @@ const MetadataForm = ({ form }: MetadataProps) => {
               >
                 <div>
                   <MetadataInput
-                    {...register(path(`metadata.${index}.key`))}
+                    {...register(path(`entries.${index}.key`))}
                     placeholder="Key"
                   />
                 </div>
                 <div>
                   <MetadataInput
-                    {...register(path(`metadata.${index}.value`))}
+                    {...register(path(`entries.${index}.value`))}
                     placeholder="Value"
                   />
                 </div>
@@ -209,7 +218,7 @@ const MetadataRow = ({
     "px-base py-[6px] outline-none flex items-center gap-x-xsmall hover:bg-grey-5 focus:bg-grey-10 transition-colors cursor-pointer"
 
   return (
-    <div className="last-of-type:rounded-b-rounded group relative">
+    <div className="last-of-type:rounded-b-rounded group/metadata relative">
       <div className="divide-grey-20 [&>div]:px-base [&>div]:py-xsmall grid grid-cols-[165px_1fr] divide-x divide-solid">
         {children}
       </div>
@@ -219,7 +228,7 @@ const MetadataRow = ({
             variant="secondary"
             size="small"
             className={clsx(
-              "h-xlarge w-large -right-small radix-state-open:opacity-100 absolute inset-y-1/2 -translate-y-1/2 transform opacity-0 transition-opacity group-hover:opacity-100"
+              "h-xlarge w-large -right-small radix-state-open:opacity-100 absolute inset-y-1/2 -translate-y-1/2 transform opacity-0 transition-opacity group-hover/metadata:opacity-100"
             )}
           >
             <EllipsisVerticalIcon />
@@ -269,10 +278,10 @@ const MetadataRow = ({
   )
 }
 
-export const formatMetadata = (
+export const getSubmittableMetadata = (
   data: MetadataFormType
 ): Record<string, unknown> => {
-  const metadata = data.metadata.reduce((acc, { key, value }) => {
+  const metadata = data.entries.reduce((acc, { key, value }) => {
     if (key) {
       acc[key] = value
     }
@@ -293,12 +302,12 @@ export const getMetadataFormValues = (
   metadata?: Record<string, unknown> | null
 ): MetadataFormType => {
   const data: MetadataFormType = {
-    metadata: [],
+    entries: [],
     deleted: [],
   }
 
   if (metadata) {
-    data.metadata = Object.entries(metadata).map(([key, value]) => ({
+    data.entries = Object.entries(metadata).map(([key, value]) => ({
       key,
       value: value as string,
       state: "existing",

@@ -11,6 +11,7 @@ import { useContext } from "react"
 import { useForm } from "react-hook-form"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { countries } from "../../../utils/countries"
+import { getMetadataFormValues } from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
 import { createAddPayload } from "./add-variant-modal"
@@ -204,6 +205,7 @@ export const getEditVariantDefaultValues = (
       })),
     },
     options,
+    metadata: getMetadataFormValues(variant.metadata),
   }
 }
 
