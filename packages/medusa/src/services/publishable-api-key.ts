@@ -1,17 +1,17 @@
-import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 
-import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
-import { FindConfig, Selector } from "../types/common"
-import { PublishableApiKey, SalesChannel } from "../models"
 import { TransactionBaseService } from "../interfaces"
-import EventBusService from "./event-bus"
-import { buildQuery, isString } from "../utils"
+import { PublishableApiKey, SalesChannel } from "../models"
+import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
+import { PublishableApiKeySalesChannelRepository } from "../repositories/publishable-api-key-sales-channel"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreatePublishableApiKeyInput,
   UpdatePublishableApiKeyInput,
 } from "../types/publishable-api-key"
-import { PublishableApiKeySalesChannelRepository } from "../repositories/publishable-api-key-sales-channel"
+import { buildQuery, isString } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager

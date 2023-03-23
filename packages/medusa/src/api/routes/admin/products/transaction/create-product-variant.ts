@@ -1,13 +1,12 @@
-import { MedusaError } from "medusa-core-utils"
+import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
-import { IInventoryService } from "../../../../../interfaces"
 import { ProductVariant } from "../../../../../models"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../../services"
-import { InventoryItemDTO } from "../../../../../types/inventory"
 import { CreateProductVariantInput } from "../../../../../types/product-variant"
 import {
   DistributedTransaction,

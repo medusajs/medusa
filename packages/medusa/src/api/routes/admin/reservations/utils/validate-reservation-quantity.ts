@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
-import { IInventoryService } from "../../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { LineItemService } from "../../../../../services"
 
 export const validateUpdateReservationQuantity = async (

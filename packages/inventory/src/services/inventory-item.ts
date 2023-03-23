@@ -1,14 +1,18 @@
 import {
-  buildQuery,
   CreateInventoryItemInput,
   FilterableInventoryItemProps,
   FindConfig,
   IEventBusService,
   InventoryItemDTO,
-} from "@medusajs/medusa"
-import { SharedContext } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+  SharedContext,
+} from "@medusajs/types"
+import {
+  buildQuery,
+  InjectEntityManager,
+  isDefined,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"

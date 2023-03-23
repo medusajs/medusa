@@ -1,13 +1,13 @@
-import { asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
-import { moduleLoader, registerMedusaModule } from "./loaders"
-import { loadModuleMigrations } from "./loaders/utils"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "./types"
+} from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import { moduleLoader, registerMedusaModule } from "./loaders"
+import { loadModuleMigrations } from "./loaders/utils"
 
 const logger: any = {
   log: (a) => console.log(a),

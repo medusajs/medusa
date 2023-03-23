@@ -1,8 +1,8 @@
 import { AbstractFileService } from "@medusajs/medusa"
-import stream from "stream"
-import { resolve } from "path"
 import * as fs from "fs"
 import mkdirp from "mkdirp"
+import { resolve } from "path"
+import stream from "stream"
 
 export default class LocalFileService extends AbstractFileService {
   constructor({}, options) {

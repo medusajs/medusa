@@ -25,4 +25,3 @@ export default moduleDefinition
 
 export * from "./initialize"
 export * from "./types"
-

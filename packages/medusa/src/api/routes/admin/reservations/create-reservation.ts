@@ -1,6 +1,6 @@
+import { IInventoryService } from "@medusajs/types"
+import { isDefined } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import { isDefined } from "medusa-core-utils"
-import { IInventoryService } from "../../../../interfaces"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**

@@ -1,10 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import {
-  CustomerService,
-  EventBusService,
-  OrderService,
-} from "../../../../services"
+import { CustomerService, OrderService } from "../../../../services"
+import EventBusService from "../../../../services/event-bus"
 import TokenService from "../../../../services/token"
 import { TokenEvents } from "../../../../types/token"
 

@@ -1,7 +1,7 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}

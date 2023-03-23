@@ -1,6 +1,22 @@
-import { ModuleDefinition, MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
+import {
+  ModuleDefinition,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
+} from "@medusajs/types"
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] = [
+  {
+    key: "eventBus",
+    registrationName: "eventBusModuleService",
+    defaultPackage: "@medusajs/event-bus-local",
+    label: "EventBusModuleService",
+    canOverride: true,
+    isRequired: true,
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
+  },
   {
     key: "stockLocationService",
     registrationName: "stockLocationService",

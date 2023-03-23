@@ -1,4 +1,5 @@
-import { Country, StockLocationAddressDTO } from "@medusajs/medusa"
+import { Country } from "@medusajs/medusa"
+import { StockLocationAddressDTO } from "@medusajs/types"
 import { useAdminRegions } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
