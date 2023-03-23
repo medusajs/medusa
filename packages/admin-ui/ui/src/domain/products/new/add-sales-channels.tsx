@@ -4,12 +4,12 @@ import { useAdminStore } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useFieldArray } from "react-hook-form"
 import Switch from "../../../components/atoms/switch"
+import SalesChannelsModal from "../../../components/forms/product/sales-channels-modal"
 import Button from "../../../components/fundamentals/button"
 import ChannelsIcon from "../../../components/fundamentals/icons/channels-icon"
 import SalesChannelsDisplay from "../../../components/molecules/sales-channels-display"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { NestedForm } from "../../../utils/nested-form"
-import SalesChannelsModal from "../components/sales-channels-modal"
 
 export type AddSalesChannelsFormType = {
   channels: SalesChannel[]

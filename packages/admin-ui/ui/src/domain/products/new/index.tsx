@@ -1,36 +1,36 @@
-import AddSalesChannelsForm, {
-  AddSalesChannelsFormType,
-} from "./add-sales-channels"
-import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
 import { AdminPostProductsReq, ProductVariant } from "@medusajs/medusa"
-import CustomsForm, { CustomsFormType } from "../components/customs-form"
-import DimensionsForm, {
-  DimensionsFormType,
-} from "../components/dimensions-form"
-import DiscountableForm, {
-  DiscountableFormType,
-} from "../components/discountable-form"
-import { FormImage, ProductStatus } from "../../../types/shared"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
-import MediaForm, { MediaFormType } from "../components/media-form"
-import OrganizeForm, { OrganizeFormType } from "../components/organize-form"
-import ThumbnailForm, { ThumbnailFormType } from "../components/thumbnail-form"
 import { useAdminCreateProduct, useMedusa } from "medusa-react"
 import { useForm, useWatch } from "react-hook-form"
+import CustomsForm, { CustomsFormType } from "../../../components/forms/product/customs-form"
+import DimensionsForm, {
+  DimensionsFormType
+} from "../../../components/forms/product/dimensions-form"
+import DiscountableForm, {
+  DiscountableFormType
+} from "../../../components/forms/product/discountable-form"
+import GeneralForm, { GeneralFormType } from "../../../components/forms/product/general-form"
+import MediaForm, { MediaFormType } from "../../../components/forms/product/media-form"
+import OrganizeForm, { OrganizeFormType } from "../../../components/forms/product/organize-form"
+import ThumbnailForm, { ThumbnailFormType } from "../../../components/forms/product/thumbnail-form"
+import { FormImage, ProductStatus } from "../../../types/shared"
+import AddSalesChannelsForm, {
+  AddSalesChannelsFormType
+} from "./add-sales-channels"
+import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
 
-import Accordion from "../../../components/organisms/accordion"
-import Button from "../../../components/fundamentals/button"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import FeatureToggle from "../../../components/fundamentals/feature-toggle"
-import FocusModal from "../../../components/molecules/modal/focus-modal"
-import { PricesFormType } from "../components/prices-form"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
-import { prepareImages } from "../../../utils/images"
 import { useEffect } from "react"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { useNavigate } from "react-router-dom"
+import { PricesFormType } from "../../../components/forms/general/prices-form"
+import Button from "../../../components/fundamentals/button"
+import FeatureToggle from "../../../components/fundamentals/feature-toggle"
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import FocusModal from "../../../components/molecules/modal/focus-modal"
+import Accordion from "../../../components/organisms/accordion"
 import useNotification from "../../../hooks/use-notification"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { getErrorMessage } from "../../../utils/error-messages"
+import { prepareImages } from "../../../utils/images"
+import { nestedForm } from "../../../utils/nested-form"
 
 type NewProductForm = {
   general: GeneralFormType
@@ -357,14 +357,14 @@ const createPayload = (
     mid_code: data.customs.mid_code || undefined,
     type: data.organize.type
       ? {
-          value: data.organize.type.label,
-          id: data.organize.type.value,
-        }
+        value: data.organize.type.label,
+        id: data.organize.type.value,
+      }
       : undefined,
     tags: data.organize.tags
       ? data.organize.tags.map((t) => ({
-          value: t,
-        }))
+        value: t,
+      }))
       : undefined,
     categories: data.organize.categories?.length
       ? data.organize.categories.map((id) => ({ id }))
