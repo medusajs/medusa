@@ -1,10 +1,10 @@
-import { FindConfig } from "../../types/common"
+import { FindConfig } from "../common/common"
 import {
   CreateStockLocationInput,
   FilterableStockLocationProps,
   StockLocationDTO,
   UpdateStockLocationInput,
-} from "../../types/stock-location"
+} from "./common"
 
 export interface IStockLocationService {
   list(

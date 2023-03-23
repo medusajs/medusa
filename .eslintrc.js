@@ -88,6 +88,10 @@ module.exports = {
           "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
           "./packages/medusa-plugin-algolia/tsconfig.spec.json",
           "./packages/admin-ui/tsconfig.json",
+          "./packages/inventory/tsconfig.spec.json",
+          "./packages/stock-location/tsconfig.spec.json",
+          "./packages/cache-redis/tsconfig.spec.json",
+          "./packages/cache-inmemory/tsconfig.spec.json",
         ],
       },
       rules: {

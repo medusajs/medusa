@@ -17,4 +17,3 @@ export type IndexSettings = {
    */
   transformer?: (document: any) => any
 }
-

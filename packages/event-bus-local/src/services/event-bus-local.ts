@@ -9,12 +9,14 @@ type InjectedDependencies = {
 
 const eventEmitter = new EventEmitter()
 
+// eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly logger_: Logger
   protected readonly eventEmitter_: EventEmitter
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
     this.logger_ = logger
@@ -52,11 +54,10 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       this.logger_.info(
         `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
       )
-      
+
       if (eventListenersCount === 0) {
         continue
       }
-
 
       try {
         this.eventEmitter_.emit(event.eventName, event.data)

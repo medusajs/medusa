@@ -15,10 +15,12 @@ type InjectedDependencies = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
+// eslint-disable-next-line max-len
 export default class RedisEventBusService extends AbstractEventBusModuleService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
+  // eslint-disable-next-line max-len
   protected readonly moduleDeclaration_: InternalModuleDeclaration
 
   protected queue_: Queue
@@ -29,6 +31,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
     this.moduleOptions_ = moduleOptions

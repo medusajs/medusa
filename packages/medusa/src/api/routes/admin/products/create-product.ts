@@ -28,21 +28,20 @@ import {
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 
+import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
+import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
-import { IInventoryService } from "../../../../interfaces"
-
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { Logger } from "../../../../types/global"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /admin/products

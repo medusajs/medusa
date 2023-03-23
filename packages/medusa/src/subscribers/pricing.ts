@@ -1,5 +1,5 @@
+import { ICacheService } from "@medusajs/types"
 import { EventBusService, ProductVariantService } from "../services"
-import { ICacheService } from "../interfaces"
 
 type ProductVariantUpdatedEventData = {
   id: string

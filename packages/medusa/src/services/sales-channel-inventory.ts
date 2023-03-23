@@ -1,9 +1,7 @@
+import { EventBusTypes, IInventoryService } from "@medusajs/types"
+import { TransactionBaseService } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
-
-import { IInventoryService, TransactionBaseService } from "../interfaces"
-
-import { EventBusTypes } from "@medusajs/types"
-import { SalesChannelLocationService } from "./"
+import SalesChannelLocationService from "./sales-channel-location"
 
 type InjectedDependencies = {
   inventoryService: IInventoryService

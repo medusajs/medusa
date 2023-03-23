@@ -1,5 +1,4 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-
 import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
@@ -8,33 +7,35 @@ import {
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
   FindConfig,
+  IEventBusService,
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
   ReservationItemDTO,
+  SharedContext,
   UpdateInventoryLevelInput,
-  UpdateReservationItemInput
-} from "@medusajs/medusa"
-import { EventBusTypes, SharedContext } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+  UpdateReservationItemInput,
+} from "@medusajs/types"
 import {
-  InventoryItemService,
-  InventoryLevelService,
-  ReservationItemService
-} from "./"
+  InjectEntityManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
+import { EntityManager } from "typeorm"
+import InventoryItemService from "./inventory-item"
+import InventoryLevelService from "./inventory-level"
+import ReservationItemService from "./reservation-item"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: EventBusTypes.IEventBusService
+  eventBusService: IEventBusService
   inventoryItemService: InventoryItemService
   inventoryLevelService: InventoryLevelService
   reservationItemService: ReservationItemService
 }
 export default class InventoryService implements IInventoryService {
   protected readonly manager_: EntityManager
-  protected readonly eventBusService_: EventBusTypes.IEventBusService | undefined
+  protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService

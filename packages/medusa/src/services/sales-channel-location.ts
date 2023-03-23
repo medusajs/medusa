@@ -1,16 +1,15 @@
-import { EntityManager, In } from "typeorm"
-import { IStockLocationService, TransactionBaseService } from "../interfaces"
-import { SalesChannelService } from "./"
-
-import { EventBusTypes } from "@medusajs/types"
-
+import { IEventBusService, IStockLocationService } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager, In } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import { SalesChannelLocation } from "../models/sales-channel-location"
+import SalesChannelService from "./sales-channel"
+
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
   salesChannelService: SalesChannelService
-  eventBusService: EventBusTypes.IEventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
 }
 
@@ -20,7 +19,7 @@ type InjectedDependencies = {
 
 class SalesChannelLocationService extends TransactionBaseService {
   protected readonly salesChannelService_: SalesChannelService
-  protected readonly eventBusService_: EventBusTypes.IEventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly stockLocationService_: IStockLocationService
 
   constructor({

@@ -2348,16 +2348,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/polyfill@npm:^7.8.7":
-  version: 7.12.1
-  resolution: "@babel/polyfill@npm:7.12.1"
-  dependencies:
-    core-js: ^2.6.5
-    regenerator-runtime: ^0.13.4
-  checksum: f5d233d2958582e8678838c32c42ba780965119ebb3771d9b9735f85efabc7b8b49161e7d908477486e0aaf8508410e957be764c27a6a828714fb9d1b7f80bc3
-  languageName: node
-  linkType: hard
-
 "@babel/preset-env@npm:7.11.5":
   version: 7.11.5
   resolution: "@babel/preset-env@npm:7.11.5"
@@ -5555,8 +5545,8 @@ __metadata:
   linkType: hard
 
 "@mapbox/node-pre-gyp@npm:^1.0.0":
-  version: 1.0.9
-  resolution: "@mapbox/node-pre-gyp@npm:1.0.9"
+  version: 1.0.10
+  resolution: "@mapbox/node-pre-gyp@npm:1.0.10"
   dependencies:
     detect-libc: ^2.0.0
     https-proxy-agent: ^5.0.0
@@ -5569,7 +5559,7 @@ __metadata:
     tar: ^6.1.11
   bin:
     node-pre-gyp: bin/node-pre-gyp
-  checksum: 5b32a2c3bf44e0340a29cc82cbb726bc8f49aa721388fa741afb790035975299a114b907018fc35832896cde7fa11ba2c703e2ccfd1f5a99ffe1c57814f58571
+  checksum: 469f3bc00778c76e0a7ffaf40742482462e05fec31b53c55ad6d6a892894046c0db7bb8543ed49b2cf1926dfcd9af1289985c367c5d20076939f8a889f686e45
   languageName: node
   linkType: hard
 
@@ -5622,6 +5612,7 @@ __metadata:
   dependencies:
     "@hookform/error-message": ^2.0.1
     "@medusajs/medusa": "*"
+    "@medusajs/types": ^0.0.1
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
     "@radix-ui/react-collapsible": ^1.0.1
@@ -5708,13 +5699,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/cache-inmemory"
   dependencies:
-    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/medusa": ^1.7.11
   languageName: unknown
   linkType: soft
 
@@ -5722,13 +5712,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-redis@workspace:packages/cache-redis"
   dependencies:
-    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
+    awilix: ^8.0.0
     cross-env: ^5.2.1
+    ioredis: ^5.3.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/medusa": ^1.7.11
   languageName: unknown
   linkType: soft
 
@@ -5767,6 +5758,7 @@ __metadata:
     "@medusajs/modules-sdk": "*"
     "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
+    awilix: ^8.0.0
     bullmq: ^3.5.6
     cross-env: ^5.2.1
     ioredis: ^5.2.5
@@ -5781,9 +5773,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
-    "@medusajs/medusa": ^1.7.7
     "@medusajs/modules-sdk": "*"
-    "@medusajs/types": "*"
+    "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -5791,8 +5782,6 @@ __metadata:
     ts-jest: ^25.5.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
@@ -5803,11 +5792,8 @@ __metadata:
     "@babel/cli": ^7.7.5
     "@babel/core": ^7.7.5
     "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
     "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/polyfill": ^7.8.7
     "@babel/preset-env": ^7.7.5
-    "@babel/runtime": ^7.9.6
     axios: ^0.21.4
     chalk: ^4.0.0
     configstore: 5.0.1
@@ -5824,13 +5810,13 @@ __metadata:
     meant: ^1.0.3
     medusa-core-utils: ^1.1.39
     medusa-telemetry: 0.0.16
-    netrc-parser: ^3.1.6
     open: ^8.0.6
     ora: ^5.4.1
     pg-god: ^1.0.12
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
+    sqlite3: ^5.0.2
     stack-trace: ^0.0.10
     ulid: ^2.3.0
     url: ^0.11.0
@@ -5884,26 +5870,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.12, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@^1.7.8, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@babel/cli": ^7.14.3
-    "@babel/core": ^7.14.3
-    "@babel/preset-typescript": ^7.13.0
     "@medusajs/medusa-cli": ^1.3.8
-    "@medusajs/modules-sdk": "*"
-    "@medusajs/types": "*"
-    "@medusajs/utils": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
-    "@types/jest": ^27.5.2
     "@types/jsonwebtoken": ^8.5.9
     "@types/lodash": ^4.14.191
     "@types/multer": ^1.4.7
     awilix: ^8.0.0
-    babel-preset-medusa-package: ^1.1.19
     body-parser: ^1.19.0
+    boxen: ^5.0.1
     bullmq: ^3.5.6
     chokidar: ^3.4.2
     class-transformer: ^0.5.1
@@ -5914,6 +5896,7 @@ __metadata:
     cors: ^2.8.5
     cross-env: ^5.2.1
     cross-spawn: ^7.0.3
+    dotenv: ^16.0.3
     express: ^4.17.1
     express-session: ^1.17.3
     fs-exists-cached: ^1.0.0
@@ -5923,6 +5906,7 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^8.5.1
+    lodash: ^4.17.21
     medusa-core-utils: ^1.1.39
     medusa-interfaces: ^1.3.6
     medusa-telemetry: ^0.0.16
@@ -5930,20 +5914,17 @@ __metadata:
     morgan: ^1.9.1
     multer: ^1.4.4
     node-schedule: ^2.1.1
-    nodemon: ^2.0.20
     papaparse: ^5.3.2
     passport: ^0.4.1
     passport-http-bearer: ^1.0.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
-    pg: ^8.5.1
     randomatic: ^3.1.1
     redis: ^3.0.2
     reflect-metadata: ^0.1.13
+    regenerator-runtime: ^0.13.11
     request-ip: ^2.1.3
-    resolve-cwd: ^3.0.0
     scrypt-kdf: ^2.0.1
-    sqlite3: ^5.0.2
     supertest: ^4.0.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
@@ -5951,6 +5932,7 @@ __metadata:
     uuid: ^8.3.2
     winston: ^3.8.2
   peerDependencies:
+    "@medusajs/types": ^0.0.1
     medusa-interfaces: 1.3.6
     typeorm: ^0.3.11
   bin:
@@ -5962,11 +5944,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
     glob: 7.1.6
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.39
     medusa-telemetry: ^0.0.16
     resolve-cwd: ^3.0.0
     ts-jest: ^25.5.1
@@ -6027,9 +6010,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": ^1.7.7
-    "@medusajs/modules-sdk": "*"
-    "@medusajs/types": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
     "@medusajs/utils": ^0.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -6037,35 +6019,36 @@ __metadata:
     ts-jest: ^25.5.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/medusa": ^1.7.7
-    "@medusajs/types": ^0.0.1
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^0.0.1, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
-    "@medusajs/modules-sdk": ^0.0.1
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
+    winston: ^3.8.2
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@*, @medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^0.0.1, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
-    "@medusajs/types": "*"
+    "@medusajs/types": ^0.0.1
+    "@types/express": ^4.17.17
+    awilix: ^8.0.0
+    class-transformer: ^0.5.1
+    class-validator: ^0.13.2
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typeorm: ^0.3.11
     typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/types": ^0.0.1
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -11211,7 +11194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^27.0.1, @types/jest@npm:^27.0.3, @types/jest@npm:^27.5.2":
+"@types/jest@npm:^27.0.1, @types/jest@npm:^27.0.3":
   version: 27.5.2
   resolution: "@types/jest@npm:27.5.2"
   dependencies:
@@ -12814,7 +12797,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"agentkeepalive@npm:^4.1.3, agentkeepalive@npm:^4.2.1":
+"agentkeepalive@npm:^4.1.3":
+  version: 4.3.0
+  resolution: "agentkeepalive@npm:4.3.0"
+  dependencies:
+    debug: ^4.1.0
+    depd: ^2.0.0
+    humanize-ms: ^1.2.1
+  checksum: 61cbdab12d45e82e9ae515b0aa8d09617b66f72409e541a646dd7be4b7260d335d7f56a38079ad305bf0ffb8405592a459faf1294111289107f48352a20c2799
+  languageName: node
+  linkType: hard
+
+"agentkeepalive@npm:^4.2.1":
   version: 4.2.1
   resolution: "agentkeepalive@npm:4.2.1"
   dependencies:
@@ -16593,13 +16587,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^2.6.5":
-  version: 2.6.12
-  resolution: "core-js@npm:2.6.12"
-  checksum: 00128efe427789120a06b819adc94cc72b96955acb331cb71d09287baf9bd37bebd191d91f1ee4939c893a050307ead4faea08876f09115112612b6a05684b63
-  languageName: node
-  linkType: hard
-
 "core-js@npm:^3.0.4, core-js@npm:^3.22.1, core-js@npm:^3.22.3, core-js@npm:^3.6.5, core-js@npm:^3.7.0, core-js@npm:^3.8.2":
   version: 3.23.4
   resolution: "core-js@npm:3.23.4"
@@ -17633,14 +17620,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"denque@npm:^2.0.1":
+"denque@npm:^2.1.0":
   version: 2.1.0
   resolution: "denque@npm:2.1.0"
   checksum: f9ef81aa0af9c6c614a727cb3bd13c5d7db2af1abf9e6352045b86e85873e629690f6222f4edd49d10e4ccf8f078bbeec0794fafaf61b659c0589d0c511ec363
   languageName: node
   linkType: hard
 
-"depd@npm:2.0.0, depd@npm:~2.0.0":
+"depd@npm:2.0.0, depd@npm:^2.0.0, depd@npm:~2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: 58bd06ec20e19529b06f7ad07ddab60e504d9e0faca4bd23079fac2d279c3594334d736508dc350e06e510aba5e22e4594483b3a6562ce7c17dd797f4cc4ad2c
@@ -19779,21 +19766,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "execa@npm:0.10.0"
-  dependencies:
-    cross-spawn: ^6.0.0
-    get-stream: ^3.0.0
-    is-stream: ^1.1.0
-    npm-run-path: ^2.0.0
-    p-finally: ^1.0.0
-    signal-exit: ^3.0.0
-    strip-eof: ^1.0.0
-  checksum: 3e8562b78f1552ff629770aa81cdb98dac927b6b7f7adc10815ecf13b6917bbabc0468d7d81494f0bb05c59b83a22639e879ef15a17c0dc3434cc32e90e85ab3
-  languageName: node
-  linkType: hard
-
 "execa@npm:^1.0.0":
   version: 1.0.0
   resolution: "execa@npm:1.0.0"
@@ -21808,13 +21780,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-stream@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "get-stream@npm:3.0.0"
-  checksum: 003f5f3b8870da59c6aafdf6ed7e7b07b48c2f8629cd461bd3900726548b6b8cfa2e14d6b7814fbb08f07a42f4f738407fa70b989928b2783a76b278505bba22
-  languageName: node
-  linkType: hard
-
 "get-stream@npm:^4.0.0, get-stream@npm:^4.1.0":
   version: 4.1.0
   resolution: "get-stream@npm:4.1.0"
@@ -23469,20 +23434,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.2.2, ioredis@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "ioredis@npm:5.2.5"
+"ioredis@npm:^5.2.2, ioredis@npm:^5.2.5, ioredis@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "ioredis@npm:5.3.1"
   dependencies:
     "@ioredis/commands": ^1.1.1
     cluster-key-slot: ^1.1.0
     debug: ^4.3.4
-    denque: ^2.0.1
+    denque: ^2.1.0
     lodash.defaults: ^4.2.0
     lodash.isarguments: ^3.1.0
     redis-errors: ^1.2.0
     redis-parser: ^3.0.0
     standard-as-callback: ^2.1.0
-  checksum: fe41af91cc5e3bf17d296ba32b521f6b1dae80854c3b70953ff2858751b106abebe8a8b6c1cb7a00d5534942a929ce835ef2ba78ac3db06ef5d6a336dd872268
+  checksum: 52277fd278e1a29fed020c1fb6238dd82e1b0f7b2b9bd052787ba6d6785fb153d7ce8276b354ba542cdb6005b5d9a3b439f7c811ef5852223b8367332acebe12
   languageName: node
   linkType: hard
 
@@ -28609,8 +28574,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-algolia@workspace:packages/medusa-plugin-algolia"
   dependencies:
-    "@medusajs/types": "*"
-    "@medusajs/utils": "*"
+    "@medusajs/modules-sdk": ^0.0.1
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
     algoliasearch: ^4.15.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
@@ -28789,10 +28755,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-meilisearch@workspace:packages/medusa-plugin-meilisearch"
   dependencies:
-    "@medusajs/types": "*"
-    "@medusajs/utils": "*"
+    "@medusajs/medusa": ^1.7.12
+    "@medusajs/types": ^0.0.1
+    "@medusajs/utils": ^0.0.1
+    body-parser: ^1.19.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     meilisearch: ^0.31.1
     typescript: ^4.9.5
   languageName: unknown
@@ -29601,12 +29570,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^3.0.0, minipass@npm:^3.1.0, minipass@npm:^3.1.1, minipass@npm:^3.1.3, minipass@npm:^3.1.6":
+"minipass@npm:^3.0.0, minipass@npm:^3.1.1, minipass@npm:^3.1.6":
   version: 3.3.4
   resolution: "minipass@npm:3.3.4"
   dependencies:
     yallist: ^4.0.0
   checksum: 942522f16a60b651de81031a095149206ebb8647f7d029f5eb4eed23b04e4f872a93ffec5f7dceb6defb00fa80cc413dd5aa1131471a480a24d7167f8264a273
+  languageName: node
+  linkType: hard
+
+"minipass@npm:^3.1.0, minipass@npm:^3.1.3":
+  version: 3.3.6
+  resolution: "minipass@npm:3.3.6"
+  dependencies:
+    yallist: ^4.0.0
+  checksum: a114746943afa1dbbca8249e706d1d38b85ed1298b530f5808ce51f8e9e941962e2a5ad2e00eae7dd21d8a4aae6586a66d4216d1a259385e9d0358f0c1eba16c
   languageName: node
   linkType: hard
 
@@ -30120,16 +30098,6 @@ __metadata:
   version: 2.1.1
   resolution: "nested-error-stacks@npm:2.1.1"
   checksum: feec00417e4778661cfbbe657e6add6ca9918dcc026cd697ac330b4a56a79e4882b36dde8abc138167566b1ce4c5baa17d2d4df727a96f8b96aebace1c3ffca7
-  languageName: node
-  linkType: hard
-
-"netrc-parser@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "netrc-parser@npm:3.1.6"
-  dependencies:
-    debug: ^3.1.0
-    execa: ^0.10.0
-  checksum: 53eae3d0ac5a2849189f284769263fe2c3a94252cf2a4749969e542a88a8e708f459fa5b8e4347149ef3db81b9ca7bb5ab1b44633ba001bf5126cffd6ea2737a
   languageName: node
   linkType: hard
 
@@ -36649,8 +36617,8 @@ __metadata:
   linkType: hard
 
 "sqlite3@npm:^5.0.2":
-  version: 5.0.8
-  resolution: "sqlite3@npm:5.0.8"
+  version: 5.1.6
+  resolution: "sqlite3@npm:5.1.6"
   dependencies:
     "@mapbox/node-pre-gyp": ^1.0.0
     node-addon-api: ^4.2.0
@@ -36664,7 +36632,7 @@ __metadata:
   peerDependenciesMeta:
     node-gyp:
       optional: true
-  checksum: 7ca429313b4702976630d70b8761137f7900fe923343c22f0d185ab0b1013e08fac023c5828abf2b13a813c36c0923745b2a1733ef00ec6b8a0e415e67177a70
+  checksum: 85f1dd1f4b9fa906578330e7badc1116c61ef4e7c64a09897268923f5c9ff4ae1e0a447dd4594c0f8c3b20a410fcc5d8d00d1056225a5186c57ea7f7c9b18974
   languageName: node
   linkType: hard
 

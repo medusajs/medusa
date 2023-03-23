@@ -1,18 +1,18 @@
-import { FindConfig } from "../../types/common"
+import { FindConfig } from "../common"
 
 import {
-  InventoryItemDTO,
-  ReservationItemDTO,
-  InventoryLevelDTO,
-  FilterableInventoryItemProps,
   CreateInventoryItemInput,
+  CreateInventoryLevelInput,
   CreateReservationItemInput,
+  FilterableInventoryItemProps,
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
-  CreateInventoryLevelInput,
+  InventoryItemDTO,
+  InventoryLevelDTO,
+  ReservationItemDTO,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
-} from "../../types/inventory"
+} from "./common"
 
 export interface IInventoryService {
   listInventoryItems(

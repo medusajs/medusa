@@ -1,8 +1,8 @@
-import { IInventoryService } from "../../../../../interfaces"
 import {
+  IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
-} from "../../../../../types/inventory"
+} from "@medusajs/types"
 import { LevelWithAvailability, ResponseInventoryItem } from "../../variants"
 
 export const buildLevelsByInventoryItemId = (

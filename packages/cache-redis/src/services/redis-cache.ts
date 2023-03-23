@@ -1,6 +1,5 @@
+import { ICacheService } from "@medusajs/types"
 import { Redis } from "ioredis"
-import { ICacheService } from "@medusajs/medusa"
-
 import { RedisCacheModuleOptions } from "../types"
 
 const DEFAULT_NAMESPACE = "medusa"

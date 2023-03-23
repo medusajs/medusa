@@ -1,4 +1,7 @@
-import { NumericalComparisonOperator, StringComparisonOperator } from "./common"
+import {
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+} from "../common"
 
 /**
  * @schema InventoryItemDTO

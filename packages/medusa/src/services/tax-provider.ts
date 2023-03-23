@@ -2,12 +2,12 @@ import { AwilixContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
 import { In } from "typeorm"
 
+import { ICacheService, IEventBusService } from "@medusajs/types"
 import {
-  ICacheService,
   ITaxService,
   ItemTaxCalculationLine,
   TaxCalculationContext,
-  TransactionBaseService,
+  TransactionBaseService
 } from "../interfaces"
 import {
   Cart,
@@ -16,16 +16,13 @@ import {
   Region,
   ShippingMethod,
   ShippingMethodTaxLine,
-  TaxProvider,
+  TaxProvider
 } from "../models"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
-
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
-import EventBusService from "./event-bus"
-
 import TaxRateService from "./tax-rate"
 
 type RegionDetails = {
@@ -43,7 +40,7 @@ class TaxProviderService extends TransactionBaseService {
   protected readonly taxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
 
   constructor(container: AwilixContainer) {
     super(container)

@@ -1,7 +1,6 @@
-import Redis from "ioredis"
-import { asValue } from "awilix"
 import { LoaderOptions } from "@medusajs/modules-sdk"
-
+import { asValue } from "awilix"
+import Redis from "ioredis"
 import { RedisCacheModuleOptions } from "../types"
 
 export default async ({

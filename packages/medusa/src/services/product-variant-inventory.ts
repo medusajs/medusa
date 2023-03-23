@@ -1,24 +1,19 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
 import {
   ICacheService,
   IInventoryService,
-  IStockLocationService,
-  TransactionBaseService,
-} from "../interfaces"
-import { LineItem, Product, ProductVariant } from "../models"
-import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
-import {
   InventoryItemDTO,
+  IStockLocationService,
   ReservationItemDTO,
   ReserveQuantityContext,
-} from "../types/inventory"
+} from "@medusajs/types"
+import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
+import { EntityManager, In } from "typeorm"
+import { LineItem, Product, ProductVariant } from "../models"
+import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { PricedProduct, PricedVariant } from "../types/pricing"
-import {
-  ProductVariantService,
-  SalesChannelInventoryService,
-  SalesChannelLocationService,
-} from "./"
+import ProductVariantService from "./product-variant"
+import SalesChannelInventoryService from "./sales-channel-inventory"
+import SalesChannelLocationService from "./sales-channel-location"
 
 type InjectedDependencies = {
   manager: EntityManager

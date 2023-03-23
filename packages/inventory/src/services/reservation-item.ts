@@ -1,18 +1,24 @@
 import {
-  buildQuery,
   CreateReservationItemInput,
   FilterableReservationItemProps,
-  FindConfig, UpdateReservationItemInput
-} from "@medusajs/medusa"
-import { EventBusTypes, SharedContext } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+  FindConfig,
+  IEventBusService,
+  SharedContext,
+  UpdateReservationItemInput,
+} from "@medusajs/types"
+import {
+  buildQuery,
+  InjectEntityManager,
+  isDefined,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
 
 type InjectedDependencies = {
-  eventBusService: EventBusTypes.IEventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
   inventoryLevelService: InventoryLevelService
 }
@@ -25,7 +31,7 @@ export default class ReservationItemService {
   }
 
   protected readonly manager_: EntityManager
-  protected readonly eventBusService_: EventBusTypes.IEventBusService | undefined
+  protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({

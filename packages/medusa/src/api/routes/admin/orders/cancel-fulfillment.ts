@@ -4,10 +4,10 @@ import {
   ProductVariantInventoryService,
 } from "../../../../services"
 
-import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { Fulfillment } from "../../../../models"
-import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
