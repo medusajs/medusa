@@ -4,6 +4,12 @@ import { useContext, useEffect, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import { useForm } from "react-hook-form"
 import Tooltip from "../../../../../components/atoms/tooltip"
+import { CustomsFormType } from "../../../../../components/forms/product/customs-form"
+import { DimensionsFormType } from "../../../../../components/forms/product/dimensions-form"
+import CreateFlowVariantForm, {
+  CreateFlowVariantFormType
+} from "../../../../../components/forms/product/variant-form/create-flow-variant-form"
+import { VariantOptionValueType } from "../../../../../components/forms/product/variant-form/variant-select-options-form"
 import Button from "../../../../../components/fundamentals/button"
 import CheckCircleFillIcon from "../../../../../components/fundamentals/icons/check-circle-fill-icon"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
@@ -14,17 +20,11 @@ import Actionables from "../../../../../components/molecules/actionables"
 import IconTooltip from "../../../../../components/molecules/icon-tooltip"
 import Modal from "../../../../../components/molecules/modal"
 import LayeredModal, {
-  LayeredModalContext,
+  LayeredModalContext
 } from "../../../../../components/molecules/modal/layered-modal"
 import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import { DragItem } from "../../../../../types/shared"
-import { CustomsFormType } from "../../../components/customs-form"
-import { DimensionsFormType } from "../../../components/dimensions-form"
-import CreateFlowVariantForm, {
-  CreateFlowVariantFormType,
-} from "../../../components/variant-form/create-flow-variant-form"
-import { VariantOptionValueType } from "../../../components/variant-form/variant-select-options-form"
 
 const ItemTypes = {
   CARD: "card",

@@ -2,12 +2,12 @@ import { Region } from "@medusajs/medusa"
 import { Controller, UseFormReturn } from "react-hook-form"
 import IncludesTaxTooltip from "../../../../../components/atoms/includes-tax-tooltip"
 import Switch from "../../../../../components/atoms/switch"
+import PriceFormInput from "../../../../../components/forms/general/prices-form/price-form-input"
 import InputHeader from "../../../../../components/fundamentals/input-header"
 import InputField from "../../../../../components/molecules/input"
 import { NextSelect } from "../../../../../components/molecules/select/next-select"
 import { Option, ShippingOptionPriceType } from "../../../../../types/shared"
 import FormValidator from "../../../../../utils/form-validator"
-import PriceFormInput from "../../../../products/components/prices-form/price-form-input"
 import { useShippingOptionFormData } from "./use-shipping-option-form-data"
 
 type Requirement = {
