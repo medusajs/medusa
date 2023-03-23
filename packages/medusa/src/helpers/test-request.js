@@ -1,3 +1,8 @@
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -7,11 +12,6 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
-import {
-  moduleLoader,
-  moduleHelper,
-  registerModules,
-} from "@medusajs/modules-sdk"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"

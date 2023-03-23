@@ -1,14 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import SwapService from "../swap"
-import {
-  ProductVariantInventoryServiceMock
-} from "../__mocks__/product-variant-inventory"
-import {
-  LineItemAdjustmentServiceMock
-} from "../__mocks__/line-item-adjustment"
+import { Order, Swap } from "../../models"
+import { SwapRepository } from "../../repositories/swap"
+import CartService from "../cart"
+import EventBusService from "../event-bus"
 import {
   CustomShippingOptionService,
-  EventBusService,
   FulfillmentService,
   LineItemService,
   OrderService,
@@ -16,12 +12,16 @@ import {
   ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
-  TotalsService,
+  TotalsService
 } from "../index"
-import CartService from "../cart"
-import { Order, Swap } from "../../models"
-import { SwapRepository } from "../../repositories/swap"
 import LineItemAdjustmentService from "../line-item-adjustment"
+import SwapService from "../swap"
+import {
+  LineItemAdjustmentServiceMock
+} from "../__mocks__/line-item-adjustment"
+import {
+  ProductVariantInventoryServiceMock
+} from "../__mocks__/product-variant-inventory"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 

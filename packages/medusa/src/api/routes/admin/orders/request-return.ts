@@ -4,22 +4,20 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
 import {
   EventBusService,
   OrderService,
-  ReturnService,
+  ReturnService
 } from "../../../../services"
 
 import { Type } from "class-transformer"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { Order, Return } from "../../../../models"
-import { OrdersReturnItem } from "../../../../types/orders"
 import { FindParams } from "../../../../types/common"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { IInventoryService } from "../../../../interfaces"
+import { OrdersReturnItem } from "../../../../types/orders"
 
 /**
  * @oas [post] /admin/orders/{id}/return

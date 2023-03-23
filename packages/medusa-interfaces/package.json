@@ -35,9 +35,5 @@
     "medusa-test-utils": "^1.1.37",
     "typescript": "^4.4.4"
   },
-  "peerDependencies": {
-    "medusa-core-utils": "^1.1.39",
-    "typeorm": "0.x"
-  },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }

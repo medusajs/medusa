@@ -1,13 +1,10 @@
 import { IdMap, MockManager as manager } from "medusa-test-utils"
-import ProductCategoryService from "../product-category"
-import { EventBusService } from "../"
+import { EventBusService, ProductCategoryService } from "../"
 import {
   invalidProdCategoryId,
   productCategoryRepositoryMock as productCategoryRepository,
   validProdCategoryId,
-  validProdCategoryIdWithChildren,
-  validProdCategoryWithSiblings,
-  validProdCategoryRankChange
+  validProdCategoryIdWithChildren, validProdCategoryRankChange, validProdCategoryWithSiblings
 } from "../../repositories/__mocks__/product-category"
 import { tempReorderRank } from "../../types/product-category"
 import { EventBusServiceMock as eventBusService } from "../__mocks__/event-bus"
@@ -74,7 +71,9 @@ describe("ProductCategoryService", () => {
       const [result, count] = await productCategoryService
         .listAndCount({ q: IdMap.getId(invalidProdCategoryId) })
 
-      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
+      expect(
+        productCategoryRepository.getFreeTextSearchResultsAndCount
+      ).toHaveBeenCalledTimes(1)
       expect(result).toEqual([])
       expect(count).toEqual(0)
     })
@@ -115,8 +114,9 @@ describe("ProductCategoryService", () => {
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-category.created", {
-          "id": IdMap.getId(validProdCategoryId)
+        "product-category.created",
+        {
+          id: IdMap.getId(validProdCategoryId),
         }
       )
     })
@@ -129,7 +129,9 @@ describe("ProductCategoryService", () => {
       )
 
       expect(productCategoryRepository.delete).toBeCalledTimes(1)
-      expect(productCategoryRepository.delete).toBeCalledWith(IdMap.getId(validProdCategoryId))
+      expect(productCategoryRepository.delete).toBeCalledWith(
+        IdMap.getId(validProdCategoryId)
+      )
     })
 
     it("returns without failure on not-found product category id", async () => {
@@ -156,8 +158,9 @@ describe("ProductCategoryService", () => {
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-category.deleted", {
-          "id": IdMap.getId(validProdCategoryId)
+        "product-category.deleted",
+        {
+          id: IdMap.getId(validProdCategoryId),
         }
       )
     })
@@ -182,11 +185,9 @@ describe("ProductCategoryService", () => {
 
   describe("update", () => {
     it("successfully updates a product category", async () => {
-      await productCategoryService.update(
-        IdMap.getId(validProdCategoryId), {
-          name: "bathrobes",
-        }
-      )
+      await productCategoryService.update(IdMap.getId(validProdCategoryId), {
+        name: "bathrobes",
+      })
 
       expect(productCategoryRepository.save).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.save).toHaveBeenCalledWith(
@@ -221,28 +222,32 @@ describe("ProductCategoryService", () => {
     })
 
     it("fails on not-found Id product category", async () => {
-      const error = await productCategoryService.update(
-        IdMap.getId(invalidProdCategoryId), {
+      const error = await productCategoryService
+        .update(IdMap.getId(invalidProdCategoryId), {
           name: "bathrobes",
-        }
-      ).catch(e => e)
+        })
+        .catch((e) => e)
 
       expect(error.message).toBe(
-        `ProductCategory with id: ${IdMap.getId(invalidProdCategoryId)} was not found`
+        `ProductCategory with id: ${IdMap.getId(
+          invalidProdCategoryId
+        )} was not found`
       )
     })
 
     it("emits a message on successful update", async () => {
       const result = await productCategoryService.update(
-        IdMap.getId(validProdCategoryId), {
+        IdMap.getId(validProdCategoryId),
+        {
           name: "bathrobes",
         }
       )
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-category.updated", {
-          "id": IdMap.getId(validProdCategoryId)
+        "product-category.updated",
+        {
+          id: IdMap.getId(validProdCategoryId),
         }
       )
     })

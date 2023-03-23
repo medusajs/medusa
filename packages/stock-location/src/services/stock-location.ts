@@ -3,13 +3,12 @@ import {
   CreateStockLocationInput,
   FilterableStockLocationProps,
   FindConfig,
-  IEventBusService,
   setMetadata,
   StockLocationAddressInput,
-  UpdateStockLocationInput,
+  UpdateStockLocationInput
 } from "@medusajs/medusa"
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { SharedContext } from "@medusajs/types"
+import { EventBusTypes, SharedContext } from "@medusajs/types"
 import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -17,7 +16,7 @@ import { StockLocation, StockLocationAddress } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventBusTypes.IEventBusService
 }
 
 /**
@@ -32,7 +31,7 @@ export default class StockLocationService {
   }
 
   protected readonly manager_: EntityManager
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusTypes.IEventBusService
 
   constructor(
     { eventBusService, manager }: InjectedDependencies,

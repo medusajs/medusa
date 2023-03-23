@@ -8,14 +8,17 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
 
 ```js
 {
-  application_id: "someId",
-  admin_api_key: "someApiKey",
+  applicationId: "someId",
+  adminApiKey: "someApiKey",
   settings: {
     [indexName]: [algolia settings passed to algolia's `updateSettings()` method]
     // example
     products: {
-      searchableAttributes: ["title", "description", "variant_sku", "type_value"],
-      attributesToRetrieve: ["title", "description", "variant_sku", "type_value"],
+      indexSettings: {
+        searchableAttributes: ["title", "description", "variant_sku", "type_value"],
+        attributesToRetrieve: ["title", "description", "variant_sku", "type_value"],
+      }
+      transformer: (product: Product) => ({ id: product.id })
     }
   }
 }

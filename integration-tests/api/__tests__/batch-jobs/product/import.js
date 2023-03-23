@@ -63,7 +63,6 @@ describe("Product import batch job", () => {
 
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
   })
@@ -81,7 +80,7 @@ describe("Product import batch job", () => {
     await batchJobSeeder(dbConnection)
     await adminSeeder(dbConnection)
     await userSeeder(dbConnection)
-     await simpleProductCollectionFactory(dbConnection, [
+    await simpleProductCollectionFactory(dbConnection, [
       {
         handle: collectionHandle1,
       },
