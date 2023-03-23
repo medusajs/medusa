@@ -3,7 +3,6 @@ import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
-  ICacheService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
