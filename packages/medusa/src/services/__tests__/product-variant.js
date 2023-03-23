@@ -274,10 +274,6 @@ describe("ProductVariantService", () => {
       },
     }
 
-    const cacheService = {
-      invalidate: (id) => Promise.resolve(),
-    }
-
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
@@ -298,7 +294,6 @@ describe("ProductVariantService", () => {
       productVariantRepository,
       productOptionValueRepository,
       cartRepository,
-      cacheService,
       priceSelectionStrategy,
     })
 
@@ -655,9 +650,6 @@ describe("ProductVariantService", () => {
       .mockImplementation(() => Promise.resolve())
 
     const regionService = {
-      withTransaction: function () {
-        return this
-      },
       list: jest.fn().mockImplementation((config) => {
         const idOrIds = config.id
 

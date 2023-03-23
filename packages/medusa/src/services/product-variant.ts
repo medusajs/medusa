@@ -11,7 +11,6 @@ import {
   SelectQueryBuilder,
 } from "typeorm"
 import {
-  ICacheService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   TransactionBaseService,
@@ -54,7 +53,6 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly productRepository_: typeof ProductRepository
   protected readonly eventBus_: EventBusService
   protected readonly regionService_: RegionService
-  protected readonly cacheService_: ICacheService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly moneyAmountRepository_: typeof MoneyAmountRepository
   // eslint-disable-next-line max-len
@@ -69,7 +67,6 @@ class ProductVariantService extends TransactionBaseService {
     moneyAmountRepository,
     productOptionValueRepository,
     cartRepository,
-    cacheService,
     priceSelectionStrategy,
   }) {
     // eslint-disable-next-line prefer-rest-params
@@ -79,7 +76,6 @@ class ProductVariantService extends TransactionBaseService {
     this.productRepository_ = productRepository
     this.eventBus_ = eventBusService
     this.regionService_ = regionService
-    this.cacheService_ = cacheService
     this.moneyAmountRepository_ = moneyAmountRepository
     this.productOptionValueRepository_ = productOptionValueRepository
     this.cartRepository_ = cartRepository
@@ -299,7 +295,6 @@ class ProductVariantService extends TransactionBaseService {
 
       if (prices) {
         await this.updateVariantPrices(variant.id!, prices)
-        await this.cacheService_.invalidate(`ps:${variant.id}:*`)
       }
 
       if (options) {
@@ -372,6 +367,10 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
+
+      await this.priceSelectionStrategy_
+        .withTransaction(manager)
+        .onVariantsPricesUpdate([variantId])
     })
   }
 

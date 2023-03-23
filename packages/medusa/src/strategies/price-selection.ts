@@ -238,6 +238,14 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     return result
   }
 
+  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
+    await Promise.all(
+      variantIds.map(
+        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)
+      )
+    )
+  }
+
   private getCacheKey(
     variantId: string,
     context: PriceSelectionContext
