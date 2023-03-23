@@ -10,7 +10,7 @@ In this document, you’ll learn how to deploy the Next.js Storefront on Vercel.
 Alternatively, you can directly deploy the Next.js storefront to Vercel with this button.
 
 <a 
-  href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmedusajs%2Fnextjs-starter-medusa.git&env=NEXT_PUBLIC_MEDUSA_BACKEND_URL&envDescription=URL%20of%20your%20Medusa%20Backend" class="img-url">
+  href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmedusajs%2Fnextjs-starter-medusa.git&env=NEXT_PUBLIC_MEDUSA_BACKEND_URL&envDescription=URL%20of%20your%20Medusa%20Backend" class="img-url no-zoom-img">
   <img src="https://vercel.com/button" alt="Deploy with Vercel" class="no-zoom-img"/>
 </a>
 
