@@ -5642,6 +5642,7 @@ __metadata:
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
     medusa-react: "*"
+    moment: ^2.29.4
     pluralize: ^8.0.0
     postcss: ^8.4.21
     query-string: ^8.1.0
@@ -29738,7 +29739,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.19.3, moment@npm:^2.27.0, moment@npm:^2.29.1":
+"moment@npm:^2.19.3, moment@npm:^2.27.0, moment@npm:^2.29.1, moment@npm:^2.29.4":
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
   checksum: 844c6f3ce42862ac9467c8ca4f5e48a00750078682cc5bda1bc0e50cc7ca88e2115a0f932d65a06e4a90e26cb78892be9b3ca3dd6546ca2c4d994cebb787fc2b
