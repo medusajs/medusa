@@ -65,7 +65,7 @@ module.exports = {
     {
       type: 'doc',
       id: 'admin/quickstart',
-      label: 'Medusa Admin',
+      label: 'Admin Dashboard',
       customProps: {
         sidebar_icon: 'computer-desktop'
       },
@@ -324,12 +324,12 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Medusa Admin Errors',
+          label: 'Admin Dashboard Errors',
           items: [
             {
               type: 'doc',
               id: 'troubleshooting/signing-in-to-admin',
-              label: 'Signing in to Medusa Admin',
+              label: 'Signing in to the Admin Dashboard',
             },
           ]
         },
@@ -1677,7 +1677,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Medusa Admin',
+      label: 'Admin Dashboard',
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true
