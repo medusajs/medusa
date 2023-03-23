@@ -13,3 +13,9 @@
   border-color: var(--medusa-tag-purple-border);
   color: var(--medusa-tag-purple-text);
 }
+
+.orangeBadge {
+  background-color: var(--medusa-tag-orange-bg);
+  border-color: var(--medusa-tag-orange-border);
+  color: var(--medusa-tag-orange-text);
+}
