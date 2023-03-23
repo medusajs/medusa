@@ -649,6 +649,13 @@ describe("ProductVariantService", () => {
       .fn()
       .mockImplementation(() => Promise.resolve())
 
+    const priceSelectionStrategy = {
+      withTransaction: function () {
+        return this
+      },
+      onVariantsPricesUpdate: (variantIds) => Promise.resolve(),
+    }
+
     const regionService = {
       list: jest.fn().mockImplementation((config) => {
         const idOrIds = config.id
@@ -676,6 +683,7 @@ describe("ProductVariantService", () => {
       manager: MockManager,
       eventBusService,
       regionService,
+      priceSelectionStrategy,
       moneyAmountRepository,
     })
 
