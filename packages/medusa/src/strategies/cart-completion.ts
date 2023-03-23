@@ -1,8 +1,8 @@
 import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
-  IInventoryService,
 } from "../interfaces"
+import { IInventoryService, ReservationItemDTO } from "@medusajs/types"
 import { IdempotencyKey, Order } from "../models"
 import OrderService, {
   ORDER_CART_ALREADY_EXISTS_ERROR,
@@ -17,7 +17,6 @@ import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../services/idempotency-key"
 import { MedusaError } from "medusa-core-utils"
 import { RequestContext } from "../types/request"
-import { ReservationItemDTO } from "../types/inventory"
 import SwapService from "../services/swap"
 
 type InjectedDependencies = {
