@@ -222,7 +222,7 @@ module.exports = {
               id: 'deployments/admin/deploying-on-netlify',
               label: 'Deploy on Netlify',
               customProps: {
-                image: 'https://i.imgur.com/gCbsCvX.png'
+                image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png'
               }
             },
           ]
@@ -237,10 +237,25 @@ module.exports = {
           items: [
             {
               type: 'doc',
+              id: 'deployments/storefront/deploying-next-on-vercel',
+              label: 'Deploy Next.js on Vercel',
+              customProps: {
+                themedImage: {
+                  light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574115/Medusa%20Docs/Other/vercel-icon-dark_llkb7l.png',
+                  dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574132/Medusa%20Docs/Other/vercel-icon-light_obvtno.png'
+                }
+              }
+            },
+            {
+              type: 'doc',
               id: 'deployments/storefront/deploying-gatsby-on-netlify',
               label: 'Deploy Gatsby on Netlify',
               customProps: {
-                image: 'https://i.imgur.com/gCbsCvX.png'
+                image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png',
+                badge: {
+                  variant: 'orange',
+                  children: 'Deprecated'
+                }
               }
             },
           ]
