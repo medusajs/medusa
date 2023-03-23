@@ -7,19 +7,19 @@ import Feedback from '@site/src/components/Feedback';
 
 # Medusa Admin Quickstart
 
-This document will guide you through setting up the Medusa admin in minutes, as well as some of its features.
+This document will guide you through setting up the Medusa admin dashboard.
+
+:::note
+
+Medusa Admin is now shipped as an NPM package and the previous GitHub repository has been deprecated.
+
+:::
 
 ## Prerequisites
 
 ### Medusa Backend
 
-The Medusa admin is connected to the Medusa backend. So, make sure to install the Medusa backend first before proceeding with the admin. You can check out the [quickstart guide to install the Medusa backend](../development/backend/install.mdx).
-
-:::tip
-
-If you’re not very familiar with Medusa’s architecture, you can learn more about it in the [Architecture Overview](../development/fundamentals/architecture-overview.md).
-
-:::
+As the Medusa Admin is essentially a plugin installed on the Medusa Backend, you must have a Medusa Backend installed first. You can learn how to install it in [this documentation](../development/backend/install.mdx).
 
 ### Node.js
 
@@ -33,36 +33,49 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ---
 
-## Instant Deployment to Netlify
-
-Instead of manually following this guide to install then later deploy the Medusa Admin, you can deploy the Medusa Admin to Netlify with this button:
-
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/admin" className="img-url">
-  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" className="no-zoom-img" />
-</a>
-
----
-
 ## Install the Admin
 
-:::tip
+### Step 1: Install the Package
 
-It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
-
-:::
-
-Start by cloning the [Admin GitHub repository](https://github.com/medusajs/admin) and changing to the cloned directory:
-
-```bash
-git clone https://github.com/medusajs/admin medusa-admin
-cd medusa-admin
-```
-
-Then, install the dependencies:
+In the directory of your Medusa backend, run the following command to install Medusa Admin:
 
 ```bash npm2yarn
-npm install
+npm install @medusajs/admin
 ```
+
+### Step 2: Add to Medusa Configurations
+
+In `medusa-config.js`, add the Medusa Admin plugin into the array of `plugins`:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      //...
+    },
+  },
+]
+```
+
+The plugin accepts the following options:
+
+1. `serve`: (default: `true`) whether to serve the admin dashboard when the Medusa backend starts.
+2. `path`: (default: `app`) the path the admin server should run on. It should not be prefixed or suffixed with a slash, and it cannot be one of the reserved paths: "admin" and "store".
+3. `outDir`: Optional path for where to output the admin build files.
+4. `autoRebuild`: (default: `false`) whether the admin UI should be rebuilt if there are any changes or if a missing build is detected when the backend starts.
+
+### Step 3: Run Medusa Admin
+
+To run the Medusa Admin, you can simply start the Medusa Backend:
+
+```bash npm2yarn
+npm run start
+```
+
+By default, the admin will be available on the URL `localhost:9000/app`. If you set the `path` option, then the admin will be available on `localhost:9000/<PATH>` with `<PATH>` being the value of the `path` option.
 
 <Feedback 
    event="survey_admin_quickstart"
@@ -79,33 +92,7 @@ If you run into errors during the installation, check out [this troubleshooting 
 
 ---
 
-## Test it Out
-
-Before running your Medusa admin, make sure that your Medusa backend is running.
-
-:::tip
-
-To run your Medusa backend, go to the directory holding the backend and run:
-
-```bash npm2yarn
-npm run start
-```
-
-:::
-
-Then, in the directory holding your Medusa admin, run the following to start the development server:
-
-```bash npm2yarn
-npm run start
-```
-
-By default, the admin runs on port 7000. So, in your browser, go to `localhost:7000` to view your admin.
-
-![Admin Log In](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001604/Medusa%20Docs/Screenshots/XYqMCo9_hq1fsv.png)
-
-Use your Medusa admin’s user credentials to log in.
-
-### Demo Credentials
+## Demo Credentials
 
 If you installed the demo data when you installed the Medusa backend by using the `--seed` option or running:
 
@@ -135,31 +122,28 @@ This will create a new user that you can use to log into your admin panel.
 
 ---
 
-## Changing the Default Port
+## Manually Building Admin Dashboard
 
-The default port is set in `package.json` in the `dev` script:
+The admin dashboard is built automatically the first time you run the backend and if you have enabled the `autoRebuild` option, which rebuilds the admin dashboard whenever you make changes while the backend is running.
+
+In some case it's useful to manually build the admin dashboard, such as when you update to a newer version of `@medusajs/admin`, or if the `autoRebuild` option is disabled.
+
+You can add the following script to `package.json` which manually builds the admin:
 
 ```json
-"dev": "vite --port 7000",
+{
+  "scripts": {
+    // other scripts...
+    "build:admin": "medusa-admin build"
+  }
+}
 ```
 
-If you wish to change the port you can simply change the `7000` to your desired port.
+After that, you can manually build the admin dashboard by running the following command:
 
-However, if you change your Medusa admin port, you need to change it in your Medusa backend. The Medusa backend has the Medusa admin and store URLs set in the configurations to avoid Cross-Origin Resource Sharing (CORS) issues.
-
-To change the URL of the Medusa admin in the backend, add a new environment variable `ADMIN_CORS` or modify it if you already have it to your Admin URL:
-
-```bash
-ADMIN_CORS=<YOUR_ADMIN_URL>
+```bash npm2yarn
+npm run build:admin
 ```
-
-Make sure to replace `<YOUR_ADMIN_URL>` with your URL.
-
-:::info
-
-For more details about the Admin CORS configuration, check out the [Configure your Backend documentation](../development/backend/configurations.md#admin-cors).
-
-:::
 
 ---
 
@@ -168,11 +152,3 @@ For more details about the Admin CORS configuration, check out the [Configure yo
 Medusa admin provides a lot of ecommerce features including managing Return Merchandise Authorization (RMA) flows, store settings, products, orders, and much more.
 
 You can learn more about Medusa admin and its features in the [User Guide](../user-guide.mdx).
-
----
-
-## See Also
-
-- [Customize Medusa Admin](./development.md)
-- Install the [Next.js](../starters/nextjs-medusa-starter.mdx) storefront starter.
-- [Use `create-medusa-app` to install all of Medusa’s 3 components.](../create-medusa-app.mdx)
