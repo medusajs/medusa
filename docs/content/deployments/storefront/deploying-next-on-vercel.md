@@ -25,7 +25,7 @@ It’s also assumed you already have the Medusa backend deployed, which the Next
 ### Required Accounts
 
 - [Vercel Account](https://vercel.com)
-- [GitHub Account](https://github.com/)
+- [GitHub Account](https://github.com/): Only required if you’re deploying through the Vercel website.
 
 :::note
 
@@ -35,11 +35,17 @@ If you want to use another Git Provider, it’s possible to follow along with th
 
 ### Required Tools
 
-- [Git CLI](../../development/backend/prepare-environment.mdx)
+- [Git CLI](../../development/backend/prepare-environment.mdx): Only required if you’re deploying through the Vercel website.
 
 ---
 
 ## Step 1: Create GitHub Repository
+
+:::note
+
+This step is only required if you’re deploying from the Vercel website. However, it’s highly recommended to connect your Vercel project to a Git repository for a better developer experience.
+
+:::
 
 Before you can deploy your Next.js storefront, you need to create a GitHub repository and push the code base to it. To do that:
 
@@ -53,7 +59,7 @@ The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
 
-Copy the link. Then, open your terminal in the directory that holds your Gatsby storefront codebase and run the following commands:
+Copy the link. Then, open your terminal in the directory that holds your Next.js storefront codebase and run the following commands:
 
 ```bash
 git init
