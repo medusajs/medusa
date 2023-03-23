@@ -1,3 +1,3 @@
 export const indexTypes = {
-    PRODUCTS: "products"
-};
+  PRODUCTS: "products",
+}

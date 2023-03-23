@@ -1,9 +1,8 @@
-import { Request, Response } from "express"
+import { IInventoryService } from "@medusajs/types"
 import { IsNumber, IsOptional, Min } from "class-validator"
-
-import { IInventoryService } from "../../../../interfaces"
-import { FindParams } from "../../../../types/common"
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels/{location_id}

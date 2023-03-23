@@ -1,16 +1,14 @@
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { EntityManager } from "typeorm"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { IInventoryService } from "../../../../interfaces"
-import { validator } from "../../../../utils/validator"
-
-import { EntityManager } from "typeorm"
-
-import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
-import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
+import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
 
 /**
  * @oas [post] /admin/inventory-items

@@ -1,4 +1,5 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { IInventoryService } from "@medusajs/types"
+import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -8,43 +9,6 @@ import {
   Not,
   Raw,
 } from "typeorm"
-import { IInventoryService, TransactionBaseService } from "../interfaces"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import {
-  Address,
-  Cart,
-  ClaimOrder,
-  Fulfillment,
-  FulfillmentItem,
-  FulfillmentStatus,
-  GiftCard,
-  LineItem,
-  Order,
-  OrderStatus,
-  Payment,
-  PaymentStatus,
-  Return,
-  Swap,
-  TrackingLink
-} from "../models"
-import { AddressRepository } from "../repositories/address"
-import { OrderRepository } from "../repositories/order"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
-import {
-  CreateFulfillmentOrder,
-  FulFillmentItemType
-} from "../types/fulfillment"
-import { TotalsContext, UpdateOrderInput } from "../types/orders"
-import { CreateShippingMethodDto } from "../types/shipping-options"
-import {
-  buildQuery,
-  buildRelations,
-  buildSelects,
-  isString,
-  setMetadata,
-} from "../utils"
-import { FlagRouter } from "../utils/flag-router"
-
 import {
   CartService,
   CustomerService,
@@ -61,8 +25,43 @@ import {
   ShippingOptionService,
   ShippingProfileService,
   TaxProviderService,
-  TotalsService
+  TotalsService,
 } from "."
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import {
+  Address,
+  Cart,
+  ClaimOrder,
+  Fulfillment,
+  FulfillmentItem,
+  FulfillmentStatus,
+  GiftCard,
+  LineItem,
+  Order,
+  OrderStatus,
+  Payment,
+  PaymentStatus,
+  Return,
+  Swap,
+  TrackingLink,
+} from "../models"
+import { AddressRepository } from "../repositories/address"
+import { OrderRepository } from "../repositories/order"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
+import {
+  CreateFulfillmentOrder,
+  FulFillmentItemType,
+} from "../types/fulfillment"
+import { TotalsContext, UpdateOrderInput } from "../types/orders"
+import { CreateShippingMethodDto } from "../types/shipping-options"
+import {
+  buildQuery,
+  buildRelations,
+  buildSelects,
+  isString,
+  setMetadata,
+} from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"

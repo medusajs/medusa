@@ -1,7 +1,7 @@
+import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import { IInventoryService } from "../../../../interfaces"
 import {
   extendedFindParamsMixin,
   NumericalComparisonOperator,

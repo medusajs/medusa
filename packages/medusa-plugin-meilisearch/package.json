@@ -19,11 +19,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/utils": "*",
+    "@medusajs/utils": "^0.0.1",
+    "body-parser": "^1.19.0",
+    "lodash": "^4.17.21",
     "meilisearch": "^0.31.1"
   },
   "devDependencies": {
-    "@medusajs/types": "*",
+    "@medusajs/medusa": "^1.7.12",
+    "@medusajs/types": "^0.0.1",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "typescript": "^4.9.5"

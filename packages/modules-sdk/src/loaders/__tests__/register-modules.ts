@@ -1,10 +1,10 @@
-import MODULE_DEFINITIONS from "../../definitions"
 import {
   InternalModuleDeclaration,
   ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types"
+} from "@medusajs/types"
+import MODULE_DEFINITIONS from "../../definitions"
 import { registerModules } from "../register-modules"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"

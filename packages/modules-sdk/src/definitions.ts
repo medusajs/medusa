@@ -1,4 +1,8 @@
-import { ModuleDefinition, MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
+import {
+  ModuleDefinition,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
+} from "@medusajs/types"
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {

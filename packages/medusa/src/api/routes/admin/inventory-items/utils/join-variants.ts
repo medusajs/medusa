@@ -1,9 +1,9 @@
+import { InventoryItemDTO } from "@medusajs/types"
+import { ProductVariant } from "../../../../../models"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../../services"
-import { InventoryItemDTO } from "../../../../../types/inventory"
-import { ProductVariant } from "../../../../../models"
 
 export type InventoryItemsWithVariants = Partial<InventoryItemDTO> & {
   variants?: ProductVariant[]

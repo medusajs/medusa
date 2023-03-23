@@ -1,4 +1,4 @@
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 import { joinLevels } from "./utils/join-levels"
