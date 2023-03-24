@@ -70,7 +70,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         ? "CAPTURE"
         : "AUTHORIZE"
 
-      session_data = await this.paypal_.createOrders({
+      session_data = await this.paypal_.createOrder({
         intent,
         purchase_units: [
           {
@@ -141,10 +141,10 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         const payments = purchase_units[0].payments
 
         const payId = payments.captures[0].id
-        await this.paypal_.capturesRefund(payId)
+        await this.paypal_.refundPayment(payId)
       } else {
         const id = purchase_units[0].payments.authorizations[0].id
-        await this.paypal_.authorizationsVoid(id)
+        await this.paypal_.cancelAuthorizedPayment(id)
       }
 
       return (await this.retrievePayment(
@@ -168,7 +168,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     const id = purchase_units[0].payments.authorizations[0].id
 
     try {
-      await this.paypal_.authorizationsCapture(id)
+      await this.paypal_.captureAuthorizedPayment(id)
       return await this.retrievePayment(paymentSessionData)
     } catch (error) {
       return this.buildError("An error occurred in capturePayment", error)
@@ -210,7 +210,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
 
       const paymentId = payments.captures[0].id
       const currencyCode = purchaseUnit.amount.currency_code
-      await this.paypal_.capturesRefund(paymentId, {
+      await this.paypal_.refundPayment(paymentId, {
         amount: {
           currency_code: currencyCode,
           value: roundToTwo(
@@ -233,7 +233,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   > {
     try {
       const id = paymentSessionData.id as string
-      return (await this.paypal_.getOrders(
+      return (await this.paypal_.getOrder(
         id
       )) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (e) {
@@ -248,7 +248,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
       const { currency_code, amount } = context
       const id = context.paymentSessionData.id as string
 
-      await this.paypal_.patchOrders(id, [
+      await this.paypal_.patchOrder(id, [
         {
           op: "replace",
           path: "/purchase_units/@reference_id=='default'",

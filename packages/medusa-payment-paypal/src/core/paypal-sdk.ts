@@ -26,7 +26,7 @@ export class PaypalSdk {
    * Create a new order.
    * @param data
    */
-  async createOrders(data: CreateOrder): Promise<CreateOrderResponse> {
+  async createOrder(data: CreateOrder): Promise<CreateOrderResponse> {
     const url = PaypalApiPath.CREATE_ORDER
     return await this.httpClient_.request({ url, data })
   }
@@ -35,7 +35,7 @@ export class PaypalSdk {
    * Retrieve an order.
    * @param orderId
    */
-  async getOrders(orderId: string): Promise<GetOrderResponse> {
+  async getOrder(orderId: string): Promise<GetOrderResponse> {
     const url = PaypalApiPath.GET_ORDER.replace("{id}", orderId)
     return await this.httpClient_.request({ url, method: "GET" })
   }
@@ -45,7 +45,7 @@ export class PaypalSdk {
    * @param orderId
    * @param data
    */
-  async patchOrders(orderId: string, data?: PatchOrder[]): Promise<void> {
+  async patchOrder(orderId: string, data?: PatchOrder[]): Promise<void> {
     const url = PaypalApiPath.PATCH_ORDER.replace("{id}", orderId)
     return await this.httpClient_.request({ url, method: "PATCH" })
   }
@@ -57,7 +57,7 @@ export class PaypalSdk {
    * @param paymentId
    * @param data
    */
-  async capturesRefund(
+  async refundPayment(
     paymentId: string,
     data?: CapturesRefund
   ): Promise<CapturesRefundResponse> {
@@ -69,7 +69,7 @@ export class PaypalSdk {
    * Voids, or cancels, an authorized payment, by ID. You cannot void an authorized payment that has been fully captured.
    * @param authorizationId
    */
-  async authorizationsVoid(authorizationId: string): Promise<void> {
+  async cancelAuthorizedPayment(authorizationId: string): Promise<void> {
     const url = PaypalApiPath.AUTHORIZATION_VOID.replace(
       "{id}",
       authorizationId
@@ -83,7 +83,7 @@ export class PaypalSdk {
    * @param authorizationId
    * @param data
    */
-  async authorizationsCapture(
+  async captureAuthorizedPayment(
     authorizationId: string,
     data?: CapturesAuthorization
   ): Promise<CapturesAuthorizationResponse> {
