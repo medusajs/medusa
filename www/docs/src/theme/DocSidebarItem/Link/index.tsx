@@ -5,18 +5,24 @@ import { isActiveSidebarItem } from "@docusaurus/theme-common/internal"
 import Link from "@docusaurus/Link"
 import isInternalUrl from "@docusaurus/isInternalUrl"
 import IconExternalLink from "@theme/Icon/ExternalLink"
+import type { Props } from "@theme/DocSidebarItem/Link"
+import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
+
 import styles from "./styles.module.css"
-import DocSidebarItemIcon from "../Icon"
-import Badge from "../../../components/Badge"
+import Badge from "@site/src/components/Badge/index"
+import { ModifiedPropSidebarItemLink } from "@site/src/types/sidebar-items"
+
+type ModifiedProps = Props & {
+  item: ModifiedPropSidebarItemLink
+}
 
 export default function DocSidebarItemLink({
   item,
   onItemClick,
   activePath,
   level,
-  index,
   ...props
-}) {
+}: ModifiedProps): JSX.Element {
   const { href, label, className, autoAddBaseUrl, customProps } = item
   const isActive = isActiveSidebarItem(item, activePath)
   const isInternalLink = isInternalUrl(href)

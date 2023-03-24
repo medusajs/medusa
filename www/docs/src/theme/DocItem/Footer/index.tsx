@@ -1,12 +1,17 @@
 import React from "react"
 import Footer from "@theme-original/DocItem/Footer"
-import Feedback from "../../../components/Feedback"
+import type FooterType from "@theme/DocItem/Footer"
+import type { WrapperProps } from "@docusaurus/types"
+import Feedback from "@site/src/components/Feedback/index"
 import { useDoc } from "@docusaurus/theme-common/internal"
 import { useThemeConfig } from "@docusaurus/theme-common"
+import ThemeConfig from "@site/src/types/theme-config"
 
-export default function FooterWrapper(props) {
+type Props = WrapperProps<typeof FooterType>
+
+export default function FooterWrapper(props: Props): JSX.Element {
   const { metadata } = useDoc()
-  const { footerFeedback = { event: "" } } = useThemeConfig()
+  const { footerFeedback = { event: "" } } = useThemeConfig() as ThemeConfig
 
   return (
     <>

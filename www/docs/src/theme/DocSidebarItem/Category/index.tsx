@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from "react"
+import React, { type ComponentProps, useEffect, useMemo } from "react"
 import clsx from "clsx"
 import {
   ThemeClassNames,
   useThemeConfig,
   usePrevious,
-  useCollapsible,
   Collapsible,
+  useCollapsible,
 } from "@docusaurus/theme-common"
 import {
   isActiveSidebarItem,
@@ -17,11 +17,26 @@ import Link from "@docusaurus/Link"
 import { translate } from "@docusaurus/Translate"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import DocSidebarItems from "@theme/DocSidebarItems"
-import DocSidebarItemIcon from "../Icon"
+import type { Props } from "@theme/DocSidebarItem/Category"
+import Badge from "@site/src/components/Badge/index"
+import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
+import { ModifiedPropSidebarItemCategory } from "@site/src/types/sidebar-items"
+
+type ModifiedProps = Props & {
+  item: ModifiedPropSidebarItemCategory
+}
 
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
-function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
+function useAutoExpandActiveCategory({
+  isActive,
+  collapsed,
+  updateCollapsed,
+}: {
+  isActive: boolean
+  collapsed: boolean
+  updateCollapsed: (b: boolean) => void
+}) {
   const wasActive = usePrevious(isActive)
   useEffect(() => {
     const justBecameActive = isActive && !wasActive
@@ -30,6 +45,7 @@ function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
     }
   }, [isActive, wasActive, collapsed, updateCollapsed])
 }
+
 /**
  * When a collapsible category has no link, we still link it to its first child
  * during SSR as a temporary fallback. This allows to be able to navigate inside
@@ -38,7 +54,9 @@ function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
  * see https://github.com/facebookincubator/infima/issues/36#issuecomment-772543188
  * see https://github.com/facebook/docusaurus/issues/3030
  */
-function useCategoryHrefWithSSRFallback(item) {
+function useCategoryHrefWithSSRFallback(
+  item: Props["item"]
+): string | undefined {
   const isBrowser = useIsBrowser()
   return useMemo(() => {
     if (item.href) {
@@ -52,7 +70,14 @@ function useCategoryHrefWithSSRFallback(item) {
     return findFirstCategoryLink(item)
   }, [item, isBrowser])
 }
-function CollapseButton({ categoryLabel, onClick }) {
+
+function CollapseButton({
+  categoryLabel,
+  onClick,
+}: {
+  categoryLabel: string
+  onClick: ComponentProps<"button">["onClick"]
+}) {
   return (
     <button
       aria-label={translate(
@@ -70,6 +95,7 @@ function CollapseButton({ categoryLabel, onClick }) {
     />
   )
 }
+
 export default function DocSidebarItemCategory({
   item,
   onItemClick,
@@ -77,7 +103,7 @@ export default function DocSidebarItemCategory({
   level,
   index,
   ...props
-}) {
+}: ModifiedProps): JSX.Element {
   const { items, label, collapsible, className, href, customProps } = item
   const {
     docs: {
@@ -85,8 +111,10 @@ export default function DocSidebarItemCategory({
     },
   } = useThemeConfig()
   const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item)
+
   const isActive = isActiveSidebarItem(item, activePath)
   const isCurrentPage = isSamePath(href, activePath)
+
   const { collapsed, setCollapsed } = useCollapsible({
     // Active categories are always initialized as expanded. The default
     // (`item.collapsed`) is only used for non-active categories.
@@ -97,6 +125,7 @@ export default function DocSidebarItemCategory({
       return isActive ? false : item.collapsed
     },
   })
+
   const { expandedItem, setExpandedItem } = useDocSidebarItemsExpandedState()
   // Use this instead of `setCollapsed`, because it is also reactive
   const updateCollapsed = (toCollapsed = !collapsed) => {
@@ -114,6 +143,7 @@ export default function DocSidebarItemCategory({
       setCollapsed(true)
     }
   }, [collapsible, expandedItem, index, setCollapsed, autoCollapseCategories])
+
   return (
     <li
       className={clsx(

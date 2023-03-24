@@ -1,8 +1,16 @@
 import React from "react"
-import BorderedIcon from "../../../components/BorderedIcon"
-import icons from "../../Icon"
+import icons from "@site/src/theme/Icon"
+import BorderedIcon from "@site/src/components/BorderedIcon"
 
-export default function DocSidebarItemIcon({ icon, is_title }) {
+type DocSidebarItemIconProps = {
+  icon?: string
+  is_title?: boolean
+} & React.HTMLAttributes<HTMLSpanElement>
+
+const DocSidebarItemIcon: React.FC<DocSidebarItemIconProps> = ({
+  icon,
+  is_title,
+}) => {
   const IconComponent = icons[icon]
 
   return (
@@ -19,3 +27,5 @@ export default function DocSidebarItemIcon({ icon, is_title }) {
     </>
   )
 }
+
+export default DocSidebarItemIcon

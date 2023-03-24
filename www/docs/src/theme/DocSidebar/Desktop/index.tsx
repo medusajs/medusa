@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from "react"
 import clsx from "clsx"
 import { useThemeConfig } from "@docusaurus/theme-common"
+import Logo from "@theme/Logo"
 import CollapseButton from "@theme/DocSidebar/Desktop/CollapseButton"
 import Content from "@theme/DocSidebar/Desktop/Content"
+import type { Props } from "@theme/DocSidebar/Desktop"
+
 import styles from "./styles.module.css"
 import useIsBrowser from "@docusaurus/useIsBrowser"
-import AnnouncementBar from "@theme/AnnouncementBar"
 import { useLocation } from "@docusaurus/router"
+import AnnouncementBar from "../../AnnouncementBar/index"
 
-function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }) {
+function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
   const {
     navbar: { hideOnScroll },
     docs: {
@@ -20,19 +23,19 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }) {
   const location = useLocation()
 
   useEffect(() => {
-    if (isBrowser && sidebarRef.current) {
-      function handleScroll() {
-        if (!sidebarRef.current?.classList.contains("scrolling")) {
-          sidebarRef.current?.classList.add("scrolling")
-          const intervalId = setInterval(() => {
-            if (!sidebarRef.current?.matches(":hover")) {
-              sidebarRef.current?.classList.remove("scrolling")
-              clearInterval(intervalId)
-            }
-          }, 300)
-        }
+    function handleScroll() {
+      if (!sidebarRef.current?.classList.contains("scrolling")) {
+        sidebarRef.current?.classList.add("scrolling")
+        const intervalId = setInterval(() => {
+          if (!sidebarRef.current?.matches(":hover")) {
+            sidebarRef.current?.classList.remove("scrolling")
+            clearInterval(intervalId)
+          }
+        }, 300)
       }
+    }
 
+    if (isBrowser && sidebarRef.current) {
       const navElement = sidebarRef.current.querySelector(".main-sidebar")
       navElement.addEventListener("scroll", handleScroll)
 
@@ -93,4 +96,5 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }) {
     </div>
   )
 }
+
 export default React.memo(DocSidebarDesktop)
