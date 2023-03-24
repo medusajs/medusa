@@ -1,23 +1,25 @@
-import {
-  InventoryLevelDTO,
-  Product,
-  ProductVariant,
-  VariantInventory,
-} from "@medusajs/medusa"
-import { useAdminVariantsInventory, useMedusa } from "medusa-react"
-import { useContext } from "react"
-import { useForm } from "react-hook-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import { removeNullish } from "../../../utils/remove-nullish"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../forms/product/variant-form/edit-flow-variant-form"
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../molecules/modal/layered-modal"
+import { Product, ProductVariant, VariantInventory } from "@medusajs/medusa"
+import {
+  adminInventoryItemsKeys,
+  useAdminVariantsInventory,
+  useMedusa,
+} from "medusa-react"
+
+import Button from "../../fundamentals/button"
+import { InventoryLevelDTO } from "@medusajs/types"
+import Modal from "../../molecules/modal"
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+import { queryClient } from "../../../constants/query-client"
+import { removeNullish } from "../../../utils/remove-nullish"
+import { useContext } from "react"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { useForm } from "react-hook-form"
 
 type Props = {
   onClose: () => void
@@ -46,14 +48,15 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   const { onUpdateVariant, updatingVariant } = useEditProductActions(product.id)
 
   const onSubmit = async (data: EditFlowVariantFormType) => {
-    const locationLevels = data.stock.location_levels || []
+    const locationLevels = data.stock.stock_location || []
     const manageInventory = data.stock.manage_inventory
     delete data.stock.manage_inventory
-    delete data.stock.location_levels
+    delete data.stock.stock_location
 
     let inventoryItemId: string | undefined = itemId
 
     const upsertPayload = removeNullish(data.stock)
+    let shouldInvalidateCache = false
 
     if (variantInventoryItem) {
       // variant inventory exists and we can remove location levels
@@ -77,12 +80,16 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
             )
           })
         )
+        if (deleteLocations.length) {
+          shouldInvalidateCache = true
+        }
       }
 
       if (!manageInventory) {
         // has an inventory item but no longer wants to manage inventory
         await client.admin.inventoryItems.delete(itemId!)
         inventoryItemId = undefined
+        shouldInvalidateCache = true
       } else {
         // has an inventory item and wants to update inventory
         await client.admin.inventoryItems.update(itemId!, upsertPayload)
@@ -122,11 +129,17 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
           }
         })
       )
+      if (locationLevels.length) {
+        shouldInvalidateCache = true
+      }
     }
 
     // @ts-ignore
     onUpdateVariant(variant.id, createUpdatePayload(data), () => {
       refetch()
+      if (shouldInvalidateCache) {
+        queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
+      }
       handleClose()
     })
   }
