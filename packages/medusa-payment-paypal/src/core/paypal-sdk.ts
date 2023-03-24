@@ -7,10 +7,10 @@ import {
   PaypalSdkOptions,
 } from "./types"
 import {
-  CapturesAuthorization,
+  captureAuthorizedPayment,
   CapturesAuthorizationResponse,
-  CapturesRefund,
   CapturesRefundResponse,
+  refundPayment,
 } from "./types/payment"
 import { PaypalHttpClient } from "./paypal-http-client"
 import { VerifyWebhookSignature } from "./types/webhook"
@@ -59,7 +59,7 @@ export class PaypalSdk {
    */
   async refundPayment(
     paymentId: string,
-    data?: CapturesRefund
+    data?: refundPayment
   ): Promise<CapturesRefundResponse> {
     const url = PaypalApiPath.CAPTURE_REFUND.replace("{id}", paymentId)
     return await this.httpClient_.request({ url, data })
@@ -85,7 +85,7 @@ export class PaypalSdk {
    */
   async captureAuthorizedPayment(
     authorizationId: string,
-    data?: CapturesAuthorization
+    data?: captureAuthorizedPayment
   ): Promise<CapturesAuthorizationResponse> {
     const url = PaypalApiPath.AUTHORIZATION_CAPTURE.replace(
       "{id}",

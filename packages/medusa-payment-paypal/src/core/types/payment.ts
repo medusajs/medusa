@@ -1,6 +1,6 @@
 import { Links, MoneyAmount, PaymentInstruction } from "./common"
 
-export interface CapturesRefund {
+export interface refundPayment {
   amount?: MoneyAmount
   invoice_id?: string
   note_to_payer?: string
@@ -20,7 +20,7 @@ export interface CapturesRefundResponse {
   links?: Links
 }
 
-export interface CapturesAuthorization {
+export interface captureAuthorizedPayment {
   amount?: MoneyAmount
   final_capture?: boolean
   invoice_id?: string
