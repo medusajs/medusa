@@ -20,6 +20,10 @@ type AddressLocationFormProps = {
   form: NestedForm<AddressLocationFormType>
 }
 
+/**
+ * Re-usable form for address location information, used to create and edit addresses.
+ * Fields are optional, but can be required by passing in a requireFields object.
+ */
 const AddressLocationForm = ({
   form,
   countryOptions,
@@ -33,71 +37,87 @@ const AddressLocationForm = ({
   } = form
 
   return (
-    <div className="gap-y-large gap-x-large mt-4 grid grid-cols-2">
+    <div className="gap-large grid grid-cols-2">
       <InputField
-        {...form.register(path("address_1"), {
-          required: required ? FormValidator.required("Address 1") : false,
+        {...register(path("address_1"), {
+          required: requireFields?.address_1
+            ? FormValidator.required("Address 1")
+            : false,
           pattern: FormValidator.whiteSpaceRule("Address 1"),
         })}
         placeholder="Address 1"
         label="Address 1"
-        required={required}
+        required={requireFields?.address_1}
         errors={errors}
       />
       <InputField
-        {...form.register(path("address_2"), {
+        {...register(path("address_2"), {
           pattern: FormValidator.whiteSpaceRule("Address 2"),
+          required: requireFields?.address_2
+            ? FormValidator.required("Address 2")
+            : false,
         })}
         placeholder="Address 2"
+        required={requireFields?.address_2}
         label="Address 2"
         errors={errors}
       />
       <InputField
-        {...form.register(path("postal_code"), {
-          required: required ? FormValidator.required("Postal code") : false,
+        {...register(path("postal_code"), {
+          required: requireFields?.postal_code
+            ? FormValidator.required("Postal code")
+            : false,
           pattern: FormValidator.whiteSpaceRule("Postal code"),
         })}
         placeholder="Postal code"
         label="Postal code"
-        required={required}
+        required={requireFields?.postal_code}
         autoComplete="off"
         errors={errors}
       />
       <InputField
         placeholder="City"
         label="City"
-        {...form.register(path("city"), {
-          required: required ? FormValidator.required("City") : false,
+        {...register(path("city"), {
+          required: requireFields?.city
+            ? FormValidator.required("City")
+            : false,
           pattern: FormValidator.whiteSpaceRule("City"),
         })}
-        required={required}
+        required={requireFields?.city}
         errors={errors}
       />
       <InputField
-        {...form.register(path("province"), {
+        {...register(path("province"), {
           pattern: FormValidator.whiteSpaceRule("Province"),
+          required: requireFields?.province
+            ? FormValidator.required("Province")
+            : false,
         })}
         placeholder="Province"
         label="Province"
+        required={requireFields?.province}
         errors={errors}
       />
       <Controller
         control={control}
         name={path("country_code")}
         rules={{
-          required: required ? FormValidator.required("Country") : false,
+          required: requireFields?.country_code
+            ? FormValidator.required("Country")
+            : false,
         }}
         render={({ field: { value, onChange } }) => {
           return (
             <NextSelect
               label="Country"
-              required={required}
+              required={requireFields?.country_code}
               value={value}
               options={countryOptions}
               onChange={onChange}
               name={path("country_code")}
               errors={errors}
-              isClearable={!required}
+              isClearable={!requireFields?.country_code}
             />
           )
         }}
@@ -105,3 +125,5 @@ const AddressLocationForm = ({
     </div>
   )
 }
+
+export default AddressLocationForm

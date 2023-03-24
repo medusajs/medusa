@@ -1,6 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import clsx from "clsx"
-import React, { useEffect, useMemo } from "react"
+import React, { useMemo } from "react"
 import { useFieldArray, useWatch } from "react-hook-form"
 import { NestedForm } from "../../../../utils/nested-form"
 import Button from "../../../fundamentals/button"
@@ -9,6 +9,7 @@ import ArrowUpIcon from "../../../fundamentals/icons/arrow-up-icon"
 import DuplicateIcon from "../../../fundamentals/icons/duplicate-icon"
 import EllipsisVerticalIcon from "../../../fundamentals/icons/ellipsis-vertical-icon"
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
+import WarningCircleIcon from "../../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../../fundamentals/icons/x-circle-icon"
 
 export type MetadataField = {
@@ -20,6 +21,7 @@ export type MetadataField = {
 export type MetadataFormType = {
   entries: MetadataField[]
   deleted?: string[]
+  ignored?: Record<string, unknown>
 }
 
 type MetadataProps = {
@@ -82,9 +84,15 @@ const MetadataForm = ({ form }: MetadataProps) => {
     name: path("entries"),
   })
 
-  useEffect(() => {
-    console.log(subscriber)
-  }, [subscriber])
+  const ignoredSubscriber = useWatch({
+    control,
+    name: path("ignored"),
+    defaultValue: {},
+  })
+
+  const ignoredLength = useMemo(() => {
+    return Object.keys(ignoredSubscriber || {}).length
+  }, [ignoredSubscriber])
 
   // If there is only one row and it is empty or there are no rows, disable the delete button
   const isDisabled = useMemo(() => {
@@ -106,73 +114,94 @@ const MetadataForm = ({ form }: MetadataProps) => {
     "divide-grey-20 grid grid-cols-[165px_1fr] divide-x divide-solid [&>div]:px-base [&>div]:py-xsmall"
 
   return (
-    <div className="rounded-rounded border-grey-20 divide-grey-20 inter-base-regular divide-y border">
-      <div
-        className={clsx(
-          "inter-small-semibold bg-grey-5 rounded-t-rounded",
-          rowClasses
-        )}
-      >
-        <div>
-          <p>Key</p>
+    <>
+      <div className="rounded-rounded border-grey-20 divide-grey-20 inter-base-regular divide-y border">
+        <div
+          className={clsx(
+            "inter-small-semibold bg-grey-5 rounded-t-rounded",
+            rowClasses
+          )}
+        >
+          <div>
+            <p>Key</p>
+          </div>
+          <div className="">
+            <p>Value</p>
+          </div>
         </div>
-        <div className="">
-          <p>Value</p>
+        <div className="divide-grey-20 divide-y">
+          {!fields.length ? (
+            <MetadataRow
+              onClearContents={() => handleClearContents(0)}
+              onDelete={() => handleDelete(0)}
+              onDuplicate={() => handleDuplicate(0)}
+              onInsertAbove={() => handleInsertAbove(0)}
+              onInsertBelow={() => handleInsertBelow(0)}
+              isDisabled={isDisabled}
+            >
+              <div>
+                <MetadataInput
+                  {...register(path(`entries.${0}.key`))}
+                  placeholder="Key"
+                />
+              </div>
+              <div>
+                <MetadataInput
+                  {...register(path(`entries.${0}.value`))}
+                  placeholder="Value"
+                />
+              </div>
+            </MetadataRow>
+          ) : (
+            fields.map((field, index) => {
+              return (
+                <MetadataRow
+                  key={field.fieldKey}
+                  onClearContents={() => handleClearContents(index)}
+                  onDelete={() => handleDelete(index)}
+                  onDuplicate={() => handleDuplicate(index)}
+                  onInsertAbove={() => handleInsertAbove(index)}
+                  onInsertBelow={() => handleInsertBelow(index)}
+                  isDisabled={isDisabled}
+                >
+                  <div>
+                    <MetadataInput
+                      {...register(path(`entries.${index}.key`))}
+                      placeholder="Key"
+                    />
+                  </div>
+                  <div>
+                    <MetadataInput
+                      {...register(path(`entries.${index}.value`))}
+                      placeholder="Value"
+                    />
+                  </div>
+                </MetadataRow>
+              )
+            })
+          )}
         </div>
       </div>
-      <div className="divide-grey-20 divide-y">
-        {!fields.length ? (
-          <MetadataRow
-            onClearContents={() => handleClearContents(0)}
-            onDelete={() => handleDelete(0)}
-            onDuplicate={() => handleDuplicate(0)}
-            onInsertAbove={() => handleInsertAbove(0)}
-            onInsertBelow={() => handleInsertBelow(0)}
-            isDisabled={isDisabled}
-          >
-            <div>
-              <MetadataInput
-                {...register(path(`entries.${0}.key`))}
-                placeholder="Key"
-              />
-            </div>
-            <div>
-              <MetadataInput
-                {...register(path(`entries.${0}.value`))}
-                placeholder="Value"
-              />
-            </div>
-          </MetadataRow>
-        ) : (
-          fields.map((field, index) => {
-            return (
-              <MetadataRow
-                key={field.fieldKey}
-                onClearContents={() => handleClearContents(index)}
-                onDelete={() => handleDelete(index)}
-                onDuplicate={() => handleDuplicate(index)}
-                onInsertAbove={() => handleInsertAbove(index)}
-                onInsertBelow={() => handleInsertBelow(index)}
-                isDisabled={isDisabled}
-              >
-                <div>
-                  <MetadataInput
-                    {...register(path(`entries.${index}.key`))}
-                    placeholder="Key"
-                  />
-                </div>
-                <div>
-                  <MetadataInput
-                    {...register(path(`entries.${index}.value`))}
-                    placeholder="Value"
-                  />
-                </div>
-              </MetadataRow>
-            )
-          })
-        )}
-      </div>
-    </div>
+      {ignoredLength > 0 && (
+        <div className="rounded-rounded p-base gap-x-base mt-base flex items-start border border-[#FFD386] bg-[#FFECBC]">
+          <div>
+            <WarningCircleIcon
+              fillType="solid"
+              size={20}
+              className="text-[#FFB224]"
+            />
+          </div>
+          <div>
+            <p className="inter-small-regular text-[#AD5700]">
+              This entities metadata contains complex values that we currently
+              don&apos;t support editing through the admin UI. Due to this{" "}
+              {Object.keys(ignoredLength)} keys are currently not being
+              displayed. You can still edit these values using the API.
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -295,6 +324,13 @@ export const getSubmittableMetadata = (
     })
   }
 
+  // Preserve complex values that we don't support editing through the UI
+  if (data.ignored) {
+    Object.entries(data.ignored).forEach(([key, value]) => {
+      metadata[key] = value
+    })
+  }
+
   return metadata
 }
 
@@ -304,15 +340,31 @@ export const getMetadataFormValues = (
   const data: MetadataFormType = {
     entries: [],
     deleted: [],
+    ignored: {},
   }
 
   if (metadata) {
-    data.entries = Object.entries(metadata).map(([key, value]) => ({
-      key,
-      value: value as string,
-      state: "existing",
-    }))
+    Object.entries(metadata).forEach(([key, value]) => {
+      if (isPrimitive(value)) {
+        data.entries.push({
+          key,
+          value: value as string,
+        })
+      } else {
+        data.ignored![key] = value
+      }
+    })
   }
 
   return data
+}
+
+const isPrimitive = (value: unknown): boolean => {
+  return (
+    value === null ||
+    value === undefined ||
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  )
 }

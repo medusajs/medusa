@@ -148,6 +148,12 @@ const OrderDetails = () => {
   const capturePayment = useAdminCapturePayment(id!)
   const cancelOrder = useAdminCancelOrder(id!)
 
+  const {
+    state: addressModalState,
+    close: closeAddressModal,
+    open: openAddressModal,
+  } = useToggleState()
+
   const { mutate: updateOrder } = useAdminUpdateOrder(id!)
 
   const { region } = useAdminRegion(order?.region_id!, {
@@ -225,11 +231,13 @@ const OrderDetails = () => {
   customerActionables.push({
     label: "Edit Shipping Address",
     icon: <TruckIcon size={"20"} />,
-    onClick: () =>
+    onClick: () => {
       setAddressModal({
         address: order?.shipping_address,
         type: AddressType.SHIPPING,
-      }),
+      })
+      openAddressModal()
+    },
   })
 
   customerActionables.push({
@@ -240,6 +248,7 @@ const OrderDetails = () => {
         address: order?.billing_address,
         type: AddressType.BILLING,
       })
+      openAddressModal()
     },
   })
 
@@ -520,15 +529,16 @@ const OrderDetails = () => {
               </div>
               <Timeline orderId={order.id} />
             </div>
-            {addressModal && (
-              <AddressModal
-                handleClose={() => setAddressModal(null)}
-                submit={updateOrder}
-                address={addressModal.address || undefined}
-                type={addressModal.type}
-                allowedCountries={region?.countries}
-              />
-            )}
+
+            <AddressModal
+              onClose={closeAddressModal}
+              open={addressModalState}
+              onSave={updateOrder}
+              address={addressModal?.address || undefined}
+              type={addressModal?.type}
+              allowedCountries={region?.countries}
+            />
+
             {emailModal && (
               <EmailModal
                 handleClose={() => setEmailModal(null)}

@@ -14,6 +14,10 @@ type AddressContactFormProps = {
   form: NestedForm<AddressContactFormType>
 }
 
+/**
+ * Re-usable form for address contact information, used to create and edit addresses.
+ * Fields are optional, but can be required by passing in a requireFields object.
+ */
 const AddressContactForm = ({
   form,
   requireFields,
@@ -26,7 +30,7 @@ const AddressContactForm = ({
 
   return (
     <div>
-      <div className="gap-large mt-4 mb-8 grid grid-cols-2">
+      <div className="gap-large grid grid-cols-2">
         <InputField
           {...register(path("first_name"), {
             required: requireFields?.first_name
