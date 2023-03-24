@@ -167,7 +167,7 @@ function OrderEditModal(props: OrderEditModalProps) {
   const [filterTerm, setFilterTerm] = useState<string>("")
 
   const showTotals = currentSubtotal !== orderEdit.subtotal
-  const showNote = !!orderEdit.changes.length
+  const hasChanges = !!orderEdit.changes.length
 
   const {
     mutateAsync: requestConfirmation,
@@ -344,7 +344,7 @@ function OrderEditModal(props: OrderEditModalProps) {
           )}
 
           {/* NOTE */}
-          {showNote && (
+          {hasChanges && (
             <div className="flex items-center justify-between">
               <span className="text-gray-500">Note</span>
               <InputField
@@ -370,7 +370,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               variant="primary"
               size="small"
               type="button"
-              disabled={isUpdating || isRequestingConfirmation}
+              disabled={isUpdating || isRequestingConfirmation || !hasChanges}
               loading={isUpdating || isRequestingConfirmation}
               onClick={onSave}
             >
