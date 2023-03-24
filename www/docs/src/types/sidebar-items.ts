@@ -20,6 +20,8 @@ type ItemCustomProps = {
     isSoon?: boolean
     badge: BadgeProps
     html?: string
+    sidebar_icon?: string
+    sidebar_is_title?: boolean
   }
 }
 
