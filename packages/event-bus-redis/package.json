@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-redis",
-  "version": "0.1.0",
+  "version": "1.7.0",
   "description": "Redis Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [

@@ -50,6 +50,7 @@
     "emoji-picker-react": "^4.4.3",
     "framer-motion": "^9.1.6",
     "medusa-react": "*",
+    "moment": "^2.29.4",
     "pluralize": "^8.0.0",
     "postcss": "^8.4.21",
     "query-string": "^8.1.0",

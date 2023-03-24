@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/inventory",
-  "version": "1.0.10",
+  "version": "1.7.0",
   "description": "Inventory Module for Medusa",
   "main": "dist/index.js",
   "repository": {
