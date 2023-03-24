@@ -36,12 +36,14 @@ type CreateFulfillmentModalProps = {
   email?: string
   orderToFulfill: Order | ClaimOrder | Swap
   orderId: string
+  onComplete?: () => void
 }
 
 const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   handleCancel,
   orderToFulfill,
   orderId,
+  onComplete,
 }) => {
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
@@ -170,10 +172,6 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
           no_notification: noNotis,
         } as AdminPostOrdersOrderFulfillmentsReq
 
-        if (isLocationFulfillmentEnabled) {
-          requestObj.location_id = locationSelectValue.value
-        }
-
         requestObj.items = Object.entries(quantities)
           .filter(([, value]) => !!value)
           .map(([key, value]) => ({
@@ -183,10 +181,15 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
         break
     }
 
+    if (isLocationFulfillmentEnabled) {
+      requestObj.location_id = locationSelectValue.value
+    }
+
     action.mutate(requestObj, {
       onSuccess: () => {
         notification("Success", successText, "success")
         handleCancel()
+        onComplete && onComplete()
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
     })

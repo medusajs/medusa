@@ -1,8 +1,7 @@
-import { Request, Response } from "express"
+import { IStockLocationService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
-
-import { IStockLocationService } from "../../../../interfaces"
+import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**

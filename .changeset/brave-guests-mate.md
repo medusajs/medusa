@@ -13,4 +13,6 @@
 "@medusajs/medusa-js": patch
 ---
 
-chore(medusa): upgrade typeorm from 0.2.51 to 0.3.11
+chore(medusa): Typeorm fixes / enhancements
+- upgrade typeorm from 0.2.51 to 0.3.11
+- Plugin repository loader to work with Typeorm update

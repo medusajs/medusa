@@ -1,4 +1,4 @@
-import { StockLocationDTO } from "@medusajs/medusa"
+import { StockLocationDTO } from "@medusajs/types"
 import { useAdminDeleteStockLocation } from "medusa-react"
 import React from "react"
 import IconBadge from "../../../../../components/fundamentals/icon-badge"
@@ -6,7 +6,7 @@ import BuildingsIcon from "../../../../../components/fundamentals/icons/building
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
 import Actionables, {
-  ActionType,
+  ActionType
 } from "../../../../../components/molecules/actionables"
 import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
 import useNotification from "../../../../../hooks/use-notification"
@@ -37,7 +37,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Location",
-      text: "Are you sure you want to delete this location",
+      text: "Are you sure you want to delete this location. This will also delete all inventory levels and reservations associated with this location.",
       extraConfirmation: true,
       entityName: location.name,
     })

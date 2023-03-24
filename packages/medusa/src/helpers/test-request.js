@@ -1,3 +1,8 @@
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -7,11 +12,6 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
-import {
-  moduleLoader,
-  moduleHelper,
-  registerModules,
-} from "@medusajs/modules-sdk"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
@@ -36,7 +36,6 @@ const config = {
     admin_cors: "",
     store_cors: "",
   },
-  moduleResolutions,
 }
 
 const testApp = express()
@@ -70,7 +69,7 @@ featureFlagLoader(config)
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
-moduleLoader({ container, configModule: config })
+moduleLoader({ container, moduleResolutions })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()

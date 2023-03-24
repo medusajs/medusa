@@ -72,7 +72,7 @@ export default async (req, res) => {
       req.request_context
     )
 
-  res.status(207).json({ payment_collection })
+  res.status(200).json({ payment_collection })
 }
 
 /**

@@ -25,6 +25,7 @@ export type EventContainerProps = {
   isFirst?: boolean
   expandable?: boolean
   children: ReactNode
+  detail?: string | React.ReactNode
 }
 
 const EventContainer: React.FC<EventContainerProps> = ({
@@ -38,6 +39,7 @@ const EventContainer: React.FC<EventContainerProps> = ({
   isFirst = false,
   expandable = false,
   children,
+  detail,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(!expandable)
 
@@ -92,6 +94,7 @@ const EventContainer: React.FC<EventContainerProps> = ({
           {children && isExpanded && (
             <div className="mt-small pb-base w-full">{children}</div>
           )}
+          <div className="text-grey-50">{detail}</div>
         </div>
       </div>
     </div>

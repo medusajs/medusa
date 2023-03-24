@@ -25,7 +25,7 @@ interface InventoryFilterState {
   additionalFilters: InventoryDefaultFilters | null
 }
 
-const allowedFilters = ["location", "q", "offset", "limit"]
+const allowedFilters = ["q", "offset", "limit", "location_id"]
 
 const DefaultTabs = {}
 
@@ -154,6 +154,7 @@ export const useInventoryFilters = (
 
   const setLocationFilter = (loc: string) => {
     dispatch({ type: "setLocation", payload: loc })
+    dispatch({ type: "setOffset", payload: 0 })
   }
 
   const paginate = (direction: 1 | -1) => {
@@ -225,8 +226,8 @@ export const useInventoryFilters = (
         if (value && typeof value === "string") {
           toQuery["q"] = value
         }
-      } else if (key === "offset" || key === "limit") {
-        toQuery[key] = value
+      } else if (key === "offset" || key === "limit" || key === "location") {
+        toQuery[stateFilterMap[key] || key] = value
       } else if (value.open) {
         toQuery[stateFilterMap[key]] = value.filter
       }

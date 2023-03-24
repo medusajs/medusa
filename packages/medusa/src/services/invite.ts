@@ -1,15 +1,16 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { EventBusService, UserService } from "."
+import { UserService } from "."
 import { User } from ".."
+import { TransactionBaseService } from "../interfaces"
 import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
-import { ListInvite } from "../types/invites"
 import { ConfigModule } from "../types/global"
-import { TransactionBaseService } from "../interfaces"
+import { ListInvite } from "../types/invites"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7

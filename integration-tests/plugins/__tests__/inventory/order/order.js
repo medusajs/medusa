@@ -15,6 +15,7 @@ const {
   simpleOrderFactory,
   simpleRegionFactory,
   simpleCartFactory,
+  simpleShippingOptionFactory,
 } = require("../../../factories")
 
 jest.setTimeout(30000)
@@ -62,9 +63,11 @@ describe("/store/carts", () => {
     let variantId
     let prodVarInventoryService
     let inventoryService
+    let lineItemService
     let stockLocationService
     let salesChannelLocationService
     let regionId
+    let orderId
 
     beforeEach(async () => {
       const api = useApi()
@@ -72,6 +75,7 @@ describe("/store/carts", () => {
       prodVarInventoryService = appContainer.resolve(
         "productVariantInventoryService"
       )
+      lineItemService = appContainer.resolve("lineItemService")
       inventoryService = appContainer.resolve("inventoryService")
       stockLocationService = appContainer.resolve("stockLocationService")
       salesChannelLocationService = appContainer.resolve(
@@ -112,10 +116,10 @@ describe("/store/carts", () => {
       await inventoryService.createInventoryLevel({
         inventory_item_id: invItem.id,
         location_id: locationId,
-        stocked_quantity: 1,
+        stocked_quantity: 100,
       })
 
-      const { id: orderId } = await simpleOrderFactory(dbConnection, {
+      const { id: order_id } = await simpleOrderFactory(dbConnection, {
         sales_channel: "test-channel",
         line_items: [
           {
@@ -124,6 +128,8 @@ describe("/store/carts", () => {
             id: "line-item-id",
           },
         ],
+        payment_status: "captured",
+        fulfillment_status: "fulfilled",
         shipping_methods: [
           {
             shipping_option: {
@@ -133,8 +139,16 @@ describe("/store/carts", () => {
         ],
       })
 
-      const orderRes = await api.get(`/admin/orders/${orderId}`, adminHeaders)
+      orderId = order_id
+      const orderRes = await api.get(`/admin/orders/${order_id}`, adminHeaders)
       order = orderRes.data.order
+
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "test-return-option",
+        is_return: true,
+        region_id: regionId,
+        price: 0,
+      })
 
       const inventoryItem = await api.get(
         `/admin/inventory-items/${invItem.id}`,
@@ -143,11 +157,68 @@ describe("/store/carts", () => {
 
       expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
         expect.objectContaining({
-          stocked_quantity: 1,
+          stocked_quantity: 100,
           reserved_quantity: 0,
-          available_quantity: 1,
+          available_quantity: 100,
         })
       )
+    })
+
+    describe("swaps", () => {
+      it("adjusts reservations on successful swap", async () => {
+        const api = useApi()
+
+        const response = await api.post(
+          `/admin/orders/${orderId}/swaps`,
+          {
+            return_items: [
+              {
+                item_id: "line-item-id",
+                quantity: 1,
+              },
+            ],
+            return_location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.order.swaps[0].return_order.location_id).toEqual(
+          locationId
+        )
+      })
+    })
+
+    describe("claims", () => {
+      it("adjusts reservations on successful swap", async () => {
+        const api = useApi()
+
+        await lineItemService.update("line-item-id", {
+          fulfilled_quantity: 1,
+        })
+
+        const response = await api.post(
+          `/admin/orders/${orderId}/claims`,
+          {
+            type: "refund",
+            claim_items: [
+              {
+                item_id: "line-item-id",
+                quantity: 1,
+                reason: "production_failure",
+              },
+            ],
+            return_shipping: { option_id: "test-return-option", price: 0 },
+            return_location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.order.claims[0].return_order.location_id).toEqual(
+          locationId
+        )
+      })
     })
 
     describe("Fulfillments", () => {
@@ -196,9 +267,9 @@ describe("/store/carts", () => {
 
         expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
           expect.objectContaining({
-            stocked_quantity: 1,
+            stocked_quantity: 100,
             reserved_quantity: 0,
-            available_quantity: 1,
+            available_quantity: 100,
           })
         )
 
@@ -226,9 +297,9 @@ describe("/store/carts", () => {
         expect(inventoryItem.data.inventory_item.location_levels).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              stocked_quantity: 1,
+              stocked_quantity: 100,
               reserved_quantity: 1,
-              available_quantity: 0,
+              available_quantity: 99,
             }),
             expect.objectContaining({
               stocked_quantity: 1,
@@ -281,9 +352,9 @@ describe("/store/carts", () => {
           expect.arrayContaining([
             expect.objectContaining({
               location_id: locationId,
-              stocked_quantity: 0,
+              stocked_quantity: 99,
               reserved_quantity: 0,
-              available_quantity: 0,
+              available_quantity: 99,
             }),
             expect.objectContaining({
               location_id: loc.id,
@@ -295,7 +366,131 @@ describe("/store/carts", () => {
         )
       })
 
-      it("Adjusts reservations on successful fulfillment with reservation", async () => {
+      it("Adjusts reservations on several subsequent fulfillments (being cancelled in-between), with a total quantity greater that the line item quantity", async () => {
+        const api = useApi()
+
+        const lineItemId1 = "line-item-id-1"
+
+        const customer = await simpleCustomerFactory(dbConnection, {})
+
+        const cart = await simpleCartFactory(dbConnection, {
+          email: "adrien@test.com",
+          region: regionId,
+          line_items: [
+            {
+              id: lineItemId1,
+              variant_id: variantId,
+              quantity: 3,
+              unit_price: 1000,
+            },
+          ],
+          sales_channel_id: "test-channel",
+          shipping_address: {},
+          shipping_methods: [
+            {
+              shipping_option: {
+                region_id: regionId,
+              },
+            },
+          ],
+        })
+
+        await appContainer
+          .resolve("cartService")
+          .update(cart.id, { customer_id: customer.id })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 100,
+            reserved_quantity: 0,
+            available_quantity: 100,
+          })
+        )
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+        const orderId = completeRes.data.data.id
+
+        let fulfillmentRes = await api.post(
+          `/admin/orders/${orderId}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId1, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(
+          fulfillmentRes.data.order.fulfillments[0].location_id
+        ).toBeTruthy()
+        expect(fulfillmentRes.data.order.fulfillment_status).toEqual(
+          "partially_fulfilled"
+        )
+
+        await api.post(
+          `/admin/orders/${orderId}/fulfillments/${fulfillmentRes.data.order.fulfillments[0].id}/cancel`,
+          {},
+          adminHeaders
+        )
+
+        fulfillmentRes = await api.post(
+          `/admin/orders/${orderId}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId1, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(
+          fulfillmentRes.data.order.fulfillments[1].location_id
+        ).toBeTruthy()
+        expect(fulfillmentRes.data.order.fulfillment_status).toEqual(
+          "partially_fulfilled"
+        )
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(0)
+        expect(inventoryItem.data.inventory_item.location_levels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              location_id: locationId,
+              stocked_quantity: 98,
+              reserved_quantity: 0,
+              available_quantity: 98,
+            }),
+          ])
+        )
+
+        const orderRes = await api.get(`/admin/orders/${orderId}`, adminHeaders)
+        expect(orderRes.data.order.items).toEqual([
+          expect.objectContaining({
+            id: lineItemId1,
+            fulfilled_quantity: 2,
+            quantity: 3,
+          }),
+        ])
+      })
+
+      it("Adjusts reservation on successful fulfillment with reservation", async () => {
         const api = useApi()
 
         await prodVarInventoryService.reserveQuantity(variantId, 1, {
@@ -310,9 +505,9 @@ describe("/store/carts", () => {
 
         expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
           expect.objectContaining({
-            stocked_quantity: 1,
+            stocked_quantity: 100,
             reserved_quantity: 1,
-            available_quantity: 0,
+            available_quantity: 99,
           })
         )
 
@@ -343,11 +538,278 @@ describe("/store/carts", () => {
         expect(reservations.data.reservations.length).toBe(0)
         expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
           expect.objectContaining({
+            stocked_quantity: 99,
+            reserved_quantity: 0,
+            available_quantity: 99,
+          })
+        )
+      })
+
+      it("Deletes multiple reservations on successful fulfillment with reservation", async () => {
+        const api = useApi()
+
+        const a = await inventoryService.updateInventoryLevel(
+          invItemId,
+          locationId,
+          { stocked_quantity: 2 }
+        )
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 2,
+            reserved_quantity: 2,
+            available_quantity: 0,
+          })
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(0)
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
             stocked_quantity: 0,
             reserved_quantity: 0,
             available_quantity: 0,
           })
         )
+      })
+
+      it("Deletes single reservation on successful fulfillment with partial reservation", async () => {
+        const api = useApi()
+
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 2,
+        })
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 2,
+            reserved_quantity: 1,
+            available_quantity: 1,
+          })
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(0)
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 0,
+            reserved_quantity: 0,
+            available_quantity: 0,
+          })
+        )
+      })
+
+      it("Adjusts single reservation on successful fulfillment with over-reserved line item", async () => {
+        const api = useApi()
+
+        const a = await inventoryService.updateInventoryLevel(
+          invItemId,
+          locationId,
+          { stocked_quantity: 3 }
+        )
+
+        await prodVarInventoryService.reserveQuantity(variantId, 3, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 3,
+            reserved_quantity: 3,
+            available_quantity: 0,
+          })
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(1)
+        expect(reservations.data.reservations).toEqual([
+          expect.objectContaining({
+            quantity: 1,
+          }),
+        ])
+        expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 1,
+            reserved_quantity: 1,
+            available_quantity: 0,
+          })
+        )
+      })
+
+      it("Prioritizes adjusting reservations at the chosen location", async () => {
+        const api = useApi()
+
+        const sl = await stockLocationService.create({
+          name: "test-location 1",
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: invItemId,
+          location_id: sl.id,
+          stocked_quantity: 3,
+        })
+
+        const a = await inventoryService.updateInventoryLevel(
+          invItemId,
+          locationId,
+          { stocked_quantity: 3 }
+        )
+
+        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+          locationId: locationId,
+          lineItemId: order.items[0].id,
+        })
+
+        await prodVarInventoryService.reserveQuantity(variantId, 2, {
+          locationId: sl.id,
+          lineItemId: order.items[0].id,
+        })
+
+        let inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        expect(inventoryItem.data.inventory_item.location_levels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              location_id: locationId,
+              stocked_quantity: 3,
+              reserved_quantity: 1,
+              available_quantity: 2,
+            }),
+            expect.objectContaining({
+              location_id: sl.id,
+              stocked_quantity: 3,
+              reserved_quantity: 2,
+              available_quantity: 1,
+            }),
+          ])
+        )
+
+        const fulfillmentRes = await api.post(
+          `/admin/orders/${order.id}/fulfillment`,
+          {
+            items: [{ item_id: lineItemId, quantity: 2 }],
+            location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(fulfillmentRes.status).toBe(200)
+        expect(fulfillmentRes.data.order.fulfillment_status).toBe("fulfilled")
+
+        inventoryItem = await api.get(
+          `/admin/inventory-items/${invItemId}`,
+          adminHeaders
+        )
+
+        const reservations = await api.get(
+          `/admin/reservations?inventory_item_id[]=${invItemId}`,
+          adminHeaders
+        )
+
+        expect(reservations.data.reservations.length).toBe(1)
+        expect(reservations.data.reservations).toEqual([
+          expect.objectContaining({
+            quantity: 1,
+            location_id: sl.id,
+          }),
+        ])
       })
 
       it("increases stocked quantity when return is received at location", async () => {
@@ -379,9 +841,9 @@ describe("/store/carts", () => {
 
         expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
           expect.objectContaining({
-            stocked_quantity: 0,
+            stocked_quantity: 99,
             reserved_quantity: 0,
-            available_quantity: 0,
+            available_quantity: 99,
           })
         )
 
@@ -402,9 +864,9 @@ describe("/store/carts", () => {
         )
         expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
           expect.objectContaining({
-            stocked_quantity: 1,
+            stocked_quantity: 100,
             reserved_quantity: 0,
-            available_quantity: 1,
+            available_quantity: 100,
           })
         )
       })
@@ -432,15 +894,40 @@ describe("/store/carts", () => {
 
         expect(inventoryItem.data.inventory_item.location_levels[0]).toEqual(
           expect.objectContaining({
-            stocked_quantity: 0,
+            stocked_quantity: 99,
             reserved_quantity: 0,
-            available_quantity: 0,
+            available_quantity: 99,
           })
         )
       })
 
       it("Fails to create fulfillment if there is not enough inventory at the fulfillment location", async () => {
         const api = useApi()
+
+        const updateRes = await api.post(
+          `/admin/inventory-items/${invItemId}/location-levels/${locationId}`,
+          {
+            stocked_quantity: 1,
+          },
+          adminHeaders
+        )
+
+        expect(updateRes.status).toBe(200)
+
+        const locationLevels = await api.get(
+          `/admin/variants/${variantId}/inventory`,
+          adminHeaders
+        )
+
+        expect(
+          locationLevels.data.variant.inventory[0].location_levels[0]
+        ).toEqual(
+          expect.objectContaining({
+            stocked_quantity: 1,
+            reserved_quantity: 0,
+            available_quantity: 1,
+          })
+        )
 
         const err = await api
           .post(

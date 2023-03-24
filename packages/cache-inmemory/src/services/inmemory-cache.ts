@@ -1,5 +1,4 @@
-import { ICacheService } from "@medusajs/medusa"
-
+import { ICacheService } from "@medusajs/types"
 import { CacheRecord, InMemoryCacheModuleOptions } from "../types"
 
 const DEFAULT_TTL = 30 // seconds
@@ -58,6 +57,8 @@ class InMemoryCacheService implements ICacheService {
     const ref = setTimeout(() => {
       this.invalidate(key)
     }, ttl * 1000)
+
+    ref.unref()
 
     this.timoutRefs.set(key, ref)
     this.store.set(key, record)

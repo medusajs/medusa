@@ -1,6 +1,6 @@
 import {
+  AdminExtendedStoresRes,
   AdminPaymentProvidersList,
-  AdminStoresRes,
   AdminTaxProvidersList,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -49,7 +49,7 @@ export const useAdminStoreTaxProviders = (
 
 export const useAdminStore = (
   options?: UseQueryOptionsWrapper<
-    Response<AdminStoresRes>,
+    Response<AdminExtendedStoresRes>,
     Error,
     ReturnType<StoreQueryKeys["details"]>
   >

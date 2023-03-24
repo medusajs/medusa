@@ -55,6 +55,15 @@ export const defaultRelations = ["region", "profile", "requirements"]
 /**
  * @schema AdminShippingOptionsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: shipping_options
+ *   relations:
+ *     - profile
+ *     - region
+ *     - requirements
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
  * required:
  *   - shipping_options
  *   - count
@@ -82,6 +91,15 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: shipping_option
+ *   relations:
+ *     - profile
+ *     - region
+ *     - requirements
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
  * required:
  *   - shipping_option
  * properties:

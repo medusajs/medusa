@@ -13,6 +13,15 @@ import { Type } from "class-transformer"
  *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
  *   - (query) limit=10 {integer} The number of collections to return
  *   - in: query
+ *     name: handle
+ *     style: form
+ *     explode: false
+ *     description: Filter by the collection handle
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting collections were created.
  *     schema:

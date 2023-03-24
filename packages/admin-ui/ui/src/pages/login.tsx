@@ -1,37 +1,50 @@
-import clsx from "clsx"
-import { useState } from "react"
-import MedusaIcon from "../components/fundamentals/icons/medusa-icon"
+import { useAdminGetSession } from "medusa-react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import LoginCard from "../components/organisms/login-card"
 import ResetTokenCard from "../components/organisms/reset-token-card"
 import SEO from "../components/seo"
-import LoginLayout from "../components/templates/login-layout"
+import PublicLayout from "../components/templates/login-layout"
 
 const LoginPage = () => {
   const [resetPassword, setResetPassword] = useState(false)
 
+  const { user } = useAdminGetSession()
+
+  const navigate = useNavigate()
+
+  // Redirect to dashboard if user is logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/")
+    }
+  }, [user, navigate])
+
+  useEffect(() => {
+    if (window.location.search.includes("reset-password")) {
+      setResetPassword(true)
+    }
+  }, [])
+
+  const showLogin = () => {
+    setResetPassword(false)
+    navigate("/login", { replace: true })
+  }
+
+  const showResetPassword = () => {
+    setResetPassword(true)
+  }
+
   return (
-    <LoginLayout>
+    <PublicLayout>
       <SEO title="Login" />
-      <div className="flex h-full w-full items-center justify-center">
-        <div
-          className={clsx(
-            "bg-grey-0 rounded-rounded flex min-h-[600px] w-[640px] justify-center transition-['min-height'] duration-300",
-            {
-              "min-h-[480px]": resetPassword,
-            }
-          )}
-        >
-          <div className="flex w-full flex-col items-center px-[120px] pt-12">
-            <MedusaIcon />
-            {resetPassword ? (
-              <ResetTokenCard goBack={() => setResetPassword(false)} />
-            ) : (
-              <LoginCard toResetPassword={() => setResetPassword(true)} />
-            )}
-          </div>
-        </div>
-      </div>
-    </LoginLayout>
+
+      {resetPassword ? (
+        <ResetTokenCard goBack={showLogin} />
+      ) : (
+        <LoginCard toResetPassword={showResetPassword} />
+      )}
+    </PublicLayout>
   )
 }
 

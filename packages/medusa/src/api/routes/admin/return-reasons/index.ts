@@ -55,6 +55,11 @@ export const defaultAdminReturnReasonsRelations: (keyof ReturnReason)[] = [
 /**
  * @schema AdminReturnReasonsRes
  * type: object
+ * x-expanded-relations:
+ *   field: return_reason
+ *   relations:
+ *     - parent_return_reason
+ *     - return_reason_children
  * required:
  *   - return_reason
  * properties:
@@ -68,6 +73,11 @@ export type AdminReturnReasonsRes = {
 /**
  * @schema AdminReturnReasonsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: return_reasons
+ *   relations:
+ *     - parent_return_reason
+ *     - return_reason_children
  * required:
  *   - return_reasons
  * properties:
