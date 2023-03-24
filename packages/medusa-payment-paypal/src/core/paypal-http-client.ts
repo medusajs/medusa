@@ -100,10 +100,9 @@ export class PaypalHttpClient {
               },
             }
 
-            return await originalMethod.apply(this.httpClient_, [
-              ...args,
-              false,
-            ])
+            return await originalMethod
+              .apply(this.httpClient_, [...args, false])
+              .then((res) => res.data)
           }
 
           this.logger_?.error(err.response.message)
