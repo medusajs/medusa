@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class productCategoryIndexes1679664759824 implements MigrationInterface {
+  name = "productCategoryIndexes1679664759824"
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE INDEX "IDX_product_category_parent_category_id" ON "product_category" ("parent_category_id");
@@ -12,7 +14,7 @@ export class productCategoryIndexes1679664759824 implements MigrationInterface {
       CREATE INDEX "IDX_product_category_is_internal" ON "product_category" ("is_internal");
     `)
     await queryRunner.query(`
-      CREATE INDEX "IDX_product_category_is_public" ON "product_category" ("is_public");
+      CREATE INDEX "IDX_product_category_is_active" ON "product_category" ("is_active");
     `)
   }
 
@@ -27,7 +29,7 @@ export class productCategoryIndexes1679664759824 implements MigrationInterface {
       DROP INDEX "IDX_product_category_is_internal";
     `)
     await queryRunner.query(`
-      DROP INDEX "IDX_product_category_is_public";
+      DROP INDEX "IDX_product_category_is_active";
     `)
   }
 }
