@@ -1,36 +1,40 @@
 import {
+  AdminGetVariantsVariantInventoryRes,
   AdminPostOrdersOrderReturnsReq,
-  LineItem as RawLineItem,
+  InventoryLevelDTO,
   Order,
+  LineItem as RawLineItem,
   StockLocationDTO,
 } from "@medusajs/medusa"
+import LayeredModal, {
+  LayeredModalContext,
+} from "../../../../components/molecules/modal/layered-modal"
+import React, { useContext, useEffect, useState } from "react"
 import {
   useAdminRequestReturn,
   useAdminShippingOptions,
   useAdminStockLocations,
+  useMedusa,
 } from "medusa-react"
-import React, { useContext, useEffect, useState } from "react"
-import Spinner from "../../../../components/atoms/spinner"
-import LayeredModal, {
-  LayeredModalContext,
-} from "../../../../components/molecules/modal/layered-modal"
 
 import Button from "../../../../components/fundamentals/button"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
+import CurrencyInput from "../../../../components/organisms/currency-input"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import Modal from "../../../../components/molecules/modal"
+import { Option } from "../../../../types/shared"
+import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
 import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping"
 import Select from "../../../../components/molecules/select/next-select/select"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
-import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
-import { Option } from "../../../../types/shared"
-import { getErrorMessage } from "../../../../utils/error-messages"
+import Spinner from "../../../../components/atoms/spinner"
+import WarningCircleIcon from "../../../../components/fundamentals/icons/warning-circle"
 import { displayAmount } from "../../../../utils/prices"
-import { removeNullish } from "../../../../utils/remove-nullish"
 import { getAllReturnableItems } from "../utils/create-filtering"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { removeNullish } from "../../../../utils/remove-nullish"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import useNotification from "../../../../hooks/use-notification"
 
 type ReturnMenuProps = {
   order: Order
@@ -40,6 +44,7 @@ type ReturnMenuProps = {
 type LineItem = Omit<RawLineItem, "beforeInsert">
 
 const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
+  const { client } = useMedusa()
   const layeredModalContext = useContext(LayeredModalContext)
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
@@ -87,6 +92,62 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       setAllItems(getAllReturnableItems(order, false))
     }
   }, [order])
+
+  const itemMap = React.useMemo(() => {
+    return new Map<string, LineItem>(order.items.map((i) => [i.id, i]))
+  }, [order.items])
+
+  const [inventoryMap, setInventoryMap] = useState<
+    Map<string, InventoryLevelDTO[]>
+  >(new Map())
+
+  React.useEffect(() => {
+    const getInventoryMap = async () => {
+      if (!allItems.length || !isLocationFulfillmentEnabled) {
+        return new Map()
+      }
+      const itemInventoryList = await Promise.all(
+        allItems.map(async (item) => {
+          if (!item.variant_id) {
+            return undefined
+          }
+          return await client.admin.variants.getInventory(item.variant_id)
+        })
+      )
+
+      return new Map(
+        itemInventoryList
+          .filter((it) => !!it)
+          .map((item) => {
+            const { variant } = item as AdminGetVariantsVariantInventoryRes
+            return [variant.id, variant.inventory[0].location_levels]
+          })
+      )
+    }
+
+    getInventoryMap().then((map) => {
+      setInventoryMap(map)
+    })
+  }, [allItems, client.admin.variants, isLocationFulfillmentEnabled])
+
+  const locationsHasInventoryLevels = React.useMemo(() => {
+    return Object.entries(toReturn)
+      .map(([itemId]) => {
+        const item = itemMap.get(itemId)
+        if (!item?.variant_id) {
+          return true
+        }
+        const hasInventoryLevel = inventoryMap
+          .get(item.variant_id)
+          ?.find((l) => l.location_id === selectedLocation?.value)
+
+        if (!hasInventoryLevel && selectedLocation?.value) {
+          return false
+        }
+        return true
+      })
+      .every(Boolean)
+  }, [toReturn, itemMap, selectedLocation?.value, inventoryMap])
 
   const { isLoading: shippingLoading, shipping_options: shippingOptions } =
     useAdminShippingOptions({
@@ -227,6 +288,16 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   })) || []
                 }
               />
+              {!locationsHasInventoryLevels && (
+                <div className="bg-orange-10 border-orange-20 rounded-rounded text-yellow-60 gap-x-base mt-4 flex border p-4">
+                  <div className="text-orange-40">
+                    <WarningCircleIcon size={20} fillType="solid" />
+                  </div>
+                  <div>
+                    {`The selected location does not have inventory levels for the selected items. The return can be requested but can't be received until an inventory level is created for the selected location.`}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

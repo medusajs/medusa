@@ -1,8 +1,3 @@
-import { Product } from "@medusajs/medusa"
-import { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import { nestedForm } from "../../../utils/nested-form"
 import DiscountableForm, {
   DiscountableFormType,
 } from "../../forms/product/discountable-form"
@@ -10,8 +5,14 @@ import GeneralForm, { GeneralFormType } from "../../forms/product/general-form"
 import OrganizeForm, {
   OrganizeFormType,
 } from "../../forms/product/organize-form"
+
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
+import { Product } from "@medusajs/medusa"
+import { nestedForm } from "../../../utils/nested-form"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
 
 type Props = {
   product: Product
@@ -149,7 +150,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
         ? { label: product.type.value, value: product.type.id }
         : null,
       tags: product.tags ? product.tags.map((t) => t.value) : null,
-      categories: product?.categories?.map((c) => c.id),
+      categories: product.categories?.map((c) => c.id),
     },
     discountable: {
       value: product.discountable,
