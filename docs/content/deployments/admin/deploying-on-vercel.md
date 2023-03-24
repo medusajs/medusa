@@ -82,6 +82,15 @@ In the `package.json` of the Medusa backend, add or change a build script for th
 }
 ```
 
+### Additional Build Options
+
+Aside from `--deployment`, you can use the following options when building your admin for deployment:
+
+- `--backend` or `-b`: a string specifying the URL of the Medusa backend. The default here is the value of the environment variable `MEDUSA_BACKEND_URL`. For example, `medusa-admin build --deployment --backend example.com`
+- `--out-dir` or `-o`: a string specifying a custom path to output the build files to. By default, it will be the `build` directory. For example, `medusa-admin --deployment --out-dir public`.
+- `--include` or `-i`: a list of strings of paths to files you want to include in the build output. It can be useful if you want to inject files that are relevant to your hosting. For example, `medusa-admin --deployment --include 200.html`
+- `include-dist` or `-d`: a string specifying the path to copy the files specified in `--include` to. By default, the files are coopied to the root of the build directory. You can use this option to change that. For example, `medusa-admin --deployment --include 200.html --include-dist static`.
+
 ---
 
 ## Step 3: Add Vercel Configurations
