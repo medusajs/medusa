@@ -47,7 +47,7 @@ const LocationDropdown = ({
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
   useEffect(() => {
-    if (!selectedLocation && !isLoading && locations) {
+    if (!selectedLocation && !isLoading && locations?.length) {
       onChange(locations[0].id)
     }
   }, [isLoading, locations, onChange, selectedLocation])
