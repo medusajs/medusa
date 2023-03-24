@@ -15,6 +15,12 @@ module.exports = {
     cookie_secret: "test",
   },
   modules: {
+    eventBus: {
+      resolve: "@medusajs/event-bus-redis",
+      options: {
+        redisUrl: redisUrl,
+      },
+    },
     cacheService: {
       resolve: "@medusajs/cache-inmemory",
       // don't set cache since this is shared between tests
