@@ -2,8 +2,12 @@ import React from "react"
 import clsx from "clsx"
 import { translate } from "@docusaurus/Translate"
 import IconClose from "@theme/Icon/Close"
+import type { Props } from "@theme/AnnouncementBar/CloseButton"
 import styles from "./styles.module.css"
-export default function AnnouncementBarCloseButton(props) {
+
+export default function AnnouncementBarCloseButton(
+  props: Props
+): JSX.Element | null {
   return (
     <button
       type="button"

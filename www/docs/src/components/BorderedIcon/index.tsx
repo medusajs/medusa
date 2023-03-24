@@ -10,7 +10,7 @@ type BorderedIconProp = {
     light: string
     dark?: string
   }
-  IconComponent: React.FC<IconProps>
+  IconComponent?: React.FC<IconProps>
   wrapperClassName?: string
   iconWrapperClassName?: string
   iconClassName?: string

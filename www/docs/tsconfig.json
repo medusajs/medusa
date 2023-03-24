@@ -1,7 +1,10 @@
 {
   "extends": "@tsconfig/docusaurus/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "lib": [
+      "es2022"
+    ]
   },
   "typeRoots": ["./node_modules/@types", "./src/types"]
 }

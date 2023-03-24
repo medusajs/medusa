@@ -1,8 +1,8 @@
-import React, { isValidElement } from "react"
-
+import React, { isValidElement, type ReactNode } from "react"
+import useIsBrowser from "@docusaurus/useIsBrowser"
 import ElementContent from "@theme/CodeBlock/Content/Element"
 import StringContent from "@theme/CodeBlock/Content/String"
-import useIsBrowser from "@docusaurus/useIsBrowser"
+import type { Props } from "@theme/CodeBlock"
 
 /**
  * Best attempt to make the children a plain string so it is copyable. If there
@@ -10,19 +10,20 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
  * return `children` as-is; otherwise, it concatenates the string children
  * together.
  */
-function maybeStringifyChildren(children) {
+function maybeStringifyChildren(children: ReactNode): ReactNode {
   if (React.Children.toArray(children).some((el) => isValidElement(el))) {
     return children
   }
   // The children is now guaranteed to be one/more plain strings
-  return Array.isArray(children) ? children.join("") : children
+  return Array.isArray(children) ? children.join("") : (children as string)
 }
+
 export default function CodeBlock({
   children: rawChildren,
   noReport = false,
   noCopy = false,
   ...props
-}) {
+}: Props): JSX.Element {
   // The Prism theme on SSR is always the default theme but the site theme can
   // be in a different mode. React hydration doesn't update DOM styles that come
   // from SSR. Hence force a re-render after mounting to apply the current
@@ -45,7 +46,7 @@ export default function CodeBlock({
         {...props}
         className={`${props.className} ${title ? "" : "no-header-block"}`}
       >
-        {children}
+        {children as string}
       </CodeBlockComp>
     </div>
   )

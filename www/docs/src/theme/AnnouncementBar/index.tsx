@@ -3,17 +3,18 @@ import { useThemeConfig } from "@docusaurus/theme-common"
 import { useAnnouncementBar } from "@docusaurus/theme-common/internal"
 import AnnouncementBarCloseButton from "@theme/AnnouncementBar/CloseButton"
 import AnnouncementBarContent from "@theme/AnnouncementBar/Content"
-import styles from "./styles.module.css"
-import IconBell from "../Icon/Bell"
-import Bordered from "../../components/Bordered"
 
-export default function AnnouncementBar() {
+import styles from "./styles.module.css"
+import Bordered from "@site/src/components/Bordered/index"
+import IconBell from "@site/src/theme/Icon/Bell/index"
+
+export default function AnnouncementBar(): JSX.Element | null {
   const { announcementBar } = useThemeConfig()
   const { isActive, close } = useAnnouncementBar()
   if (!isActive) {
     return null
   }
-  const { backgroundColor, textColor, isCloseable, id } = announcementBar
+  const { backgroundColor, textColor, isCloseable, id } = announcementBar!
   return (
     <div
       className={styles.announcementBar}

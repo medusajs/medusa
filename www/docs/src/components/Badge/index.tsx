@@ -2,7 +2,7 @@ import React from "react"
 import styles from "./styles.module.css"
 import clsx from "clsx"
 
-type BadgeProps = {
+export type BadgeProps = {
   className?: string
   variant: string
 } & React.HTMLAttributes<HTMLSpanElement>

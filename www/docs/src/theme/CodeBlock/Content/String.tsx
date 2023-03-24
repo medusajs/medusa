@@ -1,53 +1,57 @@
-import Highlight, { defaultProps } from "prism-react-renderer"
 import React from "react"
+import clsx from "clsx"
+import { useThemeConfig, usePrismTheme } from "@docusaurus/theme-common"
 import {
-  containsLineNumbers,
   parseCodeBlockTitle,
   parseLanguage,
   parseLines,
+  containsLineNumbers,
   useCodeWordWrap,
 } from "@docusaurus/theme-common/internal"
-import { usePrismTheme, useThemeConfig } from "@docusaurus/theme-common"
-
-import Container from "@theme/CodeBlock/Container"
-import CopyButton from "../../CopyButton"
+import Highlight, { defaultProps, type Language } from "prism-react-renderer"
 import Line from "@theme/CodeBlock/Line"
-import Tooltip from "../../Tooltip"
-import clsx from "clsx"
+import Container from "@theme/CodeBlock/Container"
+import type { Props } from "@theme/CodeBlock/Content/String"
+import CopyButton from "@site/src/components/CopyButton/index"
 import styles from "./styles.module.css"
 import useIsBrowser from "@docusaurus/useIsBrowser"
-import IconAlert from "../../Icon/Alert"
-import IconCopy from "../../Icon/Copy"
+import ThemeConfig from "@site/src/types/theme-config"
+import Tooltip from "@site/src/theme/Tooltip"
+import IconAlert from "@site/src/theme/Icon/Alert"
+import IconCopy from "@site/src/theme/Icon/Copy"
 
 export default function CodeBlockString({
   children,
   className: blockClassName = "",
   metastring,
   title: titleProp,
-  showLineNumbers: showLineNumbersProp = true,
+  showLineNumbers: showLineNumbersProp,
   language: languageProp,
   noReport = false,
   noCopy = false,
-}) {
+}: Props): JSX.Element {
   const {
     prism: { defaultLanguage, magicComments },
-    reportCodeLinkPrefix,
-  } = useThemeConfig()
+    reportCodeLinkPrefix = "",
+  } = useThemeConfig() as ThemeConfig
   const language =
     languageProp ?? parseLanguage(blockClassName) ?? defaultLanguage
   const prismTheme = usePrismTheme()
   const wordWrap = useCodeWordWrap()
   const isBrowser = useIsBrowser()
+
   // We still parse the metastring in case we want to support more syntax in the
   // future. Note that MDX doesn't strip quotes when parsing metastring:
   // "title=\"xyz\"" => title: "\"xyz\""
   const title = parseCodeBlockTitle(metastring) || titleProp
+
   const { lineClassNames, code } = parseLines(children, {
     metastring,
     language,
     magicComments,
   })
   const showLineNumbers = showLineNumbersProp ?? containsLineNumbers(metastring)
+
   return (
     <Container
       as="div"
@@ -64,7 +68,7 @@ export default function CodeBlockString({
           {...defaultProps}
           theme={prismTheme}
           code={code}
-          language={language ?? "text"}
+          language={(language ?? "text") as Language}
         >
           {({ className, tokens, getLineProps, getTokenProps }) => (
             <pre
