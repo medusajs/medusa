@@ -1,8 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { CreateRegionInput } from "../../types/region"
 import { FlagRouter } from "../../utils/flag-router"
+import EventBusService from "../event-bus"
 import {
-  EventBusService,
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,

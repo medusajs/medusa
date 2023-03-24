@@ -1,23 +1,22 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, IsNull, MoreThanOrEqual, Between, Not } from "typeorm"
+import { Between, EntityManager, MoreThanOrEqual, Not } from "typeorm"
+import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import {
   FindConfig,
   QuerySelector,
-  TreeQuerySelector,
   Selector,
+  TreeQuerySelector,
 } from "../types/common"
-import { buildQuery, nullableValue } from "../utils"
-import { EventBusService } from "."
 import {
   CreateProductCategoryInput,
-  UpdateProductCategoryInput,
   ReorderConditions,
   tempReorderRank,
+  UpdateProductCategoryInput,
 } from "../types/product-category"
-import { isNumber } from "lodash"
+import { buildQuery, nullableValue } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

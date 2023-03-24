@@ -1,5 +1,5 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
-import { IInventoryService } from "../../../../interfaces"
 import { OrderService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
 

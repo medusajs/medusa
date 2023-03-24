@@ -23,11 +23,12 @@ import { SwapRepository } from "../repositories/swap"
 import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
-import CartService from "./cart"
 import {
+  CartService,
   CustomShippingOptionService,
   EventBusService,
   FulfillmentService,
+  LineItemAdjustmentService,
   LineItemService,
   OrderService,
   PaymentProviderService,
@@ -36,7 +37,6 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
-import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -44,7 +44,6 @@ type InjectedProps = {
   swapRepository: typeof SwapRepository
 
   cartService: CartService
-  eventBus: EventBusService
   orderService: OrderService
   returnService: ReturnService
   totalsService: TotalsService
@@ -309,6 +308,7 @@ class SwapService extends TransactionBaseService {
       no_notification?: boolean
       idempotency_key?: string
       allow_backorder?: boolean
+      location_id?: string
     } = { no_notification: undefined }
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
@@ -379,6 +379,7 @@ class SwapService extends TransactionBaseService {
         items: returnItems as OrdersReturnItem[],
         shipping_method: returnShipping,
         no_notification: evaluatedNoNotification,
+        location_id: custom.location_id,
       })
 
       await this.eventBus_
@@ -791,7 +792,7 @@ class SwapService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       swap.shipping_methods = cart.shipping_methods.map((method) => {
-        ;(method.tax_lines as any) = undefined
+        (method.tax_lines as any) = undefined
         return method
       })
       swap.confirmed_at = new Date()
@@ -975,7 +976,7 @@ class SwapService extends TransactionBaseService {
             item_id: i.id,
             quantity: i.quantity,
           })),
-          { swap_id: swapId, metadata }
+          { swap_id: swapId, metadata, location_id: config.location_id }
         )
 
       let successfullyFulfilled: FulfillmentItem[] = []

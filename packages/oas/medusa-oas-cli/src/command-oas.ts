@@ -1,9 +1,9 @@
-import * as path from "path"
-import { lstat, mkdir, writeFile } from "fs/promises"
-import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
-import { OpenAPIObject } from "openapi3-ts"
 import { Command, Option, OptionValues } from "commander"
+import { lstat, mkdir, writeFile } from "fs/promises"
+import { OpenAPIObject } from "openapi3-ts"
+import * as path from "path"
+import swaggerInline from "swagger-inline"
 import { combineOAS } from "./utils/combine-oas"
 import {
   mergeBaseIntoOAS,
@@ -16,6 +16,14 @@ import {
 // Medusa core package directory
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
+)
+// Types package directory
+const medusaTypesPath = path.dirname(
+  require.resolve("@medusajs/types/package.json")
+)
+// Utils package directory
+const medusaUtilsPath = path.dirname(
+  require.resolve("@medusajs/utils/package.json")
 )
 const basePath = path.resolve(__dirname, "../")
 
@@ -129,6 +137,8 @@ async function getOASFromCodebase(
 ): Promise<OpenAPIObject> {
   const gen = await swaggerInline(
     [
+      path.resolve(medusaTypesPath, "dist"),
+      path.resolve(medusaUtilsPath, "dist"),
       path.resolve(medusaPackagePath, "dist", "models"),
       path.resolve(medusaPackagePath, "dist", "types"),
       path.resolve(medusaPackagePath, "dist", "api/middlewares"),

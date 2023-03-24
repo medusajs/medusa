@@ -1,7 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import randomize from "randomatic"
 import { EntityManager } from "typeorm"
-import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
 import { GiftCard, Region } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
@@ -13,6 +12,7 @@ import {
   UpdateGiftCardInput,
 } from "../types/gift-card"
 import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
 import RegionService from "./region"
 
 type InjectedDependencies = {

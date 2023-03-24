@@ -1,10 +1,10 @@
-import { EOL } from "os"
 import boxen from "boxen"
-import path from "path"
 import { execSync } from "child_process"
-import spawn from "cross-spawn"
 import chokidar from "chokidar"
+import spawn from "cross-spawn"
 import Store from "medusa-telemetry/dist/store"
+import { EOL } from "os"
+import path from "path"
 
 import Logger from "../loaders/logger"
 
@@ -50,7 +50,11 @@ export default async function ({ port, directory }) {
   let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
     env: process.env,
-    stdio: ["pipe", process.stdout, process.stderr],
+    stdio: ["inherit", "inherit", "inherit", "ipc"],
+  })
+  child.on("error", function (err) {
+    console.log("Error ", err)
+    process.exit(1)
   })
 
   chokidar.watch(`${directory}/src`).on("change", (file) => {
@@ -65,7 +69,7 @@ export default async function ({ port, directory }) {
 
     execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
       cwd: directory,
-      stdio: ["pipe", process.stdout, process.stderr],
+      stdio: ["inherit", "inherit", "inherit", "ipc"],
     })
 
     Logger.info("Rebuilt")
@@ -73,7 +77,11 @@ export default async function ({ port, directory }) {
     child = spawn(cliPath, [`start`, ...args], {
       cwd: directory,
       env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
+      stdio: ["inherit", "inherit", "inherit", "ipc"],
+    })
+    child.on("error", function (err) {
+      console.log("Error ", err)
+      process.exit(1)
     })
   })
 }

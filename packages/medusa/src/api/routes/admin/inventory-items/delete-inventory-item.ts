@@ -1,6 +1,6 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 import { ProductVariantInventoryService } from "../../../../services"
 
 /**
@@ -59,9 +59,7 @@ export default async (req: Request, res: Response) => {
       .withTransaction(transactionManager)
       .detachInventoryItem(id)
 
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryItem(id)
+    await inventoryService.deleteInventoryItem(id)
   })
 
   res.status(200).send({

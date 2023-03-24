@@ -1,20 +1,19 @@
-import { Request, Response } from "express"
-import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { IInventoryService } from "@medusajs/types"
 import { Transform } from "class-transformer"
-import { IsType } from "../../../../utils/validators/is-type"
-import { getLevelsByInventoryItemId } from "./utils/join-levels"
-import { getVariantsByInventoryItemId } from "./utils/join-variants"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { IInventoryService } from "../../../../interfaces"
 import {
   extendedFindParamsMixin,
   NumericalComparisonOperator,
   StringComparisonOperator,
 } from "../../../../types/common"
-import { AdminInventoryItemsListWithVariantsAndLocationLevelsRes } from "."
+import { IsType } from "../../../../utils/validators/is-type"
+import { getLevelsByInventoryItemId } from "./utils/join-levels"
+import { getVariantsByInventoryItemId } from "./utils/join-variants"
 
 /**
  * @oas [get] /admin/inventory-items

@@ -13,20 +13,15 @@ export default function (_rootDirectory: string, options: PluginOptions) {
 
   if (serve) {
     let buildPath: string
-    let htmlPath: string
 
+    // If an outDir is provided we use that, otherwise we default to "build".
     if (outDir) {
       buildPath = resolve(process.cwd(), outDir)
-      htmlPath = resolve(buildPath, "index.html")
     } else {
-      buildPath = resolve(
-        require.resolve("@medusajs/admin-ui"),
-        "..",
-        "..",
-        "build"
-      )
-      htmlPath = resolve(buildPath, "index.html")
+      buildPath = resolve(process.cwd(), "build")
     }
+
+    const htmlPath = resolve(buildPath, "index.html")
 
     /**
      * The admin UI should always be built at this point, but in the
@@ -35,14 +30,17 @@ export default function (_rootDirectory: string, options: PluginOptions) {
      * build files exist, and if not, we throw an error, providing the
      * user with instructions on how to fix their build.
      */
-    try {
-      fse.ensureFileSync(htmlPath)
-    } catch (_err) {
+
+    const indexExists = fse.existsSync(htmlPath)
+
+    if (!indexExists) {
       reporter.panic(
         new Error(
           `Could not find the admin UI build files. Please run ${colors.bold(
             "`medusa-admin build`"
-          )} to build the admin UI.`
+          )} or enable ${colors.bold(
+            `autoRebuild`
+          )} in the plugin options to build the admin UI.`
         )
       )
     }

@@ -15,6 +15,7 @@ const {
   simpleOrderFactory,
   simpleRegionFactory,
   simpleCartFactory,
+  simpleShippingOptionFactory,
 } = require("../../../factories")
 
 jest.setTimeout(30000)
@@ -62,9 +63,11 @@ describe("/store/carts", () => {
     let variantId
     let prodVarInventoryService
     let inventoryService
+    let lineItemService
     let stockLocationService
     let salesChannelLocationService
     let regionId
+    let orderId
 
     beforeEach(async () => {
       const api = useApi()
@@ -72,6 +75,7 @@ describe("/store/carts", () => {
       prodVarInventoryService = appContainer.resolve(
         "productVariantInventoryService"
       )
+      lineItemService = appContainer.resolve("lineItemService")
       inventoryService = appContainer.resolve("inventoryService")
       stockLocationService = appContainer.resolve("stockLocationService")
       salesChannelLocationService = appContainer.resolve(
@@ -115,7 +119,7 @@ describe("/store/carts", () => {
         stocked_quantity: 100,
       })
 
-      const { id: orderId } = await simpleOrderFactory(dbConnection, {
+      const { id: order_id } = await simpleOrderFactory(dbConnection, {
         sales_channel: "test-channel",
         line_items: [
           {
@@ -124,6 +128,8 @@ describe("/store/carts", () => {
             id: "line-item-id",
           },
         ],
+        payment_status: "captured",
+        fulfillment_status: "fulfilled",
         shipping_methods: [
           {
             shipping_option: {
@@ -133,8 +139,16 @@ describe("/store/carts", () => {
         ],
       })
 
-      const orderRes = await api.get(`/admin/orders/${orderId}`, adminHeaders)
+      orderId = order_id
+      const orderRes = await api.get(`/admin/orders/${order_id}`, adminHeaders)
       order = orderRes.data.order
+
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "test-return-option",
+        is_return: true,
+        region_id: regionId,
+        price: 0,
+      })
 
       const inventoryItem = await api.get(
         `/admin/inventory-items/${invItem.id}`,
@@ -148,6 +162,63 @@ describe("/store/carts", () => {
           available_quantity: 100,
         })
       )
+    })
+
+    describe("swaps", () => {
+      it("adjusts reservations on successful swap", async () => {
+        const api = useApi()
+
+        const response = await api.post(
+          `/admin/orders/${orderId}/swaps`,
+          {
+            return_items: [
+              {
+                item_id: "line-item-id",
+                quantity: 1,
+              },
+            ],
+            return_location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.order.swaps[0].return_order.location_id).toEqual(
+          locationId
+        )
+      })
+    })
+
+    describe("claims", () => {
+      it("adjusts reservations on successful swap", async () => {
+        const api = useApi()
+
+        await lineItemService.update("line-item-id", {
+          fulfilled_quantity: 1,
+        })
+
+        const response = await api.post(
+          `/admin/orders/${orderId}/claims`,
+          {
+            type: "refund",
+            claim_items: [
+              {
+                item_id: "line-item-id",
+                quantity: 1,
+                reason: "production_failure",
+              },
+            ],
+            return_shipping: { option_id: "test-return-option", price: 0 },
+            return_location_id: locationId,
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.order.claims[0].return_order.location_id).toEqual(
+          locationId
+        )
+      })
     })
 
     describe("Fulfillments", () => {

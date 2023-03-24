@@ -1,4 +1,5 @@
-import { Country, StockLocationAddressDTO } from "@medusajs/medusa"
+import { Country } from "@medusajs/medusa"
+import { StockLocationAddressDTO } from "@medusajs/types"
 import { useAdminRegions } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
@@ -78,7 +79,9 @@ const AddressForm = ({
             required={addressFieldsRequired}
             {...register(path("address_1"), {
               pattern: FormValidator.whiteSpaceRule("Address 1"),
-              required: addressFieldsRequired,
+              required: addressFieldsRequired
+                ? "This field is required"
+                : undefined,
             })}
           />
           <InputField
@@ -113,7 +116,9 @@ const AddressForm = ({
             control={control}
             name={path("country_code")}
             rules={{
-              required: addressFieldsRequired,
+              required: addressFieldsRequired
+                ? "This field is required"
+                : undefined,
             }}
             render={({ field: { value, onChange } }) => {
               let fieldValue:

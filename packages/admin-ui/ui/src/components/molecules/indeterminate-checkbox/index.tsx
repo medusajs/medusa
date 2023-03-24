@@ -2,6 +2,7 @@ import clsx from "clsx"
 import React, { useImperativeHandle } from "react"
 
 import CheckIcon from "../../fundamentals/icons/check-icon"
+import MinusIcon from "../../fundamentals/icons/minus-icon"
 
 type IndeterminateCheckboxProps = {
   type?: "checkbox" | "radio"
@@ -66,6 +67,7 @@ const IndeterminateCheckbox = React.forwardRef<
       >
         <span className="self-center">
           {checked && <CheckIcon size={16} />}
+          {indeterminate && <MinusIcon size={16} />}
         </span>
       </div>
       <input

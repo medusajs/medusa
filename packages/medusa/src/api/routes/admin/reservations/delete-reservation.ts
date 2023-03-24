@@ -1,5 +1,5 @@
+import { IInventoryService } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [delete] /admin/reservations/{id}
@@ -58,9 +58,7 @@ export default async (req, res) => {
     req.scope.resolve("inventoryService")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  await manager.transaction(async (manager) => {
-    await inventoryService.withTransaction(manager).deleteReservationItem(id)
-  })
+  await inventoryService.deleteReservationItem(id)
 
   res.json({
     id,

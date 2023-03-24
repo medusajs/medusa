@@ -91,7 +91,7 @@ export default async ({
   track("MODULES_INIT_STARTED")
   await moduleLoader({
     container,
-    moduleResolutions: registerModules(configModule),
+    moduleResolutions: registerModules(configModule?.modules),
     logger: Logger,
   })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}

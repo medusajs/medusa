@@ -1,5 +1,5 @@
+import { AbstractSearchService } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
-import { AbstractSearchService } from "../interfaces/search-service"
 import { Logger } from "../types/global"
 
 type InjectedDependencies = {

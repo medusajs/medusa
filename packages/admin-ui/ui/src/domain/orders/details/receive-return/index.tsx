@@ -1,13 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import {
+  AdminGetVariantsVariantInventoryRes,
   AdminPostReturnsReturnReceiveReq,
+  InventoryLevelDTO,
+  LineItem,
   Order,
   Return,
   StockLocationDTO,
 } from "@medusajs/medusa"
-import { useAdminOrder, useAdminReceiveReturn } from "medusa-react"
+import { useAdminOrder, useAdminReceiveReturn, useMedusa } from "medusa-react"
 import { useEffect, useMemo } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
 import useNotification from "../../../../hooks/use-notification"
@@ -36,6 +39,7 @@ export type ReceiveReturnFormType = {
 }
 
 export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
+  const { client } = useMedusa()
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
     isFeatureEnabled("inventoryService") &&
@@ -46,6 +50,18 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
   const { refetch } = useAdminOrder(order.id, {
     expand: orderRelations,
   })
+
+  const form = useForm<ReceiveReturnFormType>({
+    defaultValues: getDefaultReceiveReturnValues(order, returnRequest),
+    reValidateMode: "onBlur",
+  })
+
+  const {
+    handleSubmit,
+    reset,
+    setError,
+    formState: { isDirty },
+  } = form
 
   const {
     stock_locations,
@@ -68,6 +84,79 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
     value: string
     label: string
   } | null>(null)
+
+  const itemMap = React.useMemo(() => {
+    return new Map<string, LineItem>(order.items.map((i) => [i.id, i]))
+  }, [order.items])
+
+  const [inventoryMap, setInventoryMap] = useState<
+    Map<string, InventoryLevelDTO[]>
+  >(new Map())
+
+  React.useEffect(() => {
+    const getInventoryMap = async () => {
+      if (!returnRequest.items?.length || !isLocationFulfillmentEnabled) {
+        return new Map()
+      }
+      const itemInventoryList = await Promise.all(
+        returnRequest.items.map(async (item) => {
+          const orderItem = itemMap.get(item.item_id)
+          if (!orderItem?.variant_id) {
+            return undefined
+          }
+          return await client.admin.variants.getInventory(orderItem.variant_id)
+        })
+      )
+
+      return new Map(
+        itemInventoryList
+          .filter((it) => !!it)
+          .map((item) => {
+            const { variant } = item as AdminGetVariantsVariantInventoryRes
+            return [variant.id, variant.inventory[0].location_levels]
+          })
+      )
+    }
+
+    getInventoryMap().then((map) => {
+      setInventoryMap(map)
+    })
+  }, [
+    client.admin.variants,
+    isLocationFulfillmentEnabled,
+    itemMap,
+    returnRequest.items,
+  ])
+
+  const { items: receiveItems } = useWatch({
+    control: form.control,
+    name: "receive_items",
+  })
+
+  const noOfReturnItems = receiveItems.filter((item) => item.receive).length
+
+  const locationsHasInventoryLevels = React.useMemo(() => {
+    if (!noOfReturnItems) {
+      return true
+    }
+
+    return receiveItems
+      .map((returnItem) => {
+        const item = itemMap.get(returnItem.item_id)
+        if (!item?.variant_id || !returnItem.receive) {
+          return true
+        }
+        const hasInventoryLevel = inventoryMap
+          .get(item.variant_id)
+          ?.find((l) => l.location_id === selectedLocation?.value)
+
+        if (!hasInventoryLevel && selectedLocation?.value) {
+          return false
+        }
+        return true
+      })
+      .every(Boolean)
+  }, [receiveItems, itemMap, noOfReturnItems, inventoryMap, selectedLocation])
 
   useEffect(() => {
     if (isLocationFulfillmentEnabled && stock_locations?.length) {
@@ -109,17 +198,6 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
   const isSwapOrRefundedClaim = useMemo(() => {
     return isRefundedClaim || Boolean(returnRequest.swap_id)
   }, [isRefundedClaim, returnRequest.swap_id])
-
-  const form = useForm<ReceiveReturnFormType>({
-    defaultValues: getDefaultReceiveReturnValues(order, returnRequest),
-  })
-
-  const {
-    handleSubmit,
-    reset,
-    setError,
-    formState: { isDirty },
-  } = form
 
   const notification = useNotification()
 
@@ -218,6 +296,17 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
                       placeholder="Select Location to Return to"
                       value={selectedLocation}
                       isMulti={false}
+                      name={"location_id"}
+                      errors={
+                        locationsHasInventoryLevels
+                          ? {}
+                          : {
+                              location_id: {
+                                message:
+                                  "No inventory levels exist for the items at the selected location",
+                              },
+                            }
+                      }
                       onChange={setSelectedLocation}
                       options={
                         stock_locations?.map((sl: StockLocationDTO) => ({
@@ -247,7 +336,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
               <Button
                 size="small"
                 variant="primary"
-                disabled={!isDirty || isLoading}
+                disabled={!isDirty || isLoading || !locationsHasInventoryLevels}
                 loading={isLoading}
               >
                 Save and close

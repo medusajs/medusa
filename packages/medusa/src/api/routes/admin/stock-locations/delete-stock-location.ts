@@ -1,8 +1,5 @@
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import {
-  IInventoryService,
-  IStockLocationService,
-} from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**
@@ -79,12 +76,8 @@ export default async (req, res) => {
 
     if (inventoryService) {
       await Promise.all([
-        inventoryService
-          .withTransaction(transactionManager)
-          .deleteInventoryItemLevelByLocationId(id),
-        inventoryService
-          .withTransaction(transactionManager)
-          .deleteReservationItemByLocationId(id),
+        inventoryService.deleteInventoryItemLevelByLocationId(id),
+        inventoryService.deleteReservationItemByLocationId(id),
       ])
     }
   })

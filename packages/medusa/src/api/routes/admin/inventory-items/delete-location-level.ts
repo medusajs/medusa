@@ -1,7 +1,7 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
@@ -74,11 +74,7 @@ export default async (req: Request, res: Response) => {
     )
   }
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryLevel(id, location_id)
-  })
+  await inventoryService.deleteInventoryLevel(id, location_id)
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,

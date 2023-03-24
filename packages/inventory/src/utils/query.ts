@@ -1,11 +1,10 @@
-import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import {
-  buildLegacyFieldsListFrom,
-  buildQuery,
   ExtendedFindConfig,
   FilterableInventoryItemProps,
   FindConfig,
-} from "@medusajs/medusa"
+} from "@medusajs/types"
+import { buildLegacyFieldsListFrom, buildQuery } from "@medusajs/utils"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { InventoryItem } from "../models"
 
 export function getListQuery(
