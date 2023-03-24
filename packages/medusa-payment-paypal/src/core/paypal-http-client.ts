@@ -59,7 +59,7 @@ export class PaypalHttpClient {
     method?: Method
   }): Promise<TResponse> {
     return await this.httpClient_.request({
-      method: "POST",
+      method: method ?? "POST",
       url,
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export class PaypalHttpClient {
       }
 
       return await originalMethod
-        .apply(this.httpClient_, [...args, false])
+        .apply(this.httpClient_, [...args])
         .then((res) => res.data)
         .catch(async (err) => {
           if (err.response.status === 401) {
@@ -117,22 +117,21 @@ export class PaypalHttpClient {
    * @protected
    */
   protected async authenticate() {
-    const res: { data: { access_token: string } } =
-      await this.httpClient_.request({
-        method: "POST",
-        url: PaypalApiPath.AUTH,
-        auth: {
-          username: this.options_.clientId,
-          password: this.options_.clientSecret,
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        data: {
-          grant_type: "client_credentials",
-        },
-      })
+    const res: { access_token: string } = await this.httpClient_.request({
+      method: "POST",
+      url: PaypalApiPath.AUTH,
+      auth: {
+        username: this.options_.clientId,
+        password: this.options_.clientSecret,
+      },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: {
+        grant_type: "client_credentials",
+      },
+    })
 
-    this.accessToken_ = res.data.access_token
+    this.accessToken_ = res.access_token
   }
 }
