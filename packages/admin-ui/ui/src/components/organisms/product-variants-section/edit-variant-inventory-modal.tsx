@@ -11,7 +11,7 @@ import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { removeNullish } from "../../../utils/remove-nullish"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../forms/product/variant-form/edit-flow-variant-form"
+} from "../../forms/product/variant-inventory-form/edit-flow-variant-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
 import LayeredModal, {
@@ -163,6 +163,7 @@ const StockForm = ({
   updatingVariant: boolean
 }) => {
   const form = useForm<EditFlowVariantFormType>({
+    // @ts-ignore
     defaultValues: getEditVariantDefaultValues(variantInventory),
   })
 
