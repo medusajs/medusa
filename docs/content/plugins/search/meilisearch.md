@@ -75,25 +75,6 @@ const plugins = [
       settings: {
         // index settings...
       },
-      settings: {
-        // index name
-        products: {
-          // MeiliSearch's setting options 
-          // to be set on a particular index
-          searchableAttributes: [
-            "title", 
-            "description",
-            "variant_sku",
-          ],
-          displayedAttributes: [
-            "title", 
-            "description", 
-            "variant_sku", 
-            "thumbnail", 
-            "handle",
-          ],
-        },
-      },
     },
   },
 ]
