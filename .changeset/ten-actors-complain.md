@@ -8,7 +8,7 @@
 "@medusajs/types": patch
 "@medusajs/utils": patch
 "@medusajs/admin-ui": patch
-"@medusajs/medusa-plugin-meilisearch": patch
+"medusa-plugin-meilisearch": patch
 ---
 
 Remove dependency on @medusajs/medusa from Inventory and Stock-Location Modules
