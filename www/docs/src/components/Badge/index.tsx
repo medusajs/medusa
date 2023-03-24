@@ -7,15 +7,14 @@ type BadgeProps = {
   variant: string
 } & React.HTMLAttributes<HTMLSpanElement>
 
+const variantClasses = {
+  purple: styles.purpleBadge,
+  orange: styles.orangeBadge,
+}
+
 const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
   return (
-    <span
-      className={clsx(
-        styles.badge,
-        className,
-        variant === "purple" && styles.purpleBadge
-      )}
-    >
+    <span className={clsx(styles.badge, className, variantClasses[variant])}>
       {children}
     </span>
   )
