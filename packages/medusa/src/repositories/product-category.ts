@@ -63,7 +63,6 @@ export const ProductCategoryRepository = dataSource
         .skip(options_.skip)
         .take(options_.take)
         .addOrderBy(`${entityName}.rank`, "ASC")
-        .addOrderBy(`${entityName}.handle`, "ASC")
 
       if (q) {
         delete options_.where?.name
@@ -98,7 +97,6 @@ export const ProductCategoryRepository = dataSource
           )
           .addSelect(selectStatements(treeRelation))
           .addOrderBy(`${treeRelation}.rank`, "ASC")
-          .addOrderBy(`${treeRelation}.handle`, "ASC")
       })
 
       const nonTreeRelations: string[] = legacyRelations.filter(
@@ -108,10 +106,6 @@ export const ProductCategoryRepository = dataSource
       nonTreeRelations.forEach((relation) => {
         queryBuilder.leftJoinAndSelect(`${entityName}.${relation}`, relation)
       })
-
-      if (options_.withDeleted) {
-        queryBuilder.withDeleted()
-      }
 
       let [categories, count] = await queryBuilder.getManyAndCount()
 
