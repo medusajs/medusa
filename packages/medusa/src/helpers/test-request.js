@@ -1,4 +1,3 @@
-import { registerModules } from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -11,7 +10,11 @@ import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import moduleLoader, { moduleHelper } from "../loaders/module"
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import repositories from "../loaders/repositories"
 import models from "../loaders/models"
 
