@@ -309,7 +309,7 @@ Then, place an order either using the [REST APIs](/api/store) or using the store
 
 :::tip
 
-If you don’t have a storefront installed you can get started with either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) starter storefronts in minutes.
+If you don’t have a storefront installed you can get started with the [Next.js](../../starters/nextjs-medusa-starter.mdx) starter storefront in minutes.
 
 :::
 

@@ -146,7 +146,11 @@ You can test out the payment with PayPal using your sandbox account.
 
 ### Add to Gatsby Storefront
 
-Medusa also has a Gatsby storefront that you can use as your ecommerce storefront. If you don’t have the storefront installed, you can follow [this quickstart guide](../../starters/gatsby-medusa-starter.mdx).
+:::note
+
+Medusa's Gatsby storefront is deprecated and it is recommended to use the [Next.js storefront](../../starters/nextjs-medusa-starter.mdx) or build your own storefront instead.
+
+:::
 
 In your `.env.development` file (or the file you’re using for your environment variables) add the following variable with its value set to the Client ID:
 

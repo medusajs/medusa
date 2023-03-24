@@ -34,6 +34,7 @@ function CardLayout({
   html,
   containerClassName,
   isSoon = false,
+  badge,
 }) {
   return (
     <CardContainer
@@ -43,6 +44,7 @@ function CardLayout({
       <div className={clsx(styles.cardIconContainer)}>
         {icon}
         {isSoon && <Badge variant={"purple"}>Guide coming soon</Badge>}
+        {badge && <Badge {...badge} />}
       </div>
       <div className={clsx(styles.contentContainer)}>
         <span className={clsx(styles.cardTitle)} title={title}>
@@ -139,6 +141,7 @@ function CardCategory({ item }) {
       )}
       containerClassName={item.customProps?.className}
       isSoon={item.customProps?.isSoon}
+      badge={item.customProps?.badge}
     />
   )
 }
@@ -156,6 +159,7 @@ function CardLink({ item }) {
       html={item.customProps?.html}
       containerClassName={item.customProps?.className}
       isSoon={item.customProps?.isSoon}
+      badge={item.customProps?.badge}
     />
   )
 }

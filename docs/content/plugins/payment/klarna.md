@@ -62,7 +62,7 @@ Finally, in `medusa-config.js`, add the Klarna plugin to the `plugins` array wit
 const plugins = [
   // other plugins...
   {
-    resolve: `medusa-payment-klarnal`,
+    resolve: `medusa-payment-klarna`,
     options: {
       backend_url: process.env.KLARNA_BACKEND_URL,
       url: process.env.KLARNA_URL,
