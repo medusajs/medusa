@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.3.0-rc.0
+
+### Minor Changes
+
+- [#3257](https://github.com/medusajs/medusa/pull/3257) [`589d1c09b`](https://github.com/medusajs/medusa/commit/589d1c09b085dcaf9667061201ac9deff3047466) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa-payment-stripe): Implement payment processor API on stripe plugin and fix web hook issues
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0-rc.0
+  - medusa-interfaces@1.3.7-rc.0
+
 ## 1.2.10
 
 ### Patch Changes

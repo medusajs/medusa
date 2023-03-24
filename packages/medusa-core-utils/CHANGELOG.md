@@ -1,5 +1,45 @@
 # Change Log
 
+## 1.2.0-rc.0
+
+### Minor Changes
+
+- [#3408](https://github.com/medusajs/medusa/pull/3408) [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Http Server Graceful Shutdown
+
+- [#3329](https://github.com/medusajs/medusa/pull/3329) [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Inventory and Stock location modules supporting isolated connection
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+
+- [#3352](https://github.com/medusajs/medusa/pull/3352) [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat(medusa): Modules initializer
+
+  ### Loading modules in a project
+
+  Example
+
+  ```typescript
+  import {
+    InventoryServiceInitializeOptions,
+    initialize,
+  } from "@medusajs/inventory"
+
+  const options: InventoryServiceInitializeOptions = {
+    database: {
+      type: "postgres",
+      url: DB_URL,
+    },
+  }
+
+  const inventoryService = await initialize(options)
+  const newInventoryItem = await inventoryService.createInventoryItem({
+    sku: "sku_123",
+  })
+  ```
+
 ## 1.1.39
 
 ### Patch Changes
