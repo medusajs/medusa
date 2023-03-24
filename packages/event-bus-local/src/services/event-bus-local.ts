@@ -8,6 +8,10 @@ type InjectedDependencies = {
 }
 
 const eventEmitter = new EventEmitter()
+eventEmitter.setMaxListeners(Infinity)
+eventEmitter.on("error", (...args) => {
+  console.log(...args)
+})
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
@@ -59,18 +63,23 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         continue
       }
 
-      try {
-        this.eventEmitter_.emit(event.eventName, event.data)
-      } catch (error) {
-        this.logger_.error(
-          `An error occurred while processing ${event.eventName}: ${error}`
-        )
-      }
+      this.eventEmitter_.emit(event.eventName, event.data)
     }
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
-    this.eventEmitter_.on(event, subscriber)
+    if (event === "*") {
+      return this
+    }
+
+    this.eventEmitter_.on(event, async (...args) => {
+      try {
+        // @ts-ignore
+        await subscriber(...args)
+      } catch (e) {
+        this.logger_.error(`An error occurred while processing ${event}: ${e}`)
+      }
+    })
     return this
   }
 
