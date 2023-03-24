@@ -37,15 +37,15 @@ Provide powerful indexing and searching features in your commerce application wi
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
 
   ```js
-  const plugins = [
-    // ...
-    {
-      resolve: `medusa-plugin-algolia`,
-      options: {
-        application_id: process.env.ALGOLIA_APP_ID,
-        admin_api_key: process.env.ALGOLIA_ADMIN_API_KEY,
-        settings: {
-          products: {
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      // other options...
+      settings: {
+        products: {
+          indexSettings: {
             searchableAttributes: ["title", "description"],
             attributesToRetrieve: [
               "id",
@@ -61,10 +61,15 @@ Provide powerful indexing and searching features in your commerce application wi
               "images",
             ],
           },
+          transform: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
         },
       },
     },
-  ]
+  },
+]
   ```
 
 ---
