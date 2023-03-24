@@ -1,0 +1,197 @@
+---
+description: "Taxes are additional costs or fees imposed by a government for goods or services. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Taxes
+
+Taxes are additional costs or fees imposed by a government for goods or services. This overview introduces the available features related to taxes.
+
+:::note
+
+Not a developer? Check out the [Taxes user guide](../../user-guide/taxes/index.md).
+
+:::
+
+## Features
+
+### Tax Providers
+
+Developers can integrate third-party tax providers or implement custom tax-provider logic.
+
+Admins can specify the tax provider for a specific region.
+
+Customers can view calculated taxes during their checkout process.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Backend: Create Tax Provider',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a tax provider.',
+      isSoon: true
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Tax Providers',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage a taxes using Admin APIs.',
+      isSoon: true
+    }
+  },
+]} />
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/user-guide/taxes/manage',
+    label: 'User Guide: Manage Taxes',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage taxes in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/taxes/storefront/manual-calculation',
+    label: 'Storefront: Manually Calculate Taxes',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manually calculate taxes during checkout.'
+    }
+  },
+]} />
+
+### Tax Rates and Overrides
+
+Admins can create additional tax rates aside from the default tax rate. They can also specify overrides of tax rates for specific products, product types, or shipping options.
+
+Customers can review order edit requests and authorize additional payments if necessary.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Tax Rates',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage tax rates using Admin APIs.',
+      isSoon: true
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Tax Overrides',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage tax overrides using Admin APIs.',
+      isSoon: true
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/taxes/tax-rates',
+    label: 'User Guide: Tax Rates',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage tax rates using Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/taxes/tax-overrides',
+    label: 'User Guide: Tax Overrides',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage tax rates using Medusa Admin.'
+    }
+  },
+]} />
+
+### Tax-Inclusive Pricing
+
+Admins can enable tax-inclusive pricing for a region or currency. This would automatically calculate the taxes applied on a product for that region or currency.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/taxes/inclusive-pricing',
+    label: 'Architecture: Tax-Inclusive Pricing',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn how tax-inclusive pricing works and its relation to other modules.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/taxes/tax-inclusive',
+    label: 'User Guide: Tax-Inclusive Pricing',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage tax-inclusive pricing using Medusa Admin.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how tax-related entities and concepts are built, their relation to other modules, and more.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Tax',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Tax Architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/taxes/inclusive-pricing',
+    label: 'Architecture: Tax-Inclusive Pricing',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn how tax-inclusive pricing works.'
+    }
+  },
+]} />
+
+---
+
+## Related Modules
+
+Discover Taxes' relation to other modules in Medusa.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/regions-and-currencies/overview',
+    label: 'Regions',
+    customProps: {
+      icon: Icons['globe-europe-solid'],
+      description: 'Taxes, tax rates, and tax overrides are associated with a region.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/overview',
+    label: 'Carts and Checkout',
+    customProps: {
+      icon: Icons['shopping-cart-solid'],
+      description: 'Taxes can be automatically or manually calculated during checkout.'
+    }
+  },
+]} />

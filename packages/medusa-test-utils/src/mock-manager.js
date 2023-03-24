@@ -7,6 +7,15 @@ export default {
     return repo
   },
 
+  getCustomRepository: function (repo) {
+    if (repo) {
+      repo["metadata"] = repo["metadata"] ?? {
+        columns: []
+      }
+    }
+    return repo;
+  },
+
   transaction: function (isolationOrCb, cb) {
     if (typeof isolationOrCb === "string") {
       return cb(this)

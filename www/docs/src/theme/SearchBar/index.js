@@ -13,12 +13,12 @@ export default function SearchBarWrapper(props) {
     if (isBrowser) {
 
       function trackSearch(e) {
-        if (!e.target.classList.contains('DocSearch-Input') && !(e.target.tagName.toLowerCase() === "input" && e.target.getAttribute('type') === 'search')) {
+        if (!e.target.classList?.contains('DocSearch-Input') && !(e.target.tagName.toLowerCase() === "input" && e.target.getAttribute('type') === 'search')) {
           return;
         }
   
         const query = e.target.value;
-        if (query.length >= 3) {
+        if (query.length >= 3 && window.analytics) {
           //send event to segment
           window.analytics.track('search', {
             query

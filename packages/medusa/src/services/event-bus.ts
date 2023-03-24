@@ -168,7 +168,9 @@ export default class EventBusService
       .withTransaction(manager)
       .create(events)
 
-    return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
+    if (this.config_?.projectConfig?.redis_url) {
+      return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
+    }
   }
 
   startEnqueuer(): void {

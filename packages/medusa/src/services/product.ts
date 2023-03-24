@@ -517,20 +517,32 @@ class ProductService extends TransactionBaseService {
         product.thumbnail = images[0]
       }
 
+      const promises: Promise<any>[] = []
+
       if (images) {
-        product.images = await imageRepo.upsertImages(images)
+        promises.push(
+          imageRepo
+            .upsertImages(images)
+            .then((image) => (product.images = image))
+        )
       }
 
       if (metadata) {
         product.metadata = setMetadata(product, metadata)
       }
 
-      if (typeof type !== `undefined`) {
-        product.type_id = (await productTypeRepo.upsertType(type))?.id || null
+      if (isDefined(type)) {
+        promises.push(
+          productTypeRepo
+            .upsertType(type)
+            .then((type) => (product.type_id = type?.id ?? null))
+        )
       }
 
       if (tags) {
-        product.tags = await productTagRepo.upsertTags(tags)
+        promises.push(
+          productTagRepo.upsertTags(tags).then((tags) => (product.tags = tags))
+        )
       }
 
       if (isDefined(categories)) {
@@ -538,11 +550,9 @@ class ProductService extends TransactionBaseService {
 
         if (categories?.length) {
           const categoryIds = categories.map((c) => c.id)
-          const categoryRecords = categoryIds.map(
+          product.categories = categoryIds.map(
             (id) => ({ id } as ProductCategory)
           )
-
-          product.categories = categoryRecords
         }
       }
 
@@ -566,6 +576,8 @@ class ProductService extends TransactionBaseService {
         }
       }
 
+      await Promise.all(promises)
+
       const result = await productRepo.save(product)
 
       await this.eventBus_
@@ -574,6 +586,7 @@ class ProductService extends TransactionBaseService {
           id: result.id,
           fields: Object.keys(update),
         })
+
       return result
     })
   }

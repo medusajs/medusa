@@ -7,13 +7,15 @@ import {
   ObjectLiteral,
   WhereExpressionBuilder,
 } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
+import { ProductVariantPrice } from "../types/product-variant"
+import { isString } from "../utils"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -24,6 +26,31 @@ type Price = Partial<
 export const MoneyAmountRepository = dataSource
   .getRepository(MoneyAmount)
   .extend({
+    async insertBulk(
+      data: QueryDeepPartialEntity<MoneyAmount>[]
+    ): Promise<MoneyAmount[]> {
+      const queryBuilder = this.createQueryBuilder()
+        .insert()
+        .into(MoneyAmount)
+        .values(data)
+
+      // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
+      if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+        const rawMoneyAmounts = await queryBuilder.execute()
+        return rawMoneyAmounts.generatedMaps.map((d) =>
+          this.create(d)
+        ) as MoneyAmount[]
+      }
+
+      const rawMoneyAmounts = await queryBuilder.returning("*").execute()
+      return rawMoneyAmounts.generatedMaps.map((d) => this.create(d))
+    },
+
+    /**
+     * Will be removed in a future release.
+     * Use `deleteVariantPricesNotIn` instead.
+     * @deprecated
+     */
     async findVariantPricesNotIn(
       variantId: string,
       prices: Price[]
@@ -42,6 +69,63 @@ export const MoneyAmountRepository = dataSource
         )
         .getMany()
       return pricesNotInPricesPayload
+    },
+
+    async deleteVariantPricesNotIn(
+      variantIdOrData:
+        | string
+        | { variantId: string; prices: ProductVariantPrice[] }[],
+      prices?: Price[]
+    ): Promise<void> {
+      const data = isString(variantIdOrData)
+        ? [
+            {
+              variantId: variantIdOrData,
+              prices: prices!,
+            },
+          ]
+        : variantIdOrData
+
+      const queryBuilder = this.createQueryBuilder().delete()
+
+      for (const data_ of data) {
+        const where = {
+          variant_id: data_.variantId,
+          price_list_id: IsNull(),
+        }
+
+        const orWhere: ObjectLiteral[] = []
+
+        for (const price of data_.prices) {
+          if (price.currency_code) {
+            orWhere.push(
+              {
+                currency_code: Not(price.currency_code),
+              },
+              {
+                region_id: price.region_id
+                  ? Not(price.region_id)
+                  : Not(IsNull()),
+                currency_code: price.currency_code,
+              }
+            )
+          }
+
+          if (price.region_id) {
+            orWhere.push({
+              region_id: Not(price.region_id),
+            })
+          }
+        }
+
+        queryBuilder.orWhere(
+          new Brackets((localQueryBuild) => {
+            localQueryBuild.where(where).andWhere(orWhere)
+          })
+        )
+      }
+
+      await queryBuilder.execute()
     },
 
     async upsertVariantCurrencyPrice(
@@ -68,44 +152,6 @@ export const MoneyAmountRepository = dataSource
       }
 
       return await this.save(moneyAmount)
-    },
-
-    async deleteVariantPricesNotIn(
-      variantId: string,
-      prices: Price[]
-    ): Promise<void> {
-      const where = {
-        variant_id: variantId,
-        price_list_id: IsNull(),
-      }
-
-      const orWhere: ObjectLiteral[] = []
-
-      for (const price of prices) {
-        if (price.currency_code) {
-          orWhere.push(
-            {
-              currency_code: Not(price.currency_code),
-            },
-            {
-              region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
-              currency_code: price.currency_code,
-            }
-          )
-        }
-
-        if (price.region_id) {
-          orWhere.push({
-            region_id: Not(price.region_id),
-          })
-        }
-      }
-
-      await this.createQueryBuilder()
-        .delete()
-        .where(where)
-        .andWhere(orWhere)
-        .execute()
     },
 
     async addPriceListPrices(
