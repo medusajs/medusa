@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cache-inmemory",
-  "version": "1.0.0",
+  "version": "1.7.0",
   "description": "In-memory Cache Module for Medusa",
   "main": "dist/index.js",
   "repository": {
