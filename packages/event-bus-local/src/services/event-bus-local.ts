@@ -70,7 +70,9 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         // @ts-ignore
         await subscriber(...args)
       } catch (e) {
-        this.logger_.error(`An error occurred while processing ${event}: ${e}`)
+        this.logger_.error(
+          `An error occurred while processing ${event.toString()}: ${e}`
+        )
       }
     })
     return this
