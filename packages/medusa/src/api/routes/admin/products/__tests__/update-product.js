@@ -2,7 +2,6 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
-import { EventBusServiceMock } from "../../../../../services/__mocks__/event-bus"
 
 describe("POST /admin/products/:id", () => {
   describe("successfully updates a product", () => {
