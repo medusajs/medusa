@@ -4,16 +4,12 @@ export default {
   },
 
   withRepository: function (repo) {
-    return repo
-  },
-
-  getCustomRepository: function (repo) {
     if (repo) {
       repo["metadata"] = repo["metadata"] ?? {
         columns: []
       }
     }
-    return repo;
+    return repo
   },
 
   transaction: function (isolationOrCb, cb) {
