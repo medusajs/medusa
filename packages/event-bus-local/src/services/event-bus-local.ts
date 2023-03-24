@@ -9,9 +9,6 @@ type InjectedDependencies = {
 
 const eventEmitter = new EventEmitter()
 eventEmitter.setMaxListeners(Infinity)
-eventEmitter.on("error", (...args) => {
-  console.log(...args)
-})
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
@@ -68,10 +65,6 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
-    if (event === "*") {
-      return this
-    }
-
     this.eventEmitter_.on(event, async (...args) => {
       try {
         // @ts-ignore
