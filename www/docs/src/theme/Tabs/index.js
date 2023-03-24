@@ -1,4 +1,4 @@
-import React, {cloneElement, useEffect} from 'react';
+import React, {cloneElement, useEffect, useRef} from 'react';
 import clsx from 'clsx';
 import {
   useScrollPositionBlocker,
@@ -12,6 +12,8 @@ function TabList({className, block, selectedValue, selectValue, tabValues, isCod
   const tabRefs = [];
   const {blockElementScrollPositionUntilNextRender} =
     useScrollPositionBlocker();
+  const codeTabSelectorRef = useRef(null)
+  const codeTabsWrapperRef = useRef(null)
   const handleTabChange = (event) => {
     const newTab = event.currentTarget;
     const newTabIndex = tabRefs.indexOf(newTab);
@@ -44,39 +46,63 @@ function TabList({className, block, selectedValue, selectValue, tabValues, isCod
     focusElement?.focus();
   };
 
+  const changeTabSelectorCoordinates = (selectedTab) => {
+    if (!codeTabSelectorRef?.current || !codeTabsWrapperRef?.current) {
+      return
+    }
+    const selectedTabsCoordinates = selectedTab.getBoundingClientRect(),
+      tabsWrapperCoordinates = codeTabsWrapperRef.current.getBoundingClientRect();
+    codeTabSelectorRef.current.style.left = `${selectedTabsCoordinates.left - tabsWrapperCoordinates.left}px`
+    codeTabSelectorRef.current.style.width = `${selectedTabsCoordinates.width}px`
+    codeTabSelectorRef.current.style.height = `${selectedTabsCoordinates.height}px`
+  }
+
+  useEffect(() => {
+    if (codeTabSelectorRef?.current && tabRefs.length) {
+      const selectedTab = tabRefs.find((tab) => tab.getAttribute('aria-selected') === 'true')
+      if (selectedTab) {
+        changeTabSelectorCoordinates(selectedTab)
+      }
+    }
+  }, [codeTabSelectorRef, tabRefs])
+
   //ADDED: div wrapper to ul
   //ADDED: span with code-title class
+  //ADDED: code tab selector
   return (
     <div  className={`tablist-wrapper ${isCodeTabs ? 'code-header' : ''}`}>
+      <div className={`tabs-ul-wrapper ${isCodeTabs ? 'code-tabs-ul-wrapper' : ''}`} ref={codeTabsWrapperRef}>
+        {isCodeTabs && <span className='code-tab-selector' ref={codeTabSelectorRef}></span>}
+        <ul
+          role="tablist"
+          aria-orientation="horizontal"
+          className={clsx(
+            'tabs',
+            {
+              'tabs--block': block,
+            },
+            className,
+          )}>
+          {tabValues.map(({value, label, attributes}) => (
+            <li
+              // TODO extract TabListItem
+              role="tab"
+              tabIndex={selectedValue === value ? 0 : -1}
+              aria-selected={selectedValue === value}
+              key={value}
+              ref={(tabControl) => tabRefs.push(tabControl)}
+              onKeyDown={handleKeydown}
+              onClick={handleTabChange}
+              {...attributes}
+              className={clsx('tabs__item', styles.tabItem, attributes?.className, {
+                'tabs__item--active': selectedValue === value,
+              })}>
+              {label ?? value}
+            </li>
+          ))}
+        </ul>
+      </div>
       {isCodeTabs && <span className='code-title'>{codeTitle}</span>}
-      <ul
-        role="tablist"
-        aria-orientation="horizontal"
-        className={clsx(
-          'tabs',
-          {
-            'tabs--block': block,
-          },
-          className,
-        )}>
-        {tabValues.map(({value, label, attributes}) => (
-          <li
-            // TODO extract TabListItem
-            role="tab"
-            tabIndex={selectedValue === value ? 0 : -1}
-            aria-selected={selectedValue === value}
-            key={value}
-            ref={(tabControl) => tabRefs.push(tabControl)}
-            onKeyDown={handleKeydown}
-            onClick={handleTabChange}
-            {...attributes}
-            className={clsx('tabs__item', styles.tabItem, attributes?.className, {
-              'tabs__item--active': selectedValue === value,
-            })}>
-            {label ?? value}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
