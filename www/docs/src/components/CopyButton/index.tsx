@@ -1,14 +1,20 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
-
-import Tooltip from "../Tooltip"
+import React, { useState, useEffect, useRef, useCallback } from "react"
+// @ts-expect-error: TODO, we need to make theme-classic have type: module
 import copy from "copy-text-to-clipboard"
+import Tooltip from "@site/src/theme/Tooltip"
 
-export default function CopyButton({
-  children,
-  buttonClassName,
+type CopyButtonProps = {
+  text: string
+  buttonClassName?: string
+  tooltipClassName?: string
+} & React.HTMLAttributes<HTMLDivElement>
+
+const CopyButton: React.FC<CopyButtonProps> = ({
   text,
-  tooltipClassName,
-}) {
+  buttonClassName = "",
+  tooltipClassName = "",
+  children,
+}) => {
   const [isCopied, setIsCopied] = useState(false)
   const copyTimeout = useRef(undefined)
 
@@ -33,3 +39,5 @@ export default function CopyButton({
     </Tooltip>
   )
 }
+
+export default CopyButton

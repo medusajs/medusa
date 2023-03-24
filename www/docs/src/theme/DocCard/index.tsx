@@ -1,19 +1,37 @@
+import React, { type ReactNode } from "react"
+import clsx from "clsx"
+import Link from "@docusaurus/Link"
 import {
   findFirstCategoryLink,
   useDocById,
 } from "@docusaurus/theme-common/internal"
-
-import Link from "@docusaurus/Link"
-import React from "react"
-import clsx from "clsx"
 import isInternalUrl from "@docusaurus/isInternalUrl"
-import styles from "./styles.module.css"
 import { translate } from "@docusaurus/Translate"
-import BorderedIcon from "../../components/BorderedIcon"
-import Badge from "../../components/Badge"
-import Icons from "../Icon"
+import type { Props } from "@theme/DocCard"
 
-function CardContainer({ href, children, className }) {
+import styles from "./styles.module.css"
+import BorderedIcon from "@site/src/components/BorderedIcon"
+import Badge, { BadgeProps } from "@site/src/components/Badge"
+import Icons from "@site/src/theme/Icon"
+import {
+  ModifiedPropSidebarItemCategory,
+  ModifiedPropSidebarItemLink,
+  ModifiedSidebarItem,
+} from "@site/src/types/sidebar-items"
+
+type ModifiedProps = {
+  item: ModifiedSidebarItem
+}
+
+function CardContainer({
+  href,
+  children,
+  className,
+}: {
+  href: string
+  children: ReactNode
+  className?: string
+}): JSX.Element {
   return (
     <article className={`card-wrapper margin-bottom--lg`}>
       <Link
@@ -35,7 +53,16 @@ function CardLayout({
   containerClassName,
   isSoon = false,
   badge,
-}) {
+}: {
+  href: string
+  icon: ReactNode
+  title: string
+  description?: string
+  html?: string
+  containerClassName?: string
+  isSoon?: boolean
+  badge?: BadgeProps
+}): JSX.Element {
   return (
     <CardContainer
       href={href}
@@ -68,7 +95,7 @@ function CardLayout({
   )
 }
 
-function getCardIcon(item) {
+function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
   if (item.customProps?.themedImage) {
     return (
       <BorderedIcon
@@ -100,7 +127,7 @@ function getCardIcon(item) {
     )
   } else if (
     item.customProps?.iconName &&
-    Icons.hasOwnProperty(item.customProps?.iconName)
+    Object.hasOwn(Icons, item.customProps?.iconName)
   ) {
     return (
       <BorderedIcon
@@ -112,13 +139,21 @@ function getCardIcon(item) {
   } else {
     return (
       <div className={clsx("card-icon-wrapper", "no-zoom-img")}>
-        {isInternalUrl(item.href) ? "📄️" : "🔗"}
+        {isInternalUrl(
+          "href" in item ? item.href : "value" in item ? item.value : "#"
+        )
+          ? "📄️"
+          : "🔗"}
       </div>
     )
   }
 }
 
-function CardCategory({ item }) {
+function CardCategory({
+  item,
+}: {
+  item: ModifiedPropSidebarItemCategory
+}): JSX.Element | null {
   const href = findFirstCategoryLink(item)
   const icon = getCardIcon(item)
   // Unexpected: categories that don't have a link have been filtered upfront
@@ -130,6 +165,7 @@ function CardCategory({ item }) {
       href={href}
       icon={icon}
       title={item.label}
+      // eslint-disable-next-line @docusaurus/string-literal-i18n-messages
       description={translate(
         {
           message: item.customProps?.description || "{count} items",
@@ -146,7 +182,11 @@ function CardCategory({ item }) {
   )
 }
 
-function CardLink({ item }) {
+function CardLink({
+  item,
+}: {
+  item: ModifiedPropSidebarItemLink
+}): JSX.Element {
   const icon = getCardIcon(item)
   const doc = useDocById(item.docId ?? undefined)
 
@@ -164,7 +204,7 @@ function CardLink({ item }) {
   )
 }
 
-export default function DocCard({ item }) {
+export default function DocCard({ item }: ModifiedProps): JSX.Element {
   switch (item.type) {
     case "link":
       return <CardLink item={item} />

@@ -1,9 +1,10 @@
-import React from "react"
+import React, { type ReactNode } from "react"
 import clsx from "clsx"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import Translate from "@docusaurus/Translate"
+import type { Props } from "@theme/Admonition"
+
 import styles from "./styles.module.css"
-import useBaseUrl from "@docusaurus/useBaseUrl"
 
 function NoteIcon() {
   return (
@@ -23,6 +24,7 @@ function NoteIcon() {
     </svg>
   )
 }
+
 function TipIcon() {
   return (
     <svg
@@ -45,6 +47,7 @@ function TipIcon() {
     </svg>
   )
 }
+
 function DangerIcon() {
   return (
     <svg
@@ -63,14 +66,23 @@ function DangerIcon() {
     </svg>
   )
 }
+
 function InfoIcon() {
   return NoteIcon()
 }
+
 function CautionIcon() {
   return DangerIcon()
 }
+
+type AdmonitionConfig = {
+  iconComponent: React.ComponentType
+  infimaClassName: string
+  label: ReactNode
+}
+
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
-const AdmonitionConfigs = {
+const AdmonitionConfigs: Record<Props["type"], AdmonitionConfig> = {
   note: {
     infimaClassName: "secondary",
     iconComponent: NoteIcon,
@@ -132,16 +144,21 @@ const AdmonitionConfigs = {
     ),
   },
 }
+
 // Legacy aliases, undocumented but kept for retro-compatibility
 const aliases = {
   secondary: "note",
   important: "info",
   success: "tip",
   warning: "danger",
-}
-function getAdmonitionConfig(unsafeType) {
-  const type = aliases[unsafeType] ?? unsafeType
-  const config = AdmonitionConfigs[type]
+} as const
+
+function getAdmonitionConfig(unsafeType: string): AdmonitionConfig {
+  const type =
+    (aliases as { [key: string]: Props["type"] })[unsafeType] ?? unsafeType
+  const config = (AdmonitionConfigs as { [key: string]: AdmonitionConfig })[
+    type
+  ]
   if (config) {
     return config
   }
@@ -150,13 +167,19 @@ function getAdmonitionConfig(unsafeType) {
   )
   return AdmonitionConfigs.info
 }
+
 // Workaround because it's difficult in MDX v1 to provide a MDX title as props
 // See https://github.com/facebook/docusaurus/pull/7152#issuecomment-1145779682
-function extractMDXAdmonitionTitle(children) {
+function extractMDXAdmonitionTitle(children: ReactNode): {
+  mdxAdmonitionTitle: ReactNode | undefined
+  rest: ReactNode
+} {
   const items = React.Children.toArray(children)
   const mdxAdmonitionTitle = items.find(
     (item) =>
-      React.isValidElement(item) && item.props?.mdxType === "mdxAdmonitionTitle"
+      React.isValidElement(item) &&
+      (item.props as { mdxType: string } | null)?.mdxType ===
+        "mdxAdmonitionTitle"
   )
   const rest = <>{items.filter((item) => item !== mdxAdmonitionTitle)}</>
   return {
@@ -164,7 +187,8 @@ function extractMDXAdmonitionTitle(children) {
     rest,
   }
 }
-function processAdmonitionProps(props) {
+
+function processAdmonitionProps(props: Props): Props {
   const { mdxAdmonitionTitle, rest } = extractMDXAdmonitionTitle(props.children)
   return {
     ...props,
@@ -172,15 +196,11 @@ function processAdmonitionProps(props) {
     children: rest,
   }
 }
-export default function Admonition(props) {
-  const {
-    children,
-    type,
-    title,
-    icon: iconProp,
-  } = processAdmonitionProps(props)
+
+export default function Admonition(props: Props): JSX.Element {
+  const { children, type, icon: iconProp } = processAdmonitionProps(props)
+
   const typeConfig = getAdmonitionConfig(type)
-  const titleLabel = title ?? typeConfig.label
   const { iconComponent: IconComponent } = typeConfig
   const icon = iconProp ?? <IconComponent />
   return (

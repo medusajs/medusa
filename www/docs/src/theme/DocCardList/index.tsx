@@ -5,11 +5,18 @@ import {
   filterDocCardListItems,
 } from "@docusaurus/theme-common"
 import DocCard from "@theme/DocCard"
-function DocCardListForCurrentSidebarCategory({ className }) {
+import type { Props } from "@theme/DocCardList"
+
+function DocCardListForCurrentSidebarCategory({ className }: Props) {
   const category = useCurrentSidebarCategory()
   return <DocCardList items={category.items} className={className} />
 }
-export default function DocCardList(props) {
+
+type ModifiedProps = {
+  colSize?: string
+} & Props
+
+export default function DocCardList(props: ModifiedProps): JSX.Element {
   const { items, className } = props
   if (!items) {
     return <DocCardListForCurrentSidebarCategory {...props} />
