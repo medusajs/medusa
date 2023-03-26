@@ -1,14 +1,14 @@
-import dotenv from "dotenv"
 import { AwilixContainer } from "awilix"
+import dotenv from "dotenv"
 import express from "express"
 
-import {
-  ProductVariantService,
-  ProductVariantInventoryService,
-} from "../services"
-import { ProductVariant } from "../models"
-import { IInventoryService, IStockLocationService } from "../interfaces"
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import loaders from "../loaders"
+import { ProductVariant } from "../models"
+import {
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../services"
 
 dotenv.config()
 

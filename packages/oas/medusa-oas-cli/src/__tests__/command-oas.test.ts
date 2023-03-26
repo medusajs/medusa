@@ -1,11 +1,11 @@
-import os from "os"
-import fs from "fs/promises"
 import execa from "execa"
+import fs from "fs/promises"
+import * as yaml from "js-yaml"
+import { OpenAPIObject, SchemaObject } from "openapi3-ts"
+import { OperationObject } from "openapi3-ts/src/model/OpenApi"
+import os from "os"
 import path from "path"
 import { v4 as uid } from "uuid"
-import { OpenAPIObject, SchemaObject } from "openapi3-ts"
-import * as yaml from "js-yaml"
-import { OperationObject } from "openapi3-ts/src/model/OpenApi"
 
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
@@ -209,14 +209,14 @@ describe("command oas", () => {
 /** @oas [get] /store/regions
  *  operationId: OverwrittenOperation
  */
-/** 
+/**
  *  @schema FoobarTestSchema
  *  type: object
  *  properties:
  *    foo:
  *      type: string
  */
-/** 
+/**
  *  @schema StoreRegionsListRes
  *  type: object
  *  properties:
@@ -301,7 +301,7 @@ paths:
   "/foobar/tests":
     get:
       operationId: GetFoobarTests
-      responses: 
+      responses:
         "200":
           description: OK
   "/store/regions":
@@ -357,7 +357,7 @@ components:
       description: foo security
       type: apiKey
       name: foo-api-key
-      in: header 
+      in: header
 `
       const targetDir = path.resolve(tmpDir, uid())
       const filePath = path.resolve(targetDir, "custom.oas.base.yaml")

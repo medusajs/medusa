@@ -61,6 +61,7 @@ export function getCommand() {
     command.addOption(opt)
   }
   command.action(async (options) => await execute(options))
+  command.showHelpAfterError(true)
   return command
 }
 

@@ -1,28 +1,25 @@
-import { DeepPartial, EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager } from "typeorm"
 
-import { FindConfig } from "../types/common"
-import { buildQuery, isString, setMetadata } from "../utils"
-import { PaymentCollectionRepository } from "../repositories/payment-collection"
 import {
   PaymentCollection,
   PaymentCollectionStatus,
   PaymentSession,
   PaymentSessionStatus,
 } from "../models"
-import { TransactionBaseService } from "../interfaces"
-import {
-  CustomerService,
-  EventBusService,
-  PaymentProviderService,
-} from "./index"
+import { PaymentCollectionRepository } from "../repositories/payment-collection"
+import { FindConfig } from "../types/common"
+import { buildQuery, isString, setMetadata } from "../utils"
+import { CustomerService, PaymentProviderService } from "./index"
 
+import { TransactionBaseService } from "../interfaces"
+import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
 import {
   CreatePaymentCollectionInput,
   PaymentCollectionsSessionsBatchInput,
   PaymentCollectionsSessionsInput,
 } from "../types/payment-collection"
-import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager

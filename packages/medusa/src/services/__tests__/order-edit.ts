@@ -1,7 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
+import EventBusService from "../event-bus"
 import {
-  EventBusService,
   LineItemService,
   NewTotalsService,
   OrderEditItemChangeService,

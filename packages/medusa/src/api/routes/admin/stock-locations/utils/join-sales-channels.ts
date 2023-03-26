@@ -1,11 +1,8 @@
+import { StockLocationDTO, StockLocationExpandedDTO } from "@medusajs/types"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../../services"
-import {
-  StockLocationDTO,
-  StockLocationExpandedDTO,
-} from "../../../../../types/stock-location"
 
 const joinSalesChannels = async (
   locations: StockLocationDTO[],

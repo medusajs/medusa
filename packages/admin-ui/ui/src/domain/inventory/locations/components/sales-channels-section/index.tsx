@@ -1,4 +1,4 @@
-import { StockLocationExpandedDTO } from "@medusajs/medusa"
+import { StockLocationExpandedDTO } from "@medusajs/types"
 import SalesChannelsList from "../../../../../components/molecules/sales-channels-list"
 import EditSalesChannels from "../edit-sales-channels"
 

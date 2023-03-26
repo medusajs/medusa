@@ -1,6 +1,5 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
-
-import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**

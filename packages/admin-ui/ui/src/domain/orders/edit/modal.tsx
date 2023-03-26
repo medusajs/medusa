@@ -336,7 +336,10 @@ function OrderEditModal(props: OrderEditModalProps) {
               currencyCode={currencyCode}
               amountPaid={paidTotal - refundedTotal}
               newTotal={orderEdit.total}
-              differenceDue={orderEdit.total - paidTotal + refundedTotal}
+              differenceDue={
+                // TODO: more correct would be to have => diff_due = orderEdit_total_of_items_user_is_getting - paid_total + refunded_total
+                orderEdit.total - paidTotal // (orderEdit_total - refunded_total) - (paidTotal - refundedTotal)
+              }
             />
           )}
 

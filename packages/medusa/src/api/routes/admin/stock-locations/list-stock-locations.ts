@@ -1,13 +1,12 @@
+import { IStockLocationService } from "@medusajs/types"
 import { IsOptional } from "class-validator"
-import { IsType } from "../../../../utils/validators/is-type"
-
-import { IStockLocationService } from "../../../../interfaces"
-import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
+import { extendedFindParamsMixin } from "../../../../types/common"
+import { IsType } from "../../../../utils/validators/is-type"
 import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**

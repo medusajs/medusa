@@ -1,28 +1,27 @@
-import {
-  AdminPostStockLocationsReq,
-  SalesChannel,
-  StockLocationAddressDTO,
-  StockLocationAddressInput,
-} from "@medusajs/medusa"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
+import { AdminPostStockLocationsReq, SalesChannel } from "@medusajs/medusa"
 import {
   useAdminAddLocationToSalesChannel,
-  useAdminCreateStockLocation,
+  useAdminCreateStockLocation
 } from "medusa-react"
+import GeneralForm, { GeneralFormType } from "../components/general-form"
 
-import Accordion from "../../../../components/organisms/accordion"
-import AddressForm from "../components/address-form"
+import {
+  StockLocationAddressDTO,
+  StockLocationAddressInput
+} from "@medusajs/types"
+import { useForm } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import DeletePrompt from "../../../../components/organisms/delete-prompt"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
-import SalesChannelsForm from "../components/sales-channels-form"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { nestedForm } from "../../../../utils/nested-form"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
-import { useForm } from "react-hook-form"
+import Accordion from "../../../../components/organisms/accordion"
+import DeletePrompt from "../../../../components/organisms/delete-prompt"
 import useNotification from "../../../../hooks/use-notification"
 import useToggleState from "../../../../hooks/use-toggle-state"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { nestedForm } from "../../../../utils/nested-form"
+import AddressForm from "../components/address-form"
+import SalesChannelsForm from "../components/sales-channels-form"
 
 type NewLocationForm = {
   general: GeneralFormType
@@ -48,7 +47,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   })
   const {
     handleSubmit,
-    formState: { isDirty, isValid },
+    formState: { isDirty },
   } = form
 
   const {
@@ -64,7 +63,10 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   const { mutateAsync: associateSalesChannel } =
     useAdminAddLocationToSalesChannel()
 
-  const createSalesChannelAssociationPromise = (salesChannelId, locationId) =>
+  const createSalesChannelAssociationPromise = (
+    salesChannelId: string,
+    locationId: string
+  ) =>
     associateSalesChannel({
       sales_channel_id: salesChannelId,
       location_id: locationId,
@@ -127,7 +129,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 heading="Are you sure you want to cancel with unsaved changes"
                 confirmText="Yes, cancel"
                 cancelText="No, continue creating"
-                successText={undefined}
+                successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
               />
@@ -137,7 +139,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 size="small"
                 variant="primary"
                 type="button"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty}
                 onClick={onSubmit()}
               >
                 Add location
