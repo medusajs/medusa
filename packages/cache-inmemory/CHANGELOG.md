@@ -1,0 +1,14 @@
+# @medusajs/cache-inmemory
+
+## 1.8.0-rc.0
+
+### Minor Changes
+
+- [#3187](https://github.com/medusajs/medusa/pull/3187) [`f97b3d7cc`](https://github.com/medusajs/medusa/commit/f97b3d7ccee381d3491337ab5144bb44520382a7) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa, cache-redis, cache-inmemory): Added cache modules
+
+### Patch Changes
+
+- [#3531](https://github.com/medusajs/medusa/pull/3531) [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Remove dependency on @medusajs/medusa from Inventory and Stock-Location Modules
+
+- Updated dependencies [[`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73), [`271844aed`](https://github.com/medusajs/medusa/commit/271844aedbe45c369e188b5d06458dbd6984cd39), [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def)]:
+  - @medusajs/modules-sdk@0.1.0-rc.0
