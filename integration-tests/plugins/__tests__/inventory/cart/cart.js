@@ -191,6 +191,47 @@ describe("/store/carts", () => {
       expect(stockLevel.stocked_quantity).toEqual(5)
     })
 
+    it("removes reserved quantity when failing to complete the cart", async () => {
+      const api = useApi()
+
+      const cartRes = await api.post(
+        `/store/carts`,
+        {
+          region_id: "test-region",
+          items: [
+            {
+              variant_id: variantId,
+              quantity: 3,
+            },
+          ],
+        },
+        { withCredentials: true }
+      )
+
+      const cartId = cartRes.data.cart.id
+
+      await api.post(`/store/carts/${cartId}/payment-sessions`)
+      await api.post(`/store/carts/${cartId}/payment-session`, {
+        provider_id: "test-pay",
+      })
+
+      const getRes = await api
+        .post(`/store/carts/${cartId}/complete`)
+        .catch((err) => err)
+
+      expect(getRes.response.status).toEqual(500)
+      expect(getRes.response.data).toEqual({
+        code: "unknown_error",
+        type: "unknown_error",
+        message: "An unknown error occurred.",
+      })
+
+      const inventoryService = appContainer.resolve("inventoryService")
+      const [, count] = await inventoryService.listReservationItems({
+        line_item_id: cartRes.data.cart.items.map((i) => i.id),
+      })
+      expect(count).toEqual(0)
+    })
     it("fails to add a item on the cart if the inventory isn't enough", async () => {
       const api = useApi()
 
