@@ -30,6 +30,7 @@ import { MedusaError, isDefined } from "medusa-core-utils"
 import { buildQuery, isString } from "../utils"
 
 import EventBusService from "./event-bus"
+import { IInventoryService } from "@medusajs/types"
 import { OrderEditRepository } from "../repositories/order-edit"
 import { TransactionBaseService } from "../interfaces"
 
