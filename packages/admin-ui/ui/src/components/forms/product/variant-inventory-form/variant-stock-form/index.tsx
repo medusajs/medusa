@@ -37,6 +37,13 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
 
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
+  const locationsMap = useMemo(() => {
+    if (isLoading) {
+      return new Map()
+    }
+
+    return new Map(locations.map((l) => [l.id, l]))
+  }, [locations, isLoading])
   const { path, control, register, watch } = form
 
   const manageInventory = watch(path("manage_inventory"))
@@ -49,6 +56,12 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
     control,
     name: path("location_levels"),
   })
+
+  const selectedLocationLevels = watch(path("location_levels"))
+
+  const levelMap = new Map(
+    selectedLocationLevels?.map((l) => [l.location_id, l])
+  )
 
   const handleUpdateLocations = async (data: {
     added: string[]
@@ -142,10 +155,8 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                     <div className="">In Stock</div>
                   </div>
                   {selectedLocations.map((level, i) => {
-                    console.log(level)
-                    const locationDetails = locations.find(
-                      (l: StockLocationDTO) => l.id === level.location_id
-                    )
+                    const locationDetails = locationsMap.get(level.location_id)
+                    const locationLevel = levelMap.get(level.location_id)
 
                     return (
                       <div key={level.id} className="flex items-center py-3">
@@ -158,15 +169,17 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                         <div className="ml-auto flex">
                           <div className="mr-base text-small text-grey-50 flex flex-col">
                             <span className="whitespace-nowrap text-right">
-                              {`${level.reserved_quantity} reserved`}
+                              {`${locationLevel!.reserved_quantity} reserved`}
                             </span>
                             <span className="whitespace-nowrap text-right">{`${
-                              level.stocked_quantity - level.reserved_quantity
+                              locationLevel!.stocked_quantity! -
+                              locationLevel!.reserved_quantity!
                             } available`}</span>
                           </div>
                           <InputField
                             placeholder={"0"}
                             type="number"
+                            min={0}
                             {...register(
                               path(`location_levels.${i}.stocked_quantity`),
                               { valueAsNumber: true }
@@ -191,7 +204,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                     ManageLocationsScreen(
                       layeredModalContext.pop,
                       selectedLocations,
-                      locations,
+                      locations || [],
                       handleUpdateLocations
                     )
                   )

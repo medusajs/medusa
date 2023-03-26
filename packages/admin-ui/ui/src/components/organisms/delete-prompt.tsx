@@ -8,7 +8,7 @@ import useNotification from "../../hooks/use-notification"
 type DeletePromptProps = {
   heading?: string
   text?: string
-  successText?: string
+  successText?: string | false
   cancelText?: string
   confirmText?: string
   handleClose: () => void

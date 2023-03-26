@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-cli",
-  "version": "1.3.8",
+  "version": "1.3.9-rc.0",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -48,7 +48,7 @@
     "inquirer": "^8.0.0",
     "is-valid-path": "^0.1.1",
     "meant": "^1.0.3",
-    "medusa-core-utils": "^1.1.39",
+    "medusa-core-utils": "^1.2.0-rc.0",
     "medusa-telemetry": "0.0.16",
     "open": "^8.0.6",
     "ora": "^5.4.1",
