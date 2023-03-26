@@ -1,13 +1,7 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  DeepPartial,
-  EntityManager,
-  FindOptionsWhere,
-  ILike,
-  IsNull,
-} from "typeorm"
-
-import { IInventoryService, TransactionBaseService } from "../interfaces"
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput,
+} from "../types/order-edit"
 import {
   Cart,
   Order,
@@ -15,14 +9,14 @@ import {
   OrderEditItemChangeType,
   OrderEditStatus,
 } from "../models"
-import { OrderEditRepository } from "../repositories/order-edit"
-import { FindConfig, Selector } from "../types/common"
 import {
-  AddOrderEditLineItemInput,
-  CreateOrderEditInput,
-} from "../types/order-edit"
-import { buildQuery, isString } from "../utils"
-import EventBusService from "./event-bus"
+  DeepPartial,
+  EntityManager,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+} from "typeorm"
+import { FindConfig, Selector } from "../types/common"
 import {
   LineItemAdjustmentService,
   LineItemService,
@@ -32,6 +26,12 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, isString } from "../utils"
+
+import EventBusService from "./event-bus"
+import { OrderEditRepository } from "../repositories/order-edit"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -46,7 +46,7 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
 
-  inventoryService: IInventoryService
+  inventoryService?: IInventoryService
 }
 
 export default class OrderEditService extends TransactionBaseService {
