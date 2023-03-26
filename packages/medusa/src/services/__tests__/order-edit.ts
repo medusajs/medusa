@@ -1,6 +1,4 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
-import EventBusService from "../event-bus"
 import {
   LineItemService,
   NewTotalsService,
@@ -10,15 +8,18 @@ import {
   TaxProviderService,
   TotalsService,
 } from "../index"
-import LineItemAdjustmentService from "../line-item-adjustment"
+import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
+
+import EventBusService from "../event-bus"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { LineItemServiceMock } from "../__mocks__/line-item"
+import LineItemAdjustmentService from "../line-item-adjustment"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import NewTotalsServiceMock from "../__mocks__/new-totals"
 import { OrderServiceMock } from "../__mocks__/order"
+import { TotalsServiceMock } from "../__mocks__/totals"
 import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { TotalsServiceMock } from "../__mocks__/totals"
-import NewTotalsServiceMock from "../__mocks__/new-totals"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
