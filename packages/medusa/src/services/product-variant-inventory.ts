@@ -647,7 +647,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           ? salesChannelId
           : [salesChannelId]
 
-        const a = await Promise.all(
+        const quantities = await Promise.all(
           salesChannelArray.map(async (salesChannel) => {
             return await this.getVariantQuantityFromVariantInventoryItems(
               variantInventory,
@@ -655,7 +655,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
             )
           })
         )
-        variant.inventory_quantity = a.reduce((a, b) => a + (b || 0), 0)
+
+        variant.inventory_quantity = quantities.reduce(
+          (acc, next) => acc + (next || 0),
+          0
+        )
 
         return variant
       })
