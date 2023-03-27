@@ -73,30 +73,92 @@ const plugins = [
         apiKey: process.env.MEILISEARCH_API_KEY,
       },
       settings: {
-        // index name
-        products: {
-          // MeiliSearch's setting options 
-          // to be set on a particular index
-          searchableAttributes: [
-            "title", 
-            "description",
-            "variant_sku",
-          ],
-          displayedAttributes: [
-            "title", 
-            "description", 
-            "variant_sku", 
-            "thumbnail", 
-            "handle",
-          ],
-        },
+        // index settings...
       },
     },
   },
 ]
 ```
 
-You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
+### Index Settings
+
+Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
+
+```js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // other options...
+    settings: {
+      indexName: {
+        indexSettings: {
+          searchableAttributes,
+          displayedAttributes,
+        },
+        primaryKey,
+        transformer,
+      },
+    },
+    },
+  },
+]
+```
+
+Where:
+
+- `indexName`: the name of the index to create in MeiliSearch. For example, `products`. Its value is an object containing the following properties:
+  - `indexSettings`: an object that includes the following properties:
+    - `searchableAttributes`: an array of strings indicating the attributes in the product entity that can be searched.
+    - `displayedAttributes`: an array of strings indicating the attributes in the product entity that should be displayed in the search results.
+  - `primaryKey`: an optional string indicating which property acts as a primary key of a document. It's used to enforce unique documents in an index. The default value is `id`. You can learn more in [MeiliSearch's documentation](https://docs.meilisearch.com/learn/core_concepts/primary_key.html#primary-field).
+  - `transformer`: an optional function that accepts a product as a parameter and returns an object to be indexed. This allows you to have more control over what you're indexing. For example, you can add details related to variants or custom relations, or you can filter out certain products.
+
+Using this index settings structure, you can add more than one index.
+
+:::tip
+
+These settings are just examples of what you can pass to the MeiliSearch provider. If you need to pass more settings to the MeiliSearch SDK you can pass it inside `indexSettings`.
+
+:::
+
+Here's an example of the settings you can use:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // other options...
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: [
+              "title", 
+              "description",
+              "variant_sku",
+            ],
+            displayedAttributes: [
+              "title", 
+              "description", 
+              "variant_sku", 
+              "thumbnail", 
+              "handle",
+            ],
+          },
+          primaryKey: "id",
+          transform: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
 
 ---
 
