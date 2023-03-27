@@ -45,12 +45,32 @@ const LocationDropdown = ({
   onChange: (id: string) => void
 }) => {
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
+  const navigate = useNavigate()
+  const showNotification = useNotification()
 
   useEffect(() => {
+    if (!locations?.length) {
+      showNotification(
+        "No locations exist yet",
+        "You first need to create a location before assigning inventory",
+        "info",
+        {
+          id: "location-redirect",
+        }
+      )
+      navigate("/a/inventory/locations")
+    }
     if (!selectedLocation && !isLoading && locations?.length) {
       onChange(locations[0].id)
     }
-  }, [isLoading, locations, onChange, selectedLocation])
+  }, [
+    isLoading,
+    locations,
+    onChange,
+    selectedLocation,
+    navigate,
+    showNotification,
+  ])
 
   const selectedLocObj = useMemo(() => {
     if (!isLoading && locations) {
