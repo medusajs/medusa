@@ -12,6 +12,7 @@ import {
   useAdminUpdateLocationLevel,
   useAdminVariant,
 } from "medusa-react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import Button from "../../fundamentals/button"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
@@ -27,7 +28,6 @@ import { isEmpty } from "lodash"
 import qs from "qs"
 import { useInventoryFilters } from "./use-inventory-filters"
 import useInventoryTableColumn from "./use-inventory-column"
-import { useLocation, useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 
@@ -47,7 +47,7 @@ const LocationDropdown = ({
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
   useEffect(() => {
-    if (!selectedLocation && !isLoading && locations) {
+    if (!selectedLocation && !isLoading && locations?.length) {
       onChange(locations[0].id)
     }
   }, [isLoading, locations, onChange, selectedLocation])
@@ -59,7 +59,7 @@ const LocationDropdown = ({
     return null
   }, [selectedLocation, locations, isLoading])
 
-  if (isLoading || !locations || !selectedLocObj) {
+  if (isLoading) {
     return null
   }
 
@@ -70,11 +70,21 @@ const LocationDropdown = ({
         onChange={(loc) => {
           onChange(loc!.value)
         }}
-        options={locations.map((l) => ({
-          label: l.name,
-          value: l.id,
-        }))}
-        value={{ value: selectedLocObj.id, label: selectedLocObj.name }}
+        placeholder="Select location"
+        options={
+          locations?.map((l) => ({
+            label: l.name,
+            value: l.id,
+          })) || []
+        }
+        value={
+          selectedLocObj
+            ? {
+                value: selectedLocObj.id,
+                label: selectedLocObj.name,
+              }
+            : undefined
+        }
       />
     </div>
   )
