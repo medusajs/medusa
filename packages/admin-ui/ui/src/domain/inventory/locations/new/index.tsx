@@ -47,7 +47,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   })
   const {
     handleSubmit,
-    formState: { isDirty, isValid },
+    formState: { isDirty },
   } = form
 
   const {
@@ -63,7 +63,10 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   const { mutateAsync: associateSalesChannel } =
     useAdminAddLocationToSalesChannel()
 
-  const createSalesChannelAssociationPromise = (salesChannelId, locationId) =>
+  const createSalesChannelAssociationPromise = (
+    salesChannelId: string,
+    locationId: string
+  ) =>
     associateSalesChannel({
       sales_channel_id: salesChannelId,
       location_id: locationId,
@@ -126,7 +129,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 heading="Are you sure you want to cancel with unsaved changes"
                 confirmText="Yes, cancel"
                 cancelText="No, continue creating"
-                successText={undefined}
+                successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
               />
@@ -136,7 +139,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 size="small"
                 variant="primary"
                 type="button"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty}
                 onClick={onSubmit()}
               >
                 Add location
