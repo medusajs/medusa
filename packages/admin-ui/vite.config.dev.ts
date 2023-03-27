@@ -2,6 +2,7 @@
 import react from "@vitejs/plugin-react"
 import dns from "dns"
 import { defineConfig } from "vite"
+import medusaAdminExtensions from "./src/plugins/extensions"
 
 // Resolve localhost for Node v16 and older.
 // @see https://vitejs.dev/config/server-options.html#server-host.
@@ -9,7 +10,7 @@ dns.setDefaultResultOrder("verbatim")
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), medusaAdminExtensions()],
   test: {
     environment: "jsdom",
     globals: true,

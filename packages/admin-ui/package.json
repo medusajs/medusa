@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "dev": "vite -c vite.config.dev.ts --port 7001",
+    "dev:build": "vite build -c vite.config.dev.ts",
     "build": "tsc --build",
     "test:ui": "vitest --config vite.config.dev.ts",
     "test:ui:once": "vitest --config vite.config.dev.ts --run",
