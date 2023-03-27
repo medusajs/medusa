@@ -14,7 +14,6 @@ import {
 import Button from "../../fundamentals/button"
 import { InventoryLevelDTO } from "@medusajs/types"
 import Modal from "../../molecules/modal"
-import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
 import { queryClient } from "../../../constants/query-client"
 import { removeNullish } from "../../../utils/remove-nullish"
 import { useContext } from "react"
@@ -58,6 +57,9 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
 
     delete data.dimensions
     delete data.customs
+    delete data.ean
+    delete data.barcode
+    delete data.upc
 
     return removeNullish({
       ...updateDimensions,
@@ -75,6 +77,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
 
     let inventoryItemId: string | undefined = itemId
 
+    const { ean, barcode, upc } = data
     const upsertPayload = createUpdateInventoryItemPayload(data)
     let shouldInvalidateCache = false
 
@@ -154,14 +157,27 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       }
     }
 
+    const { dimensions, customs, ...stock } = data
+
     // @ts-ignore
-    onUpdateVariant(variant.id, createUpdatePayload(data), () => {
-      refetch()
-      if (shouldInvalidateCache) {
-        queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
+    onUpdateVariant(
+      variant.id,
+      removeNullish({
+        ...dimensions,
+        ...customs,
+        ...stock,
+        ean,
+        barcode,
+        upc,
+      }),
+      () => {
+        refetch()
+        if (shouldInvalidateCache) {
+          queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
+        }
+        handleClose()
       }
-      handleClose()
-    })
+    )
   }
 
   return (
@@ -173,6 +189,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         <StockForm
           variantInventory={variantInventory!}
           onSubmit={onSubmit}
+          variant={variant}
           isLoadingInventory={isLoadingInventory}
           handleClose={handleClose}
           updatingVariant={updatingVariant}
@@ -188,8 +205,10 @@ const StockForm = ({
   isLoadingInventory,
   handleClose,
   updatingVariant,
+  variant,
 }: {
   variantInventory: VariantInventory
+  variant: ProductVariant
   onSubmit: (data: EditFlowVariantFormType) => void
   isLoadingInventory: boolean
   handleClose: () => void
@@ -197,7 +216,7 @@ const StockForm = ({
 }) => {
   const form = useForm<EditFlowVariantFormType>({
     // @ts-ignore
-    defaultValues: getEditVariantDefaultValues(variantInventory),
+    defaultValues: getEditVariantDefaultValues(variantInventory, variant),
   })
 
   const {
@@ -250,16 +269,17 @@ const StockForm = ({
 }
 
 export const getEditVariantDefaultValues = (
-  variantInventory?: any
+  variantInventory?: any,
+  variant?: ProductVariant
 ): EditFlowVariantFormType => {
   const inventoryItem = variantInventory?.inventory[0]
   if (!inventoryItem) {
     return {
       sku: null,
-      ean: null,
+      ean: variant?.ean || null,
+      barcode: variant?.barcode || null,
+      upc: variant?.upc || null,
       inventory_quantity: null,
-      barcode: null,
-      upc: null,
       manage_inventory: false,
       allow_backorder: false,
       location_levels: null,
@@ -294,12 +314,12 @@ export const getEditVariantDefaultValues = (
 
   return {
     sku: inventoryItem.sku,
-    ean: inventoryItem.ean,
+    ean: variant?.ean || null,
+    barcode: variant?.barcode || null,
+    upc: variant?.upc || null,
     inventory_quantity: inventoryItem.inventory_quantity,
     manage_inventory: !!inventoryItem,
     allow_backorder: inventoryItem.allow_backorder,
-    barcode: inventoryItem.barcode,
-    upc: inventoryItem.upc,
     location_levels: inventoryItem.location_levels,
     dimensions: {
       height: inventoryItem.height,
