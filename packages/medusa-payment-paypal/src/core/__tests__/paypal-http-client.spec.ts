@@ -47,21 +47,18 @@ describe("PaypalHttpClient", function () {
           Authorization: `Bearer undefined`,
         },
       }),
+      undefined,
       0
     )
   })
 
   it("should fail and retry after authentication until reaches the maximum number of attempts", async () => {
-    mockedAxios.request.mockImplementation((async (config, retryCount = 0) => {
-      if (config.url === PaypalApiPath.AUTH) {
-        return {
-          data: {
-            access_token: accessToken,
-          },
-        }
-      }
-
-      if (retryCount < 2) {
+    mockedAxios.request.mockImplementation((async (
+      config,
+      originalConfig,
+      retryCount = 0
+    ) => {
+      if (retryCount <= 2) {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject({ response: { status: 401 } })
       }
@@ -70,7 +67,7 @@ describe("PaypalHttpClient", function () {
     }) as any)
 
     const argument = { url: PaypalApiPath.CREATE_ORDER }
-    const err = await paypalHttpClient.request(argument).catch((e) => e)
+    await paypalHttpClient.request(argument).catch((e) => e)
 
     expect(mockedAxios.request).toHaveBeenCalledTimes(3)
 
@@ -84,6 +81,7 @@ describe("PaypalHttpClient", function () {
           Authorization: `Bearer undefined`,
         },
       }),
+      undefined,
       0
     )
 
@@ -100,6 +98,14 @@ describe("PaypalHttpClient", function () {
           grant_type: "client_credentials",
         },
       }),
+      expect.objectContaining({
+        method: "POST",
+        url: argument.url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer undefined`,
+        },
+      }),
       1
     )
 
@@ -107,13 +113,126 @@ describe("PaypalHttpClient", function () {
       3,
       expect.objectContaining({
         method: "POST",
+        url: PaypalApiPath.AUTH,
+        auth: { password: options.clientId, username: options.clientSecret },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: {
+          grant_type: "client_credentials",
+        },
+      }),
+      expect.objectContaining({
+        method: "POST",
+        url: argument.url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer undefined`,
+        },
+      }),
+      2
+    )
+  })
+
+  it("should fail and retry after authentication and then succeed", async () => {
+    mockedAxios.request.mockImplementation((async (
+      config,
+      originalConfig,
+      retryCount = 0
+    ) => {
+      if (retryCount >= 2 && config.url === PaypalApiPath.AUTH) {
+        return {
+          data: {
+            access_token: accessToken,
+          },
+        }
+      }
+
+      if (retryCount < 2) {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        return Promise.reject({ response: { status: 401 } })
+      }
+
+      return { status: 200, data: responseData }
+    }) as any)
+
+    const argument = { url: PaypalApiPath.CREATE_ORDER }
+    await paypalHttpClient.request(argument).catch((e) => e)
+
+    expect(mockedAxios.request).toHaveBeenCalledTimes(4)
+
+    expect(mockedAxios.request).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        method: "POST",
+        url: argument.url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer undefined`,
+        },
+      }),
+      undefined,
+      0
+    )
+
+    expect(mockedAxios.request).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        method: "POST",
+        url: PaypalApiPath.AUTH,
+        auth: { password: options.clientId, username: options.clientSecret },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: {
+          grant_type: "client_credentials",
+        },
+      }),
+      expect.objectContaining({
+        method: "POST",
+        url: argument.url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer undefined`,
+        },
+      }),
+      1
+    )
+
+    expect(mockedAxios.request).toHaveBeenNthCalledWith(
+      3,
+      expect.objectContaining({
+        method: "POST",
+        url: PaypalApiPath.AUTH,
+        auth: { password: options.clientId, username: options.clientSecret },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: {
+          grant_type: "client_credentials",
+        },
+      }),
+      expect.objectContaining({
+        method: "POST",
+        url: argument.url,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer undefined`,
+        },
+      }),
+      2
+    )
+
+    expect(mockedAxios.request).toHaveBeenNthCalledWith(
+      4,
+      expect.objectContaining({
+        method: "POST",
         url: argument.url,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-      }),
-      1
+      })
     )
   })
 })

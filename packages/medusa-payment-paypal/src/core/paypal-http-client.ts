@@ -6,6 +6,8 @@ import {
 } from "./types"
 import { Logger } from "@medusajs/medusa"
 
+const MAX_ATTEMPTS = 2
+
 export class PaypalHttpClient {
   protected readonly baseUrl_: string = PaypalEnvironmentPaths.LIVE
   protected readonly httpClient_: AxiosInstance
@@ -75,42 +77,36 @@ export class PaypalHttpClient {
    * @protected
    */
   protected retryIfNecessary<T = unknown>(originalMethod: Function) {
-    return async (...args: unknown[]) => {
-      const hasRetried = typeof args[args.length - 1] === "number"
-      let retryCount = hasRetried ? (args[args.length - 1] as number) : 0
-
-      if (retryCount >= 2) {
+    return async (config, originalConfig, retryCount = 0) => {
+      if (retryCount > MAX_ATTEMPTS) {
         throw new Error(
           "An error occurred while requesting Paypal API after two attempts"
         )
       }
 
-      const config = args[0] as AxiosRequestConfig
-
-      const argumentsList = hasRetried ? args.slice(0, -1) : args
-
       return await originalMethod
-        .apply(this.httpClient_, [...argumentsList, retryCount])
+        .apply(this.httpClient_, [config, originalConfig, retryCount])
         .then((res) => res.data)
         .catch(async (err) => {
-          if (
-            config.url !== PaypalApiPath.AUTH &&
-            err.response?.status === 401
-          ) {
+          if (err.response?.status === 401) {
             ++retryCount
-            await this.authenticate(retryCount)
 
-            const axiosRequestConfig = args[0] as AxiosRequestConfig
-            args[0] = {
-              ...(axiosRequestConfig ?? {}),
+            if (!originalConfig) {
+              originalConfig = config
+            }
+
+            await this.authenticate(originalConfig, retryCount)
+
+            config = {
+              ...(originalConfig ?? {}),
               headers: {
-                ...(axiosRequestConfig?.headers ?? {}),
+                ...(originalConfig?.headers ?? {}),
                 Authorization: `Bearer ${this.accessToken_}`,
               },
             }
 
             return await originalMethod
-              .apply(this.httpClient_, [...argumentsList, retryCount])
+              .apply(this.httpClient_, [config])
               .then((res) => res.data)
           }
 
@@ -124,7 +120,10 @@ export class PaypalHttpClient {
    * Authenticate and store the access token
    * @protected
    */
-  protected async authenticate(retryCount = 0) {
+  protected async authenticate(
+    originalConfig?: AxiosRequestConfig,
+    retryCount = 0
+  ) {
     const res: { access_token: string } = await (
       this.httpClient_.request as any
     )(
@@ -142,6 +141,7 @@ export class PaypalHttpClient {
           grant_type: "client_credentials",
         },
       },
+      originalConfig,
       retryCount
     )
 
