@@ -45,32 +45,12 @@ const LocationDropdown = ({
   onChange: (id: string) => void
 }) => {
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
-  const navigate = useNavigate()
-  const showNotification = useNotification()
 
   useEffect(() => {
-    if (!locations?.length) {
-      showNotification(
-        "No locations exist yet",
-        "You first need to create a location before assigning inventory",
-        "info",
-        {
-          id: "location-redirect",
-        }
-      )
-      navigate("/a/inventory/locations")
-    }
     if (!selectedLocation && !isLoading && locations?.length) {
       onChange(locations[0].id)
     }
-  }, [
-    isLoading,
-    locations,
-    onChange,
-    selectedLocation,
-    navigate,
-    showNotification,
-  ])
+  }, [isLoading, locations, onChange, selectedLocation])
 
   const selectedLocObj = useMemo(() => {
     if (!isLoading && locations) {
@@ -104,6 +84,9 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
   const { store } = useAdminStore()
 
   const location = useLocation()
+
+  const { stock_locations, isLoading: locationsLoading } =
+    useAdminStockLocations()
 
   const defaultQuery = useMemo(() => {
     if (store) {
@@ -304,6 +287,11 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
           })}
         </Table.Body>
       </Table>
+      {!rows.length && !locationsLoading && !stock_locations?.length && (
+        <div className="text-grey-50 w-full py-8 text-center">
+          You don't have any stock locations. Add one to see inventory.
+        </div>
+      )}
     </TableContainer>
   )
 }

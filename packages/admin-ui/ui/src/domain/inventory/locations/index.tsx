@@ -1,6 +1,4 @@
-import { useEffect } from "react"
 import { useAdminStockLocations } from "medusa-react"
-import { useSearchParams } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
 import Spinner from "../../../components/atoms/spinner"
 import Button from "../../../components/fundamentals/button"
@@ -17,14 +15,6 @@ const Locations = () => {
     close: closeLocationCreate,
     open: openLocationCreate,
   } = useToggleState()
-
-  const [, setSearchParams] = useSearchParams()
-
-  useEffect(() => {
-    // If we get redirected here from the inventory tab, we have some hanging search params
-    // clear them for cleanliness
-    setSearchParams({})
-  }, [setSearchParams])
 
   const Actions = (
     <Button variant="secondary" size="small" onClick={openLocationCreate}>
