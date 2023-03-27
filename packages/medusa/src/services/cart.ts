@@ -313,7 +313,6 @@ class CartService extends TransactionBaseService {
 
         const rawCart: DeepPartial<Cart> = {
           context: data.context ?? {},
-          metadata: data.metadata ?? {}
         }
 
         if (
@@ -415,10 +414,12 @@ class CartService extends TransactionBaseService {
           rawCart.billing_address_id = data.billing_address_id
         }
 
+        if (data.metadata) {
+          rawCart.metadata = setMetadata({ metadata: null }, data.metadata)
+        }
         const remainingFields: (keyof Cart)[] = [
           "context",
           "type",
-          "metadata",
           "discounts",
           "gift_cards",
         ]

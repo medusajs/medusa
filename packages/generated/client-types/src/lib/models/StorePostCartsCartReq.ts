@@ -56,4 +56,8 @@ export interface StorePostCartsCartReq {
    * An optional object to provide context to the Cart.
    */
   context?: Record<string, any>
+  /**
+   * An optional object to provide metadata to the Cart.
+   */
+  metadata?: Record<string, any>
 }

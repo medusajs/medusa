@@ -33,4 +33,8 @@ export interface StorePostCartReq {
    * An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
    */
   context?: Record<string, any>
+  /**
+   * An optional object to provide metadata to the Cart.
+   */
+  metadata?: Record<string, any>
 }
