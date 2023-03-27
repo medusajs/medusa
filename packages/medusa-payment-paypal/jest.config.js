@@ -9,7 +9,7 @@ module.exports = {
     "^.+\\.[jt]s?$": "ts-jest",
   },
   transformIgnorePatterns: [
-   '/node_modules/(?!(axios)/).*'
+   "/node_modules/(?!(axios)/).*"
   ],
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
