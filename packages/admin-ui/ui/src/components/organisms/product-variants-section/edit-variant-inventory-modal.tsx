@@ -48,10 +48,10 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   const { onUpdateVariant, updatingVariant } = useEditProductActions(product.id)
 
   const onSubmit = async (data: EditFlowVariantFormType) => {
-    const locationLevels = data.stock.stock_location || []
+    const locationLevels = data.stock.location_levels || []
     const manageInventory = data.stock.manage_inventory
     delete data.stock.manage_inventory
-    delete data.stock.stock_location
+    delete data.stock.location_levels
 
     let inventoryItemId: string | undefined = itemId
 
