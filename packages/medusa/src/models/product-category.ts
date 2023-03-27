@@ -1,5 +1,5 @@
 import { generateEntityId } from "../utils/generate-entity-id"
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { kebabCase } from "lodash"
 import { Product } from "."
 import {
@@ -18,7 +18,7 @@ import {
 @Entity()
 @Tree("materialized-path")
 @Index(["parent_category_id", "rank"], { unique: true })
-export class ProductCategory extends BaseEntity {
+export class ProductCategory extends SoftDeletableEntity {
   static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
