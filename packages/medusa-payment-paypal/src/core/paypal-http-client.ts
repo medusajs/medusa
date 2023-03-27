@@ -5,7 +5,6 @@ import {
   PaypalSdkOptions,
 } from "./types"
 import { Logger } from "@medusajs/medusa"
-import { PaypalOptions } from "../types"
 
 export class PaypalHttpClient {
   protected readonly baseUrl_: string = PaypalEnvironmentPaths.LIVE
@@ -14,7 +13,7 @@ export class PaypalHttpClient {
   protected readonly logger_?: Logger
   protected accessToken_: string
 
-  constructor(options: PaypalOptions & { logger?: Logger }) {
+  constructor(options: PaypalSdkOptions) {
     this.options_ = options
 
     this.logger_ = options.logger
@@ -90,7 +89,10 @@ export class PaypalHttpClient {
         .then((res) => res.data)
         .catch(async (err) => {
           if (err.response.status === 401) {
-            await this.authenticate()
+            await this.authenticate().catch((err) => {
+              this.logger_?.error(err.response.message)
+              throw err
+            })
 
             const axiosRequestConfig = args[0] as AxiosRequestConfig
             args[0] = {

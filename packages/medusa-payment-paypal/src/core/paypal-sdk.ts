@@ -4,6 +4,7 @@ import {
   GetOrderResponse,
   PatchOrder,
   PaypalApiPath,
+  PaypalSdkOptions,
 } from "./types"
 import {
   captureAuthorizedPayment,
@@ -13,13 +14,11 @@ import {
 } from "./types/payment"
 import { PaypalHttpClient } from "./paypal-http-client"
 import { VerifyWebhookSignature } from "./types/webhook"
-import { PaypalOptions } from "../types"
-import { Logger } from "@medusajs/types"
 
 export class PaypalSdk {
   protected readonly httpClient_: PaypalHttpClient
 
-  constructor(options: PaypalOptions & { logger?: Logger }) {
+  constructor(options: PaypalSdkOptions) {
     this.httpClient_ = new PaypalHttpClient(options)
   }
 

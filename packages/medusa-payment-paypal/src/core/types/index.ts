@@ -1,9 +1,7 @@
 import { Logger } from "@medusajs/medusa"
+import { PaypalOptions } from "../../types"
 
-export type PaypalSdkOptions = {
-  clientId: string
-  clientSecret: string
-  sandbox?: boolean
+export type PaypalSdkOptions = PaypalOptions & {
   logger?: Logger
 }
 
