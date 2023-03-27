@@ -1,6 +1,6 @@
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../forms/product/variant-form/edit-flow-variant-form"
+} from "../../forms/product/variant-inventory-form/edit-flow-variant-form"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../molecules/modal/layered-modal"
@@ -48,10 +48,10 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   const { onUpdateVariant, updatingVariant } = useEditProductActions(product.id)
 
   const onSubmit = async (data: EditFlowVariantFormType) => {
-    const locationLevels = data.stock.stock_location || []
+    const locationLevels = data.stock.location_levels || []
     const manageInventory = data.stock.manage_inventory
     delete data.stock.manage_inventory
-    delete data.stock.stock_location
+    delete data.stock.location_levels
 
     let inventoryItemId: string | undefined = itemId
 
@@ -176,6 +176,7 @@ const StockForm = ({
   updatingVariant: boolean
 }) => {
   const form = useForm<EditFlowVariantFormType>({
+    // @ts-ignore
     defaultValues: getEditVariantDefaultValues(variantInventory),
   })
 

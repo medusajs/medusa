@@ -47,7 +47,7 @@ const LocationDropdown = ({
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
   useEffect(() => {
-    if (!selectedLocation && !isLoading && locations) {
+    if (!selectedLocation && !isLoading && locations?.length) {
       onChange(locations[0].id)
     }
   }, [isLoading, locations, onChange, selectedLocation])
@@ -84,6 +84,9 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
   const { store } = useAdminStore()
 
   const location = useLocation()
+
+  const { stock_locations, isLoading: locationsLoading } =
+    useAdminStockLocations()
 
   const defaultQuery = useMemo(() => {
     if (store) {
@@ -284,6 +287,11 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
           })}
         </Table.Body>
       </Table>
+      {!rows.length && !locationsLoading && !stock_locations?.length && (
+        <div className="text-grey-50 w-full py-8 text-center">
+          You don't have any stock locations. Add one to see inventory.
+        </div>
+      )}
     </TableContainer>
   )
 }
