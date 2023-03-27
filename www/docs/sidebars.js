@@ -1720,6 +1720,7 @@ module.exports = {
     {
       type: "category",
       label: "Plugins",
+      collapsed: false,
       customProps: {
         sidebar_is_group_headline: true,
       },
