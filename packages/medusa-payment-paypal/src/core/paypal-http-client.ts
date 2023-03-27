@@ -76,23 +76,29 @@ export class PaypalHttpClient {
    */
   protected retryIfNecessary<T = unknown>(originalMethod: Function) {
     return async (...args: unknown[]) => {
-      // Explicitly check false equality to avoid matching another type object
-      // if the value is not present
-      const shouldRetry = !(args[args.length - 1] === false)
+      const hasRetried = typeof args[args.length - 1] === "number"
+      let retryCount = hasRetried ? (args[args.length - 1] as number) : 0
 
-      if (!shouldRetry) {
-        return
+      if (retryCount >= 2) {
+        throw new Error(
+          "An error occurred while requesting Paypal API after two attempts"
+        )
       }
 
+      const config = args[0] as AxiosRequestConfig
+
+      const argumentsList = hasRetried ? args.slice(0, -1) : args
+
       return await originalMethod
-        .apply(this.httpClient_, [...args])
+        .apply(this.httpClient_, [...argumentsList, retryCount])
         .then((res) => res.data)
         .catch(async (err) => {
-          if (err.response.status === 401) {
-            await this.authenticate().catch((err) => {
-              this.logger_?.error(err.response.message)
-              throw err
-            })
+          if (
+            config.url !== PaypalApiPath.AUTH &&
+            err.response?.status === 401
+          ) {
+            ++retryCount
+            await this.authenticate(retryCount)
 
             const axiosRequestConfig = args[0] as AxiosRequestConfig
             args[0] = {
@@ -104,7 +110,7 @@ export class PaypalHttpClient {
             }
 
             return await originalMethod
-              .apply(this.httpClient_, [...args, false])
+              .apply(this.httpClient_, [...argumentsList, retryCount])
               .then((res) => res.data)
           }
 
@@ -118,21 +124,26 @@ export class PaypalHttpClient {
    * Authenticate and store the access token
    * @protected
    */
-  protected async authenticate() {
-    const res: { access_token: string } = await this.httpClient_.request({
-      method: "POST",
-      url: PaypalApiPath.AUTH,
-      auth: {
-        username: this.options_.clientId,
-        password: this.options_.clientSecret,
+  protected async authenticate(retryCount = 0) {
+    const res: { access_token: string } = await (
+      this.httpClient_.request as any
+    )(
+      {
+        method: "POST",
+        url: PaypalApiPath.AUTH,
+        auth: {
+          username: this.options_.clientId,
+          password: this.options_.clientSecret,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: {
+          grant_type: "client_credentials",
+        },
       },
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: {
-        grant_type: "client_credentials",
-      },
-    })
+      retryCount
+    )
 
     this.accessToken_ = res.access_token
   }

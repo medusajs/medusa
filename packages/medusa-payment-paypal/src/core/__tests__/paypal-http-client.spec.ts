@@ -46,12 +46,13 @@ describe("PaypalHttpClient", function () {
           "Content-Type": "application/json",
           Authorization: `Bearer undefined`,
         },
-      })
+      }),
+      0
     )
   })
 
-  it("should fail and retry after authentication", async () => {
-    mockedAxios.request.mockImplementation((async (config, shouldRetry) => {
+  it("should fail and retry after authentication until reaches the maximum number of attempts", async () => {
+    mockedAxios.request.mockImplementation((async (config, retryCount = 0) => {
       if (config.url === PaypalApiPath.AUTH) {
         return {
           data: {
@@ -60,7 +61,7 @@ describe("PaypalHttpClient", function () {
         }
       }
 
-      if (!(shouldRetry === false)) {
+      if (retryCount < 2) {
         // eslint-disable-next-line prefer-promise-reject-errors
         return Promise.reject({ response: { status: 401 } })
       }
@@ -69,7 +70,7 @@ describe("PaypalHttpClient", function () {
     }) as any)
 
     const argument = { url: PaypalApiPath.CREATE_ORDER }
-    await paypalHttpClient.request(argument)
+    const err = await paypalHttpClient.request(argument).catch((e) => e)
 
     expect(mockedAxios.request).toHaveBeenCalledTimes(3)
 
@@ -82,7 +83,8 @@ describe("PaypalHttpClient", function () {
           "Content-Type": "application/json",
           Authorization: `Bearer undefined`,
         },
-      })
+      }),
+      0
     )
 
     expect(mockedAxios.request).toHaveBeenNthCalledWith(
@@ -97,7 +99,8 @@ describe("PaypalHttpClient", function () {
         data: {
           grant_type: "client_credentials",
         },
-      })
+      }),
+      1
     )
 
     expect(mockedAxios.request).toHaveBeenNthCalledWith(
@@ -110,7 +113,7 @@ describe("PaypalHttpClient", function () {
           Authorization: `Bearer ${accessToken}`,
         },
       }),
-      false
+      1
     )
   })
 })
