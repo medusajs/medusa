@@ -60,57 +60,75 @@ The first step to create a payment processor is to create a JavaScript or TypeSc
 For example, create the file `src/services/my-payment.ts` with the following content:
 
 ```ts title=src/services/my-payment.ts
-import { AbstractPaymentProcessor, PaymentProcessorContext, PaymentProcessorError, PaymentProcessorSessionResponse, PaymentSessionStatus } from "@medusajs/medusa";
+import { 
+  AbstractPaymentProcessor, 
+  PaymentProcessorContext, 
+  PaymentProcessorError, 
+  PaymentProcessorSessionResponse, 
+  PaymentSessionStatus,
+} from "@medusajs/medusa"
 
 class MyPaymentProcessor extends AbstractPaymentProcessor {
-  static identifier = "my-payment";
+  static identifier = "my-payment"
 
   async capturePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async authorizePayment(
     paymentSessionData: Record<string, unknown>, 
     context: Record<string, unknown>
-  ): Promise<PaymentProcessorError | { status: PaymentSessionStatus; data: Record<string, unknown>; }> {
-    throw new Error("Method not implemented.");
+  ): Promise<
+    PaymentProcessorError | 
+    { 
+      status: PaymentSessionStatus; 
+      data: Record<string, unknown>; 
+    }
+  > {
+    throw new Error("Method not implemented.")
   }
   async cancelPayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async initiatePayment(
     context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
-    throw new Error("Method not implemented.");
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse
+  > {
+    throw new Error("Method not implemented.")
   }
   async deletePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async refundPayment(
     paymentSessionData: Record<string, unknown>, 
     refundAmount: number
   ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async retrievePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async updatePayment(
     context: PaymentProcessorContext
-  ): Promise<void | PaymentProcessorError | PaymentProcessorSessionResponse> {
-    throw new Error("Method not implemented.");
+  ): Promise<
+    void | 
+    PaymentProcessorError | 
+    PaymentProcessorSessionResponse
+  > {
+    throw new Error("Method not implemented.")
   }
 }
 
@@ -195,7 +213,9 @@ This method must return an object of type `PaymentProcessorSessionResponse`. It 
 
 ```ts
 type PaymentProcessorSessionResponse = {
-  update_requests: { customer_metadata: Record<string, unknown> }
+  update_requests: { 
+    customer_metadata: Record<string, unknown>
+  }
   session_data: Record<string, unknown>
 }
 ```
@@ -208,7 +228,10 @@ Where:
 An example of a minimal implementation of `initiatePayment`:
 
 ```ts
-import { PaymentContext, PaymentSessionResponse } from "@medusajs/medusa"
+import { 
+  PaymentContext, 
+  PaymentSessionResponse,
+} from "@medusajs/medusa"
 
 class MyPaymentService extends AbstractPaymentService {
   // ...
@@ -313,7 +336,9 @@ This method must return an object of type `PaymentSessionResponse`. It should ha
 
 ```ts
 type PaymentProcessorSessionResponse = {
-  update_requests?: { customer_metadata?: Record<string, unknown> }
+  update_requests?: { 
+    customer_metadata?: Record<string, unknown> 
+  }
   session_data: Record<string, unknown>
 }
 ```
@@ -336,7 +361,9 @@ class MyPaymentService extends AbstractPaymentService {
   async updatePayment(
     context: PaymentProcessorContext
   ): Promise<
-    void | PaymentProcessorError | PaymentProcessorSessionResponse
+    void | 
+    PaymentProcessorError | 
+    PaymentProcessorSessionResponse
   > {
     // prepare data
     return {
@@ -423,7 +450,13 @@ class MyPaymentService extends AbstractPaymentService {
   async authorizePayment(
     paymentSessionData: Record<string, unknown>, 
     context: Record<string, unknown>
-  ): Promise<PaymentProcessorError | { status: PaymentSessionStatus; data: Record<string, unknown>; }> {
+  ): Promise<
+    PaymentProcessorError | 
+    { 
+      status: PaymentSessionStatus; 
+      data: Record<string, unknown>; 
+    }
+  > {
     return {
       status: PaymentSessionStatus.AUTHORIZED,
       data: {
