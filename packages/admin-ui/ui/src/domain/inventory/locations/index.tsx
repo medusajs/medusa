@@ -43,7 +43,7 @@ const Locations = () => {
           ) : (
             <div>
               {stock_locations?.map((stockLocation) => (
-                <LocationCard location={stockLocation} />
+                <LocationCard key={stockLocation.id} location={stockLocation} />
               ))}
             </div>
           )}
