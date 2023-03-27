@@ -44,7 +44,9 @@ export abstract class AbstractPriceSelectionStrategy
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult>
 
-  public abstract onVariantsPricesUpdate(variantIds: string[]): Promise<void>
+  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
+    return void 0
+  }
 }
 
 export function isPriceSelectionStrategy(
