@@ -20,6 +20,8 @@ import { removeNullish } from "../../../utils/remove-nullish"
 import { useContext } from "react"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useForm } from "react-hook-form"
+import { countries } from "../../../utils/countries"
+import { Option } from "../../../types/shared"
 
 type Props = {
   onClose: () => void
@@ -275,6 +277,21 @@ export const getEditVariantDefaultValues = (
     }
   }
 
+  let originCountry: Option | null = null
+  if (inventoryItem.origin_country) {
+    const country = countries.find(
+      (c) =>
+        c.alpha2 === inventoryItem.origin_country ||
+        c.alpha3 === inventoryItem.origin_country
+    )
+    if (country) {
+      originCountry = {
+        label: country?.name,
+        value: country?.alpha2,
+      }
+    }
+  }
+
   return {
     sku: inventoryItem.sku,
     ean: inventoryItem.ean,
@@ -291,7 +308,7 @@ export const getEditVariantDefaultValues = (
       weight: inventoryItem.weight,
     },
     customs: {
-      origin_country: inventoryItem.origin_country,
+      origin_country: originCountry,
       mid_code: inventoryItem.mid_code,
       hs_code: inventoryItem.hs_code,
     },
