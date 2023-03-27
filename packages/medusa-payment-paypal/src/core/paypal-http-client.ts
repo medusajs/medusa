@@ -131,8 +131,8 @@ export class PaypalHttpClient {
         method: "POST",
         url: PaypalApiPath.AUTH,
         auth: {
-          username: this.options_.clientId,
-          password: this.options_.clientSecret,
+          username: this.options_.clientId ?? this.options_.client_id,
+          password: this.options_.clientSecret ?? this.options_.client_secret,
         },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
