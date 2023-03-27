@@ -1,5 +1,4 @@
 import { generateEntityId } from "../utils/generate-entity-id"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
 import { Product } from "."
@@ -26,7 +25,7 @@ export class ProductCategory extends BaseEntity {
   @Column()
   name: string
 
-  @Index({ unique: true, where: "deleted_at IS NULL" })
+  @Index({ unique: true })
   @Column({ nullable: false })
   handle: string
 
@@ -89,7 +88,6 @@ export class ProductCategory extends BaseEntity {
  * required:
  *   - category_children
  *   - created_at
- *   - deleted_at
  *   - handle
  *   - id
  *   - is_active
