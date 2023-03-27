@@ -1,8 +1,6 @@
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../forms/product/variant-inventory-form/edit-flow-variant-form"
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../molecules/modal/layered-modal"
