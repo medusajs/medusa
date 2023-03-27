@@ -163,11 +163,10 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   }
 
   async capturePayment(
-    context: PaymentProcessorContext
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    const paymentSessionData = context.paymentSessionData
     const { purchase_units } = paymentSessionData as {
       purchase_units: PurchaseUnits
     }
