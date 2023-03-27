@@ -76,7 +76,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
           deleteLocations.map(async (location: InventoryLevelDTO) => {
             await client.admin.inventoryItems.deleteLocationLevel(
               inventoryItemId!,
-              location.id
+              location.location_id
             )
           })
         )
