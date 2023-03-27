@@ -18,7 +18,7 @@ export class PaypalHttpClient {
 
     this.logger_ = options.logger
 
-    if (options.useSandbox) {
+    if (options.sandbox) {
       this.baseUrl_ = PaypalEnvironmentPaths.SANDBOX
     }
 
