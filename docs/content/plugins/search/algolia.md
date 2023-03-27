@@ -151,6 +151,12 @@ Where:
 
 Using this index settings structure, you can add more than one index.
 
+:::tip
+
+These settings are just examples of what you can pass to the Algolia provider. If you need to pass more settings to the Algolia SDK you can pass it inside `indexSettings`.
+
+:::
+
 Here's an example of the settings you can use:
 
 ```js title=medusa-config.js
