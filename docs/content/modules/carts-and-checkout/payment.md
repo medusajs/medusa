@@ -1,29 +1,35 @@
 ---
-description: 'Learn how to create a payment provider in the Medusa server. This guide explains the different methods available in a fulfillment provider.'
+description: 'Learn how to create a payment processor in the Medusa server. This guide explains the different methods available in a payment processor.'
 addHowToData: true
 ---
 
-# How to Create a Payment Provider
+# How to Create a Payment Processor
 
-In this document, you’ll learn how to add a Payment Provider to your Medusa server. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](./overview.md) first.
+In this document, you’ll learn how to create a Payment Processor in your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](./overview.md) first.
 
-## Overview
+:::note
 
-A Payment Provider is the payment method used to authorize, capture, and refund payment, among other actions. An example of a Payment Provider is Stripe.
-
-By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
-
-Adding a Payment Provider is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentProcessor` from the core Medusa package `@medusajs/medusa`.
-
-Payment Provider Services must have a static property `identifier`. It's the name that will be used to install and refer to the Payment Provider in the Medusa server.
-
-:::tip
-
-Payment Providers are loaded and installed at the server startup.
+Before v1.8 of Medusa, this guide explained how to create a payment provider. Payment Providers are now considered legacy and are deprecated. Moving forward, it's recommended to create a Payment Processor that implements the Payment Processor API.
 
 :::
 
-The Payment Provider service is also required to implement the following methods:
+## Overview
+
+A Payment Processor is the payment method used to authorize, capture, and refund payment, among other actions. An example of a Payment Processor is Stripe.
+
+By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
+
+Adding a Payment Processor is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Processor is essentially a service that extends `AbstractPaymentProcessor` from the core Medusa package `@medusajs/medusa`.
+
+Payment Processor Services must have a static property `identifier`. It's the name that will be used to install and refer to the Payment Processor in the Medusa backend.
+
+:::tip
+
+Payment Processors are loaded and installed at the server startup. If not already saved, they're saved in the database and are represented by the `PaymentProvider` entity.
+
+:::
+
+The Payment Processor is also required to implement the following methods:
 
 1. `initiatePayment`: Called when a Payment Session for the Payment Provider is to be created.
 2. `retrievePayment`: Used to retrieve payment session data, which can be retrieved from a third-party provider.
@@ -37,7 +43,7 @@ The Payment Provider service is also required to implement the following methods
 
 :::note
 
-All these methods must be declared async in the Payment Provider Service.
+All these methods must be declared async in the Payment Processor.
 
 :::
 
@@ -47,9 +53,9 @@ These methods are used at different points in the Checkout flow as well as when 
 
 ---
 
-## Create a Payment Provider
+## Create a Payment Processor
 
-The first step to create a payment provider is to create a JavaScript or TypeScript file in `src/services`. The file's name should be the name of the payment provider.
+The first step to create a payment processor is to create a JavaScript or TypeScript file in `src/services`. The file's name should be the name of the payment processor.
 
 For example, create the file `src/services/my-payment.ts` with the following content:
 
@@ -111,33 +117,33 @@ class MyPaymentProcessor extends AbstractPaymentProcessor {
 export default MyPaymentProcessor
 ```
 
-Where `MyPaymentProcessor` is the name of your Payment Provider service. For example, Stripe’s Payment Provider Service is called `StripeProviderService`.
+Where `MyPaymentProcessor` is the name of your Payment Processor service.
 
-Payment Providers must extend `AbstractPaymentProcessor` from the core Medusa package `@medusajs/medusa`.
+Payment Processors must extend `AbstractPaymentProcessor` from the core Medusa package `@medusajs/medusa`.
 
 :::tip
 
-Following the naming convention of Services, the name of the file should be the slug name of the Payment Provider, and the name of the class should be the camel case name of the Payment Provider suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the Payment Processor, and the name of the class should be the camel case name of the Payment Processors suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../services/create-service.md).
 
 :::
 
 ### identifier
 
-As mentioned in the overview, Payment Providers should have a static `identifier` property.
+As mentioned in the overview, Payment Processors should have a static `identifier` property.
 
-The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
+The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Processor is created in the database.
 
-The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
+The value of this property will also be used to reference the Payment Processor throughout the Medusa backend. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
 
 The identifier can be retrieved using the `getIdentifier` method, which is defined in `AbstractPaymentProcessor`.
 
 ### constructor
 
-You can use the `constructor` of your Payment Provider to have access to different services in Medusa through dependency injection.
+You can use the `constructor` of your Payment Processor to have access to different services in Medusa through [dependency injection](../../development/fundamentals/dependency-injection.md).
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
 
-Additionally, if you’re creating your Payment Provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
+Additionally, if you’re creating your Payment Processor as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
 
 ```ts
 class MyPaymentService extends AbstractPaymentService {
@@ -149,6 +155,20 @@ class MyPaymentService extends AbstractPaymentService {
   // ...
 }
 ```
+
+### PaymentProcessorError
+
+Before diving into the methods you'll need to implement, you'll notice that part of the expected return signature of these method includes `PaymentProcessorError`. This is an interface of the following definition:
+
+```ts
+interface PaymentProcessorError {
+  error: string
+  code?: string
+  detail?: any
+}
+```
+
+While implementing the following methods, if you need to inform the Medusa core that an error occurred at a certain stage, return an object having the attributes defined in the `PaymentProcessorError` interface.
 
 ### initiatePayment
 
@@ -183,7 +203,7 @@ type PaymentProcessorSessionResponse = {
 Where:
 
 - `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
-- `update_requests` is an object that can be used to pass data from the payment provider plugin to the core to update internal resources. Currently, it only has one attribute `customer_metadata` which allows updating the `metadata` field of the customer.
+- `update_requests` is an object that can be used to pass data from the Payment Processor plugin to the core to update internal resources. Currently, it only has one attribute `customer_metadata` which allows updating the `metadata` field of the customer.
 
 An example of a minimal implementation of `initiatePayment`:
 
@@ -208,7 +228,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 ### retrievePayment
 
-This method is used to provide a uniform way of retrieving the payment information from the third-party provider. For example, in Stripe’s Payment Provider Service this method is used to retrieve the payment intent details from Stripe.
+This method is used to provide a uniform way of retrieving the payment information from the third-party provider. For example, in Stripe’s Payment Processor this method is used to retrieve the payment intent details from Stripe.
 
 This method accepts the `data` field of a Payment Session. So, you should make sure to store in the `data` field any necessary data that would allow you to retrieve the payment data from the third-party provider.
 
@@ -333,8 +353,8 @@ This method is used to perform any actions necessary before a Payment Session is
 
 1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/DeleteCartsCartPaymentSessionsSession).
 2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionsSession). The Payment Session is deleted so that a newer one is initialized instead.
-3. When the Payment Provider is no longer available. This generally happens when the store operator removes it from the available Payment Provider in the admin.
-4. When the region of the store is changed based on the cart information and the Payment Provider is not available in the new region.
+3. When the Payment Processor is no longer available. This generally happens when the store operator removes it from the available Payment Processor in the admin.
+4. When the region of the store is changed based on the cart information and the Payment Processor is not available in the new region.
 
 It accepts the `data` field of the payment session for its first parameter.
 
@@ -507,5 +527,5 @@ class MyPaymentService extends AbstractPaymentService {
 
 ## See Also
 
-- Implementation Examples: [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) payment providers.
+- Implementation Examples: [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) Payment Processors.
 - [Implement checkout flow on the storefront](./../../storefront/how-to-implement-checkout-flow.mdx).
