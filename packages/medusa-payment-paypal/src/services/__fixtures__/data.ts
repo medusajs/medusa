@@ -213,12 +213,12 @@ export const updatePaymentSuccessData = {
   paymentSessionData: {
     id: PaymentIntentDataByStatus.APPROVED.id,
   },
-  currency_code: "usd",
+  currency_code: "USD",
   amount: 1000,
 }
 
 export const updatePaymentFailData = {
-  currency_code: "usd",
+  currency_code: "USD",
   amount: 1000,
   resource_id: FAIL_INTENT_ID,
   customer: {

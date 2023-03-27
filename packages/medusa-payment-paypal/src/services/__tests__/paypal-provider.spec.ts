@@ -1,5 +1,5 @@
 import { PaymentIntentDataByStatus } from "../../__fixtures__/data"
-import { PaymentSessionStatus } from "@medusajs/medusa"
+import { PaymentProcessorContext, PaymentSessionStatus } from "@medusajs/medusa"
 import PaypalProvider from "../paypal-provider"
 import {
   authorizePaymentSuccessData,
@@ -19,12 +19,19 @@ import {
   updatePaymentFailData,
   updatePaymentSuccessData,
 } from "../__fixtures__/data"
-import PayPalMock, {
-  INVOICE_ID,
-  PayPalClientMock,
-} from "../../__mocks__/@paypal/checkout-server-sdk"
+import axios from "axios"
+import { INVOICE_ID, PayPalMock } from "../../core/__mocks__/paypal-sdk"
 import { roundToTwo } from "../utils/utils"
 import { humanizeAmount } from "medusa-core-utils"
+
+jest.mock("axios")
+const mockedAxios = axios as jest.Mocked<typeof axios>
+
+jest.mock("../../core", () => {
+  return {
+    PaypalSdk: jest.fn().mockImplementation(() => PayPalMock),
+  }
+})
 
 const container = {}
 const paypalConfig = {
@@ -34,8 +41,12 @@ const paypalConfig = {
 }
 
 describe("PaypalProvider", () => {
+  beforeAll(() => {
+    mockedAxios.create.mockReturnThis()
+  })
+
   describe("getPaymentStatus", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
@@ -87,7 +98,7 @@ describe("PaypalProvider", () => {
   })
 
   describe("initiatePayment", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
@@ -100,35 +111,29 @@ describe("PaypalProvider", () => {
 
     it("should succeed with an existing customer but no stripe id", async () => {
       const result = await paypalProvider.initiatePayment(
-        initiatePaymentContextSuccess
+        initiatePaymentContextSuccess as PaymentProcessorContext
       )
 
-      expect(PayPalMock.orders.OrdersCreateRequest).toHaveBeenCalled()
-      expect(PayPalClientMock.execute).toHaveBeenCalled()
-      expect(PayPalClientMock.execute).toHaveBeenCalledWith(
+      expect(PayPalMock.createOrder).toHaveBeenCalled()
+      expect(PayPalMock.createOrder).toHaveBeenCalledWith(
         expect.objectContaining({
-          body: {
-            intent: "AUTHORIZE",
-            application_context: {
-              shipping_preference: "NO_SHIPPING",
-            },
-            purchase_units: [
-              {
-                custom_id: initiatePaymentContextSuccess.resource_id,
-                amount: {
-                  currency_code:
-                    initiatePaymentContextSuccess.currency_code.toUpperCase(),
-                  value: roundToTwo(
-                    humanizeAmount(
-                      initiatePaymentContextSuccess.amount,
-                      initiatePaymentContextSuccess.currency_code
-                    ),
+          intent: "AUTHORIZE",
+          purchase_units: [
+            {
+              custom_id: initiatePaymentContextSuccess.resource_id,
+              amount: {
+                currency_code:
+                  initiatePaymentContextSuccess.currency_code.toUpperCase(),
+                value: roundToTwo(
+                  humanizeAmount(
+                    initiatePaymentContextSuccess.amount,
                     initiatePaymentContextSuccess.currency_code
                   ),
-                },
+                  initiatePaymentContextSuccess.currency_code
+                ),
               },
-            ],
-          },
+            },
+          ],
         })
       )
 
@@ -139,11 +144,10 @@ describe("PaypalProvider", () => {
 
     it("should fail", async () => {
       const result = await paypalProvider.initiatePayment(
-        initiatePaymentContextFail
+        initiatePaymentContextFail as unknown as PaymentProcessorContext
       )
 
-      expect(PayPalMock.orders.OrdersCreateRequest).toHaveBeenCalled()
-      expect(PayPalClientMock.execute).not.toHaveBeenCalled()
+      expect(PayPalMock.createOrder).toHaveBeenCalled()
 
       expect(result).toEqual({
         error: "An error occurred in initiatePayment",
@@ -154,7 +158,7 @@ describe("PaypalProvider", () => {
   })
 
   describe("authorizePayment", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
@@ -167,7 +171,8 @@ describe("PaypalProvider", () => {
 
     it("should succeed", async () => {
       const result = await paypalProvider.authorizePayment(
-        authorizePaymentSuccessData
+        authorizePaymentSuccessData as Record<string, unknown>,
+        {}
       )
 
       expect(result).toEqual({
@@ -178,7 +183,7 @@ describe("PaypalProvider", () => {
   })
 
   describe("cancelPayment", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
@@ -194,12 +199,8 @@ describe("PaypalProvider", () => {
         cancelPaymentSuccessData
       )
 
-      expect(
-        PayPalMock.payments.AuthorizationsVoidRequest
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        PayPalMock.payments.AuthorizationsVoidRequest
-      ).toHaveBeenCalledWith(
+      expect(PayPalMock.cancelAuthorizedPayment).toHaveBeenCalledTimes(1)
+      expect(PayPalMock.cancelAuthorizedPayment).toHaveBeenCalledWith(
         cancelPaymentSuccessData.purchase_units[0].payments.authorizations[0].id
       )
 
@@ -215,8 +216,8 @@ describe("PaypalProvider", () => {
         cancelPaymentRefundAlreadyCaptureSuccessData
       )
 
-      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalledTimes(1)
-      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalledWith(
+      expect(PayPalMock.refundPayment).toHaveBeenCalledTimes(1)
+      expect(PayPalMock.refundPayment).toHaveBeenCalledWith(
         cancelPaymentRefundAlreadyCaptureSuccessData.purchase_units[0].payments
           .captures[0].id
       )
@@ -236,10 +237,8 @@ describe("PaypalProvider", () => {
         cancelPaymentRefundAlreadyCanceledSuccessData
       )
 
-      expect(PayPalMock.payments.CapturesRefundRequest).not.toHaveBeenCalled()
-      expect(
-        PayPalMock.payments.AuthorizationsVoidRequest
-      ).not.toHaveBeenCalled()
+      expect(PayPalMock.captureAuthorizedPayment).not.toHaveBeenCalled()
+      expect(PayPalMock.cancelAuthorizedPayment).not.toHaveBeenCalled()
 
       expect(result).toEqual({
         id: cancelPaymentRefundAlreadyCanceledSuccessData.id,
@@ -263,7 +262,7 @@ describe("PaypalProvider", () => {
   })
 
   describe("capturePayment", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
@@ -276,7 +275,7 @@ describe("PaypalProvider", () => {
 
     it("should succeed", async () => {
       const result = await paypalProvider.capturePayment(
-        capturePaymentContextSuccessData
+        capturePaymentContextSuccessData as unknown as PaymentProcessorContext
       )
 
       expect(result).toEqual({
@@ -291,7 +290,7 @@ describe("PaypalProvider", () => {
 
     it("should fail", async () => {
       const result = await paypalProvider.capturePayment(
-        capturePaymentContextFailData
+        capturePaymentContextFailData as unknown as PaymentProcessorContext
       )
 
       expect(result).toEqual({
@@ -303,7 +302,7 @@ describe("PaypalProvider", () => {
   })
 
   describe("refundPayment", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
     const refundAmount = 500
 
     beforeAll(async () => {
@@ -321,9 +320,16 @@ describe("PaypalProvider", () => {
         refundAmount
       )
 
-      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalled()
-      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalledWith(
-        refundPaymentSuccessData.purchase_units[0].payments.captures[0].id
+      expect(PayPalMock.refundPayment).toHaveBeenCalled()
+      expect(PayPalMock.refundPayment).toHaveBeenCalledWith(
+        refundPaymentSuccessData.purchase_units[0].payments.captures[0].id,
+        {
+          amount: {
+            currency_code:
+              refundPaymentSuccessData.purchase_units[0].amount.currency_code,
+            value: "5.00",
+          },
+        }
       )
 
       expect(result).toEqual({
@@ -339,7 +345,7 @@ describe("PaypalProvider", () => {
         refundAmount
       )
 
-      expect(PayPalMock.payments.CapturesRefundRequest).not.toHaveBeenCalled()
+      expect(PayPalMock.refundPayment).not.toHaveBeenCalled()
 
       expect(result).toEqual({
         code: "",
@@ -354,9 +360,16 @@ describe("PaypalProvider", () => {
         refundAmount
       )
 
-      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalled()
-      expect(PayPalMock.payments.CapturesRefundRequest).toHaveBeenCalledWith(
-        refundPaymentFailData.purchase_units[0].payments.captures[0].id
+      expect(PayPalMock.refundPayment).toHaveBeenCalled()
+      expect(PayPalMock.refundPayment).toHaveBeenCalledWith(
+        refundPaymentFailData.purchase_units[0].payments.captures[0].id,
+        {
+          amount: {
+            currency_code:
+              refundPaymentFailData.purchase_units[0].amount.currency_code,
+            value: "5.00",
+          },
+        }
       )
 
       expect(result).toEqual({
@@ -405,7 +418,7 @@ describe("PaypalProvider", () => {
   })
 
   describe("updatePayment", function () {
-    let paypalProvider
+    let paypalProvider: PaypalProvider
 
     beforeAll(async () => {
       const scopedContainer = { ...container }
@@ -418,12 +431,24 @@ describe("PaypalProvider", () => {
 
     it("should succeed", async () => {
       const result = await paypalProvider.updatePayment(
-        updatePaymentSuccessData
+        updatePaymentSuccessData as unknown as PaymentProcessorContext
       )
 
-      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalled()
-      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalledWith(
-        updatePaymentSuccessData.paymentSessionData.id
+      expect(PayPalMock.patchOrder).toHaveBeenCalled()
+      expect(PayPalMock.patchOrder).toHaveBeenCalledWith(
+        updatePaymentSuccessData.paymentSessionData.id,
+        [
+          {
+            op: "replace",
+            path: "/purchase_units/@reference_id=='default'",
+            value: {
+              amount: {
+                currency_code: updatePaymentSuccessData.currency_code,
+                value: "10.00",
+              },
+            },
+          },
+        ]
       )
 
       expect(result).toEqual(
@@ -434,11 +459,25 @@ describe("PaypalProvider", () => {
     })
 
     it("should fail", async () => {
-      const result = await paypalProvider.updatePayment(updatePaymentFailData)
+      const result = await paypalProvider.updatePayment(
+        updatePaymentFailData as unknown as PaymentProcessorContext
+      )
 
-      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalled()
-      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalledWith(
-        updatePaymentFailData.paymentSessionData.id
+      expect(PayPalMock.patchOrder).toHaveBeenCalled()
+      expect(PayPalMock.patchOrder).toHaveBeenCalledWith(
+        updatePaymentFailData.paymentSessionData.id,
+        [
+          {
+            op: "replace",
+            path: "/purchase_units/@reference_id=='default'",
+            value: {
+              amount: {
+                currency_code: updatePaymentFailData.currency_code,
+                value: "10.00",
+              },
+            },
+          },
+        ]
       )
 
       expect(result).toEqual({
