@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class removeDeletedAt1679926917252 implements MigrationInterface {
+export class categoryRemoveSoftDelete1679950221063 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "product_category" DROP COLUMN "deleted_at";`)
     await queryRunner.query(`DROP INDEX IF EXISTS "IDX_product_category_handle";`)
