@@ -15,12 +15,13 @@ RUN node /medusa/packages/medusa-dev-cli/dist/index.js --set-path-to-repo /medus
 WORKDIR /
 
 RUN yarn global add create-next-app
-RUN create-next-app -e https://github.com/medusajs/nextjs-starter-medusa storefront
+RUN create-next-app -e https://github.com/ergomake/nextjs-starter-medusa storefront
 
 WORKDIR /storefront
 RUN mv next.config.js original-next.config.js
 COPY .ergomake/next.config.js .
 RUN node /medusa/packages/medusa-dev-cli/dist/index.js -s
+RUN yarn build
 
 FROM node:18-alpine AS runner
 
@@ -36,6 +37,5 @@ ENV NEXT_PUBLIC_MEDUSA_BACKEND_URL $NEXT_PUBLIC_MEDUSA_BACKEND_URL
 
 EXPOSE 8000
 
-# it talks to the backend while building so we must build only when starting the container
-CMD sh -c 'wait-port backend:9000 && yarn build && yarn start'
+CMD sh -c 'wait-port backend:9000 && yarn start'
 
