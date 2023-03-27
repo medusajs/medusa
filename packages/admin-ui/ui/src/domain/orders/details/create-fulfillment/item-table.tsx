@@ -4,9 +4,9 @@ import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import InputField from "../../../../components/molecules/input"
 import { LineItem } from "@medusajs/medusa"
+import clsx from "clsx"
 import { useAdminVariantsInventory } from "medusa-react"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
-import clsx from "clsx"
 
 export const getFulfillableQuantity = (item: LineItem): number => {
   return item.quantity - (item.fulfilled_quantity || 0)
@@ -25,16 +25,20 @@ const CreateFulfillmentItemsTable = ({
   locationId: string
   setErrors: (errors: React.SetStateAction<{}>) => void
 }) => {
-  const handleQuantityUpdate = (value: number, id: string) => {
-    let newQuantities = { ...quantities }
+  const handleQuantityUpdate = React.useCallback(
+    (value: number, id: string) => {
+      let newQuantities = { ...quantities }
 
-    newQuantities = {
-      ...newQuantities,
-      [id]: value,
-    }
+      newQuantities = {
+        ...newQuantities,
+        [id]: value,
+      }
 
-    setQuantities(newQuantities)
-  }
+      setQuantities(newQuantities)
+    },
+    [quantities, setQuantities]
+  )
+
   return (
     <div>
       {items.map((item, idx) => {
@@ -129,7 +133,6 @@ const FulfillmentLine = ({
       )
     }
     // Note: we can't add handleQuantityUpdate to the dependency array as it will cause an infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [availableQuantity, item, item.id])
 
   if (getFulfillableQuantity(item) <= 0) {
