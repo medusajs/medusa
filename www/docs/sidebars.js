@@ -565,6 +565,11 @@ module.exports = {
           }
         },
         {
+          type: 'doc',
+          id: 'modules/products/categories',
+          label: 'Categories'
+        },
+        {
           type: 'link',
           href: '#',
           label: 'Collections',
