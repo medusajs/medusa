@@ -13,7 +13,11 @@ export default {
   },
 
   withRepository: function (repo) {
-    return Object.assign(repo, { manager: this })
+    if (repo) {
+      return Object.assign(repo, { manager: this })
+    }
+
+    return repo
   },
 
   transaction: function (isolationOrCb, cb) {
