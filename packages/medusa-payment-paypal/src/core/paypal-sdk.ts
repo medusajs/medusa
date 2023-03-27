@@ -95,6 +95,19 @@ export class PaypalSdk {
     return await this.httpClient_.request({ url, data })
   }
 
+  /**
+   * Captures an authorized payment, by ID.
+   * @param authorizationId
+   * @param data
+   */
+  async getAuthorizationPayment(
+    authorizationId: string
+  ): Promise<CapturesAuthorizationResponse> {
+    const url = PaypalApiPath.AUTHORIZATION_GET.replace("{id}", authorizationId)
+
+    return await this.httpClient_.request({ url })
+  }
+
   async verifyWebhook(data: VerifyWebhookSignature) {
     const url = PaypalApiPath.VERIFY_WEBHOOK_SIGNATURE
     return await this.httpClient_.request({ url, data })

@@ -277,6 +277,22 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     }
   }
 
+  async retrieveOrderFromAuth(authorization) {
+    const link = authorization.links.find((l) => l.rel === "up")
+    const parts = link.href.split("/")
+    const orderId = parts[parts.length - 1]
+
+    if (!orderId) {
+      return null
+    }
+
+    return await this.paypal_.getOrder(orderId)
+  }
+
+  async retrieveAuthorization(id) {
+    return await this.paypal_.getAuthorizationPayment(id)
+  }
+
   protected buildError(
     message: string,
     e: PaymentProcessorError | Error
