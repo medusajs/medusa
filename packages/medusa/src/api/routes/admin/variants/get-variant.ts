@@ -68,9 +68,7 @@ export default async (req, res) => {
     req.retrieveConfig
   )
 
-  const [variant] = await pricingService.setVariantPrices([rawVariant], {
-    ignore_cache: true,
-  })
+  const [variant] = await pricingService.setVariantPrices([rawVariant])
 
   res.status(200).json({ variant })
 }

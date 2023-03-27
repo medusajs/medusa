@@ -4,6 +4,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 
 const redisUrl = process.env.REDIS_URL || "redis://localhost:6379"
+const cacheTTL = process.env.CACHE_TTL || 15
 
 module.exports = {
   plugins: [],
@@ -17,7 +18,7 @@ module.exports = {
   modules: {
     cacheService: {
       resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 15 },
+      options: { ttl: cacheTTL },
     },
   },
 }
