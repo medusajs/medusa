@@ -11,7 +11,6 @@ import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import styles from './styles.module.css';
-import Footer from '@theme/Footer';
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -46,7 +45,6 @@ export default function DocItemLayout({children}) {
             <DocItemFooter />
           </article>
           <DocItemPaginator />
-          <Footer />
         </div>
       </div>
       {docTOC.desktop && <div className="col toc-wrapper">{docTOC.desktop}</div>}

@@ -1,5 +1,5 @@
 import Highlight, {defaultProps} from 'prism-react-renderer';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   containsLineNumbers,
   parseCodeBlockTitle,
@@ -12,19 +12,19 @@ import {usePrismTheme, useThemeConfig} from '@docusaurus/theme-common';
 import Container from '@theme/CodeBlock/Container';
 import CopyButton from '../../CopyButton';
 import Line from '@theme/CodeBlock/Line';
+import ThemedImage from '@theme/ThemedImage';
 import Tooltip from '../../Tooltip';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import IconAlert from '../../Icon/Alert';
-import IconCopy from '../../Icon/Copy';
 
 export default function CodeBlockString({
   children,
   className: blockClassName = '',
   metastring,
   title: titleProp,
-  showLineNumbers: showLineNumbersProp = true,
+  showLineNumbers: showLineNumbersProp,
   language: languageProp,
   noReport = false,
   noCopy = false
@@ -74,7 +74,7 @@ export default function CodeBlockString({
               <code
                 className={clsx(
                   styles.codeBlockLines,
-                  showLineNumbers && tokens.length > 1 && styles.codeBlockLinesWithNumbering,
+                  showLineNumbers && styles.codeBlockLinesWithNumbering,
                   tokens.length === 1 ? 'thin-code' : ''
                 )}>
                 {tokens.map((line, i) => (
@@ -84,7 +84,7 @@ export default function CodeBlockString({
                     getLineProps={getLineProps}
                     getTokenProps={getTokenProps}
                     classNames={lineClassNames[i]}
-                    showLineNumbers={showLineNumbers && tokens.length > 1}
+                    showLineNumbers={showLineNumbers}
                   />
                 ))}
               </code>
@@ -95,13 +95,19 @@ export default function CodeBlockString({
           {!noReport && (
             <Tooltip text="Report Incorrect Code">
               <a href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(`Docs(Code Issue): Code Issue in ${isBrowser ? location.pathname : ''}`)}`} target="_blank" className='report-code code-action img-url'>
-                <IconAlert />
+                <ThemedImage alt='Report Incorrect Code' sources={{
+                  light: useBaseUrl('/img/alert-code.png'),
+                  dark: useBaseUrl('/img/alert-code-dark.png')
+                }} className="no-zoom-img" />
               </a>
             </Tooltip>
           )}
           {!noCopy && (
             <CopyButton buttonClassName='code-action code-action-copy' text={code}>
-              <IconCopy />
+              <ThemedImage alt='Copy to Clipboard' sources={{
+                light: useBaseUrl('/img/clipboard-copy.png'),
+                dark: useBaseUrl('/img/clipboard-copy-dark.png')
+              }} className="no-zoom-img" />
             </CopyButton>
           )}
         </div>

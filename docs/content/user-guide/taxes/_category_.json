@@ -2,8 +2,5 @@
   "position": 10,
   "collapsed": false,
   "link": null,
-  "label": "Taxes",
-  "customProps": {
-    "sidebar_is_group_headline": true
-  }
+  "label": "Taxes"
 }

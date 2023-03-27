@@ -2,8 +2,5 @@
   "position": 9,
   "collapsed": false,
   "link": null,
-  "label": "Regions",
-  "customProps": {
-    "sidebar_is_group_headline": true
-  }
+  "label": "Regions"
 }

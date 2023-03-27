@@ -1,0 +1,11 @@
+.osTabs {
+  background-color: var(--ifm-note-background);
+  padding: 10px;
+  border: 1px solid var(--ifm-note-border-color);
+  border-radius: var(--ifm-global-radius);
+  color: var(--ifm-alert-foreground-color);
+}
+
+.osTabs li:not([aria-selected=true]) {
+  color: var(--ifm-color-content);
+}

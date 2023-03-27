@@ -37,12 +37,7 @@ export default function CodeBlock({children: rawChildren, noReport = false, noCo
           {title}
         </div>
       )}
-      <CodeBlockComp 
-        key={String(isBrowser)}
-        noReport={noReport} 
-        noCopy={noCopy} 
-        {...props}
-        className={`${props.className} ${title ? '' : 'no-header-block'}`}>
+      <CodeBlockComp key={String(isBrowser)} {...props} noReport={noReport} noCopy={noCopy} className={title ? '' : 'no-header-block'}>
         {children}
       </CodeBlockComp>
     </div>

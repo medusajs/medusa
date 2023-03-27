@@ -2,8 +2,5 @@
   "position": 5,
   "collapsed": false,
   "link": null,
-  "label": "Customers",
-  "customProps": {
-    "sidebar_is_group_headline": true
-  }
+  "label": "Customers"
 }
