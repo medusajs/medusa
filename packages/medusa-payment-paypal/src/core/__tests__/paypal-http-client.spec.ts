@@ -1,6 +1,6 @@
 import axios from "axios"
 import { PaypalHttpClient } from "../paypal-http-client"
-import { PaypalApiPath, PaypalSdkOptions } from "../types"
+import { PaypalApiPath } from "../types"
 
 jest.mock("axios")
 const mockedAxios = axios as jest.Mocked<typeof axios>
@@ -9,14 +9,14 @@ const accessToken = "accessToken"
 
 const responseData = { test: "test" }
 
-const options: PaypalSdkOptions = {
+const options = {
   clientId: "fake",
   clientSecret: "fake",
   logger: {
     error: jest.fn(),
   } as any,
-  useSandbox: true,
-}
+  sandbox: true,
+} as any
 
 describe("PaypalHttpClient", function () {
   let paypalHttpClient: PaypalHttpClient

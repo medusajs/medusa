@@ -16,23 +16,30 @@ import {
 import { humanizeAmount } from "medusa-core-utils"
 import { roundToTwo } from "./utils/utils"
 import { CreateOrder, PaypalSdk } from "../core"
+import { Logger } from "@medusajs/types"
 
 class PayPalProviderService extends AbstractPaymentProcessor {
   static identifier = "paypal"
 
   protected readonly options_: PaypalOptions
   protected paypal_: PaypalSdk
+  protected readonly logger_: Logger | undefined
 
-  constructor(_, options) {
+  constructor({ logger }: { logger?: Logger }, options) {
     // @ts-ignore
-    super(_, options)
+    // eslint-disable-next-line prefer-rest-params
+    super(...arguments)
 
+    this.logger_ = logger
     this.options_ = options
     this.init()
   }
 
   protected init(): void {
-    this.paypal_ = new PaypalSdk(this.options_)
+    this.paypal_ = new PaypalSdk({
+      ...this.options_,
+      logger: this.logger_,
+    })
   }
 
   async getPaymentStatus(

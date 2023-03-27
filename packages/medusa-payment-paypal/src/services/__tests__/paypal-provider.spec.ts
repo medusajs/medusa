@@ -33,7 +33,12 @@ jest.mock("../../core", () => {
   }
 })
 
-const container = {}
+const container = {
+  logger: {
+    error: jest.fn(),
+  } as any,
+}
+
 const paypalConfig = {
   sandbox: true,
   client_id: "fake",

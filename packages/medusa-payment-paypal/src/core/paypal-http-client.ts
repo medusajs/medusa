@@ -5,6 +5,7 @@ import {
   PaypalSdkOptions,
 } from "./types"
 import { Logger } from "@medusajs/medusa"
+import { PaypalOptions } from "../types"
 
 export class PaypalHttpClient {
   protected readonly baseUrl_: string = PaypalEnvironmentPaths.LIVE
@@ -13,7 +14,7 @@ export class PaypalHttpClient {
   protected readonly logger_?: Logger
   protected accessToken_: string
 
-  constructor(options: PaypalSdkOptions) {
+  constructor(options: PaypalOptions & { logger?: Logger }) {
     this.options_ = options
 
     this.logger_ = options.logger
