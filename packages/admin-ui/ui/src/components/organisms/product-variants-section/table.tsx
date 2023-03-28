@@ -185,7 +185,11 @@ const VariantsTable = ({ variants, actions }: Props) => {
                       handleClose={() => setShowDelete(false)}
                       confirmText="Yes, delete"
                       heading="Delete variant"
-                      text={`Are you sure you want to delete this variant.  Note: Deleting the variant will also remove inventory items and levels?`}
+                      text={`Are you sure you want to delete this variant? ${
+                        isFeatureEnabled("inventoryService")
+                          ? " Note: Deleting the variant will also remove inventory items and levels"
+                          : ""
+                      }`}
                       successText={false}
                     />
                   )}
