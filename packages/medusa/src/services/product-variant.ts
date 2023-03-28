@@ -529,18 +529,18 @@ class ProductVariantService extends TransactionBaseService {
       const promises: Promise<any>[] = []
 
       if (dataRegionPrices.length) {
-        promises.push(this.addOrUpdateRegionPrices(dataRegionPrices))
+        promises.push(this.upsertRegionPrices(dataRegionPrices))
       }
 
       if (dataCurrencyPrices.length) {
-        promises.push(this.addOrUpdateCurrencyPrices(dataCurrencyPrices))
+        promises.push(this.upsertCurrencyPrices(dataCurrencyPrices))
       }
 
       await Promise.all(promises)
     })
   }
 
-  async addOrUpdateRegionPrices(
+  async upsertRegionPrices(
     data: UpdateVariantRegionPriceData[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
@@ -619,7 +619,7 @@ class ProductVariantService extends TransactionBaseService {
     })
   }
 
-  async addOrUpdateCurrencyPrices(
+  async upsertCurrencyPrices(
     data: {
       variantId: string
       price: WithRequiredProperty<ProductVariantPrice, "currency_code">
