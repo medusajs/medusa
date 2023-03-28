@@ -1,5 +1,6 @@
 import fs from "fs"
 import aws from "aws-sdk"
+import { parse } from "path"
 import { AbstractFileService } from "@medusajs/medusa"
 import stream from "stream"
 
