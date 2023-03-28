@@ -32,11 +32,14 @@ class S3Service extends AbstractFileService {
   }
 
   uploadFile(file, options = { isProtected: false, acl: undefined }) {
+    const parsedFilename = parse(file.originalname)
+    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+
     const params = {
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
-      Key: `${file.originalname}`,
+      Key: fileKey,
     }
 
     return new Promise((resolve, reject) => {
