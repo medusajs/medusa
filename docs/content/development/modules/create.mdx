@@ -38,7 +38,7 @@ Once you’re done, you should have a `package.json` created in the directory.
 
 In your `package.json` file, add or update the following fields:
 
-```json
+```json title=package.json
 {
   // other fields
   "main": "dist/index.js",
@@ -79,7 +79,7 @@ This adds the necessary dependencies for your development, including the `@medus
 
 In the root of your NPM project, create the file `tsconfig.json` with the following content:
 
-```json
+```json title=tsconfig.json
 {
   "compilerOptions": {
     "lib": [
@@ -188,7 +188,7 @@ Where:
 
 Here's an example implementation of `src/index.ts` from Medusa's Redis Cache module:
 
-```ts
+```ts title=src/index.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import Loader from "./loaders"
@@ -233,7 +233,7 @@ Where `module-name` is the name of your module as defined in the `package.json` 
 
 Finally, add your module to `medusa-config.js`:
 
-```js
+```js title=medusa-config.js
 module.exports = {
   // ...
   modules: { 
