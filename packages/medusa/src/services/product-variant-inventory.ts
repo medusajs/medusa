@@ -514,11 +514,18 @@ class ProductVariantInventoryService extends TransactionBaseService {
     for (const item of itemsToValidate) {
       const pvInventoryItems = await this.listByVariant(item.variant_id!)
 
-      const [inventoryLevels] =
+      const [inventoryLevels, inventoryLevelCount] =
         await this.inventoryService_.listInventoryLevels({
           inventory_item_id: pvInventoryItems.map((i) => i.inventory_item_id),
           location_id: locationId,
         })
+
+      if (!inventoryLevelCount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Inventory item for ${item.title} not found at location`
+        )
+      }
 
       const pviMap: Map<string, ProductVariantInventoryItem> = new Map(
         pvInventoryItems.map((pvi) => [pvi.inventory_item_id, pvi])
