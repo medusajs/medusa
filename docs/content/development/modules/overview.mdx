@@ -1,0 +1,37 @@
+---
+description: 'Learn what Modules are and how can you use them during your custom development with Medusa.'
+---
+
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
+
+# Modules
+
+In this document, you’ll learn what Modules are and how can you use them during your custom development with Medusa.
+
+## Overview
+
+Modules are self-contained, reusable pieces of code that encapsulate specific functionality or features within an ecommerce application. They foster separation of concerns, maintainability, and reusability by organizing code into smaller, independent units that can be easily managed, tested, and integrated with other modules.
+
+Modules further increase Medusa’s extensibility. Commerce modules, such as the cart engine, can be extended or entirely replaced with your own custom logic. They can also run independently of the core Medusa package, allowing you to utilize the commerce module within a larger commerce ecosystem. For example, you can use the Order module as an Order Management System (OMS) without using Medusa’s core.
+
+This also applies to core logic such as caching or events systems. You can use modules to integrate any logic or third-party service to handle this logic. This gives you greater flexibility in how you choose your tech stack.
+
+Modules are created and loaded similarly to plugins. When created, they’re published to NPM, which makes it possible to install that module in any NPM project, including a Medusa backend. In the Medusa backend, they’re added as part of the configurations in `medusa-config.js` to use and load them within the backend.
+
+---
+
+## Custom Development
+
+Developers can create their own modules, publish them to NPM, and use them in their Medusa backend.
+
+<DocCard item={{
+    type: 'link',
+    href: '/development/modules/create',
+    label: 'Create a Module',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a module in Medusa.'
+    }
+  }}
+/>

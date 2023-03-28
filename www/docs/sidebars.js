@@ -1375,7 +1375,7 @@ module.exports = {
               label: "Overview",
             },
             {
-              type: "doc",
+              type: "ref",
               id: "references/services/classes/AuthService",
               label: "Services Reference",
             },
@@ -1390,6 +1390,29 @@ module.exports = {
               type: "doc",
               id: "development/services/create-service",
               label: "Create a Service",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            {
+              type: "doc",
+              id: "development/modules/overview",
+              label: "Modules",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/modules/create",
+              label: "Create a Module",
             },
           ],
         },
