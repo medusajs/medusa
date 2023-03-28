@@ -113,7 +113,10 @@ class PayPalProviderService extends AbstractPaymentProcessor {
   > {
     try {
       const stat = await this.getPaymentStatus(paymentSessionData)
-      return { data: paymentSessionData, status: stat }
+      const order = (await this.retrievePayment(
+        paymentSessionData
+      )) as PaypalOrder
+      return { data: order, status: stat }
     } catch (error) {
       return this.buildError("An error occurred in authorizePayment", error)
     }
