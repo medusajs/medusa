@@ -26,18 +26,6 @@ export const PayPalMock = {
     }
 
     return undefined
-/*
-    return {
-      result: {
-        id: "test",
-      },
-      status: "COMPLETED",
-      invoice_id: INVOICE_ID,
-      body: null,
-      requestBody: function (d) {
-        this.body = d
-      },
-    }*/
   }),
   createOrder: jest.fn().mockImplementation((d) => {
     if (d.purchase_units[0].custom_id === FAIL_INTENT_ID) {
@@ -45,20 +33,6 @@ export const PayPalMock = {
     }
 
     return d
-   /* return {
-      result: {
-        id: "test",
-      },
-      order: true,
-      body: null,
-      requestBody: function (d) {
-        if (d.purchase_units[0].custom_id === FAIL_INTENT_ID) {
-          throw new Error("Error.")
-        }
-
-        this.body = d
-      }
-    }*/
   }),
   patchOrder: jest.fn().mockImplementation((id) => {
     if (id === FAIL_INTENT_ID) {
