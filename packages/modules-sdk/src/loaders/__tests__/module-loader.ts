@@ -190,6 +190,38 @@ describe("modules loader", () => {
     }
   })
 
+  it("throws error if default package isn't found and module is required", async () => {
+    expect.assertions(1)
+    const moduleResolutions: Record<string, ModuleResolution> = {
+      testService: {
+        resolutionPath: "@medusajs/testService",
+        definition: {
+          registrationName: "testService",
+          key: "testService",
+          defaultPackage: "@medusajs/testService",
+          label: "TestService",
+          isRequired: true,
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
+        },
+        moduleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+          resources: MODULE_RESOURCE_TYPE.SHARED,
+        },
+      },
+    }
+
+    try {
+      await moduleLoader({ container, moduleResolutions, logger })
+    } catch (err) {
+      expect(err.message).toEqual(
+        `Make sure you have installed the default package: @medusajs/testService`
+      )
+    }
+  })
+
   it("throws error if no scope is defined to the module", async () => {
     expect.assertions(1)
     const moduleResolutions: Record<string, ModuleResolution> = {
