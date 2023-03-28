@@ -1,5 +1,11 @@
 # Redis not emitting events
 
+:::note
+
+This troubleshooting guide only applies to Medusa backends using versions before v1.8 of the core Medusa package.
+
+:::
+
 When you create a new Medusa backend, Redis is disabled by default. Instead, a fake Redis backend is used that allows you to start your project but does not actually emit any events.
 
 To enable a real Redis backend, you need to install Redis on your machine and configure it with Medusa.
