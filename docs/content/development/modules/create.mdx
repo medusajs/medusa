@@ -146,11 +146,68 @@ This step depends on what you’re actually implementing. For example, you can i
   },
 ]} />
 
-All implementation falls under this step. The next steps instruct you on what to do after you’re done implementing.
+---
+
+### Step 5: Export Module Definition
+
+After implementing the module, you must export a module definition. This is done in the file `src/index.ts`.
+
+The file must export an object with the following properties:
+
+```ts
+{
+  service: Constructor<any>
+  loaders?: ModuleLoaderFunction[]
+  migrations?: any[]
+  models?: Constructor<any>[]
+  runMigrations?(
+    options: LoaderOptions,
+    moduleDeclaration: InternalModuleDeclaration
+  ): Promise<void>
+  revertMigration?(
+    options: LoaderOptions,
+    moduleDeclaration: InternalModuleDeclaration
+  ): Promise<void>
+}
+```
+
+:::note
+
+All property types such as `ModuleLoaderFunction` can be loaded from the `@medusajs/modules-sdk` package.
+
+:::
+
+Where:
+
+- `service`: This is the only required property to be exported. It should be the main service your module exposes.
+- `loaders`: (optional) an array of functions used to perform an action while loading the module. For example, you can log a message that the module has been loaded.
+- `migrations`: (optional) an array of paths to migration files that should run when the `migration` command is used with Medusa's CLI.
+- `models`: (optional) an array of entities that your module creates.
+- `runMigrations`: (optional) a function that can be used to define migrations to run when the `migration run` command is used with Medusa's CLI. The migrations will only run if they haven't already.
+- `revertMigration`: (optional) a function can be used to define how migrations should be reverted when the `migration revert` command is used with Medusa's CLI.
+
+Here's an example implementation of `src/index.ts` from Medusa's Redis Cache module:
+
+```ts
+import { ModuleExports } from "@medusajs/modules-sdk"
+
+import Loader from "./loaders"
+import { RedisCacheService } from "./services"
+
+const service = RedisCacheService
+const loaders = [Loader]
+
+const moduleDefinition: ModuleExports = {
+  service,
+  loaders,
+}
+
+export default moduleDefinition
+```
 
 ---
 
-## Step 5: Test your Module
+## Step 6: Test your Module
 
 This step explains how you can test your module in a locally installed [Medusa backend](../backend/install.mdx) after or while implementing your custom functionality.
 
@@ -205,7 +262,7 @@ npm run start
 
 ---
 
-## Step 6: Publish Module
+## Step 7: Publish Module
 
 This section explains how to publish your module to NPM.
 
