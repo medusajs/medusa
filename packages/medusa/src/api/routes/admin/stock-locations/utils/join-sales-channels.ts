@@ -18,9 +18,7 @@ const joinSalesChannels = async (
         {
           id: salesChannelIds,
         },
-        {
-          take: salesChannelIds.length,
-        }
+        {}
       )
 
       location.sales_channels = salesChannels
