@@ -182,7 +182,8 @@ describe("PaypalProvider", () => {
 
       expect(result).toEqual({
         data: authorizePaymentSuccessData,
-        status: PaymentSessionStatus.AUTHORIZED,
+        invoice_id: "invoice_id",
+        status: "COMPLETED",
       })
     })
   })
