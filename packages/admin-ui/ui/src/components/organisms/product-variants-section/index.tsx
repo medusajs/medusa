@@ -14,7 +14,7 @@ import Section from "../../organisms/section"
 import VariantsTable from "./table"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { useMedusa } from "medusa-react"
+import { adminInventoryItemsKeys, useMedusa } from "medusa-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
@@ -93,6 +93,7 @@ const ProductVariantsSection = ({ product }: Props) => {
         await client.admin.inventoryItems.delete(
           variantInventory.inventory[0].id
         )
+        queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
       }
     })
   }
