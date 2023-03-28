@@ -44,7 +44,7 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true }
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
     })
   })
 
@@ -1784,7 +1784,9 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      const variant = response.data.product.variants.find(v => v.id === variantId)
+      const variant = response.data.product.variants.find(
+        (v) => v.id === variantId
+      )
       expect(variant.prices.length).toEqual(1)
       expect(variant.prices).toEqual(
         expect.arrayContaining([
