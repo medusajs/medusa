@@ -44,7 +44,7 @@ The Redis cache module requires a connection URL to Redis as part of its options
 CACHE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
-Where `<YOUR_REDIS_URL>` is a URL to your Redis instance.
+Where `<YOUR_REDIS_URL>` is a connection URL to your Redis instance.
 
 ---
 
