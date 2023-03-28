@@ -223,6 +223,9 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               type="submit"
               loading={isSubmitting}
               onClick={createFulfillment}
+              disabled={
+                !Object.values(quantities).some((quantity) => quantity > 0)
+              }
             >
               Create fulfillment
             </Button>

@@ -83,6 +83,8 @@ module.exports = {
         project: [
           "./packages/medusa/tsconfig.json",
           "./packages/medusa-payment-stripe/tsconfig.spec.json",
+          "./packages/medusa-payment-paypal/tsconfig.spec.json",
+          "./packages/admin-ui/tsconfig.json",
           "./packages/event-bus-local/tsconfig.spec.json",
           "./packages/event-bus-redis/tsconfig.spec.json",
           "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",

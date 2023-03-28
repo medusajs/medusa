@@ -64,7 +64,7 @@ const FulfillmentLine = ({
   handleQuantityUpdate,
   setErrors,
 }: {
-  locationId: string
+  locationId?: string
   item: LineItem
   quantities: Record<string, number>
   handleQuantityUpdate: (value: number, id: string) => void
@@ -79,6 +79,7 @@ const FulfillmentLine = ({
     item.variant_id as string,
     { enabled: isLocationFulfillmentEnabled }
   )
+
   React.useEffect(() => {
     if (isLocationFulfillmentEnabled) {
       refetch()
@@ -86,6 +87,13 @@ const FulfillmentLine = ({
   }, [isLocationFulfillmentEnabled, refetch])
 
   const { availableQuantity, inStockQuantity } = useMemo(() => {
+    if (!isLocationFulfillmentEnabled) {
+      return {
+        availableQuantity: item.variant.inventory_quantity,
+        inStockQuantity: item.variant.inventory_quantity,
+      }
+    }
+
     if (isLoading || !locationId || !variant) {
       return {}
     }
@@ -104,7 +112,13 @@ const FulfillmentLine = ({
       availableQuantity: locationInventory.available_quantity,
       inStockQuantity: locationInventory.stocked_quantity,
     }
-  }, [variant, locationId, isLoading])
+  }, [
+    isLoading,
+    locationId,
+    variant,
+    item.variant,
+    isLocationFulfillmentEnabled,
+  ])
 
   const validQuantity =
     !locationId ||
