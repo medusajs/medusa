@@ -1,5 +1,5 @@
 import { generateEntityId } from "../utils/generate-entity-id"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
 import { Product } from "."
 import {
@@ -18,14 +18,14 @@ import {
 @Entity()
 @Tree("materialized-path")
 @Index(["parent_category_id", "rank"], { unique: true })
-export class ProductCategory extends SoftDeletableEntity {
+export class ProductCategory extends BaseEntity {
   static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
   name: string
 
-  @Index({ unique: true, where: "deleted_at IS NULL" })
+  @Index({ unique: true })
   @Column({ nullable: false })
   handle: string
 
@@ -88,7 +88,6 @@ export class ProductCategory extends SoftDeletableEntity {
  * required:
  *   - category_children
  *   - created_at
- *   - deleted_at
  *   - handle
  *   - id
  *   - is_active
@@ -152,11 +151,6 @@ export class ProductCategory extends SoftDeletableEntity {
  *     format: date-time
  *   updated_at:
  *     description: The date with timezone at which the resource was updated.
- *     type: string
- *     format: date-time
- *   deleted_at:
- *     description: The date with timezone at which the resource was deleted.
- *     nullable: true
  *     type: string
  *     format: date-time
  */
