@@ -65,6 +65,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     value?: string
     label?: string
   }>({})
+
   const [metadata, setMetadata] = useState<MetadataField[]>([
     { key: "", value: "" },
   ])
