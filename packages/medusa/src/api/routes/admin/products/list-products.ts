@@ -10,6 +10,7 @@ import { FilterableProductProps } from "../../../../types/product"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
+import { IInventoryService } from "@medusajs/types"
 
 /**
  * @oas [get] /admin/products
@@ -219,6 +220,8 @@ import { Type } from "class-transformer"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const salesChannelService: SalesChannelService = req.scope.resolve(
@@ -242,15 +245,17 @@ export default async (req, res) => {
     products = await pricingService.setProductPrices(rawProducts)
   }
 
-  const [salesChannelsIds] = await salesChannelService.listAndCount(
-    {},
-    { select: ["id"] }
-  )
+  if (inventoryService) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
 
-  products = await productVariantInventoryService.setProductAvailability(
-    products,
-    salesChannelsIds.map((salesChannel) => salesChannel.id)
-  )
+    products = await productVariantInventoryService.setProductAvailability(
+      products,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )
+  }
 
   res.json({
     products,
