@@ -4,6 +4,7 @@
     "declarationMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "lib": ["es2019"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": false,

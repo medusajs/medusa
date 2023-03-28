@@ -1,13 +1,13 @@
-import path from "path"
+import path, { resolve } from "path"
 import { PluginOption } from "vite"
 import { ADMIN_SHARED_DEPS } from "../constants/extensions"
-import { generateExtensionsEntrypoint } from "../utils/extensions/generate-extensions-entrypoint"
-import { getLocalExtensions } from "../utils/extensions/get-extensions"
 
 export default function medusaAdminExtensions(): PluginOption {
-  const virtualExtensionsId = "@medusa-admin-extensions"
+  const virtualExtensionsId = "virtual:medusa-extensions"
 
-  let extensionsEntrypoint = null
+  const uiPath = resolve(__dirname, "..", "..", "ui")
+
+  const extensionsEntrypoint = null
 
   return [
     {
@@ -39,7 +39,7 @@ export default function medusaAdminExtensions(): PluginOption {
         build: {
           rollupOptions: {
             input: {
-              index: path.resolve(__dirname, "index.html"),
+              index: path.resolve(uiPath, "index.html"),
               ...ADMIN_SHARED_DEPS.reduce(
                 (acc, dep) => ({ ...acc, [dep.replace(/\//g, "_")]: dep }),
                 {}
@@ -57,10 +57,27 @@ export default function medusaAdminExtensions(): PluginOption {
   ]
 
   async function loadExtensions() {
-    const localExtensions = await getLocalExtensions()
+    return `
+      const plugin = {
+        id: "test-plugin",
+        extension: {
+          async register(app) {
+          app.injectComponent("order", "details", {
+            name: "test-component",
+            Component: () => {
+              return (
+                <div>
+                  <h1>Test component</h1>
+                  <div>I am a injected component</div>
+                </div>
+              )
+            },
+          })
+        },
+      },
+    }
 
-    console.error("local extensions", JSON.stringify(localExtensions, null, 2))
-
-    extensionsEntrypoint = generateExtensionsEntrypoint(localExtensions)
+    export const plugins = [plugin]
+    `
   }
 }

@@ -5,13 +5,29 @@ import vite from "vite"
 import { AdminBuildConfig } from "./types"
 import { AdminDevConfig } from "./types/dev"
 import { getCustomViteConfig, getCustomViteDevConfig } from "./utils"
+import { generateExtensionsEntrypoint } from "./utils/extensions/generate-extensions-entrypoint"
+import { getLocalExtensions } from "./utils/extensions/get-extensions"
 
 async function build(options?: AdminBuildConfig) {
   const config = getCustomViteConfig(options)
 
+  const uiPath = resolve(__dirname, "..", "ui")
+  const tmpExtensionsPath = resolve(uiPath, "src", "extensions.ts")
+
+  const extensions = await getLocalExtensions()
+
+  const extensionsEntrypoint = await generateExtensionsEntrypoint(
+    extensions,
+    tmpExtensionsPath
+  )
+
+  await fse.writeFile(tmpExtensionsPath, extensionsEntrypoint)
+
   await vite.build(config).catch((_err) => {
     process.exit(1)
   })
+
+  // await fse.remove(tmpExtensionsPath)
 
   await fse.writeJSON(
     resolve(config.build.outDir, "build-manifest.json"),

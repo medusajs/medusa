@@ -1,20 +1,22 @@
 import { LoadedExtension } from "../../types/extensions"
-import { pathToRelativeUrl } from "./path-to-relative-url"
 
 import path from "path"
 
 export async function generateExtensionsEntrypoint(
-  extensions: LoadedExtension[]
+  extensions: LoadedExtension[],
+  dest: string
 ) {
   const imports = extensions.map((extension, i) => {
-    return `import "${extension.name}${i}" from './${pathToRelativeUrl(
-      path.resolve(extension.path, extension.entrypoint)
-    )}';`
+    const relativePath = path.relative(path.dirname(dest), extension.path)
+
+    return `import ${extension.name}${i} from './${relativePath}';`
   })
 
-  const exports = extensions.map((extension, i) => {
-    return `export { ${extension.name}${i} };`
-  })
+  const exports = `export const plugins = [${extensions
+    .map((extension, i) => {
+      return `${extension.name}${i}`
+    })
+    .join(",")}]`
 
-  return `${imports.join("")}${exports.join("")}`
+  return `${imports.join("")}${exports}`
 }

@@ -1,0 +1,1 @@
+import extension0 from './../../../../../test-server/src/extensions/order-details';export const plugins = [extension0]
