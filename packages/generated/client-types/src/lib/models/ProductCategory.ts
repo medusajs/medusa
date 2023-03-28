@@ -61,8 +61,4 @@ export interface ProductCategory {
    * The date with timezone at which the resource was updated.
    */
   updated_at: string
-  /**
-   * The date with timezone at which the resource was deleted.
-   */
-  deleted_at: string | null
 }

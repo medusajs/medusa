@@ -1,16 +1,17 @@
+import { EntityManager, In } from "typeorm"
 import {
   ICacheService,
   IInventoryService,
-  InventoryItemDTO,
   IStockLocationService,
+  InventoryItemDTO,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
-import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
-import { EntityManager, In } from "typeorm"
 import { LineItem, Product, ProductVariant } from "../models"
-import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
+import { MedusaError, TransactionBaseService, isDefined } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
+
+import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
@@ -629,7 +630,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
-    salesChannelId: string | undefined
+    salesChannelId: string | string[] | undefined
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
@@ -649,11 +650,23 @@ class ProductVariantInventoryService extends TransactionBaseService {
         // first get all inventory items required for a variant
         const variantInventory = await this.listByVariant(variant.id)
 
-        variant.inventory_quantity =
-          await this.getVariantQuantityFromVariantInventoryItems(
-            variantInventory,
-            salesChannelId
-          )
+        const salesChannelArray = Array.isArray(salesChannelId)
+          ? salesChannelId
+          : [salesChannelId]
+
+        const quantities = await Promise.all(
+          salesChannelArray.map(async (salesChannel) => {
+            return await this.getVariantQuantityFromVariantInventoryItems(
+              variantInventory,
+              salesChannel
+            )
+          })
+        )
+
+        variant.inventory_quantity = quantities.reduce(
+          (acc, next) => acc + (next || 0),
+          0
+        )
 
         return variant
       })
@@ -662,7 +675,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   async setProductAvailability(
     products: (Product | PricedProduct)[],
-    salesChannelId: string | undefined
+    salesChannelId: string | string[] | undefined
   ): Promise<(Product | PricedProduct)[]> {
     return await Promise.all(
       products.map(async (product) => {
