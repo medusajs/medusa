@@ -80,7 +80,7 @@ export class PaypalHttpClient {
     return async (config, originalConfig, retryCount = 0) => {
       if (retryCount > MAX_ATTEMPTS) {
         throw new Error(
-          "An error occurred while requesting Paypal API after two attempts"
+          `An error occurred while requesting Paypal API after ${MAX_ATTEMPTS} attempts`
         )
       }
 
