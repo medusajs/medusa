@@ -91,7 +91,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add PayPal to Regions
 
-You can refer to [this documentation in the user guide](../../user-guide/regions/processors.mdx#manage-payment-processors) to learn how to add a payment processor like PayPal to a region.
+You can refer to [this documentation in the user guide](../../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment processor like PayPal to a region.
 
 ---
 
