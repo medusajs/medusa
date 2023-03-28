@@ -280,7 +280,7 @@ describe("PaypalProvider", () => {
 
     it("should succeed", async () => {
       const result = await paypalProvider.capturePayment(
-        capturePaymentContextSuccessData as unknown as PaymentProcessorContext
+        capturePaymentContextSuccessData.paymentSessionData
       )
 
       expect(result).toEqual({
@@ -295,7 +295,7 @@ describe("PaypalProvider", () => {
 
     it("should fail", async () => {
       const result = await paypalProvider.capturePayment(
-        capturePaymentContextFailData as unknown as PaymentProcessorContext
+        capturePaymentContextFailData.paymentSessionData
       )
 
       expect(result).toEqual({
