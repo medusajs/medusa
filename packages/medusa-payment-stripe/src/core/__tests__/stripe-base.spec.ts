@@ -101,7 +101,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -232,7 +231,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -257,7 +255,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -300,7 +297,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -309,7 +305,7 @@ describe("StripeTest", () => {
 
     it("should succeed", async () => {
       const result = await stripeTest.capturePayment(
-        capturePaymentContextSuccessData
+        capturePaymentContextSuccessData.paymentSessionData
       )
 
       expect(result).toEqual({
@@ -319,7 +315,7 @@ describe("StripeTest", () => {
 
     it("should fail on intent capture but still return the intent", async () => {
       const result = await stripeTest.capturePayment(
-        capturePaymentContextPartiallyFailData
+        capturePaymentContextPartiallyFailData.paymentSessionData
       )
 
       expect(result).toEqual({
@@ -330,11 +326,11 @@ describe("StripeTest", () => {
 
     it("should fail on intent capture", async () => {
       const result = await stripeTest.capturePayment(
-        capturePaymentContextFailData
+        capturePaymentContextFailData.paymentSessionData
       )
 
       expect(result).toEqual({
-        error: "An error occurred in deletePayment",
+        error: "An error occurred in capturePayment",
         code: "",
         detail: "Error",
       })
@@ -347,7 +343,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -391,7 +386,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -429,7 +423,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {
@@ -464,7 +457,6 @@ describe("StripeTest", () => {
     beforeAll(async () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
-      await stripeTest.init()
     })
 
     beforeEach(() => {

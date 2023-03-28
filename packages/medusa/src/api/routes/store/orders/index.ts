@@ -101,14 +101,7 @@ export const defaultStoreOrdersFields = [
   "currency_code",
   "tax_rate",
   "created_at",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
   "items.refundable",
-  "refunded_total",
-  "gift_card_total",
-  "subtotal",
-  "total",
 ] as (keyof Order)[]
 
 export const allowedStoreOrdersFields = [
