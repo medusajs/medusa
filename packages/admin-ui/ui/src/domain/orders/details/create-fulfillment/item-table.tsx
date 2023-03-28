@@ -4,6 +4,7 @@ import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import InputField from "../../../../components/molecules/input"
 import { LineItem } from "@medusajs/medusa"
+import clsx from "clsx"
 import { useAdminVariantsInventory } from "medusa-react"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
@@ -24,16 +25,20 @@ const CreateFulfillmentItemsTable = ({
   locationId: string
   setErrors: (errors: React.SetStateAction<{}>) => void
 }) => {
-  const handleQuantityUpdate = (value: number, id: string) => {
-    let newQuantities = { ...quantities }
+  const handleQuantityUpdate = React.useCallback(
+    (value: number, id: string) => {
+      let newQuantities = { ...quantities }
 
-    newQuantities = {
-      ...newQuantities,
-      [id]: value,
-    }
+      newQuantities = {
+        ...newQuantities,
+        [id]: value,
+      }
 
-    setQuantities(newQuantities)
-  }
+      setQuantities(newQuantities)
+    },
+    [quantities, setQuantities]
+  )
+
   return (
     <div>
       {items.map((item, idx) => {
@@ -118,12 +123,31 @@ const FulfillmentLine = ({
     })
   }, [validQuantity, setErrors, item.id])
 
+  React.useEffect(() => {
+    if (!availableQuantity) {
+      handleQuantityUpdate(0, item.id)
+    } else {
+      handleQuantityUpdate(
+        Math.min(getFulfillableQuantity(item), availableQuantity),
+        item.id
+      )
+    }
+    // Note: we can't add handleQuantityUpdate to the dependency array as it will cause an infinite loop
+  }, [availableQuantity, item, item.id])
+
   if (getFulfillableQuantity(item) <= 0) {
     return null
   }
 
   return (
-    <div className="rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
+    <div
+      className={clsx(
+        "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
+        {
+          "pointer-events-none opacity-50": !availableQuantity,
+        }
+      )}
+    >
       <div className="flex justify-center space-x-4">
         <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
           {item.thumbnail ? (
@@ -148,8 +172,8 @@ const FulfillmentLine = ({
       <div className="flex items-center">
         <FeatureToggle featureFlag="inventoryService">
           <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
-            <p>{availableQuantity || "N/A"} available</p>
-            <p>({inStockQuantity || "N/A"} in stock)</p>
+            <p>{availableQuantity || 0} available</p>
+            <p>({inStockQuantity || 0} in stock)</p>
           </div>
         </FeatureToggle>
         <InputField
@@ -164,7 +188,7 @@ const FulfillmentLine = ({
             </span>
           }
           value={quantities[item.id]}
-          max={getFulfillableQuantity(item)}
+          max={Math.min(availableQuantity || 0, getFulfillableQuantity(item))}
           onChange={(e) =>
             handleQuantityUpdate(e.target.valueAsNumber, item.id)
           }

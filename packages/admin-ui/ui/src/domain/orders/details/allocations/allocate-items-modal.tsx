@@ -287,8 +287,8 @@ export const AllocationLineItem: React.FC<{
             }
           )}
         >
-          <p>{availableQuantity || "N/A"} available</p>
-          <p>({inStockQuantity || "N/A"} in stock)</p>
+          <p>{availableQuantity || 0} available</p>
+          <p>({inStockQuantity || 0} in stock)</p>
         </div>
         <InputField
           {...register(path(`quantity`), { valueAsNumber: true })}
