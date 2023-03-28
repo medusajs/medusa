@@ -26,6 +26,17 @@ export async function loadInternalModule(
   try {
     loadedModule = (await import(resolution.resolutionPath as string)).default
   } catch (error) {
+    if (
+      resolution.definition.isRequired &&
+      resolution.definition.defaultPackage
+    ) {
+      return {
+        error: new Error(
+          `Make sure you have installed the default package: ${resolution.definition.defaultPackage}`
+        ),
+      }
+    }
+
     return { error }
   }
 
