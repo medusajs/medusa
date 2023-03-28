@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class categoryRemoveSoftDelete1679950221063 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DELETE FROM "product_category" WHERE "deleted_at" IS NOT NULL;`)
     await queryRunner.query(`ALTER TABLE "product_category" DROP COLUMN "deleted_at";`)
     await queryRunner.query(`DROP INDEX IF EXISTS "IDX_product_category_handle";`)
     await queryRunner.query(
