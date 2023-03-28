@@ -64,7 +64,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       )
     }
 
-    if (!isLoading && (!variant || !variant.inventory?.length)) {
+    if (!isLoading && !variant?.inventory?.length) {
       return <div className="text-right">{original.inventory_quantity}</div>
     }
 
