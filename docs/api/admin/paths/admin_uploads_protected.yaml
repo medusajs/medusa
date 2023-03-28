@@ -1,0 +1,49 @@
+post:
+  operationId: PostUploadsProtected
+  summary: Protected File Upload
+  description: >-
+    Uploads at least one file with ACL or a non-public bucket to the specific
+    fileservice that is installed in Medusa.
+  x-authenticated: true
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            files:
+              type: string
+              format: binary
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_uploads_protected/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_uploads_protected/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Uploads
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminUploadsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

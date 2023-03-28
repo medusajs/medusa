@@ -1,4 +1,14 @@
 type: object
+x-expanded-relations:
+  field: gift_card
+  relations:
+    - order
+    - region
+  eager:
+    - region.fulfillment_providers
+    - region.payment_providers
+required:
+  - gift_card
 properties:
   gift_card:
     $ref: ./GiftCard.yaml
