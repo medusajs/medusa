@@ -39,9 +39,6 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     refetch,
   } = useAdminVariantsInventory(variant.id)
 
-  const variantInventoryItem = variantInventory?.inventory[0]
-  const itemId = variantInventoryItem?.id
-
   const handleClose = () => {
     onClose()
   }
@@ -72,6 +69,10 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   const onSubmit = async (data: EditFlowVariantFormType) => {
     const locationLevels = data.location_levels || []
     const manageInventory = data.manage_inventory
+
+    const variantInventoryItem = variantInventory?.inventory?.[0]
+    const itemId = variantInventoryItem?.id
+
     delete data.manage_inventory
     delete data.location_levels
 
