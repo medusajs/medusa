@@ -72,7 +72,7 @@ Here’s an example of how you can use the `constructor` to create a memcached i
 
 ```ts title=src/services/memcached-cache.ts
 import { ICacheService } from "@medusajs/types"
-import Memcached from "Memcached"
+import Memcached from "memcached"
 
 const DEFAULT_CACHE_TIME = 30
 
@@ -96,9 +96,8 @@ class MemcachedCacheService implements ICacheService {
   constructor(
     {
       // inject services through dependency injection
-      // for example the Redis Cache module injects
-      // redis connection
-      cacheRedisConnection,
+      // for example you can access the logger
+      logger,
     },
     options: MemcachedCacheModuleOptions
   ) {
