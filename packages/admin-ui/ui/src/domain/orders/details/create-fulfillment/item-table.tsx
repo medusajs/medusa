@@ -158,8 +158,7 @@ const FulfillmentLine = ({
       className={clsx(
         "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
         {
-          "pointer-events-none opacity-50":
-            !availableQuantity && isLocationFulfillmentEnabled,
+          "pointer-events-none opacity-50": !availableQuantity,
         }
       )}
     >
