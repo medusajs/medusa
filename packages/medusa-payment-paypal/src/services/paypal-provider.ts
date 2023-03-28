@@ -305,8 +305,6 @@ class PayPalProviderService extends AbstractPaymentProcessor {
       code: "code" in e ? e.code : "",
       detail: isPaymentProcessorError(e)
         ? `${e.error}${EOL}${e.detail ?? ""}`
-        : "detail" in e
-        ? e.detail
         : e.message ?? "",
     }
   }
