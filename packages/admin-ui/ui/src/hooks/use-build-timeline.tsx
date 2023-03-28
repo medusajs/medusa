@@ -199,10 +199,6 @@ export const useBuildTimeline = (orderId: string) => {
       }
     }
 
-    if (edits) {
-      console.log({ edits })
-    }
-
     const events: TimelineEvent[] = []
 
     events.push({
