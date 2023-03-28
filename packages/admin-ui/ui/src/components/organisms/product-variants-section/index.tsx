@@ -86,12 +86,13 @@ const ProductVariantsSection = ({ product }: Props) => {
       variantInventory = variant
     }
     onDeleteVariant(variantId, async () => {
-      if (isFeatureEnabled("inventoryService")) {
-        const variantInventoryItem = variantInventory?.inventory[0]
-        if (variantInventoryItem?.id) {
-          await client.admin.inventoryItems.delete(variantInventoryItem.id)
-        }
-        queryClient.invalidateQueries(["admin_inventory_items", "list"])
+      if (
+        isFeatureEnabled("inventoryService") &&
+        variantInventory?.inventory[0]?.id
+      ) {
+        await client.admin.inventoryItems.delete(
+          variantInventory.inventory[0].id
+        )
       }
     })
   }
