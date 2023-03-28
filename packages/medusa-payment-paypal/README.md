@@ -9,8 +9,12 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
 ```js
 {
   sandbox: true, //default false
-  client_id: "CLIENT_ID", // REQUIRED
-  client_secret: "CLIENT_SECRET", // REQUIRED
-  auth_webhook_id: "WEBHOOK_ID" //REQUIRED for webhook to work
+  clientId: "CLIENT_ID", // REQUIRED
+  clientSecret: "CLIENT_SECRET", // REQUIRED
+  authWebhookId: "WEBHOOK_ID", //REQUIRED for webhook to work
 }
 ```
+
+## Deprecation
+
+The paypal plugin version `>=1.3.x` requires medusa `>=1.8.x`

@@ -186,11 +186,11 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   }
 
   async capturePayment(
-    context: PaymentProcessorContext
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    const id = context.paymentSessionData.id as string
+    const id = paymentSessionData.id as string
     try {
       const intent = await this.stripe_.paymentIntents.capture(id)
       return intent as unknown as PaymentProcessorSessionResponse["session_data"]
@@ -201,7 +201,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         }
       }
 
-      return this.buildError("An error occurred in deletePayment", error)
+      return this.buildError("An error occurred in capturePayment", error)
     }
   }
 

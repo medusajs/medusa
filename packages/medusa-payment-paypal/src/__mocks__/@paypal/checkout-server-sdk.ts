@@ -1,3 +1,9 @@
+import { PaymentIntentDataByStatus } from "../../__fixtures__/data";
+
+export const SUCCESS_INTENT = "right@test.fr"
+export const FAIL_INTENT_ID = "unknown"
+export const INVOICE_ID = "invoice_id"
+
 export const PayPalClientMock = {
   execute: jest.fn().mockImplementation((r) => {
     return {
@@ -8,6 +14,7 @@ export const PayPalClientMock = {
 
 export const PayPalMock = {
   core: {
+    env: {},
     SandboxEnvironment: function () {
       this.env = {
         sandbox: true,
@@ -32,7 +39,11 @@ export const PayPalMock = {
         status: "VOIDED"
       }
     }),
-    AuthorizationsCaptureRequest: jest.fn().mockImplementation(() => {
+    AuthorizationsCaptureRequest: jest.fn().mockImplementation((id) => {
+      if (id === FAIL_INTENT_ID) {
+        throw new Error("Error.")
+      }
+
       return {
         result: {
           id: "test",
@@ -40,13 +51,17 @@ export const PayPalMock = {
         capture: true,
       }
     }),
-    CapturesRefundRequest: jest.fn().mockImplementation(() => {
+    CapturesRefundRequest: jest.fn().mockImplementation((paymentId) => {
+      if (paymentId === FAIL_INTENT_ID) {
+        throw new Error("Error")
+      }
+
       return {
         result: {
           id: "test",
         },
         status: "COMPLETED",
-        invoice_id: 'invoice_id',
+        invoice_id: INVOICE_ID,
         body: null,
         requestBody: function (d) {
           this.body = d
@@ -64,11 +79,19 @@ export const PayPalMock = {
         order: true,
         body: null,
         requestBody: function (d) {
+          if (d.purchase_units[0].custom_id === FAIL_INTENT_ID) {
+            throw new Error("Error.")
+          }
+
           this.body = d
-        },
+        }
       }
     }),
-    OrdersPatchRequest: jest.fn().mockImplementation(() => {
+    OrdersPatchRequest: jest.fn().mockImplementation((id) => {
+      if (id === FAIL_INTENT_ID) {
+        throw new Error("Error.")
+      }
+
       return {
         result: {
           id: "test",
@@ -80,29 +103,15 @@ export const PayPalMock = {
         },
       }
     }),
-    OrdersGetRequest: jest.fn().mockImplementation((id) => {
-      switch (id) {
-        case "test-refund":
-          return {
-            result: {
-              id: "test-refund",
-              status: "COMPLETED",
-              invoice_id: "invoice_id"
-            }
-          }
-        case "test-voided":
-          return {
-            result: {
-              id: "test-voided",
-              status: "VOIDED"
-            }
-          }
-        default:
-          return {
-            result: {
-              id: "test",
-            },
-          }
+    OrdersGetRequest: jest.fn().mockImplementation((paymentId) => {
+      if (paymentId === FAIL_INTENT_ID) {
+        throw new Error("Error")
+      }
+
+      return {
+        result: Object.values(PaymentIntentDataByStatus).find(value => {
+          return value.id === paymentId
+        }) ?? {}
       }
     }),
   },
