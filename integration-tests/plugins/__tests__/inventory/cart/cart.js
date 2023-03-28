@@ -290,10 +290,10 @@ describe("/store/carts", () => {
         .catch((e) => e)
 
       expect(completeCartRes.response.status).toEqual(409)
-      expect(completeCartRes.response.data.code).toEqual(
+      expect(completeCartRes.response.data.errors[0].code).toEqual(
         "insufficient_inventory"
       )
-      expect(completeCartRes.response.data.message).toEqual(
+      expect(completeCartRes.response.data.errors[0].message).toEqual(
         `Variant with id: ${variantId} does not have the required inventory`
       )
 
