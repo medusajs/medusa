@@ -9,7 +9,7 @@ import Icons from '@theme/Icon';
 
 In this document, you’ll learn how to create a module, test the module, publish it to NPM, and install it in a Medusa backend.
 
-This document covers the general steps of creating the module, but does not explore actually implementing any functionality in it.
+This document covers the general steps of creating an internal module, but does not explore actually implementing any functionality in it. An internal module is a module that extends or replaces a functionality within the Medusa backend, such as the cache or event bus functionality.
 
 ## Prerequisites
 
@@ -58,9 +58,6 @@ In your `package.json` file, add or update the following fields:
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "tsc --build",
   },
-  "peerDependencies": {
-    "@medusajs/medusa": "^1.7.13"
-  },
   "dependencies": {
     "@medusajs/modules-sdk": "^0.1.0",
   }
@@ -83,11 +80,9 @@ In the root of your NPM project, create the file `tsconfig.json` with the follow
 {
   "compilerOptions": {
     "lib": [
-      "es5",
-      "es6",
-      "es2019"
+      "es2020"
     ],
-    "target": "es5",
+    "target": "2020",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -102,7 +97,6 @@ In the root of your NPM project, create the file `tsconfig.json` with the follow
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true
   },
   "include": ["src"],
   "exclude": [
@@ -179,12 +173,12 @@ All property types such as `ModuleLoaderFunction` can be loaded from the `@medus
 
 Where:
 
-- `service`: This is the only required property to be exported. It should be the main service your module exposes.
-- `loaders`: (optional) an array of functions used to perform an action while loading the module. For example, you can log a message that the module has been loaded.
-- `migrations`: (optional) an array of paths to migration files that should run when the `migration` command is used with Medusa's CLI.
+- `service`: This is the only required property to be exported. It should be the main service your module exposes, and it must implement all the declared methods on the module interface. For example, if it's a cache module, it must implement  the `ICacheService` interface exported from `@medusajs/types`.
+- `loaders`: (optional) an array of functions used to perform an action while loading the module. For example, you can log a message that the module has been loaded, or if your module's scope is [isolated](#module-scope) you can use the loader to establish a database connection.
+- `migrations`: (optional) an array of objects containing database migrations that should run when the `migration` command is used with Medusa's CLI.
 - `models`: (optional) an array of entities that your module creates.
-- `runMigrations`: (optional) a function that can be used to define migrations to run when the `migration run` command is used with Medusa's CLI. The migrations will only run if they haven't already.
-- `revertMigration`: (optional) a function can be used to define how migrations should be reverted when the `migration revert` command is used with Medusa's CLI.
+- `runMigrations`: (optional) a function that can be used to define migrations to run when the `migration run` command is used with Medusa's CLI. The migrations will only run if they haven't already. This will only be executed if the module's scope is [isolated](#module-scope).
+- `revertMigration`: (optional) a function can be used to define how migrations should be reverted when the `migration revert` command is used with Medusa's CLI. This will only be executed if the module's scope is [isolated](#module-scope).
 
 Here's an example implementation of `src/index.ts` from Medusa's Redis Cache module:
 
@@ -243,6 +237,8 @@ module.exports = {
       options: {
         // options if necessary
       },
+      //optional
+      resources: "shared"
     },
   },
 }
@@ -253,12 +249,39 @@ The way you add your module depends on its type and what options it requires, if
 - `moduleType` is the type of your module. For example, if your module is a cache module, it should be changed to `cacheService`.
 - `<module_name>` is the name of your module as defined in the `package.json` of your module.
 - `options` should hold any options of your module, if necessary.
+- `resources` is an optional property that indicates whether the module shares the same dependency container as the rest of the resources in the Medusa backend. It can be one of the following values:
+  - `shared`: (default) The dependency container is shared with the module, including the database connection. You don't need to establish the database connection yourself in a loader.
+  - `isolated`: the module receives an empty dependency container, and only its own dependencies will be registered in the container. When using this value, you must establish the database connection yourself and managing other resources within your module.
 
 You can now test it out simply by running the Medusa backend:
 
 ```bash npm2yarn
 npm run start
 ```
+
+### Module Scope
+
+By default, the module shares the same dependency container used across the Medusa backend. So, the module can benefit from the core services and other resources available through [dependency injection](../fundamentals/dependency-injection.md). The module can also benefit from the same database connection.
+
+The module's scope can be changed using the `resources` property available as part of the module's configurations:
+
+```js title=medusa-config.js
+module.exports = {
+  // ...
+  modules: { 
+    // ...
+    moduleType: {
+      //other configurations
+      resources: "shared"
+    },
+  },
+}
+```
+
+The `resources` property can have one of the following values:
+
+- `shared`: (default) The dependency container is shared with the module, including the database connection. You don't need to establish the database connection yourself in a loader.
+- `isolated`: the module receives an empty dependency container, and only its own dependencies will be registered in the container. When using this value, you must establish the database connection yourself and managing other resources within your module.
 
 ---
 
