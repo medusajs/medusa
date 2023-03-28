@@ -1,3 +1,5 @@
+import PaypalProvider from "../../../services/paypal-provider"
+
 export default async (req, res) => {
   const auth_algo = req.headers["paypal-auth-algo"]
   const cert_url = req.headers["paypal-cert-url"]
@@ -5,7 +7,9 @@ export default async (req, res) => {
   const transmission_sig = req.headers["paypal-transmission-sig"]
   const transmission_time = req.headers["paypal-transmission-time"]
 
-  const paypalService = req.scope.resolve("paypalProviderService")
+  const paypalService: PaypalProvider = req.scope.resolve(
+    "paypalProviderService"
+  )
 
   try {
     await paypalService.verifyWebhook({
@@ -87,6 +91,11 @@ export default async (req, res) => {
     const auth = await paypalService.retrieveAuthorization(authId)
 
     const order = await paypalService.retrieveOrderFromAuth(auth)
+
+    if (!order) {
+      res.sendStatus(200)
+      return
+    }
 
     const purchaseUnit = order.purchase_units[0]
     const customId = purchaseUnit.custom_id
