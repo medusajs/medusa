@@ -38,7 +38,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
   const locationsMap = useMemo(() => {
-    if (isLoading) {
+    if (isLoading || !locations) {
       return new Map()
     }
 

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.8-rc.1
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
 ## 1.3.8-rc.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @medusajs/utils
 
+## 0.0.2-rc.1
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
 ## 0.0.2-rc.0
 
 ### Patch Changes
