@@ -1,5 +1,6 @@
 ---
 "medusa-payment-paypal": patch
+"medusa-payment-stripe": patch
 "@medusajs/medusa": patch
 ---
 
