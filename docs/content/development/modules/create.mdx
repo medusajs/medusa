@@ -155,7 +155,7 @@ After implementing the module, you must export a module object that helps the Me
 The file must export an object with the following properties:
 
 ```ts
-{
+type ModuleExports = {
   service: Constructor<any>
   loaders?: ModuleLoaderFunction[]
   migrations?: any[]
