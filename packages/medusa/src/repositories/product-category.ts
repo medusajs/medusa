@@ -109,10 +109,6 @@ export const ProductCategoryRepository = dataSource
         queryBuilder.leftJoinAndSelect(`${entityName}.${relation}`, relation)
       })
 
-      if (options_.withDeleted) {
-        queryBuilder.withDeleted()
-      }
-
       let [categories, count] = await queryBuilder.getManyAndCount()
 
       if (includeTree) {
