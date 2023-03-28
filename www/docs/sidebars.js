@@ -1549,6 +1549,23 @@ module.exports = {
             },
             {
               type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/in-memory",
+              label: "In-Memory",
+            },
+            {
+              type: "html",
               value: "How-to",
               customProps: {
                 sidebar_is_group_divider: true,

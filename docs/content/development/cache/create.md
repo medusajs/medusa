@@ -1,5 +1,5 @@
 ---
-description: 'In this document, you’ll learn about Cache Modules in Medusa, how they work, and which modules Medusa provides.'
+description: 'In this document, you’ll learn about how to create a cache module in Medusa, using Memcached as an example.'
 ---
 
 # How to Create a Cache Module
