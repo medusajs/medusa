@@ -222,7 +222,7 @@ export const AllocationLineItem: React.FC<{
   form.setValue(path("line_item_id"), item.id)
 
   useEffect(() => {
-    if (variant?.inventory) {
+    if (variant?.inventory?.length) {
       form.setValue(path("inventory_item_id"), variant.inventory[0].id)
     }
   }, [variant, form, path])
@@ -232,12 +232,14 @@ export const AllocationLineItem: React.FC<{
       return {}
     }
     const { inventory } = variant
-    const locationInventory = inventory[0].location_levels?.find(
+    const locationInventory = inventory?.[0]?.location_levels?.find(
       (inv) => inv.location_id === locationId
     )
+
     if (!locationInventory) {
       return {}
     }
+
     return {
       availableQuantity: locationInventory.available_quantity,
       inStockQuantity: locationInventory.stocked_quantity,
