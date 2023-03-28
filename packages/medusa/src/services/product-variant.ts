@@ -607,6 +607,14 @@ class ProductVariantService extends TransactionBaseService {
         })
       }
 
+      if (dataToCreate.length || dataToUpdate.length) {
+        promises.push(
+          this.priceSelectionStrategy_
+            .withTransaction(manager)
+            .onVariantsPricesUpdate(data.map((d) => d.variantId))
+        )
+      }
+
       await Promise.all(promises)
     })
   }
@@ -681,6 +689,14 @@ class ProductVariantService extends TransactionBaseService {
           const { id, ...rest } = data
           promises.push(moneyAmountRepo.update({ id: data.id as string }, rest))
         })
+      }
+
+      if (dataToCreate.length || dataToUpdate.length) {
+        promises.push(
+          this.priceSelectionStrategy_
+            .withTransaction(manager)
+            .onVariantsPricesUpdate(data.map((d) => d.variantId))
+        )
       }
 
       await Promise.all(promises)
