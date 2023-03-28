@@ -1817,7 +1817,7 @@ Triggered when the capturing of a payment fails.
 
 The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
-In addition, an error object is passed within the same object as the Payment provider:
+In addition, an error object is passed within the same object as the Payment Processor:
 
 ```js noReport noCopy
 {

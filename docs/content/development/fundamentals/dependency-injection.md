@@ -139,19 +139,19 @@ An instance of Medusa CLI’s logger. You can use it to log messages to the term
 <tr>
 <td>
 
-Single Payment Provider
+Single Payment Processor
 
 </td>
 <td>
 
-An instance of every payment provider that extends the `AbstractPaymentService` class.
+An instance of every payment processor that extends the `AbstractPaymentService` or the `AbstractPaymentProcessor` classes.
 
 </td>
 <td>
 
-Every payment provider is registered under two names:
+Every payment processor is registered under two names:
 
-- Its camel-case name. For example, the `StripeProviderService` is registered as `stripeProviderService`.
+- Its camel-case name of the processor. For example, the `StripeProviderService` is registered as `stripeProviderService`.
 - `pp_` followed by its identifier. For example, the `StripeProviderService` is registered as `pp_stripe`.
 
 </td>
@@ -160,12 +160,12 @@ Every payment provider is registered under two names:
 <tr>
 <td>
 
-All Payment Providers
+All Payment Processors
 
 </td>
 <td>
 
-An array of all payment providers that extend the `AbstractPaymentService` class.
+An array of all payment processor that extend the `AbstractPaymentService` or `AbstractPaymentProcessor` class.
 
 </td>
 <td>

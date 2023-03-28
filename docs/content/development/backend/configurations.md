@@ -331,7 +331,7 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 ## Plugins
 
-On your Medusa backend, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment provider.
+On your Medusa backend, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment processor.
 
 :::info
 
