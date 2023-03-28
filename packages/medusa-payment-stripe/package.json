@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "dist/index.js",
   "repository": {
@@ -20,14 +20,14 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "^1.8.0-rc.1",
+    "@medusajs/medusa": "1.8.0-rc.2",
     "@types/stripe": "^8.0.417",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.8.0-rc.1"
+    "@medusajs/medusa": "1.8.0-rc.2"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.0-rc.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa@1.8.0-rc.2
+
 ## 3.0.0-rc.1
 
 ### Patch Changes

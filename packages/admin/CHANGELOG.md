@@ -1,5 +1,13 @@
 # @medusajs/admin
 
+## 1.0.0-rc.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-ui@0.0.1-rc.2
+  - @medusajs/medusa@1.8.0-rc.2
+
 ## 1.0.0-rc.1
 
 ### Patch Changes

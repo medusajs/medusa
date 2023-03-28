@@ -1,5 +1,15 @@
 # @medusajs/modules-sdk
 
+## 0.1.0-rc.2
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
+- Updated dependencies []:
+  - @medusajs/types@0.0.2-rc.1
+  - @medusajs/utils@0.0.2-rc.1
+
 ## 0.1.0-rc.1
 
 ### Patch Changes

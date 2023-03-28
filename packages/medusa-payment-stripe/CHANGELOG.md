@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.0-rc.2
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
+- Updated dependencies []:
+  - @medusajs/medusa@1.8.0-rc.2
+
 ## 2.0.0-rc.1
 
 ### Patch Changes

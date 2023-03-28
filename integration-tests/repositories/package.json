@@ -8,7 +8,7 @@
     "test": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit"
   },
   "dependencies": {
-    "@medusajs/medusa": "1.8.0-rc.1",
+    "@medusajs/medusa": "1.8.0-rc.2",
     "medusa-interfaces": "1.3.7-rc.0",
     "typeorm": "^0.3.11"
   },

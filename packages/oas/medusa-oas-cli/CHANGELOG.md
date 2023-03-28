@@ -1,5 +1,12 @@
 # @medusajs/oas-cli
 
+## 0.2.0-rc.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa@1.8.0-rc.2
+
 ## 0.2.0-rc.1
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @medusajs/admin-ui
 
+## 0.0.1-rc.2
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
+- Updated dependencies []:
+  - medusa-react@5.0.0-rc.2
+
 ## 0.0.1-rc.1
 
 ### Patch Changes
