@@ -396,7 +396,7 @@ The `useCart` hook returns an object with the following properties:
 - `createCart`: A mutation used to create a cart.
 - `updateCart`: A mutation used to update a cart’s details such as region, customer email, shipping address, and more.
 - `startCheckout`: A mutation used to initialize payment sessions during checkout.
-- `pay`: A mutation used to select a payment provider during checkout.
+- `pay`: A mutation used to select a payment processor during checkout.
 - `addShippingMethod`: A mutation used to add a shipping method to the cart during checkout.
 - `completeCheckout`: A mutation used to complete the cart and place the order.
 

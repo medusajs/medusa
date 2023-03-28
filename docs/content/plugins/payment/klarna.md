@@ -7,6 +7,12 @@ addHowToData: true
 
 In this document, you’ll learn how to integrate Klarna as a payment provider in Medusa.
 
+:::tip
+
+Following the release of v1.8 of the core Medusa package, the naming of payment providers have changed to payment processors with the introduction of the Payment Processor API. However, plugins or implementation that still don't implement the Payment Processor API are still called payment providers.
+
+:::
+
 ## Introduction
 
 [Klarna](https://www.klarna.com/) is a payment provider that allows customers to pay in different ways including direct payment, installment payments, payment after delivery, and more.
