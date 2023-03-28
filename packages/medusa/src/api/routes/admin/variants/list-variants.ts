@@ -149,6 +149,7 @@ export default async (req, res) => {
     currency_code: currencyCode,
     customer_id: req.validatedQuery.customer_id,
     include_discount_prices: true,
+    ignore_cache: true,
   })
 
   res.json({
