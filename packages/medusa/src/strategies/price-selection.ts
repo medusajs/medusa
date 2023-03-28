@@ -51,11 +51,13 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
     const cacheKey = this.getCacheKey(variant_id, context)
-    const cached = await this.cacheService_
-      .get<PriceSelectionResult>(cacheKey)
-      .catch(() => void 0)
-    if (cached) {
-      return cached
+    if (!context.ignore_cache) {
+      const cached = await this.cacheService_
+        .get<PriceSelectionResult>(cacheKey)
+        .catch(() => void 0)
+      if (cached) {
+        return cached
+      }
     }
 
     let result
@@ -233,6 +235,14 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }
 
     return result
+  }
+
+  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
+    await Promise.all(
+      variantIds.map(
+        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)
+      )
+    )
   }
 
   private getCacheKey(

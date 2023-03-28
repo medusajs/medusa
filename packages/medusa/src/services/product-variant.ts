@@ -367,6 +367,10 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
+
+      await this.priceSelectionStrategy_
+        .withTransaction(manager)
+        .onVariantsPricesUpdate([variantId])
     })
   }
 
