@@ -21,7 +21,7 @@ export interface CreateOrderResponse {
   processing_instruction?:
     | "ORDER_COMPLETE_ON_PAYMENT_APPROVAL"
     | "NO_INSTRUCTION"
-  purchase_units?: Array<PurchaseUnit>
+  purchase_units: Array<PurchaseUnit>
   create_time?: string
   update_time?: string
 }

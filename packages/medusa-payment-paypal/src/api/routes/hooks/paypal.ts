@@ -92,6 +92,11 @@ export default async (req, res) => {
 
     const order = await paypalService.retrieveOrderFromAuth(auth)
 
+    if (!order) {
+      res.sendStatus(200)
+      return
+    }
+
     const purchaseUnit = order.purchase_units[0]
     const customId = purchaseUnit.custom_id
 

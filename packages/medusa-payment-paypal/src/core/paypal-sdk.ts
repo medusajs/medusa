@@ -7,10 +7,11 @@ import {
   PaypalSdkOptions,
 } from "./types"
 import {
-  captureAuthorizedPayment,
+  CaptureAuthorizedPayment,
   CapturesAuthorizationResponse,
   CapturesRefundResponse,
-  refundPayment,
+  GetAuthorizationPaymentResponse,
+  RefundPayment,
 } from "./types/payment"
 import { PaypalHttpClient } from "./paypal-http-client"
 import { VerifyWebhookSignature } from "./types/webhook"
@@ -51,6 +52,18 @@ export class PaypalSdk {
   }
 
   /**
+   * Authorizes payment for an order. To successfully authorize payment for an order,
+   * the buyer must first approve the order or a valid payment_source must be provided in the request.
+   * A buyer can approve the order upon being redirected to the rel:approve URL that was returned in the HATEOAS links in the create order response.
+   * @param orderId
+   */
+  async authorizeOrder(orderId: string): Promise<CreateOrderResponse> {
+    const url = PaypalApiPath.AUTHORIZE_ORDER.replace("{id}", orderId)
+
+    return await this.httpClient_.request({ url })
+  }
+
+  /**
    * Refunds a captured payment, by ID. For a full refund, include an empty
    * payload in the JSON request body. For a partial refund, include an amount
    * object in the JSON request body.
@@ -59,7 +72,7 @@ export class PaypalSdk {
    */
   async refundPayment(
     paymentId: string,
-    data?: refundPayment
+    data?: RefundPayment
   ): Promise<CapturesRefundResponse> {
     const url = PaypalApiPath.CAPTURE_REFUND.replace("{id}", paymentId)
     return await this.httpClient_.request({ url, data })
@@ -85,7 +98,7 @@ export class PaypalSdk {
    */
   async captureAuthorizedPayment(
     authorizationId: string,
-    data?: captureAuthorizedPayment
+    data?: CaptureAuthorizedPayment
   ): Promise<CapturesAuthorizationResponse> {
     const url = PaypalApiPath.AUTHORIZATION_CAPTURE.replace(
       "{id}",
@@ -98,11 +111,10 @@ export class PaypalSdk {
   /**
    * Captures an authorized payment, by ID.
    * @param authorizationId
-   * @param data
    */
   async getAuthorizationPayment(
     authorizationId: string
-  ): Promise<CapturesAuthorizationResponse> {
+  ): Promise<GetAuthorizationPaymentResponse> {
     const url = PaypalApiPath.AUTHORIZATION_GET.replace("{id}", authorizationId)
 
     return await this.httpClient_.request({ url })

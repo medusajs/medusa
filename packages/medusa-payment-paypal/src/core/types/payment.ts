@@ -1,6 +1,6 @@
 import { Links, MoneyAmount, PaymentInstruction } from "./common"
 
-export interface refundPayment {
+export interface RefundPayment {
   amount?: MoneyAmount
   invoice_id?: string
   note_to_payer?: string
@@ -20,7 +20,7 @@ export interface CapturesRefundResponse {
   links?: Links
 }
 
-export interface captureAuthorizedPayment {
+export interface CaptureAuthorizedPayment {
   amount?: MoneyAmount
   final_capture?: boolean
   invoice_id?: string
@@ -51,4 +51,26 @@ export interface CapturesAuthorizationResponse {
   seller_protection?: any
   seller_receivable_breakdown?: any
   supplementary_data?: any
+}
+
+export interface GetAuthorizationPaymentResponse {
+  amount?: MoneyAmount
+  create_time?: string
+  custom_id?: string
+  expiration_time?: string
+  id?: string
+  invoice_id?: string
+  links?: Links
+  seller_protection?: any
+  status?:
+    | "CREATED"
+    | "DENIED"
+    | "CAPTURED"
+    | "VOIDED"
+    | "EXPIRED"
+    | "PARTIALLY_CAPTURED"
+    | "PENDING"
+  status_details?: any
+  supplementary_data?: any
+  update_time?: string
 }

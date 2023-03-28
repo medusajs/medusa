@@ -8,6 +8,7 @@ export const PaypalApiPath = {
   GET_ORDER: "/v2/checkout/orders/{id}",
   PATCH_ORDER: "/v2/checkout/orders/{id}",
   CREATE_ORDER: "/v2/checkout/orders",
+  AUTHORIZE_ORDER: "/v2/checkout/orders/{id}/authorize",
   CAPTURE_REFUND: "/v2/payments/captures/{id}/refund",
   AUTHORIZATION_GET: "/v2/payments/authorizations/{id}",
   AUTHORIZATION_CAPTURE: "/v2/payments/authorizations/{id}/capture",
