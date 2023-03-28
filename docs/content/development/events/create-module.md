@@ -30,14 +30,22 @@ Create the file `src/services/event-bus-custom.ts` which will hold your event bu
 Add the following content to the file:
 
 ```ts
-import { EmitData, EventBusTypes } from "@medusajs/types";
+import { EmitData, EventBusTypes } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 
 class CustomEventBus extends AbstractEventBusModuleService {
-  async emit<T>(eventName: string, data: T, options: Record<string, unknown>): Promise<void>;
+  async emit<T>(
+    eventName: string, 
+    data: T, 
+    options: Record<string, unknown>
+  ): Promise<void>;
   async emit<T>(data: EmitData<T>[]): Promise<void>;
-  async emit(eventName: unknown, data?: unknown, options?: unknown): Promise<void> {
-    throw new Error("Method not implemented.");
+  async emit(
+    eventName: unknown, 
+    data?: unknown, 
+    options?: unknown
+  ): Promise<void> {
+    throw new Error("Method not implemented.")
   }
 }
 
@@ -46,7 +54,7 @@ export default CustomEventBus
 
 This creates the class `CustomEventBus` that implements the `AbstractEventBusModuleService` class imported from `@medusajs/utils`. Feel free to rename the class to what’s relevant for your event bus service.
 
-In the class you must implement the `emit`, `subscribe`, and `unsubscribe` methods.
+In the class you must implement the `emit` method. You can optionally implement the `subscribe` and `unsubscribe` methods.
 
 ---
 
@@ -59,7 +67,8 @@ The `AbstractEventBusModuleService` implements two methods for handling subscrip
 In your custom implementation, you can use this property to manage the subscribed handler methods. For example, you can get the subscribers of a method using the `get` method of the map:
 
 ```ts
-const eventSubscribers = this.eventToSubscribersMap.get(eventName) || []
+const eventSubscribers = 
+  this.eventToSubscribersMap.get(eventName) || []
 ```
 
 Alternatively, you can implement custom logic for the `subscribe` and `unsubscribe` events, which is explained later in this guide.
@@ -70,21 +79,22 @@ The `constructor` method of a service allows you to prepare any third-party clie
 
 Here’s an example of how you can use the `constructor` to store the options of your module:
 
+<!-- eslint-disable prefer-rest-params -->
+
 ```ts
 class CustomEventBus extends AbstractEventBusModuleService {
   protected readonly moduleOptions: Record<string, any>
 
-  constructor ({
+  constructor({
     // inject resources from the Medusa backend
     // for example, you can inject the logger
-    logger
+    logger,
   }, options) {
-    // @ts-ignore
     super(...arguments)
     this.moduleOptions = options
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -111,8 +121,12 @@ You can implement your method in a way that supports both signatures by checking
 
 ```ts
 class CustomEventBus extends AbstractEventBusModuleService {
-  //...
-  async emit<T>(eventName: string, data: T, options: Record<string, unknown>): Promise<void>;
+  // ...
+  async emit<T>(
+    eventName: string, 
+    data: T, 
+    options: Record<string, unknown>
+  ): Promise<void>;
   async emit<T>(data: EmitData<T>[]): Promise<void>;
   async emit<T>(
     eventOrData: string | EmitData<T>[], 
@@ -142,7 +156,7 @@ The implementation of this method depends on the service you’re using for the 
 
 ```ts
 class CustomEventBus extends AbstractEventBusModuleService {
-  //...
+  // ...
   subscribe(
     eventName: string | symbol, 
     subscriber: EventBusTypes.Subscriber, 
@@ -168,7 +182,7 @@ The implementation of this method depends on the service you’re using for the 
 
 ```ts
 class CustomEventBus extends AbstractEventBusModuleService {
-  //...
+  // ...
   unsubscribe(
     eventName: string | symbol, 
     subscriber: EventBusTypes.Subscriber, 

@@ -52,7 +52,7 @@ This pattern is heavily inspired by the Transactionally-staged Job Drain describ
 You can emit events in Medusa using the `EventBusService`. For example:
 
 ```ts
-this.eventBusService.emit('custom-event', {
+this.eventBusService.emit("custom-event", {
   // attach any data to the event
 })
 ```
@@ -62,17 +62,17 @@ You can also emit more than one event:
 ```ts
 this.eventBusService.emit([
   {
-    eventName: 'custom-event-1',
+    eventName: "custom-event-1",
     data: {
       // attach any data to the event
-    }
+    },
   },
   {
-    eventName: 'custom-event-2',
+    eventName: "custom-event-2",
     data: {
       // attach any data to the event
-    }
-  }
+    },
+  },
 ])
 ```
 

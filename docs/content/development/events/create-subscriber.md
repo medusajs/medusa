@@ -49,7 +49,7 @@ An example of using the subscribe method with the third parameter:
 
 ```ts
 eventBusService.subscribe("order.placed", this.handleOrder, {
-  subscriberId: 'my-unique-subscriber'
+  subscriberId: "my-unique-subscriber",
 })
 ```
 
