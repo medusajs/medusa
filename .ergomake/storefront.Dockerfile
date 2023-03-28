@@ -15,9 +15,19 @@ RUN node /medusa/packages/medusa-dev-cli/dist/index.js --set-path-to-repo /medus
 WORKDIR /
 
 RUN yarn global add create-next-app
-RUN create-next-app -e https://github.com/ergomake/nextjs-starter-medusa storefront
+RUN create-next-app -e https://github.com/medusajs/nextjs-starter-medusa storefront
 
 WORKDIR /storefront
+
+#### This sequence of seds are here because we can't run getStatic* methods while building ####
+
+# disable getStaticPaths
+RUN grep -rl getStaticPath src/pages | xargs sed -i 's/getStaticPaths/getStaticPaths_/g'
+# exchange getStaticProps with getServerSideProps
+RUN grep -rl getStaticProps src/pages | xargs sed -i 's/getStaticProps/getServerSideProps/g'
+
+#### This sequence of seds are here because we can't run getStatic* methods while building ####
+
 RUN mv next.config.js original-next.config.js
 COPY .ergomake/next.config.js .
 RUN node /medusa/packages/medusa-dev-cli/dist/index.js -s
