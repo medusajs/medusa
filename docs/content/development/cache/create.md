@@ -8,7 +8,7 @@ In this document, you will learn how to build your own Medusa cache module.
 
 ## Overview
 
-Medusa provides ready-made modules for cache, including in-memory and Redis modules. If you prefer another technology used for caching in your store, you can build a module and publish it as an NPM package.
+Medusa provides ready-made modules for cache, including in-memory and Redis modules. If you prefer another technology used for caching in your commerce application, you can build a module and publish it as an NPM package.
 
 In this document, you will learn how to build your own Medusa cache module based on Memcached as an example. This gives you a real-life example of creating the cache module. You can follow the general steps with any other caching system or service.
 

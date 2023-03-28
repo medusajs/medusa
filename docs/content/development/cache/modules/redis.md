@@ -38,7 +38,7 @@ npm install @medusajs/cache-redis
 
 ## Step 2: Add Environment Variable
 
-The Redis cache module requires a URL to Redis as part of its options. If you don’t already have an environment variable set for a Redis URL, make sure to add one:
+The Redis cache module requires a connection URL to Redis as part of its options. If you don’t already have an environment variable set for a Redis URL, make sure to add one:
 
 ```bash
 CACHE_REDIS_URL=<YOUR_REDIS_URL>
