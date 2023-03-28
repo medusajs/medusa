@@ -1,5 +1,14 @@
 # @medusajs/event-bus-local
 
+## 1.8.0-rc.1
+
+### Patch Changes
+
+- [#3575](https://github.com/medusajs/medusa/pull/3575) [`4a7bdc917`](https://github.com/medusajs/medusa/commit/4a7bdc917ac17d1f8e0749c033f8816ecb0c10b5) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(event-bus-local): Error handling
+
+- Updated dependencies [[`bca1f80dd`](https://github.com/medusajs/medusa/commit/bca1f80dd501d878455e1ad4f5091cf20ef900ea)]:
+  - @medusajs/modules-sdk@0.1.0-rc.1
+
 ## 1.8.0-rc.0
 
 ### Minor Changes

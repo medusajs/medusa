@@ -1,5 +1,11 @@
 # @medusajs/modules-sdk
 
+## 0.1.0-rc.1
+
+### Patch Changes
+
+- [#3605](https://github.com/medusajs/medusa/pull/3605) [`bca1f80dd`](https://github.com/medusajs/medusa/commit/bca1f80dd501d878455e1ad4f5091cf20ef900ea) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Improved error message if default module is not installed
+
 ## 0.1.0-rc.0
 
 ### Minor Changes

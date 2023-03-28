@@ -1,5 +1,22 @@
 # @medusajs/admin-ui
 
+## 0.0.1-rc.1
+
+### Patch Changes
+
+- [#3607](https://github.com/medusajs/medusa/pull/3607) [`d1a6aa5a9`](https://github.com/medusajs/medusa/commit/d1a6aa5a90c147a34448e5398a1f205649598c09) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): fix bug with create fulfillment and a couple of other minor tweaks
+
+- [#3608](https://github.com/medusajs/medusa/pull/3608) [`345005573`](https://github.com/medusajs/medusa/commit/345005573a337d63394b63d33d6740a4171d1479) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Update order edit variants table to fit longer content
+
+- [#3592](https://github.com/medusajs/medusa/pull/3592) [`455c56c4b`](https://github.com/medusajs/medusa/commit/455c56c4b3846c583f39ba56352d645128b0c967) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Hide inventory quantity field in variant stock form if SL module enabled
+
+- [#3577](https://github.com/medusajs/medusa/pull/3577) [`95c9fbfdd`](https://github.com/medusajs/medusa/commit/95c9fbfdd5f290df0f22115f27b82f0812f8bd67) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Fix effect check in inventory table and overflow UI
+
+- [#3541](https://github.com/medusajs/medusa/pull/3541) [`feaf8d2e1`](https://github.com/medusajs/medusa/commit/feaf8d2e19715585d154464d003759c3a1f4f322) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa, admin-ui): refine create-fulfillment flow
+
+- Updated dependencies []:
+  - medusa-react@5.0.0-rc.1
+
 ## 0.0.1-rc.0
 
 ### Patch Changes

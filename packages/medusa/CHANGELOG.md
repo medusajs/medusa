@@ -1,5 +1,28 @@
 # Change Log
 
+## 1.8.0-rc.1
+
+### Minor Changes
+
+- [#3586](https://github.com/medusajs/medusa/pull/3586) [`e359d3f85`](https://github.com/medusajs/medusa/commit/e359d3f85bc12fd3868fc4b563cd994366e899dd) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Fix(medusa): include quantities when listing admin products with an inventory module installed
+
+### Patch Changes
+
+- [#3414](https://github.com/medusajs/medusa/pull/3414) [`530740889`](https://github.com/medusajs/medusa/commit/53074088941719ac7ca435e76e3e64ba23fac200) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa-payment-paypal): Migrate to the new payment processor API
+
+- [#3605](https://github.com/medusajs/medusa/pull/3605) [`bca1f80dd`](https://github.com/medusajs/medusa/commit/bca1f80dd501d878455e1ad4f5091cf20ef900ea) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Improved error message if default module is not installed
+
+- [#3589](https://github.com/medusajs/medusa/pull/3589) [`5f41cd9a6`](https://github.com/medusajs/medusa/commit/5f41cd9a67eb0962f999291594c0aac5e38eb916) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa): remove soft delete from categories + adds indexes for categories
+
+- [#3553](https://github.com/medusajs/medusa/pull/3553) [`1ce3cc5ae`](https://github.com/medusajs/medusa/commit/1ce3cc5ae4e4cb16eb03be49c9287503f759fc60) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa): invalidate price selection caching within update request
+
+- [#3473](https://github.com/medusajs/medusa/pull/3473) [`332a9b686`](https://github.com/medusajs/medusa/commit/332a9b686bd0d224855215213dd11b4704283f62) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): add errors and block receiving returns dependent on existing inventory item levels
+
+- [#3541](https://github.com/medusajs/medusa/pull/3541) [`feaf8d2e1`](https://github.com/medusajs/medusa/commit/feaf8d2e19715585d154464d003759c3a1f4f322) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa, admin-ui): refine create-fulfillment flow
+
+- Updated dependencies [[`bca1f80dd`](https://github.com/medusajs/medusa/commit/bca1f80dd501d878455e1ad4f5091cf20ef900ea)]:
+  - @medusajs/modules-sdk@0.1.0-rc.1
+
 ## 1.8.0-rc.0
 
 ### Minor Changes
