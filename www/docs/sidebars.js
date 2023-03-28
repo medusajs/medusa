@@ -572,9 +572,14 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
-          label: "Collections",
+          type: 'doc',
+          id: 'modules/products/categories',
+          label: 'Categories'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Collections',
           customProps: {
             sidebar_is_soon: true,
           },
