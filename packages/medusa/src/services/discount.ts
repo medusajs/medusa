@@ -620,7 +620,6 @@ class DiscountService extends TransactionBaseService {
       let adjustment = 0
 
       if (!lineItem.allow_discounts) {
-        // return { adjustment, multiplierFactor: 0 }
         return adjustment
       }
 
