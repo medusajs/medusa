@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/stock-location",
-  "version": "1.8.0-rc.1",
+  "version": "1.8.0-rc.2",
   "description": "Stock Location Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -24,7 +24,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "0.1.0-rc.2",
+    "@medusajs/modules-sdk": "0.1.0-rc.3",
     "@medusajs/utils": "0.0.2-rc.1",
     "awilix": "^8.0.0",
     "typeorm": "^0.3.11"

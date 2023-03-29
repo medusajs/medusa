@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-local",
-  "version": "1.8.0-rc.2",
+  "version": "1.8.0-rc.3",
   "description": "Local Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -31,7 +31,7 @@
     "test:unit": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "0.1.0-rc.2",
+    "@medusajs/modules-sdk": "0.1.0-rc.3",
     "@medusajs/utils": "0.0.2-rc.1"
   }
 }
