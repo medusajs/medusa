@@ -79,7 +79,7 @@ In this example, you’ll create a subscriber that listens to the `order.placed`
 
 :::tip
 
-For this example to work, you’ll need to install and configure Redis on your backend. You can refer to the [development guide](../../development/backend/prepare-environment.mdx#redis) to learn how to do that.
+For this example to work, you'll need to have an event bus module installed and configured, which should be available by default.
 
 :::
 

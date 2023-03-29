@@ -23,15 +23,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
-
-Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in Algolia are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa backend](../../development/backend/configurations.md#redis).
-
-:::caution
-
-If you don’t install and configure Redis on your Medusa backend, the Algolia integration will still work. However, products indexed in Algolia are only added and updated when you restart the Medusa backend.
-
-:::
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### Algolia Account
 
@@ -225,7 +217,7 @@ If you add or update products on your Medusa backend, the addition or update wil
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the Algolia indices.
+This feature is only available if you have an event module installed in your Medusa backend, as explained in the Prerequisites section.
 
 :::
 

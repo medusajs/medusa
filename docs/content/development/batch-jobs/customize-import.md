@@ -19,11 +19,7 @@ Although this documentation specifically targets import strategies, you can use 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../backend/install.mdx) to get started.
-
-### Redis
-
-Redis is required for batch jobs to work. Make sure you [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with your Medusa backend](../backend/configurations.md#redis).
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../backend/install.mdx) to get started. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### PostgreSQL
 
