@@ -1,15 +1,19 @@
-import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/medusa"
-import { useAdminStockLocations } from "medusa-react"
+import { Controller, useFieldArray, UseFormReturn } from "react-hook-form"
+import { nestedForm } from "../../../../../utils/nested-form"
 import React, { useMemo, useState } from "react"
-import { Controller, useFieldArray } from "react-hook-form"
-import { NestedForm } from "../../../../../utils/nested-form"
-import Switch from "../../../../atoms/switch"
-import Button from "../../../../fundamentals/button"
-import IconBadge from "../../../../fundamentals/icon-badge"
+
+import Accordion from "../../../../organisms/accordion"
 import BuildingsIcon from "../../../../fundamentals/icons/buildings-icon"
+import Button from "../../../../fundamentals/button"
+import CustomsForm, { CustomsFormType } from "../../customs-form"
+import DimensionsForm, { DimensionsFormType } from "../../dimensions-form"
+import IconBadge from "../../../../fundamentals/icon-badge"
 import InputField from "../../../../molecules/input"
 import Modal from "../../../../molecules/modal"
+import Switch from "../../../../atoms/switch"
+import { useAdminStockLocations } from "medusa-react"
 import { useLayeredModal } from "../../../../molecules/modal/layered-modal"
+import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
 
 export type VariantStockFormType = {
   manage_inventory?: boolean
@@ -20,11 +24,13 @@ export type VariantStockFormType = {
   upc: string | null
   barcode: string | null
   location_levels?: Partial<InventoryLevelDTO>[] | null
+  dimensions: DimensionsFormType
+  customs: CustomsFormType
 }
 
 type Props = {
   locationLevels: InventoryLevelDTO[]
-  form: NestedForm<VariantStockFormType>
+  form: UseFormReturn<VariantStockFormType>
 }
 
 const VariantStockForm = ({ form, locationLevels }: Props) => {
@@ -44,9 +50,9 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
 
     return new Map(locations.map((l) => [l.id, l]))
   }, [locations, isLoading])
-  const { path, control, register, watch } = form
+  const { control, register, watch } = form
 
-  const manageInventory = watch(path("manage_inventory"))
+  const manageInventory = watch("manage_inventory")
 
   const {
     fields: selectedLocations,
@@ -54,10 +60,10 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
     remove,
   } = useFieldArray({
     control,
-    name: path("location_levels"),
+    name: "location_levels",
   })
 
-  const selectedLocationLevels = watch(path("location_levels"))
+  const selectedLocationLevels = watch("location_levels")
 
   const levelMap = new Map(
     selectedLocationLevels?.map((l) => [l.location_id, l])
@@ -83,140 +89,171 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
   }
 
   return (
-    <div>
-      <div className="gap-y-xlarge flex flex-col">
-        <div className="flex flex-col gap-y-4">
-          <h3 className="inter-base-semibold">General</h3>
-          <div className="gap-large grid grid-cols-2">
-            <InputField
-              label="Stock keeping unit (SKU)"
-              placeholder="SUN-G, JK1234..."
-              {...register(path("sku"))}
-            />
-            <InputField
-              label="EAN (Barcode)"
-              placeholder="123456789102..."
-              {...register(path("ean"))}
-            />
-            <InputField
-              label="UPC (Barcode)"
-              placeholder="023456789104..."
-              {...register(path("upc"))}
-            />
-            <InputField
-              label="Barcode"
-              placeholder="123456789104..."
-              {...register(path("barcode"))}
-            />
+    <Accordion type="multiple" defaultValue={["general"]}>
+      <Accordion.Item title="General" value="general">
+        <div className="gap-y-xlarge mt-large flex flex-col">
+          <div className="flex flex-col gap-y-4">
+            <div className="gap-large grid grid-cols-2">
+              <InputField
+                label="Stock keeping unit (SKU)"
+                placeholder="SUN-G, JK1234..."
+                {...register("sku")}
+              />
+              <InputField
+                label="EAN (Barcode)"
+                placeholder="123456789102..."
+                {...register("ean")}
+              />
+              <InputField
+                label="UPC (Barcode)"
+                placeholder="023456789104..."
+                {...register("upc")}
+              />
+              <InputField
+                label="Barcode"
+                placeholder="123456789104..."
+                {...register("barcode")}
+              />
+            </div>
           </div>
         </div>
-        <div className="gap-y-2xsmall flex flex-col">
-          <div className="flex items-center justify-between">
-            <h3 className="inter-base-semibold mb-2xsmall">Manage inventory</h3>
-            <Controller
-              control={control}
-              name={path("manage_inventory")}
-              render={({ field: { value, onChange } }) => {
-                return <Switch checked={value} onCheckedChange={onChange} />
-              }}
-            />
-          </div>
-          <p className="inter-base-regular text-grey-50">
-            When checked Medusa will regulate the inventory when orders and
-            returns are made.
-          </p>
-        </div>
-        {manageInventory && (
-          <>
-            <div className="gap-y-2xsmall flex flex-col">
-              <div className="flex items-center justify-between">
-                <h3 className="inter-base-semibold mb-2xsmall">
-                  Allow backorders
-                </h3>
-                <Controller
-                  control={control}
-                  name={path("allow_backorder")}
-                  render={({ field: { value, onChange } }) => {
-                    return <Switch checked={value} onCheckedChange={onChange} />
-                  }}
-                />
-              </div>
-              <p className="inter-base-regular text-grey-50">
-                When checked the product will be available for purchase despite
-                the product being sold out
-              </p>
-            </div>
-            <div className="flex w-full flex-col text-base">
-              <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
-              {!isLoading && locations && (
-                <div className="flex w-full flex-col">
-                  <div className="inter-base-regular text-grey-50 flex justify-between py-3">
-                    <div className="">Location</div>
-                    <div className="">In Stock</div>
-                  </div>
-                  {selectedLocations.map((level, i) => {
-                    const locationDetails = locationsMap.get(level.location_id)
-                    const locationLevel = levelMap.get(level.location_id)
-
-                    return (
-                      <div key={level.id} className="flex items-center py-3">
-                        <div className="inter-base-regular flex items-center">
-                          <IconBadge className="mr-base">
-                            <BuildingsIcon />
-                          </IconBadge>
-                          {locationDetails?.name}
-                        </div>
-                        <div className="ml-auto flex">
-                          <div className="mr-base text-small text-grey-50 flex flex-col">
-                            <span className="whitespace-nowrap text-right">
-                              {`${locationLevel!.reserved_quantity} reserved`}
-                            </span>
-                            <span className="whitespace-nowrap text-right">{`${
-                              locationLevel!.stocked_quantity! -
-                              locationLevel!.reserved_quantity!
-                            } available`}</span>
-                          </div>
-                          <InputField
-                            placeholder={"0"}
-                            type="number"
-                            min={0}
-                            {...register(
-                              path(`location_levels.${i}.stocked_quantity`),
-                              { valueAsNumber: true }
-                            )}
-                          />
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-            <div className="flex">
-              <Button
-                variant="secondary"
-                size="small"
-                type="button"
-                className="w-full"
-                onClick={() => {
-                  layeredModalContext.push(
-                    // @ts-ignore
-                    ManageLocationsScreen(
-                      layeredModalContext.pop,
-                      selectedLocations,
-                      locations || [],
-                      handleUpdateLocations
-                    )
-                  )
+      </Accordion.Item>
+      <Accordion.Item title="Inventory" value="inventory">
+        <div className="gap-y-small mt-large flex flex-col">
+          <div className="gap-y-2xsmall flex flex-col">
+            <div className="flex items-center justify-between">
+              <h3 className="inter-base-semibold mb-2xsmall">
+                Manage inventory
+              </h3>
+              <Controller
+                control={control}
+                name={"manage_inventory"}
+                render={({ field: { value, onChange } }) => {
+                  return <Switch checked={value} onCheckedChange={onChange} />
                 }}
-              >
-                Manage locations
-              </Button>
+              />
             </div>
-          </>
-        )}
-      </div>
-    </div>
+            <p className="inter-base-regular text-grey-50">
+              When checked Medusa will regulate the inventory when orders and
+              returns are made.
+            </p>
+          </div>
+          {manageInventory && (
+            <>
+              <div className="gap-y-2xsmall flex flex-col">
+                <div className="flex items-center justify-between">
+                  <h3 className="inter-base-semibold mb-2xsmall">
+                    Allow backorders
+                  </h3>
+                  <Controller
+                    control={control}
+                    name={"allow_backorder"}
+                    render={({ field: { value, onChange } }) => {
+                      return (
+                        <Switch checked={value} onCheckedChange={onChange} />
+                      )
+                    }}
+                  />
+                </div>
+                <p className="inter-base-regular text-grey-50">
+                  When checked the product will be available for purchase
+                  despite the product being sold out
+                </p>
+              </div>
+              <div className="flex w-full flex-col text-base">
+                <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
+                {!isLoading && locations && (
+                  <div className="flex w-full flex-col">
+                    <div className="inter-base-regular text-grey-50 flex justify-between py-3">
+                      <div className="">Location</div>
+                      <div className="">In Stock</div>
+                    </div>
+                    {selectedLocations.map((level, i) => {
+                      const locationDetails = locationsMap.get(
+                        level.location_id
+                      )
+                      const locationLevel = levelMap.get(level.location_id)
+
+                      return (
+                        <div key={level.id} className="flex items-center py-3">
+                          <div className="inter-base-regular flex items-center">
+                            <IconBadge className="mr-base">
+                              <BuildingsIcon />
+                            </IconBadge>
+                            {locationDetails?.name}
+                          </div>
+                          <div className="ml-auto flex">
+                            <div className="mr-base text-small text-grey-50 flex flex-col">
+                              <span className="whitespace-nowrap text-right">
+                                {`${locationLevel!.reserved_quantity} reserved`}
+                              </span>
+                              <span className="whitespace-nowrap text-right">{`${
+                                locationLevel!.stocked_quantity! -
+                                locationLevel!.reserved_quantity!
+                              } available`}</span>
+                            </div>
+                            <InputField
+                              placeholder={"0"}
+                              type="number"
+                              min={0}
+                              {...register(
+                                `location_levels.${i}.stocked_quantity`,
+                                { valueAsNumber: true }
+                              )}
+                            />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className="flex">
+                <Button
+                  variant="secondary"
+                  size="small"
+                  type="button"
+                  className="w-full"
+                  onClick={() => {
+                    layeredModalContext.push(
+                      // @ts-ignore
+                      ManageLocationsScreen(
+                        layeredModalContext.pop,
+                        selectedLocations,
+                        locations || [],
+                        handleUpdateLocations
+                      )
+                    )
+                  }}
+                >
+                  Manage locations
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </Accordion.Item>
+      <Accordion.Item title="Shipping" value="shipping">
+        <p className="inter-base-regular text-grey-50">
+          Shipping information can be required depending on your shipping
+          provider, and whether or not you are shipping internationally.
+        </p>
+        <div className="mt-large">
+          <h3 className="inter-base-semibold mb-2xsmall">Dimensions</h3>
+          <p className="inter-base-regular text-grey-50 mb-large">
+            Configure to calculate the most accurate shipping rates.
+          </p>
+          <DimensionsForm form={nestedForm(form, "dimensions")} />
+        </div>
+        <div className="mt-xlarge">
+          <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+          <p className="inter-base-regular text-grey-50 mb-large">
+            Configure if you are shipping internationally.
+          </p>
+          <CustomsForm form={nestedForm(form, "customs")} />
+        </div>
+      </Accordion.Item>
+    </Accordion>
   )
 }
 

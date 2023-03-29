@@ -1,11 +1,8 @@
-import { InventoryLevelDTO } from "@medusajs/medusa"
+import { InventoryLevelDTO } from "@medusajs/types"
 import { UseFormReturn } from "react-hook-form"
-import { nestedForm } from "../../../../../utils/nested-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
 
-export type EditFlowVariantFormType = {
-  stock: VariantStockFormType
-}
+export type EditFlowVariantFormType = VariantStockFormType
 
 type Props = {
   form: UseFormReturn<EditFlowVariantFormType, any>
@@ -39,10 +36,7 @@ const EditFlowVariantForm = ({ form, isLoading, locationLevels }: Props) => {
 
   return (
     <>
-      <VariantStockForm
-        locationLevels={locationLevels}
-        form={nestedForm(form, "stock")}
-      />
+      <VariantStockForm locationLevels={locationLevels} form={form} />
     </>
   )
 }
