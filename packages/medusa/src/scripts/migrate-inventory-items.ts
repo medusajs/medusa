@@ -25,6 +25,17 @@ const migrateProductVariant = async (
 ) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     container.resolve("productVariantInventoryService")
+
+  const productVariantInventoryServiceTx =
+    productVariantInventoryService.withTransaction(transactionManager)
+
+  const existingVariantInventoryItems =
+    await productVariantInventoryServiceTx.listByVariant(variant.id)
+
+  if (existingVariantInventoryItems.length) {
+    return
+  }
+
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 
@@ -49,9 +60,11 @@ const migrateProductVariant = async (
     context
   )
 
-  await productVariantInventoryService
-    .withTransaction(transactionManager)
-    .attachInventoryItem(variant.id, inventoryItem.id, 1)
+  await productVariantInventoryServiceTx.attachInventoryItem(
+    variant.id,
+    inventoryItem.id,
+    1
+  )
 
   await inventoryService.createInventoryLevel(
     {
