@@ -75,7 +75,11 @@ export async function loadInternalModule(
     for (const dependency of moduleDependencies) {
       localContainer.register(
         dependency,
-        asFunction(() => container.resolve(dependency))
+        asFunction(() => {
+          return container.hasRegistration(dependency)
+            ? container.resolve(dependency)
+            : undefined
+        })
       )
     }
   }
