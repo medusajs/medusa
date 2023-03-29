@@ -343,8 +343,8 @@ describe("/store/carts", () => {
         })
 
       expect(responseFail.status).toEqual(409)
-      expect(responseFail.data.type).toEqual("not_allowed")
-      expect(responseFail.data.code).toEqual(
+      expect(responseFail.data.errors[0].type).toEqual("not_allowed")
+      expect(responseFail.data.errors[0].code).toEqual(
         MedusaError.Codes.INSUFFICIENT_INVENTORY
       )
 
