@@ -219,11 +219,11 @@ describe("/store/carts", () => {
         .post(`/store/carts/${cartId}/complete`)
         .catch((err) => err)
 
-      expect(getRes.response.status).toEqual(500)
+      expect(getRes.response.status).toEqual(400)
       expect(getRes.response.data).toEqual({
-        code: "unknown_error",
-        type: "unknown_error",
-        message: "An unknown error occurred.",
+        type: "invalid_data",
+        message:
+          "Can't insert null value in field customer_id on insert in table order",
       })
 
       const inventoryService = appContainer.resolve("inventoryService")
