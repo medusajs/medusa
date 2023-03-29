@@ -8,7 +8,7 @@ In this document, you will learn how to build your own Medusa cache module.
 
 ## Overview
 
-Medusa provides ready-made modules for cache, including in-memory and Redis modules. If you prefer another technology used for caching in your commerce application, you can build a module and publish it as an NPM package.
+Medusa provides ready-made modules for cache, including in-memory and Redis modules. If you prefer another technology used for caching in your commerce application, you can build a module locally and use it in your Medusa backend. You can also publish to NPM and reuse it across multiple Medusa backend instances.
 
 In this document, you will learn how to build your own Medusa cache module based on Memcached as an example. This gives you a real-life example of creating the cache module. You can follow the general steps with any other caching system or service.
 
@@ -20,21 +20,39 @@ If you want to create the Memcached cache module as explained in this guide, you
 
 ---
 
-## Step 1: Creating the Module
+## (Optional) Step 0: Prepare Module Directory
 
-The first step is to create and prepare your module for development. You can refer to the [Create a Module](../modules/create.mdx) documentation, specifically the first three steps, to learn how to create your module.
+Before you start implementing the custom functionality in your module, it's recommended to create a directory that holds your module and prepare the following structure in it:
 
-Once you're done, you can start implementing your module.
+```
+custom-module
+|
+|___ index.ts
+|
+|___ services // directory
+```
+
+The directory can be an NPM project, but that is optional. `index.ts` acts as an entry point to your Module. You'll fill its content in a later step. The `service` directory will hold your cache service.
+
+:::tip
+
+You can use JavaScript instead of TypeScript.
+
+:::
+
+If you're adding other resources you can add other directories for them. For example, if you're adding an entity you can add a `models` directory.
+
+It's also recommended to add a `tsconfig.json` file as explained in the [Create Module documentation](../modules/create.mdx#optional-step-0-project-preparation).
 
 ---
 
-## Step 2: Create the Service
+## Step 1: Create the Service
 
-Create the file `src/services/memcached-cache.ts` which will hold your cache service. Note that the name of the file is recommended to be in the format `<service_name>-cache`. So, if you’re not integrating `memcached`, you should replace the name with what’s relevant for your module.
+Create the file `services/memcached-cache.ts` which will hold your cache service. Note that the name of the file is recommended to be in the format `<service_name>-cache`. So, if you’re not integrating `memcached`, you should replace the name with what’s relevant for your module.
 
 Add the following content to the file:
 
-```ts title=src/services/memcached-cache.ts
+```ts title=services/memcached-cache.ts
 import { ICacheService } from "@medusajs/types"
 
 class MemcachedCacheService implements ICacheService {
@@ -62,7 +80,7 @@ In the class, you must implement three methods: `get`, `set`, and `invalidate`. 
 
 ---
 
-## Step 3: Implement the Methods
+## Step 2: Implement the Methods
 
 ### constructor
 
@@ -197,13 +215,13 @@ class MemcachedCacheService implements ICacheService {
 
 ---
 
-## Step 4: Export the Service
+## Step 3: Export the Service
 
 After implementing the cache service, you must export it so that the Medusa backend can use it.
 
-Create the file `src/index.ts` with the following content:
+Create the file `index.ts` with the following content:
 
-```ts
+```ts title=index.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import { MemcachedCacheService } from "./services"
@@ -219,15 +237,15 @@ export default moduleDefinition
 
 This exports a module definition, which requires at least a `service`. If you named your service something other than `MemcachedCacheService`, make sure to replace it with that.
 
-You can learn more about what other properties you can export in your module definition in the [Create a Module documentation](../modules/create.mdx#step-5-export-module).
+You can learn more about what other properties you can export in your module definition in the [Create a Module documentation](../modules/create.mdx#step-2-export-module).
 
 ---
 
-## Step 5: Test and Publish your Module
+## Step 4: Test your Module
 
-You can learn about how to test your module in a local backend and publish the module to NPM by following the last two steps of the [Create a Module documentation](../modules/create.mdx#step-6-test-your-module).
+You can test your module in the Medusa backend by referencing your local module.
 
-After installing your module (both when testing or publishing), you can add it to `medusa-config.js` as follows:
+To do that, add the module to the exported configuration in `medusa-config.js` as follows:
 
 ```js title=medusa-config.js
 module.exports = {
@@ -235,7 +253,7 @@ module.exports = {
   modules: { 
     // ...
     cacheService: {
-        resolve: "medusa-cache-memcached", 
+        resolve: "path/to/custom-module", 
         options: { 
           ttl: 30, 
           location: "localhost:55000", 
@@ -245,4 +263,18 @@ module.exports = {
 }
 ```
 
-Make sure to replace `medusa-cache-memcached` with the name of your module and change the options if necessary.
+Make sure to replace the `path/to/custom-module` with a relative path from your Medusa backend to your module. You can learn more about module reference in the [Create Module documentation](../modules/create.mdx#module-reference).
+
+Then, to test the module, run the Medusa backend which also runs your module:
+
+```bash npm2yarn
+npm run start
+```
+
+---
+
+## (Optional) Step 5: Publish your Module
+
+You can publish your cache module to NPM. This can be useful if you want to reuse your module across Medusa backend instances, or want to allow other developers to use it.
+
+You can refer to the [Publish Module documentation](../modules/publish.md) to learn how to publish your module.
