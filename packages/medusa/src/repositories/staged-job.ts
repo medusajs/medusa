@@ -12,9 +12,7 @@ export const StagedJobRepository = dataSource.getRepository(StagedJob).extend({
     // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
     if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
       const rawStagedJobs = await queryBuilder.execute()
-      return rawStagedJobs.generatedMaps.map((d) =>
-        this.create(d)
-      ) as StagedJob[]
+      return rawStagedJobs.generatedMaps.map((d) => this.create(d))
     }
 
     const rawStagedJobs = await queryBuilder.returning("*").execute()

@@ -17,7 +17,7 @@ describe("POST /admin/products/:id", () => {
             description: "Updated test description",
             handle: "handle",
             variants: [
-              { id: IdMap.getId("variant_1"), title: "Green" },
+              { id: IdMap.getId("testVariant"), title: "Green" },
               { title: "Blue" },
               { title: "Yellow" },
             ],
@@ -48,7 +48,6 @@ describe("POST /admin/products/:id", () => {
     })
 
     it("successfully updates variants and create new ones", async () => {
-      expect(ProductVariantServiceMock.delete).toHaveBeenCalledTimes(2)
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(2)
     })
@@ -73,7 +72,7 @@ describe("POST /admin/products/:id", () => {
       )
       expect(subject.status).toEqual(404)
       expect(subject.error.text).toEqual(
-        `{"type":"not_found","message":"Variant with id: test_321 is not associated with this product"}`
+        `{"type":"not_found","message":"Variants with id: test_321 are not associated with this product"}`
       )
     })
   })
