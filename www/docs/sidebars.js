@@ -1442,10 +1442,32 @@ module.exports = {
             },
             {
               type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/local",
+              label: "Local",
+            },
+            {
+              type: "html",
               value: "How-to",
               customProps: {
                 sidebar_is_group_divider: true,
               },
+            },
+            {
+              type: "doc",
+              id: "development/events/create-module",
+              label: "Create an Event Module",
             },
             {
               type: "doc",

@@ -3350,6 +3350,6 @@ Object of the following format:
 
 ## See Also
 
-- [Events architecture overview](./index.md)
+- [Events overview](./index.mdx)
 - [Use services in subscribers](./create-subscriber.md#using-services-in-subscribers)
 - [Create a notification provider](../notification/overview.mdx)

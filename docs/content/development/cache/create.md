@@ -22,27 +22,9 @@ If you want to create the Memcached cache module as explained in this guide, you
 
 ## (Optional) Step 0: Prepare Module Directory
 
-Before you start implementing the custom functionality in your module, it's recommended to create a directory that holds your module and prepare the following structure in it:
+Before you start implementing your module, it's recommended to prepare the directory or project holding your custom implementation.
 
-```
-custom-module
-|
-|___ index.ts
-|
-|___ services // directory
-```
-
-The directory can be an NPM project, but that is optional. `index.ts` acts as an entry point to your Module. You'll fill its content in a later step. The `service` directory will hold your cache service.
-
-:::tip
-
-You can use JavaScript instead of TypeScript.
-
-:::
-
-If you're adding other resources you can add other directories for them. For example, if you're adding an entity you can add a `models` directory.
-
-It's also recommended to add a `tsconfig.json` file as explained in the [Create Module documentation](../modules/create.mdx#optional-step-0-project-preparation).
+You can refer to the [Project Preparation step in the Create Module documentation](../modules/create.mdx#optional-step-0-project-preparation) to learn how to do that.
 
 ---
 
@@ -243,7 +225,7 @@ You can learn more about what other properties you can export in your module def
 
 ## Step 4: Test your Module
 
-You can test your module in the Medusa backend by referencing your local module.
+You can test your module in the Medusa backend by referencing it in the configurations.
 
 To do that, add the module to the exported configuration in `medusa-config.js` as follows:
 
@@ -254,7 +236,8 @@ module.exports = {
     // ...
     cacheService: {
         resolve: "path/to/custom-module", 
-        options: { 
+        options: {
+          // any necessary options
           ttl: 30, 
           location: "localhost:55000", 
         },
@@ -264,6 +247,8 @@ module.exports = {
 ```
 
 Make sure to replace the `path/to/custom-module` with a relative path from your Medusa backend to your module. You can learn more about module reference in the [Create Module documentation](../modules/create.mdx#module-reference).
+
+You can also add any necessary options to the module. The options added in the example above are relevant to the memcached module and you can replace them with your own options.
 
 Then, to test the module, run the Medusa backend which also runs your module:
 
