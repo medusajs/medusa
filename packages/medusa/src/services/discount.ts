@@ -16,7 +16,14 @@ import {
 } from "."
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Cart, Discount, LineItem, Region } from "../models"
+import {
+  Cart,
+  Customer,
+  Discount,
+  LineItem,
+  OrderStatus,
+  Region,
+} from "../models"
 import {
   AllocationType as DiscountAllocation,
   DiscountRule,
@@ -42,6 +49,7 @@ import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
 import EventBusService from "./event-bus"
+import { OrderRepository } from "../repositories/order"
 
 /**
  * Provides layer to manipulate discounts.
@@ -50,6 +58,7 @@ import EventBusService from "./event-bus"
 class DiscountService extends TransactionBaseService {
   protected readonly discountRepository_: typeof DiscountRepository
   protected readonly customerService_: CustomerService
+  protected readonly orderRepository_: typeof OrderRepository
   protected readonly discountRuleRepository_: typeof DiscountRuleRepository
   protected readonly giftCardRepository_: typeof GiftCardRepository
   // eslint-disable-next-line max-len
@@ -68,6 +77,7 @@ class DiscountService extends TransactionBaseService {
     giftCardRepository,
     discountConditionRepository,
     discountConditionService,
+    orderRepository,
     totalsService,
     newTotalsService,
     productService,
@@ -84,6 +94,7 @@ class DiscountService extends TransactionBaseService {
     this.giftCardRepository_ = giftCardRepository
     this.discountConditionRepository_ = discountConditionRepository
     this.discountConditionService_ = discountConditionService
+    this.orderRepository_ = orderRepository
     this.totalsService_ = totalsService
     this.newTotalsService_ = newTotalsService
     this.productService_ = productService
@@ -619,7 +630,10 @@ class DiscountService extends TransactionBaseService {
         })
 
       let fullItemPrice = lineItem.unit_price * lineItem.quantity
-      const includesTax = this.featureFlagRouter_.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key) && lineItem.includes_tax
+      const includesTax =
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) && lineItem.includes_tax
 
       if (includesTax) {
         const lineItemTotals = await this.newTotalsService_
@@ -682,6 +696,13 @@ class DiscountService extends TransactionBaseService {
             )
           }
 
+          if (await this.hasCustomerReachedLimit(disc, cart.customer)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} has been used a maximum allowed times by the customer`
+            )
+          }
+
           if (this.hasNotStarted(disc)) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
@@ -735,6 +756,30 @@ class DiscountService extends TransactionBaseService {
   hasReachedLimit(discount: Discount): boolean {
     const count = discount.usage_count || 0
     const limit = discount.usage_limit
+    return !!limit && count >= limit
+  }
+
+  async hasCustomerReachedLimit(
+    discount: Discount,
+    customer: Customer
+  ): Promise<boolean> {
+    const manager = this.manager_
+    const orderRepo = manager.withRepository(this.orderRepository_)
+    const [orders, count] = await orderRepo.findAndCount({
+      relations: {
+        discounts: true,
+      },
+      where: {
+        customer_id: customer.id,
+        status: In([OrderStatus.PENDING, OrderStatus.COMPLETED]),
+        discounts: {
+          id: discount.id,
+        },
+      },
+    })
+
+    const limit = discount.usage_limit_per_customer
+
     return !!limit && count >= limit
   }
 

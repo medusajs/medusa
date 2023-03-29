@@ -74,6 +74,9 @@ export class Discount extends SoftDeletableEntity {
   @Column({ default: 0 })
   usage_count: number
 
+  @Column({ type: Number, nullable: true })
+  usage_limit_per_customer: number | null
+
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
