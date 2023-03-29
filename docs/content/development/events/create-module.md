@@ -101,6 +101,7 @@ class CustomEventBus extends AbstractEventBusModuleService {
 ### emit
 
 The `emit` method is used to push an event from Medusa into your messaging system. Typically, the subscribers to that event would then pick up the message and execute their asynchronous tasks.
+
 The `emit` method has two different signatures:
 
 1. The first signature accepts three parameters. The first parameter is `eventName` being a required string indicating the name of the event to trigger. The second parameter is `data` being the optional data to send to subscribers of that event. The third optional parameter `options` which can be used to pass options specific to the event bus.
