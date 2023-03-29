@@ -1,5 +1,5 @@
 import { DisplayTotal, PaymentDetails } from "../templates"
-import { Order, ReservationItemDTO } from "@medusajs/medusa"
+import { Order } from "@medusajs/medusa"
 import React, { useContext, useMemo } from "react"
 
 import { ActionType } from "../../../../components/molecules/actionables"
@@ -13,6 +13,7 @@ import StatusIndicator from "../../../../components/fundamentals/status-indicato
 import { sum } from "lodash"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../hooks/use-toggle-state"
+import { ReservationItemDTO } from "@medusajs/types"
 
 type SummaryCardProps = {
   order: Order

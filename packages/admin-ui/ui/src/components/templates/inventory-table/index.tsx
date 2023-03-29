@@ -99,16 +99,9 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
   }, [store])
 
   const {
-    removeTab,
-    setTab,
-    saveTab,
-    availableTabs: filterTabs,
-    activeFilterTab,
     reset,
     paginate,
-    setFilters,
     setLocationFilter,
-    filters,
     setQuery: setFreeText,
     queryObject,
     representationObject,
@@ -119,11 +112,6 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
 
   const [query, setQuery] = useState(queryObject.query)
   const [numPages, setNumPages] = useState(0)
-
-  const clearFilters = () => {
-    reset()
-    setQuery("")
-  }
 
   const { inventory_items, isLoading, count } = useAdminInventoryItems(
     {

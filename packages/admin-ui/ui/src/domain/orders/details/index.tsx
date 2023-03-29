@@ -62,7 +62,7 @@ import useClipboard from "../../../hooks/use-clipboard"
 import { useHotkeys } from "react-hotkeys-hook"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
@@ -154,7 +154,9 @@ const OrderDetails = () => {
     enabled: !!order?.region_id,
   })
   const { isFeatureEnabled } = useFeatureFlag()
-  const inventoryEnabled = isFeatureEnabled("inventoryService")
+  const inventoryEnabled = useMemo(() => {
+    return isFeatureEnabled("inventoryService")
+  }, [isFeatureEnabled])
 
   const { reservations, refetch: refetchReservations } = useAdminReservations(
     {
@@ -541,7 +543,7 @@ const OrderDetails = () => {
                 orderToFulfill={order as any}
                 handleCancel={() => setShowFulfillment(false)}
                 orderId={order.id}
-                onComplete={refetchReservations}
+                onComplete={inventoryEnabled ? refetchReservations : () => {}}
               />
             )}
             {showRefund && (

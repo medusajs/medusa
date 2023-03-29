@@ -1,5 +1,15 @@
 # @medusajs/stock-location
 
+## 1.8.0-rc.1
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@0.1.0-rc.2
+  - @medusajs/utils@0.0.2-rc.1
+
 ## 1.8.0-rc.0
 
 ### Minor Changes
