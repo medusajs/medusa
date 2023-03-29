@@ -183,9 +183,11 @@ class MemcachedCacheService implements ICacheService {
   // ...
   async invalidate(key: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.memcached.touch(key, 0, (err) => {
+      this.memcached.del(key, (err) => {
         if (err) {
           rej(err)
+        } else {
+          res()
         }
       })
     })
