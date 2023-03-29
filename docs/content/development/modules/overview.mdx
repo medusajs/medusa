@@ -2,7 +2,7 @@
 description: 'Learn what Modules are and how can you use them during your custom development with Medusa.'
 ---
 
-import DocCard from '@theme/DocCard';
+import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
 
 # Modules
@@ -17,15 +17,16 @@ Modules further increase Medusa’s extensibility. Commerce modules, such as the
 
 This also applies to core logic such as caching or events systems. You can use modules to integrate any logic or third-party service to handle this logic. This gives you greater flexibility in how you choose your tech stack.
 
-Modules are created and loaded similarly to plugins. When created, they’re published to NPM, which makes it possible to install that module in any NPM project, including a Medusa backend. In the Medusa backend, they’re added as part of the configurations in `medusa-config.js` to use and load them within the backend.
+Modules are created and loaded similarly to plugins. They can be loaded from a local project, or they can be installed and loaded from an NPM package. In the Medusa backend, they’re added as part of the configurations in `medusa-config.js` to use and load them within the backend.
 
 ---
 
 ## Custom Development
 
-Developers can create their own modules, publish them to NPM, and use them in their Medusa backend.
+Developers can create their own modules and use them in their Medusa backend. They can also publish these modules to NPM to reuse them across Medusa backend or allow other developers to use them.
 
-<DocCard item={{
+<DocCardList colSize={6} items={[
+  {
     type: 'link',
     href: '/development/modules/create',
     label: 'Create a Module',
@@ -33,5 +34,14 @@ Developers can create their own modules, publish them to NPM, and use them in th
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to create a module in Medusa.'
     }
-  }}
-/>
+  },
+  {
+    type: 'link',
+    href: '/development/modules/publish',
+    label: 'Publish Module',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to publish your module on NPM.'
+    }
+  },
+]} />

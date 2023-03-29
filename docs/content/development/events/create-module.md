@@ -9,27 +9,27 @@ In this document, you’ll learn how to create an events module.
 
 ## Overview
 
-Medusa provides ready-made modules for events, including the local and Redis modules. If you prefer another technology used for managing events, you can build a module yourself. After building the module, you can use it in your Medusa backend through file path reference, or you can publish it on NPM.
+Medusa provides ready-made modules for events, including the local and Redis modules. If you prefer another technology used for managing events, you can build a module locally and use it in your Medusa backend. You can also publish to NPM and reuse it across multiple Medusa backend instances.
 
 In this document, you’ll learn how to build your own Medusa events module, mainly focusing on creating the event bus service and the available methods you need to implement within your module.
 
 ---
 
-## Step 1: Creating the Module
+## (Optional) Step 0: Prepare Module Directory
 
-The first step is to create and prepare your module for development. You can refer to the [Create a Module documentation](../modules/create.mdx), specifically the first three steps, to learn how to create your module.
+Before you start implementing your module, it's recommended to prepare the directory or project holding your custom implementation.
 
-Once you're done, you can start implementing your module.
+You can refer to the [Project Preparation step in the Create Module documentation](../modules/create.mdx#optional-step-0-project-preparation) to learn how to do that.
 
 ---
 
-## Step 2: Create the Service
+## Step 1: Create the Service
 
-Create the file `src/services/event-bus-custom.ts` which will hold your event bus service. Note that the name of the file is recommended to be in the format `event-bus-<service_name>` where `<service_name>` is the name of the service you’re integrating. For example, `event-bus-redis`.
+Create the file `services/event-bus-custom.ts` which will hold your event bus service. Note that the name of the file is recommended to be in the format `event-bus-<service_name>` where `<service_name>` is the name of the service you’re integrating. For example, `event-bus-redis`.
 
 Add the following content to the file:
 
-```ts
+```ts title=services/event-bus-custom.ts
 import { EmitData, EventBusTypes } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 
@@ -58,7 +58,7 @@ In the class you must implement the `emit` method. You can optionally implement 
 
 ---
 
-## Step 3: Implement Methods
+## Step 2: Implement Methods
 
 ### Note About the eventToSubscribersMap Property
 
@@ -194,11 +194,11 @@ class CustomEventBus extends AbstractEventBusModuleService {
 
 ---
 
-## Step 4: Export the Service
+## Step 3: Export the Service
 
 After implementing the event bus service, you must export it so that the Medusa backend can use it.
 
-Create the file `src/index.ts` with the following content:
+Create the file `index.ts` with the following content:
 
 ```ts
 import { ModuleExports } from "@medusajs/modules-sdk"
@@ -216,24 +216,23 @@ export default moduleDefinition
 
 This exports a module definition, which requires at least a `service`. If you named your service something other than `CustomEventBus`, make sure to replace it with that.
 
-You can learn more about what other properties you can export in your module definition in the [Create a Module documentation](../modules/create.mdx#step-5-export-module).
+You can learn more about what other properties you can export in your module definition in the [Create a Module documentation](../modules/create.mdx#step-2-export-module).
 
 ---
 
-## Step 5: Test and Publish your Module
+## Step 4: Test your Module
 
-You can learn about how to test your module in a local backend and use it in your backend or publish it to NPM by following the last two steps of the [Create a Module documentation](../modules/create.mdx#step-6-test-your-module).
+You can test your module in the Medusa backend by referencing it in the configurations.
 
-After installing your module (both when testing or publishing), you can add it to `medusa-config.js` as follows:
+To do that, add the module to the exported configuration in `medusa-config.js` as follows:
 
-```js
-// medusa-config.js
+```js title=medusa-config.js
 module.exports = {
   // ...
   modules: { 
     // ...
-    eventBus: {
-        resolve: "custom-event-bus", 
+    cacheService: {
+        resolve: "path/to/custom-module", 
         options: { 
           // any necessary options
         },
@@ -242,4 +241,20 @@ module.exports = {
 }
 ```
 
-Make sure to replace `custom-event-bus` with the name of your module and add options if necessary.
+Make sure to replace the `path/to/custom-module` with a relative path from your Medusa backend to your module. You can learn more about module reference in the [Create Module documentation](../modules/create.mdx#module-reference).
+
+You can also add any necessary options to the module.
+
+Then, to test the module, run the Medusa backend which also runs your module:
+
+```bash npm2yarn
+npm run start
+```
+
+---
+
+## (Optional) Step 5: Publish your Module
+
+You can publish your events module to NPM. This can be useful if you want to reuse your module across Medusa backend instances, or want to allow other developers to use it.
+
+You can refer to the [Publish Module documentation](../modules/publish.md) to learn how to publish your module.
