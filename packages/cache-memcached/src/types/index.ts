@@ -9,9 +9,15 @@ export type MemcachedCacheModuleOptions = {
    */
   ttl?: number
 
+  /**
+   * Memcached client options
+   */
   location: Memcached.Location
-
   options?: Memcached.options
 
-  /* TOOD... namespace */
+  /**
+   * Prefix for event keys
+   * @default `medusa:`
+   */
+  namespace?: string
 }

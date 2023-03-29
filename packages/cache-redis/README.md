@@ -24,3 +24,4 @@ yarn add @medusajs/cache-redis
 
 ### Other caching modules
 - [Medusa Cache In-Memory](../cache-inmemory/README.md)
+- [Medusa Cache Memcached](../cache-memcached/README.md)

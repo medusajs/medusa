@@ -4,6 +4,7 @@ import { ICacheService } from "@medusajs/types"
 
 import { MemcachedCacheModuleOptions } from "../types"
 
+const DEFAULT_NAMESPACE = "medusa"
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
 
 type InjectedDependencies = {
@@ -12,6 +13,7 @@ type InjectedDependencies = {
 
 class MemcachedCacheService implements ICacheService {
   protected readonly TTL: number
+  private readonly namespace: string
   protected readonly memcached: Memcached
 
   constructor(
@@ -20,6 +22,7 @@ class MemcachedCacheService implements ICacheService {
   ) {
     this.memcached = cacheMemcachedConnection
     this.TTL = options.ttl || DEFAULT_CACHE_TIME
+    this.namespace = options.namespace || DEFAULT_NAMESPACE
   }
   /**
    * Set a key/value pair to the cache.
@@ -35,13 +38,18 @@ class MemcachedCacheService implements ICacheService {
     ttl: number = this.TTL
   ): Promise<void> {
     return new Promise((res, rej) =>
-      this.memcached.set(key, JSON.stringify(data), ttl, (err) => {
-        if (err) {
-          rej(err)
-        } else {
-          res()
+      this.memcached.set(
+        this.getCacheKey(key),
+        JSON.stringify(data),
+        ttl,
+        (err) => {
+          if (err) {
+            rej(err)
+          } else {
+            res()
+          }
         }
-      })
+      )
     )
   }
 
@@ -51,7 +59,7 @@ class MemcachedCacheService implements ICacheService {
    */
   async get<T>(cacheKey: string): Promise<T | null> {
     return new Promise((res) => {
-      this.memcached.get(cacheKey, (err, data) => {
+      this.memcached.get(this.getCacheKey(cacheKey), (err, data) => {
         if (err) {
           res(null)
         } else {
@@ -71,14 +79,25 @@ class MemcachedCacheService implements ICacheService {
    */
   async invalidate(key: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.memcached.del(key, (err) => {
-        if (err) {
-          rej(err)
-        } else {
-          res()
-        }
-      })
+      if (key.includes("*")) {
+      } else {
+        this.memcached.del(this.getCacheKey(key), (err) => {
+          if (err) {
+            rej(err)
+          } else {
+            res()
+          }
+        })
+      }
     })
+  }
+
+  /**
+   * Returns namespaced cache key
+   * @param key
+   */
+  private getCacheKey(key: string) {
+    return this.namespace ? `${this.namespace}:${key}` : key
   }
 }
 

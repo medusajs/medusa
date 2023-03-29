@@ -21,3 +21,4 @@ Recommended for testing and development. For production, use Redis cache module.
 
 ### Other caching modules
 - [Medusa Cache Redis](../cache-redis/README.md)
+- [Medusa Cache Memcached](../cache-memcached/README.md)
