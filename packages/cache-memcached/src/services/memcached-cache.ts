@@ -50,7 +50,7 @@ class MemcachedCacheService implements ICacheService {
    * @param cacheKey
    */
   async get<T>(cacheKey: string): Promise<T | null> {
-    return new Promise((res, rej) => {
+    return new Promise((res) => {
       this.memcached.get(cacheKey, (err, data) => {
         if (err) {
           res(null)
@@ -71,9 +71,11 @@ class MemcachedCacheService implements ICacheService {
    */
   async invalidate(key: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.memcached.touch(key, 0, (err) => {
+      this.memcached.del(key, (err) => {
         if (err) {
           rej(err)
+        } else {
+          res()
         }
       })
     })
