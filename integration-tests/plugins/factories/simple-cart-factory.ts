@@ -1,20 +1,20 @@
-import { Connection } from "typeorm"
-import faker from "faker"
-import { Cart } from "@medusajs/medusa"
-
-import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
-import {
-  LineItemFactoryData,
-  simpleLineItemFactory,
-} from "./simple-line-item-factory"
 import {
   AddressFactoryData,
   simpleAddressFactory,
 } from "./simple-address-factory"
+import { Connection, DataSource } from "typeorm"
+import {
+  LineItemFactoryData,
+  simpleLineItemFactory,
+} from "./simple-line-item-factory"
+import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
 import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
+
+import { Cart } from "@medusajs/medusa"
+import faker from "faker"
 
 export type CartFactoryData = {
   id?: string
@@ -27,7 +27,7 @@ export type CartFactoryData = {
 }
 
 export const simpleCartFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: CartFactoryData = {},
   seed: number
 ): Promise<Cart> => {
@@ -35,16 +35,16 @@ export const simpleCartFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let regionId: string
   if (typeof data.region === "string") {
     regionId = data.region
   } else {
-    const region = await simpleRegionFactory(connection, data.region)
+    const region = await simpleRegionFactory(dataSource, data.region)
     regionId = region.id
   }
-  const address = await simpleAddressFactory(connection, data.shipping_address)
+  const address = await simpleAddressFactory(dataSource, data.shipping_address)
 
   const id = data.id || `simple-cart-${Math.random() * 1000}`
   const toSave = manager.create(Cart, {
@@ -60,12 +60,12 @@ export const simpleCartFactory = async (
 
   const shippingMethods = data.shipping_methods || []
   for (const sm of shippingMethods) {
-    await simpleShippingMethodFactory(connection, { ...sm, cart_id: id })
+    await simpleShippingMethodFactory(dataSource, { ...sm, cart_id: id })
   }
 
   const items = data.line_items
-  for (const item of items) {
-    await simpleLineItemFactory(connection, { ...item, cart_id: id })
+  for (const item of items || []) {
+    await simpleLineItemFactory(dataSource, { ...item, cart_id: id })
   }
 
   return cart
