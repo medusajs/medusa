@@ -1,5 +1,11 @@
 # @medusajs/modules-sdk
 
+## 0.1.0-rc.3
+
+### Patch Changes
+
+- [#3620](https://github.com/medusajs/medusa/pull/3620) [`55e94d0b4`](https://github.com/medusajs/medusa/commit/55e94d0b45776776639d3970d4264b8f5c5385dd) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Checks if dependency is registered before resolving it
+
 ## 0.1.0-rc.2
 
 ### Patch Changes
