@@ -1948,7 +1948,7 @@ describe("/store/carts", () => {
         await api.post(`/store/carts/test-cart-2/complete-cart`)
       } catch (e) {
         expect(e.response.data).toMatchSnapshot({
-          code: "insufficient_inventory",
+          errors: [{ code: "insufficient_inventory" }],
         })
         expect(e.response.status).toBe(409)
       }
@@ -1984,7 +1984,7 @@ describe("/store/carts", () => {
         await api.post(`/store/carts/swap-cart/complete-cart`)
       } catch (e) {
         expect(e.response.data).toMatchSnapshot({
-          code: "insufficient_inventory",
+          errors: [{ code: "insufficient_inventory" }],
         })
         expect(e.response.status).toBe(409)
       }
