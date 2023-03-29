@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Modules are and how can you use them during your custom development with Medusa.'
+description: 'Learn how to create a module and test the module in your Medusa backend.'
 ---
 
 import DocCardList from '@theme/DocCardList';
@@ -7,7 +7,7 @@ import Icons from '@theme/Icon';
 
 # How to Create a Module
 
-In this document, you’ll learn how to create a module, test the module, publish it to NPM, and install it in a Medusa backend.
+In this document, you’ll learn how to create a module and test the module in your Medusa backend.
 
 This document covers the general steps of creating an internal module, but does not explore actually implementing any functionality in it. An internal module is a TypeScript/JavaScript module that is loaded by the Medusa backend as part of the commerce application to extend or replace a functionality within it, such as the cache or event bus functionality.
 
@@ -15,7 +15,7 @@ This document covers the general steps of creating an internal module, but does 
 
 ## (Optional) Step 0: Project Preparation
 
-Before you start creating your module, it's recommended to use the following TypeScript config in `tsconfig.json`:
+Before you start creating your module, it's recommended to use the following TypeScript config in `tsconfig.json`, which should be added in the root of the project holding your module:
 
 ```json
 {
@@ -60,9 +60,11 @@ This step depends on what you’re actually implementing. For example, you can i
 
 When developing your module, it's important to note that you'll later be referencing the module using a file path to an `index.ts` or `index.js` file. This file is explained in the next step and acts as an entry point and a definition of your module.
 
-So, make sure when building your module you take into account that the module should be easily referenced from your local Medusa server. For example, you can develop your module in a sibling directory of the Medusa backend that you can reference with `../custom-module`.
+So, make sure when implementing your module you take into account that the module should be easily referenced from your local Medusa server. For example, you can develop your module in a sibling directory of the Medusa backend that you can reference with `../custom-module`.
 
-Keep in mind that when you publish the module to NPM, you'll have to move your module into a new NPM project. This is covered in the [publish](./publish.md) documentation.
+Keep in mind that when you publish the module to NPM, you'll have to move your module into a new NPM project. This is covered in the [Publish Module documentation](./publish.md).
+
+### Recommended Guides
 
 <DocCardList colSize={6} items={[
   {
@@ -148,7 +150,7 @@ export default moduleDefinition
 
 ---
 
-## Step 3: Use Module
+## Step 3: Reference Module
 
 To use your module in the Medusa backend, add your module to `medusa-config.js`:
 
@@ -158,7 +160,7 @@ module.exports = {
   modules: { 
     // ...
     moduleType: {
-      resolve: "./path/to/module", 
+      resolve: "module-name-or-path", 
       options: {
         // options if necessary
       },
@@ -172,13 +174,28 @@ module.exports = {
 The way you add your module depends on its type and what options it requires, if any. Note that in the above code example:
 
 - `moduleType` is the type of your module. For example, if your module is a cache module, it should be changed to `cacheService`.
-- `./path/to/module` is a relative path to your module. For example, `../custom-module`. More details are explained in the [File Reference section](#file-reference).
+- `resolve` is used to reference the Module. Its value should be either the name of an NPM package module, or a relative file path to the module. This is explained more in the [Module Reference section](#module-reference).
 - `options` should hold any options of your module, if necessary.
 - `resources` is an optional property that indicates whether the module shares the same dependency container as the rest of the resources in the Medusa backend. More details are explained in the [Module Scope section](#module-scope).
 
-### File Reference
+### Module Reference
 
-When using a local module, you must reference it using a relative file path to the module from the Medusa backend.
+When the module is installed as an NPM package, the value of the `resolve` property should be the name of that package. For example:
+
+```js title=medusa-config.js
+module.exports = {
+  // ...
+  modules: { 
+    // ...
+    moduleType: {
+      resolve: "custom-module", 
+      //...
+    },
+  },
+}
+```
+
+However, when using a local module, you must reference the module using a relative file path to it from the Medusa backend.
 
 For example, consider you have the following file structure:
 
@@ -199,7 +216,7 @@ For example, consider you have the following file structure:
 
 You can reference your module in two ways:
 
-1\. Referencing the directory: In this case, it's assumed that the `index.ts` that contains the module definition is in the root of the directory you referenced. Using the above example, the file path would be in this case:
+1\. Referencing the directory: In this case, it's assumed that the `index.ts` file that contains the module definition is in the root of the directory you referenced. Using the above example, the file path would be in this case:
 
 ```js title=medusa-config.js
 module.exports = {
@@ -214,7 +231,7 @@ module.exports = {
 }
 ```
 
-2\. Referencing `index` file: In this case, it's assumed that the `index.ts` you're referencing includes the module definition. Using the above example, the file path would be in this case:
+2\. Referencing `index` file: In this case, it's assumed that the `index.ts` or `index.js` file you're referencing includes the module definition. Using the above example, the file path would be in this case:
 
 ```js title=medusa-config.js
 module.exports = {

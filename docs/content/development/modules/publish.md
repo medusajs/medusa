@@ -106,13 +106,13 @@ If you don't already have a `tsconfig.json` file, create one in the root of your
 }
 ```
 
-This allows you to use the recommended TypeScript configurations and sets the output directory to `dist`. This is essential for preparing your module for testing and publishing.
+This allows you to use the recommended TypeScript configurations and sets the output directory to `dist`. This is essential for preparing your module for publishing.
 
 ---
 
 ## Step 4: Change Module Structure
 
-If you followed the [Create Module documentation](./create.mdx), you might have created your module in a different directory than the NPM package. So, make sure to move the module content to a `src` directory inside the new NPM project.
+To ensure that the files are built from the `src` directory to the `dist` directory, make sure to move the module content to a `src` directory inside the new NPM project.
 
 ---
 
@@ -179,7 +179,7 @@ module.exports = {
 
 Where `<module-name>` is the name of your NPM package.
 
-You can learn more about the available options in the [Create Module documentation](./create.mdx#step-3-use-module).
+You can learn more about the available options in the [Create Module documentation](./create.mdx#step-3-reference-module).
 
 ### Update Module
 
