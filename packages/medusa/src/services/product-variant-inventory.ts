@@ -247,7 +247,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
 
     // Verify that item exists
-    await (this.inventoryService_ as any).retrieveInventoryItem(
+    await this.inventoryService_.retrieveInventoryItem(
       inventoryItemId,
       {
         select: ["id"],

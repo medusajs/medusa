@@ -33,7 +33,7 @@ const migrateProductVariant = async (
   }
 
   const context = { transactionManager }
-  const inventoryItem = await (inventoryService as any).createInventoryItem(
+  const inventoryItem = await inventoryService.createInventoryItem(
     {
       sku: variant.sku,
       material: variant.material,
@@ -53,7 +53,7 @@ const migrateProductVariant = async (
     .withTransaction(transactionManager)
     .attachInventoryItem(variant.id, inventoryItem.id, 1)
 
-  await (inventoryService as any).createInventoryLevel(
+  await inventoryService.createInventoryLevel(
     {
       location_id: locationId,
       inventory_item_id: inventoryItem.id,
