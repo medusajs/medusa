@@ -1414,6 +1414,11 @@ module.exports = {
               id: "development/modules/create",
               label: "Create a Module",
             },
+            {
+              type: "doc",
+              id: "development/modules/publish",
+              label: "Publish a Module",
+            },
           ],
         },
         {

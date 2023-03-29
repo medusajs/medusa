@@ -11,74 +11,13 @@ In this document, you’ll learn how to create a module, test the module, publis
 
 This document covers the general steps of creating an internal module, but does not explore actually implementing any functionality in it. An internal module is a TypeScript/JavaScript module that is loaded by the Medusa backend as part of the commerce application to extend or replace a functionality within it, such as the cache or event bus functionality.
 
-
-
-## Prerequisites
-
-If you wish to follow the steps to publish the module on NPM, you’ll need an [NPM account](https://www.npmjs.com/signup) to publish the module on.
-
 ---
 
-## Step 1: Create an NPM Project
+## (Optional) Step 0: Project Preparation
 
-Since modules are installed in the Medusa backend (or other NPM projects) using NPM, you must create an NPM project that will hold your module.
+Before you start creating your module, it's recommended to use the following TypeScript config in `tsconfig.json`:
 
-If you don’t have one already created, run the following commands to create a directory and initialize an NPM project in it:
-
-```bash npm2yarn
-mkdir my-module
-npm init
-```
-
-You’ll be asked a couple of questions related to your package, such as its name or license. You can keep the default for now or set them right away.
-
-Once you’re done, you should have a `package.json` created in the directory.
-
----
-
-## Step 2: Changes to package.json
-
-In your `package.json` file, add or update the following fields:
-
-```json title=package.json
-{
-  // other fields
-  "main": "dist/index.js",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "dist"
-  ],
-  "devDependencies": {
-    "@medusajs/types": "^0.0.2",
-    "cross-env": "^5.2.1",
-    "typescript": "^4.4.4"
-  },
-  "scripts": {
-    "watch": "tsc --build --watch",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "build": "tsc --build",
-  },
-  "dependencies": {
-    "@medusajs/modules-sdk": "^0.1.0",
-  }
-}
-```
-
-This adds the necessary dependencies for your development, including the `@medusajs/modules-sdk` package. It also adds the following scripts that will help you during your development of the module:
-
-- `watch`: can be used to re-build your module whenever any changes occur without having to manually trigger the `build`.
-- `prepare`: can be used to prepare your module for publishing on NPM
-- `build`: can be used to manually build your module.
-
----
-
-## Step 3: Add tsconfig.json
-
-In the root of your NPM project, create the file `tsconfig.json` with the following content:
-
-```json title=tsconfig.json
+```json
 {
   "compilerOptions": {
     "lib": [
@@ -111,13 +50,19 @@ In the root of your NPM project, create the file `tsconfig.json` with the follow
 }
 ```
 
-This allows you to use the recommended TypeScript configurations and sets the output directory to `dist`. This is essential for preparing your module for testing and publishing.
-
 ---
 
-## Step 4: Implement the Custom Functionality
+## Step 1: Implement the Custom Functionality
 
 This step depends on what you’re actually implementing. For example, you can implement the cache or events module, or you can implement a commerce module. If what you’re creating has a guide, you can refer to it while implementing the functionalities.
+
+### Note About Project Structure
+
+When developing your module, it's important to note that you'll later be referencing the module using a file path to an `index.ts` or `index.js` file. This file is explained in the next step and acts as an entry point and a definition of your module.
+
+So, make sure when building your module you take into account that the module should be easily referenced from your local Medusa server. For example, you can develop your module in a sibling directory of the Medusa backend that you can reference with `../custom-module`.
+
+Keep in mind that when you publish the module to NPM, you'll have to move your module into a new NPM project. This is covered in the [publish](./publish.md) documentation.
 
 <DocCardList colSize={6} items={[
   {
@@ -144,9 +89,9 @@ This step depends on what you’re actually implementing. For example, you can i
 
 ---
 
-### Step 5: Export Module
+### Step 2: Export Module
 
-After implementing the module, you must export a module object that helps the Medusa backend understand how to use this Module. This is done in the file `src/index.ts`.
+After implementing the module, you must export a module object that helps the Medusa backend understand how to use this Module. This is done in the file `index.ts`.
 
 The file must export an object with the following properties:
 
@@ -167,7 +112,7 @@ type ModuleExports = {
 }
 ```
 
-:::note
+:::tip
 
 All property types such as `ModuleLoaderFunction` can be loaded from the `@medusajs/modules-sdk` package.
 
@@ -182,9 +127,9 @@ Where:
 - `runMigrations`: (optional) a function that can be used to define migrations to run when the `migration run` command is used with Medusa's CLI. The migrations will only run if they haven't already. This will only be executed if the module's scope is [isolated](#module-scope).
 - `revertMigration`: (optional) a function can be used to define how migrations should be reverted when the `migration revert` command is used with Medusa's CLI. This will only be executed if the module's scope is [isolated](#module-scope).
 
-Here's an example implementation of `src/index.ts` from Medusa's Redis Cache module:
+Here's an example implementation of `index.ts` from Medusa's Redis Cache module:
 
-```ts title=src/index.ts
+```ts title=index.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import Loader from "./loaders"
@@ -203,31 +148,9 @@ export default moduleDefinition
 
 ---
 
-## Step 6: Test your Module
+## Step 3: Use Module
 
-This step explains how you can test your module in a locally installed [Medusa backend](../backend/install.mdx) after or while implementing your custom functionality.
-
-Run the following command in the root of your module directory:
-
-```bash npm2yarn
-npm run build
-```
-
-Then, register your package locally to use it in other NPM projects with the following command:
-
-```bash npm2yarn
-npm link
-```
-
-Next, in your Medusa backend, run the following command to install your module:
-
-```bash npm2yarn
-npm link module-name
-```
-
-Where `module-name` is the name of your module as defined in the `package.json` of your module.
-
-Finally, add your module to `medusa-config.js`:
+To use your module in the Medusa backend, add your module to `medusa-config.js`:
 
 ```js title=medusa-config.js
 module.exports = {
@@ -235,7 +158,7 @@ module.exports = {
   modules: { 
     // ...
     moduleType: {
-      resolve: "<module_name>", 
+      resolve: "./path/to/module", 
       options: {
         // options if necessary
       },
@@ -249,16 +172,61 @@ module.exports = {
 The way you add your module depends on its type and what options it requires, if any. Note that in the above code example:
 
 - `moduleType` is the type of your module. For example, if your module is a cache module, it should be changed to `cacheService`.
-- `<module_name>` is the name of your module as defined in the `package.json` of your module.
+- `./path/to/module` is a relative path to your module. For example, `../custom-module`. More details are explained in the [File Reference section](#file-reference).
 - `options` should hold any options of your module, if necessary.
-- `resources` is an optional property that indicates whether the module shares the same dependency container as the rest of the resources in the Medusa backend. It can be one of the following values:
-  - `shared`: (default) The dependency container is shared with the module, including the database connection. You don't need to establish the database connection yourself in a loader.
-  - `isolated`: the module receives an empty dependency container, and only its own dependencies will be registered in the container. When using this value, you must establish the database connection yourself and managing other resources within your module.
+- `resources` is an optional property that indicates whether the module shares the same dependency container as the rest of the resources in the Medusa backend. More details are explained in the [Module Scope section](#module-scope).
 
-You can now test it out simply by running the Medusa backend:
+### File Reference
 
-```bash npm2yarn
-npm run start
+When using a local module, you must reference it using a relative file path to the module from the Medusa backend.
+
+For example, consider you have the following file structure:
+
+```
+|
+|___ custom-module
+|    |
+|    |___ index.ts
+|    |
+|    |___ services
+|    |    |
+|    |    |___ custom-service.ts
+|    |___ // more files
+|
+|
+|___ medusa-backend
+```
+
+You can reference your module in two ways:
+
+1\. Referencing the directory: In this case, it's assumed that the `index.ts` that contains the module definition is in the root of the directory you referenced. Using the above example, the file path would be in this case:
+
+```js title=medusa-config.js
+module.exports = {
+  // ...
+  modules: { 
+    // ...
+    moduleType: {
+      resolve: "../custom-module", 
+      //...
+    },
+  },
+}
+```
+
+2\. Referencing `index` file: In this case, it's assumed that the `index.ts` you're referencing includes the module definition. Using the above example, the file path would be in this case:
+
+```js title=medusa-config.js
+module.exports = {
+  // ...
+  modules: { 
+    // ...
+    moduleType: {
+      resolve: "../custom-module/index.ts", 
+      //...
+    },
+  },
+}
 ```
 
 ### Module Scope
@@ -287,60 +255,18 @@ The `resources` property can have one of the following values:
 
 ---
 
-## Step 7: Publish Module
+## Step 4: Test Your Module
 
-This section explains how to publish your module to NPM.
-
-### Run Prepare Command
-
-Before you publish or update your module, make sure to run the `prepare` command defined earlier:
+Finally, to test your module, run the following command:
 
 ```bash npm2yarn
-npm run prepare
+npm run start
 ```
 
-### Login
+This starts the Medusa backend and runs your module as part of it.
 
-In your terminal, log in with your NPM account:
+---
 
-```bash
-npm login
-```
+## Next Steps
 
-You’ll be asked to enter your NPM email and password.
-
-### Publish Module Package
-
-Once you’re logged in, you can publish your package with the following command:
-
-```bash
-npm publish
-```
-
-Your package is then published on NPM and everyone can use it and install it.
-
-### Install Module
-
-To install your published module, you can run the following command on any Medusa backend project:
-
-```bash
-npm install module-name
-```
-
-Where `module-name` is the name of your module.
-
-### Update Module
-
-To update your module at a later point, you can run the following command to change the NPM version:
-
-```bash
-npm version <type>
-```
-
-Where `<type>` indicates the type of version update you’re publishing. For example, it can be `major` or `minor`. You can see the [full list of types in NPM’s documentation](https://docs.npmjs.com/cli/v8/commands/npm-version).
-
-Then, publish the new update:
-
-```bash
-npm publish
-```
+After you finish developing your module, you can publish it as an NPM package with [this guide](./publish.md).
