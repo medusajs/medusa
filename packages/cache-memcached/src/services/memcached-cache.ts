@@ -1,6 +1,6 @@
 import Memcached from "memcached"
 
-import { ICacheService } from "@medusajs/medusa"
+import { ICacheService } from "@medusajs/types"
 
 import { MemcachedCacheModuleOptions } from "../types"
 

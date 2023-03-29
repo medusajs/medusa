@@ -5950,7 +5950,7 @@ __metadata:
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.11
+    "@medusajs/medusa": ^1.7.13
   languageName: unknown
   linkType: soft
 
