@@ -63,9 +63,9 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: 'doc',
-      id: 'admin/quickstart',
-      label: 'Admin Dashboard',
+      type: "doc",
+      id: "admin/quickstart",
+      label: "Admin Dashboard",
       customProps: {
         sidebar_icon: "computer-desktop",
       },
@@ -348,13 +348,13 @@ module.exports = {
           ],
         },
         {
-          type: 'category',
-          label: 'Admin Dashboard Errors',
+          type: "category",
+          label: "Admin Dashboard Errors",
           items: [
             {
-              type: 'doc',
-              id: 'troubleshooting/signing-in-to-admin',
-              label: 'Signing in to the Admin Dashboard',
+              type: "doc",
+              id: "troubleshooting/signing-in-to-admin",
+              label: "Signing in to the Admin Dashboard",
             },
           ],
         },
@@ -572,14 +572,14 @@ module.exports = {
           },
         },
         {
-          type: 'doc',
-          id: 'modules/products/categories',
-          label: 'Categories'
+          type: "doc",
+          id: "modules/products/categories",
+          label: "Categories",
         },
         {
-          type: 'link',
-          href: '#',
-          label: 'Collections',
+          type: "link",
+          href: "#",
+          label: "Collections",
           customProps: {
             sidebar_is_soon: true,
           },
@@ -871,6 +871,74 @@ module.exports = {
           type: "doc",
           id: "modules/orders/storefront/implement-claim-order",
           label: "Storefront: Implement Claim Order",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Multi-Warehouse",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/overview",
+          label: "Overview",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/install-modules",
+          label: "Install Modules",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/inventory-module",
+          label: "Inventory Module",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/stock-location-module",
+          label: "Stock Location Module",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Stock Locations",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Inventory",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Stock Locations in Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
         },
       ],
     },
@@ -1706,8 +1774,8 @@ module.exports = {
       ],
     },
     {
-      type: 'category',
-      label: 'Admin Dashboard',
+      type: "category",
+      label: "Admin Dashboard",
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
