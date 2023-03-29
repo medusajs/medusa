@@ -27,7 +27,7 @@ import {
 
 import { capitalize } from "lodash"
 import moment from "moment"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Avatar from "../../../components/atoms/avatar"
 import Spinner from "../../../components/atoms/spinner"
@@ -525,7 +525,9 @@ const OrderDetails = () => {
                     ({ name, Component }) => {
                       return (
                         <div key={name} className="mt-large">
-                          <Component />
+                          {React.createElement(Component, {
+                            order,
+                          })}
                         </div>
                       )
                     }

@@ -1,4 +1,5 @@
 import { useAdminProduct } from "medusa-react"
+import React from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
@@ -8,6 +9,7 @@ import ProductMediaSection from "../../../components/organisms/product-media-sec
 import ProductRawSection from "../../../components/organisms/product-raw-section"
 import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
 import ProductVariantsSection from "../../../components/organisms/product-variants-section"
+import { useInjectionContext } from "../../../providers/injection-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 
 const Edit = () => {
@@ -15,6 +17,8 @@ const Edit = () => {
   const navigate = useNavigate()
 
   const { product, status, error } = useAdminProduct(id || "")
+
+  const { getComponents } = useInjectionContext()
 
   if (error) {
     const errorStatus = getErrorStatus(error)
@@ -53,6 +57,17 @@ const Edit = () => {
           <ProductVariantsSection product={product} />
           <ProductAttributesSection product={product} />
           <ProductRawSection product={product} />
+          <div>
+            {getComponents("product", "details").map(({ name, Component }) => {
+              return (
+                <div key={name} className="mt-large">
+                  {React.createElement(Component, {
+                    product,
+                  })}
+                </div>
+              )
+            })}
+          </div>
         </div>
         <div className="gap-y-xsmall col-span-4 flex flex-col">
           <ProductThumbnailSection product={product} />

@@ -1,1 +1,1 @@
-import extension0 from './../../../../../test-server/src/extensions/order-details';export const plugins = [extension0]
+import extension0 from './../../../../../test-server/src/extensions/order-details';import extension1 from './../../../../../test-server/src/extensions/product-details';export const plugins = [extension0,extension1]
