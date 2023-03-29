@@ -21,7 +21,7 @@ export type MetadataField = {
 export type MetadataFormType = {
   entries: MetadataField[]
   deleted?: string[]
-  ignored?: Record<string, unknown>
+  ignored?: Record<string, any>
 }
 
 type MetadataProps = {
@@ -335,7 +335,7 @@ export const getSubmittableMetadata = (
 }
 
 export const getMetadataFormValues = (
-  metadata?: Record<string, unknown> | null
+  metadata?: Record<string, any> | null
 ): MetadataFormType => {
   const data: MetadataFormType = {
     entries: [],
@@ -359,7 +359,7 @@ export const getMetadataFormValues = (
   return data
 }
 
-const isPrimitive = (value: unknown): boolean => {
+const isPrimitive = (value: any): boolean => {
   return (
     value === null ||
     value === undefined ||

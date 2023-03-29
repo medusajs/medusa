@@ -1,24 +1,21 @@
-import { useContext } from "react"
-import BodyCard from "../../../components/organisms/body-card"
+import { Route, Routes } from "react-router-dom"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import BodyCard from "../../../components/organisms/body-card"
+import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
+import useToggleState from "../../../hooks/use-toggle-state"
 import CustomersPageTableHeader from "../header"
 import Details from "./details"
-import CustomerGroupContext, {
-  CustomerGroupContextContainer,
-} from "./context/customer-group-context"
-import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
-import { Route, Routes } from "react-router-dom"
 
 /*
  * Customer groups index page
  */
 function Index() {
-  const { showModal } = useContext(CustomerGroupContext)
+  const { state, open, close } = useToggleState()
 
   const actions = [
     {
       label: "New group",
-      onClick: showModal,
+      onClick: open,
       icon: (
         <span className="text-grey-90">
           <PlusIcon size={20} />
@@ -46,12 +43,10 @@ function Index() {
  */
 function CustomerGroups() {
   return (
-    <CustomerGroupContextContainer>
-      <Routes>
-        <Route index element={<Index />} />
-        <Route path="/:id" element={<Details />} />
-      </Routes>
-    </CustomerGroupContextContainer>
+    <Routes>
+      <Route index element={<Index />} />
+      <Route path="/:id" element={<Details />} />
+    </Routes>
   )
 }
 
