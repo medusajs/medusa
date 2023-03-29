@@ -414,9 +414,10 @@ class CartService extends TransactionBaseService {
           rawCart.billing_address_id = data.billing_address_id
         }
 
-        if (data.metadata) {
-          rawCart.metadata = setMetadata({ metadata: null }, data.metadata)
-        }
+        rawCart.metadata = data.metadata
+          ? setMetadata({ metadata: null }, data.metadata)
+          : {}
+
         const remainingFields: (keyof Cart)[] = [
           "context",
           "type",
