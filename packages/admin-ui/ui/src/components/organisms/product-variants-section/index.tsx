@@ -1,26 +1,34 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
 import OptionsProvider, { useOptionsContext } from "./options-provider"
+import { Product, ProductVariant, VariantInventory } from "@medusajs/medusa"
 
-import { useState } from "react"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import useToggleState from "../../../hooks/use-toggle-state"
-import EditIcon from "../../fundamentals/icons/edit-icon"
-import GearIcon from "../../fundamentals/icons/gear-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
 import { ActionType } from "../../molecules/actionables"
-import Section from "../../organisms/section"
 import AddVariantModal from "./add-variant-modal"
+import EditIcon from "../../fundamentals/icons/edit-icon"
 import EditVariantInventoryModal from "./edit-variant-inventory-modal"
 import EditVariantModal from "./edit-variant-modal"
 import EditVariantsModal from "./edit-variants-modal"
+import GearIcon from "../../fundamentals/icons/gear-icon"
 import OptionsModal from "./options-modal"
+import PlusIcon from "../../fundamentals/icons/plus-icon"
+import Section from "../../organisms/section"
 import VariantsTable from "./table"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { adminInventoryItemsKeys, useMedusa } from "medusa-react"
+import { useQueryClient } from "@tanstack/react-query"
+import { useState } from "react"
+import useToggleState from "../../../hooks/use-toggle-state"
 
 type Props = {
   product: Product
 }
 
 const ProductVariantsSection = ({ product }: Props) => {
+  const queryClient = useQueryClient()
+  const { client } = useMedusa()
+
+  const { isFeatureEnabled } = useFeatureFlag()
+
   const [variantToEdit, setVariantToEdit] = useState<
     | {
         base: ProductVariant
@@ -71,8 +79,23 @@ const ProductVariantsSection = ({ product }: Props) => {
 
   const { onDeleteVariant } = useEditProductActions(product.id)
 
-  const handleDeleteVariant = (variantId: string) => {
-    onDeleteVariant(variantId)
+  const handleDeleteVariant = async (variantId: string) => {
+    let variantInventory: VariantInventory | undefined
+    if (isFeatureEnabled("inventoryService")) {
+      const { variant } = await client.admin.variants.getInventory(variantId)
+      variantInventory = variant
+    }
+    onDeleteVariant(variantId, async () => {
+      if (
+        isFeatureEnabled("inventoryService") &&
+        variantInventory?.inventory[0]?.id
+      ) {
+        await client.admin.inventoryItems.delete(
+          variantInventory.inventory[0].id
+        )
+        queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
+      }
+    })
   }
 
   const handleEditVariant = (variant: ProductVariant) => {
