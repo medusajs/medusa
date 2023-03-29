@@ -94,7 +94,6 @@ export default async ({
     moduleResolutions: registerModules(configModule?.modules),
     logger: Logger,
   })
-  Logger.activity(`${EOL}`)
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
