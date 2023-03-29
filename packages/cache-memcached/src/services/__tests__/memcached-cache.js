@@ -20,10 +20,10 @@ describe("MemcachedCacheService", () => {
       {}
     )
 
-    await cacheService.set("test-key", "value")
+    cacheService.set("test-key", "value")
     expect(memcachedClientMock.set).toBeCalled()
 
-    await cacheService.get("test-key")
+    cacheService.get("test-key")
     expect(memcachedClientMock.get).toBeCalled()
   })
 })
