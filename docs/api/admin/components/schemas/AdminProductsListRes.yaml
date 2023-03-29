@@ -1,11 +1,25 @@
 type: object
+x-expanded-relations:
+  field: products
+  relations:
+    - collection
+    - images
+    - options
+    - tags
+    - type
+    - variants
+    - variants.options
+    - variants.prices
+required:
+  - products
+  - count
+  - offset
+  - limit
 properties:
   products:
     type: array
     items:
-      oneOf:
-        - $ref: ./Product.yaml
-        - $ref: ./PricedProduct.yaml
+      $ref: ./PricedProduct.yaml
   count:
     type: integer
     description: The total number of items available

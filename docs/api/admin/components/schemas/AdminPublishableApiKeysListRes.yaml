@@ -1,4 +1,9 @@
 type: object
+required:
+  - publishable_api_keys
+  - count
+  - offset
+  - limit
 properties:
   publishable_api_keys:
     type: array

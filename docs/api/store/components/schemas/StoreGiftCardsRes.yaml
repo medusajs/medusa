@@ -1,4 +1,6 @@
 type: object
+required:
+  - gift_card
 properties:
   gift_card:
     $ref: ./GiftCard.yaml

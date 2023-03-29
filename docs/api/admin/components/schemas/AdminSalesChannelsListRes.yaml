@@ -1,4 +1,9 @@
 type: object
+required:
+  - sales_channels
+  - count
+  - offset
+  - limit
 properties:
   sales_channels:
     type: array

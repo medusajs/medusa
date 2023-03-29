@@ -1,0 +1,106 @@
+get:
+  operationId: GetGiftCards
+  summary: List Gift Cards
+  description: Retrieves a list of Gift Cards.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: offset
+      description: The number of items to skip before the results.
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: limit
+      description: Limit the number of items returned.
+      schema:
+        type: number
+        default: '50'
+    - in: query
+      name: q
+      description: a search term to search by code or display ID
+      schema:
+        type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetGiftCardsParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_gift-cards/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_gift-cards/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Gift Cards
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminGiftCardsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostGiftCards
+  summary: Create a Gift Card
+  description: >-
+    Creates a Gift Card that can redeemed by its unique code. The Gift Card is
+    only valid within 1 region.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostGiftCardsReq.yaml
+  x-codegen:
+    method: create
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_gift-cards/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_gift-cards/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Gift Cards
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminGiftCardsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

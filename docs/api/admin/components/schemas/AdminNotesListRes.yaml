@@ -1,4 +1,9 @@
 type: object
+required:
+  - notes
+  - count
+  - offset
+  - limit
 properties:
   notes:
     type: array

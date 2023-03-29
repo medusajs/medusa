@@ -1,4 +1,11 @@
 type: object
+x-expanded-relations:
+  field: product_category
+  relations:
+    - category_children
+    - parent_category
+required:
+  - product_category
 properties:
   product_category:
     $ref: ./ProductCategory.yaml

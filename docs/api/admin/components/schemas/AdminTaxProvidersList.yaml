@@ -1,4 +1,6 @@
 type: object
+required:
+  - tax_providers
 properties:
   tax_providers:
     type: array
