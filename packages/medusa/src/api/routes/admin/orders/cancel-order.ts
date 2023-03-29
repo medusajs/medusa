@@ -1,6 +1,7 @@
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /orders/{id}/cancel
@@ -69,7 +70,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export class AdminPostOrdersOrderCancel extends FindParams {}

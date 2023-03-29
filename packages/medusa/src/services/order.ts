@@ -17,14 +17,14 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink
+  TrackingLink,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType
+  FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -48,7 +48,7 @@ import {
   ShippingOptionService,
   ShippingProfileService,
   TaxProviderService,
-  TotalsService
+  TotalsService,
 } from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -1777,6 +1777,7 @@ class OrderService extends TransactionBaseService {
     order.paid_total =
       order.payments?.reduce((acc, next) => (acc += next.amount), 0) || 0
     order.refundable_amount = order.paid_total - order.refunded_total || 0
+
     let item_tax_total = 0
     let shipping_tax_total = 0
 
@@ -1790,7 +1791,7 @@ class OrderService extends TransactionBaseService {
       Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
       order.subtotal += item.subtotal ?? 0
-      order.discount_total += item.discount_total ?? 0
+      order.discount_total += item.raw_discount_total ?? 0
       item_tax_total += item.tax_total ?? 0
 
       if (isReturnableItem(item)) {
@@ -1863,6 +1864,9 @@ class OrderService extends TransactionBaseService {
         return item
       })
     }
+
+    order.raw_discount_total = order.discount_total
+    order.discount_total = Math.round(order.discount_total)
 
     order.total =
       order.subtotal +

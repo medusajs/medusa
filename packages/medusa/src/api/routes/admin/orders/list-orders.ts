@@ -5,6 +5,7 @@ import { Order } from "../../../../models"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pick } from "lodash"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /orders
@@ -214,7 +215,12 @@ export default async (req, res) => {
     data = orders.map((o) => pick(o, fields))
   }
 
-  res.json({ orders: data, count, offset: skip, limit: take })
+  res.json({
+    orders: cleanResponseData(data, []),
+    count,
+    offset: skip,
+    limit: take,
+  })
 }
 
 export class AdminGetOrdersParams extends AdminListOrdersSelector {

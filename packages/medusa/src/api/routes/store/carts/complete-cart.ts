@@ -2,6 +2,7 @@ import { EntityManager } from "typeorm"
 import { AbstractCartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /carts/{id}/complete
@@ -89,6 +90,10 @@ export default async (req, res) => {
     idempotencyKey,
     req.request_context
   )
+
+  if (response_body.data) {
+    response_body.data = cleanResponseData(response_body.data, [])
+  }
 
   res.status(response_code).json(response_body)
 }

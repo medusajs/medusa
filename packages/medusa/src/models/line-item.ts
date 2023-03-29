@@ -10,7 +10,8 @@ import {
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import TaxInclusivePricingFeatureFlag
+  from "../loaders/feature-flags/tax-inclusive-pricing"
 import { generateEntityId } from "../utils"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
@@ -147,6 +148,7 @@ export class LineItem extends BaseEntity {
   original_total?: number | null
   original_tax_total?: number | null
   discount_total?: number | null
+  raw_discount_total?: number | null
   gift_card_total?: number | null
 
   @BeforeInsert()
@@ -341,6 +343,10 @@ export class LineItem extends BaseEntity {
  *     type: integer
  *     example: 0
  *   discount_total:
+ *     description: The total of discount of the line item rounded
+ *     type: integer
+ *     example: 0
+ *   raw_discount_total:
  *     description: The total of discount of the line item
  *     type: integer
  *     example: 0

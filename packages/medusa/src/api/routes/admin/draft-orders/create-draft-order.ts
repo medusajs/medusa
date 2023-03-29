@@ -25,6 +25,7 @@ import { AddressPayload } from "../../../../types/common"
 import { DraftOrderCreateProps } from "../../../../types/draft-orders"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /draft-orders
@@ -154,7 +155,7 @@ export default async (req, res) => {
       select: defaultAdminDraftOrdersCartFields,
     })
 
-  res.status(200).json({ draft_order: draftOrder })
+  res.status(200).json({ draft_order: cleanResponseData(draftOrder, []) })
 }
 
 enum Status {

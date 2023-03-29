@@ -10,6 +10,7 @@ import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { TrackingLink } from "../../../../models"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /orders/{id}/shipment
@@ -104,7 +105,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 /**

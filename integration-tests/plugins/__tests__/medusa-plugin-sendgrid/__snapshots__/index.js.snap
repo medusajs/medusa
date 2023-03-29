@@ -340,6 +340,7 @@ Object {
         "original_tax_total": 200,
         "original_total": 1200,
         "quantity": 1,
+        "raw_discount_total": 0,
         "subtotal": 1000,
         "tax_lines": Array [
           Object {
@@ -454,6 +455,7 @@ Object {
         "original_tax_total": 400,
         "original_total": 2400,
         "quantity": 2,
+        "raw_discount_total": 0,
         "returned_quantity": 1,
         "shipped_quantity": 2,
         "should_merge": true,
@@ -804,6 +806,7 @@ Object {
       "original_total": 2400,
       "price": "10.00 USD",
       "quantity": 2,
+      "raw_discount_total": 0,
       "returned_quantity": null,
       "shipped_quantity": null,
       "should_merge": true,
@@ -1037,6 +1040,7 @@ Object {
       "original_total": 2400,
       "price": "12.00 USD",
       "quantity": 2,
+      "raw_discount_total": 0,
       "returned_quantity": null,
       "shipped_quantity": 2,
       "should_merge": true,
@@ -1063,6 +1067,7 @@ Object {
         "original_tax_total": 400,
         "original_total": 2400,
         "quantity": 2,
+        "raw_discount_total": 0,
         "subtotal": 2000,
         "tax_lines": Array [
           Object {
@@ -1313,6 +1318,7 @@ Object {
         "original_tax_total": 400,
         "original_total": 2400,
         "quantity": 2,
+        "raw_discount_total": 0,
         "returned_quantity": null,
         "shipped_quantity": 2,
         "should_merge": true,
@@ -1531,6 +1537,7 @@ Object {
         "original_tax_total": 200,
         "original_total": 1200,
         "quantity": 1,
+        "raw_discount_total": 0,
         "subtotal": 1000,
         "tax_lines": Array [
           Object {
@@ -1645,6 +1652,7 @@ Object {
         "original_tax_total": 400,
         "original_total": 2400,
         "quantity": 2,
+        "raw_discount_total": 0,
         "returned_quantity": null,
         "shipped_quantity": 2,
         "should_merge": true,

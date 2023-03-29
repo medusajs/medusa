@@ -3,6 +3,7 @@ import { IsBoolean, IsObject, IsOptional } from "class-validator"
 
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments
@@ -84,7 +85,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 /**

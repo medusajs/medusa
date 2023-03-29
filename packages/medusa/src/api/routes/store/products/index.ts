@@ -2,7 +2,7 @@ import { RequestHandler, Router } from "express"
 import "reflect-metadata"
 
 import { Product } from "../../../.."
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { PaginatedResponse } from "../../../../types/common"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
@@ -28,7 +28,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/",
-    transformQuery(StoreGetProductsParams, {
+    transformStoreQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
@@ -40,7 +40,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetProductsProductParams, {
+    transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,

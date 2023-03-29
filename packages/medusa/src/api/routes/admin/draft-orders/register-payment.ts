@@ -13,6 +13,7 @@ import {
 import { EntityManager } from "typeorm"
 import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /draft-orders/{id}/pay
@@ -122,7 +123,7 @@ export default async (req, res) => {
     return order
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 export const reserveQuantityForDraftOrder = async (

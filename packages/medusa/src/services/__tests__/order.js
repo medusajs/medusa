@@ -1345,6 +1345,7 @@ describe("OrderService", () => {
             id: IdMap.getId("order"),
             items: [],
             paid_total: 0,
+            raw_discount_total: 0,
             refundable_amount: 0,
             refunded_total: 0,
             shipping_methods: [
@@ -1384,6 +1385,7 @@ describe("OrderService", () => {
             id: IdMap.getId("order"),
             items: [],
             paid_total: 0,
+            raw_discount_total: 0,
             refundable_amount: 0,
             refunded_total: 0,
             shipping_methods: [

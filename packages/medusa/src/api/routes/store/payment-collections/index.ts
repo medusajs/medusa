@@ -2,7 +2,7 @@ import { Router } from "express"
 import "reflect-metadata"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 
 import { PaymentCollection, PaymentSession } from "../../../../models"
@@ -18,7 +18,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(GetPaymentCollectionsParams, {
+    transformStoreQuery(GetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
       defaultRelations: defaultPaymentCollectionRelations,
       isList: false,

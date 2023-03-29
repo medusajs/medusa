@@ -23,6 +23,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartCreateProps } from "../../../../types/cart"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /carts
@@ -176,7 +177,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart })
+  res.status(200).json({ cart: cleanResponseData(cart, []) })
 }
 
 export class Item {

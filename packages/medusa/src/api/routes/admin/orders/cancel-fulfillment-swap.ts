@@ -7,6 +7,7 @@ import {
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
@@ -101,7 +102,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 // eslint-disable-next-line max-len

@@ -1,8 +1,8 @@
 import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}
@@ -64,10 +64,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id, provider_id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartPaymentSessionUpdateReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const cartService: CartService = req.scope.resolve("cartService")
 
@@ -86,7 +83,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**
