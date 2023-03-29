@@ -41,8 +41,7 @@ For the `order.placed` event, the `data` object won't contain other order data. 
 
 ### Subscriber ID
 
-The `subscribe` method of the `eventBusService` accepts a third optional parameter which is a context object. This object has a property `subscriberID` with its value being a string. This ID is useful when there are more than one handler method attached to a single event, or if you have multiple Medusa backends running. This allows the events bus service to differentiate between handler methods when retrying a failed one.
-
+The `subscribe` method of the `eventBusService` accepts a third optional parameter which is a context object. This object has a property `subscriberId` with its value being a string. This ID is useful when there is more than one handler method attached to a single event or if you have multiple Medusa backends running. This allows the events bus service to differentiate between handler methods when retrying a failed one.
 If a subscriber ID is not passed on subscription, all handler methods are run again. This can lead to data inconsistencies or general unwanted behavior in your system. On the other hand, if you want all handler methods to run again when one of them fails, you can omit passing a subscriber ID.
 
 An example of using the subscribe method with the third parameter:
