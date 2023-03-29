@@ -44,7 +44,7 @@ npm install @medusajs/event-bus-redis
 The Redis events module requires a connection URL to Redis as part of its options. If you don’t already have an environment variable set for a Redis URL, make sure to add one:
 
 ```bash
-CACHE_REDIS_URL=<YOUR_REDIS_URL>
+EVENTS_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 Where `<YOUR_REDIS_URL>` is a connection URL to your Redis instance.
@@ -63,7 +63,7 @@ module.exports = {
     eventBus: {
       resolve: "@medusajs/event-bus-redis",
       options: { 
-        redisUrl: process.env.CACHE_REDIS_URL,
+        redisUrl: process.env.EVENTS_REDIS_URL,
       },
     },
   },
