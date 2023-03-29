@@ -6,6 +6,17 @@ description: 'Learn what product categories are and how they work in a Medusa ba
 
 In this document, you’ll learn about Product Categories and how they can be used in Medusa.
 
+:::note
+
+Product Category feature is currently in beta mode and guarded by a feature flag. To use Product Categories either:
+
+1. Enable the `MEDUSA_FF_PRODUCT_CATEGORIES` environment variable;
+2. Or enable the `product_categories` key in the Medusa backend's settings.
+
+You can learn more about enabling it in the [feature flags](../../development/feature-flags/toggle.md) documentation.
+
+:::
+
 ## Introduction
 
 Product Categories allow you to categorize your products. You can manage categories in your store. You can also nest categories in one another, creating a parent-child hierarchy, and there is no limit to how far you can nest the categories.

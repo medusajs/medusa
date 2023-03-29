@@ -2263,6 +2263,12 @@ Object of the following format:
 
 This section holds all events related to product categories.
 
+:::note
+
+Product Category feature is currently in beta mode and guarded by a feature flag. You can learn how to enable it in the [Product Categories documentation](../../modules/products/categories.md).
+
+:::
+
 <table class="reference-table">
 <thead>
 <tr>
