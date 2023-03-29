@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-algolia",
-  "version": "0.2.10-rc.1",
+  "version": "0.2.10-rc.2",
   "description": "Algolia search plugin for Medusa",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "0.1.0-rc.2",
+    "@medusajs/modules-sdk": "0.1.0-rc.3",
     "@medusajs/utils": "0.0.2-rc.1",
     "algoliasearch": "^4.15.0"
   },

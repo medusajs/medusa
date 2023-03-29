@@ -1,5 +1,12 @@
 # @medusajs/inventory
 
+## 1.8.0-rc.3
+
+### Patch Changes
+
+- Updated dependencies [[`55e94d0b4`](https://github.com/medusajs/medusa/commit/55e94d0b45776776639d3970d4264b8f5c5385dd)]:
+  - @medusajs/modules-sdk@0.1.0-rc.3
+
 ## 1.8.0-rc.2
 
 ### Patch Changes
