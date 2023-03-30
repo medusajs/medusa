@@ -1,4 +1,21 @@
 type: object
+x-expanded-relations:
+  field: products
+  relations:
+    - collection
+    - images
+    - options
+    - options.values
+    - tags
+    - type
+    - variants
+    - variants.options
+    - variants.prices
+required:
+  - products
+  - count
+  - offset
+  - limit
 properties:
   products:
     type: array

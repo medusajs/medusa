@@ -1,4 +1,6 @@
 type: object
+required:
+  - sales_channels
 properties:
   sales_channels:
     type: array

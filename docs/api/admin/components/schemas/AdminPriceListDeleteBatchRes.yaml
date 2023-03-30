@@ -1,4 +1,8 @@
 type: object
+required:
+  - ids
+  - object
+  - deleted
 properties:
   ids:
     type: array
