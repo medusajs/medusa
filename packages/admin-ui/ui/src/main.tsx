@@ -1,30 +1,13 @@
 import ReactDOM from "react-dom/client"
 import "./assets/styles/global.css"
-import { plugins } from "./extensions"
 import MedusaApp, { Components, Library } from "./medusa-app"
+
+// @ts-ignore file is generated pre-build
+import { plugins } from "./extensions"
 
 const library: Library = {
   components: new Components(),
 }
-
-// const plugin: Plugin = {
-//   id: "test-plugin",
-//   extension: {
-//     async register(app) {
-//       app.injectComponent("order", "details", {
-//         name: "test-component",
-//         Component: () => {
-//           return (
-//             <div>
-//               <h1>Test component</h1>
-//               <div>I am a injected component</div>
-//             </div>
-//           )
-//         },
-//       })
-//     },
-//   },
-// }
 
 async function run() {
   const app = new MedusaApp({ library, plugins: plugins })

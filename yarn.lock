@@ -6208,6 +6208,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/types@npm:*":
+  version: 0.0.1
+  resolution: "@medusajs/types@npm:0.0.1"
+  checksum: 82176d1476090e72bf4a8bab57a7489cda0dd76c211334f1a5829590529cdbdf4873952dbfbb7c90335c032e6c5b181ec5de056250f0fb8a77c15757d1424787
+  languageName: node
+  linkType: hard
+
 "@medusajs/utils@0.0.2-rc.1, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
