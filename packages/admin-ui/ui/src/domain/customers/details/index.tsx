@@ -95,7 +95,7 @@ const CustomerDetail = () => {
               <div className="h-50 flex items-center justify-center">
                 <StatusDot
                   variant={customer?.has_account ? "success" : "danger"}
-                  title={customer?.has_account ? "True" : "False"}
+                  title={customer?.has_account ? "Registered" : "Guest"}
                 />
               </div>
             </div>
