@@ -188,7 +188,7 @@ interface PaymentProcessorError {
 
 While implementing the following methods, if you need to inform the Medusa core that an error occurred at a certain stage, return an object having the attributes defined in the `PaymentProcessorError` interface.
 
-For example, the Stripe payment process has the following method to create the error object, which is used within other methods:
+For example, the Stripe payment processor has the following method to create the error object, which is used within other methods:
 
 ```ts
 abstract class StripeBase extends AbstractPaymentProcessor {
@@ -229,7 +229,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
 ### initiatePayment
 
-This method is called either if a region has only one payment provider or when [a Payment Sessions is selected](/api/store#tag/Cart/operation/PostCartsCartPaymentSession), which occurs when the customer selects their preferred payment method during checkout. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
+This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](/api/store#tag/Cart/operation/PostCartsCartPaymentSession), which occurs when the customer selects their preferred payment method during checkout. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
 
 For example, in Stripe this method is used to create a Payment Intent for the customer.
 
