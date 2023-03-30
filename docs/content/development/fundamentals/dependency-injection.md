@@ -157,7 +157,7 @@ An instance of Medusa CLI’s logger. You can use it to log messages to the term
 </td>
 <td>
 
-`-`
+\-
 
 </td>
 </tr>
@@ -206,7 +206,7 @@ An array of all payment processor that extend the `AbstractPaymentService` or `A
 </td>
 <td>
 
-\-
+`paymentProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -232,7 +232,7 @@ Every fulfillment provider is registered under two names:
 </td>
 <td>
 
-By default, it's `TRANSIENT` unless defined differently within the fulfillemnt provider service.
+By default, it's `SINGLETON` unless defined differently within the fulfillemnt provider service.
 
 </td>
 </tr>
@@ -255,7 +255,7 @@ An array of all fulfillment providers that extend the `FulfillmentService` class
 </td>
 <td>
 
-\-
+`fulfillmentProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -281,7 +281,7 @@ Every notification provider is registered under two names:
 </td>
 <td>
 
-By default, it's `TRANSIENT` unless defined differently within the notification provider service.
+By default, it's `SINGLETON` unless defined differently within the notification provider service.
 
 </td>
 </tr>
@@ -304,7 +304,7 @@ An array of all notification providers that extend the `AbstractNotificationServ
 </td>
 <td>
 
-\-
+`notificationProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -405,7 +405,7 @@ An array of every tax provider that extends the `AbstractTaxService` class.
 </td>
 <td>
 
-\-
+`taxProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>

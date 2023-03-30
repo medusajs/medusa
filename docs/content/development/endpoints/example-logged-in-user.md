@@ -15,7 +15,7 @@ This documentation does not explain the basics of [middlewares](./add-middleware
 
 Create the file `src/api/middlewareds/logged-in-user.ts` with the following content:
 
-```ts
+```ts title=src/api/middlewareds/logged-in-user.ts
 import { User, UserService } from "@medusajs/medusa"
 
 export async function registerLoggedInUser(req, res, next) {
@@ -45,7 +45,7 @@ This retrieves the ID of the current user to retrieve an instance of it, then re
 
 Create the file `src/api/routes/create-product.ts` with the following content:
 
-```ts
+```ts title=src/api/routes/create-product.ts
 import cors from "cors"
 import { Router } from "express"
 import { 
@@ -75,9 +75,9 @@ For endpoints that require Cross-Origin Resource Origin (CORS) options, such as 
 
 ## Step 3: Register Endpoint in the API
 
-Create the file `index.ts` with the following content:
+Create the file `src/api/index.ts` with the following content:
 
-```ts
+```ts title=src/api/index.ts
 import configLoader from "@medusajs/medusa/dist/loaders/config"
 import createProductRouter from "./routes/create-product"
 
@@ -103,7 +103,7 @@ This exports an array of endpoints, one of them being the product endpoint that 
 
 ## Step 4: Use in a Service
 
-You can now access the logged-in user in a service. For example:
+You can now access the logged-in user in a service. For example, to access it in a custom service:
 
 <!-- eslint-disable prefer-rest-params -->
 
@@ -115,8 +115,6 @@ import {
 } from "@medusajs/medusa"
 
 class HelloService extends TransactionBaseService {
-  // The default life time for a core service is SINGLETON
-  static LIFE_TIME = Lifetime.SCOPED
 
   protected readonly loggedInUser_: User | null
 
@@ -132,7 +130,33 @@ class HelloService extends TransactionBaseService {
 export default HelloService
 ```
 
-This accesses the `loggedInUser` in a custom service. It’s important to change the lifetime of the service to `Lifetime.SCOPED`. You can learn more about the service lifetime in the [Create Service documentation](../services/create-service.md#service-life-time).
+If you're accessing it in an extended core service, it’s important to change the lifetime of the service to `Lifetime.SCOPED`. For example:
+
+```ts
+import { Lifetime } from "awilix"
+import { 
+  ProductService as MedusaProductService, 
+  User 
+} from "@medusajs/medusa"
+
+// extend core product service
+class ProductService extends MedusaProductService {
+  // The default life time for a core service is SINGLETON
+  static LIFE_TIME = Lifetime.SCOPED
+
+  protected readonly loggedInUser_: User | null
+
+  constructor(container, options) {
+    super(...arguments)
+
+    this.loggedInUser_ = container.loggedInUser
+  }
+}
+
+export default ProductService
+```
+
+You can learn more about the importance of changing the service lifetime in the [Middlewares documentation](./add-middleware.md#note-about-services-lifetime).
 
 ---
 

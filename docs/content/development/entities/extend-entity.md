@@ -49,7 +49,7 @@ export class Product extends MedusaProduct {
 
 If you’re using JavaScript instead of TypeScript in your implementation, you can skip this step.
 
-To ensure that TypeScript is aware of your extended entity, create the file `src/index.d.ts` with the following content:
+To ensure that TypeScript is aware of your extended entity and affects the typing of the Medusa package itself, create the file `src/index.d.ts` with the following content:
 
 ```ts title=src/index.d.ts
 export declare module "@medusajs/medusa/dist/models/product" {

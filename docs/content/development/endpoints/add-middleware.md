@@ -23,7 +23,7 @@ You can add a middleware to an existing route in the Medusa backend, a route in 
 
 ### Step 1: Create the Middleware File
 
-Middlewares can be created in the `src/api/middlewares` directory. It's recommended to create each middleware in a different file.
+You can organize your middlewares as you see fit, but it's recommended to create Middlewares in the `src/api/middlewares` directory. It's recommended to create each middleware in a different file.
 
 Each file should export a middleware function that accepts three parameters:
 
@@ -131,7 +131,6 @@ You can then load this new resource within other resources. For example, to load
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class CustomService extends TransactionBaseService {
-  static LIFE_TIME = Lifetime.SCOPED
 
   constructor(container, options) {
     super(...arguments)
@@ -144,7 +143,37 @@ class CustomService extends TransactionBaseService {
 export default CustomService
 ```
 
-Notice that the `LIFE_TIME` property has been set to `Lifetime.SCOPED`. If you want to access new registrations in the dependency container within a service, you must set the lifetime of the service either to `Lifetime.SCOPED` or `Lifetime.TRANSIENT`.
+### Note About Services Lifetime
+
+If you want to access new registrations in the dependency container within a service, you must set the lifetime of the service either to `Lifetime.SCOPED` or `Lifetime.TRANSIENT`.  Services that have a `Lifetime.SINGLETON` lifetime can't access new registrations since they're resolved and cached in the root dependency container beforehand. You can learn more in the [Create Services documentation](../services/create-service.md#service-life-time).
+
+For custom services, no additional action is required as the default lifetime is `Lifetime.TRANSIENT`. However, if you extend a core service, you must change the lifetime since the default lifetime for core services is `Lifetime.SINGLETON`.
+
+For example:
+
+<!-- eslint-disable prefer-rest-params -->
+
+```ts
+import { Lifetime } from "awilix"
+import { ProductService as MedusaProductService } from "@medusajs/medusa"
+
+// extending ProductService from the core
+class ProductService extends MedusaProductService {
+  // The default life time for a core service is SINGLETON
+  static LIFE_TIME = Lifetime.SCOPED
+
+  constructor(container, options) {
+    super(...arguments)
+
+    // use the registered resource.
+    container.customResource
+  }
+
+  // ...
+}
+
+export default ProductService
+```
 
 ---
 
