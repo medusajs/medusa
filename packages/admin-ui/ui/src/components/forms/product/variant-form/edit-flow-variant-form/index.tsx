@@ -117,13 +117,15 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
           </p>
           <DimensionsForm form={nestedForm(form, "dimensions")} />
         </div>
-        <div className="mt-xlarge">
-          <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
-          <p className="inter-base-regular text-grey-50 mb-large">
-            Configure if you are shipping internationally.
-          </p>
-          <CustomsForm form={nestedForm(form, "customs")} />
-        </div>
+        {showStockAndInventory && (
+          <div className="mt-xlarge">
+            <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+            <p className="inter-base-regular text-grey-50 mb-large">
+              Configure if you are shipping internationally.
+            </p>
+            <CustomsForm form={nestedForm(form, "customs")} />
+          </div>
+        )}
       </Accordion.Item>
       <Accordion.Item title="Metadata" value="metadata">
         <p className="inter-base-regular text-grey-50 mb-base">

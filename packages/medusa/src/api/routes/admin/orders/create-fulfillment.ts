@@ -168,7 +168,11 @@ export const updateInventoryAndReservations = async (
         items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
         locationId
       )
+    })
+  )
 
+  await Promise.all(
+    fulfillments.map(async ({ items }) => {
       await Promise.all(
         items.map(async ({ item, quantity }) => {
           if (!item.variant_id) {

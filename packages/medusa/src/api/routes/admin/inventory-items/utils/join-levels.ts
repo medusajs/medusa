@@ -1,4 +1,5 @@
 import {
+  FilterableInventoryLevelProps,
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
@@ -25,9 +26,14 @@ export const getLevelsByInventoryItemId = async (
   locationIds: string[],
   inventoryService: IInventoryService
 ): Promise<Record<string, LevelWithAvailability[]>> => {
-  const [levels] = await inventoryService.listInventoryLevels({
+  const selector: FilterableInventoryLevelProps = {
     inventory_item_id: items.map((inventoryItem) => inventoryItem.id),
-  })
+  }
+  if (locationIds.length) {
+    selector.location_id = locationIds
+  }
+
+  const [levels] = await inventoryService.listInventoryLevels(selector, {})
 
   const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
     levels.map(async (level) => {

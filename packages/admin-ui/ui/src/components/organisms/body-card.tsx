@@ -52,7 +52,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
         )}
       </div>
       <div
-        className={clsx("flex grow flex-col overflow-y-auto", {
+        className={clsx("flex grow flex-col", {
           "border-grey-20 border-b border-solid": setBorders,
         })}
         onScroll={scrollListener}

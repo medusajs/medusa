@@ -1,23 +1,26 @@
-import {
-  InventoryLevelDTO,
-  Product,
-  ProductVariant,
-  VariantInventory,
-} from "@medusajs/medusa"
-import { useAdminVariantsInventory, useMedusa } from "medusa-react"
-import { useContext } from "react"
-import { useForm } from "react-hook-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import { removeNullish } from "../../../utils/remove-nullish"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../forms/product/variant-form/edit-flow-variant-form"
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
+} from "../../forms/product/variant-inventory-form/edit-flow-variant-form"
 import LayeredModal, {
   LayeredModalContext,
 } from "../../molecules/modal/layered-modal"
-import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+import { Product, ProductVariant, VariantInventory } from "@medusajs/medusa"
+import {
+  adminInventoryItemsKeys,
+  useAdminVariantsInventory,
+  useMedusa,
+} from "medusa-react"
+
+import Button from "../../fundamentals/button"
+import { InventoryLevelDTO } from "@medusajs/types"
+import Modal from "../../molecules/modal"
+import { queryClient } from "../../../constants/query-client"
+import { removeNullish } from "../../../utils/remove-nullish"
+import { useContext } from "react"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { useForm } from "react-hook-form"
+import { countries } from "../../../utils/countries"
+import { Option } from "../../../types/shared"
 
 type Props = {
   onClose: () => void
@@ -36,24 +39,48 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     refetch,
   } = useAdminVariantsInventory(variant.id)
 
-  const variantInventoryItem = variantInventory?.inventory[0]
-  const itemId = variantInventoryItem?.id
-
   const handleClose = () => {
     onClose()
   }
 
   const { onUpdateVariant, updatingVariant } = useEditProductActions(product.id)
 
+  const createUpdateInventoryItemPayload = (
+    data: Partial<EditFlowVariantFormType>
+  ) => {
+    const updateDimensions = data.dimensions || {}
+    const updateCustoms = data.customs || {}
+    const originCountry = data.customs?.origin_country?.value
+
+    delete data.dimensions
+    delete data.customs
+    delete data.ean
+    delete data.barcode
+    delete data.upc
+
+    return removeNullish({
+      ...updateDimensions,
+      ...updateCustoms,
+      ...data,
+      ...(originCountry && { origin_country: originCountry }),
+    })
+  }
+
   const onSubmit = async (data: EditFlowVariantFormType) => {
-    const locationLevels = data.stock.location_levels || []
-    const manageInventory = data.stock.manage_inventory
-    delete data.stock.manage_inventory
-    delete data.stock.location_levels
+    const locationLevels = data.location_levels || []
+    const manageInventory = data.manage_inventory
+
+    const variantInventoryItem = variantInventory?.inventory?.[0]
+    const itemId = variantInventoryItem?.id
+
+    delete data.manage_inventory
+    delete data.location_levels
 
     let inventoryItemId: string | undefined = itemId
 
-    const upsertPayload = removeNullish(data.stock)
+    const { ean, barcode, upc } = data
+    const upsertPayload = createUpdateInventoryItemPayload(data)
+    let shouldInvalidateCache = false
 
     if (variantInventoryItem) {
       // variant inventory exists and we can remove location levels
@@ -73,16 +100,20 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
           deleteLocations.map(async (location: InventoryLevelDTO) => {
             await client.admin.inventoryItems.deleteLocationLevel(
               inventoryItemId!,
-              location.id
+              location.location_id
             )
           })
         )
+        if (deleteLocations.length) {
+          shouldInvalidateCache = true
+        }
       }
 
       if (!manageInventory) {
         // has an inventory item but no longer wants to manage inventory
         await client.admin.inventoryItems.delete(itemId!)
         inventoryItemId = undefined
+        shouldInvalidateCache = true
       } else {
         // has an inventory item and wants to update inventory
         await client.admin.inventoryItems.update(itemId!, upsertPayload)
@@ -122,13 +153,32 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
           }
         })
       )
+      if (locationLevels.length) {
+        shouldInvalidateCache = true
+      }
     }
 
+    const { dimensions, customs, ...stock } = data
+
     // @ts-ignore
-    onUpdateVariant(variant.id, createUpdatePayload(data), () => {
-      refetch()
-      handleClose()
-    })
+    onUpdateVariant(
+      variant.id,
+      removeNullish({
+        ...dimensions,
+        ...customs,
+        ...stock,
+        ean,
+        barcode,
+        upc,
+      }),
+      () => {
+        refetch()
+        if (shouldInvalidateCache) {
+          queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
+        }
+        handleClose()
+      }
+    )
   }
 
   return (
@@ -140,6 +190,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         <StockForm
           variantInventory={variantInventory!}
           onSubmit={onSubmit}
+          variant={variant}
           isLoadingInventory={isLoadingInventory}
           handleClose={handleClose}
           updatingVariant={updatingVariant}
@@ -155,15 +206,18 @@ const StockForm = ({
   isLoadingInventory,
   handleClose,
   updatingVariant,
+  variant,
 }: {
   variantInventory: VariantInventory
+  variant: ProductVariant
   onSubmit: (data: EditFlowVariantFormType) => void
   isLoadingInventory: boolean
   handleClose: () => void
   updatingVariant: boolean
 }) => {
   const form = useForm<EditFlowVariantFormType>({
-    defaultValues: getEditVariantDefaultValues(variantInventory),
+    // @ts-ignore
+    defaultValues: getEditVariantDefaultValues(variantInventory, variant),
   })
 
   const {
@@ -216,34 +270,68 @@ const StockForm = ({
 }
 
 export const getEditVariantDefaultValues = (
-  variantInventory?: any
+  variantInventory?: any,
+  variant?: ProductVariant
 ): EditFlowVariantFormType => {
   const inventoryItem = variantInventory?.inventory[0]
   if (!inventoryItem) {
     return {
-      stock: {
-        sku: null,
-        ean: null,
-        inventory_quantity: null,
-        manage_inventory: false,
-        allow_backorder: false,
-        barcode: null,
-        upc: null,
-        location_levels: null,
+      sku: null,
+      ean: variant?.ean || null,
+      barcode: variant?.barcode || null,
+      upc: variant?.upc || null,
+      inventory_quantity: null,
+      manage_inventory: false,
+      allow_backorder: false,
+      location_levels: null,
+      dimensions: {
+        height: null,
+        length: null,
+        width: null,
+        weight: null,
+      },
+      customs: {
+        origin_country: null,
+        mid_code: null,
+        hs_code: null,
       },
     }
   }
 
+  let originCountry: Option | null = null
+  if (inventoryItem.origin_country) {
+    const country = countries.find(
+      (c) =>
+        c.alpha2 === inventoryItem.origin_country ||
+        c.alpha3 === inventoryItem.origin_country
+    )
+    if (country) {
+      originCountry = {
+        label: country?.name,
+        value: country?.alpha2,
+      }
+    }
+  }
+
   return {
-    stock: {
-      sku: inventoryItem.sku,
-      ean: inventoryItem.ean,
-      inventory_quantity: inventoryItem.inventory_quantity,
-      manage_inventory: !!inventoryItem,
-      allow_backorder: inventoryItem.allow_backorder,
-      barcode: inventoryItem.barcode,
-      upc: inventoryItem.upc,
-      location_levels: inventoryItem.location_levels,
+    sku: inventoryItem.sku,
+    ean: variant?.ean || null,
+    barcode: variant?.barcode || null,
+    upc: variant?.upc || null,
+    inventory_quantity: inventoryItem.inventory_quantity,
+    manage_inventory: !!inventoryItem,
+    allow_backorder: inventoryItem.allow_backorder,
+    location_levels: inventoryItem.location_levels,
+    dimensions: {
+      height: inventoryItem.height,
+      length: inventoryItem.length,
+      width: inventoryItem.width,
+      weight: inventoryItem.weight,
+    },
+    customs: {
+      origin_country: originCountry,
+      mid_code: inventoryItem.mid_code,
+      hs_code: inventoryItem.hs_code,
     },
   }
 }

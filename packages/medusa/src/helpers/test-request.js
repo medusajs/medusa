@@ -1,8 +1,3 @@
-import {
-  moduleHelper,
-  moduleLoader,
-  registerModules,
-} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -15,6 +10,13 @@ import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
+import repositories from "../loaders/repositories"
+import models from "../loaders/models"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -40,7 +42,31 @@ const config = {
 
 const testApp = express()
 
+function asArray(resolvers) {
+  return {
+    resolve: (container) =>
+      resolvers.map((resolver) => container.build(resolver)),
+  }
+}
+
 const container = createContainer()
+
+// TODO: remove once the util is merged in master
+container.registerAdd = function (name, registration) {
+  const storeKey = name + "_STORE"
+
+  if (this.registrations[storeKey] === undefined) {
+    this.register(storeKey, asValue([]))
+  }
+  const store = this.resolve(storeKey)
+
+  if (this.registrations[name] === undefined) {
+    this.register(name, asArray(store))
+  }
+  store.unshift(registration)
+
+  return this
+}.bind(container)
 
 container.register("featureFlagRouter", asValue(featureFlagRouter))
 container.register("modulesHelper", asValue(moduleHelper))
@@ -66,6 +92,8 @@ testApp.use((req, res, next) => {
 })
 
 featureFlagLoader(config)
+models({ container, configModule: config, isTest: true })
+repositories({ container, isTest: true })
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })

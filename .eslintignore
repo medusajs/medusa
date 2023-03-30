@@ -10,6 +10,7 @@ packages/*
 !packages/admin-ui
 !packages/admin
 !packages/medusa-payment-stripe
+!packages/medusa-payment-paypal
 !packages/event-bus-redis
 !packages/event-bus-local
 !packages/medusa-plugin-meilisearch

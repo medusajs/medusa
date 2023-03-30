@@ -27,7 +27,7 @@ import {
 
 import { capitalize } from "lodash"
 import moment from "moment"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Avatar from "../../../components/atoms/avatar"
 import Spinner from "../../../components/atoms/spinner"
@@ -160,7 +160,9 @@ const OrderDetails = () => {
     enabled: !!order?.region_id,
   })
   const { isFeatureEnabled } = useFeatureFlag()
-  const inventoryEnabled = isFeatureEnabled("inventoryService")
+  const inventoryEnabled = useMemo(() => {
+    return isFeatureEnabled("inventoryService")
+  }, [isFeatureEnabled])
 
   const { reservations, refetch: refetchReservations } = useAdminReservations(
     {
@@ -551,7 +553,7 @@ const OrderDetails = () => {
                 orderToFulfill={order as any}
                 handleCancel={() => setShowFulfillment(false)}
                 orderId={order.id}
-                onComplete={refetchReservations}
+                onComplete={inventoryEnabled ? refetchReservations : () => {}}
               />
             )}
             {showRefund && (

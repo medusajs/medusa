@@ -2,7 +2,6 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
-import { EventBusServiceMock } from "../../../../../services/__mocks__/event-bus"
 
 describe("POST /admin/products/:id", () => {
   describe("successfully updates a product", () => {
@@ -18,7 +17,7 @@ describe("POST /admin/products/:id", () => {
             description: "Updated test description",
             handle: "handle",
             variants: [
-              { id: IdMap.getId("variant_1"), title: "Green" },
+              { id: IdMap.getId("testVariant"), title: "Green" },
               { title: "Blue" },
               { title: "Yellow" },
             ],
@@ -49,7 +48,6 @@ describe("POST /admin/products/:id", () => {
     })
 
     it("successfully updates variants and create new ones", async () => {
-      expect(ProductVariantServiceMock.delete).toHaveBeenCalledTimes(2)
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(2)
     })
@@ -74,7 +72,7 @@ describe("POST /admin/products/:id", () => {
       )
       expect(subject.status).toEqual(404)
       expect(subject.error.text).toEqual(
-        `{"type":"not_found","message":"Variant with id: test_321 is not associated with this product"}`
+        `{"type":"not_found","message":"Variants with id: test_321 are not associated with this product"}`
       )
     })
   })

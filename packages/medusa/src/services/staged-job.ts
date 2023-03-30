@@ -1,10 +1,11 @@
-import { EventBusTypes } from "@medusajs/types"
 import { DeepPartial, EntityManager, In } from "typeorm"
+
+import { EventBusTypes } from "@medusajs/types"
+import { FindConfig } from "../types/common"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
-import { FindConfig } from "../types/common"
+import { TransactionBaseService } from "../interfaces"
 import { isString } from "../utils"
 
 type StagedJobServiceProps = {
@@ -42,8 +43,7 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async create(data: EventBusTypes.EmitData[] | EventBusTypes.EmitData) {
-    return await this.atomicPhase_(async (manager) => {
-      const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
+      const stagedJobRepo = this.activeManager_.withRepository(this.stagedJobRepository_)
 
       const data_ = Array.isArray(data) ? data : [data]
 
@@ -56,7 +56,6 @@ class StagedJobService extends TransactionBaseService {
       ) as QueryDeepPartialEntity<StagedJob>[]
 
       return await stagedJobRepo.insertBulk(stagedJobs)
-    })
   }
 }
 

@@ -1,3 +1,11 @@
+import DiscountableForm, {
+  DiscountableFormType,
+} from "../../forms/product/discountable-form"
+import GeneralForm, { GeneralFormType } from "../../forms/product/general-form"
+import OrganizeForm, {
+  OrganizeFormType,
+} from "../../forms/product/organize-form"
+
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
@@ -8,13 +16,6 @@ import MetadataForm, {
   getSubmittableMetadata,
   MetadataFormType,
 } from "../../forms/general/metadata-form"
-import DiscountableForm, {
-  DiscountableFormType,
-} from "../../forms/product/discountable-form"
-import GeneralForm, { GeneralFormType } from "../../forms/product/general-form"
-import OrganizeForm, {
-  OrganizeFormType,
-} from "../../forms/product/organize-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
 
@@ -160,7 +161,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
         ? { label: product.type.value, value: product.type.id }
         : null,
       tags: product.tags ? product.tags.map((t) => t.value) : null,
-      categories: product?.categories?.map((c) => c.id),
+      categories: product.categories?.map((c) => c.id),
     },
     discountable: {
       value: product.discountable,

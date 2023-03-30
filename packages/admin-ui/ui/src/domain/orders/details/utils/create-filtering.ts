@@ -4,8 +4,6 @@ export const getAllReturnableItems = (
   order: Omit<Order, "beforeInserts">,
   isClaim: boolean
 ) => {
-  console.log(JSON.stringify(order, null, 2))
-
   let orderItems = order.items.reduce(
     (map, obj) =>
       map.set(obj.id, {

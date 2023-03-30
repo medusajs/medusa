@@ -65,6 +65,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     value?: string
     label?: string
   }>({})
+
   const [metadata, setMetadata] = useState<MetadataField[]>([
     { key: "", value: "" },
   ])
@@ -222,6 +223,9 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               type="submit"
               loading={isSubmitting}
               onClick={createFulfillment}
+              disabled={
+                !Object.values(quantities).some((quantity) => quantity > 0)
+              }
             >
               Create fulfillment
             </Button>
