@@ -43,7 +43,7 @@ Here's an example of a middleware:
 export function customMiddleware(req, res, next) {
   // TODO perform an action
   
-  next();
+  next()
 }
 ```
 
@@ -59,7 +59,9 @@ The examples used here don't apply Cross-Origin Resource Origin (CORS) options f
 
 ```ts title=src/api/index.ts
 import { Router } from "express"
-import { customMiddleware } from "./middlewares/custom-middleware"
+import { 
+  customMiddleware,
+} from "./middlewares/custom-middleware"
 
 export default (rootDirectory, pluginOptions) => {
   const router = Router()
@@ -113,15 +115,17 @@ export function customMiddleware(req, res, next) {
   
   req.scope.register({
     customResource: {
-      resolve: () => 'my custom resource'
-    }
+      resolve: () => "my custom resource",
+    },
   })
 
-  next();
+  next()
 }
 ```
 
 You can then load this new resource within other resources. For example, to load it in a service:
+
+<!-- eslint-disable prefer-rest-params -->
 
 ```ts title=src/services/custom-service.ts
 import { TransactionBaseService } from "@medusajs/medusa"
@@ -144,6 +148,8 @@ export default CustomService
 Custom services have by default a transient lifetime. This means your resource will be re-loaded everytime they're resolved.
 
 In some cases, the resource you registered shouldn't be reloaded. For example, if you registered the logged-in user. In those cases, you must set the `LIFE_TIME` static property of the custom service to `Lifetime.SCOPED`:
+
+<!-- eslint-disable prefer-rest-params -->
 
 ```ts
 import { Lifetime } from "awilix"

@@ -15,14 +15,15 @@ This documentation does not explain the basics of [middlewares](./add-middleware
 
 Create the file `src/api/middlewareds/logged-in-user.ts` with the following content:
 
-```tsx
-import { User, UserService } from "@medusajs/medusa";
+```ts
+import { User, UserService } from "@medusajs/medusa"
 
 export async function registerLoggedInUser(req, res, next) {
   let loggedInUser: User | null = null
 
   if (req.user && req.user.userId) {
-    const userService = req.scope.resolve('userService') as UserService
+    const userService = 
+      req.scope.resolve("userService") as UserService
     loggedInUser = await userService.retrieve(req.user.userId)
   }
 
@@ -30,9 +31,9 @@ export async function registerLoggedInUser(req, res, next) {
     loggedInUser: {
       resolve: () => loggedInUser,
      },
-   });
+   })
   
-  next();
+  next()
 }
 ```
 
@@ -44,17 +45,24 @@ This retrieves the ID of the current user to retrieve an instance of it, then re
 
 Create the file `src/api/routes/create-product.ts` with the following content:
 
-```tsx
+```ts
 import cors from "cors"
 import { Router } from "express"
-import { registerLoggedInUser } from "../middlewares/logged-in-user"
+import { 
+  registerLoggedInUser,
+} from "../middlewares/logged-in-user"
 
 const router = Router()
 
 export default function (adminCorsOptions) {
-  // This router will be applied before the core routes. Therefore, the middleware will be executed
+  // This router will be applied before the core routes. 
+  // Therefore, the middleware will be executed
   // before the create product handler is hit
-  router.use("/admin/products", cors(adminCorsOptions), registerLoggedInUser)
+  router.use(
+    "/admin/products", 
+    cors(adminCorsOptions), 
+    registerLoggedInUser
+  )
   return router
 }
 ```
@@ -69,7 +77,7 @@ For endpoints that require Cross-Origin Resource Origin (CORS) options, such as 
 
 Create the file `index.ts` with the following content:
 
-```tsx
+```ts
 import configLoader from "@medusajs/medusa/dist/loaders/config"
 import createProductRouter from "./routes/create-product"
 
@@ -82,7 +90,7 @@ export default async function (rootDirectory: string) {
   }
 
   const productRouters = [
-    createProductRouter(adminCors)
+    createProductRouter(adminCors),
   ]
 
   return [...productRouters]
@@ -97,11 +105,16 @@ This exports an array of endpoints, one of them being the product endpoint that 
 
 You can now access the logged-in user in a service. For example:
 
-```tsx
-import { Lifetime } from "awilix"
-import { TransactionBaseService, User } from "@medusajs/medusa"
+<!-- eslint-disable prefer-rest-params -->
 
-export default class HelloService extends TransactionBaseService {
+```ts
+import { Lifetime } from "awilix"
+import { 
+  TransactionBaseService, 
+  User,
+} from "@medusajs/medusa"
+
+class HelloService extends TransactionBaseService {
   // The default life time for a core service is SINGLETON
   static LIFE_TIME = Lifetime.SCOPED
 
@@ -113,8 +126,10 @@ export default class HelloService extends TransactionBaseService {
     this.loggedInUser_ = container.loggedInUser
   }
 
-	//...
+  // ...
 }
+
+export default HelloService
 ```
 
 This accesses the `loggedInUser` in a custom service. It’s important to change the lifetime of the service to `Lifetime.SCOPED`. You can learn more about the service lifetime in the [Create Service documentation](../services/create-service.md).
@@ -125,13 +140,13 @@ This accesses the `loggedInUser` in a custom service. It’s important to change
 
 To test out your implementation, run the following command in the root directory of the Medusa backend to transpile your changes:
 
-```tsx
+```bash npm2yarn
 npm run build
 ```
 
 Then, run your backend with the following command:
 
-```tsx
+```bash npm2yarn
 npm run start
 ```
 
