@@ -132,11 +132,13 @@ export default HelloService
 
 If you're accessing it in an extended core service, it’s important to change the lifetime of the service to `Lifetime.SCOPED`. For example:
 
+<!-- eslint-disable prefer-rest-params -->
+
 ```ts
 import { Lifetime } from "awilix"
 import { 
   ProductService as MedusaProductService, 
-  User 
+  User, 
 } from "@medusajs/medusa"
 
 // extend core product service

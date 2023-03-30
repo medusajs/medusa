@@ -155,7 +155,9 @@ For example:
 
 ```ts
 import { Lifetime } from "awilix"
-import { ProductService as MedusaProductService } from "@medusajs/medusa"
+import { 
+  ProductService as MedusaProductService,
+} from "@medusajs/medusa"
 
 // extending ProductService from the core
 class ProductService extends MedusaProductService {
