@@ -5,6 +5,12 @@ addHowToData: true
 
 # Deploy Your Medusa Backend to Railway
 
+:::note
+
+This guide is not updated yet to include details about using modules in the Medusa backend, which was introduced in v1.8 of the core package. This primarily affect details related to using Redis as an event bus service. You can learn more about how to install and configure Redis as a module in [this guide](../../development/events/modules/redis.md).
+
+:::
+
 In this document, you’ll learn how to deploy your Medusa backend to Railway.
 
 ## What is Railway

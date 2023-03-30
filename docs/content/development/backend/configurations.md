@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the different configurations available in a Medusa backend. This includes configurations related to the database, CORS, plugins, redis, and more.'
+description: 'Learn about the different configurations available in a Medusa backend. This includes configurations related to the database, CORS, plugins, and more.'
 ---
 
 # Configure Medusa Backend
@@ -8,29 +8,15 @@ In this document, you’ll learn what configurations you can add to your Medusa 
 
 ## Prerequisites
 
-This document assumes you already followed along with the [“Set up your development environment” documentation](./prepare-environment.mdx) and have [installed a Medusa backend](./install.mdx#create-a-medusa-backend).
+This document assumes you already followed along with the [Prepare Environment documentation](./prepare-environment.mdx) and have [installed a Medusa backend](./install.mdx#create-a-medusa-backend).
 
 ---
 
 ## Medusa Configurations File
 
-The configurations for your Medusa backend are in `medusa-config.js`. This includes database, Redis, and plugin configurations, among other configurations.
+The configurations for your Medusa backend are in `medusa-config.js`. This includes database, modules, and plugin configurations, among other configurations.
 
 Some of the configurations mentioned in this document are already defined in `medusa-config.js` with default values. It’s important that you know what these configurations are used for and how to set them.
-
----
-
-## Environment Variables
-
-In your configurations, you’ll often use environment variables. For example, when using API keys or setting your database URL.
-
-By default, Medusa loads environment variables from the system’s environment variables. Any different method you prefer to use or other location you’d prefer to load environment variables from you need to manually implement.
-
-:::info
-
-This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../../upgrade-guides/medusa-core/1-3-0.md).
-
-:::
 
 ---
 
@@ -131,9 +117,15 @@ module.exports = {
 
 ## Redis
 
-Medusa uses Redis to handle the event queue, among other usages. You need to set Redis URL in the configurations:
+:::note
 
-```jsx
+As of v1.8 of the Medusa core package, Redis is only used for scheduled jobs. For events handling, it's now moved into a module and can be configured as explained [here](#modules).
+
+:::
+
+You must first have Redis installed. You can refer to [Redis's installation guide](https://redis.io/docs/getting-started/installation/). You need to set Redis URL in the configurations:
+
+```js
 module.exports = {
   projectConfig: {
     // ...other configurations
@@ -144,7 +136,7 @@ module.exports = {
 
 Where `REDIS_URL` is the URL used to connect to Redis. The format of the connection string is `redis[s]://[[username][:password]@][host][:port][/db-number]`.
 
-If you omit this configuration, events will not be emitted and subscribers will not work.
+If you omit this configuration, scheduled jobs will not work.
 
 :::tip
 
@@ -159,12 +151,6 @@ REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 Where `<YOUR_REDIS_URL>` is the URL of your Redis backend.
-
-:::info
-
-You can learn more about Subscribers and events in the [Subscriber documentation](../events/create-subscriber.md).
-
-:::
 
 ---
 
@@ -203,7 +189,7 @@ In a development environment, if this option is not set the default secret is �
 
 This configuration is used to sign the session ID cookie. To set the cookie secret:
 
-```jsx
+```js
 module.exports = {
   projectConfig: {
     // ...other configurations
@@ -273,7 +259,7 @@ The examples above apply to both Admin and Store CORS.
 
 To make sure your Admin dashboard can access the Medusa backend’s admin endpoints, set this configuration:
 
-```jsx
+```js
 module.exports = {
   projectConfig: {
     // ...other configurations
@@ -302,7 +288,7 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 To make sure your Storefront dashboard can access the Medusa backend, set this configuration:
 
-```jsx
+```js
 module.exports = {
   projectConfig: {
     // ...other configurations
@@ -331,7 +317,7 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 ## Plugins
 
-On your Medusa backend, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment provider.
+On your Medusa backend, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment processor.
 
 :::info
 
@@ -385,7 +371,61 @@ It is recommended to use environment variables to store values of options instea
 
 ---
 
+## Modules
+
+In Medusa, commerce and core logic are modularized to allow developers to extend or replace certain modules with custom implementations.
+
+:::tip
+
+You can learn more about Modules in the [Modules Overview documentation](../modules/overview.mdx).
+
+:::
+
+Aside from installing the module with NPM, you need to add into the exported object in `medusa-config.js`. For example:
+
+```js
+module.exports = {
+  // ...
+  modules: { 
+    // ...
+    moduleType: {
+      resolve: "<module_name>", 
+      options: {
+        // options if necessary
+      },
+    },
+  },
+}
+```
+
+`moduleType` and `<module_name>` are just placeholder that should be replaced based on the type of Module you're adding. For example, if you used the default Medusa starter to create your backend, you should have an `eventBus` module installed:
+
+```js
+module.exports = {
+  // ...
+  modules: {
+    // ...
+    eventBus: {
+      resolve: "@medusajs/event-bus-local",
+    },
+  },
+}
+```
+
+Each module can have its own options. You must refer to the module's documentation to learn about its options.
+
+### Recommended Event Bus Modules
+
+In the default Medusa starter, the local event bus module is used. This module is good for testing out Medusa and during development, but it's highly recommended to use the [Redis event module](../events/modules/redis.md) instead for better development experience and during production.
+
+### Recommended Cache Modules
+
+In the default Medusa starter, the in-memory cache module is used. This module is good for testing out Medusa and during development, but it's highly recommended to use the [Redis cache module](../cache/modules/redis.md) instead for better development experience and during production.
+
+---
+
 ## See Also
 
 - [Medusa architecture overview](../fundamentals/architecture-overview.md)
 - [Plugins](../plugins/overview.mdx)
+- [Modules](../modules/overview.mdx)

@@ -10,7 +10,7 @@ In this document, you’ll learn about the Region entity and its architecture.
 
 Regions represent at least one country on your Medusa backend. They're used to define different business logic and configurations for a set of countries.
 
-For example, you can enable one payment provider for region A, and a different payment provider for region B. Customers can then use the payment provider enabled in their region.
+For example, you can enable one payment processor for region A, and a different payment processor for region B. Customers can then use the payment processor enabled in their region.
 
 This applies to other relations and entities in your store such as different currencies, fulfillment providers, and tax providers.
 
@@ -23,7 +23,7 @@ The following configurations can be set for each region:
 1. The currency used.
 2. The tax provider and rates.
 3. The countries that belong to that region. A country can only belong to one region.
-4. The enabled payment providers.
+4. The enabled payment processors.
 5. The enabled fulfillment providers.
 6. The shipping and return shipping options.
 
@@ -33,9 +33,9 @@ The following configurations can be set for each region:
 
 Your store needs at least one region so that your customers can place orders.
 
-If you serve customers in different countries that use the same configurations, such as the same currency and payment providers, then you can include more countries in the same region.
+If you serve customers in different countries that use the same configurations, such as the same currency and payment processors, then you can include more countries in the same region.
 
-If you serve customers in different countries that have at least one different configuration, such as different payment providers, you need to create a new region for those countries.
+If you serve customers in different countries that have at least one different configuration, such as different payment processors, you need to create a new region for those countries.
 
 There is no limit on how many regions you can create, and regions can share similar configurations.
 
@@ -84,7 +84,7 @@ The relation is available on a region by expanding the `fulfillment_providers` r
 
 ### PaymentProvider
 
-A region must have at least one payment provider. A payment provider can be used in more than one region.
+A region must have at least one payment processor. A payment processor can be used in more than one region.
 
 The relation is available on a region by expanding the `payment_providers` relation and accessing `region.payment_providers`.
 
