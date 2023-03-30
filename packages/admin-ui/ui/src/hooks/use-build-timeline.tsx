@@ -345,7 +345,10 @@ export const useBuildTimeline = (orderId: string) => {
     for (const event of order.returns) {
       events.push({
         id: event.id,
-        items: event.items.map((i) => getReturnItems(allItems, i)),
+        items: event.items
+          .map((i) => getReturnItems(allItems, i))
+          // After order edit is confirmed, line item that was returned can be deleted
+          .filter((i) => !!i),
         status: event.status,
         currentStatus: event.status,
         time: event.updated_at,
@@ -360,7 +363,10 @@ export const useBuildTimeline = (orderId: string) => {
       if (event.status !== "requested") {
         events.push({
           id: event.id,
-          items: event.items.map((i) => getReturnItems(allItems, i)),
+          items: event.items
+            .map((i) => getReturnItems(allItems, i))
+            // After order edit is confirmed, line item that was returned can be deleted
+            .filter((i) => !!i),
           status: "requested",
           time: event.created_at,
           type: "return",

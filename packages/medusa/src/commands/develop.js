@@ -50,7 +50,7 @@ export default async function ({ port, directory }) {
   let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
     env: process.env,
-    stdio: ["inherit", "inherit", "inherit", "ipc"],
+    stdio: ["pipe", process.stdout, process.stderr],
   })
   child.on("error", function (err) {
     console.log("Error ", err)
@@ -69,7 +69,7 @@ export default async function ({ port, directory }) {
 
     execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
       cwd: directory,
-      stdio: ["inherit", "inherit", "inherit", "ipc"],
+      stdio: ["pipe", process.stdout, process.stderr],
     })
 
     Logger.info("Rebuilt")
@@ -77,7 +77,7 @@ export default async function ({ port, directory }) {
     child = spawn(cliPath, [`start`, ...args], {
       cwd: directory,
       env: process.env,
-      stdio: ["inherit", "inherit", "inherit", "ipc"],
+      stdio: ["pipe", process.stdout, process.stderr],
     })
     child.on("error", function (err) {
       console.log("Error ", err)

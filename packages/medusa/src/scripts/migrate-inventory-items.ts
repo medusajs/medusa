@@ -1,14 +1,15 @@
-import { AwilixContainer } from "awilix"
-import dotenv from "dotenv"
-import express from "express"
-
 import { IInventoryService, IStockLocationService } from "@medusajs/types"
-import loaders from "../loaders"
-import { ProductVariant } from "../models"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../services"
+
+import { AwilixContainer } from "awilix"
+import { EntityManager } from "typeorm"
+import { ProductVariant } from "../models"
+import dotenv from "dotenv"
+import express from "express"
+import loaders from "../loaders"
 
 dotenv.config()
 
@@ -17,10 +18,24 @@ const BATCH_SIZE = 100
 const migrateProductVariant = async (
   variant: ProductVariant,
   locationId: string,
-  { container }: { container: AwilixContainer }
+  {
+    container,
+    transactionManager,
+  }: { container: AwilixContainer; transactionManager: EntityManager }
 ) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     container.resolve("productVariantInventoryService")
+
+  const productVariantInventoryServiceTx =
+    productVariantInventoryService.withTransaction(transactionManager)
+
+  const existingVariantInventoryItems =
+    await productVariantInventoryServiceTx.listByVariant(variant.id)
+
+  if (existingVariantInventoryItems.length) {
+    return
+  }
+
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 
@@ -28,31 +43,38 @@ const migrateProductVariant = async (
     return
   }
 
-  const inventoryItem = await inventoryService.createInventoryItem({
-    sku: variant.sku,
-    material: variant.material,
-    width: variant.width,
-    length: variant.length,
-    height: variant.height,
-    weight: variant.weight,
-    origin_country: variant.origin_country,
-    hs_code: variant.hs_code,
-    mid_code: variant.mid_code,
-    requires_shipping: true,
-  })
+  const context = { transactionManager }
+  const inventoryItem = await inventoryService.createInventoryItem(
+    {
+      sku: variant.sku,
+      material: variant.material,
+      width: variant.width,
+      length: variant.length,
+      height: variant.height,
+      weight: variant.weight,
+      origin_country: variant.origin_country,
+      hs_code: variant.hs_code,
+      mid_code: variant.mid_code,
+      requires_shipping: true,
+    },
+    context
+  )
 
-  await productVariantInventoryService.attachInventoryItem(
+  await productVariantInventoryServiceTx.attachInventoryItem(
     variant.id,
     inventoryItem.id,
     1
   )
 
-  await inventoryService.createInventoryLevel({
-    location_id: locationId,
-    inventory_item_id: inventoryItem.id,
-    stocked_quantity: variant.inventory_quantity,
-    incoming_quantity: 0,
-  })
+  await inventoryService.createInventoryLevel(
+    {
+      location_id: locationId,
+      inventory_item_id: inventoryItem.id,
+      stocked_quantity: variant.inventory_quantity,
+      incoming_quantity: 0,
+    },
+    context
+  )
 }
 
 const migrateStockLocation = async (container: AwilixContainer) => {
@@ -75,11 +97,17 @@ const processBatch = async (
   locationId: string,
   container: AwilixContainer
 ) => {
-  await Promise.all(
-    variants.map(async (variant) => {
-      await migrateProductVariant(variant, locationId, { container })
-    })
-  )
+  const manager = container.resolve("manager")
+  return await manager.transaction(async (transactionManager) => {
+    await Promise.all(
+      variants.map(async (variant) => {
+        await migrateProductVariant(variant, locationId, {
+          container,
+          transactionManager,
+        })
+      })
+    )
+  })
 }
 
 const migrate = async function ({ directory }) {

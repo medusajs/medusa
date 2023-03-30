@@ -64,7 +64,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       )
     }
 
-    if (!isLoading && (!variant || !variant.inventory)) {
+    if (!isLoading && !variant?.inventory?.length) {
       return <div className="text-right">{original.inventory_quantity}</div>
     }
 
@@ -102,55 +102,44 @@ const VariantsTable: React.FC<Props> = (props) => {
     )
   }
 
+  const ProductCell = ({ row: { original } }) => {
+    return (
+      <div className="flex items-center">
+        <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+          {original.product.thumbnail ? (
+            <img
+              src={original.product.thumbnail}
+              className="rounded-soft h-full object-cover"
+            />
+          ) : (
+            <ImagePlaceholder />
+          )}
+        </div>
+        <div className="flex max-w-[200px] flex-col">
+          <Tooltip
+            content={
+              <span className="font-normal">{original.product.title}</span>
+            }
+            maxWidth={400}
+          >
+            <div className="truncate">
+              {original.sku ?? original.product.title}
+            </div>
+          </Tooltip>
+          <span className="text-grey-50">{original.title}</span>
+        </div>
+      </div>
+    )
+  }
+
   const columns = useMemo(() => {
     return [
       {
         Header: (
-          <div className="text-small font-semibold text-gray-500">Name</div>
-        ),
-        accessor: "title",
-        Cell: ({ row: { original } }) => {
-          return (
-            <div className="flex items-center">
-              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
-                {original.product.thumbnail ? (
-                  <img
-                    src={original.product.thumbnail}
-                    className="rounded-soft h-full object-cover"
-                  />
-                ) : (
-                  <ImagePlaceholder />
-                )}
-              </div>
-              <div className="flex flex-col">
-                <span>{original.product.title}</span>
-                {original.title}
-              </div>
-            </div>
-          )
-        },
-      },
-      {
-        Header: (
-          <div className="text-small font-semibold text-gray-500">SKU</div>
+          <div className="text-small font-semibold text-gray-500">Product</div>
         ),
         accessor: "sku",
-        Cell: ({ row: { original } }) => <div>{original.sku}</div>,
-      },
-      {
-        Header: (
-          <div className="text-small font-semibold text-gray-500">Options</div>
-        ),
-        accessor: "options",
-        Cell: ({ row: { original } }) => {
-          const options = original.options?.map(({ value }) => value).join(", ")
-
-          return (
-            <div title={options} className="max-w-[160px] truncate">
-              <span>{options}</span>
-            </div>
-          )
-        },
+        Cell: ProductCell,
       },
       {
         Header: (

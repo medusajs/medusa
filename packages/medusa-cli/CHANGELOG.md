@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.3.9-rc.1
+
+### Patch Changes
+
+- [#3603](https://github.com/medusajs/medusa/pull/3603) [`cd54c7dca`](https://github.com/medusajs/medusa/commit/cd54c7dca9f7444dd2bfa91b4e3e3359dc6658cf) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa-cli): Add direct dependency of `semver`
+
+## 1.3.9-rc.0
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0-rc.0
+
 ## 1.3.8
 
 ### Patch Changes

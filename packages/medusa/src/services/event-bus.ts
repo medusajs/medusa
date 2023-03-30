@@ -156,7 +156,7 @@ export default class EventBusService
      *
      * If we are in a long-running transaction, the ACID properties of a
      * transaction ensure, that events are kept invisible to the enqueuer
-     * until the trasaction has commited.
+     * until the transaction has committed.
      *
      * This patterns also gives us at-least-once delivery of events, as events
      * are only removed from the database, if they are successfully delivered.
