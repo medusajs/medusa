@@ -1,7 +1,7 @@
 import { Column, useTable } from "react-table"
 
 import { ProductVariant } from "@medusajs/medusa"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import DuplicateIcon from "../../fundamentals/icons/duplicate-icon"
@@ -9,6 +9,7 @@ import EditIcon from "../../fundamentals/icons/edit-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import Actionables from "../../molecules/actionables"
 import Table from "../../molecules/table"
+import DeletePrompt from "../delete-prompt"
 
 type Props = {
   variants: ProductVariant[]
@@ -87,6 +88,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
   const { isFeatureEnabled } = useFeatureFlag()
   const hasInventoryService = isFeatureEnabled("inventoryService")
   const columns = useVariantsTableColumns(hasInventoryService)
+  const [showDelete, setShowDelete] = useState(false)
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -132,7 +134,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
       },
       {
         label: "Delete Variant",
-        onClick: () => deleteVariant(variant.id),
+        onClick: () => setShowDelete(true),
         icon: <TrashIcon size="20" />,
         variant: "danger",
       },
@@ -177,6 +179,20 @@ const VariantsTable = ({ variants, actions }: Props) => {
               <Table.Cell>
                 <div className="float-right">
                   <Actionables forceDropdown actions={actionables} />
+                  {showDelete && (
+                    <DeletePrompt
+                      onDelete={async () => deleteVariant(row.original.id)}
+                      handleClose={() => setShowDelete(false)}
+                      confirmText="Yes, delete"
+                      heading="Delete variant"
+                      text={`Are you sure you want to delete this variant? ${
+                        isFeatureEnabled("inventoryService")
+                          ? " Note: Deleting the variant will also remove inventory items and levels"
+                          : ""
+                      }`}
+                      successText={false}
+                    />
+                  )}
                 </div>
               </Table.Cell>
             </Table.Row>
