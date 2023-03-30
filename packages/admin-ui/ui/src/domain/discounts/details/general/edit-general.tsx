@@ -136,13 +136,6 @@ const getDefaultValues = (discount: Discount): GeneralForm | undefined => {
     },
     metadata: getMetadataFormValues(discount.metadata),
   }
-
-  // return {
-  //   regions: discount.regions.map((r) => ({ label: r.name, value: r.id })),
-  //   code: discount.code,
-  //   description: discount.rule.description,
-  //   value: discount.rule.value,
-  // }
 }
 
 export default EditGeneral

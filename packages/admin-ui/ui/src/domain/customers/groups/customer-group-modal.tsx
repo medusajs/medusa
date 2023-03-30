@@ -66,7 +66,7 @@ function CustomerGroupModal({
     const onSuccess = () => {
       const title = customerGroup ? "Group Updated" : "Group Created"
       const msg = customerGroup
-        ? "The group customer has been updated"
+        ? "The customer group has been updated"
         : "The customer group has been created"
 
       notification(title, msg, "success")
