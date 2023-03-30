@@ -1,5 +1,6 @@
 import moment from "moment"
 import { useMemo } from "react"
+import { getColor } from "../../../utils/color"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
 
 export const useCustomerColumns = () => {
@@ -14,7 +15,10 @@ export const useCustomerColumns = () => {
         Header: "Name",
         accessor: "customer",
         Cell: ({ row }) => (
-          <CustomerAvatarItem customer={row.original} color="bg-grey-80" />
+          <CustomerAvatarItem
+            customer={row.original}
+            color={getColor(row.index)}
+          />
         ),
       },
       {

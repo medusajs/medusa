@@ -53,7 +53,7 @@ const CustomerDetail = () => {
                 <Avatar
                   user={customer}
                   font="inter-2xlarge-semibold w-full h-full"
-                  color="bg-grey-80"
+                  color="bg-fuchsia-50"
                 />
               </div>
               <div className="flex grow flex-col">
