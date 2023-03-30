@@ -1,7 +1,8 @@
 <p align="center">
   <a href="https://www.medusajs.com">
-    <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/153162406-bf8fd16f-aa98-4604-b87b-e13ab4baf604.png" width="100" />
+    <img alt="Medusa" src="https://user-images.githubusercontent.com/59018053/228887024-f13c2620-2b21-4ed7-b712-38b5ec89cad9.svg" width="100" />
   </a>
+
 </p>
 <h1 align="center">
   Medusa
