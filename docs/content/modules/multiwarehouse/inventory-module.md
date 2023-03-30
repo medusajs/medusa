@@ -10,7 +10,7 @@ In this document, you’ll learn about the inventory module and how it works.
 
 The inventory module includes all functionalities related to product inventory. It implements inventory management for a product, confirming whether a product is available across inventory levels, and updating the inventory availability of a product variant at different points in the order lifecycle.
 
-The inventory module is a standalone module that can be used in any commerce application, not just in a Medusa backend. This document gives a general overview of how the inventory module is designed, then explains how the Medusa core orchestrates relations and processes around this module when it's used with the Medusa backend.
+Medusa's Inventory module is a standalone module that can be used in any commerce application, not just in a Medusa backend. This document gives a general overview of how the inventory module is designed, then explains how the Medusa core orchestrates relations and processes around this module when it's used with the Medusa backend.
 
 ---
 
