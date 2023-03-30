@@ -131,31 +131,6 @@ You can then load this new resource within other resources. For example, to load
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class CustomService extends TransactionBaseService {
-
-  constructor(container, options) {
-    super(...arguments)
-
-    // use the registered resource.
-    container.customResource
-  }
-}
-
-export default CustomService
-```
-
-### Note About Lifetime
-
-Custom services have by default a transient lifetime. This means your resource will be re-loaded everytime they're resolved.
-
-In some cases, the resource you registered shouldn't be reloaded. For example, if you registered the logged-in user. In those cases, you must set the `LIFE_TIME` static property of the custom service to `Lifetime.SCOPED`:
-
-<!-- eslint-disable prefer-rest-params -->
-
-```ts
-import { Lifetime } from "awilix"
-import { TransactionBaseService } from "@medusajs/medusa"
-
-class CustomService extends TransactionBaseService {
   static LIFE_TIME = Lifetime.SCOPED
 
   constructor(container, options) {
@@ -169,7 +144,7 @@ class CustomService extends TransactionBaseService {
 export default CustomService
 ```
 
-You can learn more about lifetime in the [Create Service documentation](../services/create-service.md#service-life-time).
+Notice that the `LIFE_TIME` property has been set to `Lifetime.SCOPED`. If you want to access new registrations in the dependency container within a service, you must set the lifetime of the service either to `Lifetime.SCOPED` or `Lifetime.TRANSIENT`.
 
 ---
 

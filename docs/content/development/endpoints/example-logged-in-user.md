@@ -132,7 +132,7 @@ class HelloService extends TransactionBaseService {
 export default HelloService
 ```
 
-This accesses the `loggedInUser` in a custom service. It’s important to change the lifetime of the service to `Lifetime.SCOPED`. You can learn more about the service lifetime in the [Create Service documentation](../services/create-service.md).
+This accesses the `loggedInUser` in a custom service. It’s important to change the lifetime of the service to `Lifetime.SCOPED`. You can learn more about the service lifetime in the [Create Service documentation](../services/create-service.md#service-life-time).
 
 ---
 
