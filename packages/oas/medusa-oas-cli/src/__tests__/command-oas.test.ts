@@ -82,6 +82,11 @@ describe("command oas", () => {
   describe("--type admin", () => {
     let oas: OpenAPIObject
 
+    /**
+     * In a CI context, beforeAll might exceed the configured jest timeout.
+     * Until we upgrade our jest version, the timeout error will be swallowed
+     * and the test will fail in unexpected ways.
+     */
     beforeAll(async () => {
       const outDir = path.resolve(tmpDir, uid())
       await runCLI("oas", ["--type", "admin", "--out-dir", outDir])
