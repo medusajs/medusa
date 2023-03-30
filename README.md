@@ -13,7 +13,7 @@
 </h4>
 
 <p align="center">
-  Building blocks for digital blocks
+  Building blocks for digital commerce
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -36,13 +36,13 @@
 
 ## Getting Started
 
-Visit the [Quickstart Guide](https://docs.medusajs.com/quickstart/quick-start) to set up a server.
+Visit the [Quickstart Guide](https://docs.medusajs.com/create-medusa-app) to set up a server.
 
-Visit the [Docs](https://docs.medusajs.com/tutorial/set-up-your-development-environment) to learn more about our system requirements.
+Visit the [Docs](https://docs.medusajs.com/development/backend/prepare-environment) to learn more about our system requirements.
 
 ## What is Medusa
 
-Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced e-commerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
+Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
 
 Learn more about [Medusa’s architecture](https://docs.medusajs.com/introduction#architecture) and [commerce modules](https://docs.medusajs.com/modules/overview) in the Docs.
 
@@ -50,7 +50,7 @@ Learn more about [Medusa’s architecture](https://docs.medusajs.com/introductio
 
 You can view the planned, started and completed features in the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap).
 
-Follow the [Upgrade Guides](https://docs.medusajs.com/advanced/backend/upgrade-guides/) to keep your Medusa project up-to-date.
+Follow the [Upgrade Guides](https://docs.medusajs.com/upgrade-guides/) to keep your Medusa project up-to-date.
 
 Check out all [available Medusa plugins](https://medusajs.com/plugins/).
 
