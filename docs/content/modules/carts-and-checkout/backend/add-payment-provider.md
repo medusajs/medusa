@@ -49,7 +49,7 @@ All these methods must be declared async in the Payment Processor.
 
 These methods are used at different points in the Checkout flow as well as when processing the order after it’s placed.
 
-![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001750/Medusa%20Docs/Diagrams/WeDr0ph_idcrir.jpg)
+![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1680177820/Medusa%20Docs/Diagrams/checkout-payment_cy9efp.jpg)
 
 ---
 
