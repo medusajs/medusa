@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.8.0-rc.4
+
+### Minor Changes
+
+- [#3554](https://github.com/medusajs/medusa/pull/3554) [`5fd74b38a`](https://github.com/medusajs/medusa/commit/5fd74b38ae1b4f7dced191983b78db83f7b1f71b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): remove reservations if cart completion fails after reservation creation
+
+- [#3544](https://github.com/medusajs/medusa/pull/3544) [`5e405be02`](https://github.com/medusajs/medusa/commit/5e405be02cc94779222dc3d930e747027496d918) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): remove reservations for all old line items when an order edit is accepted
+
+- [#3591](https://github.com/medusajs/medusa/pull/3591) [`a7e3f2d34`](https://github.com/medusajs/medusa/commit/a7e3f2d343c4059ba83022ec5c09f8101b251297) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): move customs and shipping into manage inventory modal
+
+### Patch Changes
+
+- [#3624](https://github.com/medusajs/medusa/pull/3624) [`999aeb116`](https://github.com/medusajs/medusa/commit/999aeb116c4742e5b5e0d80793af23f7727276f0) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): Fix hanging inventory item migration script
+
 ## 1.8.0-rc.3
 
 ### Minor Changes
