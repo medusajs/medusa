@@ -4,6 +4,7 @@ import BodyCard from "../../../components/organisms/body-card"
 import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
 import useToggleState from "../../../hooks/use-toggle-state"
 import CustomersPageTableHeader from "../header"
+import CustomerGroupModal from "./customer-group-modal"
 import Details from "./details"
 
 /*
@@ -25,16 +26,18 @@ function Index() {
   ]
 
   return (
-    <div className="flex h-full grow flex-col">
-      <div className="flex w-full grow flex-col">
+    <>
+      <div className="flex h-full grow flex-col">
         <BodyCard
           actionables={actions}
+          className="h-auto"
           customHeader={<CustomersPageTableHeader activeView="groups" />}
         >
           <CustomerGroupsTable />
         </BodyCard>
       </div>
-    </div>
+      <CustomerGroupModal open={state} onClose={close} />
+    </>
   )
 }
 

@@ -1,13 +1,24 @@
 import { CustomerGroup } from "@medusajs/medusa"
+import {
+  useAdminCreateCustomerGroup,
+  useAdminUpdateCustomerGroup,
+} from "medusa-react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import {
   CustomerGroupGeneralForm,
   CustomerGroupGeneralFormType,
-} from "../../../components/forms/customer-groups/customer-group-general-form"
-import { getMetadataFormValues } from "../../../components/forms/general/metadata-form"
+} from "../../../components/forms/customer-group/customer-group-general-form"
+import MetadataForm, {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../../components/forms/general/metadata-form"
 
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
+import useNotification from "../../../hooks/use-notification"
+import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
 
 type CustomerGroupModalProps = {
@@ -17,7 +28,8 @@ type CustomerGroupModalProps = {
 }
 
 type CustomerGroupModalFormType = {
-  form: CustomerGroupGeneralFormType
+  general: CustomerGroupGeneralFormType
+  metadata: MetadataFormType
 }
 
 /*
@@ -32,9 +44,66 @@ function CustomerGroupModal({
     defaultValues: getDefaultValues(customerGroup),
   })
 
-  const { register, handleSubmit: handleFormSubmit } = form
+  const { mutate: update, isLoading: isUpdating } = useAdminUpdateCustomerGroup(
+    customerGroup?.id!
+  )
+  const { mutate: create, isLoading: isCreating } =
+    useAdminCreateCustomerGroup()
 
-  const onSubmit = handleFormSubmit((data) => {})
+  const notification = useNotification()
+
+  const { reset, handleSubmit: handleFormSubmit } = form
+
+  useEffect(() => {
+    if (open) {
+      reset(getDefaultValues(customerGroup))
+    }
+  }, [customerGroup, open, reset])
+
+  const onSubmit = handleFormSubmit((data) => {
+    const { general, metadata } = data
+
+    const onSuccess = () => {
+      const title = customerGroup ? "Group Updated" : "Group Created"
+      const msg = customerGroup
+        ? "The group customer has been updated"
+        : "The customer group has been created"
+
+      notification(title, msg, "success")
+
+      onClose()
+    }
+
+    const onError = (err: Error) => {
+      notification("Error", getErrorMessage(err), "error")
+    }
+
+    if (customerGroup) {
+      update(
+        {
+          name: general.name,
+          metadata: getSubmittableMetadata(metadata),
+        },
+        {
+          onSuccess,
+          onError,
+        }
+      )
+    } else {
+      create(
+        {
+          name: general.name,
+          metadata: getSubmittableMetadata(metadata),
+        },
+        {
+          onSuccess,
+          onError,
+        }
+      )
+    }
+
+    onClose()
+  })
 
   return (
     <Modal open={open} handleClose={onClose}>
@@ -45,9 +114,18 @@ function CustomerGroupModal({
           </span>
         </Modal.Header>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <Modal.Content>
-            <CustomerGroupGeneralForm form={nestedForm(form, "form")} />
+            <div className="gap-y-xlarge flex flex-col">
+              <div>
+                <h2 className="inter-base-semibold mb-base">Details</h2>
+                <CustomerGroupGeneralForm form={nestedForm(form, "general")} />
+              </div>
+              <div>
+                <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                <MetadataForm form={nestedForm(form, "metadata")} />
+              </div>
+            </div>
           </Modal.Content>
 
           <Modal.Footer>
@@ -79,13 +157,11 @@ const getDefaultValues = (
     return undefined
   }
 
-  console.log(initialData.metadata)
-
   return {
-    form: {
+    general: {
       name: initialData.name,
-      metadata: getMetadataFormValues(initialData.metadata),
     },
+    metadata: getMetadataFormValues(initialData.metadata),
   }
 }
 

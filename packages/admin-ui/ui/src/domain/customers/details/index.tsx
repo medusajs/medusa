@@ -3,15 +3,16 @@ import moment from "moment"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 import Avatar from "../../../components/atoms/avatar"
+import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import StatusDot from "../../../components/fundamentals/status-indicator"
 import Actionables, {
   ActionType,
 } from "../../../components/molecules/actionables"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
+import Section from "../../../components/organisms/section"
 import CustomerOrdersTable from "../../../components/templates/customer-orders-table"
 import EditCustomerModal from "./edit"
 
@@ -39,31 +40,32 @@ const CustomerDetail = () => {
 
   return (
     <div>
-      <Breadcrumb
-        currentPage={"Customer Details"}
-        previousBreadcrumb={"Customers"}
-        previousRoute="/a/customers"
+      <BackButton
+        label="Back to Customers"
+        path="/a/customers"
+        className="mb-xsmall"
       />
       <div className="gap-y-small flex flex-col">
-        <BodyCard className={"relative h-auto w-full"}>
-          <div className="from-fuschia-20 absolute inset-x-0 top-0 z-0 h-[120px] w-full bg-gradient-to-b" />
-          <div className="flex grow flex-col overflow-y-auto">
-            <div className="mb-4 h-[64px] w-[64px]">
-              <Avatar
-                user={customer}
-                font="inter-2xlarge-semibold"
-                color="bg-fuschia-40"
-              />
+        <Section>
+          <div className="flex w-full items-start justify-between">
+            <div className="gap-x-base flex w-full items-center">
+              <div className="h-[64px] w-[64px]">
+                <Avatar
+                  user={customer}
+                  font="inter-2xlarge-semibold w-full h-full"
+                  color="bg-grey-90"
+                />
+              </div>
+              <div className="flex grow flex-col">
+                <h1 className="inter-xlarge-semibold text-grey-90 max-w-[50%] truncate">
+                  {customerName()}
+                </h1>
+                <h3 className="inter-small-regular text-grey-50">
+                  {customer?.email}
+                </h3>
+              </div>
             </div>
-            <div className="flex items-center justify-between">
-              <h1 className="inter-xlarge-semibold text-grey-90 max-w-[50%] truncate">
-                {customerName()}
-              </h1>
-              <Actionables forceDropdown actions={actions} />
-            </div>
-            <h3 className="inter-small-regular text-grey-50 pt-1.5">
-              {customer?.email}
-            </h3>
+            <Actionables actions={actions} forceDropdown />
           </div>
           <div className="mt-6 flex space-x-6 divide-x">
             <div className="flex flex-col">
@@ -98,7 +100,7 @@ const CustomerDetail = () => {
               </div>
             </div>
           </div>
-        </BodyCard>
+        </Section>
         <BodyCard
           title={`Orders (${customer?.orders.length})`}
           subtitle="An overview of Customer Orders"

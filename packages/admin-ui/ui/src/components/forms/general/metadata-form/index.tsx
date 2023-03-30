@@ -349,6 +349,7 @@ export const getMetadataFormValues = (
         data.entries.push({
           key,
           value: value as string,
+          state: "existing",
         })
       } else {
         data.ignored![key] = value
