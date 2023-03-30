@@ -88,7 +88,7 @@ medusa.carts.update(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useCart } from "medusa-react"
 
 const Cart = () => {
@@ -179,7 +179,7 @@ medusa.shippingOptions.listCartOptions(cartId)
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { ShippingOption } from "@medusajs/medusa"
 import { useCartShippingOptions } from "medusa-react"
 
@@ -252,7 +252,7 @@ medusa.carts.addShippingMethod(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useAddShippingMethodToCart } from "medusa-react"
 // ...
 
@@ -305,9 +305,9 @@ It returns the updated cart, with the created shipping method available in the a
 
 In this step, the customer generally chooses a payment method to complete their purchase. The implementation of payment providers is done differently for each provider, so this section will just show the general steps you should follow when implementing this step.
 
-### Initialize Payment Sessions
+### Display Payment Methods
 
-When the page opens and before the payment providers are displayed to the customer to choose from, you must initialize the [payment sessions](../payment.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
+When the page opens and before the payment providers are displayed to the customer to choose from, you must create the [payment sessions](../payment.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
 
 To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) API endpoint:
 
@@ -324,7 +324,7 @@ medusa.carts.createPaymentSessions(cartId)
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { PaymentSession } from "@medusajs/medusa"
 import { useCart } from "medusa-react"
 import { useEffect } from "react"
@@ -396,7 +396,7 @@ medusa.carts.setPaymentSession(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useCart } from "medusa-react"
 
 const PaymentProviders = () => {
@@ -474,7 +474,7 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useUpdatePaymentSession, useCart } from "medusa-react"
 // ...
 
@@ -554,7 +554,7 @@ medusa.carts.complete(cartId)
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useCart } from "medusa-react"
 // ...
 
