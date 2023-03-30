@@ -18,7 +18,7 @@ type AvatarProps = {
 const Avatar: React.FC<AvatarProps> = ({
   user,
   font = "inter-small-semibold",
-  color = "bg-violet-60",
+  color = "bg-grey-80",
   isLoading = false,
 }) => {
   let username: string
