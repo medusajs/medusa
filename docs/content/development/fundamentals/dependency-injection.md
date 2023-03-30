@@ -42,7 +42,7 @@ The Lifetime column indicates the lifetime of a service. Other resources that ar
 
 :::
 
-<table class="reference-table">
+<table class="reference-table table-col-4">
 <thead>
 <tr>
 <th>
@@ -61,7 +61,6 @@ Description
 Registration Name
 
 </th>
-
 <th>
 
 Lifetime
