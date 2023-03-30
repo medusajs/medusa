@@ -25,7 +25,7 @@
     "meilisearch": "^0.31.1"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.8.0-rc.3",
+    "@medusajs/medusa": "1.8.0-rc.4",
     "@medusajs/types": "0.0.2-rc.1",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",

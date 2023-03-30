@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.0-rc.4
+
+### Patch Changes
+
+- Updated dependencies [[`5fd74b38a`](https://github.com/medusajs/medusa/commit/5fd74b38ae1b4f7dced191983b78db83f7b1f71b), [`999aeb116`](https://github.com/medusajs/medusa/commit/999aeb116c4742e5b5e0d80793af23f7727276f0), [`5e405be02`](https://github.com/medusajs/medusa/commit/5e405be02cc94779222dc3d930e747027496d918), [`a7e3f2d34`](https://github.com/medusajs/medusa/commit/a7e3f2d343c4059ba83022ec5c09f8101b251297)]:
+  - @medusajs/medusa@1.8.0-rc.4
+
 ## 2.0.0-rc.3
 
 ### Patch Changes
