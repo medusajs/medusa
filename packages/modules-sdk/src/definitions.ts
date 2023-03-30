@@ -12,6 +12,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "EventBusModuleService",
     canOverride: true,
     isRequired: true,
+    dependencies: ["logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
