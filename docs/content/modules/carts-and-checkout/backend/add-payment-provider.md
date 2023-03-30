@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a payment processor in the Medusa server. This guide explains the different methods available in a payment processor.'
+description: 'Learn how to create a payment processor in the Medusa. This guide explains the different methods available in a payment processor.'
 addHowToData: true
 ---
 
@@ -55,11 +55,11 @@ These methods are used at different points in the Checkout flow as well as when 
 
 ## Create a Payment Processor
 
-The first step to create a payment processor is to create a JavaScript or TypeScript file in `src/services`. The file's name should be the name of the payment processor.
+The first step to create a payment processor is to create a JavaScript or TypeScript file in `src/services`. The file's name should be the name of the payment processor, and it should be in snake case.
 
-For example, create the file `src/services/my-payment.ts` with the following content:
+For example, create the file `src/services/my-payment-processor.ts` with the following content:
 
-```ts title=src/services/my-payment.ts
+```ts title=src/services/my-payment-processor.ts
 import { 
   AbstractPaymentProcessor, 
   PaymentProcessorContext, 
@@ -141,7 +141,7 @@ Payment Processors must extend `AbstractPaymentProcessor` from the core Medusa p
 
 :::tip
 
-Following the naming convention of Services, the name of the file should be the slug name of the Payment Processor, and the name of the class should be the camel case name of the Payment Processors suffixed with “Service”. In the example above, the name of the file should be `my-payment.js`. You can learn more in the [service documentation](../../../development/services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the Payment Processor, and the name of the class should be the camel case name of the Payment Processors suffixed with “Service”. In the example above, the name of the file should be `my-payment.ts`. You can learn more in the [service documentation](../../../development/services/create-service.md).
 
 :::
 
@@ -188,9 +188,48 @@ interface PaymentProcessorError {
 
 While implementing the following methods, if you need to inform the Medusa core that an error occurred at a certain stage, return an object having the attributes defined in the `PaymentProcessorError` interface.
 
+For example, the Stripe payment process has the following method to create the error object, which is used within other methods:
+
+```ts
+abstract class StripeBase extends AbstractPaymentProcessor {
+  //...
+  protected buildError(
+    message: string,
+    e: Stripe.StripeRawError | PaymentProcessorError | Error
+  ): PaymentProcessorError {
+    return {
+      error: message,
+      code: "code" in e ? e.code : "",
+      detail: isPaymentProcessorError(e)
+        ? `${e.error}${EOL}${e.detail ?? ""}`
+        : "detail" in e
+        ? e.detail
+        : e.message ?? "",
+    }
+  }
+
+  // used in other methods
+  async retrievePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | 
+    PaymentProcessorSessionResponse["session_data"]
+  > {
+    try {
+      //...
+    } catch (e) {
+      return this.buildError(
+        "An error occurred in retrievePayment",
+        e
+      )
+    }
+  }
+}
+```
+
 ### initiatePayment
 
-This method is called during checkout when [Payment Sessions are initialized](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
+This method is called either if a region has only one payment provider or when [a Payment Sessions is selected](/api/store#tag/Cart/operation/PostCartsCartPaymentSession), which occurs when the customer selects their preferred payment method during checkout. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
 
 For example, in Stripe this method is used to create a Payment Intent for the customer.
 
@@ -213,8 +252,8 @@ This method must return an object of type `PaymentProcessorSessionResponse`. It 
 
 ```ts
 type PaymentProcessorSessionResponse = {
-  update_requests: { 
-    customer_metadata: Record<string, unknown>
+  update_requests?: { 
+    customer_metadata?: Record<string, unknown>
   }
   session_data: Record<string, unknown>
 }
