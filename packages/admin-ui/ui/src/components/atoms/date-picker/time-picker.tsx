@@ -70,7 +70,7 @@ const TimePicker: React.FC<DateTimePickerProps> = ({
                 <ClockIcon size={16} />
                 <span className="mx-1">UTC</span>
                 <span className="text-grey-90">
-                  {moment.utc(date).format("HH:mm")}
+                  {date ? moment.utc(date).format("HH:mm") : "--:--"}
                 </span>
               </div>
             </InputContainer>

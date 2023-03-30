@@ -74,7 +74,9 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
                 <ArrowDownIcon size={16} />
               </div>
               <label className="w-full text-left">
-                {date ? moment(date).format("ddd, DD MMM YYYY") : "-- -- --"}
+                {date
+                  ? moment(date).format("ddd, DD MMM YYYY")
+                  : "---, -- -- ----"}
               </label>
             </InputContainer>
           </button>
