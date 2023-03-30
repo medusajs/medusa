@@ -1332,8 +1332,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "development/entities/extend-entity",
+              label: "Extend an Entity",
+            },
+            {
+              type: "doc",
               id: "development/entities/migrations/create",
               label: "Create a Migration",
+            },
+            {
+              type: "doc",
+              id: "development/entities/extend-repository",
+              label: "Extend a Repository",
             },
           ],
         },
@@ -1390,6 +1400,11 @@ module.exports = {
               type: "doc",
               id: "development/services/create-service",
               label: "Create a Service",
+            },
+            {
+              type: "doc",
+              id: "development/services/extend-service",
+              label: "Extend a Service",
             },
           ],
         },
