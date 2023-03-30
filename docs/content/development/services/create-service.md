@@ -49,7 +49,7 @@ import { TransactionBaseService } from "@medusajs/medusa"
 import { Lifetime } from "awilix"
 
 class HelloService extends TransactionBaseService {
-  static LIFE_TIME = LifeTime.SCOPED
+  static LIFE_TIME = Lifetime.SCOPED
 
   // ...
 }

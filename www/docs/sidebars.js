@@ -1371,7 +1371,12 @@ module.exports = {
             {
               type: "doc",
               id: "development/endpoints/add-middleware",
-              label: "Add a Middleware",
+              label: "Middlewares",
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/example-logged-in-user",
+              label: "Example: Logged-In User",
             },
           ],
         },
