@@ -88,7 +88,7 @@ The configurations that are exported from `medusa-config.js`.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -134,7 +134,7 @@ An instance of Typeorm’s Entity Manager.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -206,7 +206,7 @@ An array of all payment processor that extend the `AbstractPaymentService` or `A
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -255,7 +255,7 @@ An array of all fulfillment providers that extend the `FulfillmentService` class
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -304,7 +304,7 @@ An array of all notification providers that extend the `AbstractNotificationServ
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -405,7 +405,7 @@ An array of every tax provider that extends the `AbstractTaxService` class.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -451,7 +451,7 @@ An instance of the `FlagRouter`. This can be used to list feature flags, set a f
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -474,7 +474,7 @@ An instance of the Redis client. If Redis is not configured, a fake Redis client
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -497,7 +497,7 @@ Each entity is registered under its camel-case name followed by Model. For examp
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -520,7 +520,7 @@ An array of all database entities that is passed to Typeorm when connecting to t
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -543,7 +543,7 @@ Each repository is registered under its camel-case name. For example, `CustomerG
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -570,7 +570,7 @@ Each batch job strategy is registered under three names:
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -593,7 +593,7 @@ An array of all classes extending the `AbstractBatchJobStrategy` abstract class.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -616,7 +616,7 @@ An instance of the class implementing the `ITaxCalculationStrategy` interface.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -639,7 +639,7 @@ An instance of the class extending the `AbstractCartCompletionStrategy` class.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -662,7 +662,7 @@ An instance of the class implementing the `IPriceSelectionStrategy` interface.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
@@ -685,7 +685,7 @@ Its camel-case name.
 </td>
 <td>
 
--
+\-
 
 </td>
 </tr>
