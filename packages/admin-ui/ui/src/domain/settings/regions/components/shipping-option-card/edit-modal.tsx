@@ -2,6 +2,10 @@ import { ShippingOption } from "@medusajs/medusa"
 import { useAdminUpdateShippingOption } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+} from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useNotification from "../../../../../hooks/use-notification"
@@ -32,8 +36,10 @@ const EditModal = ({ open, onClose, option }: Props) => {
   } = form
 
   useEffect(() => {
-    reset(getDefaultValues(option))
-  }, [option])
+    if (open) {
+      reset(getDefaultValues(option))
+    }
+  }, [option, reset, open])
 
   const closeAndReset = () => {
     reset(getDefaultValues(option))
@@ -48,6 +54,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
         requirements: getRequirementsData(data),
         admin_only: !data.store_option,
         amount: data.amount!,
+        metadata: getSubmittableMetadata(data.metadata),
       },
       {
         onSuccess: () => {
@@ -72,7 +79,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
             <div>
               <p className="inter-base-semibold">Fulfillment Method</p>
               <p className="inter-base-regular text-grey-50">
-                {option.data.id} via {option.provider_id}
+                {option.data.id as string} via {option.provider_id}
               </p>
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
@@ -133,6 +140,7 @@ const getDefaultValues = (option: ShippingOption): ShippingOptionFormType => {
         : null,
     },
     amount: option.amount,
+    metadata: getMetadataFormValues(option.metadata),
   }
 }
 

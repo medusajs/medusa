@@ -149,10 +149,13 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               </Accordion.Item>
               <Accordion.Item
                 title="Metadata"
+                subtitle="Metadata allows you to add additional information to your discount."
                 value="metadata"
                 forceMountContent
               >
-                <MetadataForm form={nestedForm(form, "metadata")} />
+                <div className="mt-small">
+                  <MetadataForm form={nestedForm(form, "metadata")} />
+                </div>
               </Accordion.Item>
             </Accordion>
           </div>

@@ -1,6 +1,7 @@
 import { Region } from "@medusajs/medusa"
 import { useAdminCreateShippingOption } from "medusa-react"
 import { useForm } from "react-hook-form"
+import { getSubmittableMetadata } from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useNotification from "../../../../../hooks/use-notification"
@@ -51,6 +52,7 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
         admin_only: !data.store_option,
         amount: data.amount!,
         requirements: getRequirementsData(data),
+        metadata: getSubmittableMetadata(data.metadata),
       },
       {
         onSuccess: () => {
