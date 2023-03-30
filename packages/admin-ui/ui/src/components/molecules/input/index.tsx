@@ -139,6 +139,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
                 onMouseDown={(e) => e.preventDefault()}
                 className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft mr-2 h-4 w-4 cursor-pointer outline-none"
                 type="button"
+                tabIndex={-1}
               >
                 <MinusIcon size={16} />
               </button>
@@ -147,6 +148,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
                 onClick={onNumberIncrement}
                 className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft h-4 w-4 cursor-pointer outline-none"
                 type="button"
+                tabIndex={-1}
               >
                 <PlusIcon size={16} />
               </button>
