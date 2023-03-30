@@ -1,0 +1,131 @@
+---
+description: 'Learn how the events system is implemented in Medusa. It is built on a publish-subscribe architecture. The Medusa core publishes events when certain actions take place.'
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Events
+
+In this document, you’ll learn what events are and why they’re useful in Medusa.
+
+## Overview
+
+Events are used in Medusa to inform different parts of the commerce ecosystem that this event occurred. For example, when an order is placed, the `order.placed` event is triggered, which informs notification services like SendGrid to send a confirmation email to the customer.
+
+The events system in Medusa is built on a publish/subscribe architecture. The Medusa core publish an event when an action takes place, and modules, plugins, or other forms of customizations can subscribe to that event. [Subscribers](./subscribers.mdx) can then perform a task asynchronously when the event is triggered.
+
+Although the core implements the main logic behind the events system, you’ll need to use an event module that takes care of the publish/subscribe functionality such as subscribing and emitting events. Medusa provides modules that you can use both for development and production, including Redis and Local modules.
+
+---
+
+## Database Transactions
+
+Transactions in Medusa ensure Atomicity, Consistency, Isolation, and Durability (ACID) guarantees for operations in the Medusa core.
+
+In many cases, services typically update resources in the database and emit an event within a transactional operation. To ensure that these events don't cause data inconsistencies (for example, a plugin subscribes to an event to contact a third-party service, but the transaction fails) the concept of a staged job is introduced.
+
+Instead of events being processed immediately, they're stored in the database as a staged job until they're ready. In other words, until the transaction has succeeded.
+
+This rather complex logic is abstracted away from the consumers of the EventBusService, but here's an example of the flow when an API request is made:
+
+- API request starts.
+- Transaction is initiated.
+- Service layer performs some logic.
+- Events are emitted and stored in the database for eventual processing.
+- Transaction is committed.
+- API request ends.
+- Events in the database become visible.
+
+To pull staged jobs from the database, a separate enqueuer polls the database every three seconds to discover new visible jobs. These jobs are then added to the queue and processed as described in the Processing section earlier.
+
+:::note
+
+This pattern is heavily inspired by the Transactionally-staged Job Drain described in this blog post.
+
+:::
+
+---
+
+## Emitting Events
+
+You can emit events in Medusa using the `EventBusService`. For example:
+
+```ts
+this.eventBusService.emit("custom-event", {
+  // attach any data to the event
+})
+```
+
+You can also emit more than one event:
+
+```ts
+this.eventBusService.emit([
+  {
+    eventName: "custom-event-1",
+    data: {
+      // attach any data to the event
+    },
+  },
+  {
+    eventName: "custom-event-2",
+    data: {
+      // attach any data to the event
+    },
+  },
+])
+```
+
+---
+
+## Available Modules
+
+Medusa’s default starter project comes with the local event module (`@medusajs/event-bus-local`). For production environments, it’s recommended to use the Redis event module package (`@medusajs/event-bus-redis`) that you can install.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/events/modules/redis',
+    label: 'Redis',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to install Redis events module in Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/events/modules/local',
+    label: 'Local',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to install local events module in Medusa.'
+    }
+  },
+]} />
+
+---
+
+## Custom Development
+
+Developers can create custom event modules, allowing them to integrate any third-party services or logic to handle this functionality. Developers can also create and use subscribers to handle events in Medusa.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/events/create-module',
+    label: 'Create an Event Module',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an event module.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/events/create-subscriber',
+    label: 'Create a Subscriber',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a subscriber.'
+    }
+  },
+]} />

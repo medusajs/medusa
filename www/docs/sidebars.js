@@ -63,9 +63,9 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: 'doc',
-      id: 'admin/quickstart',
-      label: 'Admin Dashboard',
+      type: "doc",
+      id: "admin/quickstart",
+      label: "Admin Dashboard",
       customProps: {
         sidebar_icon: "computer-desktop",
       },
@@ -348,13 +348,13 @@ module.exports = {
           ],
         },
         {
-          type: 'category',
-          label: 'Admin Dashboard Errors',
+          type: "category",
+          label: "Admin Dashboard Errors",
           items: [
             {
-              type: 'doc',
-              id: 'troubleshooting/signing-in-to-admin',
-              label: 'Signing in to the Admin Dashboard',
+              type: "doc",
+              id: "troubleshooting/signing-in-to-admin",
+              label: "Signing in to the Admin Dashboard",
             },
           ],
         },
@@ -572,14 +572,14 @@ module.exports = {
           },
         },
         {
-          type: 'doc',
-          id: 'modules/products/categories',
-          label: 'Categories'
+          type: "doc",
+          id: "modules/products/categories",
+          label: "Categories",
         },
         {
-          type: 'link',
-          href: '#',
-          label: 'Collections',
+          type: "link",
+          href: "#",
+          label: "Collections",
           customProps: {
             sidebar_is_soon: true,
           },
@@ -1375,7 +1375,7 @@ module.exports = {
               label: "Overview",
             },
             {
-              type: "doc",
+              type: "ref",
               id: "references/services/classes/AuthService",
               label: "Services Reference",
             },
@@ -1390,6 +1390,34 @@ module.exports = {
               type: "doc",
               id: "development/services/create-service",
               label: "Create a Service",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            {
+              type: "doc",
+              id: "development/modules/overview",
+              label: "Modules",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/modules/create",
+              label: "Create a Module",
+            },
+            {
+              type: "doc",
+              id: "development/modules/publish",
+              label: "Publish a Module",
             },
           ],
         },
@@ -1414,10 +1442,32 @@ module.exports = {
             },
             {
               type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/local",
+              label: "Local",
+            },
+            {
+              type: "html",
               value: "How-to",
               customProps: {
                 sidebar_is_group_divider: true,
               },
+            },
+            {
+              type: "doc",
+              id: "development/events/create-module",
+              label: "Create an Event Module",
             },
             {
               type: "doc",
@@ -1515,6 +1565,46 @@ module.exports = {
       },
       collapsible: false,
       items: [
+        {
+          type: "category",
+          label: "Cache",
+          items: [
+            {
+              type: "doc",
+              id: "development/cache/overview",
+              label: "Cache",
+            },
+            {
+              type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/in-memory",
+              label: "In-Memory",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/create",
+              label: "Create a Cache Module",
+            },
+          ],
+        },
         {
           type: "category",
           label: "Notifications",
@@ -1706,8 +1796,8 @@ module.exports = {
       ],
     },
     {
-      type: 'category',
-      label: 'Admin Dashboard',
+      type: "category",
+      label: "Admin Dashboard",
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
