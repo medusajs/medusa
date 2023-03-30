@@ -192,7 +192,7 @@ For example, the Stripe payment process has the following method to create the e
 
 ```ts
 abstract class StripeBase extends AbstractPaymentProcessor {
-  //...
+  // ...
   protected buildError(
     message: string,
     e: Stripe.StripeRawError | PaymentProcessorError | Error
@@ -216,7 +216,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     PaymentProcessorSessionResponse["session_data"]
   > {
     try {
-      //...
+      // ...
     } catch (e) {
       return this.buildError(
         "An error occurred in retrievePayment",
