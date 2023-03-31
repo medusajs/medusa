@@ -195,9 +195,9 @@ export default CreateCustomer
 fetch(`<BACKEND_URL>/admin/customers`, {
   method: "POST",
   credentials: "include",
-	headers: {
-		"Content-Type": "application/json",
-	},
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     email,
     password,
