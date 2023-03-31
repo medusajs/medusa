@@ -1,0 +1,124 @@
+---
+description: "Sales channels are different methods a business offers its products for purchase for the customers. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
+
+# Sales Channels
+
+Sales channels are different methods a business offers its products for purchase for the customers. This overview introduces the available features related to sales channels.
+
+:::note
+
+Not a developer? Check out the [Sales Channels user guide](../../user-guide/sales-channels/index.md).
+
+:::
+
+## Features
+
+### Sales Channel Management
+
+Admins can manage sales channels, creating an unlimited number of them. They specify the products’ availability for each sales channel.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/sales-channels/admin/manage',
+    label: 'Admin: Manage Sales Channels',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage sales channels using the Admin APIs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/sales-channels/manage',
+    label: 'User Guide: Manage Sales Channels',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage sales channels using Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/sales-channels/products',
+    label: 'User Guide: Manage Products',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage products in a sales channel using Medusa Admin.'
+    }
+  },
+]} />
+
+### Sales Channels for Each Platform
+
+Developers can associate a platform with a sales channel. For example, associating a storefront with a web sales channel. Only products available in that sales channel will be shown, and all orders placed on that sales channel will be associated with it.
+
+Admins can filter orders by a sales channel. This would allow them to handle orders coming from each sales channel differently.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/sales-channels/storefront/use-sales-channels',
+    label: 'Storefront: Use Sales Channels',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to use sales channels in a storefront.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/sales-channels/admin/manage#list-orders-by-sales-channels',
+    label: 'Admin: Orders by Sales Channels',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to filter orders by a sales channel.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how sales channel related entities and concepts are built, their relation to other modules, and more.
+
+<DocCard item={{
+    type: 'link',
+    href: '/modules/sales-channels',
+    label: 'Architecture: Sales Channel',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Sales Channels architecture.'
+    }
+  }}
+/>
+
+---
+
+## Related Modules
+
+Discover Sales Channel’s relation to other modules in Medusa.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/products/overview',
+    label: 'Product',
+    customProps: {
+      icon: Icons['tag-solid'],
+      description: 'Products availability can be changed for each sales channel.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/orders/overview',
+    label: 'Orders',
+    customProps: {
+      icon: Icons['shopping-cart-solid'],
+      description: 'Orders can be associated and organized by a sales channel.'
+    }
+  },
+]} />

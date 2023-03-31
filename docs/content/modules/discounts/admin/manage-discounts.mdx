@@ -1,0 +1,755 @@
+---
+description: 'Learn how to implement discount functionalities for admins in Medusa using the REST APIs. This includes creating, updating, and deleting discounts, and managing conditions of discounts.'
+addHowToData: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Manage Discounts using Admin APIs
+
+In this document, you’ll learn how to use the Admin’s Discount APIs to manage discounts, discount conditions, and more.
+
+:::tip
+
+If you want to learn about the Discount architecture in-depth, check out the [Discount Architecture](../discounts.md) documentation instead.
+
+:::
+
+## Overview
+
+Using Medusa’s Discount Admin APIs, you can manage discounts, their conditions, status, rules, and more. You can also manage [dynamic discounts and their discount codes](/api/admin/#tag/Discount/operation/PostDiscountsDiscountDynamicCodes).
+
+### Scenario
+
+You want to add or use general admin functionalities related to:
+
+- Creating discounts of different types, configurations, and rules.
+- Updating and deleting discounts.
+- Managing conditions in that discount, including adding, retrieving, updating, and removing conditions.
+
+:::tip
+
+You can use Medusa’s Admin APIs to achieve more functionalities as well. Check out the [API reference](/api/admin/#tag/Discount) to learn more.
+
+:::
+
+---
+
+# Prerequisites
+
+### Medusa Components
+
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### Authenticated Admin User
+
+You must be an authenticated admin user before following along with the steps in the tutorial.
+
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
+
+---
+
+## Create a Discount
+
+You can create a discount by sending a request to the [Create Discount](/api/admin/#tag/Discount/operation/PostDiscounts) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+import { 
+  AllocationType,
+  DiscountRuleType,
+} from "@medusajs/medusa"
+// ...
+medusa.admin.discounts.create({
+  code,
+  rule: {
+    type: DiscountRuleType.FIXED,
+    value: 10,
+    allocation: AllocationType.ITEM,
+  },
+  regions: [
+    regionId,
+  ],
+  is_dynamic: false,
+  is_disabled: false,
+})
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { 
+  useAdminCreateDiscount,
+} from "medusa-react"
+import { 
+  AllocationType, 
+  DiscountRuleType,
+} from "@medusajs/medusa"
+
+const CreateDiscount = () => {
+  const createDiscount = useAdminCreateDiscount()
+  // ...
+
+  const handleCreate = () => {
+    // ...
+    createDiscount.mutate({
+      code,
+      rule: {
+        type: DiscountRuleType.FIXED,
+        value: 10,
+        allocation: AllocationType.ITEM,
+      },
+      regions: [
+          regionId,
+      ],
+      is_dynamic: false,
+      is_disabled: false,
+    })
+  }
+
+  // ...
+}
+
+export default CreateDiscount
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/discounts`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    code,
+    rule: {
+      type: "fixed",
+      value: 10,
+      allocation: "item",
+    },
+    regions: [
+      regionId,
+    ],
+    is_dynamic: false,
+    is_disabled: false,
+  }),
+})
+.then((response) => response.json())
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/discounts' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "code": "<CODE>",
+    "rule": {
+      "type": "fixed",
+      "value": 10,
+      "allocation": "item"
+    },
+    "regions": [
+      "<REGION_ID>"
+    ],
+    "is_dynamic": false,
+    "is_disabled": false
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts [many request-body parameters](/api/admin/#tag/Discount/operation/PostDiscounts) including:
+
+- `code`: This parameter is required. It is a unique code. The customer redeems the discount using this code.
+- `rule`: This parameter is required. It is an object having at least the following fields:
+    - `type`: A string indicating the type of discount. It can be `fixed`, `percentage`, or `free_shipping`. When using the Medusa JS Client, you must use the enum type [DiscountRuleType](../../../references/js-client/enums/internal.discountruletype/) for the value.
+    - `value`: A number indicating the value of the discount. If the discount type is `fixed`, then it will be the fixed amount to discount from the cart’s totals or its items. If the discount type is `percentage`, then it will be the percentage to discount from the items in the cart. If the type is `free_shipping`, it has no effect and can be set to `0`.
+    - `allocation`: A string indicating how the discount should be applied. Can be `item` or `total`. If the type is not `fixed`, then this has no effect. When using the Medusa JS Client, you must use the enum type [AllocationType](../../../references/js-client/enums/internal.allocationtype/) for the value.
+- `regions`: An array of region IDs this discount can be used in. If the type of discount is `fixed`, only one region can be passed.
+
+This request returns the full `discount` object.
+
+---
+
+## Update Discount
+
+You can update any of the discount’s information, configurations, and conditions by sending a request to the [Update Discount](/api/admin/#tag/Discount/operation/PostDiscountsDiscount) endpoint.
+
+For example, you can update the discount’s description and status by sending the following request:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.discounts.update(discountId, {
+  is_disabled: true,
+})
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateDiscount } from "medusa-react"
+
+const UpdateDiscount = () => {
+  const updateDiscount = useAdminUpdateDiscount(discount_id)
+  // ...
+
+  const handleUpdate = () => {
+    // ...
+    updateDiscount.mutate({
+      is_disabled: true,
+    })
+  }
+
+  // ...
+}
+
+export default UpdateDiscount
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/discounts/${discountId}`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    is_disabled: true,
+  }),
+})
+.then((response) => response.json())
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "is_disabled": true
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the discount ID as a path parameter. You can pass the parameters you want to update in the request body. In the example above, is_disabled` parameter to update it.
+
+You can check the [API reference](/api/admin/#tag/Discount/operation/PostDiscountsDiscount) for all the accepted parameters to update the discount.
+
+This updates the discount’s information and returns the full updated `discount` object in the response.
+
+---
+
+## Manage Conditions
+
+### Create a Condition
+
+:::tip
+
+You can learn more about conditions and conditions types in the [Discount Architecture](../discounts.md) documentation.
+
+:::
+
+You can send a request to the [Create Condition](/api/admin/#tag/Discount-Condition/operation/PostDiscountsDiscountConditions) endpoint to create a condition in a discount:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+import { DiscountConditionOperator } from "@medusajs/medusa"
+// ...
+medusa.admin.discounts.createCondition(discount_id, {
+  operator: DiscountConditionOperator.IN,
+  products: [
+    productId,
+  ],
+})
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDiscountCreateCondition } from "medusa-react"
+import { DiscountConditionOperator } from "@medusajs/medusa"
+
+const Discount = () => {
+  const createCondition = useAdminDiscountCreateCondition(
+    discount_id
+  )
+  // ...
+
+  const handleCreateCondition = (
+    operator: DiscountConditionOperator, 
+    productId: string
+  ) => {
+    // ...
+    createCondition.mutate({
+      operator,
+      products: [
+        productId,
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default Discount
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/discounts/${discountId}/conditions`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      operator: "in",
+      products: [
+        productId,
+      ],
+    }),
+  }
+)
+.then((response) => response.json())
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "operator": "in",
+  "products": [
+    "<PRODUCT_ID>"
+  ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the discount ID as a path parameter.
+
+It also requires the request-body parameter `operator` which can have one of the following values:
+
+- `in` indicates that the discount should be applied to the specified resources in this condition. When using the Medusa JS Client, `DiscountConditionOperator.IN` must be used as the value.
+- `not_in` indicates that the discount should be applied to all resources except those specified in this condition. When using the Medusa JS Client, `DiscountConditionOperator.NOT_IN` must be used as the value.
+
+In addition, every condition has a condition type. Based on that condition type, a different additional parameter is required for the request.
+
+For example, if the condition type is product, meaning that the condition specifies which products this discount apply/doesn’t apply for, the parameter `products` is required.
+
+The additional required parameter must be an array of IDs of the resources. For the previous example, `products` would be an array of product IDs.
+
+You can check the [API reference](/api/admin/#tag/Discount-Condition/operation/PostDiscountsDiscountConditions) for a full list of accepted parameters based on the condition type.
+
+This request returns the full `discount` object in the response which includes all conditions under `discount.rule.conditions`.
+
+### Retrieve Condition
+
+You can retrieve a condition and its resources by sending a request to the [Get Condition](/api/admin/#tag/Discount-Condition/operation/GetDiscountsDiscountConditionsCondition) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.discounts.getCondition(
+  discountId, 
+  conditionId,
+  {
+    expand: "products",
+  }
+)
+.then(({ discount_condition }) => {
+  console.log(
+    discount_condition.id,
+    discount_condition.products
+  )
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminGetDiscountCondition } from "medusa-react"
+import { Product } from "@medusajs/medusa"
+
+const DiscountCondition = () => {
+  const { 
+    discount_condition, 
+    isLoading, 
+  } = useAdminGetDiscountCondition(
+    discount_id, 
+    conditionId
+  )
+  // ...
+
+  return (
+    <div>
+      {isLoading && <span>Loading</span>}
+      {discount_condition && (
+        <>
+          <span>{discount_condition.id}</span>
+          <ul>
+            {discount_condition.products.map(
+              (product: Product) => (
+                <li key={product.id}>{product.title}</li>
+              )
+            )}
+          </ul>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default DiscountCondition
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(
+  `<BACKEND_URL>/admin/discounts/${discountId}` + 
+  `/conditions/${conditionId}&expand=products`,
+  {
+    credentials: "include",
+  }
+)
+.then((response) => response.json())
+.then(({ discount_condition }) => {
+  console.log(
+    discount_condition.id,
+    discount_condition.products
+  )
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts as path parameters the discount ID and the condition ID. You can optionally pass a query parameter `expand` which specifies which relations to include in the returned object.
+
+By default, this request returns the discount condition object without any of its resources (In the previous example the resources are the products). To ensure the resources are included in the returned object, you must pass the name of the condition’s type as a value to the `expand` query parameter.
+
+In the previous example, you pass `expand=products` as a query parameter, which returns inside the `discount_condition` object a `products` attribute. The value of `products` is an array of products that belong to this condition.
+
+### Update Condition
+
+You can update a condition’s resources using the [Update Condition](/api/admin/#tag/Discount/operation/PostDiscountsDiscountConditionsCondition) endpoint. You can’t update a condition’s operator.
+
+For example, to update the products in a condition:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.discounts.updateCondition(
+  discountId, 
+  conditionId, {
+    products: [
+      productId1,
+      productId2,
+    ],
+  }
+)
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDiscountUpdateCondition } from "medusa-react"
+import { Product } from "@medusajs/medusa"
+
+const DiscountCondition = () => {
+  const updateCondition = useAdminDiscountUpdateCondition(
+    discount_id, 
+    conditionId
+  )
+  // ...
+
+  const handleUpdateCondition = (productIds: string[]) => {
+    updateCondition.mutate({
+      products: productIds,
+    })
+  }
+
+  // ...
+}
+
+export default DiscountCondition
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
+```ts
+fetch(
+  `<BACKEND_URL>/admin/discounts/${discountId}/conditions/${conditionId}`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      products: [
+        productId1,
+        productId2,
+      ],
+    }),
+  }
+)
+.then((response) => response.json())
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "products": [
+      "<PRODUCT_ID_1>",
+      "<PRODUCT_ID_2>"
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts as a path parameter the discount ID and the condition ID. In its body, it accepts the resources of the same type that were used when the condition was created.
+
+For example, if a condition was created for `products`, you can’t pass in the update request `product_collections`. You must pass in the update request a `products` array as well.
+
+This request returns the full `discount` object with the updated condition in the response.
+
+### Delete Condition
+
+You can delete a condition by sending a request to the [Delete Condition](/api/admin/#tag/Discount-Condition/operation/DeleteDiscountsDiscountConditionsCondition) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.discounts.deleteCondition(
+  discountId, 
+  conditionId
+)
+.then(({ discount }) => {
+  console.log(discount)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDiscountRemoveCondition } from "medusa-react"
+
+const Discount = () => {
+  const deleteCondition = useAdminDiscountRemoveCondition(
+    discount_id
+  )
+  // ...
+
+  const handleUpdateCondition = (conditionId: string) => {
+    deleteCondition.mutate(conditionId)
+  }
+
+  // ...
+}
+
+export default Discount
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
+```ts
+fetch(
+  `<BACKEND_URL>/admin/discounts/${discountId}/conditions/${conditionId}`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
+.then((response) => response.json())
+.then(({ discount }) => {
+  console.log(discount.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts as a path parameter the discount ID and the condition ID.
+
+It returns the `discount` object in the response.
+
+---
+
+## Delete Discount
+
+You can delete a discount by sending a request to the [Delete Discount](/api/admin/#tag/Discount/operation/DeleteDiscountsDiscount) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.discounts.delete(discount_id)
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteDiscount } from "medusa-react"
+
+const Discount = () => {
+  const deleteDiscount = useAdminDeleteDiscount(discount_id)
+  // ...
+
+  const handleDelete = () => {
+    deleteDiscount.mutate()
+  }
+
+  // ...
+}
+
+export default Discount
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/discounts/${discountId}`, {
+  method: "DELETE",
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the discount ID as a path parameter.
+
+It returns in the response the following fields:
+
+- `id`: The ID of the deleted discount.
+- `object`: A string indicating the type of object deleted. By default, its value is `discount`.
+- `deleted`: A boolean value indicating whether the discount was deleted or not.
+
+---
+
+## See Also
+
+- [Use Discounts on the storefront](../storefront/use-discounts-in-checkout.mdx)
