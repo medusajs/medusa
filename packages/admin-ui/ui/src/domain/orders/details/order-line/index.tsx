@@ -104,20 +104,7 @@ const ReservationIndicator = ({
   const awaitingAllocation = allocatableSum - reservationsSum
 
   if (!lineItem.variant_id || (!isLoading && !variant?.inventory.length)) {
-    return (
-      <div className="text-grey-40">
-        <Tooltip
-          content={
-            <div className="inter-small-regular flex flex-col items-center px-1 pt-1 pb-2">
-              No inventory item exist for this variant.
-            </div>
-          }
-          side="bottom"
-        >
-          <CheckCircleFillIcon size={20} />
-        </Tooltip>
-      </div>
-    )
+    return <div className="w-[20px]" />
   }
 
   return (
