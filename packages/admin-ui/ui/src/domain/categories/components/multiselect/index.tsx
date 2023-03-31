@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
+import React, { useEffect, useMemo, useState } from "react"
 
-import useToggleState from "../../../../hooks/use-toggle-state"
-import useOutsideClick from "../../../../hooks/use-outside-click"
+import { sum } from "lodash"
+import Tooltip from "../../../../components/atoms/tooltip"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
 import ChevronDownIcon from "../../../../components/fundamentals/icons/chevron-down"
 import ChevronRightIcon from "../../../../components/fundamentals/icons/chevron-right-icon"
-import UTurnIcon from "../../../../components/fundamentals/icons/u-turn-icon"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import Tooltip from "../../../../components/atoms/tooltip"
-import { sum } from "lodash"
+import UTurnIcon from "../../../../components/fundamentals/icons/u-turn-icon"
+import useOutsideClick from "../../../../hooks/use-outside-click"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 /**
  * Types
@@ -34,6 +34,7 @@ const ToolTipContent = (props: { list: string[] }) => {
 }
 
 type InputProps = {
+  placeholder?: string
   isOpen: boolean
   selected: Record<string, true>
   options: NestedMultiselectOption[]
@@ -45,7 +46,8 @@ type InputProps = {
  * Multiselect input area
  */
 function Input(props: InputProps) {
-  const { isOpen, selected, openPopup, resetSelected, options } = props
+  const { placeholder, isOpen, selected, openPopup, resetSelected, options } =
+    props
   const selectedCount = Object.keys(selected).length
 
   const selectedOption = useMemo(() => {
@@ -84,7 +86,11 @@ function Input(props: InputProps) {
             </span>
           </Tooltip>
         )}
-        <span>Categories</span>
+        {selectedCount === 0 ? (
+          <span className="text-grey-50">
+            {placeholder ? placeholder : "Choose categories"}
+          </span>
+        ) : null}
       </div>
       <ChevronDownIcon
         size={16}
@@ -246,13 +252,14 @@ type NestedMultiselectProps = {
   options: NestedMultiselectOption[]
   onSelect: (values: string[]) => void
   initiallySelected?: Record<string, true>
+  placeholder?: string
 }
 
 /**
  * Nested multiselect container
  */
 function NestedMultiselect(props: NestedMultiselectProps) {
-  const { options, initiallySelected, onSelect } = props
+  const { options, initiallySelected, onSelect, placeholder } = props
   const [isOpen, openPopup, closePopup] = useToggleState(false)
 
   const rootRef = React.useRef<HTMLDivElement>(null)
@@ -353,8 +360,9 @@ function NestedMultiselect(props: NestedMultiselectProps) {
         resetSelected={resetSelected}
         selected={selected}
         options={options}
+        placeholder={placeholder}
       />
-      {isOpen && (
+      {isOpen && !!options?.length && (
         <Popup
           pop={pop}
           selected={selected}
