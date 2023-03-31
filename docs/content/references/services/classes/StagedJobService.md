@@ -1,22 +1,24 @@
-# Class: OauthService
+# Class: StagedJobService
+
+Provides layer to manipulate users.
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`OauthService`**
+  ↳ **`StagedJobService`**
 
 ## Constructors
 
 ### constructor
 
-• **new OauthService**(`cradle`)
+• **new StagedJobService**(`__namedParameters`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `cradle` | `InjectedDependencies` |
+| `__namedParameters` | `StagedJobServiceProps` |
 
 #### Overrides
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:28](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L28)
+[medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/staged-job.ts#L22)
 
 ## Properties
 
@@ -70,26 +72,6 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 ___
 
-### container\_
-
-• `Protected` **container\_**: `InjectedDependencies`
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:24](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L24)
-
-___
-
-### eventBus\_
-
-• `Protected` **eventBus\_**: [`EventBusService`](EventBusService.md)
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:26](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L26)
-
-___
-
 ### manager\_
 
 • `Protected` **manager\_**: `EntityManager`
@@ -104,13 +86,13 @@ TransactionBaseService.manager\_
 
 ___
 
-### oauthRepository\_
+### stagedJobRepository\_
 
-• `Protected` **oauthRepository\_**: `Repository`<`Oauth`\>
+• `Protected` **stagedJobRepository\_**: `Repository`<`StagedJob`\> & { `insertBulk`: (`jobToCreates`: `_QueryDeepPartialEntity`<`StagedJob`\>[]) => `Promise`<`StagedJob`[]\>  }
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:25](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L25)
+[medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/staged-job.ts#L20)
 
 ___
 
@@ -125,23 +107,6 @@ TransactionBaseService.transactionManager\_
 #### Defined in
 
 [medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
-
-___
-
-### Events
-
-▪ `Static` **Events**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `TOKEN_GENERATED` | `string` |
-| `TOKEN_REFRESHED` | `string` |
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:19](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L19)
 
 ## Accessors
 
@@ -204,143 +169,61 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<`Oauth`\>
+▸ **create**(`data`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `CreateOauthInput` |
+| `data` | `EmitData`<`unknown`\> \| `EmitData`<`unknown`\>[] |
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:87](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L87)
+[medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/staged-job.ts#L45)
 
 ___
 
-### generateToken
+### delete
 
-▸ **generateToken**(`appName`, `code`, `state`): `Promise`<`Oauth`\>
+▸ **delete**(`stagedJobIds`): `Promise`<`void`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appName` | `string` |
-| `code` | `string` |
-| `state` | `string` |
+| `stagedJobIds` | `string` \| `string`[] |
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<`void`\>
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:121](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L121)
+[medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/staged-job.ts#L37)
 
 ___
 
 ### list
 
-▸ **list**(`selector`): `Promise`<`Oauth`[]\>
+▸ **list**(`config`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `selector` | `Selector`<`Oauth`\> |
+| `config` | `FindConfig`<`StagedJob`\> |
 
 #### Returns
 
-`Promise`<`Oauth`[]\>
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:79](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L79)
-
-___
-
-### refreshToken
-
-▸ **refreshToken**(`appName`): `Promise`<`Oauth`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `appName` | `string` |
-
-#### Returns
-
-`Promise`<`Oauth`\>
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:155](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L155)
-
-___
-
-### registerOauthApp
-
-▸ **registerOauthApp**(`appDetails`): `Promise`<`Oauth`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `appDetails` | `CreateOauthInput` |
-
-#### Returns
-
-`Promise`<`Oauth`\>
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:111](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L111)
-
-___
-
-### retrieve
-
-▸ **retrieve**(`oauthId`): `Promise`<`Oauth`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `oauthId` | `string` |
-
-#### Returns
-
-`Promise`<`Oauth`\>
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:54](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L54)
-
-___
-
-### retrieveByName
-
-▸ **retrieveByName**(`appName`): `Promise`<`Oauth`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `appName` | `string` |
-
-#### Returns
-
-`Promise`<`Oauth`\>
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:36](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L36)
+[medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/staged-job.ts#L29)
 
 ___
 
@@ -368,30 +251,9 @@ TransactionBaseService.shouldRetryTransaction\_
 
 ___
 
-### update
-
-▸ **update**(`id`, `update`): `Promise`<`Oauth`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `update` | `UpdateOauthInput` |
-
-#### Returns
-
-`Promise`<`Oauth`\>
-
-#### Defined in
-
-[medusa/src/services/oauth.ts:100](https://github.com/medusajs/medusa/blob/6f85a3d36/packages/medusa/src/services/oauth.ts#L100)
-
-___
-
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`OauthService`](OauthService.md)
+▸ **withTransaction**(`transactionManager?`): [`StagedJobService`](StagedJobService.md)
 
 #### Parameters
 
@@ -401,7 +263,7 @@ ___
 
 #### Returns
 
-[`OauthService`](OauthService.md)
+[`StagedJobService`](StagedJobService.md)
 
 #### Inherited from
 
