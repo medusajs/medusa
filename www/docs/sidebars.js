@@ -605,6 +605,11 @@ module.exports = {
           },
         },
         {
+          type: "doc",
+          id: "modules/products/admin/manage-categories",
+          label: "Admin: Manage Categories",
+        },
+        {
           type: "link",
           href: "#",
           label: "Admin: Manage Collections",
