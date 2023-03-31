@@ -3,48 +3,48 @@ description: 'Learn step-by-step.'
 addHowToData: true
 ---
 
-# Deploy Your Medusa Server to Railway
+# Deploy Your Medusa Backend to Railway
 
-In this document, you’ll learn how to deploy your Medusa server to Railway.
+In this document, you’ll learn how to deploy your Medusa backend to Railway.
 
 ## What is Railway
 
 [Railway](https://railway.app/) is a hosting provider that you can use to deploy web applications and databases without having to worry about managing the full infrastructure.
 
-Railway provides a free plan that allows you to deploy your Medusa server along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
+Railway provides a free plan that allows you to deploy your Medusa backend along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
 
 ---
 
 ## Prerequisites
 
-### Medusa Server
+### Medusa Backend
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.mdx).
+It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
-Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](./../../usage/configurations.md) to learn how to do that.
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](./../../development/backend/configurations.md) to learn how to do that.
 
 ### Needed Accounts
 
 - A [Railway](https://railway.app/) account.
-- A [GitHub](https://github.com/) account to create a repository to host your server’s codebase.
+- A [GitHub](https://github.com/) account to create a repository to host your backend's codebase.
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](./../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](./../../development/backend/prepare-environment.mdx#git).
 
 ---
 
-## Changes to Medusa Server Codebase
+## Changes to Medusa Backend Codebase
 
-By default, Railway looks for a Dockerfile in the root of the codebase. If there is one, it will try to deploy your server using it.
+By default, Railway looks for a Dockerfile in the root of the codebase. If there is one, it will try to deploy your backend using it.
 
-As this guide doesn't use Docker, make sure to delete `Dockerfile` from the root of your Medusa server.
+As this guide doesn't use Docker, make sure to delete `Dockerfile` from the root of your Medusa backend.
 
 ---
 
 ## Create GitHub Repository
 
-Before you can deploy your Medusa server you need to create a GitHub repository and push the code base to it.
+Before you can deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
@@ -62,7 +62,7 @@ After creating the repository, you’ll be redirected to the repository’s page
 
 ![GitHub repository's URL](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
-Copy the link. Then, open your terminal in the directory that holds your Medusa server codebase and run the following commands:
+Copy the link. Then, open your terminal in the directory that holds your Medusa backend codebase and run the following commands:
 
 ```bash
 git init
@@ -85,7 +85,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ## Deploy to Railway
 
-In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the server from the GitHub repository. 
+In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the backend from the GitHub repository. 
 
 ### Create the PostgreSQL Database
 
@@ -118,7 +118,7 @@ To find the Redis database URL which you’ll need later:
 2. Choose the Connect tab.
 3. Copy the Redis Connection URL.
 
-### Deploy the Medusa Server Repository
+### Deploy the Medusa Backend Repository
 
 In the same project view:
 
@@ -133,11 +133,11 @@ If the GitHub repositories in the dropdown are stuck on loading and aren't showi
 
 :::
 
-It will take the server a few minutes to deploy successfully.
+It will take the backend a few minutes to deploy successfully.
 
 ### Configure Environment Variables
 
-To configure the environment variables of your Medusa server:
+To configure the environment variables of your Medusa backend:
 
 1. Click on the GitHub repository’s card.
 2. Choose the Variables tab.
@@ -161,9 +161,9 @@ It’s highly recommended to use strong, randomly generated secrets for `JWT_SE
 
 ### Change Start Command
 
-The start command is the command used to run the server. You’ll change it to run any available migrations, then run the Medusa server. This way if you create your own migrations or update the Medusa server, it's guaranteed that these migrations are run first before the server starts.
+The start command is the command used to run the backend. You’ll change it to run any available migrations, then run the Medusa backend. This way if you create your own migrations or update the Medusa backend, it's guaranteed that these migrations are run first before the backend starts.
 
-To change the start command of your Medusa server:
+To change the start command of your Medusa backend:
 
 1. Click on the GitHub repository’s card.
 2. Click on the Settings tab and scroll down to the Service section.
@@ -175,7 +175,7 @@ medusa migrations run && medusa develop
 
 ### Add Domain Name
 
-The last step is to add a domain name to your Medusa server. To do that:
+The last step is to add a domain name to your Medusa backend. To do that:
 
 1. Click on the GitHub repository’s card.
 2. Click on the Settings tab and scroll down to the Domains section.
@@ -183,11 +183,11 @@ The last step is to add a domain name to your Medusa server. To do that:
 
 ---
 
-## Test your Server
+## Test the Backend
 
-Every change you make to the settings redeploys the server. You can check the Deployments of the server by clicking on the GitHub repository’s card and choosing the Deployments tab.
+Every change you make to the settings redeploys the backend. You can check the Deployments of the backend by clicking on the GitHub repository’s card and choosing the Deployments tab.
 
-After the server is redeployed successfully, open the app in your browser using the domain name. For example, you can open the URL `<YOUR_APP_URL>/store/products` which will return the products available on your server.
+After the backend is redeployed successfully, open the app in your browser using the domain name. For example, you can open the URL `<YOUR_APP_URL>/store/products` which will return the products available on your backend.
 
 :::tip
 
@@ -199,7 +199,7 @@ If you generated a random domain, you can find it by clicking on the GitHub repo
 
 ## Troubleshooting
 
-If you run into any issues or a problem with your deployed server, you can check the logs in your Railway container instance by:
+If you run into any issues or a problem with your deployed backend, you can check the logs in your Railway container instance by:
 
 1. Click on the GitHub repository’s card.
 2. Click on the Deployments tab.
@@ -207,11 +207,11 @@ If you run into any issues or a problem with your deployed server, you can check
 
 ---
 
-## Run Commands on Server
+## Run Commands on the Backend
 
-To run commands on your server, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
+To run commands on your backend, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
 
-For example, you can run commands on the server to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.md).
+For example, you can run commands on the backend to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.md).
 
 ---
 

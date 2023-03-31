@@ -1,5 +1,16 @@
 # @medusajs/admin-ui
 
+## 0.0.1-rc.4
+
+### Patch Changes
+
+- [#3585](https://github.com/medusajs/medusa/pull/3585) [`0d0090338`](https://github.com/medusajs/medusa/commit/0d00903385df980e355c54cee9bcd4e8ede21635) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): minor fixes for inventory items
+
+- [#3625](https://github.com/medusajs/medusa/pull/3625) [`7428ffa30`](https://github.com/medusajs/medusa/commit/7428ffa300a1e5781ef18b86edf97b711df0b585) Thanks [@StephixOne](https://github.com/StephixOne)! - Fix team table filter dropdown transparency
+
+- Updated dependencies []:
+  - medusa-react@5.0.0-rc.4
+
 ## 0.0.1-rc.3
 
 ### Patch Changes

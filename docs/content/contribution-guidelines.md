@@ -77,7 +77,7 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 ## Sidebar
 
-When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js` under the `docsSidebar`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
+When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
 
 ### Terminology
 
@@ -140,7 +140,7 @@ medusa.admin.uploads.create(file) // file is an instance of File
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<YOUR_SERVER>/admin/uploads' \
+curl -L -X POST '<BACKEND_URL>/admin/uploads' \
   -H 'Authorization: Bearer <API_TOKEN>' \
   -H 'Content-Type: text/csv' \
   -F 'files=@"<FILE_PATH_1>"'

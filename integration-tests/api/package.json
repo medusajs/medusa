@@ -11,7 +11,7 @@
   "dependencies": {
     "@medusajs/cache-inmemory": "1.8.0-rc.2",
     "@medusajs/event-bus-local": "1.8.0-rc.3",
-    "@medusajs/medusa": "1.8.0-rc.3",
+    "@medusajs/medusa": "1.8.0-rc.4",
     "faker": "^5.5.3",
     "medusa-interfaces": "1.3.7-rc.0",
     "typeorm": "^0.3.11"

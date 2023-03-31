@@ -3,7 +3,7 @@ const path = require("path")
 const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
 const apisPath = path.join(__dirname, "../../docs/api")
-// const reverseSidebar = require('./src/utils/reverseSidebar')
+const reverseSidebar = require('./src/utils/reverseSidebar')
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
@@ -62,115 +62,47 @@ const config = {
       },
       items: [
         {
+          type: 'search',
+          position: 'left',
+        },
+        {
           type: "docSidebar",
-          sidebarId: "docsSidebar",
-          label: "Docs"
+          sidebarId: "homepage",
+          label: "Docs",
+          position: "right"
         },
         {
           type: "docSidebar",
           sidebarId: "userGuideSidebar",
-          label: "User Guide"
+          label: "User Guide",
+          position: "right"
         },
         {
           href: "/api/store",
           label: "Store API",
           prependBaseUrlToHref: true,
-          target: '_blank'
+          target: '_blank',
+          position: "right"
         },
         {
           href: "/api/admin",
           label: "Admin API",
           prependBaseUrlToHref: true,
-          target: '_blank'
-        },
-        {
-          href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
-          position: "right",
-          label: "Report an Issue",
-          className: "right-divider"
-        },
+          target: '_blank',
+          position: "right"
+        }
       ],
     },
+    navbarActions: [
+      {
+        type: "link",
+        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+        title: "Report an Issue",
+        icon: "report"
+      }
+    ],
     footer: {
-      logo: {
-        alt: "Medusa",
-        src: "img/logo.png",
-        srcDark: "img/logo-dark.png"
-      },
-      links: [
-        {
-          title: 'Product',
-          items: [
-            {
-              label: 'Get started',
-              to: '/quickstart/quick-start'
-            },
-            {
-              label: 'Docs',
-              to: '/'
-            },
-            {
-              label: 'Store API',
-              to: '/api/store'
-            },
-            {
-              label: 'Admin API',
-              to: '/api/admin'
-            }
-          ]
-        },
-        {
-          title: 'Company',
-          items: [
-            {
-              label: 'Careers',
-              href: 'https://medusajs.notion.site/Careers-at-Medusa-f986a1d41eb146d888f9590a360547d1'
-            },
-            {
-              label: 'Pricing',
-              href: 'https://medusajs.com/pricing/'
-            },
-            {
-              label: 'Press Kit',
-              href: 'https://medusajs.notion.site/Media-Kit-9d885bb679674b458bca316f841322b6'
-            },
-            {
-              label: 'About',
-              href: 'https://medusajs.notion.site/'
-            },
-            {
-              label: 'Blog',
-              href: 'https://medusajs.com/blog'
-            },
-            {
-              label: 'Contact',
-              href: 'https://medusajs.com/contact-us/'
-            }
-          ]
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              label: "User Trials",
-              href: "https://ky5eo2x1u81.typeform.com/to/bFCQpY59",
-            },
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
-            },
-            {
-              label: "Discussions",
-              href: "https://github.com/medusajs/medusa/discussions",
-            },
-            {
-              label: "Discord",
-              href: "https://discord.gg/medusajs",
-            },
-          ],
-        },
-      ],
-      copyright: `© ${new Date().getFullYear()} Medusa`,
+      copyright: `© ${new Date().getFullYear()} Medusa, Inc. All rights reserved.`,
     },
     socialLinks: [
       {
@@ -182,13 +114,22 @@ const config = {
         href: 'https://twitter.com/medusajs'
       },
       {
+        type: 'linkedin',
+        href: 'https://www.linkedin.com/company/medusajs'
+      },
+      {
         type: 'github',
         href: 'https://github.com/medusajs/medusa'
-      },
+      }
     ],
     reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml',
     footerFeedback: {
       event: 'survey'
+    },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true
+      }
     }
   },
   presets: [
@@ -205,11 +146,10 @@ const config = {
           ],
           showLastUpdateTime: true,
           // breadcrumbs: false,
-          // async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
-          //   const sidebarItems = await defaultSidebarItemsGenerator(args);
-          //   console.log("here", sidebarItems, args.isCategoryIndex());
-          //   return reverseSidebar(sidebarItems);
-          // },
+          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
+            const sidebarItems = await defaultSidebarItemsGenerator(args);
+            return reverseSidebar(sidebarItems, args.item);
+          },
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
@@ -241,7 +181,7 @@ const config = {
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
-          primaryColorDark: '#242526',
+          primaryColorDark: '#161618',
           options: {
             disableSearch: true,
             nativeScrollbars: true,
