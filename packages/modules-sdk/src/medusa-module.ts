@@ -50,9 +50,10 @@ export class MedusaModule {
     const services = {}
 
     for (const resolution of Object.values(moduleResolutions)) {
+      const keyName = resolution.definition.key
       const registrationName = resolution.definition.registrationName
 
-      services[registrationName] = container.resolve(registrationName)
+      services[keyName] = container.resolve(registrationName)
     }
 
     return services
