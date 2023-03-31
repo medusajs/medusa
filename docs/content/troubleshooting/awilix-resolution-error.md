@@ -45,6 +45,8 @@ When you register a custom resource using a middleware, make sure that when you 
 
 For that reason, and to avoid other similar situations, make sure to always wrap your custom resources in a try-catch block when you use them inside the constructor of a service. For example:
 
+<!-- eslint-disable prefer-rest-params -->
+
 ```ts
 import { TransactionBaseService } from "@medusajs/medusa"
 
