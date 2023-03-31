@@ -84,8 +84,11 @@ const ReservationIndicator = ({
   reservations?: ReservationItemDTO[]
   lineItem: LineItem
 }) => {
-  const { variant, isLoading } = useAdminVariantsInventory(
-    lineItem?.variant_id ?? ""
+  const { variant, isLoading, isFetching } = useAdminVariantsInventory(
+    lineItem.variant_id!,
+    {
+      enabled: !!lineItem?.variant_id,
+    }
   )
 
   const { stock_locations } = useAdminStockLocations({
@@ -103,7 +106,12 @@ const ReservationIndicator = ({
 
   const awaitingAllocation = allocatableSum - reservationsSum
 
-  if (!lineItem.variant_id || (!isLoading && !variant?.inventory.length)) {
+  if (
+    isLoading ||
+    isFetching ||
+    !lineItem.variant_id ||
+    !variant?.inventory.length
+  ) {
     return <div className="w-[20px]" />
   }
 
