@@ -1,16 +1,8 @@
-/* stylelint-disable docusaurus/copyright-header */
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
-
-/* You can override the default Infima variables here. */
+@import url('./_medusa.css');
 @import url('./_variables.css');
 
 @import url('./_card.css');
 @import url('./_code.css');
-@import url('./_dark.css');
 @import url('./_docsearch.css');
 @import url('./_docspage.css');
 @import url('./_footer.css');

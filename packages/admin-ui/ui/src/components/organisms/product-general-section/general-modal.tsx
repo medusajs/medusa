@@ -6,13 +6,18 @@ import OrganizeForm, {
   OrganizeFormType,
 } from "../../forms/product/organize-form"
 
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
 import { Product } from "@medusajs/medusa"
-import { nestedForm } from "../../../utils/nested-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { nestedForm } from "../../../utils/nested-form"
+import MetadataForm, {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../forms/general/metadata-form"
+import Button from "../../fundamentals/button"
+import Modal from "../../molecules/modal"
 
 type Props = {
   product: Product
@@ -24,6 +29,7 @@ type GeneralFormWrapper = {
   general: GeneralFormType
   organize: OrganizeFormType
   discountable: DiscountableFormType
+  metadata: MetadataFormType
 }
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
@@ -76,6 +82,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
 
         categories: data.organize.categories?.map((id) => ({ id })),
         discountable: data.discountable.value,
+        metadata: getSubmittableMetadata(data.metadata),
       },
       onReset
     )
@@ -105,6 +112,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               form={nestedForm(form, "discountable")}
               isGiftCard={product.is_giftcard}
             />
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">Metadata</h2>
+              <MetadataForm form={nestedForm(form, "metadata")} />
+            </div>
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end gap-x-2">
@@ -155,6 +166,7 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
     discountable: {
       value: product.discountable,
     },
+    metadata: getMetadataFormValues(product.metadata),
   }
 }
 

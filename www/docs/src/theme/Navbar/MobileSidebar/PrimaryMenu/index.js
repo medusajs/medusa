@@ -2,7 +2,6 @@ import React from 'react';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import {useNavbarMobileSidebar} from '@docusaurus/theme-common/internal';
 import NavbarItem from '@theme/NavbarItem';
-import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -23,7 +22,6 @@ export default function NavbarMobilePrimaryMenu() {
           key={i}
         />
       ))}
-      <NavbarColorModeToggle className='mobile' />
     </ul>
   );
 }

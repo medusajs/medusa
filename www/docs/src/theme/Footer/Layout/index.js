@@ -13,15 +13,15 @@ export default function FooterLayout({style, links, logo, copyright}) {
       })}>
       <div className="container container-fluid footer-container">
         {(logo || copyright || socialLinks) && (
-          <div className="text--center col col--6 social-logo-container">
+          <div className="col col--6 social-logo-container">
             <div className='logo-container'>
               {logo && <div className="margin-bottom--sm">{logo}</div>}
               {copyright}
             </div>
-            {socialLinks && <SocialLinks links={socialLinks} />}
           </div>
         )}
-        <div className="col col--6">
+        <div className="col col--6 row row--justify-end">
+          {socialLinks && <SocialLinks links={socialLinks} />}
           {links}
         </div>
       </div>

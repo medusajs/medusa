@@ -11,6 +11,7 @@ import { nestedForm } from "../../../../../utils/nested-form"
 import IconTooltip from "../../../../molecules/icon-tooltip"
 import InputField from "../../../../molecules/input"
 import Accordion from "../../../../organisms/accordion"
+import MetadataForm, { MetadataFormType } from "../../../general/metadata-form"
 import { PricesFormType } from "../../../general/prices-form"
 import VariantPricesForm from "../variant-prices-form"
 
@@ -29,6 +30,7 @@ export type EditFlowVariantFormType = {
   }[]
   customs: CustomsFormType
   dimensions: DimensionsFormType
+  metadata: MetadataFormType
 }
 
 type Props = {
@@ -124,6 +126,13 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
             <CustomsForm form={nestedForm(form, "customs")} />
           </div>
         )}
+      </Accordion.Item>
+      <Accordion.Item title="Metadata" value="metadata">
+        <p className="inter-base-regular text-grey-50 mb-base">
+          Metadata can be used to store additional information about the
+          variant.
+        </p>
+        <MetadataForm form={nestedForm(form, "metadata")} />
       </Accordion.Item>
     </Accordion>
   )

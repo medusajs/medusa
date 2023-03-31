@@ -1,0 +1,12 @@
+.closeButton {
+  --ifm-icon-color: var(--ifm-announcement-bar-close-icon-color);
+
+  padding: 0;
+  line-height: 0;
+  align-self: flex-start;
+}
+
+.closeButton,
+.closeButton:hover {
+  opacity: 1 !important;
+}

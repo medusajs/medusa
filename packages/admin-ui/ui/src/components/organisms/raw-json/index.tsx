@@ -28,7 +28,7 @@ function RawJSON(props: RawJSONProps) {
 
   return (
     <BodyCard className={"mb-4 h-auto min-h-0 w-full"} title={title}>
-      <div className="mt-4 flex flex-grow items-center">
+      <div className="flex flex-grow items-center">
         <JSONView data={data} />
       </div>
     </BodyCard>
