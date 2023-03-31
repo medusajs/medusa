@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to publish a Medusa plugin to NPM. This guide lists some check lists to ensure you have implemented before publishing, as well as required steps.'
+description: 'Learn how to publish a Medusa plugin to NPM. This guide lists some check lists to ensure you have implemented before publishing, as well as required steps.'-
 addHowToData: true
 ---
 
 # How to Publish a Plugin
 
-In this document, you'll learn how to publish a Medusa plugin to NPM and what are some requirements to keep in mind before publishing.
+In this document, you'll learn how to publish a Medusa plugin to NPM and what are some requirements to keep in mind before publishing. Afterwards, your plugin will be published on our [Medusa Plugins page](https://medusajs.com/plugins/).
 
 ## Prerequisites
 
