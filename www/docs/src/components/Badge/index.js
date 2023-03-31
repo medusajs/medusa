@@ -10,7 +10,8 @@ export default function Badge({ className, variant, children }) {
         className,
         variant === "purple" && styles.purpleBadge,
         variant === "orange" && styles.orangeBadge,
-        variant === "green" && styles.greenBadge
+        variant === "green" && styles.greenBadge,
+        variant === "blue" && styles.blueBadge
       )}
     >
       {children}
