@@ -1,4 +1,6 @@
 type: object
+required:
+  - tax_rate
 properties:
   tax_rate:
     $ref: ./TaxRate.yaml

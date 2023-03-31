@@ -1,4 +1,16 @@
 type: object
+x-expanded-relations:
+  field: draft_orders
+  relations:
+    - order
+    - cart
+    - cart.items
+    - cart.items.adjustments
+required:
+  - draft_orders
+  - count
+  - offset
+  - limit
 properties:
   draft_orders:
     type: array
