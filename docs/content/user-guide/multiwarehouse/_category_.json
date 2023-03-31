@@ -1,8 +1,8 @@
 {
-  "position": 3,
+  "position": 5,
   "collapsed": false,
   "link": null,
-  "label": "Products",
+  "label": "Multi-Warehouse",
   "customProps": {
     "sidebar_is_group_headline": true
   }
