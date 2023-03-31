@@ -134,6 +134,11 @@
   --medusa-tag-orange-text: #AD5700;
   --medusa-tag-orange-icon: #FFB224;
   --medusa-tag-orange-border: #FFD386;
+  --medusa-tag-green-bg: #DDF3E4;
+  --medusa-tag-green-bg-hover: #CCEBD7;
+  --medusa-tag-green-text: #18794E;
+  --medusa-tag-green-icon: #30A46C;
+  --medusa-tag-green-border: #B4DFC4;
 }
 
 /** Dark theme **/
@@ -204,4 +209,9 @@ html[data-theme="dark"] {
   --medusa-tag-orange-text: #F1A10D;
   --medusa-tag-orange-icon: #FFB224;
   --medusa-tag-orange-border: #573300;
+  --medusa-tag-green-bg: #113123;
+  --medusa-tag-green-bg-hover: #133929;
+  --medusa-tag-green-text: #4CC38A;
+  --medusa-tag-green-icon: #30A46C;
+  --medusa-tag-green-border: #164430;
 }
