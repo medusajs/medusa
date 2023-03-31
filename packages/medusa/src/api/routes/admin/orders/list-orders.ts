@@ -1,8 +1,8 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import { AdminListOrdersSelector } from "../../../../types/orders"
-import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
+import { OrderService } from "../../../../services"
+import { AdminListOrdersSelector } from "../../../../types/orders"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -208,7 +208,12 @@ export default async (req, res) => {
 
   const data = cleanResponseData(orders, req.allowedProperties)
 
-  res.json({ orders: data, count, offset: skip, limit: take })
+  res.json({
+    orders: cleanResponseData(data, []),
+    count,
+    offset: skip,
+    limit: take,
+  })
 }
 
 export class AdminGetOrdersParams extends AdminListOrdersSelector {

@@ -1,7 +1,7 @@
 import { Router } from "express"
-import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { ProductCategory } from "../../../../models"
 import { PaginatedResponse } from "../../../../types/common"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 
 import listProductCategories, {
   StoreGetProductCategoriesParams,

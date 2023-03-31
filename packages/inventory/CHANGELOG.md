@@ -71,6 +71,19 @@
 - Updated dependencies [[`74bc4b16a`](https://github.com/medusajs/medusa/commit/74bc4b16a07f78668003ca930bf2a0d928897ceb), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73), [`271844aed`](https://github.com/medusajs/medusa/commit/271844aedbe45c369e188b5d06458dbd6984cd39), [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def)]:
   - @medusajs/utils@0.0.2-rc.0
   - @medusajs/modules-sdk@0.1.0-rc.0
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`98fe8fd00`](https://github.com/medusajs/medusa/commit/98fe8fd00a1912fde1d2a93b434bda500a213c14), [`2869763ea`](https://github.com/medusajs/medusa/commit/2869763ea9673cf5c5a3aa10b58f61b8e830ce21)]:
+  - @medusajs/medusa@1.7.15
+
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies [[`902ed3c0b`](https://github.com/medusajs/medusa/commit/902ed3c0b21cd525d9975e59b7a8120ae5f7a895), [`fa4049cb5`](https://github.com/medusajs/medusa/commit/fa4049cb51232b2ed7091b1322c3fc14cd23e451)]:
+  - @medusajs/medusa@1.7.14
 
 ## 1.0.10
 

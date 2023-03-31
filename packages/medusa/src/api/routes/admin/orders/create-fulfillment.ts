@@ -18,6 +18,7 @@ import {
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/fulfillment
@@ -150,7 +151,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export const updateInventoryAndReservations = async (

@@ -1,3 +1,8 @@
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -7,16 +12,11 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
+import models from "../loaders/models"
 import passportLoader from "../loaders/passport"
+import repositories from "../loaders/repositories"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import {
-  moduleHelper,
-  moduleLoader,
-  registerModules,
-} from "@medusajs/modules-sdk"
-import repositories from "../loaders/repositories"
-import models from "../loaders/models"
 
 const adminSessionOpts = {
   cookieName: "session",
