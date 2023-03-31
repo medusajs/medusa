@@ -326,6 +326,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "troubleshooting/awilix-resolution-error",
+              label: "Handling AwilixResolutionError",
+            },
+            {
+              type: "doc",
               id: "troubleshooting/transaction-error-in-checkout",
               label: "Error 409 in checkout",
             },
