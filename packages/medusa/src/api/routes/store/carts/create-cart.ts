@@ -1,6 +1,3 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -10,18 +7,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
 
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Cart, LineItem } from "../../../../models"
 import {
   CartService,
   LineItemService,
   RegionService,
 } from "../../../../services"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { Cart, LineItem } from "../../../../models"
+import { CartCreateProps } from "../../../../types/cart"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { CartCreateProps } from "../../../../types/cart"
 
 /**
  * @oas [post] /store/carts
@@ -172,7 +173,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart })
+  res.status(200).json({ cart: cleanResponseData(cart, []) })
 }
 
 export class Item {

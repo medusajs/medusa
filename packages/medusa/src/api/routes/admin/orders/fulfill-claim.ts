@@ -1,12 +1,13 @@
+import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import {
   ClaimService,
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { updateInventoryAndReservations } from "./create-fulfillment"
 
 /**
@@ -128,7 +129,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 /**

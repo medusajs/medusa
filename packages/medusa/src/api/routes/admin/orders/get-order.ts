@@ -1,7 +1,7 @@
+import { Order } from "../../../../models"
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { Order } from "../../../../models"
 
 /**
  * @oas [get] /admin/orders/{id}
@@ -72,7 +72,7 @@ export default async (req, res) => {
 
   order = cleanResponseData(order, req.allowedProperties)
 
-  res.json({ order: order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export class AdminGetOrdersOrderParams extends FindParams {}

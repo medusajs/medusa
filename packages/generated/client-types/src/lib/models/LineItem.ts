@@ -157,9 +157,13 @@ export interface LineItem {
    */
   original_tax_total?: number
   /**
-   * The total of discount of the line item
+   * The total of discount of the line item rounded
    */
   discount_total?: number
+  /**
+   * The total of discount of the line item
+   */
+  raw_discount_total?: number
   /**
    * The total of the gift card of the line item
    */

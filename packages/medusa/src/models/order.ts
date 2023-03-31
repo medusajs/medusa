@@ -241,6 +241,7 @@ export class Order extends BaseEntity {
   // Total fields
   shipping_total: number
   discount_total: number
+  raw_discount_total: number
   tax_total: number | null
   refunded_total: number
   total: number
@@ -506,8 +507,12 @@ export class Order extends BaseEntity {
  *     type: integer
  *     description: The total of shipping
  *     example: 1000
- *   discount_total:
+ *   raw_discount_total:
  *     description: The total of discount
+ *     type: integer
+ *     example: 800
+ *   discount_total:
+ *     description: The total of discount rounded
  *     type: integer
  *     example: 800
  *   tax_total:
