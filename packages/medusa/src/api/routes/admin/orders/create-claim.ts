@@ -16,6 +16,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ClaimTypeValue } from "../../../../types/claim"
 import { AddressPayload, FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/claims
@@ -254,7 +255,9 @@ export default async (req, res) => {
 
                 return {
                   response_code: 200,
-                  response_body: { order },
+                  response_body: {
+                    order,
+                  },
                 }
               })
           })
@@ -286,6 +289,13 @@ export default async (req, res) => {
 
   if (err) {
     throw err
+  }
+
+  if (idempotencyKey.response_body.order) {
+    idempotencyKey.response_body.order = cleanResponseData(
+      idempotencyKey.response_body.order,
+      []
+    )
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)

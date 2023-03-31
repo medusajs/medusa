@@ -1,6 +1,7 @@
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /store/orders/cart/{cart_id}
@@ -54,5 +55,5 @@ export default async (req, res) => {
     relations: defaultStoreOrdersRelations,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }

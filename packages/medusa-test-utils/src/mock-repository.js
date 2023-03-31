@@ -14,7 +14,7 @@ class MockRepo {
     del,
     count,
     insertBulk,
-    metadata
+    metadata,
   }) {
     this.create_ = create
     this.update_ = update
@@ -31,7 +31,7 @@ class MockRepo {
     this.insertBulk_ = insertBulk
 
     this.metadata = metadata ?? {
-      columns: []
+      columns: [],
     }
   }
 
@@ -88,20 +88,9 @@ class MockRepo {
       return this.findDescendantsTree_(...args)
     }
   })
-  findOneOrFail = jest.fn().mockImplementation((...args) => {
-    if (this.findOneOrFail_) {
-      return this.findOneOrFail_(...args)
-    }
-  })
-
   find = jest.fn().mockImplementation((...args) => {
     if (this.find_) {
       return this.find_(...args)
-    }
-  })
-  softRemove = jest.fn().mockImplementation((...args) => {
-    if (this.softRemove_) {
-      return this.softRemove_(...args)
     }
   })
   save = jest.fn().mockImplementation((...args) => {

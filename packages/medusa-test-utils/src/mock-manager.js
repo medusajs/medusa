@@ -1,11 +1,12 @@
 export default {
   connection: {
     getMetadata: (target) => {
-
-      return target["metadata"] ?? {
-        columns: []
-      }
-    }
+      return (
+        target["metadata"] ?? {
+          columns: [],
+        }
+      )
+    },
   },
 
   getRepository: function (repo) {

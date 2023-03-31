@@ -2482,6 +2482,9 @@ describe("/admin/order-edits", () => {
       )
       expect(item2.adjustments).toHaveLength(1)
 
+      expect(item1.adjustments[0].amount).toBeCloseTo(1333, 0)
+      expect(item2.adjustments[0].amount).toBeCloseTo(667, 0)
+
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
@@ -2531,7 +2534,6 @@ describe("/admin/order-edits", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   discount_id: discount.id,
-                  amount: 1333,
                 }),
               ]),
             }),
@@ -2564,7 +2566,6 @@ describe("/admin/order-edits", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   discount_id: discount.id,
-                  amount: 667,
                 }),
               ]),
             }),
