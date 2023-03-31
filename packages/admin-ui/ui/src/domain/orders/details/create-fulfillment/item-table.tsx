@@ -80,6 +80,8 @@ const FulfillmentLine = ({
     { enabled: isLocationFulfillmentEnabled }
   )
 
+  const hasInventoryItem = !!variant?.inventory.length
+
   React.useEffect(() => {
     if (isLocationFulfillmentEnabled) {
       refetch()
@@ -100,7 +102,7 @@ const FulfillmentLine = ({
 
     const { inventory } = variant
 
-    const locationInventory = inventory[0].location_levels?.find(
+    const locationInventory = inventory[0]?.location_levels?.find(
       (inv) => inv.location_id === locationId
     )
 
@@ -142,7 +144,10 @@ const FulfillmentLine = ({
       handleQuantityUpdate(0, item.id)
     } else {
       handleQuantityUpdate(
-        Math.min(getFulfillableQuantity(item), availableQuantity),
+        Math.min(
+          getFulfillableQuantity(item),
+          ...[hasInventoryItem ? availableQuantity : Number.MAX_VALUE]
+        ),
         item.id
       )
     }
@@ -158,7 +163,8 @@ const FulfillmentLine = ({
       className={clsx(
         "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
         {
-          "pointer-events-none opacity-50": !availableQuantity,
+          "pointer-events-none opacity-50":
+            !availableQuantity && hasInventoryItem,
         }
       )}
     >
@@ -185,10 +191,12 @@ const FulfillmentLine = ({
       </div>
       <div className="flex items-center">
         <FeatureToggle featureFlag="inventoryService">
-          <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
-            <p>{availableQuantity || 0} available</p>
-            <p>({inStockQuantity || 0} in stock)</p>
-          </div>
+          {hasInventoryItem && (
+            <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
+              <p>{availableQuantity || 0} available</p>
+              <p>({inStockQuantity || 0} in stock)</p>
+            </div>
+          )}
         </FeatureToggle>
         <InputField
           type="number"
@@ -202,7 +210,10 @@ const FulfillmentLine = ({
             </span>
           }
           value={quantities[item.id]}
-          max={Math.min(availableQuantity || 0, getFulfillableQuantity(item))}
+          max={Math.min(
+            getFulfillableQuantity(item),
+            ...[hasInventoryItem ? availableQuantity || 0 : Number.MAX_VALUE]
+          )}
           onChange={(e) =>
             handleQuantityUpdate(e.target.valueAsNumber, item.id)
           }
