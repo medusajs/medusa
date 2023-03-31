@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.8.0-rc.5
+
+### Patch Changes
+
+- [#3644](https://github.com/medusajs/medusa/pull/3644) [`4342ac884`](https://github.com/medusajs/medusa/commit/4342ac884bc3fe473576ef10d291f3547e0ffc62) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin-ui): Adds metadata forms to all applicable domains in the UI.
+  fix(medusa): Fixes an issue where metadata was not being set for order addresses using `setMetadata`.
+
+- [#3653](https://github.com/medusajs/medusa/pull/3653) [`809ab2e0e`](https://github.com/medusajs/medusa/commit/809ab2e0eb2d62054481fa6491d3f7cafbadab4f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Rounding issues on line item adjustments
+
 ## 1.8.0-rc.4
 
 ### Minor Changes
@@ -300,6 +309,7 @@
   - @medusajs/utils@0.0.2-rc.0
   - @medusajs/modules-sdk@0.1.0-rc.0
   - @medusajs/medusa-cli@1.3.9-rc.0
+
 ## 1.7.15
 
 ### Patch Changes

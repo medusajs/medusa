@@ -1,5 +1,13 @@
 # @medusajs/admin
 
+## 1.0.0-rc.5
+
+### Patch Changes
+
+- Updated dependencies [[`4342ac884`](https://github.com/medusajs/medusa/commit/4342ac884bc3fe473576ef10d291f3547e0ffc62), [`7e1d8ef59`](https://github.com/medusajs/medusa/commit/7e1d8ef599fe4588d439b449373debf1221e625d), [`809ab2e0e`](https://github.com/medusajs/medusa/commit/809ab2e0eb2d62054481fa6491d3f7cafbadab4f), [`e6b5859af`](https://github.com/medusajs/medusa/commit/e6b5859af213185408e1087073c1cba10f7b33c2), [`45fd0fb63`](https://github.com/medusajs/medusa/commit/45fd0fb639f05db6115be6823d42b85672c0891d)]:
+  - @medusajs/admin-ui@0.0.1-rc.5
+  - @medusajs/medusa@1.8.0-rc.5
+
 ## 1.0.0-rc.4
 
 ### Patch Changes

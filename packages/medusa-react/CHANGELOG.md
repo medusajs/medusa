@@ -1,5 +1,13 @@
 # Change Log
 
+## 5.0.0-rc.5
+
+### Patch Changes
+
+- Updated dependencies [[`4342ac884`](https://github.com/medusajs/medusa/commit/4342ac884bc3fe473576ef10d291f3547e0ffc62), [`809ab2e0e`](https://github.com/medusajs/medusa/commit/809ab2e0eb2d62054481fa6491d3f7cafbadab4f)]:
+  - @medusajs/medusa@1.8.0-rc.5
+  - @medusajs/medusa-js@2.0.0-rc.5
+
 ## 5.0.0-rc.4
 
 ### Patch Changes
