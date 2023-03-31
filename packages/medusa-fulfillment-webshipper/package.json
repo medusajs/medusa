@@ -18,7 +18,7 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "@babel/runtime": "^7.9.6",
-    "@medusajs/medusa": "1.8.0-rc.4",
+    "@medusajs/medusa": "1.8.0-rc.5",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
