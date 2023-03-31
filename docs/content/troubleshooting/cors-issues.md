@@ -1,6 +1,6 @@
 # CORS issues
 
-If you are experiencing connection issues when trying to access your Medusa server from a storefront, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
+If you are experiencing connection issues when trying to access your Medusa backend from a storefront, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
 
 You might see a log in your browser console, that looks like this:
 
@@ -16,7 +16,8 @@ const ADMIN_CORS = process.env.ADMIN_CORS ||
   "http://localhost:7000,http://localhost:7001"
 
 // CORS to avoid issues when consuming Medusa from a client
-const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000"
+const STORE_CORS = 
+  process.env.STORE_CORS || "http://localhost:8000"
 ```
 
 If you wish to run your storefront or Medusa admin on other ports, you should update the above settings accordingly.
@@ -25,4 +26,4 @@ If you wish to run your storefront or Medusa admin on other ports, you should up
 
 ## See Also
 
-- [Configure your Medusa server](../usage/configurations.md)
+- [Configure your Medusa backend](../development/backend/configurations.md)

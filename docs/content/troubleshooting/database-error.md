@@ -1,6 +1,6 @@
 # Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string
 
-You can get the following error while running `medusa new` or while running integration tests during [local development](../usage/local-development.md):
+You can get the following error while running `medusa new` or while running integration tests during [local development](../development/fundamentals/local-development.md):
 
 ```bash
 Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string

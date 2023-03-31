@@ -3,11 +3,11 @@
   border-radius: var(--ifm-global-radius);
   border: 1px solid var(--ifm-toc-border-color);
   font: var(--ifm-font-size-base) var(--ifm-font-family-base);
-  padding: 0.8rem;
+  padding: 12px;
   width: 100%;
   background: var(--docsearch-searchbox-background);
   color: var(--docsearch-text-color);
-  margin-bottom: 0.5rem;
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
   transition: border var(--ifm-transition-fast) ease;
 }
 
@@ -23,8 +23,9 @@
 }
 
 .searchResultsColumn {
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-size: var(--medusa-label-small-plus-size) !important;
+  line-height: var(--medusa-label-small-plus-line-height) !important;
+  font-weight: var(--medusa-label-small-plus-font-weight) !important;
 }
 
 .algoliaLogo {
@@ -42,11 +43,17 @@
 
 .searchResultItemHeading {
   font-weight: 400;
-  margin-bottom: 0;
+  margin-bottom: 8px;
+}
+
+.searchResultItemHeading a {
+  color: var(--ifm-color-headers);
 }
 
 .searchResultItemPath {
-  font-size: 0.8rem;
+  font-size: var(--medusa-label-x-small-plus-size) !important;
+  line-height: var(--medusa-label-x-small-plus-line-height) !important;
+  font-weight: var(--medusa-label-x-small-plus-font-weight) !important;
   color: var(--ifm-color-content-secondary);
   --ifm-breadcrumb-separator-size-multiplier: 1;
 }
