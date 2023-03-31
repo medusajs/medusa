@@ -22,7 +22,7 @@ const CreateFulfillmentItemsTable = ({
   items: LineItem[]
   quantities: Record<string, number>
   setQuantities: (quantities: Record<string, number>) => void
-  locationId: string
+  locationId?: string
   setErrors: (errors: React.SetStateAction<{}>) => void
 }) => {
   const handleQuantityUpdate = React.useCallback(
@@ -140,7 +140,7 @@ const FulfillmentLine = ({
   }, [validQuantity, setErrors, item.id])
 
   React.useEffect(() => {
-    if (!availableQuantity) {
+    if (!availableQuantity && hasInventoryItem) {
       handleQuantityUpdate(0, item.id)
     } else {
       handleQuantityUpdate(
@@ -164,7 +164,8 @@ const FulfillmentLine = ({
         "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
         {
           "pointer-events-none opacity-50":
-            !availableQuantity && hasInventoryItem,
+            (!availableQuantity && hasInventoryItem) ||
+            (!locationId && isLocationFulfillmentEnabled),
         }
       )}
     >
