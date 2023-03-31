@@ -1,0 +1,149 @@
+---
+description: "Gift cards are prepaid codes that can be purchased and used during checkout as an alternative to payment methods or to receive a discount. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
+
+# Gift Cards
+
+Gift cards are prepaid codes that can be purchased and used during checkout as an alternative to payment methods or to receive a discount. This overview introduces the available features related to gift cards.
+
+:::note
+
+Not a developer? Check out the [Gift Cards user guide](../../user-guide/gift-cards/index.md).
+
+:::
+
+## Features
+
+### Gift Card Management
+
+Admins can manage their main gift card with unlimited denominations.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/gift-cards/admin/manage-gift-cards',
+    label: 'Admin: Manage Gift Cards',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage gift cards using Admin APIs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/gift-cards/manage',
+    label: 'User Guide: Manage Discounts',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage gift cards using Medusa Admin.'
+    }
+  },
+]} />
+
+### Gift Card Purchasing
+
+Customers can view the gift card and purchase it on the storefront. Customers can also use the gift card during checkout to deduct the gift card’s balance from the checkout total.
+
+Developers can implement custom logic to send the gift card to the customer. They can alternatively implement a Shipping Profile that specifically handles the fulfillment of gift cards.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/gift-cards/backend/send-gift-card-to-customer',
+    label: 'Backend: Send Gift Card Code',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to use send a gift card code to a customer after their purchase.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/gift-cards/storefront/use-gift-cards',
+    label: 'Storefront: Use Gift Cards',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to show gift cards to customers and allow them to redeem them.'
+    }
+  },
+]} />
+
+### Custom Gift Cards
+
+Admins can create custom gift cards that are sent to specific customers. These customers can then use the gift card during checkout, the same way they would if they purchased one.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/user-guide/gift-cards/custom',
+    label: 'User Guide: Custom Gift Cards',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage custom gift cards using Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards',
+    label: 'Admin: Manage Custom Gift Cards',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage custom gift cards using Admin APIs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/gift-cards/backend/send-gift-card-to-customer',
+    label: 'Backend: Send Gift Card Code',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to use send a custom gift card code to a customer.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how gift card related entities and concepts are built, their relation to other modules, and more.
+
+<DocCard item={{
+    type: 'link',
+    href: '/modules/gift-cards',
+    label: 'Architecture: Gift Card',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Gift Card architecture.'
+    }
+  }}
+/>
+
+---
+
+## Related Modules
+
+Discover Gift Card's relation to other modules in Medusa
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/products/overview',
+    label: 'Product',
+    customProps: {
+      icon: Icons['tag-solid'],
+      description: 'A store’s main gift card is essentially a Product.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/overview',
+    label: 'Cart and Checkout',
+    customProps: {
+      icon: Icons['shopping-cart-solid'],
+      description: 'Gift Cards can be used during checkout.'
+    }
+  },
+]} />

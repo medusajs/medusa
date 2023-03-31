@@ -1,60 +1,51 @@
 .cardContainer {
-  --ifm-link-hover-decoration: none;
-  --ifm-background-color: #fff;
-  --ifm-background-color-hover: #F9FAFB;
-  --ifm-border-color: #E5E7EB;
-
-  background-color: var(--ifm-background-color);
-  border: 1px solid var(--ifm-border-color) !important;
-  border-radius: 8px;
   box-shadow: none !important;
   transition: all var(--ifm-transition-fast) ease;
-  transition-property: border, box-shadow;
-
   display: flex;
-  flex-direction: row;
-  padding: 16px 24px;
+  padding: var(--ifm-base-spacing);
   height: 100%;
-}
-
-[data-theme="dark"] .cardContainer {
-  --ifm-background-color-hover: #2D2D2D;
-  --ifm-background-color: #222222;
-  --ifm-border-color: #393939;
-}
-
-.cardContainer:hover {
-  background-color: var(--ifm-background-color-hover);
 }
 
 .cardContainer *:last-child {
   margin-bottom: 0;
 }
 
+.cardContainer:not(.cardSoon):hover {
+  background-color: var(--ifm-card-bg-hover);
+}
+
+.cardIconContainer {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .cardTitle {
-  font-size: 14px;
-  line-height: 24px;
-  margin-bottom: 4px;
+  font-size: var(--medusa-label-regular-plus-size);
+  line-height: var(--medusa-label-regular-plus-line-height);
+  font-weight: var(--medusa-label-regular-plus-font-weight);
+  color: var(--ifm-color-primary);
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
+  display: block;
 }
 
 .cardDescription {
-  font-size: 14px;
-  line-height: 24px;
+  font-size: var(--medusa-label-regular-size);
+  line-height: var(--medusa-label-regular-line-height);
+  font-weight: var(--medusa-label-regular-font-weight);
   color: var(--ifm-color-content);
+}
+
+.cardTitle,
+.cardDescription {
+  transition: all var(--ifm-transition-fast) ease;
 }
 
 .contentContainer {
   width: calc(100% - 20px);
 }
 
-.cardTitle img {
-  vertical-align: bottom;
-  margin-right: 2px;
-}
-
-.imageContainer {
-  width: 20px;
-  height: 20px;
-  margin-right: 16px;
-  margin-top: 3px;
+.cardSoon {
+  pointer-events: none;
 }
