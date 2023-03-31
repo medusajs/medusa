@@ -55,7 +55,7 @@ This section explains how the Medusa backend uses the inventory module along wit
 
 ### Entities Relation Overview
 
-The core Medusa package contains an entity `ProductVariantInventoryItem` that is used to establish a relation between a product variant and an inventory item. This enables you to use inventory management features on the product variant level, while maintaining the modularity that allows you to choose or implement your custom inventory module.
+The core Medusa package contains an entity `ProductVariantInventoryItem` that is used to establish a relation between a product variant and an inventory item. This enables you to use inventory management features on the product variant level, while maintaining the modularity that allows you to use Medusa's inventory module or implement your custom inventory module.
 
 When you use Medusa's Inventory Module, the Medusa backend uses the `ProductVariantInventoryItem` entity as a bridge between the `InventoryItem` entity and the `ProductVariant` entity.
 
@@ -89,7 +89,7 @@ Then, the inventory module confirms that the product variant has sufficient quan
 
 ### Order Placement
 
-When an order is placed, the inventory module reserves the ordered quantity of line items that are associated with product variants having an enabled `manage_inventory` attribute. The reserved quantity is indicated by creating a reservation item for each line item, associating it with its inventory item and a stock location.
+When an order is placed, the Medusa backend uses the inventory module to reserve the ordered quantity of line items that are associated with product variants having an enabled `manage_inventory` attribute. The reserved quantity is indicated by creating a reservation item for each line item, associating it with its inventory item and a stock location.
 
 The Medusa backend chooses the stock location randomly from the available stock locations associated with the order’s sales channel. The admin can later change which stock location the item will be fulfilled from.
 
