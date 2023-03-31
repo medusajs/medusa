@@ -136,12 +136,18 @@ class CustomService extends TransactionBaseService {
     super(...arguments)
 
     // use the registered resource.
-    container.customResource
+    try {
+      container.customResource
+    } catch (e) {
+      // avoid errors when the backend first loads
+    }
   }
 }
 
 export default CustomService
 ```
+
+Notice that you have to wrap your usage of the new resource in a try-catch block when you use it in a constructor. This is to avoid errors that can arise when the backend first loads, as the resource is not registered yet.
 
 ### Note About Services Lifetime
 
@@ -168,7 +174,11 @@ class ProductService extends MedusaProductService {
     super(...arguments)
 
     // use the registered resource.
-    container.customResource
+    try {
+      container.customResource
+    } catch (e) {
+      // avoid errors when the backend first loads
+    }
   }
 
   // ...

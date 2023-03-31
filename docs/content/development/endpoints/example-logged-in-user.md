@@ -51,6 +51,9 @@ import { Router } from "express"
 import { 
   registerLoggedInUser,
 } from "../middlewares/logged-in-user"
+import 
+  authenticate 
+from "@medusajs/medusa/dist/api/middlewares/authenticate"
 
 const router = Router()
 
@@ -61,6 +64,7 @@ export default function (adminCorsOptions) {
   router.use(
     "/admin/products", 
     cors(adminCorsOptions), 
+    authenticate(),
     registerLoggedInUser
   )
   return router
@@ -70,6 +74,12 @@ export default function (adminCorsOptions) {
 In the example above, the middleware is applied on the `/admin/products` core endpoint. However, you can apply it on any other endpoint. You can also apply it to custom endpoints.
 
 For endpoints that require Cross-Origin Resource Origin (CORS) options, such as core endpoints, you must pass the CORS options to the middleware as well since it will be executed before the underlying endpoint.
+
+:::tip
+
+In the above code snippet, the `authenticate` middleware imported from `@medusajs/medusa` is used to ensure that the user is logged in first. If you're implementing this for middleware to register the logged-in customer, make sure to use the [customer's authenticate middleware](./create.md#protect-store-routes).
+
+:::
 
 ---
 
@@ -121,7 +131,11 @@ class HelloService extends TransactionBaseService {
   constructor(container, options) {
     super(...arguments)
 
-    this.loggedInUser_ = container.loggedInUser
+    try {
+      this.loggedInUser_ = container.loggedInUser
+    } catch (e) {
+      // avoid errors when backend first runs
+    }
   }
 
   // ...
