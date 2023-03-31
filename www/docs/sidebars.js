@@ -881,6 +881,74 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Multi-Warehouse",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/overview",
+          label: "Overview",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/install-modules",
+          label: "Install Modules",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/inventory-module",
+          label: "Inventory Module",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/stock-location-module",
+          label: "Stock Location Module",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Stock Locations",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Inventory",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Stock Locations in Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Taxes",
       collapsible: false,
       customProps: {
