@@ -60,7 +60,7 @@ You can retrieve available categories by sending a request to the [List Categori
 medusa.admin.productCategories.list()
 .then(({ product_categories, limit, offset, count }) => {
   console.log(product_categories.length)
-	// display categories
+  // display categories
 })
 ```
 
@@ -173,13 +173,13 @@ export default CreateCategory
 ```ts
 fetch(`<BACKEND_URL>/admin/product-categories`, {
   credentials: "include",
-	method: "POST",
-	headers: {
-	  "Content-Type": "application/json",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
   },
-	body: JSON.stringify({
-		name: "Skinny Jeans",
-	}),
+  body: JSON.stringify({
+    name: "Skinny Jeans",
+  }),
 })
 .then((response) => response.json())
 .then(({ product_category }) => {
