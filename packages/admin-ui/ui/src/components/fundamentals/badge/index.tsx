@@ -10,6 +10,7 @@ type BadgeProps = {
     | "ghost"
     | "default"
     | "disabled"
+    | "new-feature"
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Badge: React.FC<BadgeProps> = ({
@@ -27,6 +28,8 @@ const Badge: React.FC<BadgeProps> = ({
     ["badge-ghost"]: variant === "ghost",
     ["badge-default"]: variant === "default",
     ["badge-disabled"]: variant === "disabled",
+    ["bg-blue-10 border-blue-30 border font-normal text-blue-50"]:
+      variant === "new-feature",
   })
 
   return (
