@@ -957,8 +957,16 @@ class OrderService extends TransactionBaseService {
         where: { id: order.billing_address_id },
       })
 
+      if (address.metadata) {
+        address.metadata = setMetadata(addr, address.metadata)
+      }
+
       await addrRepo.save({ ...addr, ...address })
     } else {
+      if (address.metadata) {
+        address.metadata = setMetadata(null, address.metadata)
+      }
+
       order.billing_address = addrRepo.create({ ...address })
     }
   }

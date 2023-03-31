@@ -6,14 +6,15 @@ import {
   useAdminCreateProductCategory,
 } from "medusa-react"
 
-import useNotification from "../../../hooks/use-notification"
-import FocusModal from "../../../components/molecules/modal/focus-modal"
+import { useQueryClient } from "@tanstack/react-query"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
-import Select from "../../../components/molecules/select"
+import FocusModal from "../../../components/molecules/modal/focus-modal"
+import { NextSelect } from "../../../components/molecules/select/next-select"
+import useNotification from "../../../hooks/use-notification"
+import { getErrorMessage } from "../../../utils/error-messages"
 import TreeCrumbs from "../components/tree-crumbs"
-import { useQueryClient } from "@tanstack/react-query"
 
 const visibilityOptions = [
   {
@@ -63,7 +64,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
       notification("Success", "Successfully created a category", "success")
     } catch (e) {
       const errorMessage =
-        e.response?.data?.message || "Failed to create a new category"
+        getErrorMessage(e) || "Failed to create a new category"
       notification("Error", errorMessage, "error")
     }
   }
@@ -133,20 +134,18 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
           <div className="mb-8 flex justify-between gap-6">
             <div className="flex-1">
-              <Select
+              <NextSelect
                 label="Status"
                 options={statusOptions}
-                menuPortalStyles={{ zIndex: 300 }}
                 value={statusOptions[isActive ? 0 : 1]}
                 onChange={(o) => setIsActive(o.value === "active")}
               />
             </div>
 
             <div className="flex-1">
-              <Select
+              <NextSelect
                 label="Visibility"
                 options={visibilityOptions}
-                menuPortalStyles={{ zIndex: 300 }}
                 value={visibilityOptions[isPublic ? 0 : 1]}
                 onChange={(o) => setIsPublic(o.value === "public")}
               />

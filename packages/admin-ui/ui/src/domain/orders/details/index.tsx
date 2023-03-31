@@ -6,16 +6,6 @@ import {
   Swap,
 } from "@medusajs/medusa"
 import {
-  DisplayTotal,
-  FormattedAddress,
-  FormattedFulfillment,
-  FulfillmentStatusComponent,
-  OrderStatusComponent,
-  PaymentActionables,
-  PaymentStatusComponent,
-} from "./templates"
-import OrderEditProvider, { OrderEditContext } from "../edit/context"
-import {
   useAdminCancelOrder,
   useAdminCapturePayment,
   useAdminOrder,
@@ -24,47 +14,57 @@ import {
   useAdminUpdateOrder,
 } from "medusa-react"
 import { useNavigate, useParams } from "react-router-dom"
+import OrderEditProvider, { OrderEditContext } from "../edit/context"
+import {
+  DisplayTotal,
+  FormattedAddress,
+  FormattedFulfillment,
+  FulfillmentStatusComponent,
+  OrderStatusComponent,
+  PaymentActionables,
+  PaymentStatusComponent,
+} from "./templates"
 
-import { ActionType } from "../../../components/molecules/actionables"
-import AddressModal from "./address-modal"
-import { AddressType } from "../../../components/templates/address-form"
+import { capitalize } from "lodash"
+import moment from "moment"
+import { useEffect, useMemo, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import Avatar from "../../../components/atoms/avatar"
-import BodyCard from "../../../components/organisms/body-card"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
+import Spinner from "../../../components/atoms/spinner"
+import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
+import DetailsIcon from "../../../components/fundamentals/details-icon"
 import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
 import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon"
 import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon"
-import CreateFulfillmentModal from "./create-fulfillment"
-import CreateRefundModal from "./refund"
-import DetailsIcon from "../../../components/fundamentals/details-icon"
 import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
-import EmailModal from "./email-modal"
-import JSONView from "../../../components/molecules/json-view"
 import MailIcon from "../../../components/fundamentals/icons/mail-icon"
-import MarkShippedModal from "./mark-shipped"
-import OrderEditModal from "../edit/modal"
-import RawJSON from "../../../components/organisms/raw-json"
 import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
-import Spinner from "../../../components/atoms/spinner"
-import SummaryCard from "./detail-cards/summary"
-import Timeline from "../../../components/organisms/timeline"
-import Tooltip from "../../../components/atoms/tooltip"
-import TransferOrdersModal from "../../../components/templates/transfer-orders-modal"
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
-import { capitalize } from "lodash"
-import extractCustomerName from "../../../utils/extract-customer-name"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { isoAlpha2Countries } from "../../../utils/countries"
-import moment from "moment"
+import { ActionType } from "../../../components/molecules/actionables"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
+import JSONView from "../../../components/molecules/json-view"
+import BodyCard from "../../../components/organisms/body-card"
+import RawJSON from "../../../components/organisms/raw-json"
+import Timeline from "../../../components/organisms/timeline"
+import { AddressType } from "../../../components/templates/address-form"
+import TransferOrdersModal from "../../../components/templates/transfer-orders-modal"
 import useClipboard from "../../../hooks/use-clipboard"
-import { useHotkeys } from "react-hotkeys-hook"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
-import { useEffect, useMemo, useState } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { isoAlpha2Countries } from "../../../utils/countries"
+import { getErrorMessage } from "../../../utils/error-messages"
+import extractCustomerName from "../../../utils/extract-customer-name"
+import { formatAmountWithSymbol } from "../../../utils/prices"
+import OrderEditModal from "../edit/modal"
+import AddressModal from "./address-modal"
+import CreateFulfillmentModal from "./create-fulfillment"
+import SummaryCard from "./detail-cards/summary"
+import EmailModal from "./email-modal"
+import MarkShippedModal from "./mark-shipped"
+import CreateRefundModal from "./refund"
 
 type OrderDetailFulfillment = {
   title: string
@@ -148,6 +148,12 @@ const OrderDetails = () => {
   const capturePayment = useAdminCapturePayment(id!)
   const cancelOrder = useAdminCancelOrder(id!)
 
+  const {
+    state: addressModalState,
+    close: closeAddressModal,
+    open: openAddressModal,
+  } = useToggleState()
+
   const { mutate: updateOrder } = useAdminUpdateOrder(id!)
 
   const { region } = useAdminRegion(order?.region_id!, {
@@ -227,11 +233,13 @@ const OrderDetails = () => {
   customerActionables.push({
     label: "Edit Shipping Address",
     icon: <TruckIcon size={"20"} />,
-    onClick: () =>
+    onClick: () => {
       setAddressModal({
         address: order?.shipping_address,
         type: AddressType.SHIPPING,
-      }),
+      })
+      openAddressModal()
+    },
   })
 
   customerActionables.push({
@@ -242,6 +250,7 @@ const OrderDetails = () => {
         address: order?.billing_address,
         type: AddressType.BILLING,
       })
+      openAddressModal()
     },
   })
 
@@ -522,15 +531,16 @@ const OrderDetails = () => {
               </div>
               <Timeline orderId={order.id} />
             </div>
-            {addressModal && (
-              <AddressModal
-                handleClose={() => setAddressModal(null)}
-                submit={updateOrder}
-                address={addressModal.address || undefined}
-                type={addressModal.type}
-                allowedCountries={region?.countries}
-              />
-            )}
+
+            <AddressModal
+              onClose={closeAddressModal}
+              open={addressModalState}
+              onSave={updateOrder}
+              address={addressModal?.address || undefined}
+              type={addressModal?.type}
+              allowedCountries={region?.countries}
+            />
+
             {emailModal && (
               <EmailModal
                 handleClose={() => setEmailModal(null)}

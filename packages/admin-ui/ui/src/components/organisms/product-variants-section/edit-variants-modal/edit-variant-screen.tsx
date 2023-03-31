@@ -10,6 +10,7 @@ import EditFlowVariantForm, {
 
 import { useForm } from "react-hook-form"
 import useEditProductActions from "../../../../hooks/use-edit-product-actions"
+import { getSubmittableMetadata } from "../../../forms/general/metadata-form"
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
 import { LayeredModalContext } from "../../../molecules/modal/layered-modal"
@@ -117,6 +118,7 @@ export const createUpdatePayload = (
     ...stock,
     ...dimensions,
     ...customs,
+    metadata: getSubmittableMetadata(data.metadata),
     // @ts-ignore
     origin_country: customs?.origin_country
       ? customs.origin_country.value
