@@ -1,15 +1,16 @@
 import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
-import { useContext, useEffect } from "react"
+import { useEffect } from "react"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../forms/product/variant-form/edit-flow-variant-form"
 import LayeredModal, {
-  LayeredModalContext,
+  useLayeredModal,
 } from "../../molecules/modal/layered-modal"
 
 import { useMedusa } from "medusa-react"
 import { useForm } from "react-hook-form"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
+import { getSubmittableMetadata } from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
 
@@ -20,7 +21,8 @@ type Props = {
 }
 
 const AddVariantModal = ({ open, onClose, product }: Props) => {
-  const context = useContext(LayeredModalContext)
+  const context = useLayeredModal()
+
   const { client } = useMedusa()
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getDefaultValues(product),
@@ -160,6 +162,10 @@ const getDefaultValues = (product: Product): EditFlowVariantFormType => {
       hs_code: null,
       origin_country: null,
     },
+    metadata: {
+      entries: [],
+      deleted: [],
+    },
   }
 }
 
@@ -192,6 +198,7 @@ export const createAddPayload = (
       : null,
     // @ts-ignore
     prices: priceArray,
+    metadata: getSubmittableMetadata(data.metadata),
     title: data.general.title || `${options?.map((o) => o.value).join(" / ")}`,
     options: options.map((option) => ({
       option_id: option.id,

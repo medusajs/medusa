@@ -1,11 +1,12 @@
 import { Controller, useFieldArray, useWatch } from "react-hook-form"
 import { currencies } from "../../../../utils/currencies"
-import { NestedForm } from "../../../../utils/nested-form"
+import { nestedForm, NestedForm } from "../../../../utils/nested-form"
 import IncludesTaxTooltip from "../../../atoms/includes-tax-tooltip"
 import InputError from "../../../atoms/input-error"
 import Switch from "../../../atoms/switch"
 import CoinsIcon from "../../../fundamentals/icons/coins-icon"
 import IconTooltip from "../../../molecules/icon-tooltip"
+import MetadataForm, { MetadataFormType } from "../../general/metadata-form"
 import PriceFormInput from "../../general/prices-form/price-form-input"
 
 type DenominationType = {
@@ -18,6 +19,7 @@ export type DenominationFormType = {
   defaultDenomination: DenominationType
   currencyDenominations: DenominationType[]
   useSameValue: boolean
+  metadata: MetadataFormType
 }
 
 type Props = {
@@ -51,7 +53,7 @@ const DenominationForm = ({ form }: Props) => {
     <div className="gap-y-xlarge flex flex-col">
       <div>
         <div className="gap-x-2xsmall flex items-center">
-          <h2 className="inter-large-semibold">Default currency</h2>
+          <h2 className="inter-base-semibold">Default currency</h2>
           <IconTooltip
             type="info"
             content="The denomination in your store's default currency"
@@ -170,6 +172,10 @@ const DenominationForm = ({ form }: Props) => {
           </div>
         </div>
       )}
+      <div>
+        <h2 className="inter-base-semibold mb-base">Metadata</h2>
+        <MetadataForm form={nestedForm(form, "metadata")} />
+      </div>
     </div>
   )
 }

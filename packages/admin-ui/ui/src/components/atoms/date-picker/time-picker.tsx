@@ -70,7 +70,7 @@ const TimePicker: React.FC<DateTimePickerProps> = ({
                 <ClockIcon size={16} />
                 <span className="mx-1">UTC</span>
                 <span className="text-grey-90">
-                  {moment.utc(date).format("HH:mm")}
+                  {date ? moment.utc(date).format("HH:mm") : "--:--"}
                 </span>
               </div>
             </InputContainer>
@@ -84,13 +84,13 @@ const TimePicker: React.FC<DateTimePickerProps> = ({
           <NumberScroller
             numbers={hourNumbers}
             selected={selectedHour}
-            onSelect={(n) => setSelectedHour(n)}
+            onSelect={(n) => setSelectedHour(n as number)}
             className="pr-4"
           />
           <NumberScroller
             numbers={minuteNumbers}
             selected={selectedMinute}
-            onSelect={(n) => setSelectedMinute(n)}
+            onSelect={(n) => setSelectedMinute(n as number)}
           />
           <div className="to-grey-0 h-xlarge absolute bottom-4 left-0 right-0 z-10 bg-gradient-to-b from-transparent" />
         </PopoverPrimitive.Content>
