@@ -64,7 +64,7 @@ export default function (adminCorsOptions) {
   router.use(
     "/admin/products", 
     cors(adminCorsOptions), 
-    authenticate,
+    authenticate(),
     registerLoggedInUser
   )
   return router
@@ -131,7 +131,11 @@ class HelloService extends TransactionBaseService {
   constructor(container, options) {
     super(...arguments)
 
-    this.loggedInUser_ = container.loggedInUser
+    try {
+      this.loggedInUser_ = container.loggedInUser
+    } catch (e) {
+      // avoid errors when backend first runs
+    }
   }
 
   // ...
