@@ -64,7 +64,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
             "border-grey-20 border-b border-solid": setBorders,
           })}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between">
             <div>
               {customHeader ? (
                 <div>{customHeader}</div>

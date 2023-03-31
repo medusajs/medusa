@@ -1,3 +1,4 @@
+import { Product } from "@medusajs/medusa"
 import {
   useAdminDeleteProduct,
   useAdminProducts,
@@ -15,6 +16,7 @@ import DeletePrompt from "../../components/organisms/delete-prompt"
 import GiftCardBanner from "../../components/organisms/gift-card-banner"
 import GiftCardTable from "../../components/templates/gift-card-table"
 import useNotification from "../../hooks/use-notification"
+import useToggleState from "../../hooks/use-toggle-state"
 import { ProductStatus } from "../../types/shared"
 import { getErrorMessage } from "../../utils/error-messages"
 import CustomGiftcard from "./custom-giftcard"
@@ -26,8 +28,6 @@ const Overview = () => {
   })
   const { store } = useAdminStore()
   const [showCreate, setShowCreate] = useState(false)
-  const [showCreateCustom, setShowCreateCustom] = useState(false)
-  const [showDelete, setShowDelete] = useState(false)
 
   const giftCard = products?.[0]
 
@@ -36,6 +36,20 @@ const Overview = () => {
   const updateGiftCard = useAdminUpdateProduct(giftCard?.id!)
   const deleteGiftCard = useAdminDeleteProduct(giftCard?.id!)
 
+  const {
+    state: stateCustom,
+    close: closeCustom,
+    open: openCustom,
+  } = useToggleState()
+
+  const { state: stateNew, close: closeNew, open: openNew } = useToggleState()
+
+  const {
+    state: stateDelete,
+    close: closeDelete,
+    open: openDelete,
+  } = useToggleState()
+
   const onUpdate = () => {
     let status: ProductStatus = ProductStatus.PUBLISHED
     if (giftCard?.status === "published") {
@@ -43,7 +57,6 @@ const Overview = () => {
     }
 
     updateGiftCard.mutate(
-      // @ts-ignore
       { status },
       {
         onSuccess: () =>
@@ -64,7 +77,7 @@ const Overview = () => {
   const actionables = [
     {
       label: "Custom Gift Card",
-      onClick: () => setShowCreateCustom(true),
+      onClick: openCustom,
       icon: <PlusIcon size={20} />,
     },
   ]
@@ -74,7 +87,10 @@ const Overview = () => {
       return null
     }
 
-    return { ...giftCard, defaultCurrency: store.default_currency_code }
+    return {
+      ...(giftCard as Product),
+      defaultCurrency: store.default_currency_code,
+    }
   }, [giftCard, store])
 
   return (
@@ -85,28 +101,26 @@ const Overview = () => {
           subtitle="Manage the Gift Cards of your Medusa store"
         />
         {!isLoading ? (
-          <>
-            <div className="mb-base">
-              {giftCardWithCurrency ? (
-                <GiftCardBanner
-                  {...giftCardWithCurrency}
-                  onDelete={() => setShowDelete(true)}
-                  onEdit={() => navigate("/a/gift-cards/manage")}
-                  onUnpublish={onUpdate}
-                />
-              ) : (
-                <BannerCard title="Are you ready to sell your first Gift Card?">
-                  <BannerCard.Description
-                    cta={{
-                      label: "Create Gift Card",
-                      onClick: () => setShowCreate(true),
-                    }}
-                  >
-                    No Gift Card has been added yet.
-                  </BannerCard.Description>
-                </BannerCard>
-              )}
-            </div>
+          <div className="gap-y-xsmall flex flex-col">
+            {giftCardWithCurrency ? (
+              <GiftCardBanner
+                {...giftCardWithCurrency}
+                onDelete={openDelete}
+                onEdit={() => navigate("/a/gift-cards/manage")}
+                onUnpublish={onUpdate}
+              />
+            ) : (
+              <BannerCard title="Are you ready to sell your first Gift Card?">
+                <BannerCard.Description
+                  cta={{
+                    label: "Create Gift Card",
+                    onClick: () => setShowCreate(true),
+                  }}
+                >
+                  No Gift Card has been added yet.
+                </BannerCard.Description>
+              </BannerCard>
+            )}
             <div className="flex w-full grow flex-col">
               <BodyCard
                 title="History"
@@ -117,20 +131,21 @@ const Overview = () => {
                 <GiftCardTable />
               </BodyCard>
             </div>
-          </>
+          </div>
         ) : (
           <div className="rounded-rounded border-grey-20 flex h-44 w-full items-center justify-center border">
             <Spinner variant="secondary" size="large" />
           </div>
         )}
       </div>
-      {showCreateCustom && (
-        <CustomGiftcard onDismiss={() => setShowCreateCustom(false)} />
-      )}
+
+      <CustomGiftcard onClose={closeCustom} open={stateCustom} />
+
       {showCreate && <NewGiftCard onClose={() => setShowCreate(!showCreate)} />}
-      {showDelete && (
+
+      {stateDelete && (
         <DeletePrompt
-          handleClose={() => setShowDelete(!showDelete)}
+          handleClose={closeDelete}
           onDelete={async () => onDelete()}
           successText="Successfully deleted Gift Card"
           confirmText="Yes, delete"
