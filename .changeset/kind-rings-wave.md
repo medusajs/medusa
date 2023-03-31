@@ -3,4 +3,4 @@
 "@medusajs/medusa": patch
 ---
 
-Fix(admin-ui, medusa): resolve bugs for orders with variants without inventory items
+fix(admin-ui, medusa): resolve bugs for orders with variants without inventory items
