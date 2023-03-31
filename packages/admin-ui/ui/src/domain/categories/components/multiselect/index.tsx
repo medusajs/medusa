@@ -35,6 +35,7 @@ const ToolTipContent = (props: { list: string[] }) => {
 
 type InputProps = {
   placeholder?: string
+  disabled?: boolean
   isOpen: boolean
   selected: Record<string, true>
   options: NestedMultiselectOption[]
@@ -46,8 +47,15 @@ type InputProps = {
  * Multiselect input area
  */
 function Input(props: InputProps) {
-  const { placeholder, isOpen, selected, openPopup, resetSelected, options } =
-    props
+  const {
+    placeholder,
+    isOpen,
+    selected,
+    openPopup,
+    resetSelected,
+    options,
+    disabled,
+  } = props
   const selectedCount = Object.keys(selected).length
 
   const selectedOption = useMemo(() => {
@@ -67,7 +75,11 @@ function Input(props: InputProps) {
   return (
     <div
       onClick={openPopup}
-      className="rounded-rounded border-grey-20 bg-grey-5 px-small focus-within:border-violet-60 focus-within:shadow-cta flex h-10 items-center justify-between border"
+      className={clsx(
+        "rounded-rounded border-grey-20 bg-grey-5 px-small focus-within:border-violet-60 focus-within:shadow-cta flex h-10 items-center justify-between border",
+        { "opacity-50": disabled },
+        { "pointer-events-none": disabled }
+      )}
     >
       <div className="flex items-center gap-1">
         {!!selectedCount && (
@@ -361,6 +373,7 @@ function NestedMultiselect(props: NestedMultiselectProps) {
         selected={selected}
         options={options}
         placeholder={placeholder}
+        disabled={!options?.length}
       />
       {isOpen && !!options?.length && (
         <Popup
