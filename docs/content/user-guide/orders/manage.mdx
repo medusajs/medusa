@@ -50,6 +50,56 @@ This section includes the customer’s details, including their shipping address
 
 ---
 
+## Manage Item Allocation
+
+:::note
+
+This feature is only available if you have the Inventory and Stock Locations module installed. You can learn more in the [Multi-Warehouse documentation](../multiwarehouse/index.md).
+
+:::
+
+Item allocation occurs when a customer places an order. The orderd quantity of the items is considered reserved of the underlying product variant's quantity in a stock location. This is only applied for product variants that have "Manage Inventory" enabled.
+
+You can manage the item's allocation by managing the location that the item's quantity will be reserved from.
+
+### Allocate an Item
+
+Items should be allocated by default. However, in some edge cases the item may need to be allocated manually.
+
+To allocate an Item:
+
+1. Go to the order details page.
+2. Scroll to the Summary section.
+3. You should see an "Awaits allocation" badge at the top of the Summary section. Click on it.
+4. In the form that opens:
+  1. For the Location field, choose the location to allocate the item from.
+  2. In the Items to Allocate section, choose the quantity to allocate for each item.
+5. Once you're done, click the "Save allocation" button.
+
+### Edit Item Allocation
+
+If an item is already allocated, you can edit its allocation by following these steps:
+
+1. Go to the order details page.
+2. Scroll to the Summary section.
+3. Find the item you want to change its allocation. If the item is already allocated, you should see a <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1680265348/Medusa%20Docs/UI%20Icons/check-circle-solid-lightpng_yvyrz0.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1680265348/Medusa%20Docs/UI%20Icons/check-circle-solid-dark_eo8dgm.png" alt="check" /> icon next to it.
+4. Hover over the icon, then click the "Edit Allocation" button.
+5. In the new window that opens:
+  1. In the Locations field, choose the location to allocate this item from.
+  2. Once done, click the "Save and close" button.
+
+### Delete Item Allocation
+
+To delete an item allocation:
+
+1. Go to the order details page.
+2. Scroll to the Summary section.
+3. Find the item you want to delete its allocation. If the item is already allocated, you should see a check icon next to it.
+4. Hover over the icon, then click the "Edit Allocation" button.
+5. In the new window that opens, click on the "Delete allocation" button.
+
+---
+
 ## Edit the Shipping Address
 
 To edit the shipping address used for an order:
