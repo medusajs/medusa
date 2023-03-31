@@ -1,5 +1,5 @@
-import InputField from "../../../../../components/molecules/input"
 import FormValidator from "../../../../../utils/form-validator"
+import InputField from "../../../../../components/molecules/input"
 import { NestedForm } from "../../../../../utils/nested-form"
 
 export type GeneralFormType = {
