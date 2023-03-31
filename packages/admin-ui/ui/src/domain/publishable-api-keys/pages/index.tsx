@@ -6,21 +6,22 @@ import {
   useAdminCreatePublishableApiKey,
 } from "medusa-react"
 
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import BodyCard from "../../../components/organisms/body-card"
-import FocusModal from "../../../components/molecules/modal/focus-modal"
+import BackButton from "../../../components/atoms/back-button"
 import Fade from "../../../components/atoms/fade-wrapper"
-import useToggleState from "../../../hooks/use-toggle-state"
+import Spacer from "../../../components/atoms/spacer"
 import Button from "../../../components/fundamentals/button"
+import ChannelsIcon from "../../../components/fundamentals/icons/channels-icon"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
+import FocusModal from "../../../components/molecules/modal/focus-modal"
+import SalesChannelsSummary from "../../../components/molecules/sales-channels-summary"
+import BodyCard from "../../../components/organisms/body-card"
 import useNotification from "../../../hooks/use-notification"
-import PublishableApiKeysTable from "../tables/publishable-api-keys-table"
+import useToggleState from "../../../hooks/use-toggle-state"
+import AddSalesChannelsSideModal from "../modals/add-sales-channels"
 import DetailsModal from "../modals/details"
 import ManageSalesChannelsSideModal from "../modals/manage-sales-channels"
-import ChannelsIcon from "../../../components/fundamentals/icons/channels-icon"
-import SalesChannelsSummary from "../../../components/molecules/sales-channels-summary"
-import AddSalesChannelsSideModal from "../modals/add-sales-channels"
+import PublishableApiKeysTable from "../tables/publishable-api-keys-table"
 
 type AddSalesChannelsSectionProps = {
   setSelectedChannels: (arg: any) => void
@@ -229,10 +230,10 @@ function Index() {
 
   return (
     <div>
-      <Breadcrumb
-        currentPage="Publishable API Keys"
-        previousBreadcrumb="Settings"
-        previousRoute="/a/settings"
+      <BackButton
+        label="Back to settings"
+        path="/a/settings"
+        className="mb-xsmall"
       />
       <BodyCard
         title="Publishable API keys"
@@ -256,6 +257,7 @@ function Index() {
           close={_closeChannelsModal}
         />
       </BodyCard>
+      <Spacer />
     </div>
   )
 }

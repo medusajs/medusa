@@ -104,7 +104,7 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
             onClick: handleSubmit(onSave),
           },
           {
-            label: "Cancel changes",
+            label: "Cancel",
             onClick: handleCancel,
           },
         ]}

@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { useEffect, useRef, useState, useMemo } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import { SalesChannel } from "@medusajs/medusa"
 import {
@@ -9,27 +9,27 @@ import {
   useAdminUpdateSalesChannel,
 } from "medusa-react"
 
-import EditSalesChannel from "../form/edit-sales-channel"
-import AddSalesChannelModal from "../form/add-sales-channel"
+import { useNavigate, useParams } from "react-router-dom"
+import BackButton from "../../../components/atoms/back-button"
+import Fade from "../../../components/atoms/fade-wrapper"
+import Spacer from "../../../components/atoms/spacer"
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import EditIcon from "../../../components/fundamentals/icons/edit-icon"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import SearchIcon from "../../../components/fundamentals/icons/search-icon"
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Actionables, {
   ActionType,
 } from "../../../components/molecules/actionables"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import SearchIcon from "../../../components/fundamentals/icons/search-icon"
+import StatusSelector from "../../../components/molecules/status-selector"
+import useImperativeDialog from "../../../hooks/use-imperative-dialog"
+import useToggleState from "../../../hooks/use-toggle-state"
+import AddSalesChannelModal from "../form/add-sales-channel"
+import EditSalesChannel from "../form/edit-sales-channel"
 import {
   SalesChannelProductsSelectModal,
   SalesChannelProductsTable,
 } from "../tables/product"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import StatusSelector from "../../../components/molecules/status-selector"
-import TwoSplitPane from "../../../components/templates/two-split-pane"
-import Fade from "../../../components/atoms/fade-wrapper"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { useNavigate, useParams } from "react-router-dom"
-import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 
 type ListIndicatorProps = { isActive: boolean }
 
@@ -101,10 +101,7 @@ function SalesChannelTile(props: SalesChannelTileProps) {
           <h3 className="text-grey-90 mb-1 font-semibold leading-5">
             {salesChannel.name}
           </h3>
-          <span
-            title={salesChannel.description}
-            className="text-small text-grey-50 "
-          >
+          <span className="text-small text-grey-50 ">
             {salesChannel.description}
           </span>
         </div>
@@ -210,7 +207,7 @@ function SalesChannelsList(props: SalesChannelsListProps) {
   } = props
 
   return (
-    <div className="bg-grey-0 border-grey-20 col-span-1 h-[968px] rounded-lg border px-8 py-6">
+    <div className="bg-grey-0 border-grey-20  col-span-1 grow rounded-lg border px-8 py-6">
       <SalesChannelsHeader
         filterText={filterText}
         setFilterText={setFilterText}
@@ -338,7 +335,7 @@ function SalesChannelDetails(props: SalesChannelDetailsProps) {
     useToggleState(false)
 
   return (
-    <div className="rounded-rounded bg-grey-0 border-grey-20 col-span-2 h-[968px] border px-8 py-6">
+    <div className="rounded-rounded bg-grey-0 border-grey-20 col-span-2 col-span-2 h-fit border px-8 py-6">
       <SalesChannelDetailsHeader
         isDefault={isDefault}
         resetDetails={resetDetails}
@@ -449,13 +446,13 @@ function Details() {
 
   return (
     <div>
-      <Breadcrumb
-        currentPage={"Sales channels"}
-        previousBreadcrumb={"Settings"}
-        previousRoute="/a/settings"
+      <BackButton
+        path="/a/settings"
+        label="Back to settings"
+        className="mb-xsmall"
       />
 
-      <TwoSplitPane threeCols>
+      <div className="gap-x-xsmall grid grid-cols-3">
         <SalesChannelsList
           filterText={filterText}
           setFilterText={setFilterText}
@@ -477,7 +474,8 @@ function Details() {
             resetDetails={resetDetails}
           />
         )}
-      </TwoSplitPane>
+      </div>
+      <Spacer />
 
       <Fade isVisible={showCreateModal} isFullScreen={true}>
         <AddSalesChannelModal onClose={closeCreateModal} />

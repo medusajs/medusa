@@ -1,19 +1,20 @@
-import { Route, Routes, useNavigate } from "react-router-dom"
 import { useMemo, useState } from "react"
+import { Route, Routes, useNavigate } from "react-router-dom"
 
-import BodyCard from "../../components/organisms/body-card"
+import { useAdminCreateBatchJob } from "medusa-react"
+import Spacer from "../../components/atoms/spacer"
 import Button from "../../components/fundamentals/button"
-import Details from "./details"
 import ExportIcon from "../../components/fundamentals/icons/export-icon"
+import BodyCard from "../../components/organisms/body-card"
+import TableViewHeader from "../../components/organisms/custom-table-header"
 import ExportModal from "../../components/organisms/export-modal"
 import OrderTable from "../../components/templates/order-table"
-import TableViewHeader from "../../components/organisms/custom-table-header"
-import { getErrorMessage } from "../../utils/error-messages"
-import { transformFiltersAsExportContext } from "./utils"
-import { useAdminCreateBatchJob } from "medusa-react"
 import useNotification from "../../hooks/use-notification"
-import { usePolling } from "../../providers/polling-provider"
 import useToggleState from "../../hooks/use-toggle-state"
+import { usePolling } from "../../providers/polling-provider"
+import { getErrorMessage } from "../../utils/error-messages"
+import Details from "./details"
+import { transformFiltersAsExportContext } from "./utils"
 
 const VIEWS = ["orders", "drafts"]
 
@@ -37,6 +38,7 @@ const OrderIndex = () => {
   const actions = useMemo(() => {
     return [
       <Button
+        key="export"
         variant="secondary"
         size="small"
         onClick={() => openExportModal()}
@@ -90,6 +92,7 @@ const OrderIndex = () => {
           >
             <OrderTable setContextFilters={setContextFilters} />
           </BodyCard>
+          <Spacer />
         </div>
       </div>
       {exportModalOpen && (

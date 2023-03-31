@@ -8,6 +8,7 @@ import {
 import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import PageDescription from "../../components/atoms/page-description"
+import Spacer from "../../components/atoms/spacer"
 import Spinner from "../../components/atoms/spinner"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BannerCard from "../../components/molecules/banner-card"
@@ -95,7 +96,7 @@ const Overview = () => {
 
   return (
     <>
-      <div className="pb-xlarge flex h-full grow flex-col">
+      <div className="flex flex-col">
         <PageDescription
           title="Gift Cards"
           subtitle="Manage the Gift Cards of your Medusa store"
@@ -121,16 +122,14 @@ const Overview = () => {
                 </BannerCard.Description>
               </BannerCard>
             )}
-            <div className="flex w-full grow flex-col">
-              <BodyCard
-                title="History"
-                subtitle="See the history of purchased Gift Cards"
-                actionables={actionables}
-                className="h-fit"
-              >
-                <GiftCardTable />
-              </BodyCard>
-            </div>
+
+            <BodyCard
+              title="History"
+              subtitle="See the history of purchased Gift Cards"
+              actionables={actionables}
+            >
+              <GiftCardTable />
+            </BodyCard>
           </div>
         ) : (
           <div className="rounded-rounded border-grey-20 flex h-44 w-full items-center justify-center border">
@@ -152,6 +151,7 @@ const Overview = () => {
           heading="Delete Gift Card"
         />
       )}
+      <Spacer />
     </>
   )
 }
