@@ -65,52 +65,58 @@ export async function handlePaymentHook({
     paymentIntent.metadata.cart_id ?? paymentIntent.metadata.resource_id // Backward compatibility
   const resourceId = paymentIntent.metadata.resource_id
 
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      try {
-        await onPaymentIntentSucceeded({
-          eventId: event.id,
-          paymentIntent,
-          cartId,
-          resourceId,
-          isPaymentCollection: isPaymentCollection(resourceId),
-          container,
-        })
-      } catch (err) {
-        const message = buildError(event.type, err)
-        logger.warn(message)
-        return { statusCode: 409 }
-      }
+  const manager = container.resolve("manager")
 
-      break
-    case "payment_intent.amount_capturable_updated":
-      try {
-        await onPaymentAmountCapturableUpdate({
-          eventId: event.id,
-          cartId,
-          container,
-        })
-      } catch (err) {
-        const message = buildError(event.type, err)
-        logger.warn(message)
-        return { statusCode: 409 }
-      }
+  return await manager.transaction(async (transactionManager) => {
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        try {
+          await onPaymentIntentSucceeded({
+            eventId: event.id,
+            paymentIntent,
+            cartId,
+            resourceId,
+            isPaymentCollection: isPaymentCollection(resourceId),
+            container,
+            transactionManager,
+          })
+        } catch (err) {
+          const message = buildError(event.type, err)
+          logger.warn(message)
+          return { statusCode: 409 }
+        }
 
-      break
-    case "payment_intent.payment_failed": {
-      const message =
-        paymentIntent.last_payment_error &&
-        paymentIntent.last_payment_error.message
-      logger.error(
-        `The payment of the payment intent ${paymentIntent.id} has failed${EOL}${message}`
-      )
-      break
+        break
+      case "payment_intent.amount_capturable_updated":
+        try {
+          await onPaymentAmountCapturableUpdate({
+            eventId: event.id,
+            cartId,
+            container,
+            transactionManager,
+          })
+        } catch (err) {
+          const message = buildError(event.type, err)
+          logger.warn(message)
+          return { statusCode: 409 }
+        }
+
+        break
+      case "payment_intent.payment_failed": {
+        const message =
+          paymentIntent.last_payment_error &&
+          paymentIntent.last_payment_error.message
+        logger.error(
+          `The payment of the payment intent ${paymentIntent.id} has failed${EOL}${message}`
+        )
+        break
+      }
+      default:
+        return { statusCode: 204 }
     }
-    default:
-      return { statusCode: 204 }
-  }
 
-  return { statusCode: 200 }
+    return { statusCode: 200 }
+  })
 }
 
 async function onPaymentIntentSucceeded({
@@ -120,43 +126,41 @@ async function onPaymentIntentSucceeded({
   resourceId,
   isPaymentCollection,
   container,
+  transactionManager,
 }) {
-  const manager = container.resolve("manager")
-
-  await manager.transaction(async (transactionManager) => {
-    if (isPaymentCollection) {
-      await capturePaymenCollectiontIfNecessary({
-        paymentIntent,
-        resourceId,
-        container,
-      })
-    } else {
-      await completeCartIfNecessary({
-        eventId,
-        cartId,
-        container,
-        transactionManager,
-      })
-
-      await capturePaymentIfNecessary({
-        cartId,
-        transactionManager,
-        container,
-      })
-    }
-  })
-}
-
-async function onPaymentAmountCapturableUpdate({ eventId, cartId, container }) {
-  const manager = container.resolve("manager")
-
-  await manager.transaction(async (transactionManager) => {
+  if (isPaymentCollection) {
+    await capturePaymenCollectiontIfNecessary({
+      paymentIntent,
+      resourceId,
+      container,
+    })
+  } else {
     await completeCartIfNecessary({
       eventId,
       cartId,
       container,
       transactionManager,
     })
+
+    await capturePaymentIfNecessary({
+      cartId,
+      transactionManager,
+      container,
+    })
+  }
+}
+
+async function onPaymentAmountCapturableUpdate({
+  eventId,
+  cartId,
+  container,
+  transactionManager,
+}) {
+  await completeCartIfNecessary({
+    eventId,
+    cartId,
+    container,
+    transactionManager,
   })
 }
 
