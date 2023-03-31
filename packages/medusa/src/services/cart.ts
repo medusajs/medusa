@@ -2632,7 +2632,6 @@ class CartService extends TransactionBaseService {
     cart.gift_card_tax_total = giftCardTotal.tax_total || 0
 
     cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
-    cart.discount_total = Math.round(cart.discount_total)
 
     cart.raw_discount_total = cart.discount_total
     cart.discount_total = Math.round(cart.discount_total)
