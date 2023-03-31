@@ -1,4 +1,5 @@
 import { LineItem, ReservationItemDTO } from "@medusajs/medusa"
+import { useAdminStockLocations, useAdminVariantsInventory } from "medusa-react"
 
 import Button from "../../../../components/fundamentals/button"
 import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
@@ -10,7 +11,6 @@ import Tooltip from "../../../../components/atoms/tooltip"
 import WarningCircleIcon from "../../../../components/fundamentals/icons/warning-circle"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 import { sum } from "lodash"
-import { useAdminStockLocations } from "medusa-react"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 type OrderLineProps = {
@@ -84,6 +84,10 @@ const ReservationIndicator = ({
   reservations?: ReservationItemDTO[]
   lineItem: LineItem
 }) => {
+  const { variant, isLoading } = useAdminVariantsInventory(
+    lineItem?.variant_id ?? ""
+  )
+
   const { stock_locations } = useAdminStockLocations({
     id: reservations?.map((r) => r.location_id) || [],
   })
@@ -98,6 +102,23 @@ const ReservationIndicator = ({
   const allocatableSum = lineItem.quantity - (lineItem?.fulfilled_quantity || 0)
 
   const awaitingAllocation = allocatableSum - reservationsSum
+
+  if (!lineItem.variant_id || (!isLoading && !variant?.inventory.length)) {
+    return (
+      <div className="text-grey-40">
+        <Tooltip
+          content={
+            <div className="inter-small-regular flex flex-col items-center px-1 pt-1 pb-2">
+              No inventory item exist for this variant.
+            </div>
+          }
+          side="bottom"
+        >
+          <CheckCircleFillIcon size={20} />
+        </Tooltip>
+      </div>
+    )
+  }
 
   return (
     <div className={awaitingAllocation ? "text-rose-50" : "text-grey-40"}>
