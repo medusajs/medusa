@@ -1,7 +1,8 @@
 import { Controller } from "react-hook-form"
 import { Option } from "../../types/shared"
 import FormValidator from "../../utils/form-validator"
-import { NestedForm } from "../../utils/nested-form"
+import { nestedForm, NestedForm } from "../../utils/nested-form"
+import MetadataForm, { MetadataFormType } from "../forms/general/metadata-form"
 import Input from "../molecules/input"
 import { NextSelect } from "../molecules/select/next-select"
 
@@ -16,6 +17,7 @@ export type AddressPayload = {
   country_code: Option
   postal_code: string
   phone: string | null
+  metadata: MetadataFormType
 }
 
 export enum AddressType {
@@ -172,6 +174,10 @@ const AddressForm = ({
             )
           }}
         />
+      </div>
+      <div className="mt-xlarge gap-y-base flex flex-col">
+        <span className="inter-base-semibold">Metadata</span>
+        <MetadataForm form={nestedForm(form, "metadata")} />
       </div>
     </div>
   )

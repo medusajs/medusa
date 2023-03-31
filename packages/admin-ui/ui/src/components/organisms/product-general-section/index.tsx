@@ -141,6 +141,18 @@ const ProductDetails = ({ product }: Props) => {
         title="Discountable"
         value={product.discountable ? "True" : "False"}
       />
+      <Detail
+        title="Metadata"
+        value={
+          Object.entries(product.metadata || {}).length > 0
+            ? `${Object.entries(product.metadata || {}).length} ${
+                Object.keys(product.metadata || {}).length === 1
+                  ? "item"
+                  : "items"
+              }`
+            : undefined
+        }
+      />
     </div>
   )
 }

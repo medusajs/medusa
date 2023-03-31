@@ -1,11 +1,13 @@
 import { useWatch } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import MetadataForm from "../../../../components/forms/general/metadata-form"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import Accordion from "../../../../components/organisms/accordion"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { nestedForm } from "../../../../utils/nested-form"
 import { DiscountRuleType } from "../../types"
 import { useDiscountForm } from "./form/discount-form-context"
 import { DiscountFormValues } from "./form/mappers"
@@ -23,7 +25,7 @@ type DiscountFormProps = {
 const DiscountForm = ({ closeForm }: DiscountFormProps) => {
   const navigate = useNavigate()
   const notification = useNotification()
-  const { handleSubmit, handleReset, control } = useDiscountForm()
+  const { handleSubmit, handleReset, control, form } = useDiscountForm()
 
   const { onSaveAsActive, onSaveAsInactive } = useFormActions()
 
@@ -144,6 +146,16 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 tooltip="Add conditions to your Discount"
               >
                 <DiscountNewConditions />
+              </Accordion.Item>
+              <Accordion.Item
+                title="Metadata"
+                subtitle="Metadata allows you to add additional information to your discount."
+                value="metadata"
+                forceMountContent
+              >
+                <div className="mt-small">
+                  <MetadataForm form={nestedForm(form, "metadata")} />
+                </div>
               </Accordion.Item>
             </Accordion>
           </div>

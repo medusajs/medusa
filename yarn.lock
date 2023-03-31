@@ -5633,6 +5633,7 @@ __metadata:
     "@testing-library/user-event": ^14.4.3
     "@types/pluralize": ^0.0.29
     "@types/react": ^18.0.27
+    "@types/react-datepicker": ^4.10.0
     "@types/react-dom": ^18.0.10
     "@types/react-table": ^7.7.9
     "@vitejs/plugin-react": ^3.1.0
@@ -11500,6 +11501,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-datepicker@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "@types/react-datepicker@npm:4.10.0"
+  dependencies:
+    "@popperjs/core": ^2.9.2
+    "@types/react": "*"
+    date-fns: ^2.0.1
+    react-popper: ^2.2.5
+  checksum: f1f18a89a2cd860ea74fbe08c14012295557c6b6e5cbcab5ff00c43a5fae77080f10d35d6799d56f0b800742b01184aa038ed73460ff8eb3a7461e5bd2956ee4
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:^17.0.18":
   version: 17.0.18
   resolution: "@types/react-dom@npm:17.0.18"
@@ -17324,7 +17337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.24.0, date-fns@npm:^2.28.0":
+"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.28.0":
   version: 2.29.3
   resolution: "date-fns@npm:2.29.3"
   checksum: aa9128c876ef69a05988029d6aa3d7e5c47a1e978f18b77b48126683d1a2e6605a16c3f5293ca9f4ca790d0755b5061fcea5b469f097871cd53f6590a5c1adc4
@@ -33982,7 +33995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-popper@npm:^2.3.0":
+"react-popper@npm:^2.2.5, react-popper@npm:^2.3.0":
   version: 2.3.0
   resolution: "react-popper@npm:2.3.0"
   dependencies:

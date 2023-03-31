@@ -18,6 +18,8 @@ type BodyCardProps = {
   status?: React.ReactNode
   customHeader?: React.ReactNode
   compact?: boolean
+  footerMinHeight?: number
+  setBorders?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const BodyCard: React.FC<BodyCardProps> = ({
@@ -94,7 +96,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
           {children && (
             <div
               className={clsx("flex flex-col", {
-                "my-large grow": !compact,
+                grow: !compact,
               })}
             >
               {children}
