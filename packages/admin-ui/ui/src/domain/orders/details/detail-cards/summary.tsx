@@ -57,21 +57,21 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
         })
       )
 
-      const a = new Map(
-        inventory
-          .filter(
-            (
-              inventoryItem
-              // eslint-disable-next-line max-len
-            ): inventoryItem is Response<AdminGetVariantsVariantInventoryRes> =>
-              !!inventoryItem
-          )
-          .map((i) => {
-            return [i.variant.id, i.variant]
-          })
+      setVariantInventoryMap(
+        new Map(
+          inventory
+            .filter(
+              (
+                inventoryItem
+                // eslint-disable-next-line max-len
+              ): inventoryItem is Response<AdminGetVariantsVariantInventoryRes> =>
+                !!inventoryItem
+            )
+            .map((i) => {
+              return [i.variant.id, i.variant]
+            })
+        )
       )
-
-      setVariantInventoryMap(a)
     }
 
     fetchInventory()
