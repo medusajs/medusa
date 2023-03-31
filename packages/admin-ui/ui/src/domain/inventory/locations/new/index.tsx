@@ -88,11 +88,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
       return
     }
 
-    const addressFields = [
-      data.address.address_1,
-      data.address.country_code,
-      data.address.company,
-    ]
+    const addressFields = [data.address.address_1, data.address.country_code]
     if (addressFields.some(Boolean) && !addressFields.every(Boolean)) {
       setAccordionValue("general")
       return
