@@ -10,6 +10,7 @@ import IconBoltSolid from './BoltSolid';
 import IconBookOpen from './BookOpen';
 import IconBug from './Bug';
 import IconBugAntSolid from './BugAntSolid';
+import IconBuildingSolid from './BuildingSolid';
 import IconBuildingTax from './BuildingTax';
 import IconCalendar from './Calendar';
 import IconCashSolid from './CashSolid';
@@ -93,6 +94,7 @@ export default {
   'book-open': IconBookOpen,
   'bug': IconBug,
   'bug-ant-solid': IconBugAntSolid,
+  'building-solid': IconBuildingSolid,
   'building-tax': IconBuildingTax,
   'calendar': IconCalendar,
   'cash-solid': IconCashSolid,
