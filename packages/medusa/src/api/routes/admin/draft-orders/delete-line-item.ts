@@ -8,6 +8,7 @@ import {
 import { DraftOrder } from "../../../.."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
@@ -93,6 +94,8 @@ export default async (req, res) => {
         select: defaultAdminDraftOrdersCartFields,
       })
 
-    res.status(200).json({ draft_order: draftOrder })
+    res.status(200).json({
+      draft_order: cleanResponseData(draftOrder, []),
+    })
   })
 }

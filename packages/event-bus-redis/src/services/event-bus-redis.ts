@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration, Logger } from "@medusajs/modules-sdk"
-import { ConfigModule, EmitData } from "@medusajs/types"
+import { EmitData } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
@@ -7,7 +7,6 @@ import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 
 type InjectedDependencies = {
   logger: Logger
-  configModule: ConfigModule
   eventBusRedisConnection: Redis
 }
 
@@ -17,7 +16,6 @@ type InjectedDependencies = {
  */
 // eslint-disable-next-line max-len
 export default class RedisEventBusService extends AbstractEventBusModuleService {
-  protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   // eslint-disable-next-line max-len
@@ -26,7 +24,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected queue_: Queue
 
   constructor(
-    { configModule, logger, eventBusRedisConnection }: InjectedDependencies,
+    { logger, eventBusRedisConnection }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
     moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -35,7 +33,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     super(...arguments)
 
     this.moduleOptions_ = moduleOptions
-    this.config_ = configModule
     this.logger_ = logger
 
     this.queue_ = new Queue(moduleOptions.queueName ?? `events-queue`, {

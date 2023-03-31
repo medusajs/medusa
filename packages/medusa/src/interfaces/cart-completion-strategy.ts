@@ -1,13 +1,13 @@
+import { TransactionBaseService } from "@medusajs/utils"
 import { IdempotencyKey } from "../models"
 import { RequestContext } from "../types/request"
-import { TransactionBaseService } from "./transaction-base-service"
 
 export type CartCompletionResponse = {
   /** The response code for the completion request */
   response_code: number
 
   /** The response body for the completion request */
-  response_body: object
+  response_body: Record<string, unknown>
 }
 
 export interface ICartCompletionStrategy {

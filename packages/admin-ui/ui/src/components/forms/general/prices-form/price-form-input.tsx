@@ -1,8 +1,9 @@
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import AmountField from "react-currency-input-field"
 import { currencies } from "../../../../utils/currencies"
 import InputError from "../../../atoms/input-error"
+import InputHeader from "../../../fundamentals/input-header"
 
 type Props = {
   currencyCode: string
@@ -10,6 +11,8 @@ type Props = {
   onChange: (amount?: number) => void
   errors?: { [x: string]: unknown }
   name?: string
+  label?: string
+  required?: boolean
 }
 
 const PriceFormInput = ({
@@ -18,13 +21,18 @@ const PriceFormInput = ({
   errors,
   amount,
   onChange,
+  label,
+  required,
 }: Props) => {
   const { symbol_native, decimal_digits } =
     currencies[currencyCode.toUpperCase()]
 
-  const getFormattedValue = (value: number) => {
-    return `${value / 10 ** decimal_digits}`
-  }
+  const getFormattedValue = useCallback(
+    (value: number) => {
+      return `${value / 10 ** decimal_digits}`
+    },
+    [decimal_digits]
+  )
 
   const [formattedValue, setFormattedValue] = useState<string | undefined>(
     amount !== null && amount !== undefined
@@ -36,7 +44,7 @@ const PriceFormInput = ({
     if (amount) {
       setFormattedValue(getFormattedValue(amount))
     }
-  }, [amount, decimal_digits])
+  }, [amount, decimal_digits, getFormattedValue])
 
   const onAmountChange = (value?: string, floatValue?: number | null) => {
     if (typeof floatValue === "number") {
@@ -52,6 +60,7 @@ const PriceFormInput = ({
 
   return (
     <div>
+      {label && <InputHeader {...{ label, required }} className="mb-xsmall" />}
       <div
         className={clsx(
           "bg-grey-5 border-gray-20 px-small py-xsmall rounded-rounded focus-within:shadow-input focus-within:border-violet-60 flex h-10 w-full items-center border",

@@ -472,8 +472,8 @@ const DraftOrderDetails = () => {
       )}
       {addressModal && (
         <AddressModal
-          handleClose={() => setAddressModal(null)}
-          submit={updateOrder.mutate}
+          onClose={() => setAddressModal(null)}
+          onSave={updateOrder.mutate}
           address={addressModal.address}
           type={addressModal.type}
           allowedCountries={region?.countries}
