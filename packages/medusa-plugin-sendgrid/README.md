@@ -73,6 +73,26 @@ Handle sending emails to customers related to orders, restock notifications, use
 
 ---
 
+## Dynamic usage
+
+You can resolve the SendGrid service to dynamically send emails via sendgrid.
+
+Example:
+
+```
+const sendgridService = scope.resolve("sendgridService")
+const sendOptions =  {
+    templateId: "d-123....",
+    from: "ACME <acme@mail.com>",
+    to: "customer@mail.com",
+    data: { dynamic: "data" }
+  };
+
+sendgridService.sendEmail(sendOptions)
+```
+
+---
+
 ## Additional Resources
 
 - [SendGrid Plugin Documentation](https://docs.medusajs.com/plugins/notifications/sendgrid)
