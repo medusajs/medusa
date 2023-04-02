@@ -60,6 +60,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
               "shadow-input border-violet-60": isOpen,
               "border-grey-20": !isOpen,
             })}
+            type="button"
           >
             <InputContainer className="shadown-none border-0 focus-within:shadow-none">
               <div className="text-grey-50 flex w-full justify-between pr-0.5">

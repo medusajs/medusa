@@ -64,7 +64,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
             "border-grey-20 border-b border-solid": setBorders,
           })}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between">
             <div>
               {customHeader ? (
                 <div>{customHeader}</div>
@@ -112,8 +112,8 @@ const BodyCard: React.FC<BodyCardProps> = ({
                 <Button
                   key={i}
                   onClick={event.onClick}
-                  className="first:ml-xsmall min-w-[130px] justify-center"
-                  variant={i === 0 ? "primary" : "ghost"}
+                  className="first:ml-xsmall justify-center"
+                  variant={i === 0 ? "primary" : "secondary"}
                   size={"small"}
                   type={event.type}
                 >
