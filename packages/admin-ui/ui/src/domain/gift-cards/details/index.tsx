@@ -3,7 +3,6 @@ import moment from "moment"
 import { useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
-import Badge from "../../../components/fundamentals/badge"
 import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import StatusSelector from "../../../components/molecules/status-selector"
@@ -85,7 +84,6 @@ const GiftCardDetails = () => {
             <BodyCard
               className={"h-auto min-h-0 w-full"}
               title={`${giftCard?.code}`}
-              subtitle={`Gift Card id: ${giftCard?.id}`}
               status={
                 <StatusSelector
                   isDraft={!!giftCard?.is_disabled}
@@ -122,6 +120,12 @@ const GiftCardDetails = () => {
                       })}
                     </div>
                   </div>
+                  <div className="flex flex-col pl-6">
+                    <div className="inter-smaller-regular text-grey-50 mb-1">
+                      Region
+                    </div>
+                    <div>{giftCard.region.name}</div>
+                  </div>
                   {giftCard.ends_at && (
                     <div className="flex flex-col pl-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
@@ -140,9 +144,6 @@ const GiftCardDetails = () => {
                       {moment(giftCard.created_at).format("DD MMM YYYY")}
                     </div>
                   </div>
-                </div>
-                <div className="flex items-end">
-                  <Badge variant="default">{giftCard?.region?.name}</Badge>
                 </div>
               </div>
             </BodyCard>
