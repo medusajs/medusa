@@ -246,6 +246,10 @@ export const AllocationLineItem: React.FC<{
     }
   }, [variant, locationId, isLoading])
 
+  if (!variant.inventory?.length) {
+    return null
+  }
+
   const lineItemReservationCapacity =
     getFulfillableQuantity(item) - (reservedQuantity || 0)
 
@@ -256,6 +260,7 @@ export const AllocationLineItem: React.FC<{
     lineItemReservationCapacity,
     inventoryItemReservationCapacity
   )
+
   return (
     <div className="mt-8 flex w-full items-start justify-between">
       <div className="gap-x-base flex w-7/12">

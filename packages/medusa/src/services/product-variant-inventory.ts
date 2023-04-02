@@ -514,10 +514,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    const itemsToValidate = items.filter((item) => item.variant_id)
+    const itemsToValidate = items.filter((item) => !!item.variant_id)
 
     for (const item of itemsToValidate) {
       const pvInventoryItems = await this.listByVariant(item.variant_id!)
+
+      if (!pvInventoryItems.length) {
+        continue
+      }
 
       const [inventoryLevels, inventoryLevelCount] =
         await this.inventoryService_.listInventoryLevels({
