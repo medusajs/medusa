@@ -29,26 +29,30 @@ describe("Product Categories", () => {
     beforeEach(async () => {
       a1 = await simpleProductCategoryFactory(dbConnection, {
         name: 'a1',
-        is_active: true
+        is_active: true,
+        rank: 0,
       })
       a11 = await simpleProductCategoryFactory(dbConnection, {
         name: 'a11',
         parent_category: a1,
-        is_active: true
+        is_active: true,
+        rank: 0,
       })
       a111 = await simpleProductCategoryFactory(dbConnection, {
         name: 'a111',
         parent_category: a11,
         is_active: true,
-        is_internal: true
+        is_internal: true,
+        rank: 0,
       })
       a12 = await simpleProductCategoryFactory(dbConnection, {
         name: 'a12',
         parent_category: a1,
-        is_active: false
+        is_active: false,
+        rank: 1,
       })
 
-      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+      productCategoryRepository = dbConnection.manager.withRepository(ProductCategoryRepository)
     })
 
     it("can fetch all root categories", async () => {
@@ -103,7 +107,8 @@ describe("Product Categories", () => {
         dbConnection, {
           name: 'skinny jeans',
           handle: 'skinny-jeans',
-          is_active: true
+          is_active: true,
+          rank: 0,
         }
       )
 
@@ -112,7 +117,8 @@ describe("Product Categories", () => {
           name: 'winter shirts',
           handle: 'winter-shirts',
           parent_category: a1,
-          is_active: true
+          is_active: true,
+          rank: 0,
         }
       )
 
@@ -120,7 +126,8 @@ describe("Product Categories", () => {
         dbConnection, {
           name: 'running shoes',
           handle: 'running-shoes',
-          parent_category: a11
+          parent_category: a11,
+          rank: 0,
         }
       )
 
@@ -129,11 +136,12 @@ describe("Product Categories", () => {
           name: 'casual shoes',
           handle: 'casual-shoes',
           parent_category: a1,
-          is_internal: true
+          is_internal: true,
+          rank: 1,
         }
       )
 
-      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+      productCategoryRepository = dbConnection.manager.withRepository(ProductCategoryRepository)
     })
 
     it("fetches all active categories", async () => {
@@ -200,7 +208,7 @@ describe("Product Categories", () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
         {
           where: { id: a11.id },
-          relations: ['parent_category', 'category_children'],
+          relations: { parent_category: true, category_children: true },
         },
       )
 

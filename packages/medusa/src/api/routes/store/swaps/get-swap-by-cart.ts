@@ -1,7 +1,8 @@
 import SwapService from "../../../../services/swap"
+import { defaultStoreSwapRelations } from "."
 
 /**
- * @oas [get] /swaps/{cart_id}
+ * @oas [get] /store/swaps/{cart_id}
  * operationId: GetSwapsSwapCartId
  * summary: Get by Cart ID
  * description: "Retrieves a Swap by the id of the Cart used to confirm the Swap."
@@ -24,7 +25,7 @@ import SwapService from "../../../../services/swap"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/swaps/{cart_id}'
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK
@@ -48,7 +49,10 @@ export default async (req, res) => {
 
   const swapService: SwapService = req.scope.resolve("swapService")
 
-  const swap = await swapService.retrieveByCartId(cart_id)
+  const swap = await swapService.retrieveByCartId(
+    cart_id,
+    defaultStoreSwapRelations
+  )
 
   res.json({ swap })
 }

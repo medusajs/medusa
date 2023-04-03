@@ -1,5 +1,5 @@
 /**
- * @oas [get] /batch-jobs/{id}
+ * @oas [get] /admin/batch-jobs/{id}
  * operationId: "GetBatchJobsBatchJob"
  * summary: "Get a Batch Job"
  * description: "Retrieves a Batch Job."
@@ -28,7 +28,7 @@
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK

@@ -23,7 +23,7 @@ async function validateProductSalesChannelAssociation(
       "publishableApiKeyService"
     )
 
-    const { sales_channel_id: salesChannelIds } =
+    const { sales_channel_ids: salesChannelIds } =
       await publishableKeyService.getResourceScopes(pubKey)
 
     if (

@@ -1,13 +1,19 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
 
-import { Type } from "class-transformer"
-import { Product } from "../../../../models"
-import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
+import { PricedProduct } from "../../../../types/pricing"
+import { Product } from "../../../../models"
+import { Type } from "class-transformer"
+import { IInventoryService } from "@medusajs/types"
 
 /**
- * @oas [get] /products
+ * @oas [get] /admin/products
  * operationId: "GetProducts"
  * summary: "List Products"
  * description: "Retrieves a list of Product"
@@ -191,7 +197,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -214,6 +220,13 @@ import { FilterableProductProps } from "../../../../types/product"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const { skip, take, relations } = req.listConfig
@@ -230,6 +243,18 @@ export default async (req, res) => {
   )
   if (includesPricing) {
     products = await pricingService.setProductPrices(rawProducts)
+  }
+
+  if (inventoryService) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    products = await productVariantInventoryService.setProductAvailability(
+      products,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )
   }
 
   res.json({

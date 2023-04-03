@@ -1,12 +1,11 @@
-import { Request, Response } from "express"
+import { IStockLocationService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
-
-import { IStockLocationService } from "../../../../interfaces"
+import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /stock-locations/{id}
+ * @oas [post] /admin/stock-locations/{id}
  * operationId: "PostStockLocationsStockLocation"
  * summary: "Update a Stock Location"
  * description: "Updates a Stock Location."
@@ -48,7 +47,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Stock Location
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK

@@ -5,7 +5,7 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/taxes
+ * @oas [post] /store/carts/{id}/taxes
  * summary: "Calculate Cart Taxes"
  * operationId: "PostCartsCartTaxes"
  * description: "Calculates taxes for a cart. Depending on the cart's region
@@ -20,7 +20,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

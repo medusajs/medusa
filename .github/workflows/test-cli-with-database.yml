@@ -58,8 +58,9 @@ jobs:
         run: npm i -g @medusajs/medusa-cli
 
       - name: Create Medusa project
+        # TODO: Remove the branch when typeorm is no longer a dependency for starter
         run: |
-          medusa new cli-test
+          medusa new cli-test 'https://github.com/medusajs/medusa-starter-default/tree/typeorm-upgrade'
         working-directory: ..
 
       - name: Install postgres config
@@ -89,7 +90,7 @@ jobs:
       ##########################  Test medusa develop  ###############################
 
       - name: Run development server
-        run: medusa develop  > /dev/null 2>&1 &
+        run: medusa develop &
         working-directory: ../cli-test
 
       - name: Testing development server
@@ -98,7 +99,7 @@ jobs:
       ###########################  Test medusa start  ################################
 
       - name: Starting medusa
-        run: medusa start > /dev/null 2>&1 &
+        run: medusa start &
         working-directory: ../cli-test
 
       - name: Testing server

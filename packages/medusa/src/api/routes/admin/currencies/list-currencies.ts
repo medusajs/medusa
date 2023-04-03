@@ -7,7 +7,7 @@ import { ExtendedRequest } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
- * @oas [get] /currencies
+ * @oas [get] /admin/currencies
  * operationId: "GetCurrencies"
  * summary: "List Currency"
  * description: "Retrieves a list of Currency"
@@ -38,7 +38,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       curl --location --request POST 'https://medusa-url.com/admin/currencies' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
- *   - Currency
+ *   - Currencies
  * responses:
  *   200:
  *     description: OK

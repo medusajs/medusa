@@ -6,7 +6,7 @@ import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/line-items/{line_id}
+ * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
  * description: "Updates a Line Item if the desired quantity can be fulfilled."
@@ -41,7 +41,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -75,7 +75,7 @@ export default async (req, res) => {
     } else {
       const cart = await cartService
         .withTransaction(m)
-        .retrieve(id, { relations: ["items"] })
+        .retrieve(id, { relations: ["items", "items.variant"] })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {

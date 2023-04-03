@@ -1,3 +1,8 @@
+import { DbAwareColumn, generateEntityId } from "../utils"
+import { MoneyAmount } from "./money-amount"
+import { Product } from "./product"
+import { ProductOptionValue } from "./product-option-value"
+import { SoftDeletableEntity } from "../interfaces"
 import {
   BeforeInsert,
   Column,
@@ -5,15 +10,9 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany,
+  OneToMany
 } from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { MoneyAmount } from "./money-amount"
-import { Product } from "./product"
-import { ProductOptionValue } from "./product-option-value"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 import { ProductVariantInventoryItem } from "./product-variant-inventory-item"
 
 @Entity()
@@ -25,7 +24,7 @@ export class ProductVariant extends SoftDeletableEntity {
   @Column()
   product_id: string
 
-  @ManyToOne(() => Product, (product) => product.variants, { eager: true })
+  @ManyToOne(() => Product, (product) => product.variants)
   @JoinColumn({ name: "product_id" })
   product: Product
 
@@ -51,7 +50,7 @@ export class ProductVariant extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   upc: string
 
-  @Column({ nullable: true, default: 0, select: false })
+  @Column({ nullable: true, default: 0 })
   variant_rank: number
 
   @Column({ type: "int" })

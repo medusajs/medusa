@@ -30,7 +30,6 @@ describe("Batch job of product-export type", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
   })

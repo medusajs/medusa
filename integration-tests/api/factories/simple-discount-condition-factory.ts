@@ -10,7 +10,7 @@ import { DiscountConditionProductTag } from "@medusajs/medusa/dist/models/discou
 import { DiscountConditionProductType } from "@medusajs/medusa/dist/models/discount-condition-product-type"
 import { DiscountConditionJoinTableForeignKey } from "@medusajs/medusa/dist/repositories/discount-condition"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 export type DiscountConditionFactoryData = {
   id?: string
@@ -66,7 +66,7 @@ const getJoinTableResourceIdentifiers = (type: string) => {
 }
 
 export const simpleDiscountConditionFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: DiscountConditionFactoryData,
   seed?: number
 ): Promise<void> => {
@@ -74,7 +74,7 @@ export const simpleDiscountConditionFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let resources = []
 

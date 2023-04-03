@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/cancel
  * operationId: "PostOrdersClaimCancel"
  * summary: "Cancel a Claim"
  * description: "Cancels a Claim"
@@ -39,7 +39,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

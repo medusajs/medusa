@@ -5,18 +5,18 @@ import {
   PaymentProviderService,
   ProductVariantInventoryService,
 } from "../../../../services"
+
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { Order } from "../../../../models"
 import {
   defaultAdminOrdersFields as defaultOrderFields,
   defaultAdminOrdersRelations as defaultOrderRelations,
-} from "../orders/index"
-
-import { EntityManager } from "typeorm"
-import { Order } from "../../../../models"
-import { MedusaError } from "medusa-core-utils"
+} from "../../../../types/orders"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /draft-orders/{id}/pay
+ * @oas [post] /admin/draft-orders/{id}/pay
  * summary: "Registers a Payment"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
  * description: "Registers a payment for a Draft Order."
@@ -45,7 +45,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -86,9 +86,6 @@ export default async (req, res) => {
     const orderServiceTx = orderService.withTransaction(manager)
     const cartServiceTx = cartService.withTransaction(manager)
 
-    const productVariantInventoryServiceTx =
-      productVariantInventoryService.withTransaction(manager)
-
     const draftOrder = await draftOrderServiceTx.retrieve(id)
 
     const cart = await cartServiceTx.retrieveWithTotals(draftOrder.cart_id)
@@ -117,7 +114,7 @@ export default async (req, res) => {
       })
 
     await reserveQuantityForDraftOrder(order, {
-      productVariantInventoryService: productVariantInventoryServiceTx,
+      productVariantInventoryService,
     })
 
     return order

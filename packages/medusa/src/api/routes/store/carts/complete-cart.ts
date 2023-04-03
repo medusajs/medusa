@@ -5,7 +5,7 @@ import { IdempotencyKeyService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/complete
+ * @oas [post] /store/carts/{id}/complete
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: "Completes a cart. The following steps will be performed. Payment
@@ -33,7 +33,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/complete'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "If a cart was successfully authorized, but requires further

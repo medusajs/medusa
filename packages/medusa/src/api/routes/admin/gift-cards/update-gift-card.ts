@@ -1,13 +1,13 @@
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { GiftCardService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /gift-cards/{id}
+ * @oas [post] /admin/gift-cards/{id}
  * operationId: "PostGiftCardsGiftCard"
  * summary: "Update a Gift Card"
  * description: "Update a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
@@ -47,7 +47,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK
@@ -123,7 +123,7 @@ export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  ends_at?: Date
+  ends_at?: Date | null
 
   @IsOptional()
   @IsString()

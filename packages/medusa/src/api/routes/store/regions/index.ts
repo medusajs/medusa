@@ -13,9 +13,26 @@ export default (app) => {
   return app
 }
 
+export const defaultRelations = [
+  "countries",
+  "payment_providers",
+  "fulfillment_providers",
+]
+
 /**
  * @schema StoreRegionsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: regions
+ *   relations:
+ *     - countries
+ *     - payment_providers
+ *     - fulfillment_providers
+ *   eager:
+ *     - payment_providers
+ *     - fulfillment_providers
+ * required:
+ *   - regions
  * properties:
  *   regions:
  *     type: array
@@ -29,6 +46,17 @@ export type StoreRegionsListRes = {
 /**
  * @schema StoreRegionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: region
+ *   relations:
+ *     - countries
+ *     - payment_providers
+ *     - fulfillment_providers
+ *   eager:
+ *     - payment_providers
+ *     - fulfillment_providers
+ * required:
+ *   - region
  * properties:
  *   region:
  *     $ref: "#/components/schemas/Region"

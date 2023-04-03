@@ -4,6 +4,7 @@ export enum PostgresError {
   DUPLICATE_ERROR = "23505",
   FOREIGN_KEY_ERROR = "23503",
   SERIALIZATION_FAILURE = "40001",
+  NULL_VIOLATION = "23502",
 }
 
 export const formatException = (err): MedusaError => {
@@ -41,6 +42,12 @@ export const formatException = (err): MedusaError => {
       return new MedusaError(
         MedusaError.Types.CONFLICT,
         err?.detail ?? err?.message
+      )
+    }
+    case PostgresError.NULL_VIOLATION: {
+      return new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Can't insert null value in field ${err?.column} on insert in table ${err?.table}`
       )
     }
     default:

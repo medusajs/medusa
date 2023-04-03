@@ -1,28 +1,32 @@
+import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
 import { Router } from "express"
 import "reflect-metadata"
+import { ProductVariant } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-} from "../../../../types/inventory"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetInventoryItemsParams } from "./list-inventory-items"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import {
+  AdminPostInventoryItemsParams,
+  AdminPostInventoryItemsReq,
+} from "./create-inventory-item"
+import {
+  AdminPostInventoryItemsItemLocationLevelsParams,
+  AdminPostInventoryItemsItemLocationLevelsReq,
+} from "./create-location-level"
 import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
-import { AdminPostInventoryItemsInventoryItemReq } from "./update-inventory-item"
+import { AdminGetInventoryItemsParams } from "./list-inventory-items"
 import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
 import {
-  AdminPostInventoryItemsItemLocationLevelsReq,
-  AdminPostInventoryItemsItemLocationLevelsParams,
-} from "./create-location-level"
+  AdminPostInventoryItemsInventoryItemParams,
+  AdminPostInventoryItemsInventoryItemReq,
+} from "./update-inventory-item"
 import {
-  AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsLevelParams,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
 } from "./update-location-level"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { ProductVariant } from "../../../../models"
 
 const route = Router()
 
@@ -48,7 +52,7 @@ export default (app) => {
 
   route.post(
     "/:id",
-    transformQuery(AdminGetInventoryItemsItemParams, {
+    transformQuery(AdminPostInventoryItemsInventoryItemParams, {
       defaultFields: defaultAdminInventoryItemFields,
       defaultRelations: defaultAdminInventoryItemRelations,
       isList: false,
@@ -71,6 +75,17 @@ export default (app) => {
     }),
     transformBody(AdminPostInventoryItemsItemLocationLevelsReq),
     middlewares.wrap(require("./create-location-level").default)
+  )
+
+  route.post(
+    "/",
+    transformQuery(AdminPostInventoryItemsParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostInventoryItemsReq),
+    middlewares.wrap(require("./create-inventory-item").default)
   )
 
   route.get(
@@ -134,6 +149,8 @@ export const defaultAdminInventoryItemRelations = []
 /**
  * @schema AdminInventoryItemsRes
  * type: object
+ * required:
+ *   - inventory_item
  * properties:
  *   inventory_item:
  *     $ref: "#/components/schemas/InventoryItemDTO"
@@ -145,6 +162,10 @@ export type AdminInventoryItemsRes = {
 /**
  * @schema AdminInventoryItemsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -163,6 +184,11 @@ export type AdminInventoryItemsDeleteRes = DeleteResponse
 /**
  * @schema AdminInventoryItemsListRes
  * type: object
+ * required:
+ *   - inventory_items
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   inventory_items:
  *     type: array
@@ -185,6 +211,11 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
 /**
  * @schema AdminInventoryItemsListWithVariantsAndLocationLevelsRes
  * type: object
+ * required:
+ *   - inventory_items
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   inventory_items:
  *     type: array
@@ -214,22 +245,31 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
  *     description: The number of items per page
  */
 export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
-  Partial<InventoryItemDTO> & {
-    location_levels?: InventoryLevelDTO[]
-    variants?: ProductVariant[]
+  PaginatedResponse & {
+    inventory_items: (Partial<InventoryItemDTO> & {
+      location_levels?: InventoryLevelDTO[]
+      variants?: ProductVariant[]
+    })[]
   }
-
 /**
  * @schema AdminInventoryItemsLocationLevelsRes
  * type: object
+ * required:
+ *   - inventory_item
  * properties:
- *   id:
- *     description: The id of the location
- *   location_levels:
- *     description: List of stock levels at a given location
- *     type: array
- *     items:
- *       $ref: "#/components/schemas/InventoryLevelDTO"
+ *   inventory_item:
+ *     type: object
+ *     required:
+ *       - id
+ *       - location_levels
+ *     properties:
+ *       id:
+ *         description: The id of the location
+ *       location_levels:
+ *         description: List of stock levels at a given location
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/InventoryLevelDTO"
  */
 export type AdminInventoryItemsLocationLevelsRes = {
   inventory_item: {
@@ -238,9 +278,10 @@ export type AdminInventoryItemsLocationLevelsRes = {
   }
 }
 
-export * from "./list-inventory-items"
-export * from "./get-inventory-item"
-export * from "./update-inventory-item"
-export * from "./list-location-levels"
+export * from "./create-inventory-item"
 export * from "./create-location-level"
+export * from "./get-inventory-item"
+export * from "./list-inventory-items"
+export * from "./list-location-levels"
+export * from "./update-inventory-item"
 export * from "./update-location-level"

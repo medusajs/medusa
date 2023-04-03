@@ -1,7 +1,7 @@
 import { ProductService } from "../../../../services"
 
 /**
- * @oas [get] /products/tag-usage
+ * @oas [get] /admin/products/tag-usage
  * operationId: "GetProductsTagUsage"
  * summary: "List Tags Usage Number"
  * description: "Retrieves a list of Product Tags with how many times each is used."
@@ -28,7 +28,7 @@ import { ProductService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Tag
+ *   - Products
  * responses:
  *   200:
  *     description: OK

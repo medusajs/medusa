@@ -5,7 +5,7 @@ import { FindParams } from "../../../../types/common"
 import { defaultAdminProductCategoryRelations } from "."
 
 /**
- * @oas [get] /product-categories/{id}
+ * @oas [get] /admin/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
  * description: "Retrieves a Product Category."
@@ -37,7 +37,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK

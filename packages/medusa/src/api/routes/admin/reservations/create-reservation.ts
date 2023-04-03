@@ -1,9 +1,10 @@
+import { IInventoryService } from "@medusajs/types"
+import { isDefined } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
+import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
- * @oas [post] /reservations
+ * @oas [post] /admin/reservations
  * operationId: "PostReservations"
  * summary: "Creates a Reservation"
  * description: "Creates a Reservation which can be associated with any resource as required."
@@ -40,14 +41,14 @@ import { IInventoryService } from "../../../../interfaces"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -64,16 +65,23 @@ import { IInventoryService } from "../../../../interfaces"
 export default async (req, res) => {
   const { validatedBody } = req as { validatedBody: AdminPostReservationsReq }
 
-  const manager: EntityManager = req.scope.resolve("manager")
-
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
-  const reservation = await manager.transaction(async (manager) => {
-    return await inventoryService
-      .withTransaction(manager)
-      .createReservationItem(validatedBody)
-  })
+  if (isDefined(validatedBody.line_item_id)) {
+    await validateUpdateReservationQuantity(
+      validatedBody.line_item_id,
+      validatedBody.quantity,
+      {
+        lineItemService: req.scope.resolve("lineItemService"),
+        inventoryService: req.scope.resolve("inventoryService"),
+      }
+    )
+  }
+
+  const reservation = await inventoryService.createReservationItem(
+    validatedBody
+  )
 
   res.status(200).json({ reservation })
 }
@@ -82,7 +90,6 @@ export default async (req, res) => {
  * @schema AdminPostReservationsReq
  * type: object
  * required:
- *   - line_item_id
  *   - location_id
  *   - inventory_item_id
  *   - quantity

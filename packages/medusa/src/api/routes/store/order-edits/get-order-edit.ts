@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [get] /order-edits/{id}
+ * @oas [get] /store/order-edits/{id}
  * operationId: "GetOrderEditsOrderEdit"
  * summary: "Retrieve an OrderEdit"
  * description: "Retrieves a OrderEdit."
@@ -25,7 +25,7 @@ import { OrderEditService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/order-edits/{id}'
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

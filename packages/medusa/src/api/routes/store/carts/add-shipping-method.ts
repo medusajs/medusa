@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/shipping-methods
+ * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: "PostCartsCartShippingMethod"
  * description: "Adds a Shipping Method to the Cart."
  * summary: "Add a Shipping Method"
@@ -40,7 +40,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *           "option_id": "{option_id}",
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *  "200":
  *    description: OK

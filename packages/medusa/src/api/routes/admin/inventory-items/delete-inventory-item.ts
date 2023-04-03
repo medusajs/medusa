@@ -1,16 +1,18 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 import { ProductVariantInventoryService } from "../../../../services"
 
 /**
- * @oas [delete] /inventory-items/{id}
+ * @oas [delete] /admin/inventory-items/{id}
  * operationId: "DeleteInventoryItemsInventoryItem"
  * summary: "Delete an Inventory Item"
  * description: "Delete an Inventory Item"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,7 +33,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - InventoryItem
+ *   - Inventory Items
  * responses:
  *   200:
  *     description: OK
@@ -57,9 +59,7 @@ export default async (req: Request, res: Response) => {
       .withTransaction(transactionManager)
       .detachInventoryItem(id)
 
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryItem(id)
+    await inventoryService.deleteInventoryItem(id)
   })
 
   res.status(200).send({

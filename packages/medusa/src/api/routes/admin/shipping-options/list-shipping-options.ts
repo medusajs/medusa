@@ -7,7 +7,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /admin/shipping-options
  * operationId: "GetShippingOptions"
  * summary: "List Shipping Options"
  * description: "Retrieves a list of Shipping Options."
@@ -51,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
