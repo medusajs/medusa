@@ -1,9 +1,17 @@
 type: object
+required:
+  - inventory_item
 properties:
-  id:
-    description: The id of the location
-  location_levels:
-    description: List of stock levels at a given location
-    type: array
-    items:
-      $ref: ./InventoryLevelDTO.yaml
+  inventory_item:
+    type: object
+    required:
+      - id
+      - location_levels
+    properties:
+      id:
+        description: The id of the location
+      location_levels:
+        description: List of stock levels at a given location
+        type: array
+        items:
+          $ref: ./InventoryLevelDTO.yaml

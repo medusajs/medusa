@@ -1,4 +1,6 @@
 type: object
+required:
+  - payment
 properties:
   payment:
     $ref: ./Payment.yaml

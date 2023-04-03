@@ -1,4 +1,9 @@
 type: object
+required:
+  - customers
+  - count
+  - offset
+  - limit
 properties:
   customers:
     type: array

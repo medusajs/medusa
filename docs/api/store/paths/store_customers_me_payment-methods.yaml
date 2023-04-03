@@ -1,0 +1,42 @@
+get:
+  operationId: GetCustomersCustomerPaymentMethods
+  summary: Get Payment Methods
+  description: >-
+    Retrieves a list of a Customer's saved payment methods. Payment methods are
+    saved with Payment Providers and it is their responsibility to fetch saved
+    methods.
+  x-authenticated: true
+  x-codegen:
+    method: listPaymentMethods
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_customers_me_payment-methods/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_customers_me_payment-methods/get.sh
+  security:
+    - cookie_auth: []
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCustomersListPaymentMethodsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
