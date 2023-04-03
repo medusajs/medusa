@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit"
+    "test:integration": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "@medusajs/medusa": "1.8.0-rc.6",

@@ -18,8 +18,7 @@
     "ci": "node scripts/build-openapi.js",
     "preview:admin": "yarn redocly preview-docs ../../../docs/api/admin/openapi.yaml --config=../../../docs-util/redocly/config.yaml",
     "preview:store": "yarn redocly preview-docs ../../../docs/api/store/openapi.yaml --config=../../../docs-util/redocly/config.yaml",
-    "test": "jest --passWithNoTests",
-    "test:unit": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@medusajs/medusa-oas-cli": "0.2.0-rc.6",
