@@ -1,5 +1,11 @@
 # @medusajs/utils
 
+## 0.0.2-rc.2
+
+### Patch Changes
+
+- [#3688](https://github.com/medusajs/medusa/pull/3688) [`a0c919a8d`](https://github.com/medusajs/medusa/commit/a0c919a8d01ca5edf62336de48e9a112e3822f38) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa-cli): Add missing utils dep
+
 ## 0.0.2-rc.1
 
 ### Patch Changes

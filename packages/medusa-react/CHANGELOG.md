@@ -1,5 +1,19 @@
 # Change Log
 
+## 5.0.0-rc.6
+
+### Patch Changes
+
+- [#3689](https://github.com/medusajs/medusa/pull/3689) [`d06ab9299`](https://github.com/medusajs/medusa/commit/d06ab929946c9e3842dcf4299b2c7e4c85fcc116) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(react): export product-categories store hooks
+
+- [#3676](https://github.com/medusajs/medusa/pull/3676) [`788ddc0f4`](https://github.com/medusajs/medusa/commit/788ddc0f43696df607f07133af15a04b29d5447d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui, medusa-react, medusa): Minor fixes to GC domain in admin UI. Also fixes GC update payload type in medusa-react and medusa.
+
+- [#3686](https://github.com/medusajs/medusa/pull/3686) [`7f87c4f2c`](https://github.com/medusajs/medusa/commit/7f87c4f2c8abb876213a595005e67d770be9cbe4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-react): Query key invalidation
+
+- Updated dependencies [[`788ddc0f4`](https://github.com/medusajs/medusa/commit/788ddc0f43696df607f07133af15a04b29d5447d), [`a5ad6c054`](https://github.com/medusajs/medusa/commit/a5ad6c05428e1bb090bbc5a51345a00821781c06), [`7f87c4f2c`](https://github.com/medusajs/medusa/commit/7f87c4f2c8abb876213a595005e67d770be9cbe4), [`eed784d7d`](https://github.com/medusajs/medusa/commit/eed784d7d0b58aeddc9f6f5ea56fe80c608b22f5), [`a0c919a8d`](https://github.com/medusajs/medusa/commit/a0c919a8d01ca5edf62336de48e9a112e3822f38), [`0cca13779`](https://github.com/medusajs/medusa/commit/0cca13779d0e84683193ad82ab163a10a807e903)]:
+  - @medusajs/medusa@1.8.0-rc.6
+  - @medusajs/medusa-js@2.0.0-rc.6
+
 ## 5.0.0-rc.5
 
 ### Patch Changes

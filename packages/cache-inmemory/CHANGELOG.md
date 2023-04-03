@@ -1,5 +1,14 @@
 # @medusajs/cache-inmemory
 
+## 1.8.0-rc.3
+
+### Patch Changes
+
+- [#3649](https://github.com/medusajs/medusa/pull/3649) [`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Export initialize method for all modules
+
+- Updated dependencies [[`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b)]:
+  - @medusajs/modules-sdk@0.1.0-rc.4
+
 ## 1.8.0-rc.2
 
 ### Patch Changes

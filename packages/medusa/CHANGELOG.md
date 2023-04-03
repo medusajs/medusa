@@ -1,5 +1,26 @@
 # Change Log
 
+## 1.8.0-rc.6
+
+### Patch Changes
+
+- [#3676](https://github.com/medusajs/medusa/pull/3676) [`788ddc0f4`](https://github.com/medusajs/medusa/commit/788ddc0f43696df607f07133af15a04b29d5447d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui, medusa-react, medusa): Minor fixes to GC domain in admin UI. Also fixes GC update payload type in medusa-react and medusa.
+
+- [#3670](https://github.com/medusajs/medusa/pull/3670) [`a5ad6c054`](https://github.com/medusajs/medusa/commit/a5ad6c05428e1bb090bbc5a51345a00821781c06) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Fix(admin-ui,medusa): Ensure stock locations are created with a name
+
+- [#3686](https://github.com/medusajs/medusa/pull/3686) [`7f87c4f2c`](https://github.com/medusajs/medusa/commit/7f87c4f2c8abb876213a595005e67d770be9cbe4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-react): Query key invalidation
+
+- [#3660](https://github.com/medusajs/medusa/pull/3660) [`eed784d7d`](https://github.com/medusajs/medusa/commit/eed784d7d0b58aeddc9f6f5ea56fe80c608b22f5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui, medusa): resolve bugs for orders with variants without inventory items
+
+- [#3688](https://github.com/medusajs/medusa/pull/3688) [`a0c919a8d`](https://github.com/medusajs/medusa/commit/a0c919a8d01ca5edf62336de48e9a112e3822f38) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa-cli): Add missing utils dep
+
+- [#3684](https://github.com/medusajs/medusa/pull/3684) [`0cca13779`](https://github.com/medusajs/medusa/commit/0cca13779d0e84683193ad82ab163a10a807e903) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): inventory stocked quantity regulation
+
+- Updated dependencies [[`a0c919a8d`](https://github.com/medusajs/medusa/commit/a0c919a8d01ca5edf62336de48e9a112e3822f38), [`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b)]:
+  - @medusajs/medusa-cli@1.3.9-rc.2
+  - @medusajs/utils@0.0.2-rc.2
+  - @medusajs/modules-sdk@0.1.0-rc.4
+
 ## 1.8.0-rc.5
 
 ### Patch Changes

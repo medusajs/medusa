@@ -1,5 +1,20 @@
 # @medusajs/admin-ui
 
+## 0.0.1-rc.6
+
+### Patch Changes
+
+- [#3666](https://github.com/medusajs/medusa/pull/3666) [`ca3b32d53`](https://github.com/medusajs/medusa/commit/ca3b32d53c6854716bcbfb641ed381fa0f019a58) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Make copy and UI on manage locations modal better when no locations
+
+- [#3676](https://github.com/medusajs/medusa/pull/3676) [`788ddc0f4`](https://github.com/medusajs/medusa/commit/788ddc0f43696df607f07133af15a04b29d5447d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui, medusa-react, medusa): Minor fixes to GC domain in admin UI. Also fixes GC update payload type in medusa-react and medusa.
+
+- [#3670](https://github.com/medusajs/medusa/pull/3670) [`a5ad6c054`](https://github.com/medusajs/medusa/commit/a5ad6c05428e1bb090bbc5a51345a00821781c06) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Fix(admin-ui,medusa): Ensure stock locations are created with a name
+
+- [#3660](https://github.com/medusajs/medusa/pull/3660) [`eed784d7d`](https://github.com/medusajs/medusa/commit/eed784d7d0b58aeddc9f6f5ea56fe80c608b22f5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui, medusa): resolve bugs for orders with variants without inventory items
+
+- Updated dependencies [[`d06ab9299`](https://github.com/medusajs/medusa/commit/d06ab929946c9e3842dcf4299b2c7e4c85fcc116), [`788ddc0f4`](https://github.com/medusajs/medusa/commit/788ddc0f43696df607f07133af15a04b29d5447d), [`7f87c4f2c`](https://github.com/medusajs/medusa/commit/7f87c4f2c8abb876213a595005e67d770be9cbe4)]:
+  - medusa-react@5.0.0-rc.6
+
 ## 0.0.1-rc.5
 
 ### Patch Changes
