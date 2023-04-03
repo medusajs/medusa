@@ -81,7 +81,7 @@ Here’s an example of how you can use the `constructor` to store the options of
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts
+```ts title=services/event-bus-custom.ts
 class CustomEventBus extends AbstractEventBusModuleService {
   protected readonly moduleOptions: Record<string, any>
 
@@ -109,7 +109,7 @@ The `emit` method has two different signatures:
 
 The `options` parameter depends on the event bus integrating. For example, the Redis event bus accept the following options:
 
-```ts
+```ts title=services/event-bus-custom.ts
 type JobData<T> = {
   eventName: string
   data: T
@@ -119,7 +119,7 @@ type JobData<T> = {
 
 You can implement your method in a way that supports both signatures by checking the type of the first input. For example:
 
-```ts
+```ts title=services/event-bus-custom.ts
 class CustomEventBus extends AbstractEventBusModuleService {
   // ...
   async emit<T>(
@@ -154,7 +154,7 @@ The  `subscribe` method accepts three parameters:
 
 The implementation of this method depends on the service you’re using for the event bus:
 
-```ts
+```ts title=services/event-bus-custom.ts
 class CustomEventBus extends AbstractEventBusModuleService {
   // ...
   subscribe(
@@ -180,7 +180,7 @@ The `unsubscribe` method accepts three parameters:
 
 The implementation of this method depends on the service you’re using for the event bus:
 
-```ts
+```ts title=services/event-bus-custom.ts
 class CustomEventBus extends AbstractEventBusModuleService {
   // ...
   unsubscribe(
@@ -200,7 +200,7 @@ After implementing the event bus service, you must export it so that the Medusa 
 
 Create the file `index.ts` with the following content:
 
-```ts
+```ts title=services/event-bus-custom.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import { CustomEventBus } from "./services"

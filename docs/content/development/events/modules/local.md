@@ -19,9 +19,7 @@ This document will you guide you through installing the local events module.
 
 ## Prerequisites
 
-### Medusa Backend
-
-It’s assumed you already have a Medusa backend installed. If not, you can learn how to install it here.
+It’s assumed you already have a Medusa backend installed. If not, you can learn how to install it by following [this guide](../../backend/install.mdx).
 
 ---
 

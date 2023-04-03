@@ -18,7 +18,7 @@ One of these modules is the Redis module. This module allows you to utilize Redi
 
 ### Medusa Backend
 
-It’s assumed you already have a Medusa backend installed. If not, you can learn how to install it [here](../../backend/install.mdx).
+It’s assumed you already have a Medusa backend installed. If not, you can learn how to install it by following [this guide](../../backend/install.mdx).
 
 ### Redis
 
@@ -52,7 +52,7 @@ Where `<YOUR_REDIS_URL>` is a connection URL to your Redis instance.
 
 In `medusa-config.js`, add the following to the exported object:
 
-```js
+```js title=medusa-config.js
 module.exports = {
   // ...
   modules: {

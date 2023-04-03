@@ -22,7 +22,7 @@ This document will guide you through installing the in-memory cache module.
 
 ### Medusa Backend
 
-It’s assumed you already have a Medusa backend installed. If not, you can learn how to install it [here](../../backend/install.mdx).
+It’s assumed you already have a Medusa backend installed. If not, you can learn how to install it by following [this guide](../../backend/install.mdx).
 
 ---
 
@@ -40,7 +40,7 @@ npm install @medusajs/cache-inmemory
 
 In `medusa-config.js`, add the following to the exported object:
 
-```jsx
+```js title=medusa-config.js
 module.exports = {
   // ...
   modules: {

@@ -60,7 +60,7 @@ You can access any service through the dependencies injected to your subscriberâ
 
 For example:
 
-```ts
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   constructor({ productService, eventBusService }) {
       this.productService = productService
@@ -76,7 +76,7 @@ class OrderNotifierSubscriber {
 
 You can then use `this.productService` anywhere in your subscriberâ€™s methods. For example:
 
-```ts
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   // ...
   handleOrder = async (data) => {

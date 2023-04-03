@@ -25,6 +25,8 @@ In your Medusa backend, create the file `src/models/product.ts`. This file will 
 
 Note that the name of the file must be the same as the name of the original entity in the core package. Since in this guide you’re overriding the Product entity, it’s named `product` to match the core. If you’re extending the customer entity, for example, the file should be named `customer.ts`.
 
+---
+
 ## Step 2: Implement Extended Entity
 
 In the file you created, you can import the entity you’re extending from the core package, then create a class that extends that entity. You can add in that class the new attributes and methods.
@@ -45,6 +47,8 @@ export class Product extends MedusaProduct {
 }
 ```
 
+---
+
 ## (Optional) Step 3: Create a TypeScript Declaration File
 
 If you’re using JavaScript instead of TypeScript in your implementation, you can skip this step.
@@ -60,6 +64,8 @@ export declare module "@medusajs/medusa/dist/models/product" {
 ```
 
 Notice that you must pass the attributes you added to the entity into the `interface`. The attributes will be merged with the attributes defined in the core `Product` entity.
+
+---
 
 ## Step 4: Extend Repository
 
@@ -100,6 +106,8 @@ export default ProductRepository
 
 Instead of just spreading the properties of the `MedusaProductRepository` as you did when extending a repository, you have to change the value of the `target` property to be the entity you created.
 
+---
+
 ## Step 5: Create Migration
 
 To reflect your entity changes on the database schema, you must create a migration with those changes.
@@ -128,6 +136,8 @@ class changeProduct1680013376180 implements MigrationInterface {
 
 export default changeProduct1680013376180
 ```
+
+---
 
 ## Step 6: Use Custom Entity
 

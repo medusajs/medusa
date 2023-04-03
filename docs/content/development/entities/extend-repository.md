@@ -25,6 +25,8 @@ In your Medusa backend, create the file `src/repositories/product.ts`. This file
 
 Note that the name of the file must be the same as the name of the original repository in the core package. Since in this guide you’re extending the Product repository, it’s named `product` to match the core. If you’re extending the customer repository, for example, the file should be named `customer.ts`.
 
+---
+
 ## Step 2: Implement Extended Repository
 
 In the file you created, you must retrieve both the repository you're extending along with its entity from the core. You’ll then use the data source exported from the core package to extend the repository.
@@ -77,6 +79,8 @@ You must first add the properties of the repository you’re extending, which in
 
 After that, you can add your custom methods to the repository. In the example above, you add the method `customFunction`. You can use any name for your methods.
 
+---
+
 ## Step 3: Use Your Extended Repository
 
 You can now use your extended repository in other resources such as services or endpoints.
@@ -107,6 +111,8 @@ export default () => {
   })
 }
 ```
+
+---
 
 ## Step 4: Test Your Implementation
 
