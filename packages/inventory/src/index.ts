@@ -8,7 +8,6 @@ import InventoryService from "./services/inventory"
 
 import { ModuleExports } from "@medusajs/modules-sdk"
 
-// const migrations = [SchemaMigration, TypeMigration]
 const service = InventoryService
 const loaders = [loadContainer, loadConnection]
 const models = Object.values(InventoryModels)
