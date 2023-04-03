@@ -108,7 +108,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -117,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -303,25 +303,26 @@ class BrightpearlService extends BaseService {
       return
     }
 
-    const variant = await this.productVariantService_
-      .retrieveBySKU(sku)
-      .catch((_) => undefined)
-
-    if (!variant?.manage_inventory) {
-      return
-    }
-
     const productAvailability = availability[productId]
 
     if (!this.inventoryService_) {
+      const variant = await this.productVariantService_
+        .retrieveBySKU(sku)
+        .catch((_) => undefined)
+
+      if (!variant?.manage_inventory) {
+        return
+      }
+
       return this.adjustCoreInventory_(variant.id, productAvailability)
     }
 
-    const pvInventoryItems =
-      await this.productVariantInventoryService_.listByVariant(variant.id)
+    const inventoryItems = await this.inventoryService_.listInventoryItems({
+      sku,
+    })
 
     const [inventoryLevels] = await this.inventoryService_.listInventoryLevels({
-      inventory_item_id: pvInventoryItems.map((pvi) => pvi.inventory_item_id),
+      inventory_item_id: inventoryItems.map((i) => i.id),
     })
 
     const inventoryMap = inventoryLevels.reduce((acc, item) => {
