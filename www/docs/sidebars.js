@@ -631,6 +631,11 @@ module.exports = {
           },
         },
         {
+          type: "doc",
+          id: "modules/products/store/use-categories",
+          label: "Storefront: Use Categories",
+        },
+        {
           type: "link",
           href: "#",
           label: "Storefront: Show Collections",

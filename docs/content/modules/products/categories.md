@@ -92,3 +92,4 @@ Aside from these relations, the `mpath` attribute, which is a [Materialized Path
 ## See Also
 
 - [How to manage product categories using the admin APIs](./admin/manage-categories.mdx)
+- [How to use product categories in a storefront](./store/use-categories.mdx)
