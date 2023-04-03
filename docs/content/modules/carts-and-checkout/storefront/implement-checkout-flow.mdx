@@ -8,13 +8,13 @@ import TabItem from '@theme/TabItem';
 
 # How to Implement Checkout Flow
 
-This document will guide you through the steps needed to implement the checkout flow in a Medusa storefront, including steps related to adding a custom payment provider.
+This document will guide you through the steps needed to implement the checkout flow in a Medusa storefront, including steps related to adding a custom payment processor.
 
 ## Overview
 
 A checkout flow is composed of the necessary steps to allow a customer to perform a successful checkout. It’s generally made up of two primary steps: the shipping and payment steps.
 
-This document will take you through the general process of a checkout flow. You should follow along with this document if you’re creating a custom storefront, if you’re adding a custom payment provider, or if you’re just interested in learning more about how checkout works in Medusa.
+This document will take you through the general process of a checkout flow. You should follow along with this document if you’re creating a custom storefront, if you’re adding a custom payment processor, or if you’re just interested in learning more about how checkout works in Medusa.
 
 :::note
 
@@ -88,7 +88,7 @@ medusa.carts.update(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useCart } from "medusa-react"
 
 const Cart = () => {
@@ -252,7 +252,7 @@ medusa.carts.addShippingMethod(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useAddShippingMethodToCart } from "medusa-react"
 // ...
 
@@ -303,11 +303,11 @@ It returns the updated cart, with the created shipping method available in the a
 
 ## Payment Step
 
-In this step, the customer generally chooses a payment method to complete their purchase. The implementation of payment providers is done differently for each provider, so this section will just show the general steps you should follow when implementing this step.
+In this step, the customer generally chooses a payment method to complete their purchase. The implementation of payment processors is done differently for each processor, so this section will just show the general steps you should follow when implementing this step.
 
-### Initialize Payment Sessions
+### Display Payment Methods
 
-When the page opens and before the payment providers are displayed to the customer to choose from, you must initialize the [payment sessions](../payment.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
+When the page opens and before the payment providers are displayed to the customer to choose from, you must create the [payment sessions](../payment.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
 
 To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) API endpoint:
 
@@ -339,7 +339,7 @@ const PaymentProviders = () => {
   return (
     <div>
       {!cart?.payment_sessions.length && (
-        <span>No payment providers</span>
+        <span>No payment processors</span>
       )}
       <ul>
         {cart?.payment_sessions.map(
@@ -378,7 +378,7 @@ This endpoint accepts the ID of the cart as a path parameter. It returns the upd
 
 ### Select Payment Session
 
-When the customer chooses the payment provider they want to complete purchase with, you should select the payment session associated with that payment provider. To do that, send a `POST` request to the [Select a Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) API endpoint:
+When the customer chooses the payment processor they want to complete purchase with, you should select the payment session associated with that payment processor. To do that, send a `POST` request to the [Select a Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) API endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -396,7 +396,7 @@ medusa.carts.setPaymentSession(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useCart } from "medusa-react"
 
 const PaymentProviders = () => {
@@ -439,19 +439,19 @@ fetch(`<BACKEND_URL>/store/carts/${cartId}/payment-session`, {
 </TabItem>
 </Tabs>
 
-The request accepts the ID of the cart as a path parameter, and the ID of the payment provider in the request's body.
+The request accepts the ID of the cart as a path parameter, and the ID of the payment processor in the request's body.
 
 It returns the updated cart, with the selected payment session available under `cart.payment_session`.
 
 :::tip
 
-If you have one payment provider or if only one payment provider is available for the current cart, its payment session will be automatically selected in the “[Initialize Payment Session](#initialize-payment-sessions)” step and this step becomes unnecessary. You can check whether there is a payment session selected or not by checking whether `cart.payment_session` is `null` or not.
+If you have one payment processor or if only one payment processor is available for the current cart, its payment session will be automatically selected in the “[Initialize Payment Session](#initialize-payment-sessions)” step and this step becomes unnecessary. You can check whether there is a payment session selected or not by checking whether `cart.payment_session` is `null` or not.
 
 :::
 
 ### Update Payment Session
 
-This step is optional and is only necessary for some payment providers. As mentioned in the [Payment Architecture](../payment.md#overview) documentation, the `PaymentSession` model has a `data` attribute that holds any data required for the Payment Provider to perform payment operations such as capturing payment.
+This step is optional and is only necessary for some payment processors. As mentioned in the [Payment Architecture](../payment.md#overview) documentation, the `PaymentSession` model has a `data` attribute that holds any data required for the Payment Processor to perform payment operations such as capturing payment.
 
 If you need to update that data at any point before the purchase is made, send a request to [Update a Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) API endpoint:
 
@@ -474,7 +474,7 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useUpdatePaymentSession, useCart } from "medusa-react"
 // ...
 
@@ -531,13 +531,13 @@ fetch(
 </TabItem>
 </Tabs>
 
-This request accepts the ID of the cart and the ID of the payment session's payment provider as path parameters. In the request's body, it accepts a `data` object where you can pass any data relevant for the payment provider.
+This request accepts the ID of the cart and the ID of the payment session's payment processor as path parameters. In the request's body, it accepts a `data` object where you can pass any data relevant for the payment processor.
 
 It returns the updated cart. You can access the payment session's data on `cart.payment_session.data`.
 
 ### Complete Cart
 
-The last step is to place the order by completing the cart. When you complete the cart, your Medusa backend will try to authorize the payment first, then place the order if the authorization is successful. So, you should perform any necessary action with your payment provider first to make sure the authorization is successful when you send the request to complete the cart.
+The last step is to place the order by completing the cart. When you complete the cart, your Medusa backend will try to authorize the payment first, then place the order if the authorization is successful. So, you should perform any necessary action with your payment processor first to make sure the authorization is successful when you send the request to complete the cart.
 
 To complete a cart, send a `POST` request to the [Complete a Cart](/api/store/#tag/Cart/operation/PostCartsCartComplete) API endpoint:
 
@@ -554,7 +554,7 @@ medusa.carts.complete(cartId)
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
+```ts
 import { useCart } from "medusa-react"
 // ...
 

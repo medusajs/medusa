@@ -45,7 +45,7 @@ const CustomerDetail = () => {
         path="/a/customers"
         className="mb-xsmall"
       />
-      <div className="gap-y-small flex flex-col">
+      <div className="gap-y-xsmall flex flex-col">
         <Section>
           <div className="flex w-full items-start justify-between">
             <div className="gap-x-base flex w-full items-center">

@@ -1,10 +1,10 @@
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { GiftCardService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/gift-cards/{id}
@@ -123,7 +123,7 @@ export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  ends_at?: Date
+  ends_at?: Date | null
 
   @IsOptional()
   @IsString()

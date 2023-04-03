@@ -28,11 +28,18 @@ This opens a new form with different sections. The only field required is the Ti
 
 ### Organize Section
 
+:::note
+
+If you don't see a categories field, it's because this feature is currently in beta and must be manually enabled by your technical team.
+
+:::
+
 All fields in this section allow you to better group and filter your products using types, collections, and tags.
 
 1. You can either choose from a list of types or create a new one.
 2. You can choose from a list of collections.
-3. Tags are comma-separated. After entering a tag’s value, add a comma “,” and it will create the tag. You can remove the tag by pressing the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999180/Medusa%20Docs/UI%20Icons/kvGRHQR_s0ptsm.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999200/Medusa%20Docs/UI%20Icons/RJ4SLIu_n30zqr.png" alt="X" /> icon next to it.
+3. You can choose one or more categories. If you don't have any categories, you can learn how to create them in the [Manage Categories documentation](./categories.mdx). If you want to choose a nested category, you can click on a parent category which will show the categories nested inside it.
+4. Tags are comma-separated. After entering a tag’s value, add a comma “,” and it will create the tag. You can remove the tag by pressing the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999180/Medusa%20Docs/UI%20Icons/kvGRHQR_s0ptsm.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999200/Medusa%20Docs/UI%20Icons/RJ4SLIu_n30zqr.png" alt="X" /> icon next to it.
 
 ### Variants Section
 
@@ -94,12 +101,16 @@ To save the product you can either:
 1. Click the “Save as draft” button to save the product without publishing it.
 2. Click the “Publish product” button to save the product and publish it.
 
+---
+
 ## View Product Details
 
 To view a product’s details:
 
 1. Go to the Products page.
 2. Click on the product you want to view.
+
+---
 
 ## Edit a Product’s General Information
 
@@ -111,6 +122,8 @@ To edit a product’s general information:
 4. Edit any of the information in the window.
 5. Once done, click on the Save button.
 
+---
+
 ## Change a Product’s Status
 
 A product’s status can either be Draft or Published.
@@ -120,6 +133,8 @@ To change a product’s status:
 1. Go to the product’s details page.
 2. Click on the status at the top right of the first section. For example, if the current status of the product is Draft, you should see Draft written at the top right of the first section.
 3. Click on the status in the dropdown to change the status.
+
+---
 
 ## Manage Product Options
 
@@ -140,13 +155,18 @@ To manage a product’s option:
     3. You can delete an option by clicking the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999290/Medusa%20Docs/UI%20Icons/1yp4PNt_vzwnhf.png" alt="trash" /> icon.
 5. Once you’re done, click on the "Save and close" button.
 
+---
+
 ## Manage Product Variants
 
 ### Add a Variant
 
 :::info
 
-Multiple variants can’t have the same options combination.
+Please note the following:
+
+- Multiple variants can’t have the same options combination.
+- The steps regarding managing the inventory of a product variant requires the Inventory and Stock Location modules to be installed. You can refer to the [Multi-Warehouse user guide](../multiwarehouse/index.md) for more details about that.
 
 :::
 
@@ -162,8 +182,13 @@ To add a variant to a product:
         1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999595/Medusa%20Docs/UI%20Icons/A91y4rk_doqj9s.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999615/Medusa%20Docs/UI%20Icons/knwwocb_ll4l6m.png" alt="right arrow" /> icon next to the currency. This expands a list of regions below the currency. These are regions that use this currency.
         2. Enter the price for the region you want.
     4. In the Stock & Inventory section, you can manage how Medusa handles the product’s inventory, the quantity in Stock, and more.
-        1. If Manage Inventory is enabled, Medusa will change the available quantity of the variant when orders or returns are made.
-        2. If Allow Backorders is enabled, customers can purchase this variant even if it’s out-of-stock.
+        1. If you disable the Manage Inventory field, Medusa will assume the product is always in stock.
+        2. If you enable the Manage Inventory field:
+            1. Under the Quantity section, click on the "Manage locations" button.
+            2. Enable the locations a product is enabled in.
+            3. Click on the "Save and go back" button.
+            4. For each location you added, enter the quantity available in stock.
+        3. If Allow Backorders is enabled, customers can purchase this variant even if it’s out-of-stock. You can only enable "Allow Backorders" if "Manage Inventory" is enabled.
     5. In the Shipping section, you can specify information relevant to shipping such as Height, Weight, Country of origin, and more.
 5. Once you’re done, click on the “Save and close” button.
 
@@ -216,6 +241,8 @@ To delete a variant:
 3. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
 4. Click on Delete Variant from the dropdown.
 
+---
+
 ## Edit a Product’s Attributes
 
 To edit a product’s attributes:
@@ -225,6 +252,8 @@ To edit a product’s attributes:
 3. Click on Edit Attributes from the dropdown.
 4. In the new window that opens, you can edit any of the attribute information of the product.
 5. Once you’re done, click on the Save button.
+
+---
 
 ## Manage Thumbnails
 
@@ -259,6 +288,8 @@ To delete a thumbnail:
 2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999290/Medusa%20Docs/UI%20Icons/1yp4PNt_vzwnhf.png" alt="trash" /> icon at the top right of the Thumbnail section.
 3. Click the Confirm button.
 
+---
+
 ## Manage Images
 
 :::info
@@ -280,6 +311,8 @@ To manage a product’s images
         2. Click on Delete from the dropdown.
 4. Once you’re done, click Save and close.
 
+---
+
 ## Duplicate a Product
 
 To duplicate a product:
@@ -289,6 +322,8 @@ To duplicate a product:
 3. Click on Duplicate from the dropdown.
 
 This creates a product with the same information as the original but as a draft.
+
+---
 
 ## Delete a Product
 

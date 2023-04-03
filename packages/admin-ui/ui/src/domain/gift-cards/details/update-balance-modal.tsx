@@ -1,109 +1,109 @@
-import { AdminPostGiftCardsGiftCardReq, GiftCard } from "@medusajs/medusa"
-import clsx from "clsx"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import Tooltip from "../../../components/atoms/tooltip"
+import { GiftCard } from "@medusajs/medusa"
+import { useAdminUpdateGiftCard } from "medusa-react"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import GiftCardBalanceForm, {
+  GiftCardBalanceFormType,
+} from "../../../components/forms/gift-card/gift-card-balance-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
-import CurrencyInput from "../../../components/organisms/currency-input"
+import useNotification from "../../../hooks/use-notification"
+import { getErrorMessage } from "../../../utils/error-messages"
+import { nestedForm } from "../../../utils/nested-form"
 
 type UpdateBalanceModalProps = {
-  handleClose: () => void
-  handleSave: (update: AdminPostGiftCardsGiftCardReq) => void
-  currencyCode: string
+  open: boolean
+  onClose: () => void
   giftCard: GiftCard
-  updating: boolean
 }
 
 type UpdateBalanceModalFormData = {
-  balance: number
+  balance: GiftCardBalanceFormType
 }
 
 const UpdateBalanceModal = ({
-  handleClose,
-  handleSave,
-  currencyCode,
+  open,
+  onClose,
   giftCard,
-  updating,
 }: UpdateBalanceModalProps) => {
-  const { control, handleSubmit } = useForm<UpdateBalanceModalFormData>({
-    defaultValues: {
-      balance: giftCard.balance,
-    },
+  const form = useForm<UpdateBalanceModalFormData>({
+    defaultValues: getDefaultValues(giftCard),
   })
 
-  const balance = useWatch({
-    control,
-    name: "balance",
+  const {
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = form
+
+  const { mutate, isLoading } = useAdminUpdateGiftCard(giftCard.id)
+
+  const notification = useNotification()
+
+  const onSubmit = handleSubmit((data) => {
+    mutate(
+      {
+        balance: data.balance.amount,
+      },
+      {
+        onSuccess: () => {
+          notification(
+            "Balance updated",
+            "Gift card balance was updated",
+            "success"
+          )
+
+          onClose()
+        },
+        onError: (err) => {
+          notification(
+            "Failed to update balance",
+            getErrorMessage(err),
+            "error"
+          )
+        },
+      }
+    )
   })
+
+  useEffect(() => {
+    if (open) {
+      reset(getDefaultValues(giftCard))
+    }
+  }, [open, reset, giftCard])
 
   return (
-    <Modal handleClose={handleClose}>
+    <Modal open={open} handleClose={onClose}>
       <Modal.Body>
-        <form onSubmit={handleSubmit(handleSave)}>
-          <Modal.Header handleClose={handleClose}>
-            <span className="inter-xlarge-semibold">Update Balance</span>
-            <span
-              className={clsx(
-                "inter-small-regular mt-2xsmall transition-display text-rose-50 delay-75",
-                {
-                  hidden: !(balance > giftCard.value),
-                }
-              )}
-            >
-              Balance can't be updated to a value that is greater than the
-              original amount
-            </span>
-          </Modal.Header>
+        <Modal.Header handleClose={onClose}>
+          <h1 className="inter-xlarge-semibold">Update Balance</h1>
+        </Modal.Header>
+        <form onSubmit={onSubmit}>
           <Modal.Content>
-            <CurrencyInput.Root
-              readOnly
-              currentCurrency={currencyCode}
-              size="small"
-            >
-              <Controller
-                control={control}
-                name="balance"
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <CurrencyInput.Amount
-                      amount={value}
-                      label="Price"
-                      onChange={onChange}
-                    />
-                  )
-                }}
-              />
-            </CurrencyInput.Root>
+            <GiftCardBalanceForm
+              form={nestedForm(form, "balance")}
+              currencyCode={giftCard.region.currency_code}
+              originalAmount={giftCard.value}
+            />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full justify-end">
+            <div className="gap-x-xsmall flex w-full justify-end">
               <Button
-                variant="ghost"
+                variant="secondary"
                 size="small"
-                onClick={handleClose}
-                className="mr-2"
+                onClick={onClose}
                 type="button"
               >
                 Cancel
               </Button>
               <Button
-                loading={updating}
                 variant="primary"
-                className="min-w-[100px]"
                 size="small"
                 type="submit"
-                disabled={balance > giftCard.value || updating}
+                loading={isLoading}
+                disabled={isLoading || !isDirty}
               >
-                {balance > giftCard.value ? (
-                  <Tooltip content="Balance is above original value">
-                    Save
-                  </Tooltip>
-                ) : (
-                  "Save"
-                )}
+                Save and close
               </Button>
             </div>
           </Modal.Footer>
@@ -112,4 +112,13 @@ const UpdateBalanceModal = ({
     </Modal>
   )
 }
+
+const getDefaultValues = (giftCard: GiftCard): UpdateBalanceModalFormData => {
+  return {
+    balance: {
+      amount: giftCard.balance,
+    },
+  }
+}
+
 export default UpdateBalanceModal

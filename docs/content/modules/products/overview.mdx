@@ -29,7 +29,6 @@ Admins can manage unlimited amount of products and their variants. They can mana
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage products using Admin APIs.',
-      isSoon: true,
     }
   },
   {
@@ -55,37 +54,37 @@ Admins can manage unlimited amount of products and their variants. They can mana
 
 ### Product Organization
 
-Admins can organize products into collections, tags, types, and more.
+Admins can organize products into categories, collections, tags, types, and more.
 
 Customers can use this organization to filter products while browsing them.
 
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '#',
-    label: 'Admin: Manage Collections',
+    href: '/modules/products/admin/manage-categories',
+    label: 'Admin: Manage Categories',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to manage collections using Admin APIs.',
+      description: 'Learn how to manage categories using Admin APIs.',
       isSoon: true,
     }
   },
   {
     type: 'link',
-    href: '/user-guide/products/collections',
-    label: 'User Guide: Manage Collections',
+    href: '/user-guide/products/categories',
+    label: 'User Guide: Manage Categories',
     customProps: {
       icon: Icons['users-solid'],
-      description: 'Learn how to manage collections in Medusa Admin.'
+      description: 'Learn how to manage categories in the Medusa Admin.'
     }
   },
   {
     type: 'link',
     href: '#',
-    label: 'Storefront: Show Collections',
+    label: 'Storefront: Use Categories',
     customProps: {
       icon: Icons['server-solid'],
-      description: 'Learn how to show collections in a storefront.',
+      description: 'Learn how to use categories in a storefront.',
       isSoon: true,
     }
   },
@@ -131,7 +130,7 @@ Admins can bulk import and export products using CSV files. This facilitates mov
 
 Learn how product-related entities are build, their relation to other modules, and more.
 
-<DocCardList colSize={6} items={[
+<DocCardList colSize={4} items={[
   {
     type: 'link',
     href: '#',
@@ -140,6 +139,15 @@ Learn how product-related entities are build, their relation to other modules, a
       icon: Icons['circle-stack-solid'],
       description: 'Learn about the Product Architecture.',
       isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/products/categories',
+    label: 'Architecture: Category',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Product Category Architecture.',
     }
   },
   {

@@ -7,14 +7,6 @@ addHowToData: true
 
 In this document, you’ll learn how to create a [Subscriber](./subscribers.mdx) in Medusa that listens to events to perform an action.
 
-## Prerequisites
-
-Medusa's event system works by pushing data to a Queue that each handler then gets notified of. The queuing system is based on Redis, so it's required for subscribers to work.
-
-You can learn how to [install Redis](../backend/prepare-environment.mdx#redis) and [configure it with Medusa](../backend/configurations.md#redis) before you get started.
-
----
-
 ## Implementation
 
 A subscriber is a TypeScript or JavaScript file that is created under `src/subscribers`. Its file name, by convension, should be the class name of the subscriber without the word `Subscriber`. For example, if the subscriber is `HelloSubscriber`, the file name should be `hello.ts`.
@@ -41,11 +33,24 @@ export default OrderNotifierSubscriber
 
 This subscriber registers the method `handleOrder` as one of the handlers of the `order.placed` event. The method `handleOrder` will be executed every time an order is placed. It receives the order ID in the `data` parameter. You can then use the order’s details to perform any kind of task you need.
 
-:::note
+:::tip
 
-The `data` object won't contain other order data. Only the ID of the order. You can retrieve the order information using the `orderService`.
+For the `order.placed` event, the `data` object won't contain other order data. Only the ID of the order. You can retrieve the order information using the `orderService`.
 
 :::
+
+### Subscriber ID
+
+The `subscribe` method of the `eventBusService` accepts a third optional parameter which is a context object. This object has a property `subscriberId` with its value being a string. This ID is useful when there is more than one handler method attached to a single event or if you have multiple Medusa backends running. This allows the events bus service to differentiate between handler methods when retrying a failed one.
+If a subscriber ID is not passed on subscription, all handler methods are run again. This can lead to data inconsistencies or general unwanted behavior in your system. On the other hand, if you want all handler methods to run again when one of them fails, you can omit passing a subscriber ID.
+
+An example of using the subscribe method with the third parameter:
+
+```ts
+eventBusService.subscribe("order.placed", this.handleOrder, {
+  subscriberId: "my-unique-subscriber",
+})
+```
 
 ---
 
@@ -55,7 +60,7 @@ You can access any service through the dependencies injected to your subscriber�
 
 For example:
 
-```ts
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   constructor({ productService, eventBusService }) {
       this.productService = productService
@@ -71,7 +76,7 @@ class OrderNotifierSubscriber {
 
 You can then use `this.productService` anywhere in your subscriber’s methods. For example:
 
-```ts
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   // ...
   handleOrder = async (data) => {

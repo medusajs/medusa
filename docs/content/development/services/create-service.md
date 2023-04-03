@@ -3,13 +3,13 @@ description: 'Learn how to create a service in Medusa. This guide also includes 
 addHowToData: true
 ---
 
-# Create a Service
+# How to Create a Service
 
 In this document, you’ll learn how you can create a [Service](./overview.mdx) and use it across your Medusa backend just like any of the core services.
 
-## Implementation
+## Service Implementation
 
-To create a service, create a TypeScript or JavaScript file in `src/services` to hold the service. The name of the file should be the registration name of the service without `Service` as it will be appended to it by default.
+To create a service, create a TypeScript or JavaScript file in `src/services` to hold the service. The name of the file should be the name of the service without `Service`. This is essential as the file name is used when registering the service in the [dependency container](../fundamentals/dependency-injection.md), and `Service` is appended to the camel-case version of the file name automatically.
 
 For example, if you want to create a service `helloService`, create the file `hello.ts` in `src/services` with the following content:
 
@@ -26,6 +26,33 @@ class HelloService extends TransactionBaseService {
 }
 
 export default HelloService
+```
+
+This service will be registered in the dependency container as `helloService`.
+
+---
+
+## Service Life Time
+
+As the dependency container in Medusa is built on top of [awilix](https://github.com/jeffijoe/awilix), you can specify the [Lifetime](https://github.com/jeffijoe/awilix#lifetime-management) of a service. The lifetime is added as a static property to the service.
+
+There are three lifetime types:
+
+1. `Lifetime.TRANSIENT`: (default for custom services) when used, a new instance of the service is created everytime it is resolved in other resources from the dependency container.
+2. `Lifetime.SCOPED`: when used, an instance of the service is created and reused in the scope of the dependency container. So, when the service is resolved in other resources that share that dependency container, the same instance of the service will be returned.
+3. `Lifetime.SINGLETON`: (default for core services) when used, the service is always reused, regardless of the scope. An instance of the service is cached in the root container.
+
+You can set the lifetime of your service by setting the `LIFE_TIME` static property:
+
+```ts title=/src/services/hello.ts
+import { TransactionBaseService } from "@medusajs/medusa"
+import { Lifetime } from "awilix"
+
+class HelloService extends TransactionBaseService {
+  static LIFE_TIME = Lifetime.SCOPED
+
+  // ...
+}
 ```
 
 ---

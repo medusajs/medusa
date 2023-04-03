@@ -1,20 +1,30 @@
 import { AdminPostProductsReq, ProductVariant } from "@medusajs/medusa"
 import { useAdminCreateProduct, useMedusa } from "medusa-react"
 import { useForm, useWatch } from "react-hook-form"
-import CustomsForm, { CustomsFormType } from "../../../components/forms/product/customs-form"
+import CustomsForm, {
+  CustomsFormType,
+} from "../../../components/forms/product/customs-form"
 import DimensionsForm, {
-  DimensionsFormType
+  DimensionsFormType,
 } from "../../../components/forms/product/dimensions-form"
 import DiscountableForm, {
-  DiscountableFormType
+  DiscountableFormType,
 } from "../../../components/forms/product/discountable-form"
-import GeneralForm, { GeneralFormType } from "../../../components/forms/product/general-form"
-import MediaForm, { MediaFormType } from "../../../components/forms/product/media-form"
-import OrganizeForm, { OrganizeFormType } from "../../../components/forms/product/organize-form"
-import ThumbnailForm, { ThumbnailFormType } from "../../../components/forms/product/thumbnail-form"
+import GeneralForm, {
+  GeneralFormType,
+} from "../../../components/forms/product/general-form"
+import MediaForm, {
+  MediaFormType,
+} from "../../../components/forms/product/media-form"
+import OrganizeForm, {
+  OrganizeFormType,
+} from "../../../components/forms/product/organize-form"
+import ThumbnailForm, {
+  ThumbnailFormType,
+} from "../../../components/forms/product/thumbnail-form"
 import { FormImage, ProductStatus } from "../../../types/shared"
 import AddSalesChannelsForm, {
-  AddSalesChannelsFormType
+  AddSalesChannelsFormType,
 } from "./add-sales-channels"
 import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
 
@@ -247,8 +257,8 @@ const NewProduct = ({ onClose }: Props) => {
             </div>
           </div>
         </FocusModal.Header>
-        <FocusModal.Main className="no-scrollbar flex w-full justify-center">
-          <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
+        <FocusModal.Main className="no-scrollbar flex w-full justify-center py-16">
+          <div className="small:w-4/5 medium:w-7/12 large:w-6/12 max-w-[700px]">
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
@@ -357,14 +367,14 @@ const createPayload = (
     mid_code: data.customs.mid_code || undefined,
     type: data.organize.type
       ? {
-        value: data.organize.type.label,
-        id: data.organize.type.value,
-      }
+          value: data.organize.type.label,
+          id: data.organize.type.value,
+        }
       : undefined,
     tags: data.organize.tags
       ? data.organize.tags.map((t) => ({
-        value: t,
-      }))
+          value: t,
+        }))
       : undefined,
     categories: data.organize.categories?.length
       ? data.organize.categories.map((id) => ({ id }))
@@ -435,6 +445,7 @@ const createBlank = (): NewProductForm => {
       images: [],
     },
     organize: {
+      categories: null,
       collection: null,
       tags: null,
       type: null,
