@@ -1,22 +1,24 @@
-# Class: StrategyResolverService
+# Class: StagedJobService
+
+Provides layer to manipulate users.
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`StrategyResolverService`**
+  ↳ **`StagedJobService`**
 
 ## Constructors
 
 ### constructor
 
-• **new StrategyResolverService**(`container`)
+• **new StagedJobService**(`__namedParameters`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `container` | `InjectedDependencies` |
+| `__namedParameters` | `StagedJobServiceProps` |
 
 #### Overrides
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/strategy-resolver.ts:11](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/strategy-resolver.ts#L11)
+[medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/staged-job.ts#L22)
 
 ## Properties
 
@@ -70,16 +72,6 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 ___
 
-### container
-
-• `Protected` `Readonly` **container**: `InjectedDependencies`
-
-#### Defined in
-
-[medusa/src/services/strategy-resolver.ts:11](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/strategy-resolver.ts#L11)
-
-___
-
 ### manager\_
 
 • `Protected` **manager\_**: `EntityManager`
@@ -91,6 +83,16 @@ TransactionBaseService.manager\_
 #### Defined in
 
 [medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+
+___
+
+### stagedJobRepository\_
+
+• `Protected` **stagedJobRepository\_**: `Repository`<`StagedJob`\> & { `insertBulk`: (`jobToCreates`: `_QueryDeepPartialEntity`<`StagedJob`\>[]) => `Promise`<`StagedJob`[]\>  }
+
+#### Defined in
+
+[medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/staged-job.ts#L20)
 
 ___
 
@@ -165,23 +167,63 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
-### resolveBatchJobByType
+### create
 
-▸ **resolveBatchJobByType**(`type`): `AbstractBatchJobStrategy`
+▸ **create**(`data`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `type` | `string` |
+| `data` | `EmitData`<`unknown`\> \| `EmitData`<`unknown`\>[] |
 
 #### Returns
 
-`AbstractBatchJobStrategy`
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/strategy-resolver.ts:15](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/strategy-resolver.ts#L15)
+[medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/staged-job.ts#L45)
+
+___
+
+### delete
+
+▸ **delete**(`stagedJobIds`): `Promise`<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `stagedJobIds` | `string` \| `string`[] |
+
+#### Returns
+
+`Promise`<`void`\>
+
+#### Defined in
+
+[medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/staged-job.ts#L37)
+
+___
+
+### list
+
+▸ **list**(`config`): `Promise`<`StagedJob`[]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `config` | `FindConfig`<`StagedJob`\> |
+
+#### Returns
+
+`Promise`<`StagedJob`[]\>
+
+#### Defined in
+
+[medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/bb9df09e3/packages/medusa/src/services/staged-job.ts#L29)
 
 ___
 
@@ -211,7 +253,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`StrategyResolverService`](StrategyResolverService.md)
+▸ **withTransaction**(`transactionManager?`): [`StagedJobService`](StagedJobService.md)
 
 #### Parameters
 
@@ -221,7 +263,7 @@ ___
 
 #### Returns
 
-[`StrategyResolverService`](StrategyResolverService.md)
+[`StagedJobService`](StagedJobService.md)
 
 #### Inherited from
 
