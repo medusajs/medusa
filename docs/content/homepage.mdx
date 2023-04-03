@@ -75,10 +75,10 @@ Medusa provides the essential building blocks that developers can put together t
   {
     type: 'link',
     href: '/admin/quickstart',
-    label: 'Medusa Admin Quickstart',
+    label: 'Admin Dashboard',
     customProps: {
       icon: Icons['computer-desktop-solid'],
-      description: 'The Medusa admin is an intuitive admin dashboard that can be used along with the Medusa backend and modules. Merchants can use it to perform data management and processes such as manage orders, products, customers, and much more.'
+      description: 'An intuitive admin dashboard along with the Medusa backend and commerce modules. Merchants can use it to perform data management and processes such as manage orders, products, customers, and much more.'
     }
   },
 ]} />
@@ -162,29 +162,41 @@ Learn about all the new features and enhancements in Medusa.
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '/modules/orders/admin/edit-order',
-    label: 'Edit an Order',
+    href: '/modules/multiwarehouse/overview',
+    label: 'Multi-Warehouse',
     customProps: {
-      icon: Icons['pencil-square-solid'],
-      description: 'Gain more control over the order process by editing items in an order.'
+      icon: Icons['building-solid'],
+      description: 'Allows merchants to store a product in multiple locations with accurate and consistent inventory data.',
+      badge: {
+        variant: 'blue',
+        children: 'New'
+      }
     }
   },
   {
     type: 'link',
-    href: '/modules/sales-channels',
-    label: 'Sales Channels',
+    href: '/modules/products/categories',
+    label: 'Product Categories',
     customProps: {
-      icon: Icons['channels-solid'],
-      description: 'Expand your market and set configurations for different channels.'
+      icon: Icons['swatch-solid'],
+      description: 'Clearer organization of your products under categories that can be nested and ranked.',
+      badge: {
+        variant: 'blue',
+        children: 'New'
+      }
     }
   },
   {
     type: 'link',
-    href: '/development/publishable-api-keys',
-    label: 'Publishable API Keys',
+    href: '/development/modules/overview',
+    label: 'Modules',
     customProps: {
-      icon: Icons['key-solid'],
-      description: 'Scope API calls to specific resources using an API key'
+      icon: Icons['puzzle-solid'],
+      description: 'Modules are self-contained packaged functionalities that are isolated from the Medusa core.',
+      badge: {
+        variant: 'blue',
+        children: 'New'
+      }
     }
   },
 ]} />

@@ -25,11 +25,7 @@ In this document, you’ll learn how to handle the `order-update-token.created` 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
-
-### Redis
-
-Redis is required for batch jobs to work. Make sure you [install Redis](../../../development/backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../../../development/backend/configurations.md#redis).
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### Notification Provider
 

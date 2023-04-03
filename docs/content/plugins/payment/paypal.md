@@ -5,15 +5,15 @@ addHowToData: true
 
 # PayPal
 
-This document guides you through setting up PayPal as a payment provider in your Medusa backend, admin, and storefront using the [PayPal plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-paypal).
+This document guides you through setting up PayPal as a payment processor in your Medusa backend, admin, and storefront using the [PayPal plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-paypal).
 
 ## Overview
 
-[PayPal](https://www.paypal.com) is a payment provider used by millions around the world. It allows customers to purchase orders from your website using their PayPal account rather than the need to enter their card details.
+[PayPal](https://www.paypal.com) is a payment processor used by millions around the world. It allows customers to purchase orders from your website using their PayPal account rather than the need to enter their card details.
 
 As a developer, you can use PayPal’s SDKs and APIs to integrate PayPal as a payment method into your ecommerce store. You can test out the payment method in sandbox mode before going live with it as a payment method.
 
-Using the `medusa-payment-paypal` plugin, this guide shows you how to set up your Medusa backend with PayPal as a payment provider.
+Using the `medusa-payment-paypal` plugin, this guide shows you how to set up your Medusa backend with PayPal as a payment processor.
 
 ---
 
@@ -27,7 +27,7 @@ Webhooks are used in scenarios where the customer might leave the page during th
 
 Additionally, you need a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../development/backend/install.mdx) to get started.
 
-You also need [Medusa Admin](../../admin/quickstart.mdx) installed to enable PayPal as a payment provider. You can alternatively use the [REST APIs](/api/admin).
+You also need [Medusa Admin](../../admin/quickstart.mdx) installed to enable PayPal as a payment processor. You can alternatively use the [REST APIs](/api/admin).
 
 ---
 
@@ -81,9 +81,9 @@ That’s all you need to install PayPal on your Medusa backend!
 
 ## Admin Setup
 
-This section will guide you through adding PayPal as a payment provider in a region using your Medusa admin dashboard.
+This section will guide you through adding PayPal as a payment processor in a region using your Medusa admin dashboard.
 
-This step is required for you to be able to use PayPal as a payment provider in your storefront.
+This step is required for you to be able to use PayPal as a payment processor in your storefront.
 
 ### Admin Prerequisites
 
@@ -91,7 +91,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add PayPal to Regions
 
-You can refer to [this documentation in the user guide](../../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment provider like PayPal to a region.
+You can refer to [this documentation in the user guide](../../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment processor like PayPal to a region.
 
 ---
 
@@ -115,7 +115,7 @@ It is recommended to read through the [Frontend Checkout Flow](../../modules/car
 
 Although the next sections have different implementations to add PayPal into your storefront, they essentially follow the same process:
 
-1. Show PayPal’s button if the PayPal provider is available for the current cart.
+1. Show PayPal’s button if the PayPal processor is available for the current cart.
 2. When the button is clicked, open PayPal’s payment portal and wait for the customer to authorize the payment.
 3. If the payment is authorized successfully, set PayPal’s [Payment Session](../../modules/carts-and-checkout/payment.md#payment-session) as the session used to perform the payment for the current cart, then update the Payment Session on the backend with the data received from PayPal’s payment portal. This data is essential to the backend to verify the authorization and perform additional payment processing later such as capturing payment.
 4. Complete the cart to create the order.
@@ -169,7 +169,7 @@ Next, create a new file `src/components/payment/paypal-payment/index.jsx` with t
 ```jsx title=src/components/payment/paypal-payment/index.jsx
 import { 
   PayPalButtons, 
-  PayPalScriptProvider,
+  PayPalScriptProcessor,
 } from "@paypal/react-paypal-js"
 import React, { useMemo, useState } from "react"
 
@@ -192,7 +192,7 @@ const PaypalPayment = () => {
   const paypalSession = useMemo(() => {
     if (cart.payment_sessions) {
       return cart.payment_sessions.find(
-        (s) => s.provider_id === "paypal"
+        (s) => s.processor_id === "paypal"
       )
     }
 
@@ -245,7 +245,7 @@ const PaypalPayment = () => {
   }
 
   return (
-    <PayPalScriptProvider options={{ 
+    <PayPalScriptProcessor options={{ 
       "client-id": paypalClientId,
       "currency": cart.region.currency_code.toUpperCase(),
       "intent": "authorize",
@@ -260,7 +260,7 @@ const PaypalPayment = () => {
           onApprove={handlePayment}
           disabled={processing}
         />
-    </PayPalScriptProvider>
+    </PayPalScriptProcessor>
   )
 }
 
@@ -269,18 +269,18 @@ export default PaypalPayment
 
 Here’s briefly what this code snippet does:
 
-1. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProvider` component the Client ID.
+1. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProcessor` component the Client ID.
 2. When the button is clicked, the `handlePayment` function is executed. In this method, you initialize the payment authorization using `actions.order.authorize()`. It takes the customer to another page to log in with PayPal and authorize the payment.
 3. After the payment is authorized successfully on PayPal’s portal, the fulfillment function passed to `actions.order.authorize().then` will be executed which calls the `completeOrder` function.
-4. In `completeOrder`, you first ensure that the payment session for the PayPal payment provider is set as the [selected Payment Session in the cart](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession). Then, you send a request to the backend to [update the payment session](/api/store#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) data with the authorization data received from PayPal.
+4. In `completeOrder`, you first ensure that the payment session for the PayPal payment processor is set as the [selected Payment Session in the cart](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession). Then, you send a request to the backend to [update the payment session](/api/store#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) data with the authorization data received from PayPal.
 5. You then [complete the cart and place the order](/api/store/#tag/Cart/operation/PostCartsCartComplete). If that is done successfully, you navigate to the `/order-confirmed` page.
 
-The last step is to add this component as the component to render when PayPal is available as a payment provider.
+The last step is to add this component as the component to render when PayPal is available as a payment processor.
 
-In `src/components/payment/index.js` you’ll find in the return statement a switch statement that checks the payment provider for each payment session and renders the component based on the ID. Add before the `default` case a case for `paypal`:
+In `src/components/payment/index.js` you’ll find in the return statement a switch statement that checks the payment processor for each payment session and renders the component based on the ID. Add before the `default` case a case for `paypal`:
 
 ```jsx title=src/components/payment/index.js
-switch (ps.provider_id) {
+switch (ps.processor_id) {
   case "stripe":
     // ...
     break
@@ -325,7 +325,7 @@ Next, create the file that will hold the PayPal component with the following con
 ```jsx
 import { 
   PayPalButtons, 
-  PayPalScriptProvider,
+  PayPalScriptProcessor,
 } from "@paypal/react-paypal-js"
 import { useEffect, useState } from "react"
 
@@ -350,7 +350,7 @@ function Paypal() {
       const response = await client
         .carts
         .setPaymentSession(cart.id, {
-          "provider_id": "paypal",
+          "processor_id": "paypal",
         })
 
       if (!response.cart) {
@@ -383,7 +383,7 @@ function Paypal() {
   return (
     <div style={{ marginTop: "10px", marginLeft: "10px" }}>
       {cart !== undefined && (
-        <PayPalScriptProvider options={{ 
+        <PayPalScriptProcessor options={{ 
           "client-id": "<CLIENT_ID>",
           "currency": "EUR",
           "intent": "authorize",
@@ -398,7 +398,7 @@ function Paypal() {
               onApprove={handlePayment}
               disabled={processing}
             />
-        </PayPalScriptProvider>
+        </PayPalScriptProcessor>
       )}
     </div>
   )
@@ -411,10 +411,10 @@ Here’s briefly what this code snippet does:
 
 1. At the beginning of the component, the Medusa client is initialized using the JS Client you installed.
 2. You also need to retrieve the cart. Ideally, the cart should be managed through a context. So, every time the cart has been updated the cart should be updated in the context to be accessed from all components.
-3. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProvider` component the Client ID. Make sure to replace `<CLIENT_ID>` with the environment variable you added.
+3. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProcessor` component the Client ID. Make sure to replace `<CLIENT_ID>` with the environment variable you added.
 4. When the button is clicked, the `handlePayment` function is executed. In this method, you initialize the payment authorization using `actions.order.authorize()`. It takes the customer to another page to log in with PayPal and authorize the payment.
 5. After the payment is authorized successfully on PayPal’s portal, the fulfillment function passed to `actions.order.authorize().then` will be executed.
-6. In the fulfillment function, you first ensure that the payment session for the PayPal payment provider is set as the [selected Payment Session in the cart](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession). Then, you send a request to the backend to [update the payment session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) data with the authorization data received from PayPal.
+6. In the fulfillment function, you first ensure that the payment session for the PayPal payment processor is set as the [selected Payment Session in the cart](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession). Then, you send a request to the backend to [update the payment session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) data with the authorization data received from PayPal.
 7. You then [complete the cart and place the order](/api/store/#tag/Cart/operation/PostCartsCartComplete). If that is done successfully, you just show a success alert. You can change this based on the behavior you want in your storefront.
 
 You can then import this component where you want to show it in your storefront.
