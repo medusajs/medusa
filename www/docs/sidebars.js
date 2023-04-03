@@ -1498,7 +1498,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/modules/overview",
-              label: "Modules",
+              label: "Overview",
             },
             {
               type: "html",
