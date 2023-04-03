@@ -5,13 +5,22 @@ import {
   Country,
 } from "@medusajs/medusa"
 import { MutateOptions } from "@tanstack/react-query"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import AddressContactForm, {
+  AddressContactFormType,
+} from "../../../components/forms/general/address-contact-form"
+import AddressLocationForm, {
+  AddressLocationFormType,
+} from "../../../components/forms/general/address-location-form"
+import MetadataForm, {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../../components/forms/general/metadata-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
-import AddressForm, {
-  AddressPayload,
-  AddressType,
-} from "../../../components/templates/address-form"
+import { AddressType } from "../../../components/templates/address-form"
 import useNotification from "../../../hooks/use-notification"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -22,6 +31,12 @@ type AddressPayloadType =
   | Partial<AdminPostOrdersOrderReq["shipping_address"]>
   | AdminPostDraftOrdersReq["shipping_address"]
   | Partial<AdminPostDraftOrdersReq["shipping_address"]>
+
+type AddressModalFormType = {
+  contact: AddressContactFormType
+  location: AddressLocationFormType
+  metadata: MetadataFormType
+}
 
 type TVariables = {
   shipping_address?: AddressPayloadType
@@ -34,8 +49,9 @@ type MutateAction = <T extends TVariables>(
 ) => void
 
 type AddressModalProps = {
-  handleClose: () => void
-  submit: MutateAction
+  onClose: () => void
+  onSave: MutateAction
+  open: boolean
   submitting?: boolean
   allowedCountries?: Country[]
   address?: Address
@@ -45,85 +61,112 @@ type AddressModalProps = {
 const AddressModal = ({
   address,
   allowedCountries = [],
-  handleClose,
-  submit,
+  onClose,
+  onSave,
+  open,
   type,
   submitting = false,
 }: AddressModalProps) => {
-  const form = useForm<AddressPayload>({
-    defaultValues: mapAddressToFormData(address),
+  const form = useForm<AddressModalFormType>({
+    defaultValues: getDefaultValues(address),
   })
   const {
+    reset,
     formState: { isDirty },
+    handleSubmit,
   } = form
   const notification = useNotification()
+
+  useEffect(() => {
+    if (open) {
+      reset(getDefaultValues(address))
+    }
+  }, [address, open, reset])
 
   const countryOptions = allowedCountries
     .map((c) => ({ label: c.display_name, value: c.iso_2 }))
     .filter(Boolean)
 
-  const handleUpdateAddress = (data: AddressPayload) => {
+  const onSubmit = handleSubmit((data) => {
     const updateObj: TVariables = {}
+    const { contact, location, metadata } = data
+
+    const countryCode = location.country_code.value
+    const metadataEntries = getSubmittableMetadata(metadata)
 
     if (type === "shipping") {
       // @ts-ignore
       updateObj["shipping_address"] = {
-        ...data,
-        country_code: data.country_code.value,
+        ...contact,
+        ...location,
+        country_code: countryCode,
+        metadata: metadataEntries,
       }
     } else {
       // @ts-ignore
       updateObj["billing_address"] = {
-        ...data,
-        country_code: data.country_code.value,
+        ...contact,
+        ...location,
+        country_code: countryCode,
+        metadata: metadataEntries,
       }
     }
 
-    return submit(updateObj, {
+    return onSave(updateObj, {
       onSuccess: () => {
         notification("Success", "Successfully updated address", "success")
-        handleClose()
+        onClose()
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
     })
-  }
+  })
 
   return (
-    <Modal handleClose={handleClose} isLargeModal>
-      <form onSubmit={form.handleSubmit(handleUpdateAddress)}>
+    <Modal open={open} handleClose={onClose}>
+      <form onSubmit={onSubmit}>
         <Modal.Body>
-          <Modal.Header handleClose={handleClose}>
+          <Modal.Header handleClose={onClose}>
             <span className="inter-xlarge-semibold">
               {type === AddressType.BILLING ? "Billing" : "Shipping"} Address
             </span>
           </Modal.Header>
           <Modal.Content>
-            <AddressForm
-              form={nestedForm(form)}
-              countryOptions={countryOptions}
-              type={type}
-            />
+            <div className="gap-y-xlarge flex flex-col">
+              <div>
+                <h2 className="inter-base-semibold mb-base">Contact</h2>
+                <AddressContactForm form={nestedForm(form, "contact")} />
+              </div>
+              <div>
+                <h2 className="inter-base-semibold mb-base">Location</h2>
+                <AddressLocationForm
+                  form={nestedForm(form, "location")}
+                  countryOptions={countryOptions}
+                />
+              </div>
+              <div>
+                <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                <MetadataForm form={nestedForm(form, "metadata")} />
+              </div>
+            </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-end">
+            <div className="gap-x-xsmall flex w-full justify-end">
               <Button
-                variant="ghost"
-                className="text-small mr-2 w-32 justify-center"
-                size="large"
-                onClick={handleClose}
+                variant="secondary"
+                size="small"
+                onClick={onClose}
                 type="button"
               >
                 Cancel
               </Button>
               <Button
-                size="large"
-                className="text-small w-32 justify-center"
+                size="small"
                 variant="primary"
                 type="submit"
                 loading={submitting}
                 disabled={submitting || !isDirty}
               >
-                Save
+                Save and close
               </Button>
             </div>
           </Modal.Footer>
@@ -133,23 +176,31 @@ const AddressModal = ({
   )
 }
 
-const mapAddressToFormData = (address?: Address): AddressPayload => {
-  const countryDisplayName =
-    isoAlpha2Countries[address?.country_code?.toUpperCase()]
+const getDefaultValues = (address?: Address): AddressModalFormType => {
+  const countryDisplayName = address?.country_code
+    ? isoAlpha2Countries[
+        address.country_code.toUpperCase() as keyof typeof isoAlpha2Countries
+      ]
+    : ""
 
   return {
-    first_name: address?.first_name || "",
-    last_name: address?.last_name || "",
-    phone: address?.phone || null,
-    company: address?.company || null,
-    address_1: address?.address_1 || "",
-    address_2: address?.address_2 || null,
-    city: address?.city || "",
-    province: address?.province || null,
-    country_code: address?.country_code
-      ? { label: countryDisplayName, value: address.country_code }
-      : { label: "", value: "" },
-    postal_code: address?.postal_code || "",
+    contact: {
+      first_name: address?.first_name || "",
+      last_name: address?.last_name || "",
+      phone: address?.phone || "",
+      company: address?.company || null,
+    },
+    location: {
+      address_1: address?.address_1 || "",
+      address_2: address?.address_2 || null,
+      city: address?.city || "",
+      province: address?.province || null,
+      country_code: address?.country_code
+        ? { label: countryDisplayName, value: address.country_code }
+        : { label: "", value: "" },
+      postal_code: address?.postal_code || "",
+    },
+    metadata: getMetadataFormValues(address?.metadata),
   }
 }
 

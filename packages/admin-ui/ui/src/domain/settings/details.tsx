@@ -2,7 +2,7 @@ import { Store } from "@medusajs/medusa"
 import { useAdminStore, useAdminUpdateStore } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import BreadCrumb from "../../components/molecules/breadcrumb"
+import BackButton from "../../components/atoms/back-button"
 import Input from "../../components/molecules/input"
 import BodyCard from "../../components/organisms/body-card"
 import useNotification from "../../hooks/use-notification"
@@ -64,10 +64,10 @@ const AccountDetails = () => {
   return (
     <form className="flex-col py-5">
       <div className="max-w-[632px]">
-        <BreadCrumb
-          previousRoute="/a/settings/"
-          previousBreadcrumb="Settings"
-          currentPage="Store Details"
+        <BackButton
+          path="/a/settings/"
+          label="Back to settings"
+          className="mb-xsmall"
         />
         <BodyCard
           events={[
@@ -76,37 +76,41 @@ const AccountDetails = () => {
               type: "button",
               onClick: handleSubmit(onSubmit),
             },
-            { label: "Cancel changes", type: "button", onClick: handleCancel },
+            { label: "Cancel", type: "button", onClick: handleCancel },
           ]}
           title="Store Details"
           subtitle="Manage your business details"
         >
-          <h6 className="mt-large inter-base-semibold">General</h6>
-          <Input
-            className="mt-base"
-            label="Store name"
-            {...register("name")}
-            placeholder="Medusa Store"
-          />
-          <h6 className="mt-2xlarge inter-base-semibold">Advanced settings</h6>
-          <Input
-            className="mt-base"
-            label="Swap link template"
-            {...register("swap_link_template")}
-            placeholder="https://acme.inc/swap={swap_id}"
-          />
-          <Input
-            className="mt-base"
-            label="Draft order link template"
-            {...register("payment_link_template")}
-            placeholder="https://acme.inc/payment={payment_id}"
-          />
-          <Input
-            className="mt-base"
-            label="Invite link template"
-            {...register("invite_link_template")}
-            placeholder="https://acme-admin.inc/invite?token={invite_token}"
-          />
+          <div className="gap-y-xlarge mb-large flex flex-col">
+            <div>
+              <h2 className="inter-base-semibold mb-base">General</h2>
+              <Input
+                label="Store name"
+                {...register("name")}
+                placeholder="Medusa Store"
+              />
+            </div>
+            <div>
+              <h2 className="inter-base-semibold mb-base">Advanced settings</h2>
+              <Input
+                label="Swap link template"
+                {...register("swap_link_template")}
+                placeholder="https://acme.inc/swap={swap_id}"
+              />
+              <Input
+                className="mt-base"
+                label="Draft order link template"
+                {...register("payment_link_template")}
+                placeholder="https://acme.inc/payment={payment_id}"
+              />
+              <Input
+                className="mt-base"
+                label="Invite link template"
+                {...register("invite_link_template")}
+                placeholder="https://acme-admin.inc/invite?token={invite_token}"
+              />
+            </div>
+          </div>
         </BodyCard>
       </div>
     </form>

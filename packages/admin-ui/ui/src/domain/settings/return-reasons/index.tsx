@@ -1,8 +1,8 @@
 import { useAdminReturnReasons } from "medusa-react"
 import { useState } from "react"
+import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import BreadCrumb from "../../../components/molecules/breadcrumb"
 import BodyCard from "../../../components/organisms/body-card"
 import RadioGroup from "../../../components/organisms/radio-group"
 import TwoSplitPane from "../../../components/templates/two-split-pane"
@@ -30,10 +30,10 @@ const ReturnReasons = () => {
 
   return (
     <div>
-      <BreadCrumb
-        previousRoute="/a/settings"
-        previousBreadcrumb="Settings"
-        currentPage="Return Reasons"
+      <BackButton
+        path="/a/settings"
+        label="Back to settings"
+        className="mb-xsmall"
       />
       <TwoSplitPane>
         <BodyCard
@@ -65,6 +65,7 @@ const ReturnReasons = () => {
               >
                 {return_reasons?.map((reason) => (
                   <RadioGroup.Item
+                    key={reason.id}
                     label={reason.label}
                     description={reason.description}
                     className="mt-xsmall"

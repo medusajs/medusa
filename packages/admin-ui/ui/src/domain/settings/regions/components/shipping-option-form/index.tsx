@@ -2,12 +2,16 @@ import { Region } from "@medusajs/medusa"
 import { Controller, UseFormReturn } from "react-hook-form"
 import IncludesTaxTooltip from "../../../../../components/atoms/includes-tax-tooltip"
 import Switch from "../../../../../components/atoms/switch"
+import MetadataForm, {
+  MetadataFormType,
+} from "../../../../../components/forms/general/metadata-form"
 import PriceFormInput from "../../../../../components/forms/general/prices-form/price-form-input"
 import InputHeader from "../../../../../components/fundamentals/input-header"
 import InputField from "../../../../../components/molecules/input"
 import { NextSelect } from "../../../../../components/molecules/select/next-select"
 import { Option, ShippingOptionPriceType } from "../../../../../types/shared"
 import FormValidator from "../../../../../utils/form-validator"
+import { nestedForm } from "../../../../../utils/nested-form"
 import { useShippingOptionFormData } from "./use-shipping-option-form-data"
 
 type Requirement = {
@@ -26,6 +30,7 @@ export type ShippingOptionFormType = {
     min_subtotal: Requirement | null
     max_subtotal: Requirement | null
   }
+  metadata: MetadataFormType
 }
 
 type Props = {
@@ -271,6 +276,11 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
             }}
           />
         </div>
+      </div>
+      <div className="bg-grey-20 my-xlarge h-px w-full" />
+      <div>
+        <h3 className="inter-base-semibold mb-base">Metadata</h3>
+        <MetadataForm form={nestedForm(form, "metadata")} />
       </div>
     </div>
   )

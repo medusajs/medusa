@@ -12,6 +12,10 @@ import { StorePostCartReq } from "./create-cart"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { StorePostCartsCartShippingMethodReq } from "./add-shipping-method"
+import { StorePostCartsCartPaymentSessionReq } from "./set-payment-session"
+import { StorePostCartsCartLineItemsItemReq } from "./update-line-item"
+import { StorePostCartsCartPaymentSessionUpdateReq } from "./update-payment-session"
 
 const route = Router()
 
@@ -43,6 +47,11 @@ export default (app, container) => {
 
   const createMiddlewares = [
     middlewareService.usePreCartCreation(),
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     transformBody(StorePostCartReq),
     extendRequestParams,
     validateSalesChannelParam,
@@ -56,75 +65,149 @@ export default (app, container) => {
 
   route.post(
     "/:id",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     transformBody(StorePostCartsCartReq),
     middlewares.wrap(require("./update-cart").default)
   )
 
   route.post(
     "/:id/complete",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./complete-cart").default)
   )
 
   // DEPRECATION
   route.post(
     "/:id/complete-cart",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./complete-cart").default)
   )
 
   // Line items
   route.post(
     "/:id/line-items",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./create-line-item").default)
   )
   route.post(
     "/:id/line-items/:line_id",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
+    transformBody(StorePostCartsCartLineItemsItemReq),
     middlewares.wrap(require("./update-line-item").default)
   )
   route.delete(
     "/:id/line-items/:line_id",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./delete-line-item").default)
   )
 
   route.delete(
     "/:id/discounts/:code",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./delete-discount").default)
   )
 
   // Payment sessions
   route.post(
     "/:id/payment-sessions",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./create-payment-sessions").default)
   )
 
   route.post(
     "/:id/payment-sessions/:provider_id",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
+    transformBody(StorePostCartsCartPaymentSessionUpdateReq),
     middlewares.wrap(require("./update-payment-session").default)
   )
 
   route.delete(
     "/:id/payment-sessions/:provider_id",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./delete-payment-session").default)
   )
 
   route.post(
     "/:id/payment-sessions/:provider_id/refresh",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./refresh-payment-session").default)
   )
 
   route.post(
     "/:id/payment-session",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
+    transformBody(StorePostCartsCartPaymentSessionReq),
     middlewares.wrap(require("./set-payment-session").default)
   )
 
   // Shipping Options
   route.post(
     "/:id/shipping-methods",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
+    transformBody(StorePostCartsCartShippingMethodReq),
     middlewares.wrap(require("./add-shipping-method").default)
   )
 
   // Taxes
   route.post(
     "/:id/taxes",
+    transformStoreQuery(FindParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./calculate-taxes").default)
   )
 

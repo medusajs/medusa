@@ -90,10 +90,10 @@ export type ModuleExports = {
   models?: Constructor<any>[]
   runMigrations?(
     options: LoaderOptions,
-    moduleDeclaration: InternalModuleDeclaration
+    moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
   revertMigration?(
     options: LoaderOptions,
-    moduleDeclaration: InternalModuleDeclaration
+    moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
 }

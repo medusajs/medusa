@@ -10,6 +10,7 @@ import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
 import { StoreGetOrderParams } from "./get-order"
 import { StoreGetOrdersParams } from "./lookup-order"
+import { FindParams } from "../../../../types/common"
 
 const route = Router()
 
@@ -50,6 +51,12 @@ export default (app) => {
    */
   route.get(
     "/cart/:cart_id",
+    transformStoreQuery(FindParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
+    }),
     middlewares.wrap(require("./get-order-by-cart").default)
   )
 

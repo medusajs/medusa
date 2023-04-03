@@ -1,6 +1,6 @@
+import { dropRight, flatMap, get } from "lodash"
 import React, { useCallback, useMemo } from "react"
 import Nestable from "react-nestable"
-import { dropRight, get, flatMap } from "lodash"
 
 import "react-nestable/dist/styles/index.css"
 import "../styles/product-categories.css"
@@ -8,12 +8,12 @@ import "../styles/product-categories.css"
 import { ProductCategory } from "@medusajs/medusa"
 import { adminProductCategoryKeys, useMedusa } from "medusa-react"
 
-import TriangleMiniIcon from "../../../components/fundamentals/icons/triangle-mini-icon"
-import ProductCategoryListItemDetails from "./product-category-list-item-details"
-import ReorderIcon from "../../../components/fundamentals/icons/reorder-icon"
 import { useQueryClient } from "@tanstack/react-query"
+import ReorderIcon from "../../../components/fundamentals/icons/reorder-icon"
+import TriangleMiniIcon from "../../../components/fundamentals/icons/triangle-mini-icon"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
+import ProductCategoryListItemDetails from "./product-category-list-item-details"
 
 type ProductCategoriesListProps = {
   categories: ProductCategory[]
@@ -76,6 +76,7 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
     () => (
       <Nestable
         items={categories}
+        collapsed={true}
         onChange={onItemDrop}
         childrenProp="category_children"
         // Adding an unreasonably high number here to prevent us from

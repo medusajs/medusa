@@ -473,9 +473,6 @@ class ProductService extends TransactionBaseService {
   ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
-      const productVariantRepo = manager.withRepository(
-        this.productVariantRepository_
-      )
       const productTagRepo = manager.withRepository(this.productTagRepository_)
       const productTypeRepo = manager.withRepository(
         this.productTypeRepository_

@@ -1,8 +1,8 @@
 import { useAdminDeleteDiscount, useAdminDiscount } from "medusa-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import RawJSON from "../../../components/organisms/raw-json"
 import useNotification from "../../../hooks/use-notification"
@@ -50,22 +50,22 @@ const Edit = () => {
         />
       )}
 
-      <Breadcrumb
-        currentPage="Add Discount"
-        previousBreadcrumb="Discount"
-        previousRoute="/a/discounts"
+      <BackButton
+        label="Back to Discounts"
+        path="/a/discounts"
+        className="mb-xsmall"
       />
       {isLoading || !discount ? (
         <div className="flex h-full items-center justify-center">
           <Spinner variant="secondary" />
         </div>
       ) : (
-        <div className="flex flex-col gap-y-4">
+        <div className="gap-y-xsmall flex flex-col">
           <DiscountFormProvider>
             <General discount={discount} />
             <Configurations discount={discount} />
             <DiscountDetailsConditions discount={discount} />
-            <RawJSON data={discount} title="Raw discount" rootName="discount" />
+            <RawJSON data={discount} title="Raw discount" />
           </DiscountFormProvider>
         </div>
       )}

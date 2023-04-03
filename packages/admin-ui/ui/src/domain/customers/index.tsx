@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom"
+import Spacer from "../../components/atoms/spacer"
 import BodyCard from "../../components/organisms/body-card"
 import CustomerTable from "../../components/templates/customer-table"
 import Details from "./details"
@@ -7,15 +8,14 @@ import CustomersPageTableHeader from "./header"
 
 const CustomerIndex = () => {
   return (
-    <div className="flex h-full grow flex-col">
-      <div className="flex w-full grow flex-col">
-        <BodyCard
-          customHeader={<CustomersPageTableHeader activeView="customers" />}
-          className="h-fit"
-        >
-          <CustomerTable />
-        </BodyCard>
-      </div>
+    <div>
+      <BodyCard
+        customHeader={<CustomersPageTableHeader activeView="customers" />}
+        className="h-fit"
+      >
+        <CustomerTable />
+      </BodyCard>
+      <Spacer />
     </div>
   )
 }

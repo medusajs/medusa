@@ -14,6 +14,7 @@ import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/claims/{claim_id}
@@ -103,7 +104,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order: data })
+  res.json({ order: cleanResponseData(data, []) })
 }
 
 /**

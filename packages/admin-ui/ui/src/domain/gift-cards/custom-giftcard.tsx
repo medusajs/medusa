@@ -1,161 +1,136 @@
-import { useAdminCreateGiftCard, useAdminRegions } from "medusa-react"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useAdminCreateGiftCard } from "medusa-react"
+import React, { useEffect } from "react"
+import { useForm, useWatch } from "react-hook-form"
+import GiftCardBalanceForm, {
+  GiftCardBalanceFormType,
+} from "../../components/forms/gift-card/gift-card-balance-form"
+import GiftCardEndsAtForm, {
+  GiftCardEndsAtFormType,
+} from "../../components/forms/gift-card/gift-card-ends-at-form"
+import GiftCardReceiverForm, {
+  GiftCardReceiverFormType,
+} from "../../components/forms/gift-card/gift-card-receiver-form"
+import GiftCardRegionForm, {
+  GiftCardRegionFormType,
+} from "../../components/forms/gift-card/gift-card-region-form"
 import Button from "../../components/fundamentals/button"
-import InputField from "../../components/molecules/input"
 import Modal from "../../components/molecules/modal"
-import Select from "../../components/molecules/select"
-import TextArea from "../../components/molecules/textarea"
-import CurrencyInput from "../../components/organisms/currency-input"
 import useNotification from "../../hooks/use-notification"
 import { getErrorMessage } from "../../utils/error-messages"
-import { focusByName } from "../../utils/focus-by-name"
-import { validateEmail } from "../../utils/validate-email"
+import { nestedForm } from "../../utils/nested-form"
 
 type CustomGiftcardProps = {
-  onDismiss: () => void
+  onClose: () => void
+  open: boolean
 }
 
-const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
-  const { isLoading, regions } = useAdminRegions()
-  const [selectedRegion, setSelectedRegion] = useState<any>(null)
-  const [giftCardAmount, setGiftCardAmount] = useState(0)
+type CustomGiftCardFormType = {
+  region: GiftCardRegionFormType
+  ends_at: GiftCardEndsAtFormType
+  balance: GiftCardBalanceFormType
+  receiver: GiftCardReceiverFormType
+}
 
-  const { register, handleSubmit } = useForm()
+const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
+  const form = useForm<CustomGiftCardFormType>()
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { isDirty },
+  } = form
+
+  const currencySubscriber = useWatch({
+    control,
+    name: "region.region_id.currency_code",
+    defaultValue: "usd",
+  })
 
   const notification = useNotification()
 
   const { mutate, isLoading: isSubmitting } = useAdminCreateGiftCard()
 
   useEffect(() => {
-    if (!isLoading) {
-      setSelectedRegion({
-        value: regions[0],
-        label: regions[0].name,
-      })
+    if (open) {
+      reset()
     }
-  }, [isLoading])
+  }, [open, reset])
 
-  const onSubmit = (data) => {
-    if (!giftCardAmount) {
-      notification("Error", "Please enter an amount", "error")
-      focusByName("amount")
-      return
-    }
-
-    if (!validateEmail(data.metadata.email)) {
-      notification("Error", "Invalid email address", "error")
-      focusByName("metadata.email")
-      return
-    }
-
-    const update = {
-      region_id: selectedRegion.value.id,
-      value: Math.round(
-        giftCardAmount / (1 + selectedRegion.value.tax_rate / 100)
-      ),
-      ...data,
-    }
-
-    mutate(update, {
-      onSuccess: () => {
-        notification("Success", "Created Custom Gift Card", "success")
-        onDismiss()
+  const onSubmit = handleSubmit((data) => {
+    mutate(
+      {
+        region_id: data.region.region_id.value,
+        value: data.balance.amount,
+        ends_at: data.ends_at.ends_at || undefined,
+        metadata: {
+          email: data.receiver.email,
+          personal_message: data.receiver.message,
+        },
       },
-      onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
-        onDismiss()
-      },
-    })
-  }
+      {
+        onSuccess: () => {
+          notification(
+            "Created gift card",
+            "Custom gift card was created successfully",
+            "success"
+          )
+          onClose()
+        },
+        onError: (error) => {
+          notification("Error", getErrorMessage(error), "error")
+        },
+      }
+    )
+  })
 
   return (
-    <Modal handleClose={onDismiss}>
+    <Modal open={open} handleClose={onClose}>
       <Modal.Body>
-        <Modal.Header handleClose={onDismiss}>
+        <Modal.Header handleClose={onClose}>
           <h2 className="inter-xlarge-semibold">Custom Gift Card</h2>
         </Modal.Header>
-        <Modal.Content>
-          <div className="flex flex-col">
-            <span className="inter-base-semibold">Value</span>
-            <div className="gap-x-2xsmall mt-4 flex">
-              <div className="w-[267px]">
-                <Select
-                  label={"Region"}
-                  value={selectedRegion}
-                  onChange={(value) => setSelectedRegion(value)}
-                  options={
-                    regions?.map((r) => ({
-                      value: r,
-                      label: r.name,
-                    })) || []
-                  }
-                />
-              </div>
-              <div className="w-[415px]">
-                <CurrencyInput.Root
-                  size="medium"
-                  currencyCodes={
-                    isLoading ? undefined : regions?.map((r) => r.currency_code)
-                  }
-                  readOnly
-                  currentCurrency={selectedRegion?.value?.currency_code}
-                >
-                  <CurrencyInput.Amount
-                    label={"Amount"}
-                    amount={giftCardAmount}
-                    onChange={(value) => {
-                      setGiftCardAmount(value || 0)
-                    }}
-                    name="amount"
-                    required={true}
+        <form onSubmit={onSubmit}>
+          <Modal.Content>
+            <div className="gap-y-xlarge flex flex-col">
+              <div>
+                <h2 className="inter-base-semibold mb-base">Details</h2>
+                <div className="gap-x-xsmall grid grid-cols-2">
+                  <GiftCardRegionForm form={nestedForm(form, "region")} />
+                  <GiftCardBalanceForm
+                    form={nestedForm(form, "balance")}
+                    currencyCode={currencySubscriber}
                   />
-                </CurrencyInput.Root>
+                </div>
+              </div>
+              <GiftCardEndsAtForm form={nestedForm(form, "ends_at")} />
+              <div>
+                <h2 className="inter-base-semibold mb-base">Receiver</h2>
+                <GiftCardReceiverForm form={nestedForm(form, "receiver")} />
               </div>
             </div>
-          </div>
-          <div className="mt-8">
-            <span className="inter-base-semibold">Receiver</span>
-            <div className="gap-y-xsmall mt-4 grid grid-cols-1">
-              <InputField
-                label={"Email"}
-                required
-                {...register("metadata.email", { required: true })}
-                placeholder="lebron@james.com"
-                type="email"
-              />
-              <TextArea
-                label={"Personal Message"}
-                rows={7}
-                placeholder="Something nice to someone special"
-                {...register("metadata.personal_message")}
-              />
+          </Modal.Content>
+          <Modal.Footer>
+            <div className="gap-x-xsmall flex w-full justify-end">
+              <Button
+                variant="secondary"
+                onClick={onClose}
+                size="small"
+                type="button"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                size="small"
+                disabled={isSubmitting || !isDirty}
+                loading={isSubmitting}
+              >
+                Create and send
+              </Button>
             </div>
-          </div>
-        </Modal.Content>
-        <Modal.Footer>
-          <div className="gap-x-xsmall flex w-full justify-end">
-            <Button
-              variant="ghost"
-              onClick={onDismiss}
-              size="small"
-              className="w-[112px]"
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={handleSubmit(onSubmit)}
-              size="small"
-              className="w-[112px]"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-            >
-              Create & Send
-            </Button>
-          </div>
-        </Modal.Footer>
+          </Modal.Footer>
+        </form>
       </Modal.Body>
     </Modal>
   )

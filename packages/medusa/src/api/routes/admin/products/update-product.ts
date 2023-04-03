@@ -18,6 +18,7 @@ import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus, ProductVariant } from "../../../../models"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import {
   PricingService,
   ProductService,
@@ -39,7 +40,6 @@ import {
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
-import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import {
   createVariantTransaction,
   revertVariantTransaction,

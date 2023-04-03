@@ -1,5 +1,21 @@
 # @medusajs/admin-ui
 
+## 0.0.1-rc.5
+
+### Patch Changes
+
+- [#3644](https://github.com/medusajs/medusa/pull/3644) [`4342ac884`](https://github.com/medusajs/medusa/commit/4342ac884bc3fe473576ef10d291f3547e0ffc62) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin-ui): Adds metadata forms to all applicable domains in the UI.
+  fix(medusa): Fixes an issue where metadata was not being set for order addresses using `setMetadata`.
+
+- [#3657](https://github.com/medusajs/medusa/pull/3657) [`7e1d8ef59`](https://github.com/medusajs/medusa/commit/7e1d8ef599fe4588d439b449373debf1221e625d) Thanks [@StephixOne](https://github.com/StephixOne)! - feat(admin-ui): Add new feature badge for categories and inventory
+
+- [#3645](https://github.com/medusajs/medusa/pull/3645) [`e6b5859af`](https://github.com/medusajs/medusa/commit/e6b5859af213185408e1087073c1cba10f7b33c2) Thanks [@StephixOne](https://github.com/StephixOne)! - feat(admin-ui): Make number input increment/decrement buttons not tabbable-to
+
+- [#3655](https://github.com/medusajs/medusa/pull/3655) [`45fd0fb63`](https://github.com/medusajs/medusa/commit/45fd0fb639f05db6115be6823d42b85672c0891d) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Always show categories in product page
+
+- Updated dependencies []:
+  - medusa-react@5.0.0-rc.5
+
 ## 0.0.1-rc.4
 
 ### Patch Changes
