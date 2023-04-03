@@ -5796,6 +5796,7 @@ __metadata:
     "@babel/plugin-proposal-class-properties": ^7.7.4
     "@babel/plugin-transform-runtime": ^7.7.6
     "@babel/preset-env": ^7.7.5
+    "@medusajs/utils": 0.0.2-rc.1
     axios: ^0.21.4
     chalk: ^4.0.0
     configstore: 5.0.1
