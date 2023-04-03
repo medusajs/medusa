@@ -1,8 +1,4 @@
-import {
-  DbAwareColumn,
-  generateEntityId,
-  SoftDeletableEntity,
-} from "@medusajs/utils"
+import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
 
 export enum ReservationType {
@@ -26,12 +22,8 @@ export class ReservationItem extends SoftDeletableEntity {
   @Column()
   quantity: number
 
-  @DbAwareColumn({
-    type: "enum",
-    enum: ReservationType,
-    default: ReservationType.INTERNAL,
-  })
-  type: ReservationType
+  @Column({ type: "text", nullable: true })
+  external_id: string | null
 
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
