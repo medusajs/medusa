@@ -658,21 +658,23 @@ class ProductVariantInventoryService extends TransactionBaseService {
         // first get all inventory items required for a variant
         const variantInventory = await this.listByVariant(variant.id)
 
-        const salesChannelArray = Array.isArray(salesChannelId)
-          ? salesChannelId
-          : [salesChannelId]
+        if (!variantInventory.length) {
+          variant.inventory_quantity = 0
+          return variant
+        }
 
-        const quantities = await Promise.all(
-          salesChannelArray.map(async (salesChannel) => {
-            return await this.getVariantQuantityFromVariantInventoryItems(
-              variantInventory,
-              salesChannel
-            )
-          })
-        )
+        const locationIds =
+          await this.salesChannelLocationService_.listLocationIds(
+            salesChannelId
+          )
 
-        variant.inventory_quantity = quantities.reduce(
-          (acc, next) => acc + (next || 0),
+        const [locations] = await this.inventoryService_.listInventoryLevels({
+          location_id: locationIds,
+          inventory_item_id: variantInventory[0].inventory_item_id,
+        })
+
+        variant.inventory_quantity = locations.reduce(
+          (acc, next) => acc + (next.stocked_quantity || 0),
           0
         )
 

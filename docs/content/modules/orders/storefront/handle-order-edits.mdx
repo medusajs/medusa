@@ -191,14 +191,14 @@ If `difference_due` is less than 0, then the amount will be refunded to the cust
 
 :::note
 
-💡 This section explains how to authorize the payment using one payment provider and payment session. However, payment collections allow customers to pay in installments or with more than one provider. You can learn more about how to do that using the [batch endpoints of the Payment APIs](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsBatchAuthorize)
+💡 This section explains how to authorize the payment using one payment processor and payment session. However, payment collections allow customers to pay in installments or with more than one provider. You can learn more about how to do that using the [batch endpoints of the Payment APIs](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsBatchAuthorize)
 
 :::
 
 If `difference_due` is greater than 0, then additional payment from the customer is required. In this case, you must implement these steps to allow the customer to authorize the payment:
 
-1. Show the customer the available payment providers. These can be retrieved from the details of [the region of the order](/api/store/#tag/Region/operation/GetRegionsRegion).
-2. When the customer selects the payment provider, initialize the payment session of that provider in the payment collection. You can do that by sending a request to the [Manage Payment Sessions](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessions) endpoint, passing it the payment collection’s ID as a path parameter, and the payment provider’s ID as a request body parameter:
+1. Show the customer the available payment processors. These can be retrieved from the details of [the region of the order](/api/store/#tag/Region/operation/GetRegionsRegion).
+2. When the customer selects the payment processor, initialize the payment session of that provider in the payment collection. You can do that by sending a request to the [Manage Payment Sessions](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessions) endpoint, passing it the payment collection’s ID as a path parameter, and the payment processor's ID as a request body parameter:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -267,7 +267,7 @@ fetch(
 </Tabs>
 
 1. Show the customer the payment details form based on the payment session’s provider. For example, if the provider ID of a payment session is `stripe`, you must show Stripe’s card component to enter the customer’s card details.
-2. Authorize the payment using the payment provider. The [Authorize Payment Session](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsSessionAuthorize) endpoint accepts the payment collection’s ID and the ID of the payment session as path parameters:
+2. Authorize the payment using the payment processor. The [Authorize Payment Session](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsSessionAuthorize) endpoint accepts the payment collection’s ID and the ID of the payment session as path parameters:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>

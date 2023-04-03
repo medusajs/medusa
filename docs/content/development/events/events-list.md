@@ -826,6 +826,193 @@ Object of the following format:
 
 ---
 
+## Inventory Item Events
+
+This section holds all events related to inventory items.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`inventory-item.created`
+
+</td>
+<td>
+
+Triggered when an inventory item is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the inventory item
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`inventory-item.updated`
+
+</td>
+<td>
+
+Triggered when an inventory item is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the inventory item
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`inventory-item.deleted`
+
+</td>
+<td>
+
+Triggered when an inventory item is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the inventory item
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
+## Inventory Level Events
+
+This section holds all events related to inventory levels.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`inventory-level.created`
+
+</td>
+<td>
+
+Triggered when an inventory level is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the inventory level
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`inventory-level.updated`
+
+</td>
+<td>
+
+Triggered when an inventory level is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the inventory level
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`inventory-level.deleted`
+
+</td>
+<td>
+
+Triggered when an inventory level is deleted, which can be done either directly using its ID or based on the ID of a location. The returned ID depends on how the inventory level was deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // (optional) string ID of the inventory level, available if it was deleted directly
+  location_id // (optional) string ID of location, available if level was deleted by location ID
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
 ## Invite Events
 
 This section holds all events related to invites.
@@ -1817,7 +2004,7 @@ Triggered when the capturing of a payment fails.
 
 The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
 
-In addition, an error object is passed within the same object as the Payment provider:
+In addition, an error object is passed within the same object as the Payment Processor:
 
 ```js noReport noCopy
 {
@@ -2075,6 +2262,12 @@ Object of the following format:
 ## Product Category Events
 
 This section holds all events related to product categories.
+
+:::note
+
+Product Category feature is currently in beta mode and guarded by a feature flag. You can learn how to enable it in the [Product Categories documentation](../../modules/products/categories.md).
+
+:::
 
 <table class="reference-table">
 <thead>
@@ -2438,6 +2631,101 @@ Object of the following format:
 
 ---
 
+## Reservation Item Events
+
+This section holds all events related to reservation items.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`reservation-item.created`
+
+</td>
+<td>
+
+Triggered when a reservation item is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the reservation item
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`reservation-item.updated`
+
+</td>
+<td>
+
+Triggered when an reservation item is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the reservation item
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`reservation-item.deleted`
+
+</td>
+<td>
+
+Triggered when a reservation item is deleted, which can be done either directly using its ID or based on the ID of a location or a line item. The returned ID depends on how the reservation item was deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // (optional) string ID of the reservation item, available if it was deleted directly
+  location_id // (optional) string ID of location, available if item was deleted by location ID
+  line_item_id // (optional) string ID of line item, available if reservation item was deleted by line item ID
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
 ## Sales Channel Events
 
 This section holds all events related to sales channels.
@@ -2523,6 +2811,99 @@ Object of the following format:
 ```js noReport noCopy
 {
   id // string ID of sales channel
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
+## Stock Location Events
+
+This section holds all events related to stock locations.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`stock-location.created`
+
+</td>
+<td>
+
+Triggered when a stock location is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the stock location
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`stock-location.updated`
+
+</td>
+<td>
+
+Triggered when an stock location is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the stock location
+}
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+`stock-location.deleted`
+
+</td>
+<td>
+
+Triggered when a stock location is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of the stock location
 }
 ```
 
@@ -2958,6 +3339,6 @@ Object of the following format:
 
 ## See Also
 
-- [Events architecture overview](./index.md)
+- [Events overview](./index.mdx)
 - [Use services in subscribers](./create-subscriber.md#using-services-in-subscribers)
 - [Create a notification provider](../notification/overview.mdx)

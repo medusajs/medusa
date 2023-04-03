@@ -19,11 +19,7 @@ This guide explains how to create a scheduled job on your Medusa backend. The sc
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../backend/install.mdx) to get started.
-
-### Redis
-
-Redis is required for scheduled jobs to work. Make sure you [install Redis](../../development/backend/prepare-environment.mdx#redis) and [configure it with your Medusa backend](../../development/backend/configurations.md#redis).
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../backend/install.mdx) to get started. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ---
 
