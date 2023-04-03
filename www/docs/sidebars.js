@@ -1837,6 +1837,11 @@ module.exports = {
             },
           ],
         },
+        {
+          type: "doc",
+          id: "development/fundamentals/transaction-orchestrator",
+          label: "Transaction Orchestrator",
+        },
       ],
     },
   ],
