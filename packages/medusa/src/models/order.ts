@@ -11,15 +11,8 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import {
-  DbAwareColumn,
-  resolveDbGenerationStrategy,
-  resolveDbType,
-} from "../utils/db-aware-column"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
+import { DbAwareColumn, resolveDbGenerationStrategy, resolveDbType, } from "../utils/db-aware-column"
+import { FeatureFlagColumn, FeatureFlagDecorators, } from "../utils/feature-flag-decorators"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"

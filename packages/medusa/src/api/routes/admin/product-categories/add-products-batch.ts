@@ -8,7 +8,7 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}/products/batch
+ * @oas [post] /admin/product-categories/{id}/products/batch
  * operationId: "PostProductCategoriesCategoryProductsBatch"
  * summary: "Add Products to a category"
  * description: "Assign a batch of products to a product category."
@@ -60,7 +60,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   200:
  *     description: OK

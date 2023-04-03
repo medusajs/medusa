@@ -118,7 +118,7 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true, type: "text" })
   variant_id: string | null
 
-  @ManyToOne(() => ProductVariant, { eager: true })
+  @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 

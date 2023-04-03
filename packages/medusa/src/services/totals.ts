@@ -102,29 +102,24 @@ type CalculationContextOptions = {
  * @implements {BaseService}
  */
 class TotalsService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly taxProviderService_: TaxProviderService
   protected readonly newTotalsService_: NewTotalsService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     taxProviderService,
     newTotalsService,
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
 
-    this.manager_ = manager
     this.featureFlagRouter_ = featureFlagRouter
   }
 
@@ -223,7 +218,7 @@ class TotalsService extends TransactionBaseService {
         )
       } else if (totals.tax_lines.length === 0) {
         const orderLines = await this.taxProviderService_
-          .withTransaction(this.manager_)
+          .withTransaction(this.activeManager_)
           .getTaxLines(cartOrOrder.items, calculationContext)
 
         totals.tax_lines = orderLines.filter((ol) => {
@@ -392,7 +387,7 @@ class TotalsService extends TransactionBaseService {
       }
     } else {
       taxLines = await this.taxProviderService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .getTaxLines(cartOrOrder.items, calculationContext)
 
       if (cartOrOrder.type === "swap") {
@@ -872,7 +867,7 @@ class TotalsService extends TransactionBaseService {
             taxLines = lineItem.tax_lines
           } else {
             taxLines = (await this.taxProviderService_
-              .withTransaction(this.manager_)
+              .withTransaction(this.activeManager_)
               .getTaxLines([lineItem], calculationContext)) as LineItemTaxLine[]
           }
         }

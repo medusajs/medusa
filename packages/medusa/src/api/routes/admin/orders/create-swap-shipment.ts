@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Create Swap Shipment"
  * description: "Registers a Swap Fulfillment as shipped."
@@ -56,7 +56,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

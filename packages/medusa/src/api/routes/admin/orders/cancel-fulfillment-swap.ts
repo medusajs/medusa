@@ -9,7 +9,7 @@ import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancel Swap's Fulfilmment"
  * description: "Registers a Swap's Fulfillment as canceled."
@@ -43,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

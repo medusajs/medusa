@@ -3,7 +3,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 
 /**
- * @oas [delete] /carts/{id}/discounts/{code}
+ * @oas [delete] /store/carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
  * description: "Removes a Discount from a Cart."
  * summary: "Remove Discount"
@@ -27,7 +27,7 @@ import { CartService } from "../../../../services"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/discounts/{code}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

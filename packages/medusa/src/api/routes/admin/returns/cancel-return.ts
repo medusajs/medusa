@@ -1,12 +1,9 @@
 import { OrderService, ReturnService } from "../../../../services"
-import {
-  defaultAdminOrdersFields,
-  defaultAdminOrdersRelations,
-} from "../orders"
 import { EntityManager } from "typeorm"
+import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
 
 /**
- * @oas [post] /returns/{id}/cancel
+ * @oas [post] /admin/returns/{id}/cancel
  * operationId: "PostReturnsReturnCancel"
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."
@@ -34,7 +31,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
@@ -75,8 +72,8 @@ export default async (req, res) => {
   }
 
   const order = await orderService.retrieve(result.order_id!, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+    select: defaultReturnCancelFields,
+    relations: defaultReturnCancelRelations,
   })
 
   res.status(200).json({ order })

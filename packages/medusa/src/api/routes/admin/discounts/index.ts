@@ -223,6 +223,18 @@ export const defaultAdminDiscountConditionRelations = ["discount_rule"]
 /**
  * @schema AdminDiscountsRes
  * type: object
+ * x-expanded-relations:
+ *   field: discount
+ *   relations:
+ *     - parent_discount
+ *     - regions
+ *     - rule
+ *     - rule.conditions
+ *   eager:
+ *     - regions.fulfillment_providers
+ *     - regions.payment_providers
+ * required:
+ *   - discount
  * properties:
  *   discount:
  *     $ref: "#/components/schemas/Discount"
@@ -234,6 +246,12 @@ export type AdminDiscountsRes = {
 /**
  * @schema AdminDiscountConditionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: discount_condition
+ *   relations:
+ *     - discount_rule
+ * required:
+ *   - discount_condition
  * properties:
  *   discount_condition:
  *     $ref: "#/components/schemas/DiscountCondition"
@@ -245,6 +263,10 @@ export type AdminDiscountConditionsRes = {
 /**
  * @schema AdminDiscountsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -263,6 +285,11 @@ export type AdminDiscountsDeleteRes = DeleteResponse
 /**
  * @schema AdminDiscountConditionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ *   - discount
  * properties:
  *   id:
  *     type: string
@@ -286,6 +313,18 @@ export type AdminDiscountConditionsDeleteRes = DeleteResponse & {
 /**
  * @schema AdminDiscountsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: discounts
+ *   relations:
+ *     - parent_discount
+ *     - regions
+ *     - rule
+ *     - rule.conditions
+ * required:
+ *   - discounts
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   discounts:
  *     type: array

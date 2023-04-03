@@ -68,7 +68,7 @@ describe("Sales channels", () => {
       )
 
       expect(
-        await salesChannelLocationService.listLocations(sc.id)
+        await salesChannelLocationService.listLocationIds(sc.id)
       ).toHaveLength(2)
 
       await api.delete(`/admin/sales-channels/${sc.id}`, {
@@ -78,7 +78,7 @@ describe("Sales channels", () => {
       await expect(salesChannelService.retrieve(sc.id)).rejects.toThrowError()
 
       await expect(
-        salesChannelLocationService.listLocations(sc.id)
+        salesChannelLocationService.listLocationIds(sc.id)
       ).rejects.toThrowError()
     })
   })

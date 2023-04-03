@@ -6,7 +6,7 @@ import {
 import { ReturnReasonService } from "../../../../services"
 
 /**
- * @oas [get] /return-reasons/{id}
+ * @oas [get] /admin/return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Get a Return Reason"
  * description: "Retrieves a Return Reason."
@@ -35,7 +35,7 @@ import { ReturnReasonService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

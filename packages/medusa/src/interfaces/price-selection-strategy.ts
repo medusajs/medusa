@@ -7,7 +7,7 @@ export interface IPriceSelectionStrategy {
   /**
    * Instantiate a new price selection strategy with the active transaction in
    * order to ensure reads are accurate.
-   * @param manager EntityManager with the queryrunner of the active transaction
+   * @param manager EntityManager with the query runner of the active transaction
    * @returns a new price selection strategy
    */
   withTransaction(manager: EntityManager): IPriceSelectionStrategy
@@ -15,15 +15,21 @@ export interface IPriceSelectionStrategy {
   /**
    * Calculate the original and discount price for a given variant in a set of
    * circumstances described in the context.
-   * @param variant The variant id of the variant for which to retrieve prices
+   * @param variantId The variant id of the variant for which to retrieve prices
    * @param context Details relevant to determine the correct pricing of the variant
    * @return pricing details in an object containing the calculated lowest price,
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
-    variant_id: string,
+    variantId: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult>
+
+  /**
+   * Notify price selection strategy that variants prices have been updated.
+   * @param variantIds The ids of the updated variants
+   */
+  onVariantsPricesUpdate(variantIds: string[]): Promise<void>
 }
 
 export abstract class AbstractPriceSelectionStrategy
@@ -34,9 +40,13 @@ export abstract class AbstractPriceSelectionStrategy
   ): IPriceSelectionStrategy
 
   public abstract calculateVariantPrice(
-    variant_id: string,
+    variantId: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult>
+
+  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
+    return void 0
+  }
 }
 
 export function isPriceSelectionStrategy(
@@ -57,6 +67,7 @@ export type PriceSelectionContext = {
   currency_code?: string
   include_discount_prices?: boolean
   tax_rates?: TaxServiceRate[]
+  ignore_cache?: boolean
 }
 
 enum DefaultPriceType {

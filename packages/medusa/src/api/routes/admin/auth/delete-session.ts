@@ -1,5 +1,5 @@
 /**
- * @oas [delete] /auth
+ * @oas [delete] /admin/auth
  * operationId: "DeleteAuth"
  * summary: "User Logout"
  * x-authenticated: true

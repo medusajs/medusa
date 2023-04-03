@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { Payment } from "@medusajs/medusa"
 
 export type PaymentFactoryData = {
@@ -12,11 +12,11 @@ export type PaymentFactoryData = {
 }
 
 export const simplePaymentFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: PaymentFactoryData,
   _?: number
 ): Promise<Payment> => {
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let captured_at = data.captured
   if (typeof captured_at === "boolean") {

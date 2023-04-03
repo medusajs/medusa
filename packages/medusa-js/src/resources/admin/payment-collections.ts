@@ -1,8 +1,8 @@
 import {
-  AdminUpdatePaymentCollectionsReq,
+  AdminGetPaymentCollectionsParams,
   AdminPaymentCollectionDeleteRes,
   AdminPaymentCollectionsRes,
-  GetPaymentCollectionsParams,
+  AdminUpdatePaymentCollectionsReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -11,7 +11,7 @@ import qs from "qs"
 class AdminPaymentCollectionsResource extends BaseResource {
   retrieve(
     id: string,
-    query?: GetPaymentCollectionsParams,
+    query?: AdminGetPaymentCollectionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPaymentCollectionsRes> {
     let path = `/admin/payment-collections/${id}`

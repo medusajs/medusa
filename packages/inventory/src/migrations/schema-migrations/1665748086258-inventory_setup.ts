@@ -1,46 +1,4 @@
-import { ConfigModule } from "@medusajs/medusa"
-import {
-  createConnection,
-  ConnectionOptions,
-  MigrationInterface,
-  QueryRunner,
-} from "typeorm"
-
-import { CONNECTION_NAME } from "../../config"
-
-export const up = async ({ configModule }: { configModule: ConfigModule }) => {
-  const connection = await createConnection({
-    name: CONNECTION_NAME,
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    extra: configModule.projectConfig.database_extra || {},
-    schema: configModule.projectConfig.database_schema,
-    migrations: [inventorySetup1665748086258],
-    logging: true,
-  } as ConnectionOptions)
-
-  await connection.runMigrations()
-  await connection.close()
-}
-
-export const down = async ({
-  configModule,
-}: {
-  configModule: ConfigModule
-}) => {
-  const connection = await createConnection({
-    name: CONNECTION_NAME,
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    extra: configModule.projectConfig.database_extra || {},
-    schema: configModule.projectConfig.database_schema,
-    migrations: [inventorySetup1665748086258],
-    logging: true,
-  } as ConnectionOptions)
-
-  await connection.undoLastMigration({ transaction: "all" })
-  await connection.close()
-}
+import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class inventorySetup1665748086258 implements MigrationInterface {
   name = "inventorySetup1665748086258"

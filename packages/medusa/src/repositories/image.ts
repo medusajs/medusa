@@ -1,9 +1,10 @@
-import { EntityRepository, In, Repository } from "typeorm"
-import { Image } from "../models"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
-@EntityRepository(Image)
-export class ImageRepository extends Repository<Image> {
+import { Image } from "../models"
+import { dataSource } from "../loaders/database"
+import { In } from "typeorm"
+
+export const ImageRepository = dataSource.getRepository(Image).extend({
   async insertBulk(data: QueryDeepPartialEntity<Image>[]): Promise<Image[]> {
     const queryBuilder = this.createQueryBuilder()
       .insert()
@@ -18,9 +19,9 @@ export class ImageRepository extends Repository<Image> {
 
     const rawImages = await queryBuilder.returning("*").execute()
     return rawImages.generatedMaps.map((d) => this.create(d))
-  }
+  },
 
-  public async upsertImages(imageUrls: string[]) {
+  async upsertImages(imageUrls: string[]) {
     const existingImages = await this.find({
       where: {
         url: In(imageUrls),
@@ -49,5 +50,6 @@ export class ImageRepository extends Repository<Image> {
     }
 
     return upsertedImgs
-  }
-}
+  },
+})
+export default ImageRepository

@@ -11,7 +11,7 @@ import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/refund
+ * @oas [post] /admin/orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."
@@ -56,7 +56,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

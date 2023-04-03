@@ -1,0 +1,94 @@
+{{>header}}
+
+import { ApiError } from './ApiError';
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { ApiResult } from './ApiResult';
+import { CancelablePromise } from './CancelablePromise';
+import type { OnCancel } from './CancelablePromise';
+import type { OpenAPIConfig } from './OpenAPI';
+
+{{>functions/isDefined}}
+
+
+{{>functions/isString}}
+
+
+{{>functions/isStringWithValue}}
+
+
+{{>functions/isBlob}}
+
+
+{{>functions/isFormData}}
+
+
+{{>functions/base64}}
+
+
+{{>functions/getQueryString}}
+
+
+{{>functions/getUrl}}
+
+
+{{>functions/getFormData}}
+
+
+{{>functions/resolve}}
+
+
+{{>fetch/getHeaders}}
+
+
+{{>fetch/getRequestBody}}
+
+
+{{>fetch/sendRequest}}
+
+
+{{>fetch/getResponseHeader}}
+
+
+{{>fetch/getResponseBody}}
+
+
+{{>functions/catchErrorCodes}}
+
+
+/**
+ * Request method
+ * @param config The OpenAPI configuration object
+ * @param options The request options from the service
+ * @returns CancelablePromise<T>
+ * @throws ApiError
+ */
+export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
+	return new CancelablePromise(async (resolve, reject, onCancel) => {
+		try {
+			const url = getUrl(config, options);
+			const formData = getFormData(options);
+			const body = getRequestBody(options);
+			const headers = await getHeaders(config, options);
+
+			if (!onCancel.isCancelled) {
+				const response = await sendRequest(config, options, url, body, formData, headers, onCancel);
+				const responseBody = await getResponseBody(response);
+				const responseHeader = getResponseHeader(response, options.responseHeader);
+
+				const result: ApiResult = {
+					url,
+					ok: response.ok,
+					status: response.status,
+					statusText: response.statusText,
+					body: responseHeader ?? responseBody,
+				};
+
+				catchErrorCodes(options, result);
+
+				resolve(result.body);
+			}
+		} catch (error) {
+			reject(error);
+		}
+	});
+};

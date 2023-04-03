@@ -75,7 +75,9 @@ describe("/admin/store", () => {
       medusaProcess = await setupServer({ cwd })
 
       const manager = dbConnection.manager
-      const store = await manager.findOne(Store, { name: "Medusa Store" })
+      const store = await manager.findOne(Store, {
+        where: { name: "Medusa Store" },
+      })
       await manager.query(
         `INSERT INTO store_currencies (store_id, currency_code) VALUES ('${store.id}', 'dkk')`
       )

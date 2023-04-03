@@ -2,9 +2,10 @@ import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import { PricingService, ProductService } from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: Get Shipping Options
  * description: "Retrieves a list of Shipping Options."
@@ -30,7 +31,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
@@ -80,7 +81,7 @@ export default async (req, res) => {
   }
 
   const options = await shippingOptionService.list(query, {
-    relations: ["requirements"],
+    relations: defaultRelations,
   })
 
   const data = await pricingService.setShippingOptionPrices(options)

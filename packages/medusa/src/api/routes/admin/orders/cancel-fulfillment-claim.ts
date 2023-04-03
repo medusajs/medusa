@@ -9,7 +9,7 @@ import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
  * summary: "Cancel Claim Fulfillment"
  * description: "Registers a claim's fulfillment as canceled."
@@ -43,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

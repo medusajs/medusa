@@ -1,7 +1,8 @@
 import RegionService from "../../../../services/region"
+import { defaultRelations } from "."
 
 /**
- * @oas [get] /regions/{id}
+ * @oas [get] /store/regions/{id}
  * operationId: GetRegionsRegion
  * summary: Get a Region
  * description: "Retrieves a Region."
@@ -24,7 +25,7 @@ import RegionService from "../../../../services/region"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions/{id}'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -49,7 +50,7 @@ export default async (req, res) => {
   const regionService: RegionService = req.scope.resolve("regionService")
 
   const region = await regionService.retrieve(region_id, {
-    relations: ["countries", "payment_providers", "fulfillment_providers"],
+    relations: defaultRelations,
   })
 
   res.json({ region })

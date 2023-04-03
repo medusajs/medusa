@@ -2,7 +2,7 @@ import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [get] /carts/{id}
+ * @oas [get] /store/carts/{id}
  * operationId: "GetCartsCart"
  * summary: "Get a Cart"
  * description: "Retrieves a Cart."
@@ -25,7 +25,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/carts/{id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/complete
+ * @oas [post] /admin/orders/{id}/complete
  * operationId: "PostOrdersOrderComplete"
  * summary: "Complete an Order"
  * description: "Completes an Order"
@@ -35,7 +35,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

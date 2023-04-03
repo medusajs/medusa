@@ -3,7 +3,7 @@ import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [delete] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: DeleteCartsCartPaymentSessionsSession
  * summary: "Delete a Payment Session"
  * description: "Deletes a Payment Session on a Cart. May be useful if a payment has failed."
@@ -27,7 +27,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

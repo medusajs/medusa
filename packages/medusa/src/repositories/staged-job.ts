@@ -1,9 +1,8 @@
-import { EntityRepository, Repository } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { dataSource } from "../loaders/database"
 import { StagedJob } from "../models"
 
-@EntityRepository(StagedJob)
-export class StagedJobRepository extends Repository<StagedJob> {
+export const StagedJobRepository = dataSource.getRepository(StagedJob).extend({
   async insertBulk(jobToCreates: QueryDeepPartialEntity<StagedJob>[]) {
     const queryBuilder = this.createQueryBuilder()
       .insert()
@@ -18,5 +17,6 @@ export class StagedJobRepository extends Repository<StagedJob> {
 
     const rawStagedJobs = await queryBuilder.returning("*").execute()
     return rawStagedJobs.generatedMaps.map((d) => this.create(d))
-  }
-}
+  },
+})
+export default StagedJobRepository

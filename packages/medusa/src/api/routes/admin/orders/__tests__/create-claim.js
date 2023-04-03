@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ClaimServiceMock } from "../../../../../services/__mocks__/claim"
 
-describe("POST /admin/order/:id/claims", () => {
+describe("POST /admin/orders/:id/claims", () => {
   describe("successfully creates a claim", () => {
     let subject
 

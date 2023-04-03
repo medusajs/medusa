@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/{session_id}
+ * @oas [post] /store/payment-collections/{id}/sessions/{session_id}
  * operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
  * summary: "Refresh a Payment Session"
  * description: "Refreshes a Payment Session to ensure that it is in sync with the Payment Collection."
@@ -27,7 +27,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}'
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK

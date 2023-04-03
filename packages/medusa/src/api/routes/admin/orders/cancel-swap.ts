@@ -5,7 +5,7 @@ import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/cancel
  * operationId: "PostOrdersSwapCancel"
  * summary: "Cancels a Swap"
  * description: "Cancels a Swap"
@@ -38,7 +38,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

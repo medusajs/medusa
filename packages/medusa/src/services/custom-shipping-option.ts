@@ -12,19 +12,13 @@ type InjectedDependencies = {
   customShippingOptionRepository: typeof CustomShippingOptionRepository
 }
 class CustomShippingOptionService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   // eslint-disable-next-line max-len
   protected customShippingOptionRepository_: typeof CustomShippingOptionRepository
 
-  constructor({
-    manager,
-    customShippingOptionRepository,
-  }: InjectedDependencies) {
+  constructor({ customShippingOptionRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.customShippingOptionRepository_ = customShippingOptionRepository
   }
 
@@ -38,8 +32,7 @@ class CustomShippingOptionService extends TransactionBaseService {
     id: string,
     config: FindConfig<CustomShippingOption> = {}
   ): Promise<CustomShippingOption> {
-    const manager = this.manager_
-    const customShippingOptionRepo = manager.getCustomRepository(
+    const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
 
@@ -70,8 +63,7 @@ class CustomShippingOptionService extends TransactionBaseService {
       relations: [],
     }
   ): Promise<CustomShippingOption[]> {
-    const manager = this.manager_
-    const customShippingOptionRepo = manager.getCustomRepository(
+    const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
 
@@ -83,7 +75,6 @@ class CustomShippingOptionService extends TransactionBaseService {
   /**
    * Creates a custom shipping option
    * @param data - the custom shipping option to create
-   * @param config - any configurations if needed, including meta data
    * @return resolves to the creation result
    */
   async create<
@@ -92,8 +83,7 @@ class CustomShippingOptionService extends TransactionBaseService {
       ? CustomShippingOption[]
       : CustomShippingOption
   >(data: T): Promise<TResult> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const customShippingOptionRepo = manager.getCustomRepository(
+    const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
     const data_ = (

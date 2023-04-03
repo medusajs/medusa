@@ -9,7 +9,7 @@ import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}/batch
+ * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
  * summary: "Delete Batch Resources"
  * description: "Delete a batch of resources from a discount condition."
@@ -52,7 +52,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount Condition
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

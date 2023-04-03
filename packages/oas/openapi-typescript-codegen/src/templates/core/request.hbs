@@ -1,0 +1,4 @@
+{{~#equals @root.httpClient 'fetch'}}{{>fetch/request}}{{/equals~}}
+{{~#equals @root.httpClient 'xhr'}}{{>xhr/request}}{{/equals~}}
+{{~#equals @root.httpClient 'axios'}}{{>axios/request}}{{/equals~}}
+{{~#equals @root.httpClient 'node'}}{{>node/request}}{{/equals~}}

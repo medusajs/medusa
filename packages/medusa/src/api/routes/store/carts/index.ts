@@ -1,16 +1,15 @@
 import "reflect-metadata"
-import { RequestHandler, Router } from "express"
+import { Router } from "express"
 
 import { Cart, Order, Swap } from "../../../../"
-import { DeleteResponse, FindParams } from "../../../../types/common"
+import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformStoreQuery,
 } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 
@@ -34,7 +33,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(FindParams, {
+    transformStoreQuery(FindParams, {
       defaultRelations: defaultStoreCartRelations,
       defaultFields: defaultStoreCartFields,
       isList: false,
@@ -45,14 +44,9 @@ export default (app, container) => {
   const createMiddlewares = [
     middlewareService.usePreCartCreation(),
     transformBody(StorePostCartReq),
+    extendRequestParams,
+    validateSalesChannelParam,
   ]
-
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    createMiddlewares.push(
-      extendRequestParams as unknown as RequestHandler,
-      validateSalesChannelParam as unknown as RequestHandler
-    )
-  }
 
   route.post(
     "/",
@@ -143,6 +137,7 @@ export const defaultStoreCartRelations = [
   "gift_cards",
   "region",
   "items",
+  "items.variant",
   "items.adjustments",
   "payment",
   "shipping_address",
@@ -159,6 +154,63 @@ export const defaultStoreCartRelations = [
 /**
  * @schema StoreCartsRes
  * type: object
+ * x-expanded-relations:
+ *   field: cart
+ *   relations:
+ *     - billing_address
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.variant
+ *     - payment
+ *     - payment_sessions
+ *     - region
+ *     - region.countries
+ *     - region.payment_providers
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *      - items
+ *      - items.variant
+ *      - items.variant.product
+ *      - items.tax_lines
+ *      - items.adjustments
+ *      - gift_cards
+ *      - discounts
+ *      - discounts.rule
+ *      - shipping_methods
+ *      - shipping_methods.tax_lines
+ *      - shipping_address
+ *      - region
+ *      - region.tax_rates
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - item_tax_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_tax_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ * required:
+ *   - cart
  * properties:
  *   cart:
  *     $ref: "#/components/schemas/Cart"
@@ -170,6 +222,9 @@ export type StoreCartsRes = {
 /**
  * @schema StoreCompleteCartRes
  * type: object
+ * required:
+ *   - type
+ *   - data
  * properties:
  *   type:
  *     type: string
@@ -205,8 +260,6 @@ export type StoreCompleteCartRes =
       type: "swap"
       data: Swap
     }
-
-export type StoreCartsDeleteRes = DeleteResponse
 
 export * from "./add-shipping-method"
 export * from "./create-cart"

@@ -514,7 +514,7 @@ describe("ClaimService", () => {
 
       expect(claimRepo.findOne).toHaveBeenCalledWith({
         where: { id: "claim_id" },
-        relations: ["order"],
+        relations: { order: true },
       })
     })
   })

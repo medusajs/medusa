@@ -18,8 +18,8 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import {
-  ProductSalesChannelReq,
   ProductProductCategoryReq,
+  ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
@@ -28,24 +28,23 @@ import {
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 
+import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
+import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
-import { IInventoryService } from "../../../../interfaces"
-
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { Logger } from "../../../../types/global"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
- * @oas [post] /products
+ * @oas [post] /admin/products
  * operationId: "PostProducts"
  * summary: "Create a Product"
  * x-authenticated: true
@@ -85,7 +84,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

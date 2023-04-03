@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions
+ * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
@@ -27,7 +27,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

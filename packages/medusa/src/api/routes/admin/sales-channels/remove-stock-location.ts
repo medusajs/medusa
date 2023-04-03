@@ -1,11 +1,11 @@
-import { IsString } from "class-validator"
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm"
 
+import { EntityManager } from "typeorm"
+import { IsString } from "class-validator"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**
- * @oas [delete] /sales-channels/{id}/stock-locations
+ * @oas [delete] /admin/sales-channels/{id}/stock-locations
  * operationId: "DeleteSalesChannelsSalesChannelStockLocation"
  * summary: "Remove a stock location from a Sales Channel"
  * description: "Removes a stock location from a Sales Channel."
@@ -45,7 +45,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
@@ -80,7 +80,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (transactionManager) => {
     await channelLocationService
       .withTransaction(transactionManager)
-      .removeLocation(id, validatedBody.location_id)
+      .removeLocation(validatedBody.location_id, id)
   })
 
   res.json({

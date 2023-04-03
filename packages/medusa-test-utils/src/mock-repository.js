@@ -116,6 +116,13 @@ class MockRepo {
     }
     return {}
   })
+  count = jest.fn().mockImplementation((...args) => {
+    if (this.count_) {
+      return this.count(...args)
+    }
+    return {}
+  })
+
   delete = jest.fn().mockImplementation((...args) => {
     if (this.delete_) {
       return this.delete_(...args)

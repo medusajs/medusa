@@ -12,7 +12,7 @@ import { TrackingLink } from "../../../../models"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/shipment
+ * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Create a Shipment"
  * description: "Registers a Fulfillment as shipped."
@@ -55,7 +55,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

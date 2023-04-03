@@ -7,11 +7,14 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
-import moduleLoader, { moduleHelper } from "../loaders/module"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import registerModuleDefinitions from "../loaders/module-definitions"
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import repositories from "../loaders/repositories"
 import models from "../loaders/models"
 
@@ -27,7 +30,7 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const moduleResolutions = registerModuleDefinitions({})
+const moduleResolutions = registerModules({})
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",
@@ -35,7 +38,6 @@ const config = {
     admin_cors: "",
     store_cors: "",
   },
-  moduleResolutions,
 }
 
 const testApp = express()
@@ -95,7 +97,7 @@ repositories({ container, isTest: true })
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
-moduleLoader({ container, configModule: config })
+moduleLoader({ container, moduleResolutions })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()

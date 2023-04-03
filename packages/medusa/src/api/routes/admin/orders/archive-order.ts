@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /orders/{id}/archive
+ * @oas [post] /admin/orders/{id}/archive
  * operationId: "PostOrdersOrderArchive"
  * summary: "Archive Order"
  * description: "Archives the order with the given id."
@@ -35,7 +35,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
