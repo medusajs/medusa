@@ -1051,7 +1051,7 @@ describe("DiscountService", () => {
   describe("hasCustomerReachedLimit", () => {
     const orderRepository = MockRepository({
       findAndCount: jest.fn().mockImplementation(() => {
-        return Promise.resolve([_, 2])
+        return Promise.resolve([orders, 2])
       }),
     })
 
