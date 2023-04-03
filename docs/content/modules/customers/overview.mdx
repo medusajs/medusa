@@ -1,0 +1,160 @@
+---
+description: "Customers are individuals that make purchases in your store. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Customers
+
+Customers are individuals that make purchases in your store. This overview introduces the available features related to customers.
+
+:::note
+
+Not a developer? Check out the [Customers user guide](../../user-guide/customers/index.md).
+
+:::
+
+## Features
+
+### Customer Accounts
+
+Customers can make purchases as guests, or they can create an account.
+
+When a customer creates an account, they can manage their details and review their order history.
+
+An admin can manage all customers and their details.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Storefront: Add Customer Profiles',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to implement customer accounts in a storefront.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Customers',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage customers using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/customers/manage',
+    label: 'User Guide: Manage Customers',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage customers in Medusa Admin.'
+    }
+  },
+]} />
+
+### Customer Groups
+
+Admins can segment customers or assign them to different customer groups. This can be useful for marketing purposes.
+
+For example, an admin can specify a different pricing or special discounts for specific customer groups.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Customer Groups',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage customer groups using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/customers/groups',
+    label: 'User Guide: Customer Groups',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage customer groups in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/admin#tag/Customer-Group',
+    label: 'Admin APIs: Customer Groups',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check available Admin REST APIs for Customer Groups.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how Customer-related entities are built, their relation to other modules, and more.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Customer',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Customer Architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Customer Group',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Customer Group Architecture.',
+      isSoon: true,
+    }
+  },
+]} />
+
+---
+
+## Related Modules
+
+Discover Customers’ relation to other modules in Medusa.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/orders/overview',
+    label: 'Orders',
+    customProps: {
+      icon: Icons['check-circle-solid'],
+      description: 'Customers can place orders, request returns and exchanges, and more.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/discounts/overview',
+    label: 'Discounts',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Discounts can be associated with a specific customer group.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/price-lists/overview',
+    label: 'Price Lists',
+    customProps: {
+      icon: Icons['currency-dollar-solid'],
+      description: 'Set special prices for specific customer groups.'
+    }
+  },
+]} />

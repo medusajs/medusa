@@ -10,6 +10,7 @@ import { OrderService, SwapService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
@@ -102,7 +103,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 /**

@@ -1,13 +1,7 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  DeepPartial,
-  EntityManager,
-  FindOptionsWhere,
-  ILike,
-  IsNull,
-} from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput,
+} from "../types/order-edit"
 import {
   Cart,
   Order,
@@ -15,14 +9,14 @@ import {
   OrderEditItemChangeType,
   OrderEditStatus,
 } from "../models"
-import { OrderEditRepository } from "../repositories/order-edit"
-import { FindConfig, Selector } from "../types/common"
 import {
-  AddOrderEditLineItemInput,
-  CreateOrderEditInput,
-} from "../types/order-edit"
-import { buildQuery, isString } from "../utils"
-import EventBusService from "./event-bus"
+  DeepPartial,
+  EntityManager,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+} from "typeorm"
+import { FindConfig, Selector } from "../types/common"
 import {
   LineItemAdjustmentService,
   LineItemService,
@@ -32,6 +26,13 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, isString } from "../utils"
+
+import EventBusService from "./event-bus"
+import { IInventoryService } from "@medusajs/types"
+import { OrderEditRepository } from "../repositories/order-edit"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -45,6 +46,8 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
+
+  inventoryService?: IInventoryService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -67,6 +70,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
+  protected readonly inventoryService_: IInventoryService | undefined
 
   constructor({
     orderEditRepository,
@@ -78,6 +82,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
+    inventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -91,6 +96,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
+    this.inventoryService_ = inventoryService
   }
 
   async retrieve(
@@ -744,7 +750,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      await Promise.all([
+      const [lineItems] = await Promise.all([
         lineItemServiceTx.update(
           { order_id: orderEdit.order_id },
           { order_id: null }
@@ -759,6 +765,17 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit.confirmed_by = context.confirmedBy
 
       orderEdit = await orderEditRepository.save(orderEdit)
+
+      if (this.inventoryService_) {
+        await Promise.all(
+          lineItems.map(
+            async (lineItem) =>
+              await this.inventoryService_!.deleteReservationItemsByLineItem(
+                lineItem.id
+              )
+          )
+        )
+      }
 
       await this.eventBusService_
         .withTransaction(manager)

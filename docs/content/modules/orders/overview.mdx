@@ -1,0 +1,357 @@
+---
+description: "Customers place orders to purchase products from an ecommerce business. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Orders
+
+Customers place orders to purchase products from an ecommerce business. This overview introduces the available features related to orders.
+
+:::note
+
+Not a developer? Check out the [Orders user guide](../../user-guide/orders/index.md).
+
+:::
+
+## Features
+
+### Order Management
+
+Admins can manage orders placed by customers, including capturing payment and fulfilling items in the order. Admins can also export orders into CSV files.
+
+Customers can view their previous orders.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Orders',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage orders using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/manage',
+    label: 'User Guide: Manage Orders',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage orders in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/export',
+    label: 'User Guide: Export Orders',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Export orders into CSV files in Medusa admin.'
+    }
+  },
+]} />
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/user-guide/orders/payments',
+    label: 'User Guide: Manage Payments',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage an order\'s payment in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/fulfillments',
+    label: 'User Guide: Manage Fulfillment',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage an order\'s fulfillment in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Storefront: Manage Customer Orders',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage orders as a customer.',
+      isSoon: true,
+    }
+  },
+]} />
+
+### Edit Orders
+
+Admins can perform edits on items in an order, such as add, remove, or update items. Admins can request confirmation from the customer or force apply the edit.
+
+Customers can review order edit requests and authorize additional payments if necessary.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/orders/admin/edit-order',
+    label: 'Admin: Edit an Order',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to edit an order using Admin APIs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/edit',
+    label: 'User Guide: Edit Order',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Edit an order in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/orders/storefront/handle-order-edits',
+    label: 'Storefront: Order Edits',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Handle order edits in a storefront.'
+    }
+  },
+]} />
+
+### Draft Orders
+
+Admins can create draft orders that don’t require involvement from a customer. They can specify all details including items in the order, payment method, and more.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Draft Orders',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage draft orders using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/edit',
+    label: 'User Guide: Draft Orders',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage draft orders in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/admin#tag/Draft-Order',
+    label: 'Admin APIs: Draft Orders',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check available Admin REST APIs for Draft Orders.'
+    }
+  },
+]} />
+
+### Returns, Swaps, and Claims
+
+Admins can return order items, or create swaps to return an item to be replaced by a new one.
+
+Customers can also request to return or swap items. This allows for implementing an automated Return Merchandise Authorization (RMA) flow.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Returns',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage returns using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Swaps',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage swaps using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Claims',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage claims using Admin APIs.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/returns',
+    label: 'User Guide: Manage Returns',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage order returns in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/exchange',
+    label: 'User Guide: Exchanges',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage order exchanges in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/orders/claims',
+    label: 'User Guide: Manage Claims',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Manage order claims in Medusa Admin.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Storefront: Create a Return',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a return as a customer.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Storefront: Create a Swap',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a swap as a customer.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/store#tag/Return',
+    label: 'Storefront APIs: Returns',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check available Storefront REST APIs for Returns.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how order-related entities are built, their relation to other modules, and more.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Order',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Order architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Swap',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Swap architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Return',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Return architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Claim',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Claim architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Draft Order',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Draft Order architecture.',
+      isSoon: true,
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Fulfillment',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Fulfillment architecture.',
+      isSoon: true,
+    }
+  },
+]} />
+
+---
+
+## Related Modules
+
+Discover Order’s relation to other modules in Medusa
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/overview',
+    label: 'Carts and Checkout',
+    customProps: {
+      icon: Icons['shopping-cart-solid'],
+      description: 'Customers can place an order using a virtual cart.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/products/overview',
+    label: 'Products',
+    customProps: {
+      icon: Icons['tag-solid'],
+      description: 'Customers can browse products to purchase them.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/sales-channels/overview',
+    label: 'Sales Channels',
+    customProps: {
+      icon: Icons['channels-solid'],
+      description: 'Orders can be associated with specific channels.',
+    }
+  },
+]} />

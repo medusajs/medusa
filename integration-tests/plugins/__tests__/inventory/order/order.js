@@ -960,5 +960,107 @@ describe("/store/carts", () => {
         )
       })
     })
+
+    describe("POST /admin/order-edits", () => {
+      let order
+
+      beforeEach(async () => {
+        const api = useApi()
+
+        const cart = await simpleCartFactory(dbConnection, {
+          id: "test-cart",
+          sales_channel_id: "test-channel",
+        })
+
+        const cartId = cart.id
+
+        await api.post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            variant_id: variantId,
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+
+        await api.post(
+          `/store/carts/${cartId}`,
+          {
+            email: "test@test.com",
+          },
+          { withCredentials: true }
+        )
+
+        await api.post(`/store/carts/${cartId}/payment-sessions`)
+        await api.post(`/store/carts/${cartId}/payment-session`, {
+          provider_id: "test-pay",
+        })
+        const completeRes = await api.post(`/store/carts/${cartId}/complete`)
+
+        expect(completeRes.status).toEqual(200)
+        expect(completeRes.data.type).toEqual("order")
+
+        order = completeRes.data.data
+      })
+
+      it("deletes reservations when an order edit is confirmed", async () => {
+        const api = useApi()
+
+        const lineItemIds = order.items.map((item) => item.id)
+
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        const [, count] = await inventoryService.listReservationItems({
+          line_item_id: lineItemIds,
+        })
+
+        expect(count).toEqual(1)
+
+        let response = await api.post(
+          `/admin/order-edits/`,
+          {
+            order_id: order.id,
+            internal_note: "This is an internal note",
+          },
+          adminHeaders
+        )
+
+        const orderEditId = response.data.order_edit.id
+
+        const itemToUpdate = response.data.order_edit.items.find(
+          (item) => item.original_item_id === order.items[0].id
+        )
+
+        response = await api.post(
+          `/admin/order-edits/${orderEditId}/items/${itemToUpdate.id}`,
+          { quantity: 2 },
+          adminHeaders
+        )
+
+        response = await api.post(
+          `/admin/order-edits/${orderEditId}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.order_edit).toEqual(
+          expect.objectContaining({
+            id: orderEditId,
+            created_by: "admin_user",
+            confirmed_by: "admin_user",
+            confirmed_at: expect.any(String),
+            status: "confirmed",
+          })
+        )
+
+        const [, countAfterConfirm] =
+          await inventoryService.listReservationItems({
+            line_item_id: lineItemIds,
+          })
+
+        expect(countAfterConfirm).toEqual(0)
+      })
+    })
   })
 })

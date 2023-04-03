@@ -109,7 +109,7 @@ const EditDenominationsModal = ({
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">Edit Denominations</h1>
+          <h1 className="inter-xlarge-semibold">Edit Denomination</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>

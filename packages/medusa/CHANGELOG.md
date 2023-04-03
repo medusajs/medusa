@@ -1,5 +1,28 @@
 # Change Log
 
+## 1.8.0-rc.5
+
+### Patch Changes
+
+- [#3644](https://github.com/medusajs/medusa/pull/3644) [`4342ac884`](https://github.com/medusajs/medusa/commit/4342ac884bc3fe473576ef10d291f3547e0ffc62) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin-ui): Adds metadata forms to all applicable domains in the UI.
+  fix(medusa): Fixes an issue where metadata was not being set for order addresses using `setMetadata`.
+
+- [#3653](https://github.com/medusajs/medusa/pull/3653) [`809ab2e0e`](https://github.com/medusajs/medusa/commit/809ab2e0eb2d62054481fa6491d3f7cafbadab4f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Rounding issues on line item adjustments
+
+## 1.8.0-rc.4
+
+### Minor Changes
+
+- [#3554](https://github.com/medusajs/medusa/pull/3554) [`5fd74b38a`](https://github.com/medusajs/medusa/commit/5fd74b38ae1b4f7dced191983b78db83f7b1f71b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): remove reservations if cart completion fails after reservation creation
+
+- [#3544](https://github.com/medusajs/medusa/pull/3544) [`5e405be02`](https://github.com/medusajs/medusa/commit/5e405be02cc94779222dc3d930e747027496d918) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): remove reservations for all old line items when an order edit is accepted
+
+- [#3591](https://github.com/medusajs/medusa/pull/3591) [`a7e3f2d34`](https://github.com/medusajs/medusa/commit/a7e3f2d343c4059ba83022ec5c09f8101b251297) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): move customs and shipping into manage inventory modal
+
+### Patch Changes
+
+- [#3624](https://github.com/medusajs/medusa/pull/3624) [`999aeb116`](https://github.com/medusajs/medusa/commit/999aeb116c4742e5b5e0d80793af23f7727276f0) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): Fix hanging inventory item migration script
+
 ## 1.8.0-rc.3
 
 ### Minor Changes
@@ -286,6 +309,25 @@
   - @medusajs/utils@0.0.2-rc.0
   - @medusajs/modules-sdk@0.1.0-rc.0
   - @medusajs/medusa-cli@1.3.9-rc.0
+
+## 1.7.15
+
+### Patch Changes
+
+- [#3539](https://github.com/medusajs/medusa/pull/3539) [`98fe8fd00`](https://github.com/medusajs/medusa/commit/98fe8fd00a1912fde1d2a93b434bda500a213c14) Thanks [@adrien2p](https://github.com/adrien2p)! - Fix(medusa): Variant update should include the id for the listeners to be able to identify the entity
+
+- [#3491](https://github.com/medusajs/medusa/pull/3491) [`2869763ea`](https://github.com/medusajs/medusa/commit/2869763ea9673cf5c5a3aa10b58f61b8e830ce21) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix eventBus.emit using redis mock
+
+## 1.7.14
+
+### Patch Changes
+
+- [`902ed3c0b`](https://github.com/medusajs/medusa/commit/902ed3c0b21cd525d9975e59b7a8120ae5f7a895) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Issue with fixed total discount with tax-inclusive pricing enabled
+
+- [#3417](https://github.com/medusajs/medusa/pull/3417) [`fa4049cb5`](https://github.com/medusajs/medusa/commit/fa4049cb51232b2ed7091b1322c3fc14cd23e451) Thanks [@adrien2p](https://github.com/adrien2p)! - chores(medusa): Refactoring product update flow to improve handling and performances
+
+- Updated dependencies [[`fa4049cb5`](https://github.com/medusajs/medusa/commit/fa4049cb51232b2ed7091b1322c3fc14cd23e451)]:
+  - medusa-test-utils@1.1.40
 
 ## 1.7.13
 

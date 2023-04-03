@@ -247,9 +247,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
 
     // Verify that item exists
-    await this.inventoryService_.retrieveInventoryItem(inventoryItemId, {
-      select: ["id"],
-    })
+    await this.inventoryService_.retrieveInventoryItem(
+      inventoryItemId,
+      {
+        select: ["id"],
+      },
+      { transactionManager: this.activeManager_ }
+    )
 
     const variantInventoryRepo = this.activeManager_.getRepository(
       ProductVariantInventoryItem

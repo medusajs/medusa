@@ -1,0 +1,68 @@
+---
+description: "Learn what a Strategy is in Medusa. A strategy is an isolated piece of business logic that can be overridden and customized."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Strategy
+
+In this document, you’ll learn what a Strategy is in Medusa.
+
+## Introduction
+
+A strategy is an isolated piece of business logic that can be overridden and customized. It’s a TypeScript or JavaScript class that doesn’t have to follow a specific definition, but performs only a single functionality.
+
+For example, in the core `@medusajs/medusa` package, strategies are used to implement functionalities like cart completion and product import.
+
+These strategy classes are then resolved in endpoints, services, or wherever needed using dependency injection and used to perform their designated functionality.
+
+For example, the `CartCompletionStrategy` is resolved in the Complete Cart endpoint that is defined in the core `@medusajs/medusa` package. It’s then used to complete the cart and place the order:
+
+```ts
+export default async (req, res) => {
+	// ...
+	const completionStrat: AbstractCartCompletionStrategy = 
+    req.scope.resolve(
+      "cartCompletionStrategy"
+    )
+
+  const { 
+    response_code, 
+    response_body, 
+  } = await completionStrat.complete(
+    id,
+    idempotencyKey,
+    req.request_context
+  )
+
+  res.status(response_code).json(response_body)
+}
+```
+
+Developers can override these strategies defined in the core to customize their functionality. Dependency injection then resolves the strategy (in the code example above, `CartCompletionStrategy`) to the custom strategy that the developer created. Then, the method (in the code example above, `complete`) of the custom strategy will be executed instead of the one defined in the core package.
+
+## Custom Development
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Backend: Create a Strategy',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a strategy.',
+      isSoon: true
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Backend: Override a Strategy',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to override a strategy.',
+      isSoon: true
+    }
+  },
+]} />

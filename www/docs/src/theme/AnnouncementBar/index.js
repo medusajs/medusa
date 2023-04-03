@@ -3,9 +3,9 @@ import {useThemeConfig} from '@docusaurus/theme-common';
 import {useAnnouncementBar} from '@docusaurus/theme-common/internal';
 import AnnouncementBarCloseButton from '@theme/AnnouncementBar/CloseButton';
 import AnnouncementBarContent from '@theme/AnnouncementBar/Content';
-import ThemedImage from '@theme/ThemedImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
+import IconBell from '../Icon/Bell';
+import Bordered from '../../components/Bordered';
 
 export default function AnnouncementBar() {
   const {announcementBar} = useThemeConfig();
@@ -18,13 +18,12 @@ export default function AnnouncementBar() {
     <div
       className={styles.announcementBar}
       style={{backgroundColor, color: textColor}}>
-      <div
-        className={styles.announcementBarIconWrapper}>
-        <ThemedImage alt="announcement" sources={{
-          light: useBaseUrl('/img/bell.png'),
-          dark: useBaseUrl('/img/bell-dark.png')
-        }} className={styles.announcementBarIcon} />
-      </div>
+      <Bordered>
+        <div
+          className={styles.announcementBarIconWrapper}>
+          <IconBell />
+        </div>
+      </Bordered>
       <AnnouncementBarContent className={styles.announcementBarContent} />
       {isCloseable && (
         <AnnouncementBarCloseButton

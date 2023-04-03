@@ -62,7 +62,7 @@ const AddConditionsModal = ({
           ) : (
             <div className="flex h-full flex-1 flex-col items-center justify-center">
               <span className="inter-base-regular text-grey-40">
-                Can't add anymore conditions
+                You cannot add any more conditions
               </span>
             </div>
           )}

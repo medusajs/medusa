@@ -2,14 +2,14 @@ import { Router } from "express"
 import "reflect-metadata"
 
 import { Product } from "../../../.."
-import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { PaginatedResponse } from "../../../../types/common"
+import { FlagRouter } from "../../../../utils/flag-router"
+import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
-import { StoreGetProductsParams } from "./list-products"
 import { StoreGetProductsProductParams } from "./get-product"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { StoreGetProductsParams } from "./list-products"
 
 const route = Router()
 

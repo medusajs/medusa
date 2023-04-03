@@ -2,14 +2,14 @@ import { Controller } from "react-hook-form"
 import NestedMultiselect from "../../../../domain/categories/components/multiselect"
 import {
   FeatureFlag,
-  useFeatureFlag,
+  useFeatureFlag
 } from "../../../../providers/feature-flag-provider"
 import { Option } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputHeader from "../../../fundamentals/input-header"
 import {
   NextCreateableSelect,
-  NextSelect,
+  NextSelect
 } from "../../../molecules/select/next-select"
 import TagInput from "../../../molecules/tag-input"
 import useOrganizeData from "./use-organize-data"
@@ -86,8 +86,7 @@ const OrganizeForm = ({ form }: Props) => {
         />
       </div>
 
-      {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) &&
-      categoriesOptions?.length ? (
+      {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) ? (
         <>
           <InputHeader label="Categories" className="mb-2" />
           <Controller
@@ -101,6 +100,11 @@ const OrganizeForm = ({ form }: Props) => {
 
               return (
                 <NestedMultiselect
+                  placeholder={
+                    !!categoriesOptions?.length
+                      ? "Choose categories"
+                      : "No categories available"
+                  }
                   onSelect={onChange}
                   options={categoriesOptions}
                   initiallySelected={initiallySelected}

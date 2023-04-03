@@ -73,7 +73,7 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
           }
 
           return (
-            <div className="gap-x-2xsmall flex">
+            <div className="gap-x-2xsmall flex items-center">
               <div ref={containerRef} className="gap-x-xsmall flex">
                 {visibleItems.map((item) => {
                   return (

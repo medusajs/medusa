@@ -19,4 +19,5 @@ export const StagedJobRepository = dataSource.getRepository(StagedJob).extend({
     return rawStagedJobs.generatedMaps.map((d) => this.create(d))
   },
 })
+
 export default StagedJobRepository

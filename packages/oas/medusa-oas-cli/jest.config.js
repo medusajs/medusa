@@ -10,5 +10,5 @@ module.exports = {
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
-  testTimeout: 30000,
+  testTimeout: 60000,
 }

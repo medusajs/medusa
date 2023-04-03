@@ -35,7 +35,7 @@ const UserMenu: React.FC = () => {
             <Avatar
               user={{ ...user }}
               isLoading={isLoading}
-              color="bg-fuschia-40"
+              color="bg-grey-80"
             />
           </div>
         </DropdownMenu.Trigger>

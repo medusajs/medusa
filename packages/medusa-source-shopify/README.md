@@ -1,85 +1,61 @@
-# Medusa Source Shopify
-Plugin that allows users to source Medusa using a Shopify store.
+# Shopify Source
 
-## Quick start
+Migrate your products and categories from Shopify to Medusa.
 
-This plugin will copy all of your products and collections from Shopify to Medusa. 
+[Medusa Website](https://medusajs.com) | [Medusa Repository](https://github.com/medusajs/medusa)
 
-To get started with the plugin you should follow these steps.
+## Features
 
-### Install the plugin
+- Migrate data related to products from Shopify to Medusa.
+- Consistently keep data in sync between Shopify and Medusa.
 
-Navigate to your Medusa server in your terminal, and install the plugin.
+---
 
-```zsh
-$ cd my-medusa-server
-$ yarn medusa-source-shopify
-```
+## Prerequisites
 
-### Create a Shopify app
+- [Medusa backend](https://docs.medusajs.com/development/backend/install)
+- [Shopify account](https://shopify.dev/)
 
-Navigate to your Shopify dashboard, and then go to `Apps` and click the `Develop apps for your store` button at the bottom of the page. After navigating to the `App development` page, click the `Create an app` in the top right corner.
+---
 
-This should open a modal where you can choose a name for your app. Write a name and click `Create app`.
+## How to Install
 
-You should then click the button that says `Configure Admin API scopes`. Scroll down to `Products` and select the `read_products` scope, and then save your changes.
+1\. Run the following command in the directory of the Medusa backend:
 
-Go back to overview and click `Install app`. This should generate a token, that you should write down as you can only view it once.
+  ```bash
+  npm install medusa-source-shopify
+  ```
 
+2\. Set the following environment variable in `.env`:
 
-### Add the required plugin options
+  ```bash
+  SHOPIFY_DOMAIN=<YOUR_SHOPIFY_DOMAIN>
+  SHOPIFY_PASSWORD=<YOUR_SHOPIFY_PASSWORD>
+  ```
 
-Update your `medusa-config.js` with the following:
+3\. In `medusa-config.js` add the following at the end of the `plugins` array:
 
-```js
-//Shopify keys
-const SHOPIFY_STORE_URL = process.env.SHOPIFY_STORE_URL || "";
-const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY || "";
+  ```js
+  const plugins = [
+    // ...,
+    {
+      resolve: 'medusa-source-shopify',
+      options: {
+        domain: process.env.SHOPIFY_DOMAIN,
+        password: process.env.SHOPIFY_PASSWORD
+      }
+    }
+  ];
+  ```
 
-const plugins = [
-  // other plugins...
-  {
-    resolve: `medusa-source-shopify`,
-    options: {
-      domain: SHOPIFY_STORE_URL,
-      password: SHOPIFY_API_KEY,
-    },
-  },
-];
-```
+---
 
-You should then add `SHOPIFY_STORE_URL` and `SHOPIFY_API_KEY` to your `.env`.
+## Test the Plugin
 
-```env
-SHOPIFY_API_KEY=<your_secret_shopify_key>
-SHOPIFY_STORE_URL=<your_store_name>
-```
+1\. Run the following command in the directory of the Medusa backend to run the backend:
 
-The `SHOPIFY_API_KEY` is the token that we generated in the previous step. `SHOPIFY_STORE_URL` is the name of your store. You can view the name in the url of your Shopify dashboard, which has the following format `<your_store_name>.myshopify.com`.
+  ```bash
+  npm run start
+  ```
 
-### Run your server
-
-After setting everything up you can now run your server
-
-```zsh
-$ yarn start
-```
-
-and the plugin will handle the rest.
-
-## Note
-
-### The plugin only queries updates since last build time
-
-The plugin stores everytime it is run, and will use this timestamp to only fetch products, collections and collects that have been updated in Shopify since the last time it pulled data.
-
-### `Product/Collection` relations (`Collect`)
-Shopify supports products being part of more than one collection, but Medusa does not support this. For this reason a product will only be part of the first collection it has a relation to in Medusa. The plugin processes Shopify product/collection relations in the following order:
-
-1. Custom collections
-2. Smart collections
-
-This means that if product `X` is part of custom collection `Y` and smart collection `Z` in Shopify, it will only be added to custom collection `X` in Medusa.
-
-
-
+2\. The data migration runs on server start-up. You should see your Shopify products in Medusa.
