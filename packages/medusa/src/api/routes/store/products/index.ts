@@ -8,6 +8,7 @@ import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
 import { StoreGetProductsProductParams } from "./get-product"
 import { StoreGetProductsParams } from "./list-products"
 
@@ -24,6 +25,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/",
+    withDefaultSalesChannel(true),
     transformStoreQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
@@ -36,6 +38,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/:id",
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
