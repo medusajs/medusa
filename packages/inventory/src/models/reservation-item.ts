@@ -1,10 +1,6 @@
 import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
 
-export enum ReservationType {
-  INTERNAL = "internal",
-  EXTERNAL = "external",
-}
 @Entity()
 export class ReservationItem extends SoftDeletableEntity {
   @Index()
