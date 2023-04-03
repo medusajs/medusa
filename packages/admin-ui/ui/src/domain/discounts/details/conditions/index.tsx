@@ -22,54 +22,56 @@ const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
 
   return (
     <ConditionsProvider discount={discount}>
-      <BodyCard
-        title="Conditions"
-        className="min-h-[200px]"
-        forceDropdown
-        actionables={[
-          {
-            label: "Add condition",
-            icon: <PlusIcon size={16} />,
-            onClick: () => setShow(true),
-          },
-        ]}
-      >
-        {conditions.length ? (
-          <div
-            style={{
-              gridTemplateRows: `repeat(${Math.ceil(
-                conditions?.length / 2
-              )}, minmax(0, 1fr))`,
-            }}
-            className="gap-y-base gap-x-xlarge grid grid-flow-col grid-cols-2"
-          >
-            {conditions.map((condition, i) => (
-              <NumberedItem
-                key={i}
-                title={condition.title}
-                index={i + 1}
-                description={condition.description}
-                actions={condition.actions}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="gap-y-small flex flex-1 flex-col items-center justify-center">
-            <span className="inter-base-regular text-grey-50">
-              This discount has no conditions
-            </span>
-          </div>
+      <div>
+        <BodyCard
+          title="Conditions"
+          className="min-h-[200px]"
+          forceDropdown
+          actionables={[
+            {
+              label: "Add condition",
+              icon: <PlusIcon size={16} />,
+              onClick: () => setShow(true),
+            },
+          ]}
+        >
+          {conditions.length ? (
+            <div
+              style={{
+                gridTemplateRows: `repeat(${Math.ceil(
+                  conditions?.length / 2
+                )}, minmax(0, 1fr))`,
+              }}
+              className="gap-y-base gap-x-xlarge grid grid-flow-col grid-cols-2"
+            >
+              {conditions.map((condition, i) => (
+                <NumberedItem
+                  key={i}
+                  title={condition.title}
+                  index={i + 1}
+                  description={condition.description}
+                  actions={condition.actions}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="gap-y-small flex flex-1 flex-col items-center justify-center">
+              <span className="inter-base-regular text-grey-50">
+                This discount has no conditions
+              </span>
+            </div>
+          )}
+        </BodyCard>
+        <AddCondition show={show} onClose={() => setShow(false)} />
+        {selectedCondition && (
+          <EditConditionsModal
+            open={!!selectedCondition}
+            condition={selectedCondition}
+            discount={discount}
+            onClose={() => deSelectCondition()}
+          />
         )}
-      </BodyCard>
-      <AddCondition show={show} onClose={() => setShow(false)} />
-      {selectedCondition && (
-        <EditConditionsModal
-          open={!!selectedCondition}
-          condition={selectedCondition}
-          discount={discount}
-          onClose={() => deSelectCondition()}
-        />
-      )}
+      </div>
     </ConditionsProvider>
   )
 }

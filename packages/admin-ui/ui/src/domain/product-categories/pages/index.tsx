@@ -3,6 +3,7 @@ import { createContext, useState } from "react"
 import { ProductCategory } from "@medusajs/medusa"
 import { useAdminProductCategories } from "medusa-react"
 
+import Spacer from "../../../components/atoms/spacer"
 import BodyCard from "../../../components/organisms/body-card"
 import useToggleState from "../../../hooks/use-toggle-state"
 import ProductCategoriesList from "../components/product-categories-list"
@@ -99,6 +100,7 @@ function ProductCategoryPage() {
               <ProductCategoriesList categories={categories!} />
             )}
           </BodyCard>
+          <Spacer />
           {isCreateModalVisible && (
             <CreateProductCategory
               parentCategory={activeCategory}

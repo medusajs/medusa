@@ -34,7 +34,11 @@ const NumberScroller: React.FC<NumberScrollerProps> = ({
               }
             )}
           >
-            <button onClick={() => onSelect(n)} className="h-full w-full py-2">
+            <button
+              onClick={() => onSelect(n)}
+              className="h-full w-full py-2"
+              type="button"
+            >
               {n.toLocaleString("en-US", { minimumIntegerDigits: 2 })}
             </button>
           </div>

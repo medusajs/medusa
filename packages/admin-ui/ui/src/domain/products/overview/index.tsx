@@ -2,6 +2,7 @@ import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
+import Spacer from "../../../components/atoms/spacer"
 import Button from "../../../components/fundamentals/button"
 import ExportIcon from "../../../components/fundamentals/icons/export-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -14,10 +15,10 @@ import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { usePolling } from "../../../providers/polling-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
-import { usePolling } from "../../../providers/polling-provider"
 
 const VIEWS = ["products", "collections"]
 
@@ -178,8 +179,10 @@ const Overview = () => {
           >
             <CurrentView />
           </BodyCard>
+          <Spacer />
         </div>
       </div>
+
       {showNewCollection && (
         <AddCollectionModal
           onClose={() => setShowNewCollection(!showNewCollection)}
