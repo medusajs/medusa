@@ -1,6 +1,6 @@
 # S3 Plugin ACL Error
 
-If you're using the [S3 Plugin](../add-plugins/s3.md) and, when you upload an image, you receive the following error on your Medusa server:
+If you're using the [S3 Plugin](../plugins/file-service/s3.md) and, when you upload an image, you receive the following error on your Medusa backend:
 
 ```bash noReport
 AccessControlListNotSupported: The bucket does not allow ACLs

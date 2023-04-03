@@ -1,3 +1,5 @@
+import { isDefined, MedusaError } from "@medusajs/utils"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -6,20 +8,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
+import { Order, Return } from "../../../../models"
 import {
   EventBusService,
   OrderService,
   ReturnService,
 } from "../../../../services"
-
-import { Type } from "class-transformer"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { Order, Return } from "../../../../models"
-import { OrdersReturnItem } from "../../../../types/orders"
 import { FindParams } from "../../../../types/common"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { IInventoryService } from "../../../../interfaces"
+import { OrdersReturnItem } from "../../../../types/orders"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/return
@@ -244,7 +242,9 @@ export default async (req, res) => {
 
                   return {
                     response_code: 200,
-                    response_body: { order },
+                    response_body: {
+                      order: cleanResponseData(order, []),
+                    },
                   }
                 })
             })

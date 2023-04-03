@@ -1,4 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom"
+import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
@@ -27,6 +28,7 @@ const PricingIndex = () => {
         >
           <PricingTable />
         </BodyCard>
+        <Spacer />
       </div>
     </div>
   )

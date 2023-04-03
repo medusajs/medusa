@@ -23,11 +23,12 @@ import { SwapRepository } from "../repositories/swap"
 import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
-import CartService from "./cart"
 import {
+  CartService,
   CustomShippingOptionService,
   EventBusService,
   FulfillmentService,
+  LineItemAdjustmentService,
   LineItemService,
   OrderService,
   PaymentProviderService,
@@ -36,7 +37,6 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
-import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -44,7 +44,6 @@ type InjectedProps = {
   swapRepository: typeof SwapRepository
 
   cartService: CartService
-  eventBus: EventBusService
   orderService: OrderService
   returnService: ReturnService
   totalsService: TotalsService

@@ -1,10 +1,9 @@
+import { AdminPostStockLocationsReq, SalesChannel } from "@medusajs/medusa"
+import GeneralForm, { GeneralFormType } from "../components/general-form"
 import {
-  AdminPostStockLocationsReq,
-  SalesChannel,
   StockLocationAddressDTO,
   StockLocationAddressInput,
-} from "@medusajs/medusa"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
+} from "@medusajs/types"
 import {
   useAdminAddLocationToSalesChannel,
   useAdminCreateStockLocation,
@@ -16,6 +15,7 @@ import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import DeletePrompt from "../../../../components/organisms/delete-prompt"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
+import React from "react"
 import SalesChannelsForm from "../components/sales-channels-form"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
@@ -28,11 +28,12 @@ type NewLocationForm = {
   general: GeneralFormType
   address: StockLocationAddressDTO
   salesChannels: {
-    channels: SalesChannel[]
+    channels: Omit<SalesChannel, "locations">[]
   }
 }
 
 const NewLocation = ({ onClose }: { onClose: () => void }) => {
+  const [accordionValue, setAccordionValue] = React.useState("general")
   const form = useForm<NewLocationForm>({
     defaultValues: {
       general: {
@@ -48,7 +49,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   })
   const {
     handleSubmit,
-    formState: { isDirty, isValid },
+    formState: { isDirty },
   } = form
 
   const {
@@ -64,7 +65,10 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
   const { mutateAsync: associateSalesChannel } =
     useAdminAddLocationToSalesChannel()
 
-  const createSalesChannelAssociationPromise = (salesChannelId, locationId) =>
+  const createSalesChannelAssociationPromise = (
+    salesChannelId: string,
+    locationId: string
+  ) =>
     associateSalesChannel({
       sales_channel_id: salesChannelId,
       location_id: locationId,
@@ -78,39 +82,49 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
     }
   }
 
-  const onSubmit = () =>
-    handleSubmit(async (data) => {
-      const { locationPayload, salesChannelsPayload } = createPayload(data)
-      try {
-        const { stock_location } = await createStockLocation(locationPayload)
-        Promise.all(
-          salesChannelsPayload.map((salesChannel) =>
-            createSalesChannelAssociationPromise(
-              salesChannel.id,
-              stock_location.id
-            )
+  const onSubmit = async (data) => {
+    if (!data.general.name) {
+      setAccordionValue("general")
+      return
+    }
+
+    const addressFields = [data.address.address_1, data.address.country_code]
+    if (addressFields.some(Boolean) && !addressFields.every(Boolean)) {
+      setAccordionValue("general")
+      return
+    }
+
+    const { locationPayload, salesChannelsPayload } = createPayload(data)
+    try {
+      const { stock_location } = await createStockLocation(locationPayload)
+      Promise.all(
+        salesChannelsPayload.map((salesChannel) =>
+          createSalesChannelAssociationPromise(
+            salesChannel.id,
+            stock_location.id
           )
         )
-          .then(() => {
-            notification("Success", "Location added successfully", "success")
-          })
-          .catch(() => {
-            notification(
-              "Error",
-              "Location was created successfully, but there was an error associating sales channels",
-              "error"
-            )
-          })
-          .finally(() => {
-            onClose()
-          })
-      } catch (err) {
-        notification("Error", getErrorMessage(err), "error")
-      }
-    })
+      )
+        .then(() => {
+          notification("Success", "Location added successfully", "success")
+        })
+        .catch(() => {
+          notification(
+            "Error",
+            "Location was created successfully, but there was an error associating sales channels",
+            "error"
+          )
+        })
+        .finally(() => {
+          onClose()
+        })
+    } catch (err) {
+      notification("Error", getErrorMessage(err), "error")
+    }
+  }
 
   return (
-    <form className="w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <FocusModal>
         <FocusModal.Header>
           <div className="medium:w-8/12 flex w-full justify-between px-8">
@@ -127,7 +141,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 heading="Are you sure you want to cancel with unsaved changes"
                 confirmText="Yes, cancel"
                 cancelText="No, continue creating"
-                successText={undefined}
+                successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
               />
@@ -136,9 +150,8 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
               <Button
                 size="small"
                 variant="primary"
-                type="button"
-                disabled={!isDirty || !isValid}
-                onClick={onSubmit()}
+                type="submit"
+                disabled={!isDirty}
               >
                 Add location
               </Button>
@@ -150,7 +163,11 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             <h1 className="mb-base text-grey-90 text-xlarge px-1 font-semibold">
               Add new location
             </h1>
-            <Accordion defaultValue={"general"} type="single">
+            <Accordion
+              value={accordionValue}
+              onValueChange={setAccordionValue}
+              type="single"
+            >
               <Accordion.Item
                 value={"general"}
                 title={"General Information"}

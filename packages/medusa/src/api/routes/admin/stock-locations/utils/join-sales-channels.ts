@@ -1,11 +1,8 @@
+import { StockLocationDTO, StockLocationExpandedDTO } from "@medusajs/types"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../../services"
-import {
-  StockLocationDTO,
-  StockLocationExpandedDTO,
-} from "../../../../../types/stock-location"
 
 const joinSalesChannels = async (
   locations: StockLocationDTO[],
@@ -17,9 +14,12 @@ const joinSalesChannels = async (
       const salesChannelIds = await channelLocationService.listSalesChannelIds(
         location.id
       )
-      const [salesChannels] = await salesChannelService.listAndCount({
-        id: salesChannelIds,
-      })
+      const [salesChannels] = await salesChannelService.listAndCount(
+        {
+          id: salesChannelIds,
+        },
+        {}
+      )
 
       location.sales_channels = salesChannels
 

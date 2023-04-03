@@ -285,7 +285,7 @@ const Summary = () => {
         <div className="flex items-center">
           <div className="mr-3 h-5 w-5">
             <Avatar
-              color="bg-fuschia-40"
+              color="bg-grey-80"
               user={{
                 email,
                 first_name: shipping?.first_name,

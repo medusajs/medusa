@@ -1,13 +1,12 @@
-import resolveCwd from "resolve-cwd"
-
-import MODULE_DEFINITIONS from "../definitions"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   ModuleDefinition,
   ModuleResolution,
   MODULE_SCOPE,
-} from "../types"
+} from "@medusajs/types"
+import resolveCwd from "resolve-cwd"
+import MODULE_DEFINITIONS from "../definitions"
 
 export const registerModules = (
   modules?: Record<

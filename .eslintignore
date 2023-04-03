@@ -10,7 +10,15 @@ packages/*
 !packages/admin-ui
 !packages/admin
 !packages/medusa-payment-stripe
-
+!packages/medusa-payment-paypal
+!packages/event-bus-redis
+!packages/event-bus-local
+!packages/medusa-plugin-meilisearch
+!packages/medusa-plugin-algolia
+!packages/inventory
+!packages/stock-location
+!packages/cache-redis
+!packages/cache-inmemory
 
 
 **/models/*

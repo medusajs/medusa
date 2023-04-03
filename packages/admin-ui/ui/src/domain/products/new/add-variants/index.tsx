@@ -2,6 +2,13 @@ import clsx from "clsx"
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { v4 as uuidv4 } from "uuid"
+import { CustomsFormType } from "../../../../components/forms/product/customs-form"
+import { DimensionsFormType } from "../../../../components/forms/product/dimensions-form"
+import CreateFlowVariantForm, {
+  CreateFlowVariantFormType
+} from "../../../../components/forms/product/variant-form/create-flow-variant-form"
+import { VariantOptionType } from "../../../../components/forms/product/variant-form/variant-select-options-form"
+import useCheckOptions from "../../../../components/forms/product/variant-form/variant-select-options-form/hooks"
 import Button from "../../../../components/fundamentals/button"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
@@ -9,19 +16,12 @@ import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
 import LayeredModal, {
-  LayeredModalContext,
+  LayeredModalContext
 } from "../../../../components/molecules/modal/layered-modal"
 import TagInput from "../../../../components/molecules/tag-input"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import useToggleState from "../../../../hooks/use-toggle-state"
 import { NestedForm } from "../../../../utils/nested-form"
-import { CustomsFormType } from "../../components/customs-form"
-import { DimensionsFormType } from "../../components/dimensions-form"
-import CreateFlowVariantForm, {
-  CreateFlowVariantFormType,
-} from "../../components/variant-form/create-flow-variant-form"
-import { VariantOptionType } from "../../components/variant-form/variant-select-options-form"
-import useCheckOptions from "../../components/variant-form/variant-select-options-form/hooks"
 import NewVariant from "./new-variant"
 
 type ProductOptionType = {

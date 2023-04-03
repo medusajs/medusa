@@ -1,12 +1,11 @@
-import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
-import { EOL } from "os"
 import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types"
-
+} from "@medusajs/types"
+import { AwilixContainer, ClassOrFunctionReturning, Resolver } from "awilix"
+import { createMedusaContainer } from "medusa-core-utils"
+import { EOL } from "os"
 import { moduleLoader } from "../module-loader"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
 
@@ -187,6 +186,38 @@ describe("modules loader", () => {
     } catch (err) {
       expect(err.message).toEqual(
         "No service found in module. Make sure your module exports a service."
+      )
+    }
+  })
+
+  it("throws error if default package isn't found and module is required", async () => {
+    expect.assertions(1)
+    const moduleResolutions: Record<string, ModuleResolution> = {
+      testService: {
+        resolutionPath: "@medusajs/testService",
+        definition: {
+          registrationName: "testService",
+          key: "testService",
+          defaultPackage: "@medusajs/testService",
+          label: "TestService",
+          isRequired: true,
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
+        },
+        moduleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+          resources: MODULE_RESOURCE_TYPE.SHARED,
+        },
+      },
+    }
+
+    try {
+      await moduleLoader({ container, moduleResolutions, logger })
+    } catch (err) {
+      expect(err.message).toEqual(
+        `Make sure you have installed the default package: @medusajs/testService`
       )
     }
   })

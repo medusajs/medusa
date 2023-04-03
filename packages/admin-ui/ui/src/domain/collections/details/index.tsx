@@ -107,7 +107,7 @@ const CollectionDetails = () => {
 
   return (
     <>
-      <div className="!pb-xlarge flex flex-col">
+      <div className="flex flex-col">
         <BackButton
           className="mb-xsmall"
           path="/a/products?view=collections"

@@ -1,9 +1,9 @@
 import { useAdminRegions } from "medusa-react"
 import { useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import GearIcon from "../../../components/fundamentals/icons/gear-icon"
-import BreadCrumb from "../../../components/molecules/breadcrumb"
 import BodyCard from "../../../components/organisms/body-card"
 import RadioGroup from "../../../components/organisms/radio-group"
 import TwoSplitPane from "../../../components/templates/two-split-pane"
@@ -26,10 +26,10 @@ const Taxes = () => {
   return (
     <>
       <div>
-        <BreadCrumb
-          previousRoute="/a/settings"
-          previousBreadcrumb="Settings"
-          currentPage="Taxes"
+        <BackButton
+          path="/a/settings"
+          label="Back to settings"
+          className="mb-xsmall"
         />
         <TwoSplitPane threeCols>
           <BodyCard

@@ -37,7 +37,7 @@ module.exports = {
     "max-len": [
       "error",
       {
-        code: 75,
+        code: 64,
       },
     ],
     semi: ["error", "never"],
@@ -86,7 +86,7 @@ module.exports = {
   },
   ignorePatterns: [
     'docs/content/references/**',
-    'docs/content/advanced/backend/subscribers/events-list.md'
+    'docs/content/**/events-list.md'
   ],
   overrides: [
     {

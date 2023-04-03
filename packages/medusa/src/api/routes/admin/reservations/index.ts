@@ -1,15 +1,14 @@
+import { ReservationItemDTO } from "@medusajs/types"
 import { Router } from "express"
-import { ReservationItemDTO } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import "reflect-metadata"
-import { AdminPostReservationsReq } from "./create-reservation"
-import { AdminPostReservationsReservationReq } from "./update-reservation"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminGetReservationsParams } from "./list-reservations"
+import { AdminPostReservationsReservationReq } from "./update-reservation"
 
 const route = Router()
 
@@ -133,5 +132,5 @@ export type AdminReservationsDeleteRes = DeleteResponse
 export * from "./create-reservation"
 export * from "./delete-reservation"
 export * from "./get-reservation"
-export * from "./update-reservation"
 export * from "./list-reservations"
+export * from "./update-reservation"

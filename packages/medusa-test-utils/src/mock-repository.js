@@ -14,6 +14,7 @@ class MockRepo {
     del,
     count,
     insertBulk,
+    metadata,
   }) {
     this.create_ = create
     this.update_ = update
@@ -28,6 +29,10 @@ class MockRepo {
     this.findAndCount_ = findAndCount
     this.findOneWithRelations_ = findOneWithRelations
     this.insertBulk_ = insertBulk
+
+    this.metadata = metadata ?? {
+      columns: [],
+    }
   }
 
   setFindOne(fn) {
@@ -107,6 +112,7 @@ class MockRepo {
     }
     return {}
   })
+
   delete = jest.fn().mockImplementation((...args) => {
     if (this.delete_) {
       return this.delete_(...args)

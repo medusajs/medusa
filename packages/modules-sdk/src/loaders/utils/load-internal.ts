@@ -1,6 +1,3 @@
-import { asFunction, asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
-import { trackInstallation } from "medusa-telemetry"
 import {
   Constructor,
   InternalModuleDeclaration,
@@ -10,7 +7,10 @@ import {
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types"
+} from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asFunction, asValue } from "awilix"
+import { trackInstallation } from "medusa-telemetry"
 
 export async function loadInternalModule(
   container: MedusaContainer,
@@ -26,6 +26,17 @@ export async function loadInternalModule(
   try {
     loadedModule = (await import(resolution.resolutionPath as string)).default
   } catch (error) {
+    if (
+      resolution.definition.isRequired &&
+      resolution.definition.defaultPackage
+    ) {
+      return {
+        error: new Error(
+          `Make sure you have installed the default package: ${resolution.definition.defaultPackage}`
+        ),
+      }
+    }
+
     return { error }
   }
 
@@ -64,7 +75,11 @@ export async function loadInternalModule(
     for (const dependency of moduleDependencies) {
       localContainer.register(
         dependency,
-        asFunction(() => container.resolve(dependency))
+        asFunction(() => {
+          return container.hasRegistration(dependency)
+            ? container.resolve(dependency)
+            : undefined
+        })
       )
     }
   }

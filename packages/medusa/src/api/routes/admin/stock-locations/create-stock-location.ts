@@ -1,9 +1,15 @@
+import {
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { Request, Response } from "express"
-import { Type } from "class-transformer"
-import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
+import { Transform, Type } from "class-transformer"
 
-import { IStockLocationService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
+import { IStockLocationService } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/stock-locations
@@ -139,6 +145,8 @@ class StockLocationAddress {
  */
 export class AdminPostStockLocationsReq {
   @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => value?.trim())
   name: string
 
   @IsOptional()

@@ -1,8 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import EventBusService from "../event-bus"
 
-import { EventBusService } from "../index"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 import PublishableApiKeyService from "../publishable-api-key"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 const pubKeyToRetrieve = {
   id: IdMap.getId("pub-key-to-retrieve"),

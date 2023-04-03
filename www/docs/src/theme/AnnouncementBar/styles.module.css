@@ -1,27 +1,16 @@
-:root {
-  --docusaurus-announcement-bar-height: auto !important;
-}
-
 .announcementBar {
+  --bordered-margin-right: 12px;
+  
   position: relative;
   display: flex;
   align-items: center;
   height: var(--docusaurus-announcement-bar-height);
   background-color: var(--ifm-announcement-bar-bg);
-  padding: 12px 20px 12px 12px;
+  padding: 12px;
   border: 1px solid var(--ifm-announcement-bar-border-color);
   border-radius: var(--ifm-global-radius);
-  margin: 0 16px 16px 16px;
-}
-
-.announcementBar:after {
-  content: '';
-  width: 100%;
-  height: 2px;
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  background: var(--ifm-primary-gradient);
+  margin: 0 var(--doc-sidebar-padding) calc(var(--ifm-base-margin-vertical) / 2) var(--doc-sidebar-padding);
+  transition: all var(--ifm-transition-fast) ease;
 }
 
 .announcementBar:hover {
@@ -39,33 +28,22 @@ html[data-announcement-bar-initially-dismissed='true'] .announcementBar {
 .announcementBarClose {
   z-index: 101;
   text-align: right;
-  color: var(--ifm-announcement-bar-text-color) !important;
-}
-
-.announcementBarClose svg {
-  /* color: var(--ifm-announcement-bar-close-icon-color); */
-  width: 8px !important;
-  height: 8px !important;
 }
 
 .announcementBarClose svg g {
-  stroke-width: 1.9px !important;
+  stroke-width: 1.5px !important;
 }
 
 .announcementBarIconWrapper {
+  --ifm-icon-color: var(--ifm-announcement-bar-icon-color);
+
   padding: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--ifm-announcement-bar-icon-bg);
-  border: 1px solid var(--ifm-announcement-bar-icon-border-color);
-  border-radius: var(--ifm-global-radius);
-  margin-right: 12px;
-}
-
-.announcementBarIcon {
-  width: 20px;
-  height: 20px;
+  background: var(--ifm-announcement-bar-icon-bg);
+  background-size: cover;
+  border-radius: calc(var(--ifm-global-radius) / 2);
 }
 
 .announcementBarLink {
@@ -84,10 +62,6 @@ html[data-announcement-bar-initially-dismissed='true'] .announcementBar {
 }
 
 @media (min-width: 997px) {
-  :root {
-    --docusaurus-announcement-bar-height: 30px;
-  }
-
   .announcementBarPlaceholder,
   .announcementBarClose {
     flex-basis: 50px;

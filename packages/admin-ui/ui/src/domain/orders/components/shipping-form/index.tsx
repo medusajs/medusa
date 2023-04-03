@@ -4,12 +4,12 @@ import clsx from "clsx"
 import { useAdminShippingOptions } from "medusa-react"
 import { useMemo } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import PriceFormInput from "../../../../components/forms/general/prices-form/price-form-input"
 import Button from "../../../../components/fundamentals/button"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import { NextSelect } from "../../../../components/molecules/select/next-select"
 import { NestedForm } from "../../../../utils/nested-form"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
-import PriceFormInput from "../../../products/components/prices-form/price-form-input"
 
 export type ShippingFormType = {
   option: {

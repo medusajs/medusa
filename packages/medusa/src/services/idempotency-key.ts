@@ -1,15 +1,16 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { v4 } from "uuid"
-import { TransactionBaseService } from "../interfaces"
-import { DeepPartial, EntityManager } from "typeorm"
-import { IdempotencyKeyRepository } from "../repositories/idempotency-key"
-import { IdempotencyKey } from "../models"
 import {
   CreateIdempotencyKeyInput,
   IdempotencyCallbackResult,
 } from "../types/idempotency-key"
-import { Selector } from "../types/common"
+import { DeepPartial, EntityManager } from "typeorm"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { buildQuery, isString } from "../utils"
+
+import { IdempotencyKey } from "../models"
+import { IdempotencyKeyRepository } from "../repositories/idempotency-key"
+import { Selector } from "../types/common"
+import { TransactionBaseService } from "../interfaces"
+import { v4 } from "uuid"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
@@ -43,9 +44,11 @@ class IdempotencyKeyService extends TransactionBaseService {
     reqPath: string
   ): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async () => {
-      const key = await this.retrieve(headerKey).catch(() => void 0)
-      if (key) {
-        return key
+      if (headerKey) {
+        const key = await this.retrieve(headerKey).catch(() => void 0)
+        if (key) {
+          return key
+        }
       }
       return await this.create({
         request_method: reqMethod,

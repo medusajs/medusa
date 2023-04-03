@@ -222,7 +222,7 @@ export const AllocationLineItem: React.FC<{
   form.setValue(path("line_item_id"), item.id)
 
   useEffect(() => {
-    if (variant?.inventory) {
+    if (variant?.inventory?.length) {
       form.setValue(path("inventory_item_id"), variant.inventory[0].id)
     }
   }, [variant, form, path])
@@ -232,17 +232,23 @@ export const AllocationLineItem: React.FC<{
       return {}
     }
     const { inventory } = variant
-    const locationInventory = inventory[0].location_levels?.find(
+    const locationInventory = inventory?.[0]?.location_levels?.find(
       (inv) => inv.location_id === locationId
     )
+
     if (!locationInventory) {
       return {}
     }
+
     return {
       availableQuantity: locationInventory.available_quantity,
       inStockQuantity: locationInventory.stocked_quantity,
     }
   }, [variant, locationId, isLoading])
+
+  if (!variant.inventory?.length) {
+    return null
+  }
 
   const lineItemReservationCapacity =
     getFulfillableQuantity(item) - (reservedQuantity || 0)
@@ -254,6 +260,7 @@ export const AllocationLineItem: React.FC<{
     lineItemReservationCapacity,
     inventoryItemReservationCapacity
   )
+
   return (
     <div className="mt-8 flex w-full items-start justify-between">
       <div className="gap-x-base flex w-7/12">
@@ -287,8 +294,8 @@ export const AllocationLineItem: React.FC<{
             }
           )}
         >
-          <p>{availableQuantity || "N/A"} available</p>
-          <p>({inStockQuantity || "N/A"} in stock)</p>
+          <p>{availableQuantity || 0} available</p>
+          <p>({inStockQuantity || 0} in stock)</p>
         </div>
         <InputField
           {...register(path(`quantity`), { valueAsNumber: true })}

@@ -1,21 +1,21 @@
 import {
-  buildQuery,
   CreateReservationItemInput,
   FilterableReservationItemProps,
   FindConfig,
   IEventBusService,
+  SharedContext,
   UpdateReservationItemInput,
-} from "@medusajs/medusa"
-import { SharedContext } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+} from "@medusajs/types"
+import {
+  buildQuery,
+  InjectEntityManager,
+  isDefined,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
-<<<<<<< HEAD
-import { ReservationType } from "../models/reservation-item"
-=======
 import { ReservationItem } from "../models"
->>>>>>> develop
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -126,39 +126,6 @@ export default class ReservationItemService {
    * @param data - The reservation item data.
    * @return The created reservation item.
    */
-<<<<<<< HEAD
-  async create(data: CreateReservationItemInput): Promise<ReservationItem> {
-    return await this.atomicPhase_(async (manager) => {
-      const reservationItemRepository = manager.getRepository(ReservationItem)
-
-      const reservationItem = reservationItemRepository.create({
-        inventory_item_id: data.inventory_item_id,
-        line_item_id: data.line_item_id,
-        location_id: data.location_id,
-        quantity: data.quantity,
-        metadata: data.metadata,
-        type: data.type as unknown as ReservationType,
-      })
-
-      const [newInventoryItem] = await Promise.all([
-        reservationItemRepository.save(reservationItem),
-        this.inventoryLevelService_
-          .withTransaction(manager)
-          .adjustReservedQuantity(
-            data.inventory_item_id,
-            data.location_id,
-            data.quantity
-          ),
-      ])
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.CREATED, {
-          id: newInventoryItem.id,
-        })
-
-      return newInventoryItem
-=======
   @InjectEntityManager()
   async create(
     data: CreateReservationItemInput,
@@ -173,7 +140,6 @@ export default class ReservationItemService {
       location_id: data.location_id,
       quantity: data.quantity,
       metadata: data.metadata,
->>>>>>> develop
     })
 
     const [newInventoryItem] = await Promise.all([
@@ -276,9 +242,10 @@ export default class ReservationItemService {
       context
     )
 
-    const ops: Promise<unknown>[] = []
+    const ops: Promise<unknown>[] = [
+      itemRepository.softDelete({ line_item_id: lineItemId }),
+    ]
     for (const item of items) {
-      ops.push(itemRepository.softRemove({ line_item_id: lineItemId }))
       ops.push(
         this.inventoryLevelService_.adjustReservedQuantity(
           item.inventory_item_id,

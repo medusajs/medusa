@@ -10,6 +10,7 @@ import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
 import { StoreGetOrderParams } from "./get-order"
 import { StoreGetOrdersParams } from "./lookup-order"
+import { FindParams } from "../../../../types/common"
 
 const route = Router()
 
@@ -50,6 +51,12 @@ export default (app) => {
    */
   route.get(
     "/cart/:cart_id",
+    transformStoreQuery(FindParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
+    }),
     middlewares.wrap(require("./get-order-by-cart").default)
   )
 
@@ -101,14 +108,7 @@ export const defaultStoreOrdersFields = [
   "currency_code",
   "tax_rate",
   "created_at",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
   "items.refundable",
-  "refunded_total",
-  "gift_card_total",
-  "subtotal",
-  "total",
 ] as (keyof Order)[]
 
 export const allowedStoreOrdersFields = [

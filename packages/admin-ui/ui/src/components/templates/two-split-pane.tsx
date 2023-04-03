@@ -38,7 +38,7 @@ const TwoSplitPane: React.FC<TwoSplitPaneProps> = ({
       {Children.map(children, (child, i) => {
         return (
           <div
-            className={clsx("h-full w-full", {
+            className={clsx("w-full", {
               "col-span-2": threeCols && i === 1,
             })}
             key={i}

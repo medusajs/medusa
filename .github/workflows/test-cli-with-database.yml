@@ -90,7 +90,7 @@ jobs:
       ##########################  Test medusa develop  ###############################
 
       - name: Run development server
-        run: medusa develop  > /dev/null 2>&1 &
+        run: medusa develop &
         working-directory: ../cli-test
 
       - name: Testing development server
@@ -99,7 +99,7 @@ jobs:
       ###########################  Test medusa start  ################################
 
       - name: Starting medusa
-        run: medusa start > /dev/null 2>&1 &
+        run: medusa start &
         working-directory: ../cli-test
 
       - name: Testing server

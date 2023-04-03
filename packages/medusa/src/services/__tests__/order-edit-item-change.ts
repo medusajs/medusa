@@ -1,7 +1,12 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { EventBusService, LineItemService, OrderEditItemChangeService, TaxProviderService, } from "../index"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { In } from "typeorm"
+import EventBusService from "../event-bus"
+import {
+  LineItemService,
+  OrderEditItemChangeService,
+  TaxProviderService
+} from "../index"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 
 const taxProviderServiceMock = {

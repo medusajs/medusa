@@ -2,13 +2,13 @@ import { useAdminProduct } from "medusa-react"
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
+import ProductAttributesSection from "../../../components/organisms/product-attributes-section"
+import ProductGeneralSection from "../../../components/organisms/product-general-section"
+import ProductMediaSection from "../../../components/organisms/product-media-section"
+import ProductRawSection from "../../../components/organisms/product-raw-section"
+import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
+import ProductVariantsSection from "../../../components/organisms/product-variants-section"
 import { getErrorStatus } from "../../../utils/get-error-status"
-import AttributesSection from "./sections/attributes"
-import GeneralSection from "./sections/general"
-import MediaSection from "./sections/media"
-import RawSection from "./sections/raw"
-import ThumbnailSection from "./sections/thumbnail"
-import VariantsSection from "./sections/variants"
 
 const Edit = () => {
   const { id } = useParams()
@@ -17,13 +17,9 @@ const Edit = () => {
   const { product, status, error } = useAdminProduct(id || "")
 
   if (error) {
-    let message = "An unknown error occurred"
-
     const errorStatus = getErrorStatus(error)
 
     if (errorStatus) {
-      message = errorStatus.message
-
       // If the product is not found, redirect to the 404 page
       if (errorStatus.status === 404) {
         navigate("/404")
@@ -53,14 +49,14 @@ const Edit = () => {
       />
       <div className="gap-x-base grid grid-cols-12">
         <div className="gap-y-xsmall col-span-8 flex flex-col">
-          <GeneralSection product={product} />
-          <VariantsSection product={product} />
-          <AttributesSection product={product} />
-          <RawSection product={product} />
+          <ProductGeneralSection product={product} />
+          <ProductVariantsSection product={product} />
+          <ProductAttributesSection product={product} />
+          <ProductRawSection product={product} />
         </div>
         <div className="gap-y-xsmall col-span-4 flex flex-col">
-          <ThumbnailSection product={product} />
-          <MediaSection product={product} />
+          <ProductThumbnailSection product={product} />
+          <ProductMediaSection product={product} />
         </div>
       </div>
     </div>
