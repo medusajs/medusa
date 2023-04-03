@@ -945,7 +945,7 @@ module.exports = {
         {
           type: "link",
           href: "#",
-          label: "Admin: Manage Stock Locations in Orders",
+          label: "Admin: Manage Allocations in Orders",
           customProps: {
             sidebar_is_soon: true,
           },
