@@ -1047,6 +1047,70 @@ describe("DiscountService", () => {
     })
   })
 
+  describe("hasCustomerReachedLimit", () => {
+    const orderRepository = MockRepository({
+      findAndCount: jest.fn().mockImplementation(() => {
+        return Promise.resolve([1, 2])
+      }),
+    })
+
+    const customer = {
+      id: IdMap.getId("test-customer"),
+    }
+
+    const discountService = new DiscountService({
+      featureFlagRouter,
+      manager: MockManager,
+      orderRepository: orderRepository,
+    })
+
+    it("returns true if customer discount limit is reached", async () => {
+      const discount = {
+        id: "customer-limit-reached",
+        code: "customer-limit-reached",
+        regions: [{ id: "good" }],
+        rule: {},
+        usage_count: 2,
+        usage_limit_per_customer: 2,
+        usage_limit: 3,
+      }
+
+      const hasCustomerReachedLimit =
+        await discountService.hasCustomerReachedLimit(discount, customer)
+      expect(hasCustomerReachedLimit).toBe(true)
+    })
+
+    it("returns false if customer discount limit is not reached", async () => {
+      const discount = {
+        id: "customer-limit-reached",
+        code: "customer-limit-reached",
+        regions: [{ id: "good" }],
+        rule: {},
+        usage_count: 2,
+        usage_limit_per_customer: 100,
+        usage_limit: 100,
+      }
+
+      const hasCustomerReachedLimit =
+        await discountService.hasCustomerReachedLimit(discount, customer)
+      expect(hasCustomerReachedLimit).toBe(false)
+    })
+
+    it("returns false if customer discount limit is not set", async () => {
+      const discount = {
+        id: "customer-limit-reached",
+        code: "customer-limit-reached",
+        regions: [{ id: "good" }],
+        rule: {},
+        usage_count: 2,
+      }
+
+      const hasCustomerReachedLimit =
+        await discountService.hasCustomerReachedLimit(discount, customer)
+      expect(hasCustomerReachedLimit).toBe(false)
+    })
+  })
+
   describe("isDisabled", () => {
     const discountService = new DiscountService({
       featureFlagRouter,
