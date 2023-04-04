@@ -1,22 +1,24 @@
-# Class: CustomShippingOptionService
+# Class: StagedJobService
+
+Provides layer to manipulate users.
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`CustomShippingOptionService`**
+  ↳ **`StagedJobService`**
 
 ## Constructors
 
 ### constructor
 
-• **new CustomShippingOptionService**(`__namedParameters`)
+• **new StagedJobService**(`__namedParameters`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `InjectedDependencies` |
+| `__namedParameters` | `StagedJobServiceProps` |
 
 #### Overrides
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/custom-shipping-option.ts:18](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/custom-shipping-option.ts#L18)
+[medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/staged-job.ts#L22)
 
 ## Properties
 
@@ -70,16 +72,6 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 ___
 
-### customShippingOptionRepository\_
-
-• `Protected` **customShippingOptionRepository\_**: `Repository`<`CustomShippingOption`\>
-
-#### Defined in
-
-[medusa/src/services/custom-shipping-option.ts:16](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/custom-shipping-option.ts#L16)
-
-___
-
 ### manager\_
 
 • `Protected` **manager\_**: `EntityManager`
@@ -91,6 +83,16 @@ TransactionBaseService.manager\_
 #### Defined in
 
 [medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+
+___
+
+### stagedJobRepository\_
+
+• `Protected` **stagedJobRepository\_**: `Repository`<`StagedJob`\> & { `insertBulk`: (`jobToCreates`: `_QueryDeepPartialEntity`<`StagedJob`\>[]) => `Promise`<`StagedJob`[]\>  }
+
+#### Defined in
+
+[medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/staged-job.ts#L20)
 
 ___
 
@@ -167,82 +169,61 @@ ___
 
 ### create
 
-▸ **create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
-
-Creates a custom shipping option
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `T` | `CreateCustomShippingOptionInput` \| `CreateCustomShippingOptionInput`[] |
-| `TResult` | `T` extends `CreateCustomShippingOptionInput`[] ? `CustomShippingOption`[] : `CustomShippingOption` |
+▸ **create**(`data`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `data` | `T` | the custom shipping option to create |
+| Name | Type |
+| :------ | :------ |
+| `data` | `EmitData`<`unknown`\> \| `EmitData`<`unknown`\>[] |
 
 #### Returns
 
-`Promise`<`TResult`\>
-
-resolves to the creation result
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/custom-shipping-option.ts:80](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/custom-shipping-option.ts#L80)
+[medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/staged-job.ts#L45)
+
+___
+
+### delete
+
+▸ **delete**(`stagedJobIds`): `Promise`<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `stagedJobIds` | `string` \| `string`[] |
+
+#### Returns
+
+`Promise`<`void`\>
+
+#### Defined in
+
+[medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/staged-job.ts#L37)
 
 ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<`CustomShippingOption`[]\>
-
-Fetches all custom shipping options based on the given selector
+▸ **list**(`config`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `selector` | `Selector`<`CustomShippingOption`\> | the query object for find |
-| `config` | `FindConfig`<`CustomShippingOption`\> | the configuration used to find the objects. contains relations, skip, and take. |
+| Name | Type |
+| :------ | :------ |
+| `config` | `FindConfig`<`StagedJob`\> |
 
 #### Returns
 
-`Promise`<`CustomShippingOption`[]\>
-
-custom shipping options matching the query
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/custom-shipping-option.ts:58](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/custom-shipping-option.ts#L58)
-
-___
-
-### retrieve
-
-▸ **retrieve**(`id`, `config?`): `Promise`<`CustomShippingOption`\>
-
-Retrieves a specific shipping option.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `id` | `string` | the id of the custom shipping option to retrieve. |
-| `config` | `FindConfig`<`CustomShippingOption`\> | any options needed to query for the result. |
-
-#### Returns
-
-`Promise`<`CustomShippingOption`\>
-
-the requested custom shipping option.
-
-#### Defined in
-
-[medusa/src/services/custom-shipping-option.ts:31](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/custom-shipping-option.ts#L31)
+[medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/7a3194c31/packages/medusa/src/services/staged-job.ts#L29)
 
 ___
 
@@ -272,7 +253,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`CustomShippingOptionService`](CustomShippingOptionService.md)
+▸ **withTransaction**(`transactionManager?`): [`StagedJobService`](StagedJobService.md)
 
 #### Parameters
 
@@ -282,7 +263,7 @@ ___
 
 #### Returns
 
-[`CustomShippingOptionService`](CustomShippingOptionService.md)
+[`StagedJobService`](StagedJobService.md)
 
 #### Inherited from
 
