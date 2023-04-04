@@ -18,10 +18,11 @@ export function withDefaultSalesChannel(
     )
 
     const defaultSalesChannel = await salesChannelService.retrieveDefault()
-    req.query.sales_channel_id = asArray
-      ? [defaultSalesChannel.id]
-      : defaultSalesChannel.id
-
+    if (defaultSalesChannel?.id) {
+      req.query.sales_channel_id = asArray
+        ? [defaultSalesChannel.id]
+        : defaultSalesChannel.id
+    }
     next()
   }
 }
