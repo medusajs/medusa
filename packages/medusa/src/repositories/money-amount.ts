@@ -16,6 +16,7 @@ import {
 } from "../types/price-list"
 import { ProductVariantPrice } from "../types/product-variant"
 import { isString } from "../utils"
+import { groupBy } from "lodash"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -227,18 +228,20 @@ export const MoneyAmountRepository = dataSource
     },
 
     async findManyForVariantInRegion(
-      variant_id: string,
+      variant_ids: string | string[],
       region_id?: string,
       currency_code?: string,
       customer_id?: string,
       include_discount_prices?: boolean,
       include_tax_inclusive_pricing = false
-    ): Promise<[MoneyAmount[], number]> {
+    ): Promise<[Record<string, MoneyAmount[]>, number]> {
+      variant_ids = Array.isArray(variant_ids) ? variant_ids : [variant_ids]
+
       const date = new Date()
 
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
-        .where({ variant_id: variant_id })
+        .where({ variant_id: In(variant_ids) })
         .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
         .andWhere(
           "(price_list.ends_at is null OR price_list.ends_at > :date)",
@@ -296,7 +299,11 @@ export const MoneyAmountRepository = dataSource
           "cgroup.id is null"
         )
       }
-      return await qb.getManyAndCount()
+
+      const [prices, count] = await qb.getManyAndCount()
+      const groupedPrices = groupBy(prices, "variant_id")
+
+      return [groupedPrices, count]
     },
 
     async updatePriceListPrices(

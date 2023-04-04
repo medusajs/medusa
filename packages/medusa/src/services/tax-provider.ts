@@ -428,9 +428,11 @@ class TaxProviderService extends TransactionBaseService {
    * @return the tax rates configured for the shipping option. A map by product id
    */
   async getRegionRatesForProduct(
-    productIds: string[],
+    productIds: string | string[],
     region: RegionDetails
   ): Promise<Map<string, TaxServiceRate[]>> {
+    productIds = Array.isArray(productIds) ? productIds : [productIds]
+
     const nonCachedProductIds: string[] = []
 
     const cacheKeysMap = new Map(

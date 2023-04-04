@@ -166,17 +166,9 @@ class PricingService extends TransactionBaseService {
   ): Promise<Map<string, ProductVariantPricing>> {
     const dataMap = new Map(data.map((d) => [d.variantId, d]))
 
-    const calculatePriceData = data.map((d) => ({
-      variantId: d.variantId,
-      context: {
-        ...context.price_selection,
-        tax_rates: d.taxRates,
-      },
-    }))
-
     const variantsPricing = await this.priceSelectionStrategy
       .withTransaction(this.activeManager_)
-      .calculateVariantPrice(calculatePriceData)
+      .calculateVariantPrice(data, context.price_selection)
 
     const pricingResultMap = new Map()
 

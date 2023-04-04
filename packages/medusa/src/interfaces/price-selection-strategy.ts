@@ -1,7 +1,8 @@
-import { MoneyAmount, TransactionBaseService } from ".."
+import { MoneyAmount } from "../models"
 import { PriceListType } from "../types/price-list"
 import { TaxServiceRate } from "../types/tax-service"
 import { ITransactionBaseService } from "@medusajs/types"
+import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IPriceSelectionStrategy extends ITransactionBaseService {
   /**
@@ -13,7 +14,8 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
-    data: { variantId: string; context: PriceSelectionContext }[]
+    data: { variantId: string; taxRates?: TaxServiceRate[] }[],
+    context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 
   /**
@@ -28,7 +30,8 @@ export abstract class AbstractPriceSelectionStrategy
   implements IPriceSelectionStrategy
 {
   public abstract calculateVariantPrice(
-    data: { variantId: string; context: PriceSelectionContext }[]
+    data: { variantId: string; taxRates: TaxServiceRate[] }[],
+    context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 
   public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
