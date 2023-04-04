@@ -1,4 +1,9 @@
 type: object
+required:
+  - inventory_items
+  - count
+  - offset
+  - limit
 properties:
   inventory_items:
     type: array

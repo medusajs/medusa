@@ -1,4 +1,6 @@
 type: object
+required:
+  - store
 properties:
   store:
     $ref: ./Store.yaml
