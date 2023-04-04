@@ -1,22 +1,24 @@
-# Class: IdempotencyKeyService
+# Class: StagedJobService
+
+Provides layer to manipulate users.
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`IdempotencyKeyService`**
+  ↳ **`StagedJobService`**
 
 ## Constructors
 
 ### constructor
 
-• **new IdempotencyKeyService**(`__namedParameters`)
+• **new StagedJobService**(`__namedParameters`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `InjectedDependencies` |
+| `__namedParameters` | `StagedJobServiceProps` |
 
 #### Overrides
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/idempotency-key.ts:25](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L25)
+[medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/staged-job.ts#L22)
 
 ## Properties
 
@@ -70,16 +72,6 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 ___
 
-### idempotencyKeyRepository\_
-
-• `Protected` `Readonly` **idempotencyKeyRepository\_**: `Repository`<`IdempotencyKey`\>
-
-#### Defined in
-
-[medusa/src/services/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L23)
-
-___
-
 ### manager\_
 
 • `Protected` **manager\_**: `EntityManager`
@@ -91,6 +83,16 @@ TransactionBaseService.manager\_
 #### Defined in
 
 [medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+
+___
+
+### stagedJobRepository\_
+
+• `Protected` **stagedJobRepository\_**: `Repository`<`StagedJob`\> & { `insertBulk`: (`jobToCreates`: `_QueryDeepPartialEntity`<`StagedJob`\>[]) => `Promise`<`StagedJob`[]\>  }
+
+#### Defined in
+
+[medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/staged-job.ts#L20)
 
 ___
 
@@ -167,102 +169,61 @@ ___
 
 ### create
 
-▸ **create**(`payload`): `Promise`<`IdempotencyKey`\>
-
-Creates an idempotency key for a request.
-If no idempotency key is provided in request, we will create a unique
-identifier.
+▸ **create**(`data`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `payload` | `CreateIdempotencyKeyInput` | payload of request to create idempotency key for |
+| Name | Type |
+| :------ | :------ |
+| `data` | `EmitData`<`unknown`\> \| `EmitData`<`unknown`\>[] |
 
 #### Returns
 
-`Promise`<`IdempotencyKey`\>
-
-the created idempotency key
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/idempotency-key.ts:68](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L68)
+[medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/staged-job.ts#L45)
 
 ___
 
-### initializeRequest
+### delete
 
-▸ **initializeRequest**(`headerKey`, `reqMethod`, `reqParams`, `reqPath`): `Promise`<`IdempotencyKey`\>
-
-Execute the initial steps in a idempotent request.
+▸ **delete**(`stagedJobIds`): `Promise`<`void`\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `headerKey` | `string` | potential idempotency key from header |
-| `reqMethod` | `string` | method of request |
-| `reqParams` | `Record`<`string`, `unknown`\> | params of request |
-| `reqPath` | `string` | path of request |
+| Name | Type |
+| :------ | :------ |
+| `stagedJobIds` | `string` \| `string`[] |
 
 #### Returns
 
-`Promise`<`IdempotencyKey`\>
-
-the existing or created idempotency key
+`Promise`<`void`\>
 
 #### Defined in
 
-[medusa/src/services/idempotency-key.ts:40](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L40)
+[medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/staged-job.ts#L37)
 
 ___
 
-### lock
+### list
 
-▸ **lock**(`idempotencyKey`): `Promise`<`IdempotencyKey`\>
-
-Locks an idempotency.
+▸ **list**(`config`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `idempotencyKey` | `string` | key to lock |
+| Name | Type |
+| :------ | :------ |
+| `config` | `FindConfig`<`StagedJob`\> |
 
 #### Returns
 
-`Promise`<`IdempotencyKey`\>
-
-result of the update operation
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/idempotency-key.ts:138](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L138)
-
-___
-
-### retrieve
-
-▸ **retrieve**(`idempotencyKeyOrSelector`): `Promise`<`IdempotencyKey`\>
-
-Retrieves an idempotency key
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `idempotencyKeyOrSelector` | `string` \| `Selector`<`IdempotencyKey`\> | key or selector to retrieve |
-
-#### Returns
-
-`Promise`<`IdempotencyKey`\>
-
-idempotency key
-
-#### Defined in
-
-[medusa/src/services/idempotency-key.ts:86](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L86)
+[medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/staged-job.ts#L29)
 
 ___
 
@@ -290,34 +251,9 @@ TransactionBaseService.shouldRetryTransaction\_
 
 ___
 
-### update
-
-▸ **update**(`idempotencyKey`, `update`): `Promise`<`IdempotencyKey`\>
-
-Locks an idempotency.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `idempotencyKey` | `string` | key to update |
-| `update` | `DeepPartial`<`IdempotencyKey`\> | update object |
-
-#### Returns
-
-`Promise`<`IdempotencyKey`\>
-
-result of the update operation
-
-#### Defined in
-
-[medusa/src/services/idempotency-key.ts:167](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L167)
-
-___
-
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`IdempotencyKeyService`](IdempotencyKeyService.md)
+▸ **withTransaction**(`transactionManager?`): [`StagedJobService`](StagedJobService.md)
 
 #### Parameters
 
@@ -327,7 +263,7 @@ ___
 
 #### Returns
 
-[`IdempotencyKeyService`](IdempotencyKeyService.md)
+[`StagedJobService`](StagedJobService.md)
 
 #### Inherited from
 
@@ -336,32 +272,3 @@ TransactionBaseService.withTransaction
 #### Defined in
 
 [medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
-
-___
-
-### workStage
-
-▸ **workStage**(`idempotencyKey`, `callback`): `Promise`<`IdempotencyKey`\>
-
-Performs an atomic work stage.
-An atomic work stage contains some related functionality, that needs to be
-transactionally executed in isolation. An idempotent request will
-always consist of 2 or more of these phases. The required phases are
-"started" and "finished".
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `idempotencyKey` | `string` | current idempotency key |
-| `callback` | (`transactionManager`: `EntityManager`) => `Promise`<`IdempotencyCallbackResult`\> | functionality to execute within the phase |
-
-#### Returns
-
-`Promise`<`IdempotencyKey`\>
-
-new updated idempotency key
-
-#### Defined in
-
-[medusa/src/services/idempotency-key.ts:196](https://github.com/medusajs/medusa/blob/f0d37b4d2/packages/medusa/src/services/idempotency-key.ts#L196)
