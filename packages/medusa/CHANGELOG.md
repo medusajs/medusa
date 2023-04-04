@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.8.0-rc.7
+
+### Patch Changes
+
+- [#3665](https://github.com/medusajs/medusa/pull/3665) [`748833383`](https://github.com/medusajs/medusa/commit/748833383f4bafd05109dac7afa1286fe851cba3) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): draft order adjustments for mw
+
+- [#3705](https://github.com/medusajs/medusa/pull/3705) [`e5a2e9c8d`](https://github.com/medusajs/medusa/commit/e5a2e9c8d237bbe4e3563f5a7a892ca41f01ba24) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): circular loading
+
 ## 1.8.0-rc.6
 
 ### Patch Changes

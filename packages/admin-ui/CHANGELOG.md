@@ -1,5 +1,14 @@
 # @medusajs/admin-ui
 
+## 0.0.1-rc.7
+
+### Patch Changes
+
+- [#3706](https://github.com/medusajs/medusa/pull/3706) [`dae8da109`](https://github.com/medusajs/medusa/commit/dae8da1099bbe5fd3c59adc7fd2c28b41c0f71bc) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(admin): Duplicate product without prices
+
+- Updated dependencies []:
+  - medusa-react@5.0.0-rc.7
+
 ## 0.0.1-rc.6
 
 ### Patch Changes
