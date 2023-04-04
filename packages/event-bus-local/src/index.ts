@@ -11,3 +11,4 @@ const moduleDefinition: ModuleExports = {
 }
 
 export default moduleDefinition
+export * from "./initialize"

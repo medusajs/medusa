@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 
+import useNotification from "../../hooks/use-notification"
+import { getErrorMessage } from "../../utils/error-messages"
 import Button from "../fundamentals/button"
 import Modal from "../molecules/modal"
-import { getErrorMessage } from "../../utils/error-messages"
-import useNotification from "../../hooks/use-notification"
 
 type DeletePromptProps = {
   heading?: string
@@ -54,10 +54,10 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex h-8 w-full justify-end">
+          <div className="gap-x-xsmall flex h-8 w-full justify-end">
             <Button
-              variant="ghost"
-              className="text-small min-w-24 mr-2 justify-center"
+              variant="secondary"
+              className="justify-center"
               size="small"
               onClick={handleClose}
             >
@@ -66,7 +66,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
             <Button
               loading={isLoading}
               size="small"
-              className="text-small w-24 justify-center"
+              className="justify-center"
               variant="nuclear"
               onClick={handleSubmit}
               disabled={isLoading}

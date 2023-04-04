@@ -1,5 +1,9 @@
+import {
+  AdminGetVariantsVariantInventoryRes,
+  Order,
+  VariantInventory,
+} from "@medusajs/medusa"
 import { DisplayTotal, PaymentDetails } from "../templates"
-import { Order } from "@medusajs/medusa"
 import React, { useContext, useMemo } from "react"
 
 import { ActionType } from "../../../../components/molecules/actionables"
@@ -9,11 +13,13 @@ import BodyCard from "../../../../components/organisms/body-card"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
+import { ReservationItemDTO } from "@medusajs/types"
+import { Response } from "@medusajs/medusa-js"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { useMedusa } from "medusa-react"
 import useToggleState from "../../../../hooks/use-toggle-state"
-import { ReservationItemDTO } from "@medusajs/types"
 
 type SummaryCardProps = {
   order: Order
@@ -28,8 +34,48 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
   } = useToggleState()
 
   const { showModal } = useContext(OrderEditContext)
+  const { client } = useMedusa()
   const { isFeatureEnabled } = useFeatureFlag()
   const inventoryEnabled = isFeatureEnabled("inventoryService")
+
+  const [variantInventoryMap, setVariantInventoryMap] = React.useState<
+    Map<string, VariantInventory>
+  >(new Map())
+
+  React.useEffect(() => {
+    if (!inventoryEnabled) {
+      return
+    }
+
+    const fetchInventory = async () => {
+      const inventory = await Promise.all(
+        order.items.map(async (item) => {
+          if (!item.variant_id) {
+            return
+          }
+          return await client.admin.variants.getInventory(item.variant_id)
+        })
+      )
+
+      setVariantInventoryMap(
+        new Map(
+          inventory
+            .filter(
+              (
+                inventoryItem
+                // eslint-disable-next-line max-len
+              ): inventoryItem is Response<AdminGetVariantsVariantInventoryRes> =>
+                !!inventoryItem
+            )
+            .map((i) => {
+              return [i.variant.id, i.variant]
+            })
+        )
+      )
+    }
+
+    fetchInventory()
+  }, [order.items, inventoryEnabled, client.admin.variants])
 
   const reservationItemsMap = useMemo(() => {
     if (!reservations?.length || !inventoryEnabled) {
@@ -52,6 +98,13 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
 
   const allItemsReserved = useMemo(() => {
     return order.items.every((item) => {
+      if (
+        !item.variant_id ||
+        !variantInventoryMap.get(item.variant_id)?.inventory.length
+      ) {
+        return true
+      }
+
       const reservations = reservationItemsMap[item.id]
 
       return (
@@ -61,7 +114,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             item.quantity - (item.fulfilled_quantity || 0))
       )
     })
-  }, [reservationItemsMap, order])
+  }, [order.items, variantInventoryMap, reservationItemsMap])
 
   const { hasMovements, swapAmount, manualRefund, swapRefund, returnRefund } =
     useMemo(() => {

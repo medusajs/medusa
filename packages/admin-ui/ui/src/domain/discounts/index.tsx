@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Route, Routes } from "react-router-dom"
 import Fade from "../../components/atoms/fade-wrapper"
+import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
@@ -31,6 +32,7 @@ const DiscountIndex = () => {
         >
           <DiscountTable />
         </BodyCard>
+        <Spacer />
       </div>
       <DiscountFormProvider>
         <Fade isVisible={isOpen} isFullScreen={true}>

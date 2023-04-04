@@ -30,6 +30,7 @@ import moment from "moment"
 import { useEffect, useMemo, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Avatar from "../../../components/atoms/avatar"
+import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
@@ -42,7 +43,6 @@ import MailIcon from "../../../components/fundamentals/icons/mail-icon"
 import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import { ActionType } from "../../../components/molecules/actionables"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
 import JSONView from "../../../components/molecules/json-view"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
@@ -285,10 +285,10 @@ const OrderDetails = () => {
   return (
     <div>
       <OrderEditProvider orderId={id!}>
-        <Breadcrumb
-          currentPage={"Order Details"}
-          previousBreadcrumb={"Orders"}
-          previousRoute="/a/orders"
+        <BackButton
+          path="/a/orders"
+          label="Back to Orders"
+          className="mb-xsmall"
         />
         {isLoading || !order ? (
           <BodyCard className="pt-2xlarge flex w-full items-center justify-center">

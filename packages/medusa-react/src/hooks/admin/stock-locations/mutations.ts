@@ -11,6 +11,8 @@ import {
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminProductKeys } from "../products"
+import { adminVariantKeys } from "../variants"
 import { adminStockLocationsKeys } from "./queries"
 
 export const useAdminCreateStockLocation = (
@@ -67,7 +69,12 @@ export const useAdminDeleteStockLocation = (
     () => client.admin.stockLocations.delete(id),
     buildOptions(
       queryClient,
-      [adminStockLocationsKeys.lists(), adminStockLocationsKeys.detail(id)],
+      [
+        adminStockLocationsKeys.lists(),
+        adminStockLocationsKeys.detail(id),
+        adminVariantKeys.all,
+        adminProductKeys.lists(),
+      ],
       options
     )
   )

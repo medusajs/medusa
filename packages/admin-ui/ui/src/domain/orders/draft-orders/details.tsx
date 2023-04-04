@@ -10,6 +10,7 @@ import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import Avatar from "../../../components/atoms/avatar"
+import BackButton from "../../../components/atoms/back-button"
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
 import Spinner from "../../../components/atoms/spinner"
 import Badge from "../../../components/fundamentals/badge"
@@ -19,7 +20,6 @@ import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-i
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import StatusDot from "../../../components/fundamentals/status-indicator"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
 import JSONView from "../../../components/molecules/json-view"
 import BodyCard from "../../../components/organisms/body-card"
 import ConfirmationPrompt from "../../../components/organisms/confirmation-prompt"
@@ -125,10 +125,10 @@ const DraftOrderDetails = () => {
 
   return (
     <div>
-      <Breadcrumb
-        currentPage={"Draft Order Details"}
-        previousBreadcrumb={"Draft Orders"}
-        previousRoute="/a/draft-orders"
+      <BackButton
+        path="/a/draft-orders"
+        label="Back to Draft Orders"
+        className="mb-xsmall"
       />
       {isLoading || !draft_order ? (
         <BodyCard className="pt-2xlarge flex w-full items-center justify-center">

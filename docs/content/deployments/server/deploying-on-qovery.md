@@ -51,19 +51,13 @@ Before you can deploy your Medusa backend you need to create a GitHub repository
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
-![Click plus icon at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001782/Medusa%20Docs/Netlify/0YlxBRi_aiywpo.png)
-
 You’ll then be redirected to a new page with a form. In the form, enter the Repository Name then scroll down and click Create repository.
-
-![An image of the Create Repository form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001800/Medusa%20Docs/Netlify/YPYXAF2_lypjne.png)
 
 ### Push Code to GitHub Repository
 
 The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
-
-![An image of the GitHub URL in a new repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
 Copy the link. Then, open your terminal in the directory that holds your Medusa backend codebase and run the following commands:
 
@@ -79,7 +73,7 @@ Then, add, commit, and push the changes into the repository:
 ```bash
 git add .
 git commit -m "initial commit"
-git push origin master
+git push
 ```
 
 After pushing the changes, you can find the files in your GitHub repository.
@@ -118,7 +112,7 @@ You need to add some variables to use for your Medusa deployment to Qovery.
 
 In the root directory of your Medusa backend, create the file `variables.tf` with the following content:
 
-```
+```tf
 variable "qovery_organization_id" {
   type = string
   nullable = false
@@ -254,6 +248,12 @@ Here’s an explanation of each of the variables and how to retrieve their varia
 - `git_url`: The URL of the Git repository you created earlier. Make sure it ends with `.git`.
 - `git_branch`: The branch to use in the GitHub repo. By default it’s `master`.
 - `git_root_path`: The root path of the Medusa backend. By default, it’s `/`. If you are hosting your Medusa backend in a monorepo in a nested directory, you need to change the value of this variable.
+
+:::note
+
+If you're using modules that require setting up other variables, you can add them here.
+
+:::
 
 ### Add Terraform Configuration File
 
@@ -422,6 +422,12 @@ resource "qovery_application" "medusa_app" {
 }
 ```
 
+:::note
+
+If you're using modules that require setting up other resources, make sure to add them here.
+
+:::
+
 This is a Terraform configuration file that creates all the resources necessary to deploy Medusa to Qovery. If you set `qovery_create_cluster` to `true`, it will create new credentials and a cluster in your Qovery organization using the AWS credentials you set in the variables.
 
 Next, it creates a new project, environment, PostgreSQL database, and a Redis database in your Qovery organization.
@@ -521,5 +527,5 @@ To add environment variables, in your [Qovery Console](https://console.qovery.co
 
 ## See Also
 
-- [Deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md)
-- [Deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md)
+- [Deploy the Medusa Admin](../admin/index.mdx)
+- [Deploy the Storefront](../storefront/index.mdx)

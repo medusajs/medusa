@@ -22,36 +22,29 @@ The migration file must be inside the `src/migrations` directory. When you run t
 <details>
   <summary>Generating Migrations for Entities</summary>
 
-  You can alternatively use Typeorm's `generate` command to generate a Migration file from existing entity classes. As Medusa uses v0.2.45 of Typeorm, you have to create a `ormconfig.json` first before using the `generate` command.
+  You can alternatively use Typeorm's `generate` command to generate a Migration file from existing entity classes. As of v1.8, Medusa uses Typeorm v0.3.x. You have to create a [DataSource](https://typeorm.io/data-source) first before using the `migration:generate` command.
 
-:::note
+  For example, create the file `datasource.js` in the root of your Medusa server with the following content:
 
-Typeorm will be updated to the latest version in v1.8.0 of Medusa.
-
-:::
-
-  For example, create the file `ormconfig.json` in the root of your Medusa server with the following content:
-
-  ```json
-  {
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "<YOUR_DB_USERNAME>",
-    "password": "<YOUR_DB_PASSWORD>",
-    "database": "<YOUR_DB_NAME>",
-    "synchronize": true,
-    "logging": false,
-    "entities": [
-      "dist/models/**/*.js"
+  ```js
+  const { DataSource } = require("typeorm")
+  
+  const AppDataSource = new DataSource({
+    type: "postgres",
+    port: 5432,
+    username: "<YOUR_DB_USERNAME>",
+    password: "<YOUR_DB_PASSWORD>",
+    database: "<YOUR_DB_NAME>",
+    entities: [
+      "dist/models/*.js",
     ],
-    "migrations": [
-      "dist/migrations/**/*.js"
+    migrations: [
+      "dist/migrations/*.js",
     ],
-    "cli": {
-        "entitiesDir": "src/models",
-        "migrationsDir": "src/migrations"
-    }
+  })
+
+  module.exports = {
+    datasource: AppDataSource,
   }
   ```
 
@@ -66,7 +59,7 @@ Typeorm will be updated to the latest version in v1.8.0 of Medusa.
   Finally, run the following command to generate a Migration for your new entity:
 
   ```bash
-  npx typeorm@0.2.45 migration:generate -n PostCreate
+  npx typeorm migration:generate -d datasource.js src/migrations/PostCreate
   ```
 
   Where `PostCreate` is just an example of the name of the migration to generate. The migration will then be generated in `src/migrations/<TIMESTAMP>-PostCreate.ts`. You can then skip to step 3 of this guide.

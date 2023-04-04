@@ -7,7 +7,7 @@ import { getErrorMessage } from "../../../utils/error-messages"
 import Button from "../../fundamentals/button"
 import InputField from "../../molecules/input"
 import Modal from "../../molecules/modal"
-import Select from "../../molecules/select"
+import { NextSelect } from "../../molecules/select/next-select"
 
 type InviteModalProps = {
   handleClose: () => void
@@ -68,10 +68,13 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
                 name="role"
                 control={control}
                 defaultValue={{ label: "Member", value: "member" }}
-                render={({ field: { value, onChange } }) => {
+                render={({ field: { value, onChange, onBlur, ref } }) => {
                   return (
-                    <Select
+                    <NextSelect
                       label="Role"
+                      placeholder="Select role"
+                      onBlur={onBlur}
+                      ref={ref}
                       onChange={onChange}
                       options={roleOptions}
                       value={value}

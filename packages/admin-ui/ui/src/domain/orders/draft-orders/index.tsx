@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
+import Spacer from "../../../components/atoms/spacer"
 
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
@@ -47,6 +48,7 @@ const DraftOrderIndex = () => {
         >
           <DraftOrderTable />
         </BodyCard>
+        <Spacer />
       </div>
       {showNewOrder && (
         <NewOrderFormProvider>
