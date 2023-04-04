@@ -5,14 +5,14 @@ import {
   PaymentProviderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { Order } from "../../../../models"
 import {
   defaultAdminOrdersFields as defaultOrderFields,
   defaultAdminOrdersRelations as defaultOrderRelations,
 } from "../../../../types/orders"
+
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { Order } from "../../../../models"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -76,6 +76,7 @@ export default async (req, res) => {
     "paymentProviderService"
   )
   const orderService: OrderService = req.scope.resolve("orderService")
+  const inventoryService: OrderService = req.scope.resolve("inventoryService")
   const cartService: CartService = req.scope.resolve("cartService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
@@ -113,9 +114,12 @@ export default async (req, res) => {
         select: defaultOrderFields,
       })
 
-    await reserveQuantityForDraftOrder(order, {
-      productVariantInventoryService,
-    })
+    // TODO: Re-enable when we have a way to handle inventory for draft orders on creation
+    if (!inventoryService) {
+      await reserveQuantityForDraftOrder(order, {
+        productVariantInventoryService,
+      })
+    }
 
     return order
   })
