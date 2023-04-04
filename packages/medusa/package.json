@@ -35,8 +35,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
     "serve": "node dist/app.js",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest"
   },
   "peerDependencies": {
     "@medusajs/types": "0.0.2-rc.1",

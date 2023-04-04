@@ -22,8 +22,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run release",
     "build": "rollup --config --environment NODE_ENV:development",
     "release": "rollup --config --environment NODE_ENV:production",
-    "test": "jest --passWithNoTests",
-    "test:unit": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "camelcase": "^6.3.0",
