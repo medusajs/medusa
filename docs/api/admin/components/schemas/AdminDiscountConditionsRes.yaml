@@ -1,4 +1,10 @@
 type: object
+x-expanded-relations:
+  field: discount_condition
+  relations:
+    - discount_rule
+required:
+  - discount_condition
 properties:
   discount_condition:
     $ref: ./DiscountCondition.yaml

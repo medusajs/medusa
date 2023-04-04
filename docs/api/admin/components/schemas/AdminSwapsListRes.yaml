@@ -1,4 +1,9 @@
 type: object
+required:
+  - swaps
+  - count
+  - offset
+  - limit
 properties:
   swaps:
     type: array

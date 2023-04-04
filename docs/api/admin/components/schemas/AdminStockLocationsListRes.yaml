@@ -1,9 +1,14 @@
 type: object
+required:
+  - stock_locations
+  - count
+  - offset
+  - limit
 properties:
   stock_locations:
     type: array
     items:
-      $ref: ./StockLocationDTO.yaml
+      $ref: ./StockLocationExpandedDTO.yaml
   count:
     type: integer
     description: The total number of items available

@@ -1,0 +1,120 @@
+get:
+  operationId: GetProductsProductVariants
+  summary: List a Product's Variants
+  description: Retrieves a list of the Product Variants associated with a Product.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: ID of the product to search for the variants.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated string of the column to select.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated string of the relations to include.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many items to skip before the results.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of items returned.
+      schema:
+        type: integer
+        default: 100
+  x-codegen:
+    method: listVariants
+    queryParams: AdminGetProductsVariantsParams
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_variants/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductsListVariantsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostProductsProductVariants
+  summary: Create a Product Variant
+  description: >-
+    Creates a Product Variant. Each Product Variant must have a unique
+    combination of Product Option Values.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostProductsProductVariantsReq.yaml
+  x-codegen:
+    method: createVariant
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_products_{id}_variants/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_variants/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

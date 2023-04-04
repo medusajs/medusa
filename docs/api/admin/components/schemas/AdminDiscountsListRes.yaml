@@ -1,4 +1,16 @@
 type: object
+x-expanded-relations:
+  field: discounts
+  relations:
+    - parent_discount
+    - regions
+    - rule
+    - rule.conditions
+required:
+  - discounts
+  - count
+  - offset
+  - limit
 properties:
   discounts:
     type: array
