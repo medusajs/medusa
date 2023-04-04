@@ -18,7 +18,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   value: string
 
-  @Index()
+  @Index('idx_product_option_value_option_id', { where: "deleted_at IS NULL" })
   @Column()
   option_id: string
 
@@ -26,7 +26,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
   @JoinColumn({ name: "option_id" })
   option: ProductOption
 
-  @Index()
+  @Index('idx_product_option_value_variant_id', { where: "deleted_at IS NULL" })
   @Column()
   variant_id: string
 
