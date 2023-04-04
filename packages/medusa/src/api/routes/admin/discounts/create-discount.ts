@@ -263,6 +263,11 @@ export class AdminPostDiscountsReq {
   @IsPositive()
   usage_limit?: number
 
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  usage_limit_per_customer?: number
+
   @IsArray()
   @IsString({ each: true })
   regions: string[]

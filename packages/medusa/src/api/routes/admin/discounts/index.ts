@@ -198,6 +198,7 @@ export const defaultAdminDiscountsFields: (keyof Discount)[] = [
   "rule_id",
   "parent_discount_id",
   "usage_limit",
+  "usage_limit_per_customer",
   "usage_count",
   "starts_at",
   "ends_at",

@@ -122,6 +122,10 @@ export class AdminPostDiscountsDiscountDynamicCodesReq {
   @IsOptional()
   usage_limit = 1
 
+  @IsNumber()
+  @IsOptional()
+  usage_limit_per_customer = 1
+
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>

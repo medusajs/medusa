@@ -234,6 +234,11 @@ export class AdminPostDiscountsDiscountReq {
   @IsPositive()
   usage_limit?: number | null
 
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  usage_limit_per_customer?: number | null
+
   @IsArray()
   @IsOptional()
   @IsString({ each: true })

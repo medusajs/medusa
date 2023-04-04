@@ -44,6 +44,11 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
           data.config.usage_limit && data.config.usage_limit > 0
             ? data.config.usage_limit
             : null,
+        usage_limit_per_customer:
+          data.config.usage_limit_per_customer &&
+          data.config.usage_limit_per_customer > 0
+            ? data.config.usage_limit_per_customer
+            : null,
         valid_duration: data.config.valid_duration,
       },
       {
@@ -110,6 +115,7 @@ const getDefaultValues = (discount: Discount): ConfigurationsForm => {
       starts_at: new Date(discount.starts_at),
       ends_at: discount.ends_at ? new Date(discount.ends_at) : null,
       usage_limit: discount.usage_limit,
+      usage_limit_per_customer: discount.usage_limit_per_customer,
       valid_duration: discount.valid_duration,
     },
   }
