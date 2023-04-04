@@ -2,9 +2,9 @@
 description: 'Learn what the dependency container is and how to use it in Medusa. Learn also what dependency injection is, and what the resources regsitered and their names are.'
 ---
 
-# Dependency Injection
+# Dependency Container and Injection
 
-In this document, you’ll learn what the dependency injection is and how you can use it in Medusa.
+In this document, you’ll learn what the dependency container is and how you can use it in Medusa with dependency injection.
 
 ## Introduction
 
@@ -36,13 +36,13 @@ The backend then registers all important resources in the container, which makes
 
 The Medusa backend scans the core Medusa package, plugins, and your files in the `dist` directory and registers the following resources:
 
-:::note
+:::tip
 
-Many resources are registered under their camel-case name. These resources are formatted by taking the name of the file, transforming it to camel case, then appending the folder name to the name. So, the `services/product.ts` service is registered as `productService`.
+The Lifetime column indicates the lifetime of a service. Other resources that aren't services don't have a lifetime, which is indicated with the `-` in the column. You can learn about what a lifetime is in the [Create a Service](../services/create-service.md) documentation.
 
 :::
 
-<table class="reference-table">
+<table class="reference-table table-col-4">
 <thead>
 <tr>
 <th>
@@ -59,6 +59,11 @@ Description
 <th>
 
 Registration Name
+
+</th>
+<th>
+
+Lifetime
 
 </th>
 </tr>
@@ -80,6 +85,11 @@ The configurations that are exported from `medusa-config.js`.
 `configModule`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -96,6 +106,11 @@ Services that extend the `TransactionBaseService` class.
 <td>
 
 Each service is registered under its camel-case name. For example, the `ProductService` is registered as `productService`.
+
+</td>
+<td>
+
+Core services by default have the `SINGLETON` lifetime. However, some have a different lifetime which is indicated in this table. Custom services, including services in plugins, by default have the `TRANSIENT` lifetime, unless defined differently within the custom service.
 
 </td>
 </tr>
@@ -116,6 +131,11 @@ An instance of Typeorm’s Entity Manager.
 `manager`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -134,43 +154,58 @@ An instance of Medusa CLI’s logger. You can use it to log messages to the term
 `logger`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
 <td>
 
-Single Payment Provider
+Single Payment Processor
 
 </td>
 <td>
 
-An instance of every payment provider that extends the `AbstractPaymentService` class.
+An instance of every payment processor that extends the `AbstractPaymentService` or the `AbstractPaymentProcessor` classes.
 
 </td>
 <td>
 
-Every payment provider is registered under two names:
+Every payment processor is registered under two names:
 
-- Its camel-case name. For example, the `StripeProviderService` is registered as `stripeProviderService`.
+- Its camel-case name of the processor. For example, the `StripeProviderService` is registered as `stripeProviderService`.
 - `pp_` followed by its identifier. For example, the `StripeProviderService` is registered as `pp_stripe`.
 
 </td>
+<td>
+
+By default, it's `TRANSIENT` unless defined differently within the payment processor service.
+
+</td>
 </tr>
 
 <tr>
 <td>
 
-All Payment Providers
+All Payment Processors
 
 </td>
 <td>
 
-An array of all payment providers that extend the `AbstractPaymentService` class.
+An array of all payment processor that extend the `AbstractPaymentService` or `AbstractPaymentProcessor` class.
 
 </td>
 <td>
 
 `paymentProviders`
+
+</td>
+<td>
+
+`paymentProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -194,6 +229,11 @@ Every fulfillment provider is registered under two names:
 - `fp_` followed by its identifier. For example, the `WebshipperFulfillmentService` is registered as `fp_webshipper`.
 
 </td>
+<td>
+
+By default, it's `SINGLETON` unless defined differently within the fulfillemnt provider service.
+
+</td>
 </tr>
 
 <tr>
@@ -210,6 +250,11 @@ An array of all fulfillment providers that extend the `FulfillmentService` class
 <td>
 
 `fulfillmentProviders`
+
+</td>
+<td>
+
+`fulfillmentProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -233,6 +278,11 @@ Every notification provider is registered under two names:
 - `noti_` followed by its identifier. For example, the `SendGridService` is registered as `noti_sendgrid`.
 
 </td>
+<td>
+
+By default, it's `SINGLETON` unless defined differently within the notification provider service.
+
+</td>
 </tr>
 
 <tr>
@@ -249,6 +299,11 @@ An array of all notification providers that extend the `AbstractNotificationServ
 <td>
 
 `notificationProviders`
+
+</td>
+<td>
+
+`notificationProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -272,6 +327,11 @@ The file service is registered under two names:
 - `fileService`
 
 </td>
+<td>
+
+By default, it's `TRANSIENT` unless defined differently within the file service.
+
+</td>
 </tr>
 
 <tr>
@@ -291,6 +351,11 @@ The search service is registered under two names:
 
 - Its camel-case name. For example, the `AlgoliaService` is registered as `algoliaService`.
 - `searchService`
+
+</td>
+<td>
+
+By default, it's `TRANSIENT` unless defined differently within the search service.
 
 </td>
 </tr>
@@ -314,6 +379,11 @@ The tax provider is registered under two names:
 - `tp_` followed by its identifier.
 
 </td>
+<td>
+
+By default, it's `SINGLETON` unless defined differently within the tax provider service.
+
+</td>
 </tr>
 
 <tr>
@@ -330,6 +400,11 @@ An array of every tax provider that extends the `AbstractTaxService` class.
 <td>
 
 `taxProviders`
+
+</td>
+<td>
+
+`taxProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
 
 </td>
 </tr>
@@ -350,6 +425,11 @@ An instance of every service that extends the `OauthService` class.
 Each Oauth Service is registered under its camel-case name followed by `Oauth`.
 
 </td>
+<td>
+
+By default, it's `TRANSIENT` unless defined differently within the Oauth service.
+
+</td>
 </tr>
 
 <tr>
@@ -366,6 +446,11 @@ An instance of the `FlagRouter`. This can be used to list feature flags, set a f
 <td>
 
 `featureFlagRouter`
+
+</td>
+<td>
+
+\-
 
 </td>
 </tr>
@@ -386,6 +471,11 @@ An instance of the Redis client. If Redis is not configured, a fake Redis client
 `redisClient`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -402,6 +492,11 @@ An instance of every entity.
 <td>
 
 Each entity is registered under its camel-case name followed by Model. For example, the `CustomerGroup` entity is stored under `customerGroupModel`.
+
+</td>
+<td>
+
+\-
 
 </td>
 </tr>
@@ -422,6 +517,11 @@ An array of all database entities that is passed to Typeorm when connecting to t
 `db_entities`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -438,6 +538,11 @@ An instance of each repository.
 <td>
 
 Each repository is registered under its camel-case name. For example, `CustomerGroupRepository` is stored under `customerGroupRepository`.
+
+</td>
+<td>
+
+\-
 
 </td>
 </tr>
@@ -462,6 +567,11 @@ Each batch job strategy is registered under three names:
 - `batchType_` followed by its batch job type. For example, the `ProductImportStrategy` is registered under `batchType_product-import`.
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -478,6 +588,11 @@ An array of all classes extending the `AbstractBatchJobStrategy` abstract class.
 <td>
 
 `batchJobStrategies`
+
+</td>
+<td>
+
+\-
 
 </td>
 </tr>
@@ -498,6 +613,11 @@ An instance of the class implementing the `ITaxCalculationStrategy` interface.
 `taxCalculationStrategy`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -514,6 +634,11 @@ An instance of the class extending the `AbstractCartCompletionStrategy` class.
 <td>
 
 `cartCompletionStrategy`
+
+</td>
+<td>
+
+\-
 
 </td>
 </tr>
@@ -534,6 +659,11 @@ An instance of the class implementing the `IPriceSelectionStrategy` interface.
 `priceSelectionStrategy`
 
 </td>
+<td>
+
+\-
+
+</td>
 </tr>
 
 <tr>
@@ -550,6 +680,11 @@ An instance of strategies that aren’t of the specific types mentioned above an
 <td>
 
 Its camel-case name.
+
+</td>
+<td>
+
+\-
 
 </td>
 </tr>
@@ -576,7 +711,7 @@ Please note that in endpoints some resources, such as repositories, are not avai
 
 ### In Classes
 
-In classes such as services, strategies, or subscribers, you can load resources in the constructor function. The constructor receives an object of dependencies as a first parameter. Each dependency in the object should use the registration name of the resource that should be injected to the class.
+In classes such as services, strategies, or subscribers, you can load resources in the constructor function using dependency injection. The constructor receives an object of dependencies as a first parameter. Each dependency in the object should use the registration name of the resource that should be injected to the class.
 
 For example:
 

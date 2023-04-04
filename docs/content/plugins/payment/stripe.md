@@ -21,7 +21,7 @@ You can also follow this video guide to learn how the setup works:
 
 [Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales. These features are also available in a safe test environment which allows for a concern-free development process.
 
-Using the `medusa-payment-stripe` plugin, this guide shows you how to set up your Medusa project with Stripe as a payment provider.
+Using the `medusa-payment-stripe` plugin, this guide shows you how to set up your Medusa project with Stripe as a payment processor.
 
 ---
 
@@ -33,7 +33,7 @@ Before you proceed with this guide, make sure you create a [Stripe account](http
 
 ## Medusa Backend
 
-This section guides you over the steps necessary to add Stripe as a payment provider to your Medusa backend.
+This section guides you over the steps necessary to add Stripe as a payment processor to your Medusa backend.
 
 If you don’t have a Medusa backend installed yet, you must follow the [quickstart guide](../../development/backend/install.mdx) first.
 
@@ -86,7 +86,7 @@ STRIPE_API_KEY=sk_...
 
 :::note
 
-If you store environment variables differently on your backend, for example, using the hosting provider’s UI, then you don’t need to add it in `.env`. Add the environment variables in a way relevant to your backend.
+If you store environment variables differently on your backend, for example, using the hosting processor’s UI, then you don’t need to add it in `.env`. Add the environment variables in a way relevant to your backend.
 
 :::
 
@@ -108,9 +108,9 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 
 ## Admin Setup
 
-This section will guide you through adding Stripe as a payment provider in a region using your Medusa admin dashboard.
+This section will guide you through adding Stripe as a payment processor in a region using your Medusa admin dashboard.
 
-This step is required for you to be able to use Stripe as a payment provider in your storefront.
+This step is required for you to be able to use Stripe as a payment processor in your storefront.
 
 ### Admin Prerequisites
 
@@ -118,7 +118,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add Stripe to Regions
 
-You can refer to [this documentation in the user guide](../../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment provider like Stripe to a region.
+You can refer to [this documentation in the user guide](../../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment processor like Stripe to a region.
 
 ---
 
@@ -178,8 +178,8 @@ This section will go over how to add Stripe into a React-based framework. The in
 
 The integration with stripe must have the following workflow:
 
-1. During checkout when the user reaches the payment section, you should [create payment sessions](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions). This will initialize the `payment_sessions` array in the `cart` object received. The `payment_sessions` is an array of available payment providers.
-2. If Stripe is available as a payment provider, you should select Stripe as [the payment session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) for the current cart. This will initialize the `payment_session` object in the `cart` object to include data related to Stripe and the current payment session. This includes the payment intent and client secret.
+1. During checkout when the user reaches the payment section, you should [create payment sessions](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions). This will initialize the `payment_sessions` array in the `cart` object received. The `payment_sessions` is an array of available payment processors.
+2. If Stripe is available as a payment processor, you should select Stripe as [the payment session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) for the current cart. This will initialize the `payment_session` object in the `cart` object to include data related to Stripe and the current payment session. This includes the payment intent and client secret.
 3. After the user enters their card details and submits the form, confirm the payment with Stripe.
 4. If the payment is confirmed successfully, [complete the order](/api/store/#tag/Cart/operation/PostCartsCartComplete) in Medusa. Otherwise show an error.
 
@@ -299,7 +299,7 @@ client.carts.createPaymentSessions(cart.id)
     // check if stripe is selected
     const isStripeAvailable = cart.payment_sessions?.some(
       (session) => (
-        session.provider_id === "stripe"
+        session.processor_id === "stripe"
       )
     )
     if (!isStripeAvailable) {
@@ -308,7 +308,7 @@ client.carts.createPaymentSessions(cart.id)
 
     // select stripe payment session
     client.carts.setPaymentSession(cart.id, {
-      provider_id: "stripe",
+      processor_id: "stripe",
     }).then(({ cart }) => {
       setClientSecret(cart.payment_session.data.client_secret)
     })

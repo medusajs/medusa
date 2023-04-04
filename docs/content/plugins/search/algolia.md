@@ -23,15 +23,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
-
-Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in Algolia are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa backend](../../development/backend/configurations.md#redis).
-
-:::caution
-
-If you don’t install and configure Redis on your Medusa backend, the Algolia integration will still work. However, products indexed in Algolia are only added and updated when you restart the Medusa backend.
-
-:::
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### Algolia Account
 
@@ -100,38 +92,100 @@ Where `<YOUR_APP_ID>` and `<YOUR_ADMIN_API_KEY>` are respectively the Applicatio
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
     resolve: `medusa-plugin-algolia`,
     options: {
-      application_id: process.env.ALGOLIA_APP_ID,
-      admin_api_key: process.env.ALGOLIA_ADMIN_API_KEY,
+      applicationId: process.env.ALGOLIA_APP_ID,
+      adminApiKey: process.env.ALGOLIA_ADMIN_API_KEY,
       settings: {
-        products: {
-          searchableAttributes: ["title", "description"],
-          attributesToRetrieve: [
-            "id",
-            "title",
-            "description",
-            "handle",
-            "thumbnail",
-            "variants",
-            "variant_sku",
-            "options",
-            "collection_title",
-            "collection_handle",
-            "images",
-          ],
-        },
+        // index settings...
       },
     },
   },
 ]
 ```
 
-The `searchableAttributes` are the attributes in a product that are searchable, and `attributesToRetrieve` are the attributes to retrieve for each product result. You’re free to make changes to these attributes as you see fit, but these are the recommended attributes.
+### Index Settings
+
+Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
+
+```js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      // other options...
+    settings: {
+      indexName: {
+        indexSettings: {
+          searchableAttributes,
+          attributesToRetrieve,
+        },
+        transformer,
+      },
+    },
+    },
+  },
+]
+```
+
+Where:
+
+- `indexName`: the name of the index to create in Algolia. For example, `products`. Its value is an object containing the following properties:
+  - `indexSettings`: an object that includes the following properties:
+    - `searchableAttributes`: an array of strings indicating the attributes in the product entity that can be searched.
+    - `attributesToRetrieve`: an array of strings indicating the attributes in the product entity that should be retrieved in the search results.
+  - `transformer`: an optional function that accepts a product as a parameter and returns an object to be indexed. This allows you to have more control over what you're indexing. For example, you can add details related to variants or custom relations, or you can filter out certain products.
+
+Using this index settings structure, you can add more than one index.
+
+:::tip
+
+These settings are just examples of what you can pass to the Algolia provider. If you need to pass more settings to the Algolia SDK you can pass it inside `indexSettings`.
+
+:::
+
+Here's an example of the settings you can use:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      // other options...
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: ["title", "description"],
+            attributesToRetrieve: [
+              "id",
+              "title",
+              "description",
+              "handle",
+              "thumbnail",
+              "variants",
+              "variant_sku",
+              "options",
+              "collection_title",
+              "collection_handle",
+              "images",
+            ],
+          },
+          transform: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
 
 ---
 
@@ -163,7 +217,7 @@ If you add or update products on your Medusa backend, the addition or update wil
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the Algolia indices.
+This feature is only available if you have an event module installed in your Medusa backend, as explained in the Prerequisites section.
 
 :::
 

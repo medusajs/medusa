@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-redis",
-  "version": "1.8.0-rc.3",
+  "version": "1.8.0-rc.4",
   "description": "Redis Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -32,8 +32,8 @@
     "test:unit": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "0.1.0-rc.3",
-    "@medusajs/utils": "0.0.2-rc.1",
+    "@medusajs/modules-sdk": "0.1.0-rc.4",
+    "@medusajs/utils": "0.0.2-rc.2",
     "awilix": "^8.0.0",
     "bullmq": "^3.5.6",
     "ioredis": "^5.2.5"
