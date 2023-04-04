@@ -2242,13 +2242,19 @@ class CartService extends TransactionBaseService {
 
             const availablePrice = await this.priceSelectionStrategy_
               .withTransaction(this.activeManager_)
-              .calculateVariantPrice(item.variant_id, {
-                region_id: region.id,
-                currency_code: region.currency_code,
-                quantity: item.quantity,
-                customer_id: customer_id || cart.customer_id,
-                include_discount_prices: true,
-              })
+              .calculateVariantPrice([
+                {
+                  variantId: item.variant_id,
+                  context: {
+                    region_id: region.id,
+                    currency_code: region.currency_code,
+                    quantity: item.quantity,
+                    customer_id: customer_id || cart.customer_id,
+                    include_discount_prices: true,
+                  },
+                },
+              ])
+              .then((res) => res.get(item.variant_id!)!)
               .catch(() => undefined)
 
             if (

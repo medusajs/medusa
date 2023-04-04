@@ -3,7 +3,6 @@ import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
-  IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
   PriceType,
@@ -15,7 +14,6 @@ import { FlagRouter } from "../utils/flag-router"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   protected manager_: EntityManager
-
   protected readonly featureFlagRouter_: FlagRouter
   protected moneyAmountRepository_: typeof MoneyAmountRepository
   protected cacheService_: ICacheService
@@ -26,55 +24,75 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     moneyAmountRepository,
     cacheService,
   }) {
-    super()
+    // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
+    super(...arguments)
     this.manager_ = manager
     this.moneyAmountRepository_ = moneyAmountRepository
     this.featureFlagRouter_ = featureFlagRouter
     this.cacheService_ = cacheService
   }
 
-  withTransaction(manager: EntityManager): IPriceSelectionStrategy {
-    if (!manager) {
-      return this
-    }
-
-    return new PriceSelectionStrategy({
-      manager: manager,
-      moneyAmountRepository: this.moneyAmountRepository_,
-      featureFlagRouter: this.featureFlagRouter_,
-      cacheService: this.cacheService_,
-    })
-  }
-
   async calculateVariantPrice(
-    variant_id: string,
-    context: PriceSelectionContext
-  ): Promise<PriceSelectionResult> {
-    const cacheKey = this.getCacheKey(variant_id, context)
-    if (!context.ignore_cache) {
-      const cached = await this.cacheService_
-        .get<PriceSelectionResult>(cacheKey)
-        .catch(() => void 0)
-      if (cached) {
-        return cached
-      }
-    }
+    data: { variantId: string; context: PriceSelectionContext }[]
+  ): Promise<Map<string, PriceSelectionResult>> {
+    const dataMap = new Map(data.map((d) => [d.variantId, d]))
 
-    let result
+    const nonCachedData: {
+      variantId: string
+      context: PriceSelectionContext
+    }[] = []
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        TaxInclusivePricingFeatureFlag.key
-      )
-    ) {
-      result = await this.calculateVariantPrice_new(variant_id, context)
-    } else {
-      result = await this.calculateVariantPrice_old(variant_id, context)
-    }
+    const cacheKeysMap = new Map(
+      data.map(({ variantId, context }) => [
+        variantId,
+        this.getCacheKey(variantId, context),
+      ])
+    )
 
-    await this.cacheService_.set(cacheKey, result)
+    const variantPricesMap = new Map<string, PriceSelectionResult>()
+    await Promise.all(
+      [...cacheKeysMap].map(async ([id, cacheKey]) => {
+        const { context } = dataMap.get(id)!
 
-    return result
+        let cacheHit: PriceSelectionResult | undefined | null
+        if (!context.ignore_cache) {
+          cacheHit = await this.cacheService_.get<PriceSelectionResult>(
+            cacheKey
+          )
+        }
+
+        if (!cacheHit) {
+          nonCachedData.push(dataMap.get(id)!)
+          return
+        }
+
+        variantPricesMap.set(id, cacheHit)
+      })
+    )
+
+    await Promise.all(
+      nonCachedData.map(async ({ variantId, context }) => {
+        const cacheKey = cacheKeysMap.get(variantId)!
+
+        let result: PriceSelectionResult
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
+        ) {
+          result = await this.calculateVariantPrice_new(variantId, context)
+        } else {
+          result = await this.calculateVariantPrice_old(variantId, context)
+        }
+
+        await this.cacheService_.set(cacheKey, result)
+
+        variantPricesMap.set(variantId, result)
+      })
+    )
+
+    return variantPricesMap
   }
 
   private async calculateVariantPrice_new(
