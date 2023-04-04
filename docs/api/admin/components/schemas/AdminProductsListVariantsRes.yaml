@@ -1,4 +1,9 @@
 type: object
+required:
+  - variants
+  - count
+  - offset
+  - limit
 properties:
   variants:
     type: array

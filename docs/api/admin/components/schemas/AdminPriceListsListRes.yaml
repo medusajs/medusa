@@ -1,4 +1,9 @@
 type: object
+required:
+  - price_lists
+  - count
+  - offset
+  - limit
 properties:
   price_lists:
     type: array

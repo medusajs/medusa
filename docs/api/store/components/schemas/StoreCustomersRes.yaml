@@ -1,4 +1,11 @@
 type: object
+x-expanded-relations:
+  field: customer
+  relations:
+    - billing_address
+    - shipping_addresses
+required:
+  - customer
 properties:
   customer:
     $ref: ./Customer.yaml
