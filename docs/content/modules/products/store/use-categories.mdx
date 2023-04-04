@@ -49,12 +49,18 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You can list product categories by sending a request to the [List Product Categories endpoint](/api/store#tag/Product-Category/operation/GetProductCategories):
 
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
 ```ts
 medusa.productCategories.list()
 .then(({ product_categories, limit, offset, count }) => {
   console.log(product_categories.length)
 })
 ```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
 import { useProductCategories } from "medusa-react"
@@ -88,8 +94,11 @@ function Categories() {
 export default Categories
 ```
 
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
 ```ts
-fetch(`<BACKEND_URL>/product-categories`, {
+fetch(`<BACKEND_URL>/store/product-categories`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -98,10 +107,16 @@ fetch(`<BACKEND_URL>/product-categories`, {
 })
 ```
 
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl -L -X GET '<BACKEND_URL>/store/product-categories' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+</TabItem>
+</Tabs>
 
 This request does not require any query parameters. You can, however, pass query parameters to filter the list of categories, such as the passing the `q` query parameter to search categories by title or handle. You can learn about available query parameters in the [API reference](/api/store#tag/Product-Category/operation/GetProductCategories).
 
@@ -117,12 +132,18 @@ By default, the categories are not retrieved along with their nested children. T
 
 You can retrieve a single product category by using the [Get a Product Category endpoint](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory):
 
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
 ```ts
 medusa.productCategories.retrieve(productCategoryId)
 .then(({ product_category }) => {
   console.log(product_category.name)
 })
 ```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
 import { useProductCategory } from "medusa-react"
@@ -141,8 +162,13 @@ function Category() {
 export default Category
 ```
 
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
 ```ts
-fetch(`<BACKEND_URL>/product-categories/${productCategoryId}`, {
+fetch(`<BACKEND_URL>/store/product-categories/${productCategoryId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
@@ -151,10 +177,16 @@ fetch(`<BACKEND_URL>/product-categories/${productCategoryId}`, {
 })
 ```
 
+</TabItem>
+<TabItem value="curl" label="cURL">
+
 ```bash
 curl -L -X GET '<BACKEND_URL>/store/product-categories/<CAT_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+</TabItem>
+</Tabs>
 
 This request requires the product category ID as a path parameter. You can also pass query parameters such as `expand` and `fields` as explained in the [API reference](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory).
 
