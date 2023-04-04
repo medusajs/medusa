@@ -26,8 +26,6 @@ class MemcachedCacheService implements ICacheService {
   }
   /**
    * Set a key/value pair to the cache.
-   * It is also possible to manage the ttl through environment variable using CACHE_TTL. If the ttl is 0 it will
-   * act like the value should not be cached at all.
    * @param key
    * @param data
    * @param ttl
@@ -74,7 +72,7 @@ class MemcachedCacheService implements ICacheService {
   }
 
   /**
-   * Invalidate cache for a specific key. a key can be either a specific key or more global such as "ps:*".
+   * Invalidate cache for a specific key.
    * @param key
    */
   async invalidate(key: string): Promise<void> {
