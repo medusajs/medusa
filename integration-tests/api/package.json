@@ -9,11 +9,11 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/cache-inmemory": "1.8.0-rc.3",
-    "@medusajs/event-bus-local": "1.8.0-rc.4",
-    "@medusajs/medusa": "1.8.0-rc.8",
+    "@medusajs/cache-inmemory": "1.8.0",
+    "@medusajs/event-bus-local": "1.8.0",
+    "@medusajs/medusa": "1.8.0",
     "faker": "^5.5.3",
-    "medusa-interfaces": "1.3.7-rc.0",
+    "medusa-interfaces": "1.3.7",
     "typeorm": "^0.3.11"
   },
   "devDependencies": {
