@@ -25,7 +25,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/",
-    withDefaultSalesChannel(true),
     transformStoreQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
@@ -33,18 +32,19 @@ export default (app, featureFlagRouter: FlagRouter) => {
       allowedRelations: allowedStoreProductsRelations,
       isList: true,
     }),
+    withDefaultSalesChannel(true),
     middlewares.wrap(require("./list-products").default)
   )
 
   route.get(
     "/:id",
-    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
       allowedRelations: allowedStoreProductsRelations,
     }),
+    withDefaultSalesChannel(),
     middlewares.wrap(require("./get-product").default)
   )
 
