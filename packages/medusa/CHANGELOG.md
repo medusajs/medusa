@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.8.0-rc.8
+
+### Patch Changes
+
+- [#3713](https://github.com/medusajs/medusa/pull/3713) [`4488ec685`](https://github.com/medusajs/medusa/commit/4488ec68524f95f367cbd352e9e5eb1957d1d0d6) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Category seeding result in non null constraint error
+
 ## 1.8.0-rc.7
 
 ### Patch Changes
