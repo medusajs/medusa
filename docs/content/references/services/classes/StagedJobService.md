@@ -1,22 +1,24 @@
-# Class: ReturnReasonService
+# Class: StagedJobService
+
+Provides layer to manipulate users.
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`ReturnReasonService`**
+  ↳ **`StagedJobService`**
 
 ## Constructors
 
 ### constructor
 
-• **new ReturnReasonService**(`__namedParameters`)
+• **new StagedJobService**(`__namedParameters`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `InjectedDependencies` |
+| `__namedParameters` | `StagedJobServiceProps` |
 
 #### Overrides
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/return-reason.ts:18](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L18)
+[medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/staged-job.ts#L22)
 
 ## Properties
 
@@ -84,13 +86,13 @@ TransactionBaseService.manager\_
 
 ___
 
-### retReasonRepo\_
+### stagedJobRepository\_
 
-• `Protected` `Readonly` **retReasonRepo\_**: `Repository`<`ReturnReason`\>
+• `Protected` **stagedJobRepository\_**: `Repository`<`StagedJob`\> & { `insertBulk`: (`jobToCreates`: `_QueryDeepPartialEntity`<`StagedJob`\>[]) => `Promise`<`StagedJob`[]\>  }
 
 #### Defined in
 
-[medusa/src/services/return-reason.ts:16](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L16)
+[medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/staged-job.ts#L20)
 
 ___
 
@@ -167,33 +169,33 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<`ReturnReason`\>
+▸ **create**(`data`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `CreateReturnReason` |
+| `data` | `EmitData`<`unknown`\> \| `EmitData`<`unknown`\>[] |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/return-reason.ts:25](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L25)
+[medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/staged-job.ts#L45)
 
 ___
 
 ### delete
 
-▸ **delete**(`returnReasonId`): `Promise`<`void`\>
+▸ **delete**(`stagedJobIds`): `Promise`<`void`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `returnReasonId` | `string` |
+| `stagedJobIds` | `string` \| `string`[] |
 
 #### Returns
 
@@ -201,55 +203,27 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return-reason.ts:113](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L113)
+[medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/staged-job.ts#L37)
 
 ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<`ReturnReason`[]\>
+▸ **list**(`config`): `Promise`<`StagedJob`[]\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `selector` | `Selector`<`ReturnReason`\> | the query object for find |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
+| Name | Type |
+| :------ | :------ |
+| `config` | `FindConfig`<`StagedJob`\> |
 
 #### Returns
 
-`Promise`<`ReturnReason`[]\>
-
-the result of the find operation
+`Promise`<`StagedJob`[]\>
 
 #### Defined in
 
-[medusa/src/services/return-reason.ts:68](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L68)
-
-___
-
-### retrieve
-
-▸ **retrieve**(`returnReasonId`, `config?`): `Promise`<`ReturnReason`\>
-
-Gets an order by id.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `returnReasonId` | `string` | id of order to retrieve |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
-
-#### Returns
-
-`Promise`<`ReturnReason`\>
-
-the order document
-
-#### Defined in
-
-[medusa/src/services/return-reason.ts:87](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L87)
+[medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/staged-job.ts#L29)
 
 ___
 
@@ -277,30 +251,9 @@ TransactionBaseService.shouldRetryTransaction\_
 
 ___
 
-### update
-
-▸ **update**(`id`, `data`): `Promise`<`ReturnReason`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `data` | `UpdateReturnReason` |
-
-#### Returns
-
-`Promise`<`ReturnReason`\>
-
-#### Defined in
-
-[medusa/src/services/return-reason.ts:46](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/return-reason.ts#L46)
-
-___
-
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ReturnReasonService`](ReturnReasonService.md)
+▸ **withTransaction**(`transactionManager?`): [`StagedJobService`](StagedJobService.md)
 
 #### Parameters
 
@@ -310,7 +263,7 @@ ___
 
 #### Returns
 
-[`ReturnReasonService`](ReturnReasonService.md)
+[`StagedJobService`](StagedJobService.md)
 
 #### Inherited from
 
