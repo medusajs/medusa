@@ -2,6 +2,7 @@ import { Router } from "express"
 import { User } from "../../../.."
 import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
+import { Department } from "../../../../models/department"
 
 export const unauthenticatedUserRoutes = (app) => {
   const route = Router()
@@ -17,7 +18,10 @@ export const unauthenticatedUserRoutes = (app) => {
     middlewares.wrap(require("./reset-password").default)
   )
 }
-
+export interface UserWithDepartments extends User{
+  departments: Department[];
+    data: any;
+}
 export default (app) => {
   const route = Router()
   app.use("/users", route)
@@ -60,7 +64,7 @@ export type AdminUserRes = {
  *       $ref: "#/components/schemas/User"
  */
 export type AdminUsersListRes = {
-  users: Omit<User, "password_hash">[]
+  users: Omit<UserWithDepartments, "password_hash">[]
 }
 
 /**

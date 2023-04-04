@@ -1,8 +1,9 @@
-import { BeforeInsert, Column, Entity, Index } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinTable, OneToMany } from "typeorm"
 
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Department } from "./department"
 
 export enum UserRoles {
   ADMIN = "admin",
@@ -43,6 +44,21 @@ export class User extends SoftDeletableEntity {
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "usr")
   }
+  
+    
+  @OneToMany(() => Department, (department) => department.users)
+  @JoinTable({
+    name: "department",
+    joinColumn: {
+      name: "user_id",
+      referencedColumnName: "id"
+    }
+    // inverseJoinColumn: {
+    //   name: "departmentId",
+    //   referencedColumnName: "id"
+    // }
+  })
+  departments: Department[];
 }
 
 /**
