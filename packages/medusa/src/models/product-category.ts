@@ -46,7 +46,7 @@ export class ProductCategory extends BaseEntity {
   parent_category: ProductCategory | null
 
   // Typeorm also keeps track of the category's parent at all times.
-  @Column()
+  @Column({ nullable: true })
   parent_category_id: string | null
 
   @TreeChildren({ cascade: true })
