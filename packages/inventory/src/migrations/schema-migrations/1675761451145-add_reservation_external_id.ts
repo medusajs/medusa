@@ -1,4 +1,3 @@
-import { ConfigModule } from "@medusajs/medusa"
 import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class addReservationType1675761451145 implements MigrationInterface {
