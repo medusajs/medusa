@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/openapi-typescript-codegen",
-  "version": "0.2.0-rc.0",
+  "version": "0.2.0",
   "description": "Library that generates Typescript clients based on the OpenAPI specification.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -22,8 +22,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run release",
     "build": "rollup --config --environment NODE_ENV:development",
     "release": "rollup --config --environment NODE_ENV:production",
-    "test": "jest --passWithNoTests",
-    "test:unit": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "camelcase": "^6.3.0",

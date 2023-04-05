@@ -310,4 +310,4 @@ class MyFulfillmentService extends FulfillmentService {
 
 ## See Also
 
-- Example Implementations: [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) and the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-manual)
+- Example Implementations: [Webshipper plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-fulfillment-webshipper) and the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-fulfillment-manual)

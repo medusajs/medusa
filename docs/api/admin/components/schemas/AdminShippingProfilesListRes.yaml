@@ -1,4 +1,6 @@
 type: object
+required:
+  - shipping_profiles
 properties:
   shipping_profiles:
     type: array

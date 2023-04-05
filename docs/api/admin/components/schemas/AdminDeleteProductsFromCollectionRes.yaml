@@ -1,4 +1,8 @@
 type: object
+required:
+  - id
+  - object
+  - removed_products
 properties:
   id:
     type: string
