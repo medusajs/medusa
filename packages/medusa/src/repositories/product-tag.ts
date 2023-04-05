@@ -45,13 +45,14 @@ export const ProductTagRepository = dataSource
     },
 
     async listTagsByUsage(take = 10): Promise<ProductTag[]> {
-      return await this.createQueryBuilder("pt")
-        .leftJoin("product_tags", "pts", "pt.id = pts.product_tag_id")
+      const qb = this.createQueryBuilder("pt")
         .select(["id", "COUNT(pts.product_tag_id) as usage_count", "value"])
+        .leftJoin("product_tags", "pts", "pt.id = pts.product_tag_id")
         .groupBy("id")
         .orderBy("usage_count", "DESC")
         .limit(take)
-        .getMany()
+
+      return await qb.getRawMany()
     },
 
     async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
