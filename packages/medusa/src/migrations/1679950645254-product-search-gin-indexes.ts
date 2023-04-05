@@ -23,11 +23,11 @@ export class productSearchGinIndexes1679950645254 implements MigrationInterface 
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      DROP IF EXISTS idx_gin_product_title;
-      DROP IF EXISTS idx_gin_product_description;
-      DROP IF EXISTS idx_gin_product_variant_title;
-      DROP IF EXISTS idx_gin_product_variant_sku;
-      DROP IF EXISTS idx_gin_product_collection;
+      DROP INDEX IF EXISTS idx_gin_product_title;
+      DROP INDEX IF EXISTS idx_gin_product_description;
+      DROP INDEX IF EXISTS idx_gin_product_variant_title;
+      DROP INDEX IF EXISTS idx_gin_product_variant_sku;
+      DROP INDEX IF EXISTS idx_gin_product_collection;
     `)
   }
 }

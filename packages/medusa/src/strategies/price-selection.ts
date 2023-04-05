@@ -39,11 +39,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   ): Promise<Map<string, PriceSelectionResult>> {
     const dataMap = new Map(data.map((d) => [d.variantId, d]))
 
-    const nonCachedData: {
-      variantId: string
-      taxRates?: TaxServiceRate[]
-    }[] = []
-
     const cacheKeysMap = new Map(
       data.map(({ variantId }) => [
         variantId,
@@ -51,26 +46,35 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       ])
     )
 
+    const nonCachedData: {
+      variantId: string
+      taxRates?: TaxServiceRate[]
+    }[] = []
+
     const variantPricesMap = new Map<string, PriceSelectionResult>()
-    await Promise.all(
-      [...cacheKeysMap].map(async ([id, cacheKey]) => {
-        let cacheHit: PriceSelectionResult | undefined | null
-        if (!context.ignore_cache) {
-          cacheHit = await this.cacheService_.get<PriceSelectionResult>(
-            cacheKey
-          )
+
+    if (!context.ignore_cache) {
+      const cacheHits = await Promise.all(
+        [...cacheKeysMap].map(async ([, cacheKey]) => {
+          return await this.cacheService_.get<PriceSelectionResult>(cacheKey)
+        })
+      )
+
+      for (const [index, cacheHit] of cacheHits.entries()) {
+        const variantId = data[index].variantId
+        if (cacheHit) {
+          variantPricesMap.set(variantId, cacheHit)
+          continue
         }
 
-        if (!cacheHit) {
-          nonCachedData.push(dataMap.get(id)!)
-          return
-        }
+        nonCachedData.push(dataMap.get(variantId)!)
+      }
+    } else {
+      nonCachedData.push(...dataMap.values())
+    }
 
-        variantPricesMap.set(id, cacheHit)
-      })
-    )
+    let results: Map<string, PriceSelectionResult> = new Map()
 
-    let results
     if (
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
@@ -81,28 +85,14 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       /* result = await this.calculateVariantPrice_old(variantId, context)*/
     }
 
-    /* await Promise.all(
-      nonCachedData.map(async ({ variantId, context }) => {
-        const cacheKey = cacheKeysMap.get(variantId)!
-
-        let result: PriceSelectionResult
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          )
-        ) {
-          result = await this.calculateVariantPrice_new(variantId, context)
-        } else {
-          result = await this.calculateVariantPrice_old(variantId, context)
-        }
-
-        await this.cacheService_.set(cacheKey, result)
-
-        variantPricesMap.set(variantId, result)
+    await Promise.all(
+      [...results].map(async ([variantId, prices]) => {
+        variantPricesMap.set(variantId, prices)
+        await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)
       })
-    )*/
+    )
 
-    return variantPricesMap
+    return results
   }
 
   private async calculateVariantPrice_new(
@@ -111,7 +101,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   ): Promise<Map<string, PriceSelectionResult>> {
     const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
-    const [variantsPrices] = await moneyRepo.findManyForVariantInRegion(
+    const variantsPrices = await moneyRepo.findManyForVariantInRegion(
       data.map((d) => d.variantId),
       context.region_id,
       context.currency_code,
