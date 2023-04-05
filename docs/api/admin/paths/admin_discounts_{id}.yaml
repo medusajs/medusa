@@ -1,0 +1,174 @@
+get:
+  operationId: GetDiscountsDiscount
+  summary: Get a Discount
+  description: Retrieves a Discount
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Discount
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  x-codegen:
+    method: retrieve
+    queryParams: AdminGetDiscountParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_discounts_{id}/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_discounts_{id}/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminDiscountsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostDiscountsDiscount
+  summary: Update a Discount
+  description: >-
+    Updates a Discount with a given set of rules that define how the Discount
+    behaves.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Discount.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each item of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each item of the
+        result.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostDiscountsDiscountReq.yaml
+  x-codegen:
+    method: update
+    queryParams: AdminPostDiscountsDiscountParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_discounts_{id}/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_discounts_{id}/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminDiscountsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteDiscountsDiscount
+  summary: Delete a Discount
+  description: Deletes a Discount.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Discount
+      schema:
+        type: string
+  x-codegen:
+    method: delete
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_discounts_{id}/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_discounts_{id}/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminDiscountsDeleteRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

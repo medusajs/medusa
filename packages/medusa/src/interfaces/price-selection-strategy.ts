@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { MoneyAmount } from ".."
+import { MoneyAmount } from "../models"
 import { PriceListType } from "../types/price-list"
 import { TaxServiceRate } from "../types/tax-service"
 

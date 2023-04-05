@@ -1,4 +1,20 @@
 type: object
+x-expanded-relations:
+  field: product
+  relations:
+    - collection
+    - images
+    - options
+    - tags
+    - type
+    - variants
+    - variants.options
+    - variants.prices
+required:
+  - variant_id
+  - object
+  - deleted
+  - product
 properties:
   variant_id:
     type: string
@@ -12,4 +28,4 @@ properties:
     description: Whether or not the items were deleted.
     default: true
   product:
-    $ref: ./Product.yaml
+    $ref: ./PricedProduct.yaml

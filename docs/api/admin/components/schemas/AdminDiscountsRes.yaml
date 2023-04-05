@@ -1,4 +1,16 @@
 type: object
+x-expanded-relations:
+  field: discount
+  relations:
+    - parent_discount
+    - regions
+    - rule
+    - rule.conditions
+  eager:
+    - regions.fulfillment_providers
+    - regions.payment_providers
+required:
+  - discount
 properties:
   discount:
     $ref: ./Discount.yaml

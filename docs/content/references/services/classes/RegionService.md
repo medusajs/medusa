@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:67](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L67)
+[medusa/src/services/region.ts:65](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L65)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,27 +68,27 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### countryRepository\_
 
-• `Protected` `Readonly` **countryRepository\_**: typeof `CountryRepository`
+• `Protected` `Readonly` **countryRepository\_**: `Repository`<`Country`\>
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:59](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L59)
+[medusa/src/services/region.ts:57](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L57)
 
 ___
 
 ### currencyRepository\_
 
-• `Protected` `Readonly` **currencyRepository\_**: typeof `CurrencyRepository`
+• `Protected` `Readonly` **currencyRepository\_**: `Repository`<`Currency`\>
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:60](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L60)
+[medusa/src/services/region.ts:58](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L58)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:54](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L54)
+[medusa/src/services/region.ts:52](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L52)
 
 ___
 
@@ -108,17 +108,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:52](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L52)
+[medusa/src/services/region.ts:50](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L50)
 
 ___
 
 ### fulfillmentProviderRepository\_
 
-• `Protected` `Readonly` **fulfillmentProviderRepository\_**: typeof `FulfillmentProviderRepository`
+• `Protected` `Readonly` **fulfillmentProviderRepository\_**: `Repository`<`FulfillmentProvider`\>
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:64](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L64)
+[medusa/src/services/region.ts:62](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L62)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:57](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L57)
+[medusa/src/services/region.ts:55](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L55)
 
 ___
 
@@ -136,23 +136,23 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### paymentProviderRepository\_
 
-• `Protected` `Readonly` **paymentProviderRepository\_**: typeof `PaymentProviderRepository`
+• `Protected` `Readonly` **paymentProviderRepository\_**: `Repository`<`PaymentProvider`\>
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:62](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L62)
+[medusa/src/services/region.ts:60](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L60)
 
 ___
 
@@ -162,17 +162,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:56](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L56)
+[medusa/src/services/region.ts:54](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L54)
 
 ___
 
 ### regionRepository\_
 
-• `Protected` `Readonly` **regionRepository\_**: typeof `RegionRepository`
+• `Protected` `Readonly` **regionRepository\_**: `Repository`<`Region`\>
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:58](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L58)
+[medusa/src/services/region.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L56)
 
 ___
 
@@ -182,17 +182,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:55](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L55)
+[medusa/src/services/region.ts:53](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L53)
 
 ___
 
 ### taxProviderRepository\_
 
-• `Protected` `Readonly` **taxProviderRepository\_**: typeof `TaxProviderRepository`
+• `Protected` `Readonly` **taxProviderRepository\_**: `Repository`<`TaxProvider`\>
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:65](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L65)
+[medusa/src/services/region.ts:63](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L63)
 
 ___
 
@@ -200,13 +200,13 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:51](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L51)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -224,7 +224,25 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:44](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L44)
+[medusa/src/services/region.ts:44](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L44)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -249,7 +267,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:580](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L580)
+[medusa/src/services/region.ts:559](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L559)
 
 ___
 
@@ -275,7 +293,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:710](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L710)
+[medusa/src/services/region.ts:687](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L687)
 
 ___
 
@@ -301,7 +319,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:659](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L659)
+[medusa/src/services/region.ts:638](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L638)
 
 ___
 
@@ -340,7 +358,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -364,7 +382,7 @@ the newly created region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:117](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L117)
+[medusa/src/services/region.ts:101](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L101)
 
 ___
 
@@ -388,7 +406,7 @@ the result of the delete operation
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:549](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L549)
+[medusa/src/services/region.ts:528](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L528)
 
 ___
 
@@ -413,7 +431,7 @@ result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:529](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L529)
+[medusa/src/services/region.ts:506](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L506)
 
 ___
 
@@ -438,7 +456,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:618](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L618)
+[medusa/src/services/region.ts:597](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L597)
 
 ___
 
@@ -463,7 +481,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:798](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L798)
+[medusa/src/services/region.ts:773](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L773)
 
 ___
 
@@ -488,7 +506,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:759](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L759)
+[medusa/src/services/region.ts:734](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L734)
 
 ___
 
@@ -513,7 +531,7 @@ the region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:494](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L494)
+[medusa/src/services/region.ts:471](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L471)
 
 ___
 
@@ -538,7 +556,7 @@ a Region with country code
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:437](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L437)
+[medusa/src/services/region.ts:417](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L417)
 
 ___
 
@@ -562,7 +580,7 @@ region with the matching name
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:474](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L474)
+[medusa/src/services/region.ts:451](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L451)
 
 ___
 
@@ -586,7 +604,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -611,7 +629,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:190](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L190)
+[medusa/src/services/region.ts:172](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L172)
 
 ___
 
@@ -637,7 +655,7 @@ the validated Country
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:388](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L388)
+[medusa/src/services/region.ts:368](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L368)
 
 ___
 
@@ -665,13 +683,13 @@ void
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:363](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L363)
+[medusa/src/services/region.ts:343](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L343)
 
 ___
 
 ### validateFields
 
-▸ `Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<{ `automatic_taxes?`: `boolean` ; `countries?`: (`undefined` \| { id?: number \| undefined; iso\_2?: string \| undefined; iso\_3?: string \| undefined; num\_code?: number \| undefined; name?: string \| undefined; display\_name?: string \| undefined; region\_id?: string \| ... 1 more ... \| undefined; region?: { ...; } \| undefined; })[] ; `created_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `currency?`: { code?: string \| undefined; symbol?: string \| undefined; symbol\_native?: string \| undefined; name?: string \| undefined; includes\_tax?: boolean \| undefined; } ; `currency_code?`: `string` ; `deleted_at?`: ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `fulfillment_providers?`: (`undefined` \| { id?: string \| undefined; is\_installed?: boolean \| undefined; })[] ; `gift_cards_taxable?`: `boolean` ; `id?`: `string` ; `includes_tax?`: `boolean` ; `metadata?`: { [x: string]: unknown; } ; `name?`: `string` ; `payment_providers?`: (`undefined` \| { id?: string \| undefined; is\_installed?: boolean \| undefined; })[] ; `tax_code?`: `string` ; `tax_provider?`: { id?: string \| undefined; is\_installed?: boolean \| undefined; } ; `tax_provider_id?`: ``null`` \| `string` ; `tax_rate?`: `number` ; `tax_rates?`: ``null`` \| (`undefined` \| { rate?: number \| null \| undefined; code?: string \| null \| undefined; name?: string \| undefined; region\_id?: string \| undefined; region?: { name?: string \| undefined; currency\_code?: string \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 9 more ...; updated\_at?: { ...; } \| undefin...)[] ; `updated_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; }  }\>
+▸ `Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<`DeepPartial`<`Region`\>\>
 
 Validates fields for creation and updates. If the region already exists
 the id can be passed to check that country updates are allowed.
@@ -691,13 +709,13 @@ the id can be passed to check that country updates are allowed.
 
 #### Returns
 
-`Promise`<{ `automatic_taxes?`: `boolean` ; `countries?`: (`undefined` \| { id?: number \| undefined; iso\_2?: string \| undefined; iso\_3?: string \| undefined; num\_code?: number \| undefined; name?: string \| undefined; display\_name?: string \| undefined; region\_id?: string \| ... 1 more ... \| undefined; region?: { ...; } \| undefined; })[] ; `created_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `currency?`: { code?: string \| undefined; symbol?: string \| undefined; symbol\_native?: string \| undefined; name?: string \| undefined; includes\_tax?: boolean \| undefined; } ; `currency_code?`: `string` ; `deleted_at?`: ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `fulfillment_providers?`: (`undefined` \| { id?: string \| undefined; is\_installed?: boolean \| undefined; })[] ; `gift_cards_taxable?`: `boolean` ; `id?`: `string` ; `includes_tax?`: `boolean` ; `metadata?`: { [x: string]: unknown; } ; `name?`: `string` ; `payment_providers?`: (`undefined` \| { id?: string \| undefined; is\_installed?: boolean \| undefined; })[] ; `tax_code?`: `string` ; `tax_provider?`: { id?: string \| undefined; is\_installed?: boolean \| undefined; } ; `tax_provider_id?`: ``null`` \| `string` ; `tax_rate?`: `number` ; `tax_rates?`: ``null`` \| (`undefined` \| { rate?: number \| null \| undefined; code?: string \| null \| undefined; name?: string \| undefined; region\_id?: string \| undefined; region?: { name?: string \| undefined; currency\_code?: string \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 9 more ...; updated\_at?: { ...; } \| undefin...)[] ; `updated_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; }  }\>
+`Promise`<`DeepPartial`<`Region`\>\>
 
 the validated region data
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:261](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L261)
+[medusa/src/services/region.ts:241](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L241)
 
 ___
 
@@ -725,7 +743,7 @@ void
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:347](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/region.ts#L347)
+[medusa/src/services/region.ts:327](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/region.ts#L327)
 
 ___
 
@@ -749,4 +767,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
