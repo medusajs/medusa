@@ -33,7 +33,6 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest"
   }
 }
