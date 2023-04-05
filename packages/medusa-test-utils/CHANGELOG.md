@@ -1,5 +1,37 @@
 # Change Log
 
+## 1.1.40
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+
+## 1.1.40-rc.0
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0-rc.0
+
+## 1.1.40
+
+### Patch Changes
+
+- [#3417](https://github.com/medusajs/medusa/pull/3417) [`fa4049cb5`](https://github.com/medusajs/medusa/commit/fa4049cb51232b2ed7091b1322c3fc14cd23e451) Thanks [@adrien2p](https://github.com/adrien2p)! - chores(medusa): Refactoring product update flow to improve handling and performances
+
+## 1.1.39
+
+### Patch Changes
+
+- [#3407](https://github.com/medusajs/medusa/pull/3407) [`f0a1355fe`](https://github.com/medusajs/medusa/commit/f0a1355feb5160ff7de1f3d3da769efe29d0d8ed) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Bulk emit events
+
 ## 1.1.38
 
 ### Patch Changes

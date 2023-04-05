@@ -1,10 +1,6 @@
-import { Request, Response } from "express"
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-
-import {
-  IInventoryService,
-  IStockLocationService,
-} from "../../../../interfaces"
+import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**
@@ -22,6 +18,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostInventoryItemsItemLocationLevelsReq"
+ * x-codegen:
+ *   method: createLocationLevel
+ *   queryParams: AdminPostInventoryItemsItemLocationLevelsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -1,0 +1,104 @@
+---
+description: 'This quickstart guide will help you set up a Medusa backend in three steps.'
+addHowToData: true
+---
+
+import Feedback from '@site/src/components/Feedback';
+
+# Install Medusa Backend
+
+This document will guide you through setting up your Medusa backend in a three steps.
+
+## Prerequisites
+
+### Node.js
+
+Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
+
+```bash noReport
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
+
+### Git
+
+Git is required for this setup. You can find instructions on how to install it from the [Set up your dev environment documentation](../../development/backend/prepare-environment.mdx#git).
+
+---
+
+## Create a Medusa Backend
+
+:::tip
+
+It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
+
+:::
+
+### 1. Install Medusa CLI
+
+   ```bash npm2yarn
+   npm install @medusajs/medusa-cli -g
+   ```
+
+:::note
+
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../../troubleshooting/cli-installation-errors.mdx).
+
+:::
+
+### 2. Create a new Medusa project
+
+   ```bash noReport
+   medusa new my-medusa-store --seed
+   ```
+
+### 3. Start your Medusa backend
+
+   ```bash noReport
+   cd my-medusa-store
+   medusa develop
+   ```
+
+<Feedback 
+   event="survey_server_quickstart"
+   question="Did you set up the backend successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
+
+### Test the Backend
+
+After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+
+```bash noReport
+curl localhost:9000/store/products
+```
+
+---
+
+## Next Steps
+
+### Learn about the Architecture
+
+Medusa backend is made up of different resources that make it a powerful server. Get an overview of them in the [Medusa Architecture Overview](../fundamentals/architecture-overview.md) documentation.
+
+### Set Up Development Environment
+
+For an optimal experience developing with Medusa and to make sure you can use its advanced functionalities, you'll need to install more tools such as PostgreSQL.
+
+Follow [this documentation to learn how to set up your development environment](../../development/backend/prepare-environment.mdx).
+
+### Backend Configurations
+
+It's important to configure your Medusa backend properly and learn how environment variables are loaded.
+
+You can learn more about configuring your backend and loading environment variables in the [Configure your Backend documentation](../../development/backend/configurations.md).
+
+### File Service Plugin
+
+To upload product images to your Medusa backend, you must install and configure one of the following file service plugins:
+
+- [MinIO](../../plugins/file-service/minio.md) (Recommended for local development)
+- [S3](../../plugins/file-service/s3.md)
+- [DigitalOcean Spaces](../../plugins/file-service/spaces.md)

@@ -15,7 +15,7 @@ At Medusa, we strive to provide the best experience for developers using our pla
 
 As an open source solution, we work closely and constantly interact with our community to ensure that we provide the best experience for everyone using Medusa. 
 
-We are capable of getting a general understanding of how developers use Medusa and what general issues they run into through different means such as our Discord server, GitHub issues and discussions, and occasional one-on-one sessions.
+We are capable of getting a general understanding of how developers use Medusa and what general issues they run into through different means such as our Discord backend, GitHub issues and discussions, and occasional one-on-one sessions.
 
 However, although these methods can be insightful, they’re not enough to get a full and global understanding of how developers are using Medusa, especially in production.
 
@@ -29,22 +29,22 @@ Collecting this data allows us to understand certain details such as:
 
 ---
 
-## Server Analytics
+## Backend Analytics
 
-This section covers which data in the server are collected and how to opt out of it.
+This section covers which data in the backend are collected and how to opt out of it.
 
-### Collected Data in Server
+### Collected Data in the Backend
 
-The following data is being collected on your server:
+The following data is being collected on your backend:
 
 - Unique project ID generated with UUID.
 - Unique machine ID generated with UUID.
 - Operating system information including Node version or operating system platform used.
-- The version of the Medusa server and Medusa CLI are used.
+- The version of the Medusa backend and Medusa CLI are used.
 
 :::info
 
-💡 Data is only collected when the server is run with the command `medusa start`.
+💡 Data is only collected when the backend is run with the command `medusa start`.
 
 :::
 
@@ -56,7 +56,7 @@ If you prefer to disable data collection, you can do it either by setting the fo
 MEDUSA_DISABLE_TELEMETRY=true
 ```
 
-Or, you can run the following command in the root of your Medusa server project to disable it:
+Or, you can run the following command in the root of your Medusa backend project to disable it:
 
 ```bash
 medusa telemetry --disable
@@ -105,10 +105,11 @@ MEDUSA_FF_ANALYTICS=false
 ```
 
 2\. Alternatively, on your Medusa admin, you can disable tracking by following these steps:
-    1. Go to Settings → Personal Information.
-    2. In the Usage insights section, click on the “Edit preferences” button.
-    3. Enable the “Opt out of sharing my usage data” toggle.
-    4. Click on the “Submit and close” button.
+
+  1. Go to Settings → Personal Information.
+  2. In the Usage insights section, click on the “Edit preferences” button.
+  3. Enable the “Opt out of sharing my usage data” toggle.
+  4. Click on the “Submit and close” button.
 
 <!-- vale docs.We = YES -->
 <!-- vale docs.FirstPerson = YES -->

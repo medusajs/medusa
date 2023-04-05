@@ -25,6 +25,7 @@ import { AddressPayload } from "../../../../types/common"
 import { DraftOrderCreateProps } from "../../../../types/draft-orders"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/draft-orders
@@ -154,7 +155,7 @@ export default async (req, res) => {
       select: defaultAdminDraftOrdersCartFields,
     })
 
-  res.status(200).json({ draft_order: draftOrder })
+  res.status(200).json({ draft_order: cleanResponseData(draftOrder, []) })
 }
 
 enum Status {
@@ -181,12 +182,12 @@ enum Status {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   shipping_address:
  *     description: "The Address to be used for shipping."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   items:
  *     description: The Line Items that have been received.

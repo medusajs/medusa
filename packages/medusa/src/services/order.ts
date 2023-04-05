@@ -1,4 +1,5 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { IInventoryService } from "@medusajs/types"
+import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -8,7 +9,24 @@ import {
   Not,
   Raw,
 } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
+} from "."
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -44,26 +62,7 @@ import {
   setMetadata,
 } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-
-import {
-  CartService,
-  CustomerService,
-  DiscountService,
-  DraftOrderService,
-  EventBusService,
-  FulfillmentProviderService,
-  FulfillmentService,
-  GiftCardService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductVariantInventoryService,
-  RegionService,
-  ShippingOptionService,
-  ShippingProfileService,
-  TaxProviderService,
-  TotalsService,
-} from "."
+import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -86,6 +85,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
+  inventoryService: IInventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
   productVariantInventoryService: ProductVariantInventoryService
@@ -128,6 +128,7 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
+  protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
@@ -578,10 +579,12 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      await this.eventBus_.emit(OrderService.Events.COMPLETED, {
-        id: orderId,
-        no_notification: order.no_notification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.COMPLETED, {
+          id: orderId,
+          no_notification: order.no_notification,
+        })
 
       order.status = OrderStatus.COMPLETED
 
@@ -954,8 +957,16 @@ class OrderService extends TransactionBaseService {
         where: { id: order.billing_address_id },
       })
 
+      if (address.metadata) {
+        address.metadata = setMetadata(addr, address.metadata)
+      }
+
       await addrRepo.save({ ...addr, ...address })
     } else {
+      if (address.metadata) {
+        address.metadata = setMetadata(null, address.metadata)
+      }
+
       order.billing_address = addrRepo.create({ ...address })
     }
   }
@@ -1408,9 +1419,7 @@ class OrderService extends TransactionBaseService {
             metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
-          },
-          {
-            locationId: location_id,
+            location_id: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
@@ -1453,14 +1462,15 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const eventBusTx = this.eventBus_.withTransaction(manager)
-      for (const fulfillment of fulfillments) {
-        await eventBusTx.emit(OrderService.Events.FULFILLMENT_CREATED, {
+      const eventsToEmit = fulfillments.map((fulfillment) => ({
+        eventName: OrderService.Events.FULFILLMENT_CREATED,
+        data: {
           id: orderId,
           fulfillment_id: fulfillment.id,
           no_notification: evaluatedNoNotification,
-        })
-      }
+        },
+      }))
+      await this.eventBus_.withTransaction(manager).emit(eventsToEmit)
 
       return result
     })
@@ -1617,11 +1627,13 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      await this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-        id: result.id,
-        refund_id: refund.id,
-        no_notification: evaluatedNoNotification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.REFUND_CREATED, {
+          id: result.id,
+          refund_id: refund.id,
+          no_notification: evaluatedNoNotification,
+        })
       return result
     })
   }
@@ -1830,6 +1842,7 @@ class OrderService extends TransactionBaseService {
     order.paid_total =
       order.payments?.reduce((acc, next) => (acc += next.amount), 0) || 0
     order.refundable_amount = order.paid_total - order.refunded_total || 0
+
     let item_tax_total = 0
     let shipping_tax_total = 0
 
@@ -1843,7 +1856,7 @@ class OrderService extends TransactionBaseService {
       Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
       order.subtotal += item.subtotal ?? 0
-      order.discount_total += item.discount_total ?? 0
+      order.discount_total += item.raw_discount_total ?? 0
       item_tax_total += item.tax_total ?? 0
 
       if (isReturnableItem(item)) {
@@ -1916,6 +1929,9 @@ class OrderService extends TransactionBaseService {
         return item
       })
     }
+
+    order.raw_discount_total = order.discount_total
+    order.discount_total = Math.round(order.discount_total)
 
     order.total =
       order.subtotal +

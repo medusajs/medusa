@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/reservations/{id}
@@ -36,7 +36,7 @@ import { IInventoryService } from "../../../../interfaces"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

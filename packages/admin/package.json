@@ -1,0 +1,47 @@
+{
+  "name": "@medusajs/admin",
+  "version": "2.0.0",
+  "bin": {
+    "medusa-admin": "./bin/medusa-admin.js"
+  },
+  "main": "index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "bin",
+    "types",
+    "*.js",
+    "api",
+    "loaders",
+    "commands",
+    "utils",
+    "setup"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "test": "jest --passWithNoTests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/admin"
+  },
+  "dependencies": {
+    "@medusajs/admin-ui": "1.8.0",
+    "commander": "^10.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "fs-extra": "^11.1.0",
+    "medusa-core-utils": "1.2.0",
+    "ora": "5.4.0",
+    "picocolors": "^1.0.0",
+    "ts-dedent": "^2.2.0"
+  },
+  "peerDependencies": {
+    "@medusajs/medusa": "1.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "typescript": "^4.9.3"
+  },
+  "packageManager": "yarn@3.2.1"
+}

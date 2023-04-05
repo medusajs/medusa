@@ -205,12 +205,9 @@ async function registerPaymentProcessor({
   ).filter((provider) => provider instanceof AbstractPaymentProcessor)
 
   const payIds: string[] = []
-  await Promise.all(
-    payProviders.map((paymentProvider) => {
-      payIds.push(paymentProvider.getIdentifier())
-      return paymentProvider.init()
-    })
-  )
+  payProviders.map((paymentProvider) => {
+    payIds.push(paymentProvider.getIdentifier())
+  })
 
   const pProviderService = container.resolve<PaymentProviderService>(
     "paymentProviderService"

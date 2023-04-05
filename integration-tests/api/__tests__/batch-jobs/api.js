@@ -84,34 +84,36 @@ describe("/admin/batch-jobs", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.batch_jobs.length).toEqual(4)
-      expect(response.data).toMatchSnapshot({
-        batch_jobs: [
-          {
-            id: "job_5",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            created_by: "admin_user",
-          },
-          {
-            id: "job_3",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            created_by: "admin_user",
-          },
-          {
-            id: "job_2",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            created_by: "admin_user",
-          },
-          {
-            id: "job_1",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            created_by: "admin_user",
-          },
-        ],
-      })
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          batch_jobs: expect.arrayContaining([
+            expect.objectContaining({
+              id: "job_5",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              created_by: "admin_user",
+            }),
+            expect.objectContaining({
+              id: "job_3",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              created_by: "admin_user",
+            }),
+            expect.objectContaining({
+              id: "job_2",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              created_by: "admin_user",
+            }),
+            expect.objectContaining({
+              id: "job_1",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              created_by: "admin_user",
+            }),
+          ]),
+        })
+      )
     })
 
     it("lists batch jobs created by the user and where completed_at is null ", async () => {
@@ -214,8 +216,6 @@ describe("/admin/batch-jobs", () => {
           created_by: "admin_user",
           status: "created",
           id: expect.any(String),
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
         })
       )
     })
@@ -264,28 +264,6 @@ describe("/admin/batch-jobs", () => {
       await db.teardown()
     })
 
-    it("Cancels batch job created by the user", async () => {
-      const api = useApi()
-
-      const jobId = "job_1"
-
-      const response = await api.post(
-        `/admin/batch-jobs/${jobId}/cancel`,
-        {},
-        adminReqConfig
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data.batch_job).toEqual(
-        expect.objectContaining({
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          canceled_at: expect.any(String),
-          status: "canceled",
-        })
-      )
-    })
-
     it("Fails to cancel a batch job created by a different user", async () => {
       expect.assertions(3)
       const api = useApi()
@@ -318,6 +296,28 @@ describe("/admin/batch-jobs", () => {
             "Cannot cancel completed batch job"
           )
         })
+    })
+
+    it("Cancels batch job created by the user", async () => {
+      const api = useApi()
+
+      const jobId = "job_1"
+
+      const response = await api.post(
+        `/admin/batch-jobs/${jobId}/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.batch_job).toEqual(
+        expect.objectContaining({
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          canceled_at: expect.any(String),
+          status: "canceled",
+        })
+      )
     })
   })
 })

@@ -28,20 +28,20 @@ import {
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 
+import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
+import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
-import { IInventoryService } from "../../../../interfaces"
-
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /admin/products
@@ -117,6 +117,8 @@ export default async (req, res) => {
   const shippingProfileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"
   )
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const inventoryService: IInventoryService | undefined =
@@ -148,8 +150,12 @@ export default async (req, res) => {
         .retrieveDefault()
     }
 
-    // If no sales channel available, set the default one
-    if (!validated?.sales_channels?.length) {
+    // Provided that the feature flag is enabled and
+    // no sales channels are available, set the default one
+    if (
+      featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+      !validated?.sales_channels?.length
+    ) {
       const defaultSalesChannel = await salesChannelService
         .withTransaction(manager)
         .retrieveDefault()

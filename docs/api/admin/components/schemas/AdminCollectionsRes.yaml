@@ -1,4 +1,10 @@
 type: object
+x-expanded-relations:
+  field: collection
+  relations:
+    - products
+required:
+  - collection
 properties:
   collection:
     $ref: ./ProductCollection.yaml

@@ -1,7 +1,3 @@
-.docItemContainer {
-  margin-bottom: calc(var(--ifm-base-margin-vertical) * 3);
-}
-
 .docItemContainer header + *,
 .docItemContainer article > *:first-child {
   margin-top: 0;

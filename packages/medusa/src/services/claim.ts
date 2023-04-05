@@ -346,6 +346,7 @@ export default class ClaimService extends TransactionBaseService {
           shipping_address,
           shipping_address_id,
           no_notification,
+          return_location_id,
           ...rest
         } = data
 
@@ -485,6 +486,7 @@ export default class ClaimService extends TransactionBaseService {
             ),
             shipping_method: return_shipping,
             no_notification: evaluatedNoNotification,
+            location_id: return_location_id,
           })
         }
 
@@ -512,6 +514,7 @@ export default class ClaimService extends TransactionBaseService {
     config: {
       metadata?: Record<string, unknown>
       no_notification?: boolean
+      location_id?: string
     } = {
       metadata: {},
     }
@@ -595,7 +598,7 @@ export default class ClaimService extends TransactionBaseService {
               item_id: i.id,
               quantity: i.quantity,
             })),
-            { claim_order_id: id, metadata }
+            { claim_order_id: id, metadata, location_id: config.location_id }
           )
 
         let successfullyFulfilledItems: FulfillmentItem[] = []
@@ -638,15 +641,17 @@ export default class ClaimService extends TransactionBaseService {
         )
         const claimOrder = await claimRepo.save(claim)
 
-        const eventBusTx = this.eventBus_.withTransaction(transactionManager)
-
-        for (const fulfillment of fulfillments) {
-          await eventBusTx.emit(ClaimService.Events.FULFILLMENT_CREATED, {
+        const eventsToEmit = fulfillments.map((fulfillment) => ({
+          eventName: ClaimService.Events.FULFILLMENT_CREATED,
+          data: {
             id: id,
             fulfillment_id: fulfillment.id,
             no_notification: claim.no_notification,
-          })
-        }
+          },
+        }))
+        await this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(eventsToEmit)
 
         return claimOrder
       }

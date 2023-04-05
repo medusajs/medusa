@@ -1,4 +1,4 @@
-import { ModuleResolution, ModulesResponse } from "./types/module"
+import { ModuleResolution, ModulesResponse } from "@medusajs/types"
 
 export class ModulesHelper {
   private modules_: Record<string, ModuleResolution> = {}

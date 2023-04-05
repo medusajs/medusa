@@ -1,5 +1,190 @@
 # @medusajs/inventory
 
+## 1.8.0
+
+### Minor Changes
+
+- [#3329](https://github.com/medusajs/medusa/pull/3329) [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Inventory and Stock location modules supporting isolated connection
+
+### Patch Changes
+
+- [#3319](https://github.com/medusajs/medusa/pull/3319) [`08c8aa46c`](https://github.com/medusajs/medusa/commit/08c8aa46c55453cf741a97d06547ae85fee6e985) Thanks [@pKorsholm](https://github.com/pKorsholm)! - List inventory items based on locations
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+
+- [#3685](https://github.com/medusajs/medusa/pull/3685) [`8ddb3952c`](https://github.com/medusajs/medusa/commit/8ddb3952c045e6c05c8d0f6922f0d4ba30cf3bd4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Fix RC package versions
+
+- [#3352](https://github.com/medusajs/medusa/pull/3352) [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat(medusa): Modules initializer
+
+  ### Loading modules in a project
+
+  Example
+
+  ```typescript
+  import {
+    InventoryServiceInitializeOptions,
+    initialize,
+  } from "@medusajs/inventory"
+
+  const options: InventoryServiceInitializeOptions = {
+    database: {
+      type: "postgres",
+      url: DB_URL,
+    },
+  }
+
+  const inventoryService = await initialize(options)
+  const newInventoryItem = await inventoryService.createInventoryItem({
+    sku: "sku_123",
+  })
+  ```
+
+- [#3460](https://github.com/medusajs/medusa/pull/3460) [`10bf05c14`](https://github.com/medusajs/medusa/commit/10bf05c147cb65a263465129790edd44a6d8948b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Fix(inventory, medusa): ensure no orphaned reservations and invenotry levels on location removal
+
+- [#3649](https://github.com/medusajs/medusa/pull/3649) [`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Export initialize method for all modules
+
+- [#3531](https://github.com/medusajs/medusa/pull/3531) [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Remove dependency on @medusajs/medusa from Inventory and Stock-Location Modules
+
+- Updated dependencies [[`8ddb3952c`](https://github.com/medusajs/medusa/commit/8ddb3952c045e6c05c8d0f6922f0d4ba30cf3bd4), [`a0c919a8d`](https://github.com/medusajs/medusa/commit/a0c919a8d01ca5edf62336de48e9a112e3822f38), [`55e94d0b4`](https://github.com/medusajs/medusa/commit/55e94d0b45776776639d3970d4264b8f5c5385dd), [`74bc4b16a`](https://github.com/medusajs/medusa/commit/74bc4b16a07f78668003ca930bf2a0d928897ceb), [`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73), [`bca1f80dd`](https://github.com/medusajs/medusa/commit/bca1f80dd501d878455e1ad4f5091cf20ef900ea), [`271844aed`](https://github.com/medusajs/medusa/commit/271844aedbe45c369e188b5d06458dbd6984cd39), [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def)]:
+  - @medusajs/modules-sdk@1.8.0
+  - @medusajs/utils@1.8.0
+
+## 1.8.0-rc.4
+
+### Patch Changes
+
+- [#3649](https://github.com/medusajs/medusa/pull/3649) [`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Export initialize method for all modules
+
+- Updated dependencies [[`a0c919a8d`](https://github.com/medusajs/medusa/commit/a0c919a8d01ca5edf62336de48e9a112e3822f38), [`bd12a9508`](https://github.com/medusajs/medusa/commit/bd12a95083b69a70b83ad38578c5a68738c41b2b)]:
+  - @medusajs/utils@0.0.2-rc.2
+  - @medusajs/modules-sdk@0.1.0-rc.4
+
+## 1.8.0-rc.3
+
+### Patch Changes
+
+- Updated dependencies [[`55e94d0b4`](https://github.com/medusajs/medusa/commit/55e94d0b45776776639d3970d4264b8f5c5385dd)]:
+  - @medusajs/modules-sdk@0.1.0-rc.3
+
+## 1.8.0-rc.2
+
+### Patch Changes
+
+- chore: Fix RC package versions
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@0.1.0-rc.2
+  - @medusajs/utils@0.0.2-rc.1
+
+## 1.8.0-rc.1
+
+### Patch Changes
+
+- Updated dependencies [[`bca1f80dd`](https://github.com/medusajs/medusa/commit/bca1f80dd501d878455e1ad4f5091cf20ef900ea)]:
+  - @medusajs/modules-sdk@0.1.0-rc.1
+
+## 1.8.0-rc.0
+
+### Minor Changes
+
+- [#3329](https://github.com/medusajs/medusa/pull/3329) [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Inventory and Stock location modules supporting isolated connection
+
+### Patch Changes
+
+- [#3319](https://github.com/medusajs/medusa/pull/3319) [`08c8aa46c`](https://github.com/medusajs/medusa/commit/08c8aa46c55453cf741a97d06547ae85fee6e985) Thanks [@pKorsholm](https://github.com/pKorsholm)! - List inventory items based on locations
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+
+- [#3352](https://github.com/medusajs/medusa/pull/3352) [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat(medusa): Modules initializer
+
+  ### Loading modules in a project
+
+  Example
+
+  ```typescript
+  import {
+    InventoryServiceInitializeOptions,
+    initialize,
+  } from "@medusajs/inventory"
+
+  const options: InventoryServiceInitializeOptions = {
+    database: {
+      type: "postgres",
+      url: DB_URL,
+    },
+  }
+
+  const inventoryService = await initialize(options)
+  const newInventoryItem = await inventoryService.createInventoryItem({
+    sku: "sku_123",
+  })
+  ```
+
+- [#3460](https://github.com/medusajs/medusa/pull/3460) [`10bf05c14`](https://github.com/medusajs/medusa/commit/10bf05c147cb65a263465129790edd44a6d8948b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Fix(inventory, medusa): ensure no orphaned reservations and invenotry levels on location removal
+
+- [#3531](https://github.com/medusajs/medusa/pull/3531) [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Remove dependency on @medusajs/medusa from Inventory and Stock-Location Modules
+
+- Updated dependencies [[`74bc4b16a`](https://github.com/medusajs/medusa/commit/74bc4b16a07f78668003ca930bf2a0d928897ceb), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73), [`271844aed`](https://github.com/medusajs/medusa/commit/271844aedbe45c369e188b5d06458dbd6984cd39), [`4e9d257d3`](https://github.com/medusajs/medusa/commit/4e9d257d3bf76703ef5be8ca054cc9f0f7339def)]:
+  - @medusajs/utils@0.0.2-rc.0
+  - @medusajs/modules-sdk@0.1.0-rc.0
+
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`98fe8fd00`](https://github.com/medusajs/medusa/commit/98fe8fd00a1912fde1d2a93b434bda500a213c14), [`2869763ea`](https://github.com/medusajs/medusa/commit/2869763ea9673cf5c5a3aa10b58f61b8e830ce21)]:
+  - @medusajs/medusa@1.7.15
+
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies [[`902ed3c0b`](https://github.com/medusajs/medusa/commit/902ed3c0b21cd525d9975e59b7a8120ae5f7a895), [`fa4049cb5`](https://github.com/medusajs/medusa/commit/fa4049cb51232b2ed7091b1322c3fc14cd23e451)]:
+  - @medusajs/medusa@1.7.14
+
+## 1.0.10
+
+### Patch Changes
+
+- [#3407](https://github.com/medusajs/medusa/pull/3407) [`f0a1355fe`](https://github.com/medusajs/medusa/commit/f0a1355feb5160ff7de1f3d3da769efe29d0d8ed) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Bulk emit events
+
+- Updated dependencies [[`601d20e7a`](https://github.com/medusajs/medusa/commit/601d20e7ab293728cd81f0723805841016812120), [`f0a1355fe`](https://github.com/medusajs/medusa/commit/f0a1355feb5160ff7de1f3d3da769efe29d0d8ed)]:
+  - @medusajs/medusa@1.7.13
+
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`ce577f269`](https://github.com/medusajs/medusa/commit/ce577f2696aa2181bef8f3096b1a639feabe2714), [`aa0d1f321`](https://github.com/medusajs/medusa/commit/aa0d1f32153f82c6219efe5cfc08862db5e5a129), [`9f508c8bd`](https://github.com/medusajs/medusa/commit/9f508c8bd8bee63677504cc8b86f1643579945d8)]:
+  - @medusajs/medusa@1.7.12
+
+## 1.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`c43248131`](https://github.com/medusajs/medusa/commit/c432481319cc205938081c3fcf60e75053b659ca)]:
+  - @medusajs/medusa@1.7.11
+
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`b458615ed`](https://github.com/medusajs/medusa/commit/b458615ed50a7c637e9e77f29f21c7ab300ed5d8), [`4b114cc41`](https://github.com/medusajs/medusa/commit/4b114cc4191ba20832b66072ec82386b22a3533c)]:
+  - @medusajs/medusa@1.7.10
+
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`370bd472e`](https://github.com/medusajs/medusa/commit/370bd472ed8c9038f66defd012a886e0f83c32cf)]:
+  - @medusajs/medusa@1.7.9
+
 ## 1.0.5
 
 ### Patch Changes

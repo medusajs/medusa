@@ -1,3 +1,5 @@
+import { IInventoryService } from "@medusajs/types"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,23 +9,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
+  PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-
-import { IInventoryService } from "../../../../interfaces"
 import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
-
-import { EntityManager } from "typeorm"
-
 import { createVariantTransaction } from "./transaction/create-product-variant"
 
 /**
@@ -146,10 +144,14 @@ export default async (req, res) => {
   })
 
   const productService: ProductService = req.scope.resolve("productService")
-  const product = await productService.retrieve(id, {
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }

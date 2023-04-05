@@ -1,0 +1,477 @@
+---
+description: 'Learn how to implement order-edit related features in the storefront using REST APIs. This includes showing the customer order-edit requests, authorizing additional payments, and confirming or declining order edits.'
+addHowToData: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Handle an Order Edit in Storefront
+
+In this document, you’ll learn how to allow a customer to confirm or decline an Order Edit.
+
+---
+
+## Overview
+
+A merchant can request to edit an order to make changes to its items. The change can include removing an item, adding a new item, and changing the quantity of an item in the original order.
+
+When the Order Edit is in the “request” state, it requires either a confirmation from the customer, or it can be force-confirmed by the merchant.
+
+This guide focuses on how to use the Storefront APIs to implement the flow that allows a customer to either confirm or decline an Order Edit.
+
+:::note
+
+You can check out how to implement order editing using the Admin APIs in [this documentation](../admin/edit-order.mdx).
+
+:::
+
+### Scenarios
+
+You want to implement the following functionalities in your storefront:
+
+- List and show customers order-edit requests.
+- Confirm order edits and authorize any additional payment if necessary.
+- Decline order edits.
+
+:::note
+
+You can perform other functionalities related to order editing. To learn more, check out the API reference.
+
+:::
+
+---
+
+## Prerequisites
+
+### Medusa Components
+
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../../../development/backend/install.mdx) to get started.
+
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install the [Next.js starter storefront](../../../starters/nextjs-medusa-starter.mdx).
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client and JavaScript’s Fetch API.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.md) and have [created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### Previous Steps
+
+You must have an existing order edit in the “request” state.
+
+---
+
+## Retrieve an Order Edit
+
+You can retrieve a single order edit by its ID by sending a request to the [Get Order Edit](/api/store/#tag/OrderEdit/operation/GetOrderEditsOrderEdit) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.orderEdits.retrieve(orderEditId)
+.then(({ order_edit }) => {
+  console.log(order_edit.changes)
+  // show changed items to the customer
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useOrderEdit } from "medusa-react"
+
+const OrderEdit = () => {
+  const { order_edit, isLoading } = useOrderEdit(orderEditId)
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}`)
+.then((response) => response.json())
+.then(({ order_edit }) => {
+  console.log(order_edit.changes)
+  // show changed items to the customer
+})
+```
+
+</TabItem>
+</Tabs>
+
+The request requires the order edit’s ID as a path parameter.
+
+It returns the Order Edit as an object. Some of its important fields are:
+
+- `order_id`: The ID of the order that this Order Edit belongs to.
+- `difference_due`: The amount to either be refunded or paid. If the amount is greater than 0, then the customer is required to pay an additional amount. If the amount is less than 0, then the merchant has to refund the difference to the customer.
+- `payment_collection_id`: The ID of the payment collection. This will be used to authorize additional payment if necessary.
+
+:::note
+
+You can learn more about what fields to expect in the [API reference](/api/store/#tag/OrderEdit/operation/GetOrderEditsOrderEdit).
+
+:::
+
+### Show Changed Items
+
+All data about changes to the original order’s items can be found in `order_edit.changes`. `changes` is an array of item changes. Each item change includes the following fields:
+
+<!-- eslint-skip -->
+
+```ts
+{
+  type: string,
+  line_item: LineItem | null,
+  original_line_item: LineItem | null
+}
+```
+
+`type` can be either:
+
+- `item_add`: In this case, a new item is being added. `line_item` will be an item object and `original_line_item` will be `null`.
+- `item_update`: In this case, an item’s quantity in the original order is updated. `line_item` will be the updated item, and `original_line_item` will be the item in the original order. You can either just use `line_item` to show the new quantity, or show the customer a comparison between the old and new quantity using `original_line_item` as well.
+- `item_remove`: In this case, an item in the original order is removed. The `original_line_item` will be the item in the original order, and `line_item` will be `null`.
+
+Here’s an example of how you can use this data to show the customer the requested edits to the order:
+
+```tsx
+<ul>
+  {orderEdit.changes.map((itemChange) => (
+    <li key={itemChange.id}>
+      <strong>
+        {
+          itemChange.line_item ? 
+          itemChange.line_item.title : 
+          itemChange.original_line_item.title
+        }
+      </strong>
+      {itemChange.type === "added" && <span>New Item</span>}
+      {itemChange.type === "removed" && (
+        <span>Removed Item</span>
+      )}
+      {itemChange.type === "edited" && 
+        <span>
+          Edited Item
+          Old Quantity: {itemChange.original_line_item.quantity}
+          New Quantity: {itemChange.line_item.quantity}
+        </span>}
+    </li>
+  ))}
+</ul>
+```
+
+---
+
+## Handle Payment
+
+After viewing the changes in the order edit, the customer can choose to confirm or decline the order edit.
+
+In case the customer wants to confirm the order edit, you must check whether a refund or an additional payment is required. You can check that by checking the value of `difference_due`. 
+
+### Refund Amount
+
+If `difference_due` is less than 0, then the amount will be refunded to the customer by the merchant from the Medusa admin. No additional actions are required here before [completing the order edit](#complete-the-order-edit).
+
+### Make Additional Payments
+
+:::note
+
+💡 This section explains how to authorize the payment using one payment processor and payment session. However, payment collections allow customers to pay in installments or with more than one provider. You can learn more about how to do that using the [batch endpoints of the Payment APIs](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsBatchAuthorize)
+
+:::
+
+If `difference_due` is greater than 0, then additional payment from the customer is required. In this case, you must implement these steps to allow the customer to authorize the payment:
+
+1. Show the customer the available payment processors. These can be retrieved from the details of [the region of the order](/api/store/#tag/Region/operation/GetRegionsRegion).
+2. When the customer selects the payment processor, initialize the payment session of that provider in the payment collection. You can do that by sending a request to the [Manage Payment Sessions](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessions) endpoint, passing it the payment collection’s ID as a path parameter, and the payment processor's ID as a request body parameter:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+<!-- eslint-disable max-len -->
+
+```ts
+medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
+  provider_id,
+})
+.then(({ payment_collection }) => {
+  console.log(payment_collection.payment_sessions)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useManagePaymentSession } from "medusa-react"
+
+const OrderEditPayment = () => {
+  const managePaymentSession = useManagePaymentSession(
+    paymentCollectionId
+  )
+  // ...
+
+  const handleAdditionalPayment = (provider_id: string) => {
+    managePaymentSession.mutate({
+      provider_id,
+    })
+  }
+
+  // ...
+}
+
+export default OrderEditPayment
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
+```ts
+fetch(
+  `<BACKEND_URL>/store/payment-collections/${paymentCollectionId}/sessions`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      provider_id,
+    }),
+  }
+)
+.then((response) => response.json())
+.then(({ payment_collection }) => {
+  console.log(payment_collection.payment_sessions)
+})
+```
+
+</TabItem>
+</Tabs>
+
+1. Show the customer the payment details form based on the payment session’s provider. For example, if the provider ID of a payment session is `stripe`, you must show Stripe’s card component to enter the customer’s card details.
+2. Authorize the payment using the payment processor. The [Authorize Payment Session](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsSessionAuthorize) endpoint accepts the payment collection’s ID and the ID of the payment session as path parameters:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa
+  .paymentCollection
+  .authorizePaymentSession(
+    paymentCollectionId, 
+    paymentSessionId
+  )
+.then(({ payment_session }) => {
+  console.log(payment_session.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useAuthorizePaymentSession } from "medusa-react"
+
+const OrderEditPayment = () => {
+  const authorizePaymentSession = useAuthorizePaymentSession(
+    paymentCollectionId
+  )
+  // ...
+
+  const handleAuthorizePayment = (paymentSessionId: string) => {
+    authorizePaymentSession.mutate(paymentSessionId)
+  }
+
+  // ...
+}
+
+export default OrderEditPayment
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
+```ts
+fetch(
+  `<BACKEND_URL>/store/payment-collection/${paymentCollectionId}` + 
+  `/sessions/${paymentSessionId}/authorize`, 
+  {
+    method: "POST",
+    credentials: "include",
+  }
+)
+.then((response) => response.json())
+.then(({ payment_session }) => {
+  console.log(payment_session.id)
+})
+```
+
+</TabItem>
+</Tabs>
+
+After performing the above steps, you can [complete the Order Edit](#complete-the-order-edit).
+
+---
+
+## Complete the Order Edit
+
+To confirm and complete the order edit, send a request to the [Complete Order Edit](/api/store/#tag/OrderEdit/operation/PostOrderEditsOrderEditComplete) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.orderEdits.complete(orderEditId)
+.then(({ order_edit }) => {
+  console.log(order_edit.confirmed_at)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useCompleteOrderEdit } from "medusa-react"
+
+const OrderEdit = () => {
+  const completeOrderEdit = useCompleteOrderEdit(orderEditId)
+  // ...
+
+  const handleCompleteOrderEdit = () => {
+    completeOrderEdit.mutate()
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
+```ts
+fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}/complete`, {
+  method: "POST",
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ order_edit }) => {
+  console.log(order_edit.confirmed_at)
+})
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the order edit’s ID as a path parameter.
+
+It returns the full Order Edit object. You can find properties related to the order confirmation, such as `order_edit.confirmed_at`.
+
+After completing the order edit, the changes proposed in the Order Edit are reflected in the original order.
+
+:::info
+
+If the payment isn’t authorized first, the order edit completion will fail.
+
+:::
+
+---
+
+## Decline an Order Edit
+
+If the customer wants to decline the Order Edit, you can do that by sending a request to the Decline Order Edit endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.orderEdits.decline(orderEditId, {
+  decline_reason: "I am not satisfied",
+})
+.then(({ order_edit }) => {
+  console.log(order_edit.declined_at)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```ts
+import { useDeclineOrderEdit } from "medusa-react"
+
+const OrderEdit = () => {
+  const declineOrderEdit = useDeclineOrderEdit(orderEditId)
+  // ...
+
+  const handleDeclineOrderEdit = () => {
+    declineOrderEdit.mutate({
+      declined_reason: "I am not satisfied",
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(
+  `<BACKEND_URL>/store/order-edits/${orderEditId}/decline`, 
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      decline_reason: "I am not satisfied",
+    }),
+  }
+)
+.then((response) => response.json())
+.then(({ order_edit }) => {
+  console.log(order_edit.declined_at)
+})
+```
+
+</TabItem>
+</Tabs>
+
+The request requires passing the order edit’s ID as a path parameter.
+
+In the request body parameters, you can optionally pass the `decline_reason` parameter. It’s a string that indicates to the merchant the reason the customer declined the order edit.
+
+If the Order Edit is declined, the changes requested in the Order Edit aren't reflected on the original order and no refund or additional payments are required.
+
+---
+
+## See Also
+
+- [Edit an order using Admin APIs](../admin/edit-order.mdx)

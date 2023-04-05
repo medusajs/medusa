@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
 import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tree"
-import { defaultStoreScope } from "."
+import { defaultStoreCategoryScope } from "."
 
 /**
  * @oas [get] /store/product-categories/{id}
@@ -17,7 +17,7 @@ import { defaultStoreScope } from "."
  *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
  * x-codegen:
  *   method: retrieve
- *   queryParams: StoreGetProductCategoryParams
+ *   queryParams: StoreGetProductCategoriesCategoryParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -70,7 +70,7 @@ export default async (req: Request, res: Response) => {
   const productCategory = await productCategoryService.retrieve(
     id,
     retrieveConfig,
-    defaultStoreScope
+    defaultStoreCategoryScope
   )
 
   res.status(200).json({
@@ -80,9 +80,9 @@ export default async (req: Request, res: Response) => {
     product_category: transformTreeNodesWithConfig(
       productCategory,
       retrieveConfig,
-      defaultStoreScope
+      defaultStoreCategoryScope
     ),
   })
 }
 
-export class StoreGetProductCategoryParams extends FindParams {}
+export class StoreGetProductCategoriesCategoryParams extends FindParams {}

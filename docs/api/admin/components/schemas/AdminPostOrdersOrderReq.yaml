@@ -5,12 +5,10 @@ properties:
     type: string
   billing_address:
     description: Billing address
-    anyOf:
-      - $ref: ./AddressFields.yaml
+    $ref: ./AddressPayload.yaml
   shipping_address:
     description: Shipping address
-    anyOf:
-      - $ref: ./AddressFields.yaml
+    $ref: ./AddressPayload.yaml
   items:
     description: The Line Items for the order
     type: array

@@ -1,4 +1,3 @@
-import { ExtendedFindConfig, FindConfig } from "../types/common"
 import {
   FindManyOptions,
   FindOperator,
@@ -13,6 +12,7 @@ import {
   MoreThanOrEqual,
 } from "typeorm"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { ExtendedFindConfig, FindConfig } from "../types/common"
 import { isObject } from "./is-object"
 
 /**
@@ -334,4 +334,12 @@ function buildOrder<TEntity>(orderBy: {
   }
 
   return output
+}
+
+export function nullableValue(value: any): FindOperator<any> {
+  if (value === null) {
+    return IsNull()
+  } else {
+    return value
+  }
 }

@@ -1,5 +1,5 @@
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { IStockLocationService } from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**
@@ -60,6 +60,9 @@ export default async (req, res) => {
     "stockLocationService"
   )
 
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+
   const salesChannelLocationService: SalesChannelLocationService =
     req.scope.resolve("salesChannelLocationService")
 
@@ -69,7 +72,14 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .removeLocation(id)
 
-    await stockLocationService.withTransaction(transactionManager).delete(id)
+    await stockLocationService.delete(id)
+
+    if (inventoryService) {
+      await Promise.all([
+        inventoryService.deleteInventoryItemLevelByLocationId(id),
+        inventoryService.deleteReservationItemByLocationId(id),
+      ])
+    }
   })
 
   res.status(200).send({

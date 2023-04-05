@@ -21,9 +21,10 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /admin/order/{id}/swaps
+ * @oas [post] /admin/orders/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
@@ -164,6 +165,7 @@ export default async (req, res) => {
                       idempotency_key: idempotencyKey.idempotency_key,
                       no_notification: validated.no_notification,
                       allow_backorder: validated.allow_backorder,
+                      location_id: validated.return_location_id,
                     }
                   )
 
@@ -218,7 +220,9 @@ export default async (req, res) => {
 
                 return {
                   response_code: 200,
-                  response_body: { order },
+                  response_body: {
+                    order: cleanResponseData(order, []),
+                  },
                 }
               })
           })
@@ -360,6 +364,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsBoolean()
   @IsOptional()
   no_notification?: boolean
+
+  @IsOptional()
+  @IsString()
+  return_location_id?: string
 
   @IsBoolean()
   @IsOptional()

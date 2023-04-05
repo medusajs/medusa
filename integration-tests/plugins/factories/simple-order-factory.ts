@@ -5,6 +5,9 @@ import {
   Order,
   PaymentStatus,
   FulfillmentStatus,
+  SalesChannel,
+  Discount,
+  isString,
 } from "@medusajs/medusa"
 
 import {
@@ -24,6 +27,11 @@ import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
+import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "../../api/factories"
+import { isDefined } from "medusa-core-utils"
 
 export type OrderFactoryData = {
   id?: string
@@ -33,6 +41,7 @@ export type OrderFactoryData = {
   email?: string | null
   currency_code?: string
   tax_rate?: number | null
+  sales_channel?: string | SalesChannelFactoryData
   line_items?: LineItemFactoryData[]
   discounts?: DiscountFactoryData[]
   shipping_address?: AddressFactoryData
@@ -72,15 +81,14 @@ export const simpleOrderFactory = async (
   })
   const customer = await manager.save(customerToSave)
 
-  let discounts = []
+  let discounts: Discount[] = []
   if (typeof data.discounts !== "undefined") {
     discounts = await Promise.all(
       data.discounts.map((d) => simpleDiscountFactory(connection, d, seed))
     )
   }
-
   const id = data.id || `simple-order-${Math.random() * 1000}`
-  const toSave = manager.create(Order, {
+  const toCreate: Partial<Order> = {
     id,
     discounts,
     payment_status: data.payment_status ?? PaymentStatus.AWAITING,
@@ -92,16 +100,44 @@ export const simpleOrderFactory = async (
     currency_code: currencyCode,
     tax_rate: taxRate,
     shipping_address_id: address.id,
-  })
+  }
 
-  const order = await manager.save(toSave)
+  let sc_id
+  if (isDefined(data.sales_channel)) {
+    let sc
+    
+    if (isString(data.sales_channel)) {
+      sc = await manager.findOne(SalesChannel, {
+        where: { id: data.sales_channel },
+      })
+    }
+
+    if (!sc) {
+      sc = await simpleSalesChannelFactory(
+        connection,
+        isString(data.sales_channel)
+          ? { id: data.sales_channel }
+          : data.sales_channel
+      )
+    }
+
+    sc_id = sc.id
+  }
+
+  if (sc_id) {
+    toCreate.sales_channel_id = sc_id
+  }
+
+  const toSave = manager.create(Order, toCreate)
+
+  const order = await manager.save(Order, toSave)
 
   const shippingMethods = data.shipping_methods || []
   for (const sm of shippingMethods) {
     await simpleShippingMethodFactory(connection, { ...sm, order_id: order.id })
   }
 
-  const items = data.line_items
+  const items = data.line_items || []
   for (const item of items) {
     await simpleLineItemFactory(connection, { ...item, order_id: id })
   }

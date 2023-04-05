@@ -9,7 +9,7 @@ class ContentfulService extends BaseService {
     {
       regionService,
       productService,
-      redisClient,
+      cacheService,
       productVariantService,
       eventBusService,
     },
@@ -31,24 +31,23 @@ class ContentfulService extends BaseService {
       accessToken: options.access_token,
     })
 
-    this.redis_ = redisClient
+    this.cacheService_ = cacheService
 
     this.capab_ = {}
   }
 
   async addIgnore_(id, side) {
     const key = `${id}_ignore_${side}`
-    return await this.redis_.set(
+    return await this.cacheService_.set(
       key,
       1,
-      "EX",
       this.options_.ignore_threshold || IGNORE_THRESHOLD
     )
   }
 
   async shouldIgnore_(id, side) {
     const key = `${id}_ignore_${side}`
-    return await this.redis_.get(key)
+    return await this.cacheService_.get(key)
   }
 
   async getContentfulEnvironment_() {

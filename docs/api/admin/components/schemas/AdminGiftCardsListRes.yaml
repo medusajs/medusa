@@ -1,4 +1,17 @@
 type: object
+x-expanded-relations:
+  field: gift_cards
+  relations:
+    - order
+    - region
+  eager:
+    - region.fulfillment_providers
+    - region.payment_providers
+required:
+  - gift_cards
+  - count
+  - offset
+  - limit
 properties:
   gift_cards:
     type: array

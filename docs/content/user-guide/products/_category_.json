@@ -1,6 +1,9 @@
 {
-  "position": 4,
+  "position": 3,
   "collapsed": false,
   "link": null,
-  "label": "Products"
+  "label": "Products",
+  "customProps": {
+    "sidebar_is_group_headline": true
+  }
 }

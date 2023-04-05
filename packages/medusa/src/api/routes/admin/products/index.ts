@@ -17,6 +17,10 @@ export default (app, featureFlagRouter: FlagRouter) => {
     defaultAdminProductRelations.push("sales_channels")
   }
 
+  if (featureFlagRouter.isFeatureEnabled("product_categories")) {
+    defaultAdminProductRelations.push("categories")
+  }
+
   route.post(
     "/",
     validateSalesChannelsExist((req) => req.body?.sales_channels),
@@ -100,7 +104,6 @@ export const defaultAdminProductRelations = [
   "tags",
   "type",
   "collection",
-  "categories",
 ]
 
 export const defaultAdminProductFields: (keyof Product)[] = [
@@ -136,6 +139,17 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 /**
  * @schema AdminProductsDeleteOptionRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - option_id
  *   - object
@@ -154,7 +168,7 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
  *     description: Whether or not the items were deleted.
  *     default: true
  *   product:
- *     $ref: "#/components/schemas/Product"
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsDeleteOptionRes = {
   option_id: string
@@ -166,6 +180,17 @@ export type AdminProductsDeleteOptionRes = {
 /**
  * @schema AdminProductsDeleteVariantRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - variant_id
  *   - object
@@ -184,7 +209,7 @@ export type AdminProductsDeleteOptionRes = {
  *     description: Whether or not the items were deleted.
  *     default: true
  *   product:
- *     $ref: "#/components/schemas/Product"
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsDeleteVariantRes = {
   variant_id: string
@@ -222,6 +247,17 @@ export type AdminProductsDeleteRes = {
 /**
  * @schema AdminProductsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - products
  *   - count
@@ -231,9 +267,7 @@ export type AdminProductsDeleteRes = {
  *   products:
  *     type: array
  *     items:
- *       oneOf:
- *         - $ref: "#/components/schemas/Product"
- *         - $ref: "#/components/schemas/PricedProduct"
+ *       $ref: "#/components/schemas/PricedProduct"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -326,11 +360,22 @@ export type AdminProductsListTagsRes = {
 /**
  * @schema AdminProductsRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
  * required:
  *   - product
  * properties:
  *   product:
- *     $ref: "#/components/schemas/Product"
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsRes = {
   product: Product

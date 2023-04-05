@@ -1,0 +1,29 @@
+# TS build info
+*.tsbuildinfo
+
+# Output of `yarn build` command.
+/api
+/commands
+/utils
+/types
+/loaders
+/setup
+
+# Vite cache
+.cache
+
+# Vite build output
+build
+
+# Platform-specific files
+.DS_Store
+Thumbs.db
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Local dev preview
+/dashboard/dist

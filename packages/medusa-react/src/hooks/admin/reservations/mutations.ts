@@ -4,15 +4,17 @@ import {
   AdminReservationsDeleteRes,
   AdminReservationsRes,
 } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js/src"
 import {
-  useMutation,
   UseMutationOptions,
+  useMutation,
   useQueryClient,
 } from "@tanstack/react-query"
-import { useMedusa } from "../../../contexts"
-import { buildOptions } from "../../utils/buildOptions"
+
+import { Response } from "@medusajs/medusa-js/src"
 import { adminReservationsKeys } from "./queries"
+import { buildOptions } from "../../utils/buildOptions"
+import { useMedusa } from "../../../contexts"
+import { adminVariantKeys } from "../variants"
 
 export const useAdminCreateReservation = (
   options?: UseMutationOptions<
@@ -27,7 +29,14 @@ export const useAdminCreateReservation = (
   return useMutation(
     (payload: AdminPostReservationsReq) =>
       client.admin.reservations.create(payload),
-    buildOptions(queryClient, [adminReservationsKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [
+        adminReservationsKeys.lists(),
+        adminVariantKeys.all,
+      ],
+      options
+    )
   )
 }
 
@@ -47,7 +56,11 @@ export const useAdminUpdateReservation = (
       client.admin.reservations.update(id, payload),
     buildOptions(
       queryClient,
-      [adminReservationsKeys.lists(), adminReservationsKeys.detail(id)],
+      [
+        adminReservationsKeys.lists(),
+        adminReservationsKeys.detail(id),
+        adminVariantKeys.all,
+      ],
       options
     )
   )
@@ -68,7 +81,11 @@ export const useAdminDeleteReservation = (
     () => client.admin.reservations.delete(id),
     buildOptions(
       queryClient,
-      [adminReservationsKeys.lists(), adminReservationsKeys.detail(id)],
+      [
+        adminReservationsKeys.lists(),
+        adminReservationsKeys.detail(id),
+        adminVariantKeys.all,
+      ],
       options
     )
   )

@@ -1,0 +1,157 @@
+---
+description: "Regions and currencies are essential components in a Medusa ecommerce store. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Regions and Currencies
+
+Regions are essential to your Medusa ecommerce store. They represent different countries or regions your ecommerce store serves customers in. This overview introduces the available features related to regions and currencies.
+
+:::note
+
+Not a developer? Check out the [Regions user guide](../../user-guide/regions/index.md).
+
+:::
+
+## Features
+
+### Multi-Region Support and Management
+
+In Medusa, you can create an unlimited number of regions. A region can be associated with one or more country.
+
+For example, you can create a region to represent the European region, and associate European countries with that region. You can also create a region that represents each of these countries on their own.
+
+Each region can have its own settings such as the currency, payment processors, tax providers, and more.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/regions-and-currencies/admin/manage-regions',
+    label: 'Admin: Manage Regions',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage regions using the Admin APIs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/regions/manage',
+    label: 'User Guide: Manage Regions',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to view and manage regions in Medusa Admin.'
+    }
+  },
+]} />
+
+### Multi-Currency Support
+
+A currency can be associated with one or more regions. When setting prices for products, you can specify a price per currency and per region.
+
+You have complete control over the format and value of the price of a product per currency and per region. This flexibility removes the restriction of being tied to a predefined conversion rate, which often leads to prices badly-formatted on the storefront.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '#',
+    label: 'Admin: Manage Currencies',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to manage currencies using the Admin APIs.',
+      isSoon: true
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/settings/currencies',
+    label: 'User Guide: Manage Currencies',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage available currencies in Medusa Admin'
+    }
+  },
+]} />
+
+### Region Switcher in the Storefront
+
+Your customers can choose the region that matches their location. This would automatically show the correct product prices to the customer with the currency of that region.
+
+During checkout, customers will only see the available shipping options and payment processors in their region. Taxes are also calculated based on that region. This ensures a seamless checkout experience tailored for every region.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/regions-and-currencies/storefront/use-regions',
+    label: 'Storefront: Use Regions',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to display and use Regions in the storefront.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/store/#tag/Region',
+    label: 'Store APIs: Regions',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check available Store REST APIs for Regions.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how Regions and Currencies are built, their relation to other modules, and more.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/regions-and-currencies/regions',
+    label: 'Architecture: Region',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Region Architecture.'
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Architecture: Currency',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Currency Architecture.',
+      isSoon: true,
+    }
+  },
+]} />
+
+---
+
+## Related Modules
+
+Discover Regions and Currencies' relation to other modules in Medusa.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/taxes/overview',
+    label: 'Taxes',
+    customProps: {
+      icon: Icons['cash-solid'],
+      description: 'Manage tax providers per region. Integrate third-party tax providers.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/overview',
+    label: 'Carts and Checkout',
+    customProps: {
+      icon: Icons['shopping-cart-solid'],
+      description: 'Show a personalized checkout experience based on the region selected.'
+    }
+  },
+]} />

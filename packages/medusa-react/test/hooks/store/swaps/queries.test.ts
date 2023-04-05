@@ -1,6 +1,6 @@
-import { useCartSwap } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
+import { useCartSwap } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useCartSwap hook", () => {

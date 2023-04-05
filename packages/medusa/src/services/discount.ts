@@ -9,7 +9,6 @@ import {
   In,
 } from "typeorm"
 import {
-  EventBusService,
   NewTotalsService,
   ProductService,
   RegionService,
@@ -36,12 +35,13 @@ import {
   UpdateDiscountInput,
   UpdateDiscountRuleInput,
 } from "../types/discount"
+import { CalculationContextData } from "../types/totals"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
-import { CalculationContextData } from "../types/totals"
+import EventBusService from "./event-bus"
 
 /**
  * Provides layer to manipulate discounts.
@@ -619,12 +619,12 @@ class DiscountService extends TransactionBaseService {
         })
 
       let fullItemPrice = lineItem.unit_price * lineItem.quantity
-      if (
+      const includesTax =
         this.featureFlagRouter_.isFeatureEnabled(
           TaxInclusivePricingFeatureFlag.key
-        ) &&
-        lineItem.includes_tax
-      ) {
+        ) && lineItem.includes_tax
+
+      if (includesTax) {
         const lineItemTotals = await this.newTotalsService_
           .withTransaction(transactionManager)
           .getLineItemTotals([lineItem], {
@@ -649,6 +649,7 @@ class DiscountService extends TransactionBaseService {
         const totals = await this.newTotalsService_.getLineItemTotals(
           discountedItems,
           {
+            includeTax: includesTax,
             calculationContext,
           }
         )
@@ -658,14 +659,13 @@ class DiscountService extends TransactionBaseService {
         }, 0)
         const nominator = Math.min(value, subtotal)
         const totalItemPercentage = fullItemPrice / subtotal
-        adjustment = Math.round(nominator * totalItemPercentage)
+
+        adjustment = nominator * totalItemPercentage
       } else {
         adjustment = value * lineItem.quantity
       }
 
-      // if the amount of the discount exceeds the total price of the item,
-      // we return the total item price, else the fixed amount
-      return adjustment >= fullItemPrice ? fullItemPrice : adjustment
+      return Math.min(adjustment, fullItemPrice)
     })
   }
 
