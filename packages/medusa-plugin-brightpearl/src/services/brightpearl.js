@@ -1497,50 +1497,54 @@ class BrightpearlService extends BaseService {
         }
       }
 
+      if (!(this.inventoryService_ && this.stockLocationService_)) {
+        return await this.orderService_
+          .withTransaction(transactionManager)
+          .createFulfillment(order.externalRef, lines, {
+            metadata: { goods_out_note: id },
+          })
+      }
+
+      const bpLocation = goodsOut.warehouseId
+
+      const fulfillmentLocation =
+        await this.getMedusaLocationFromBrightPearlWarehouse(
+          bpLocation,
+          medusaOrder.sales_channel_id,
+          { transactionManager: transactionManager }
+        )
+
       const medusaOrder = await this.orderService_
         .withTransaction(transactionManager)
         .createFulfillment(order.externalRef, lines, {
           metadata: { goods_out_note: id },
+          location_id: fulfillmentLocation.id,
         })
 
-      if (this.inventoryService_ && this.stockLocationService_) {
-        const existingFulfillmentMap = new Map(
-          existingFulfillments.map((fulfillment) => [
-            fulfillment.id,
-            fulfillment,
-          ])
-        )
+      const existingFulfillmentMap = new Map(
+        existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
+      )
 
-        const bpLocation = goodsOut.warehouseId
+      const { fulfillments } = await this.orderService_
+        .withTransaction(transactionManager)
+        .retrieve(order.externalRef, {
+          relations: [
+            "fulfillments",
+            "fulfillments.items",
+            "fulfillments.items.item",
+          ],
+        })
 
-        const fulfillmentLocation =
-          await this.getMedusaLocationFromBrightPearlWarehouse(
-            bpLocation,
-            medusaOrder.sales_channel_id,
-            { transactionManager: transactionManager }
-          )
-
-        const { fulfillments } = await this.orderService_
-          .withTransaction(transactionManager)
-          .retrieve(order.externalRef, {
-            relations: [
-              "fulfillments",
-              "fulfillments.items",
-              "fulfillments.items.item",
-            ],
-          })
-
-        await updateInventoryAndReservations(
-          fulfillments.filter((f) => !existingFulfillmentMap.get(f.id)),
-          {
-            inventoryService:
-              this.productVariantInventoryService_.withTransaction(
-                transactionManager
-              ),
-            locationId: fulfillmentLocation.id,
-          }
-        )
-      }
+      await updateInventoryAndReservations(
+        fulfillments.filter((f) => !existingFulfillmentMap.get(f.id)),
+        {
+          inventoryService:
+            this.productVariantInventoryService_.withTransaction(
+              transactionManager
+            ),
+          locationId: fulfillmentLocation.id,
+        }
+      )
 
       return medusaOrder
     }, "SERIALIZABLE")
