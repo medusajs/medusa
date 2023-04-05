@@ -110,7 +110,7 @@ Each service is registered under its camel-case name. For example, the `ProductS
 </td>
 <td>
 
-Core services by default have the `SINGLETON` lifetime. However, some have a different lifetime which is indicated in this table. Custom services, including services in plugins, by default have the `TRANSIENT` lifetime, unless defined differently within the custom service.
+Core services by default have the `SINGLETON` lifetime. However, some have a different lifetime which is indicated in this table. Custom services, including services in plugins, by default have the `SCOPED` lifetime, unless defined differently within the custom service.
 
 </td>
 </tr>
@@ -182,7 +182,7 @@ Every payment processor is registered under two names:
 </td>
 <td>
 
-By default, it's `TRANSIENT` unless defined differently within the payment processor service.
+By default, it's `SINGLETON` unless defined differently within the payment processor service.
 
 </td>
 </tr>
@@ -205,7 +205,7 @@ An array of all payment processor that extend the `AbstractPaymentService` or `A
 </td>
 <td>
 
-`paymentProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
+`paymentProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
 
 </td>
 </tr>
@@ -254,7 +254,7 @@ An array of all fulfillment providers that extend the `FulfillmentService` class
 </td>
 <td>
 
-`fulfillmentProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
+`fulfillmentProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
 
 </td>
 </tr>
@@ -303,7 +303,7 @@ An array of all notification providers that extend the `AbstractNotificationServ
 </td>
 <td>
 
-`notificationProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
+`notificationProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
 
 </td>
 </tr>
@@ -329,7 +329,7 @@ The file service is registered under two names:
 </td>
 <td>
 
-By default, it's `TRANSIENT` unless defined differently within the file service.
+By default, it's `SINGLETON` unless defined differently within the file service.
 
 </td>
 </tr>
@@ -355,7 +355,7 @@ The search service is registered under two names:
 </td>
 <td>
 
-By default, it's `TRANSIENT` unless defined differently within the search service.
+By default, it's `SINGLETON` unless defined differently within the search service.
 
 </td>
 </tr>
@@ -404,7 +404,7 @@ An array of every tax provider that extends the `AbstractTaxService` class.
 </td>
 <td>
 
-`taxProviders` is `TRANSIENT`, and each item in it is `TRANSIENT`.
+`taxProviders` is `TRANSIENT`, and each item in it is `SINGLETON`.
 
 </td>
 </tr>
@@ -427,7 +427,7 @@ Each Oauth Service is registered under its camel-case name followed by `Oauth`.
 </td>
 <td>
 
-By default, it's `TRANSIENT` unless defined differently within the Oauth service.
+By default, it's `SINGLETON` unless defined differently within the Oauth service.
 
 </td>
 </tr>
