@@ -36,14 +36,12 @@ export const ProductTagRepository = dataSource
         .values(data)
 
       if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
-        const rawImages = await queryBuilder.execute()
-        return rawImages.generatedMaps.map((d) =>
-          this.create(d)
-        ) as ProductTag[]
+        const rawTags = await queryBuilder.execute()
+        return rawTags.generatedMaps.map((d) => this.create(d)) as ProductTag[]
       }
 
-      const rawImages = await queryBuilder.returning("*").execute()
-      return rawImages.generatedMaps.map((d) => this.create(d))
+      const rawTags = await queryBuilder.returning("*").execute()
+      return rawTags.generatedMaps.map((d) => this.create(d))
     },
 
     async listTagsByUsage(take = 10): Promise<ProductTag[]> {
