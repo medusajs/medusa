@@ -1,6 +1,7 @@
 ---
 description: 'Actions Required for Vite Update'
-sidebar_label: 'Medusa Admin: Vite'
+sidebar_label: '(Repository) Vite'
+slug: /upgrade-guides/admin/admin-vite
 sidebar_custom_props:
   iconName: 'computer-desktop-solid'
 ---
@@ -8,6 +9,12 @@ sidebar_custom_props:
 # Updating Medusa Admin from Gatsby to Vite
 
 Medusa Admin has been updated to Vite. Learn about breaking changes since the update.
+
+:::warning
+
+This guide applies if you're using an old version of the admin repository and you're adding the latest changes of the repository. However, this repository is now deprecated and it's highly recommended to switch to using an admin plugin instead. You can learn more in [the upgrade guide](./1-0-0.md)
+
+:::
 
 ## Overview
 
