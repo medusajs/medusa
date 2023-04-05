@@ -2,9 +2,7 @@ import { In } from "typeorm"
 import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
-import {
-  QueryDeepPartialEntity
-} from "typeorm/query-builder/QueryPartialEntity"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
