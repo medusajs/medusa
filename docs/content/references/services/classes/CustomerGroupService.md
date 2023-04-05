@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:27](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L27)
+[medusa/src/services/customer-group.ts:24](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L24)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,17 +66,17 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### customerGroupRepository\_
 
-• `Protected` `Readonly` **customerGroupRepository\_**: typeof `CustomerGroupRepository`
+• `Protected` `Readonly` **customerGroupRepository\_**: `Repository`<`CustomerGroup`\> & { `addCustomers`: (`groupId`: `string`, `customerIds`: `string`[]) => `Promise`<`CustomerGroup`\> ; `findWithRelationsAndCount`: (`relations`: `FindOptionsRelations`<`CustomerGroup`\>, `idsOrOptionsWithoutRelations`: `FindWithoutRelationsOptions`) => `Promise`<[`CustomerGroup`[], `number`]\> ; `removeCustomers`: (`groupId`: `string`, `customerIds`: `string`[]) => `Promise`<`DeleteResult`\>  }
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:24](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L24)
+[medusa/src/services/customer-group.ts:21](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L21)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:25](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L25)
+[medusa/src/services/customer-group.ts:22](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L22)
 
 ___
 
@@ -94,13 +94,13 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:21](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L21)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -108,13 +108,31 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:22](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L22)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -139,7 +157,7 @@ the customer group after insertion
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:94](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L94)
+[medusa/src/services/customer-group.ts:89](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L89)
 
 ___
 
@@ -178,7 +196,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -192,15 +210,7 @@ Creates a customer group with the provided data.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `group` | `Object` | the customer group to create |
-| `group.created_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
-| `group.customers?` | (`undefined` \| { email?: string \| undefined; first\_name?: string \| undefined; last\_name?: string \| undefined; billing\_address\_id?: string \| null \| undefined; billing\_address?: { customer\_id?: string \| null \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 10 more ...; updated\_at?: { ...; } \| undef...)[] | - |
-| `group.deleted_at?` | ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
-| `group.id?` | `string` | - |
-| `group.metadata?` | { [x: string]: unknown; } | - |
-| `group.name?` | `string` | - |
-| `group.price_lists?` | (`undefined` \| { name?: string \| undefined; description?: string \| undefined; type?: PriceListType \| undefined; status?: PriceListStatus \| undefined; starts\_at?: { ...; } \| ... 1 more ... \| undefined; ... 7 more ...; updated\_at?: { ...; } \| undefined; })[] | - |
-| `group.updated_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
+| `group` | `DeepPartial`<`CustomerGroup`\> | the customer group to create |
 
 #### Returns
 
@@ -210,7 +220,7 @@ the result of the create operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:70](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L70)
+[medusa/src/services/customer-group.ts:65](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L65)
 
 ___
 
@@ -234,7 +244,7 @@ a promise
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:158](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L158)
+[medusa/src/services/customer-group.ts:153](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L153)
 
 ___
 
@@ -256,7 +266,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:261](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L261)
+[medusa/src/services/customer-group.ts:257](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L257)
 
 ___
 
@@ -281,7 +291,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:181](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L181)
+[medusa/src/services/customer-group.ts:176](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L176)
 
 ___
 
@@ -306,7 +316,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:199](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L199)
+[medusa/src/services/customer-group.ts:194](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L194)
 
 ___
 
@@ -331,7 +341,7 @@ the customergroup with the provided id
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:240](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L240)
+[medusa/src/services/customer-group.ts:236](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L236)
 
 ___
 
@@ -352,7 +362,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:40](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L40)
+[medusa/src/services/customer-group.ts:35](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L35)
 
 ___
 
@@ -376,7 +386,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -401,7 +411,7 @@ resulting customer group
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:125](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/customer-group.ts#L125)
+[medusa/src/services/customer-group.ts:120](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/customer-group.ts#L120)
 
 ___
 
@@ -425,4 +435,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

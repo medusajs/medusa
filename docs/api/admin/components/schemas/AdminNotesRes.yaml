@@ -1,4 +1,6 @@
 type: object
+required:
+  - note
 properties:
   note:
     $ref: ./Note.yaml
