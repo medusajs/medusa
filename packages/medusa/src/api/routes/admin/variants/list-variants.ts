@@ -1,16 +1,20 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
-
-import { Type } from "class-transformer"
-import { omit } from "lodash"
 import {
   CartService,
   PricingService,
+  ProductVariantInventoryService,
   RegionService,
+  SalesChannelService,
 } from "../../../../services"
-import ProductVariantService from "../../../../services/product-variant"
-import { NumericalComparisonOperator } from "../../../../types/common"
+import { IsInt, IsOptional, IsString } from "class-validator"
+
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
+import { IInventoryService } from "@medusajs/types"
 import { IsType } from "../../../../utils/validators/is-type"
+import { NumericalComparisonOperator } from "../../../../types/common"
+import { PricedVariant } from "../../../../types/pricing"
+import ProductVariantService from "../../../../services/product-variant"
+import { Type } from "class-transformer"
+import { omit } from "lodash"
 
 /**
  * @oas [get] /admin/variants
@@ -143,7 +147,7 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const variants = await pricingService.setVariantPrices(rawVariants, {
+  let variants = await pricingService.setVariantPrices(rawVariants, {
     cart_id: req.validatedQuery.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
@@ -151,6 +155,27 @@ export default async (req, res) => {
     include_discount_prices: true,
     ignore_cache: true,
   })
+
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
+
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
+  if (inventoryService) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    variants = (await productVariantInventoryService.setVariantAvailability(
+      variants,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )) as PricedVariant[]
+  }
 
   res.json({
     variants,

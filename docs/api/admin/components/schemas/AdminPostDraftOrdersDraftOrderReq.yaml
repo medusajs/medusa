@@ -17,12 +17,12 @@ properties:
   billing_address:
     description: The Address to be used for billing purposes.
     anyOf:
-      - $ref: ./AddressFields.yaml
+      - $ref: ./AddressPayload.yaml
       - type: string
   shipping_address:
     description: The Address to be used for shipping.
     anyOf:
-      - $ref: ./AddressFields.yaml
+      - $ref: ./AddressPayload.yaml
       - type: string
   discounts:
     description: An array of Discount codes to add to the Draft Order.

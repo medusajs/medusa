@@ -1,4 +1,15 @@
 type: object
+x-expanded-relations:
+  field: regions
+  relations:
+    - countries
+    - payment_providers
+    - fulfillment_providers
+  eager:
+    - payment_providers
+    - fulfillment_providers
+required:
+  - regions
 properties:
   regions:
     type: array

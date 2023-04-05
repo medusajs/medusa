@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:51](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L51)
+[medusa/src/services/tax-provider.ts:45](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L45)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:44](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L44)
+[medusa/src/services/tax-provider.ts:38](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L38)
 
 ___
 
@@ -88,17 +88,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:43](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L43)
+[medusa/src/services/tax-provider.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L37)
 
 ___
 
 ### eventBus\_
 
-• `Protected` `Readonly` **eventBus\_**: [`EventBusService`](EventBusService.md)
+• `Protected` `Readonly` **eventBus\_**: `IEventBusService`
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:49](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L49)
+[medusa/src/services/tax-provider.ts:43](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L43)
 
 ___
 
@@ -106,43 +106,43 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:40](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L40)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### smTaxLineRepo\_
 
-• `Protected` `Readonly` **smTaxLineRepo\_**: typeof `ShippingMethodTaxLineRepository`
+• `Protected` `Readonly` **smTaxLineRepo\_**: `Repository`<`ShippingMethodTaxLine`\> & { `deleteForCart`: (`cartId`: `string`) => `Promise`<`void`\> ; `upsertLines`: (`lines`: `ShippingMethodTaxLine`[]) => `Promise`<`ShippingMethodTaxLine`[]\>  }
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:47](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L47)
+[medusa/src/services/tax-provider.ts:41](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L41)
 
 ___
 
 ### taxLineRepo\_
 
-• `Protected` `Readonly` **taxLineRepo\_**: typeof `LineItemTaxLineRepository`
+• `Protected` `Readonly` **taxLineRepo\_**: `Repository`<`LineItemTaxLine`\> & { `deleteForCart`: (`cartId`: `string`) => `Promise`<`void`\> ; `upsertLines`: (`lines`: `LineItemTaxLine`[]) => `Promise`<`LineItemTaxLine`[]\>  }
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:46](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L46)
+[medusa/src/services/tax-provider.ts:40](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L40)
 
 ___
 
 ### taxProviderRepo\_
 
-• `Protected` `Readonly` **taxProviderRepo\_**: typeof `TaxProviderRepository`
+• `Protected` `Readonly` **taxProviderRepo\_**: `Repository`<`TaxProvider`\>
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:48](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L48)
+[medusa/src/services/tax-provider.ts:42](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L42)
 
 ___
 
@@ -152,21 +152,39 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:45](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L45)
+[medusa/src/services/tax-provider.ts:39](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L39)
 
 ___
 
 ### transactionManager\_
 
-• `Protected` **transactionManager\_**: `EntityManager`
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:41](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L41)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -205,7 +223,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -225,7 +243,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:97](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L97)
+[medusa/src/services/tax-provider.ts:89](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L89)
 
 ___
 
@@ -245,7 +263,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:107](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L107)
+[medusa/src/services/tax-provider.ts:97](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L97)
 
 ___
 
@@ -271,7 +289,7 @@ the newly created tax lines
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:183](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L183)
+[medusa/src/services/tax-provider.ts:171](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L171)
 
 ___
 
@@ -296,7 +314,7 @@ the newly created tax lines
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:129](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L129)
+[medusa/src/services/tax-provider.ts:117](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L117)
 
 ___
 
@@ -321,7 +339,7 @@ the cache key to use for the id set
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:484](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L484)
+[medusa/src/services/tax-provider.ts:476](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L476)
 
 ___
 
@@ -347,7 +365,7 @@ the tax rates configured for the shipping option.
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:436](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L436)
+[medusa/src/services/tax-provider.ts:428](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L428)
 
 ___
 
@@ -373,7 +391,7 @@ the tax rates configured for the shipping option.
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:389](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L389)
+[medusa/src/services/tax-provider.ts:381](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L381)
 
 ___
 
@@ -400,7 +418,7 @@ the computed tax lines
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:204](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L204)
+[medusa/src/services/tax-provider.ts:192](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L192)
 
 ___
 
@@ -429,7 +447,7 @@ the computed tax lines
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:256](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L256)
+[medusa/src/services/tax-provider.ts:246](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L246)
 
 ___
 
@@ -452,7 +470,7 @@ Return a map of tax lines for line items and shipping methods
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:352](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L352)
+[medusa/src/services/tax-provider.ts:344](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L344)
 
 ___
 
@@ -466,7 +484,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:65](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L65)
+[medusa/src/services/tax-provider.ts:57](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L57)
 
 ___
 
@@ -486,7 +504,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:488](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L488)
+[medusa/src/services/tax-provider.ts:480](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L480)
 
 ___
 
@@ -510,7 +528,7 @@ the region specific tax provider
 
 #### Defined in
 
-[packages/medusa/src/services/tax-provider.ts:75](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/tax-provider.ts#L75)
+[medusa/src/services/tax-provider.ts:67](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/tax-provider.ts#L67)
 
 ___
 
@@ -534,7 +552,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -558,4 +576,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

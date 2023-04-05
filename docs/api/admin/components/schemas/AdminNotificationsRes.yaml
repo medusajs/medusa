@@ -1,4 +1,10 @@
 type: object
+x-expanded-relations:
+  field: notification
+  relations:
+    - resends
+required:
+  - notification
 properties:
   notification:
     $ref: ./Notification.yaml
