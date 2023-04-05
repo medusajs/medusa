@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-chore(medusa): migrate sales channel repository
+chore(medusa): migrate SalesChannel / ProductCategory repository

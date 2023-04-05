@@ -47,7 +47,7 @@ export const ProductCategoryRepository = dataSource
       const columnsSelected = buildLegacyFieldsListFrom(options_.select)
       const relationsSelected = buildLegacyFieldsListFrom(options_.relations)
 
-      const selectStatements = (relationName: string): string[] => {
+      const fetchSelectColumns = (relationName: string): string[] => {
         const modelColumns = this.metadata.ownColumns.map(
           (column) => column.propertyName
         )
@@ -59,7 +59,7 @@ export const ProductCategoryRepository = dataSource
       }
 
       const queryBuilder = this.createQueryBuilder(entityName)
-        .select(selectStatements(entityName))
+        .select(fetchSelectColumns(entityName))
         .skip(options_.skip)
         .take(options_.take)
         .addOrderBy(`${entityName}.rank`, "ASC")
@@ -96,7 +96,7 @@ export const ProductCategoryRepository = dataSource
             treeWhere,
             treeScope
           )
-          .addSelect(selectStatements(treeRelation))
+          .addSelect(fetchSelectColumns(treeRelation))
           .addOrderBy(`${treeRelation}.rank`, "ASC")
           .addOrderBy(`${treeRelation}.handle`, "ASC")
       })

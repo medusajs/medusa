@@ -3,7 +3,6 @@ import { SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 
-const salesChannelTable = "sales_channel"
 const productSalesChannelTable = "product_sales_channel"
 
 export const SalesChannelRepository = dataSource
@@ -32,7 +31,7 @@ export const SalesChannelRepository = dataSource
         },
       ]
 
-      let qb = this.createQueryBuilder(salesChannelTable)
+      let qb = this.createQueryBuilder()
         .select()
         .where(options_.where)
         .skip(options_.skip)
