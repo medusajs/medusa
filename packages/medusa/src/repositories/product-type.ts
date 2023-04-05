@@ -1,6 +1,7 @@
-import { ProductType } from "../models/product-type"
+import { ProductType } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type UpsertTypeInput = Partial<ProductType> & {
   value: string
@@ -25,7 +26,19 @@ export const ProductTypeRepository = dataSource
       const created = this.create({
         value: type.value,
       })
-      return await this.save(created)
+
+      const queryBuilder = this.createQueryBuilder()
+        .insert()
+        .into(ProductType)
+        .values(created as QueryDeepPartialEntity<ProductType>)
+
+      if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
+        const rawTypes = await queryBuilder.execute()
+        return this.create(rawTypes.generatedMaps[0])
+      }
+
+      const rawTypes = await queryBuilder.returning("*").execute()
+      return this.create(rawTypes.generatedMaps[0])
     },
 
     async findAndCountByDiscountConditionId(
