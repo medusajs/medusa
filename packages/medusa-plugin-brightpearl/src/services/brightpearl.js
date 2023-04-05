@@ -818,6 +818,7 @@ class BrightpearlService extends BaseService {
     }
 
     return client.orders.create(order).then(async (salesOrderId) => {
+      // TODO re-add reservations creation here iff inventory service isn't installed
       return await this.orderService_.update(fromOrder.id, {
         metadata: {
           brightpearl_sales_order_id: salesOrderId,
@@ -1540,15 +1541,16 @@ class BrightpearlService extends BaseService {
   ) {
     const locationIds = await this.salesChannelLocationService_
       .withTransaction(context.transactionManager)
-      .listLocations(sales_channel_id)
+      .listLocationIds(sales_channel_id)
 
-    const locations = await this.stockLocationService_
-      .withTransaction(context.transactionManager)
-      .list({ id: locationIds })
+    const locations = await this.stockLocationService_.list(
+      { id: locationIds },
+      {},
+      { transactionManager: context.transactionManager }
+    )
 
-    const bpLocIdString = `${bpLocationId}`
     const fulfillmentLocation = locations.find(
-      (location) => location.metadata?.bp_id === bpLocIdString
+      (location) => location.metadata?.bp_id === bpLocationId
     )
 
     return fulfillmentLocation
