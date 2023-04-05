@@ -6,13 +6,14 @@ import {
   DeleteFileType,
   FileServiceUploadResult,
   GetUploadedFileType,
+  IFileService,
   UploadStreamDescriptorType,
 } from "@medusajs/medusa"
 import stream from "stream"
 import { PutObjectRequest } from "aws-sdk/clients/s3"
 import { ClientConfiguration } from "aws-sdk/clients/s3"
 
-class S3Service extends AbstractFileService {
+class S3Service extends AbstractFileService implements IFileService {
   // eslint-disable-next-line no-empty-pattern
   private bucket_: string
   private s3Url_: string
@@ -67,6 +68,7 @@ class S3Service extends AbstractFileService {
     const client = this.getClient()
 
     const parsedFilename = parse(file.originalname)
+
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const params = {
@@ -74,6 +76,7 @@ class S3Service extends AbstractFileService {
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
+      ContentType: file.mimetype,
     }
 
     const result = await client.upload(params).promise()

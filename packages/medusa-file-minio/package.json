@@ -1,5 +1,5 @@
 {
-  "name": "medusa-file-minio",
+  "name": "@lambdacurry/medusa-file-minio",
   "version": "1.1.7",
   "description": "MinIO server file connector for Medusa",
   "main": "dist/index.js",
@@ -21,7 +21,6 @@
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",
     "build": "tsc",
     "watch": "tsc --watch"
