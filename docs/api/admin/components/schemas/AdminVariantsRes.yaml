@@ -1,0 +1,12 @@
+type: object
+x-expanded-relations:
+  field: variant
+  relations:
+    - options
+    - prices
+    - product
+required:
+  - variant
+properties:
+  variant:
+    $ref: ./PricedVariant.yaml
