@@ -108,7 +108,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -117,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -817,14 +817,26 @@ class BrightpearlService extends BaseService {
       rows: await this.getBrightpearlRows(fromOrder),
     }
 
-    return client.orders.create(order).then(async (salesOrderId) => {
-      // TODO re-add reservations creation here iff inventory service isn't installed
-      return await this.orderService_.update(fromOrder.id, {
-        metadata: {
-          brightpearl_sales_order_id: salesOrderId,
-        },
+    return client.orders
+      .create(order)
+      .then(async (salesOrderId) => {
+        if (!this.inventoryService_) {
+          const order = await client.orders.retrieve(salesOrderId)
+          await client.warehouses
+            .createReservation(order, this.options.warehouse)
+            .catch((err) => {
+              console.log("Failed to allocate for order:", salesOrderId)
+            })
+        }
+        return salesOrderId
       })
-    })
+      .then((salesOrderId) => {
+        return this.orderService_.update(fromOrder.id, {
+          metadata: {
+            brightpearl_sales_order_id: salesOrderId,
+          },
+        })
+      })
   }
 
   async createSwapPayment(fromSwapId) {
