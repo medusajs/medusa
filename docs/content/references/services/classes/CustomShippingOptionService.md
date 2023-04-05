@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:20](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L20)
+[medusa/src/services/custom-shipping-option.ts:18](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/custom-shipping-option.ts#L18)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,17 +66,17 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### customShippingOptionRepository\_
 
-• `Protected` **customShippingOptionRepository\_**: typeof `CustomShippingOptionRepository`
+• `Protected` **customShippingOptionRepository\_**: `Repository`<`CustomShippingOption`\>
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:18](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L18)
+[medusa/src/services/custom-shipping-option.ts:16](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/custom-shipping-option.ts#L16)
 
 ___
 
@@ -84,13 +84,13 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:15](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -98,13 +98,31 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:16](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L16)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -143,7 +161,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -174,7 +192,7 @@ resolves to the creation result
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:89](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L89)
+[medusa/src/services/custom-shipping-option.ts:80](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/custom-shipping-option.ts#L80)
 
 ___
 
@@ -199,7 +217,7 @@ custom shipping options matching the query
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:65](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L65)
+[medusa/src/services/custom-shipping-option.ts:58](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/custom-shipping-option.ts#L58)
 
 ___
 
@@ -224,7 +242,7 @@ the requested custom shipping option.
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:37](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/custom-shipping-option.ts#L37)
+[medusa/src/services/custom-shipping-option.ts:31](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/custom-shipping-option.ts#L31)
 
 ___
 
@@ -248,7 +266,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -272,4 +290,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

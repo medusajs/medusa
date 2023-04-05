@@ -1,2 +1,2 @@
 anyOf:
-  - $ref: ./AddressFields.yaml
+  - $ref: ./AddressPayload.yaml

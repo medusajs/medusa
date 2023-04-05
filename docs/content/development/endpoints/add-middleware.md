@@ -153,7 +153,7 @@ Notice that you have to wrap your usage of the new resource in a try-catch block
 
 If you want to access new registrations in the dependency container within a service, you must set the lifetime of the service either to `Lifetime.SCOPED` or `Lifetime.TRANSIENT`.  Services that have a `Lifetime.SINGLETON` lifetime can't access new registrations since they're resolved and cached in the root dependency container beforehand. You can learn more in the [Create Services documentation](../services/create-service.md#service-life-time).
 
-For custom services, no additional action is required as the default lifetime is `Lifetime.TRANSIENT`. However, if you extend a core service, you must change the lifetime since the default lifetime for core services is `Lifetime.SINGLETON`.
+For custom services, no additional action is required as the default lifetime is `Lifetime.SCOPED`. However, if you extend a core service, you must change the lifetime since the default lifetime for core services is `Lifetime.SINGLETON`.
 
 For example:
 

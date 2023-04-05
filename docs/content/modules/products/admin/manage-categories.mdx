@@ -80,7 +80,7 @@ function Categories() {
     <div>
       {isLoading && <span>Loading...</span>}
       {product_categories && !product_categories.length && (
-        <span>No Product</span>
+        <span>No Categories</span>
       )}
       {product_categories && product_categories.length > 0 && (
         <ul>
@@ -676,3 +676,9 @@ The request returns the following fields:
 - `id`: The ID of the deleted category.
 - `object`: The type of object that was deleted. In this case, the value will be `product-category`.
 - `deleted`: A boolean value indicating whether the category was deleted.
+
+---
+
+## See Also
+
+- [How to use product categories in a storefront](../store/use-categories.mdx)

@@ -15,6 +15,8 @@ import {
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminProductKeys } from "../products"
+import { adminVariantKeys } from "../variants"
 import { adminOrderKeys } from "./queries"
 
 export const useAdminUpdateOrder = (
@@ -128,7 +130,12 @@ export const useAdminCreateFulfillment = (
       client.admin.orders.createFulfillment(orderId, payload),
     buildOptions(
       queryClient,
-      [adminOrderKeys.lists(), adminOrderKeys.detail(orderId)],
+      [
+        adminOrderKeys.lists(),
+        adminOrderKeys.detail(orderId),
+        adminVariantKeys.all,
+        adminProductKeys.lists(),
+      ],
       options
     )
   )

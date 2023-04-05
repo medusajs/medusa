@@ -1,4 +1,9 @@
 type: object
+required:
+  - id
+  - object
+  - deleted
+  - discount
 properties:
   id:
     type: string
