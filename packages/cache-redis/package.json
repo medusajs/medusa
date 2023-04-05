@@ -1,0 +1,38 @@
+{
+  "name": "@medusajs/cache-redis",
+  "version": "1.8.0",
+  "description": "Redis Cache Module for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/cache-redis"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "devDependencies": {
+    "@medusajs/types": "1.8.0",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
+    "typescript": "^4.4.4"
+  },
+  "scripts": {
+    "watch": "tsc --build --watch",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "build": "tsc --build",
+    "test": "jest --passWithNoTests",
+    "test:unit": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@medusajs/modules-sdk": "1.8.0",
+    "awilix": "^8.0.0",
+    "ioredis": "^5.3.1"
+  }
+}

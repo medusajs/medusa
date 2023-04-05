@@ -12,7 +12,7 @@ import { pick } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /notifications
+ * @oas [get] /admin/notifications
  * operationId: "GetNotifications"
  * summary: "List Notifications"
  * description: "Retrieves a list of Notifications."
@@ -50,7 +50,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Notification
+ *   - Notifications
  * responses:
  *   200:
  *     description: OK

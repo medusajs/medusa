@@ -17,12 +17,6 @@ Alternatively, you can use this button to deploy the Medusa backend to Heroku di
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" className="no-zoom-img" />
 </a>
 
-<div>
-  <video width="100%" height="100%" playsinline autoplay muted controls>
-    <source src="https://user-images.githubusercontent.com/59018053/154798681-37060f13-5248-47c5-97c5-81c06da301d4.mp4" type="video/mp4" />
-  </video>
-</div>
-
 ## Prerequisites
 
 ### Medusa Backend
@@ -147,6 +141,20 @@ Where `<YOUR_REDIS_URL>` is the value you received from the previous command.
 If you're using the Heroku PostgreSQL Add-on, it should configure the environment variable `DATABASE_URL`. In that case, you don't need to perform any additional actions.
 
 However, if you use another add-on, make sure to set the environment variable `DATABASE_URL` to the PostgreSQL Database URL.
+
+#### (Optional) Configure Modules Environment Variables
+
+If you use in your Medusa backend modules that require setting environment variables, then you should set them at this point.
+
+For example, if you use the Redis Event Bus module:
+
+```bash
+heroku config:set EVENT_REDIS_URL=<YOUR_REDIS_URL>
+```
+
+Make sure to change `EVENT_REDIS_URL` to the environment variable name you use for your module's configurations.
+
+If your module requires setting up other services, do that then add the environment variables.
 
 #### (Optional) Configure CORS Variables
 

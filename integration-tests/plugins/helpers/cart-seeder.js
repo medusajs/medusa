@@ -14,6 +14,7 @@ const {
   LineItem,
   Payment,
   PaymentSession,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -34,11 +35,15 @@ module.exports = async (connection, data = {}) => {
   const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: "gift_card",
+    where: {
+      type: ShippingProfileType.GIFT_CARD,
+    },
   })
 
   await manager.insert(Address, {

@@ -1,12 +1,16 @@
+import { IStockLocationService } from "@medusajs/types"
 import { IsOptional } from "class-validator"
-import { IsType } from "../../../../utils/validators/is-type"
-
-import { IStockLocationService } from "../../../../interfaces"
-import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
+import {
+  SalesChannelLocationService,
+  SalesChannelService,
+} from "../../../../services"
+import { extendedFindParamsMixin } from "../../../../types/common"
+import { IsType } from "../../../../utils/validators/is-type"
+import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
- * @oas [get] /stock-locations
+ * @oas [get] /admin/stock-locations
  * operationId: "GetStockLocations"
  * summary: "List Stock Locations"
  * description: "Retrieves a list of stock locations"
@@ -108,7 +112,7 @@ import { Request, Response } from "express"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -133,14 +137,51 @@ export default async (req: Request, res: Response) => {
   const stockLocationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
+  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
+    "salesChannelLocationService"
+  )
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
 
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
-  const [locations, count] = await stockLocationService.listAndCount(
+  const filterOnSalesChannel = !!filterableFields.sales_channel_id
+
+  const includeSalesChannels =
+    !!listConfig.relations?.includes("sales_channels")
+
+  if (includeSalesChannels) {
+    listConfig.relations = listConfig.relations?.filter(
+      (r) => r !== "sales_channels"
+    )
+  }
+
+  if (filterOnSalesChannel) {
+    const ids: string[] = Array.isArray(filterableFields.sales_channel_id)
+      ? filterableFields.sales_channel_id
+      : [filterableFields.sales_channel_id]
+
+    delete filterableFields.sales_channel_id
+
+    const locationIds = await channelLocationService.listLocationIds(ids)
+
+    filterableFields.id = [...new Set(locationIds.flat())]
+  }
+
+  let [locations, count] = await stockLocationService.listAndCount(
     filterableFields,
     listConfig
   )
+
+  if (includeSalesChannels) {
+    locations = await joinSalesChannels(
+      locations,
+      channelLocationService,
+      salesChannelService
+    )
+  }
 
   res.status(200).json({
     stock_locations: locations,
@@ -165,4 +206,8 @@ export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsType([String, [String]])
   address_id?: string | string[]
+
+  @IsOptional()
+  @IsType([String, [String]])
+  sales_channel_id?: string | string[]
 }

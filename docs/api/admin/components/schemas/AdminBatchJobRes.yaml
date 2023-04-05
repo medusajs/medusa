@@ -1,4 +1,6 @@
 type: object
+required:
+  - batch_job
 properties:
   batch_job:
     $ref: ./BatchJob.yaml

@@ -6,7 +6,7 @@ const { setPort, useApi } = require("../../../helpers/use-api")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 const {
   simpleOrderFactory,
@@ -343,8 +343,6 @@ describe("medusa-plugin-sendgrid", () => {
 
     expect(response.status).toEqual(200)
 
-    expect(response.status).toEqual(200)
-
     const swap = response.data.order.swaps[0]
     const returnOrder = swap.return_order
     await api.post(
@@ -421,7 +419,6 @@ describe("medusa-plugin-sendgrid", () => {
       price: 500,
     })
     const api = useApi()
-
     const response = await api.post(
       `/admin/orders/${order.id}/claims`,
       {
@@ -557,11 +554,14 @@ describe("medusa-plugin-sendgrid", () => {
         phone: "12353245",
       },
     })
+
     await api.post(`/store/carts/${cartId}/shipping-methods`, {
       option_id: shippingOut.id,
     })
+
     await api.post(`/store/carts/${cartId}/payment-sessions`)
     await api.post(`/store/carts/${cartId}/complete`)
+
     const { data: fulfillmentData } = await api.post(
       `/admin/orders/${order.id}/swaps/${swapId}/fulfillments`,
       {},
@@ -741,7 +741,6 @@ describe("medusa-plugin-sendgrid", () => {
 
     const order = await createReturnableOrder(dbConnection)
     const api = useApi()
-
     const response = await api.post(
       `/admin/orders/${order.id}/swaps`,
       {

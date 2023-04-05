@@ -464,6 +464,10 @@
     {
       "source": "/starters/gatsby-medusa-starter",
       "destination": "/starters/nextjs-medusa-starter?ref=gatsby-medusa-starter"
+    },
+    {
+      "source": "/deployments/admin/deploying-on-netlify",
+      "destination": "/deployments/admin/deploying-on-vercel"
     }
   ]
 }

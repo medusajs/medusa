@@ -15,7 +15,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}
+ * @oas [post] /admin/regions/{id}
  * operationId: "PostRegionsRegion"
  * summary: "Update a Region"
  * description: "Updates a Region"
@@ -55,7 +55,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

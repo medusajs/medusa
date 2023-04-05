@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /carts/{id}
+ * @oas [get] /store/carts/{id}
  * operationId: "GetCartsCart"
  * summary: "Get a Cart"
  * description: "Retrieves a Cart."
@@ -26,7 +26,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/carts/{id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

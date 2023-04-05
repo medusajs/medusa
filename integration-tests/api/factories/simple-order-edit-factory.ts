@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { OrderFactoryData, simpleOrderFactory } from "./simple-order-factory"
 import { OrderEdit } from "@medusajs/medusa"
 
@@ -22,13 +22,13 @@ export type OrderEditFactoryData = {
 }
 
 export const simpleOrderEditFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: OrderEditFactoryData = {}
 ): Promise<OrderEdit> => {
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   if (!data.order_id) {
-    const order = await simpleOrderFactory(connection, data.order)
+    const order = await simpleOrderFactory(dataSource, data.order)
     data.order_id = order.id
   }
 

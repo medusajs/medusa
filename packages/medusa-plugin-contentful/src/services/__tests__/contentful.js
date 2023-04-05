@@ -18,7 +18,7 @@ describe("ContentfulService", () => {
         return Promise.resolve(undefined)
       }),
     }
-    const redisClient = {
+    const cacheService = {
       get: async (id) => {
         // const key = `${id}_ignore_${side}`
         if (id === `ignored_ignore_contentful`) {
@@ -44,7 +44,7 @@ describe("ContentfulService", () => {
       {
         regionService,
         productService,
-        redisClient,
+        cacheService,
         productVariantService,
         eventBusService,
       },

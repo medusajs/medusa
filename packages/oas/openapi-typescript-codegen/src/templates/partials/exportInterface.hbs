@@ -1,0 +1,54 @@
+{{#ifdef description deprecated}}
+/**
+{{#if description}}
+ * {{{escapeComment description}}}
+{{/if}}
+{{#if deprecated}}
+ * @deprecated
+{{/if}}
+ */
+{{/ifdef}}
+export interface {{{name}}} {
+	{{#each properties}}
+	{{#ifdef description deprecated}}
+	/**
+	{{#if description}}
+	 * {{{escapeComment description}}}
+	{{/if}}
+	{{#if deprecated}}
+	 * @deprecated
+	{{/if}}
+	 */
+	{{/ifdef}}
+  {{~#if nestedRelations}}
+    {{#each nestedRelations}}
+      {{>isReadOnly}}{{{../name}}}: {{>typeWithRelation}};
+    {{/each}}
+  {{else}}
+    {{>isReadOnly}}{{{name}}}{{>isRequired}}: {{>type parent=../name}};
+  {{/if}}
+	{{/each}}
+};
+
+{{#if enums}}
+{{#unless @root.useUnionTypes}}
+
+export namespace {{{name}}} {
+
+	{{#each enums}}
+	{{#if description}}
+	/**
+	 * {{{escapeComment description}}}
+	 */
+	{{/if}}
+	export enum {{{name}}} {
+		{{#each enum}}
+		{{{name}}} = {{{value}}},
+		{{/each}}
+	}
+
+	{{/each}}
+
+}
+{{/unless}}
+{{/if}}

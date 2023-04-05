@@ -1,0 +1,31 @@
+{
+  "name": "@medusajs/oas-github-ci",
+  "version": "1.0.1",
+  "description": "OAS Github CI",
+  "main": "scripts/build-openapi.js",
+  "files": [
+    "scripts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/oas/oas-github-ci"
+  },
+  "private": true,
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "ci": "node scripts/build-openapi.js",
+    "preview:admin": "yarn redocly preview-docs ../../../docs/api/admin/openapi.yaml --config=../../../docs-util/redocly/config.yaml",
+    "preview:store": "yarn redocly preview-docs ../../../docs/api/store/openapi.yaml --config=../../../docs-util/redocly/config.yaml",
+    "test": "jest --passWithNoTests",
+    "test:unit": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@medusajs/medusa-oas-cli": "0.2.0",
+    "@readme/openapi-parser": "^2.4.0",
+    "@redocly/cli": "1.0.0-beta.123",
+    "execa": "^5.1.1",
+    "js-yaml": "^4.1.0"
+  }
+}

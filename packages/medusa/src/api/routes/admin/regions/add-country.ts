@@ -7,7 +7,7 @@ import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}/countries
+ * @oas [post] /admin/regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
  * summary: "Add Country"
  * description: "Adds a Country to the list of Countries in a Region"
@@ -47,7 +47,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK

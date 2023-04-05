@@ -1,4 +1,6 @@
 type: object
+required:
+  - customer_group
 properties:
   customer_group:
     $ref: ./CustomerGroup.yaml

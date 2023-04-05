@@ -3,7 +3,7 @@ import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
 import GiftCardService from "../../../../services/gift-card"
 
 /**
- * @oas [get] /gift-cards/{code}
+ * @oas [get] /store/gift-cards/{code}
  * operationId: "GetGiftCardsCode"
  * summary: "Get Gift Card by Code"
  * description: "Retrieves a Gift Card by its associated unique code."
@@ -26,7 +26,7 @@ import GiftCardService from "../../../../services/gift-card"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK

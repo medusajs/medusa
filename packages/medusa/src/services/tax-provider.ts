@@ -1,10 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
-import { EntityManager, In } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { In } from "typeorm"
 
-import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
-import { TaxProviderRepository } from "../repositories/tax-provider"
+import { ICacheService, IEventBusService } from "@medusajs/types"
+import {
+  ITaxService,
+  ItemTaxCalculationLine,
+  TaxCalculationContext,
+  TransactionBaseService
+} from "../interfaces"
 import {
   Cart,
   LineItem,
@@ -12,21 +16,14 @@ import {
   Region,
   ShippingMethod,
   ShippingMethodTaxLine,
-  TaxProvider,
+  TaxProvider
 } from "../models"
+import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
+import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
+import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
-import {
-  ICacheService,
-  ITaxService,
-  ItemTaxCalculationLine,
-  TaxCalculationContext,
-  TransactionBaseService,
-} from "../interfaces"
-
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
-
 import TaxRateService from "./tax-rate"
-import EventBusService from "./event-bus"
 
 type RegionDetails = {
   id: string
@@ -37,16 +34,13 @@ type RegionDetails = {
  * Finds tax providers and assists in tax related operations.
  */
 class TaxProviderService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly container_: AwilixContainer
   protected readonly cacheService_: ICacheService
   protected readonly taxRateService_: TaxRateService
   protected readonly taxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
 
   constructor(container: AwilixContainer) {
     super(container)
@@ -58,12 +52,10 @@ class TaxProviderService extends TransactionBaseService {
     this.taxRateService_ = container["taxRateService"]
     this.eventBus_ = container["eventBusService"]
     this.taxProviderRepo_ = container["taxProviderRepository"]
-
-    this.manager_ = container["manager"]
   }
 
   async list(): Promise<TaxProvider[]> {
-    const tpRepo = this.manager_.getCustomRepository(this.taxProviderRepo_)
+    const tpRepo = this.activeManager_.withRepository(this.taxProviderRepo_)
     return tpRepo.find({})
   }
 
@@ -96,9 +88,7 @@ class TaxProviderService extends TransactionBaseService {
 
   async clearLineItemsTaxLines(itemIds: string[]): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const taxLineRepo = transactionManager.getCustomRepository(
-        this.taxLineRepo_
-      )
+      const taxLineRepo = transactionManager.withRepository(this.taxLineRepo_)
 
       await taxLineRepo.delete({ item_id: In(itemIds) })
     })
@@ -106,10 +96,8 @@ class TaxProviderService extends TransactionBaseService {
 
   async clearTaxLines(cartId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const taxLineRepo = transactionManager.getCustomRepository(
-        this.taxLineRepo_
-      )
-      const shippingTaxRepo = transactionManager.getCustomRepository(
+      const taxLineRepo = transactionManager.withRepository(this.taxLineRepo_)
+      const shippingTaxRepo = transactionManager.withRepository(
         this.smTaxLineRepo_
       )
 
@@ -141,10 +129,10 @@ class TaxProviderService extends TransactionBaseService {
         taxLines = await this.getTaxLines(cartOrLineItems, calculationContext)
       }
 
-      const itemTaxLineRepo = transactionManager.getCustomRepository(
+      const itemTaxLineRepo = transactionManager.withRepository(
         this.taxLineRepo_
       )
-      const shippingTaxLineRepo = transactionManager.getCustomRepository(
+      const shippingTaxLineRepo = transactionManager.withRepository(
         this.smTaxLineRepo_
       )
 
@@ -222,7 +210,9 @@ class TaxProviderService extends TransactionBaseService {
       calculationContext
     )
 
-    const smTaxLineRepo = this.manager_.getCustomRepository(this.smTaxLineRepo_)
+    const smTaxLineRepo = this.activeManager_.withRepository(
+      this.smTaxLineRepo_
+    )
 
     // .create only creates entities nothing is persisted in DB
     return providerLines.map((pl) => {
@@ -311,8 +301,10 @@ class TaxProviderService extends TransactionBaseService {
       calculationContext
     )
 
-    const liTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
-    const smTaxLineRepo = this.manager_.getCustomRepository(this.smTaxLineRepo_)
+    const liTaxLineRepo = this.activeManager_.withRepository(this.taxLineRepo_)
+    const smTaxLineRepo = this.activeManager_.withRepository(
+      this.smTaxLineRepo_
+    )
 
     // .create only creates entities nothing is persisted in DB
     return providerLines.map((pl) => {
@@ -398,7 +390,7 @@ class TaxProviderService extends TransactionBaseService {
 
     let toReturn: TaxServiceRate[] = []
     const optionRates = await this.taxRateService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .listByShippingOption(optionId)
 
     if (optionRates.length > 0) {
@@ -445,7 +437,7 @@ class TaxProviderService extends TransactionBaseService {
 
     let toReturn: TaxServiceRate[] = []
     const productRates = await this.taxRateService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .listByProduct(productId, {
         region_id: region.id,
       })
@@ -486,7 +478,7 @@ class TaxProviderService extends TransactionBaseService {
   }
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
-    const model = this.manager_.getCustomRepository(this.taxProviderRepo_)
+    const model = this.activeManager_.withRepository(this.taxProviderRepo_)
     await model.update({}, { is_installed: false })
 
     for (const p of providers) {

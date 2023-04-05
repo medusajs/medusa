@@ -1,13 +1,13 @@
+import { ICacheService } from "@medusajs/types"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
-  ICacheService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
   PriceType,
 } from "../interfaces"
-import { isDefined } from "medusa-core-utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
@@ -51,11 +51,13 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
     const cacheKey = this.getCacheKey(variant_id, context)
-    const cached = await this.cacheService_
-      .get<PriceSelectionResult>(cacheKey)
-      .catch(() => void 0)
-    if (cached) {
-      return cached
+    if (!context.ignore_cache) {
+      const cached = await this.cacheService_
+        .get<PriceSelectionResult>(cacheKey)
+        .catch(() => void 0)
+      if (cached) {
+        return cached
+      }
     }
 
     let result
@@ -79,9 +81,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo = this.manager_.getCustomRepository(
-      this.moneyAmountRepository_
-    )
+    const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
     const [prices, count] = await moneyRepo.findManyForVariantInRegion(
       variant_id,
@@ -168,9 +168,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo = this.manager_.getCustomRepository(
-      this.moneyAmountRepository_
-    )
+    const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
     const [prices, count] = await moneyRepo.findManyForVariantInRegion(
       variant_id,
@@ -237,6 +235,14 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }
 
     return result
+  }
+
+  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
+    await Promise.all(
+      variantIds.map(
+        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)
+      )
+    )
   }
 
   private getCacheKey(

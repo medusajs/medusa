@@ -1,10 +1,6 @@
-import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces/transaction-base-service"
 
 class SystemProviderService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   static identifier = "system"
 
   constructor(_) {

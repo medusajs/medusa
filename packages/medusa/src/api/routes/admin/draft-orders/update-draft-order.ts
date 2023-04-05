@@ -62,7 +62,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -161,12 +161,12 @@ export default async (req, res) => {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   shipping_address:
  *     description: "The Address to be used for shipping."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   discounts:
  *     description: "An array of Discount codes to add to the Draft Order."

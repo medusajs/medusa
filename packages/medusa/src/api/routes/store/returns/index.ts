@@ -12,9 +12,20 @@ export default (app) => {
   return app
 }
 
+export const defaultRelations = ["items", "items.reason"]
+
 /**
  * @schema StoreReturnsRes
  * type: object
+ * x-expanded-relations:
+ *   field: return
+ *   relations:
+ *     - items
+ *     - items.reason
+ *   eager:
+ *     - items
+ * required:
+ *   - return
  * properties:
  *   return:
  *     $ref: "#/components/schemas/Return"

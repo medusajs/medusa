@@ -4,7 +4,7 @@ import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/line-items/{line_id}
+ * @oas [delete] /store/carts/{id}/line-items/{line_id}
  * operationId: DeleteCartsCartLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Cart."
@@ -28,7 +28,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

@@ -1,0 +1,214 @@
+get:
+  operationId: GetProducts
+  summary: List Products
+  description: Retrieves a list of Products.
+  parameters:
+    - in: query
+      name: q
+      description: >-
+        Query used for searching products by title, description, variant's
+        title, variant's sku, and collection's title
+      schema:
+        type: string
+    - in: query
+      name: id
+      style: form
+      explode: false
+      description: product IDs to search for.
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    - in: query
+      name: sales_channel_id
+      style: form
+      explode: false
+      description: an array of sales channel IDs to filter the retrieved products by.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: collection_id
+      style: form
+      explode: false
+      description: Collection IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: type_id
+      style: form
+      explode: false
+      description: Type IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: tags
+      style: form
+      explode: false
+      description: Tag IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: title
+      description: title to search for.
+      schema:
+        type: string
+    - in: query
+      name: description
+      description: description to search for.
+      schema:
+        type: string
+    - in: query
+      name: handle
+      description: handle to search for.
+      schema:
+        type: string
+    - in: query
+      name: is_giftcard
+      description: Search for giftcards using is_giftcard=true.
+      schema:
+        type: boolean
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting products were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting products were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: category_id
+      style: form
+      explode: false
+      description: Category ids to filter by.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: include_category_children
+      description: Include category children when filtering by category_id.
+      schema:
+        type: boolean
+    - in: query
+      name: offset
+      description: How many products to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of products returned.
+      schema:
+        type: integer
+        default: 100
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each product of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each product of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: the field used to order the products.
+      schema:
+        type: string
+    - in: query
+      name: cart_id
+      description: The id of the Cart to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      description: The id of the Region to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: currency_code
+      description: The currency code to use for price selection.
+      schema:
+        type: string
+  x-codegen:
+    method: list
+    queryParams: StoreGetProductsParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_products/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_products/get.sh
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreProductsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

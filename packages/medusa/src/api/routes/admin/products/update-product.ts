@@ -1,3 +1,6 @@
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -11,46 +14,39 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus, ProductVariant } from "../../../../models"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
+import { Logger } from "../../../../types/global"
 import {
   ProductProductCategoryReq,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   CreateProductVariantInput,
   ProductVariantPricesUpdateReq,
   UpdateProductVariantInput,
 } from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
-import { MedusaError } from "medusa-core-utils"
 import { DistributedTransaction } from "../../../../utils/transaction"
-import { IInventoryService } from "../../../../interfaces"
-import { Logger } from "../../../../types/global"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-} from "./index"
-import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import { validator } from "../../../../utils/validator"
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
 
 /**
- * @oas [post] /products/{id}
+ * @oas [post] /admin/products/{id}
  * operationId: "PostProductsProduct"
  * summary: "Update a Product"
  * description: "Updates a Product"
@@ -91,7 +87,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -144,7 +140,7 @@ export default async (req, res) => {
       return
     }
 
-    const variantRepo = manager.getCustomRepository(productVariantRepo)
+    const variantRepo = manager.withRepository(productVariantRepo)
     const productVariants = await productVariantService
       .withTransaction(transactionManager)
       .list(

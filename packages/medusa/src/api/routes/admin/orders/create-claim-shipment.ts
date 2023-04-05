@@ -5,7 +5,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/shipments
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
  * summary: "Create Claim Shipment"
  * description: "Registers a Claim Fulfillment as shipped."
@@ -49,7 +49,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

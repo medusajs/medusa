@@ -6,7 +6,7 @@ import {
   ShippingProfileType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { simpleRegionFactory } from "./simple-region-factory"
 
 export type ShippingOptionFactoryData = {
@@ -28,7 +28,7 @@ type ShippingOptionRequirementData = {
 }
 
 export const simpleShippingOptionFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ShippingOptionFactoryData = {},
   seed?: number
 ): Promise<ShippingOption> => {
@@ -36,19 +36,23 @@ export const simpleShippingOptionFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.DEFAULT,
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    }
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.GIFT_CARD,
+    where: {
+      type: ShippingProfileType.GIFT_CARD,
+    }
   })
 
   let region_id = data.region_id
 
   if (!region_id) {
-    const { id } = await simpleRegionFactory(connection)
+    const { id } = await simpleRegionFactory(dataSource)
     region_id = id
   }
 

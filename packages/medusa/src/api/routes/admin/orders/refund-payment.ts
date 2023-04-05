@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/refund
+ * @oas [post] /admin/orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."
@@ -57,7 +57,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

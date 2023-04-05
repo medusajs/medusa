@@ -19,9 +19,14 @@ import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import {
+  defaultAdminPriceListFields,
+  defaultAdminPriceListRelations,
+} from "./index"
+import { PriceList } from "../../../../models"
 
 /**
- * @oas [post] /price-lists
+ * @oas [post] /admin/price-lists
  * operationId: "PostPriceListsPriceList"
  * summary: "Create a Price List"
  * description: "Creates a Price List"
@@ -78,7 +83,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
@@ -104,10 +109,15 @@ export default async (req: Request, res) => {
     req.scope.resolve("priceListService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const priceList = await manager.transaction(async (transactionManager) => {
+  let priceList = await manager.transaction(async (transactionManager) => {
     return await priceListService
       .withTransaction(transactionManager)
       .create(req.validatedBody as CreatePriceListInput)
+  })
+
+  priceList = await priceListService.retrieve(priceList.id, {
+    select: defaultAdminPriceListFields as (keyof PriceList)[],
+    relations: defaultAdminPriceListRelations,
   })
 
   res.json({ price_list: priceList })

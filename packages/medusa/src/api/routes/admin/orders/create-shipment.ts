@@ -13,7 +13,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/shipment
+ * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Create a Shipment"
  * description: "Registers a Fulfillment as shipped."
@@ -56,7 +56,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

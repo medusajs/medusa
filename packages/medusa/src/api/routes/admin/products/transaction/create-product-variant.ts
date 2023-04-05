@@ -1,3 +1,13 @@
+import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+import { EntityManager } from "typeorm"
+import { ulid } from "ulid"
+import { ProductVariant } from "../../../../../models"
+import {
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../../services"
+import { CreateProductVariantInput } from "../../../../../types/product-variant"
 import {
   DistributedTransaction,
   TransactionHandlerType,
@@ -6,17 +16,6 @@ import {
   TransactionState,
   TransactionStepsDefinition,
 } from "../../../../../utils/transaction"
-import { ulid } from "ulid"
-import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../../interfaces"
-import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../../services"
-import { CreateProductVariantInput } from "../../../../../types/product-variant"
-import { InventoryItemDTO } from "../../../../../types/inventory"
-import { ProductVariant } from "../../../../../models"
-import { MedusaError } from "medusa-core-utils"
 
 enum actions {
   createVariant = "createVariant",
@@ -74,8 +73,6 @@ export const createVariantTransaction = async (
     productVariantInventoryService,
   } = dependencies
 
-  const inventoryServiceTx = inventoryService?.withTransaction(manager)
-
   const productVariantInventoryServiceTx =
     productVariantInventoryService.withTransaction(manager)
 
@@ -96,7 +93,7 @@ export const createVariantTransaction = async (
       return
     }
 
-    return await inventoryServiceTx!.createInventoryItem({
+    return await inventoryService!.createInventoryItem({
       sku: variant.sku,
       origin_country: variant.origin_country,
       hs_code: variant.hs_code,
@@ -111,7 +108,7 @@ export const createVariantTransaction = async (
 
   async function removeInventoryItem(inventoryItem: InventoryItemDTO) {
     if (inventoryItem) {
-      await inventoryServiceTx!.deleteInventoryItem(inventoryItem.id)
+      await inventoryService!.deleteInventoryItem(inventoryItem.id)
     }
   }
 

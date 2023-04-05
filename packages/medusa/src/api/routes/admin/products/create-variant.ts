@@ -1,3 +1,5 @@
+import { IInventoryService } from "@medusajs/types"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,27 +9,23 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Type } from "class-transformer"
-import {
-  ProductService,
-  ProductVariantService,
-  ProductVariantInventoryService,
-} from "../../../../services"
+import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-
-import { IInventoryService } from "../../../../interfaces"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../services"
 import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
-
-import { EntityManager } from "typeorm"
-
 import { createVariantTransaction } from "./transaction/create-product-variant"
 
 /**
- * @oas [post] /products/{id}/variants
+ * @oas [post] /admin/products/{id}/variants
  * operationId: "PostProductsProductVariants"
  * summary: "Create a Product Variant"
  * description: "Creates a Product Variant. Each Product Variant must have a unique combination of Product Option Values."
@@ -92,7 +90,7 @@ import { createVariantTransaction } from "./transaction/create-product-variant"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -146,10 +144,14 @@ export default async (req, res) => {
   })
 
   const productService: ProductService = req.scope.resolve("productService")
-  const product = await productService.retrieve(id, {
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }

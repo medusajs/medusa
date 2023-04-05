@@ -1,12 +1,13 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsBoolean } from "class-validator"
 import { Request, Response } from "express"
 import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
- * @oas [get] /product-categories
+ * @oas [get] /admin/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories."
@@ -15,6 +16,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - (query) q {string} Query used for searching product category names orhandles.
  *   - (query) is_internal {boolean} Search for only internal categories.
  *   - (query) is_active {boolean} Search for only active categories
+ *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
@@ -43,7 +45,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   200:
  *     description: OK
@@ -91,6 +93,11 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
+  include_descendants_tree?: boolean
 
   @IsString()
   @IsOptional()
