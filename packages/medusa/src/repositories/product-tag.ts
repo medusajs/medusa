@@ -2,8 +2,9 @@ import { In } from "typeorm"
 import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { Image } from "../models"
+import {
+  QueryDeepPartialEntity
+} from "typeorm/query-builder/QueryPartialEntity"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -69,7 +70,7 @@ export const ProductTagRepository = dataSource
       )
 
       const upsertedTags: ProductTag[] = []
-      const tagsToCreate: QueryDeepPartialEntity<Image>[] = []
+      const tagsToCreate: QueryDeepPartialEntity<ProductTag>[] = []
 
       for (const tag of tags) {
         const aTag = existingTagsMap.get(tag.value)
@@ -77,7 +78,7 @@ export const ProductTagRepository = dataSource
           upsertedTags.push(aTag)
         } else {
           const newTag = this.create(tag)
-          tagsToCreate.push(newTag as QueryDeepPartialEntity<Image>)
+          tagsToCreate.push(newTag as QueryDeepPartialEntity<ProductTag>)
         }
       }
 
