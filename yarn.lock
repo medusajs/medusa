@@ -5997,14 +5997,14 @@ __metadata:
     form-data: 4.0.0
     fs-extra: ^10.1.0
     handlebars: ^4.7.7
-    jest: 26.6.3
-    jest-cli: 26.6.3
+    jest: ^25.5.4
     json-schema-ref-parser: ^9.0.9
     node-fetch: 2.6.7
     pascalcase: ^2.0.0
     qs: 6.10.3
     rollup: 3.9.1
     rollup-plugin-terser: 7.0.2
+    ts-jest: ^25.5.1
     tslib: 2.3.1
     typescript: 4.9.5
   languageName: unknown
@@ -24599,29 +24599,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-cli@npm:26.6.3, jest-cli@npm:^26.6.3":
-  version: 26.6.3
-  resolution: "jest-cli@npm:26.6.3"
-  dependencies:
-    "@jest/core": ^26.6.3
-    "@jest/test-result": ^26.6.2
-    "@jest/types": ^26.6.2
-    chalk: ^4.0.0
-    exit: ^0.1.2
-    graceful-fs: ^4.2.4
-    import-local: ^3.0.2
-    is-ci: ^2.0.0
-    jest-config: ^26.6.3
-    jest-util: ^26.6.2
-    jest-validate: ^26.6.2
-    prompts: ^2.0.1
-    yargs: ^15.4.1
-  bin:
-    jest: bin/jest.js
-  checksum: 3f62c26b300549115bcfc0393d7d49467d414d200bb211a8843fd48d0296ddbfc5e6fe808c64ad2039127657b662e3ba3db44166341bd5db2d089bf09cf82a2c
-  languageName: node
-  linkType: hard
-
 "jest-cli@npm:^25.5.4":
   version: 25.5.4
   resolution: "jest-cli@npm:25.5.4"
@@ -24643,6 +24620,29 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: 0ff61e14b65059d01d8c2528ad458cdaf08629d336965307468d32e59aa63f82cccf877bccf37e38b664007203c1203e468145e20eee33ccd69175e840c9393f
+  languageName: node
+  linkType: hard
+
+"jest-cli@npm:^26.6.3":
+  version: 26.6.3
+  resolution: "jest-cli@npm:26.6.3"
+  dependencies:
+    "@jest/core": ^26.6.3
+    "@jest/test-result": ^26.6.2
+    "@jest/types": ^26.6.2
+    chalk: ^4.0.0
+    exit: ^0.1.2
+    graceful-fs: ^4.2.4
+    import-local: ^3.0.2
+    is-ci: ^2.0.0
+    jest-config: ^26.6.3
+    jest-util: ^26.6.2
+    jest-validate: ^26.6.2
+    prompts: ^2.0.1
+    yargs: ^15.4.1
+  bin:
+    jest: bin/jest.js
+  checksum: 3f62c26b300549115bcfc0393d7d49467d414d200bb211a8843fd48d0296ddbfc5e6fe808c64ad2039127657b662e3ba3db44166341bd5db2d089bf09cf82a2c
   languageName: node
   linkType: hard
 
@@ -26298,19 +26298,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:26.6.3, jest@npm:^26.6.3":
-  version: 26.6.3
-  resolution: "jest@npm:26.6.3"
-  dependencies:
-    "@jest/core": ^26.6.3
-    import-local: ^3.0.2
-    jest-cli: ^26.6.3
-  bin:
-    jest: bin/jest.js
-  checksum: 4469f5c426f5b00855e2264dc4fce5ab16c0fab31d2dc6fc829d769ca7ec84a9c74763f7c1d281d085ad55897927a08df2b4778b0df899a66188ff0722e17d29
-  languageName: node
-  linkType: hard
-
 "jest@npm:^25.5.2, jest@npm:^25.5.4":
   version: 25.5.4
   resolution: "jest@npm:25.5.4"
@@ -26321,6 +26308,19 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: a5c58268632b37b2c9bd4ca0f067bda030d1330581d3295e110584863bf8e48f76d40624c02b0a26ad8d05f18ef2e84851f7fef271b8c7684684992bef03c838
+  languageName: node
+  linkType: hard
+
+"jest@npm:^26.6.3":
+  version: 26.6.3
+  resolution: "jest@npm:26.6.3"
+  dependencies:
+    "@jest/core": ^26.6.3
+    import-local: ^3.0.2
+    jest-cli: ^26.6.3
+  bin:
+    jest: bin/jest.js
+  checksum: 4469f5c426f5b00855e2264dc4fce5ab16c0fab31d2dc6fc829d769ca7ec84a9c74763f7c1d281d085ad55897927a08df2b4778b0df899a66188ff0722e17d29
   languageName: node
   linkType: hard
 
