@@ -38,8 +38,8 @@ As the dependency container in Medusa is built on top of [awilix](https://github
 
 There are three lifetime types:
 
-1. `Lifetime.TRANSIENT`: (default for custom services) when used, a new instance of the service is created everytime it is resolved in other resources from the dependency container.
-2. `Lifetime.SCOPED`: when used, an instance of the service is created and reused in the scope of the dependency container. So, when the service is resolved in other resources that share that dependency container, the same instance of the service will be returned.
+1. `Lifetime.TRANSIENT`: when used, a new instance of the service is created everytime it is resolved in other resources from the dependency container.
+2. `Lifetime.SCOPED`: (default for custom services) when used, an instance of the service is created and reused in the scope of the dependency container. So, when the service is resolved in other resources that share that dependency container, the same instance of the service will be returned.
 3. `Lifetime.SINGLETON`: (default for core services) when used, the service is always reused, regardless of the scope. An instance of the service is cached in the root container.
 
 You can set the lifetime of your service by setting the `LIFE_TIME` static property:

@@ -28,7 +28,7 @@ export function registerPaymentServiceFromClass(
   container.registerAdd(
     "paymentProviders",
     asFunction((cradle) => new klass(cradle, pluginDetails.options), {
-      lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+      lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
     })
   )
 
@@ -36,7 +36,7 @@ export function registerPaymentServiceFromClass(
     [registrationName]: asFunction(
       (cradle) => new klass(cradle, pluginDetails.options),
       {
-        lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
       }
     ),
     [`pp_${(klass as unknown as typeof AbstractPaymentService).identifier}`]:
@@ -59,7 +59,7 @@ export function registerPaymentProcessorFromClass(
   container.registerAdd(
     "paymentProviders",
     asFunction((cradle) => new klass(cradle, pluginDetails.options), {
-      lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+      lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
     })
   )
 
@@ -67,7 +67,7 @@ export function registerPaymentProcessorFromClass(
     [registrationName]: asFunction(
       (cradle) => new klass(cradle, pluginDetails.options),
       {
-        lifetime: klass.LIFE_TIME || Lifetime.TRANSIENT,
+        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
       }
     ),
     [`pp_${(klass as unknown as typeof AbstractPaymentProcessor).identifier}`]:

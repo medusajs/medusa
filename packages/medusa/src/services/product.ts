@@ -326,12 +326,12 @@ class ProductService extends TransactionBaseService {
     return await productTypeRepository.find({})
   }
 
-  async listTagsByUsage(count = 10): Promise<ProductTag[]> {
+  async listTagsByUsage(take = 10): Promise<ProductTag[]> {
     const productTagRepo = this.activeManager_.withRepository(
       this.productTagRepository_
     )
 
-    return await productTagRepo.listTagsByUsage(count)
+    return await productTagRepo.listTagsByUsage(take)
   }
 
   /**
