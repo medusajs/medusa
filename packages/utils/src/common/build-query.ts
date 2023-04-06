@@ -138,7 +138,8 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 }
 
 /**
- * Revert new object structure of find options to the legacy structure of previous version
+ * Converts a typeorms structure of find options to an
+ * array of string paths
  * @example
  * input: {
  *   test: {

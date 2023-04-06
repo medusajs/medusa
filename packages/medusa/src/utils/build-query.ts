@@ -139,6 +139,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 
 /**
  * Revert new object structure of find options to the legacy structure of previous version
+ * @deprecated in favor of import { objectToStringPath } from "@medusajs/utils"
  * @example
  * input: {
  *   test: {
@@ -153,7 +154,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
  * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
  * @param input
  */
-export function objectToStringPath<TEntity>(
+export function buildLegacyFieldsListFrom<TEntity>(
   input:
     | FindOptionsWhere<TEntity>
     | FindOptionsSelect<TEntity>
@@ -168,7 +169,7 @@ export function objectToStringPath<TEntity>(
 
   for (const key of Object.keys(input)) {
     if (input[key] != undefined && typeof input[key] === "object") {
-      const deepRes = objectToStringPath(input[key])
+      const deepRes = buildLegacyFieldsListFrom(input[key])
 
       const items = deepRes.reduce((acc, val) => {
         acc.push(`${key}.${val}`)

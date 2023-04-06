@@ -13,7 +13,7 @@ import {
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { objectToStringPath } from "../utils"
+import { objectToStringPath } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
 
 export type DefaultWithoutRelations = Omit<

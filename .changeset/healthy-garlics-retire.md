@@ -1,5 +1,6 @@
 ---
 "@medusajs/medusa": patch
+"@medusajs/utils": patch
 ---
 
-chore(medusa): rename buildLegacyFieldsListFrom to objectToStringPath
+chore(medusa, utils): rename buildLegacyFieldsListFrom to objectToStringPath

@@ -1,5 +1,5 @@
 import { FindOptionsOrder, FindOptionsSelect, In, MoreThan, Not } from "typeorm"
-import { addOrderToSelect, objectToStringPath, buildQuery } from "../build-query"
+import { addOrderToSelect, buildLegacyFieldsListFrom, buildQuery } from "../build-query"
 
 describe("buildQuery", () => {
   it("successfully creates query", () => {
@@ -139,9 +139,9 @@ describe("buildQuery", () => {
   })
 })
 
-describe("objectToStringPath", () => {
+describe("buildLegacyFieldsListFrom", () => {
   it("successfully build back select object shape to list", () => {
-    const q = objectToStringPath({
+    const q = buildLegacyFieldsListFrom({
       order: {
         items: true,
         swaps: {
@@ -185,7 +185,7 @@ describe("objectToStringPath", () => {
   })
 
   it("successfully build back relation object shape to list", () => {
-    const q = objectToStringPath({
+    const q = buildLegacyFieldsListFrom({
       order: {
         items: true,
         swaps: {
@@ -241,7 +241,7 @@ describe("objectToStringPath", () => {
   })
 
   it("successfully build back order object shape to list", () => {
-    const q = objectToStringPath({
+    const q = buildLegacyFieldsListFrom({
       id: "ASC",
       items: {
         id: "ASC",

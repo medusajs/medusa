@@ -16,7 +16,7 @@ import {
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
 import { isDefined } from "medusa-core-utils"
-import { objectToStringPath } from "../utils"
+import { objectToStringPath } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
 
 const resolveableFields = [
