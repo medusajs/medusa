@@ -2,16 +2,12 @@ import { Command, Option, OptionValues } from "commander"
 import fs, { mkdir } from "fs/promises"
 import * as path from "path"
 import execa from "execa"
-import {
-  jsonFileToYamlFile,
-  jsonObjectToYamlString,
-  readYaml,
-  writeYaml,
-} from "./utils/yaml-utils"
+import { jsonFileToYamlFile, readYaml, writeYaml } from "./utils/yaml-utils"
 import { isArray, mergeWith } from "lodash"
 import { readJson } from "./utils/json-utils"
 import { getTmpDirectory, isFile } from "./utils/fs-utils"
 import {
+  formatHintRecommendation,
   getCircularPatchRecommendation,
   getCircularReferences,
 } from "./utils/circular-patch-utils"
@@ -223,9 +219,7 @@ const circularReferenceCheck = async (srcFile: string): Promise<void> => {
     let errorMessage = `🔴 Unhandled circular references - Please manually patch using --config ./redocly-config.yaml`
     const recommendation = getCircularPatchRecommendation(circularRefs, oas)
     if (Object.keys(recommendation).length) {
-      const hint = jsonObjectToYamlString({
-        decorators: { "medusa/circular-patch": { schemas: recommendation } },
-      })
+      const hint = formatHintRecommendation(recommendation)
       errorMessage += `
 Within redocly-config.yaml, try adding the following:
 """

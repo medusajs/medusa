@@ -1,6 +1,7 @@
 import { OpenAPIObject, SchemaObject } from "openapi3-ts"
 import OpenAPIParser from "@readme/openapi-parser"
 import { $Refs } from "@readme/json-schema-ref-parser"
+import { jsonObjectToYamlString } from "./yaml-utils"
 
 export const getCircularReferences = async (
   srcFile: string
@@ -73,4 +74,12 @@ export const getCircularPatchRecommendation = (
     schemas[match.schema].push(match.referencedSchema)
   }
   return schemas
+}
+
+export const formatHintRecommendation = (
+  recommendation: Record<string, string[]>
+) => {
+  return jsonObjectToYamlString({
+    decorators: { "medusa/circular-patch": { schemas: recommendation } },
+  })
 }

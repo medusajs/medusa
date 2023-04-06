@@ -1,4 +1,4 @@
-import fs, { lstat } from "fs/promises"
+import fs, { access, lstat } from "fs/promises"
 import path from "path"
 import os from "os"
 
@@ -7,6 +7,15 @@ export async function isFile(filePath: string): Promise<boolean> {
     return (await lstat(path.resolve(filePath))).isFile()
   } catch (err) {
     console.log(err)
+    return false
+  }
+}
+
+export async function exists(filePath: string): Promise<boolean> {
+  try {
+    await access(path.resolve(filePath), fs.constants.F_OK)
+    return true
+  } catch (err) {
     return false
   }
 }
