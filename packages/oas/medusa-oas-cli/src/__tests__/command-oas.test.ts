@@ -6,12 +6,24 @@ import { v4 as uid } from "uuid"
 import { getTmpDirectory } from "../utils/fs-utils"
 import { readYaml } from "../utils/yaml-utils"
 import { readJson } from "../utils/json-utils"
-import { runCLI } from "./utils/test-utils"
+import execa from "execa"
 
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
 )
 const basePath = path.resolve(__dirname, `../../`)
+
+export const runCLI = async (command: string, options: string[] = []) => {
+  const params = ["run", "medusa-oas", command, ...options]
+  try {
+    const { all: logs } = await execa("yarn", params, {
+      cwd: basePath,
+      all: true,
+    })
+  } catch (err) {
+    throw new Error(err.message + err.all)
+  }
+}
 
 const listOperations = (oas: OpenAPIObject): OperationObject[] => {
   const operations: OperationObject[] = []

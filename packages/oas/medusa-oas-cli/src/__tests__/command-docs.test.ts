@@ -3,7 +3,6 @@ import { writeJson } from "../utils/json-utils"
 import { OpenAPIObject } from "openapi3-ts"
 import path from "path"
 import { v4 as uid } from "uuid"
-import { getBaseOpenApi, runCLI } from "./utils/test-utils"
 import { readYaml, writeYaml } from "../utils/yaml-utils"
 import { mkdir, readdir } from "fs/promises"
 import {
@@ -11,6 +10,33 @@ import {
   getCircularPatchRecommendation,
   getCircularReferences,
 } from "../utils/circular-patch-utils"
+import execa from "execa"
+
+const basePath = path.resolve(__dirname, `../../../`)
+
+export const runCLI = async (command: string, options: string[] = []) => {
+  const params = ["run", "medusa-oas", command, ...options]
+  try {
+    const { all: logs } = await execa("yarn", params, {
+      cwd: basePath,
+      all: true,
+    })
+  } catch (err) {
+    throw new Error(err.message + err.all)
+  }
+}
+
+export const getBaseOpenApi = (): OpenAPIObject => {
+  return {
+    openapi: "3.0.0",
+    info: {
+      title: "Test",
+      version: "1.0.0",
+    },
+    paths: {},
+    components: {},
+  }
+}
 
 describe("command docs", () => {
   let tmpDir: string
@@ -243,7 +269,7 @@ describe("command docs", () => {
       ).rejects.toThrow("--config must be a file")
     })
 
-    it("should fail when config is of supported file type", async () => {
+    it("should fail when config is not of supported file type", async () => {
       const outDir = path.resolve(tmpDir, uid())
       await mkdir(outDir, { recursive: true })
       const tmpFile = path.resolve(outDir, "tmp.txt")
@@ -264,7 +290,6 @@ describe("command docs", () => {
 
   describe("circular references", () => {
     let srcFile: string
-    let configFile: string
 
     beforeAll(async () => {
       openApi = getBaseOpenApi()
@@ -316,7 +341,7 @@ describe("command docs", () => {
       )
     })
 
-    it("should recommendation which schemas to patch to resolve circular reference", async () => {
+    it("should recommend which schemas to patch to resolve circular references", async () => {
       /**
        * The recommendation is heavily influenced but the dereference operation
        * from @readme/json-schema-ref-parser. It's not an exact science and the

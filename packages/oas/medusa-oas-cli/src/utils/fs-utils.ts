@@ -1,6 +1,6 @@
-import fs, { access, lstat } from "fs/promises"
+import { access, lstat, mkdtemp } from "fs/promises"
 import path from "path"
-import os from "os"
+import { tmpdir } from "os"
 
 export async function isFile(filePath: string): Promise<boolean> {
   try {
@@ -13,7 +13,7 @@ export async function isFile(filePath: string): Promise<boolean> {
 
 export async function exists(filePath: string): Promise<boolean> {
   try {
-    await access(path.resolve(filePath), fs.constants.F_OK)
+    await access(path.resolve(filePath))
     return true
   } catch (err) {
     return false
@@ -24,10 +24,6 @@ export const getTmpDirectory = async () => {
   /**
    * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
    */
-  const tmpDir = process.env["RUNNER_TEMP"] ?? os.tmpdir()
-  return await fs.mkdtemp(tmpDir)
-}
-
-export const copyFile = async (srcFile: string, outFile: string) => {
-  await fs.copyFile(srcFile, outFile)
+  const tmpDir = process.env["RUNNER_TEMP"] ?? tmpdir()
+  return await mkdtemp(tmpDir)
 }
