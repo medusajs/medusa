@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
 } from "typeorm"
 import {
@@ -18,6 +19,7 @@ import { Currency } from "./currency"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { SalesChannel } from "./sales-channel"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Department } from "./department"
 
 @Entity()
 export class Store extends BaseEntity {
@@ -73,6 +75,21 @@ export class Store extends BaseEntity {
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "store")
   }
+  
+  @OneToMany(() => Department, (department) => department.stores)
+  @JoinTable({
+    name: "department",
+    joinColumn: {
+      name: "store_id",
+      referencedColumnName: "id"
+    }
+    // inverseJoinColumn: {
+    //   name: "departmentId",
+    //   referencedColumnName: "id"
+    // }
+  })
+  departments: Department[];
+  
 }
 
 /**

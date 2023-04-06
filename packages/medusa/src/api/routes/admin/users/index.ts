@@ -20,7 +20,6 @@ export const unauthenticatedUserRoutes = (app) => {
 }
 export interface UserWithDepartments extends User{
   departments: Department[];
-    data: any;
 }
 export default (app) => {
   const route = Router()

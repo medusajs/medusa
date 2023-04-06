@@ -1,4 +1,4 @@
-import { AdminAuthRes } from "@medusajs/medusa"
+import { AdminWithDeparts } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -13,7 +13,7 @@ type AuthQueryKey = typeof adminAuthKeys
 
 export const useAdminGetSession = (
   options?: UseQueryOptionsWrapper<
-    Response<AdminAuthRes>,
+    Response<AdminWithDeparts>,
     Error,
     ReturnType<AuthQueryKey["details"]>
   >

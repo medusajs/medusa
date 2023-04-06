@@ -1,3 +1,4 @@
+import { AdminWithDeparts } from '@medusajs/medusa/src/api/routes/admin/auth/index';
 import { AdminAuthRes, AdminPostAuthReq } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -11,8 +12,9 @@ class AdminAuthResource extends BaseResource {
    */
   getSession(
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminAuthRes> {
+  ): ResponsePromise<AdminWithDeparts> {
     const path = `/admin/auth`
+    console.log("O BHAI WAIT.. ADMIN AUTH CALLED")
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 

@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { User } from "../../../.."
+import { Department, User } from "../../../.."
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -23,6 +23,11 @@ export default (app) => {
   return app
 }
 
+export type AdminWithDeparts = {
+  user:Omit<User, "password_hash">,
+  department:Department
+}
+
 /**
  * @schema AdminAuthRes
  * type: object
@@ -33,7 +38,7 @@ export default (app) => {
  *     $ref: "#/components/schemas/User"
  */
 export type AdminAuthRes = {
-  user: Omit<User, "password_hash">
+  user: Omit<User, "password_hash"> 
 }
 
 export * from "./create-session"

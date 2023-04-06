@@ -26,6 +26,8 @@ export default async function ({ port, directory }) {
           if (err) {
             return
           }
+          Logger.success(serverActivity, `-----WAIT AMAN Server is ready on port: ${port}`)
+          
           Logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })

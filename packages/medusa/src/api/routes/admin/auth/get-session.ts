@@ -1,5 +1,7 @@
 import UserService from "../../../../services/user"
 import _ from "lodash"
+import { UserWithDepartments } from "../users"
+import { Department } from "../../../../models"
 
 /**
  * @oas [get] /admin/auth
@@ -53,10 +55,14 @@ import _ from "lodash"
 export default async (req, res) => {
   try {
     const userService: UserService = req.scope.resolve("userService")
-    const user = await userService.retrieve(req.user.userId)
-
+    const user: UserWithDepartments = await userService.retrieve(req.user.userId)
+    
+    
     const cleanRes = _.omit(user, ["password_hash"])
-    res.status(200).json({ user: cleanRes })
+    const departments: Department| null = await userService.getDepartments(req.user.userId);
+    console.log('--------------------------------------------------------departments------------', departments)
+    console.log('--------------------------------------------------------ADMIN------------', user, cleanRes)
+    res.status(200).json({ user: cleanRes, departments})
   } catch (err) {
     res.sendStatus(400)
   }

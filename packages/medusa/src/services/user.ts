@@ -1,11 +1,12 @@
+import { UserRepository } from './../repositories/user';
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
-import { User } from "../models"
-import { UserRepository } from "../repositories/user"
+import { Department, User } from "../models"
+
 import { FindConfig } from "../types/common"
 import {
   CreateUserInput,
@@ -17,9 +18,13 @@ import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import AnalyticsConfigService from "./analytics-config"
 import EventBusService from "./event-bus"
+import { UserWithDepartments } from "../api"
+import {DepartmentRepository} from '../repositories/department';
+
 
 type UserServiceProps = {
   userRepository: typeof UserRepository
+  departmentRepository: typeof DepartmentRepository
   analyticsConfigService: AnalyticsConfigService
   eventBusService: EventBusService
   manager: EntityManager
@@ -39,11 +44,13 @@ class UserService extends TransactionBaseService {
 
   protected readonly analyticsConfigService_: AnalyticsConfigService
   protected readonly userRepository_: typeof UserRepository
+  protected readonly departmentRepository_: typeof DepartmentRepository
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     userRepository,
+    departmentRepository,
     eventBusService,
     analyticsConfigService,
     featureFlagRouter,
@@ -52,6 +59,7 @@ class UserService extends TransactionBaseService {
     super(arguments[0])
 
     this.userRepository_ = userRepository
+    this.departmentRepository_ = departmentRepository
     this.analyticsConfigService_ = analyticsConfigService
     this.featureFlagRouter_ = featureFlagRouter
     this.eventBus_ = eventBusService
@@ -74,27 +82,41 @@ class UserService extends TransactionBaseService {
    * @param {FindConfig} config - query configs
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
+  async retrieve(userId: string, config: FindConfig<User> = {}): Promise<UserWithDepartments> {
     if (!isDefined(userId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `"userId" must be defined`
       )
     }
-
+    console.log('----------------------------------------------------------------a config', config)
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
+    //const userRepo = this.activeManager_.getCustomRepository(this.userRepository_);
     const query = buildQuery({ id: userId }, config)
-
+    console.log('----------------------------------------------------------------a query', query)
     const user = await userRepo.findOne(query)
-
+    // const user = await userRepo.createQueryBuilder('users')
+    //     .leftJoinAndSelect('users.departments','stores')
+    //     .where({ id: userId })
+    //     .getOne();
+        
+    // const user = await userRepo.findOne({
+    //       where: {id:userId},
+    //       relations: ["departments"],
+    //     });
+        if (!user) {
+          throw new Error("User not found");
+        }
+        
+        
     if (!user) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `User with id: ${userId} was not found`
       )
     }
-
-    return user
+    console.log('----------------------------------------------------------------a user', user)
+    return user as UserWithDepartments
   }
 
   /**
@@ -124,6 +146,31 @@ class UserService extends TransactionBaseService {
 
     return user
   }
+  
+  
+  async getDepartments(user_id): Promise<Department | null>{
+    //const userRepo = this.activeManager_.withRepository(this.userRepository_)
+    const departRepo = this.activeManager_.withRepository(this.departmentRepository_)
+    let departments;
+    // console.log('----------------------------------------------------------------a user_id', user_id)
+    try{
+      departments = await departRepo.find({
+        where: { user_id:user_id },
+        relations:{ stores: true}
+      })
+      console.log('----------------------------------------------------------------a departments', departments, departments.stores)
+    }
+    catch(err){
+      console.log('----------------------------------------------------------------a err', err)
+    }
+    
+    //    if (!user_id) {
+       
+    //       throw new Error("User not found");
+    //     }
+    // console.log('----------------------------------------------------------------a department', department)
+    return departments;
+  }
 
   /**
    * Gets a user by email.
@@ -140,6 +187,7 @@ class UserService extends TransactionBaseService {
 
     const query = buildQuery({ email: email.toLowerCase() }, config)
     const user = await userRepo.findOne(query)
+    //const user = await userRepo.findOne({where:{ email: email.toLowerCase() },...config, relations:{departments:{stores:true}}})
 
     if (!user) {
       throw new MedusaError(
@@ -148,7 +196,7 @@ class UserService extends TransactionBaseService {
       )
     }
 
-    return user
+    return user as UserWithDepartments
   }
 
   /**

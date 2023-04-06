@@ -85,7 +85,7 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .authenticate(validated.email, validated.password)
   })
-
+  console.log("Result of authentication", result)
   if (result.success && result.user) {
     // Add JWT to cookie
     req.session.jwt = jwt.sign({ userId: result.user.id }, jwt_secret, {
@@ -93,7 +93,7 @@ export default async (req, res) => {
     })
 
     const cleanRes = _.omit(result.user, ["password_hash"])
-
+    console.log("After cleaning-------------", cleanRes, '--------------------------------before', result)
     res.json({ user: cleanRes })
   } else {
     res.sendStatus(401)

@@ -189,6 +189,11 @@ export class initialSchema1611063162649 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "order_gift_cards" ADD CONSTRAINT "FK_f2bb9f71e95b315eb24b2b84cb3" FOREIGN KEY ("gift_card_id") REFERENCES "gift_card"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "store_currencies" ADD CONSTRAINT "FK_b4f4b63d1736689b7008980394c" FOREIGN KEY ("store_id") REFERENCES "store"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "store_currencies" ADD CONSTRAINT "FK_82a6bbb0b527c20a0002ddcbd60" FOREIGN KEY ("currency_code") REFERENCES "currency"("code") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`CREATE TABLE department ("id" character varying NOT NULL, 
+        "user_id" character varying NOT NULL, "store_id" character varying NOT NULL,
+        "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+        )`);
+        
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

@@ -22,6 +22,7 @@ export default (
     ignore: ["index.js", "index.ts"],
   })
   core.forEach((fn) => {
+    console.log('----------------------------------------------------------------ENTITY--',fn)
     const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
     if (loaded) {
       Object.entries(loaded).map(
@@ -37,10 +38,16 @@ export default (
             }
 
             models.push(val)
+            
           }
         }
       )
+      console.log('----------------------------------------------------------------MODELS--',models)
     }
+    else{
+      console.log('----------------------------------------------------------------ENTITY NOT LOADED--',fn)
+    }
+    
   })
 
   return models

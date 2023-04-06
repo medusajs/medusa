@@ -38,7 +38,7 @@ export default async ({
   customOptions,
 }: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
-
+  console.log('----------------------------------------------------------------ENTITIES',entities)
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
   dataSource = new DataSource({

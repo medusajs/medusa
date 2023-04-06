@@ -107,6 +107,7 @@ class AdminUsersResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUsersListRes> {
     const path = `/admin/users`
+    
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
