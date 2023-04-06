@@ -2,7 +2,8 @@ import { Router } from "express"
 import bodyParser from "body-parser"
 import { MedusaError } from "medusa-core-utils"
 import jwt from "jsonwebtoken"
-import { isObject, isString, isDefined, isNumber } from "@medusa/utils"
+import { IsString, IsNumber, IsObject, IsOptional } from "class-validator"
+import { validator } from "@medusajs/utils"
 
 const JWT_SECRET = process.env.JWT_SECRET || ""
 
@@ -10,11 +11,7 @@ export default () => {
   const app = Router()
 
   app.delete("/:id/wishlist", bodyParser.json(), async (req, res) => {
-    const requestIsValid = isObject(req.body) && isNumber(req.body.index)
-
-    if (!requestIsValid) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-    }
+    const validated = await validator(DeleteWishlistReq, req.body)
 
     try {
       const customerService = req.scope.resolve("customerService")
@@ -23,7 +20,7 @@ export default () => {
       const wishlist = (customer.metadata && customer.metadata.wishlist) || []
 
       const newWishlist = [...wishlist]
-      newWishlist.splice(req.body.index, 1)
+      newWishlist.splice(validated.index, 1)
 
       customer = await customerService.update(customer.id, {
         metadata: { wishlist: newWishlist },
@@ -36,15 +33,7 @@ export default () => {
   })
 
   app.post("/:id/wishlist", bodyParser.json(), async (req, res) => {
-    const requestIsValid =
-      isObject(req.body) &&
-      isString(req.body.variant_id) &&
-      isNumber(req.body.quantity) &&
-      (!isDefined(req.body.metadata) || isObject(req.body.metadata))
-
-    if (!requestIsValid) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-    }
+    const validated = await validator(CreateWishlistReq, req.body)
 
     try {
       const lineItemService = req.scope.resolve("lineItemService")
@@ -56,10 +45,10 @@ export default () => {
       const regions = await regionService.list()
       if (regions.length) {
         const lineItem = await lineItemService.generate(
-          req.body.variant_id,
+          validated.variant_id,
           regions[0].id,
-          req.body.quantity,
-          { metadata: req.body.metadata }
+          validated.quantity,
+          { metadata: validated.metadata }
         )
 
         const wishlist = (customer.metadata && customer.metadata.wishlist) || []
@@ -102,4 +91,21 @@ export default () => {
   })
 
   return app
+}
+
+class DeleteWishlistReq {
+  @IsNumber
+  index
+}
+
+class CreateWishlistReq {
+  @IsString
+  variant_id
+
+  @IsNumber
+  quantity
+
+  @IsObject
+  @IsOptional
+  metadata
 }

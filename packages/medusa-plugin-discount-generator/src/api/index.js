@@ -1,22 +1,17 @@
 import { Router } from "express"
 import bodyParser from "body-parser"
-import { MedusaError } from "medusa-core-utils"
-import { isObject, isString } from "@medusa/utils"
+import { IsString } from "class-validator"
+import { validator } from "@medusajs/utils"
 
 export default (container) => {
   const route = Router()
 
   route.post("/discount-code", bodyParser.json(), async (req, res) => {
-    const requestIsValid =
-      isObject(req.body) && isString(req.body.discount_code)
-
-    if (!requestIsValid) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-    }
+    const validated = await validator(CreateDiscountCodeReq, req.body)
 
     const discountGenerator = req.scope.resolve("discountGeneratorService")
     const code = await discountGenerator.generateDiscount(
-      req.body.discount_code
+      validated.discount_code
     )
 
     res.json({
@@ -25,4 +20,9 @@ export default (container) => {
   })
 
   return route
+}
+
+class CreateDiscountCodeReq {
+  @IsString
+  discount_code
 }
