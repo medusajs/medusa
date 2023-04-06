@@ -24,11 +24,6 @@ post:
         schema:
           $ref: ../components/schemas/AdminOrdersOrderLineItemReservationReq.yaml
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_orders_{id}_line-items_{line_item_id}_reserve/post.js
     - lang: Shell
       label: cURL
       source:
