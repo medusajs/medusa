@@ -18,8 +18,8 @@ import { getVariantsByInventoryItemId } from "./utils/join-variants"
 /**
  * @oas [get] /admin/inventory-items
  * operationId: "GetInventoryItems"
- * summary: "List inventory items."
- * description: "Lists inventory items."
+ * summary: "List Inventory Items"
+ * description: "Lists inventory items with the ability to apply filters or search queries on them."
  * x-authenticated: true
  * parameters:
  *   - (query) offset=0 {integer} How many inventory items to skip in the result.
@@ -58,15 +58,14 @@ import { getVariantsByInventoryItemId } from "./utils/join-variants"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.list()
- *       .then(({ inventory_items }) => {
+ *       .then(({ inventory_items, count, offset, limit }) => {
  *         console.log(inventory_items.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
