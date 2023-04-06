@@ -1,4 +1,15 @@
 type: object
+x-expanded-relations:
+  field: shipping_option
+  relations:
+    - profile
+    - region
+    - requirements
+  eager:
+    - region.fulfillment_providers
+    - region.payment_providers
+required:
+  - shipping_option
 properties:
   shipping_option:
     $ref: ./ShippingOption.yaml

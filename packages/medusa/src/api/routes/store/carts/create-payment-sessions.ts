@@ -5,7 +5,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions
+ * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
@@ -28,7 +28,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

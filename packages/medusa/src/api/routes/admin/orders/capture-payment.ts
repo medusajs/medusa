@@ -4,7 +4,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/capture
+ * @oas [post] /admin/orders/{id}/capture
  * operationId: "PostOrdersOrderCapture"
  * summary: "Capture Order's Payment"
  * description: "Captures all the Payments associated with an Order."
@@ -36,7 +36,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

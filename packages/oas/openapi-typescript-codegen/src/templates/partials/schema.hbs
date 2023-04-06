@@ -1,0 +1,17 @@
+{{#equals export 'interface'}}
+{{>schemaInterface}}
+{{else equals export 'enum'}}
+{{>schemaEnum}}
+{{else equals export 'array'}}
+{{>schemaArray}}
+{{else equals export 'dictionary'}}
+{{>schemaDictionary}}
+{{else equals export 'any-of'}}
+{{>schemaComposition}}
+{{else equals export 'all-of'}}
+{{>schemaComposition}}
+{{else equals export 'one-of'}}
+{{>schemaComposition}}
+{{else}}
+{{>schemaGeneric}}
+{{/equals}}

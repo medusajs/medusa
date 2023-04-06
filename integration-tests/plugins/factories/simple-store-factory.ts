@@ -1,22 +1,27 @@
 import { SalesChannel, Store } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource, Not, IsNull } from "typeorm"
 
 export type StoreFactoryData = {
   swap_link_template?: string
 }
 
 export const simpleStoreFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: StoreFactoryData = {},
   seed?: number
-): Promise<Store> => {
+): Promise<Store | undefined> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
 
-  const manager = connection.manager
-  const store = await manager.findOne(Store)
+  const manager = dataSource.manager
+  const stores = await manager.find(Store, { where: { id: Not(IsNull()) } })
+  const store = stores[0]
+
+  if (!store) {
+    return
+  }
 
   store.swap_link_template = data.swap_link_template ?? "something/{cart_id}"
 

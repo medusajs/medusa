@@ -702,10 +702,14 @@ describe("ProductVariantService", () => {
       .fn()
       .mockImplementation(() => Promise.resolve())
 
-    const regionService = {
+    const priceSelectionStrategy = {
       withTransaction: function () {
         return this
       },
+      onVariantsPricesUpdate: (variantIds) => Promise.resolve(),
+    }
+
+    const regionService = {
       list: jest.fn().mockImplementation((config) => {
         const idOrIds = config.id
 
@@ -723,12 +727,16 @@ describe("ProductVariantService", () => {
           name: "California",
         })
       },
+      withTransaction: function () {
+        return this
+      },
     }
 
     const productVariantService = new ProductVariantService({
       manager: MockManager,
       eventBusService,
       regionService,
+      priceSelectionStrategy,
       moneyAmountRepository,
     })
 

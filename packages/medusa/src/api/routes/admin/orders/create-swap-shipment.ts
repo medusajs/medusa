@@ -13,7 +13,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Create Swap Shipment"
  * description: "Registers a Swap Fulfillment as shipped."
@@ -57,7 +57,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

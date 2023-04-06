@@ -23,6 +23,13 @@ export default (app) => {
 /**
  * @schema AdminCustomersRes
  * type: object
+ * x-expanded-relations:
+ *   field: customer
+ *   relations:
+ *     - orders
+ *     - shipping_addresses
+ * required:
+ *   - customer
  * properties:
  *   customer:
  *     $ref: "#/components/schemas/Customer"
@@ -34,6 +41,11 @@ export type AdminCustomersRes = {
 /**
  * @schema AdminCustomersListRes
  * type: object
+ * required:
+ *   - customers
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   customers:
  *     type: array

@@ -24,7 +24,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /order/{id}/swaps
+ * @oas [post] /admin/orders/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
@@ -77,7 +77,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -145,9 +145,11 @@ export default async (req, res) => {
                     relations: [
                       "cart",
                       "items",
+                      "items.variant",
                       "items.tax_lines",
                       "swaps",
                       "swaps.additional_items",
+                      "swaps.additional_items.variant",
                       "swaps.additional_items.tax_lines",
                     ],
                   })
@@ -163,6 +165,7 @@ export default async (req, res) => {
                       idempotency_key: idempotencyKey.idempotency_key,
                       no_notification: validated.no_notification,
                       allow_backorder: validated.allow_backorder,
+                      location_id: validated.return_location_id,
                     }
                   )
 
@@ -361,6 +364,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsBoolean()
   @IsOptional()
   no_notification?: boolean
+
+  @IsOptional()
+  @IsString()
+  return_location_id?: string
 
   @IsBoolean()
   @IsOptional()

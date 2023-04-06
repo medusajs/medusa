@@ -1,0 +1,508 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Medusa Admin API
+  description: |
+    API reference for Medusa's Admin endpoints. All endpoints are prefixed with `/admin`.
+    
+    ## Authentication
+
+    There are two ways to send authenticated requests to the Medusa server: Using a user's API token, or using a Cookie Session ID.
+
+    <!-- ReDoc-Inject: <SecurityDefinitions> -->
+
+    ## Expanding Fields
+
+    In many endpoints you'll find an `expand` query parameter that can be passed to the endpoint. You can use the `expand` query parameter to unpack an entity's relations and return them in the response.
+
+    Please note that the relations you pass to `expand` replace any relations that are expanded by default in the request.
+
+    ### Expanding One Relation
+
+    For example, when you retrieve products, you can retrieve their collection by passing to the `expand` query parameter the value `collection`:
+
+    ```bash
+    curl "http://localhost:9000/admin/products?expand=collection" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Expanding Multiple Relations
+
+    You can expand more than one relation by separating the relations in the `expand` query parameter with a comma.
+    
+    For example, to retrieve both the variants and the collection of products, pass to the `expand` query parameter the value `variants,collection`:
+
+    ```bash
+    curl "http://localhost:9000/admin/products?expand=variants,collection" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Prevent Expanding Relations
+
+    Some requests expand relations by default. You can prevent that by passing an empty expand value to retrieve an entity without any extra relations.
+    
+    For example:
+
+    ```bash
+    curl "http://localhost:9000/admin/products?expand" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    This would retrieve each product with only its properties, without any relations like `collection`.
+
+    ## Selecting Fields
+
+    In many endpoints you'll find a `fields` query parameter that can be passed to the endpoint. You can use the `fields` query parameter to specify which fields in the entity should be returned in the response.
+
+    Please note that if you pass a `fields` query parameter, only the fields you pass in the value along with the `id` of the entity will be returned in the response.
+    
+    Also, the `fields` query parameter does not affect the expanded relations. You'll have to use the `expand` parameter instead.
+
+    ### Selecting One Field
+
+    For example, when you retrieve a list of products, you can retrieve only the titles of the products by passing `title` as a value to the `fields` query parameter:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?fields=title" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    As mentioned above, the expanded relations such as `variants` will still be returned as they're not affected by the `fields` parameter.
+    
+    You can ensure that only the `title` field is returned by passing an empty value to the `expand` query parameter. For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?fields=title&expand" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Selecting Multiple Fields
+
+    You can pass more than one field by seperating the field names in the `fields` query parameter with a comma.
+
+    For example, to select the `title` and `handle` of products:
+
+    ```bash
+    curl "http://localhost:9000/admin/products?fields=title,handle" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Retrieve Only the ID
+
+    You can pass an empty `fields` query parameter to return only the ID of an entity. For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?fields" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    You can also pair with an empty `expand` query parameter to ensure that the relations aren't retrieved as well. For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?fields&expand" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ## Query Parameter Types
+
+    This section covers how to pass some common data types as query parameters. This is useful if you're sending requests to the API endpoints and not using our JS Client. For example, when using cURL or Postman.
+
+    ### Strings
+
+    You can pass a string value in the form of `<parameter_name>=<value>`.
+
+    For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?title=Shirt" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    If the string has any characters other than letters and numbers, you must encode them.
+
+    For example, if the string has spaces, you can encode the space with `+` or `%20`:
+
+    ```bash
+    curl "http://localhost:9000/admin/products?title=Blue%20Shirt" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    You can use tools like [this one](https://www.urlencoder.org/) to learn how a value can be encoded.
+
+    ### Integers
+
+    You can pass an integer value in the form of `<parameter_name>=<value>`.
+
+    For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?offset=1" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Boolean
+
+    You can pass a boolean value in the form of `<parameter_name>=<value>`.
+
+    For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?is_giftcard=true" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Date and DateTime
+
+    You can pass a date value in the form `<parameter_name>=<value>`. The date must be in the format `YYYY-MM-DD`.
+
+    For example:
+    
+    ```bash
+    curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+    
+    You can also pass the time using the format `YYYY-MM-DDTHH:MM:SSZ`. Please note that the `T` and `Z` here are fixed.
+
+    For example:
+    
+    ```bash
+    curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17T07:22:30Z" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Array
+
+    Each array value must be passed as a separate query parameter in the form `<parameter_name>[]=<value>`. You can also specify the index of each parameter in the brackets `<parameter_name>[0]=<value>`.
+
+    For example:
+    
+    ```bash
+    curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    Note that the `-g` parameter passed to `curl` disables errors being thrown for using the brackets. Read more [here](https://curl.se/docs/manpage.html#-g).
+
+    ### Object
+
+    Object parameters must be passed as separate query parameters in the form `<parameter_name>[<key>]=<value>`.
+
+    For example:
+    
+    ```bash
+    curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ## Pagination
+
+    ### Query Parameters
+
+    In listing endpoints, such as list customers or list products, you can control the pagination using the query parameters `limit` and `offset`.
+
+    `limit` is used to specify the maximum number of items that can be return in the response. `offset` is used to specify how many items to skip before returning the resulting entities.
+
+    You can use the `offset` query parameter to change between pages. For example, if the limit is 50, at page 1 the offset should be 0; at page 2 the offset should be 50, and so on.
+
+    For example, to limit the number of products returned in the List Products endpoint:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?limit=5" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    ### Response Fields
+
+    In the response of listing endpoints, aside from the entities retrieved, there are three pagination-related fields returned: `count`, `limit`, and `offset`.
+
+    Similar to the query parameters, `limit` is the maximum number of items that can be returned in the response, and `field` is the number of items that were skipped before the entities in the result.
+
+    `count` is the total number of available items of this entity. It can be used to determine how many pages are there.
+    
+    For example, if the `count` is 100 and the `limit` is 50, you can divide the `count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
+
+  license:
+    name: MIT
+    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+tags:
+  - name: Auth
+    description: Auth endpoints that allow authorization of admin Users and manages
+      their sessions.
+  - name: Apps
+    description: App endpoints that allow handling apps in Medusa.
+  - name: Batch Jobs
+    description: Batch Job endpoints that allow handling batch jobs in Medusa.
+  - name: Collections
+    description: Collection endpoints that allow handling collections in Medusa.
+  - name: Customers
+    description: Customer endpoints that allow handling customers in Medusa.
+  - name: Customer Groups
+    description: Customer Group endpoints that allow handling customer groups in Medusa.
+  - name: Discounts
+    description: Discount endpoints that allow handling discounts in Medusa.
+  - name: Draft Orders
+    description: Draft Order endpoints that allow handling draft orders in Medusa.
+  - name: Gift Cards
+    description: Gift Card endpoints that allow handling gift cards in Medusa.
+  - name: Invites
+    description: Invite endpoints that allow handling invites in Medusa.
+  - name: Notes
+    description: Note endpoints that allow handling notes in Medusa.
+  - name: Notifications
+    description: Notification endpoints that allow handling notifications in Medusa.
+  - name: Orders
+    description: Order endpoints that allow handling orders in Medusa.
+  - name: Price Lists
+    description: Price List endpoints that allow handling price lists in Medusa.
+  - name: Products
+    description: Product endpoints that allow handling products in Medusa.
+  - name: Product Tags
+    description: Product Tag endpoints that allow handling product tags in Medusa.
+  - name: Product Types
+    description: Product Types endpoints that allow handling product types in Medusa.
+  - name: Regions
+    description: Region endpoints that allow handling regions in Medusa.
+  - name: Return Reasons
+    description: Return Reason endpoints that allow handling return reasons in Medusa.
+  - name: Returns
+    description: Return endpoints that allow handling returns in Medusa.
+  - name: Sales Channels
+    description: Sales Channel endpoints that allow handling sales channels in Medusa.
+  - name: Shipping Options
+    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+  - name: Shipping Profiles
+    description: Shipping Profile endpoints that allow handling shipping profiles in
+      Medusa.
+  - name: Store
+    description: Store endpoints that allow handling stores in Medusa.
+  - name: Swaps
+    description: Swap endpoints that allow handling swaps in Medusa.
+  - name: Tax Rates
+    description: Tax Rate endpoints that allow handling tax rates in Medusa.
+  - name: Uploads
+    description: Upload endpoints that allow handling uploads in Medusa.
+  - name: Users
+    description: User endpoints that allow handling users in Medusa.
+  - name: Variants
+    description: Product Variant endpoints that allow handling product variants in Medusa.
+servers:
+  - url: https://api.medusa-commerce.com
+paths: { }
+components:
+  responses:
+    default_error:
+      description: Default Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: "unknown_error"
+            message: "An unknown error occurred."
+            type: "unknown_error"
+    invalid_state_error:
+      description: Invalid State Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: "unknown_error"
+            message: "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
+            type: "QueryRunnerAlreadyReleasedError"
+    invalid_request_error:
+      description: Invalid Request Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: "invalid_request_error"
+            message: "Discount with code TEST already exists."
+            type: "duplicate_error"
+    not_found_error:
+      description: Not Found Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: "Entity with id 1 was not found"
+            type: "not_found"
+    400_error:
+      description: Client Error or Multiple Errors
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/Error"
+              - $ref: "#/components/schemas/MultipleErrors"
+          examples:
+            not_allowed:
+              $ref: "#/components/examples/not_allowed_error"
+            invalid_data:
+              $ref: "#/components/examples/invalid_data_error"
+            MultipleErrors:
+              $ref: "#/components/examples/multiple_errors"
+    500_error:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            database:
+              $ref: "#/components/examples/database_error"
+            unexpected_state:
+              $ref: "#/components/examples/unexpected_state_error"
+            invalid_argument:
+              $ref: "#/components/examples/invalid_argument_error"
+            default_error:
+              $ref: "#/components/examples/default_error"
+    unauthorized:
+      description: 'User is not authorized. Must log in first'
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+    incorrect_credentials:
+      description: 'User does not exist or incorrect credentials'
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+  examples:
+    not_allowed_error:
+      summary: Not Allowed Error
+      value:
+        message: "Discount must be set to dynamic"
+        type: "not_allowed"
+    invalid_data_error:
+      summary: Invalid Data Error
+      value:
+        message: "first_name must be a string"
+        type: "invalid_data"
+    multiple_errors:
+      summary: Multiple Errors
+      value:
+        message: "Provided request body contains errors. Please check the data and retry the request"
+        errors:
+          - message: "first_name must be a string"
+            type: "invalid_data"
+          - message: "Discount must be set to dynamic"
+            type: "not_allowed"
+    database_error:
+      summary: Database Error
+      value:
+        code: "api_error"
+        message: "An error occured while hashing password"
+        type: "database_error"
+    unexpected_state_error:
+      summary: Unexpected State Error
+      value:
+        message: "cart.total must be defined"
+        type: "unexpected_state"
+    invalid_argument_error:
+      summary: Invalid Argument Error
+      value:
+        message: "cart.total must be defined"
+        type: "unexpected_state"
+    default_error:
+      summary: Default Error
+      value:
+        code: "unknown_error"
+        message: "An unknown error occurred."
+        type: "unknown_error"
+  securitySchemes:
+    api_token:
+      type: http
+      x-displayName: API Token
+      description: |
+        Use a user's API Token to send authenticated requests.
+
+        ### How to Add API Token to a User
+
+        At the moment, there's no direct way of adding an API Token for a user. The only way it can be done is through directly editing the database.
+
+        If you're using a PostgreSQL database, you can run the following commands in your command line to add API token:
+        
+        ```bash
+        psql -d <DB_NAME> -U <DB_USER>
+        UPDATE public.user SET api_token='<API_TOKEN>' WHERE email='<USER_EMAIL>';
+        ```
+
+        Where:
+        - `<DB_NAME>` is the name of the database schema you use for the Medusa server.
+        - `<DB_USER>` is the name of the user that has privileges over the database schema.
+        - `<API_TOKEN>` is the API token you want to associate with the user. You can use [this tool to generate a random token](https://randomkeygen.com/).
+        - `<USER_EMAIL>` is the email address of the admin user you want to have this API token.
+
+        ### How to Use the API Token
+
+        The API token can be used for Bearer Authentication. It's passed in the `Authorization` header as the following:
+        
+        ```
+        Authorization: Bearer {api_token}
+        ```
+
+        In this API reference, you'll find in the cURL request samples the use of `{api_token}`. This is where you must pass the API token.
+
+        If you're following along with the JS Client request samples, you must provide the `apiKey` option when creating the Medusa client:
+
+        ```ts
+        const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3, apiKey: '{api_token}' })
+        ```
+
+        If you're using Medusa React, you can pass the `apiKey` prop to `MedusaProvider`:
+        
+        ```tsx
+        <MedusaProvider
+          apiKey='api_token}'
+          //...
+        >
+        ```
+      scheme: bearer
+    cookie_auth:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      x-displayName: Cookie Session ID
+      description: |
+        Use a cookie session to send authenticated requests.
+
+        ### How to Obtain the Cookie Session
+
+        If you're sending requests through a browser, using JS Client, or using tools like Postman, the cookie session should be automatically set when the admin user is logged in.
+
+        If you're sending requests using cURL, you must set the Session ID in the cookie manually.
+
+        To do that, send a request to [authenticate the user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+
+        ```bash
+        curl -v --location --request POST 'https://medusa-url.com/admin/auth' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+        ```
+
+        The headers will be logged in the terminal as well as the response. You should find in the headers a Cookie header similar to this:
+
+        ```bash
+        Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+        ```
+
+        Copy the value after `connect.sid` (without the `;` at the end) and pass it as a cookie in subsequent requests as the following:
+
+        ```bash
+        curl --location --request GET 'https://medusa-url.com/admin/products' \
+        --header 'Cookie: connect.sid={sid}'
+        ```
+        
+        Where `{sid}` is the value of `connect.sid` that you copied.

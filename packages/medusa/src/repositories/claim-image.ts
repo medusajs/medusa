@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
 import { ClaimImage } from "../models/claim-image"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(ClaimImage)
-export class ClaimImageRepository extends Repository<ClaimImage> {}
+export const ClaimImageRepository = dataSource.getRepository(ClaimImage)
+export default ClaimImageRepository

@@ -14,7 +14,7 @@ import { validator } from "../../../../utils/validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /draft-orders/{id}/line-items/{line_id}
+ * @oas [post] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
  * summary: "Update a Line Item"
  * description: "Updates a Line Item for a Draft Order"
@@ -55,7 +55,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK

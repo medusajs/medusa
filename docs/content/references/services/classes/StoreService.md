@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L31)
+[medusa/src/services/store.ts:28](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L28)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,17 +68,17 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### currencyRepository\_
 
-• `Protected` `Readonly` **currencyRepository\_**: typeof `CurrencyRepository`
+• `Protected` `Readonly` **currencyRepository\_**: `Repository`<`Currency`\>
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:28](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L28)
+[medusa/src/services/store.ts:25](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L25)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:29](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L29)
+[medusa/src/services/store.ts:26](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L26)
 
 ___
 
@@ -96,37 +96,55 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:24](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L24)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### storeRepository\_
 
-• `Protected` `Readonly` **storeRepository\_**: typeof `StoreRepository`
+• `Protected` `Readonly` **storeRepository\_**: `Repository`<`Store`\>
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:27](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L27)
+[medusa/src/services/store.ts:24](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L24)
 
 ___
 
 ### transactionManager\_
 
-• `Protected` **transactionManager\_**: `EntityManager`
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:25](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L25)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -150,7 +168,7 @@ result after update
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:204](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L204)
+[medusa/src/services/store.ts:208](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L208)
 
 ___
 
@@ -189,7 +207,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -207,7 +225,7 @@ The store.
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:49](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L49)
+[medusa/src/services/store.ts:45](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L45)
 
 ___
 
@@ -227,7 +245,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:98](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L98)
+[medusa/src/services/store.ts:100](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L100)
 
 ___
 
@@ -251,7 +269,7 @@ result after update
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:248](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L248)
+[medusa/src/services/store.ts:252](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L252)
 
 ___
 
@@ -275,7 +293,7 @@ the store
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:85](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L85)
+[medusa/src/services/store.ts:83](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L83)
 
 ___
 
@@ -299,7 +317,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -323,7 +341,7 @@ resolves to the update result.
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:114](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/store.ts#L114)
+[medusa/src/services/store.ts:116](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/store.ts#L116)
 
 ___
 
@@ -347,4 +365,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

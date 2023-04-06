@@ -29,9 +29,7 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa backend set up. You can follow the [Quickstart guide](../../development/backend/install.mdx).
-
-You also must have [Redis configured on your Medusa backend](../../development/backend/prepare-environment.mdx#redis). Sending emails is done through Subscribers, which uses Redis as the event queue. If you don’t set up Redis, the plugin will not send emails.
+Before going further with this guide make sure you have a Medusa backend set up. You can follow the [Quickstart guide](../../development/backend/install.mdx). The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ---
 

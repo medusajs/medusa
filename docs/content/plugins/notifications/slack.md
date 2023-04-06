@@ -32,15 +32,7 @@ To follow along with this guide, you need to have a Slack account with a connect
 
 ### Medusa Backend
 
-This tutorial assumes you already have a Medusa backend installed. If you don’t, please follow along with the [quickstart guide](../../development/backend/install.mdx).
-
-### Redis
-
-Medusa's event system works by pushing data into a queue that is based on [Redis](https://redis.io/). This queue then notifies handlers of different events of this data that is pushed into the queue. The handlers then use this data to perform a certain action.
-
-As the Slack plugin will listen to the `order.placed` event to know when to send notifications, you'll need to have Redis installed and configured with your Medusa backend.
-
-You can read the [Set up your development enviornment guideline](../../development/backend/prepare-environment.mdx#redis) to learn more about how you can install and setup Redis.
+This tutorial assumes you already have a Medusa backend installed. If you don’t, please follow along with the [quickstart guide](../../development/backend/install.mdx). The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ---
 

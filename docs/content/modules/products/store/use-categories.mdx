@@ -1,0 +1,199 @@
+---
+description: 'Learn how to use product categories in your storefront using the REST APIs. This includes listing categories and retrieving a single category.'
+addHowToData: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Use Product Categories in a Storefront
+
+In this document, you’ll learn how to use product categories in a storefront.
+
+## Overview
+
+Using the product category store REST APIs, you can list categories in your storefront.
+
+### Scenario
+
+You want to add or use the following store functionalities:
+
+- List and filter categories.
+- Retrieve a single category.
+
+---
+
+## Prerequisites
+
+### Medusa Components
+
+It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
+
+It's also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install the [Next.js starter storefront](../../../starters/nextjs-medusa-starter.mdx).
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.md) and have [created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+---
+
+## List Categories
+
+You can list product categories by sending a request to the [List Product Categories endpoint](/api/store#tag/Product-Category/operation/GetProductCategories):
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.productCategories.list()
+.then(({ product_categories, limit, offset, count }) => {
+  console.log(product_categories.length)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useProductCategories } from "medusa-react"
+import { ProductCategory } from "@medusajs/medusa"
+
+function Categories() {
+  const { 
+    product_categories, 
+    isLoading,
+  } = useProductCategories()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {product_categories && !product_categories.length && (
+        <span>No Categories</span>
+      )}
+      {product_categories && product_categories.length > 0 && (
+        <ul>
+          {product_categories.map(
+            (category: ProductCategory) => (
+              <li key={category.id}>{category.name}</li>
+            )
+          )}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Categories
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/store/product-categories`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ product_categories, limit, offset, count }) => {
+  console.log(product_categories.length)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/store/product-categories' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request does not require any query parameters. You can, however, pass query parameters to filter the list of categories, such as the passing the `q` query parameter to search categories by title or handle. You can learn about available query parameters in the [API reference](/api/store#tag/Product-Category/operation/GetProductCategories).
+
+The request returns an array of product categories along with [pagination fields](/api/store#section/Pagination).
+
+### Including all Nested Categories
+
+By default, the categories are not retrieved along with their nested children. To retrieve categories with their nested children, make sure to pass the query parameter `include_descendants_tree` with the value `true`. Nested categories will be available inside each category object under the property `category_children`, which is an array of categories.
+
+---
+
+## Get a Category
+
+You can retrieve a single product category by using the [Get a Product Category endpoint](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory):
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.productCategories.retrieve(productCategoryId)
+.then(({ product_category }) => {
+  console.log(product_category.name)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useProductCategory } from "medusa-react"
+
+function Category() {
+  const { product_category, isLoading } = useProductCategory()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {product_category && <span>{product_category.name}</span>}
+    </div>
+  )
+}
+
+export default Category
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+<!-- eslint-disable max-len -->
+
+```ts
+fetch(`<BACKEND_URL>/store/product-categories/${productCategoryId}`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ product_category }) => {
+  console.log(product_category.name)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/store/product-categories/<CAT_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the product category ID as a path parameter. You can also pass query parameters such as `expand` and `fields` as explained in the [API reference](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory).
+
+The request returns the category as an object.
+
+---
+
+## See Also
+
+- [How to manage product categories](../admin/manage-categories.mdx).

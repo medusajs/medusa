@@ -83,19 +83,13 @@ Before you can deploy your Medusa backend you need to create a GitHub repository
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
-![Click plus then choose new repository from dropdown](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001782/Medusa%20Docs/Netlify/0YlxBRi_aiywpo.png)
-
 You’ll then be redirected to a new page with a form. In the form, enter the Repository Name then scroll down and click Create repository.
-
-![New repository form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001800/Medusa%20Docs/Netlify/YPYXAF2_lypjne.png)
 
 ### Push Code to GitHub Repository
 
 The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
-
-![GitHub repository's URL](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
 Copy the link. Then, open your terminal in the directory that holds your Medusa backend codebase and run the following commands:
 
@@ -111,7 +105,7 @@ Then, add, commit, and push the changes into the repository:
 ```bash
 git add .
 git commit -m "initial commit"
-git push origin master
+git push
 ```
 
 After pushing the changes, you can find the files in your GitHub repository.
@@ -197,13 +191,19 @@ NPM_CONFIG_PRODUCTION=false
 NODE_ENV=production
 ```
 
+:::caution
+
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
+
+:::
+
 Notice how for database environment variables you access the values from the database you created earlier `db`. If you changed the name of the database, you must change `db` here to the name you supplied to the PostgreSQL database.
 
 Another thing to note here is that you added a `REDIS_URL` environment variable that uses a `redis` resource to retrieve the URL. You’ll be creating this resource in a later section.
 
-:::caution
+:::note
 
-It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
+If you're using modules that require setting environment variables, make sure to set them here. You can also add them later. For example, if you're using the Redis Event Bus module, you can set the environment variable for it here or use the same `REDIS_URL` variable. Your module may also require setting up other resources than those explained in this guide so make sure to add them as well.
 
 :::
 
@@ -300,5 +300,5 @@ Once you click Save, the environment variables will be saved and a redeployment 
 
 ## See Also
 
-- [Deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
-- [Deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).
+- [Deploy the Medusa Admin](../admin/index.mdx).
+- [Deploy the Storefront](../storefront/index.mdx).

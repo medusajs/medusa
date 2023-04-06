@@ -131,7 +131,7 @@ describe("PriceListService", () => {
       .fn()
       .mockImplementation(() => Promise.resolve())
     updateRelatedMoneyAmountRepository.updatePriceListPrices =
-      new MoneyAmountRepository().updatePriceListPrices
+      MoneyAmountRepository.updatePriceListPrices
 
     const updateRelatedPriceListService = new PriceListService({
       manager: MockManager,

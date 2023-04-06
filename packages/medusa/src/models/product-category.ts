@@ -1,5 +1,5 @@
 import { generateEntityId } from "../utils/generate-entity-id"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
 import { Product } from "."
 import {
@@ -17,14 +17,15 @@ import {
 
 @Entity()
 @Tree("materialized-path")
-export class ProductCategory extends SoftDeletableEntity {
+@Index(["parent_category_id", "rank"], { unique: true })
+export class ProductCategory extends BaseEntity {
   static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
   name: string
 
-  @Index({ unique: true, where: "deleted_at IS NULL" })
+  @Index({ unique: true })
   @Column({ nullable: false })
   handle: string
 
@@ -50,6 +51,9 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
+
+  @Column({ nullable: false, default: 0 })
+  rank: number
 
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
@@ -84,7 +88,6 @@ export class ProductCategory extends SoftDeletableEntity {
  * required:
  *   - category_children
  *   - created_at
- *   - deleted_at
  *   - handle
  *   - id
  *   - is_active
@@ -119,6 +122,10 @@ export class ProductCategory extends SoftDeletableEntity {
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
  *     default: false
+ *   rank:
+ *     type: integer
+ *     description: An integer that depicts the rank of category in a tree node
+ *     default: 0
  *   category_children:
  *     description: Available if the relation `category_children` are expanded.
  *     type: array
@@ -144,11 +151,6 @@ export class ProductCategory extends SoftDeletableEntity {
  *     format: date-time
  *   updated_at:
  *     description: The date with timezone at which the resource was updated.
- *     type: string
- *     format: date-time
- *   deleted_at:
- *     description: The date with timezone at which the resource was deleted.
- *     nullable: true
  *     type: string
  *     format: date-time
  */

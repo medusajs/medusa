@@ -4,7 +4,7 @@ import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /customer-groups/{id}
+ * @oas [get] /admin/customer-groups/{id}
  * operationId: "GetCustomerGroupsGroup"
  * summary: "Get a Customer Group"
  * description: "Retrieves a Customer Group."
@@ -36,7 +36,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK

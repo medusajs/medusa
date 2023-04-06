@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { ProductService } from "../../../../services"
 
 /**
- * @oas [delete] /products/{id}/options/{option_id}
+ * @oas [delete] /admin/products/{id}/options/{option_id}
  * operationId: "DeleteProductsProductOptionsOption"
  * summary: "Delete a Product Option"
  * description: "Deletes a Product Option. Before a Product Option can be deleted all Option Values for the Product Option must be the same. You may, for example, have to delete some of your variants prior to deleting the Product Option"
@@ -34,7 +34,7 @@ import { ProductService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK

@@ -12,7 +12,6 @@ const fallback = (filename: string) => {
 }
 
 // Polyfill Node's `Module.createRequireFromPath` if not present (added in Node v10.12.0)
-const createRequireFromPath =
-  Module.createRequire || Module.createRequireFromPath || fallback
+const createRequireFromPath = Module.createRequire || fallback
 
 export default createRequireFromPath

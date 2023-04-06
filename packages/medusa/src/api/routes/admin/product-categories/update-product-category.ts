@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsInt, Min, IsNotEmpty } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -7,7 +7,7 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}
+ * @oas [post] /admin/product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
  * summary: "Update a Product Category"
  * description: "Updates a Product Category."
@@ -50,7 +50,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK
@@ -115,12 +115,26 @@ export default async (req: Request, res: Response) => {
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category
+ *   rank:
+ *     type: number
+ *     description: The rank of the category in the tree node (starting from 0)
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
   @IsString()
   @IsOptional()
   name?: string
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  handle?: string
+
+  @IsOptional()
+  @IsInt()
+  @IsNotEmpty()
+  @Min(0)
+  rank?: number
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}

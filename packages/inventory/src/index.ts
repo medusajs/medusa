@@ -1,12 +1,15 @@
-import ConnectionLoader from "./loaders/connection"
-import InventoryService from "./services/inventory"
+import loadConnection from "./loaders/connection"
+import loadContainer from "./loaders/container"
+
+import migrations from "./migrations"
+import { revertMigration, runMigrations } from "./migrations/run-migration"
 import * as InventoryModels from "./models"
-import * as SchemaMigration from "./migrations/schema-migrations/1665748086258-inventory_setup"
-import { ModuleExports } from "@medusajs/medusa"
+import InventoryService from "./services/inventory"
+
+import { ModuleExports } from "@medusajs/modules-sdk"
 
 const service = InventoryService
-const migrations = [SchemaMigration]
-const loaders = [ConnectionLoader]
+const loaders = [loadContainer, loadConnection]
 const models = Object.values(InventoryModels)
 
 const moduleDefinition: ModuleExports = {
@@ -14,6 +17,11 @@ const moduleDefinition: ModuleExports = {
   migrations,
   loaders,
   models,
+  runMigrations,
+  revertMigration,
 }
 
 export default moduleDefinition
+export * from "./initialize"
+export { revertMigration, runMigrations } from "./migrations/run-migration"
+export * from "./types"

@@ -1,9 +1,15 @@
 type: object
+required:
+  - tags
 properties:
   tags:
     type: array
     items:
       type: object
+      required:
+        - id
+        - usage_count
+        - value
       properties:
         id:
           description: The ID of the tag.

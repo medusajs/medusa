@@ -48,7 +48,9 @@ describe("/store/carts", () => {
       )
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: ShippingProfile.default,
+        },
       })
 
       await manager.insert(Region, {

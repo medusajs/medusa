@@ -10,7 +10,7 @@ import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
+ * @oas [post] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
  * summary: "Add Batch Resources"
  * description: "Add a batch of resources to a discount condition."
@@ -54,7 +54,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount Condition
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK

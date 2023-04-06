@@ -1,4 +1,6 @@
 type: object
+required:
+  - currency
 properties:
   currency:
     $ref: ./Currency.yaml

@@ -10,11 +10,14 @@ import ProductTagService from "../../../../services/product-tag"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
- * @oas [get] /product-tags
+ * @oas [get] /store/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
  * description: "Retrieve a list of Product Tags."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductTagsParams
  * parameters:
  *   - (query) limit=20 {integer} The number of types to return.
  *   - (query) offset=0 {integer} The number of items to skip before the results.
@@ -98,26 +101,14 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/product-tags'
  * tags:
- *   - Product Tag
+ *   - Product Tags
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_tags:
- *              $ref: "#/components/schemas/ProductTag"
- *            count:
- *              type: integer
- *              description: The total number of items available
- *            offset:
- *              type: integer
- *              description: The number of items skipped before these items
- *            limit:
- *              type: integer
- *              description: The number of items per page
+ *          $ref: "#/components/schemas/StoreProductTagsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
