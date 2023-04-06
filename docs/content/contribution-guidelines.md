@@ -99,13 +99,19 @@ How-to guides in the sidebar for documentation pages under the Commerce Modules 
 To add an icon to the sidebar item, start by checking if the icon already exists under `www/docs/src/theme/Icon`. If not, add the item as a React component under `www/docs/src/theme/Icon/Icon<Name>/index.tsx`, where `<Name>` is the camel-case name of your icon. The icon must be added to the React component as an SVG element. For example:
   
 ```tsx title=www/docs/src/theme/Icon/Bolt/index.tsx
-import React from 'react';
+import React from "react"
 
-export default function IconBolt (props) {
+export default function IconBolt(props) {
   return (
-    <svg width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path d="M3.125 11.25L11.875 1.875L10 8.75H16.875L8.125 18.125L10 11.25H3.125Z" 
-        stroke="var(--ifm-icon-color)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width={20} height={20} viewBox="0 0 20 20" 
+      fill="none" xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+      <path 
+        d="M3.125..."
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        stroke="var(--ifm-icon-color)" />
     </svg>
   )
 }
@@ -116,14 +122,14 @@ Make sure to set the `stroke` or `fill` of the icon to `var(--ifm-icon-color)` a
 If you added a new icon, add it in the object in the file `www/docs/src/theme/Icon/index.ts`, where the property is the kebab-case version of the icon's name, and the value being the component you created. Make sure to add it in the correct alphabetical position as well. For example:
 
 ```ts title=www/docs/src/theme/Icon/index.ts
-import IconBolt from './Bolt';
-import IconBoltSolid from './BoltSolid';
+import IconBolt from "./Bolt"
+import IconBoltSolid from "./BoltSolid"
 // other imports
 
 export default {
   // other icons
-  'bolt': IconBolt,
-  'bolt-solid': IconBoltSolid,
+  "bolt": IconBolt,
+  "bolt-solid": IconBoltSolid,
   // other icons
 }
 ```
