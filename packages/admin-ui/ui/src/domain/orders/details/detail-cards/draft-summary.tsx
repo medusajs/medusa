@@ -1,5 +1,10 @@
 import React, { useMemo } from "react"
-import { DraftOrder } from "@medusajs/medusa"
+import { sum } from "lodash"
+import {
+  AdminGetVariantsVariantInventoryRes,
+  DraftOrder,
+  VariantInventory,
+} from "@medusajs/medusa"
 import Badge from "../../../../components/fundamentals/badge"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import BodyCard from "../../../../components/organisms/body-card"
@@ -8,15 +13,19 @@ import { DisplayTotal } from "../templates"
 import { ActionType } from "../../../../components/molecules/actionables"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import useToggleState from "../../../../hooks/use-toggle-state"
-import { useAdminReservations } from "medusa-react"
+import { useAdminReservations, useMedusa } from "medusa-react"
 import { ReservationItemDTO } from "@medusajs/types"
 import ReservationIndicator from "../../components/reservation-indicator/reservation-indicator"
+import AllocateItemsModal from "../allocations/allocate-items-modal"
+import { Response } from "@medusajs/medusa-js"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 
 type DraftSummaryCardProps = {
   order: DraftOrder
 }
 
 const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
+  const { client } = useMedusa()
   const { isFeatureEnabled } = useFeatureFlag()
   const inventoryEnabled = useMemo(() => {
     return isFeatureEnabled("inventoryService")
@@ -24,6 +33,45 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
 
   const { cart } = order
   const { region } = cart
+
+  const [variantInventoryMap, setVariantInventoryMap] = React.useState<
+    Map<string, VariantInventory>
+  >(new Map())
+
+  React.useEffect(() => {
+    if (!inventoryEnabled) {
+      return
+    }
+
+    const fetchInventory = async () => {
+      const inventory = await Promise.all(
+        cart.items.map(async (item) => {
+          if (!item.variant_id) {
+            return
+          }
+          return await client.admin.variants.getInventory(item.variant_id)
+        })
+      )
+
+      setVariantInventoryMap(
+        new Map(
+          inventory
+            .filter(
+              (
+                inventoryItem
+                // eslint-disable-next-line max-len
+              ): inventoryItem is Response<AdminGetVariantsVariantInventoryRes> =>
+                !!inventoryItem
+            )
+            .map((i) => {
+              return [i.variant.id, i.variant]
+            })
+        )
+      )
+    }
+
+    fetchInventory()
+  }, [cart.items, inventoryEnabled, client.admin.variants])
 
   const { reservations } = useAdminReservations(
     {
@@ -59,7 +107,25 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
     close: closeAllocationModal,
   } = useToggleState()
 
-  const allItemsReserved = false
+  const allItemsReserved = useMemo(() => {
+    return cart.items.every((item) => {
+      if (
+        !item.variant_id ||
+        !variantInventoryMap.get(item.variant_id)?.inventory.length
+      ) {
+        return true
+      }
+
+      const reservations = reservationItemsMap[item.id]
+
+      return (
+        item.quantity === item.fulfilled_quantity ||
+        (reservations &&
+          sum(reservations.map((r) => r.quantity)) ===
+            item.quantity - (item.fulfilled_quantity || 0))
+      )
+    })
+  }, [cart.items, variantInventoryMap, reservationItemsMap])
 
   const actionables = useMemo(() => {
     const actionables: ActionType[] = []
@@ -76,6 +142,17 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
     <BodyCard
       className={"mb-4 h-auto min-h-0 w-full"}
       title="Summary"
+      status={
+        isFeatureEnabled("inventoryService") &&
+        Array.isArray(reservations) && (
+          <StatusIndicator
+            onClick={allItemsReserved ? undefined : showAllocationModal}
+            variant={allItemsReserved ? "success" : "danger"}
+            title={allItemsReserved ? "Allocated" : "Awaits allocation"}
+            className="rounded-rounded border px-3 py-1.5"
+          />
+        )
+      }
       actionables={actionables}
     >
       <div className="mt-6">
@@ -181,6 +258,13 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           totalTitle={`Total`}
         />
       </div>
+      {allocationModalIsOpen && (
+        <AllocateItemsModal
+          reservationItemsMap={reservationItemsMap}
+          items={cart.items}
+          close={closeAllocationModal}
+        />
+      )}
     </BodyCard>
   )
 }

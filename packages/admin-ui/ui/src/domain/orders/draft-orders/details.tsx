@@ -122,8 +122,6 @@ const DraftOrderDetails = () => {
   const { cart } = draft_order || {}
   const { region } = cart || {}
 
-  console.log(draft_order)
-
   return (
     <div>
       <BackButton
