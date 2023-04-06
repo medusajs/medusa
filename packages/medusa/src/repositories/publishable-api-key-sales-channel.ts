@@ -2,6 +2,9 @@ import { Brackets, In } from "typeorm"
 
 import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 import { dataSource } from "../loaders/database"
+import SalesChannelRepository from "./sales-channel"
+
+const publishableApiKeySalesChannelAlias = "PublishableKeySalesChannel"
 
 export const PublishableApiKeySalesChannelRepository = dataSource
   .getRepository(PublishableApiKeySalesChannel)
@@ -16,35 +19,38 @@ export const PublishableApiKeySalesChannelRepository = dataSource
       publishableApiKeyId: string,
       config?: { q?: string }
     ): Promise<SalesChannel[]> {
-      const query = this.createQueryBuilder("PublishableKeySalesChannel")
-        .select("PublishableKeySalesChannel.sales_channel_id")
-        .innerJoinAndMapOne(
-          "PublishableKeySalesChannel.sales_channel_id",
-          SalesChannel,
-          "SalesChannel",
-          "PublishableKeySalesChannel.sales_channel_id = SalesChannel.id"
-        )
+      const salesChannelAlias = "sales_channel"
+
+      const queryBuilder = this.createQueryBuilder(
+        publishableApiKeySalesChannelAlias
+      )
+        .select(`${salesChannelAlias}.*`)
+        .from(SalesChannel, salesChannelAlias)
         .where(
-          "PublishableKeySalesChannel.publishable_key_id = :publishableApiKeyId",
+          `${publishableApiKeySalesChannelAlias}.publishable_key_id = :publishableApiKeyId`,
           {
             publishableApiKeyId,
           }
         )
+        .andWhere(
+          `${publishableApiKeySalesChannelAlias}.sales_channel_id = ${salesChannelAlias}.id`
+        )
 
       if (config?.q) {
-        query.andWhere(
+        queryBuilder.andWhere(
           new Brackets((qb) => {
-            qb.where(`SalesChannel.description ILIKE :q`, {
+            qb.where(`${salesChannelAlias}.description ILIKE :q`, {
               q: `%${config.q}%`,
-            }).orWhere(`SalesChannel.name ILIKE :q`, { q: `%${config.q}%` })
+            }).orWhere(`${salesChannelAlias}.name ILIKE :q`, {
+              q: `%${config.q}%`,
+            })
           })
         )
       }
 
-      const records = await query.getMany()
-
-      return records.map(
-        (record) => record.sales_channel_id as unknown as SalesChannel
+      const records = await queryBuilder.getRawMany()
+      return records.map((salesChannel: SalesChannel) =>
+        SalesChannelRepository.create(salesChannel)
       )
     },
 
@@ -60,7 +66,7 @@ export const PublishableApiKeySalesChannelRepository = dataSource
     ): Promise<void> {
       await this.createQueryBuilder()
         .insert()
-        .into("publishable_api_key_sales_channel")
+        .into(PublishableApiKeySalesChannel)
         .values(
           salesChannelIds.map((id) => ({
             sales_channel_id: id,
@@ -83,7 +89,7 @@ export const PublishableApiKeySalesChannelRepository = dataSource
     ): Promise<void> {
       await this.createQueryBuilder()
         .delete()
-        .from("publishable_api_key_sales_channel")
+        .from(PublishableApiKeySalesChannel)
         .where({
           sales_channel_id: In(salesChannelIds),
           publishable_key_id: publishableApiKeyId,

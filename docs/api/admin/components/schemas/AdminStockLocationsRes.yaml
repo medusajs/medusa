@@ -1,4 +1,6 @@
 type: object
+required:
+  - stock_location
 properties:
   stock_location:
-    $ref: ./StockLocationDTO.yaml
+    $ref: ./StockLocationExpandedDTO.yaml

@@ -31,10 +31,7 @@ export const useAdminCreateReservation = (
       client.admin.reservations.create(payload),
     buildOptions(
       queryClient,
-      [
-        adminReservationsKeys.lists(),
-        adminVariantKeys.all,
-      ],
+      [adminReservationsKeys.lists(), adminVariantKeys.all],
       options
     )
   )
@@ -45,7 +42,7 @@ export const useAdminUpdateReservation = (
   options?: UseMutationOptions<
     Response<AdminReservationsRes>,
     Error,
-    AdminPostReservationsReq
+    AdminPostReservationsReservationReq
   >
 ) => {
   const { client } = useMedusa()

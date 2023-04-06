@@ -1,11 +1,15 @@
 type: object
+required:
+  - uploads
 properties:
   uploads:
     type: array
     items:
       type: object
+      required:
+        - url
       properties:
         url:
-          type: string
           description: The URL of the uploaded file.
+          type: string
           format: uri
