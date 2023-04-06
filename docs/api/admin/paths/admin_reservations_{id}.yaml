@@ -1,7 +1,7 @@
 get:
   operationId: GetReservationsReservation
   summary: Get a Reservation
-  description: Retrieves a single reservation using its id
+  description: Retrieves a single reservation using its ID
   x-authenticated: true
   parameters:
     - in: path
@@ -45,7 +45,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostReservationsReservation
-  summary: Updates a Reservation
+  summary: Update a Reservation
   description: Updates a Reservation which can be associated with any resource as required.
   x-authenticated: true
   parameters:
