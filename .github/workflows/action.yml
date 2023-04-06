@@ -1,9 +1,6 @@
 name: Medusa Pipeline
 on:
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "www/**"
 
 jobs:
   setup:
