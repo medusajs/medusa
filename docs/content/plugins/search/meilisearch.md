@@ -21,15 +21,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
-
-Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa backend](../../development/backend/configurations.md#redis).
-
-:::caution
-
-If you don’t install and configure Redis on your Medusa backend, the MeiliSearch integration will still work. However, products indexed in MeiliSearch are only added and updated when you restart the Medusa backend.
-
-:::
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### MeiliSearch Instance
 
@@ -73,30 +65,92 @@ const plugins = [
         apiKey: process.env.MEILISEARCH_API_KEY,
       },
       settings: {
-        // index name
-        products: {
-          // MeiliSearch's setting options 
-          // to be set on a particular index
-          searchableAttributes: [
-            "title", 
-            "description",
-            "variant_sku",
-          ],
-          displayedAttributes: [
-            "title", 
-            "description", 
-            "variant_sku", 
-            "thumbnail", 
-            "handle",
-          ],
-        },
+        // index settings...
       },
     },
   },
 ]
 ```
 
-You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
+### Index Settings
+
+Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
+
+```js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // other options...
+    settings: {
+      indexName: {
+        indexSettings: {
+          searchableAttributes,
+          displayedAttributes,
+        },
+        primaryKey,
+        transformer,
+      },
+    },
+    },
+  },
+]
+```
+
+Where:
+
+- `indexName`: the name of the index to create in MeiliSearch. For example, `products`. Its value is an object containing the following properties:
+  - `indexSettings`: an object that includes the following properties:
+    - `searchableAttributes`: an array of strings indicating the attributes in the product entity that can be searched.
+    - `displayedAttributes`: an array of strings indicating the attributes in the product entity that should be displayed in the search results.
+  - `primaryKey`: an optional string indicating which property acts as a primary key of a document. It's used to enforce unique documents in an index. The default value is `id`. You can learn more in [MeiliSearch's documentation](https://docs.meilisearch.com/learn/core_concepts/primary_key.html#primary-field).
+  - `transformer`: an optional function that accepts a product as a parameter and returns an object to be indexed. This allows you to have more control over what you're indexing. For example, you can add details related to variants or custom relations, or you can filter out certain products.
+
+Using this index settings structure, you can add more than one index.
+
+:::tip
+
+These settings are just examples of what you can pass to the MeiliSearch provider. If you need to pass more settings to the MeiliSearch SDK you can pass it inside `indexSettings`.
+
+:::
+
+Here's an example of the settings you can use:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // other options...
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: [
+              "title", 
+              "description",
+              "variant_sku",
+            ],
+            displayedAttributes: [
+              "title", 
+              "description", 
+              "variant_sku", 
+              "thumbnail", 
+              "handle",
+            ],
+          },
+          primaryKey: "id",
+          transform: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
 
 ---
 
@@ -124,7 +178,7 @@ If you add or update products on your Medusa backend, the addition or update wil
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the MeiliSearch indices.
+This feature is only available if you have an event module installed in your Medusa backend, as explained in the Prerequisites section.
 
 :::
 

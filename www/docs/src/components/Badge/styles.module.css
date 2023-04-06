@@ -19,3 +19,15 @@
   border-color: var(--medusa-tag-orange-border);
   color: var(--medusa-tag-orange-text);
 }
+
+.greenBadge {
+  background-color: var(--medusa-tag-green-bg);
+  border-color: var(--medusa-tag-green-border);
+  color: var(--medusa-tag-green-text);
+}
+
+.blueBadge {
+  background-color: var(--medusa-tag-blue-bg);
+  border-color: var(--medusa-tag-blue-border);
+  color: var(--medusa-tag-blue-text);
+}

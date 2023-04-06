@@ -1,10 +1,10 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import {
   useAdminAcceptInvite,
   useAdminCreateInvite,
   useAdminDeleteInvite,
   useAdminResendInvite,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminAcceptInvite hook", () => {

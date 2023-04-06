@@ -2,7 +2,7 @@ import { IsArray, IsString } from "class-validator"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/batch/authorize
+ * @oas [post] /store/payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
  * summary: "Authorize PaymentSessions"
  * description: "Authorizes Payment Sessions of a Payment Collection."
@@ -35,7 +35,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK
@@ -72,7 +72,7 @@ export default async (req, res) => {
       req.request_context
     )
 
-  res.status(207).json({ payment_collection })
+  res.status(200).json({ payment_collection })
 }
 
 /**

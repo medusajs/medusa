@@ -1,0 +1,39 @@
+{
+  "name": "@medusajs/modules-sdk",
+  "version": "1.8.0",
+  "description": "SDK for medusa modules",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/modules-sdk"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@medusajs/types": "1.8.0",
+    "@medusajs/utils": "1.8.0",
+    "awilix": "^8.0.0",
+    "glob": "7.1.6",
+    "medusa-telemetry": "^0.0.16",
+    "resolve-cwd": "^3.0.0"
+  },
+  "scripts": {
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "build": "tsc --build",
+    "test": "jest",
+    "test:unit": "jest"
+  }
+}

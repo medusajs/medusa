@@ -1,4 +1,9 @@
 type: object
+required:
+  - tax_rates
+  - count
+  - offset
+  - limit
 properties:
   tax_rates:
     type: array

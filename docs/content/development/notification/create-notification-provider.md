@@ -15,9 +15,7 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to either install a [Medusa backend](../backend/install.mdx), or create it in a [plugin](../plugins/overview.mdx).
-
-You also need to [setup Redis](../backend/prepare-environment.mdx#redis) and [configure it with the Medusa backend](../backend/configurations.md#redis) to test out the Notification provider.
+Before you start creating a Notification Provider, you need to either install a [Medusa backend](../backend/install.mdx), or create it in a [plugin](../plugins/overview.mdx). The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ---
 
@@ -297,7 +295,7 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 ## Test Sending Notifications with your Notification Provider
 
-Make sure you've configured Redis with your Medusa backend as explained in the [Prerequisites](#prerequisites) section and that the Redis service is running.
+Make sure you have an event bus module configured in your Medusa backend. You can learn more on how to do that in the [Configurations guide](../backend/configurations.md).
 
 Then, start by running your Medusa backend:
 

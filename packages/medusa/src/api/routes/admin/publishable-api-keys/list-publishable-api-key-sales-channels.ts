@@ -5,7 +5,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
- * @oas [get] /publishable-api-keys/{id}/sales-channels
+ * @oas [get] /admin/publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
  * summary: "List SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"
@@ -36,7 +36,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

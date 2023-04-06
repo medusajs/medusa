@@ -1,0 +1,41 @@
+post:
+  operationId: PostApps
+  summary: Generate Token for App
+  description: Generates a token for an application.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostAppsReq.yaml
+  x-codegen:
+    method: authorize
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_apps_authorizations/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Apps
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminAppsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

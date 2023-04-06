@@ -1,7 +1,7 @@
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
 
 /**
- * @oas [get] /gift-cards/{id}
+ * @oas [get] /admin/gift-cards/{id}
  * operationId: "GetGiftCardsGiftCard"
  * summary: "Get a Gift Card"
  * description: "Retrieves a Gift Card."
@@ -30,7 +30,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK

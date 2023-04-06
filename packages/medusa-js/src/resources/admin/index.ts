@@ -8,6 +8,7 @@ import AdminCustomersResource from "./customers"
 import AdminDiscountsResource from "./discounts"
 import AdminDraftOrdersResource from "./draft-orders"
 import AdminGiftCardsResource from "./gift-cards"
+import AdminInventoryItemsResource from "./inventory-item"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
 import AdminNotificationsResource from "./notifications"
@@ -22,6 +23,7 @@ import AdminProductTypesResource from "./product-types"
 import AdminProductsResource from "./products"
 import AdminPublishableApiKeyResource from "./publishable-api-keys"
 import AdminRegionsResource from "./regions"
+import AdminReservationsResource from "./reservations"
 import AdminReturnReasonsResource from "./return-reasons"
 import AdminReturnsResource from "./returns"
 import AdminSalesChannelsResource from "./sales-channels"
@@ -46,6 +48,7 @@ class Admin extends BaseResource {
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
+  public inventoryItems = new AdminInventoryItemsResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public priceLists = new AdminPriceListResource(this.client)
   public products = new AdminProductsResource(this.client)
@@ -65,6 +68,7 @@ class Admin extends BaseResource {
   public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
+  public reservations = new AdminReservationsResource(this.client)
   public notifications = new AdminNotificationsResource(this.client)
   public taxRates = new AdminTaxRatesResource(this.client)
   public uploads = new AdminUploadsResource(this.client)

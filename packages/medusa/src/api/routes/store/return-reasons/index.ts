@@ -39,6 +39,13 @@ export const defaultStoreReturnReasonRelations: (keyof ReturnReason)[] = [
 /**
  * @schema StoreReturnReasonsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: return_reasons
+ *   relations:
+ *     - parent_return_reason
+ *     - return_reason_children
+ * required:
+ *   - return_reasons
  * properties:
  *   return_reasons:
  *     type: array
@@ -52,6 +59,13 @@ export type StoreReturnReasonsListRes = {
 /**
  * @schema StoreReturnReasonsRes
  * type: object
+ * x-expanded-relations:
+ *   field: return_reason
+ *   relations:
+ *     - parent_return_reason
+ *     - return_reason_children
+ * required:
+ *   - return_reason
  * properties:
  *   return_reason:
  *     $ref: "#/components/schemas/ReturnReason"

@@ -1,0 +1,117 @@
+post:
+  operationId: PostProductsProductOptionsOption
+  summary: Update a Product Option
+  description: Updates a Product Option
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+    - in: path
+      name: option_id
+      required: true
+      description: The ID of the Product Option.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostProductsProductOptionsOption.yaml
+  x-codegen:
+    method: updateOption
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_products_{id}_options_{option_id}/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_options_{option_id}/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteProductsProductOptionsOption
+  summary: Delete a Product Option
+  description: >-
+    Deletes a Product Option. Before a Product Option can be deleted all Option
+    Values for the Product Option must be the same. You may, for example, have
+    to delete some of your variants prior to deleting the Product Option
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+    - in: path
+      name: option_id
+      required: true
+      description: The ID of the Product Option.
+      schema:
+        type: string
+  x-codegen:
+    method: deleteOption
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_products_{id}_options_{option_id}/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_products_{id}_options_{option_id}/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductsDeleteOptionRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

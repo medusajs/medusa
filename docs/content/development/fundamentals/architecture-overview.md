@@ -18,7 +18,7 @@ The retrieval, manipulation, and other utility methods related to that entity ar
 
 The backend does not have any tightly-coupled frontend. Instead, it exposes [**Endpoints**](../endpoints/overview.mdx) which are REST APIs that frontends such as an admin or a storefront can use to communicate with the backend. Endpoints are [Express routes](https://expressjs.com/en/guide/routing.html).
 
-Medusa also uses an [**Events Architecture**](../events/index.md) to trigger and handle events. Events are triggered when a specific action occurs, such as when an order is placed. To manage this events system, Medusa connects to a service that implements a pub/sub model, such as [Redis](https://redis.io/).
+Medusa also uses an [**Events Architecture**](../events/index.mdx) to trigger and handle events. Events are triggered when a specific action occurs, such as when an order is placed. To manage this events system, Medusa connects to a service that implements a pub/sub model, such as [Redis](https://redis.io/).
 
 Events can be handled using [**Subscribers**](../events/subscribers.mdx). Subscribers are TypeScript or JavaScript classes that add their methods as handlers for specific events. These handler methods are only executed when an event is triggered.
 

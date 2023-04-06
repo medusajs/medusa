@@ -16,7 +16,7 @@ import { Type } from "class-transformer"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}
+ * @oas [post] /admin/orders/{id}
  * operationId: "PostOrdersOrder"
  * summary: "Update an Order"
  * description: "Updates and order"
@@ -59,7 +59,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -109,12 +109,10 @@ export default async (req, res) => {
  *     type: string
  *   billing_address:
  *     description: Billing address
- *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *     $ref: "#/components/schemas/AddressPayload"
  *   shipping_address:
  *     description: Shipping address
- *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *     $ref: "#/components/schemas/AddressPayload"
  *   items:
  *     description: The Line Items for the order
  *     type: array

@@ -22,11 +22,12 @@ export default (app) => {
   return app
 }
 
-export const defaultStoreCollectionRelations = ["products"]
+export const defaultStoreCollectionRelations = []
 export const allowedFields = [
   "id",
   "title",
   "handle",
+  "products",
   "metadata",
   "created_at",
   "updated_at",
@@ -37,6 +38,11 @@ export const allowedFields = [
 /**
  * @schema StoreCollectionsListRes
  * type: object
+ * required:
+ *   - collections
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   collections:
  *      type: array
@@ -59,6 +65,8 @@ export type StoreCollectionsListRes = PaginatedResponse & {
 /**
  * @schema StoreCollectionsRes
  * type: object
+ * required:
+ *   - collection
  * properties:
  *   collection:
  *     $ref: "#/components/schemas/ProductCollection"

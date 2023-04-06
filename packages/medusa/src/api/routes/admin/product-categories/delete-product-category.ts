@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { ProductCategoryService } from "../../../../services"
 
 /**
- * @oas [delete] /product-categories/{id}
+ * @oas [delete] /admin/product-categories/{id}
  * operationId: "DeleteProductCategoriesCategory"
  * summary: "Delete a Product Category"
  * description: "Deletes a ProductCategory."
@@ -33,7 +33,7 @@ import { ProductCategoryService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   "200":
  *     description: OK

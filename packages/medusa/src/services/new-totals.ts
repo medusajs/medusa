@@ -60,15 +60,11 @@ type InjectedDependencies = {
 }
 
 export default class NewTotalsService extends TransactionBaseService {
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
-
   protected readonly taxProviderService_: TaxProviderService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
-    manager,
     taxProviderService,
     featureFlagRouter,
     taxCalculationStrategy,
@@ -76,7 +72,6 @@ export default class NewTotalsService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.featureFlagRouter_ = featureFlagRouter
     this.taxCalculationStrategy_ = taxCalculationStrategy
@@ -103,7 +98,6 @@ export default class NewTotalsService extends TransactionBaseService {
   ): Promise<{ [lineItemId: string]: LineItemTotals }> {
     items = Array.isArray(items) ? items : [items]
 
-    const manager = this.transactionManager_ ?? this.manager_
     let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
 
     if (!taxRate && includeTax) {
@@ -115,7 +109,7 @@ export default class NewTotalsService extends TransactionBaseService {
         })
       } else {
         const { lineItemsTaxLines } = await this.taxProviderService_
-          .withTransaction(manager)
+          .withTransaction(this.activeManager_)
           .getTaxLinesMap(items, calculationContext)
         lineItemsTaxLinesMap = lineItemsTaxLines
       }
@@ -593,7 +587,6 @@ export default class NewTotalsService extends TransactionBaseService {
       ? shippingMethods
       : [shippingMethods]
 
-    const manager = this.transactionManager_ ?? this.manager_
     let shippingMethodsTaxLinesMap: {
       [shippingMethodId: string]: ShippingMethodTaxLine[]
     } = {}
@@ -613,7 +606,7 @@ export default class NewTotalsService extends TransactionBaseService {
           shipping_methods: shippingMethods,
         }
         const { shippingMethodsTaxLines } = await this.taxProviderService_
-          .withTransaction(manager)
+          .withTransaction(this.activeManager_)
           .getTaxLinesMap([], calculationContextWithGivenMethod)
         shippingMethodsTaxLinesMap = shippingMethodsTaxLines
       }

@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/cancel
  * operationId: "PostOrdersSwapCancel"
  * summary: "Cancels a Swap"
  * description: "Cancels a Swap"
@@ -39,7 +39,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

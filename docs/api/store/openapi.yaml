@@ -381,147 +381,147 @@ tags:
     description: >-
       Auth endpoints that allow authorization of customers and manages their
       sessions.
-  - name: Cart
+  - name: Carts
     description: Cart endpoints that allow handling carts in Medusa.
-  - name: Collection
+  - name: Collections
     description: Collection endpoints that allow handling collections in Medusa.
-  - name: Customer
+  - name: Customers
     description: Customer endpoints that allow handling customers in Medusa.
-  - name: Gift Card
+  - name: Gift Cards
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-  - name: Order
+  - name: Orders
     description: Order endpoints that allow handling orders in Medusa.
-  - name: Product
+  - name: Products
     description: Product endpoints that allow handling products in Medusa.
-  - name: Product Variant
+  - name: Product Variants
     description: Product Variant endpoints that allow handling product variants in Medusa.
-  - name: Region
+  - name: Regions
     description: Region endpoints that allow handling regions in Medusa.
-  - name: Return Reason
+  - name: Return Reasons
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-  - name: Return
+  - name: Returns
     description: Return endpoints that allow handling returns in Medusa.
-  - name: Shipping Option
+  - name: Shipping Options
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-  - name: Swap
+  - name: Swaps
     description: Swap endpoints that allow handling swaps in Medusa.
 servers:
-  - url: https://api.medusa-commerce.com/store
+  - url: https://api.medusa-commerce.com
 paths:
-  /auth:
-    $ref: paths/auth.yaml
-  /auth/{email}:
-    $ref: paths/auth_{email}.yaml
-  /carts/{id}/shipping-methods:
-    $ref: paths/carts_{id}_shipping-methods.yaml
-  /carts/{id}/taxes:
-    $ref: paths/carts_{id}_taxes.yaml
-  /carts/{id}/complete:
-    $ref: paths/carts_{id}_complete.yaml
-  /carts:
-    $ref: paths/carts.yaml
-  /carts/{id}/payment-sessions:
-    $ref: paths/carts_{id}_payment-sessions.yaml
-  /carts/{id}/discounts/{code}:
-    $ref: paths/carts_{id}_discounts_{code}.yaml
-  /carts/{id}/line-items/{line_id}:
-    $ref: paths/carts_{id}_line-items_{line_id}.yaml
-  /carts/{id}/payment-sessions/{provider_id}:
-    $ref: paths/carts_{id}_payment-sessions_{provider_id}.yaml
-  /carts/{id}:
-    $ref: paths/carts_{id}.yaml
-  /carts/{id}/payment-sessions/{provider_id}/refresh:
-    $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
-  /carts/{id}/payment-session:
-    $ref: paths/carts_{id}_payment-session.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
-  /customers/me/addresses:
-    $ref: paths/customers_me_addresses.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/me/addresses/{address_id}:
-    $ref: paths/customers_me_addresses_{address_id}.yaml
-  /customers/me:
-    $ref: paths/customers_me.yaml
-  /customers/me/payment-methods:
-    $ref: paths/customers_me_payment-methods.yaml
-  /customers/me/orders:
-    $ref: paths/customers_me_orders.yaml
-  /customers/password-token:
-    $ref: paths/customers_password-token.yaml
-  /customers/password-reset:
-    $ref: paths/customers_password-reset.yaml
-  /gift-cards/{code}:
-    $ref: paths/gift-cards_{code}.yaml
-  /order-edits/{id}/complete:
-    $ref: paths/order-edits_{id}_complete.yaml
-  /order-edits/{id}/decline:
-    $ref: paths/order-edits_{id}_decline.yaml
-  /order-edits/{id}:
-    $ref: paths/order-edits_{id}.yaml
-  /orders/customer/confirm:
-    $ref: paths/orders_customer_confirm.yaml
-  /orders/cart/{cart_id}:
-    $ref: paths/orders_cart_{cart_id}.yaml
-  /orders/{id}:
-    $ref: paths/orders_{id}.yaml
-  /orders:
-    $ref: paths/orders.yaml
-  /orders/batch/customer/token:
-    $ref: paths/orders_batch_customer_token.yaml
-  /payment-collections/{id}/sessions/batch/authorize:
-    $ref: paths/payment-collections_{id}_sessions_batch_authorize.yaml
-  /payment-collections/{id}/sessions/{session_id}/authorize:
-    $ref: paths/payment-collections_{id}_sessions_{session_id}_authorize.yaml
-  /payment-collections/{id}:
-    $ref: paths/payment-collections_{id}.yaml
-  /payment-collections/{id}/sessions/batch:
-    $ref: paths/payment-collections_{id}_sessions_batch.yaml
-  /payment-collections/{id}/sessions:
-    $ref: paths/payment-collections_{id}_sessions.yaml
-  /payment-collections/{id}/sessions/{session_id}:
-    $ref: paths/payment-collections_{id}_sessions_{session_id}.yaml
-  /product-categories/{id}:
-    $ref: paths/product-categories_{id}.yaml
-  /product-categories:
-    $ref: paths/product-categories.yaml
-  /product-tags:
-    $ref: paths/product-tags.yaml
-  /product-types:
-    $ref: paths/product-types.yaml
-  /products/{id}:
-    $ref: paths/products_{id}.yaml
-  /products:
-    $ref: paths/products.yaml
-  /products/search:
-    $ref: paths/products_search.yaml
-  /regions/{id}:
-    $ref: paths/regions_{id}.yaml
-  /regions:
-    $ref: paths/regions.yaml
-  /return-reasons/{id}:
-    $ref: paths/return-reasons_{id}.yaml
-  /return-reasons:
-    $ref: paths/return-reasons.yaml
-  /returns:
-    $ref: paths/returns.yaml
-  /shipping-options:
-    $ref: paths/shipping-options.yaml
-  /shipping-options/{cart_id}:
-    $ref: paths/shipping-options_{cart_id}.yaml
-  /swaps:
-    $ref: paths/swaps.yaml
-  /swaps/{cart_id}:
-    $ref: paths/swaps_{cart_id}.yaml
-  /variants/{variant_id}:
-    $ref: paths/variants_{variant_id}.yaml
-  /variants:
-    $ref: paths/variants.yaml
-  /carts/{id}/line-items:
-    $ref: paths/carts_{id}_line-items.yaml
+  /store/auth:
+    $ref: paths/store_auth.yaml
+  /store/auth/{email}:
+    $ref: paths/store_auth_{email}.yaml
+  /store/carts:
+    $ref: paths/store_carts.yaml
+  /store/carts/{id}:
+    $ref: paths/store_carts_{id}.yaml
+  /store/carts/{id}/complete:
+    $ref: paths/store_carts_{id}_complete.yaml
+  /store/carts/{id}/discounts/{code}:
+    $ref: paths/store_carts_{id}_discounts_{code}.yaml
+  /store/carts/{id}/line-items:
+    $ref: paths/store_carts_{id}_line-items.yaml
+  /store/carts/{id}/line-items/{line_id}:
+    $ref: paths/store_carts_{id}_line-items_{line_id}.yaml
+  /store/carts/{id}/payment-session:
+    $ref: paths/store_carts_{id}_payment-session.yaml
+  /store/carts/{id}/payment-sessions:
+    $ref: paths/store_carts_{id}_payment-sessions.yaml
+  /store/carts/{id}/payment-sessions/{provider_id}:
+    $ref: paths/store_carts_{id}_payment-sessions_{provider_id}.yaml
+  /store/carts/{id}/payment-sessions/{provider_id}/refresh:
+    $ref: paths/store_carts_{id}_payment-sessions_{provider_id}_refresh.yaml
+  /store/carts/{id}/shipping-methods:
+    $ref: paths/store_carts_{id}_shipping-methods.yaml
+  /store/carts/{id}/taxes:
+    $ref: paths/store_carts_{id}_taxes.yaml
+  /store/collections:
+    $ref: paths/store_collections.yaml
+  /store/collections/{id}:
+    $ref: paths/store_collections_{id}.yaml
+  /store/customers:
+    $ref: paths/store_customers.yaml
+  /store/customers/me:
+    $ref: paths/store_customers_me.yaml
+  /store/customers/me/addresses:
+    $ref: paths/store_customers_me_addresses.yaml
+  /store/customers/me/addresses/{address_id}:
+    $ref: paths/store_customers_me_addresses_{address_id}.yaml
+  /store/customers/me/orders:
+    $ref: paths/store_customers_me_orders.yaml
+  /store/customers/me/payment-methods:
+    $ref: paths/store_customers_me_payment-methods.yaml
+  /store/customers/password-reset:
+    $ref: paths/store_customers_password-reset.yaml
+  /store/customers/password-token:
+    $ref: paths/store_customers_password-token.yaml
+  /store/gift-cards/{code}:
+    $ref: paths/store_gift-cards_{code}.yaml
+  /store/order-edits/{id}:
+    $ref: paths/store_order-edits_{id}.yaml
+  /store/order-edits/{id}/complete:
+    $ref: paths/store_order-edits_{id}_complete.yaml
+  /store/order-edits/{id}/decline:
+    $ref: paths/store_order-edits_{id}_decline.yaml
+  /store/orders:
+    $ref: paths/store_orders.yaml
+  /store/orders/batch/customer/token:
+    $ref: paths/store_orders_batch_customer_token.yaml
+  /store/orders/cart/{cart_id}:
+    $ref: paths/store_orders_cart_{cart_id}.yaml
+  /store/orders/customer/confirm:
+    $ref: paths/store_orders_customer_confirm.yaml
+  /store/orders/{id}:
+    $ref: paths/store_orders_{id}.yaml
+  /store/payment-collections/{id}:
+    $ref: paths/store_payment-collections_{id}.yaml
+  /store/payment-collections/{id}/sessions:
+    $ref: paths/store_payment-collections_{id}_sessions.yaml
+  /store/payment-collections/{id}/sessions/batch:
+    $ref: paths/store_payment-collections_{id}_sessions_batch.yaml
+  /store/payment-collections/{id}/sessions/batch/authorize:
+    $ref: paths/store_payment-collections_{id}_sessions_batch_authorize.yaml
+  /store/payment-collections/{id}/sessions/{session_id}:
+    $ref: paths/store_payment-collections_{id}_sessions_{session_id}.yaml
+  /store/payment-collections/{id}/sessions/{session_id}/authorize:
+    $ref: paths/store_payment-collections_{id}_sessions_{session_id}_authorize.yaml
+  /store/product-categories:
+    $ref: paths/store_product-categories.yaml
+  /store/product-categories/{id}:
+    $ref: paths/store_product-categories_{id}.yaml
+  /store/product-tags:
+    $ref: paths/store_product-tags.yaml
+  /store/product-types:
+    $ref: paths/store_product-types.yaml
+  /store/products:
+    $ref: paths/store_products.yaml
+  /store/products/search:
+    $ref: paths/store_products_search.yaml
+  /store/products/{id}:
+    $ref: paths/store_products_{id}.yaml
+  /store/regions:
+    $ref: paths/store_regions.yaml
+  /store/regions/{id}:
+    $ref: paths/store_regions_{id}.yaml
+  /store/return-reasons:
+    $ref: paths/store_return-reasons.yaml
+  /store/return-reasons/{id}:
+    $ref: paths/store_return-reasons_{id}.yaml
+  /store/returns:
+    $ref: paths/store_returns.yaml
+  /store/shipping-options:
+    $ref: paths/store_shipping-options.yaml
+  /store/shipping-options/{cart_id}:
+    $ref: paths/store_shipping-options_{cart_id}.yaml
+  /store/swaps:
+    $ref: paths/store_swaps.yaml
+  /store/swaps/{cart_id}:
+    $ref: paths/store_swaps_{cart_id}.yaml
+  /store/variants:
+    $ref: paths/store_variants.yaml
+  /store/variants/{variant_id}:
+    $ref: paths/store_variants_{variant_id}.yaml
 components:
   securitySchemes:
     cookie_auth:

@@ -8,7 +8,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits
+ * @oas [post] /admin/order-edits
  * operationId: "PostOrderEdits"
  * summary: "Create an OrderEdit"
  * description: "Creates an OrderEdit."
@@ -42,7 +42,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

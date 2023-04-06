@@ -7,7 +7,7 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /tax-rates/{id}/products/batch
+ * @oas [delete] /admin/tax-rates/{id}/products/batch
  * operationId: "DeleteTaxRatesTaxRateProducts"
  * summary: "Delete from Products"
  * description: "Removes a Tax Rate from a list of Products"
@@ -70,7 +70,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK

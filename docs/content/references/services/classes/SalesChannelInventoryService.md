@@ -1,5 +1,11 @@
 # Class: SalesChannelInventoryService
 
+## Hierarchy
+
+- `TransactionBaseService`
+
+  ↳ **`SalesChannelInventoryService`**
+
 ## Constructors
 
 ### constructor
@@ -12,19 +18,65 @@
 | :------ | :------ |
 | `__namedParameters` | `InjectedDependencies` |
 
+#### Overrides
+
+TransactionBaseService.constructor
+
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:21](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/sales-channel-inventory.ts#L21)
+[medusa/src/services/sales-channel-inventory.ts:18](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/sales-channel-inventory.ts#L18)
 
 ## Properties
 
-### eventBusService\_
+### \_\_configModule\_\_
 
-• `Protected` `Readonly` **eventBusService\_**: [`EventBusService`](EventBusService.md)
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:18](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/sales-channel-inventory.ts#L18)
+utils/dist/common/transaction-base-service.d.ts:5
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:4
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:6
+
+___
+
+### eventBusService\_
+
+• `Protected` `Readonly` **eventBusService\_**: `IEventBusService`
+
+#### Defined in
+
+[medusa/src/services/sales-channel-inventory.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/sales-channel-inventory.ts#L15)
 
 ___
 
@@ -34,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:19](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/sales-channel-inventory.ts#L19)
+[medusa/src/services/sales-channel-inventory.ts:16](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/sales-channel-inventory.ts#L16)
 
 ___
 
@@ -42,9 +94,13 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
+#### Inherited from
+
+TransactionBaseService.manager\_
+
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:15](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/sales-channel-inventory.ts#L15)
+utils/dist/common/transaction-base-service.d.ts:7
 
 ___
 
@@ -54,9 +110,80 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:17](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/sales-channel-inventory.ts#L17)
+[medusa/src/services/sales-channel-inventory.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/sales-channel-inventory.ts#L14)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:8
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:9
 
 ## Methods
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:24
+
+___
 
 ### retrieveAvailableItemQuantity
 
@@ -79,4 +206,52 @@ available quantity of item across all sales channel locations
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-inventory.ts:39](https://github.com/medusajs/medusa/blob/a4575c391/packages/medusa/src/services/sales-channel-inventory.ts#L39)
+[medusa/src/services/sales-channel-inventory.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/sales-channel-inventory.ts#L37)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:12
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): [`SalesChannelInventoryService`](SalesChannelInventoryService.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
+
+#### Returns
+
+[`SalesChannelInventoryService`](SalesChannelInventoryService.md)
+
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
+#### Defined in
+
+utils/dist/common/transaction-base-service.d.ts:11

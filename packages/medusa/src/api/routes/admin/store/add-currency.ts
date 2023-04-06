@@ -2,7 +2,7 @@ import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /store/currencies/{code}
+ * @oas [post] /admin/store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
  * summary: "Add a Currency Code"
  * description: "Adds a Currency Code to the available currencies."

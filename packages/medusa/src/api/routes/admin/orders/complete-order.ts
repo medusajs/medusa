@@ -4,7 +4,7 @@ import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/complete
+ * @oas [post] /admin/orders/{id}/complete
  * operationId: "PostOrdersOrderComplete"
  * summary: "Complete an Order"
  * description: "Completes an Order"
@@ -36,7 +36,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

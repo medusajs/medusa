@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /gift-cards/{id}
+ * @oas [delete] /admin/gift-cards/{id}
  * operationId: "DeleteGiftCardsGiftCard"
  * summary: "Delete a Gift Card"
  * description: "Deletes a Gift Card"
@@ -30,7 +30,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK

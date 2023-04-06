@@ -7,7 +7,7 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/confirm
+ * @oas [post] /admin/order-edits/{id}/confirm
  * operationId: "PostOrderEditsOrderEditConfirm"
  * summary: "Confirms an OrderEdit"
  * description: "Confirms an OrderEdit."
@@ -36,7 +36,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

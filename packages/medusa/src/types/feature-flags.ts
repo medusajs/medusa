@@ -3,6 +3,22 @@ export interface IFlagRouter {
   listFlags: () => FeatureFlagsResponse
 }
 
+/**
+ * @schema FeatureFlagsResponse
+ * type: array
+ * items:
+ *   type: object
+ *   required:
+ *     - key
+ *     - value
+ *   properties:
+ *     key:
+ *       description: The key of the feature flag.
+ *       type: string
+ *     value:
+ *       description: The value of the feature flag.
+ *       type: boolean
+ */
 export type FeatureFlagsResponse = {
   key: string
   value: boolean

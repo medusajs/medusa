@@ -2,9 +2,10 @@ import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { defaultAdminCollectionsRelations } from "."
 
 /**
- * @oas [post] /collections
+ * @oas [post] /admin/collections
  * operationId: "PostCollections"
  * summary: "Create a Collection"
  * description: "Creates a Product Collection."
@@ -42,7 +43,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK
@@ -77,7 +78,9 @@ export default async (req: Request, res: Response) => {
       .create(validatedBody)
   })
 
-  const collection = await productCollectionService.retrieve(created.id)
+  const collection = await productCollectionService.retrieve(created.id, {
+    relations: defaultAdminCollectionsRelations,
+  })
 
   res.status(200).json({ collection })
 }

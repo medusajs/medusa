@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: PostCartsCartPaymentSessionUpdate
  * summary: Update a Payment Session
  * description: "Updates a Payment Session with additional data."
@@ -42,7 +42,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *           "data": {}
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK

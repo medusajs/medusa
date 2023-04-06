@@ -6,7 +6,7 @@ import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers/me/addresses/{address_id}
+ * @oas [post] /store/customers/me/addresses/{address_id}
  * operationId: PostCustomersCustomerAddressesAddress
  * summary: "Update a Shipping Address"
  * description: "Updates a Customer's saved Shipping Address."
@@ -45,7 +45,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *  "200":
  *    description: OK
@@ -98,7 +98,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerAddressesAddressReq
  * anyOf:
- *   - $ref: "#/components/schemas/AddressFields"
+ *   - $ref: "#/components/schemas/AddressPayload"
  */
 // eslint-disable-next-line max-len
 export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}

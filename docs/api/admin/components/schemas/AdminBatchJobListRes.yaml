@@ -1,4 +1,9 @@
 type: object
+required:
+  - batch_jobs
+  - count
+  - offset
+  - limit
 properties:
   batch_jobs:
     type: array

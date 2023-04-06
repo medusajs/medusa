@@ -15,3 +15,6 @@ properties:
   parent_category_id:
     type: string
     description: The ID of the parent product category
+  rank:
+    type: number
+    description: The rank of the category in the tree node (starting from 0)
