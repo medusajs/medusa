@@ -217,4 +217,4 @@ For example, you can run commands on the backend to seed the database or create 
 ## See Also
 
 - [Deploy the Medusa Admin](../admin/index.mdx)
-- [Deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md)
+- [Deploy the Storefront](../storefront/index.mdx)
