@@ -1,7 +1,8 @@
 import { Router } from "express"
 import bodyParser from "body-parser"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import jwt from "jsonwebtoken"
+import { isObject, isString, isDefined, isNumber } from "@medusa/utils"
 
 const JWT_SECRET = process.env.JWT_SECRET || ""
 
@@ -9,12 +10,9 @@ export default () => {
   const app = Router()
 
   app.delete("/:id/wishlist", bodyParser.json(), async (req, res) => {
-    const schema = Validator.object().keys({
-      index: Validator.number().required(),
-    })
+    const requestIsValid = isObject(req.body) && isNumber(req.body.index)
 
-    const { value, error } = schema.validate(req.body)
-    if (error) {
+    if (!requestIsValid) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
     }
 
@@ -25,7 +23,7 @@ export default () => {
       const wishlist = (customer.metadata && customer.metadata.wishlist) || []
 
       const newWishlist = [...wishlist]
-      newWishlist.splice(value.index, 1)
+      newWishlist.splice(req.body.index, 1)
 
       customer = await customerService.update(customer.id, {
         metadata: { wishlist: newWishlist },
@@ -38,14 +36,13 @@ export default () => {
   })
 
   app.post("/:id/wishlist", bodyParser.json(), async (req, res) => {
-    const schema = Validator.object().keys({
-      variant_id: Validator.string().required(),
-      quantity: Validator.number().required(),
-      metadata: Validator.object().optional(),
-    })
+    const requestIsValid =
+      isObject(req.body) &&
+      isString(req.body.variant_id) &&
+      isNumber(req.body.quantity) &&
+      (!isDefined(req.body.metadata) || isObject(req.body.metadata))
 
-    const { value, error } = schema.validate(req.body)
-    if (error) {
+    if (!requestIsValid) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
     }
 
@@ -59,10 +56,10 @@ export default () => {
       const regions = await regionService.list()
       if (regions.length) {
         const lineItem = await lineItemService.generate(
-          value.variant_id,
+          req.body.variant_id,
           regions[0].id,
-          value.quantity,
-          { metadata: value.metadata }
+          req.body.quantity,
+          { metadata: req.body.metadata }
         )
 
         const wishlist = (customer.metadata && customer.metadata.wishlist) || []

@@ -1,25 +1,25 @@
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
+import { isObject, isString } from "@medusa/utils"
 
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    template_id: Validator.string().required(),
-    from: Validator.string().required(),
-    to: Validator.string().required(),
-    data: Validator.object().optional().default({}),
-  })
+  const requestIsValid =
+    isObject(req.body) &&
+    isString(req.body.template_id) &&
+    isString(req.body.from) &&
+    isString(req.body.to) &&
+    (!isDefined(req.body.data) || isObject(req.body.data))
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
+  if (!requestIsValid) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
   try {
     const sendgridService = req.scope.resolve("sendgridService")
     await sendgridService.sendEmail(
-      value.template_id,
-      value.from,
-      value.to,
-      value.data
+      req.body.template_id,
+      req.body.from,
+      req.body.to,
+      req.body.data || {}
     )
     res.sendStatus(200)
   } catch (err) {

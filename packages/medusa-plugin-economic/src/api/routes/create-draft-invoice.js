@@ -1,16 +1,15 @@
-export default async (req, res) => {
-  const schema = Validator.object().keys({
-    orderId: Validator.string().required(),
-  })
+import { isObject, isString } from "@medusa/utils"
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
+export default async (req, res) => {
+  const requestIsValid = isObject(req.body) && isString(req.body.orderId)
+
+  if (!requestIsValid) {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
   try {
     const economicService = req.scope.resolve("economicService")
-    await economicService.draftEconomicInvoice(value.orderId)
+    await economicService.draftEconomicInvoice(req.body.orderId)
     res.sendStatus(200)
   } catch (error) {
     throw error
