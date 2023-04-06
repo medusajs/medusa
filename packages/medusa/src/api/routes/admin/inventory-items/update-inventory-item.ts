@@ -7,7 +7,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /admin/inventory-items/{id}
  * operationId: "PostInventoryItemsInventoryItem"
- * summary: "Update an Inventory Item."
+ * summary: "Update an Inventory Item"
  * description: "Updates an Inventory Item."
  * x-authenticated: true
  * parameters:
