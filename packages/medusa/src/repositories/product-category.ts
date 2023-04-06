@@ -44,14 +44,14 @@ export const ProductCategoryRepository = dataSource
       const options_ = { ...options }
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
-      const legacySelect = buildLegacyFieldsListFrom(options_.select)
-      const legacyRelations = buildLegacyFieldsListFrom(options_.relations)
+      const columnsSelected = buildLegacyFieldsListFrom(options_.select)
+      const relationsSelected = buildLegacyFieldsListFrom(options_.relations)
 
-      const selectStatements = (relationName: string): string[] => {
+      const fetchSelectColumns = (relationName: string): string[] => {
         const modelColumns = this.metadata.ownColumns.map(
           (column) => column.propertyName
         )
-        const selectColumns = legacySelect.length ? legacySelect : modelColumns
+        const selectColumns = columnsSelected.length ? columnsSelected : modelColumns
 
         return selectColumns.map((column) => {
           return `${relationName}.${column}`
@@ -59,7 +59,7 @@ export const ProductCategoryRepository = dataSource
       }
 
       const queryBuilder = this.createQueryBuilder(entityName)
-        .select(selectStatements(entityName))
+        .select(fetchSelectColumns(entityName))
         .skip(options_.skip)
         .take(options_.take)
         .addOrderBy(`${entityName}.rank`, "ASC")
@@ -69,18 +69,18 @@ export const ProductCategoryRepository = dataSource
         delete options_.where?.name
         delete options_.where?.handle
 
-        queryBuilder.where(
-          new Brackets((bracket) => {
-            bracket
-              .where({ name: ILike(`%${q}%`) })
-              .orWhere({ handle: ILike(`%${q}%`) })
-          })
-        )
+        options_.where = [{
+          ...options_.where,
+          name: ILike(`%${q}%`)
+        }, {
+          ...options_.where,
+          handle: ILike(`%${q}%`)
+        }]
       }
 
-      queryBuilder.andWhere(options_.where)
+      queryBuilder.where(options_.where)
 
-      const includedTreeRelations: string[] = legacyRelations.filter((rel) =>
+      const includedTreeRelations: string[] = relationsSelected.filter((rel) =>
         ProductCategory.treeRelations.includes(rel)
       )
 
@@ -96,12 +96,12 @@ export const ProductCategoryRepository = dataSource
             treeWhere,
             treeScope
           )
-          .addSelect(selectStatements(treeRelation))
+          .addSelect(fetchSelectColumns(treeRelation))
           .addOrderBy(`${treeRelation}.rank`, "ASC")
           .addOrderBy(`${treeRelation}.handle`, "ASC")
       })
 
-      const nonTreeRelations: string[] = legacyRelations.filter(
+      const nonTreeRelations: string[] = relationsSelected.filter(
         (rel) => !ProductCategory.treeRelations.includes(rel)
       )
 
@@ -128,15 +128,15 @@ export const ProductCategoryRepository = dataSource
       productCategoryId: string,
       productIds: string[]
     ): Promise<void> {
+      const valuesToInsert = productIds.map((id) => ({
+        product_category_id: productCategoryId,
+        product_id: id,
+      }))
+
       await this.createQueryBuilder()
         .insert()
         .into(ProductCategory.productCategoryProductJoinTable)
-        .values(
-          productIds.map((id) => ({
-            product_category_id: productCategoryId,
-            product_id: id,
-          }))
-        )
+        .values(valuesToInsert)
         .orIgnore()
         .execute()
     },
