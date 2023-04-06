@@ -3,22 +3,14 @@ import fs from "fs/promises"
 import * as yaml from "js-yaml"
 import { OpenAPIObject, SchemaObject } from "openapi3-ts"
 import { OperationObject } from "openapi3-ts/src/model/OpenApi"
-import os from "os"
 import path from "path"
 import { v4 as uid } from "uuid"
+import { getTmpDirectory } from "../utils/fs-utils"
 
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
 )
 const basePath = path.resolve(__dirname, `../../`)
-
-const getTmpDirectory = async () => {
-  /**
-   * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
-   */
-  const tmpDir = process.env["RUNNER_TEMP"] ?? os.tmpdir()
-  return await fs.mkdtemp(tmpDir)
-}
 
 const runCLI = async (command: string, options: string[] = []) => {
   const params = ["run", "medusa-oas", command, ...options]
