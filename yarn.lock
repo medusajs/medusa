@@ -5857,7 +5857,9 @@ __metadata:
   dependencies:
     "@medusajs/medusa": 1.8.0
     "@medusajs/openapi-typescript-codegen": 0.2.0
+    "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
+    "@redocly/cli": 1.0.0-beta.123
     "@types/lodash": ^4.14.191
     commander: ^10.0.0
     jest: ^25.5.4
@@ -5966,10 +5968,7 @@ __metadata:
   resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
   dependencies:
     "@medusajs/medusa-oas-cli": 0.2.0
-    "@readme/openapi-parser": ^2.4.0
-    "@redocly/cli": 1.0.0-beta.123
     execa: ^5.1.1
-    js-yaml: ^4.1.0
   languageName: unknown
   linkType: soft
 
