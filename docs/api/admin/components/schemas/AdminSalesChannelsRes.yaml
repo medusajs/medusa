@@ -1,4 +1,6 @@
 type: object
+required:
+  - sales_channel
 properties:
   sales_channel:
     $ref: ./SalesChannel.yaml

@@ -1,4 +1,6 @@
 type: object
+required:
+  - inventory_item
 properties:
   inventory_item:
     $ref: ./InventoryItemDTO.yaml

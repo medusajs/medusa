@@ -1,4 +1,18 @@
 type: object
+x-expanded-relations:
+  field: shipping_options
+  relations:
+    - profile
+    - region
+    - requirements
+  eager:
+    - region.fulfillment_providers
+    - region.payment_providers
+required:
+  - shipping_options
+  - count
+  - offset
+  - limit
 properties:
   shipping_options:
     type: array
@@ -7,3 +21,9 @@ properties:
   count:
     type: integer
     description: The total number of items available
+  offset:
+    type: integer
+    description: The number of items skipped before these items
+  limit:
+    type: integer
+    description: The number of items per page

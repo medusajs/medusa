@@ -1,4 +1,12 @@
 type: object
+x-expanded-relations:
+  field: variants
+  relations:
+    - prices
+    - options
+    - product
+required:
+  - variants
 properties:
   variants:
     type: array
