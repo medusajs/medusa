@@ -1,11 +1,13 @@
 import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
-import { CartType } from "../models/cart"
-import {
-  AddressPayload,
-  DateComparisonOperator,
-  StringComparisonOperator,
-} from "./common"
+import { Cart, CartType } from "../models/cart"
+import { AddressPayload, DateComparisonOperator, StringComparisonOperator } from "./common"
+import { Region } from "../models"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isCart(object: any): object is Cart {
+  return object.object === "cart"
+}
 
 export class FilterableCartProps {
   @ValidateNested()
@@ -24,9 +26,14 @@ export type LineItemUpdate = {
   title?: string
   unit_price?: number
   quantity?: number
-  metadata?: object
+  metadata?: Record<string, unknown>
   region_id?: string
   variant_id?: string
+}
+
+export type LineItemValidateData = {
+  variant?: { product_id: string };
+  variant_id: string
 }
 
 class GiftCard {
@@ -38,7 +45,8 @@ class Discount {
 }
 
 export type CartCreateProps = {
-  region_id: string
+  region_id?: string
+  region?: Region
   email?: string
   billing_address_id?: string
   billing_address?: Partial<AddressPayload>
@@ -49,7 +57,9 @@ export type CartCreateProps = {
   customer_id?: string
   type?: CartType
   context?: object
-  metadata?: object
+  metadata?: Record<string, unknown>
+  sales_channel_id?: string
+  country_code?: string
 }
 
 export type CartUpdateProps = {
@@ -58,13 +68,14 @@ export type CartUpdateProps = {
   email?: string
   shipping_address_id?: string
   billing_address_id?: string
-  billing_address?: AddressPayload
-  shipping_address?: AddressPayload
+  billing_address?: AddressPayload | string
+  shipping_address?: AddressPayload | string
   completed_at?: Date
-  payment_authorized_at?: Date
+  payment_authorized_at?: Date | null
   gift_cards?: GiftCard[]
   discounts?: Discount[]
   customer_id?: string
   context?: object
-  metadata?: object
+  metadata?: Record<string, unknown>
+  sales_channel_id?: string
 }

@@ -1,0 +1,89 @@
+title: DraftOrder
+description: Represents a draft order
+type: object
+required:
+  - canceled_at
+  - cart_id
+  - completed_at
+  - created_at
+  - display_id
+  - id
+  - idempotency_key
+  - metadata
+  - no_notification_order
+  - order_id
+  - status
+  - updated_at
+properties:
+  id:
+    description: The draft order's ID
+    type: string
+    example: dorder_01G8TJFKBG38YYFQ035MSVG03C
+  status:
+    description: The status of the draft order
+    type: string
+    enum:
+      - open
+      - completed
+    default: open
+  display_id:
+    description: The draft order's display ID
+    type: string
+    example: 2
+  cart_id:
+    description: The ID of the cart associated with the draft order.
+    nullable: true
+    type: string
+    example: cart_01G8ZH853Y6TFXWPG5EYE81X63
+  cart:
+    description: A cart object. Available if the relation `cart` is expanded.
+    nullable: true
+    type: object
+  order_id:
+    description: The ID of the order associated with the draft order.
+    nullable: true
+    type: string
+    example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
+  order:
+    description: An order object. Available if the relation `order` is expanded.
+    nullable: true
+    type: object
+  canceled_at:
+    description: The date the draft order was canceled at.
+    nullable: true
+    type: string
+    format: date-time
+  completed_at:
+    description: The date the draft order was completed at.
+    nullable: true
+    type: string
+    format: date-time
+  no_notification_order:
+    description: Whether to send the customer notifications regarding order updates.
+    nullable: true
+    type: boolean
+    example: false
+  idempotency_key:
+    description: >-
+      Randomly generated key used to continue the completion of the cart
+      associated with the draft order in case of failure.
+    nullable: true
+    type: string
+    externalDocs:
+      url: >-
+        https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+      description: Learn more how to use the idempotency key.
+  created_at:
+    description: The date with timezone at which the resource was created.
+    type: string
+    format: date-time
+  updated_at:
+    description: The date with timezone at which the resource was updated.
+    type: string
+    format: date-time
+  metadata:
+    description: An optional key-value map with additional details
+    nullable: true
+    type: object
+    example:
+      car: white

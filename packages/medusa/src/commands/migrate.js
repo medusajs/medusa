@@ -1,37 +1,64 @@
-import { createConnection } from "typeorm"
-import { getConfigFile } from "medusa-core-utils"
-
+import { asValue, createContainer } from "awilix"
+import featureFlagLoader from "../loaders/feature-flags"
 import Logger from "../loaders/logger"
+import databaseLoader from "../loaders/database"
+import configModuleLoader from "../loaders/config"
+import getMigrations, {
+  getModuleSharedResources,
+  revertIsolatedModulesMigration,
+  runIsolatedModulesMigration,
+} from "./utils/get-migrations"
 
-import getMigrations from "./utils/get-migrations"
+const getDataSource = async (directory) => {
+  const configModule = configModuleLoader(directory)
+  const featureFlagRouter = featureFlagLoader(configModule)
+  const { coreMigrations } = getMigrations(directory, featureFlagRouter)
+  const { migrations: moduleMigrations } = getModuleSharedResources(
+    configModule,
+    featureFlagRouter
+  )
 
-const t = async function({ directory }) {
-  const args = process.argv
-  args.shift()
-  args.shift()
-  args.shift()
+  const container = createContainer()
+  container.register("db_entities", asValue([]))
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
-  const migrationDirs = getMigrations(directory)
-
-  const connection = await createConnection({
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    extra: configModule.projectConfig.database_extra || {},
-    migrations: migrationDirs,
-    logging: true,
+  return await databaseLoader({
+    container,
+    configModule,
+    customOptions: {
+      migrations: coreMigrations.concat(moduleMigrations),
+      logging: "all",
+    },
   })
+}
+
+const main = async function ({ directory }) {
+  const args = process.argv
+
+  args.shift()
+  args.shift()
+  args.shift()
+
+  const configModule = configModuleLoader(directory)
+  const dataSource = await getDataSource(directory)
 
   if (args[0] === "run") {
-    await connection.runMigrations()
-    await connection.close()
+    await dataSource.runMigrations()
+    await dataSource.destroy()
+    await runIsolatedModulesMigration(configModule)
     Logger.info("Migrations completed.")
     process.exit()
+  } else if (args[0] === "revert") {
+    await dataSource.undoLastMigration({ transaction: "all" })
+    await dataSource.destroy()
+    await revertIsolatedModulesMigration(configModule)
+    Logger.info("Migrations reverted.")
+    process.exit()
   } else if (args[0] === "show") {
-    const unapplied = await connection.showMigrations()
-    await connection.close()
+    const unapplied = await dataSource.showMigrations()
+    Logger.info(unapplied)
+    await dataSource.destroy()
     process.exit(unapplied ? 1 : 0)
   }
 }
 
-export default t
+export default main

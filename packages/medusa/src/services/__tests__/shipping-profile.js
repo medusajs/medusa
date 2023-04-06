@@ -1,12 +1,5 @@
-import { In } from "typeorm"
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ShippingProfileService from "../shipping-profile"
-//import { ShippingProfileModelMock } from "../../models/__mocks__/shipping-profile"
-//import { ProductServiceMock, products } from "../__mocks__/product"
-//import {
-//  ShippingOptionServiceMock,
-//  shippingOptions,
-//} from "../__mocks__/shipping-option"
 
 describe("ShippingProfileService", () => {
   describe("retrieve", () => {
@@ -36,21 +29,21 @@ describe("ShippingProfileService", () => {
 
   describe("update", () => {
     const profRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({ id: q.where.id })
       },
     })
 
     const productService = {
-      update: jest.fn(),
-      withTransaction: function() {
+      updateShippingProfile: jest.fn(),
+      withTransaction: function () {
         return this
       },
     }
 
     const shippingOptionService = {
-      update: jest.fn(),
-      withTransaction: function() {
+      updateShippingProfile: jest.fn(),
+      withTransaction: function () {
         return this
       },
     }
@@ -82,10 +75,11 @@ describe("ShippingProfileService", () => {
         products: [IdMap.getId("product1")],
       })
 
-      expect(productService.update).toBeCalledTimes(1)
-      expect(productService.update).toBeCalledWith(IdMap.getId("product1"), {
-        profile_id: id,
-      })
+      expect(productService.updateShippingProfile).toBeCalledTimes(1)
+      expect(productService.updateShippingProfile).toBeCalledWith(
+        [IdMap.getId("product1")],
+        id
+      )
     })
 
     it("calls updateOne with shipping options", async () => {
@@ -95,17 +89,17 @@ describe("ShippingProfileService", () => {
         shipping_options: [IdMap.getId("validId")],
       })
 
-      expect(shippingOptionService.update).toBeCalledTimes(1)
-      expect(shippingOptionService.update).toBeCalledWith(
-        IdMap.getId("validId"),
-        { profile_id: id }
+      expect(shippingOptionService.updateShippingProfile).toBeCalledTimes(1)
+      expect(shippingOptionService.updateShippingProfile).toBeCalledWith(
+        [IdMap.getId("validId")],
+        id
       )
     })
   })
 
   describe("delete", () => {
     const profRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({ id: q.where.id })
       },
     })
@@ -132,8 +126,8 @@ describe("ShippingProfileService", () => {
     const profRepo = MockRepository({ findOne: () => Promise.resolve({}) })
 
     const productService = {
-      update: jest.fn(),
-      withTransaction: function() {
+      updateShippingProfile: jest.fn(),
+      withTransaction: function () {
         return this
       },
     }
@@ -149,21 +143,21 @@ describe("ShippingProfileService", () => {
     })
 
     it("add product to profile successfully", async () => {
-      await profileService.addProduct(
-        IdMap.getId("validId"),
-        IdMap.getId("product2")
-      )
+      await profileService.addProduct(IdMap.getId("validId"), [
+        IdMap.getId("product2"),
+      ])
 
-      expect(productService.update).toBeCalledTimes(1)
-      expect(productService.update).toBeCalledWith(IdMap.getId("product2"), {
-        profile_id: IdMap.getId("validId"),
-      })
+      expect(productService.updateShippingProfile).toBeCalledTimes(1)
+      expect(productService.updateShippingProfile).toBeCalledWith(
+        [IdMap.getId("product2")],
+        IdMap.getId("validId")
+      )
     })
   })
 
   describe("fetchCartOptions", () => {
     const profRepo = MockRepository({
-      find: q => {
+      find: (q) => {
         switch (q.where.id) {
           default:
             return Promise.resolve([
@@ -195,13 +189,16 @@ describe("ShippingProfileService", () => {
           },
         ])
       }),
-      validateCartOption: jest.fn().mockImplementation(s => s),
-      withTransaction: function() {
+      validateCartOption: jest.fn().mockImplementation(async (s) => s),
+      withTransaction: function () {
         return this
       },
     }
 
     const customShippingOptionService = {
+      withTransaction: function () {
+        return this
+      },
       list: jest.fn().mockImplementation(({ cart_id }, config) => {
         if (cart_id === "cso-cart") {
           return Promise.resolve([
@@ -304,8 +301,8 @@ describe("ShippingProfileService", () => {
     const profRepo = MockRepository({ findOne: () => Promise.resolve({}) })
 
     const shippingOptionService = {
-      update: jest.fn(),
-      withTransaction: function() {
+      updateShippingProfile: jest.fn(),
+      withTransaction: function () {
         return this
       },
     }
@@ -321,15 +318,14 @@ describe("ShippingProfileService", () => {
     })
 
     it("add shipping option to profile successfully", async () => {
-      await profileService.addShippingOption(
-        IdMap.getId("validId"),
-        IdMap.getId("freeShipping")
-      )
-
-      expect(shippingOptionService.update).toBeCalledTimes(1)
-      expect(shippingOptionService.update).toBeCalledWith(
+      await profileService.addShippingOption(IdMap.getId("validId"), [
         IdMap.getId("freeShipping"),
-        { profile_id: IdMap.getId("validId") }
+      ])
+
+      expect(shippingOptionService.updateShippingProfile).toBeCalledTimes(1)
+      expect(shippingOptionService.updateShippingProfile).toBeCalledWith(
+        [IdMap.getId("freeShipping")],
+        IdMap.getId("validId")
       )
     })
   })

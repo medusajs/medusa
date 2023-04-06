@@ -3,9 +3,16 @@ import CustomerService from "../customer"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
+}
+
+const customerGroupService = {
+  withTransaction: function () {
+    return this
+  },
+  list: jest.fn().mockImplementation(() => Promise.resolve()),
 }
 
 describe("CustomerService", () => {
@@ -57,6 +64,32 @@ describe("CustomerService", () => {
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
     })
+
+    it("successfully retrieves a guest customer by email", async () => {
+      const result = await customerService.retrieveUnregisteredByEmail(
+        "tony@stark.com"
+      )
+
+      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(customerRepository.findOne).toHaveBeenCalledWith({
+        where: { email: "tony@stark.com", has_account: false },
+      })
+
+      expect(result.id).toEqual(IdMap.getId("ironman"))
+    })
+
+    it("successfully retrieves a registered customer by email", async () => {
+      const result = await customerService.retrieveRegisteredByEmail(
+        "tony@stark.com"
+      )
+
+      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(customerRepository.findOne).toHaveBeenCalledWith({
+        where: { email: "tony@stark.com", has_account: true },
+      })
+
+      expect(result.id).toEqual(IdMap.getId("ironman"))
+    })
   })
 
   describe("retrieveByPhone", () => {
@@ -85,91 +118,131 @@ describe("CustomerService", () => {
   })
 
   describe("create", () => {
-    const customerRepository = MockRepository({
-      findOne: query => {
+    const customerRepository = {
+      ...MockRepository({
+        findOne: (query) => {
+          if (query.where.email === "tony@stark.com") {
+            return Promise.resolve({
+              id: IdMap.getId("exists"),
+              has_account: true,
+              password_hash: "test",
+            })
+          }
+          return undefined
+        },
+      }),
+      listAndCount: jest.fn().mockImplementation((query, q) => {
         if (query.where.email === "tony@stark.com") {
-          return Promise.resolve({
-            id: IdMap.getId("exists"),
-            password_hash: "test",
-          })
+          return Promise.resolve([
+            [
+              {
+                id: IdMap.getId("exists"),
+                has_account: true,
+                password_hash: "test",
+              },
+            ],
+            0,
+          ])
         }
-        return Promise.resolve({ id: IdMap.getId("ironman") })
-      },
-    })
+        return Promise.resolve([[], 0])
+      }),
+    }
 
+    const configModule = {
+      projectConfig: {
+        jwt_secret: "test",
+      },
+    }
     const customerService = new CustomerService({
       manager: MockManager,
       customerRepository,
       eventBusService,
+      configModule,
     })
 
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("successfully create a customer", async () => {
+    it("successfully creates a customer with password", async () => {
       await customerService.create({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+        password: "test",
       })
 
       expect(customerRepository.create).toBeCalledTimes(1)
       expect(customerRepository.create).toBeCalledWith({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
-      })
-    })
-
-    it("successfully updates an existing customer on create", async () => {
-      await customerService.create({
-        email: "tony@stark.com",
-        password: "stark123",
-        has_account: false,
-      })
-
-      expect(customerRepository.save).toBeCalledTimes(1)
-      expect(customerRepository.save).toBeCalledWith({
-        id: IdMap.getId("exists"),
-        email: "tony@stark.com",
-        password_hash: expect.anything(),
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
         has_account: true,
+        password_hash: expect.anything(),
       })
     })
 
-    it("fails if email is in incorrect format", async () => {
-      await expect(
-        customerService.create({
-          email: "olivermedusa.com",
-        })
-      ).rejects.toThrow("The email is not valid")
+    it("calls listAndCount with email", async () => {
+      await customerService.create({
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+        password: "test",
+      })
+
+      expect(customerRepository.listAndCount).toHaveBeenCalledWith(
+        {
+          relations: {},
+          skip: 0,
+          take: 2,
+          where: {
+            email: "john@doe.com",
+          },
+        },
+        undefined
+      )
     })
 
-    it("fails if billing address is in incorrect format", async () => {
-      await expect(
-        customerService.create({
-          email: "oliver@medusa.com",
-          first_name: "Oliver",
-          last_name: "Juhl",
-          billing_address: {
-            first_name: 1234,
-          },
+    it("successfully creates a one time customer", async () => {
+      await customerService.create({
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+      })
+
+      expect(customerRepository.create).toBeCalledTimes(1)
+      expect(customerRepository.create).toBeCalledWith({
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+      })
+    })
+
+    it("Fails to create a customer with an existing account", async () => {
+      expect.assertions(1)
+      await customerService
+        .create({
+          email: "tony@stark.com",
+          password: "stark123",
         })
-      ).rejects.toThrow("The address is not valid")
+        .catch((err) => {
+          expect(err.message).toEqual(
+            "A customer with the given email already has an account. Log in instead"
+          )
+        })
     })
   })
 
   describe("update", () => {
     const customerRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
 
     const addressRepository = MockRepository({
-      create: data => data,
-      save: data => Promise.resolve(data),
+      create: (data) => data,
+      save: (data) => Promise.resolve(data),
     })
 
     const customerService = new CustomerService({
@@ -246,30 +319,72 @@ describe("CustomerService", () => {
     })
   })
 
-  describe("updateAddress", () => {
-    const addressRepository = MockRepository({
-      findOne: query => {
-        return Promise.resolve({
-          id: IdMap.getId("hollywood-boulevard"),
-          address_1: "Hollywood Boulevard 2",
-        })
+  describe("update customer groups", () => {
+    const customerRepository = MockRepository({
+      findOne: (query) => {
+        return Promise.resolve({ id: IdMap.getId("ironman") })
       },
+    })
+
+    const addressRepository = MockRepository({
+      create: (data) => data,
+      save: (data) => Promise.resolve(data),
+    })
+
+    const customerGroupRepository = MockRepository({
+      findByIds: jest.fn().mockImplementation(() => Promise.resolve()),
     })
 
     const customerService = new CustomerService({
       manager: MockManager,
       addressRepository,
+      customerRepository,
+      customerGroupRepository,
+      customerGroupService,
+      eventBusService,
     })
 
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("successfully updates address", async () => {
-      await customerService.updateAddress(
-        IdMap.getId("ironman"),
-        IdMap.getId("hollywood-boulevard"),
-        {
+    describe("updateAddress", () => {
+      const addressRepository = MockRepository({
+        findOne: (query) => {
+          return Promise.resolve({
+            id: IdMap.getId("hollywood-boulevard"),
+            address_1: "Hollywood Boulevard 2",
+          })
+        },
+      })
+
+      const customerService = new CustomerService({
+        manager: MockManager,
+        addressRepository,
+      })
+
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
+
+      it("successfully updates address", async () => {
+        await customerService.updateAddress(
+          IdMap.getId("ironman"),
+          IdMap.getId("hollywood-boulevard"),
+          {
+            first_name: "Tony",
+            last_name: "Stark",
+            address_1: "Hollywood Boulevard 1",
+            city: "Los Angeles",
+            country_code: "us",
+            postal_code: "90046",
+            phone: "+1 (222) 333 4444",
+          }
+        )
+
+        expect(addressRepository.save).toBeCalledTimes(1)
+        expect(addressRepository.save).toBeCalledWith({
+          id: IdMap.getId("hollywood-boulevard"),
           first_name: "Tony",
           last_name: "Stark",
           address_1: "Hollywood Boulevard 1",
@@ -277,94 +392,66 @@ describe("CustomerService", () => {
           country_code: "us",
           postal_code: "90046",
           phone: "+1 (222) 333 4444",
-        }
-      )
-
-      expect(addressRepository.save).toBeCalledTimes(1)
-      expect(addressRepository.save).toBeCalledWith({
-        id: IdMap.getId("hollywood-boulevard"),
-        first_name: "Tony",
-        last_name: "Stark",
-        address_1: "Hollywood Boulevard 1",
-        city: "Los Angeles",
-        country_code: "us",
-        postal_code: "90046",
-        phone: "+1 (222) 333 4444",
+        })
       })
     })
 
-    it("throws on invalid address", async () => {
-      await expect(
-        customerService.updateAddress(
-          IdMap.getId("ironman"),
-          IdMap.getId("hollywood-boulevard"),
-          {
-            first_name: "Tony",
-            last_name: "Stark",
-            country_code: "us",
-            unknown: "key",
-            address_1: "Hollywood",
-          }
-        )
-      ).rejects.toThrow("The address is not valid")
-    })
-  })
+    describe("removeAddress", () => {
+      const addressRepository = MockRepository({
+        findOne: (query) => {
+          return Promise.resolve({
+            id: IdMap.getId("hollywood-boulevard"),
+            address_1: "Hollywood Boulevard 2",
+          })
+        },
+      })
 
-  describe("removeAddress", () => {
-    const addressRepository = MockRepository({
-      findOne: query => {
-        return Promise.resolve({
+      const customerService = new CustomerService({
+        manager: MockManager,
+        addressRepository,
+      })
+
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
+
+      it("successfully deletes address", async () => {
+        await customerService.removeAddress(
+          IdMap.getId("ironman"),
+          IdMap.getId("hollywood-boulevard")
+        )
+
+        expect(addressRepository.softRemove).toBeCalledTimes(1)
+        expect(addressRepository.softRemove).toBeCalledWith({
           id: IdMap.getId("hollywood-boulevard"),
           address_1: "Hollywood Boulevard 2",
         })
-      },
-    })
-
-    const customerService = new CustomerService({
-      manager: MockManager,
-      addressRepository,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully deletes address", async () => {
-      await customerService.removeAddress(
-        IdMap.getId("ironman"),
-        IdMap.getId("hollywood-boulevard")
-      )
-
-      expect(addressRepository.softRemove).toBeCalledTimes(1)
-      expect(addressRepository.softRemove).toBeCalledWith({
-        id: IdMap.getId("hollywood-boulevard"),
-        address_1: "Hollywood Boulevard 2",
       })
     })
-  })
 
-  describe("delete", () => {
-    const customerRepository = MockRepository({
-      findOne: query => {
-        return Promise.resolve({ id: IdMap.getId("ironman") })
-      },
-    })
+    describe("delete", () => {
+      const customerRepository = MockRepository({
+        findOne: (query) => {
+          return Promise.resolve({ id: IdMap.getId("ironman") })
+        },
+      })
 
-    const customerService = new CustomerService({
-      manager: MockManager,
-      customerRepository,
-    })
+      const customerService = new CustomerService({
+        manager: MockManager,
+        customerRepository,
+      })
 
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
 
-    it("successfully deletes customer", async () => {
-      await customerService.delete(IdMap.getId("ironman"))
+      it("successfully deletes customer", async () => {
+        await customerService.delete(IdMap.getId("ironman"))
 
-      expect(customerRepository.softRemove).toBeCalledTimes(1)
-      expect(customerRepository.softRemove).toBeCalledWith({
-        id: IdMap.getId("ironman"),
+        expect(customerRepository.softRemove).toBeCalledTimes(1)
+        expect(customerRepository.softRemove).toBeCalledWith({
+          id: IdMap.getId("ironman"),
+        })
       })
     })
   })

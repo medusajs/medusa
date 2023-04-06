@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm"
+import { Column, Entity, PrimaryColumn } from "typeorm"
 
 @Entity()
 export class FulfillmentProvider {
@@ -10,15 +10,20 @@ export class FulfillmentProvider {
 }
 
 /**
- * @schema fulfillment_provider
+ * @schema FulfillmentProvider
  * title: "Fulfillment Provider"
  * description: "Represents a fulfillment provider plugin and holds its installation status."
- * x-resourceId: fulfillment_provider
+ * type: object
+ * required:
+ *   - id
+ *   - is_installed
  * properties:
  *   id:
- *     description: "The id of the fulfillment provider as given by the plugin."
+ *     description: The id of the fulfillment provider as given by the plugin.
  *     type: string
+ *     example: manual
  *   is_installed:
- *     description: "Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`."
+ *     description: Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.
  *     type: boolean
+ *     default: true
  */

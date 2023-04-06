@@ -1,0 +1,172 @@
+---
+description: "A cart is a virtual shopping basket that customers can use to pick products they want to purchase. Learn about the available features and guides."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Carts and Checkout
+
+A cart is a virtual shopping basket that customers can use to pick products they want to purchase. Checkout is the process of the customer placing an order. This overview introduces the available features related to carts and checkout.
+
+## Features
+
+### Cart Management
+
+Customers can manage their cart including adding, updating, and removing items from the cart.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/storefront/implement-cart',
+    label: 'Storefront: Implement Cart',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to implement cart functionality in a storefront.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/store/#tag/Cart',
+    label: 'Storefront APIs: Carts',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check available Store REST APIs for Carts.'
+    }
+  },
+]} />
+
+### Shipping and Payment
+
+Developers can integrate any third-party provider or custom logic to offer shipping and payment options for customers during checkout. They can integrate them using existing plugins or by creating their own.
+
+Admins can specify available shipping and payment processors during checkout for customers based on their [Region](../regions-and-currencies/overview.mdx).
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/backend/add-fulfillment-provider',
+    label: 'Backend: Create Fulfillment Provider',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a fulfillment provider in the backend.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/backend/add-payment-provider',
+    label: 'Backend: Create Payment Processor',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a payment processor in the backend.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/user-guide/regions/providers',
+    label: 'User Guide: Manage Providers',
+    customProps: {
+      icon: Icons['users-solid'],
+      description: 'Learn how to manage available providers using Medusa Admin.'
+    }
+  },
+]} />
+
+### Checkout Flow
+
+Developers can implement a seamless checkout flow that include steps related to shipping and payment, tax calculation, and more.
+
+Customers can place orders using the checkout flow.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/storefront/implement-checkout-flow',
+    label: 'Storefront: Implement Checkout',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to implement the checkout flow in a storefront.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/store/#tag/Cart',
+    label: 'Storefront APIs: Cart',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check available Store REST APIs for Carts related to checkout.'
+    }
+  },
+]} />
+
+---
+
+## Understand the Architecture
+
+Learn how cart-related entities are build, their relation to other modules, and more.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/shipping',
+    label: 'Architecture: Shipping',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Shipping architecture.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/payment',
+    label: 'Architecture: Payment',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the Payment architecture.'
+    }
+  },
+]} />
+
+---
+
+## Related Modules
+
+Discover Carts and Checkout’s relation to other modules in Medusa
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/products/overview',
+    label: 'Products',
+    customProps: {
+      icon: Icons['tag-solid'],
+      description: 'Customers can add products to cart and purchase them.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/taxes/overview',
+    label: 'Taxes',
+    customProps: {
+      icon: Icons['cash-solid'],
+      description: 'Taxes can be calculated for a cart either automatically or manually.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/discounts/overview',
+    label: 'Discounts',
+    customProps: {
+      icon: Icons['currency-dollar-solid'],
+      description: 'Discounts can be applied on a cart to reduce its total.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/gift-cards/overview',
+    label: 'Gift Cards',
+    customProps: {
+      icon: Icons['gift-solid'],
+      description: 'Purchased gift cards can be applied during checkout.'
+    }
+  },
+]} />

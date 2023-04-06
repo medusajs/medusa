@@ -1,6 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("POST /admin/products/:id", () => {
   describe("successfully updates a product", () => {
@@ -9,12 +10,17 @@ describe("POST /admin/products/:id", () => {
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/products/${IdMap.getId("product1")}`,
+        `/admin/products/${IdMap.getId("multipleVariants")}`,
         {
           payload: {
             title: "Product 1",
             description: "Updated test description",
             handle: "handle",
+            variants: [
+              { id: IdMap.getId("testVariant"), title: "Green" },
+              { title: "Blue" },
+              { title: "Yellow" },
+            ],
           },
           adminSession: {
             jwt: {
@@ -32,7 +38,7 @@ describe("POST /admin/products/:id", () => {
     it("calls update", () => {
       expect(ProductServiceMock.update).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.update).toHaveBeenCalledWith(
-        IdMap.getId("product1"),
+        IdMap.getId("multipleVariants"),
         expect.objectContaining({
           title: "Product 1",
           description: "Updated test description",
@@ -40,51 +46,34 @@ describe("POST /admin/products/:id", () => {
         })
       )
     })
+
+    it("successfully updates variants and create new ones", async () => {
+      expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
+      expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(2)
+    })
   })
 
   describe("handles failed update operation", () => {
-    it("throws if metadata is to be updated", async () => {
-      try {
-        await request("POST", `/admin/products/${IdMap.getId("product1")}`, {
+    it("throws on wrong variant in update", async () => {
+      const subject = await request(
+        "POST",
+        `/admin/products/${IdMap.getId("variantsWithPrices")}`,
+        {
           payload: {
-            _id: IdMap.getId("product1"),
             title: "Product 1",
-            metadata: "Test Description",
+            variants: [{ id: "test_321", title: "Green" }],
           },
           adminSession: {
             jwt: {
               userId: IdMap.getId("admin_user"),
             },
           },
-        })
-      } catch (error) {
-        expect(error.status).toEqual(400)
-        expect(error.message).toEqual(
-          "Use setMetadata to update metadata fields"
-        )
-      }
-    })
-
-    it("throws if variants is to be updated", async () => {
-      try {
-        await request("POST", `/admin/products/${IdMap.getId("product1")}`, {
-          payload: {
-            _id: IdMap.getId("product1"),
-            title: "Product 1",
-            metadata: "Test Description",
-          },
-          adminSession: {
-            jwt: {
-              userId: IdMap.getId("admin_user"),
-            },
-          },
-        })
-      } catch (error) {
-        expect(error.status).toEqual(400)
-        expect(error.message).toEqual(
-          "Use addVariant, reorderVariants, removeVariant to update Product Variants"
-        )
-      }
+        }
+      )
+      expect(subject.status).toEqual(404)
+      expect(subject.error.text).toEqual(
+        `{"type":"not_found","message":"Variants with id: test_321 are not associated with this product"}`
+      )
     })
   })
 })

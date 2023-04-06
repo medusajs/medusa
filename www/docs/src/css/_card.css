@@ -1,0 +1,111 @@
+.card {
+  background-color: var(--ifm-card-bg);
+  border: 1px solid var(--ifm-card-bg-hover) !important;
+  border-radius: var(--ifm-global-radius);
+}
+
+img.card-icon {
+  width: var(--ifm-card-icon-size);
+  height: var(--ifm-card-icon-size);
+}
+
+.cards-grid {
+  display: grid;
+  column-gap: var(--ifm-base-spacing);
+  grid-auto-rows: 1fr;
+}
+
+.cards-grid.grid-6 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-highlighted {
+  --bordered-inside-padding: 6px;
+
+  position: relative;
+  margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
+}
+
+.card-highlighted {
+  background-color: var(--ifm-card-bg);
+}
+
+/* html[data-theme="dark"] .card-highlighted::before,
+html[data-theme="dark"] .card-highlighted::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+/* html[data-theme="dark"] .card-highlighted::before {
+  z-index: -2;
+  background-color: var(--ifm-card-bg);
+  background-image: url('/img/stardust.png');
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+html[data-theme="dark"] .card-highlighted::after {
+  z-index: -1;
+  background-image: url('/img/light-beam.png');
+} */
+
+.card-highlighted:hover {
+  background-color: var(--ifm-card-bg-hover);
+}
+
+.card + p {
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+.card-wrapper:hover > [class*=cardSoon] [class*=cardTitle],
+.card-wrapper:hover > [class*=cardSoon] [class*=cardDescription] {
+  color: var(--medusa-text-disabled);
+}
+
+@media screen and (min-width: 992px) {
+  .cards-grid.grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 991px) and (min-width: 768px) {
+  .cards-grid.grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .card-highlighted [class*=cardDescription] {
+    width: 50%;
+  }
+
+  .card-highlighted::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+  }
+
+  .card-highlighted::before {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: var(--ifm-card-highlighted-bg-image);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cards-grid.grid-4 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .cards-grid.grid-6 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

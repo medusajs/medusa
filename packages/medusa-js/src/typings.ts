@@ -47,3 +47,5 @@ export type InviteUserRolesEnum = `${AdminPostInvitesReq["role"]}`
 export type AdminPostInvitesPayload = Omit<AdminPostInvitesReq, "role"> & {
   role: InviteUserRolesEnum
 }
+
+export type AdminCreateUploadPayload = File | File[]

@@ -1,0 +1,108 @@
+.theme-doc-toc-desktop {
+  padding-top: calc(var(--ifm-base-margin-vertical) * 1.5);
+}
+
+.theme-doc-toc-desktop .table-of-contents {
+  border-left: none !important;
+  padding: 0;
+  font-size: 12px;
+  position: relative;
+  overflow-y: hidden;
+}
+
+html:not([data-theme="dark"]) .theme-doc-toc-desktop .table-of-contents::before {
+  background-image: url('/img/side-menu-light.svg');
+}
+
+[data-theme="dark"] .theme-doc-toc-desktop .table-of-contents::before {
+  background-image: url('/img/side-menu.svg');
+}
+
+.theme-doc-toc-desktop .table-of-contents::before {
+  background-repeat: no-repeat;
+  background-size: 14px 10px;
+  background-position-y: center;
+  padding-left: 22px;
+  content: 'On this page';
+  padding-bottom: 0;
+  font-size: var(--medusa-label-small-plus-size);
+  line-height: var(--medusa-label-small-plus-line-height);
+  font-weight: var(--medusa-label-small-plus-font-weight);
+}
+
+.theme-doc-toc-desktop .table-of-contents .table-of-contents__link {
+  padding-left: var(--ifm-toc-link-padding-left);
+}
+
+.theme-doc-toc-desktop .table-of-contents > li:first-child {
+  margin-top: calc(var(--ifm-base-margin-vertical) / 2);
+}
+
+.theme-doc-toc-desktop .table-of-contents::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 40px;
+  height: 100%;
+  width: 1px;
+  background-color: var(--ifm-toc-divider-color);
+}
+
+.theme-doc-toc-desktop .table-of-contents li a + ul {
+  margin-top: 4px;
+}
+
+.theme-doc-toc-desktop .table-of-contents__link {
+  position: relative;
+  font-size: var(--medusa-label-x-small-plus-size);
+  line-height: var(--medusa-label-x-small-plus-line-height);
+  font-weight: var(--medusa-label-x-small-plus-font-weight);
+}
+
+.theme-doc-toc-desktop .table-of-contents__link:hover, 
+.theme-doc-toc-desktop .table-of-contents__link:hover code, 
+.theme-doc-toc-desktop .table-of-contents__link--active, 
+.theme-doc-toc-desktop .table-of-contents__link--active code {
+  color: var(--ifm-toc-link-active);
+}
+
+.theme-doc-toc-desktop .table-of-contents__link--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background-color: var(--ifm-toc-link-active);
+  z-index: 1;
+}
+
+.theme-doc-toc-desktop .table-of-contents li {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.theme-doc-toc-desktop .table-of-contents > li:not(:first-child),
+.theme-doc-toc-desktop .table-of-contents ul li {
+  margin-top: 0px;
+}
+
+.theme-doc-toc-desktop .table-of-contents li:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+.theme-doc-toc-desktop .table-of-contents li:last-child {
+  margin-bottom: 0px;
+}
+
+.theme-doc-toc-desktop .table-of-contents, .table-of-contents ul {
+  padding-left: 0;
+}
+
+.table-of-contents ul .table-of-contents__link {
+  padding-left: calc(var(--ifm-toc-padding-horizontal) + var(--ifm-toc-link-padding-left)) !important;
+}
+
+.col.toc-wrapper {
+  --ifm-col-width: var(--ifm-toc-width);
+}

@@ -1,7 +1,9 @@
-import { MedusaError } from "medusa-core-utils"
-
 export default async (req, res) => {
   const { klarna_order_id } = req.query
+
+  function isPaymentCollection(id) {
+    return id && id.startsWith("paycol")
+  }
 
   try {
     const orderService = req.scope.resolve("orderService")
@@ -11,10 +13,18 @@ export default async (req, res) => {
       klarna_order_id
     )
 
-    const cartId = klarnaOrder.merchant_data
-    const order = await orderService.retrieveByCartId(cartId)
+    const resourceId = klarnaOrder.merchant_data
 
-    await klarnaProviderService.acknowledgeOrder(klarnaOrder.order_id, order.id)
+    if (isPaymentCollection(resourceId)) {
+      await klarnaProviderService.acknowledgeOrder(klarnaOrder.order_id)
+    } else {
+      const order = await orderService.retrieveByCartId(resourceId)
+
+      await klarnaProviderService.acknowledgeOrder(
+        klarnaOrder.order_id,
+        order.id
+      )
+    }
 
     res.sendStatus(200)
   } catch (error) {

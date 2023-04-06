@@ -1,7 +1,95 @@
 # Change Log
 
+## 1.3.7
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+
+## 1.3.7-rc.0
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+
+## 1.3.6
+
+### Patch Changes
+
+- [#3217](https://github.com/medusajs/medusa/pull/3217) [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Fix npm packages files included
+
+- Updated dependencies [[`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0)]:
+  - medusa-core-utils@1.1.39
+
+## 1.3.5
+
+### Patch Changes
+
+- [#3185](https://github.com/medusajs/medusa/pull/3185) [`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Patches all dependencies + minor bumps `winston` to include a [fix for a significant memory leak](https://github.com/winstonjs/winston/pull/2057)
+
+- Updated dependencies [[`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4)]:
+  - medusa-core-utils@1.1.38
+
+## 1.3.4
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+## 1.3.3
+
+### Patch Changes
+
+- [#1962](https://github.com/medusajs/medusa/pull/1962) [`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert FulfillmentService to TypeScript
+
+## 1.3.2
+
+### Patch Changes
+
+- [#1914](https://github.com/medusajs/medusa/pull/1914) [`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68) Thanks [@fPolic](https://github.com/fPolic)! - Version bump due to missing changesets in merged PRs
+
+* [#1874](https://github.com/medusajs/medusa/pull/1874) [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b) Thanks [@adrien2p](https://github.com/adrien2p)! - Move search indexing into a separate subscriber to defer the work load
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.3.1](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.3.0...medusa-interfaces@1.3.1) (2022-07-05)
+
+### Bug Fixes
+
+- **medusa:** Remove deps `mongoose` + `mongodb` ([#1218](https://github.com/medusajs/medusa/issues/1218)) ([c76e23e](https://github.com/medusajs/medusa/commit/c76e23e84dd8cb08c3c709f9f95c4c17b9685439))
+
+# [1.3.0](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.2.1...medusa-interfaces@1.3.0) (2022-05-01)
+
+### Bug Fixes
+
+- ensures no duplicate tax lines when completing cart ([#1262](https://github.com/medusajs/medusa/issues/1262)) ([607a382](https://github.com/medusajs/medusa/commit/607a382b4ee190c25eafa345674b55b74a7d6349))
+
+## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.34...medusa-interfaces@1.2.1) (2022-02-28)
+
+### Bug Fixes
+
+- atomic phase error handler ([#1104](https://github.com/medusajs/medusa/issues/1104)) ([f983cfa](https://github.com/medusajs/medusa/commit/f983cfada675b9c2ad89f1dea37f862673383f54))
+
+# [1.2.0](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.34...medusa-interfaces@1.2.0) (2022-02-25)
+
+### Bug Fixes
+
+- atomic phase error handler ([#1104](https://github.com/medusajs/medusa/issues/1104)) ([62c263c](https://github.com/medusajs/medusa/commit/62c263c36080541023fda5ae33a458c58cbaeb1e))
+
+## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.33...medusa-interfaces@1.1.34) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
+## [1.1.33](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.32...medusa-interfaces@1.1.33) (2022-02-06)
+
+**Note:** Version bump only for package medusa-interfaces
 
 ## [1.1.32](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.31...medusa-interfaces@1.1.32) (2021-12-08)
 

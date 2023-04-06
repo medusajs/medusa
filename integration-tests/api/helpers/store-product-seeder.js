@@ -8,13 +8,48 @@ const {
   ShippingProfile,
   ProductVariant,
   Image,
+  Cart,
+  PriceList,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
+
+  const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
+    new Date()
+  )
+  const tomorrow = ((today) => new Date(today.setDate(today.getDate() + 1)))(
+    new Date()
+  )
+  const tenDaysAgo = ((today) => new Date(today.setDate(today.getDate() - 10)))(
+    new Date()
+  )
+
+  const priceList = await manager.create(PriceList, {
+    id: "pl",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  await manager.save(priceList)
+
+  const priceList1 = await manager.create(PriceList, {
+    id: "pl_expired",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: yesterday,
+  })
+
+  await manager.save(priceList1)
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   const coll = manager.create(ProductCollection, {
@@ -83,12 +118,20 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
+  await manager.insert(Cart, {
+    id: "test-cart",
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
   const p = manager.create(Product, {
     id: "test-product",
     handle: "test-product",
     title: "Test product",
     profile_id: defaultProfile.id,
     description: "test-product-description",
+    status: "published",
     collection_id: "test-collection",
     type: { id: "test-type", value: "test-type" },
     tags: [
@@ -117,7 +160,21 @@ module.exports = async (connection, data = {}) => {
     upc: "test-upc",
     barcode: "test-barcode",
     product_id: "test-product",
-    prices: [{ id: "test-price", currency_code: "usd", amount: 100 }],
+    prices: [
+      { id: "test-price", currency_code: "usd", type: "default", amount: 100 },
+      {
+        id: "test-price-discount",
+        currency_code: "usd",
+        amount: 80,
+        price_list_id: "pl",
+      },
+      {
+        id: "test-price-discount-expired",
+        currency_code: "usd",
+        amount: 70,
+        price_list_id: "pl_expired",
+      },
+    ],
     options: [
       {
         id: "test-variant-option",
@@ -139,7 +196,21 @@ module.exports = async (connection, data = {}) => {
     upc: "test-upc1",
     barcode: "test-barcode 1",
     product_id: "test-product",
-    prices: [{ id: "test-price1", currency_code: "usd", amount: 100 }],
+    prices: [
+      { id: "test-price1", currency_code: "usd", type: "default", amount: 100 },
+      {
+        id: "test-price1-discount",
+        currency_code: "usd",
+        amount: 80,
+        price_list_id: "pl",
+      },
+      {
+        id: "test-price1-discount-expired",
+        currency_code: "usd",
+        amount: 70,
+        price_list_id: "pl_expired",
+      },
+    ],
     options: [
       {
         id: "test-variant-option-1",
@@ -160,7 +231,21 @@ module.exports = async (connection, data = {}) => {
     ean: "test-ean2",
     upc: "test-upc2",
     product_id: "test-product",
-    prices: [{ id: "test-price2", currency_code: "usd", amount: 100 }],
+    prices: [
+      { id: "test-price2", currency_code: "usd", type: "default", amount: 100 },
+      {
+        id: "test-price2-discount",
+        currency_code: "usd",
+        amount: 80,
+        price_list_id: "pl",
+      },
+      {
+        id: "test-price2-discount-expired",
+        currency_code: "usd",
+        amount: 70,
+        price_list_id: "pl_expired",
+      },
+    ],
     options: [
       {
         id: "test-variant-option-2",
@@ -176,6 +261,7 @@ module.exports = async (connection, data = {}) => {
     id: "test-product1",
     handle: "test-product1",
     title: "Test product1",
+    status: "published",
     profile_id: defaultProfile.id,
     description: "test-product-description1",
     collection_id: "test-collection",

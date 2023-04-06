@@ -28,6 +28,24 @@ export const carts = {
     total: 1000,
     region_id: IdMap.getId("testRegion"),
   },
+  testCartTaxInclusive: {
+    id: IdMap.getId("test-cart"),
+    items: [],
+    payment: {
+      data: "some-data",
+    },
+    payment_session: {
+      status: "authorized",
+    },
+    total: 1000,
+    region_id: IdMap.getId("testRegion"),
+    shipping_options: [
+      {
+        id: IdMap.getId("tax-inclusive-option"),
+        includes_tax: true,
+      },
+    ],
+  },
   testSwapCart: {
     id: IdMap.getId("test-swap"),
     items: [],
@@ -207,10 +225,10 @@ export const carts = {
 }
 
 export const CartServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-  updatePaymentSession: jest.fn().mockImplementation(data => {
+  updatePaymentSession: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
   authorizePayment: jest.fn().mockImplementation((id, data) => {
@@ -223,13 +241,13 @@ export const CartServiceMock = {
     }
     return Promise.resolve(carts.testCart)
   }),
-  refreshPaymentSession: jest.fn().mockImplementation(data => {
+  refreshPaymentSession: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     if (data.region_id === IdMap.getId("testRegion")) {
       return Promise.resolve(carts.regionCart)
     }
@@ -238,7 +256,7 @@ export const CartServiceMock = {
     }
     return Promise.resolve(carts.regionCart)
   }),
-  retrieve: jest.fn().mockImplementation(cartId => {
+  retrieveWithTotals: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
     }
@@ -263,9 +281,45 @@ export const CartServiceMock = {
     if (cartId === IdMap.getId("test-cart2")) {
       return Promise.resolve(carts.testCart)
     }
+    if (cartId === IdMap.getId("tax-inclusive-option")) {
+      return Promise.resolve(carts.testCartTaxInclusive)
+    }
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, "cart not found")
+  }),
+  retrieve: jest.fn().mockImplementation((cartId) => {
+    if (cartId === IdMap.getId("fr-cart")) {
+      return Promise.resolve(carts.frCart)
+    }
+    if (cartId === IdMap.getId("swap-cart")) {
+      return Promise.resolve(carts.testSwapCart)
+    }
+    if (cartId === IdMap.getId("test-cart")) {
+      return Promise.resolve(carts.testCart)
+    }
+    if (cartId === IdMap.getId("cartLineItemMetadata")) {
+      return Promise.resolve(carts.cartWithMetadataLineItem)
+    }
+    if (cartId === IdMap.getId("regionCart")) {
+      return Promise.resolve(carts.regionCart)
+    }
+    if (cartId === IdMap.getId("emptyCart")) {
+      return Promise.resolve(carts.emptyCart)
+    }
+    if (cartId === IdMap.getId("cartWithPaySessions")) {
+      return Promise.resolve(carts.cartWithPaySessions)
+    }
+    if (cartId === IdMap.getId("test-cart2")) {
+      return Promise.resolve(carts.testCart)
+    }
+    if (cartId === IdMap.getId("tax-inclusive-option")) {
+      return Promise.resolve(carts.testCartTaxInclusive)
+    }
     throw new MedusaError(MedusaError.Types.NOT_FOUND, "cart not found")
   }),
   addLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
+    return Promise.resolve()
+  }),
+  addOrUpdateLineItems: jest.fn().mockImplementation((cartId, lineItem) => {
     return Promise.resolve()
   }),
   setPaymentMethod: jest.fn().mockImplementation((cartId, method) => {
@@ -326,20 +380,20 @@ export const CartServiceMock = {
   applyDiscount: jest.fn().mockImplementation((cartId, code) => {
     return Promise.resolve()
   }),
-  setPaymentSession: jest.fn().mockImplementation(cartId => {
+  setPaymentSession: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
-  setPaymentSessions: jest.fn().mockImplementation(cartId => {
+  setPaymentSessions: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
-  setShippingOptions: jest.fn().mockImplementation(cartId => {
+  setShippingOptions: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
-  decorate: jest.fn().mockImplementation(cart => {
+  decorate: jest.fn().mockImplementation((cart) => {
     cart.decorated = true
     return cart
   }),
-  addShippingMethod: jest.fn().mockImplementation(cartId => {
+  addShippingMethod: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
   retrieveShippingOption: jest.fn().mockImplementation((cartId, optionId) => {
@@ -377,6 +431,9 @@ export const CartServiceMock = {
         },
       }
     }
+  }),
+  refreshAdjustments_: jest.fn().mockImplementation((cart) => {
+    return Promise.resolve({})
   }),
 }
 

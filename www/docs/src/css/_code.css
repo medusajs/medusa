@@ -1,0 +1,203 @@
+code {
+  border: 1px solid var(--ifm-code-border-color);
+  color: var(--ifm-code-color);
+  line-height: var(--medusa-body-regular-line-height);
+}
+
+[data-tooltip-content]:hover code {
+  background-color: var(--ifm-code-background-hover);
+}
+
+[data-tooltip-content] > span:active > code,
+[data-tooltip-content] > span:focus > code {
+  background-color: var(--ifm-code-background-pressed);
+}
+
+.inline-code-copy {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  display: inline;
+  color: var(--ifm-code-color)
+}
+
+.prism-code {
+  background-color: none;
+  word-break: break-word;
+  outline: none !important;
+}
+
+.prism-code div,
+.prism-code div:focus,
+.prism-code div:active {
+  outline: none !important;
+}
+
+.code-tabs {
+  position: relative;
+}
+
+.code-header {
+  padding: 12px var(--ifm-base-spacing);
+  background-color: var(--medusa-code-tabs-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--ifm-code-border-radius) var(--ifm-code-border-radius) 0px 0px;
+}
+
+.code-tabs .tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.code-tabs .tabs__item {
+  color: var(--ifm-code-tabs-color);
+  font-size: var(--medusa-label-small-plus-size);
+  font-weight: var(--medusa-label-small-plus-font-weight);
+  line-height: var(--medusa-label-small-plus-line-height);
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  border-radius: 99999px;
+}
+
+.code-tabs .tabs__item:not(:first-child) {
+  margin-left: 4px;
+}
+
+.code-title {
+  font-size: var(--medusa-label-small-plus-size);
+  font-weight: var(--medusa-label-small-plus-font-weight);
+  line-height: var(--medusa-label-small-plus-line-height);
+  color: var(--ifm-code-title-color);
+}
+
+.code-tabs-ul-wrapper {
+  position: relative;
+  overflow: auto;
+}
+
+.code-tabs-ul-wrapper .tabs__item {
+  z-index: 2;
+}
+
+.code-tabs .tabs__item--active {
+  color: var(--ifm-code-tabs-active-color);
+}
+
+.theme-code-block:not(.no-header-block),
+.code-tabs .theme-code-block {
+  border-radius: 0 0 var(--ifm-code-border-radius) var(--ifm-code-border-radius) !important;
+}
+
+.theme-code-block.no-header-block {
+  border-radius: var(--ifm-code-border-radius);
+}
+
+.code-action-copy {
+  display: flex;
+}
+
+.code-action {
+  --ifm-icon-color: var(--medusa-code-block-action);
+
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: var(--ifm-global-radius);
+}
+
+.code-action:hover,
+.tabs__item:hover {
+  background-color: var(--ifm-code-action-hover-bg) !important;
+}
+
+.code-action:not(:first-child) {
+  margin-left: calc(var(--ifm-base-spacing) / 2);
+}
+
+a.code-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.copy-action {
+  cursor: pointer;
+}
+
+.code-header,
+.theme-code-block {
+  border: 1px solid var(--ifm-code-block-border-color);
+}
+
+.code-header {
+  border-bottom: none;
+}
+
+.theme-code-block.no-header-block code:not(.thin-code),
+.theme-code-block:not(.no-header-block) code {
+  padding: var(--ifm-pre-padding);
+}
+
+.theme-code-block.no-header-block .thin-code {
+  padding: calc(var(--ifm-pre-padding) / 2);
+  padding-left: var(--ifm-pre-padding);
+}
+
+[class*=codeLineNumber] {
+  color: var(--ifm-code-line-number-color);
+  padding-left: 0 !important;
+}
+
+@media screen and (min-width: 568px) {
+  .prism-code {
+    max-width: 90%;
+  }
+
+  .prism-code:after {
+    border-radius: var(--ifm-global-radius);
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(10% + 24px);
+    height: 100%;
+    background: linear-gradient(90deg, var(--ifm-pre-background-transparent), var(--ifm-pre-background) 24px);
+  }
+
+  .prism-code:not(:hover)::-webkit-scrollbar-thumb,
+  .prism-code:not(:hover)::-webkit-scrollbar-track {
+    visibility: hidden;
+  }
+
+  .prism-code:hover::-webkit-scrollbar-thumb,
+  .prism-code:hover::-webkit-scrollbar-track {
+    opacity: 1;
+  }
+
+  .code-tabs-ul-wrapper .code-tab-selector {
+    position: absolute;
+    border: 1px solid var(--medusa-code-tab-border);
+    background-color: var(--ifm-code-tabs-active-bg);
+    transition: all var(--ifm-transition-fast) ease;
+    top: 0;
+    z-index: 1;
+    border-radius: 99999px;
+  }
+}
+
+@media screen and (max-width: 567px) {
+  .code-tabs .tabs__item--active {
+    border: 1px solid var(--medusa-code-tab-border);
+    background-color: var(--ifm-code-tabs-active-bg);
+  }
+  .code-action {
+    visibility: hidden;
+  }
+
+  .tablist-wrapper.code-header .code-title {
+    display: none;
+  }
+}

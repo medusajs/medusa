@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react"
+import { getVariantPrice } from "../helpers"
 import { useLocalStorage } from "../hooks/utils"
-import { RegionInfo, ProductVariant } from "../types"
-import { getVariantPrice } from "../utils"
-import { isArray, isEmpty, isObject } from "lodash"
+import { ProductVariant, RegionInfo } from "../types"
+import { isArray, isEmpty, isObject } from "../utils"
 
 interface Item {
   variant: ProductVariant

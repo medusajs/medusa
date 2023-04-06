@@ -1,0 +1,30 @@
+{
+  "name": "typedoc-frontmatter-plugin",
+  "version": "1.0.0",
+  "description": "Plugin to add frontmatter key-values at the top of pages",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Shahed Nasser",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "typedoc": "0.22.x"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10",
+    "typedoc": "^0.22.10",
+    "typescript": "4.5.2"
+  },
+  "keywords": [
+    "typedocplugin",
+    "packages",
+    "monorepo",
+    "lerna",
+    "typedoc"
+  ]
+}

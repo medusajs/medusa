@@ -1,0 +1,47 @@
+name: Generate Services Reference
+on: 
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  services:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Generate Services Reference
+        run: yarn generate:services
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'chore(docs): Generated Services Reference (automated)'
+          base: 'master'
+          title: 'chore(docs): Generated Services Reference (automated)'
+          labels: 'type: chore'
+          add-paths: docs/content/references/services/**
+          branch: 'chore/generate-services'
+          branch-suffix: 'timestamp'

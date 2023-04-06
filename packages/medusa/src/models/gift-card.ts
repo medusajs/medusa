@@ -1,26 +1,20 @@
 import {
-  Entity,
   BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
   Column,
-  PrimaryColumn,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
-import { Region } from "./region"
 import { Order } from "./order"
+import { Region } from "./region"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class GiftCard {
-  @PrimaryColumn()
-  id: string
-
+export class GiftCard extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   code: string
@@ -56,74 +50,101 @@ export class GiftCard {
   })
   ends_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  @Column({ type: "real", nullable: true })
+  tax_rate: number | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `gift_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "gift")
   }
 }
 
 /**
- * @schema gift_card
+ * @schema GiftCard
  * title: "Gift Card"
  * description: "Gift Cards are redeemable and represent a value that can be used towards the payment of an Order."
- * x-resourceId: gift_card
+ * type: object
+ * required:
+ *   - balance
+ *   - code
+ *   - created_at
+ *   - deleted_at
+ *   - ends_at
+ *   - id
+ *   - is_disabled
+ *   - metadata
+ *   - order_id
+ *   - region_id
+ *   - tax_rate
+ *   - updated_at
+ *   - value
  * properties:
  *   id:
- *     description: "The id of the Gift Card. This value will be prefixed by `gift_`."
+ *     description: The gift card's ID
  *     type: string
+ *     example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
  *   code:
- *     description: "The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card."
+ *     description: The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.
  *     type: string
+ *     example: 3RFT-MH2C-Y4YZ-XMN4
  *   value:
- *     description: "The value that the Gift Card represents."
+ *     description: The value that the Gift Card represents.
  *     type: integer
+ *     example: 10
  *   balance:
- *     description: "The remaining value on the Gift Card."
+ *     description: The remaining value on the Gift Card.
  *     type: integer
+ *     example: 10
  *   region_id:
- *     description: "The id of the Region in which the Gift Card is available."
+ *     description: The id of the Region in which the Gift Card is available.
  *     type: string
+ *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: "The Region in which the Gift Card is available."
- *     anyOf:
- *       - $ref: "#/components/schemas/region"
+ *     description: A region object. Available if the relation `region` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Region"
  *   order_id:
- *     description: "The id of the Order that the Gift Card was purchased in."
+ *     description: The id of the Order that the Gift Card was purchased in.
+ *     nullable: true
  *     type: string
+ *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
+ *   order:
+ *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Order"
  *   is_disabled:
- *     description: "Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts."
+ *     description: Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.
  *     type: boolean
+ *     default: false
  *   ends_at:
- *     description: "The time at which the Gift Card can no longer be used."
+ *     description: The time at which the Gift Card can no longer be used.
+ *     nullable: true
  *     type: string
  *     format: date-time
+ *   tax_rate:
+ *     description: The gift card's tax rate that will be applied on calculating totals
+ *     nullable: true
+ *     type: number
+ *     example: 0
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
+ *     description: The date with timezone at which the resource was created.
  *     type: string
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
+ *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
+ *     example: {car: "white"}
  */

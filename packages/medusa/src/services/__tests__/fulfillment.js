@@ -1,18 +1,19 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import FulfillmentService from "../fulfillment"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 
 describe("FulfillmentService", () => {
   describe("createFulfillment", () => {
     const fulfillmentRepository = MockRepository({})
 
     const fulfillmentProviderService = {
-      createFulfillment: jest.fn().mockImplementation(data => {
+      createFulfillment: jest.fn().mockImplementation((data) => {
         return Promise.resolve(data)
       }),
     }
 
     const shippingProfileService = {
-      retrieve: jest.fn().mockImplementation(data => {
+      retrieve: jest.fn().mockImplementation((data) => {
         return Promise.resolve({
           id: IdMap.getId("default"),
           name: "default_profile",
@@ -22,11 +23,19 @@ describe("FulfillmentService", () => {
       }),
     }
 
+    const lineItemRepository = {
+      create: jest.fn().mockImplementation((data) => {
+        return data
+      }),
+    }
+
     const fulfillmentService = new FulfillmentService({
       manager: MockManager,
       fulfillmentProviderService,
       fulfillmentRepository,
       shippingProfileService,
+      lineItemRepository,
+      productVariantInventoryService: ProductVariantInventoryServiceMock,
     })
 
     beforeEach(async () => {
@@ -44,12 +53,12 @@ describe("FulfillmentService", () => {
               },
             },
           ],
-          items: [{ id: IdMap.getId("test-line"), quantity: 10 }],
+          items: [{ id: IdMap.getId("test-line"), quantity: 9 }],
         },
         [
           {
             item_id: IdMap.getId("test-line"),
-            quantity: 10,
+            quantity: 9,
           },
         ],
         { order_id: "test", metadata: {} }
@@ -59,7 +68,7 @@ describe("FulfillmentService", () => {
       expect(fulfillmentRepository.create).toHaveBeenCalledWith({
         order_id: "test",
         provider_id: "GLS Express",
-        items: [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
+        items: [{ item_id: IdMap.getId("test-line"), quantity: 9 }],
         data: expect.anything(),
         metadata: {},
       })
@@ -101,7 +110,7 @@ describe("FulfillmentService", () => {
           canceled_at: new Date(),
           items: [{ item_id: 1, quantity: 2 }],
         }),
-      save: f => f,
+      save: (f) => f,
     })
 
     const lineItemService = {
@@ -111,13 +120,13 @@ describe("FulfillmentService", () => {
           Promise.resolve({ id: 1, fulfilled_quantity: 2 })
         ),
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const fulfillmentProviderService = {
-      cancelFulfillment: f => f,
+      cancelFulfillment: (f) => f,
     }
 
     const fulfillmentService = new FulfillmentService({
@@ -125,6 +134,7 @@ describe("FulfillmentService", () => {
       fulfillmentProviderService,
       fulfillmentRepository,
       lineItemService,
+      productVariantInventoryService: ProductVariantInventoryServiceMock,
     })
 
     beforeEach(async () => {
@@ -150,9 +160,9 @@ describe("FulfillmentService", () => {
   })
 
   describe("createShipment", () => {
-    const trackingLinkRepository = MockRepository({ create: c => c })
+    const trackingLinkRepository = MockRepository({ create: (c) => c })
     const fulfillmentRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("canceled"):
             return Promise.resolve({ canceled_at: new Date() })

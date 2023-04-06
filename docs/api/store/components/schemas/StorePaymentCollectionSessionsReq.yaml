@@ -1,0 +1,7 @@
+type: object
+required:
+  - provider_id
+properties:
+  provider_id:
+    type: string
+    description: The ID of the Payment Provider.

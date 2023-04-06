@@ -1,0 +1,100 @@
+h1 {
+  font-size: var(--ifm-h1-font-size);
+  font-weight: var(--ifm-h1-weight);
+  line-height: var(--ifm-h1-line-height);
+}
+
+h2 {
+  font-size: var(--ifm-h2-font-size);
+  font-weight: var(--ifm-h2-weight);
+  line-height: var(--ifm-h2-line-height);
+}
+
+h3 {
+  font-size: var(--ifm-h3-font-size);
+  font-weight: var(--ifm-h3-weight);
+  line-height: var(--ifm-h3-line-height);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ifm-color-headers);
+}
+
+.markdown > h1,
+.markdown > h1:first-child {
+  --ifm-h1-font-size: var(--medusa-h1-size);
+  --ifm-h1-line-height: var(--medusa-h1-line-height);
+  --ifm-h1-weight: var(--medusa-h1-weight);
+}
+
+.markdown > h1:first-child,
+.markdown > h2,
+.markdown > h3 {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
+}
+
+.markdown > h2 {
+  --ifm-h2-font-size: var(--medusa-h2-size);
+  --ifm-h2-line-height: var(--medusa-h2-line-height);
+  --ifm-h2-weight: var(--medusa-h2-weight);
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: var(--medusa-h3-size);
+  --ifm-h3-line-height: var(--medusa-h3-line-height);
+  --ifm-h3-weight: var(--medusa-h3-weight);
+}
+
+p {
+  font-weight: var(--ifm-font-weight-base);
+}
+
+.markdown > p {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
+}
+
+.markdown a:not(.hash-link),
+.DocSearch-Prefill {
+  font-weight: var(--ifm-link-weight);
+}
+
+.markdown p + img,
+.markdown .alert,
+.markdown .code-wrapper {
+  margin-bottom: var(--ifm-base-margin-vertical);
+}
+
+.markdown h2,
+.markdown h3,
+.markdown p + .code-wrapper,
+.markdown p + .tabs-wrapper,
+.markdown p + .alert,
+.markdown p + section,
+video {
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+.markdown p + .card-wrapper {
+  margin-top: 24px;
+}
+
+.markdown {
+  margin-bottom: 0;
+}
+
+.markdown p + p > img:not(.ui-icon) {
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+p + img:not(.ui-icon) {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
+}
+
+h1 + .cards-grid,
+h1 + .card-wrapper,
+h2 + .cards-grid,
+h2 + .card-wrapper,
+h3 + .cards-grid,
+h3 + .card-wrapper {
+  margin-top: calc(var(--ifm-hr-margin-vertical) - 8px);
+}

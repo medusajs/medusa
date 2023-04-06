@@ -1,17 +1,35 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductService from "../product"
+import { FlagRouter } from "../../utils/flag-router"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
 
+const mockUpsertTags = jest.fn().mockImplementation((data) =>
+  Promise.resolve(
+    data.map(({ value, id }) => ({
+      value,
+      id: id || (value === "title" ? "tag-1" : "tag-2"),
+    }))
+  )
+)
+
+const mockUpsertType = jest.fn().mockImplementation((value) => {
+  const productType = {
+    id: "type",
+    value: value,
+  }
+  return Promise.resolve(productType)
+})
+
 describe("ProductService", () => {
   describe("retrieve", () => {
     const productRepo = MockRepository({
-      findOneWithRelations: (rels, query) => {
+      findOne: (query) => {
         if (query.where.id === "test id with variants") {
           return {
             id: "test id with variants",
@@ -34,6 +52,7 @@ describe("ProductService", () => {
     const productService = new ProductService({
       manager: MockManager,
       productRepository: productRepo,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -43,8 +62,8 @@ describe("ProductService", () => {
     it("successfully retrieves a product", async () => {
       const result = await productService.retrieve(IdMap.getId("ironman"))
 
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith(undefined, {
+      expect(productRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(productRepo.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
       })
 
@@ -54,14 +73,14 @@ describe("ProductService", () => {
 
   describe("create", () => {
     const productRepository = MockRepository({
-      create: product => ({
+      create: (product) => ({
         id: IdMap.getId("ironman"),
         title: "Suit",
         options: [],
         collection: { id: IdMap.getId("cat"), title: "Suits" },
         variants: product.variants,
       }),
-      findOneWithRelations: () => ({
+      findOne: () => ({
         id: IdMap.getId("ironman"),
         title: "Suit",
         options: [],
@@ -71,7 +90,7 @@ describe("ProductService", () => {
 
     const productTagRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         if (data.value === "title") {
           return { id: "tag-1", value: "title" }
         }
@@ -81,18 +100,20 @@ describe("ProductService", () => {
         }
       },
     })
+    productTagRepository.upsertTags = mockUpsertTags
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
+    productTypeRepository.upsertType = mockUpsertType
 
     const productCollectionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
-      retrieve: id =>
+      retrieve: (id) =>
         Promise.resolve({ id: IdMap.getId("cat"), title: "Suits" }),
     }
 
@@ -103,6 +124,7 @@ describe("ProductService", () => {
       productCollectionService,
       productTagRepository,
       productTypeRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -148,13 +170,9 @@ describe("ProductService", () => {
         ],
       })
 
-      expect(productTagRepository.findOne).toHaveBeenCalledTimes(2)
-      // We add two tags, that does not exist therefore we make sure
-      // that create is also called
-      expect(productTagRepository.create).toHaveBeenCalledTimes(2)
+      expect(productTagRepository.upsertTags).toHaveBeenCalledTimes(1)
 
-      expect(productTypeRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(productTypeRepository.create).toHaveBeenCalledTimes(1)
+      expect(productTypeRepository.upsertType).toHaveBeenCalledTimes(1)
 
       expect(productRepository.save).toHaveBeenCalledTimes(1)
       expect(productRepository.save).toHaveBeenCalledWith({
@@ -192,7 +210,7 @@ describe("ProductService", () => {
 
   describe("update", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: (rels, query) => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("ironman&co")) {
           return Promise.resolve({
             id: IdMap.getId("ironman&co"),
@@ -223,27 +241,14 @@ describe("ProductService", () => {
 
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
-
-    const productVariantRepository = MockRepository()
-
-    const productVariantService = {
-      withTransaction: function() {
-        return this
-      },
-      update: (variant, update) => {
-        if (variant.id) {
-          return update
-        }
-        return Promise.resolve()
-      },
-    }
+    productTypeRepository.upsertType = mockUpsertType
 
     const productTagRepository = MockRepository({
-      findOne: data => {
+      findOne: (data) => {
         if (data.where.value === "test") {
           return Promise.resolve({ id: IdMap.getId("test"), value: "test" })
         }
@@ -252,15 +257,36 @@ describe("ProductService", () => {
         }
       },
     })
+    productTagRepository.upsertTags = mockUpsertTags
+
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return this
+      },
+      calculateVariantPrice: (variantId, context) => {
+        return {
+          originalPrice: null,
+          calculatedPrice: null,
+          prices: [],
+        }
+      },
+    }
 
     const productService = new ProductService({
       manager: MockManager,
       productRepository,
-      productVariantService,
-      productVariantRepository,
       productTagRepository,
       productTypeRepository,
       eventBusService,
+      cartRepository,
+      priceSelectionStrategy,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -283,17 +309,6 @@ describe("ProductService", () => {
         id: IdMap.getId("ironman"),
         metadata: { some_key: "some_value" },
       })
-    })
-
-    it("successfully updates product variants", async () => {
-      await productService.update(IdMap.getId("ironman&co"), {
-        variants: [{ id: IdMap.getId("green"), title: "Greener" }],
-      })
-
-      // The update of variants will be tested in product variant test file
-      // Here we just test, that the function reaches its end when updating
-      // variants
-      expect(productRepository.save).toHaveBeenCalledTimes(1)
     })
 
     it("successfully updates product status", async () => {
@@ -334,30 +349,6 @@ describe("ProductService", () => {
       })
     })
 
-    it("successfully updates variant ranking", async () => {
-      await productService.update("ranking test", {
-        variants: [
-          { id: "test_321", title: "Greener", variant_rank: 1 },
-          { id: "test_123", title: "Blueer", variant_rank: 0 },
-        ],
-      })
-
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product.updated",
-        expect.any(Object)
-      )
-
-      expect(productRepository.save).toHaveBeenCalledTimes(1)
-      expect(productRepository.save).toHaveBeenCalledWith({
-        id: "ranking test",
-        variants: [
-          { id: "test_321", title: "Greener", variant_rank: 0 },
-          { id: "test_123", title: "Blueer", variant_rank: 1 },
-        ],
-      })
-    })
-
     it("successfully updates tags", async () => {
       await productService.update(IdMap.getId("ironman"), {
         tags: [
@@ -389,23 +380,6 @@ describe("ProductService", () => {
         expect(err.message).toEqual("Product with id: 123 was not found")
       }
     })
-
-    it("throws on wrong variant in update", async () => {
-      try {
-        await productService.update(IdMap.getId("ironman&co"), {
-          variants: [
-            { id: IdMap.getId("yellow") },
-            { id: IdMap.getId("green") },
-          ],
-        })
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Variant with id: ${IdMap.getId(
-            "yellow"
-          )} is not associated with this product`
-        )
-      }
-    })
   })
 
   describe("delete", () => {
@@ -417,7 +391,7 @@ describe("ProductService", () => {
       manager: MockManager,
       eventBusService,
       productRepository,
-      eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -440,7 +414,7 @@ describe("ProductService", () => {
 
   describe("addOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [{ title: "Color" }],
@@ -449,15 +423,14 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       addOptionValue: jest.fn(),
     }
 
     const productOptionRepository = MockRepository({
-      create: () =>
-        Promise.resolve({ id: IdMap.getId("Material"), title: "Material" }),
+      create: () => ({ id: IdMap.getId("Material"), title: "Material" }),
     })
 
     const productService = new ProductService({
@@ -466,6 +439,7 @@ describe("ProductService", () => {
       productOptionRepository,
       productVariantService,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -513,7 +487,7 @@ describe("ProductService", () => {
 
   describe("reorderVariants", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [{ id: IdMap.getId("green") }, { id: IdMap.getId("blue") }],
@@ -524,6 +498,7 @@ describe("ProductService", () => {
       manager: MockManager,
       productRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -569,75 +544,9 @@ describe("ProductService", () => {
     })
   })
 
-  describe("reorderOptions", () => {
-    const productRepository = MockRepository({
-      findOneWithRelations: query =>
-        Promise.resolve({
-          id: IdMap.getId("ironman"),
-          options: [
-            { id: IdMap.getId("material") },
-            { id: IdMap.getId("color") },
-          ],
-        }),
-    })
-
-    const productService = new ProductService({
-      manager: MockManager,
-      productRepository,
-      eventBusService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("reorders options", async () => {
-      await productService.reorderOptions(IdMap.getId("ironman"), [
-        IdMap.getId("color"),
-        IdMap.getId("material"),
-      ])
-
-      expect(productRepository.save).toBeCalledTimes(1)
-      expect(productRepository.save).toBeCalledWith({
-        id: IdMap.getId("ironman"),
-        options: [
-          { id: IdMap.getId("color") },
-          { id: IdMap.getId("material") },
-        ],
-      })
-    })
-
-    it("throws if one option id is not in the product options", async () => {
-      try {
-        await productService.reorderOptions(IdMap.getId("ironman"), [
-          IdMap.getId("packaging"),
-          IdMap.getId("material"),
-        ])
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Product has no option with id: ${IdMap.getId("packaging")}`
-        )
-      }
-    })
-
-    it("throws if order length and product option lengths differ", async () => {
-      try {
-        await productService.reorderOptions(IdMap.getId("ironman"), [
-          IdMap.getId("size"),
-          IdMap.getId("color"),
-          IdMap.getId("material"),
-        ])
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Product options and new options order differ in length.`
-        )
-      }
-    })
-  })
-
   describe("updateOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [
@@ -657,6 +566,7 @@ describe("ProductService", () => {
       productRepository,
       productOptionRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -712,7 +622,7 @@ describe("ProductService", () => {
 
   describe("deleteOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [
@@ -751,7 +661,7 @@ describe("ProductService", () => {
     })
 
     const productOptionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("material")) {
           return undefined
         }
@@ -764,6 +674,7 @@ describe("ProductService", () => {
       productRepository,
       productOptionRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {

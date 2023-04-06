@@ -25,6 +25,7 @@ const order = {
     {
       name: "standard",
       price: 12399,
+      subtotal: 12399,
     },
   ],
   payment_method: {
@@ -66,6 +67,7 @@ const krwOrder = {
     {
       name: "standard",
       price: 12399,
+      subtotal: 12399,
     },
   ],
   payment_method: {
@@ -109,6 +111,7 @@ const roundingOrder = {
     {
       name: "standard",
       price: 0,
+      subtotal: 0,
     },
   ],
   discounts: [
@@ -155,6 +158,21 @@ const OrderService = {
 const TotalsService = {
   getTotal: () => {
     return Promise.resolve(123)
+  },
+  getShippingMethodTotals: () => {
+    return {
+      price: 0,
+      subtotal: 0,
+      discount_total: 0,
+      tax_total: 0,
+    }
+  },
+  getLineItemTotals: () => {
+    return {
+      subtotal: 15800,
+      discount_total: 0,
+      tax_total: 3950,
+    }
   },
   getLineDiscounts: (o) => {
     if (o.id === "rounding") {
@@ -239,76 +257,6 @@ describe("BrightpearlService", () => {
 
       await client.test.fail()
       await client.test.fail()
-    })
-  })
-
-  describe("createSalesOrder", () => {
-    const bpService = new BrightpearlService(
-      {
-        orderService: OrderService,
-        totalsService: TotalsService,
-        oauthService: OAuthService,
-        regionService: RegionService,
-      },
-      { account: "test" }
-    )
-
-    it("successfully builds sales order", async () => {
-      jest.clearAllMocks()
-
-      await bpService.createSalesOrder(order)
-
-      expect(mockCreateOrder).toHaveBeenCalledWith({
-        currency: { code: "DKK" },
-        ref: "1234",
-        externalRef: "12355",
-        channelId: "1",
-        installedIntegrationInstanceId: undefined,
-        statusId: "3",
-        customer: {
-          id: "12345",
-          address: {
-            addressFullName: "Test Testson",
-            addressLine1: "Test",
-            addressLine2: "TEst",
-            postalCode: "1234",
-            countryIsoCode: "DK",
-            telephone: "12345678",
-            email: "test@example.com",
-          },
-        },
-        delivery: {
-          shippingMethodId: 0,
-          address: {
-            addressFullName: "Test Testson",
-            addressLine1: "Test",
-            addressLine2: "TEst",
-            postalCode: "1234",
-            countryIsoCode: "DK",
-            telephone: "12345678",
-            email: "test@example.com",
-          },
-        },
-        rows: [
-          {
-            name: "Test",
-            net: 22,
-            tax: 5.082,
-            quantity: 2,
-            taxCode: "1234",
-            externalRef: undefined,
-            nominalCode: "4000",
-          },
-          {
-            name: "Shipping: standard",
-            quantity: 1,
-            net: 123.99,
-            tax: 28.6417,
-            taxCode: "1234",
-            nominalCode: "4040",
-          },
-        ],
-      })
     })
   })
 

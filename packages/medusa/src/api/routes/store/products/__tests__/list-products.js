@@ -1,5 +1,5 @@
 import { IdMap } from "medusa-test-utils"
-import { defaultStoreProductsRelations } from ".."
+import { defaultStoreProductsFields, defaultStoreProductsRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 
@@ -18,8 +18,22 @@ describe("GET /store/products", () => {
     it("calls get product from productSerice", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
-        { status: ["published"] },
-        { relations: defaultStoreProductsRelations, skip: 0, take: 100 }
+        {
+          status: ["published"],
+          categories: {
+            is_active: true,
+            is_internal: false,
+          }
+        },
+        {
+          relations: defaultStoreProductsRelations,
+          select: defaultStoreProductsFields,
+          skip: 0,
+          take: 100,
+          order: {
+            created_at: "DESC",
+          },
+        }
       )
     })
 
@@ -41,8 +55,23 @@ describe("GET /store/products", () => {
     it("calls list from productSerice", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
-        { is_giftcard: true, status: ["published"] },
-        { relations: defaultStoreProductsRelations, skip: 0, take: 100 }
+        {
+          is_giftcard: true,
+          status: ["published"],
+          categories: {
+            is_active: true,
+            is_internal: false,
+          }
+        },
+        {
+          relations: defaultStoreProductsRelations,
+          select: defaultStoreProductsFields,
+          skip: 0,
+          take: 100,
+          order: {
+            created_at: "DESC",
+          },
+        }
       )
     })
   })

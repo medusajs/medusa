@@ -6,7 +6,7 @@ import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
 
-export default async function({ directory, id, email, password, keepAlive }) {
+export default async function ({ directory, id, email, password, keepAlive }) {
   track("CLI_USER", { with_id: !!id })
   const app = express()
   try {

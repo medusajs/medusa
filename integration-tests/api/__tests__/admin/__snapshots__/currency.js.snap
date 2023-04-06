@@ -1,0 +1,293 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/currencies GET /admin/currencies should retrieve the currencies 1`] = `
+Object {
+  "count": 120,
+  "currencies": Array [
+    Object {
+      "code": "aed",
+      "name": "United Arab Emirates Dirham",
+      "symbol": "AED",
+      "symbol_native": "د.إ.‏",
+    },
+    Object {
+      "code": "afn",
+      "name": "Afghan Afghani",
+      "symbol": "Af",
+      "symbol_native": "؋",
+    },
+    Object {
+      "code": "all",
+      "name": "Albanian Lek",
+      "symbol": "ALL",
+      "symbol_native": "Lek",
+    },
+    Object {
+      "code": "amd",
+      "name": "Armenian Dram",
+      "symbol": "AMD",
+      "symbol_native": "դր.",
+    },
+    Object {
+      "code": "ars",
+      "name": "Argentine Peso",
+      "symbol": "AR$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "aud",
+      "name": "Australian Dollar",
+      "symbol": "AU$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "azn",
+      "name": "Azerbaijani Manat",
+      "symbol": "man.",
+      "symbol_native": "ман.",
+    },
+    Object {
+      "code": "bam",
+      "name": "Bosnia-Herzegovina Convertible Mark",
+      "symbol": "KM",
+      "symbol_native": "KM",
+    },
+    Object {
+      "code": "bdt",
+      "name": "Bangladeshi Taka",
+      "symbol": "Tk",
+      "symbol_native": "৳",
+    },
+    Object {
+      "code": "bgn",
+      "name": "Bulgarian Lev",
+      "symbol": "BGN",
+      "symbol_native": "лв.",
+    },
+    Object {
+      "code": "bhd",
+      "name": "Bahraini Dinar",
+      "symbol": "BD",
+      "symbol_native": "د.ب.‏",
+    },
+    Object {
+      "code": "bif",
+      "name": "Burundian Franc",
+      "symbol": "FBu",
+      "symbol_native": "FBu",
+    },
+    Object {
+      "code": "bnd",
+      "name": "Brunei Dollar",
+      "symbol": "BN$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "bob",
+      "name": "Bolivian Boliviano",
+      "symbol": "Bs",
+      "symbol_native": "Bs",
+    },
+    Object {
+      "code": "brl",
+      "name": "Brazilian Real",
+      "symbol": "R$",
+      "symbol_native": "R$",
+    },
+    Object {
+      "code": "bwp",
+      "name": "Botswanan Pula",
+      "symbol": "BWP",
+      "symbol_native": "P",
+    },
+    Object {
+      "code": "byn",
+      "name": "Belarusian Ruble",
+      "symbol": "Br",
+      "symbol_native": "руб.",
+    },
+    Object {
+      "code": "bzd",
+      "name": "Belize Dollar",
+      "symbol": "BZ$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "cad",
+      "name": "Canadian Dollar",
+      "symbol": "CA$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "cdf",
+      "name": "Congolese Franc",
+      "symbol": "CDF",
+      "symbol_native": "FrCD",
+    },
+  ],
+  "limit": 20,
+  "offset": 0,
+}
+`;
+
+exports[`[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/currencies GET /admin/currencies should retrieve the currencies 1`] = `
+Object {
+  "count": 120,
+  "currencies": Array [
+    Object {
+      "code": "aed",
+      "includes_tax": false,
+      "name": "United Arab Emirates Dirham",
+      "symbol": "AED",
+      "symbol_native": "د.إ.‏",
+    },
+    Object {
+      "code": "afn",
+      "includes_tax": false,
+      "name": "Afghan Afghani",
+      "symbol": "Af",
+      "symbol_native": "؋",
+    },
+    Object {
+      "code": "all",
+      "includes_tax": false,
+      "name": "Albanian Lek",
+      "symbol": "ALL",
+      "symbol_native": "Lek",
+    },
+    Object {
+      "code": "amd",
+      "includes_tax": false,
+      "name": "Armenian Dram",
+      "symbol": "AMD",
+      "symbol_native": "դր.",
+    },
+    Object {
+      "code": "ars",
+      "includes_tax": false,
+      "name": "Argentine Peso",
+      "symbol": "AR$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "aud",
+      "includes_tax": false,
+      "name": "Australian Dollar",
+      "symbol": "AU$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "azn",
+      "includes_tax": false,
+      "name": "Azerbaijani Manat",
+      "symbol": "man.",
+      "symbol_native": "ман.",
+    },
+    Object {
+      "code": "bam",
+      "includes_tax": false,
+      "name": "Bosnia-Herzegovina Convertible Mark",
+      "symbol": "KM",
+      "symbol_native": "KM",
+    },
+    Object {
+      "code": "bdt",
+      "includes_tax": false,
+      "name": "Bangladeshi Taka",
+      "symbol": "Tk",
+      "symbol_native": "৳",
+    },
+    Object {
+      "code": "bgn",
+      "includes_tax": false,
+      "name": "Bulgarian Lev",
+      "symbol": "BGN",
+      "symbol_native": "лв.",
+    },
+    Object {
+      "code": "bhd",
+      "includes_tax": false,
+      "name": "Bahraini Dinar",
+      "symbol": "BD",
+      "symbol_native": "د.ب.‏",
+    },
+    Object {
+      "code": "bif",
+      "includes_tax": false,
+      "name": "Burundian Franc",
+      "symbol": "FBu",
+      "symbol_native": "FBu",
+    },
+    Object {
+      "code": "bnd",
+      "includes_tax": false,
+      "name": "Brunei Dollar",
+      "symbol": "BN$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "bob",
+      "includes_tax": false,
+      "name": "Bolivian Boliviano",
+      "symbol": "Bs",
+      "symbol_native": "Bs",
+    },
+    Object {
+      "code": "brl",
+      "includes_tax": false,
+      "name": "Brazilian Real",
+      "symbol": "R$",
+      "symbol_native": "R$",
+    },
+    Object {
+      "code": "bwp",
+      "includes_tax": false,
+      "name": "Botswanan Pula",
+      "symbol": "BWP",
+      "symbol_native": "P",
+    },
+    Object {
+      "code": "byn",
+      "includes_tax": false,
+      "name": "Belarusian Ruble",
+      "symbol": "Br",
+      "symbol_native": "руб.",
+    },
+    Object {
+      "code": "bzd",
+      "includes_tax": false,
+      "name": "Belize Dollar",
+      "symbol": "BZ$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "cad",
+      "includes_tax": false,
+      "name": "Canadian Dollar",
+      "symbol": "CA$",
+      "symbol_native": "$",
+    },
+    Object {
+      "code": "cdf",
+      "includes_tax": false,
+      "name": "Congolese Franc",
+      "symbol": "CDF",
+      "symbol_native": "FrCD",
+    },
+  ],
+  "limit": 20,
+  "offset": 0,
+}
+`;
+
+exports[`[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/currencies POST /admin/currencies/:code should update currency includes_tax 1`] = `
+Object {
+  "currency": Object {
+    "code": "aed",
+    "includes_tax": true,
+    "name": "United Arab Emirates Dirham",
+    "symbol": "AED",
+    "symbol_native": "د.إ.‏",
+  },
+}
+`;

@@ -60,6 +60,24 @@ export const products = {
       },
     ],
   },
+  multipleVariants: {
+    id: IdMap.getId("multipleVariants"),
+    title: "Multiple Variants",
+    variants: [
+      {
+        id: IdMap.getId("variant_1"),
+        title: "Variant 1",
+      },
+      {
+        id: IdMap.getId("variant_2"),
+        title: "Variant 2",
+      },
+      {
+        id: IdMap.getId("variant_3"),
+        title: "Variant 3",
+      },
+    ],
+  },
 }
 
 export const ProductServiceMock = {
@@ -106,11 +124,17 @@ export const ProductServiceMock = {
   deleteOption: jest
     .fn()
     .mockReturnValue(Promise.resolve(products.productWithOptions)),
-  retrieveVariants: jest
-    .fn()
-    .mockReturnValue(
-      Promise.resolve([{ id: IdMap.getId("1") }, { id: IdMap.getId("2") }])
-    ),
+  updateshippingProfiles: jest.fn().mockReturnValue(Promise.resolve()),
+  retrieveVariants: jest.fn().mockImplementation((productId) => {
+    if (productId === IdMap.getId("product1")) {
+      return Promise.resolve([
+        { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
+        { id: IdMap.getId("2"), product_id: IdMap.getId("product1") },
+      ])
+    }
+
+    return []
+  }),
   retrieve: jest.fn().mockImplementation((productId) => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
@@ -130,12 +154,18 @@ export const ProductServiceMock = {
     if (productId === IdMap.getId("variantsWithPrices")) {
       return Promise.resolve(products.variantsWithPrices)
     }
+    if (productId === IdMap.getId("multipleVariants")) {
+      return Promise.resolve(products.multipleVariants)
+    }
     return Promise.resolve(undefined)
   }),
   update: jest.fn().mockImplementation((product, data) => {
     return Promise.resolve(products.product1)
   }),
   listAndCount: jest.fn().mockImplementation((data) => {
+    if (data?.id?.includes("sales_channel_1_product_1")) {
+      return Promise.resolve([[{ id: "sales_channel_1_product_1" }], 1])
+    }
     return Promise.resolve([[products.product1, products.product2], 2])
   }),
   list: jest.fn().mockImplementation((data) => {

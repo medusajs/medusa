@@ -1,0 +1,9 @@
+type: object
+required:
+  - product_types
+properties:
+  product_types:
+    type: array
+    description: The IDs of the types of products to associate with this tax rate
+    items:
+      type: string

@@ -1,10 +1,14 @@
+import { humanizeAmount } from "medusa-core-utils"
 import { FulfillmentService } from "medusa-interfaces"
 import Webshipper from "../utils/webshipper"
 
 class WebshipperFulfillmentService extends FulfillmentService {
   static identifier = "webshipper"
 
-  constructor({ logger, claimService, swapService, orderService }, options) {
+  constructor(
+    { logger, totalsService, claimService, swapService, orderService },
+    options
+  ) {
     super()
 
     this.options_ = options
@@ -24,6 +28,9 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     /** @private @const {OrderService} */
     this.orderService_ = orderService
+
+    /** @private @const {TotalsService} */
+    this.totalsService_ = totalsService
 
     /** @private @const {SwapService} */
     this.swapService_ = swapService
@@ -106,13 +113,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     const fromOrder = await this.orderService_.retrieve(orderId, {
       select: ["total"],
-      relations: [
-        "discounts",
-        "discounts.rule",
-        "discounts.rule.valid_for",
-        "shipping_address",
-        "returns",
-      ],
+      relations: ["discounts", "discounts.rule", "shipping_address", "returns"],
     })
 
     const methodData = returnOrder.shipping_method.data
@@ -137,7 +138,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       }
     }
 
-    let docs = []
+    const docs = []
     if (this.invoiceGenerator_) {
       const base64Invoice = await this.invoiceGenerator_.createReturnInvoice(
         fromOrder,
@@ -170,22 +171,38 @@ class WebshipperFulfillmentService extends FulfillmentService {
               width: 15,
               length: 15,
             },
-            customs_lines: returnOrder.items.map(({ item, quantity }) => {
-              return {
-                ext_ref: item.id,
-                sku: item.variant.sku,
-                description: item.title,
-                quantity: quantity,
-                country_of_origin:
-                  item.variant.origin_country ||
-                  item.variant.product.origin_country,
-                tarif_number:
-                  item.variant.hs_code || item.variant.product.hs_code,
-                unit_price: item.unit_price / 100,
-                vat_percent: fromOrder.tax_rate,
-                currency: fromOrder.currency_code.toUpperCase(),
-              }
-            }),
+            customs_lines: await Promise.all(
+              returnOrder.items.map(async ({ item, quantity }) => {
+                const totals = await this.totalsService_.getLineItemTotals(
+                  item,
+                  fromOrder,
+                  {
+                    include_tax: true,
+                    use_tax_lines: true,
+                  }
+                )
+                return {
+                  ext_ref: item.id,
+                  sku: item.variant.sku,
+                  description: item.title,
+                  quantity: quantity,
+                  country_of_origin:
+                    item.variant.origin_country ||
+                    item.variant.product.origin_country,
+                  tarif_number:
+                    item.variant.hs_code || item.variant.product.hs_code,
+                  unit_price: humanizeAmount(
+                    totals.unit_price,
+                    fromOrder.currency_code
+                  ),
+                  vat_percent: totals.tax_lines.reduce(
+                    (acc, next) => acc + next.rate,
+                    0
+                  ),
+                  currency: fromOrder.currency_code.toUpperCase(),
+                }
+              })
+            ),
           },
         ],
         sender_address: {
@@ -270,19 +287,21 @@ class WebshipperFulfillmentService extends FulfillmentService {
           fulfillmentItems
         )
 
-        invoice = await this.client_.documents
-          .create({
-            type: "documents",
-            attributes: {
-              document_size: this.options_.document_size || "A4",
-              document_format: "PDF",
-              base64: base64Invoice,
-              document_type: "invoice",
-            },
-          })
-          .catch((err) => {
-            throw err
-          })
+        if (base64Invoice) {
+          invoice = await this.client_.documents
+            .create({
+              type: "documents",
+              attributes: {
+                document_size: this.options_.document_size || "A4",
+                document_format: "PDF",
+                base64: base64Invoice,
+                document_type: "invoice",
+              },
+            })
+            .catch((err) => {
+              throw err
+            })
+        }
 
         const cooCountries = this.options_.coo_countries
         if (
@@ -314,7 +333,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
         }
       }
 
-      let id = fulfillment.id
+      const id = fulfillment.id
       let visible_ref = `${fromOrder.display_id}-${id.substr(id.length - 4)}`
       let ext_ref = `${fromOrder.id}.${fulfillment.id}`
 
@@ -329,21 +348,38 @@ class WebshipperFulfillmentService extends FulfillmentService {
           status: "pending",
           ext_ref,
           visible_ref,
-          order_lines: fulfillmentItems.map((item) => {
-            return {
-              ext_ref: item.id,
-              sku: item.variant.sku,
-              description: item.title,
-              quantity: item.quantity,
-              country_of_origin:
-                item.variant.origin_country ||
-                item.variant.product.origin_country,
-              tarif_number:
-                item.variant.hs_code || item.variant.product.hs_code,
-              unit_price: item.unit_price / 100,
-              vat_percent: fromOrder.tax_rate,
-            }
-          }),
+          order_lines: await Promise.all(
+            fulfillmentItems.map(async (item) => {
+              const totals = await this.totalsService_.getLineItemTotals(
+                item,
+                fromOrder,
+                {
+                  include_tax: true,
+                  use_tax_lines: true,
+                }
+              )
+
+              return {
+                ext_ref: item.id,
+                sku: item.variant.sku,
+                description: item.title,
+                quantity: item.quantity,
+                country_of_origin:
+                  item.variant.origin_country ||
+                  item.variant.product.origin_country,
+                tarif_number:
+                  item.variant.hs_code || item.variant.product.hs_code,
+                unit_price: humanizeAmount(
+                  totals.unit_price,
+                  fromOrder.currency_code
+                ),
+                vat_percent: totals.tax_lines.reduce(
+                  (acc, next) => acc + next.rate,
+                  0
+                ),
+              }
+            })
+          ),
           delivery_address: {
             att_contact: `${shipping_address.first_name} ${shipping_address.last_name}`,
             address_1: shipping_address.address_1,
@@ -354,6 +390,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
             state: shipping_address.province,
             phone: shipping_address.phone,
             email: fromOrder.email,
+            personal_customs_no:
+              shipping_address.metadata?.personal_customs_no || null,
           },
           currency: fromOrder.currency_code.toUpperCase(),
         },
@@ -587,19 +625,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
       return Promise.resolve()
     }
 
-    if (order) {
-      if (
-        order.data.attributes.status !== "pending" &&
-        order.data.attributes.status !== "missing_rate"
-      ) {
-        if (order.data.attributes.status === "cancelled") {
-          return Promise.resolve(order)
-        }
-        throw new Error("Cannot cancel order")
-      }
+    if (this.options_.delete_on_cancel) {
+      return await this.client_.orders.delete(data.id)
     }
 
-    return this.client_.orders.delete(data.id)
+    return await this.client_.orders.update(data.id, {
+      id: data.id,
+      type: "orders",
+      attributes: {
+        status: "cancelled",
+      },
+    })
   }
 }
 

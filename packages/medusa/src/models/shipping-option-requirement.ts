@@ -1,24 +1,17 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  Index,
   DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  PrimaryColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum RequirementType {
   MIN_SUBTOTAL = "min_subtotal",
@@ -48,32 +41,49 @@ export class ShippingOptionRequirement {
   deleted_at: Date
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `sor_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "sor")
   }
 }
 
 /**
- * @schema shipping_option_requirement
+ * @schema ShippingOptionRequirement
  * title: "Shipping Option Requirement"
  * description: "A requirement that a Cart must satisfy for the Shipping Option to be available to the Cart."
- * x-resourceId: shipping_option_requirement
+ * type: object
+ * required:
+ *   - amount
+ *   - deleted_at
+ *   - id
+ *   - shipping_option_id
+ *   - type
  * properties:
  *   id:
- *     description: "The id of the Shipping Option Requirement. This value will be prefixed with `sor_`."
+ *     description: The shipping option requirement's ID
  *     type: string
+ *     example: sor_01G1G5V29AB4CTNDRFSRWSRKWD
  *   shipping_option_id:
- *     description: "The id of the Shipping Option that the Shipping Option Requirement belongs to."
+ *     description: The id of the Shipping Option that the hipping option requirement belongs to
  *     type: string
+ *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
+ *   shipping_option:
+ *     description: Available if the relation `shipping_option` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ShippingOption"
  *   type:
- *     description: "The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available."
+ *     description: The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.
  *     type: string
  *     enum:
  *       - min_subtotal
  *       - max_subtotal
+ *     example: min_subtotal
  *   amount:
- *     description: "The amount to compare the Cart subtotal to."
+ *     description: The amount to compare the Cart subtotal to.
  *     type: integer
+ *     example: 100
+ *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
+ *     type: string
+ *     format: date-time
  */

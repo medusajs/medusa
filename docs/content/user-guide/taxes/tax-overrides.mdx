@@ -1,0 +1,80 @@
+---
+sidebar_position: 4
+description: 'This user guide explains how to manage tax overrides on the Medusa admin. Learn how to add, edit, and delete overrides.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Tax Overrides
+
+In this document, you’ll learn how to manage tax overrides in your Medusa Admin.
+
+## Overview
+
+When you create or edit a [tax rate](./tax-rates.mdx), you can add, edit, and delete overrides. Overrides are used to customize the tax rate applied for some products, product types, or shipping options.
+
+### Override Types
+
+There are three override types:
+
+1. **Products**: Used to override the tax rate applied on specific products during checkout.
+2. **Product Types:** Used to override the tax rate applied on a product type. This subsequently overrides the tax rate of any product having this type during checkout.
+3. **Shipping Options:** Used to override the tax rate applied on selected shipping methods during checkout.
+
+---
+
+## Add Override
+
+To add an override while [adding or editing a tax rate](./tax-rates.mdx#create-tax-rate):
+
+1. Go to Settings → Taxes
+2. Select the region that the tax rate you want to edit belongs to.
+3. Under the Overrides section, click Add Overrides
+4. Choose the type of the override, then choose the specific entries in that type that you want to apply the tax rate to. For example, if you chose the Products type, choose at least one product to apply the override to.
+5. Once done, click on Add.
+6. In the tax rate form, click on Save.
+
+:::info
+
+If you already have an override for one of the types, and you choose to add a new override for that same type, the new override replaces the old one. If you want to add new entries to the same type (for example, add more products to the Products override), you should edit the existing override instead.
+
+:::
+
+---
+
+## Edit Override
+
+You can edit an override to select more entries for or remove entries from an override type.
+
+To edit an override:
+
+1. Go to Settings → Taxes
+2. Select the region that the tax rate you want to edit belongs to.
+3. From the list of tax rates in the Details section, find the tax rate that the override you want to edit belongs to and click the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
+4. Under the overrides section, find the override type you want to edit. For example, if you want to add a product to the overrides, find the override with the title “Product Rules”.
+5. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the override type.
+6. Choose Edit from the dropdown.
+7. You can then change the selected entries for the override type.
+8. Once done, click Add.
+9. In the edit form of the tax rate, click Save.
+
+---
+
+## Delete Override
+
+:::caution
+
+If you delete an override you won’t be able to restore it and it won’t be applied during checkout. If you want to, instead, remove some entries from an override type, you should edit the override instead.
+
+:::
+
+To delete an override:
+
+1. Go to Settings → Taxes
+2. Select the region that the tax rate you want to edit belongs to.
+3. From the list of tax rates in the Details section, find the tax rate that the override you want to delete belongs to and click the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
+4. Under the overrides section, find the override type you want to delete.
+5. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the override type.
+6. Choose “Delete rule” from the dropdown.
+7. Click Save.

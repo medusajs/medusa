@@ -11,7 +11,7 @@ export class draftOrders1613384784316 implements MigrationInterface {
         await queryRunner.query(`CREATE INDEX "IDX_8f6dd6c49202f1466ebf21e77d" ON "draft_order" ("order_id") `);
         await queryRunner.query(`ALTER TABLE "order" ADD "draft_order_id" character varying`);
         await queryRunner.query(`ALTER TABLE "order" ADD CONSTRAINT "UQ_727b872f86c7378474a8fa46147" UNIQUE ("draft_order_id")`);
-        await queryRunner.query(`ALTER TYPE "public"."cart_type_enum" RENAME TO "cart_type_enum_old"`);
+        await queryRunner.query(`ALTER TYPE "cart_type_enum" RENAME TO "cart_type_enum_old"`);
         await queryRunner.query(`CREATE TYPE "cart_type_enum" AS ENUM('default', 'swap', 'draft_order', 'payment_link')`);
         await queryRunner.query(`ALTER TABLE "cart" ALTER COLUMN "type" DROP DEFAULT`);
         await queryRunner.query(`ALTER TABLE "cart" ALTER COLUMN "type" TYPE "cart_type_enum" USING "type"::"text"::"cart_type_enum"`);

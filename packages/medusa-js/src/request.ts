@@ -2,17 +2,22 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from "axios"
 import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
+import KeyManager from "./key-manager"
+
 const unAuthenticatedAdminEndpoints = {
   "/admin/auth": "POST",
   "/admin/users/password-token": "POST",
   "/admin/users/reset-password": "POST",
   "/admin/invites/accept": "POST",
 }
+
 export interface Config {
   baseUrl: string
   maxRetries: number
   apiKey?: string
+  publishableApiKey?: string
 }
+
 export interface RequestOptions {
   timeout?: number
   numberOfRetries?: number
@@ -68,7 +73,7 @@ class Client {
   }
 
   // Stolen from https://github.com/stripe/stripe-node/blob/fd0a597064289b8c82f374f4747d634050739043/lib/utils.js#L282
-  normalizeHeaders(obj: object): object {
+  normalizeHeaders(obj: object): Record<string, any> {
     if (!(obj && typeof obj === "object")) {
       return obj
     }
@@ -109,9 +114,9 @@ class Client {
     userHeaders: RequestOptions,
     method: RequestMethod,
     path: string,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): AxiosRequestHeaders {
-    let defaultHeaders: object = {
+    let defaultHeaders: Record<string, any> = {
       Accept: "application/json",
       "Content-Type": "application/json",
     }
@@ -121,6 +126,13 @@ class Client {
         ...defaultHeaders,
         Authorization: `Bearer ${this.config.apiKey}`,
       }
+    }
+
+    const publishableApiKey =
+      this.config.publishableApiKey || KeyManager.getPublishableApiKey()
+
+    if (publishableApiKey) {
+      defaultHeaders["x-publishable-api-key"] = publishableApiKey
     }
 
     // only add idempotency key, if we want to retry
@@ -159,8 +171,8 @@ class Client {
         if (cfg) {
           return this.shouldRetryCondition(
             err,
-            cfg.currentRetryAttempt || 1,
-            cfg.retry || 3
+            cfg.currentRetryAttempt ?? 1,
+            cfg.retry ?? 3
           )
         } else {
           return false
@@ -173,27 +185,30 @@ class Client {
 
   /**
    * Axios request
-   * @param {Types.RequestMethod} method request method
-   * @param {string} path request path
-   * @param {object} payload request payload
-   * @param {RequestOptions} options axios configuration
-   * @param {object} customHeaders custom request headers
-   * @return {object}
+   * @param method request method
+   * @param path request path
+   * @param payload request payload
+   * @param options axios configuration
+   * @param customHeaders custom request headers
+   * @return
    */
   async request(
     method: RequestMethod,
     path: string,
-    payload: object = {},
+    payload: Record<string, any> = {},
     options: RequestOptions = {},
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): Promise<any> {
     const reqOpts = {
       method,
       withCredentials: true,
       url: path,
-      data: payload,
       json: true,
       headers: this.setHeaders(options, method, path, customHeaders),
+    }
+
+    if (["POST", "DELETE"].includes(method)) {
+      reqOpts["data"] = payload
     }
 
     // e.g. data = { cart: { ... } }, response = { status, headers, ... }

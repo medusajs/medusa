@@ -1,31 +1,112 @@
 # Change Log
 
+## 1.3.7
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+
+## 1.3.7-rc.0
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0-rc.0
+  - medusa-interfaces@1.3.7-rc.0
+
+## 1.3.6
+
+### Patch Changes
+
+- [#3217](https://github.com/medusajs/medusa/pull/3217) [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Fix npm packages files included
+
+- Updated dependencies [[`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0)]:
+  - medusa-core-utils@1.1.39
+  - medusa-interfaces@1.3.6
+
+## 1.3.5
+
+### Patch Changes
+
+- [#3185](https://github.com/medusajs/medusa/pull/3185) [`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Patches all dependencies + minor bumps `winston` to include a [fix for a significant memory leak](https://github.com/winstonjs/winston/pull/2057)
+
+- Updated dependencies [[`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4)]:
+  - medusa-core-utils@1.1.38
+  - medusa-interfaces@1.3.5
+
+## 1.3.4
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-interfaces@1.3.4
+
+## 1.3.3
+
+### Patch Changes
+
+- [#2821](https://github.com/medusajs/medusa/pull/2821) [`ba6bb3e54`](https://github.com/medusajs/medusa/commit/ba6bb3e54b9989cecf476c7411c406a43562efe1) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Extract cron jobs logic from the EventBusService to its own service JobSchedulerService
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168)]:
+  - medusa-core-utils@1.1.37
+
+## 1.3.2
+
+### Patch Changes
+
+- [#2536](https://github.com/medusajs/medusa/pull/2536) [`61da5f365`](https://github.com/medusajs/medusa/commit/61da5f365061c3d82d402e250d61ac8991b590a2) Thanks [@srindom](https://github.com/srindom)! - fix(medusa-plugin-brightpearl): account for shipping prices being tax inclusive
+
+- Updated dependencies [[`ea3d73882`](https://github.com/medusajs/medusa/commit/ea3d7388234f23c4a5bc7ceb55c493a097b76c12)]:
+  - medusa-core-utils@1.1.34
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.3.1](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.3.0...medusa-plugin-brightpearl@1.3.1) (2022-07-05)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+# [1.3.0](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.2.1...medusa-plugin-brightpearl@1.3.0) (2022-05-01)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.45...medusa-plugin-brightpearl@1.2.1) (2022-02-28)
+
+### Features
+
+- new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([47588e7](https://github.com/medusajs/medusa/commit/47588e7a8d3b2ae2fed0c1e87fdf1ee2db6bcdc2)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+
+# [1.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.45...medusa-plugin-brightpearl@1.2.0) (2022-02-25)
+
+### Features
+
+- new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([c56660f](https://github.com/medusajs/medusa/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+
+## [1.1.45](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.44...medusa-plugin-brightpearl@1.1.45) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
+## [1.1.44](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.43...medusa-plugin-brightpearl@1.1.44) (2022-02-06)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
 
 ## [1.1.43](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.42...medusa-plugin-brightpearl@1.1.43) (2022-01-11)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl
 
-
-
-
-
 ## [1.1.42](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.41...medusa-plugin-brightpearl@1.1.42) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl
 
-
-
-
-
 ## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.40...medusa-plugin-brightpearl@1.1.41) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl
-
-
-
-
 
 ## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.39...medusa-plugin-brightpearl@1.1.40) (2021-12-08)
 

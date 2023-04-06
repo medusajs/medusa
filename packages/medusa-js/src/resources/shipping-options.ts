@@ -2,6 +2,7 @@ import {
   StoreGetShippingOptionsParams,
   StoreShippingOptionsListRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
@@ -9,35 +10,31 @@ class ShippingOptionsResource extends BaseResource {
   /**
    * @description Lists shiping options available for a cart
    * @param {string} cart_id
+   * @param customHeaders
    * @return {ResponsePromise<StoreShippingOptionsListRes>}
    */
-  listCartOptions(cart_id: string): ResponsePromise<StoreShippingOptionsListRes> {
+  listCartOptions(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
     const path = `/store/shipping-options/${cart_id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
    * @description Lists shiping options available
-   * @param {StoreGetShippingOptionsParamsObject} query
+   * @param {StoreGetShippingOptionsParams} query
+   * @param customHeaders
    * @return {ResponsePromise<StoreShippingOptionsListRes>}
    */
   list(
-    query?: StoreGetShippingOptionsParams
-  ): ResponsePromise<StoreShippingOptionsListRes> {
+    query?: StoreGetShippingOptionsParams,
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
     let path = `/store/shipping-options`
 
-    const queryString = Object.entries(query || {}).map(([key, value]) => {
-      let val = value
-      if (Array.isArray(value)) {
-        val = value.join(",")
-      }
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/store/shipping-options?${queryString}`
+    }
 
-      return `${key}=${val}`
-    })
-
-    path = `/store/shipping-options?${queryString.join("&")}`
-
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

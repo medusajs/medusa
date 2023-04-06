@@ -1,0 +1,40 @@
+.admonition {
+  margin-bottom: var(--ifm-base-margin-vertical);
+}
+
+.admonitionIcon {
+  display: inline-block;
+}
+
+.admonitionIcon svg,
+.admonitionIcon img {
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.admonitionIcon {
+  height: 24px;
+  width: 24px;
+  margin-right: var(--ifm-base-spacing);
+}
+
+.admonitionIcon img {
+  max-height: 100%;
+}
+
+.admonitionContent {
+  color: var(--ifm-note-text-color);
+  font-size: var(--medusa-body-regular-size) !important;
+  line-height: var(--medusa-body-regular-line-height) !important;
+  font-weight: var(--medusa-body-regular-font-weight) !important;
+  flex: 1;
+  width: calc(100% - 40px);
+}
+
+.admonitionContent > :last-child {
+  margin-bottom: 0;
+}
+
+.admonitionContentContainer {
+  display: flex;
+}

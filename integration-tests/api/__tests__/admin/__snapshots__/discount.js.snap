@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id should get condition 1`] = `
+Object {
+  "created_at": Any<String>,
+  "discount_rule": Object {
+    "allocation": "total",
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "description": null,
+    "id": Any<String>,
+    "metadata": null,
+    "type": "percentage",
+    "updated_at": Any<String>,
+    "value": 10,
+  },
+  "discount_rule_id": Any<String>,
+  "id": "test-condition",
+  "operator": "in",
+  "type": "products",
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id should get condition with expand + fields 1`] = `
+Object {
+  "id": "test-condition",
+  "products": Array [
+    Object {
+      "collection_id": null,
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "description": null,
+      "discountable": true,
+      "external_id": null,
+      "handle": null,
+      "height": null,
+      "hs_code": null,
+      "id": "test-product",
+      "is_giftcard": false,
+      "length": null,
+      "material": null,
+      "metadata": null,
+      "mid_code": null,
+      "origin_country": null,
+      "profile_id": Any<String>,
+      "status": "draft",
+      "subtitle": null,
+      "thumbnail": null,
+      "title": "Handmade Frozen Chair",
+      "type_id": Any<String>,
+      "updated_at": Any<String>,
+      "weight": null,
+      "width": null,
+    },
+  ],
+  "type": "products",
+}
+`;
+
+exports[`/admin/discounts POST /admin/discounts fails if multiple types of resources are provided on update 1`] = `
+Object {
+  "message": "Only one of products, product_types is allowed, Only one of product_types, products is allowed",
+  "type": "invalid_data",
+}
+`;
+
+exports[`/admin/discounts POST /admin/discounts fails to add condition on rule with existing comb. of type and operator 1`] = `
+Object {
+  "code": "invalid_request_error",
+  "message": "Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule",
+  "type": "duplicate_error",
+}
+`;
+
+exports[`/admin/discounts POST /admin/discounts/:id/conditions should create a condition 1`] = `
+Object {
+  "code": "TEST",
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "ends_at": null,
+  "id": "test-discount",
+  "is_disabled": false,
+  "is_dynamic": false,
+  "metadata": null,
+  "parent_discount": null,
+  "parent_discount_id": null,
+  "regions": Array [],
+  "rule": Object {
+    "allocation": "total",
+    "conditions": Array [
+      Object {
+        "created_at": Any<String>,
+        "deleted_at": null,
+        "discount_rule_id": Any<String>,
+        "id": Any<String>,
+        "metadata": null,
+        "operator": "in",
+        "type": "products",
+        "updated_at": Any<String>,
+      },
+    ],
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "description": null,
+    "id": Any<String>,
+    "metadata": null,
+    "type": "percentage",
+    "updated_at": Any<String>,
+    "value": 10,
+  },
+  "rule_id": Any<String>,
+  "starts_at": Any<String>,
+  "updated_at": Any<String>,
+  "usage_count": 0,
+  "usage_limit": null,
+  "valid_duration": null,
+}
+`;
+
+exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id should update a condition 1`] = `
+Object {
+  "code": "TEST",
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "ends_at": null,
+  "id": "test-discount",
+  "is_disabled": false,
+  "is_dynamic": false,
+  "metadata": null,
+  "parent_discount_id": null,
+  "rule": Object {
+    "allocation": "total",
+    "conditions": Array [
+      Object {
+        "created_at": Any<String>,
+        "deleted_at": null,
+        "discount_rule_id": Any<String>,
+        "id": Any<String>,
+        "metadata": null,
+        "operator": "in",
+        "products": Array [
+          Object {
+            "collection_id": null,
+            "created_at": Any<String>,
+            "deleted_at": null,
+            "description": null,
+            "discountable": true,
+            "external_id": null,
+            "handle": null,
+            "height": null,
+            "hs_code": null,
+            "id": "test-product",
+            "is_giftcard": false,
+            "length": null,
+            "material": null,
+            "metadata": null,
+            "mid_code": null,
+            "origin_country": null,
+            "profile_id": Any<String>,
+            "status": "draft",
+            "subtitle": null,
+            "thumbnail": null,
+            "title": "Practical Frozen Fish",
+            "type_id": Any<String>,
+            "updated_at": Any<String>,
+            "weight": null,
+            "width": null,
+          },
+        ],
+        "type": "products",
+        "updated_at": Any<String>,
+      },
+    ],
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "description": null,
+    "id": Any<String>,
+    "metadata": null,
+    "type": "percentage",
+    "updated_at": Any<String>,
+    "value": 10,
+  },
+  "rule_id": Any<String>,
+  "starts_at": Any<String>,
+  "updated_at": Any<String>,
+  "usage_count": 0,
+  "usage_limit": null,
+  "valid_duration": null,
+}
+`;

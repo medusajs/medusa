@@ -1,7 +1,7 @@
 import React from "react"
 import DefaultMedusaProvider from "./medusa-context"
 import { initialize, mswDecorator } from "msw-storybook-addon"
-import { handlers } from "../mocks/handlers"
+import { adminHandlers, storeHandlers } from "../mocks/handlers"
 
 initialize()
 
@@ -10,7 +10,7 @@ export const parameters = {
   // https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args
   actions: { argTypesRegex: "^on.*" },
   msw: {
-    handlers,
+    handlers: [...adminHandlers, ...storeHandlers],
   },
 }
 

@@ -72,21 +72,20 @@ class OrderSubscriber {
 
     const fromSwap = await this.swapService_.retrieve(id, {
       relations: [
-        "order",
-        "order.payments",
-        "order.region",
-        "order.swaps",
-        "order.discounts",
-        "order.discounts.rule",
         "return_order",
         "return_order.items",
         "return_order.shipping_method",
+        "return_order.shipping_method.tax_lines",
         "additional_items",
+        "additional_items.tax_lines",
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.tax_lines",
       ],
     })
-    let fromOrder = fromSwap.order
+    const fromOrder = await this.orderService_.retrieve(fromSwap.order_id, {
+      relations: ["payments", "region", "swaps", "discounts", "discounts.rule"],
+    })
 
     if (
       !(
@@ -105,23 +104,27 @@ class OrderSubscriber {
     const { id } = data
     const fromClaim = await this.claimService_.retrieve(id, {
       relations: [
-        "order",
-        "order.payments",
-        "order.region",
-        "order.claims",
-        "order.discounts",
-        "order.discounts.rule",
         "claim_items",
         "return_order",
         "return_order.items",
         "return_order.shipping_method",
+        "return_order.shipping_method.tax_lines",
         "additional_items",
+        "additional_items.tax_lines",
         "shipping_address",
         "shipping_methods",
       ],
     })
 
-    const fromOrder = fromClaim.order
+    const fromOrder = await this.orderService_.retrieve(fromClaim.order_id, {
+      relations: [
+        "payments",
+        "region",
+        "claims",
+        "discounts",
+        "discounts.rule",
+      ],
+    })
 
     if (fromClaim.type === "replace") {
       await this.brightpearlService_.createClaim(fromOrder, fromClaim)
@@ -147,11 +150,11 @@ class OrderSubscriber {
     const { id, return_id } = data
 
     const order = await this.orderService_.retrieve(id, {
-      relations: ["region", "swaps", "payments"],
+      relations: ["discounts", "region", "swaps", "payments"],
     })
 
     const fromReturn = await this.returnService_.retrieve(return_id, {
-      relations: ["items"],
+      relations: ["items", "shipping_method", "shipping_method.tax_lines"],
     })
 
     return this.brightpearlService_

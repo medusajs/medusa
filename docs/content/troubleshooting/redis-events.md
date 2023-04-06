@@ -1,25 +1,37 @@
 # Redis not emitting events
 
-When you create a new Medusa project, Redis is disabled by default. Instead, we use a fake Redis server, that allows you to start your project, but holds no functionality.
+:::note
 
-To enable a real Redis server, you need to install and start it up on your PC. Install it directly from their [website](https://redis.io/download) or use Homebrew and run the following commands:
+This troubleshooting guide only applies to Medusa backends using versions before v1.8 of the core Medusa package.
 
-```bash
-brew install redis
-brew services start redis
-```
+:::
 
-Additonally, ensure that `redis_url` is not commented out in your project configuration in the bottom of your `medusa-config.js`.
+When you create a new Medusa backend, Redis is disabled by default. Instead, a fake Redis backend is used that allows you to start your project but does not actually emit any events.
 
-```jsx
+To enable a real Redis backend, you need to install Redis on your machine and configure it with Medusa.
+
+You can learn how to [install Redis in the Set Up your Development Environment documentation](../development/backend/prepare-environment.mdx#redis).
+
+After installing it, make sure to configure your Medusa backend to use Redis:
+
+```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    redis_url: REDIS_URL, // <-- Enables a real Redis server
-    database_url: DATABASE_URL,
-    database_type: "postgres",
-    store_cors: STORE_CORS,
-    admin_cors: ADMIN_CORS,
+    // ...
+    redis_url: REDIS_URL,
   },
-  plugins,
 }
 ```
+
+By default, Medusa connects to Redis over the URL `redis://localhost:6379`. If you need to change that URL, set the following environment variable:
+
+```bash
+REDIS_URL=<YOUR_REDIS_URL>
+```
+
+---
+
+## See Also
+
+- [Set up your development environment](../development/backend/prepare-environment.mdx)
+- [Configure the Medusa backend](../development/backend/configurations.md)

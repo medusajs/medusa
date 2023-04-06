@@ -14,12 +14,26 @@ export default (app) => {
 
 export const defaultStoreGiftCardRelations = ["region"]
 
-export const defaultStoreGiftCardFields = ["id", "code", "value", "balance"]
+export const defaultStoreGiftCardFields: (keyof GiftCard)[] = [
+  "id",
+  "code",
+  "value",
+  "balance",
+]
 
 export const allowedStoreGiftCardRelations = ["region"]
 
 export const allowedStoreGiftCardFields = ["id", "code", "value", "balance"]
 
+/**
+ * @schema StoreGiftCardsRes
+ * type: object
+ * required:
+ *   - gift_card
+ * properties:
+ *   gift_card:
+ *     $ref: "#/components/schemas/GiftCard"
+ */
 export type StoreGiftCardsRes = {
   gift_card: GiftCard
 }

@@ -1,5 +1,22 @@
-import { EntityRepository, Repository } from "typeorm"
-import { ShippingOption } from "../models/shipping-option"
+import { ShippingOption } from "../models"
+import { dataSource } from "../loaders/database"
+import { In } from "typeorm"
 
-@EntityRepository(ShippingOption)
-export class ShippingOptionRepository extends Repository<ShippingOption> {}
+export const ShippingOptionRepository = dataSource
+  .getRepository(ShippingOption)
+  .extend({
+    async upsertShippingProfile(
+      shippingOptionIds: string[],
+      shippingProfileId: string
+    ): Promise<ShippingOption[]> {
+      await this.createQueryBuilder()
+        .update(ShippingOption)
+        .set({ profile_id: shippingProfileId })
+        .where({ id: In(shippingOptionIds) })
+        .execute()
+
+      return this.findByIds(shippingOptionIds)
+    },
+  })
+
+export default ShippingOptionRepository

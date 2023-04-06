@@ -1,0 +1,26 @@
+type: object
+required:
+  - email
+  - password
+properties:
+  email:
+    description: The Users email.
+    type: string
+    format: email
+  first_name:
+    description: The name of the User.
+    type: string
+  last_name:
+    description: The name of the User.
+    type: string
+  role:
+    description: Userrole assigned to the user.
+    type: string
+    enum:
+      - admin
+      - member
+      - developer
+  password:
+    description: The Users password.
+    type: string
+    format: password

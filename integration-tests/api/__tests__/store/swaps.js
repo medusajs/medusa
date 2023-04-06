@@ -1,18 +1,8 @@
 const path = require("path")
 const {
-  Region,
-  Order,
-  Customer,
   ShippingProfile,
-  Product,
-  ProductVariant,
-  MoneyAmount,
-  LineItem,
-  Payment,
-  Cart,
-  ShippingMethod,
   ShippingOption,
-  Swap,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -41,35 +31,32 @@ describe("/store/carts", () => {
 
   describe("/store/swaps", () => {
     beforeEach(async () => {
-      try {
-        await orderSeeder(dbConnection)
+      await orderSeeder(dbConnection)
 
-        const manager = dbConnection.manager
-        await manager.query(
-          `UPDATE "swap" SET cart_id='test-cart-2' WHERE id = 'test-swap'`
-        )
-        await manager.query(
-          `UPDATE "payment" SET swap_id=NULL WHERE id = 'test-payment-swap'`
-        )
+      const manager = dbConnection.manager
+      await manager.query(
+        `UPDATE "swap" SET cart_id='test-cart-2' WHERE id = 'test-swap'`
+      )
+      await manager.query(
+        `UPDATE "payment" SET swap_id=NULL WHERE id = 'test-payment-swap'`
+      )
 
-        const defaultProfile = await manager.findOne(ShippingProfile, {
-          type: "default",
-        })
-        await manager.insert(ShippingOption, {
-          id: "return-option",
-          name: "Test ret",
-          profile_id: defaultProfile.id,
-          region_id: "test-region",
-          provider_id: "test-ful",
-          data: {},
-          price_type: "flat_rate",
-          amount: 1000,
-          is_return: true,
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      const defaultProfile = await manager.findOne(ShippingProfile, {
+        where: {
+          type: ShippingProfileType.DEFAULT,
+        },
+      })
+      await manager.insert(ShippingOption, {
+        id: "return-option",
+        name: "Test ret",
+        profile_id: defaultProfile.id,
+        region_id: "test-region",
+        provider_id: "test-ful",
+        data: {},
+        price_type: "flat_rate",
+        amount: 1000,
+        is_return: true,
+      })
     })
 
     afterEach(async () => {
@@ -100,66 +87,50 @@ describe("/store/carts", () => {
           console.log(err.response.data.message)
         })
 
-      expect(response.data).toMatchSnapshot({
-        swap: {
-          id: expect.stringMatching(/^swap_*/),
-          idempotency_key: expect.any(String),
-          additional_items: [
-            {
-              id: expect.stringMatching(/^item_*/),
-              cart_id: expect.stringMatching(/^cart_*/),
-              swap_id: expect.stringMatching(/^swap_*/),
-              variant: {
-                id: "test-variant-2",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                product: {
-                  profile_id: expect.stringMatching(/^sp_*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              },
-              quantity: 1,
-              variant_id: "test-variant-2",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          order: {
-            id: "test-order",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          cart_id: expect.stringMatching(/^cart_*/),
-          cart: {
-            id: expect.stringMatching(/^cart_*/),
-            billing_address_id: "test-billing-address",
-            type: "swap",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            shipping_address_id: expect.stringMatching(/^addr_*/),
-            metadata: {
-              swap_id: expect.stringMatching(/^swap_*/),
-            },
-          },
-          return_order: {
-            id: expect.stringMatching(/^ret_*/),
-            swap_id: expect.stringMatching(/^swap_*/),
-            refund_amount: 7200,
-            items: [
-              {
-                item_id: "test-item",
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          swap: expect.objectContaining({
+            id: expect.stringMatching(/^swap_*/),
+            additional_items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.stringMatching(/^item_*/),
+                cart_id: expect.stringMatching(/^cart_*/),
+                swap_id: expect.stringMatching(/^swap_*/),
+                variant: expect.objectContaining({
+                  id: "test-variant-2",
+                }),
                 quantity: 1,
-                return_id: expect.stringMatching(/^ret_*/),
-              },
-            ],
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
-      })
+                variant_id: "test-variant-2",
+              }),
+            ]),
+            order: expect.objectContaining({
+              id: "test-order",
+            }),
+            cart_id: expect.stringMatching(/^cart_*/),
+            cart: expect.objectContaining({
+              id: expect.stringMatching(/^cart_*/),
+              billing_address_id: "test-billing-address",
+              type: "swap",
+              shipping_address_id: "test-shipping-address",
+              metadata: expect.objectContaining({
+                swap_id: expect.stringMatching(/^swap_*/),
+              }),
+            }),
+            return_order: expect.objectContaining({
+              id: expect.stringMatching(/^ret_*/),
+              swap_id: expect.stringMatching(/^swap_*/),
+              refund_amount: 7200,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  item_id: "test-item",
+                  quantity: 1,
+                  return_id: expect.stringMatching(/^ret_*/),
+                }),
+              ]),
+            }),
+          }),
+        })
+      )
     })
 
     it("swap with return shipping", async () => {
@@ -186,75 +157,54 @@ describe("/store/carts", () => {
           console.log(err.response.data.message)
         })
 
-      expect(response.data).toMatchSnapshot({
-        swap: {
+      expect(response.data).toEqual({
+        swap: expect.objectContaining({
           id: expect.stringMatching(/^swap_*/),
-          idempotency_key: expect.any(String),
-          additional_items: [
-            {
+          additional_items: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.stringMatching(/^item_*/),
               cart_id: expect.stringMatching(/^cart_*/),
               swap_id: expect.stringMatching(/^swap_*/),
-              variant: {
+              variant: expect.objectContaining({
                 id: "test-variant-2",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                product: {
-                  profile_id: expect.stringMatching(/^sp_*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              },
+              }),
               quantity: 1,
               variant_id: "test-variant-2",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          order: {
+            }),
+          ]),
+          order: expect.objectContaining({
             id: "test-order",
-            display_id: expect.any(Number),
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
+          }),
           cart_id: expect.stringMatching(/^cart_*/),
-          cart: {
+          cart: expect.objectContaining({
             id: expect.stringMatching(/^cart_*/),
             billing_address_id: "test-billing-address",
-            shipping_address_id: expect.stringMatching(/^addr_*/),
+            shipping_address_id: "test-shipping-address",
             type: "swap",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            metadata: {
+            metadata: expect.objectContaining({
               swap_id: expect.stringMatching(/^swap_*/),
-            },
-          },
-          return_order: {
+            }),
+          }),
+          return_order: expect.objectContaining({
             id: expect.stringMatching(/^ret_*/),
             swap_id: expect.stringMatching(/^swap_*/),
             refund_amount: 6200,
-            shipping_method: {
+            shipping_method: expect.objectContaining({
               id: expect.stringMatching(/^sm_*/),
               return_id: expect.stringMatching(/^ret_*/),
-              shipping_option: {
+              shipping_option: expect.objectContaining({
                 profile_id: expect.stringMatching(/^sp_*/),
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-            },
-            items: [
-              {
+              }),
+            }),
+            items: expect.arrayContaining([
+              expect.objectContaining({
                 item_id: "test-item",
                 quantity: 1,
                 return_id: expect.stringMatching(/^ret_*/),
-              },
-            ],
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
+              }),
+            ]),
+          }),
+        }),
       })
     })
   })

@@ -1,21 +1,24 @@
 const path = require("path")
-require("dotenv").config({ path: path.join(__dirname, "../.env") })
 
+const { getConfigFile } = require("medusa-core-utils")
 const { dropDatabase } = require("pg-god")
-const { createConnection } = require("typeorm")
+const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 
-const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
-const DB_USERNAME = process.env.DB_USERNAME || "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration-${workerId}`
+const DB_HOST = process.env.DB_HOST
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_TEMP_NAME
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 
 const pgGodCredentials = {
   user: DB_USERNAME,
   password: DB_PASSWORD,
+  host: DB_HOST,
 }
 
 const keepTables = [
+  "store",
   "staged_job",
   "shipping_profile",
   "fulfillment_provider",
@@ -24,37 +27,44 @@ const keepTables = [
   "currency",
 ]
 
-let connectionType = "postgresql"
+let dataSourceType = "postgresql"
 
 const DbTestUtil = {
   db_: null,
 
-  setDb: function (connection) {
-    this.db_ = connection
+  setDb: function (dataSource) {
+    this.db_ = dataSource
   },
 
   clear: async function () {
     this.db_.synchronize(true)
   },
 
-  teardown: async function () {
+  teardown: async function ({ forceDelete } = {}) {
+    forceDelete = forceDelete || []
+
     const entities = this.db_.entityMetadatas
+
     const manager = this.db_.manager
 
-    if (connectionType === "sqlite") {
+    if (dataSourceType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = OFF`)
     } else {
       await manager.query(`SET session_replication_role = 'replica';`)
     }
 
     for (const entity of entities) {
-      if (keepTables.includes(entity.tableName)) {
+      if (
+        keepTables.includes(entity.tableName) &&
+        !forceDelete.includes(entity.tableName)
+      ) {
         continue
       }
 
-      await manager.query(`DELETE FROM "${entity.tableName}";`)
+      await manager.query(`DELETE
+                           FROM "${entity.tableName}";`)
     }
-    if (connectionType === "sqlite") {
+    if (dataSourceType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = ON`)
     } else {
       await manager.query(`SET session_replication_role = 'origin';`)
@@ -62,54 +72,87 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
-    await this.db_.close()
-    const databaseName = `medusa-integration-${workerId}`
-    return await dropDatabase({ databaseName }, pgGodCredentials)
+    await this.db_.destroy()
+    return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
 }
 
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+  initDb: async function ({ cwd, database_extra }) {
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { projectConfig, featureFlags } = configModule
 
-    const modelsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `models`
-    )).default
+    const featureFlagsLoader =
+      require("@medusajs/medusa/dist/loaders/feature-flags").default
+
+    const featureFlagsRouter = featureFlagsLoader({ featureFlags })
+    const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
-    const { projectConfig } = require(configPath)
     if (projectConfig.database_type === "sqlite") {
-      connectionType = "sqlite"
-      const dbConnection = await createConnection({
+      dataSourceType = "sqlite"
+      const dataSource = new DataSource({
         type: "sqlite",
         database: projectConfig.database_database,
         synchronize: true,
         entities,
+        extra: database_extra ?? {},
       })
 
-      instance.setDb(dbConnection)
-      return dbConnection
+      const dbDataSource = await dataSource.initialize()
+
+      instance.setDb(dbDataSource)
+      return dbDataSource
     } else {
-      const databaseName = `medusa-integration-${workerId}`
+      await dbFactory.createFromTemplate(DB_NAME)
 
-      await dbFactory.createFromTemplate(databaseName)
+      // get migrations with enabled featureflags
+      const migrationDir = path.resolve(
+        path.join(
+          __dirname,
+          `../../`,
+          `node_modules`,
+          `@medusajs`,
+          `medusa`,
+          `dist`,
+          `migrations`,
+          `*.js`
+        )
+      )
 
-      const dbConnection = await createConnection({
+      const {
+        getEnabledMigrations,
+        getModuleSharedResources,
+      } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
+
+      const { migrations: moduleMigrations, models: moduleModels } =
+        getModuleSharedResources(configModule, featureFlagsRouter)
+
+      const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
+        featureFlagsRouter.isFeatureEnabled(flag)
+      )
+
+      const enabledEntities = entities.filter(
+        (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
+      )
+
+      const dbDataSource = new DataSource({
         type: "postgres",
         url: DB_URL,
-        entities,
+        entities: enabledEntities.concat(moduleModels),
+        migrations: enabledMigrations.concat(moduleMigrations),
+        extra: database_extra ?? {},
+        name: "integration-tests",
       })
 
-      instance.setDb(dbConnection)
-      return dbConnection
+      await dbDataSource.initialize()
+
+      await dbDataSource.runMigrations()
+
+      instance.setDb(dbDataSource)
+      return dbDataSource
     }
   },
   useDb: function () {

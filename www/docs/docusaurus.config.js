@@ -1,124 +1,136 @@
+require('dotenv').config();
 const path = require("path")
+const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
+const apisPath = path.join(__dirname, "../../docs/api")
+const reverseSidebar = require('./src/utils/reverseSidebar')
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
+const announcementBar = JSON.parse(fs.readFileSync('./announcement.json'))
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
-  title: "Medusa Commerce",
+const config = {
+  title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
   plugins: [
     [
-      "docusaurus2-dotenv",
+      "docusaurus-plugin-segment",
       {
-        path: "./.env", // The path to your environment variables.
-        systemvars: true, // Set to true if you would rather load all system variables as well (useful for CI purposes)
-      },
+        apiKey: process.env.SEGMENT_API_KEY || "temp"
+      }
     ],
+    require.resolve("docusaurus-plugin-image-zoom"),
   ],
   themeConfig: {
-    disableSwitch: true,
+    image: 'img/docs-banner.jpg',
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
     algolia: {
       apiKey: algoliaApiKey,
       indexName: "medusa-commerce",
       placeholder: "Search docs...",
       appId: algoliaAppId,
+      contextualSearch: false,
+      externalUrlRegex: "https://medusajs.com"
     },
     prism: {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
-      theme: require("@kiwicopple/prism-react-renderer/themes/vsDark"),
-      darkTheme: require("@kiwicopple/prism-react-renderer/themes/vsDark"),
+      theme: require("./src/themes/medusaDocs"),
+    },
+    zoom: {
+      selector: '.markdown :not(.no-zoom-img) > img:not(.no-zoom-img)'
     },
     navbar: {
-      hideOnScroll: true,
+      hideOnScroll: false,
       logo: {
-        alt: "Medusa Commerce",
-        src: "img/logo.svg",
-        srcDark: "img/logo.svg",
+        alt: "Medusa",
+        src: "img/logo.png",
+        srcDark: "img/logo-dark.png"
       },
       items: [
         {
-          href: "https://docs.medusajs.com",
-          label: "Overview",
+          type: 'search',
+          position: 'left',
         },
         {
-          type: "doc",
-          docId: "tutorial/set-up-your-development-environment",
-          label: "Tutorial",
+          type: "docSidebar",
+          sidebarId: "homepage",
+          label: "Docs",
+          position: "right"
         },
         {
-          href: `https://docs.medusajs.com/api/store`,
-          target: "_self",
-          label: "Reference",
+          type: "docSidebar",
+          sidebarId: "userGuideSidebar",
+          label: "User Guide",
+          position: "right"
         },
         {
-          href: "https://github.com/medusajs/medusa",
-          className: "navbar-github-link",
-          position: "right",
+          href: "/api/store",
+          label: "Store API",
+          prependBaseUrlToHref: true,
+          target: '_blank',
+          position: "right"
         },
         {
-          type: "search",
-          position: "right",
-        },
+          href: "/api/admin",
+          label: "Admin API",
+          prependBaseUrlToHref: true,
+          target: '_blank',
+          position: "right"
+        }
       ],
     },
+    navbarActions: [
+      {
+        type: "link",
+        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+        title: "Report an Issue",
+        icon: "report"
+      }
+    ],
     footer: {
-      links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Tutorial",
-              to: "/tutorial/set-up-your-development-environment",
-            },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
-            },
-            {
-              label: "Discord",
-              href: "https://discord.gg/H6naACAK",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/medusajs",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "Contact",
-              href: "https://medusa-commere.com",
-            },
-            {
-              label: "Privacy & Terms",
-              href: "https://medusa-commere.com",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/medusajs/medusa",
-            },
-          ],
-        },
-      ],
-      copyright: `© ${new Date().getFullYear()} Medusa Commerce`,
+      copyright: `© ${new Date().getFullYear()} Medusa, Inc. All rights reserved.`,
     },
+    socialLinks: [
+      {
+        type: 'discord',
+        href: 'https://discord.gg/medusajs'
+      },
+      {
+        type: 'twitter',
+        href: 'https://twitter.com/medusajs'
+      },
+      {
+        type: 'linkedin',
+        href: 'https://www.linkedin.com/company/medusajs'
+      },
+      {
+        type: 'github',
+        href: 'https://github.com/medusajs/medusa'
+      }
+    ],
+    reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml',
+    footerFeedback: {
+      event: 'survey'
+    },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true
+      }
+    }
   },
   presets: [
     [
@@ -126,14 +138,74 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/medusajs/medusa/edit/master/www/",
+          editUrl: "https://github.com/medusajs/medusa/edit/master/docs/content",
           path: docsPath,
           routeBasePath: "/",
+          remarkPlugins: [
+            [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
+          ],
+          showLastUpdateTime: true,
+          // breadcrumbs: false,
+          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
+            const sidebarItems = await defaultSidebarItemsGenerator(args);
+            return reverseSidebar(sidebarItems, args.item);
+          },
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: require.resolve("./src/css/custom.css")
         },
+        gtag: {
+          trackingID: 'G-S7G7X3JYS3',
+        },
+      },
+    ],
+    [
+      'redocusaurus',
+      {
+        // Plugin Options for loading OpenAPI files
+        specs: [
+          {
+            spec: path.join(apisPath, 'store/openapi.yaml'),
+            route: '/api/store',
+            layout: {
+              noFooter: true
+            }
+          },
+          {
+            spec: path.join(apisPath, 'admin/openapi.yaml'),
+            route: '/api/admin',
+            layout: {
+              noFooter: true
+            }
+          }
+        ],
+        // Theme Options for modifying how redoc renders them
+        theme: {
+          primaryColorDark: '#161618',
+          options: {
+            disableSearch: true,
+            nativeScrollbars: true,
+            sortTagsAlphabetically: true,
+            hideDownloadButton: true,
+            expandResponses: "200,204",
+            generatedPayloadSamplesMaxDepth: 4,
+            showObjectSchemaExamples: true,
+            requiredPropsFirst: true,
+            hideRequestPayloadSample: true
+          },
+          theme: {
+            sidebar: {
+              width: '250px'
+            }
+          }
+        }
       },
     ],
   ],
 }
+
+if (Object.keys(announcementBar).length) {
+  config.themeConfig.announcementBar = announcementBar
+}
+
+module.exports = config

@@ -41,8 +41,10 @@ export class RestockNotification {
  *     type: string
  *     description: "The id of the variant that customers have signed up to be notified about,"
  *   emails:
- *     type: string[]
  *     description: "The emails of customers who wish to be notified about restocks."
+ *     type: array
+ *     items:
+ *       type: string
  *   created_at:
  *     type: string
  *     format: date-time

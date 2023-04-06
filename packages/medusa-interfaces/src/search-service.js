@@ -9,6 +9,10 @@ class SearchService extends BaseService {
     super()
   }
 
+  get options() {
+    return this.options_ ?? {}
+  }
+
   /**
    * Used to create an index
    * @param indexName {string} - the index name
@@ -32,7 +36,7 @@ class SearchService extends BaseService {
    * Used to index documents by the search engine provider
    * @param indexName {string} - the index name
    * @param documents {Array.<Object>} - documents array to be indexed
-   * @param type {Array.<Object>} - type of documents to be added (e.g: products, regions, orders, etc)
+   * @param type {string} - type of documents to be added (e.g: products, regions, orders, etc)
    * @return {Promise<{object}>} - returns response from search engine provider
    */
   addDocuments(indexName, documents, type) {

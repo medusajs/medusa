@@ -1,68 +1,60 @@
-import {
-  Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity } from "typeorm"
+
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class ProductTag {
-  @PrimaryColumn()
-  id: string
-
+export class ProductTag extends SoftDeletableEntity {
   @Column()
   value: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `ptag_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "ptag")
   }
 }
 
 /**
- * @schema product_tag
+ * @schema ProductTag
  * title: "Product Tag"
  * description: "Product Tags can be added to Products for easy filtering and grouping."
- * x-resourceId: product_tag
+ * type: object
+ * required:
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
+ *   - updated_at
+ *   - value
  * properties:
  *   id:
- *     description: "The id of the Product Tag. This value will be prefixed with `ptag_`."
+ *     description: The product tag's ID
  *     type: string
+ *     example: ptag_01G8K2MTMG9168F2B70S1TAVK3
  *   value:
- *     description: "The value that the Product Tag represents (e.g. \"Pants\")."
+ *     description: The value that the Product Tag represents
  *     type: string
+ *     example: Pants
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
+ *     description: The date with timezone at which the resource was created.
  *     type: string
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
+ *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
+ *     example: {car: "white"}
  */

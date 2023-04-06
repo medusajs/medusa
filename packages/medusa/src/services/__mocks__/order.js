@@ -4,6 +4,10 @@ export const orders = {
   testOrder: {
     id: IdMap.getId("test-order"),
     email: "virgil@vandijk.dk",
+    sales_channel_id: "test-channel",
+    sales_channel: {
+      id: "test-channel",
+    },
     billing_address: {
       first_name: "Virgil",
       last_name: "Van Dijk",
@@ -42,7 +46,9 @@ export const orders = {
       },
     ],
     regionid: IdMap.getId("testRegion"),
+    currency_code: "USD",
     customerid: IdMap.getId("testCustomer"),
+    fulfillments: [],
     payment_method: {
       providerid: "default_provider",
       data: {},
@@ -96,6 +102,7 @@ export const orders = {
       },
     ],
     regionid: IdMap.getId("region-france"),
+    currency_code: "EUR",
     customerid: IdMap.getId("test-customer"),
     payment_method: {
       providerid: "default_provider",
@@ -160,6 +167,15 @@ export const OrderServiceMock = {
     return Promise.resolve(undefined)
   }),
   retrieve: jest.fn().mockImplementation((orderId) => {
+    if (orderId === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    if (orderId === IdMap.getId("processed-order")) {
+      return Promise.resolve(orders.processedOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
+  retrieveWithTotals: jest.fn().mockImplementation((orderId) => {
     if (orderId === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }

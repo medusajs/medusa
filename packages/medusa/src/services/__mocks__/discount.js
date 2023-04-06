@@ -6,6 +6,7 @@ export const discounts = {
     code: "Something",
     is_dynamic: true,
     rule: {
+      id: IdMap.getId("dynamic_rule"),
       type: "percentage",
       allocation: "total",
       value: 10,
@@ -16,6 +17,7 @@ export const discounts = {
     id: IdMap.getId("total10"),
     code: "10%OFF",
     rule: {
+      id: IdMap.getId("total10_rule"),
       type: "percentage",
       allocation: "total",
       value: 10,
@@ -26,10 +28,10 @@ export const discounts = {
     id: IdMap.getId("item10Percent"),
     code: "MEDUSA",
     rule: {
+      id: IdMap.getId("item10Percent_rule"),
       type: "percentage",
       allocation: "item",
       value: 10,
-      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -37,6 +39,7 @@ export const discounts = {
     id: IdMap.getId("total10Fixed"),
     code: "MEDUSA",
     rule: {
+      id: IdMap.getId("total10Fixed_rule"),
       type: "fixed",
       allocation: "total",
       value: 10,
@@ -47,10 +50,10 @@ export const discounts = {
     id: IdMap.getId("item9Fixed"),
     code: "MEDUSA",
     rule: {
+      id: IdMap.getId("item9Fixed_rule"),
       type: "fixed",
       allocation: "item",
       value: 9,
-      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -58,10 +61,10 @@ export const discounts = {
     id: IdMap.getId("item2Fixed"),
     code: "MEDUSA",
     rule: {
+      id: IdMap.getId("item2Fixed_rule"),
       type: "fixed",
       allocation: "item",
       value: 2,
-      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -69,10 +72,10 @@ export const discounts = {
     id: IdMap.getId("item10FixedNoVariants"),
     code: "MEDUSA",
     rule: {
+      id: IdMap.getId("item10FixedNoVariants_rule"),
       type: "fixed",
       allocation: "item",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -81,10 +84,10 @@ export const discounts = {
     code: "MEDUSA",
     ends_at: new Date("December 17, 1995 03:24:00"),
     rule: {
+      id: IdMap.getId("expired_rule"),
       type: "fixed",
       allocation: "item",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -92,10 +95,10 @@ export const discounts = {
     id: IdMap.getId("freeshipping"),
     code: "FREESHIPPING",
     rule: {
+      id: IdMap.getId("freeshipping_rule"),
       type: "free_shipping",
       allocation: "total",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -103,16 +106,17 @@ export const discounts = {
     id: IdMap.getId("us-discount"),
     code: "US10",
     rule: {
+      id: IdMap.getId("us-discount_rule"),
       type: "free_shipping",
       allocation: "total",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("us")],
   },
   alreadyExists: {
     code: "ALREADYEXISTS",
     rule: {
+      id: IdMap.getId("ALREADYEXISTS_rule"),
       type: "percentage",
       allocation: "total",
       value: 20,
@@ -122,13 +126,13 @@ export const discounts = {
 }
 
 export const DiscountServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(data)
   }),
-  retrieveByCode: jest.fn().mockImplementation(data => {
+  retrieveByCode: jest.fn().mockImplementation((data) => {
     if (data === "10%OFF") {
       return Promise.resolve(discounts.total10Percent)
     }
@@ -140,7 +144,7 @@ export const DiscountServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  retrieve: jest.fn().mockImplementation(data => {
+  retrieve: jest.fn().mockImplementation((data) => {
     if (data === IdMap.getId("total10")) {
       return Promise.resolve(discounts.total10Percent)
     }
@@ -152,20 +156,20 @@ export const DiscountServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  delete: jest.fn().mockImplementation(data => {
+  delete: jest.fn().mockImplementation((data) => {
     return Promise.resolve({
       id: IdMap.getId("total10"),
       object: "discount",
       deleted: true,
     })
   }),
-  list: jest.fn().mockImplementation(data => {
+  list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([{}])
   }),
-  listAndCount: jest.fn().mockImplementation(data => {
+  listAndCount: jest.fn().mockImplementation((data) => {
     return Promise.resolve([{}])
   }),
   addRegion: jest.fn().mockReturnValue(Promise.resolve()),

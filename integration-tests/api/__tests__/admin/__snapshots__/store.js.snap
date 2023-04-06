@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/store POST /admin/store fails to update default currency if not in store currencies 1`] = `
+Object {
+  "message": "Store does not have currency: eur",
+  "type": "invalid_data",
+}
+`;

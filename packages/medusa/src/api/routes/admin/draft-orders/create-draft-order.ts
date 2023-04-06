@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -11,17 +10,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { transformIdableFields } from "medusa-core-utils"
 import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
+
+import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
 import { DraftOrder } from "../../../.."
-import { DraftOrderService } from "../../../../services"
+import { CartService, DraftOrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
+import { DraftOrderCreateProps } from "../../../../types/draft-orders"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+
 /**
- * @oas [post] /draft-orders
+ * @oas [post] /admin/draft-orders
  * operationId: "PostDraftOrders"
  * summary: "Create a Draft Order"
  * description: "Creates a Draft Order"
@@ -30,111 +37,125 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - email
- *           - items
- *           - region_id
- *           - shipping_methods
- *         properties:
- *           status:
- *             description: "The status of the draft order"
- *             type: string
- *           email:
- *             description: "The email of the customer of the draft order"
- *             type: string
- *           billing_address:
- *             description: "The Address to be used for billing purposes."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
- *           shipping_address:
- *             description: "The Address to be used for shipping."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
- *           items:
- *             description: The Line Items that have been received.
- *             type: array
- *             items:
- *               properties:
- *                 variant_id:
- *                   description: The id of the Product Variant to generate the Line Item from.
- *                   type: string
- *                 unit_price:
- *                   description: The potential custom price of the item.
- *                   type: integer
- *                 title:
- *                   description: The potential custom title of the item.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Line Item.
- *                   type: integer
- *                 metadata:
- *                   description: The optional key-value map with additional details about the Line Item.
- *                   type: object
- *           region_id:
- *             description: The id of the region for the draft order
- *             type: string
- *           discounts:
- *             description: The discounts to add on the draft order
- *             type: array
- *             items:
- *               properties:
- *                 code:
- *                   description: The code of the discount to apply
- *                   type: string
- *           customer_id:
- *             description: The id of the customer to add on the draft order
- *             type: string
- *           no_notification_order:
- *             description: An optional flag passed to the resulting order to determine use of notifications.
- *             type: boolean
- *           shipping_methods:
- *             description: The shipping methods for the draft order
- *             type: array
- *             items:
- *               properties:
- *                 option_id:
- *                   description: The id of the shipping option in use
- *                   type: string
- *                 data:
- *                   description: The optional additional data needed for the shipping method
- *                   type: object
- *                 price:
- *                   description: The potential custom price of the shipping
- *                   type: integer
- *           metadata:
- *             description: The optional key-value map with additional details about the Draft Order.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersReq"
+ * x-codegen:
+ *   method: create
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.draftOrders.create({
+ *         email: 'user@example.com',
+ *         region_id,
+ *         items: [
+ *           {
+ *             quantity: 1
+ *           }
+ *         ],
+ *         shipping_methods: [
+ *           {
+ *             option_id
+ *           }
+ *         ],
+ *       })
+ *       .then(({ draft_order }) => {
+ *         console.log(draft_order.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com",
+ *           "region_id": "{region_id}"
+ *           "items": [
+ *              {
+ *                "quantity": 1
+ *              }
+ *           ],
+ *           "shipping_methods": [
+ *              {
+ *                "option_id": "{option_id}"
+ *              }
+ *           ]
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *           $ref: "#/components/schemas/AdminDraftOrdersRes"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 
 export default async (req, res) => {
   const validated = await validator(AdminPostDraftOrdersReq, req.body)
 
-  const value = transformIdableFields(validated, [
-    "shipping_address",
-    "billing_address",
-  ])
+  const { shipping_address, billing_address, ...rest } = validated
+
+  const draftOrderDataToCreate: DraftOrderCreateProps = { ...rest }
+
+  if (typeof shipping_address === "string") {
+    draftOrderDataToCreate.shipping_address_id = shipping_address
+  } else {
+    draftOrderDataToCreate.shipping_address = shipping_address
+  }
+
+  if (typeof billing_address === "string") {
+    draftOrderDataToCreate.billing_address_id = billing_address
+  } else {
+    draftOrderDataToCreate.billing_address = billing_address
+  }
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
-  let draftOrder: DraftOrder = await draftOrderService.create(value)
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  let draftOrder: DraftOrder = await manager.transaction(
+    async (transactionManager) => {
+      return await draftOrderService
+        .withTransaction(transactionManager)
+        .create(draftOrderDataToCreate)
+    }
+  )
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {
     relations: defaultAdminDraftOrdersRelations,
     select: defaultAdminDraftOrdersFields,
   })
 
-  res.status(200).json({ draft_order: draftOrder })
+  const cartService: CartService = req.scope.resolve("cartService")
+
+  draftOrder.cart = await cartService
+    .withTransaction(manager)
+    .retrieveWithTotals(draftOrder.cart_id, {
+      relations: defaultAdminDraftOrdersCartRelations,
+      select: defaultAdminDraftOrdersCartFields,
+    })
+
+  res.status(200).json({ draft_order: cleanResponseData(draftOrder, []) })
 }
 
 enum Status {
@@ -142,6 +163,96 @@ enum Status {
   completed = "completed",
 }
 
+/**
+ * @schema AdminPostDraftOrdersReq
+ * type: object
+ * required:
+ *   - email
+ *   - region_id
+ *   - shipping_methods
+ * properties:
+ *   status:
+ *     description: "The status of the draft order"
+ *     type: string
+ *     enum: [open, completed]
+ *   email:
+ *     description: "The email of the customer of the draft order"
+ *     type: string
+ *     format: email
+ *   billing_address:
+ *     description: "The Address to be used for billing purposes."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressPayload"
+ *       - type: string
+ *   shipping_address:
+ *     description: "The Address to be used for shipping."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressPayload"
+ *       - type: string
+ *   items:
+ *     description: The Line Items that have been received.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - quantity
+ *       properties:
+ *         variant_id:
+ *           description: The ID of the Product Variant to generate the Line Item from.
+ *           type: string
+ *         unit_price:
+ *           description: The potential custom price of the item.
+ *           type: integer
+ *         title:
+ *           description: The potential custom title of the item.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Line Item.
+ *           type: integer
+ *         metadata:
+ *           description: The optional key-value map with additional details about the Line Item.
+ *           type: object
+ *   region_id:
+ *     description: The ID of the region for the draft order
+ *     type: string
+ *   discounts:
+ *     description: The discounts to add on the draft order
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - code
+ *       properties:
+ *         code:
+ *           description: The code of the discount to apply
+ *           type: string
+ *   customer_id:
+ *     description: The ID of the customer to add on the draft order
+ *     type: string
+ *   no_notification_order:
+ *     description: An optional flag passed to the resulting order to determine use of notifications.
+ *     type: boolean
+ *   shipping_methods:
+ *     description: The shipping methods for the draft order
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *          - option_id
+ *       properties:
+ *         option_id:
+ *           description: The ID of the shipping option in use
+ *           type: string
+ *         data:
+ *           description: The optional additional data needed for the shipping method
+ *           type: object
+ *         price:
+ *           description: The potential custom price of the shipping
+ *           type: integer
+ *   metadata:
+ *     description: The optional key-value map with additional details about the Draft Order.
+ *     type: object
+ */
 export class AdminPostDraftOrdersReq {
   @IsEnum(Status)
   @IsOptional()
@@ -151,18 +262,19 @@ export class AdminPostDraftOrdersReq {
   email: string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
 
   @IsArray()
   @Type(() => Item)
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  items: Item[]
+  @IsOptional()
+  items?: Item[]
 
   @IsString()
   region_id: string
@@ -189,7 +301,7 @@ export class AdminPostDraftOrdersReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object = {}
+  metadata?: Record<string, unknown> = {}
 }
 
 class ShippingMethod {
@@ -198,7 +310,7 @@ class ShippingMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object = {}
+  data?: Record<string, unknown> = {}
 
   @IsNumber()
   @IsOptional()
@@ -228,5 +340,5 @@ class Item {
 
   @IsObject()
   @IsOptional()
-  metadata?: object = {}
+  metadata?: Record<string, unknown> = {}
 }

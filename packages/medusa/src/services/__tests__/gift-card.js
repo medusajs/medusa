@@ -5,28 +5,29 @@ import GiftCardService from "../gift-card"
 describe("GiftCardService", () => {
   const eventBusService = {
     emit: jest.fn(),
-    withTransaction: function() {
+    withTransaction: function () {
       return this
     },
   }
 
   describe("create", () => {
     const giftCardRepo = MockRepository({
-      create: s => {
+      create: (s) => {
         return Promise.resolve(s)
       },
-      save: s => {
+      save: (s) => {
         return Promise.resolve(s)
       },
     })
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
         return Promise.resolve({
           id: IdMap.getId("region-id"),
+          tax_rate: 19,
         })
       },
     }
@@ -57,25 +58,14 @@ describe("GiftCardService", () => {
         order_id: IdMap.getId("order-id"),
         is_disabled: true,
         code: expect.any(String),
+        tax_rate: null
       })
-    })
-
-    it("fails to create giftcard if no region is provided", async () => {
-      const card = {
-        ...giftCard,
-      }
-
-      card.region_id = undefined
-
-      await expect(giftCardService.create(card)).rejects.toThrow(
-        "Gift card is missing region_id"
-      )
     })
   })
 
   describe("retrieve", () => {
     const giftCardRepo = MockRepository({
-      findOneWithRelations: () => {
+      findOne: () => {
         return Promise.resolve({})
       },
     })
@@ -95,22 +85,19 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
-        ["region"],
-        {
-          where: {
-            id: IdMap.getId("gift-card"),
-          },
-          select: ["id"],
-        }
-      )
+      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
+        relationLoadStrategy: "query",
+        relations: { region: true },
+        select: { id: true },
+        where: { id: IdMap.getId("gift-card") },
+      })
     })
   })
 
   describe("retrieveByCode", () => {
     const giftCardRepo = MockRepository({
-      findOneWithRelations: () => {
+      findOne: () => {
         return Promise.resolve({})
       },
     })
@@ -130,16 +117,13 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
-        ["region"],
-        {
-          where: {
-            code: "1234-1234-1234-1234",
-          },
-          select: ["id"],
-        }
-      )
+      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
+        "relationLoadStrategy": "query",
+        "relations": {"region": true},
+        "select": {"id": true},
+        "where": {"code": "1234-1234-1234-1234"}
+      })
     })
   })
 
@@ -152,16 +136,16 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOneWithRelations: s => {
+      findOne: (s) => {
         return Promise.resolve(giftCard)
       },
-      save: s => {
+      save: (s) => {
         return Promise.resolve(s)
       },
     })
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -198,7 +182,7 @@ describe("GiftCardService", () => {
 
     it.each([[-100], [6000]])(
       "fails to update balance with illegal input '%s'",
-      async input => {
+      async (input) => {
         await expect(
           giftCardService.update(IdMap.getId("giftcard-id"), {
             balance: input,
@@ -215,7 +199,7 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOne: s => {
+      findOne: (s) => {
         switch (s.where.id) {
           case IdMap.getId("gift-card"):
             return Promise.resolve(giftCard)
@@ -223,7 +207,7 @@ describe("GiftCardService", () => {
             return Promise.resolve()
         }
       },
-      softRemove: s => {
+      softRemove: (s) => {
         return Promise.resolve()
       },
     })

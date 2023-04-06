@@ -1,6 +1,8 @@
-import { Swap } from "./../../../../"
 import { Router } from "express"
+
+import { Swap } from "./../../../../"
 import middlewares from "../../../middlewares"
+import { FindConfig } from "../../../../types/common"
 
 const route = Router()
 
@@ -19,6 +21,7 @@ export default (app) => {
 export const defaultStoreSwapRelations = [
   "order",
   "additional_items",
+  "additional_items.variant",
   "return_order",
   "return_order.shipping_method",
   "fulfillments",
@@ -27,7 +30,7 @@ export const defaultStoreSwapRelations = [
   "shipping_methods",
   "cart",
 ]
-export const defaultStoreSwapFields = [
+export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
   "id",
   "fulfillment_status",
   "payment_status",
@@ -43,6 +46,30 @@ export const defaultStoreSwapFields = [
   "idempotency_key",
 ]
 
+/**
+ * @schema StoreSwapsRes
+ * type: object
+ * x-expanded-relations:
+ *   field: swap
+ *   relations:
+ *     - additional_items
+ *     - additional_items.variant
+ *     - cart
+ *     - fulfillments
+ *     - order
+ *     - payment
+ *     - return_order
+ *     - return_order.shipping_method
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ * required:
+ *   - swap
+ * properties:
+ *   swap:
+ *     $ref: "#/components/schemas/Swap"
+ */
 export type StoreSwapsRes = {
   swap: Swap
 }

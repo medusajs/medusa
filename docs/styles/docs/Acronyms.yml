@@ -1,0 +1,74 @@
+extends: conditional
+message: "'%s' has no definition."
+link: https://medusajs.notion.site/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0#4a59adcd20a949008302f27502921933
+level: error
+ignorecase: false
+scope: paragraph
+# Ensures that the existence of 'first' implies the existence of 'second'.
+first: '\b([A-Z]{3,5})\b'
+second: '(?:\b[A-Z][a-z]+ )+\(([A-Z]{3,5})\)'
+# ... with the exception of these:
+exceptions:
+  - API
+  - ASP
+  - CLI
+  - CPU
+  - CSS
+  - CSV
+  - DEBUG
+  - DOM
+  - DPI
+  - FAQ
+  - GCC
+  - GDB
+  - GET
+  - GPU
+  - GTK
+  - GUI
+  - HTML
+  - HTTP
+  - HTTPS
+  - IDE
+  - JAR
+  - JSON
+  - JSX
+  - LESS
+  - LLDB
+  - NET
+  - NOTE
+  - NVDA
+  - OSS
+  - PATH
+  - PDF
+  - PHP
+  - POST
+  - RAM
+  - REPL
+  - RSA
+  - SCM
+  - SCSS
+  - SDK
+  - SQL
+  - SSH
+  - SSL
+  - SVG
+  - TBD
+  - TCP
+  - TODO
+  - URI
+  - URL
+  - USB
+  - UTF
+  - XML
+  - XSS
+  - YAML
+  - ZIP
+  - AWS
+  - REST
+  - MDX
+  - NPM
+  - SMS
+  - SID
+  - VIP
+  - UPS
+  - RMA

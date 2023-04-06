@@ -1,2 +1,4 @@
 # All files not owned by other teams must be reviewed by the core team
 *                                               @medusajs/core
+/docs/                                          @medusajs/docs
+/www/                                           @medusajs/docs

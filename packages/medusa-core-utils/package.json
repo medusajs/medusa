@@ -1,6 +1,6 @@
 {
   "name": "medusa-core-utils",
-  "version": "1.1.31",
+  "version": "1.2.0",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -11,31 +11,19 @@
   "scripts": {
     "test": "jest",
     "build": "tsc --build",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch": "tsc --watch"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.8",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-transform-classes": "^7.9.5",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.13.9",
-    "@babel/preset-typescript": "^7.16.0",
-    "@babel/runtime": "^7.13.9",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.1",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0",
-    "jest": "^25.5.2",
-    "prettier": "^1.19.1",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
-  },
-  "dependencies": {
-    "joi": "^17.3.0",
-    "joi-objectid": "^3.0.1"
   },
   "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
 }

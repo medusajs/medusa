@@ -1,18 +1,20 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ClaimService from "../claim"
-import { InventoryServiceMock } from "../__mocks__/inventory"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 
 const withTransactionMock = jest.fn()
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     withTransactionMock("eventBus")
     return this
   },
 }
 
 const totalsService = {
+  getCalculationContext: jest.fn(() => {}),
   getRefundTotal: jest.fn(() => 1000),
+  getLineItemRefund: jest.fn(() => 8000),
 }
 
 describe("ClaimService", () => {
@@ -27,6 +29,7 @@ describe("ClaimService", () => {
           {
             id: "itm_1",
             unit_price: 8000,
+            shipped_quantity: 1,
           },
         ],
       },
@@ -54,29 +57,46 @@ describe("ClaimService", () => {
     }
 
     const claimRepo = MockRepository({
-      create: d => ({ id: "claim_134", ...d }),
+      create: (d) => ({ id: "claim_134", ...d }),
     })
+
+    const lineItemRepository = MockRepository({
+      create: (d) => ({ id: "claim_item_134", ...d }),
+    })
+
+    const taxProviderService = {
+      createTaxLines: jest.fn(),
+      withTransaction: function () {
+        withTransactionMock("return")
+        return this
+      },
+    }
 
     const returnService = {
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("return")
         return this
       },
     }
 
     const lineItemService = {
-      generate: jest.fn((d, _, q) => ({ variant_id: d, quantity: q })),
+      generate: jest.fn((d, _, q) => ({
+        id: "test_item",
+        variant_id: d,
+        quantity: q,
+      })),
       retrieve: () => Promise.resolve({}),
-      withTransaction: function() {
+      list: () => Promise.resolve([{}]),
+      withTransaction: function () {
         withTransactionMock("lineItem")
         return this
       },
     }
 
-    const inventoryService = {
-      ...InventoryServiceMock,
-      withTransaction: function() {
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
+      withTransaction: function () {
         withTransactionMock("inventory")
         return this
       },
@@ -84,7 +104,7 @@ describe("ClaimService", () => {
 
     const claimItemService = {
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("claimItem")
         return this
       },
@@ -93,11 +113,13 @@ describe("ClaimService", () => {
     const claimService = new ClaimService({
       manager: MockManager,
       claimRepository: claimRepo,
+      lineItemRepository: lineItemRepository,
+      taxProviderService,
       totalsService,
       returnService,
       lineItemService,
       claimItemService,
-      inventoryService,
+      productVariantInventoryService,
       eventBusService,
     })
 
@@ -114,6 +136,7 @@ describe("ClaimService", () => {
       expect(returnService.create).toHaveBeenCalledWith({
         order_id: "1234",
         claim_order_id: "claim_134",
+        refund_amount: 8000,
         shipping_method: {
           option_id: "opt_13",
           price: 0,
@@ -135,17 +158,15 @@ describe("ClaimService", () => {
         1
       )
 
-      expect(inventoryService.confirmInventory).toHaveBeenCalledTimes(1)
-      expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
-        "var_123",
-        1
-      )
-      expect(withTransactionMock).toHaveBeenCalledWith("inventory")
-      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(1)
-      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-        "var_123",
-        -1
-      )
+      expect(
+        productVariantInventoryService.reserveQuantity
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        productVariantInventoryService.reserveQuantity
+      ).toHaveBeenCalledWith("var_123", 1, {
+        lineItemId: "test_item",
+        salesChannelId: undefined,
+      })
 
       expect(withTransactionMock).toHaveBeenCalledWith("claimItem")
       expect(claimItemService.create).toHaveBeenCalledTimes(1)
@@ -163,11 +184,12 @@ describe("ClaimService", () => {
       expect(claimRepo.create).toHaveBeenCalledWith({
         payment_status: "not_refunded",
         no_notification: true,
-        refund_amount: 1000,
+        refund_amount: 8000,
         type: "refund",
         order_id: "1234",
         additional_items: [
           {
+            id: "test_item",
             variant_id: "var_123",
             quantity: 1,
           },
@@ -246,7 +268,6 @@ describe("ClaimService", () => {
             },
           ],
         })
-        console.warn(res)
       } catch (e) {
         expect(e.message).toEqual(
           `Variant with id: var_123 does not have the required inventory`
@@ -273,6 +294,206 @@ describe("ClaimService", () => {
     )
   })
 
+  describe("getRefundTotalForClaimLinesOnOrder", () => {
+    const testOrder = (items = [], swaps = [], claims = []) => ({
+      id: "1234",
+      region_id: "order_region",
+      no_notification: true,
+      items: [
+        {
+          id: "itm_1",
+          unit_price: 8000,
+          shipped_quantity: 1,
+        },
+        ...items,
+      ],
+      ...swaps,
+      ...claims,
+    })
+
+    const claimRepo = MockRepository({})
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+      totalsService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calculates refund total for claim with one shipped item", async () => {
+      const order = testOrder([
+        {
+          id: "itm_1",
+          unit_price: 8000,
+          shipped_quantity: 1,
+        },
+      ])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledWith(order, {
+        id: "itm_1",
+        unit_price: 8000,
+        quantity: 1,
+        shipped_quantity: 1,
+      })
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("calculates refund total for claim with one shipped + one pending item", async () => {
+      const order = testOrder([{ id: "itm_2", shipped_quantity: 0 }])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledWith(order, {
+        id: "itm_1",
+        unit_price: 8000,
+        quantity: 1,
+        shipped_quantity: 1,
+      })
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("calculates refund total for claim with two shipped + one pending item", async () => {
+      const order = testOrder([
+        { id: "itm_2", shipped_quantity: 0 },
+        { id: "itm_3", shipped_quantity: 1, unit_price: 5000 },
+      ])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+          { item_id: "itm_3", quantity: 1 },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(2)
+      expect(totalsService.getLineItemRefund.mock.calls).toEqual([
+        [
+          order,
+          {
+            id: "itm_1",
+            unit_price: 8000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+        [
+          order,
+          {
+            id: "itm_3",
+            unit_price: 5000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      ])
+
+      expect(refund).toEqual(16000)
+    })
+
+    it("calculates refund total for claim on swap items", async () => {
+      const order = testOrder([], [[{ id: "itm_1", shipped_quantity: 1 }]])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund.mock.calls).toEqual([
+        [
+          order,
+          {
+            id: "itm_1",
+            unit_price: 8000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      ])
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("calculates refund total for claim on claim items", async () => {
+      const order = testOrder([], [], [{ id: "itm_1", shipped_quantity: 1 }])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund.mock.calls).toEqual([
+        [
+          order,
+          {
+            id: "itm_1",
+            unit_price: 8000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      ])
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("return 0 when claim lines cannot be found", async () => {
+      const order = testOrder([
+        { id: "itm_2", shipped_quantity: 0 },
+        { id: "itm_3", shipped_quantity: 1, unit_price: 5000 },
+      ])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [{ item_id: "itm_10", quantity: 1 }]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(0)
+
+      expect(refund).toEqual(0)
+    })
+  })
+
   describe("retrieve", () => {
     const claimRepo = MockRepository()
     const claimService = new ClaimService({
@@ -293,7 +514,7 @@ describe("ClaimService", () => {
 
       expect(claimRepo.findOne).toHaveBeenCalledWith({
         where: { id: "claim_id" },
-        relations: ["order"],
+        relations: { order: true },
       })
     })
   })
@@ -303,7 +524,7 @@ describe("ClaimService", () => {
       createFulfillment: jest.fn((_, items) =>
         Promise.resolve([{ id: "ful", items }])
       ),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("fulfillment")
         return this
       },
@@ -339,7 +560,7 @@ describe("ClaimService", () => {
     const lineItemService = {
       update: jest.fn(),
       retrieve: () => Promise.resolve({}),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("lineItem")
         return this
       },
@@ -440,11 +661,11 @@ describe("ClaimService", () => {
   describe("cancelFulfillment", () => {
     const claimRepo = MockRepository({
       findOne: () => Promise.resolve({}),
-      save: f => Promise.resolve(f),
+      save: (f) => Promise.resolve(f),
     })
 
     const fulfillmentService = {
-      cancelFulfillment: jest.fn().mockImplementation(f => {
+      cancelFulfillment: jest.fn().mockImplementation((f) => {
         switch (f) {
           case IdMap.getId("no-claim"):
             return Promise.resolve({})
@@ -454,7 +675,7 @@ describe("ClaimService", () => {
             })
         }
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -519,7 +740,7 @@ describe("ClaimService", () => {
           ],
         })
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("fulfillment")
         return this
       },
@@ -528,7 +749,7 @@ describe("ClaimService", () => {
     const lineItemService = {
       update: jest.fn(),
       retrieve: () => Promise.resolve({}),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("lineItem")
         return this
       },
@@ -623,7 +844,7 @@ describe("ClaimService", () => {
   describe("cancel", () => {
     const fulfillmentService = {
       cancelFulfillment: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("fulfillment")
         return this
       },
@@ -631,7 +852,7 @@ describe("ClaimService", () => {
 
     const returnService = {
       cancel: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("return")
         return this
       },
@@ -642,7 +863,7 @@ describe("ClaimService", () => {
     const fulfillment = { id: "ful_21", canceled_at: now }
 
     const claimRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         const claim = {
           return_order: { ...ret_order },
           fulfillments: [{ ...fulfillment }],

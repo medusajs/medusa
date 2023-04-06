@@ -31,7 +31,7 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminShippingProfilesFields = [
+export const defaultAdminShippingProfilesFields: (keyof ShippingProfile)[] = [
   "id",
   "name",
   "type",
@@ -41,17 +41,60 @@ export const defaultAdminShippingProfilesFields = [
   "metadata",
 ]
 
+export const defaultAdminShippingProfilesRelations: (keyof ShippingProfile)[] =
+  ["products", "shipping_options"]
+
+/**
+ * @schema AdminDeleteShippingProfileRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Shipping Profile.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: shipping_profile
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminDeleteShippingProfileRes = DeleteResponse
 
-export const defaultAdminShippingProfilesRelations = [
-  "products",
-  "shipping_options",
-]
-
+/**
+ * @schema AdminShippingProfilesRes
+ * type: object
+ * x-expanded-relations:
+ *   field: shipping_profile
+ *   relations:
+ *     - products
+ *     - shipping_options
+ * required:
+ *   - shipping_profile
+ * properties:
+ *   shipping_profile:
+ *     $ref: "#/components/schemas/ShippingProfile"
+ */
 export type AdminShippingProfilesRes = {
   shipping_profile: ShippingProfile
 }
 
+/**
+ * @schema AdminShippingProfilesListRes
+ * type: object
+ * required:
+ *   - shipping_profiles
+ * properties:
+ *   shipping_profiles:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ShippingProfile"
+ */
 export type AdminShippingProfilesListRes = {
   shipping_profiles: ShippingProfile[]
 }

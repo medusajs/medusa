@@ -13,13 +13,20 @@ const {
   ShippingOption,
   ShippingProfile,
   Swap,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
+const { simpleSalesChannelFactory } = require("../factories")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: ShippingProfileType.DEFAULT },
+  })
+
+  const salesChannel = await simpleSalesChannelFactory(dataSource, {
+    id: "test-channel",
+    is_default: true,
   })
 
   await manager.insert(Product, {
@@ -28,6 +35,10 @@ module.exports = async (connection, data = {}) => {
     profile_id: defaultProfile.id,
     options: [{ id: "test-option", title: "Size" }],
   })
+
+  await manager.query(
+    `insert into product_sales_channel values ('test-product', '${salesChannel.id}');`
+  )
 
   await manager.insert(ProductVariant, {
     id: "test-variant",
@@ -153,6 +164,7 @@ module.exports = async (connection, data = {}) => {
         currency_code: "usd",
         amount_refunded: 0,
         provider_id: "test-pay",
+        captured_at: new Date(),
         data: {},
       },
     ],
@@ -173,6 +185,14 @@ module.exports = async (connection, data = {}) => {
     quantity: 1,
     variant_id: "test-variant",
     order_id: "test-order",
+    adjustments: [
+      {
+        amount: 800,
+        discount_id: "test-discount",
+        description: "discount",
+        item_id: "test-item",
+      },
+    ],
   })
 
   await manager.save(li)

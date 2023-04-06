@@ -1,25 +1,20 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class ProductOptionValue {
-  @PrimaryColumn()
-  id: string
-
+export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   value: string
 
@@ -41,59 +36,70 @@ export class ProductOptionValue {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert(): void | undefined {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `optval_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "optval")
   }
 }
 
 /**
- * @schema product_option_value
+ * @schema ProductOptionValue
  * title: "Product Option Value"
  * description: "A value given to a Product Variant's option set. Product Variant have a Product Option Value for each of the Product Options defined on the Product."
- * x-resourceId: product_option_value
+ * type: object
+ * required:
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
+ *   - option_id
+ *   - updated_at
+ *   - value
+ *   - variant_id
  * properties:
  *   id:
- *     description: "The id of the Product Option Value. This value will be prefixed with `optval_`."
+ *     description: The product option value's ID
  *     type: string
+ *     example: optval_01F0YESHR7S6ECD03RF6W12DSJ
  *   value:
- *     description: "The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be \"Small\", \"Medium\" or \"Large\")."
+ *     description: The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be `Small`, `Medium` or `Large`).
  *     type: string
+ *     example: large
  *   option_id:
- *     description: "The id of the Product Option that the Product Option Value is defined for."
+ *     description: The ID of the Product Option that the Product Option Value is defined for.
  *     type: string
+ *     example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
+ *   option:
+ *     description: Available if the relation `option` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ProductOption"
  *   variant_id:
- *     description: "The id of the Product Variant that the Product Option Value is defined for."
+ *     description: The ID of the Product Variant that the Product Option Value is defined for.
  *     type: string
+ *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
+ *   variant:
+ *     description: Available if the relation `variant` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ProductVariant"
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
+ *     description: The date with timezone at which the resource was created.
  *     type: string
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
+ *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
+ *     example: {car: "white"}
  */

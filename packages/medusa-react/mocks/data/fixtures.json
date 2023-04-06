@@ -1,5 +1,12 @@
 {
   "resources": {
+    "currency": {
+      "symbol": "$",
+      "name": "US Dollar",
+      "symbol_native": "$",
+      "code": "USD",
+      "includes_tax": false
+    },
     "region": {
       "id": "reg_01F0YES4R67TXXC1QBQ8P54A8Y",
       "name": "Test Region",
@@ -349,6 +356,14 @@
       "updated_at": "2021-03-16T21:24:13.657Z",
       "metadata": null
     },
+    "product_category": {
+      "id": "pcat_01F0YESBFAZ0DV6V831JXWH0BG",
+      "name": "Skinny Jeans",
+      "handle": "skinny-jeans",
+      "created_at": "2021-03-16T21:24:07.273Z",
+      "updated_at": "2021-03-16T21:24:07.273Z",
+      "deleted_at": null
+    },
     "product_variant": {
       "id": "variant_01F0YESHR7P2YAYBDBY5B6X3PK",
       "title": "Test variant",
@@ -478,7 +493,14 @@
         "created_at": "2021-03-16T21:24:16.872Z",
         "updated_at": "2021-03-16T21:24:16.872Z",
         "deleted_at": null,
-        "metadata": null
+        "metadata": null,
+        "conditions": [
+          {
+            "id": "cnd_01F0YESMVJXKX8XZ6Q9Z6Q6Z6",
+            "type": "products",
+            "operator": "in"
+          }
+        ]
       },
       "is_disabled": false,
       "parent_discount_id": null,
@@ -515,6 +537,14 @@
       "updated_at": "2021-03-16T21:24:20.015Z",
       "deleted_at": null,
       "metadata": null
+    },
+    "customer_group": {
+      "name": "test group",
+      "id": "cgrp_01FX8NJYPPDEH7YK9NYM6BXPHV",
+      "deleted_at": null,
+      "metadata": null,
+      "created_at": "2022-03-03T19:54:53.014Z",
+      "updated_at": "2022-03-03T19:54:53.014Z"
     },
     "shipping_profile": {
       "id": "sp_01F0YESTZQFW15SFEZSS29EZ5R",
@@ -556,6 +586,7 @@
     "user": {
       "id": "admin_user",
       "email": "admin@medusa.js",
+      "role": "admin",
       "first_name": null,
       "last_name": null,
       "api_token": "test_token",
@@ -819,6 +850,34 @@
       "refunded_total": 0,
       "refundable_amount": 8200
     },
+    "order_edit": {
+      "id": "oe_01F0YET7XPCMF8RZ0Y151NZV2V",
+      "order_id": "ord_01F0YET7XPCMF8RZ0Y151NZV2V",
+      "internal_note": "internal note",
+      "declined_reason": null,
+      "declined_at": null,
+      "declined_by": null,
+      "canceled_at": null,
+      "canceled_by": null,
+      "requested_at": null,
+      "requested_by": null,
+      "created_at": "2021-03-16T21:24:35.871Z",
+      "created_by_id": "admin_user",
+      "confirmed_at": null,
+      "confirmed_by": null
+    },
+    "store_order_edit": {
+      "id": "oe_01F0YET7XPCMF8RZ0Y151NZV2B",
+      "order_id": "ord_01F0YET7XPCMF8RZ0Y151NZV2V",
+      "declined_reason": null,
+      "declined_at": null,
+      "declined_by": null,
+      "canceled_at": null,
+      "requested_at": null,
+      "created_at": "2021-03-16T21:24:35.871Z",
+      "confirmed_at": null,
+      "confirmed_by": null
+    },
     "return": {
       "id": "ret_01F0YET7XPCMF8RZ0Y151NZV2V",
       "status": "requested",
@@ -1050,6 +1109,339 @@
       "updated_at": "2021-03-17 12:09:59.156058+01",
       "metadata": null,
       "parent_return_reason_id": null
+    },
+    "product_type": {
+      "id": "ptype_ZXDBABWJVW6115VEMZXDBAB",
+      "value": "clothing",
+      "created_at": "2021-03-16T21:24:35.828Z",
+      "updated_at": "2021-03-16T21:24:35.828Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "product_tag": {
+      "id": "ptag_ZXDBABWJVW6115VEMZXDBAB",
+      "value": "pants",
+      "created_at": "2021-03-16T21:24:35.828Z",
+      "updated_at": "2021-03-16T21:24:35.828Z",
+      "deleted_at": null,
+      "metadata": null
+    },
+    "price_list": {
+      "id": "pl_ZXDBABWJVW6115VEMZXDBAB",
+      "name": "test price list",
+      "description": "test price list",
+      "type": "products",
+      "status": "active",
+      "starts_at": null,
+      "ends_at": null,
+      "created_at": "2021-03-16T21:24:35.828Z",
+      "updated_at": "2021-03-16T21:24:35.828Z",
+      "deleted_at": null
+    },
+    "note": {
+      "id": "note_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "value": "customer contacted",
+      "resource_type": "swap",
+      "resource_id": "swap_01F0YET86Y9G92D3YDR9Y6V676",
+      "author_id": "admin_user",
+      "created_at": "2021-03-17 11:58:56.975971+01",
+      "updated_at": "2021-03-17 12:09:59.156058+01",
+      "metadata": null
+    },
+    "inventory_item": {
+      "id": "iitem_320ZXDBAB4WJVW6115VEM7",
+      "sku": "sku123",
+      "origin_country": "dk",
+      "hs_code": null,
+      "mid_code": null,
+      "material": null,
+      "weight": 10,
+      "lenght": 4,
+      "height": 5,
+      "width": 2,
+      "requires_shipping": true,
+      "created_at": "2021-03-17 11:58:56.975971+01",
+      "updated_at": "2021-03-17 12:09:59.156058+01",
+      "metadata": null,
+      "location_levels": [
+        {
+          "id": "ilev_320ZXDBAB4WJVW6115VEM7",
+          "inventory_item_id": "iitem_320ZXDBAB4WJVW6115VEM7",
+          "location_id": "loc_01F0ZXDBAB9KVZWJVW6115VEM7",
+          "stocked_quantity": 1,
+          "reserved_quantity": 0, 
+          "incoming_quantity": 10
+        }
+      ]
+    },
+    "stock_location": {
+      "id": "loc_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "name": "Stock location 1", 
+      "address_id": "addr_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "created_at": "2021-03-17 11:58:56.975971+01",
+      "updated_at": "2021-03-17 12:09:59.156058+01"
+    },
+    "reservation": {
+      "id": "res_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "line_item_id": "li_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "inventory_item_id": "iitem_320ZXDBAB4WJVW6115VEM7",
+      "location_id": "loc_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "quantity": 1
+    },
+    "invite": {
+      "id": "invite_320ZXDBAB4WJVW6115VEM7",
+      "user_email": "lebron@james.com",
+      "role": "admin",
+      "accepted": true,
+      "token": "secret_token",
+      "expires_at": "2021-03-18 11:58:56.975971+01",
+      "created_at": "2021-03-17 11:58:56.975971+01",
+      "updated_at": "2021-03-17 12:09:59.156058+01",
+      "metadata": null
+    },
+    "publishable_api_key": {
+      "id": "pubkey_1234",
+      "created_by": "admin_user",
+      "created_at": "2021-11-08 11:58:56.975971+01",
+      "updated_at": "2021-11-08 11:58:56.975971+01",
+      "revoked_by": null,
+      "revoked_at": null
+    },
+    "draft_order": {
+      "id": "dorder_01FGKMYKMJ4E8HP3RGEW28E7CZ",
+      "status": "open",
+      "display_id": 1,
+      "cart_id": "cart_01FGKMYKM9V8FVEJE23Q26FG5B",
+      "cart": {
+        "id": "cart_01FGKMYKM9V8FVEJE23Q26FG5B",
+        "email": "jane@medusa.test",
+        "billing_address_id": null,
+        "billing_address": null,
+        "shipping_address_id": "addr_01FGKMYKKQ3S1Q4ZC9HV4REXC6",
+        "shipping_address": {
+          "id": "addr_01FGKMYKKQ3S1Q4ZC9HV4REXC6",
+          "customer_id": null,
+          "company": null,
+          "first_name": "Jane",
+          "last_name": "Medusan",
+          "address_1": null,
+          "address_2": null,
+          "city": null,
+          "country_code": "dk",
+          "province": null,
+          "postal_code": null,
+          "phone": null,
+          "created_at": "2021-09-27T12:51:21.335Z",
+          "updated_at": "2021-09-27T12:51:21.335Z",
+          "deleted_at": null,
+          "metadata": null
+        },
+        "items": [
+          {
+            "id": "item_01FGKMYKM9AKV5D146N28QFPX7",
+            "cart_id": "cart_01FGKMYKM9V8FVEJE23Q26FG5B",
+            "order_id": null,
+            "swap_id": null,
+            "claim_order_id": null,
+            "title": "Basic Tee - One Size",
+            "description": "Soft and sweet",
+            "thumbnail": "https://test.js/1234",
+            "is_giftcard": false,
+            "should_merge": true,
+            "allow_discounts": true,
+            "has_shipping": null,
+            "unit_price": 8000,
+            "variant_id": "variant_01FGKMYKJVY3DYDZWCRB2GZS0G",
+            "variant": {
+              "id": "variant_01FGKMYKJVY3DYDZWCRB2GZS0G",
+              "title": "One Size",
+              "product_id": "prod_01FGKMYKJJMZ6XFN37JBGTZ46G",
+              "sku": null,
+              "barcode": null,
+              "ean": null,
+              "upc": null,
+              "inventory_quantity": 1,
+              "allow_backorder": false,
+              "manage_inventory": true,
+              "hs_code": null,
+              "origin_country": null,
+              "mid_code": null,
+              "material": null,
+              "weight": null,
+              "length": null,
+              "height": null,
+              "width": null,
+              "created_at": "2021-09-27T12:51:21.307Z",
+              "updated_at": "2021-09-27T12:51:21.307Z",
+              "deleted_at": null,
+              "metadata": null
+            },
+            "quantity": 1,
+            "fulfilled_quantity": 1,
+            "returned_quantity": null,
+            "shipped_quantity": null,
+            "created_at": "2021-09-27T12:51:21.352Z",
+            "updated_at": "2021-09-27T12:51:21.352Z",
+            "metadata": null
+          }
+        ],
+        "region_id": "reg_01FGKMYKKG6ACZANRNHR3XVRN3",
+        "region": {
+          "id": "reg_01FGKMYKKG6ACZANRNHR3XVRN3",
+          "name": "United States",
+          "currency_code": "usd",
+          "tax_rate": "0",
+          "tax_code": null,
+          "payment_providers": [
+            {
+              "id": "test-pay",
+              "is_installed": true
+            }
+          ],
+          "fulfillment_providers": [],
+          "created_at": "2021-09-27T12:51:21.328Z",
+          "updated_at": "2021-09-27T12:51:21.328Z",
+          "deleted_at": null,
+          "metadata": null
+        },
+        "discounts": [],
+        "gift_cards": [],
+        "customer_id": "cus_01FGKMYKM2TAKTGZ1XMEW45RJZ",
+        "payment_sessions": [],
+        "payment_id": null,
+        "payment": null,
+        "shipping_methods": [],
+        "type": "draft_order",
+        "completed_at": null,
+        "payment_authorized_at": null,
+        "created_at": "2021-09-27T12:51:21.352Z",
+        "updated_at": "2021-09-27T12:51:21.352Z",
+        "deleted_at": null,
+        "metadata": null,
+        "idempotency_key": null,
+        "context": null,
+        "shipping_total": 0,
+        "discount_total": 0,
+        "tax_total": 0,
+        "gift_card_total": 0,
+        "subtotal": 8000,
+        "total": 8000
+      },
+      "order_id": null,
+      "order": null,
+      "canceled_at": null,
+      "created_at": "2021-09-27T12:51:21.360Z",
+      "updated_at": "2021-09-27T12:51:21.360Z",
+      "no_notification_order": null,
+      "metadata": null
+    },
+    "fulfillment_option": {
+      "provider_id": "test-ful",
+      "options": []
+    },
+    "batch_job": {
+      "id": "batch_01F0YES4R67TXXC1QBQ8P54A8Y",
+      "type": "product_export",
+      "created_by": "usr_123412341234",
+      "context": null,
+      "result": null,
+      "dry_run": false,
+      "updated_at": "2021-03-16T21:24:00.389Z",
+      "created_at": "2021-03-16T21:24:00.389Z",
+      "deleted_at": null
+    },
+    "upload": {
+      "url": "test-url"
+    },
+    "sales_channel": {
+      "id": "sc_01F0YES4R67TXXC1QBQ8P54A8Y",
+      "name": "sales channel 1 name",
+      "description": "sales channel 1 description",
+      "is_disabled": false,
+      "updated_at": "2022-07-05T15:16:01.959Z",
+      "created_at": "2022-07-05T15:16:01.959Z",
+      "deleted_at": null
+    },
+    "sales_channels": [
+      {
+        "id": "sc_01F0YES4R67TXXC1QBQ8P54A8Y",
+        "name": "sales channel 1 name",
+        "description": "sales channel 1 description",
+        "is_disabled": false,
+        "updated_at": "2022-07-05T15:16:01.959Z",
+        "created_at": "2022-07-05T15:16:01.959Z",
+        "deleted_at": null
+      }
+    ],
+    "payment_collection": {
+      "id": "paycol_01GJK7P9MRHM6XWCJG70JFB8PF",
+      "created_at": "2022-11-23T21:53:19.367Z",
+      "updated_at": "2022-11-24T12:57:08.652Z",
+      "deleted_at": null,
+      "type": "order_edit",
+      "status": "authorized",
+      "description": null,
+      "amount": 900,
+      "authorized_amount": 900,
+      "region_id": "test-region",
+      "currency_code": "usd",
+      "metadata": null,
+      "created_by": "admin_user",
+      "payment_sessions": [
+        {
+          "id": "ps_01GJMVD71Z4WF9FXXGT7DHGPCM",
+          "created_at": "2022-11-24T12:57:07.883Z",
+          "updated_at": "2022-11-24T12:57:08.652Z",
+          "cart_id": null,
+          "provider_id": "test-pay",
+          "is_selected": null,
+          "status": "authorized",
+          "data": {},
+          "idempotency_key": null,
+          "amount": 900,
+          "payment_authorized_at": "2022-11-24T12:57:08.672Z"
+        }
+      ]
+    },
+    "payment_sessions": {
+      "id": "ps_01GJMVD71Z4WF9FXXGT7DHGPCM",
+      "created_at": "2022-11-24T12:57:07.883Z",
+      "updated_at": "2022-11-24T12:57:08.652Z",
+      "cart_id": null,
+      "provider_id": "test-pay",
+      "is_selected": null,
+      "status": "authorized",
+      "data": {},
+      "idempotency_key": null,
+      "amount": 900,
+      "payment_authorized_at": "2022-11-24T12:57:08.672Z"
+    },
+    "payment": {
+      "id": "pay_A1GJEVD71Z4WF9FXFGT7D1GP15",
+      "swap_id": null,
+      "cart_id": null,
+      "order_id": null,
+      "amount": 900,
+      "currency_code": "usd",
+      "amount_refunded": 0,
+      "amount_captured": 900,
+      "provider_id": "manual",
+      "data": {},
+      "captured_at": "2022-11-17T21:24:35.871Z",
+      "canceled_at": null,
+      "created_at": "2022-11-16T21:24:35.871Z",
+      "updated_at": "2022-11-16T21:24:35.871Z",
+      "metadata": null,
+      "idempotency_key": null
+    },
+    "refund": {
+      "order_id": null,
+      "payment_id": "pay_A1GJEVD71Z4WF9FXFGT7D1GP15",
+      "amount": 900,
+      "note": null,
+      "reason": "return",
+      "metadata": null,
+      "idempotency_key": null
     }
   }
 }

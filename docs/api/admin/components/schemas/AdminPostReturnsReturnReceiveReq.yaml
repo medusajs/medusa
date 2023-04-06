@@ -1,0 +1,22 @@
+type: object
+required:
+  - items
+properties:
+  items:
+    description: The Line Items that have been received.
+    type: array
+    items:
+      type: object
+      required:
+        - item_id
+        - quantity
+      properties:
+        item_id:
+          description: The ID of the Line Item.
+          type: string
+        quantity:
+          description: The quantity of the Line Item.
+          type: integer
+  refund:
+    description: The amount to refund.
+    type: number

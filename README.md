@@ -1,6 +1,10 @@
 <p align="center">
   <a href="https://www.medusajs.com">
-    <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/129161578-19b83dc8-fac5-4520-bd48-53cba676edd2.png" width="100" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
   </a>
 </p>
 <h1 align="center">
@@ -8,18 +12,12 @@
 </h1>
 
 <h4 align="center">
-  <a href="https://github.com/medusajs/admin">Medusa Admin</a> |
-  <a href="https://www.medusajs.com">Website</a> |
-  <a href="https://roadmap.medusa-commerce.com">Roadmap</a> |
-  <a href="https://www.medusajs.com/blog">Blog</a> |
-  <a href="https://www.linkedin.com/company/medusa-commerce">LinkedIn</a> |
-  <a href="https://twitter.com/medusajs">Twitter</a> |
   <a href="https://docs.medusajs.com">Documentation</a> |
-  <a href="https://medusajs.notion.site/medusajs/Medusa-Home-3485f8605d834a07949b17d1a9f7eafd">Notion</a>
+  <a href="https://www.medusajs.com">Website</a>
 </h4>
 
 <p align="center">
-Medusa is an open-source headless commerce engine that enables developers to create amazing digital commerce experiences.
+  Building blocks for digital commerce
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -31,6 +29,7 @@ Medusa is an open-source headless commerce engine that enables developers to cre
   <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
+    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
   <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
@@ -39,86 +38,41 @@ Medusa is an open-source headless commerce engine that enables developers to cre
   </a>
 </p>
 
-## 🚀 Quickstart
+## Getting Started
 
-1. **Install Medusa CLI**
-   ```bash
-   npm install -g @medusajs/medusa-cli
-   ```
-2. **Create a new Medusa project**
-   ```
-   medusa new my-medusa-store --seed
-   ```
-3. **Start your Medusa engine**
-   ```bash
-   medusa develop
-   ```
-4. **Use the API**
-   ```bash
-   curl localhost:9000/store/products | python -m json.tool
-   ```
+Visit the [Quickstart Guide](https://docs.medusajs.com/create-medusa-app) to set up a server.
 
-We have a prebuilt admin dashboard that you can use to configure and manage your store find it here: [Medusa Admin](https://github.com/medusajs/admin)
+Visit the [Docs](https://docs.medusajs.com/development/backend/prepare-environment) to learn more about our system requirements.
 
-After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusajs.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
+## What is Medusa
 
-## 🛒 Setting up a storefront for your Medusa project
+Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
 
-Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.
+Learn more about [Medusa’s architecture](https://docs.medusajs.com/development/fundamentals/architecture-overview) and [commerce modules](https://docs.medusajs.com/modules/overview) in the Docs.
 
-To provide a quick way to get you started with a storefront install one of our traditional e-commerce starters:
+## Roadmap, Upgrades & Plugins
 
-- [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
-  ```
-  npm install -g gatsby-cli
-  gatsby new my-medusa-storefront https://github.com/medusajs/gatsby-starter-medusa
-  ```
-- [Nextjs Starter](https://github.com/medusajs/nextjs-starter-medusa)
-  ```
-  npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
-  ```
+You can view the planned, started and completed features in the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap).
 
-With your starter and your Medusa store running you can open http://localhost:8000 (for Gatsby) or http://localhost:3000 (for Nextjs) in your browser and view the products in your store, build a cart, add shipping details and pay and complete an order.
+Follow the [Upgrade Guides](https://docs.medusajs.com/upgrade-guides/) to keep your Medusa project up-to-date.
 
-## ⭐️ Features
+Check out all [available Medusa plugins](https://medusajs.com/plugins/).
 
-Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
+## Community & Contributions
 
-- **Headless**: Medusa is a highly customizable commerce API which means that you may use any presentation layer such as a website, app, chatbots, etc.
-- **Regions** allow you to specify currencies, payment providers, shipping providers, tax rates and more for one or more countries for truly international sales.
-- **Orders** come with all the functionality necessary to perform powerful customer service operations with ease.
-- **Carts** allow customers to collect products for purchase, add shipping details and complete payments.
-- **Products** come with relevant fields for customs, stock keeping and sales. Medusa supports multiple options and unlimited variants.
-- **Swaps** allow customers to exchange products after purchase (e.g. for incorrect sizes). Accounting, payment and fulfillment plugins handle all the tedious work for you for automated customer service.
-- **Claims** can be created if customers experience problems with one of their products. Plugins make sure to automate sending out replacements, handling refunds and collecting valuable data for analysis.
-- **Returns** allow customers to send back products and can be configured to function in a 100% automated flow through accounting and payment plugins.
-- **Fulfillment API** makes it easy to integrate with any fulfillment provider by creating fulfillment plugins, check the `/packages` directory for a full list of plugins.
-- **Payments API** makes it easy to integrate with any payment provider by creating payment plugins, we already support Stripe, Paypal and Klarna.
-- **Notification API** allow integrations with email providers, chatbots, Slack channels, etc.
-- **Customer Login** to give customers a way of managing their data, viewing their orders and saving payment details.
-- **Shipping Options & Profiles** enable powerful rules for free shipping limits, multiple fulfillment methods and more.
-- **Medusa's Plugin Architecture** makes it intuitive and easy to manage your integrations, switch providers and grow with ease.
-- **Customization** is supported for those special use cases that all the other e-commerce platforms can't accommodate.
+The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
 
-## Database support
+Our [Contribution Guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) describes how to contribute to the codebase and Docs.
 
-In production Medusa requires Postgres and Redis, but SQLite is supported for development and testing purposes. If you plan on using Medusa for a project it is recommended that you install Postgres and Redis on your dev machine.
+Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
 
-- [Install PostgreSQL](https://www.postgresql.org/download/)
-- [Install Redis](https://redis.io/download)
+## Other channels
 
-To use Postgres and Redis you should provide a `database_url` and `redis_url` in your `medusa-config.js`.
+- [GitHub Issues](https://github.com/medusajs/medusa/issues)
+- [Twitter](https://twitter.com/medusajs)
+- [LinkedIn](https://www.linkedin.com/company/medusajs)
+- [Medusa Blog](https://medusajs.com/blog/)
 
-## Contribution
+## License
 
-Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market. Whether its fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
-
-## Repository structure
-
-The Medusa repository is a mono-repository managed using Lerna. Lerna allows us to have all Medusa packages in one place, and still distribute them as separate NPM packages.
-
-## Licensed
-
-Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/master/LICENSE)
-
-## Thank you!
+Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/master/LICENSE).

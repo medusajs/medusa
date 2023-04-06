@@ -1,0 +1,19 @@
+.react-tooltip {
+  border: 1px solid var(--ifm-tooltip-border-color) !important;
+  border-radius: var(--ifm-global-radius) !important;
+  font-size: var(--medusa-label-x-small-plus-size) !important;
+  line-height: var(--medusa-label-x-small-plus-line-height) !important;
+  font-weight: var(--medusa-label-x-small-plus-font-weight) !important;
+  box-shadow: var(--ifm-tooltip-box-shadow-color) !important;
+  padding: calc(var(--ifm-base-margin-vertical) / 4 - 1px) var(--ifm-base-spacing) !important;
+}
+
+.react-tooltip-arrow {
+  display: none;
+}
+
+@media screen and (max-width: 875px) {
+  .react-tooltip {
+    display: none;
+  }
+}

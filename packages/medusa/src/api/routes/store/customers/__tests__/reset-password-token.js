@@ -8,7 +8,7 @@ describe("POST /store/customers/password-token", () => {
     beforeAll(async () => {
       subject = await request("POST", `/store/customers/password-token`, {
         payload: {
-          email: "lebron@james.com",
+          email: "lebron@james1.com",
         },
       })
     })
@@ -18,10 +18,12 @@ describe("POST /store/customers/password-token", () => {
     })
 
     it("calls CustomerService retrieve", () => {
-      expect(CustomerServiceMock.retrieveByEmail).toHaveBeenCalledTimes(1)
-      expect(CustomerServiceMock.retrieveByEmail).toHaveBeenCalledWith(
-        "lebron@james.com"
-      )
+      expect(
+        CustomerServiceMock.retrieveRegisteredByEmail
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        CustomerServiceMock.retrieveRegisteredByEmail
+      ).toHaveBeenCalledWith("lebron@james1.com")
     })
 
     it("calls CustomerService retrieve", () => {
@@ -33,7 +35,7 @@ describe("POST /store/customers/password-token", () => {
       ).toHaveBeenCalledWith(IdMap.getId("lebron"))
     })
 
-    it("returns customer decorated", () => {
+    it("returns success", () => {
       expect(subject.status).toEqual(204)
     })
   })

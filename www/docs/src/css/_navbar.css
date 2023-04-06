@@ -1,0 +1,88 @@
+.navbar {
+  z-index: calc(var(--ifm-z-index-overlay) - 1);
+  padding: 0;
+}
+
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) { 
+  html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
+    background: none;
+    backdrop-filter: blur(12px);
+  }
+}
+
+.navbar__link {
+  font-size: var(--medusa-label-small-plus-size);
+  line-height: var(--medusa-label-small-plus-line-height);
+  font-weight: var(--medusa-label-small-plus-font-weight);
+}
+
+.navbar__inner {
+  max-width: var(--ifm-max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--ifm-navbar-padding-vertical) var(--ifm-navbar-padding-horizontal);
+}
+
+.navbar__brand {
+  margin-right: calc(var(--ifm-base-spacing) * 2);
+}
+
+.navbar__logo {
+  height: var(--ifm-logo-height);
+  width: var(--ifm-logo-width);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0 !important;
+}
+
+[class*=colorModeToggle],
+.navbar-link-icon {
+  background-color: var(--medusa-button-secondary);
+  border: 1px solid var(--medusa-border-base);
+  border-radius: var(--ifm-global-radius);
+  width: 32px !important;
+  height: 32px !important;
+}
+
+[class*=toggleButton]:hover,
+.navbar-link-icon:hover {
+  background-color: var(--medusa-button-secondary-hover) !important;
+}
+
+[class*=toggleButton] {
+  --ifm-icon-color: var(--ifm-color-mode-icon-color)
+}
+
+.navbar-link-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[class*=colorModeToggle] {
+  margin-left: var(--ifm-navbar-item-padding-horizontal);
+  margin-right: 12px;
+}
+
+[class*=toggleButton] {
+  border-radius: var(--ifm-global-radius) !important;
+}
+
+@media screen and (min-width: 992px) {  
+  .navbar .divider {
+    height: 20px;
+    width: 1px;
+    margin-left: var(--ifm-navbar-item-padding-horizontal);
+    margin-right: var(--ifm-navbar-item-padding-horizontal);
+    display: inline-block;
+    vertical-align: middle;
+    background-color: var(--ifm-navbar-divider-color);
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .navbar-actions {
+    display: none;
+  }
+}

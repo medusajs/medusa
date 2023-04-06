@@ -1,0 +1,55 @@
+.codeBlockContent {
+  position: relative;
+  /* rtl:ignore */
+  direction: ltr;
+  border-radius: inherit;
+}
+
+.codeBlock {
+  --ifm-pre-background: var(--prism-background-color);
+  margin: 0;
+  padding: 0;
+}
+
+.codeBlockStandalone {
+  padding: 0;
+}
+
+.codeBlockLines {
+  font: inherit;
+  /* rtl:ignore */
+  float: left;
+  min-width: 100%;
+}
+
+.codeBlockLinesWithNumbering {
+  display: table;
+  padding: var(--ifm-pre-padding) 0;
+}
+
+@media print {
+  .codeBlockLines {
+    white-space: pre-wrap;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  column-gap: 2px;
+  position: absolute;
+  right: var(--ifm-pre-padding);
+  top: var(--ifm-pre-padding);
+}
+
+.buttonGroup button:focus-visible,
+.buttonGroup button:hover {
+  opacity: 1 !important;
+}
+
+.thinCodeWrapper + .buttonGroup {
+  top: calc(var(--ifm-pre-padding) / 4 - 2px) !important;
+}
+
+:global(.theme-code-block:hover) .buttonGroup button {
+  opacity: 0.4;
+}

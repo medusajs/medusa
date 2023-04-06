@@ -1,0 +1,8 @@
+extends: existence
+message: "The -g option should be added at the end of the command"
+link: https://docs.medusajs.com/contribution-guidelines#global-option
+level: error
+scope: code
+ignorecase: true
+raw:
+  - '(npm (i|install) (-g|--global)|npm (-g|--global) (i|install))'

@@ -5,6 +5,9 @@ import { RegionServiceMock } from "../../../../../services/__mocks__/region"
 const defaultFields = [
   "id",
   "name",
+  "automatic_taxes",
+  "gift_cards_taxable",
+  "tax_provider_id",
   "currency_code",
   "tax_rate",
   "tax_code",
@@ -74,7 +77,6 @@ describe("GET /admin/regions", () => {
     })
 
     it("returns 200", () => {
-      console.log(subject)
       expect(subject.status).toEqual(200)
     })
 

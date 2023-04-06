@@ -1,0 +1,118 @@
+---
+sidebar_position: 4
+description: 'This user guide explains how to manage publishable API keys on the Medusa admin. Learn how to create, edit, copy, and revoke publishable API keys.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Publishable API Keys
+
+In this document, you’ll learn how to manage publishable API keys in Medusa Admin.
+
+## Overview
+
+Publishable API keys are used by developers or technical teams. They are used to define the resources that an API key is associated with and can access.
+
+Then, this publishable API key is used in storefront development to retrieve or process data based on the scope of the publishable API key.
+
+Currently, publishable API keys can only be used with sales channels.
+
+---
+
+## Create Publishable API Key
+
+To create a publishable API key:
+
+1. Go to Settings → API key management.
+2. Click on the “Create API key” button at the top right.
+3. In the new form that opens:
+    1. Enter a name for the API key in the Title field.
+    2. You can optionally add sales channels. To do that:
+        1. Click on the “Add sales channels” button.
+        2. Click on the checkbox next to the sales channels you want to add.
+        3. Click on the “Save and close” button.
+4. Once you’re done, click on the “Publish API key” button.
+
+---
+
+## Copy Token of API Key
+
+To copy the token of an API key:
+
+1. Go to Settings → API key management.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the API key you want to copy.
+3. Click on “Copy token” from the dropdown.
+
+---
+
+## Edit API Key Details
+
+To edit the details of an API key:
+
+1. Go to Settings → API key management.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the API key you want to edit.
+3. Click on “Edit API key details” from the dropdown.
+4. Change the title of the API Key in the side window that opens.
+5. Click on the “Save and close” button.
+
+---
+
+## Manage Sales Channels of a Publishable API Key
+
+:::info
+
+Making any changes in the sales channels here does not affect the sales channel itself or any of its data. This only impacts the relation between sales channels and publishable API keys.
+
+:::
+
+You can add or delete sales channels from a publishable API key. Adding a sales channel makes it accessible using the publishable API key. Removing a sales channel from a publishable API key removes the API key’s access to the sales channel.
+
+To manage sales channels of a publishable API key:
+
+1. Go to Settings → API key management.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the API key you want to manage its sales channels.
+3. Click on “Edit sales channels” from the dropdown.
+4. In the side window that opens:
+    1. To add a sales channel to the publishable API key:
+        1. Click on the “Add channels” button.
+        2. Click on the checkbox next to the sales channels you want to add.
+        3. Once done, click on the “Add and go back” button to add the sales channels and continue editing, or click on the “Add and close” to add the sales channels and close the side menu.
+    2. To delete a sales channel from the publishable API key:
+        1. Click on the checkbox next to the sales channels you want to delete.
+        2. Click on the “Remove” button.
+5. Once you’re done editing, click on the Close button.
+
+---
+
+## Revoke Publishable API Key
+
+:::warning
+
+Revoking a publishable API key does not remove it, but the API key can’t be used in development anymore. It can't be undone.
+
+:::
+
+To revoke a publishable API key:
+
+1. Go to Settings → API key management.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the API key you want to revoke.
+3. Click on “Revoke token” from the dropdown.
+4. Confirm revoking the publishable API key by clicking the “Yes, revoke” button in the pop-up.
+
+---
+
+## Delete Publishable API Key
+
+:::warning
+
+Deleting a publishable API key completely removes it and the API key can’t be used in development anymore. It can't be undone.
+
+:::
+
+To delete a publishable API key:
+
+1. Go to Settings → API key management.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the API key you want to delete.
+3. Click on “Delete API key” from the dropdown.
+4. Confirm deleting the publishable API key by clicking the “Yes, delete” button in the pop-up.

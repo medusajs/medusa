@@ -1,0 +1,33 @@
+name: "Test server"
+description: "Test the currently running medusa server to see if a user has been created and that the server is seeded"
+
+inputs:
+  email:
+    description: "email of user to log in"
+    required: false
+    default: "test@test.com"
+  password:
+    description: "password of user to log in"
+    required: false
+    default: "password"
+  pathToSeedData:
+    description: "path to seed data"
+    required: false
+    default: "../cli-test/data/seed.json"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Wait for live server response
+      shell: "bash"
+      run: ./integration-tests/scripts/cli/wait-for-server-live.sh
+    - name: Log in with user
+      shell: "bash"
+      run: ./integration-tests/scripts/cli/login.sh ${{ inputs.email }} ${{ inputs.password }}
+    - name: GetProducts
+      shell: "bash"
+      run: ./integration-tests/scripts/cli/get-products.sh ${{ inputs.pathToSeedData }}
+
+    - name: Kill server
+      shell: "bash"
+      run: kill -9 $(lsof -t -i :9000)

@@ -1,0 +1,23 @@
+type: object
+properties:
+  name:
+    description: The name of the Shipping Profile
+    type: string
+  metadata:
+    description: An optional set of key-value pairs with additional information.
+    type: object
+  type:
+    description: The type of the Shipping Profile
+    type: string
+    enum:
+      - default
+      - gift_card
+      - custom
+  products:
+    description: An optional array of product ids to associate with the Shipping Profile
+    type: array
+  shipping_options:
+    description: >-
+      An optional array of shipping option ids to associate with the Shipping
+      Profile
+    type: array

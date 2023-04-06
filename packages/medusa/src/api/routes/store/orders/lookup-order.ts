@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsEmail,
   IsNumber,
@@ -6,32 +5,83 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { Type } from "class-transformer"
+
 import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /store/orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
- * description: "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned."
+ * description: "Look up an order using filters."
  * parameters:
  *   - (query) display_id=* {number} The display id given to the Order.
- *   - (query) email=* {string} The email of the Order with the given display_id.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
+ *   - in: query
+ *     name: email
+ *     style: form
+ *     explode: false
+ *     description: The email associated with this order.
+ *     required: true
+ *     schema:
+ *       type: string
+ *       format: email
+ *   - in: query
+ *     name: shipping_address
+ *     style: form
+ *     explode: false
+ *     description: The shipping address associated with this order.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         postal_code:
+ *           type: string
+ *           description: The postal code of the shipping address
+ * x-codegen:
+ *   method: lookupOrder
+ *   queryParams: StoreGetOrdersParams
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.orders.lookupOrder({
+ *         display_id: 1,
+ *         email: 'user@example.com'
+ *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/StoreOrdersRes"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetOrdersParams, req.query)
+  const validated = req.validatedQuery as StoreGetOrdersParams
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -40,10 +90,7 @@ export default async (req, res) => {
       display_id: validated.display_id,
       email: validated.email,
     },
-    {
-      select: defaultStoreOrdersFields,
-      relations: defaultStoreOrdersRelations,
-    }
+    req.listConfig
   )
 
   if (orders.length !== 1) {
@@ -53,7 +100,9 @@ export default async (req, res) => {
 
   const order = orders[0]
 
-  res.json({ order })
+  res.json({
+    order: cleanResponseData(order, req.allowedProperties || []),
+  })
 }
 
 export class ShippingAddressPayload {
@@ -62,7 +111,7 @@ export class ShippingAddressPayload {
   postal_code?: string
 }
 
-export class StoreGetOrdersParams {
+export class StoreGetOrdersParams extends FindParams {
   @IsNumber()
   @Type(() => Number)
   display_id: number

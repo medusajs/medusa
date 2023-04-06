@@ -3,6 +3,7 @@ import {
   StoreVariantsListRes,
   StoreVariantsRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
@@ -10,33 +11,28 @@ class ProductVariantsResource extends BaseResource {
   /**
    * @description Retrieves a single product variant
    * @param {string} id is required
+   * @param customHeaders
    * @return {ResponsePromise<StoreVariantsRes>}
    */
-  retrieve(id: string): ResponsePromise<StoreVariantsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsRes> {
     const path = `/store/variants/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
    * @description Retrieves a list of of Product Variants
-   * @param {StoreVariantsListParamsObject} query
+   * @param {StoreGetVariantsParams} query
+   * @param customHeaders
    * @return {ResponsePromise<StoreVariantsListRes>}
    */
-  list(query?: StoreGetVariantsParams): ResponsePromise<StoreVariantsListRes> {
-    const path = `/store/variants`
+  list(query?: StoreGetVariantsParams, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsListRes> {
+    let path = `/store/variants`
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
 
-    const search = Object.entries(query || {}).map(([key, value]) => {
-      if (Array.isArray(value)) {
-        return `${key}=${value.join(",")}`
-      }
-
-      return `${key}=${value}`
-    })
-
-    return this.client.request(
-      "GET",
-      `${path}${search.length > 0 && `?${search.join("&")}`}`
-    )
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

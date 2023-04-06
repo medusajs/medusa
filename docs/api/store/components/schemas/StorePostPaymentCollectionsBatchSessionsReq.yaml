@@ -1,0 +1,25 @@
+type: object
+required:
+  - sessions
+properties:
+  sessions:
+    description: >-
+      An array of payment sessions related to the Payment Collection. If the
+      session_id is not provided, existing sessions not present will be deleted
+      and the provided ones will be created.
+    type: array
+    items:
+      type: object
+      required:
+        - provider_id
+        - amount
+      properties:
+        provider_id:
+          type: string
+          description: The ID of the Payment Provider.
+        amount:
+          type: integer
+          description: The amount .
+        session_id:
+          type: string
+          description: The ID of the Payment Session to be updated.

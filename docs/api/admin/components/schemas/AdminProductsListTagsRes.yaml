@@ -1,0 +1,22 @@
+type: object
+required:
+  - tags
+properties:
+  tags:
+    type: array
+    items:
+      type: object
+      required:
+        - id
+        - usage_count
+        - value
+      properties:
+        id:
+          description: The ID of the tag.
+          type: string
+        usage_count:
+          description: The number of products that use this tag.
+          type: string
+        value:
+          description: The value of the tag.
+          type: string

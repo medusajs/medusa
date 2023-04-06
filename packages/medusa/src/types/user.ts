@@ -8,7 +8,7 @@ export interface CreateUserInput {
   last_name?: string
   api_token?: string
   role?: UserRoles
-  metadata?: JSON
+  metadata?: Record<string, unknown>
 }
 
 export interface UpdateUserInput {
@@ -18,7 +18,7 @@ export interface UpdateUserInput {
   readonly password_hash?: string
   api_token?: string
   role?: UserRoles
-  metadata?: JSON
+  metadata?: Record<string, unknown>
 }
 
 export enum UserRole {

@@ -1,10 +1,10 @@
+import { MockManager, MockRepository } from "medusa-test-utils"
 import CustomShippingOptionService from "../custom-shipping-option"
-import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 
 describe("CustomShippingOptionService", () => {
   describe("list", () => {
     const customShippingOptionRepository = MockRepository({
-      find: q => {
+      find: (q) => {
         return Promise.resolve([
           {
             id: "cso-test",
@@ -37,14 +37,16 @@ describe("CustomShippingOptionService", () => {
         where: {
           cart_id: "test-cso-cart",
         },
-        relations: ["shipping_option"],
+        relations: {
+          shipping_option: true,
+        },
       })
     })
   })
 
   describe("retrieve", () => {
     const customShippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         if (q.where.id === "cso-test") {
           return Promise.resolve({
             id: "cso-test",
@@ -73,7 +75,10 @@ describe("CustomShippingOptionService", () => {
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledWith({
         where: { id: "cso-test" },
-        relations: ["shipping_option", "cart"],
+        relations: {
+          shipping_option: true,
+          cart: true,
+        },
       })
     })
 
@@ -86,10 +91,8 @@ describe("CustomShippingOptionService", () => {
 
   describe("create", () => {
     const customShippingOptionRepository = MockRepository({
-      create: jest
-        .fn()
-        .mockImplementation(f => Promise.resolve({ id: "test-cso", ...f })),
-      save: jest.fn().mockImplementation(f => Promise.resolve(f)),
+      create: jest.fn().mockImplementation((f) => ({ id: "test-cso", ...f })),
+      save: jest.fn().mockImplementation((f) => Promise.resolve(f)),
     })
 
     const customShippingOptionService = new CustomShippingOptionService({
@@ -110,20 +113,22 @@ describe("CustomShippingOptionService", () => {
       await customShippingOptionService.create(customShippingOption)
 
       expect(customShippingOptionRepository.create).toHaveBeenCalledTimes(1)
-      expect(customShippingOptionRepository.create).toHaveBeenCalledWith({
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: {},
-      })
+      expect(customShippingOptionRepository.create).toHaveBeenCalledWith([
+        {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+        },
+      ])
 
       expect(customShippingOptionRepository.save).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.save).toHaveBeenCalledWith({
+        0: {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+        },
         id: "test-cso",
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: {},
       })
     })
   })

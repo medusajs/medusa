@@ -1,0 +1,291 @@
+---
+description: 'Learn step-by-step.'
+addHowToData: true
+---
+
+import styles from '../deployment.module.css';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Deploy Your Medusa Backend on Heroku
+
+In this document, you'll learn how to deploy your Medusa backend on Heroku. Heroku is a PaaS (Platform as a Service) that allows you to easily deploy your applications in the cloud.
+
+Alternatively, you can use this button to deploy the Medusa backend to Heroku directly:
+
+<a href="https://heroku.com/deploy?template=https://github.com/medusajs/medusa-starter-default/tree/feat/deploy-heroku" className="img-url">
+  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" className="no-zoom-img" />
+</a>
+
+## Prerequisites
+
+### Medusa Backend
+
+It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
+
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](../../development/backend/configurations.md) to learn how to do that.
+
+### Needed Accounts
+
+- A [Heroku](https://heroku.com/) account.
+
+### Required Tools
+
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../development/backend/prepare-environment.mdx#git).
+- Heroku's CLI tool. You can follow [Heroku's documentation to learn how to install it for your operating system](https://devcenter.heroku.com/articles/heroku-cli).
+
+---
+
+## Deploy to Heroku
+
+### 1. Login to Heroku from your CLI
+
+Before you can create an app with Heroku, you must login with the CLI tool:
+
+```bash
+heroku login
+```
+
+Depending on your operating system, you must follow either the instructions in your terminal or a page in your browser will open.
+
+### 2. Create an App with Heroku
+
+In the root directory of your Medusa backend, run the following commands to create an app on Heroku and add it as a remote origin:
+
+```bash
+heroku create <APP_NAME>
+heroku git:remote -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of the app you'll create. You can use any name you want.
+
+### 3. Install Postgresql and Redis on Heroku
+
+Medusa requires a Postgres database and a Redis instance to work. You can add those to your Heroku app using Add-ons.
+
+:::note
+
+If you don't have a payment method set up in your Heroku account, you'll be asked to enter your payment details when you try to install these addons.
+
+:::
+
+#### PostgreSQL
+
+Add a Postgres add-on to your Heroku app with the following command:
+
+```bash
+heroku addons:create heroku-postgresql:mini
+```
+
+This uses Heroku Postgres's smallest plan. You can check out [the available plans and pricing of Heroku Postgres on Heroku's website.](https://elements.heroku.com/addons/heroku-postgresql#pricing)
+
+#### Redis
+
+Add a Redis instance to your Heroku app with the following command:
+
+```bash
+heroku addons:create stackhero-redis:ist-ebi1rc
+```
+
+This uses the lowest plan in Stackhero Redis. You can check out [the plans and pricing of Stackhero Redis on Heroku's website.](https://elements.heroku.com/addons/stackhero-redis#pricing)
+
+### 4. Configure Environment Variables on Heroku
+
+Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa backend](../../development/backend/configurations.md) document.
+
+Run the following commands in the root directory of your Medusa backend to set some environment variables:
+
+```bash
+heroku config:set NODE_ENV=production
+heroku config:set JWT_SECRET=your-super-secret
+heroku config:set COOKIE_SECRET=your-super-secret-pt2
+heroku config:set NPM_CONFIG_PRODUCTION=false
+```
+
+:::tip
+
+Make sure to replace `your-super-secret` and `your-super-secret-pt2` with actual secrets in a production environment.
+
+:::
+
+#### Set Buildpack
+
+Additionally, you need to set the buildpack to Node.js using the following command:
+
+```bash
+heroku buildpacks:set heroku/nodejs
+```
+
+#### Configure the Redis URL
+
+Stackhero Redis adds the Redis URL under the environment variable `STACKHERO_REDIS_URL_TLS`. However, Medusa looks for the `REDIS_URL` environment variable when initializing the connection with Redis.
+
+Retrieve the value of `STACKHERO_REDIS_URL_TLS` with the following command:
+
+```bash
+heroku config:get STACKHERO_REDIS_URL_TLS
+```
+
+This prints the value of the environment variable which is a Redis connection string.
+
+Copy that value and use it to set the environment variable `REDIS_URL` with the following command:
+
+```bash
+heroku config:set REDIS_URL=<YOUR_REDIS_URL>
+```
+
+Where `<YOUR_REDIS_URL>` is the value you received from the previous command.
+
+#### Configure the PostgreSQL Database URL
+
+If you're using the Heroku PostgreSQL Add-on, it should configure the environment variable `DATABASE_URL`. In that case, you don't need to perform any additional actions.
+
+However, if you use another add-on, make sure to set the environment variable `DATABASE_URL` to the PostgreSQL Database URL.
+
+#### (Optional) Configure Modules Environment Variables
+
+If you use in your Medusa backend modules that require setting environment variables, then you should set them at this point.
+
+For example, if you use the Redis Event Bus module:
+
+```bash
+heroku config:set EVENT_REDIS_URL=<YOUR_REDIS_URL>
+```
+
+Make sure to change `EVENT_REDIS_URL` to the environment variable name you use for your module's configurations.
+
+If your module requires setting up other services, do that then add the environment variables.
+
+#### (Optional) Configure CORS Variables
+
+Optionally, if you've deployed the admin dashboard and you want to ensure it can use the backend's REST APIs, you must set the following environment variable:
+
+```bash
+heroku config:set ADMIN_CORS=<YOUR_ADMIN_URL>
+```
+
+Where `<YOUR_ADMIN_URL>` is the URL of your admin dashboard.
+
+Similarly, if you've deployed the storefront and you want to ensure it can use the backend's REST APIs, you must set the following environment variable:
+
+```bash
+heroku config:set STORE_CORS=<YOUR_STOREFRONT_URL>
+```
+
+Where `<YOUR_STOREFRONT_URL>` is the URL of your storefront.
+
+### 5. Configure Medusa Backend
+
+Before jumping into the deployment, you need to configure your Medusa backend to ensure it uses the previous environment variables and the recommended production configurations.
+
+#### medusa-config.js
+
+Update `module.exports` to include the following configurations:
+
+```js
+module.exports = {
+  projectConfig: {
+    redis_url: REDIS_URL,
+    database_url: DATABASE_URL,
+    database_type: "postgres",
+    store_cors: STORE_CORS,
+    admin_cors: ADMIN_CORS,
+    database_extra:
+      process.env.NODE_ENV !== "development"
+        ? { ssl: { rejectUnauthorized: false } }
+        : {},
+  },
+  plugins,
+}
+```
+
+#### package.json
+
+Update `scripts` to include the following scripts:
+
+```json
+"scripts": {
+    "serve": "medusa start",
+    "start": "medusa develop",
+    "heroku-postbuild": "medusa migrations run",
+    "prepare": "npm run build",
+    "build": "babel src -d dist --extensions \".ts,.js\""
+},
+```
+
+### 6. Launch your Medusa Backend
+
+Finally, commit and push all changes to Heroku:
+
+```bash
+git add .
+git commit -m "Deploy Medusa Backend on Heroku"
+git push heroku HEAD:master
+```
+
+This triggers a redeploy of the Medusa backend with all the new configurations.
+
+## Test your Backend
+
+To test your backend, run the following command to retrieve the backend's URL:
+
+```bash
+heroku apps:info -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of the app. You should see as the output a bunch of info of the app.
+
+The backend's URL is available under "Web URL". You can copy it and perform requests to it to test it out.
+
+For example, you can send a request to `<YOUR_BACKEND_URL>/store/products` and you should receive a JSON response with the products in your store.
+
+### Troubleshooting: Inspect Build Logs
+
+If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa backend:
+
+```bash
+heroku logs -n 500000 --remote heroku --tail -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of the app.
+
+---
+
+## Run Commands on Your Backend
+
+To run commands on your backend, you can use the following command:
+
+```bash
+heroku run -a <APP_NAME> -- <COMMAND>
+```
+
+Where `<APP_NAME>` is the name of the app and `<COMMAND>` is the command you want to run.
+
+For example, to create an admin user you can run the following command:
+
+```bash
+heroku run -a <APP_NAME> -- medusa user -e "<EMAIL>" -p "<PASSWORD>"
+```
+
+Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>` are the credentials you want to use to log in to the Medusa admin dashboard.
+
+---
+
+## Add Environment Variables
+
+You’ll likely need to add environment variables later such as Admin Cross-Origin Resource Sharing (CORS) and Store CORS variables.
+
+To set or change an environment variable's value, you can use the following command:
+
+```bash
+heroku config:set <ENV_NAME>=<ENV_VALUE> -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of your Heroku app, `<ENV_NAME>` is the name of the environment variable, and `<ENV_VALUE>` is the value.
+
+---
+
+## See Also
+
+- [Deploy your Medusa admin](../admin/index.mdx)
+- [Deploy your storefront](../storefront/index.mdx)

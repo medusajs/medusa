@@ -1,0 +1,289 @@
+/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+:root {
+  /* Base Styles */
+  --ifm-global-radius: 8px;
+  --ifm-hr-background-color: var(--medusa-border-base);
+  --ifm-base-spacing: 16px;
+  --ifm-global-spacing: var(--ifm-base-spacing);
+  --ifm-base-margin-vertical: 32px;
+  --ifm-hr-margin-vertical: var(--ifm-base-margin-vertical);
+  --ifm-leading: 24px;
+  --ifm-logo-width: 83px;
+  --ifm-logo-height: 20px;
+  
+  /* Colors */
+  --ifm-color-primary: var(--medusa-text-base);
+  --ifm-background-color: var(--medusa-bg-base);
+  --ifm-background-surface-color: var(--medusa-bg-subtle);
+  --ifm-color-content: var(--medusa-text-subtle) !important;
+  --ifm-color-content-secondary: var(--ifm-color-content) !important;
+  --ifm-primary-gradient: linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%,
+  #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%);
+  --ifm-base-border-color: var(--medusa-border-base);
+  --ifm-strong-border-color: var(--medusa-border-strong);
+  --ifm-focus-border-color: var(--medusa-border-focus);
+  --ifm-icon-color: var(--medusa-icon-secondary);
+
+  /* Fonts */
+  --ifm-code-font-size: var(--medusa-body-regular-size);
+  --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+  --ifm-font-family-monospace: 'Roboto Mono',SFMono-Regular, Menlo, Monaco, Consolas,'Liberation Mono', 'Courier New', monospace;
+  --ifm-font-size-base: var(--medusa-body-regular-size);
+  --ifm-line-height-base: var(--medusa-body-regular-line-height);
+  --ifm-font-weight-base: var(--medusa-body-regular-font-weight);
+
+  /* Headings */
+  /** Due to how docusaurus styles headings, the variables are set again in _typography.css **/
+  --ifm-color-headers: var(--ifm-color-primary);
+  --ifm-h1-font-size: var(--medusa-h1-size);
+  --ifm-h1-line-height: var(--medusa-h1-line-height);
+  --ifm-h1-weight: var(--medusa-h1-weight);
+  --ifm-h2-font-size: var(--medusa-h2-size);
+  --ifm-h2-line-height: var(--medusa-h2-line-height);
+  --ifm-h2-weight: var(--medusa-h2-weight);
+  --ifm-h3-font-size: var(--medusa-h3-size);
+  --ifm-h3-line-height: var(--medusa-h3-line-height);
+  --ifm-h3-weight: var(--medusa-h3-weight);
+  --ifm-h4-font-size: var(--ifm-font-size-base);
+
+  /* Links */
+  --ifm-link-color: var(--ifm-color-primary);
+  --ifm-link-weight: var(--medusa-body-regular-plus-font-weight);
+  --ifm-link-hover-color: var(--ifm-color-content);
+  --ifm-link-decoration: none;
+  --ifm-link-hover-decoration: none;
+
+  /* Sidebar */
+  --doc-sidebar-width: 320px !important;
+  --doc-sidebar-padding: 24px;
+  --ifm-menu-link-padding-vertical: 6px;
+  --ifm-menu-link-padding-horizontal: 16px;
+  --ifm-menu-color: var(--medusa-text-subtle);
+  --ifm-menu-color-active: var(--medusa-text-base);
+  --ifm-menu-color-background-hover: var(--medusa-bg-base-hover);
+  --ifm-menu-color-background-active: var(--medusa-bg-base-pressed);
+
+  /* Docs Page */
+  --ifm-docs-page-max-width: var(--ifm-container-width-xl);
+  --ifm-max-content-width: 1419px;
+
+  /* Toc */
+  --ifm-toc-border-color: var(--medusa-border-base);
+  --ifm-toc-link-color: var(--medusa-text-subtle);
+  --ifm-toc-padding-horizontal: 16px;
+  --ifm-toc-link-active: var(--medusa-text-base);
+  --ifm-toc-divider-color: var(--medusa-border-base);
+  --ifm-toc-link-padding-left: 11px;
+
+  /* Navbar */
+  --ifm-navbar-background-color: var(--ifm-background-color);
+  --ifm-navbar-shadow: 0px 1px 0px 0px var(--medusa-border-base);
+  --ifm-navbar-padding-vertical: 12px;
+  --ifm-navbar-padding-horizontal: 24px;
+  --ifm-navbar-item-padding-vertical: 6px;
+  --ifm-navbar-item-padding-horizontal: 16px;
+  --ifm-navbar-height: 57px;
+  --ifm-navbar-link-hover-color: var(--medusa-text-base);
+  --ifm-navbar-link-color: var(--medusa-text-subtle);
+  --ifm-navbar-divider-color: var(--medusa-border-strong);
+
+  /* Color Mode toggler */
+  --ifm-color-mode-icon-color: var(--medusa-icon-secondary);
+
+  /* Screen Width */
+  --ifm-container-width-xl: 960px;
+
+  /* Notes */
+  --ifm-note-background: var(--ifm-background-surface-color);
+  --ifm-note-border-color: var(--medusa-border-base);
+  --ifm-note-text-color: var(--medusa-text-subtle);
+  --ifm-note-info-color: var(--medusa-support-info);
+  --ifm-note-warning-color: var(--medusa-support-error);
+  --ifm-note-tip-color: var(--medusa-support-warning);
+
+  /* Inline Code */
+  --ifm-code-border-radius: 8px;
+  --ifm-code-padding-horizontal: 8px;
+  --ifm-code-border-color: var(--medusa-border-base);
+  --ifm-code-background: var(--medusa-bg-subtle) !important;
+  --ifm-code-background-hover: var(--medusa-bg-subtle-hover);
+  --ifm-code-background-pressed: var(--medusa-bg-subtle-pressed);
+  --ifm-code-color: var(--medusa-text-subtle);
+
+  /* Code Blocks */
+  --ifm-pre-background: var(--medusa-code-block);
+  --ifm-pre-background-transparent: var(--medusa-code-block-transparent);
+  --ifm-code-tabs-color: var(--medusa-code-tab-text);
+  --ifm-code-tabs-active-bg: var(--medusa-code-tab);
+  --ifm-code-tabs-active-color: var(--medusa-code-tab-active-text);
+  --ifm-code-action-hover-bg: var(--medusa-code-tab-hover);
+  --ifm-pre-padding: 16px;
+  --ifm-code-title-color: var(--medusa-code-tab-title);
+  --ifm-code-line-number-color: var(--medusa-text-placeholder);
+  --ifm-code-block-border-color: var(--medusa-code-block-border);
+
+  /* Tabs */
+  --ifm-tabs-color-active: var(--ifm-color-primary);
+
+  /* Tooltip */
+  --ifm-tooltip-background-color: var(--medusa-tooltip);
+  --ifm-tooltip-border-color: var(--medusa-tooltip-border);
+  --ifm-tooltip-box-shadow-color: var(--medusa-tooltip-shadow);
+  --rt-opacity: 1 !important;
+  --rt-color-dark: var(--ifm-tooltip-background-color) !important;
+  --rt-color-white: var(--ifm-color-content) !important;
+
+  /* Buttons */
+  --ifm-primary-btn-background-color: var(--medusa-button-primary);
+  --ifm-primary-btn-hover-background-color: var(--medusa-button-primary-hover);
+  --ifm-primary-btn-color: var(--medusa-text-on-color);
+  --ifm-primary-btn-border-color: var(--medusa-button-primary);
+  --ifm-primary-btn-focused-shadow: var(--medusa-shadow-button-focused);
+  --ifm-secondary-btn-background-color: var(--medusa-button-secondary);
+  --ifm-secondary-btn-color: var(--ifm-color-primary);
+  --ifm-secondary-btn-border-color: var(--ifm-base-border-color);
+  --ifm-secondary-btn-hover-background-color: var(--medusa-button-secondary-hover);
+  --ifm-secondary-btn-focused-shadow: var(--ifm-primary-btn-focused-shadow);
+
+  /* Footer */
+  --ifm-footer-color: var(--medusa-text-placeholder);
+  --ifm-footer-background-color: transparent;
+  --ifm-footer-padding-horizontal: 0;
+  --ifm-footer-social-icons-color: var(--medusa-icon-placeholder);
+  --ifm-footer-social-icons-color-hover: var(--medusa-icon-secondary);
+  --ifm-footer-border-color: var(--medusa-border-base);
+  --ifm-footer-link-color: var(--ifm-color-content);
+  --ifm-doc-footer-border-color: var(--medusa-border-base);
+
+  /* Search */
+  --docsearch-searchbox-width: 280px;
+  --docsearch-searchbox-height: 32px !important;
+  --docsearch-searchbox-background: var(--medusa-bg-field) !important;
+  --docsearch-searchbox-focus-background: var(--medusa-bg-field-hover) !important;
+  --docsearch-searchbox-border-color: var(--medusa-border-base);
+  --docsearch-searchbox-shadow: none !important;
+  --docsearch-modal-height: 472px !important;
+  --docsearch-modal-background: var(--medusa-bg-base) !important;
+  --docsearch-modal-border-color: var(--medusa-border-base);
+  --docsearch-modal-shadow: var(--medusa-shadow-overlay) !important;
+  --docsearch-modal-fade-bg: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%); /* TODO */
+  --docsearch-modal-searchbox-height: 56px;
+  --docsearch-modal-searchbox-focus-background: none;
+  --docsearch-container-background: var(--medusa-bg-overlay) !important;
+  --docsearch-key-gradient: var(--medusa-bg-component) !important;
+  --docsearch-muted-color: var(--medusa-text-subtle) !important;
+  --docsearch-placeholder-color: var(--medusa-text-placeholder);
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-source-color: var(--medusa-text-placeholder);
+  --docsearch-spacing-y: 12px;
+  --docsearch-spacing-x: 24px;
+  --docsearch-spacing: var(--docsearch-spacing-y) var(--docsearch-spacing-x) !important;
+  --docsearch-source-spacing: 10px 24px;
+  --docsearch-highlight-color: var(--medusa-text-placeholder) !important;
+  --docsearch-text-color: var(--ifm-color-primary) !important;
+  --docsearch-hit-background: var(--docsearch-modal-background) !important;
+  --docsearch-hit-height: auto !important;
+  --docsearch-hit-active-color: var(--docsearch-text-color) !important;
+  --docsearch-hit-active-bg: var(--medusa-bg-base-hover);
+  --docsearch-hit-icon-color: var(--medusa-icon-placeholder);
+  --docsearch-icon-color: var(--medusa-icon-placeholder);
+  --docsearch-hit-border-color: var(--medusa-border-base);
+  --docsearch-hit-title-color: var(--docsearch-primary-color);
+  --docsearch-tree-color: var(--medusa-border-base);
+  --docsearch-tree-hover-color: var(--medusa-border-strong);
+  --docsearch-footer-height: 40px !important;
+
+  /* Announcement Bar */
+  --docusaurus-announcement-bar-height: auto !important;
+  --ifm-announcement-bar-bg: var(--ifm-background-surface-color);
+  --ifm-announcement-bar-border-color: var(--ifm-base-border-color);
+  --ifm-announcement-bar-hover-bg: var(--medusa-bg-subtle-hover);
+  --ifm-announcement-bar-icon-bg: url('/img/announcement-bg.svg');
+  --ifm-announcement-bar-icon-color: var(--medusa-icon-on-color);
+  --ifm-announcement-bar-title-color: var(--ifm-color-primary);
+  --ifm-announcement-bar-text-color: var(--ifm-color-content);
+  --ifm-announcement-bar-close-icon-color: var(--medusa-icon-placeholder);
+
+  /* Cards */
+  --ifm-card-bg: var(--ifm-background-surface-color);
+  --ifm-card-bg-hover: var(--medusa-bg-subtle-hover);
+  --ifm-card-border-color: var(--ifm-background-surface-color);
+  --ifm-card-icon-size: 20px;
+  --ifm-card-highlighted-bg-image: url('/img/small-squares-bg-light.svg');
+
+  /* Large Card */
+  --large-card-bg: var(--ifm-background-surface-color);
+  --large-card-bg-hover: var(--medusa-bg-subtle-hover);
+  --large-card-border-color: var(--ifm-base-border-color);
+  --large-card-bg-image: url('/img/squares-bg-light.svg');
+  --large-card-fade-effect: linear-gradient(transparent, var(--large-card-bg));
+  --large-card-fade-effect-hover: linear-gradient(transparent, var(--large-card-bg-hover));
+  --large-card-icon-size: 20px;
+  --large-card-icon-inside-padding: 6px;
+  --large-card-icon-wrapper-padding: var(--bordered-padding);
+  --large-card-icon-wrapper-border-color: var(--ifm-strong-border-color);
+  --large-card-title-color: var(--ifm-color-primary);
+
+  /* Bordered Element */
+  --bordered-border-color: var(--medusa-border-strong);
+  --bordered-padding: 3px;
+  --bordered-inside-padding: 2px;
+  --bordered-margin-right: calc(var(--ifm-base-margin-vertical) / 2);
+
+  /** Tables **/
+  --ifm-table-border-color: var(--medusa-border-base);
+  --ifm-table-head-background: var(--ifm-background-surface-color);
+  --ifm-table-head-color: var(--ifm-color-primary);
+  --ifm-table-head-font-weight: var(--medusa-body-regular-plus-font-weight);
+  --ifm-table-stripe-background: var(--ifm-background-surface-color) !important;
+}
+
+html[data-theme="dark"] {
+
+  /* Sidebar */
+  --ifm-menu-color-background-hover: var(--medusa-bg-subtle-hover);
+  --ifm-menu-color-background-active: var(--medusa-bg-subtle-pressed);
+
+  /* Colors */
+  --ifm-background-color: var(--medusa-bg-subtle);
+  --ifm-background-surface-color: var(--medusa-bg-base);
+
+  /* Inline Code */
+  --ifm-code-background: var(--medusa-bg-base) !important;
+  --ifm-code-background-hover: var(--medusa-bg-base-hover);
+  --ifm-code-background-pressed: var(--medusa-bg-base-pressed);
+
+  /* Cards */
+  --ifm-card-bg-hover: var(--medusa-bg-base-hover);
+  --ifm-card-highlighted-bg-image: url('/img/small-squares-bg.svg');
+
+  /* Announcement Bar */
+  --ifm-announcement-bar-hover-bg: var(--medusa-bg-base-hover);
+
+  /* Large Card */
+  --large-card-bg-hover: var(--medusa-bg-base-hover);
+  --large-card-bg-image: url('/img/squares-bg.svg');
+}
+
+@media screen and (min-width: 1441px) {
+  :root {
+    /** Table of Content **/
+    --ifm-toc-width: calc(2 / 12 * 100%);
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  :root {
+    /** Table of Content **/
+    --ifm-toc-width: calc(3 / 12 * 100%);
+  }
+}
+
+@media (min-width: 997px) {
+  :root {
+    --docusaurus-announcement-bar-height: 30px;
+  }
+}

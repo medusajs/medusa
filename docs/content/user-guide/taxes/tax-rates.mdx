@@ -1,0 +1,65 @@
+---
+sidebar_position: 3
+description: 'This user guide explains how to manage tax rates on the Medusa admin. Learn how to create, edit, and delete tax rates.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Tax Rates
+
+In this document, you’ll learn how to manage tax rates in your Medusa Admin.
+
+## Overview
+
+Regions have at least one tax rate, which is the default tax rate. You can, however, add more tax rates for further customization. You can also edit or delete tax rates.
+
+---
+
+## Create Tax Rates
+
+To add a tax rate:
+
+1. Go to Settings → Taxes
+2. Select a region that you want to add a new tax rate to.
+3. Click on New Tax Rate at the top right of the Details section.
+4. This opens the tax rate form in a new window.
+5. You can optionally [add overrides to the tax rate](./tax-overrides.mdx).
+6. Once done, click Save.
+
+---
+
+## Edit Tax Rate
+
+To edit a tax rate:
+
+1. Go to Settings → Taxes
+2. Select the region that the tax rate you want to edit belongs to.
+3. From the list of tax rates in the Details section, find the tax rate you want to edit and click the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
+4. Choose Edit from the dropdown.
+5. In the form that opens in the new window, you can edit the basic details of the tax rate such as the name or rate. If you’re editing a tax rate that’s not the default, you can [manage overrides of this tax rate](./tax-overrides.mdx).
+6. Once done, click Save.
+
+---
+
+## Delete Tax Rate
+
+:::warning
+
+If you delete a tax rate, you won’t be able to restore it or use it during checkout.
+
+:::
+
+To delete a tax rate:
+
+1. Go to Settings → Taxes
+2. Select the region that the tax rate you want to delete belongs to.
+3. From the list of tax rates in the Details section, find the tax rate you want to delete and click the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
+4. Choose Delete Tax Rate from the dropdown.
+5. Confirm deleting the tax rate by clicking the “Yes, confirm” button in the pop-up.
+
+:::info
+
+Default tax rates can’t be deleted. If you don’t want to apply any taxes in a region, you can instead set the default tax rate to zero.
+
+:::

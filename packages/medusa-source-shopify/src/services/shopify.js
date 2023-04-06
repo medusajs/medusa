@@ -6,6 +6,7 @@ class ShopifyService extends BaseService {
     {
       manager,
       shippingProfileService,
+      storeService,
       shopifyProductService,
       shopifyCollectionService,
       shopifyClientService,
@@ -26,6 +27,8 @@ class ShopifyService extends BaseService {
     this.collectionService_ = shopifyCollectionService
     /** @private @const {ShopifyRestClient} */
     this.client_ = shopifyClientService
+    /** @private @const {StoreService} */
+    this.store_ = storeService
   }
 
   withTransaction(transactionManager) {
@@ -40,6 +43,8 @@ class ShopifyService extends BaseService {
       shopifyClientService: this.client_,
       shopifyProductService: this.productService_,
       shopifyCollectionService: this.collectionService_,
+      shopifyBuildService: this.buildService_,
+      storeService: this.store_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -49,29 +54,79 @@ class ShopifyService extends BaseService {
 
   async importShopify() {
     return this.atomicPhase_(async (manager) => {
+      const updatedSinceQuery = await this.getAndUpdateBuildTime_()
+
       await this.shippingProfileService_.createDefault()
       await this.shippingProfileService_.createGiftCardDefault()
 
       const products = await this.client_.list(
         "products",
-        INCLUDE_PRESENTMENT_PRICES
+        INCLUDE_PRESENTMENT_PRICES,
+        updatedSinceQuery
       )
-      const customCollections = await this.client_.list("custom_collections")
-      const smartCollections = await this.client_.list("smart_collections")
-      const collects = await this.client_.list("collects")
+
+      const customCollections = await this.client_.list(
+        "custom_collections",
+        null,
+        updatedSinceQuery
+      )
+
+      const smartCollections = await this.client_.list(
+        "smart_collections",
+        null,
+        updatedSinceQuery
+      )
+
+      const collects = await this.client_.list(
+        "collects",
+        null,
+        updatedSinceQuery
+      )
+
+      const resolvedProducts = await Promise.all(
+        products.map(async (product) => {
+          return await this.productService_
+            .withTransaction(manager)
+            .create(product)
+        })
+      )
 
       await this.collectionService_
         .withTransaction(manager)
-        .createWithProducts(
-          collects,
-          [...customCollections, ...smartCollections],
-          products
-        )
+        .createCustomCollections(collects, customCollections, resolvedProducts)
 
-      for (const product of products) {
-        await this.productService_.withTransaction(manager).create(product)
-      }
+      await this.collectionService_
+        .withTransaction(manager)
+        .createSmartCollections(smartCollections, resolvedProducts)
     })
+  }
+
+  async getAndUpdateBuildTime_() {
+    let buildtime = null
+    const store = await this.store_.retrieve()
+    if (!store) {
+      return {}
+    }
+
+    if (store.metadata?.source_shopify_bt) {
+      buildtime = store.metadata.source_shopify_bt
+    }
+
+    const payload = {
+      metadata: {
+        source_shopify_bt: new Date().toISOString(),
+      },
+    }
+
+    await this.store_.update(payload)
+
+    if (!buildtime) {
+      return {}
+    }
+
+    return {
+      updated_at_min: buildtime,
+    }
   }
 }
 

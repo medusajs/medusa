@@ -1,5 +1,6 @@
-import _ from "lodash"
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../../utils/flag-router"
 import ShippingOptionService from "../shipping-option"
 
 describe("ShippingOptionService", () => {
@@ -13,6 +14,7 @@ describe("ShippingOptionService", () => {
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     it("successfully gets shipping option", async () => {
@@ -26,7 +28,7 @@ describe("ShippingOptionService", () => {
 
   describe("update", () => {
     const shippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("noCalc"):
             return Promise.resolve({
@@ -35,11 +37,18 @@ describe("ShippingOptionService", () => {
           case IdMap.getId("validId"):
             return Promise.resolve({
               provider_id: "provider",
+              amount: 100,
               data: {
                 provider_data: "true",
               },
             })
-
+          case "flat-rate-no-amount":
+            return Promise.resolve({
+              provider_id: "provider",
+              data: {
+                provider_data: "true",
+              },
+            })
           default:
             return Promise.resolve({})
         }
@@ -47,17 +56,20 @@ describe("ShippingOptionService", () => {
     })
 
     const fulfillmentProviderService = {
-      canCalculate: jest.fn().mockImplementation(id => id !== "no_calc"),
+      canCalculate: jest
+        .fn()
+        .mockImplementation((option) => option.provider_id !== "no_calc"),
     }
 
     const shippingOptionRequirementRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRepository,
       shippingOptionRequirementRepository,
       fulfillmentProviderService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -131,7 +143,7 @@ describe("ShippingOptionService", () => {
     it("sets flat rate price", async () => {
       await optionService.update(IdMap.getId("validId"), {
         price_type: "flat_rate",
-        amount: 100,
+        amount: 200,
       })
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
@@ -141,7 +153,37 @@ describe("ShippingOptionService", () => {
           provider_data: "true",
         },
         price_type: "flat_rate",
-        amount: 100,
+        amount: 200,
+      })
+    })
+
+    it("throws on flat rate but no amount", async () => {
+      expect.assertions(1)
+      try {
+        await optionService.update(IdMap.getId("flat-rate-no-amount"), {
+          price_type: "flat_rate",
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Shipping options of type `flat_rate` must have an `amount`"
+        )
+      }
+    })
+
+    it("sets a price to", async () => {
+      await optionService.update(IdMap.getId("validId"), {
+        price_type: "flat_rate",
+        amount: 0,
+      })
+
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
+        provider_id: "provider",
+        data: {
+          provider_data: "true",
+        },
+        price_type: "flat_rate",
+        amount: 0,
       })
     })
 
@@ -151,12 +193,10 @@ describe("ShippingOptionService", () => {
       })
 
       expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledTimes(1)
-      expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith(
-        "provider",
-        {
-          provider_data: "true",
-        }
-      )
+      expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith({
+        data: { provider_data: "true" },
+        provider_id: "provider",
+      })
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
       expect(shippingOptionRepository.save).toHaveBeenCalledWith({
@@ -204,7 +244,7 @@ describe("ShippingOptionService", () => {
 
   describe("delete", () => {
     const shippingOptionRepository = MockRepository({
-      findOne: i =>
+      findOne: (i) =>
         i.where.id === IdMap.getId("validId")
           ? { id: IdMap.getId("validId") }
           : null,
@@ -212,6 +252,7 @@ describe("ShippingOptionService", () => {
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -236,7 +277,7 @@ describe("ShippingOptionService", () => {
 
   describe("addRequirement", () => {
     const shippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("has-min"):
             return Promise.resolve({
@@ -254,12 +295,13 @@ describe("ShippingOptionService", () => {
     })
 
     const shippingOptionRequirementRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRepository,
       shippingOptionRequirementRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -297,18 +339,22 @@ describe("ShippingOptionService", () => {
 
   describe("removeRequirement", () => {
     const shippingOptionRequirementRepository = MockRepository({
-      softRemove: q => {
+      softRemove: (q) => {
         return Promise.resolve()
       },
-      findOne: i =>
-        i.where.id === IdMap.getId("requirement_id")
-          ? { id: IdMap.getId("requirement_id") }
-          : null,
+      findOne: (i) => {
+        if (i.where.id === IdMap.getId("requirement_id")) {
+          return { id: IdMap.getId("requirement_id") }
+        } else {
+          return null
+        }
+      }
     })
 
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRequirementRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -328,23 +374,23 @@ describe("ShippingOptionService", () => {
     it("is idempotent", async () => {
       await optionService.removeRequirement(IdMap.getId("validId"), "something")
 
-      expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(1)
+      expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(0)
     })
   })
 
   describe("create", () => {
     const shippingOptionRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
 
     const fulfillmentProviderService = {
-      validateOption: jest.fn().mockImplementation(o => {
+      validateOption: jest.fn().mockImplementation((o) => {
         return Promise.resolve(o.data.res)
       }),
     }
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -353,7 +399,7 @@ describe("ShippingOptionService", () => {
     }
 
     const shippingOptionRequirementRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
     const optionService = new ShippingOptionService({
       manager: MockManager,
@@ -361,6 +407,7 @@ describe("ShippingOptionService", () => {
       shippingOptionRequirementRepository,
       fulfillmentProviderService,
       regionService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -481,7 +528,7 @@ describe("ShippingOptionService", () => {
   })
 
   describe("createShippingMethod", () => {
-    const option = id => ({
+    const option = (id) => ({
       id,
       region_id: IdMap.getId("region"),
       price_type: "flat_rate",
@@ -497,16 +544,16 @@ describe("ShippingOptionService", () => {
       ],
     })
     const shippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           default:
             return Promise.resolve(option(q.where.id))
         }
       },
     })
-    const shippingMethodRepository = MockRepository({ create: r => r })
+    const shippingMethodRepository = MockRepository({ create: (r) => r })
     const totalsService = {
-      getSubtotal: c => {
+      getSubtotal: (c) => {
         return c.subtotal
       },
     }
@@ -514,8 +561,8 @@ describe("ShippingOptionService", () => {
     const providerService = {
       validateFulfillmentData: jest
         .fn()
-        .mockImplementation(r => Promise.resolve(r.data)),
-      getPrice: d => d.price,
+        .mockImplementation((r) => Promise.resolve(r.data)),
+      getPrice: (d) => d.price,
     }
 
     const optionService = new ShippingOptionService({
@@ -524,6 +571,7 @@ describe("ShippingOptionService", () => {
       shippingOptionRepository,
       totalsService,
       fulfillmentProviderService: providerService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -584,6 +632,70 @@ describe("ShippingOptionService", () => {
         })
       ).rejects.toThrow(
         "The Cart does not satisfy the shipping option's requirements"
+      )
+    })
+  })
+
+  describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] createShippingMethod", () => {
+    const option = (id) => ({
+      id,
+      region_id: IdMap.getId("region"),
+      price_type: "flat_rate",
+      amount: 10,
+      includes_tax: true,
+      data: {
+        something: "yes",
+      },
+      requirements: [
+        {
+          type: "min_subtotal",
+          amount: 100,
+        },
+      ],
+    })
+    const shippingOptionRepository = MockRepository({
+      findOne: (q) => {
+        switch (q.where.id) {
+          default:
+            return Promise.resolve(option(q.where.id))
+        }
+      },
+    })
+    const shippingMethodRepository = MockRepository({ create: (r) => r })
+    const totalsService = {
+      getSubtotal: (c) => {
+        return c.subtotal
+      },
+    }
+
+    const providerService = {
+      validateFulfillmentData: jest
+        .fn()
+        .mockImplementation((r) => Promise.resolve(r.data)),
+      getPrice: (d) => d.price,
+    }
+
+    const optionService = new ShippingOptionService({
+      manager: MockManager,
+      shippingMethodRepository,
+      shippingOptionRepository,
+      totalsService,
+      fulfillmentProviderService: providerService,
+      featureFlagRouter: new FlagRouter({
+        [TaxInclusivePricingFeatureFlag.key]: true,
+      }),
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should create a shipping method that also includes the taxes", async () => {
+      await optionService.createShippingMethod("random_id", {}, { price: 10 })
+      expect(shippingMethodRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          includes_tax: true,
+        })
       )
     })
   })

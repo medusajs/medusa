@@ -1,32 +1,49 @@
 import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
+
 import GiftCardService from "../../../../services/gift-card"
 
 /**
- * @oas [get] /gift-cards/{code}
+ * @oas [get] /store/gift-cards/{code}
  * operationId: "GetGiftCardsCode"
- * summary: "Retrieve Gift Card by Code"
- * description: "Retrieves a Gift Card by its associated unqiue code."
+ * summary: "Get Gift Card by Code"
+ * description: "Retrieves a Gift Card by its associated unique code."
  * parameters:
  *   - (path) code=* {string} The unique Gift Card code.
+ * x-codegen:
+ *   method: retrieve
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.giftCards.retrieve(code)
+ *       .then(({ gift_card }) => {
+ *         console.log(gift_card.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               description: The id of the Gift Card
- *             code:
- *               description: The code of the Gift Card
- *             value:
- *               description: The original value of the Gift Card.
- *             balance:
- *               description: The current balanace of the Gift Card
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/StoreGiftCardsRes"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { code } = req.params

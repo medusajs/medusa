@@ -1,0 +1,31 @@
+type: object
+x-expanded-relations:
+  field: products
+  relations:
+    - collection
+    - images
+    - options
+    - tags
+    - type
+    - variants
+    - variants.options
+    - variants.prices
+required:
+  - products
+  - count
+  - offset
+  - limit
+properties:
+  products:
+    type: array
+    items:
+      $ref: ./PricedProduct.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of items skipped before these items
+  limit:
+    type: integer
+    description: The number of items per page

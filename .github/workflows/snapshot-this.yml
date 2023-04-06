@@ -1,0 +1,137 @@
+# Inspired from https://github.com/Shopify/quilt/blob/main/.github/workflows/snapit.yml
+name: Snapshot This
+
+on:
+  issue_comment:
+    types:
+      - created
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  snapshot:
+    name: Snapshot Release
+    if: |
+      github.event.issue.pull_request && 
+      github.event.comment.body == '/snapshot-this'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate pull request
+        uses: actions/github-script@v6
+        with:
+          script: |
+            try {
+              // Add a rocket reaction to the comment
+              await github.rest.reactions.createForIssueComment({
+                ...context.repo,
+                comment_id: context.payload.comment.id,
+                content: 'rocket',
+              })
+
+              // Only allow comment creators who have "write" permissions to repo
+              const actorPermission = (await github.rest.repos.getCollaboratorPermissionLevel({
+                ...context.repo,
+                username: context.actor
+              })).data.permission
+              const isPermitted = ['write', 'admin'].includes(actorPermission)
+              if (!isPermitted) {
+                const errorMessage = 'Only users with write permission to the respository can run /snapshot-this'
+                await github.rest.issues.createComment({
+                  ...context.repo,
+                  issue_number: context.issue.number,
+                  body: errorMessage,
+                })
+                core.setFailed(errorMessage)
+                return;
+              }
+
+              const pullRequest = await github.rest.pulls.get({
+                ...context.repo,
+                pull_number: context.issue.number,
+              })
+              // Pull request from fork
+              if (context.payload.repository.full_name !== pullRequest.data.head.repo.full_name) {
+                const errorMessage = '`/snapshot-this` is not supported on pull requests from forked repositories.'
+                await github.rest.issues.createComment({
+                  ...context.repo,
+                  issue_number: context.issue.number,
+                  body: errorMessage,
+                })
+                core.setFailed(errorMessage)
+              }
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ format('refs/pull/{0}/merge', github.event.issue.number) }}
+
+      # Because changeset entries are consumed and removed on the
+      # 'changeset-release/main' branch, we need to reset the files
+      # so the following 'changeset version --snapshot' command will
+      # regenerate the package version bumps with the snapshot releases
+      - name: Reset changeset entries on changeset-release/main branch
+        run: |
+          if [[ $(git branch --show-current) == 'changeset-release/main' ]]; then
+            git checkout origin/main -- .changeset
+          fi
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: snapshot-this
+
+      - name: Build Packages
+        shell: "bash"
+        run: yarn build
+
+      - name: Create an .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+
+      - name: Create and publish snapshot release
+        uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            await exec.exec('yarn run changeset version --snapshot snapshot')
+            const {stdout} = await exec.getExecOutput('yarn run release:snapshot')
+            const newTags = Array
+              .from(stdout.matchAll(/New tag:\s+([^\s\n]+)/g))
+              .map(([_, tag]) => tag)
+            if (newTags.length) {
+              const multiple = newTags.length > 1
+              const body = (
+                `#### :rocket: A snapshot release has been made for this PR\n\n` +
+                `Test the snapshot${multiple ? 's' : ''} by updating your \`package.json\` ` +
+                `with the newly published version${multiple ? 's' : ''}:\n` +
+                newTags.map(tag => (
+                  '```sh\n' +
+                  `yarn add ${tag}\n` +
+                  '```'
+                )).join('\n') + 
+                `\n\n> Latest commit: ${context.sha}`
+
+              )
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body,
+              })
+              await github.rest.reactions.createForIssueComment({
+                ...context.repo,
+                comment_id: context.payload.comment.id,
+                content: 'hooray',
+              })
+            }

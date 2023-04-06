@@ -1,6 +1,6 @@
 {
   "name": "medusa-telemetry",
-  "version": "0.0.11",
+  "version": "0.0.16",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -11,6 +11,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
@@ -19,23 +22,20 @@
     "@babel/preset-typescript": "^7.15.0",
     "babel-preset-medusa-package": "^1.1.19",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0",
-    "jest": "^25.5.2",
-    "nodemon": "^2.0.1",
-    "prettier": "^1.19.1"
+    "jest": "^25.5.4",
+    "nodemon": "^2.0.20"
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__ --extensions \".ts,.js\"",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "build": "babel src -d dist --ignore **/__tests__ --extensions \".ts,.js\"",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch": "babel -w src --out-dir dist/ --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
+    "build": "babel src -d dist --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
     "serve": "node dist/app.js",
     "postinstall": "node dist/postinstall.js || true",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest --passWithNoTests src"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "axios-retry": "^3.1.9",
     "boxen": "^5.0.1",
     "ci-info": "^3.2.0",

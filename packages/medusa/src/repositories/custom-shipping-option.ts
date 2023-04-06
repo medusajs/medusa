@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
-import { CustomShippingOption } from './../models/custom-shipping-option';
+import { CustomShippingOption } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(CustomShippingOption)
-export class CustomShippingOptionRepository extends Repository<CustomShippingOption> {}
+export const CustomShippingOptionRepository =
+  dataSource.getRepository(CustomShippingOption)
+export default CustomShippingOptionRepository

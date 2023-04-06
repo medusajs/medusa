@@ -1,0 +1,69 @@
+.announcementBar {
+  --bordered-margin-right: 12px;
+  
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--docusaurus-announcement-bar-height);
+  background-color: var(--ifm-announcement-bar-bg);
+  padding: 12px;
+  border: 1px solid var(--ifm-announcement-bar-border-color);
+  border-radius: var(--ifm-global-radius);
+  margin: 0 var(--doc-sidebar-padding) calc(var(--ifm-base-margin-vertical) / 2) var(--doc-sidebar-padding);
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+.announcementBar:hover {
+  background-color: var(--ifm-announcement-bar-hover-bg);
+}
+
+html[data-announcement-bar-initially-dismissed='true'] .announcementBar {
+  display: none;
+}
+
+.announcementBarContent {
+  flex: 1;
+}
+
+.announcementBarClose {
+  z-index: 101;
+  text-align: right;
+}
+
+.announcementBarClose svg g {
+  stroke-width: 1.5px !important;
+}
+
+.announcementBarIconWrapper {
+  --ifm-icon-color: var(--ifm-announcement-bar-icon-color);
+
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ifm-announcement-bar-icon-bg);
+  background-size: cover;
+  border-radius: calc(var(--ifm-global-radius) / 2);
+}
+
+.announcementBarLink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+@media print {
+  .announcementBar {
+    display: none;
+  }
+}
+
+@media (min-width: 997px) {
+  .announcementBarPlaceholder,
+  .announcementBarClose {
+    flex-basis: 50px;
+  }
+}

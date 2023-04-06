@@ -1,24 +1,19 @@
 import {
-  Entity,
-  Index,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  ManyToOne, 
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
-  JoinColumn
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class ReturnReason {
-  @PrimaryColumn()
-  id: string
-
+export class ReturnReason extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   value: string
@@ -30,71 +25,89 @@ export class ReturnReason {
   description: string
 
   @Column({ nullable: true })
-  parent_return_reason_id: string
+  parent_return_reason_id: string | null
 
-  @ManyToOne(() => ReturnReason, {cascade: ['soft-remove']}
-  )
+  @ManyToOne(() => ReturnReason, { cascade: ["soft-remove"] })
   @JoinColumn({ name: "parent_return_reason_id" })
-  parent_return_reason: ReturnReason
+  parent_return_reason: ReturnReason | null
 
   @OneToMany(
     () => ReturnReason,
-    return_reason => return_reason.parent_return_reason,
-    { cascade: ["insert", 'soft-remove'] }
+    (return_reason) => return_reason.parent_return_reason,
+    { cascade: ["insert", "soft-remove"] }
   )
   return_reason_children: ReturnReason[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `rr_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "rr")
   }
 }
 
 /**
- * @schema return_reason
+ * @schema ReturnReason
  * title: "Return Reason"
  * description: "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned."
- * x-resourceId: return_reason
+ * type: object
+ * required:
+ *   - created_at
+ *   - deleted_at
+ *   - description
+ *   - id
+ *   - label
+ *   - metadata
+ *   - parent_return_reason_id
+ *   - updated_at
+ *   - value
  * properties:
  *   id:
- *     description: "The id of the Return Reason will start with `rr_`."
+ *     description: The return reason's ID
  *     type: string
- *   description:
- *     description: "A description of the Reason."
- *     type: string
- *   label:
- *     description: "A text that can be displayed to the Customer as a reason."
- *     type: string
+ *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
  *   value:
- *     description: "The value to identify the reason by."
+ *     description: The value to identify the reason by.
  *     type: string
+ *     example: damaged
+ *   label:
+ *     description: A text that can be displayed to the Customer as a reason.
+ *     type: string
+ *     example: Damaged goods
+ *   description:
+ *     description: A description of the Reason.
+ *     nullable: true
+ *     type: string
+ *     example: Items that are damaged
+ *   parent_return_reason_id:
+ *     description: The ID of the parent reason.
+ *     nullable: true
+ *     type: string
+ *     example: null
+ *   parent_return_reason:
+ *     description: Available if the relation `parent_return_reason` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ReturnReason"
+ *   return_reason_children:
+ *     description: Available if the relation `return_reason_children` is expanded.
+ *     $ref: "#/components/schemas/ReturnReason"
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
+ *     description: The date with timezone at which the resource was created.
  *     type: string
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
+ *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
+ *     example: {car: "white"}
  */

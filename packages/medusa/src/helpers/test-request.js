@@ -1,13 +1,22 @@
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
 import { MockManager } from "medusa-test-utils"
+import querystring from "querystring"
 import "reflect-metadata"
 import supertest from "supertest"
-import config from "../config"
 import apiLoader from "../loaders/api"
+import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
+import models from "../loaders/models"
 import passportLoader from "../loaders/passport"
+import repositories from "../loaders/repositories"
 import servicesLoader from "../loaders/services"
+import strategiesLoader from "../loaders/strategies"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -21,9 +30,47 @@ const clientSessionOpts = {
   secret: "test",
 }
 
+const moduleResolutions = registerModules({})
+const config = {
+  projectConfig: {
+    jwt_secret: "supersecret",
+    cookie_secret: "superSecret",
+    admin_cors: "",
+    store_cors: "",
+  },
+}
+
 const testApp = express()
 
+function asArray(resolvers) {
+  return {
+    resolve: (container) =>
+      resolvers.map((resolver) => container.build(resolver)),
+  }
+}
+
 const container = createContainer()
+
+// TODO: remove once the util is merged in master
+container.registerAdd = function (name, registration) {
+  const storeKey = name + "_STORE"
+
+  if (this.registrations[storeKey] === undefined) {
+    this.register(storeKey, asValue([]))
+  }
+  const store = this.resolve(storeKey)
+
+  if (this.registrations[name] === undefined) {
+    this.register(name, asArray(store))
+  }
+  store.unshift(registration)
+
+  return this
+}.bind(container)
+
+container.register("featureFlagRouter", asValue(featureFlagRouter))
+container.register("modulesHelper", asValue(moduleHelper))
+container.register("configModule", asValue(config))
 container.register({
   logger: asValue({
     error: () => {},
@@ -44,41 +91,54 @@ testApp.use((req, res, next) => {
   next()
 })
 
-servicesLoader({ container })
-passportLoader({ app: testApp, container })
+featureFlagLoader(config)
+models({ container, configModule: config, isTest: true })
+repositories({ container, isTest: true })
+servicesLoader({ container, configModule: config })
+strategiesLoader({ container, configModule: config })
+passportLoader({ app: testApp, container, configModule: config })
+moduleLoader({ container, moduleResolutions })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()
   next()
 })
 
-apiLoader({ container, rootDirectory: ".", app: testApp })
+apiLoader({ container, app: testApp, configModule: config })
 
 const supertestRequest = supertest(testApp)
 
 export async function request(method, url, opts = {}) {
-  let { payload, headers } = opts
+  const { payload, query, headers = {}, flags = [] } = opts
 
-  const req = supertestRequest[method.toLowerCase()](url)
-  headers = headers || {}
+  flags.forEach((flag) => {
+    featureFlagRouter.setFlag(flag.key, true)
+  })
+
+  const queryParams = query && querystring.stringify(query)
+  const req = supertestRequest[method.toLowerCase()](
+    `${url}${queryParams ? "?" + queryParams : ""}`
+  )
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
-    if (opts.adminSession.jwt) {
-      opts.adminSession.jwt = jwt.sign(
-        opts.adminSession.jwt,
-        config.jwtSecret,
+    const adminSession = { ...opts.adminSession }
+
+    if (adminSession.jwt) {
+      adminSession.jwt = jwt.sign(
+        adminSession.jwt,
+        config.projectConfig.jwt_secret,
         {
           expiresIn: "30m",
         }
       )
     }
-    headers.Cookie = JSON.stringify(opts.adminSession) || ""
+    headers.Cookie = JSON.stringify(adminSession) || ""
   }
   if (opts.clientSession) {
     if (opts.clientSession.jwt) {
-      opts.clientSession.jwt = jwt.sign(
+      opts.clientSession.jwt_store = jwt.sign(
         opts.clientSession.jwt,
-        config.jwtSecret,
+        config.projectConfig.jwt_secret,
         {
           expiresIn: "30d",
         }
@@ -89,7 +149,9 @@ export async function request(method, url, opts = {}) {
   }
 
   for (const name in headers) {
-    req.set(name, headers[name])
+    if ({}.hasOwnProperty.call(headers, name)) {
+      req.set(name, headers[name])
+    }
   }
 
   if (payload && !req.get("content-type")) {
@@ -125,6 +187,5 @@ export async function request(method, url, opts = {}) {
   //  c[clientSessionOpts.cookieName] &&
   //  sessions.util.decode(clientSessionOpts, c[clientSessionOpts.cookieName])
   //    .content
-
   return res
 }

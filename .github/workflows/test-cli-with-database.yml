@@ -1,0 +1,104 @@
+name: CLI Pipeline
+on:
+  pull_request:
+
+jobs:
+  test-cli-with-database:
+    env:
+      NODE_ENV: CI
+      REDIS_URL: redis://localhost:6379
+      DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
+
+    strategy:
+      matrix:
+        db: [sqlite, postgres]
+
+    services:
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: cli-test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup development server
+        uses: ./.github/actions/setup-server
+        with:
+          cache-extension: "cli-test"
+
+      - name: Install Medusa cli
+        run: npm i -g @medusajs/medusa-cli
+
+      - name: Create Medusa project
+        run: |
+          medusa new cli-test
+        working-directory: ..
+
+      - name: run medusa dev
+        run: medusa-dev --force-install
+        working-directory: ../cli-test
+
+      - name: Run migrations
+        env:
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: medusa migrations run
+        working-directory: ../cli-test
+
+      - name: Seed db
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: yarn seed
+        working-directory: ../cli-test
+
+      - name: Create admin user
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: medusa user -e test@test.com -p password -i admin_123
+        working-directory: ../cli-test
+
+      ##########################  Test medusa develop  ###############################
+
+      - name: Run development server
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: medusa develop &
+        working-directory: ../cli-test
+
+      - name: Testing development server
+        uses: ./.github/actions/test-server
+
+      ###########################  Test medusa start  ################################
+
+      - name: Starting medusa
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: medusa start &
+        working-directory: ../cli-test
+
+      - name: Testing server
+        uses: ./.github/actions/test-server

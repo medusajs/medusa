@@ -1,6 +1,6 @@
 {
   "name": "medusa-source-shopify",
-  "version": "1.0.3",
+  "version": "1.2.8",
   "description": "Source plugin that allows users to import products from a Shopify store",
   "main": "index.js",
   "repository": {
@@ -11,13 +11,13 @@
   "author": "Kasper Fabrcius Kristensen <kasper@medusa-commerce.com>",
   "license": "MIT",
   "scripts": {
-    "build": "babel src -d . --ignore **/__tests__,**/__mocks__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__,**/__mocks__",
-    "test": "jest"
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests src",
+    "build": "babel src --out-dir . --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir . --ignore '**/__tests__','**/__mocks__'"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x",
+    "medusa-interfaces": "1.3.7",
     "typeorm": "0.x"
   },
   "dependencies": {
@@ -28,9 +28,9 @@
     "express": "^4.17.1",
     "ioredis": "^4.27.9",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.1.31",
-    "medusa-interfaces": "^1.1.32",
-    "medusa-test-utils": "^1.1.37"
+    "medusa-core-utils": "^1.2.0",
+    "medusa-interfaces": "^1.3.7",
+    "medusa-test-utils": "^1.1.40"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
@@ -44,8 +44,12 @@
     "@babel/runtime": "^7.15.4",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.32.0",
-    "jest": "^27.2.0"
+    "jest": "^25.5.4",
+    "medusa-interfaces": "^1.3.7"
   },
-  "gitHead": "3bbd1e8507e00bc471de6ae3c30207999a4a4011"
+  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-source"
+  ]
 }

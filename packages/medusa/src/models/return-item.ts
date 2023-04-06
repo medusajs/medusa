@@ -1,25 +1,9 @@
-import {
-  Entity,
-  Generated,
-  RelationId,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
-} from "typeorm"
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
 
-import { ReturnReason } from "./return-reason"
-import { Return } from "./return"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
+import { Return } from "./return"
+import { ReturnReason } from "./return-reason"
 
 @Entity()
 export class ReturnItem {
@@ -60,45 +44,76 @@ export class ReturnItem {
   note: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 }
 
 /**
- * @schema return_item
+ * @schema ReturnItem
  * title: "Return Item"
  * description: "Correlates a Line Item with a Return, keeping track of the quantity of the Line Item that will be returned."
- * x-resourceId: return_item
+ * type: object
+ * required:
+ *   - is_requested
+ *   - item_id
+ *   - metadata
+ *   - note
+ *   - quantity
+ *   - reason_id
+ *   - received_quantity
+ *   - requested_quantity
+ *   - return_id
  * properties:
  *   return_id:
- *     description: "The id of the Return that the Return Item belongs to."
+ *     description: The id of the Return that the Return Item belongs to.
  *     type: string
+ *     example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
  *   item_id:
- *     description: "The id of the Line Item that the Return Item references."
+ *     description: The id of the Line Item that the Return Item references.
  *     type: string
+ *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
+ *   return_order:
+ *     description: Available if the relation `return_order` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Return"
  *   item:
- *     description: "The Line Item that the Return Item references."
- *     anyOf:
- *       - $ref: "#/components/schemas/line_item"
+ *     description: Available if the relation `item` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/LineItem"
  *   quantity:
- *     description: "The quantity of the Line Item that is included in the Return."
+ *     description: The quantity of the Line Item that is included in the Return.
  *     type: integer
+ *     example: 1
  *   is_requested:
- *     description: "Whether the Return Item was requested initially or received unexpectedly in the warehouse."
+ *     description: Whether the Return Item was requested initially or received unexpectedly in the warehouse.
  *     type: boolean
+ *     default: true
  *   requested_quantity:
- *     description: "The quantity that was originally requested to be returned."
+ *     description: The quantity that was originally requested to be returned.
+ *     nullable: true
  *     type: integer
- *   recieved_quantity:
- *     description: "The quantity that was received in the warehouse."
+ *     example: 1
+ *   received_quantity:
+ *     description: The quantity that was received in the warehouse.
+ *     nullable: true
  *     type: integer
- *   reason:
- *     description: "The reason for returning the item."
- *     anyOf:
- *       - $ref: "#/components/schemas/return_reason"
- *   note:
- *     description: "An optional note with additional details about the Return."
+ *     example: 1
+ *   reason_id:
+ *     description: The ID of the reason for returning the item.
+ *     nullable: true
  *     type: string
+ *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
+ *   reason:
+ *     description: Available if the relation `reason` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ReturnReason"
+ *   note:
+ *     description: An optional note with additional details about the Return.
+ *     nullable: true
+ *     type: string
+ *     example: I didn't like it.
  *   metadata:
- *     description: "An optional key-value map with additional information."
+ *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
+ *     example: {car: "white"}
  */

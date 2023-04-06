@@ -1,8 +1,7 @@
 import axios from "axios"
 import _ from "lodash"
-import { hmacValidator } from "@adyen/api-library"
+import { CheckoutAPI, Client, Config, hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
-import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
 class AdyenService extends BaseService {
   constructor({ cartService }, options) {

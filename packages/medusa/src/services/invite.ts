@@ -1,14 +1,16 @@
-import { BaseService } from "medusa-interfaces"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import config from "../config"
 import { MedusaError } from "medusa-core-utils"
-import { User } from ".."
 import { EntityManager } from "typeorm"
-import { EventBusService, UserService } from "."
+import { UserService } from "."
+import { User } from ".."
+import { TransactionBaseService } from "../interfaces"
+import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
+import { ConfigModule } from "../types/global"
 import { ListInvite } from "../types/invites"
-import { UserRoles } from "../models/user"
+import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -16,89 +18,68 @@ const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
 type InviteServiceProps = {
   manager: EntityManager
   userService: UserService
-  userRepository: UserRepository
-  inviteRepository: InviteRepository
+  userRepository: typeof UserRepository
+  inviteRepository: typeof InviteRepository
   eventBusService: EventBusService
 }
 
-class InviteService extends BaseService {
+class InviteService extends TransactionBaseService {
   static Events = {
     CREATED: "invite.created",
   }
 
-  private manager_: EntityManager
-  private userService_: UserService
-  private userRepo_: UserRepository
-  private inviteRepository_: InviteRepository
-  private eventBus_: EventBusService
+  protected readonly userService_: UserService
+  protected readonly userRepo_: typeof UserRepository
+  protected readonly inviteRepository_: typeof InviteRepository
+  protected readonly eventBus_: EventBusService
 
-  constructor({
-    manager,
-    userService,
-    userRepository,
-    inviteRepository,
-    eventBusService,
-  }: InviteServiceProps) {
-    super()
+  protected readonly configModule_: ConfigModule
 
-    /** @private @constant {EntityManager} */
-    this.manager_ = manager
+  constructor(
+    {
+      userService,
+      userRepository,
+      inviteRepository,
+      eventBusService,
+    }: InviteServiceProps,
+    configModule: ConfigModule
+  ) {
+    // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
+    super(...arguments)
 
-    /** @private @constant {UserService} */
+    this.configModule_ = configModule
     this.userService_ = userService
-
-    /** @private @constant {UserRepository} */
     this.userRepo_ = userRepository
-
-    /** @private @constant {InviteRepository} */
     this.inviteRepository_ = inviteRepository
-
-    /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
 
-  withTransaction(manager): InviteService {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new InviteService({
-      manager,
-      inviteRepository: this.inviteRepository_,
-      userService: this.userService_,
-      userRepository: this.userRepo_,
-      eventBusService: this.eventBus_,
-    })
-
-    cloned.transactionManager_ = manager
-
-    return cloned
-  }
-
   generateToken(data): string {
-    if (config.jwtSecret) {
-      return jwt.sign(data, config.jwtSecret)
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.sign(data, jwt_secret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
+      "Please configure jwt_secret"
     )
   }
 
   async list(selector, config = {}): Promise<ListInvite[]> {
-    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
+    const inviteRepo = this.activeManager_.withRepository(InviteRepository)
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
     return await inviteRepo.find(query)
   }
 
   /**
    * Updates an account_user.
-   * @param {string} user - user emails
-   * @param {string} role - role to assign to the user
-   * @param {number} validDuration - role to assign to the user
-   * @return {Promise} the result of create
+   * @param user - user emails
+   * @param role - role to assign to the user
+   * @param validDuration - role to assign to the user
+   * @return the result of create
    */
   async create(
     user: string,
@@ -107,9 +88,9 @@ class InviteService extends BaseService {
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const inviteRepository =
-        this.manager_.getCustomRepository(InviteRepository)
+        this.activeManager_.withRepository(InviteRepository)
 
-      const userRepo = this.manager_.getCustomRepository(UserRepository)
+      const userRepo = this.activeManager_.withRepository(UserRepository)
 
       const userEntity = await userRepo.findOne({
         where: { email: user },
@@ -133,7 +114,7 @@ class InviteService extends BaseService {
         invite = await inviteRepository.save(invite)
       } else if (!invite) {
         // if no invite is found, create a new one
-        const created = await inviteRepository.create({
+        const created = inviteRepository.create({
           role,
           token: "",
           user_email: user,
@@ -160,31 +141,30 @@ class InviteService extends BaseService {
         .emit(InviteService.Events.CREATED, {
           id: invite.id,
           token: invite.token,
+          user_email: invite.user_email,
         })
     })
   }
 
   /**
    * Deletes an invite from a given user id.
-   * @param {string} inviteId - the id of the invite to delete. Must be
+   * @param inviteId - the id of the invite to delete. Must be
    *   castable as an ObjectId
-   * @return {Promise} the result of the delete operation.
+   * @return the result of the delete operation.
    */
   async delete(inviteId): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
-      const inviteRepo: InviteRepository =
-        manager.getCustomRepository(InviteRepository)
+    return await this.atomicPhase_(async (manager) => {
+      const inviteRepo: typeof InviteRepository =
+        manager.withRepository(InviteRepository)
 
       // Should not fail, if invite does not exist, since delete is idempotent
       const invite = await inviteRepo.findOne({ where: { id: inviteId } })
 
       if (!invite) {
-        return Promise.resolve()
+        return
       }
 
       await inviteRepo.delete({ id: invite.id })
-
-      return Promise.resolve()
     })
   }
 
@@ -201,9 +181,9 @@ class InviteService extends BaseService {
 
     const { invite_id, user_email } = decoded
 
-    return this.atomicPhase_(async (m) => {
-      const userRepo = m.getCustomRepository(this.userRepo_)
-      const inviteRepo: InviteRepository = m.getCustomRepository(
+    return await this.atomicPhase_(async (m) => {
+      const userRepo = m.withRepository(this.userRepo_)
+      const inviteRepo: typeof InviteRepository = m.withRepository(
         this.inviteRepository_
       )
 
@@ -247,19 +227,20 @@ class InviteService extends BaseService {
   }
 
   verifyToken(token): JwtPayload | string {
-    if (config.jwtSecret) {
-      return jwt.verify(token, config.jwtSecret)
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.verify(token, jwt_secret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
+      "Please configure jwt_secret"
     )
   }
 
-  async resend(id): Promise<any> {
-    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
+  async resend(id): Promise<void> {
+    const inviteRepo = this.activeManager_.withRepository(InviteRepository)
 
-    const invite = await inviteRepo.findOne({ id })
+    const invite = await inviteRepo.findOne({ where: { id } })
 
     if (!invite) {
       throw new MedusaError(
@@ -280,10 +261,11 @@ class InviteService extends BaseService {
     await inviteRepo.save(invite)
 
     await this.eventBus_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .emit(InviteService.Events.CREATED, {
         id: invite.id,
         token: invite.token,
+        user_email: invite.user_email,
       })
   }
 }

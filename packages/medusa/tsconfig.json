@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
+    "lib": ["es5", "es6", "es2019"],
     "target": "es5",
     "outDir": "./dist",
     "esModuleInterop": true,
@@ -16,13 +16,15 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true // to use ES5 specific tooling
+    "downlevelIteration": true, // to use ES5 specific tooling
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*", "index.d.ts"],
   "exclude": [
     "./dist/**/*",
     "./src/**/__tests__",
     "./src/**/__mocks__",
+    "./src/**/__fixtures__",
     "node_modules"
   ]
 }

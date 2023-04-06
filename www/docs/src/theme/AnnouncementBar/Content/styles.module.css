@@ -1,0 +1,10 @@
+.contentWrapper {
+  color: var(--ifm-announcement-bar-text-color);
+  font-size: var(--medusa-label-x-small-plus-size);
+  line-height: var(--medusa-label-x-small-plus-line-height);
+  font-weight: var(--medusa-label-x-small-plus-font-weight);
+}
+
+.contentTitle {
+  color: var(--ifm-announcement-bar-title-color);
+}

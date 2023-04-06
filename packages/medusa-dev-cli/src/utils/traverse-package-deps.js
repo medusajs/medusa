@@ -1,10 +1,17 @@
-const _ = require(`lodash`);
-const path = require(`path`);
+const _ = require(`lodash`)
+const path = require(`path`)
 
 /**
  * @typedef {Object} TraversePackagesDepsReturn
  * @property {Object} depTree Lookup table to check dependants for given package.
  * Used to determine which packages need to be published.
+ * @example
+ * ```
+ * {
+ *   "medusa-cli": Set(["medusa"]),
+ *   "medusa-telemetry": Set(["medusa", "medusa-cli"]),
+ * }
+ * ```
  */
 
 /**
@@ -24,53 +31,58 @@ const path = require(`path`);
  * @return {TraversePackagesDepsReturn}
  */
 const traversePackagesDeps = ({
-  root,
   packages,
   monoRepoPackages,
   seenPackages = [...packages],
   depTree = {},
+  packageNameToPath,
 }) => {
   packages.forEach((p) => {
-    if (p.startsWith("@medusajs")) {
-      p = p.split("/")[1];
-    }
-    let pkgJson;
+    let pkgJson
     try {
-      pkgJson = require(path.join(root, `packages`, p, `package.json`));
-    } catch {
-      console.error(`"${p}" package doesn't exist in monorepo.`);
+      const packageRoot = packageNameToPath.get(p)
+      if (packageRoot) {
+        pkgJson = require(path.join(packageRoot, `package.json`))
+      } else {
+        console.error(`"${p}" package doesn't exist in monorepo.`)
+        // remove from seenPackages
+        seenPackages = seenPackages.filter((seenPkg) => seenPkg !== p)
+        return
+      }
+    } catch (e) {
+      console.error(`"${p}" package doesn't exist in monorepo.`, e)
       // remove from seenPackages
-      seenPackages = seenPackages.filter((seenPkg) => seenPkg !== p);
-      return;
+      seenPackages = seenPackages.filter((seenPkg) => seenPkg !== p)
+      return
     }
 
     const fromMonoRepo = _.intersection(
       Object.keys({ ...pkgJson.dependencies }),
       monoRepoPackages
-    );
+    )
 
     fromMonoRepo.forEach((pkgName) => {
-      depTree[pkgName] = (depTree[pkgName] || new Set()).add(p);
-    });
+      depTree[pkgName] = (depTree[pkgName] || new Set()).add(p)
+    })
 
     // only traverse not yet seen packages to avoid infinite loops
-    const newPackages = _.difference(fromMonoRepo, seenPackages);
+    const newPackages = _.difference(fromMonoRepo, seenPackages)
 
     if (newPackages.length) {
       newPackages.forEach((depFromMonorepo) => {
-        seenPackages.push(depFromMonorepo);
-      });
+        seenPackages.push(depFromMonorepo)
+      })
 
       traversePackagesDeps({
-        root,
         packages: fromMonoRepo,
         monoRepoPackages,
         seenPackages,
         depTree,
-      });
+        packageNameToPath,
+      })
     }
-  });
-  return { seenPackages, depTree };
-};
+  })
+  return { seenPackages, depTree }
+}
 
-exports.traversePackagesDeps = traversePackagesDeps;
+exports.traversePackagesDeps = traversePackagesDeps

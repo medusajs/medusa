@@ -1,0 +1,133 @@
+.redocusaurus .expanded + tr > td > div {
+  background-color: var(--ifm-background-surface-color) !important;
+}
+
+.redocusaurus table tbody tr table,
+.redocusaurus table tbody tr table tbody tr {
+  background-color: transparent !important;
+}
+
+.redocusaurus a {
+  color: var(--ifm-link-color) !important;
+}
+
+.redocusaurus pre,
+.redocusaurus .react-tabs__tab-panel--selected,
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button,
+.redocusaurus div[id^='tag'] > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) {
+  background-color: var(--medusa-code-block) !important;
+}
+
+[data-theme="dark"] .redocusaurus [data-section-id] > div:nth-child(2) > div > button,
+.redocusaurus div[id^='tag'] > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(2) > div {
+  border-color: var(--medusa-border-strong) !important;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button {
+  border-radius: var(--ifm-global-radius) var(--ifm-global-radius) 0 0 !important;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button + div > div > div > div {
+  color: var(--ifm-color-primary) !important;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) .react-tabs__tab pre {
+  background-color: transparent !important;
+  margin-top: calc(var(--ifm-base-margin-vertical) / 2);
+}
+
+.redocusaurus h5 + svg {
+  fill: var(--ifm-icon-color);
+}
+
+.redocusaurus h2 + div + div > div + div {
+  padding: 8px 9.6px;
+  background-color: var(--ifm-background-surface-color);
+}
+
+.redocusaurus h2 + div + div {
+  border-bottom-color: var(--ifm-base-border-color);
+}
+
+.redocusaurus .menu-content,
+.redocusaurus .menu-content label {
+  background-color: var(--ifm-background-color) !important;
+}
+
+.redoc-json code {
+  border: none !important;
+}
+
+.redocusaurus p {
+  color: var(--ifm-color-content);
+}
+
+.redocusaurus h2, .redocusaurus h3, .redocusaurus h4 {
+  color: var(--ifm-color-headers) !important;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) h2, .redocusaurus [data-section-id] > div:nth-child(2) h3, .redocusaurus [data-section-id] > div:nth-child(2) h4 {
+  --ifm-color-headers: var(--medusa-text-on-color);
+}
+
+.redocusaurus [data-section-id]:after {
+  border-color: transparent !important;
+}
+
+.redocusaurus .property-name + div {
+  color: var(--medusa-icon-error) !important;
+}
+
+.redocusaurus .react-tabs__tab:not(.react-tabs__tab--selected) {
+  background-color: var(--ifm-secondary-btn-background-color) !important;
+  border-color: var(--ifm-secondary-btn-border-color) !important;
+  color: var(--ifm-secondary-btn-color) !important;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected[aria-selected="true"]:not(.tab-error):not(.tab-success) {
+  background-color: var(--ifm-primary-btn-background-color) !important;
+  border-color: var(--ifm-primary-btn-border-color) !important;
+  color: var(--ifm-primary-btn-color) !important;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected.tab-success {
+  background-color: var(--medusa-button-success) !important;
+  border-color: var(--medusa-button-success) !important;
+  color: var(--medusa-button-success-text) !important;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected.tab-error {
+  background-color: var(--medusa-button-danger) !important;
+  border-color: var(--medusa-button-danger) !important;
+  color: var(--medusa-button-danger-text) !important;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected.tab-error:hover {
+  background-color: var(--medusa-button-danger-hover) !important;
+  border-color: var(--medusa-button-danger-hover) !important;
+}
+
+.redocusaurus .tab-error:not(.react-tabs__tab--selected) {
+  background-color: var(--ifm-secondary-btn-background-color) !important;
+  border-color: var(--ifm-secondary-btn-border-color) !important;
+  color: var(--medusa-support-error) !important;
+}
+
+.redocusaurus .tab-success:not(.react-tabs__tab--selected) {
+  background-color: var(--ifm-secondary-btn-background-color) !important;
+  border-color: var(--ifm-secondary-btn-border-color) !important;
+  color: var(--medusa-support-success) !important;
+}
+
+.redocusaurus [type=get] {
+  background-color: var(--medusa-support-success) !important;
+}
+
+.redocusaurus [type=delete] {
+  background-color: var(--medusa-support-error) !important;
+}
+
+.redocusaurus table th,
+.redocusaurus table td {
+  border-color: var(--ifm-base-border-color) !important;
+}

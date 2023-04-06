@@ -1,0 +1,88 @@
+title: Customer
+description: Represents a customer
+type: object
+required:
+  - billing_address_id
+  - created_at
+  - deleted_at
+  - email
+  - first_name
+  - has_account
+  - id
+  - last_name
+  - metadata
+  - phone
+  - updated_at
+properties:
+  id:
+    description: The customer's ID
+    type: string
+    example: cus_01G2SG30J8C85S4A5CHM2S1NS2
+  email:
+    description: The customer's email
+    type: string
+    format: email
+  first_name:
+    description: The customer's first name
+    nullable: true
+    type: string
+    example: Arno
+  last_name:
+    description: The customer's last name
+    nullable: true
+    type: string
+    example: Willms
+  billing_address_id:
+    description: The customer's billing address ID
+    nullable: true
+    type: string
+    example: addr_01G8ZH853YPY9B94857DY91YGW
+  billing_address:
+    description: Available if the relation `billing_address` is expanded.
+    nullable: true
+    $ref: ./Address.yaml
+  shipping_addresses:
+    description: Available if the relation `shipping_addresses` is expanded.
+    type: array
+    items:
+      $ref: ./Address.yaml
+  phone:
+    description: The customer's phone number
+    nullable: true
+    type: string
+    example: 16128234334802
+  has_account:
+    description: Whether the customer has an account or not
+    type: boolean
+    default: false
+  orders:
+    description: Available if the relation `orders` is expanded.
+    type: array
+    items:
+      type: object
+  groups:
+    description: >-
+      The customer groups the customer belongs to. Available if the relation
+      `groups` is expanded.
+    type: array
+    items:
+      $ref: ./CustomerGroup.yaml
+  created_at:
+    description: The date with timezone at which the resource was created.
+    type: string
+    format: date-time
+  updated_at:
+    description: The date with timezone at which the resource was updated.
+    type: string
+    format: date-time
+  deleted_at:
+    description: The date with timezone at which the resource was deleted.
+    nullable: true
+    type: string
+    format: date-time
+  metadata:
+    description: An optional key-value map with additional details
+    nullable: true
+    type: object
+    example:
+      car: white

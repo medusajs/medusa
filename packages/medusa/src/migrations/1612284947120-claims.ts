@@ -68,7 +68,7 @@ export class claims1612284947120 implements MigrationInterface {
       `ALTER TABLE "line_item" ADD "claim_order_id" character varying`
     )
     await queryRunner.query(
-      `ALTER TYPE "public"."refund_reason_enum" RENAME TO "refund_reason_enum_old"`
+      `ALTER TYPE "refund_reason_enum" RENAME TO "refund_reason_enum_old"`
     )
     await queryRunner.query(
       `CREATE TYPE "refund_reason_enum" AS ENUM('discount', 'return', 'swap', 'claim', 'other')`

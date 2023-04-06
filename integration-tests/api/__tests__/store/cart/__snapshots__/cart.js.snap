@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/store/carts POST /store/carts/:id fails to complete cart with items inventory not/partially covered 1`] = `
+Object {
+  "errors": Array [
+    Object {
+      "code": "insufficient_inventory",
+      "message": "Variant with id: test-variant-2 does not have the required inventory",
+      "type": "not_allowed",
+    },
+  ],
+}
+`;
+
+exports[`/store/carts POST /store/carts/:id fails to complete swap cart with items inventory not/partially covered 1`] = `
+Object {
+  "errors": Array [
+    Object {
+      "code": "insufficient_inventory",
+      "message": "Variant with id: test-variant-2 does not have the required inventory",
+      "type": "not_allowed",
+    },
+  ],
+}
+`;
+
+exports[`/store/carts POST /store/carts/:id returns early, if cart is already completed 1`] = `
+Object {
+  "code": "cart_incompatible_state",
+  "message": "Cart has already been completed",
+  "type": "not_allowed",
+}
+`;
+
+exports[`/store/carts shipping address + region updates updates region only - single to multiple countries 1`] = `
+Object {
+  "address_1": null,
+  "address_2": null,
+  "city": null,
+  "company": null,
+  "country_code": null,
+  "created_at": Any<String>,
+  "customer_id": null,
+  "deleted_at": null,
+  "first_name": "lebron",
+  "id": Any<String>,
+  "last_name": null,
+  "metadata": null,
+  "phone": null,
+  "postal_code": null,
+  "province": null,
+  "updated_at": Any<String>,
+}
+`;

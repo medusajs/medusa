@@ -1,0 +1,87 @@
+name: Documentation Tests
+on: 
+  pull_request:
+    paths:
+      - docs/content/**
+      - www/docs/**
+jobs:
+  docs-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs
+
+      - name: Install Docusaurus dependencies
+        working-directory: www/docs
+        run: yarn install
+      - name: Build Docusaurus website
+        working-directory: www/docs
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        run: yarn build
+        
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Get Directories to Scan
+        working-directory: docs
+        run: ./get-files.sh
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: '--minAlertLevel=error'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: eslint-docs
+
+      - name: Run Eslint
+        run: yarn lint:docs

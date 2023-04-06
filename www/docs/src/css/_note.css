@@ -1,0 +1,24 @@
+.alert {
+  padding: var(--ifm-base-spacing);
+  border: 1px solid var(--ifm-note-border-color) !important;
+  background-color: var(--ifm-note-background);
+  border-radius: var(--ifm-global-radius);
+  box-shadow: none;
+}
+
+.alert p > code {
+  padding-left: calc(var(--ifm-base-spacing) / 2);
+  padding-right: calc(var(--ifm-base-spacing) / 2);
+  font-size: 14px !important;
+}
+
+.alert a {
+  text-decoration: none;
+}
+
+[class*=alert--] {
+  --ifm-code-background: var(--medusa-bg-base) !important;
+  --ifm-alert-background-color-highlight: var(--ifm-background-surface-color) !important;
+  --ifm-link-color: var(--ifm-color-primary) !important;
+  --ifm-link-hover-color: var(--ifm-color-content) !important;
+}

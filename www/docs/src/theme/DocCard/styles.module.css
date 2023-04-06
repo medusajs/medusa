@@ -1,0 +1,51 @@
+.cardContainer {
+  box-shadow: none !important;
+  transition: all var(--ifm-transition-fast) ease;
+  display: flex;
+  padding: var(--ifm-base-spacing);
+  height: 100%;
+}
+
+.cardContainer *:last-child {
+  margin-bottom: 0;
+}
+
+.cardContainer:not(.cardSoon):hover {
+  background-color: var(--ifm-card-bg-hover);
+}
+
+.cardIconContainer {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardTitle {
+  font-size: var(--medusa-label-regular-plus-size);
+  line-height: var(--medusa-label-regular-plus-line-height);
+  font-weight: var(--medusa-label-regular-plus-font-weight);
+  color: var(--ifm-color-primary);
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
+  display: block;
+}
+
+.cardDescription {
+  font-size: var(--medusa-label-regular-size);
+  line-height: var(--medusa-label-regular-line-height);
+  font-weight: var(--medusa-label-regular-font-weight);
+  color: var(--ifm-color-content);
+}
+
+.cardTitle,
+.cardDescription {
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+.contentContainer {
+  width: calc(100% - 20px);
+}
+
+.cardSoon {
+  pointer-events: none;
+}

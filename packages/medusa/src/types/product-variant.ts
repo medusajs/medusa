@@ -1,16 +1,36 @@
-import { IsBoolean, IsNumber, IsString, ValidateNested } from "class-validator"
+import {
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+  Validate,
+  ValidateIf,
+  ValidateNested,
+} from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
   StringComparisonOperator,
+  WithRequiredProperty,
 } from "./common"
+import { XorConstraint } from "./validators/xor"
+import { ProductVariant } from "../models"
 
 export type ProductVariantPrice = {
+  id?: string
   currency_code?: string
   region_id?: string
   amount: number
-  sale_amount?: number | undefined
+  min_quantity?: number
+  max_quantity?: number
+}
+
+export type GetRegionPriceContext = {
+  regionId: string
+  quantity?: number
+  customer_id?: string
+  include_discount_prices?: boolean
 }
 
 export type ProductVariantOption = {
@@ -39,12 +59,12 @@ export type CreateProductVariantInput = {
   width?: number
   options: ProductVariantOption[]
   prices: ProductVariantPrice[]
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 export type UpdateProductVariantInput = {
   title?: string
-  product_id: string
+  product_id?: string
   sku?: string
   barcode?: string
   ean?: string
@@ -54,15 +74,40 @@ export type UpdateProductVariantInput = {
   manage_inventory?: boolean
   hs_code?: string
   origin_country?: string
+  variant_rank?: number
   mid_code?: string
   material?: string
   weight?: number
   length?: number
   height?: number
   width?: number
-  options: ProductVariantOption[]
+  options?: ProductVariantOption[]
+  prices?: ProductVariantPrice[]
+  metadata?: Record<string, unknown>
+}
+
+export type UpdateProductVariantData = {
+  variant: ProductVariant
+  updateData: UpdateProductVariantInput
+}
+
+export type UpdateVariantPricesData = {
+  variantId: string
   prices: ProductVariantPrice[]
-  metadata?: object
+}
+
+export type UpdateVariantRegionPriceData = {
+  variantId: string
+  price: {
+    currency_code: string
+    region_id: string
+    amount: number
+  }
+}
+
+export type UpdateVariantCurrencyPriceData = {
+  variantId: string
+  price: WithRequiredProperty<ProductVariantPrice, "currency_code">
 }
 
 export class FilterableProductVariantProps {
@@ -70,8 +115,8 @@ export class FilterableProductVariantProps {
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
 
-  @IsString()
-  title?: string
+  @IsType([String, [String]])
+  title?: string | string[]
 
   @IsType([String, [String]])
   product_id?: string | string[]
@@ -88,8 +133,8 @@ export class FilterableProductVariantProps {
   @IsType([String])
   upc?: string
 
-  @IsNumber()
-  inventory_quantity?: number
+  @IsType([Number, NumericalComparisonOperator])
+  inventory_quantity?: number | NumericalComparisonOperator
 
   @IsBoolean()
   allow_backorder?: boolean
@@ -129,4 +174,48 @@ export class FilterableProductVariantProps {
 
   @IsType([DateComparisonOperator])
   updated_at?: DateComparisonOperator
+}
+
+export class ProductVariantPricesUpdateReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @ValidateIf((o) => !o.id)
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
+
+  @ValidateIf((o) => !o.id)
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
+
+  @IsInt()
+  amount: number
+
+  @IsOptional()
+  @IsInt()
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
+}
+
+export class ProductVariantPricesCreateReq {
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
+
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
+
+  @IsInt()
+  amount: number
+
+  @IsOptional()
+  @IsInt()
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
 }

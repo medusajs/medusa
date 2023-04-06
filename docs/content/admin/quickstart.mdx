@@ -1,0 +1,251 @@
+---
+description: "Learn how to install Medusa's admin dashboard. The admin dashboard gives merchants an easy-to-use interface to manage their data such as orders, products, regions, and more."
+addHowToData: true
+---
+
+import Feedback from '@site/src/components/Feedback';
+
+# Admin Dashboard Quickstart
+
+This document will guide you through setting up the admin dashboard in the Medusa backend.
+
+:::note
+
+The admin dashboard is now shipped as an NPM package, and the previous GitHub repository has been deprecated.
+
+:::
+
+## Overview
+
+The admin dashboard is installed on the Medusa backend. Setting it up depends on how you intend to use it:
+
+1. [Served alongside the Medusa backend](#option-1-install-and-serve-admin-with-the-backend): with this approach, the admin dashboard starts when you start the Medusa backend. This also means you can later deploy the Medusa backend along with the admin dashboard on the same hosting.
+2. [Served separately from the Medusa backend](#option-2-install-and-serve-admin-separately): with this approach, the admin dashboard starts separately from the Medusa backend. You still need the Medusa backend to be running as the admin uses its APIs. This is useful if you intend to later deploy the admin dashboard on a different hosting than the Medusa Backend, such as using Vercel.
+
+This guide will explain the steps and configurations required for both approaches.
+
+---
+
+## Prerequisites
+
+### Medusa Backend
+
+As the admin dashboard is a plugin installed on the Medusa Backend, you must have a Medusa Backend installed first. You can learn how to install it in [this documentation](../development/backend/install.mdx).
+
+### Node.js
+
+The Admin uses [Vite v4.1.4](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) which requires v14.8+ or v16+ of Node.js. You can check which version of Node you have by running the following command:
+
+```bash noReport
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
+
+---
+
+## Option 1: Install and Serve Admin with the Backend
+
+This section explains how to install the admin to be served with the Medusa Backend and later deployed together.
+
+:::note
+
+If you decide later to serve the admin for development separately or deploy it on a different hosting, you can go back and follow the steps in [Option 2](#option-2-install-and-serve-admin-serparately).
+
+:::
+
+### Step 1: Install the Package
+
+In the directory of your Medusa backend, run the following command to install admin dashboard:
+
+```bash npm2yarn
+npm install @medusajs/admin
+```
+
+### Step 2: Add Admin to Medusa Configurations
+
+In `medusa-config.js`, add the admin plugin into the array of `plugins`:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      // ...
+    },
+  },
+]
+```
+
+The plugin accepts the following options:
+
+1. `serve`: (default: `true`) a boolean indicating whether to serve the admin dashboard when the Medusa backend starts. If set to `false`, you can serve the admin dashboard using the [dev command](#dev-command-options).
+2. `path`: (default: `app`) a string indicating the path the admin server should run on. It shouldn't be prefixed or suffixed with a slash `/`, and it can't be one of the reserved paths: "admin" and "store".
+3. `outDir`: Optional path for where to output the admin build files.
+4. `autoRebuild`: (default: `false`) a boolean indicating whether the admin UI should be rebuilt if there are any changes or if a missing build is detected when the backend starts. If not set, you must [manually build the admin dashboard](#build-command-options).
+
+### Optional: Manually Building Admin Dashboard
+
+If you have `autoRebuild` disabled, you must build your admin dashboard before starting the Medusa backend. Refer to the [build command](#build-command-options) for more details.
+
+### Step 3: Test the Admin Dashboard
+
+:::tip
+
+If you disabled the `serve` option, you need to run the admin dashboard separately using the [dev command](#dev-command-options)
+
+:::
+
+You can test the admin dashboard by running the following command in the directory of the Medusa backend:
+
+```bash npm2yarn
+npm run start
+```
+
+This starts the Medusa Backend and the admin dashboard. By default, the admin will be available on the URL `localhost:9000/app`. If you set the `path` option, then the admin will be available on `localhost:9000/<PATH>` with `<PATH>` being the value of the `path` option.
+
+<Feedback 
+   event="survey_admin_quickstart"
+   question="Did you set up the admin successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
+
+---
+
+## Option 2: Install and Serve Admin Separately
+
+This section explains how to install the admin dashboard using approach 2, which allows you to serve and later deploy the admin separately.
+
+:::note
+
+If you decide later to serve and deploy the admin alongside the server, you can go back and follow the steps in [Option 1](#option-1-install-and-serve-admin-with-the-backend).
+
+:::
+
+### Step 1: Install the Package
+
+In the directory of your Medusa backend, run the following command to install admin dashboard:
+
+```bash npm2yarn
+npm install @medusajs/admin --save-dev
+```
+
+### Step 2: Add Scripts to Package.json
+
+Add the following scripts to `package.json` in the directory of the Medusa backend:
+
+```json title=package.json
+{
+  "scripts": {
+    // other scripts...
+    "build:admin": "medusa-admin build",
+    "dev:admin": "medusa-admin dev"
+  }
+}
+```
+
+Where:
+
+- `build:admin`: Used to manually create a build of the admin. In this approach, it's useful with the `--deployment` option to build the admin for deployment. You can learn more about all available options in [this section](#build-command-options).
+- `dev:admin`: Used to run the development server of the admin. You can learn about other available options for this command in [this section](#dev-command-options).
+
+### Step 3: Start Admin in Development
+
+Make sure to run the Medusa backend first. Then, in the root directory of the backend, run the following command to start the admin development server:
+
+```bash npm2yarn
+npm run dev:admin
+```
+
+This runs the admin dashboard on `localhost:7001`.
+
+<Feedback 
+   event="survey_admin_quickstart"
+   question="Did you set up the admin successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
+
+---
+
+## Demo Credentials
+
+If you installed the demo data when you installed the Medusa backend by using the `--seed` option or running:
+
+```bash npm2yarn
+npm run seed
+```
+
+You can use the email `admin@medusa-test.com` and password `supersecret` to log in.
+
+:::info
+
+Passwords in Medusa are hashed using the [scrypt-kdf](https://www.npmjs.com/package/scrypt-kdf). The password hash is then stored in the database.
+
+:::
+
+---
+
+## Create a New Admin User
+
+To create a new admin user from the command line, run the following command in the directory holding your Medusa backend:
+
+```bash
+medusa user -e some@email.com -p some-password
+```
+
+This will create a new user that you can use to log into your admin panel.
+
+---
+
+## Build Command Options
+
+The `build` command in the admin CLI allows you to manually build the admin dashboard. If you intend to use it, you should typically add it to the `package.json` of the Medusa backend:
+
+```json title=package.json
+{
+  "scripts": {
+    // other scripts...
+    "build:admin": "medusa-admin build"
+  }
+}
+```
+
+You can add the following options to the `medusa-admin build` command:
+
+- `--deployment`: a boolean value indicating that the build should be ready for deployment. When this option is added, options are not loaded from `medusa-config.js` anymore, and it means the admin will be built to be hosted on an external host. For example, `medusa-admin build --deployment`.
+- `--backend` or `-b`: a string specifying the URL of the Medusa backend. This can be useful with the `--deployment` option. The default here is the value of the environment variable `MEDUSA_BACKEND_URL`. For example, `medusa-admin build --deployment --backend example.com`
+- `--out-dir` or `-o`: a string specifying a custom path to output the build files to. By default, it will be the `build` directory. For example, `medusa-admin --deployment --out-dir public`.
+- `--include` or `-i`: a list of strings of paths to files you want to include in the build output. It can be useful if you want to inject files that are relevant to your external hosting, such as adding a `200.html` file that is needed for redirects on Surge. For example, `medusa-admin --deployment --include 200.html`
+- `--include-dist` or `-d`: a string specifying the path to copy the files specified in `--include` to. By default, the files are coopied to the root of the build directory. You can use this option to change that. For example, `medusa-admin --deployment --include 200.html --include-dist static`.
+
+---
+
+## Dev Command Options
+
+The `dev` command in the admin CLI allows you to run the admin dashboard in development separately from the Medusa backend. If you intend to use it, you should typically add it to the `package.json` of the Medusa backend:
+
+```json title=package.json
+{
+  "scripts": {
+    // other scripts...
+    "dev:admin": "medusa-admin dev"
+  }
+}
+```
+
+You can add the following options to the `medusa-admin dev` command:
+
+- `--backend` or `-b`: a string specifying the URL of the Medusa backend. By default, it's the value of the environment variable `MEDUSA_BACKEND_URL`. For example, `medusa-admin dev --backend example.com`.
+- `--port` or `-p`: the port to run the admin on. By default, it's `7001`. For example, `medusa-admin dev --port 8000`.
+
+---
+
+## Admin User Guide
+
+The admin dashboard provides a lot of ecommerce features including managing Return Merchandise Authorization (RMA) flows, store settings, products, orders, and much more.
+
+You can learn more about the admin dashboard and its features in the [User Guide](../user-guide.mdx).

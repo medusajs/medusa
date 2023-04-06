@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/product-tags GET /admin/product-tags returns a list of product tags 1`] = `
+Array [
+  Object {
+    "created_at": Any<String>,
+    "id": "tag4",
+    "updated_at": Any<String>,
+    "value": "1234",
+  },
+  Object {
+    "created_at": Any<String>,
+    "id": "tag3",
+    "updated_at": Any<String>,
+    "value": "1235",
+  },
+  Object {
+    "created_at": Any<String>,
+    "id": "tag1",
+    "updated_at": Any<String>,
+    "value": "123",
+  },
+]
+`;
+
+exports[`/admin/product-tags GET /admin/product-tags returns a list of product tags matching free text search param 1`] = `
+Array [
+  Object {
+    "created_at": Any<String>,
+    "id": "tag4",
+    "updated_at": Any<String>,
+    "value": "1234",
+  },
+  Object {
+    "created_at": Any<String>,
+    "id": "tag3",
+    "updated_at": Any<String>,
+    "value": "1235",
+  },
+  Object {
+    "created_at": Any<String>,
+    "id": "tag1",
+    "updated_at": Any<String>,
+    "value": "123",
+  },
+]
+`;

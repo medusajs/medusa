@@ -1,0 +1,38 @@
+@media (min-width: 997px) {
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    height: 100%;
+    position: sticky;
+    top: 0;
+    transition: opacity 50ms ease;
+    padding-top: calc(var(--ifm-base-spacing) * 1.5);
+  }
+
+  .sidebarWithHideableNavbar {
+    padding-top: 0;
+  }
+
+  .sidebarHidden {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .sidebarLogo {
+    display: flex !important;
+    align-items: center;
+    margin: 18px 0;
+    color: inherit !important;
+    text-decoration: none !important;
+    width: fit-content;
+    padding-left: var(--doc-sidebar-padding);
+    padding-right: var(--doc-sidebar-padding);
+  }
+
+  .sidebarLogo img {
+    height: var(--ifm-logo-height);
+  }
+}

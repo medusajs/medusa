@@ -2,6 +2,9 @@ node_modules
 
 .DS_Store
 
+utils
+
+
 *.js
 *.js.map
 *.d.ts

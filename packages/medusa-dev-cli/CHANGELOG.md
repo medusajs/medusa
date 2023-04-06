@@ -1,7 +1,51 @@
 # Change Log
 
+## 0.0.31
+
+### Patch Changes
+
+- [#3293](https://github.com/medusajs/medusa/pull/3293) [`e8e7d7bb5`](https://github.com/medusajs/medusa/commit/e8e7d7bb5355877b3d0b85a079b6b57cfe7391c9) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(medusa-dev): include packages/ subdirectories in discovery
+
+## 0.0.31-rc.0
+
+### Patch Changes
+
+- [#3293](https://github.com/medusajs/medusa/pull/3293) [`e8e7d7bb5`](https://github.com/medusajs/medusa/commit/e8e7d7bb5355877b3d0b85a079b6b57cfe7391c9) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(medusa-dev): include packages/ subdirectories in discovery
+
+## 0.0.30
+
+### Patch Changes
+
+- [#3217](https://github.com/medusajs/medusa/pull/3217) [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Fix npm packages files included
+
+## 0.0.29
+
+### Patch Changes
+
+- [#3185](https://github.com/medusajs/medusa/pull/3185) [`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Patches all dependencies + minor bumps `winston` to include a [fix for a significant memory leak](https://github.com/winstonjs/winston/pull/2057)
+
+## 0.0.28
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+## 0.0.27
+
+### Patch Changes
+
+- [#2360](https://github.com/medusajs/medusa/pull/2360) [`196595cb6`](https://github.com/medusajs/medusa/commit/196595cb651d058b7da8711604ba57e5c0ee8a55) Thanks [@srindom](https://github.com/srindom)! - Avoid dev cli auth
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [0.0.26](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.24...medusa-dev-cli@0.0.26) (2022-07-05)
+
+**Note:** Version bump only for package medusa-dev-cli
+
+## [0.0.25](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.24...medusa-dev-cli@0.0.25) (2022-07-05)
+
+**Note:** Version bump only for package medusa-dev-cli
 
 ## [0.0.24](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.23...medusa-dev-cli@0.0.24) (2021-12-08)
 

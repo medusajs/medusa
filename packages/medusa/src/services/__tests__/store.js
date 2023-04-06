@@ -44,7 +44,7 @@ describe("StoreService", () => {
     })
 
     it("successfully retrieve store", async () => {
-      await storeService.retrieve()
+      await storeService.retrieve().catch(() => void 0)
 
       expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
@@ -53,7 +53,11 @@ describe("StoreService", () => {
   describe("update", () => {
     const storeRepository = MockRepository({
       findOne: () =>
-        Promise.resolve({ id: IdMap.getId("store"), name: "Medusa" }),
+        Promise.resolve({
+          id: IdMap.getId("store"),
+          name: "Medusa",
+          default_currency_code: "usd",
+        }),
     })
 
     const currencyRepository = MockRepository({})
@@ -79,15 +83,16 @@ describe("StoreService", () => {
       expect(storeRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("store"),
         name: "Medusa Commerce",
+        default_currency_code: "usd",
       })
     })
 
     it("fails if currency not ok", async () => {
       await expect(
         storeService.update({
-          currencies: ["1cd"],
+          currencies: ["1cd", "usd"],
         })
-      ).rejects.toThrow("Invalid currency 1cd")
+      ).rejects.toThrow("Currency with code 1cd does not exist")
 
       expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
@@ -143,8 +148,6 @@ describe("StoreService", () => {
       await expect(storeService.addCurrency("1cd")).rejects.toThrow(
         "Currency 1cd not found"
       )
-
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
 
     it("fails if currency already existis", async () => {

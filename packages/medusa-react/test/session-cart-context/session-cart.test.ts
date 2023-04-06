@@ -45,7 +45,7 @@ describe("useSessionCart hook", () => {
 
       act(() => {
         addItem({
-          variant: variant as unknown as ProductVariant,
+          variant: (variant as unknown) as ProductVariant,
           quantity: 1,
         })
       })
@@ -70,14 +70,14 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 1,
             },
             {
-              variant: {
+              variant: ({
                 ...variant,
                 id: "test-variant",
-              } as unknown as ProductVariant,
+              } as unknown) as ProductVariant,
               quantity: 1,
             },
           ]),
@@ -120,14 +120,14 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 3,
             },
             {
-              variant: {
+              variant: ({
                 ...variant,
                 id: "test-variant",
-              } as unknown as ProductVariant,
+              } as unknown) as ProductVariant,
               quantity: 1,
             },
           ]),
@@ -163,7 +163,7 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 2,
             },
           ]),
@@ -196,7 +196,7 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 4,
             },
           ]),
@@ -229,7 +229,7 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 4,
             },
           ]),
@@ -241,10 +241,10 @@ describe("useSessionCart hook", () => {
       act(() => {
         setItems([
           {
-            variant: {
+            variant: ({
               ...variant,
               id: "test-variant",
-            } as unknown as ProductVariant,
+            } as unknown) as ProductVariant,
             quantity: 1,
           },
         ])
@@ -272,7 +272,7 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 1,
             },
           ]),
@@ -299,7 +299,7 @@ describe("useSessionCart hook", () => {
         initialProps: {
           initialState: generateCartState(initialSessionCartState, [
             {
-              variant: variant as unknown as ProductVariant,
+              variant: (variant as unknown) as ProductVariant,
               quantity: 4,
             },
           ]),
