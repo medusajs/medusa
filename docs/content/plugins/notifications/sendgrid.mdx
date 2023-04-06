@@ -3979,6 +3979,24 @@ You can also track analytics related to emails sent from the SendGrid dashboard.
 
 ---
 
+## Dynamic usage
+
+You can resolve the SendGrid service to send emails from your custom services or other resources. For example:
+
+```ts
+const sendgridService = scope.resolve("sendgridService")
+const sendOptions =  {
+    templateId: "d-123....",
+    from: "ACME <acme@mail.com>",
+    to: "customer@mail.com",
+    data: { dynamic: "data" },
+  }
+
+sendgridService.sendEmail(sendOptions)
+```
+
+---
+
 ## See Also
 
 - [Notifications Overview](../../development/notification/overview.mdx)
