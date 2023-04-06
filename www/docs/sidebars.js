@@ -295,6 +295,11 @@ module.exports = {
           items: [
             {
               type: "doc",
+              id: "troubleshooting/create-medusa-app-errors",
+              label: "Create Medusa App Errors",
+            },
+            {
+              type: "doc",
               id: "troubleshooting/cli-installation-errors",
               label: "Errors Installing CLI",
             },
