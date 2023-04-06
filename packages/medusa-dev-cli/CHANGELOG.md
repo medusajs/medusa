@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.31
+
+### Patch Changes
+
+- [#3293](https://github.com/medusajs/medusa/pull/3293) [`e8e7d7bb5`](https://github.com/medusajs/medusa/commit/e8e7d7bb5355877b3d0b85a079b6b57cfe7391c9) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(medusa-dev): include packages/ subdirectories in discovery
+
 ## 0.0.31-rc.0
 
 ### Patch Changes

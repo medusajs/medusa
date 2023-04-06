@@ -1,0 +1,45 @@
+delete:
+  operationId: DeleteOrderEditsOrderEditItemChange
+  summary: Delete a Line Item Change
+  description: Deletes an Order Edit Item Change
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order Edit to delete.
+      schema:
+        type: string
+    - in: path
+      name: change_id
+      required: true
+      description: The ID of the Order Edit Item Change to delete.
+      schema:
+        type: string
+  x-codegen:
+    method: deleteItemChange
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_order-edits_{id}_changes_{change_id}/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_order-edits_{id}_changes_{change_id}/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Order Edits
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminOrderEditItemChangeDeleteRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml

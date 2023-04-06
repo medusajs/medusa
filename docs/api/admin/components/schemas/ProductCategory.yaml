@@ -5,7 +5,6 @@ type: object
 required:
   - category_children
   - created_at
-  - deleted_at
   - handle
   - id
   - is_active
@@ -44,6 +43,10 @@ properties:
     type: boolean
     description: A flag to make product category visible/hidden in the store front
     default: false
+  rank:
+    type: integer
+    description: An integer that depicts the rank of category in a tree node
+    default: 0
   category_children:
     description: Available if the relation `category_children` are expanded.
     type: array
@@ -73,10 +76,5 @@ properties:
     format: date-time
   updated_at:
     description: The date with timezone at which the resource was updated.
-    type: string
-    format: date-time
-  deleted_at:
-    description: The date with timezone at which the resource was deleted.
-    nullable: true
     type: string
     format: date-time

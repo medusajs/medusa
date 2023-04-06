@@ -1,4 +1,6 @@
 type: object
+required:
+  - collection
 properties:
   collection:
     $ref: ./ProductCollection.yaml

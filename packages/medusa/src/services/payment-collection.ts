@@ -417,11 +417,12 @@ export default class PaymentCollectionService extends TransactionBaseService {
         await paymentCollectionRepository.getPaymentCollectionIdBySessionId(
           sessionId,
           {
-            relations: [
-              "region",
-              "region.payment_providers",
-              "payment_sessions",
-            ],
+            relations: {
+              region: {
+                payment_providers: true,
+              },
+              payment_sessions: true,
+            },
           }
         )
 

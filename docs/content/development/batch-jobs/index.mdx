@@ -13,7 +13,7 @@ In this document, you’ll learn what Batch Jobs are and how they work in Medusa
 
 Batch Jobs are tasks that can be performed asynchronously and iteratively. They can be [created using the Admin API](/api/admin/#tag/Batch-Job/operation/PostBatchJobs), then, once confirmed, they are processed asynchronously.
 
-Batch jobs require Redis, which Medusa uses as a queuing system to register and handle events. Every status change of a batch job triggers an event that can be handled using [subscribers](../events/subscribers.mdx).
+Every status change of a batch job triggers an event that can be handled using [subscribers](../events/subscribers.mdx).
 
 Medusa uses batch jobs in its core to perform some asynchronous tasks. For example, the Export Products functionality uses batch jobs.
 

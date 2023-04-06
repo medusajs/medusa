@@ -1,0 +1,46 @@
+post:
+  operationId: PostCartsCartLineItems
+  summary: Add a Line Item
+  description: Generates a Line Item with a given Product Variant and adds it to the Cart
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Cart to add the Line Item to.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartLineItemsReq.yaml
+  x-codegen:
+    method: createLineItem
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_carts_{id}_line-items/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_carts_{id}_line-items/post.sh
+  tags:
+    - Carts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

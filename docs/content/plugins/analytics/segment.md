@@ -47,9 +47,7 @@ Check out the [Event Reference](../../development/events/events-list.md) to lear
 
 ### Medusa Backend
 
-It is assumed you already have a Medusa backend installed. If not, please follow the [Quickstart guide](../../development/backend/install.mdx) to get started in minutes.
-
-In addition, make sure to have Redis installed and configured with your Medusa backend. If not, follow [this documentation](../../development/backend/prepare-environment.mdx#redis) to install Redis and then [configure it](../../development/backend/configurations.md#redis).
+It is assumed you already have a Medusa backend installed. If not, please follow the [Quickstart guide](../../development/backend/install.mdx) to get started in minutes. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa starter.
 
 ### Segment Account
 
