@@ -123,7 +123,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     delete options_.where.include_category_children
     delete options_.where.categories
 
-    // TODO: move back to the service layer
     if (q) {
       options_.relations = options_.relations ?? {}
       options_.relations.variants = options_.relations.variants ?? true
