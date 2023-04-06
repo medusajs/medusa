@@ -6,8 +6,8 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
- * summary: "Create an Inventory Location Level for a given Inventory Item."
- * description: "Creates an Inventory Location Level for a given Inventory Item."
+ * summary: "Create an Inventory Level"
+ * description: "Creates an Inventory Level for a given Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
@@ -29,7 +29,7 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
- *         location_id: 'sloc',
+ *         location_id: 'sloc_123',
  *         stocked_quantity: 10,
  *       })
  *       .then(({ inventory_item }) => {
@@ -42,7 +42,7 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "location_id": "sloc",
+ *           "location_id": "sloc_123",
  *           "stocked_quantity": 10
  *       }'
  * security:
