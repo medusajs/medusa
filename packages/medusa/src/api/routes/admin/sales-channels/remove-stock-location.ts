@@ -7,7 +7,7 @@ import { SalesChannelLocationService } from "../../../../services"
 /**
  * @oas [delete] /admin/sales-channels/{id}/stock-locations
  * operationId: "DeleteSalesChannelsSalesChannelStockLocation"
- * summary: "Remove a stock location from a Sales Channel"
+ * summary: "Remove a Stock Location Association"
  * description: "Removes a stock location from a Sales Channel."
  * x-authenticated: true
  * parameters:
@@ -26,8 +26,8 @@ import { SalesChannelLocationService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.removeLocation(sales_channel_id, {
- *         location_id: 'App'
+ *       medusa.admin.salesChannels.removeLocation(salesChannelId, {
+ *         location_id: 'loc_id'
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
@@ -39,7 +39,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "locaton_id": "stock_location_id"
+ *           "locaton_id": "loc_id"
  *       }'
  * security:
  *   - api_token: []

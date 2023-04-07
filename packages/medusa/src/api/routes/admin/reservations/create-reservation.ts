@@ -6,8 +6,8 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
 /**
  * @oas [post] /admin/reservations
  * operationId: "PostReservations"
- * summary: "Creates a Reservation"
- * description: "Creates a Reservation which can be associated with any resource as required."
+ * summary: "Create a Reservation"
+ * description: "Create a Reservation which can be associated with any resource as required."
  * x-authenticated: true
  * requestBody:
  *  content:
@@ -22,9 +22,13 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.reservations.create({
+ *         line_item_id: 'item_123',
+ *         location_id: 'loc_123',
+ *         inventory_item_id: 'iitem_123',
+ *         quantity: 1
  *       })
- *       .then(({ reservations }) => {
- *         console.log(reservations.id);
+ *       .then(({ reservation }) => {
+ *         console.log(reservation.id);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -33,9 +37,10 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "resource_id": "{resource_id}",
- *           "resource_type": "order",
- *           "value": "We delivered this order"
+ *           "line_item_id": "item_123",
+ *           "location_id": "loc_123",
+ *           "inventory_item_id": "iitem_123",
+ *           "quantity": 1
  *       }'
  * security:
  *   - api_token: []
