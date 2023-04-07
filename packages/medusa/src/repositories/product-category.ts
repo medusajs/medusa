@@ -9,7 +9,7 @@ import {
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { buildLegacyFieldsListFrom } from "../utils"
+import { objectToStringPath } from "@medusajs/utils"
 import { isEmpty } from "lodash"
 
 export const ProductCategoryRepository = dataSource
@@ -44,8 +44,8 @@ export const ProductCategoryRepository = dataSource
       const options_ = { ...options }
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
-      const columnsSelected = buildLegacyFieldsListFrom(options_.select)
-      const relationsSelected = buildLegacyFieldsListFrom(options_.relations)
+      const columnsSelected = objectToStringPath(options_.select)
+      const relationsSelected = objectToStringPath(options_.relations)
 
       const fetchSelectColumns = (relationName: string): string[] => {
         const modelColumns = this.metadata.ownColumns.map(

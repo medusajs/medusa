@@ -10,10 +10,10 @@ import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { ProductFilterOptions } from "../types/product"
 import {
-  buildLegacyFieldsListFrom,
-  fetchCategoryDescendantsIds,
   isObject,
+  fetchCategoryDescendantsIds,
 } from "../utils"
+import { objectToStringPath } from "@medusajs/utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -89,7 +89,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     // https://github.com/typeorm/typeorm/issues/6294
     // Cleanup the repo and fix order/skip/take and relation load strategy when those issues are resolved
 
-    const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
+    const orderFieldsCollectionPointSeparated = objectToStringPath(
       options.order ?? {}
     )
 
