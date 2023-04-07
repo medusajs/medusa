@@ -130,6 +130,18 @@ const config = {
       sidebar: {
         autoCollapseCategories: true
       }
+    },
+    cloudinaryConfig: {
+      cloudName: 'dza7lstvk', // TODO replace with env variable
+      flags: [
+        'fl_lossy',
+        'f_auto'
+      ],
+      resize: {
+        action: 'pad',
+        aspectRatio: '16:9'
+      },
+      roundCorners: 16
     }
   },
   presets: [

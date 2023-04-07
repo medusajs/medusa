@@ -200,6 +200,14 @@ details > div {
   padding-right: 0 !important;
 }
 
+.cloudinary-image-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+}
+
 @media screen and (min-width: 1419px) {
   .main-wrapper {
     min-width: var(--ifm-max-content-width);
