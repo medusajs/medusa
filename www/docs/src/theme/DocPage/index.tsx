@@ -14,7 +14,9 @@ import {
 import DocPageLayout from "@theme/DocPage/Layout"
 import NotFound from "@theme/NotFound"
 import SearchMetadata from "@theme/SearchMetadata"
-function DocPageMetadata(props) {
+import type { Props } from "@theme/DocPage"
+
+function DocPageMetadata(props: Props): JSX.Element {
   const { versionMetadata } = props
   return (
     <>
@@ -33,14 +35,14 @@ function DocPageMetadata(props) {
     </>
   )
 }
-export default function DocPage(props) {
+
+export default function DocPage(props: Props): JSX.Element {
   const { versionMetadata } = props
   const currentDocRouteMetadata = useDocRouteMetadata(props)
   if (!currentDocRouteMetadata) {
     return <NotFound />
   }
   const { docElement, sidebarName, sidebarItems } = currentDocRouteMetadata
-
   return (
     <>
       <DocPageMetadata {...props} />

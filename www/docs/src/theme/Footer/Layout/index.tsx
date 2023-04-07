@@ -1,10 +1,17 @@
 import React from "react"
 import clsx from "clsx"
-import SocialLinks from "../SocialLinks"
+import type { Props } from "@theme/Footer/Layout"
 import { useThemeConfig } from "@docusaurus/theme-common"
+import ThemeConfig from "@site/src/types/theme-config"
+import SocialLinks from "@site/src/components/Footer/SocialLinks"
 
-export default function FooterLayout({ style, links, logo, copyright }) {
-  const { socialLinks } = useThemeConfig()
+export default function FooterLayout({
+  style,
+  links,
+  logo,
+  copyright,
+}: Props): JSX.Element {
+  const { socialLinks } = useThemeConfig() as ThemeConfig
 
   return (
     <footer

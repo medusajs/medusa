@@ -1,16 +1,19 @@
-import React, { useState, useCallback, useRef } from "react"
+import React, { type ReactNode, useState, useCallback, useRef } from "react"
 import clsx from "clsx"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
 import { useLocation } from "@docusaurus/router"
 import DocSidebar from "@theme/DocSidebar"
 import ExpandButton from "@theme/DocPage/Layout/Sidebar/ExpandButton"
-import styles from "./styles.module.css"
+import type { Props } from "@theme/DocPage/Layout/Sidebar"
 import { SwitchTransition, CSSTransition } from "react-transition-group"
+
+import styles from "./styles.module.css"
+
 // Reset sidebar state when sidebar changes
 // Use React key to unmount/remount the children
 // See https://github.com/facebook/docusaurus/issues/3414
-function ResetOnSidebarChange({ children }) {
+function ResetOnSidebarChange({ children }: { children: ReactNode }) {
   const sidebar = useDocsSidebar()
   return (
     <React.Fragment key={sidebar?.name ?? "noSidebar"}>
@@ -18,12 +21,14 @@ function ResetOnSidebarChange({ children }) {
     </React.Fragment>
   )
 }
+
 export default function DocPageLayoutSidebar({
   sidebar,
   hiddenSidebarContainer,
   setHiddenSidebarContainer,
-}) {
+}: Props): JSX.Element {
   const { pathname } = useLocation()
+
   const [hiddenSidebar, setHiddenSidebar] = useState(false)
   const toggleSidebar = useCallback(() => {
     if (hiddenSidebar) {
@@ -31,8 +36,10 @@ export default function DocPageLayoutSidebar({
     }
     setHiddenSidebarContainer((value) => !value)
   }, [setHiddenSidebarContainer, hiddenSidebar])
+
   const { name } = useDocsSidebar()
   const sidebarRef = useRef(null)
+
   return (
     <aside
       className={clsx(
@@ -41,9 +48,10 @@ export default function DocPageLayoutSidebar({
         hiddenSidebarContainer && styles.docSidebarContainerHidden
       )}
       onTransitionEnd={(e) => {
-        if (!e.currentTarget.classList.contains(styles.docSidebarContainer)) {
+        if (!e.currentTarget.classList.contains(styles.docSidebarContainer!)) {
           return
         }
+
         if (hiddenSidebarContainer) {
           setHiddenSidebar(true)
         }
