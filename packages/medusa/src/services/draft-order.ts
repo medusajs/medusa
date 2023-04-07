@@ -314,7 +314,7 @@ class DraftOrderService extends TransactionBaseService {
               variantId: item.variant_id,
               quantity: item.quantity,
               metadata: item.metadata,
-              unit_price: item.unit_price,
+              unit_price: item.unit_price ?? 0,
             })
             return
           }
