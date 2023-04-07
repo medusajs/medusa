@@ -17,22 +17,19 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
     >
     delete query_.where.customer_groups
 
-    if (groups) {
+    if (groups || q) {
       query_.relations = query_.relations ?? {}
       query_.relations.customer_groups =
         query_.relations.customer_groups ?? true
 
-      query_.where.customer_groups = {
-        ...(query_.where.customer_groups ?? {}),
-        id: In(groups.value),
+      if (groups) {
+        query_.where.customer_groups = {
+          id: In(groups.value),
+        }
       }
     }
 
     if (q) {
-      query_.relations = query_.relations ?? {}
-      query_.relations.customer_groups =
-        query_.relations.customer_groups ?? true
-
       const groupsWhere = query_.where.customer_groups ?? {}
 
       query_.where = query_.where ?? {}
