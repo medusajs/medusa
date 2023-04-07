@@ -10,6 +10,8 @@ export type BadgeProps = {
 const variantClasses = {
   purple: styles.purpleBadge,
   orange: styles.orangeBadge,
+  green: styles.greenBadge,
+  blue: styles.blueBadge,
 }
 
 const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
