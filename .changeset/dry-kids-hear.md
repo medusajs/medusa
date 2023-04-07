@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix(medusa): Assign 0 instead of undefined when the variant has no price
+fix(medusa): Throw upon draft order creation if a variant does not have any prices
