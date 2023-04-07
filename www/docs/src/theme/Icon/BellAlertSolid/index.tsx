@@ -1,6 +1,7 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconBellAlertSolid(props) {
+const IconBellAlertSolid: React.FC<IconProps> = (props) => {
   return (
     <svg
       width={20}
@@ -23,3 +24,5 @@ export default function IconBellAlertSolid(props) {
     </svg>
   )
 }
+
+export default IconBellAlertSolid

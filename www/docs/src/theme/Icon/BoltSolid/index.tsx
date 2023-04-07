@@ -1,6 +1,7 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconBoltSolid(props) {
+const IconBoltSolid: React.FC<IconProps> = (props) => {
   return (
     <svg
       width={20}
@@ -19,3 +20,5 @@ export default function IconBoltSolid(props) {
     </svg>
   )
 }
+
+export default IconBoltSolid

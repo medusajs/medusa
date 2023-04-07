@@ -1,6 +1,7 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconBug(props) {
+const IconBug: React.FC<IconProps> = (props) => {
   return (
     <svg
       width={20}
@@ -20,3 +21,5 @@ export default function IconBug(props) {
     </svg>
   )
 }
+
+export default IconBug

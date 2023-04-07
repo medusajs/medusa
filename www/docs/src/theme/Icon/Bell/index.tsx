@@ -1,6 +1,7 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconBell(props) {
+const IconBell: React.FC<IconProps> = (props) => {
   return (
     <svg
       width={20}
@@ -23,3 +24,5 @@ export default function IconBell(props) {
     </svg>
   )
 }
+
+export default IconBell

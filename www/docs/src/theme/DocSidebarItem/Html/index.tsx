@@ -6,7 +6,7 @@ import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
 
 import styles from "./styles.module.css"
 import Badge from "@site/src/components/Badge/index"
-import { ModifiedPropSidebarItemHtml } from "@site/src/types/sidebar-items"
+import { ModifiedPropSidebarItemHtml } from "@medusajs/docs"
 
 type ModifiedProps = Props & {
   item: ModifiedPropSidebarItemHtml

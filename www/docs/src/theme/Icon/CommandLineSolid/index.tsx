@@ -1,6 +1,7 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconCommandLineSolid(props) {
+const IconCommandLineSolid: React.FC<IconProps> = (props) => {
   return (
     <svg
       width={20}
@@ -19,3 +20,5 @@ export default function IconCommandLineSolid(props) {
     </svg>
   )
 }
+
+export default IconCommandLineSolid

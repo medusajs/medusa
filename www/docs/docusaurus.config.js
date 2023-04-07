@@ -10,7 +10,7 @@ const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
+/** @type {import('@medusajs/docs').MedusaDocusaurusConfig} */
 const config = {
   title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
@@ -129,21 +129,18 @@ const config = {
     },
     docs: {
       sidebar: {
-        autoCollapseCategories: true
-      }
+        autoCollapseCategories: true,
+      },
     },
     cloudinaryConfig: {
-      cloudName: 'dza7lstvk', // TODO replace with env variable
-      flags: [
-        'fl_lossy',
-        'f_auto'
-      ],
+      cloudName: "dza7lstvk", // TODO replace with env variable
+      flags: ["fl_lossy", "f_auto"],
       resize: {
-        action: 'pad',
-        aspectRatio: '16:9'
+        action: "pad",
+        aspectRatio: "16:9",
       },
-      roundCorners: 16
-    }
+      roundCorners: 16,
+    },
   },
   presets: [
     [

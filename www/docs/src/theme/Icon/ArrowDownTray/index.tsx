@@ -1,6 +1,7 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconArrowDownTray(props) {
+const IconArrowDownTray: React.FC<IconProps> = (props) => {
   return (
     <svg
       width={20}
@@ -20,3 +21,5 @@ export default function IconArrowDownTray(props) {
     </svg>
   )
 }
+
+export default IconArrowDownTray

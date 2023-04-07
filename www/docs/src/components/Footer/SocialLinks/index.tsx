@@ -3,7 +3,7 @@ import IconTwitter from "@site/src/theme/Icon/Twitter"
 import IconGitHub from "@site/src/theme/Icon/GitHub"
 import IconDiscord from "@site/src/theme/Icon/Discord"
 import IconLinkedIn from "@site/src/theme/Icon/LinkedIn"
-import { SocialLink } from "@site/src/types/theme-config"
+import { SocialLink } from "@medusajs/docs"
 
 type SocialLinksProps = {
   links?: SocialLink[]

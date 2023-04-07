@@ -2,7 +2,7 @@ import React from "react"
 import clsx from "clsx"
 import type { Props } from "@theme/Footer/Layout"
 import { useThemeConfig } from "@docusaurus/theme-common"
-import ThemeConfig from "@site/src/types/theme-config"
+import { ThemeConfig } from "@medusajs/docs"
 import SocialLinks from "@site/src/components/Footer/SocialLinks"
 
 export default function FooterLayout({

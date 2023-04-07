@@ -20,7 +20,7 @@ import DocSidebarItems from "@theme/DocSidebarItems"
 import type { Props } from "@theme/DocSidebarItem/Category"
 import Badge from "@site/src/components/Badge/index"
 import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
-import { ModifiedPropSidebarItemCategory } from "@site/src/types/sidebar-items"
+import { ModifiedPropSidebarItemCategory } from "@medusajs/docs"
 
 type ModifiedProps = Props & {
   item: ModifiedPropSidebarItemCategory

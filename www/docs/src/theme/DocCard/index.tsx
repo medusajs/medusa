@@ -17,7 +17,7 @@ import {
   ModifiedPropSidebarItemCategory,
   ModifiedPropSidebarItemLink,
   ModifiedSidebarItem,
-} from "@site/src/types/sidebar-items"
+} from "@medusajs/docs"
 
 type ModifiedProps = {
   item: ModifiedSidebarItem
