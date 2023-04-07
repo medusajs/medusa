@@ -80,6 +80,36 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it"creates a draft order cart containing variant without prices", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant-without-prices",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
+      expect(response.status).toEqual(200)
+    })
+
     it("creates a draft order with a custom shipping option price", async () => {
       const api = useApi()
 
