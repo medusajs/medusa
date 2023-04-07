@@ -25,7 +25,7 @@ export class ProductCategory extends BaseEntity {
   @Column()
   name: string
 
-  @Column({ nullable: true, default: '' })
+  @Column({ nullable: false, default: '' })
   description: string
 
   @Index({ unique: true })
