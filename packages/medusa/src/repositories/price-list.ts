@@ -29,6 +29,8 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
     }
 
     if (q) {
+      const groupsWhere = query_.where.customer_groups ?? {}
+
       query_.where = query_.where ?? {}
       query_.where = [
         {
@@ -39,28 +41,14 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
           ...query_.where,
           description: ILike(`%${q}%`),
         },
+        {
+          ...query_.where,
+          customer_groups: {
+            ...groupsWhere,
+            name: ILike(`%${q}%`),
+          },
+        },
       ]
-
-      if (groups) {
-        query_.where.push({
-          ...query_.where,
-          customer_groups: {
-            id: In(groups.value),
-            name: ILike(`%${q}%`),
-          },
-        })
-      } else {
-        query_.relations = query_.relations ?? {}
-        query_.relations.customer_groups =
-          query_.relations.customer_groups ?? true
-
-        query_.where.push({
-          ...query_.where,
-          customer_groups: {
-            name: ILike(`%${q}%`),
-          },
-        })
-      }
     }
 
     return await this.findAndCount(query_)
