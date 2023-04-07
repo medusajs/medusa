@@ -1,7 +1,9 @@
-import { Brackets, DeleteResult, FindOptionsWhere, In } from "typeorm"
+import { Brackets, DeleteResult, FindOptionsWhere, In, ILike } from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+
+const productSalesChannelTable = "product_sales_channel"
 
 export const SalesChannelRepository = dataSource
   .getRepository(SalesChannel)
@@ -13,25 +15,29 @@ export const SalesChannelRepository = dataSource
       }
     ): Promise<[SalesChannel[], number]> {
       const options_ = { ...options }
-      options_.where = options_.where as FindOptionsWhere<SalesChannel>
 
+      options_.where = options_.where as FindOptionsWhere<SalesChannel>
       delete options_?.where?.name
       delete options_?.where?.description
 
-      let qb = this.createQueryBuilder("sales_channel")
+      options_.where = [
+        {
+          ...options_.where,
+          name: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          description: ILike(`%${q}%`),
+        },
+      ]
+
+      let qb = this.createQueryBuilder()
         .select()
         .where(options_.where)
-        .andWhere(
-          new Brackets((qb) => {
-            qb.where(`sales_channel.description ILIKE :q`, {
-              q: `%${q}%`,
-            }).orWhere(`sales_channel.name ILIKE :q`, { q: `%${q}%` })
-          })
-        )
-        .skip(options.skip)
-        .take(options.take)
+        .skip(options_.skip)
+        .take(options_.take)
 
-      if (options.withDeleted) {
+      if (options_.withDeleted) {
         qb = qb.withDeleted()
       }
 
@@ -42,13 +48,15 @@ export const SalesChannelRepository = dataSource
       salesChannelId: string,
       productIds: string[]
     ): Promise<DeleteResult> {
+      const whereOptions = {
+        sales_channel_id: salesChannelId,
+        product_id: In(productIds),
+      }
+
       return await this.createQueryBuilder()
         .delete()
-        .from("product_sales_channel")
-        .where({
-          sales_channel_id: salesChannelId,
-          product_id: In(productIds),
-        })
+        .from(productSalesChannelTable)
+        .where(whereOptions)
         .execute()
     },
 
@@ -56,17 +64,18 @@ export const SalesChannelRepository = dataSource
       salesChannelId: string,
       productIds: string[]
     ): Promise<void> {
+      const valuesToInsert = productIds.map((id) => ({
+        sales_channel_id: salesChannelId,
+        product_id: id,
+      }))
+
       await this.createQueryBuilder()
         .insert()
-        .into("product_sales_channel")
-        .values(
-          productIds.map((id) => ({
-            sales_channel_id: salesChannelId,
-            product_id: id,
-          }))
-        )
+        .into(productSalesChannelTable)
+        .values(valuesToInsert)
         .orIgnore()
         .execute()
     },
   })
+
 export default SalesChannelRepository
