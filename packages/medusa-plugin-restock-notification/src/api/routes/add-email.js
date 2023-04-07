@@ -1,16 +1,5 @@
 export default async (req, res) => {
   const { variant_id } = req.params
-
-  // const schema = Validator.object().keys({
-  //   email: Validator.string().required(),
-  // })
-
-  // const { value, error } = schema.validate(req.body)
-  // if (error) {
-  //   res.status(400).json({ message: error.message })
-  //   return
-  // }
-
   try {
     const restockNotificationService = req.scope.resolve(
       "restockNotificationService"
