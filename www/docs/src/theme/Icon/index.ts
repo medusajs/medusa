@@ -81,6 +81,12 @@ import IconTwitter from "./Twitter"
 import IconUser from "./User"
 import IconUsersSolid from "./UsersSolid"
 
+export type IconProps = {
+  width?: number
+  height?: number
+  strokeWidth?: number | string
+} & React.HTMLAttributes<SVGElement>
+
 export default {
   "academic-cap-solid": IconAcademicCapSolid,
   adjustments: IconAdjustments,

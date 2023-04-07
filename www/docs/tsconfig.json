@@ -3,8 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": [
-      "es2022"
-    ]
+      "es2022",
+    ],
+    "paths": {
+      "@site/*": ["./*"],
+      "@medusajs/docs-ui/*": ["./src/components/*"]
+    }
   },
   "typeRoots": ["./node_modules/@types", "./src/types"]
 }

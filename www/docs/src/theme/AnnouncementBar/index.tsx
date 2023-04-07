@@ -5,7 +5,7 @@ import AnnouncementBarCloseButton from "@theme/AnnouncementBar/CloseButton"
 import AnnouncementBarContent from "@theme/AnnouncementBar/Content"
 
 import styles from "./styles.module.css"
-import Bordered from "@site/src/components/Bordered/index"
+import Bordered from "@site/src/components/Bordered"
 import IconBell from "@site/src/theme/Icon/Bell/index"
 
 export default function AnnouncementBar(): JSX.Element | null {

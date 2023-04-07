@@ -5,7 +5,7 @@ import type { WrapperProps } from "@docusaurus/types"
 import Feedback from "@site/src/components/Feedback/index"
 import { useDoc } from "@docusaurus/theme-common/internal"
 import { useThemeConfig } from "@docusaurus/theme-common"
-import ThemeConfig from "@site/src/types/theme-config"
+import { ThemeConfig } from "@medusajs/docs"
 
 type Props = WrapperProps<typeof FooterType>
 

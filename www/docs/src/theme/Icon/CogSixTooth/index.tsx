@@ -1,10 +1,11 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconCogSixTooth(props) {
+const IconCogSixTooth: React.FC<IconProps> = (props) => {
   return (
     <svg
-      width={20}
-      height={20}
+      width={props.width || 20}
+      height={props.height || 20}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -27,3 +28,5 @@ export default function IconCogSixTooth(props) {
     </svg>
   )
 }
+
+export default IconCogSixTooth
