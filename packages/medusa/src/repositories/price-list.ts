@@ -29,6 +29,10 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
     }
 
     if (q) {
+      query_.relations = query_.relations ?? {}
+      query_.relations.customer_groups =
+        query_.relations.customer_groups ?? true
+
       const groupsWhere = query_.where.customer_groups ?? {}
 
       query_.where = query_.where ?? {}
