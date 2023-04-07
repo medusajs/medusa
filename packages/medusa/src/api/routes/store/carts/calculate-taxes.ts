@@ -2,9 +2,10 @@ import { CartService, IdempotencyKeyService } from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/taxes
+ * @oas [post] /store/carts/{id}/taxes
  * summary: "Calculate Cart Taxes"
  * operationId: "PostCartsCartTaxes"
  * description: "Calculates taxes for a cart. Depending on the cart's region
@@ -19,7 +20,7 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -116,6 +117,13 @@ export default async (req, res) => {
 
   if (err) {
     throw err
+  }
+
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.cart = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)

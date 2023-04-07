@@ -31,6 +31,8 @@ type LineItemTotals = {
   original_tax_total: number
   tax_lines: LineItemTaxLine[]
   discount_total: number
+
+  raw_discount_total: number
 }
 
 type GiftCardTransaction = {
@@ -58,15 +60,11 @@ type InjectedDependencies = {
 }
 
 export default class NewTotalsService extends TransactionBaseService {
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
-
   protected readonly taxProviderService_: TaxProviderService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
-    manager,
     taxProviderService,
     featureFlagRouter,
     taxCalculationStrategy,
@@ -74,7 +72,6 @@ export default class NewTotalsService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.featureFlagRouter_ = featureFlagRouter
     this.taxCalculationStrategy_ = taxCalculationStrategy
@@ -101,7 +98,6 @@ export default class NewTotalsService extends TransactionBaseService {
   ): Promise<{ [lineItemId: string]: LineItemTotals }> {
     items = Array.isArray(items) ? items : [items]
 
-    const manager = this.transactionManager_ ?? this.manager_
     let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
 
     if (!taxRate && includeTax) {
@@ -113,7 +109,7 @@ export default class NewTotalsService extends TransactionBaseService {
         })
       } else {
         const { lineItemsTaxLines } = await this.taxProviderService_
-          .withTransaction(manager)
+          .withTransaction(this.activeManager_)
           .getTaxLinesMap(items, calculationContext)
         lineItemsTaxLinesMap = lineItemsTaxLines
       }
@@ -172,7 +168,8 @@ export default class NewTotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total = lineItemAllocation.discount?.amount ?? 0
+    const raw_discount_total = lineItemAllocation.discount?.amount ?? 0
+    const discount_total = Math.round(raw_discount_total)
 
     const totals: LineItemTotals = {
       unit_price: item.unit_price,
@@ -184,6 +181,8 @@ export default class NewTotalsService extends TransactionBaseService {
       original_tax_total: 0,
       tax_total: 0,
       tax_lines: item.tax_lines ?? [],
+
+      raw_discount_total: raw_discount_total,
     }
 
     if (includeTax) {
@@ -274,7 +273,8 @@ export default class NewTotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const discount_total = lineItemAllocation.discount?.amount ?? 0
+    const raw_discount_total = lineItemAllocation.discount?.amount ?? 0
+    const discount_total = Math.round(raw_discount_total)
 
     const totals: LineItemTotals = {
       unit_price: item.unit_price,
@@ -286,6 +286,8 @@ export default class NewTotalsService extends TransactionBaseService {
       original_tax_total: 0,
       tax_total: 0,
       tax_lines: [],
+
+      raw_discount_total,
     }
 
     taxRate = taxRate / 100
@@ -585,7 +587,6 @@ export default class NewTotalsService extends TransactionBaseService {
       ? shippingMethods
       : [shippingMethods]
 
-    const manager = this.transactionManager_ ?? this.manager_
     let shippingMethodsTaxLinesMap: {
       [shippingMethodId: string]: ShippingMethodTaxLine[]
     } = {}
@@ -605,7 +606,7 @@ export default class NewTotalsService extends TransactionBaseService {
           shipping_methods: shippingMethods,
         }
         const { shippingMethodsTaxLines } = await this.taxProviderService_
-          .withTransaction(manager)
+          .withTransaction(this.activeManager_)
           .getTaxLinesMap([], calculationContextWithGivenMethod)
         shippingMethodsTaxLinesMap = shippingMethodsTaxLines
       }

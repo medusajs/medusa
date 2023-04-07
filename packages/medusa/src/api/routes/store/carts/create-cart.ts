@@ -1,6 +1,3 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -10,22 +7,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
 
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Cart, LineItem } from "../../../../models"
 import {
   CartService,
   LineItemService,
   RegionService,
 } from "../../../../services"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { Cart, LineItem } from "../../../../models"
+import { CartCreateProps } from "../../../../types/cart"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { CartCreateProps } from "../../../../types/cart"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
- * @oas [post] /carts
+ * @oas [post] /store/carts
  * summary: "Create a Cart"
  * operationId: "PostCart"
  * description: "Creates a Cart within the given region and with the initial items. If no
@@ -54,7 +54,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "Successfully created a new Cart"
@@ -125,21 +125,18 @@ export default async (req, res) => {
     }
   }
 
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    if (
-      !toCreate.sales_channel_id &&
-      req.publishableApiKeyScopes?.sales_channel_id.length
-    ) {
-      if (req.publishableApiKeyScopes.sales_channel_id.length > 1) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The PublishableApiKey provided in the request header has multiple associated sales channels."
-        )
-      }
-
-      toCreate.sales_channel_id =
-        req.publishableApiKeyScopes.sales_channel_id[0]
+  if (
+    !toCreate.sales_channel_id &&
+    req.publishableApiKeyScopes?.sales_channel_ids.length
+  ) {
+    if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "The PublishableApiKey provided in the request header has multiple associated sales channels."
+      )
     }
+
+    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   let cart: Cart
@@ -176,7 +173,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart })
+  res.status(200).json({ cart: cleanResponseData(cart, []) })
 }
 
 export class Item {

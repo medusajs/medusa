@@ -1,14 +1,16 @@
+import { IInventoryService } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [delete] /reservations/{id}
+ * @oas [delete] /admin/reservations/{id}
  * operationId: "DeleteReservationsReservation"
  * summary: "Delete a Reservation"
  * description: "Deletes a Reservation."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Reservation to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -16,7 +18,7 @@ import { IInventoryService } from "../../../../interfaces"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.reservations.delete(reservation.id)
+ *       medusa.admin.reservations.delete(reservationId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
@@ -29,26 +31,14 @@ import { IInventoryService } from "../../../../interfaces"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Reservation.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: reservation
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Reservation was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminReservationsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -64,12 +54,11 @@ import { IInventoryService } from "../../../../interfaces"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const inventoryService: IInventoryService = req.resolve("inventoryService")
-  const manager: EntityManager = req.resolve("manager")
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
-  await manager.transaction(async (manager) => {
-    await inventoryService.withTransaction(manager).deleteReservationItem(id)
-  })
+  await inventoryService.deleteReservationItem(id)
 
   res.json({
     id,

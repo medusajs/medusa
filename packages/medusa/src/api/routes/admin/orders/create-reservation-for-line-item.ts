@@ -6,7 +6,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [post] /orders/{id}/line-items/{line_item_id}/reserve
+ * @oas [post] /admin/orders/{id}/line-items/{line_item_id}/reserve
  * operationId: "PostOrdersOrderLineItemReservations"
  * summary: "Create a Reservation for a line item"
  * description: "Creates a Reservation for a line item at a specified location, optionally for a partial quantity."
@@ -20,22 +20,10 @@ import {
  *       schema:
  *         $ref: "#/components/schemas/AdminOrdersOrderLineItemReservationReq"
  * x-codeSamples:
- *   - lang: JavaScript
- *     label: JS Client
- *     source: |
- *       import Medusa from "@medusajs/medusa-js"
- *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in or use api token
- *       medusa.admin.orders.createReservation(order_id, line_item_id, {
- *         location_id
- *       })
- *       .then(({ reservation }) => {
- *         console.log(reservation.id);
- *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reservations' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reserve' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
@@ -45,7 +33,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK

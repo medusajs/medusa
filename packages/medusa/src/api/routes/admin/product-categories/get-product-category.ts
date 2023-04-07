@@ -5,7 +5,7 @@ import { FindParams } from "../../../../types/common"
 import { defaultAdminProductCategoryRelations } from "."
 
 /**
- * @oas [get] /product-categories/{id}
+ * @oas [get] /admin/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
  * description: "Retrieves a Product Category."
@@ -24,7 +24,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.retrieve(product_category_id)
+ *       medusa.admin.productCategories.retrieve(productCategoryId)
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       });
@@ -37,7 +37,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK

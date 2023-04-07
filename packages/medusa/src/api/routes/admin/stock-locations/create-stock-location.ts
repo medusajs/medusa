@@ -1,12 +1,18 @@
+import {
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { Request, Response } from "express"
-import { Type } from "class-transformer"
-import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
+import { Transform, Type } from "class-transformer"
 
-import { IStockLocationService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
+import { IStockLocationService } from "@medusajs/types"
 
 /**
- * @oas [post] /stock-locations
+ * @oas [post] /admin/stock-locations
  * operationId: "PostStockLocations"
  * summary: "Create a Stock Location"
  * description: "Creates a Stock Location."
@@ -30,7 +36,6 @@ import { FindParams } from "../../../../types/common"
  *       // must be previously logged in or use api token
  *       medusa.admin.stockLocations.create({
  *         name: 'Main Warehouse',
- *         location_id: 'sloc'
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
@@ -48,7 +53,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Stock Location
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -139,6 +144,8 @@ class StockLocationAddress {
  */
 export class AdminPostStockLocationsReq {
   @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => value?.trim())
   name: string
 
   @IsOptional()

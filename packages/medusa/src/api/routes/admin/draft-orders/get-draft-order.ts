@@ -7,9 +7,10 @@ import {
 } from "."
 
 import { DraftOrder } from "../../../.."
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /draft-orders/{id}
+ * @oas [get] /admin/draft-orders/{id}
  * operationId: "GetDraftOrdersDraftOrder"
  * summary: "Get a Draft Order"
  * description: "Retrieves a Draft Order."
@@ -38,7 +39,7 @@ import { DraftOrder } from "../../../.."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -77,5 +78,7 @@ export default async (req, res) => {
     select: defaultAdminDraftOrdersCartFields,
   })
 
-  res.json({ draft_order: draftOrder })
+  res.json({
+    draft_order: cleanResponseData(draftOrder, []),
+  })
 }

@@ -5,7 +5,7 @@ import { Type } from "class-transformer"
 import customerController from "../../../../controllers/customers"
 
 /**
- * @oas [get] /customers
+ * @oas [get] /admin/customers
  * operationId: "GetCustomers"
  * summary: "List Customers"
  * description: "Retrieves a list of Customers."
@@ -39,7 +39,7 @@ import customerController from "../../../../controllers/customers"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK

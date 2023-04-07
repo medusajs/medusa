@@ -2,7 +2,7 @@ import { AbstractFileService } from "../../../../interfaces"
 import { IsString } from "class-validator"
 
 /**
- * @oas [post] /uploads/download-url
+ * @oas [post] /admin/uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
  * summary: "Get a File's Download URL"
  * description: "Creates a presigned download url for a file"
@@ -38,7 +38,7 @@ import { IsString } from "class-validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK

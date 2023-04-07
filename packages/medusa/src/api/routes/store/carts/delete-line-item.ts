@@ -1,9 +1,10 @@
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/line-items/{line_id}
+ * @oas [delete] /store/carts/{id}/line-items/{line_id}
  * operationId: DeleteCartsCartLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Cart."
@@ -27,7 +28,7 @@ import { CartService } from "../../../../services"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -72,5 +73,6 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  res.status(200).json({ cart: data })
+
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

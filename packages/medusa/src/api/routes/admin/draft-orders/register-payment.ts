@@ -8,14 +8,15 @@ import {
 import {
   defaultAdminOrdersFields as defaultOrderFields,
   defaultAdminOrdersRelations as defaultOrderRelations,
-} from "../orders/index"
+} from "../../../../types/orders"
 
 import { EntityManager } from "typeorm"
-import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
+import { Order } from "../../../../models"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /draft-orders/{id}/pay
+ * @oas [post] /admin/draft-orders/{id}/pay
  * summary: "Registers a Payment"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
  * description: "Registers a payment for a Draft Order."
@@ -44,7 +45,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -75,6 +76,7 @@ export default async (req, res) => {
     "paymentProviderService"
   )
   const orderService: OrderService = req.scope.resolve("orderService")
+  const inventoryService: OrderService = req.scope.resolve("inventoryService")
   const cartService: CartService = req.scope.resolve("cartService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
@@ -84,9 +86,6 @@ export default async (req, res) => {
     const draftOrderServiceTx = draftOrderService.withTransaction(manager)
     const orderServiceTx = orderService.withTransaction(manager)
     const cartServiceTx = cartService.withTransaction(manager)
-
-    const productVariantInventoryServiceTx =
-      productVariantInventoryService.withTransaction(manager)
 
     const draftOrder = await draftOrderServiceTx.retrieve(id)
 
@@ -115,14 +114,17 @@ export default async (req, res) => {
         select: defaultOrderFields,
       })
 
-    await reserveQuantityForDraftOrder(order, {
-      productVariantInventoryService: productVariantInventoryServiceTx,
-    })
+    // TODO: Re-enable when we have a way to handle inventory for draft orders on creation
+    if (!inventoryService) {
+      await reserveQuantityForDraftOrder(order, {
+        productVariantInventoryService,
+      })
+    }
 
     return order
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 export const reserveQuantityForDraftOrder = async (

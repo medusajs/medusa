@@ -1,4 +1,6 @@
 type: object
+required:
+  - order
 properties:
   order:
     $ref: ./Order.yaml

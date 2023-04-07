@@ -1,6 +1,6 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
-import { ShippingMethodTaxLine, ShippingMethod } from "@medusajs/medusa"
+import { ShippingMethod, ShippingMethodTaxLine } from "@medusajs/medusa"
 
 import {
   ShippingOptionFactoryData,
@@ -19,7 +19,7 @@ export type ShippingMethodFactoryData = {
 }
 
 export const simpleShippingMethodFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ShippingMethodFactoryData,
   seed?: number
 ): Promise<ShippingMethod> => {
@@ -27,14 +27,14 @@ export const simpleShippingMethodFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let shippingOptionId: string
   if (typeof data.shipping_option === "string") {
     shippingOptionId = data.shipping_option
   } else {
     const option = await simpleShippingOptionFactory(
-      connection,
+      dataSource,
       data.shipping_option
     )
     shippingOptionId = option.id

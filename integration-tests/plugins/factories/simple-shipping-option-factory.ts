@@ -1,13 +1,9 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import {
-  ShippingOptionPriceType,
-  ShippingProfile,
-  ShippingOption,
-  ShippingProfileType,
-} from "@medusajs/medusa"
+import { ShippingOption, ShippingOptionPriceType, ShippingProfile, ShippingProfileType, } from "@medusajs/medusa"
 
 export type ShippingOptionFactoryData = {
+  id?: string
   name?: string
   region_id: string
   is_return?: boolean
@@ -26,15 +22,15 @@ export const simpleShippingOptionFactory = async (
 
   const manager = connection.manager
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.DEFAULT,
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.GIFT_CARD,
+    where: { type: ShippingProfileType.GIFT_CARD },
   })
 
   const created = manager.create(ShippingOption, {
-    id: `simple-so-${Math.random() * 1000}`,
+    id: data.id || `simple-so-${Math.random() * 1000}`,
     name: data.name || "Test Method",
     is_return: data.is_return ?? false,
     region_id: data.region_id,

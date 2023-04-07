@@ -1,9 +1,10 @@
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders/cart/{cart_id}
+ * @oas [get] /store/orders/cart/{cart_id}
  * operationId: GetOrdersOrderCartId
  * summary: Get by Cart ID
  * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
@@ -26,7 +27,7 @@ import { OrderService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -54,5 +55,5 @@ export default async (req, res) => {
     relations: defaultStoreOrdersRelations,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }

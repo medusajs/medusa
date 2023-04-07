@@ -1,9 +1,10 @@
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/capture
+ * @oas [post] /admin/orders/{id}/capture
  * operationId: "PostOrdersOrderCapture"
  * summary: "Capture Order's Payment"
  * description: "Captures all the Payments associated with an Order."
@@ -35,7 +36,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -72,7 +73,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export class AdminPostOrdersOrderCaptureParams extends FindParams {}

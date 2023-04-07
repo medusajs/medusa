@@ -1,9 +1,6 @@
 name: CLI Pipeline
 on:
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "www/**"
 
 jobs:
   test-cli-with-database:
@@ -62,34 +59,34 @@ jobs:
           medusa new cli-test
         working-directory: ..
 
-      - name: Install postgres config
-        if: matrix.db == 'postgres'
-        run: |
-          curl \
-          https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/postgres-config/medusa-config.js \
-          --output medusa-config.js
-        working-directory: ../cli-test
-
       - name: run medusa dev
         run: medusa-dev --force-install
         working-directory: ../cli-test
 
       - name: Run migrations
+        env:
+          DATABASE_TYPE: ${{ matrix.db }}
         run: medusa migrations run
         working-directory: ../cli-test
 
       - name: Seed db
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
         run: yarn seed
         working-directory: ../cli-test
 
       - name: Create admin user
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
         run: medusa user -e test@test.com -p password -i admin_123
         working-directory: ../cli-test
 
       ##########################  Test medusa develop  ###############################
 
       - name: Run development server
-        run: medusa develop  > /dev/null 2>&1 &
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: medusa develop &
         working-directory: ../cli-test
 
       - name: Testing development server
@@ -98,7 +95,9 @@ jobs:
       ###########################  Test medusa start  ################################
 
       - name: Starting medusa
-        run: medusa start > /dev/null 2>&1 &
+        env:  
+          DATABASE_TYPE: ${{ matrix.db }}
+        run: medusa start &
         working-directory: ../cli-test
 
       - name: Testing server

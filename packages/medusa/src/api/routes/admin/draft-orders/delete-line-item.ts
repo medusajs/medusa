@@ -8,9 +8,10 @@ import {
 import { DraftOrder } from "../../../.."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /draft-orders/{id}/line-items/{line_id}
+ * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Draft Order."
@@ -40,7 +41,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -93,6 +94,8 @@ export default async (req, res) => {
         select: defaultAdminDraftOrdersCartFields,
       })
 
-    res.status(200).json({ draft_order: draftOrder })
+    res.status(200).json({
+      draft_order: cleanResponseData(draftOrder, []),
+    })
   })
 }

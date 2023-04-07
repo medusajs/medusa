@@ -1,5 +1,5 @@
 import { AnalyticsConfig } from "@medusajs/medusa"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 export type AnalyticsConfigData = {
   id?: string
@@ -9,10 +9,10 @@ export type AnalyticsConfigData = {
 }
 
 export const simpleAnalyticsConfigFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: AnalyticsConfigData = {}
 ): Promise<AnalyticsConfig> => {
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const job = manager.create<AnalyticsConfig>(AnalyticsConfig, {
     id: data.id ?? "test-analytics-config",

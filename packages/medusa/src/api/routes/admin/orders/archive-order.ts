@@ -1,9 +1,10 @@
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/archive
+ * @oas [post] /admin/orders/{id}/archive
  * operationId: "PostOrdersOrderArchive"
  * summary: "Archive Order"
  * description: "Archives the order with the given id."
@@ -35,7 +36,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -70,7 +71,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export class AdminPostOrdersOrderArchiveParams extends FindParams {}

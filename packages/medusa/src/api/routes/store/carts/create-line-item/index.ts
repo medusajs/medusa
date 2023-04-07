@@ -11,9 +11,10 @@ import {
   runIdempotencyStep,
   RunIdempotencyStepOptions,
 } from "../../../../../utils/idempotency"
+import { cleanResponseData } from "../../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/line-items
+ * @oas [post] /store/carts/{id}/line-items
  * operationId: PostCartsCartLineItems
  * summary: "Add a Line Item"
  * description: "Generates a Line Item with a given Product Variant and adds it
@@ -50,7 +51,7 @@ import {
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -128,6 +129,13 @@ export default async (req, res) => {
 
   if (err) {
     throw err
+  }
+
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.cart = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)

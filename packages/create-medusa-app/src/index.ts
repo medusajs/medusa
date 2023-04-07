@@ -1,6 +1,5 @@
-import path from "path"
 import Commander from "commander"
-import chalk from "chalk"
+import path from "path"
 
 import { prompt } from "enquirer"
 import { newStarter } from "./new-starter"
@@ -33,11 +32,8 @@ const questions = {
     name: "storefront",
     message: "Which storefront starter would you like to install?",
     choices: [
-      "Gatsby Starter",
       "Next.js Starter",
       "medusa.express (Next.js)",
-      "medusa.express (Gatsby)",
-      "Gatsby Starter (Simple)",
       "None",
     ],
   },
@@ -61,16 +57,10 @@ const program = new Commander.Command(pkg.name)
 const getStorefrontStarter = (starter: string): string => {
   const selected = starter.toLowerCase()
   switch (selected) {
-    case "gatsby starter":
-      return "https://github.com/medusajs/gatsby-starter-medusa"
     case "next.js starter":
       return "https://github.com/medusajs/nextjs-starter-medusa"
     case "medusa.express (next.js)":
       return "https://github.com/medusajs/medusa-express-nextjs"
-    case "medusa.express (gatsby)":
-      return "https://github.com/medusajs/medusa-express-gatsby"
-    case "gatsby starter (simple)":
-      return "https://github.com/medusajs/gatsby-starter-medusa-simple"
     default:
       return ""
   }
@@ -126,12 +116,6 @@ export const run = async (): Promise<void> => {
       verbose: progOptions.verbose,
     })
   }
-  await newStarter({
-    starter: "https://github.com/medusajs/admin",
-    root: path.join(projectRoot, `admin`),
-    keepGit: true,
-    verbose: progOptions.verbose,
-  })
 
   console.log(`
   Your project is ready 🚀. The available commands are:
@@ -139,17 +123,13 @@ export const run = async (): Promise<void> => {
     Medusa API
     cd ${projectRoot}/backend
     yarn start
-
-    Admin
-    cd ${projectRoot}/admin
-    yarn start
   `)
 
   if (hasStorefront) {
     console.log(`
     Storefront
     cd ${projectRoot}/storefront
-    yarn start
+    yarn dev
     `)
   }
 }

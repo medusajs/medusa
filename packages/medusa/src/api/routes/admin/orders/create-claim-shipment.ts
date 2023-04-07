@@ -2,9 +2,10 @@ import { ClaimService, OrderService } from "../../../../services"
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/shipments
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
  * summary: "Create Claim Shipment"
  * description: "Registers a Claim Fulfillment as shipped."
@@ -48,7 +49,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -92,7 +93,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 /**

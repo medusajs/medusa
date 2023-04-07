@@ -1,9 +1,14 @@
-import { IStockLocationService } from "../../../../interfaces"
+import { IStockLocationService } from "@medusajs/types"
 import { Request, Response } from "express"
+import {
+  SalesChannelLocationService,
+  SalesChannelService,
+} from "../../../../services"
 import { FindParams } from "../../../../types/common"
+import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
- * @oas [get] /stock-locations/{id}
+ * @oas [get] /admin/stock-locations/{id}
  * operationId: "GetStockLocationsStockLocation"
  * summary: "Get a Stock Location"
  * description: "Retrieves the Stock Location."
@@ -22,7 +27,7 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.stockLocations.retrieve(stock_location_id)
+ *       medusa.admin.stockLocations.retrieve(stockLocationId)
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
  *       });
@@ -35,7 +40,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Stock Location
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -50,7 +55,34 @@ export default async (req: Request, res: Response) => {
   const locationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
-  const stockLocation = await locationService.retrieve(id, req.retrieveConfig)
+  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
+    "salesChannelLocationService"
+  )
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+
+  const { retrieveConfig } = req
+
+  const includeSalesChannels =
+    !!retrieveConfig.relations?.includes("sales_channels")
+
+  if (includeSalesChannels) {
+    retrieveConfig.relations = retrieveConfig.relations?.filter(
+      (r) => r !== "sales_channels"
+    )
+  }
+
+  let stockLocation = await locationService.retrieve(id, retrieveConfig)
+
+  if (includeSalesChannels) {
+    const [location] = await joinSalesChannels(
+      [stockLocation],
+      channelLocationService,
+      salesChannelService
+    )
+    stockLocation = location
+  }
 
   res.status(200).json({ stock_location: stockLocation })
 }

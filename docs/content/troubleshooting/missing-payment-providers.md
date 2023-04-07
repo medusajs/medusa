@@ -1,6 +1,6 @@
-# Payment Provider (Stripe) not showing in checkout
+# Payment Processor (Stripe) not showing in checkout
 
-You add payment providers to your Medusa instance by adding them as plugins in `medusa-config.js`:
+You add payment processors to your Medusa instance by adding them as plugins in `medusa-config.js`:
 
 ```js title=medusa-config.js
 const plugins = [
@@ -24,7 +24,7 @@ npm install medusa-payment-stripe
 
 However, to also show them as part of your checkout flow you need to add them to your regions.
 
-In the Medusa Admin go to Settings > Regions and for each region scroll down to the Payment Provider input and choose the payment provider you want to use in that region.
+Then, refer to [this user guide](../user-guide/regions/providers.mdx) to learn how to enable the payment processor in a region.
 
 ---
 

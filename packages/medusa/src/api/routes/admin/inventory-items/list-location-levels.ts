@@ -1,20 +1,20 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
-
-import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /inventory-items/{id}/location-levels
+ * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
- * summary: "List stock levels of a given location."
- * description: "Lists stock levels of a given location."
+ * summary: "List Inventory Levels"
+ * description: "Lists inventory levels of an inventory item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) offset=0 {integer} How many stock locations levels to skip in the result.
- *   - (query) limit=20 {integer} Limit the number of stock locations levels returned.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: listLocationLevels
+ *   queryParams: AdminGetInventoryItemsItemLocationLevelsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,8 +30,7 @@ import { FindParams } from "../../../../types/common"
  *     label: cURL
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -1,6 +1,12 @@
 type: object
+x-expanded-relations:
+  field: shipping_options
+  relations:
+    - requirements
+required:
+  - shipping_options
 properties:
   shipping_options:
     type: array
     items:
-      $ref: ./ShippingOption.yaml
+      $ref: ./PricedShippingOption.yaml

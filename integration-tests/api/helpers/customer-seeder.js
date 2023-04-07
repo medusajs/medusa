@@ -1,7 +1,7 @@
 const { Customer, Address, CustomerGroup } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const testAddr = await manager.create(Address, {
     id: "test-address",

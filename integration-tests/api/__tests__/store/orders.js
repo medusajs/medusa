@@ -67,7 +67,9 @@ describe("/store/carts", () => {
       })
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: ShippingProfile.default,
+        },
       })
       await manager.insert(Product, {
         id: "test-product",
@@ -166,6 +168,7 @@ describe("/store/carts", () => {
         // fields
         "status",
         "email",
+
         // relations
         "shipping_address",
         "fulfillments",
@@ -175,6 +178,18 @@ describe("/store/carts", () => {
         "customer",
         "payments",
         "region",
+
+        // totals
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
       ])
     })
 
@@ -186,6 +201,7 @@ describe("/store/carts", () => {
       expect(Object.keys(response.data.order)).toEqual([
         // fields
         "status",
+
         // default relations
         "shipping_address",
         "fulfillments",
@@ -195,6 +211,18 @@ describe("/store/carts", () => {
         "customer",
         "payments",
         "region",
+
+        // totals
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
       ])
     })
 
@@ -208,8 +236,21 @@ describe("/store/carts", () => {
       expect(Object.keys(response.data.order)).toEqual([
         // fields
         "status",
+
         // selected relations
         "billing_address",
+
+        // totals
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "total",
+        "subtotal",
+        "paid_total",
+        "refundable_amount",
+        "gift_card_total",
+        "gift_card_tax_total",
       ])
     })
 
@@ -308,12 +349,12 @@ describe("/store/carts", () => {
         })
 
       expect(responseFail.status).toEqual(409)
-      expect(responseFail.data.type).toEqual("not_allowed")
-      expect(responseFail.data.code).toEqual(
+      expect(responseFail.data.errors[0].type).toEqual("not_allowed")
+      expect(responseFail.data.errors[0].code).toEqual(
         MedusaError.Codes.INSUFFICIENT_INVENTORY
       )
 
-      let payments = await manager.find(Payment, { cart_id: cartId })
+      let payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({
@@ -338,7 +379,7 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      payments = await manager.find(Payment, { cart_id: cartId })
+      payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(2)
       expect(payments).toEqual(
         expect.arrayContaining([
@@ -391,7 +432,9 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      const payments = await manager.find(Payment, { cart_id: cartId })
+      const payments = await manager.find(Payment, {
+        where: { cart_id: cartId },
+      })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({

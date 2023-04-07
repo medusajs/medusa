@@ -1,9 +1,9 @@
+import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { IStockLocationService } from "../../../../interfaces"
 import { SalesChannelLocationService } from "../../../../services"
 
 /**
- * @oas [delete] /stock-locations/{id}
+ * @oas [delete] /admin/stock-locations/{id}
  * operationId: "DeleteStockLocationsStockLocation"
  * summary: "Delete a Stock Location"
  * description: "Delete a Stock Location"
@@ -18,9 +18,9 @@ import { SalesChannelLocationService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.stockLocations.delete(stock_location_id)
- *         .then(({ id, object, deleted }) => {
- *           console.log(id)
- *         })
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -30,7 +30,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - StockLocation
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -60,6 +60,9 @@ export default async (req, res) => {
     "stockLocationService"
   )
 
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+
   const salesChannelLocationService: SalesChannelLocationService =
     req.scope.resolve("salesChannelLocationService")
 
@@ -69,7 +72,14 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .removeLocation(id)
 
-    await stockLocationService.withTransaction(transactionManager).delete(id)
+    await stockLocationService.delete(id)
+
+    if (inventoryService) {
+      await Promise.all([
+        inventoryService.deleteInventoryItemLevelByLocationId(id),
+        inventoryService.deleteReservationItemByLocationId(id),
+      ])
+    }
   })
 
   res.status(200).send({

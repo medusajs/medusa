@@ -5,7 +5,7 @@ import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /price-lists/{id}/prices/batch
+ * @oas [delete] /admin/price-lists/{id}/prices/batch
  * operationId: "DeletePriceListsPriceListPricesBatch"
  * summary: "Delete Prices"
  * description: "Batch delete prices that belong to a Price List"
@@ -49,7 +49,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK

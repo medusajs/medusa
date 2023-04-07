@@ -1,17 +1,24 @@
 type: object
+required:
+  - fulfillment_options
 properties:
   fulfillment_options:
     type: array
     items:
       type: object
+      required:
+        - provider_id
+        - options
       properties:
         provider_id:
-          type: string
           description: ID of the fulfillment provider
+          type: string
         options:
-          type: array
           description: fulfillment provider options
-          example:
-            - id: manual-fulfillment
-            - id: manual-fulfillment-return
-              is_return: true
+          type: array
+          items:
+            type: object
+            example:
+              - id: manual-fulfillment
+              - id: manual-fulfillment-return
+                is_return: true

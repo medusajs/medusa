@@ -10,9 +10,10 @@ import { OrderService, SwapService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Create Swap Shipment"
  * description: "Registers a Swap Fulfillment as shipped."
@@ -56,7 +57,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -102,7 +103,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 /**

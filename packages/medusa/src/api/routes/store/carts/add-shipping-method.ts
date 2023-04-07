@@ -3,10 +3,10 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/shipping-methods
+ * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: "PostCartsCartShippingMethod"
  * description: "Adds a Shipping Method to the Cart."
  * summary: "Add a Shipping Method"
@@ -40,7 +40,7 @@ import { validator } from "../../../../utils/validator"
  *           "option_id": "{option_id}",
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *  "200":
  *    description: OK
@@ -62,10 +62,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartShippingMethodReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -94,7 +91,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**

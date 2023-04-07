@@ -3,9 +3,10 @@ import { ClaimService, OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/cancel
  * operationId: "PostOrdersClaimCancel"
  * summary: "Cancel a Claim"
  * description: "Cancels a Claim"
@@ -38,7 +39,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -85,7 +86,7 @@ export default async (req, res) => {
     includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 export class AdminPostOrdersClaimCancel extends FindParams {}

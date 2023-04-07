@@ -23,15 +23,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
-
-Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in Algolia are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa backend](../../development/backend/configurations.md#redis).
-
-:::caution
-
-If you don’t install and configure Redis on your Medusa backend, the Algolia integration will still work. However, products indexed in Algolia are only added and updated when you restart the Medusa backend.
-
-:::
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### Algolia Account
 
@@ -100,38 +92,100 @@ Where `<YOUR_APP_ID>` and `<YOUR_ADMIN_API_KEY>` are respectively the Applicatio
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
     resolve: `medusa-plugin-algolia`,
     options: {
-      application_id: process.env.ALGOLIA_APP_ID,
-      admin_api_key: process.env.ALGOLIA_ADMIN_API_KEY,
+      applicationId: process.env.ALGOLIA_APP_ID,
+      adminApiKey: process.env.ALGOLIA_ADMIN_API_KEY,
       settings: {
-        products: {
-          searchableAttributes: ["title", "description"],
-          attributesToRetrieve: [
-            "id",
-            "title",
-            "description",
-            "handle",
-            "thumbnail",
-            "variants",
-            "variant_sku",
-            "options",
-            "collection_title",
-            "collection_handle",
-            "images",
-          ],
-        },
+        // index settings...
       },
     },
   },
 ]
 ```
 
-The `searchableAttributes` are the attributes in a product that are searchable, and `attributesToRetrieve` are the attributes to retrieve for each product result. You’re free to make changes to these attributes as you see fit, but these are the recommended attributes.
+### Index Settings
+
+Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
+
+```js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      // other options...
+    settings: {
+      indexName: {
+        indexSettings: {
+          searchableAttributes,
+          attributesToRetrieve,
+        },
+        transformer,
+      },
+    },
+    },
+  },
+]
+```
+
+Where:
+
+- `indexName`: the name of the index to create in Algolia. For example, `products`. Its value is an object containing the following properties:
+  - `indexSettings`: an object that includes the following properties:
+    - `searchableAttributes`: an array of strings indicating the attributes in the product entity that can be searched.
+    - `attributesToRetrieve`: an array of strings indicating the attributes in the product entity that should be retrieved in the search results.
+  - `transformer`: an optional function that accepts a product as a parameter and returns an object to be indexed. This allows you to have more control over what you're indexing. For example, you can add details related to variants or custom relations, or you can filter out certain products.
+
+Using this index settings structure, you can add more than one index.
+
+:::tip
+
+These settings are just examples of what you can pass to the Algolia provider. If you need to pass more settings to the Algolia SDK you can pass it inside `indexSettings`.
+
+:::
+
+Here's an example of the settings you can use:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      // other options...
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: ["title", "description"],
+            attributesToRetrieve: [
+              "id",
+              "title",
+              "description",
+              "handle",
+              "thumbnail",
+              "variants",
+              "variant_sku",
+              "options",
+              "collection_title",
+              "collection_handle",
+              "images",
+            ],
+          },
+          transform: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
 
 ---
 
@@ -163,7 +217,7 @@ If you add or update products on your Medusa backend, the addition or update wil
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the Algolia indices.
+This feature is only available if you have an event module installed in your Medusa backend, as explained in the Prerequisites section.
 
 :::
 
@@ -233,134 +287,13 @@ To make sure the Next.js storefront properly displays the products in the search
 
 ![Search pop up in the Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
 
-### Add to Gatsby and React-Based Storefronts
+### Add to Other Storefronts
 
-This section covers adding the search UI to React-based storefronts. It uses the Gatsby storefront as an example, but you can use the same steps on any React-based framework.
-
-:::tip
-
-For other frontend frameworks, please check out [Algolia’s Integrations guide](https://www.algolia.com/developers/?ui-libraries&client-libraries) for steps based on your framework.
-
-:::
-
-In the directory that contains your storefront, run the following command to install the necessary dependencies:
-
-```bash npm2yarn
-npm install algoliasearch react-instantsearch-dom
-```
-
-Then, add the following environment variables:
-
-```bash
-GATSBY_ALGOLIA_APP_ID=<YOUR_APP_ID>
-GATSBY_ALGOLIA_SEARCH_API_KEY=<YOUR_SEARCH_API_KEY>
-GATSBY_SEARCH_INDEX_NAME=products
-```
-
-Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are respectively the Application ID and Search-Only API Key on the [API Keys page](#retrieve-api-keys).
-
-:::note
-
-In Gatsby, environment variables that should be public and available in the browser are prefixed with `GATSBY_`. If you’re using another React-based framework, you might need to use a different prefix to ensure these variables can be used in your code. Please refer to your framework’s documentation for help on this.
-
-:::
-
-Then, create the file `src/components/header/search.jsx` with the following content:
-
-```jsx title=src/components/header/search.jsx
-import {
-  Highlight,
-  Hits,
-  InstantSearch,
-  SearchBox,
-  connectStateResults,
-} from "react-instantsearch-dom"
-
-import React from "react"
-import algoliasearch from "algoliasearch/lite"
-
-const searchClient = algoliasearch(
-  process.env.GATSBY_ALGOLIA_APP_ID,
-  process.env.GATSBY_ALGOLIA_SEARCH_API_KEY
-)
-
-const Search = () => {
-  const Results = connectStateResults(
-    ({ searchState, searchResults, children }) => {
-      return (
-        searchState && searchState.query && 
-        searchResults && searchResults.nbHits !== 0 ? 
-        (
-          <div 
-            className="absolute ...">
-            {children}
-          </div>
-        ) : (
-          <div></div>
-        )
-      )
-    }      
-  )
-
-  return (
-    <div className="relative">
-      <InstantSearch 
-        indexName={process.env.GATSBY_SEARCH_INDEX_NAME} 
-        searchClient={searchClient}>
-        <SearchBox submit={null} reset={null} />
-        <Results>
-          <Hits hitComponent={Hit} />
-        </Results>
-      </InstantSearch>
-    </div>
-  )
-}
-
-const Hit = ({ hit }) => {
-  return (
-    <div key={hit.id} className="relative">
-      <div className="hit-name">
-        <Highlight attribute="title" hit={hit} tagName="mark" />
-      </div>
-    </div>
-  )
-}
-
-export default Search
-```
-
-This file uses the dependencies you installed to show the search results. It also initializes Algolia using the environment variables you added.
-
-:::note
-
-If you named your environment variables differently based on your framework, make sure to rename them here as well.
-
-:::note
-
-Finally, import this file at the beginning of `src/components/header/index.jsx`:
-
-```jsx title=src/components/header/index.jsx
-import Search from "./search"
-```
-
-And add the `Search` component in the returned JSX before `RegionPopover`:
-
-```jsx title=src/components/header/index.jsx
-// ...
-<div className="...">
-  <Search />
-  <RegionPopover regions={mockData.regions} />
-</div>
-// ...
-```
-
-If you run your Gatsby storefront while the Medusa backend is running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
-
-![Search bar in the Gatsby storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000097/Medusa%20Docs/Algolia/INtlcIo_jlh16x.png)
+To integrate Algolia's search functionalities in your storefront, please refer to [Algolia's InstantSearch.js documentation](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/). You'll find packages for different frontend frameworks and how you can use them.
 
 ---
 
 ## See Also
 
 - [Deploy your Medusa backend](../../deployments/server/index.mdx)
-- [Deploy your Gatsby storefront](../../deployments/storefront/deploying-gatsby-on-netlify.md)
+- [Deploy your storefront](../../deployments/storefront/index.mdx)

@@ -1,14 +1,14 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 import { simpleRegionFactory } from "./simple-region-factory"
 import { simplePaymentFactory } from "./simple-payment-factory"
 import { Payment, PaymentCollection } from "@medusajs/medusa"
 
 export const simplePaymentCollectionFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: Partial<PaymentCollection> = {}
 ): Promise<PaymentCollection> => {
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const defaultData = {
     currency_code: data.currency_code ?? "usd",
@@ -19,7 +19,7 @@ export const simplePaymentCollectionFactory = async (
   }
 
   if (!data.region && !data.region_id) {
-    data.region = await simpleRegionFactory(connection, {
+    data.region = await simpleRegionFactory(dataSource, {
       id: data.region_id || "test-region",
       currency_code: defaultData.currency_code,
     })
@@ -32,7 +32,7 @@ export const simplePaymentCollectionFactory = async (
       payment.currency_code = payment.currency_code ?? defaultData.currency_code
 
       const savedPayment = await simplePaymentFactory(
-        connection,
+        dataSource,
         payment as any
       )
       payments.push(savedPayment)

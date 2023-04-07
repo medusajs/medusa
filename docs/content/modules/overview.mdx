@@ -41,6 +41,21 @@ Medusa provides the necessary features to build a customizable shopping experien
 
   </LargeCard>
   <LargeCard
+    Icon={Icons['building-solid']}
+    title='Inventory (Multi-Warehouse)'
+    action={{
+      label: 'Learn more',
+      href: '/modules/multiwarehouse/overview'
+    }}
+  >
+
+  - Create and manage multiple stock locations that represent where you physically store your products.
+  - Manage the product variants' inventory across stock locations, and associate those locations with sales channels.
+  - Associate order fulfillemnts and returns with a stock location. The management of inventory item quantity is handled automatically.
+
+
+  </LargeCard>
+  <LargeCard
     Icon={Icons['shopping-cart-solid']}
     title='Cart and Checkout'
     action={{
@@ -49,7 +64,7 @@ Medusa provides the necessary features to build a customizable shopping experien
     }}
   >
 
-  - Accept payments with payment providers including Stripe and PayPal.
+  - Accept payments with payment processors including Stripe and PayPal.
   - Calculate taxes of a cart through custom logic or third-party tax providers.
   - Allow customers to apply discount codes and gift cards during checkout.
   - Fully customize the frontend experience of the checkout process.
@@ -144,7 +159,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
   >
 
   - Create an unlimited number of regions, each associated with a currency and at least one country.
-  - Manage each region’s settings including payment providers, shipping options, and more.
+  - Manage each region’s settings including payment processors, shipping options, and more.
   - Set prices for products and shipping options specific to a currency or a region.
 
 
@@ -211,10 +226,10 @@ If you have any questions about Medusa, its features, and development with it, f
   {
     type: 'link',
     href: '/modules/carts-and-checkout/backend/add-payment-provider',
-    label: 'Create a Payment Provider',
+    label: 'Create a Payment Processor',
     customProps: {
       icon: Icons['credit-card-solid'],
-      description: 'Create a payment provider.',
+      description: 'Learn how to create a payment processor.',
     },
   },
   {

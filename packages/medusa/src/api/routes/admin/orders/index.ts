@@ -72,6 +72,10 @@ import {
   AdminPostOrdersOrderClaimsClaimShipmentsParams,
   AdminPostOrdersOrderClaimsClaimShipmentsReq,
 } from "./create-claim-shipment"
+import {
+  defaultAdminOrdersFields,
+  defaultAdminOrdersRelations,
+} from "../../../../types/orders"
 
 const route = Router()
 
@@ -91,10 +95,10 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
-      defaultFields: defaultAdminOrdersFields,
+      defaultFields: defaultFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -105,8 +109,8 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/:id",
-    transformIncludesOptions(allowedOrderIncludesFields, [
-      AvailableOrderIncludesFields.RETURNABLE_ITEMS,
+    transformIncludesOptions(allowedOrderIncludes, [
+      AvailableOrderIncludes.RETURNABLE_ITEMS,
     ]),
     transformQuery(AdminPostOrdersOrderParams, {
       defaultRelations: relations,
@@ -121,7 +125,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderReq),
     transformQuery(FindParams, {
       defaultRelations: relations,
@@ -136,7 +140,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/complete",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderCompleteParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -150,7 +154,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/refund",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderRefundsReq),
     transformQuery(AdminPostOrdersOrderRefundsParams, {
       defaultRelations: relations,
@@ -165,7 +169,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/capture",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderCaptureParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -179,7 +183,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillment",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderFulfillmentsReq),
     transformQuery(AdminPostOrdersOrderFulfillmentsParams, {
       defaultRelations: relations,
@@ -194,7 +198,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/fulfillments/:fulfillment_id/cancel",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderFulfillementsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -208,7 +212,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderSwapFulfillementsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -222,7 +226,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersClaimFulfillmentsCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -236,7 +240,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/shipment",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderShipmentReq),
     transformQuery(AdminPostOrdersOrderShipmentParams, {
       defaultRelations: relations,
@@ -251,7 +255,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/return",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderReturnsReq),
     transformQuery(AdminPostOrdersOrderReturnsParams, {
       defaultRelations: relations,
@@ -266,7 +270,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/cancel",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderCancel, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -280,7 +284,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/shipping-methods",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderShippingMethodsReq),
     transformQuery(AdminPostOrdersOrderShippingMethodsParams, {
       defaultRelations: relations,
@@ -295,7 +299,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/archive",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderArchiveParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -309,8 +313,8 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps",
-    transformIncludesOptions(allowedOrderIncludesFields, [
-      AvailableOrderIncludesFields.RETURNABLE_ITEMS,
+    transformIncludesOptions(allowedOrderIncludes, [
+      AvailableOrderIncludes.RETURNABLE_ITEMS,
     ]),
     transformBody(AdminPostOrdersOrderSwapsReq),
     transformQuery(AdminPostOrdersOrderSwapsParams, {
@@ -326,7 +330,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/cancel",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersSwapCancelParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -340,7 +344,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderSwapsSwapFulfillmentsParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -354,7 +358,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/shipments",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderSwapsSwapShipmentsReq),
     transformQuery(AdminPostOrdersOrderSwapsSwapShipmentsParams, {
       defaultRelations: relations,
@@ -369,7 +373,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/process-payment",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersOrderSwapsSwapProcessPaymentParams, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -383,7 +387,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderClaimsReq),
     transformQuery(AdminPostOrdersOrderClaimsParams, {
       defaultRelations: relations,
@@ -398,7 +402,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/cancel",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminPostOrdersClaimCancel, {
       defaultRelations: relations,
       defaultFields: defaultFields,
@@ -412,7 +416,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderClaimsClaimReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimParams, {
       defaultRelations: relations,
@@ -427,7 +431,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderClaimsClaimFulfillmentsReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimFulfillmentsParams, {
       defaultRelations: relations,
@@ -442,7 +446,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/shipments",
-    transformIncludesOptions(allowedOrderIncludesFields),
+    transformIncludesOptions(allowedOrderIncludes),
     transformBody(AdminPostOrdersOrderClaimsClaimShipmentsReq),
     transformQuery(AdminPostOrdersOrderClaimsClaimShipmentsParams, {
       defaultRelations: relations,
@@ -480,6 +484,111 @@ export default (app, featureFlagRouter: FlagRouter) => {
 /**
  * @schema AdminOrdersRes
  * type: object
+ * x-expanded-relations:
+ *   field: order
+ *   relations:
+ *     - billing_address
+ *     - claims
+ *     - claims.additional_items
+ *     - claims.additional_items.variant
+ *     - claims.claim_items
+ *     - claims.claim_items.images
+ *     - claims.claim_items.item
+ *     - claims.fulfillments
+ *     - claims.fulfillments.tracking_links
+ *     - claims.return_order
+ *     - claims.return_order.shipping_method
+ *     - claims.return_order.shipping_method.tax_lines
+ *     - claims.shipping_address
+ *     - claims.shipping_methods
+ *     - customer
+ *     - discounts
+ *     - discounts.rule
+ *     - fulfillments
+ *     - fulfillments.items
+ *     - fulfillments.tracking_links
+ *     - gift_card_transactions
+ *     - gift_cards
+ *     - items
+ *     - payments
+ *     - refunds
+ *     - region
+ *     - returns
+ *     - returns.items
+ *     - returns.items.reason
+ *     - returns.shipping_method
+ *     - returns.shipping_method.tax_lines
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - returns.items
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *     - claims
+ *     - claims.additional_items
+ *     - claims.additional_items.adjustments
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.tax_lines
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_card_transactions
+ *     - gift_card_transactions.gift_card
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.refundable
+ *     - items.tax_lines
+ *     - items.variant
+ *     - items.variant.product
+ *     - refunds
+ *     - region
+ *     - shipping_methods
+ *     - shipping_methods.tax_lines
+ *     - swaps
+ *     - swaps.additional_items
+ *     - swaps.additional_items.adjustments
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.tax_lines
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - paid_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - claims.additional_items.discount_total
+ *     - claims.additional_items.gift_card_total
+ *     - claims.additional_items.original_tax_total
+ *     - claims.additional_items.original_total
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.subtotal
+ *     - claims.additional_items.tax_total
+ *     - claims.additional_items.total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ *     - swaps.additional_items.discount_total
+ *     - swaps.additional_items.gift_card_total
+ *     - swaps.additional_items.original_tax_total
+ *     - swaps.additional_items.original_total
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.subtotal
+ *     - swaps.additional_items.tax_total
+ *     - swaps.additional_items.total
+ * required:
+ *   - order
  * properties:
  *   order:
  *     $ref: "#/components/schemas/Order"
@@ -491,6 +600,114 @@ export type AdminOrdersRes = {
 /**
  * @schema AdminOrdersListRes
  * type: object
+ * x-expanded-relations:
+ *   field: orders
+ *   relations:
+ *     - billing_address
+ *     - claims
+ *     - claims.additional_items
+ *     - claims.additional_items.variant
+ *     - claims.claim_items
+ *     - claims.claim_items.images
+ *     - claims.claim_items.item
+ *     - claims.fulfillments
+ *     - claims.fulfillments.tracking_links
+ *     - claims.return_order
+ *     - claims.return_order.shipping_method
+ *     - claims.return_order.shipping_method.tax_lines
+ *     - claims.shipping_address
+ *     - claims.shipping_methods
+ *     - customer
+ *     - discounts
+ *     - discounts.rule
+ *     - fulfillments
+ *     - fulfillments.items
+ *     - fulfillments.tracking_links
+ *     - gift_card_transactions
+ *     - gift_cards
+ *     - items
+ *     - payments
+ *     - refunds
+ *     - region
+ *     - returns
+ *     - returns.items
+ *     - returns.items.reason
+ *     - returns.shipping_method
+ *     - returns.shipping_method.tax_lines
+ *     - shipping_address
+ *     - shipping_methods
+ *   eager:
+ *     - fulfillments.items
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ *     - returns.items
+ *     - shipping_methods.shipping_option
+ *   implicit:
+ *     - claims
+ *     - claims.additional_items
+ *     - claims.additional_items.adjustments
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.tax_lines
+ *     - discounts
+ *     - discounts.rule
+ *     - gift_card_transactions
+ *     - gift_card_transactions.gift_card
+ *     - gift_cards
+ *     - items
+ *     - items.adjustments
+ *     - items.refundable
+ *     - items.tax_lines
+ *     - items.variant
+ *     - items.variant.product
+ *     - refunds
+ *     - region
+ *     - shipping_methods
+ *     - shipping_methods.tax_lines
+ *     - swaps
+ *     - swaps.additional_items
+ *     - swaps.additional_items.adjustments
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.tax_lines
+ *   totals:
+ *     - discount_total
+ *     - gift_card_tax_total
+ *     - gift_card_total
+ *     - paid_total
+ *     - refundable_amount
+ *     - refunded_total
+ *     - shipping_total
+ *     - subtotal
+ *     - tax_total
+ *     - total
+ *     - claims.additional_items.discount_total
+ *     - claims.additional_items.gift_card_total
+ *     - claims.additional_items.original_tax_total
+ *     - claims.additional_items.original_total
+ *     - claims.additional_items.refundable
+ *     - claims.additional_items.subtotal
+ *     - claims.additional_items.tax_total
+ *     - claims.additional_items.total
+ *     - items.discount_total
+ *     - items.gift_card_total
+ *     - items.original_tax_total
+ *     - items.original_total
+ *     - items.refundable
+ *     - items.subtotal
+ *     - items.tax_total
+ *     - items.total
+ *     - swaps.additional_items.discount_total
+ *     - swaps.additional_items.gift_card_total
+ *     - swaps.additional_items.original_tax_total
+ *     - swaps.additional_items.original_total
+ *     - swaps.additional_items.refundable
+ *     - swaps.additional_items.subtotal
+ *     - swaps.additional_items.tax_total
+ *     - swaps.additional_items.total
+ * required:
+ *   - orders
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   orders:
  *     type: array
@@ -510,73 +727,6 @@ export type AdminOrdersListRes = PaginatedResponse & {
   orders: Order[]
 }
 
-export const defaultAdminOrdersRelations = [
-  "customer",
-  "billing_address",
-  "shipping_address",
-  "discounts",
-  "discounts.rule",
-  "shipping_methods",
-  "payments",
-  "fulfillments",
-  "fulfillments.tracking_links",
-  "fulfillments.items",
-  "returns",
-  "returns.shipping_method",
-  "returns.shipping_method.tax_lines",
-  "returns.items",
-  "returns.items.reason",
-  "gift_cards",
-  "gift_card_transactions",
-  "claims",
-  "claims.return_order",
-  "claims.return_order.shipping_method",
-  "claims.return_order.shipping_method.tax_lines",
-  "claims.shipping_methods",
-  "claims.shipping_address",
-  "claims.additional_items",
-  "claims.fulfillments",
-  "claims.fulfillments.tracking_links",
-  "claims.claim_items",
-  "claims.claim_items.item",
-  "claims.claim_items.images",
-  // "claims.claim_items.tags",
-  "swaps",
-  "swaps.return_order",
-  "swaps.return_order.shipping_method",
-  "swaps.return_order.shipping_method.tax_lines",
-  "swaps.payment",
-  "swaps.shipping_methods",
-  "swaps.shipping_methods.tax_lines",
-  "swaps.shipping_address",
-  "swaps.additional_items",
-  "swaps.fulfillments",
-  "swaps.fulfillments.tracking_links",
-]
-
-export const defaultAdminOrdersFields = [
-  "id",
-  "status",
-  "fulfillment_status",
-  "payment_status",
-  "display_id",
-  "cart_id",
-  "draft_order_id",
-  "customer_id",
-  "email",
-  "region_id",
-  "currency_code",
-  "tax_rate",
-  "canceled_at",
-  "created_at",
-  "updated_at",
-  "metadata",
-  "items.refundable",
-  "swaps.additional_items.refundable",
-  "claims.additional_items.refundable",
-  "no_notification",
-] as (keyof Order)[]
-
 export const filterableAdminOrdersFields = [
   "id",
   "status",
@@ -594,13 +744,11 @@ export const filterableAdminOrdersFields = [
   "updated_at",
 ]
 
-export const AvailableOrderIncludesFields = {
+export const AvailableOrderIncludes = {
   RETURNABLE_ITEMS: "returnable_items",
 }
 
-export const allowedOrderIncludesFields = [
-  AvailableOrderIncludesFields.RETURNABLE_ITEMS,
-]
+export const allowedOrderIncludes = [AvailableOrderIncludes.RETURNABLE_ITEMS]
 
 export * from "./add-shipping-method"
 export * from "./archive-order"

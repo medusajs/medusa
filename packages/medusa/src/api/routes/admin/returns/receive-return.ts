@@ -11,9 +11,10 @@ import { Type } from "class-transformer"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
- * @oas [post] /returns/{id}/receive
+ * @oas [post] /admin/returns/{id}/receive
  * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
  * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
@@ -62,7 +63,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
@@ -124,7 +125,9 @@ export default async (req, res) => {
     }
   })
 
-  receivedReturn = await returnService.retrieve(id, { relations: ["swap"] })
+  receivedReturn = await returnService.retrieve(id, {
+    relations: defaultRelations,
+  })
 
   res.status(200).json({ return: receivedReturn })
 }

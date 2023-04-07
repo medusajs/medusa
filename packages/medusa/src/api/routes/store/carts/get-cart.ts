@@ -1,8 +1,9 @@
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /carts/{id}
+ * @oas [get] /store/carts/{id}
  * operationId: "GetCartsCart"
  * summary: "Get a Cart"
  * description: "Retrieves a Cart."
@@ -25,7 +26,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/carts/{id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -70,5 +71,5 @@ export default async (req, res) => {
   }
 
   const data = await cartService.retrieveWithTotals(id, req.retrieveConfig)
-  res.json({ cart: data })
+  res.json({ cart: cleanResponseData(data, []) })
 }

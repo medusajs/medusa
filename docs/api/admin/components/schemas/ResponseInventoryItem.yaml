@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./InventoryItemDTO.yaml
+  - type: object
+    required:
+      - available_quantity
+    properties:
+      available_quantity:
+        type: number

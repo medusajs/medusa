@@ -1,5 +1,6 @@
 import { DataType } from "@shopify/shopify-api"
 import { BaseService } from "medusa-interfaces"
+
 import { createClient } from "../utils/create-client"
 import { pager } from "../utils/pager"
 

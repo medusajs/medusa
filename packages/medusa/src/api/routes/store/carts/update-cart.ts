@@ -14,9 +14,10 @@ import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}
+ * @oas [post] /store/carts/{id}
  * operationId: PostCartsCart
  * summary: Update a Cart
  * description: "Updates a Cart."
@@ -50,7 +51,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           "email": "user@example.com"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -100,7 +101,7 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  res.json({ cart: data })
+  res.json({ cart: cleanResponseData(data, []) })
 }
 
 class GiftCard {
@@ -136,14 +137,14 @@ class Discount {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/Address"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *         description: A full billing address object.
  *       - type: string
  *         description: The billing address ID
  *   shipping_address:
  *     description: "The Address to be used for shipping."
  *     anyOf:
- *       - $ref: "#/components/schemas/Address"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *         description: A full shipping address object.
  *       - type: string
  *         description: The shipping address ID

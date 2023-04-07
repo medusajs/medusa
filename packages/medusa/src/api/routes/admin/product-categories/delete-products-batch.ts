@@ -8,9 +8,9 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [delete] /product-categories/{id}/products/batch
+ * @oas [delete] /admin/product-categories/{id}/products/batch
  * operationId: "DeleteProductCategoriesCategoryProductsBatch"
- * summary: "Delete Products"
+ * summary: "Remove Products from Category"
  * description: "Remove a list of products from a product category."
  * x-authenticated: true
  * parameters:
@@ -32,10 +32,10 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.removeProducts(product_category_id, {
+ *       medusa.admin.productCategories.removeProducts(productCategoryId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
@@ -59,7 +59,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   "200":
  *     description: OK

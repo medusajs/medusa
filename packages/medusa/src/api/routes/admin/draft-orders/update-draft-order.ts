@@ -19,6 +19,7 @@ import { CartUpdateProps } from "../../../../types/cart"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/draft-orders/{id}
@@ -61,7 +62,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -137,7 +138,7 @@ export default async (req, res) => {
     select: defaultAdminDraftOrdersCartFields,
   })
 
-  res.status(200).json({ draft_order: draftOrder })
+  res.status(200).json({ draft_order: cleanResponseData(draftOrder, []) })
 }
 
 /**
@@ -160,12 +161,12 @@ export default async (req, res) => {
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   shipping_address:
  *     description: "The Address to be used for shipping."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   discounts:
  *     description: "An array of Discount codes to add to the Draft Order."

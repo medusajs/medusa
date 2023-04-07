@@ -1,4 +1,6 @@
 type: object
+required:
+  - invites
 properties:
   invites:
     type: array

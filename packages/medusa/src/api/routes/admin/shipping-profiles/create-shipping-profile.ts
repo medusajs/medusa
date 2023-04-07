@@ -5,7 +5,7 @@ import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /shipping-profiles
+ * @oas [post] /admin/shipping-profiles
  * operationId: "PostShippingProfiles"
  * summary: "Create a Shipping Profile"
  * description: "Creates a Shipping Profile"
@@ -43,7 +43,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK

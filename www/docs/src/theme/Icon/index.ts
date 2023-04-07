@@ -1,4 +1,3 @@
-import React from "react"
 import IconAcademicCapSolid from "./AcademicCapSolid"
 import IconAdjustments from "./Adjustments"
 import IconAlert from "./Alert"
@@ -11,6 +10,7 @@ import IconBoltSolid from "./BoltSolid"
 import IconBookOpen from "./BookOpen"
 import IconBug from "./Bug"
 import IconBugAntSolid from "./BugAntSolid"
+import IconBuildingSolid from "./BuildingSolid"
 import IconBuildingTax from "./BuildingTax"
 import IconCalendar from "./Calendar"
 import IconCashSolid from "./CashSolid"
@@ -73,14 +73,13 @@ import IconSquaresPlus from "./SquaresPlus"
 import IconSquaresPlusSolid from "./SquaresPlusSolid"
 import IconStar from "./Star"
 import IconStripe from "./Stripe"
+import IconSwatchSolid from "./SwatchSolid"
 import IconTagSolid from "./TagSolid"
 import IconTools from "./Tools"
 import IconToolsSolid from "./ToolsSolid"
 import IconTwitter from "./Twitter"
 import IconUser from "./User"
 import IconUsersSolid from "./UsersSolid"
-
-export type IconProps = React.HTMLAttributes<SVGAElement>
 
 export default {
   "academic-cap-solid": IconAcademicCapSolid,
@@ -95,6 +94,7 @@ export default {
   "book-open": IconBookOpen,
   bug: IconBug,
   "bug-ant-solid": IconBugAntSolid,
+  "building-solid": IconBuildingSolid,
   "building-tax": IconBuildingTax,
   calendar: IconCalendar,
   "cash-solid": IconCashSolid,
@@ -157,6 +157,7 @@ export default {
   "squares-plus-solid": IconSquaresPlusSolid,
   star: IconStar,
   stripe: IconStripe,
+  "swatch-solid": IconSwatchSolid,
   "tag-solid": IconTagSolid,
   tools: IconTools,
   "tools-solid": IconToolsSolid,

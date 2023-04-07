@@ -2,10 +2,9 @@
  * Custom sidebar definitions:
  * - To declare a sidebar element as part of the homepage sidebar, add className: 'homepage-sidebar-item'
  * - To add an icon:
- *   - add the icon in www/docs/src/theme/Icon/<IconName>/index.js as a React SVG element if it doesn't exist, where `<IconName>` is the camel case name of the icon
+ *   - add the icon in www/docs/src/theme/Icon/<IconName>/index.ts as a React SVG element if it doesn't exist, where `<IconName>` is the camel case name of the icon
  *   - add the mapping to the icon in www/docs/src/theme/Icon/index.js
  *   - add in customProps sidebar_icon: 'icon-name'
- * - To add a divider line, add in customProps sidebar_is_divider_line: true and set value/label to any value
  * - To add a group divider add in customProps sidebar_is_group_divider: true and set the label/value to the title that should appear in the divider.
  * - To add a back item, add in customProps:
  *   - sidebar_is_back_link: true
@@ -65,7 +64,7 @@ module.exports = {
     {
       type: "doc",
       id: "admin/quickstart",
-      label: "Medusa Admin",
+      label: "Admin Dashboard",
       customProps: {
         sidebar_icon: "computer-desktop",
       },
@@ -223,11 +222,14 @@ module.exports = {
           items: [
             {
               type: "doc",
-              id: "deployments/admin/deploying-on-netlify",
-              label: "Deploy on Netlify",
+              id: "deployments/admin/deploying-on-vercel",
+              label: "Deploy on Vercel",
               customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png",
+                themedImage: {
+                  light:
+                    "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574115/Medusa%20Docs/Other/vercel-icon-dark_llkb7l.png",
+                  dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574132/Medusa%20Docs/Other/vercel-icon-light_obvtno.png",
+                },
               },
             },
           ],
@@ -292,6 +294,11 @@ module.exports = {
           items: [
             {
               type: "doc",
+              id: "troubleshooting/create-medusa-app-errors",
+              label: "Create Medusa App Errors",
+            },
+            {
+              type: "doc",
               id: "troubleshooting/cli-installation-errors",
               label: "Errors Installing CLI",
             },
@@ -323,6 +330,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "troubleshooting/awilix-resolution-error",
+              label: "Handling AwilixResolutionError",
+            },
+            {
+              type: "doc",
               id: "troubleshooting/transaction-error-in-checkout",
               label: "Error 409 in checkout",
             },
@@ -346,12 +358,12 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Medusa Admin Errors",
+          label: "Admin Dashboard Errors",
           items: [
             {
               type: "doc",
               id: "troubleshooting/signing-in-to-admin",
-              label: "Signing in to Medusa Admin",
+              label: "Signing in to the Admin Dashboard",
             },
           ],
         },
@@ -569,6 +581,11 @@ module.exports = {
           },
         },
         {
+          type: "doc",
+          id: "modules/products/categories",
+          label: "Categories",
+        },
+        {
           type: "link",
           href: "#",
           label: "Collections",
@@ -592,6 +609,11 @@ module.exports = {
           },
         },
         {
+          type: "doc",
+          id: "modules/products/admin/manage-categories",
+          label: "Admin: Manage Categories",
+        },
+        {
           type: "link",
           href: "#",
           label: "Admin: Manage Collections",
@@ -611,6 +633,11 @@ module.exports = {
           customProps: {
             sidebar_is_soon: true,
           },
+        },
+        {
+          type: "doc",
+          id: "modules/products/store/use-categories",
+          label: "Storefront: Use Categories",
         },
         {
           type: "link",
@@ -863,6 +890,75 @@ module.exports = {
           type: "doc",
           id: "modules/orders/storefront/implement-claim-order",
           label: "Storefront: Implement Claim Order",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Multi-Warehouse",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/overview",
+          label: "Overview",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/install-modules",
+          label: "Install Modules",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/inventory-module",
+          label: "Inventory Module",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/stock-location-module",
+          label: "Stock Location Module",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/backend/create-inventory-service",
+          label: "Backend: Create Inventory Service",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/backend/create-stock-location-service",
+          label: "Backend: Create Stock Location Service",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-stock-locations",
+          label: "Admin: Manage Stock Locations",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-inventory-items",
+          label: "Admin: Manage Inventory Items",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-item-allocations-in-orders",
+          label: "Admin: Manage Allocations in Orders",
         },
       ],
     },
@@ -1324,8 +1420,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "development/entities/extend-entity",
+              label: "Extend an Entity",
+            },
+            {
+              type: "doc",
               id: "development/entities/migrations/create",
               label: "Create a Migration",
+            },
+            {
+              type: "doc",
+              id: "development/entities/extend-repository",
+              label: "Extend a Repository",
             },
           ],
         },
@@ -1353,7 +1459,12 @@ module.exports = {
             {
               type: "doc",
               id: "development/endpoints/add-middleware",
-              label: "Add a Middleware",
+              label: "Middlewares",
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/example-logged-in-user",
+              label: "Example: Logged-In User",
             },
           ],
         },
@@ -1367,7 +1478,7 @@ module.exports = {
               label: "Overview",
             },
             {
-              type: "doc",
+              type: "ref",
               id: "references/services/classes/AuthService",
               label: "Services Reference",
             },
@@ -1382,6 +1493,39 @@ module.exports = {
               type: "doc",
               id: "development/services/create-service",
               label: "Create a Service",
+            },
+            {
+              type: "doc",
+              id: "development/services/extend-service",
+              label: "Extend a Service",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            {
+              type: "doc",
+              id: "development/modules/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/modules/create",
+              label: "Create a Module",
+            },
+            {
+              type: "doc",
+              id: "development/modules/publish",
+              label: "Publish a Module",
             },
           ],
         },
@@ -1406,10 +1550,32 @@ module.exports = {
             },
             {
               type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/local",
+              label: "Local",
+            },
+            {
+              type: "html",
               value: "How-to",
               customProps: {
                 sidebar_is_group_divider: true,
               },
+            },
+            {
+              type: "doc",
+              id: "development/events/create-module",
+              label: "Create an Event Module",
             },
             {
               type: "doc",
@@ -1507,6 +1673,46 @@ module.exports = {
       },
       collapsible: false,
       items: [
+        {
+          type: "category",
+          label: "Cache",
+          items: [
+            {
+              type: "doc",
+              id: "development/cache/overview",
+              label: "Cache",
+            },
+            {
+              type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/in-memory",
+              label: "In-Memory",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/create",
+              label: "Create a Cache Module",
+            },
+          ],
+        },
         {
           type: "category",
           label: "Notifications",
@@ -1641,6 +1847,11 @@ module.exports = {
             },
           ],
         },
+        {
+          type: "doc",
+          id: "development/fundamentals/transaction-orchestrator",
+          label: "Transaction Orchestrator",
+        },
       ],
     },
   ],
@@ -1699,7 +1910,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Medusa Admin",
+      label: "Admin Dashboard",
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
@@ -1711,6 +1922,20 @@ module.exports = {
           customProps: {
             reverse: true,
           },
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Plugins",
+      collapsed: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "upgrade-guides/plugins",
         },
       ],
     },
@@ -2026,6 +2251,15 @@ module.exports = {
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "js-client/overview",
+      label: "Medusa JS Client",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "javascript",
       },
     },
     {

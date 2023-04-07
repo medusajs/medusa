@@ -1,9 +1,10 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [delete] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: DeleteCartsCartPaymentSessionsSession
  * summary: "Delete a Payment Session"
  * description: "Deletes a Payment Session on a Cart. May be useful if a payment has failed."
@@ -27,7 +28,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -63,5 +64,5 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

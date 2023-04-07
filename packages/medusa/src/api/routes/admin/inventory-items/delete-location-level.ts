@@ -1,19 +1,19 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [delete] /inventory-items/{id}/location-levels/{location_id}
+ * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "DeleteInventoryItemsInventoryIteLocationLevelsLocation"
- * summary: "Delete a location level of an Inventory Item."
+ * summary: "Delete a Location Level"
  * description: "Delete a location level of an Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
  *   - (path) location_id=* {string} The ID of the location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: deleteLocationLevel
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,8 +29,7 @@ import { IInventoryService } from "../../../../interfaces"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -74,11 +73,7 @@ export default async (req: Request, res: Response) => {
     )
   }
 
-  await manager.transaction(async (transactionManager) => {
-    await inventoryService
-      .withTransaction(transactionManager)
-      .deleteInventoryLevel(id, location_id)
-  })
+  await inventoryService.deleteInventoryLevel(id, location_id)
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,

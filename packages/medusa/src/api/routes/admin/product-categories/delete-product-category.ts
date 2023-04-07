@@ -4,10 +4,10 @@ import { EntityManager } from "typeorm"
 import { ProductCategoryService } from "../../../../services"
 
 /**
- * @oas [delete] /product-categories/{id}
+ * @oas [delete] /admin/product-categories/{id}
  * operationId: "DeleteProductCategoriesCategory"
  * summary: "Delete a Product Category"
- * description: "Deletes a ProductCategory."
+ * description: "Deletes a Product Category."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
@@ -20,7 +20,7 @@ import { ProductCategoryService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.delete(product_category_id)
+ *       medusa.admin.productCategories.delete(productCategoryId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
@@ -33,7 +33,7 @@ import { ProductCategoryService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   "200":
  *     description: OK

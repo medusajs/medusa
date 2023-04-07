@@ -21,15 +21,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
-
-Furthermore, it’s highly recommended to ensure your Medusa backend is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa backend are updated. You can follow [this documentation to install Redis](../../development/backend/prepare-environment.mdx#redis) and then [configure it on your Medusa backend](../../development/backend/configurations.md#redis).
-
-:::caution
-
-If you don’t install and configure Redis on your Medusa backend, the MeiliSearch integration will still work. However, products indexed in MeiliSearch are only added and updated when you restart the Medusa backend.
-
-:::
+It is required to have a Medusa backend installed before starting with this documentation. If not, please follow along with the [quickstart guide](../../development/backend/install.mdx) to get started in minutes. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
 ### MeiliSearch Instance
 
@@ -73,30 +65,92 @@ const plugins = [
         apiKey: process.env.MEILISEARCH_API_KEY,
       },
       settings: {
-        // index name
-        products: {
-          // MeiliSearch's setting options 
-          // to be set on a particular index
-          searchableAttributes: [
-            "title", 
-            "description",
-            "variant_sku",
-          ],
-          displayedAttributes: [
-            "title", 
-            "description", 
-            "variant_sku", 
-            "thumbnail", 
-            "handle",
-          ],
-        },
+        // index settings...
       },
     },
   },
 ]
 ```
 
-You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
+### Index Settings
+
+Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
+
+```js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // other options...
+    settings: {
+      indexName: {
+        indexSettings: {
+          searchableAttributes,
+          displayedAttributes,
+        },
+        primaryKey,
+        transformer,
+      },
+    },
+    },
+  },
+]
+```
+
+Where:
+
+- `indexName`: the name of the index to create in MeiliSearch. For example, `products`. Its value is an object containing the following properties:
+  - `indexSettings`: an object that includes the following properties:
+    - `searchableAttributes`: an array of strings indicating the attributes in the product entity that can be searched.
+    - `displayedAttributes`: an array of strings indicating the attributes in the product entity that should be displayed in the search results.
+  - `primaryKey`: an optional string indicating which property acts as a primary key of a document. It's used to enforce unique documents in an index. The default value is `id`. You can learn more in [MeiliSearch's documentation](https://docs.meilisearch.com/learn/core_concepts/primary_key.html#primary-field).
+  - `transformer`: an optional function that accepts a product as a parameter and returns an object to be indexed. This allows you to have more control over what you're indexing. For example, you can add details related to variants or custom relations, or you can filter out certain products.
+
+Using this index settings structure, you can add more than one index.
+
+:::tip
+
+These settings are just examples of what you can pass to the MeiliSearch provider. If you need to pass more settings to the MeiliSearch SDK you can pass it inside `indexSettings`.
+
+:::
+
+Here's an example of the settings you can use:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // other options...
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: [
+              "title", 
+              "description",
+              "variant_sku",
+            ],
+            displayedAttributes: [
+              "title", 
+              "description", 
+              "variant_sku", 
+              "thumbnail", 
+              "handle",
+            ],
+          },
+          primaryKey: "id",
+          transform: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
 
 ---
 
@@ -124,7 +178,7 @@ If you add or update products on your Medusa backend, the addition or update wil
 
 :::note
 
-This feature is only available if you have Redis installed and configured with your Medusa backend as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa backend to see the change in the MeiliSearch indices.
+This feature is only available if you have an event module installed in your Medusa backend, as explained in the Prerequisites section.
 
 :::
 
@@ -197,136 +251,13 @@ To make sure the Next.js storefront properly displays the products in the search
 
 ![Search Result on Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000298/Medusa%20Docs/MeiliSearch/gQVWvH2_datei5.png)
 
-### Add to Gatsby and React-Based Storefronts
+### Add to Other Storefronts
 
-This section covers adding the search UI to React-based storefronts. It uses the Gatsby storefront as an example, but you can use the same steps on any React-based framework.
-
-:::tip
-
-For other frontend frameworks, please check out [MeiliSearch’s Integrations guide](https://github.com/meilisearch/integration-guides) for steps based on your framework.
-
-:::
-
-In the directory that contains your storefront, run the following command to install the necessary dependencies:
-
-```bash npm2yarn
-npm install react-instantsearch-dom @meilisearch/instant-meilisearch
-```
-
-Then, add the following environment variables:
-
-```bash
-GATSBY_MEILISEARCH_HOST=<YOUR_MEILISEARCH_HOST>
-GATSBY_MEILISEARCH_API_KEY=<YOUR_API_KEY>
-GATSBY_SEARCH_INDEX_NAME=products
-```
-
-Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.
-
-:::caution
-
-In Gatsby, environment variables that should be public and available in the browser are prefixed with `GATSBY_`. If you’re using another React-based framework, you might need to use a different prefix to ensure these variables can be used in your code. Please refer to your framework’s documentation for help on this.
-
-:::
-
-Then, create the file `src/components/header/search.jsx` with the following content:
-
-```jsx title=src/components/header/search.jsx
-import {
-  Highlight,
-  Hits,
-  InstantSearch,
-  SearchBox,
-  connectStateResults,
-} from "react-instantsearch-dom"
-
-import React from "react"
-import { 
-  instantMeiliSearch,
-} from "@meilisearch/instant-meilisearch"
-
-const searchClient = instantMeiliSearch(
-  process.env.GATSBY_MEILISEARCH_HOST,
-  process.env.GATSBY_MEILISEARCH_API_KEY
-)
-
-const Search = () => {
-  const Results = connectStateResults(
-    ({ searchState, searchResults, children }) => {
-      return (
-        searchState && searchState.query && 
-        searchResults && searchResults.nbHits !== 0 ? 
-        (
-          <div 
-            className="absolute ...">
-            {children}
-          </div>
-        ) : (
-          <div></div>
-        )
-      )
-    }
-  )
-
-  return (
-    <div className="relative">
-      <InstantSearch 
-        indexName={process.env.GATSBY_SEARCH_INDEX_NAME} 
-        searchClient={searchClient}>
-        <SearchBox submit={null} reset={null} />
-        <Results>
-          <Hits hitComponent={Hit} />
-        </Results>
-      </InstantSearch>
-    </div>
-  )
-}
-
-const Hit = ({ hit }) => {
-  return (
-    <div key={hit.id} className="relative">
-      <div className="hit-name">
-        <Highlight attribute="title" hit={hit} tagName="mark" />
-      </div>
-    </div>
-  )
-}
-
-export default Search
-```
-
-This file uses the dependencies you installed to show the search results. It also initializes MeiliSearch using the environment variables you added.
-
-:::caution
-
-If you named your environment variables differently based on your framework, make sure to rename them here as well.
-
-:::
-
-Finally, import this file at the beginning of `src/components/header/index.jsx`:
-
-```jsx title=src/components/header/index.jsx
-import Search from "./search"
-```
-
-And add the `Search` component in the returned JSX before `RegionPopover`:
-
-```jsx title=src/components/header/index.jsx
-// ...
-<div className="...">
-  <Search />
-  <RegionPopover regions={mockData.regions} />
-</div>
-// ...
-```
-
-If you run your Gatsby storefront while the Medusa backend and the MeiliSearch instance are running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
-
-![Search box in the header of the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000317/Medusa%20Docs/MeiliSearch/ZkRgF2h_ytnpv9.png)
+To integrate MeiliSearch's search functionalities in your storefront, please refer to [MeiliSearch's documentation](https://docs.meilisearch.com/learn/what_is_meilisearch/sdks.html#front-end-tools). They offer different tools that you can use based on the frontend framework of your storefront.
 
 ---
 
 ## See Also
 
 - [Deploy your Medusa backend](../../deployments/server/index.mdx).
-- [Deploy your Gatsby storefront](../../deployments/storefront/deploying-gatsby-on-netlify.md).
+- [Deploy your storefront](../../deployments/storefront/index.mdx).

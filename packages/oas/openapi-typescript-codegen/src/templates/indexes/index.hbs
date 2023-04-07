@@ -1,0 +1,38 @@
+{{>header}}
+
+{{#if @root.exportClient}}
+export { {{{clientName}}} } from './{{{clientName}}}';
+{{#if @root.exportHooks}}
+export { use{{{pascalCase clientName}}}, {{{pascalCase clientName}}}Provider } from './use{{{pascalCase clientName}}}';
+{{/if}}
+{{/if}}
+
+{{#if @root.exportCore}}
+export { ApiError } from './core/ApiError';
+{{#if @root.exportClient}}
+export { BaseHttpRequest } from './core/BaseHttpRequest';
+{{/if}}
+export { CancelablePromise, CancelError } from './core/CancelablePromise';
+export { OpenAPI } from './core/OpenAPI';
+export type { OpenAPIConfig } from './core/OpenAPI';
+{{/if}}
+
+{{#if @root.exportModels}}
+{{#if models}}
+export * from './models';
+{{/if}}
+{{/if}}
+
+{{#if @root.exportSchemas}}
+{{#if models}}
+{{#each models}}
+export { ${{{name}}} } from './schemas/${{{name}}}';
+{{/each}}
+{{/if}}
+{{/if}}
+
+{{#if @root.exportServices}}
+{{#if services}}
+export * from './services';
+{{/if}}
+{{/if}}

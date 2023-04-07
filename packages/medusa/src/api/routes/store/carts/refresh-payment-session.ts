@@ -1,8 +1,9 @@
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
+ * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}/refresh
  * operationId: PostCartsCartPaymentSessionsSession
  * summary: Refresh a Payment Session
  * description: "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary."
@@ -26,7 +27,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual/refresh'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -67,5 +68,5 @@ export default async (req, res) => {
     ],
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

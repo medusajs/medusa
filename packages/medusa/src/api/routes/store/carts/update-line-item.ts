@@ -3,10 +3,10 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/line-items/{line_id}
+ * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
  * description: "Updates a Line Item if the desired quantity can be fulfilled."
@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -63,10 +63,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id, line_id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartLineItemsItemReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -78,7 +75,7 @@ export default async (req, res) => {
     } else {
       const cart = await cartService
         .withTransaction(m)
-        .retrieve(id, { relations: ["items"] })
+        .retrieve(id, { relations: ["items", "items.variant"] })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {
@@ -115,7 +112,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**

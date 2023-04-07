@@ -3,10 +3,10 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-session
+ * @oas [post] /store/carts/{id}/payment-session
  * operationId: PostCartsCartPaymentSession
  * summary: Select a Payment Session
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
@@ -40,7 +40,7 @@ import { validator } from "../../../../utils/validator"
  *           "provider_id": "manual"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -62,10 +62,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartPaymentSessionReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const cartService: CartService = req.scope.resolve("cartService")
 
@@ -81,7 +78,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**
