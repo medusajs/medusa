@@ -133,7 +133,7 @@ const config = {
       },
     },
     cloudinaryConfig: {
-      cloudName: "dza7lstvk", // TODO replace with env variable
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
       flags: ["fl_lossy", "f_auto"],
       resize: {
         action: "pad",
