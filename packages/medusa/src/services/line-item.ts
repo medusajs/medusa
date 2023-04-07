@@ -335,9 +335,9 @@ class LineItemService extends TransactionBaseService {
     if (unit_price == null) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `unit_price is required for variant item: ${
+        `Cannot generate line item for variant "${
           variant.title ?? variant.product.title ?? variant.id
-        }`
+        }" without a price`
       )
     }
 
