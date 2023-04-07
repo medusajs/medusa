@@ -1,4 +1,4 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import {
   EntityManager,
   FindOptionsWhere,
@@ -29,6 +29,7 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
+import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -314,7 +315,7 @@ class DraftOrderService extends TransactionBaseService {
               variantId: item.variant_id,
               quantity: item.quantity,
               metadata: item.metadata,
-              unit_price: item.unit_price ?? 0,
+              unit_price: item.unit_price,
             })
             return
           }

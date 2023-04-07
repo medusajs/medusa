@@ -80,7 +80,7 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
-    it"creates a draft order cart containing variant without prices", async () => {
+    it("creates a draft order cart containing variant without prices", async () => {
       const api = useApi()
 
       const payload = {
@@ -102,12 +102,17 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post(
-        "/admin/draft-orders",
-        payload,
-        adminReqConfig
+      const response = await api
+        .post("/admin/draft-orders", payload, adminReqConfig)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(400)
+      expect(response.data.type).toEqual("invalid_data")
+      expect(response.data.message).toEqual(
+        `unit_price is required for variant item: test variant without prices`
       )
-      expect(response.status).toEqual(200)
     })
 
     it("creates a draft order with a custom shipping option price", async () => {
