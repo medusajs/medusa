@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.9.2",
     "@docusaurus/core": "latest",
     "@docusaurus/preset-classic": "latest",
     "@docusaurus/remark-plugin-npm2yarn": "latest",
