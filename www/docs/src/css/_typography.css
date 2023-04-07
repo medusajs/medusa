@@ -53,6 +53,10 @@ p {
   margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
 }
 
+.markdown > p img {
+  margin-top: calc(var(--ifm-base-margin-vertical) / 4);;
+}
+
 .markdown a:not(.hash-link),
 .DocSearch-Prefill {
   font-weight: var(--ifm-link-weight);
