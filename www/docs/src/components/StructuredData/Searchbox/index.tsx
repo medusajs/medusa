@@ -2,7 +2,9 @@ import React from "react"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import Head from "@docusaurus/Head"
 
-export default function StructuredDataSearchbox() {
+type StructuredDataSearchboxProps = React.HTMLAttributes<HTMLScriptElement>
+
+const StructuredDataSearchbox: React.FC<StructuredDataSearchboxProps> = () => {
   const {
     siteConfig: { url },
   } = useDocusaurusContext()
@@ -27,3 +29,5 @@ export default function StructuredDataSearchbox() {
     </Head>
   )
 }
+
+export default StructuredDataSearchbox

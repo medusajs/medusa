@@ -1,16 +1,19 @@
 import React, { useEffect } from "react"
-
 import SearchBar from "@theme-original/SearchBar"
+import type SearchBarType from "@theme/SearchBar"
+import type { WrapperProps } from "@docusaurus/types"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 
-export default function SearchBarWrapper(props) {
+type Props = WrapperProps<typeof SearchBarType>
+
+export default function SearchBarWrapper(props: Props): JSX.Element {
   const isBrowser = useIsBrowser()
   const location = useLocation()
 
   useEffect(() => {
     if (isBrowser) {
-      function trackSearch(e) {
+      const trackSearch = (e) => {
         if (
           !e.target.classList?.contains("DocSearch-Input") &&
           !(

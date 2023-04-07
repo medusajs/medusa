@@ -5,9 +5,16 @@ import {
   useTabs,
 } from "@docusaurus/theme-common/internal"
 import useIsBrowser from "@docusaurus/useIsBrowser"
+import type { Props as OldProps } from "@theme/Tabs"
 import styles from "./styles.module.css"
 
-// ADDED: isCodeTabs and codeTitle props
+type TabsCustomProps = {
+  isCodeTabs?: boolean
+  codeTitle?: string
+}
+
+type TabListProps = TabsCustomProps & OldProps & ReturnType<typeof useTabs>
+
 function TabList({
   className,
   block,
@@ -16,23 +23,31 @@ function TabList({
   tabValues,
   isCodeTabs = false,
   codeTitle,
-}) {
-  const tabRefs = []
+}: TabListProps) {
+  const tabRefs: (HTMLLIElement | null)[] = []
   const { blockElementScrollPositionUntilNextRender } =
     useScrollPositionBlocker()
   const codeTabSelectorRef = useRef(null)
   const codeTabsWrapperRef = useRef(null)
-  const handleTabChange = (event) => {
+  const handleTabChange = (
+    event:
+      | React.FocusEvent<HTMLLIElement>
+      | React.MouseEvent<HTMLLIElement>
+      | React.KeyboardEvent<HTMLLIElement>
+  ) => {
     const newTab = event.currentTarget
     const newTabIndex = tabRefs.indexOf(newTab)
-    const newTabValue = tabValues[newTabIndex].value
+    const newTabValue = tabValues[newTabIndex]!.value
+
     if (newTabValue !== selectedValue) {
       blockElementScrollPositionUntilNextRender(newTab)
       selectValue(newTabValue)
     }
   }
-  const handleKeydown = (event) => {
-    let focusElement = null
+
+  const handleKeydown = (event: React.KeyboardEvent<HTMLLIElement>) => {
+    let focusElement: HTMLLIElement | null = null
+
     switch (event.key) {
       case "Enter": {
         handleTabChange(event)
@@ -40,17 +55,18 @@ function TabList({
       }
       case "ArrowRight": {
         const nextTab = tabRefs.indexOf(event.currentTarget) + 1
-        focusElement = tabRefs[nextTab] ?? tabRefs[0]
+        focusElement = tabRefs[nextTab] ?? tabRefs[0]!
         break
       }
       case "ArrowLeft": {
         const prevTab = tabRefs.indexOf(event.currentTarget) - 1
-        focusElement = tabRefs[prevTab] ?? tabRefs[tabRefs.length - 1]
+        focusElement = tabRefs[prevTab] ?? tabRefs[tabRefs.length - 1]!
         break
       }
       default:
         break
     }
+
     focusElement?.focus()
   }
 
@@ -79,9 +95,6 @@ function TabList({
     }
   }, [codeTabSelectorRef, tabRefs])
 
-  // ADDED: div wrapper to ul
-  // ADDED: span with code-title class
-  // ADDED: code tab selector
   return (
     <div className={`tablist-wrapper ${isCodeTabs ? "code-header" : ""}`}>
       <div
@@ -134,8 +147,13 @@ function TabList({
   )
 }
 
-// CHANGED: Removed margin-top--md class
-function TabContent({ lazy, children, selectedValue }) {
+function TabContent({
+  lazy,
+  children,
+  selectedValue,
+}: OldProps & ReturnType<typeof useTabs>) {
+  // eslint-disable-next-line no-param-reassign
+  children = Array.isArray(children) ? children : [children]
   if (lazy) {
     const selectedTabItem = children.find(
       (tabItem) => tabItem.props.value === selectedValue
@@ -158,7 +176,9 @@ function TabContent({ lazy, children, selectedValue }) {
   )
 }
 
-function TabsComponent(props) {
+type TabsComponentProp = TabsCustomProps & OldProps
+
+function TabsComponent(props: TabsComponentProp): JSX.Element {
   const tabs = useTabs(props)
   return (
     <div className={clsx("tabs-container", styles.tabList)}>
@@ -167,7 +187,12 @@ function TabsComponent(props) {
     </div>
   )
 }
-export default function Tabs(props) {
+
+type TabsProps = {
+  wrapperClassName?: string
+} & OldProps
+
+export default function Tabs(props: TabsProps): JSX.Element {
   const isBrowser = useIsBrowser()
 
   useEffect(() => {
@@ -177,7 +202,6 @@ export default function Tabs(props) {
     }
   }, [])
 
-  // ADDED: wrapper div + isCodeTabs prop
   return (
     <div
       className={`tabs-wrapper ${props.wrapperClassName || ""} ${

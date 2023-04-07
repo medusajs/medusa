@@ -1,23 +1,24 @@
-import React from "react"
+import React, { type ReactNode } from "react"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import {
   splitNavbarItems,
   useNavbarMobileSidebar,
 } from "@docusaurus/theme-common/internal"
-import NavbarItem from "@theme/NavbarItem"
+import NavbarItem, { type Props as NavbarItemConfig } from "@theme/NavbarItem"
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle"
 import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle"
 import NavbarLogo from "@theme/Navbar/Logo"
 import styles from "./styles.module.css"
-import { useWindowSize } from "@docusaurus/theme-common"
-import NavbarActions from "../Actions"
-import Tooltip from "../../Tooltip"
+import NavbarActions from "@site/src/components/Navbar/Actions"
+import Tooltip from "@site/src/components/Tooltip"
+import { ThemeConfig } from "@medusajs/docs"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
-  return useThemeConfig().navbar.items
+  return useThemeConfig().navbar.items as NavbarItemConfig[]
 }
-function NavbarItems({ items }) {
+
+function NavbarItems({ items }: { items: NavbarItemConfig[] }): JSX.Element {
   return (
     <>
       {items.map((item, i) => (
@@ -26,7 +27,14 @@ function NavbarItems({ items }) {
     </>
   )
 }
-function NavbarContentLayout({ left, right }) {
+
+function NavbarContentLayout({
+  left,
+  right,
+}: {
+  left: ReactNode
+  right: ReactNode
+}) {
   return (
     <div className="navbar__inner">
       <div className="navbar__items">{left}</div>
@@ -34,11 +42,13 @@ function NavbarContentLayout({ left, right }) {
     </div>
   )
 }
-export default function NavbarContent() {
+
+export default function NavbarContent(): JSX.Element {
   const mobileSidebar = useNavbarMobileSidebar()
+
   const items = useNavbarItems()
   const [leftItems, rightItems] = splitNavbarItems(items)
-  const { navbarActions } = useThemeConfig()
+  const { navbarActions } = useThemeConfig() as ThemeConfig
 
   return (
     <NavbarContentLayout

@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    analytics?: any
-  }
-}
-
 declare module "@theme/CodeBlock" {
   import type { ReactNode } from "react"
   import type { Props as DocusaurusProps } from "@theme/CodeBlock"
@@ -36,6 +30,7 @@ declare module "@medusajs/docs" {
   } from "@docusaurus/plugin-content-docs"
   import { BadgeProps } from "../components/Badge/index"
   import { IconProps } from "../theme/Icon/index"
+  import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
 
   type ItemCustomProps = {
     customProps?: {
@@ -70,6 +65,20 @@ declare module "@medusajs/docs" {
     | ModifiedPropSidebarItemLink
     | ModifiedPropSidebarItemHtml
 
+  export declare type SocialLink = {
+    href: string
+    type: string
+  }
+
+  export declare type NavbarAction = {
+    type: "link"
+    href: string
+    title?: string
+    icon?: string
+    className?: string
+    label?: string
+  }
+
   export declare type ThemeConfig = {
     reportCodeLinkPrefix?: string
     footerFeedback: {
@@ -87,6 +96,8 @@ declare module "@medusajs/docs" {
       }
       roundCorners?: number
     }
+    navbarActions: NavbarAction[]
+    // resolve type errors
     prism: {
       magicComments: MagicCommentConfig[]
     }
@@ -96,8 +107,9 @@ declare module "@medusajs/docs" {
     themeConfig: ThemeConfig
   } & DocusaurusConfig
 
-  export declare type SocialLink = {
-    href: string
-    type: string
-  }
+  export declare type DocContextValue = {
+    frontMatter: {
+      addHowToData?: boolean
+    }
+  } & DocusaurusDocContextValue
 }

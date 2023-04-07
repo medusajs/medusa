@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react"
 // @ts-expect-error: wait until docusaurus uses type: module
 import copy from "copy-text-to-clipboard"
-import Tooltip from "@site/src/theme/Tooltip"
+import Tooltip from "@site/src/components/Tooltip"
 
 type CopyButtonProps = {
   text: string

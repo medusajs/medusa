@@ -2,8 +2,17 @@ import React from "react"
 import Head from "@docusaurus/Head"
 import { useLocation } from "@docusaurus/router"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
+import type { TOCItem } from "@docusaurus/mdx-loader"
 
-export default function StructuredDataHowTo({ toc, title }) {
+type StructuredDataHowToProps = {
+  toc: readonly TOCItem[]
+  title: string
+}
+
+const StructuredDataHowTo: React.FC<StructuredDataHowToProps> = ({
+  toc,
+  title,
+}) => {
   const location = useLocation()
   const {
     siteConfig: { url },
@@ -31,3 +40,5 @@ export default function StructuredDataHowTo({ toc, title }) {
     </Head>
   )
 }
+
+export default StructuredDataHowTo

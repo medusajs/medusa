@@ -7,7 +7,6 @@ import {
 } from "@docusaurus/theme-common/internal"
 import isInternalUrl from "@docusaurus/isInternalUrl"
 import { translate } from "@docusaurus/Translate"
-import type { Props } from "@theme/DocCard"
 
 import styles from "./styles.module.css"
 import BorderedIcon from "@site/src/components/BorderedIcon"

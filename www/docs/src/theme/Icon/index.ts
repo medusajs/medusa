@@ -82,8 +82,8 @@ import IconUser from "./User"
 import IconUsersSolid from "./UsersSolid"
 
 export type IconProps = {
-  width?: number | string
-  height?: number | string
+  width?: number
+  height?: number
   strokeWidth?: number | string
 } & React.HTMLAttributes<SVGElement>
 

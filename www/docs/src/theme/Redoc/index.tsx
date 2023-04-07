@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react"
-
 import Redoc from "@theme-original/Redoc"
+import type RedocType from "@theme-original/Redoc"
+import type { WrapperProps } from "@docusaurus/types"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 
-export default function RedocWrapper(props) {
+type Props = WrapperProps<typeof RedocType>
+
+export default function RedocWrapper(props: Props): JSX.Element {
   const isBrowser = useIsBrowser()
   const [loading, setLoading] = useState(
     isBrowser ? document.readyState !== "complete" : true
@@ -25,16 +28,17 @@ export default function RedocWrapper(props) {
         }
       }, 1000)
 
-      function scrollHandler() {
+      const scrollHandler = () => {
         const redocSidebar = document.querySelector(
           ".redocusaurus .menu-content"
-        )
-        const navbar = document.querySelector(".navbar")
+        ) as HTMLElement
+        const navbar = document.querySelector(".navbar") as HTMLElement
         if (!redocSidebar || !navbar) {
           return
         }
 
         let offset = navbar.clientHeight
+        // @ts-expect-error: error for entries
         for (const [_, className] of navbar.classList.entries()) {
           if (className.indexOf("navbarHidden") !== -1) {
             offset = 0

@@ -11,29 +11,30 @@ import SkipToContent from "@theme/SkipToContent"
 import Navbar from "@theme/Navbar"
 import LayoutProvider from "@theme/Layout/Provider"
 import ErrorPageContent from "@theme/ErrorPageContent"
-import styles from "./styles.module.css"
+import type { Props } from "@theme/Layout"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
-import StructuredDataSearchbox from "../StructuredData/Searchbox"
 import "animate.css"
+import StructuredDataSearchbox from "@site/src/components/StructuredData/Searchbox"
+import styles from "./styles.module.css"
 
-export default function Layout(props) {
+export default function Layout(props: Props): JSX.Element {
   const {
     children,
-    // noFooter,
     wrapperClassName,
     // Not really layout-related, but kept for convenience/retro-compatibility
     title,
     description,
   } = props
 
+  useKeyboardNavigation()
   const isBrowser = useIsBrowser()
   const location = useLocation()
 
   useEffect(() => {
     if (isBrowser) {
       if (window.analytics) {
-        function handlePlay() {
+        const handlePlay = () => {
           window.analytics.track("video_played")
         }
 
@@ -54,7 +55,6 @@ export default function Layout(props) {
     }
   }, [isBrowser, location.pathname])
 
-  useKeyboardNavigation()
   return (
     <LayoutProvider>
       <PageMetadata title={title} description={description} />

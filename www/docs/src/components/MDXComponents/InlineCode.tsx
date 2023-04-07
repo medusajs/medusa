@@ -1,10 +1,11 @@
+import React from "react"
 import CopyButton from "@site/src/components/CopyButton"
-import React, { isValidElement } from "react"
+import type { Props } from "@theme/MDXComponents/Code"
 
-export default function MDXInlineCode(props) {
+const MDXInlineCode: React.FC<Props> = (props) => {
   return (
     <CopyButton
-      text={props.children}
+      text={props.children as string}
       buttonClassName="inline-code-copy"
       tooltipClassName="inline-tooltip"
     >
@@ -12,3 +13,5 @@ export default function MDXInlineCode(props) {
     </CopyButton>
   )
 }
+
+export default MDXInlineCode

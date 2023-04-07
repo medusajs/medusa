@@ -1,10 +1,12 @@
 import React from "react"
 import styles from "./styles.module.css"
-export default function IconExternalLink({ width = 16, height = 16 }) {
+import { IconProps } from ".."
+
+const IconExternalLink: React.FC<IconProps> = (props) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={props.width}
+      height={props.height}
       viewBox="0 0 16 16"
       fill="none"
       className={styles.iconExternalLink}
@@ -26,3 +28,5 @@ export default function IconExternalLink({ width = 16, height = 16 }) {
     </svg>
   )
 }
+
+export default IconExternalLink
