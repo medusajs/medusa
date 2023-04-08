@@ -27,7 +27,7 @@ const imageRegex = /^https:\/\/res.cloudinary.com\/.*\/upload\/v[0-9]+\/(?<image
 export default function CloudinaryImage ({ src, ...props }) {
   const { cloudinaryConfig } = useThemeConfig();
   const matchingRegex = src.match(imageRegex)
-  if (!cloudinaryConfig || !matchingRegex?.groups || !matchingRegex.groups.imageId) {
+  if (!cloudinaryConfig || !cloudinaryConfig.cloudName || !matchingRegex?.groups || !matchingRegex.groups.imageId) {
     // either cloudinary isn't configured or
     // could not match url to a cloudinary url
     // default to docusaurus's image component
