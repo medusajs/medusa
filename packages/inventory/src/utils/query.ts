@@ -3,7 +3,7 @@ import {
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/types"
-import { buildLegacyFieldsListFrom, buildQuery } from "@medusajs/utils"
+import { objectToStringPath, buildQuery } from "@medusajs/utils"
 import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { InventoryItem } from "../models"
 
@@ -60,7 +60,7 @@ export function getListQuery(
   }
 
   if (query.select) {
-    const legacySelect = buildLegacyFieldsListFrom(query.select)
+    const legacySelect = objectToStringPath(query.select)
     queryBuilder.select(legacySelect.map((s) => "inv_item." + s))
   }
 

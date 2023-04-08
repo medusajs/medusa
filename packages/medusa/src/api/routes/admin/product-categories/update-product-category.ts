@@ -103,6 +103,9 @@ export default async (req: Request, res: Response) => {
  *   name:
  *     type: string
  *     description:  The name to identify the Product Category by.
+ *   description:
+ *     type: string
+ *     description: An optional text field to describe the Product Category by.
  *   handle:
  *     type: string
  *     description:  A handle to be used in slugs.
