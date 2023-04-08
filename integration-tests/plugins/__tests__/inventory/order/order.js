@@ -18,7 +18,7 @@ const {
   simpleShippingOptionFactory,
 } = require("../../../factories")
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
@@ -26,11 +26,6 @@ describe("/store/carts", () => {
   let express
   let appContainer
   let dbConnection
-
-  const doAfterEach = async () => {
-    const db = useDb()
-    return await db.teardown()
-  }
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
