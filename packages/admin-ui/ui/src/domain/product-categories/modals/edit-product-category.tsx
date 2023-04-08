@@ -6,6 +6,7 @@ import { useAdminUpdateProductCategory } from "medusa-react"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
+import TextArea from "../../../components/molecules/textarea"
 import SideModal from "../../../components/molecules/modal/side-modal"
 import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
@@ -42,6 +43,7 @@ function EditProductCategoriesSideModal(
 
   const [name, setName] = useState("")
   const [handle, setHandle] = useState("")
+  const [description, setDescription] = useState("")
   const [isActive, setIsActive] = useState(true)
   const [isPublic, setIsPublic] = useState(true)
 
@@ -55,6 +57,7 @@ function EditProductCategoriesSideModal(
     if (activeCategory) {
       setName(activeCategory.name)
       setHandle(activeCategory.handle)
+      setDescription(activeCategory.description)
       setIsActive(activeCategory.is_active)
       setIsPublic(!activeCategory.is_internal)
     }
@@ -65,6 +68,7 @@ function EditProductCategoriesSideModal(
       await updateCategory({
         name,
         handle,
+        description,
         is_active: isActive,
         is_internal: !isPublic,
       })
@@ -128,6 +132,15 @@ function EditProductCategoriesSideModal(
             className="my-6"
             placeholder="Custom handle"
             onChange={(ev) => setHandle(ev.target.value)}
+          />
+
+          <TextArea
+            label="Description"
+            name="description"
+            value={description}
+            className="my-6"
+            placeholder="Give this category a description"
+            onChange={(ev) => setDescription(ev.target.value)}
           />
 
           <NextSelect
