@@ -130,6 +130,18 @@ const config = {
       sidebar: {
         autoCollapseCategories: true
       }
+    },
+    cloudinaryConfig: {
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
+      flags: [
+        'fl_lossy',
+        'f_auto'
+      ],
+      resize: {
+        action: 'pad',
+        aspectRatio: '16:9'
+      },
+      roundCorners: 16
     }
   },
   presets: [
