@@ -17,7 +17,10 @@ class S3Service extends AbstractFileService {
     this.endpoint_ = options.endpoint
     this.awsConfigObject_ = options.aws_config_object
 
-    this.client_ = new aws.S3()
+    this.client_ = new aws.S3({
+      region: this.region_,
+      endpoint: this.endpoint_,
+    })
   }
 
   upload(file) {
@@ -121,18 +124,16 @@ class S3Service extends AbstractFileService {
   }
 
   updateAwsConfig(additionalConfiguration = {}) {
-    aws.config.setPromisesDependency(null)
+    this.client_.config.setPromisesDependency(null)
 
     const config = {
       ...additionalConfiguration,
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
       ...this.awsConfigObject_,
     }
 
-    aws.config.update(config, true)
+    this.client_.config.update(config, true)
   }
 }
 
