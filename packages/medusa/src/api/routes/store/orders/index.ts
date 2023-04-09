@@ -1,16 +1,16 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
+import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformStoreQuery,
 } from "../../../middlewares"
 import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
-import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
 import { StoreGetOrderParams } from "./get-order"
 import { StoreGetOrdersParams } from "./lookup-order"
-import { FindParams } from "../../../../types/common"
+import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 
 const route = Router()
 
@@ -219,6 +219,6 @@ export type StoreOrdersRes = {
   order: Order
 }
 
-export * from "./lookup-order"
 export * from "./confirm-order-request"
+export * from "./lookup-order"
 export * from "./request-order"
