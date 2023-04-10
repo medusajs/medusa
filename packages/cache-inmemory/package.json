@@ -30,6 +30,6 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "workspace:*"
+    "@medusajs/modules-sdk": "workspace:^1.8.0"
   }
 }

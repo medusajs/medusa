@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@medusajs/medusa": "workspace:*",
-    "medusa-interfaces": "1.3.7",
+    "medusa-interfaces": "workspace:*",
     "typeorm": "^0.3.11"
   },
   "devDependencies": {

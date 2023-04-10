@@ -19,8 +19,8 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "workspace:*",
-    "@medusajs/utils": "workspace:*",
+    "@medusajs/modules-sdk": "workspace:^1.8.0",
+    "@medusajs/utils": "workspace:^1.8.0",
     "algoliasearch": "^4.15.0"
   },
   "devDependencies": {
