@@ -28449,7 +28449,6 @@ __metadata:
   resolution: "medusa-file-minio@workspace:packages/medusa-file-minio"
   dependencies:
     "@medusajs/medusa": 1.8.0-rc.6
-    "@types/stripe": ^8.0.417
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
     cross-env: ^5.2.1
@@ -28468,7 +28467,6 @@ __metadata:
   resolution: "medusa-file-s3@workspace:packages/medusa-file-s3"
   dependencies:
     "@medusajs/medusa": 1.8.0-rc.6
-    "@types/stripe": ^8.0.417
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
     cross-env: ^5.2.1
