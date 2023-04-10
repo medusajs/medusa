@@ -9,6 +9,10 @@ export interface AdminPostProductCategoriesCategoryReq {
    */
   name?: string
   /**
+   * An optional text field to describe the Product Category by.
+   */
+  description?: string
+  /**
    * A handle to be used in slugs.
    */
   handle?: string

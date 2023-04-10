@@ -16,6 +16,12 @@
         "build"
       ],
       "outputs": []
+    },
+    "test:integration": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": []
     }
   },
   "globalDependencies": [

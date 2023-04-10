@@ -6,8 +6,8 @@ import { joinLevels } from "./utils/join-levels"
 /**
  * @oas [get] /admin/inventory-items/{id}
  * operationId: "GetInventoryItemsInventoryItem"
- * summary: "Retrive an Inventory Item."
- * description: "Retrives an Inventory Item."
+ * summary: "Get an Inventory Item"
+ * description: "Retrieves an Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
@@ -31,8 +31,7 @@ import { joinLevels } from "./utils/join-levels"
  *     label: cURL
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
