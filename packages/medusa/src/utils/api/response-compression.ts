@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from "express"
 import compression from "compression"
+import { Logger } from "@medusajs/types"
 import {
   ProjectConfigOptions,
   ResponseCompressionOptions,
 } from "@medusajs/types"
 
 export function shouldCompressResponse(req: Request, res: Response) {
+  const logger: Logger = req.scope.resolve("logger")
   const {
     projectConfig: { response_compression_enabled },
   } = req.scope.resolve("configModule")
@@ -18,6 +20,8 @@ export function shouldCompressResponse(req: Request, res: Response) {
     // don't compress responses with this request header
     return false
   }
+
+  logger.info(`Http compression enabled for routes`)
 
   // fallback to standard filter function
   return compression.filter(req, res)
