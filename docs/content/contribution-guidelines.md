@@ -10,9 +10,9 @@ This guide is specific to contributing to the documentation. If you’re interes
 
 ## Site Setup
 
-The documentation website is built with [Docusaurus](https://docusaurus.io/), a framework that optimizes documentation creation. If you’re not familiar with Docusaurus, it’s recommended to check out the [Installation documentation](https://docusaurus.io/docs/installation) on their website to better understand Docusaurus, how it works, its structure, and more details.
+The documentation website is built with [Docusaurus](https://docusaurus.io/), a framework that optimizes documentation creation. If you’re not familiar with Docusaurus, it’s recommended to check out the [Installation documentation](https://docusaurus.io/docs/installation) on their website. This will help you better understand Docusaurus, how it works, its structure, and more details.
 
-The documentation codebase is hosted as part of the [medusa repository](https://github.com/medusajs/medusa) on GitHub. You’ll find the code that runs the docusaurus website under the [www/docs](https://github.com/medusajs/medusa/tree/master/www/docs) directory.
+The documentation codebase is hosted as part of the [medusa repository](https://github.com/medusajs/medusa) on GitHub. You’ll find the code that runs the Docusaurus website under the [www/docs](https://github.com/medusajs/medusa/tree/master/www/docs) directory.
 
 ---
 
@@ -33,9 +33,8 @@ You’ll also find MDX files. MDX files combine the power of Markdown with React
 
 ## What You Can’t Contribute To
 
-The [Services Reference](/references/services/classes/AuthService) is an automatically generated API reference using Typedoc. So, you can’t contribute to it by making changes to its markdown files.
-
-You can, however, contribute to the script generating it if you find any issues in it.
+- All references under the `docs/content/reference` directory are automatically generated using Typedoc. So, you can’t contribute to it by making changes to its markdown files.
+- The API reference is generated from OpenApi Spec (OAS) comments added on endpoints in the core Medusa package. So, you can't contribute to it by making changes to files under `docs/api`. You can, however, contribute by making changes to the endpoint's comments. Endpoints are located under the `packages/medusa/src/api` directory.
 
 ---
 
@@ -49,7 +48,7 @@ When you contribute to the documentation content, make sure to follow the [docum
 
 If you’re fixing errors in an existing documentation page, you can scroll down to the end of the page and click on the “Edit this page” link. You’ll be redirected to the GitHub edit form of that page and you can make edits directly and submit a pull request (PR).
 
-If you’re adding a new page or contributing to the codebase, fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done creating a PR in the Medusa repository.
+If you’re adding a new page or contributing to the codebase, you need to fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done,  create a PR in the Medusa repository.
 
 For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
@@ -57,7 +56,7 @@ For more details on how to contribute, check out [the contribution guidelines in
 
 When you make an edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
 
-Documentation contributions always use `master` as the base branch.
+Documentation contributions always use `develop` as the base branch. Make sure to also open your PR against the `develop` branch.
 
 ### Branch Name
 
@@ -77,7 +76,9 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 ## Sidebar
 
-When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
+When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js`. In this file, an object is exported. This object holds more than one sidebar. The properties of the object indicate the internal sidebar name, and the value is an array of sidebar items in that sidebar.
+
+You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
 
 ### Terminology
 
@@ -85,9 +86,195 @@ When the documentation page is a conceptual or an overview documentation, the la
 
 When the documentation page is tutorial documentation, the label in the sidebar should start with a verb. Exceptions to this rule are integration documentation and upgrade guides.
 
-### Character Count
+### Sidebar Prefixes
 
-The character count of the sidebar item's label must be at most twenty-seven characters. For the API Reference, the sidebar item's label must be at most twenty-five characters.
+How-to guides in the sidebar for documentation pages under the Commerce Modules section are typically prefixed with one of the following terms:
+
+- `Backend: `: Used when the how-to guide explains how to do something on the Medusa backend.
+- `Admin: `: Used when the how-to guide explains how to do something using the admin APIs.
+- `Store: `: Used when the how-to guide explains how to do something using the store APIs.
+
+### Sidebar Icon
+
+To add an icon to the sidebar item, start by checking if the icon already exists under `www/docs/src/theme/Icon`. If not, add the item as a React component under `www/docs/src/theme/Icon/Icon<Name>/index.tsx`, where `<Name>` is the camel-case name of your icon. The icon must be added to the React component as an SVG element. For example:
+  
+```tsx title=www/docs/src/theme/Icon/Bolt/index.tsx
+import React from "react"
+
+export default function IconBolt(props) {
+  return (
+    <svg width={20} height={20} viewBox="0 0 20 20" 
+      fill="none" xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+      <path 
+        d="M3.125..."
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        stroke="var(--ifm-icon-color)" />
+    </svg>
+  )
+}
+```
+
+Make sure to set the `stroke` or `fill` of the icon to `var(--ifm-icon-color)` as shown in the example above.
+
+If you added a new icon, add it in the object in the file `www/docs/src/theme/Icon/index.ts`, where the property is the kebab-case version of the icon's name, and the value being the component you created. Make sure to add it in the correct alphabetical position as well. For example:
+
+```ts title=www/docs/src/theme/Icon/index.ts
+import IconBolt from "./Bolt"
+import IconBoltSolid from "./BoltSolid"
+// other imports
+
+export default {
+  // other icons
+  "bolt": IconBolt,
+  "bolt-solid": IconBoltSolid,
+  // other icons
+}
+```
+
+Finally, you can add the icon to the sidebar item by adding a `sidebar_icon` property to the `customProps` property and setting its value to the kebab-cased version of the icon's name. For example:
+
+```js title=www/docs/sidebars.js
+module.exports = {
+  // other sidebars
+  homepage: [
+    {
+      // other properties
+      customProps: {
+        sidebar_icon: "book-open",
+      },
+    },
+    // other items
+  ],
+}
+```
+
+### Sidebar Item Types
+
+There are different sidebar item types used in the documentation:
+
+- Homepage Items: If a sidebar item is shown under the `homepage` sidebar, you should set the `className` property of the item to `homepage-sidebar-item`. You can use this with other sidebar item types. For example:
+  
+  ```js title=www/docs/sidebars.js
+  module.exports = {
+    // other sidebars
+    homepage: [
+      {
+        type: "doc",
+        // other properties
+        className: "homepage-sidebar-item",
+      },
+      // other items
+    ],
+  }
+  ```
+
+- Sidebar Title: This item is used as a title to the sidebar, typically added at the top of the sidebar. You typically would also use an icon with it. To use this item, add a `sidebar_is_title` property to the `customProps` object of the item with its value being `true`. For example:
+  
+  ```js title=www/docs/sidebars.js
+  module.exports = {
+    // other sidebars
+    modules: [
+      // other items
+      {
+        type: "doc",
+        id: "modules/overview",
+        label: "Commerce Modules",
+        customProps: {
+          sidebar_is_title: true,
+          sidebar_icon: "puzzle",
+        },
+      },
+      // other items
+    ],
+  }
+  ```
+
+- Back Item: This item is used to show a back button, typically at the top of the sidebar. To use this item, add the `sidebar_is_back_link` property to the `customProps` object of the item, with its value set to true. Also, add the `sidebar_icon` property to the `customProps` object with its value set to `back-arrow`. For example:
+
+  ```js title=www/docs/sidebars.js
+  module.exports = {
+    // other sidebars
+    core: [
+      // other items
+      {
+        type: "ref",
+        id: "homepage",
+        label: "Back to home",
+        customProps: {
+          sidebar_is_back_link: true,
+          sidebar_icon: "back-arrow",
+        },
+      },
+      // other items
+    ],
+  }
+  ```
+
+- Group Divider Item: This item is used if a sidebar item does not link to any document and is only used to separate between sidebar sections. The item must be of type `html`, and its `value` property holds the text that should be shown in the divider. You must also add in the `customProps` object of the item the property `sidebar_is_group_divider` with its value being `true`. For example:
+  
+  ```js title=www/docs/sidebars.js
+  module.exports = {
+    // other sidebars
+    homepage: [
+      // other items
+      {
+        type: "html",
+        value: "Browse Docs",
+        customProps: {
+          sidebar_is_group_divider: true,
+        },
+        className: "homepage-sidebar-item",
+      },
+      // other items
+    ],
+  }
+  ```
+
+- Group Headline Item: This item is used if a sidebar item does not link to any document and is only used to indicate the beginning of a new section or group in the sidebar. To use this item, set the `type` of the item to `category`, and add the `sidebar_is_group_headline` property to the `customProps` object of the item, with its value set to `true`. For example:
+  
+  ```js title=www/docs/sidebars.js
+  module.exports = {
+    // other sidebars
+    modules: [
+      // other items
+      {
+        type: "category",
+        label: "Regions and Currencies",
+        collapsible: false,
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          // items within group or section
+        ],
+      },
+      // other items
+    ],
+  }
+  ```
+
+- Soon Item: This item is used to indicate that a certain guide will be added soon, but it does not actually link to any document. To use this item, set the `type` of the item to `link`, its `href` property to `#`, and add to the `customProps` object the property `sidebar_is_soon` with its value set to `true`. For example:
+  
+  ```js title=www/docs/sidebars.js
+  module.exports = {
+    // other sidebars
+    modules: [
+      // other items
+      {
+        type: "link",
+        href: "#",
+        label: "Currencies",
+        customProps: {
+          sidebar_is_soon: true,
+        },
+      },
+      // other items
+    ],
+  }
+  ```
 
 ---
 
@@ -95,13 +282,11 @@ The character count of the sidebar item's label must be at most twenty-seven cha
 
 When displaying notes and additional information on a documentation page, use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions). Make sure the type of admonition used matches the note’s importance to the current document.
 
-If the note is something developers have to be careful of doing or not doing, use the `caution` or `danger` admonitions based on how critical it is.
+If the note is something developers have to be careful of doing or not doing, use the `danger` admonition based on how critical it is.
 
-If the note is defining something to the developer in case they’re not familiar with it, use the `info` admonition.
+If the note displays helpful information and tips that may not be in the scope of the documentation page, use the `tip` admonition.
 
-If the note displays helpful information and tips use the `tip` admonition.
-
-If the admonition does not match any of the mentioned criteria, always default to the `note` admonition.
+For all other note types, use the `note` admonition.
 
 ---
 
@@ -129,7 +314,7 @@ import TabItem from '@theme/TabItem';
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.uploads.create(file) // file is an instance of File
 .then(({ uploads }) => {
   const key = uploads[0].key
@@ -227,7 +412,7 @@ Make sure to always use the `run` command when the command runs a script.
 
 <!-- vale off -->
 
-For example, even though you can run the `start` script using NPM with `npm start`, however, to make sure it’s transformed properly to a Yarn command, you must add the `run` keyword before `start`.
+For example, even though you can run the `start` script using NPM with `npm start`, to make sure it’s transformed properly to a Yarn command, you must add the `run` keyword before `start`.
 
 <!-- vale on -->
 
@@ -254,13 +439,13 @@ You can check the result of running the "lint" action on your PR by clicking the
 If you want to check your work locally, you can do that by:
 
 1. [Installing Vale](https://vale.sh/docs/vale-cli/installation/) on your machine.
-2. Change to the `docs` directory:
+2. Changing to the `docs` directory:
 
 ```bash
 cd docs
 ```
 
-3\. Run the `run-vale` script:
+3\. Running the `run-vale` script:
 
 ```bash
 ./run-vale.sh error
@@ -298,7 +483,7 @@ If you use this in your PR, you must justify its usage.
 
 ## Linting with ESLint
 
-Medusa uses Eslint to lint code blocks in the documentation and perform checks on incoming PRs into the repository.
+Medusa uses ESlint to lint code blocks in the documentation and perform checks on incoming PRs into the repository.
 
 ### Result of ESLint PR Checks
 
@@ -306,7 +491,7 @@ You can check the result of running the "eslint" action on your PR by clicking t
 
 ### Running ESLint locally
 
-If you want to check your work locally, you can do that by:
+If you want to check ESLint errors locally and fix them, you can do that by:
 
 1. Installing the dependencies in the root directory:
 
@@ -317,10 +502,10 @@ yarn install
 2\. Run the lint command:
 
 ```bash
-yarn lint:docs
+yarn lint:docs --fix
 ```
 
-You can also pass the `--fix` option to automatically fix errors.
+The `--fix` option automatically fixes some errors. Other errors will be shown which you'll have to resolve yourself.
 
 ### ESLint Exceptions
 
