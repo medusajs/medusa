@@ -5791,8 +5791,8 @@
     "/admin/inventory-items": {
       "get": {
         "operationId": "GetInventoryItems",
-        "summary": "List inventory items.",
-        "description": "Lists inventory items.",
+        "summary": "List Inventory Items",
+        "description": "Lists inventory items with the ability to apply filters or search queries on them.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -5947,12 +5947,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.list()\n.then(({ inventory_items }) => {\n  console.log(inventory_items.length);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.list()\n.then(({ inventory_items, count, offset, limit }) => {\n  console.log(inventory_items.length);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request GET 'https://medusa-url.com/admin/inventory-items' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json'\n"
+            "source": "curl --location --request GET 'https://medusa-url.com/admin/inventory-items' \\\n--header 'Authorization: Bearer {api_token}'\n"
           }
         ],
         "security": [
@@ -5999,7 +5999,7 @@
       },
       "post": {
         "operationId": "PostInventoryItems",
-        "summary": "Create an Inventory Item.",
+        "summary": "Create an Inventory Item",
         "description": "Creates an Inventory Item.",
         "x-authenticated": true,
         "parameters": [
@@ -6037,12 +6037,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.create(inventoryItemId, {\n  variant_id: 'variant_123',\n  sku: \"sku-123\",\n})\n.then(({ inventory_item }) => {\n  console.log(inventory_item.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.create({\n  variant_id: 'variant_123',\n})\n.then(({ inventory_item }) => {\n  console.log(inventory_item.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/inventory-items' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"variant_id\": \"variant_123\",\n    \"sku\": \"sku-123\",\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/inventory-items' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"variant_id\": \"variant_123\",\n}'\n"
           }
         ],
         "security": [
@@ -6091,8 +6091,8 @@
     "/admin/inventory-items/{id}": {
       "get": {
         "operationId": "GetInventoryItemsInventoryItem",
-        "summary": "Retrive an Inventory Item.",
-        "description": "Retrives an Inventory Item.",
+        "summary": "Get an Inventory Item",
+        "description": "Retrieves an Inventory Item.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -6134,7 +6134,7 @@
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json'\n"
+            "source": "curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \\\n--header 'Authorization: Bearer {api_token}'\n"
           }
         ],
         "security": [
@@ -6181,7 +6181,7 @@
       },
       "post": {
         "operationId": "PostInventoryItemsInventoryItem",
-        "summary": "Update an Inventory Item.",
+        "summary": "Update an Inventory Item",
         "description": "Updates an Inventory Item.",
         "x-authenticated": true,
         "parameters": [
@@ -6340,8 +6340,8 @@
     "/admin/inventory-items/{id}/location-levels": {
       "get": {
         "operationId": "GetInventoryItemsInventoryItemLocationLevels",
-        "summary": "List stock levels of a given location.",
-        "description": "Lists stock levels of a given location.",
+        "summary": "List Inventory Levels",
+        "description": "Lists inventory levels of an inventory item.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -6351,24 +6351,6 @@
             "description": "The ID of the Inventory Item.",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many stock locations levels to skip in the result.",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of stock locations levels returned.",
-            "schema": {
-              "type": "integer",
-              "default": 20
             }
           },
           {
@@ -6401,7 +6383,7 @@
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json'\n"
+            "source": "curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \\\n--header 'Authorization: Bearer {api_token}'\n"
           }
         ],
         "security": [
@@ -6448,8 +6430,8 @@
       },
       "post": {
         "operationId": "PostInventoryItemsInventoryItemLocationLevels",
-        "summary": "Create an Inventory Location Level for a given Inventory Item.",
-        "description": "Creates an Inventory Location Level for a given Inventory Item.",
+        "summary": "Create an Inventory Level",
+        "description": "Creates an Inventory Level for a given Inventory Item.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -6495,12 +6477,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {\n  location_id: 'sloc',\n  stocked_quantity: 10,\n})\n.then(({ inventory_item }) => {\n  console.log(inventory_item.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {\n  location_id: 'sloc_123',\n  stocked_quantity: 10,\n})\n.then(({ inventory_item }) => {\n  console.log(inventory_item.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"location_id\": \"sloc\",\n    \"stocked_quantity\": 10\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"location_id\": \"sloc_123\",\n    \"stocked_quantity\": 10\n}'\n"
           }
         ],
         "security": [
@@ -6549,8 +6531,8 @@
     "/admin/inventory-items/{id}/location-levels/{location_id}": {
       "post": {
         "operationId": "PostInventoryItemsInventoryItemLocationLevelsLocationLevel",
-        "summary": "Update an Inventory Location Level for a given Inventory Item.",
-        "description": "Updates an Inventory Location Level for a given Inventory Item.",
+        "summary": "Update an Inventory Level",
+        "description": "Updates an Inventory Level for a given Inventory Item.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -6657,7 +6639,7 @@
       },
       "delete": {
         "operationId": "DeleteInventoryItemsInventoryIteLocationLevelsLocation",
-        "summary": "Delete a location level of an Inventory Item.",
+        "summary": "Delete a Location Level",
         "description": "Delete a location level of an Inventory Item.",
         "x-authenticated": true,
         "parameters": [
@@ -6692,7 +6674,7 @@
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json'\n"
+            "source": "curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \\\n--header 'Authorization: Bearer {api_token}'\n"
           }
         ],
         "security": [
@@ -10451,14 +10433,9 @@
         },
         "x-codeSamples": [
           {
-            "lang": "JavaScript",
-            "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.createReservation(order_id, line_item_id, {\n  location_id\n})\n.then(({ reservation }) => {\n  console.log(reservation.id);\n});\n"
-          },
-          {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reservations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"location_id\": \"loc_1\"\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reserve' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"location_id\": \"loc_1\"\n}'\n"
           }
         ],
         "security": [
@@ -10608,8 +10585,8 @@
     "/admin/orders/{id}/reservations": {
       "get": {
         "operationId": "GetOrdersOrderReservations",
-        "summary": "Get reservations for an Order",
-        "description": "Retrieves reservations for an Order",
+        "summary": "Get reservations of an Order",
+        "description": "Retrieves reservations of an Order",
         "x-authenticated": true,
         "parameters": [
           {
@@ -10641,11 +10618,6 @@
           }
         ],
         "x-codeSamples": [
-          {
-            "lang": "JavaScript",
-            "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.retrieveReservations(order_id)\n.then(({ reservations }) => {\n  console.log(reservations[0].id);\n});\n"
-          },
           {
             "lang": "Shell",
             "label": "cURL",
@@ -13654,7 +13626,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.retrieve(product_category_id)\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.retrieve(productCategoryId)\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -13753,7 +13725,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.update(product_category_id, {\n  name: \"Skinny Jeans\"\n})\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.update(productCategoryId, {\n  name: \"Skinny Jeans\"\n})\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -13806,7 +13778,7 @@
       "delete": {
         "operationId": "DeleteProductCategoriesCategory",
         "summary": "Delete a Product Category",
-        "description": "Deletes a ProductCategory.",
+        "description": "Deletes a Product Category.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -13826,7 +13798,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.delete(product_category_id)\n.then(({ id, object, deleted }) => {\n  console.log(id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.delete(productCategoryId)\n.then(({ id, object, deleted }) => {\n  console.log(id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -13880,7 +13852,7 @@
     "/admin/product-categories/{id}/products/batch": {
       "post": {
         "operationId": "PostProductCategoriesCategoryProductsBatch",
-        "summary": "Add Products to a category",
+        "summary": "Add Products to a Category",
         "description": "Assign a batch of products to a product category.",
         "x-authenticated": true,
         "parameters": [
@@ -13927,12 +13899,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.addProducts(product_category_id, {\n  product_ids: [\n    {\n      id: product_id\n    }\n  ]\n})\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.addProducts(productCategoryId, {\n  product_ids: [\n    {\n      id: productId\n    }\n  ]\n})\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location \\\n--request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"product_ids\": [\n      {\n        \"id\": \"{product_id}\"\n      }\n    ]\n}'\n"
+            "source": "curl --location \\\n--request POST 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"product_ids\": [\n      {\n        \"id\": \"{product_id}\"\n      }\n    ]\n}'\n"
           }
         ],
         "security": [
@@ -13979,7 +13951,7 @@
       },
       "delete": {
         "operationId": "DeleteProductCategoriesCategoryProductsBatch",
-        "summary": "Delete Products",
+        "summary": "Remove Products from Category",
         "description": "Remove a list of products from a product category.",
         "x-authenticated": true,
         "parameters": [
@@ -14026,7 +13998,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.removeProducts(product_category_id, {\n  product_ids: [\n    {\n      id: product_id\n    }\n  ]\n})\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.productCategories.removeProducts(productCategoryId, {\n  product_ids: [\n    {\n      id: productId\n    }\n  ]\n})\n.then(({ product_category }) => {\n  console.log(product_category.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -17809,6 +17781,11 @@
         },
         "x-codeSamples": [
           {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.list()\n.then(({ reservations, count, limit, offset }) => {\n  console.log(reservations.length)\n})\n"
+          },
+          {
             "lang": "Shell",
             "label": "cURL",
             "source": "curl --location --request GET 'https://medusa-url.com/admin/product-categories' \\\n--header 'Authorization: Bearer {api_token}'\n"
@@ -17858,8 +17835,8 @@
       },
       "post": {
         "operationId": "PostReservations",
-        "summary": "Creates a Reservation",
-        "description": "Creates a Reservation which can be associated with any resource as required.",
+        "summary": "Create a Reservation",
+        "description": "Create a Reservation which can be associated with any resource as required.",
         "x-authenticated": true,
         "requestBody": {
           "content": {
@@ -17874,12 +17851,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.create({\n})\n.then(({ reservations }) => {\n  console.log(reservations.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.create({\n  line_item_id: 'item_123',\n  location_id: 'loc_123',\n  inventory_item_id: 'iitem_123',\n  quantity: 1\n})\n.then(({ reservation }) => {\n  console.log(reservation.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/reservations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"resource_id\": \"{resource_id}\",\n    \"resource_type\": \"order\",\n    \"value\": \"We delivered this order\"\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/reservations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"line_item_id\": \"item_123\",\n    \"location_id\": \"loc_123\",\n    \"inventory_item_id\": \"iitem_123\",\n    \"quantity\": 1\n}'\n"
           }
         ],
         "security": [
@@ -17929,7 +17906,7 @@
       "get": {
         "operationId": "GetReservationsReservation",
         "summary": "Get a Reservation",
-        "description": "Retrieves a single reservation using its id",
+        "description": "Retrieves a single reservation using its ID",
         "x-authenticated": true,
         "parameters": [
           {
@@ -17946,7 +17923,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.retrieve(reservation_id)\n.then(({ reservation }) => {\n  console.log(reservation.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.retrieve(reservationId)\n.then(({ reservation }) => {\n  console.log(reservation.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -17998,7 +17975,7 @@
       },
       "post": {
         "operationId": "PostReservationsReservation",
-        "summary": "Updates a Reservation",
+        "summary": "Update a Reservation",
         "description": "Updates a Reservation which can be associated with any resource as required.",
         "x-authenticated": true,
         "parameters": [
@@ -18025,7 +18002,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.update(reservation.id, {\n  quantity: 3\n})\n.then(({ reservations }) => {\n  console.log(reservations.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.update(reservationId, {\n  quantity: 3\n})\n.then(({ reservation }) => {\n  console.log(reservation.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -18098,7 +18075,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.delete(reservation.id)\n.then(({ id, object, deleted }) => {\n  console.log(id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.reservations.delete(reservationId)\n.then(({ id, object, deleted }) => {\n  console.log(id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -19456,8 +19433,8 @@
     "/admin/sales-channels/{id}/stock-locations": {
       "post": {
         "operationId": "PostSalesChannelsSalesChannelStockLocation",
-        "summary": "Associate a stock location to a Sales Channel",
-        "description": "Associates a stock location to a Sales Channel.",
+        "summary": "Associate a Stock Location",
+        "description": "Associates a stock location with a Sales Channel.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -19486,12 +19463,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.salesChannels.addLocation(sales_channel_id, {\n  location_id: 'App'\n})\n.then(({ sales_channel }) => {\n  console.log(sales_channel.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.salesChannels.addLocation(salesChannelId, {\n  location_id: 'loc_123'\n})\n.then(({ sales_channel }) => {\n  console.log(sales_channel.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"locaton_id\": \"stock_location_id\"\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"locaton_id\": \"loc_123\"\n}'\n"
           }
         ],
         "security": [
@@ -19538,7 +19515,7 @@
       },
       "delete": {
         "operationId": "DeleteSalesChannelsSalesChannelStockLocation",
-        "summary": "Remove a stock location from a Sales Channel",
+        "summary": "Remove a Stock Location Association",
         "description": "Removes a stock location from a Sales Channel.",
         "x-authenticated": true,
         "parameters": [
@@ -19568,12 +19545,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.salesChannels.removeLocation(sales_channel_id, {\n  location_id: 'App'\n})\n.then(({ sales_channel }) => {\n  console.log(sales_channel.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.salesChannels.removeLocation(salesChannelId, {\n  location_id: 'loc_id'\n})\n.then(({ sales_channel }) => {\n  console.log(sales_channel.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request DELETE 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"locaton_id\": \"stock_location_id\"\n}'\n"
+            "source": "curl --location --request DELETE 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"locaton_id\": \"loc_id\"\n}'\n"
           }
         ],
         "security": [
@@ -20628,7 +20605,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.create({\n  name: 'Main Warehouse',\n  location_id: 'sloc'\n})\n.then(({ stock_location }) => {\n  console.log(stock_location.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.create({\n  name: 'Main Warehouse',\n})\n.then(({ stock_location }) => {\n  console.log(stock_location.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -20720,7 +20697,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.retrieve(stock_location_id)\n.then(({ stock_location }) => {\n  console.log(stock_location.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.retrieve(stockLocationId)\n.then(({ stock_location }) => {\n  console.log(stock_location.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -20800,12 +20777,12 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.update(stock_location_id, {\n  name: 'App'\n})\n.then(({ stock_location }) => {\n  console.log(stock_location.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.update(stockLocationId, {\n  name: 'Main Warehouse'\n})\n.then(({ stock_location }) => {\n  console.log(stock_location.id);\n});\n"
           },
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"name\": \"App\"\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"name\": \"Main Warehouse\"\n}'\n"
           }
         ],
         "security": [
@@ -20870,7 +20847,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.delete(stock_location_id)\n  .then(({ id, object, deleted }) => {\n    console.log(id)\n  })\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.stockLocations.delete(stock_location_id)\n.then(({ id, object, deleted }) => {\n  console.log(id)\n})\n"
           },
           {
             "lang": "Shell",
