@@ -1,6 +1,5 @@
 import { Router } from "express"
 import errorHandler from "./middlewares/error-handler"
-import httpCompression from "./middlewares/http-compression"
 import compression from "compression"
 import admin from "./routes/admin"
 import store from "./routes/store"
