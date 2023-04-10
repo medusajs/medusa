@@ -41,5 +41,6 @@ jobs:
           publish: yarn release
           commit: "chore: Release"
           title: "chore: Release"
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
