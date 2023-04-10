@@ -1,7 +1,7 @@
 post:
   operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
-  summary: Update an Inventory Location Level for a given Inventory Item.
-  description: Updates an Inventory Location Level for a given Inventory Item.
+  summary: Update an Inventory Level
+  description: Updates an Inventory Level for a given Inventory Item.
   x-authenticated: true
   parameters:
     - in: path
@@ -72,7 +72,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
-  summary: Delete a location level of an Inventory Item.
+  summary: Delete a Location Level
   description: Delete a location level of an Inventory Item.
   x-authenticated: true
   parameters:

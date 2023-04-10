@@ -81,6 +81,10 @@ get:
     method: list
     queryParams: AdminGetReservationsParams
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_reservations/get.js
     - lang: Shell
       label: cURL
       source:
@@ -111,8 +115,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostReservations
-  summary: Creates a Reservation
-  description: Creates a Reservation which can be associated with any resource as required.
+  summary: Create a Reservation
+  description: Create a Reservation which can be associated with any resource as required.
   x-authenticated: true
   requestBody:
     content:
