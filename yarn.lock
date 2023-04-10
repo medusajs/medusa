@@ -4043,7 +4043,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ioredis/commands@npm:^1.1.1":
+"@ioredis/as-callback@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@ioredis/as-callback@npm:3.0.0"
+  checksum: cbeae0c4a8f8f8ea1987d105056fd595a5a1a781a73dfa3a13ac13027fd1de099af6f3590bd315fd20284efd8597430a7ba3b912570804d158dabbdb2071523b
+  languageName: node
+  linkType: hard
+
+"@ioredis/commands@npm:^1.1.1, @ioredis/commands@npm:^1.2.0":
   version: 1.2.0
   resolution: "@ioredis/commands@npm:1.2.0"
   checksum: a5d3c29dd84d8a28b7c67a441ac1715cbd7337a7b88649c0f17c345d89aa218578d2b360760017c48149ef8a70f44b051af9ac0921a0622c2b479614c4f65b36
@@ -5906,7 +5913,7 @@ __metadata:
     fs-exists-cached: ^1.0.0
     glob: ^7.1.6
     ioredis: ^5.2.5
-    ioredis-mock: ^5.6.0
+    ioredis-mock: 8.4.0
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^8.5.1
@@ -20374,7 +20381,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fengari-interop@npm:^0.1.2":
+"fengari-interop@npm:^0.1.3":
   version: 0.1.3
   resolution: "fengari-interop@npm:0.1.3"
   peerDependencies:
@@ -23427,18 +23434,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis-mock@npm:^5.6.0":
-  version: 5.9.1
-  resolution: "ioredis-mock@npm:5.9.1"
+"ioredis-mock@npm:8.4.0":
+  version: 8.4.0
+  resolution: "ioredis-mock@npm:8.4.0"
   dependencies:
+    "@ioredis/as-callback": ^3.0.0
+    "@ioredis/commands": ^1.2.0
     fengari: ^0.1.4
-    fengari-interop: ^0.1.2
-    lodash: ^4.17.21
-    standard-as-callback: ^2.1.0
+    fengari-interop: ^0.1.3
+    semver: ^7.3.8
   peerDependencies:
-    ioredis: 4.x
-    redis-commands: 1.x
-  checksum: 0b898273788c38ec617a3cf94df93c41a8f05a1cf57dfbbc3a97ea72fc07882be3872d55c915e49e615892ec20129351be7bb68e1beb7563a01eec157cc84088
+    "@types/ioredis-mock": ^8
+    ioredis: ^5
+  checksum: 689b250c2b0ec051b3d4062d850b7a458cc0e8a263b4666eae3929bb79fd0caf5b65605f3c275eff8f3e872f936dfa5a63db9e732697bc8240c82076bcb20caf
   languageName: node
   linkType: hard
 

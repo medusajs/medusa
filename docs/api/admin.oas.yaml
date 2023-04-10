@@ -4574,8 +4574,8 @@ paths:
   /admin/inventory-items:
     get:
       operationId: GetInventoryItems
-      summary: List inventory items.
-      description: Lists inventory items.
+      summary: List Inventory Items
+      description: Lists inventory items with the ability to apply filters or search queries on them.
       x-authenticated: true
       parameters:
         - in: query
@@ -4680,15 +4680,14 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
             medusa.admin.inventoryItems.list()
-            .then(({ inventory_items }) => {
+            .then(({ inventory_items, count, offset, limit }) => {
               console.log(inventory_items.length);
             });
         - lang: Shell
           label: cURL
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/inventory-items' \
-            --header 'Authorization: Bearer {api_token}' \
-            --header 'Content-Type: application/json'
+            --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
@@ -4715,7 +4714,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostInventoryItems
-      summary: Create an Inventory Item.
+      summary: Create an Inventory Item
       description: Creates an Inventory Item.
       x-authenticated: true
       parameters:
@@ -4744,9 +4743,8 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.inventoryItems.create(inventoryItemId, {
+            medusa.admin.inventoryItems.create({
               variant_id: 'variant_123',
-              sku: "sku-123",
             })
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
@@ -4759,7 +4757,6 @@ paths:
             --header 'Content-Type: application/json' \
             --data-raw '{
                 "variant_id": "variant_123",
-                "sku": "sku-123",
             }'
       security:
         - api_token: []
@@ -4788,8 +4785,8 @@ paths:
   /admin/inventory-items/{id}:
     get:
       operationId: GetInventoryItemsInventoryItem
-      summary: Retrive an Inventory Item.
-      description: Retrives an Inventory Item.
+      summary: Get an Inventory Item
+      description: Retrieves an Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -4826,8 +4823,7 @@ paths:
           label: cURL
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \
-            --header 'Authorization: Bearer {api_token}' \
-            --header 'Content-Type: application/json'
+            --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
@@ -4854,7 +4850,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostInventoryItemsInventoryItem
-      summary: Update an Inventory Item.
+      summary: Update an Inventory Item
       description: Updates an Inventory Item.
       x-authenticated: true
       parameters:
@@ -4975,8 +4971,8 @@ paths:
   /admin/inventory-items/{id}/location-levels:
     get:
       operationId: GetInventoryItemsInventoryItemLocationLevels
-      summary: List stock levels of a given location.
-      description: Lists stock levels of a given location.
+      summary: List Inventory Levels
+      description: Lists inventory levels of an inventory item.
       x-authenticated: true
       parameters:
         - in: path
@@ -4985,18 +4981,6 @@ paths:
           description: The ID of the Inventory Item.
           schema:
             type: string
-        - in: query
-          name: offset
-          description: How many stock locations levels to skip in the result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: Limit the number of stock locations levels returned.
-          schema:
-            type: integer
-            default: 20
         - in: query
           name: expand
           description: Comma separated list of relations to include in the results.
@@ -5025,8 +5009,7 @@ paths:
           label: cURL
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
-            --header 'Authorization: Bearer {api_token}' \
-            --header 'Content-Type: application/json'
+            --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
@@ -5053,8 +5036,8 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostInventoryItemsInventoryItemLocationLevels
-      summary: Create an Inventory Location Level for a given Inventory Item.
-      description: Creates an Inventory Location Level for a given Inventory Item.
+      summary: Create an Inventory Level
+      description: Creates an Inventory Level for a given Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -5089,7 +5072,7 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
             medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
-              location_id: 'sloc',
+              location_id: 'sloc_123',
               stocked_quantity: 10,
             })
             .then(({ inventory_item }) => {
@@ -5102,7 +5085,7 @@ paths:
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
-                "location_id": "sloc",
+                "location_id": "sloc_123",
                 "stocked_quantity": 10
             }'
       security:
@@ -5132,8 +5115,8 @@ paths:
   /admin/inventory-items/{id}/location-levels/{location_id}:
     post:
       operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
-      summary: Update an Inventory Location Level for a given Inventory Item.
-      description: Updates an Inventory Location Level for a given Inventory Item.
+      summary: Update an Inventory Level
+      description: Updates an Inventory Level for a given Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -5214,7 +5197,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
-      summary: Delete a location level of an Inventory Item.
+      summary: Delete a Location Level
       description: Delete a location level of an Inventory Item.
       x-authenticated: true
       parameters:
@@ -5247,8 +5230,7 @@ paths:
           label: cURL
           source: |
             curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
-            --header 'Authorization: Bearer {api_token}' \
-            --header 'Content-Type: application/json'
+            --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
@@ -8055,22 +8037,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminOrdersOrderLineItemReservationReq'
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: |
-            import Medusa from "@medusajs/medusa-js"
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-            // must be previously logged in or use api token
-            medusa.admin.orders.createReservation(order_id, line_item_id, {
-              location_id
-            })
-            .then(({ reservation }) => {
-              console.log(reservation.id);
-            });
         - lang: Shell
           label: cURL
           source: |
-            curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reservations' \
+            curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reserve' \
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
@@ -8182,8 +8152,8 @@ paths:
   /admin/orders/{id}/reservations:
     get:
       operationId: GetOrdersOrderReservations
-      summary: Get reservations for an Order
-      description: Retrieves reservations for an Order
+      summary: Get reservations of an Order
+      description: Retrieves reservations of an Order
       x-authenticated: true
       parameters:
         - in: path
@@ -8205,16 +8175,6 @@ paths:
             type: integer
             default: 20
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: |
-            import Medusa from "@medusajs/medusa-js"
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-            // must be previously logged in or use api token
-            medusa.admin.orders.retrieveReservations(order_id)
-            .then(({ reservations }) => {
-              console.log(reservations[0].id);
-            });
         - lang: Shell
           label: cURL
           source: |
@@ -10491,7 +10451,7 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.productCategories.retrieve(product_category_id)
+            medusa.admin.productCategories.retrieve(productCategoryId)
             .then(({ product_category }) => {
               console.log(product_category.id);
             });
@@ -10561,7 +10521,7 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.productCategories.update(product_category_id, {
+            medusa.admin.productCategories.update(productCategoryId, {
               name: "Skinny Jeans"
             })
             .then(({ product_category }) => {
@@ -10603,7 +10563,7 @@ paths:
     delete:
       operationId: DeleteProductCategoriesCategory
       summary: Delete a Product Category
-      description: Deletes a ProductCategory.
+      description: Deletes a Product Category.
       x-authenticated: true
       parameters:
         - in: path
@@ -10621,7 +10581,7 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.productCategories.delete(product_category_id)
+            medusa.admin.productCategories.delete(productCategoryId)
             .then(({ id, object, deleted }) => {
               console.log(id);
             });
@@ -10657,7 +10617,7 @@ paths:
   /admin/product-categories/{id}/products/batch:
     post:
       operationId: PostProductCategoriesCategoryProductsBatch
-      summary: Add Products to a category
+      summary: Add Products to a Category
       description: Assign a batch of products to a product category.
       x-authenticated: true
       parameters:
@@ -10692,10 +10652,10 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.productCategories.addProducts(product_category_id, {
+            medusa.admin.productCategories.addProducts(productCategoryId, {
               product_ids: [
                 {
-                  id: product_id
+                  id: productId
                 }
               ]
             })
@@ -10706,7 +10666,7 @@ paths:
           label: cURL
           source: |
             curl --location \
-            --request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \
+            --request POST 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
@@ -10742,7 +10702,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteProductCategoriesCategoryProductsBatch
-      summary: Delete Products
+      summary: Remove Products from Category
       description: Remove a list of products from a product category.
       x-authenticated: true
       parameters:
@@ -10777,10 +10737,10 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.productCategories.removeProducts(product_category_id, {
+            medusa.admin.productCategories.removeProducts(productCategoryId, {
               product_ids: [
                 {
-                  id: product_id
+                  id: productId
                 }
               ]
             })
@@ -13684,6 +13644,16 @@ paths:
         method: list
         queryParams: AdminGetReservationsParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: |
+            import Medusa from "@medusajs/medusa-js"
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+            // must be previously logged in or use api token
+            medusa.admin.reservations.list()
+            .then(({ reservations, count, limit, offset }) => {
+              console.log(reservations.length)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13715,8 +13685,8 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostReservations
-      summary: Creates a Reservation
-      description: Creates a Reservation which can be associated with any resource as required.
+      summary: Create a Reservation
+      description: Create a Reservation which can be associated with any resource as required.
       x-authenticated: true
       requestBody:
         content:
@@ -13731,9 +13701,13 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
             medusa.admin.reservations.create({
+              line_item_id: 'item_123',
+              location_id: 'loc_123',
+              inventory_item_id: 'iitem_123',
+              quantity: 1
             })
-            .then(({ reservations }) => {
-              console.log(reservations.id);
+            .then(({ reservation }) => {
+              console.log(reservation.id);
             });
         - lang: Shell
           label: cURL
@@ -13742,9 +13716,10 @@ paths:
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
-                "resource_id": "{resource_id}",
-                "resource_type": "order",
-                "value": "We delivered this order"
+                "line_item_id": "item_123",
+                "location_id": "loc_123",
+                "inventory_item_id": "iitem_123",
+                "quantity": 1
             }'
       security:
         - api_token: []
@@ -13774,7 +13749,7 @@ paths:
     get:
       operationId: GetReservationsReservation
       summary: Get a Reservation
-      description: Retrieves a single reservation using its id
+      description: Retrieves a single reservation using its ID
       x-authenticated: true
       parameters:
         - in: path
@@ -13790,7 +13765,7 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.reservations.retrieve(reservation_id)
+            medusa.admin.reservations.retrieve(reservationId)
             .then(({ reservation }) => {
               console.log(reservation.id);
             });
@@ -13825,7 +13800,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostReservationsReservation
-      summary: Updates a Reservation
+      summary: Update a Reservation
       description: Updates a Reservation which can be associated with any resource as required.
       x-authenticated: true
       parameters:
@@ -13847,11 +13822,11 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.reservations.update(reservation.id, {
+            medusa.admin.reservations.update(reservationId, {
               quantity: 3
             })
-            .then(({ reservations }) => {
-              console.log(reservations.id);
+            .then(({ reservation }) => {
+              console.log(reservation.id);
             });
         - lang: Shell
           label: cURL
@@ -13907,7 +13882,7 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.reservations.delete(reservation.id)
+            medusa.admin.reservations.delete(reservationId)
             .then(({ id, object, deleted }) => {
               console.log(id);
             });
@@ -14958,8 +14933,8 @@ paths:
   /admin/sales-channels/{id}/stock-locations:
     post:
       operationId: PostSalesChannelsSalesChannelStockLocation
-      summary: Associate a stock location to a Sales Channel
-      description: Associates a stock location to a Sales Channel.
+      summary: Associate a Stock Location
+      description: Associates a stock location with a Sales Channel.
       x-authenticated: true
       parameters:
         - in: path
@@ -14982,8 +14957,8 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.salesChannels.addLocation(sales_channel_id, {
-              location_id: 'App'
+            medusa.admin.salesChannels.addLocation(salesChannelId, {
+              location_id: 'loc_123'
             })
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
@@ -14995,7 +14970,7 @@ paths:
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
-                "locaton_id": "stock_location_id"
+                "locaton_id": "loc_123"
             }'
       security:
         - api_token: []
@@ -15023,7 +14998,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteSalesChannelsSalesChannelStockLocation
-      summary: Remove a stock location from a Sales Channel
+      summary: Remove a Stock Location Association
       description: Removes a stock location from a Sales Channel.
       x-authenticated: true
       parameters:
@@ -15047,8 +15022,8 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.salesChannels.removeLocation(sales_channel_id, {
-              location_id: 'App'
+            medusa.admin.salesChannels.removeLocation(salesChannelId, {
+              location_id: 'loc_id'
             })
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
@@ -15060,7 +15035,7 @@ paths:
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
-                "locaton_id": "stock_location_id"
+                "locaton_id": "loc_id"
             }'
       security:
         - api_token: []
@@ -15868,7 +15843,6 @@ paths:
             // must be previously logged in or use api token
             medusa.admin.stockLocations.create({
               name: 'Main Warehouse',
-              location_id: 'sloc'
             })
             .then(({ stock_location }) => {
               console.log(stock_location.id);
@@ -15939,7 +15913,7 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.stockLocations.retrieve(stock_location_id)
+            medusa.admin.stockLocations.retrieve(stockLocationId)
             .then(({ stock_location }) => {
               console.log(stock_location.id);
             });
@@ -15996,8 +15970,8 @@ paths:
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
-            medusa.admin.stockLocations.update(stock_location_id, {
-              name: 'App'
+            medusa.admin.stockLocations.update(stockLocationId, {
+              name: 'Main Warehouse'
             })
             .then(({ stock_location }) => {
               console.log(stock_location.id);
@@ -16009,7 +15983,7 @@ paths:
             --header 'Authorization: Bearer {api_token}' \
             --header 'Content-Type: application/json' \
             --data-raw '{
-                "name": "App"
+                "name": "Main Warehouse"
             }'
       security:
         - api_token: []
@@ -16055,9 +16029,9 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
             // must be previously logged in or use api token
             medusa.admin.stockLocations.delete(stock_location_id)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
+            .then(({ id, object, deleted }) => {
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: |

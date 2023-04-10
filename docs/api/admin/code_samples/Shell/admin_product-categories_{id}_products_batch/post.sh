@@ -1,5 +1,5 @@
 curl --location \
---request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \
+--request POST 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
 --header 'Authorization: Bearer {api_token}' \
 --header 'Content-Type: application/json' \
 --data-raw '{

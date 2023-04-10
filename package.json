@@ -86,6 +86,8 @@
     "develop:create:db": "ts-node --transpile-only ./integration-tests/development/create-database.js",
     "release:next": "changeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
+    "release": "changeset publish",
+    "version": "changeset version && yarn install --no-immutable",
     "check:freshness": "node ./scripts/freshness-check.js"
   },
   "dependencies": {
