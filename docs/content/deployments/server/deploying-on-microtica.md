@@ -59,7 +59,7 @@ Since Microtica deploys on your cloud account, here are the resources that the p
 
 ## Deploy to Microtica
 
-### 1. Create/Import a Git repository
+### Step 1: Create/Import a Git repository
 
 Before you can deploy your Medusa backend you need to connect your preferred Git account. Microtica will create a repository on your Git account with a default repo name `medusa-server`. 
 
