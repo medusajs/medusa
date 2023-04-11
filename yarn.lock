@@ -5901,6 +5901,7 @@ __metadata:
     chokidar: ^3.4.2
     class-transformer: ^0.5.1
     class-validator: ^0.13.2
+    compression: ^1.7.4
     connect-redis: ^5.0.0
     cookie-parser: ^1.4.6
     core-js: ^3.6.5
@@ -35401,7 +35402,6 @@ __metadata:
     axios-mock-adapter: ^1.19.0
     babel-jest: ^26.6.3
     babel-preset-medusa-package: ^1.0.0
-    compression: ^1.7.4
     cross-env: ^7.0.3
     eslint: ^8.23.0
     eslint-config-google: ^0.14.0
