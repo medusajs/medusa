@@ -40,7 +40,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Generated API Reference'
-          base: 'master'
+          base: 'develop'
           title: 'chore(docs): Updated API Reference'
           labels: 'type: chore'
           add-paths: docs/api/*
