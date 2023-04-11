@@ -27,7 +27,7 @@
     "@medusajs/modules-sdk": "1.8.0",
     "@medusajs/utils": "1.8.0",
     "awilix": "^8.0.0",
-    "typeorm": "^0.3.11"
+    "typeorm": "^0.3.14"
   },
   "scripts": {
     "watch": "tsc --build --watch",
