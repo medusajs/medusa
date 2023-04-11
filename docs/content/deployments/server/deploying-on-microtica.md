@@ -113,4 +113,7 @@ After the deployment is finished, navigate to Resources → [AppName] (Medusa in
 
 ## Add environment variables
 
-The environment variables can be updated/added/configured after deployment as well. You can access them with `process.env.<VARIABLE NAME>`. You can read more about the built-in environment variables, as well as how to specify custom environment variables in the Medusa Server runtime [in Microtica documentation](https://docs.microtica.com/medusa-server?utm_source=medusa&utm_medium=docs&utm_campaign=medusa#z8li6). 
+The environment variables can be updated, added, or configured after deployment as well. You can access them with `process.env.<VARIABLE NAME>`.
+
+You can read more about the built-in environment variables, as well as how to specify custom environment variables in the Medusa backend runtime [in Microtica documentation](https://docs.microtica.com/medusa-server?utm_source=medusa&utm_medium=docs&utm_campaign=medusa#z8li6). 
+
