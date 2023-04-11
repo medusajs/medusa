@@ -146,30 +146,6 @@ Now, if you run your Medusa backend and your storefront, on checkout you’ll be
 
 ![Next.js Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001145/Medusa%20Docs/Stripe/h5mWdJT_n1bktt.png)
 
-### Add to Gatsby Storefront
-
-:::note
-
-Medusa's Gatsby storefront is deprecated and it is recommended to use the [Next.js storefront](../../starters/nextjs-medusa-starter.mdx) or build your own storefront instead.
-
-:::
-
-In your `.env.development` file (or the file you’re using for your environment variables) add the following variable with the value set to the Publishable Key:
-
-```jsx title=.env.development
-GATSBY_STRIPE_KEY=pk_
-```
-
-:::note
-
-You might find this environment variable already available so you can just replace its value with your Publishable Key.
-
-:::
-
-Now, if you run your Medusa backend and your storefront, on checkout you’ll be able to use Stripe.
-
-![Gatsby Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001172/Medusa%20Docs/Stripe/1XvW776_omosuz.png)
-
 ### Add to Custom Storefront
 
 This section will go over how to add Stripe into a React-based framework. The instructions are general instructions that you can use in your storefront.

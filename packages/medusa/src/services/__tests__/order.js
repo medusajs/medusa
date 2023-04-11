@@ -1,9 +1,9 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import OrderService from "../order"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import OrderService from "../order"
 
 describe("OrderService", () => {
   const totalsService = {
@@ -519,12 +519,13 @@ describe("OrderService", () => {
     })
   })
 
-  describe("retrieveByCartId", () => {
+  describe("retrieveByCartIdWithTotals", () => {
     const orderRepo = MockRepository({
-      findOne: (q) => {
+      findOneWithRelations: (q) => {
         return Promise.resolve({})
       },
     })
+
     const orderService = new OrderService({
       totalsService,
       newTotalsService: newTotalsServiceMock,
@@ -537,11 +538,15 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.retrieveByCartId(IdMap.getId("test-cart"))
-      expect(orderRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(orderRepo.findOne).toHaveBeenCalledWith({
-        where: { cart_id: IdMap.getId("test-cart") },
-      })
+      await orderService.retrieveByCartIdWithTotals(IdMap.getId("test-cart"))
+
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith(
+        expect.any(Object),
+        {
+          where: { cart_id: IdMap.getId("test-cart") },
+        }
+      )
     })
   })
 

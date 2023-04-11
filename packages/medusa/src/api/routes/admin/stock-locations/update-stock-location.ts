@@ -28,8 +28,8 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.stockLocations.update(stock_location_id, {
- *         name: 'App'
+ *       medusa.admin.stockLocations.update(stockLocationId, {
+ *         name: 'Main Warehouse'
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
@@ -41,7 +41,7 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "name": "App"
+ *           "name": "Main Warehouse"
  *       }'
  * security:
  *   - api_token: []
