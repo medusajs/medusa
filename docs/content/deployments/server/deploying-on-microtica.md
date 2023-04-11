@@ -43,7 +43,9 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 ---
 
 ## What will be provisioned on AWS
+
 Since Microtica deploys on your cloud account, here are the resources that the platform is going to provision in the environment.
+
 - VPC, subnets and networking
 - Container infrastructure based on Fargate 
 - application load balancer
