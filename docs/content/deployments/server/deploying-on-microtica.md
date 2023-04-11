@@ -65,7 +65,7 @@ Before you can deploy your Medusa backend you need to connect your preferred Git
 
 ![Create Git Repository](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f93aa39723e1e5667f_RVoeExwARHAsVe3lq7oBZqYJ9nMP9x3EjX81evL3UgLZ_jXYeHk9mEBFJ760tQZvESp__mGaRKY6Nsd_NqELSzpNv3mWoqmfmJhosNlCLU94s3vhYKIhdo-T8sPvmtXZ2s6qPkkYdlHJ_2IWgDOvUn0uZzEnEl6beU65M5cmui2DZ8mkVi2wCquRBNIX.png)
 
-If you already have a Medusa server repo that you want to deploy then you need to perform a couple of changes in your source code. Follow [this tutorial to deploy and existing Medusa Server app](https://docs.microtica.com/medusa-server?utm_source=medusa&utm_medium=docs&utm_campaign=medusa#xUBRz).
+If you already have a Medusa backend repository that you want to deploy then you need to perform a couple of changes in your source code. Follow [this tutorial to deploy and existing Medusa Backend app](https://docs.microtica.com/medusa-server?utm_source=medusa&utm_medium=docs&utm_campaign=medusa#xUBRz).
 
 ### 2. Configure the Template
 
