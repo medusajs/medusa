@@ -711,6 +711,13 @@ class DiscountService extends TransactionBaseService {
             )
           }
 
+          if (!cart.customer_id && this.hasCustomersGroupCondition(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} is only valid for specific customer`
+            )
+          }
+
           const isValidForRegion = await this.isValidForRegion(
             disc,
             cart.region_id
@@ -734,11 +741,6 @@ class DiscountService extends TransactionBaseService {
                 `Discount ${disc.code} is not valid for customer`
               )
             }
-          } else if (this.hasCustomersGroupCondition(disc)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              `Discount ${disc.code} is only valid for specific customer`
-            )
           }
         })
       )
