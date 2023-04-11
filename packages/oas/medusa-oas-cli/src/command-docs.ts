@@ -205,8 +205,8 @@ const sanitizeOAS = async (
   configFile: string
 ): Promise<void> => {
   const { all: logs } = await execa(
-    "redocly",
-    ["bundle", srcFile, `--output=${outFile}`, `--config=${configFile}`],
+    "yarn",
+    ["redocly", "bundle", srcFile, `--output=${outFile}`, `--config=${configFile}`],
     { cwd: basePath, all: true }
   )
   console.log(logs)
@@ -237,8 +237,8 @@ const generateReference = async (
   outDir: string
 ): Promise<void> => {
   const { all: logs } = await execa(
-    "redocly",
-    ["split", srcFile, `--outDir=${outDir}`],
+    "yarn",
+    ["redocly", "split", srcFile, `--outDir=${outDir}`],
     { cwd: basePath, all: true }
   )
   console.log(logs)
@@ -259,8 +259,9 @@ const buildHTML = async (
   configFile: string
 ): Promise<void> => {
   const { all: logs } = await execa(
-    "redocly",
+    "yarn",
     [
+      "redocly",
       "build-docs",
       srcFile,
       `--output=${outFile}`,
