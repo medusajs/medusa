@@ -35,10 +35,28 @@ module.exports = {
             className: "homepage-sidebar-item",
         },
         {
-            type: "html",
-            value: "Browse Docs",
-            customProps: {
-                sidebar_is_group_divider: true,
+          type: "category",
+          label: "Installation Errors",
+          items: [
+            {
+              type: "doc",
+              id: "troubleshooting/create-medusa-app-errors",
+              label: "Create Medusa App Errors",
+            },
+            {
+              type: "doc",
+              id: "troubleshooting/cli-installation-errors",
+              label: "Errors Installing CLI",
+            },
+            {
+              type: "doc",
+              id: "troubleshooting/common-installation-errors",
+              label: "General Errors",
+            },
+            {
+              type: "doc",
+              id: "troubleshooting/errors-after-update",
+              label: "Errors After Update",
             },
             className: "homepage-sidebar-item",
         },
@@ -1208,11 +1226,1105 @@ module.exports = {
             ],
         },
         {
-            type: "category",
-            label: "Users",
-            collapsible: false,
-            customProps: {
-                sidebar_is_group_headline: true,
+
+          type: "doc",
+          id: "modules/products/store/use-categories",
+          label: "Storefront: Use Categories",
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Storefront: Show Collections",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Carts and Checkout",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Cart",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/shipping",
+          label: "Shipping",
+        },
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/payment",
+          label: "Payment",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/backend/add-fulfillment-provider",
+          label: "Backend: Create Fulfillment Provider",
+        },
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/backend/add-payment-provider",
+          label: "Backend: Create Payment Provider",
+        },
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/storefront/implement-cart",
+          label: "Storefront: Implement Cart",
+        },
+        {
+          type: "doc",
+          id: "modules/carts-and-checkout/storefront/implement-checkout-flow",
+          label: "Storefront: Implement Checkout",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Orders",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/orders/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Swaps",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Returns",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Claims",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Draft Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Fulfillment",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Backend: Send Confirmation Email",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/orders/backend/handle-order-claim-event",
+          label: "Backend: Send Order Claim Email",
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/orders/admin/edit-order",
+          label: "Admin: Edit an Order",
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Swaps",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Returns",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Claims",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Draft Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Return Reasons",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Storefront: Manage Customer Orders",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Storefront: Create a Swap",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Storefront: Create a Return",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/orders/storefront/handle-order-edits",
+          label: "Storefront: Handle Order Edits",
+        },
+        {
+          type: "doc",
+          id: "modules/orders/storefront/implement-claim-order",
+          label: "Storefront: Implement Claim Order",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Multi-Warehouse",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/overview",
+          label: "Overview",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/install-modules",
+          label: "Install Modules",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/inventory-module",
+          label: "Inventory Module",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/stock-location-module",
+          label: "Stock Location Module",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/backend/create-inventory-service",
+          label: "Backend: Create Inventory Service",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/backend/create-stock-location-service",
+          label: "Backend: Create Stock Location Service",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-stock-locations",
+          label: "Admin: Manage Stock Locations",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-inventory-items",
+          label: "Admin: Manage Inventory Items",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-item-allocations-in-orders",
+          label: "Admin: Manage Allocations in Orders",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Taxes",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/taxes/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Taxes",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/taxes/inclusive-pricing",
+          label: "Tax Inclusive Pricing",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Backend: Create Tax Provider",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Taxes",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Tax Rates",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Tax Overrides",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/taxes/storefront/manual-calculation",
+          label: "Storefront: Calculate Taxes",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Discounts",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/discounts/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/discounts/discounts",
+          label: "Discounts",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/discounts/admin/manage-discounts",
+          label: "Admin: Manage Discounts",
+        },
+        {
+          type: "doc",
+          id: "modules/discounts/storefront/use-discounts-in-checkout",
+          label: "Storefront: Discounts in Checkout",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Gift Cards",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/gift-cards/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/gift-cards/gift-cards",
+          label: "Gift Cards",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/gift-cards/backend/send-gift-card-to-customer",
+          label: "Backend: Send Gift Card Code",
+        },
+        {
+          type: "doc",
+          id: "modules/gift-cards/admin/manage-gift-cards",
+          label: "Admin: Manage Gift Cards",
+        },
+        {
+          type: "doc",
+          id: "modules/gift-cards/storefront/use-gift-cards",
+          label: "Storefront: Use Gift Cards",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Price Lists",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/price-lists/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/price-lists/price-lists",
+          label: "Price Lists",
+        },
+        {
+          type: "doc",
+          id: "modules/price-lists/price-selection-strategy",
+          label: "Price Selection Strategy",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/price-lists/backend/override-price-selection-strategy",
+          label: "Backend: Override Price Selection",
+        },
+        {
+          type: "doc",
+          id: "modules/price-lists/admin/manage-price-lists",
+          label: "Admin: Manage Price Lists",
+        },
+        {
+          type: "doc",
+          id: "modules/price-lists/admin/import-prices",
+          label: "Admin: Import Prices",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Sales Channels",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/sales-channels/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/sales-channels/sales-channels",
+          label: "Sales Channels",
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          id: "modules/sales-channels/admin/manage",
+          label: "Admin: Manage Sales Channels",
+        },
+        {
+          type: "doc",
+          id: "modules/sales-channels/storefront/use-sales-channels",
+          label: "Storefront: Use Sales Channels",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Users",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "modules/users/overview",
+          label: "Overview",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Users",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Invites",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "html",
+          value: "How-to",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Backend: Send Invite",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Profile",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Users",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+        {
+          type: "link",
+          href: "#",
+          label: "Admin: Manage Invites",
+          customProps: {
+            sidebar_is_soon: true,
+          },
+        },
+      ],
+    },
+  ],
+  core: [
+    {
+      type: "ref",
+      id: "homepage",
+      label: "Back to home",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "development/overview",
+      label: "Medusa Development",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "server-stack",
+      },
+    },
+    {
+      type: "category",
+      label: "Backend Setup",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "development/backend/install",
+          label: "Backend Quickstart",
+        },
+        {
+          type: "doc",
+          id: "development/backend/prepare-environment",
+          label: "Prepare Environment",
+        },
+        {
+          type: "doc",
+          id: "development/backend/configurations",
+          label: "Configurations",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Architectural Concepts",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "doc",
+          id: "development/fundamentals/architecture-overview",
+          label: "Medusa Architecture",
+        },
+        {
+          type: "doc",
+          id: "development/fundamentals/dependency-injection",
+          label: "Dependency Injection",
+        },
+        {
+          type: "doc",
+          id: "development/fundamentals/local-development",
+          label: "Local Development",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Basics",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: false,
+      items: [
+        {
+          type: "category",
+          label: "Entities",
+          items: [
+            {
+              type: "doc",
+              id: "development/entities/overview",
+              label: "Overview",
+            },
+            {
+              type: "doc",
+              id: "development/entities/migrations/overview",
+              label: "Migrations",
+            },
+            {
+              type: "ref",
+              id: "references/entities/classes/Address",
+              label: "Entities Reference",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/entities/create",
+              label: "Create an Entity",
+            },
+            {
+              type: "doc",
+              id: "development/entities/extend-entity",
+              label: "Extend an Entity",
+            },
+            {
+              type: "doc",
+              id: "development/entities/migrations/create",
+              label: "Create a Migration",
+            },
+            {
+              type: "doc",
+              id: "development/entities/extend-repository",
+              label: "Extend a Repository",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Endpoints",
+          items: [
+            {
+              type: "doc",
+              id: "development/endpoints/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/create",
+              label: "Create an Endpoint",
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/add-middleware",
+              label: "Middlewares",
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/example-logged-in-user",
+              label: "Example: Logged-In User",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Services",
+          items: [
+            {
+              type: "doc",
+              id: "development/services/overview",
+              label: "Overview",
+            },
+            {
+              type: "ref",
+              id: "references/services/classes/AuthService",
+              label: "Services Reference",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/services/create-service",
+              label: "Create a Service",
+            },
+            {
+              type: "doc",
+              id: "development/services/extend-service",
+              label: "Extend a Service",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            {
+              type: "doc",
+              id: "development/modules/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/modules/create",
+              label: "Create a Module",
+            },
+            {
+              type: "doc",
+              id: "development/modules/publish",
+              label: "Publish a Module",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Events",
+          items: [
+            {
+              type: "doc",
+              id: "development/events/index",
+              label: "Overview",
+            },
+            {
+              type: "doc",
+              id: "development/events/subscribers",
+              label: "Subscribers",
+            },
+            {
+              type: "doc",
+              id: "development/events/events-list",
+              label: "Events Reference",
+            },
+            {
+              type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/events/modules/local",
+              label: "Local",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/events/create-module",
+              label: "Create an Event Module",
+            },
+            {
+              type: "doc",
+              id: "development/events/create-subscriber",
+              label: "Create a Subscriber",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Scheduled Jobs",
+          items: [
+            {
+              type: "doc",
+              id: "development/scheduled-jobs/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/scheduled-jobs/create",
+              label: "Create a Scheduled Job",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Plugins",
+          items: [
+            {
+              type: "doc",
+              id: "development/plugins/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/plugins/create",
+              label: "Create a Plugin",
+            },
+            {
+              type: "doc",
+              id: "development/plugins/publish",
+              label: "Publish a Plugin",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Publishable API Keys",
+          items: [
+            {
+              type: "doc",
+              id: "development/publishable-api-keys/index",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/publishable-api-keys/admin/manage-publishable-api-keys",
+              label: "Admin: Manage Publishable API Keys",
+            },
+            {
+              type: "doc",
+              id: "development/publishable-api-keys/storefront/use-in-requests",
+              label: "Storefront: Use in Requests",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Advanced Concepts",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: false,
+      items: [
+        {
+          type: "category",
+          label: "Cache",
+          items: [
+            {
+              type: "doc",
+              id: "development/cache/overview",
+              label: "Cache",
+            },
+            {
+              type: "html",
+              value: "Available Modules",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/redis",
+              label: "Redis",
+            },
+            {
+              type: "doc",
+              id: "development/cache/modules/in-memory",
+              label: "In-Memory",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/cache/create",
+              label: "Create a Cache Module",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Notifications",
+          items: [
+            {
+              type: "doc",
+              id: "development/notification/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/notification/create-notification-provider",
+              label: "Create a Notification Provider",
             },
             items: [{
                     type: "doc",
@@ -2176,312 +3288,356 @@ module.exports = {
             id: "js-client/overview",
             label: "Medusa JS Client",
             customProps: {
-                sidebar_is_title: true,
-                sidebar_icon: "javascript",
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate Spaces with the Medusa backend.",
             },
-        },
-        {
-            type: "doc",
-            id: "js-client/overview",
-            label: "Medusa JS Client",
-            customProps: {
-                sidebar_is_title: true,
-                sidebar_icon: "javascript",
-            },
-        },
-        {
-            type: "category",
-            collapsed: false,
-            label: "Resources",
-            customProps: {
-                sidebar_is_group_headline: true,
-            },
-            items: [{
-                    type: "category",
-                    label: "admin",
-                    collapsed: true,
-                    link: {
-                        type: "doc",
-                        id: "references/js-client/classes/Admin",
-                    },
-                    items: [{
-                            type: "doc",
-                            id: "references/js-client/classes/AdminAuthResource",
-                            label: "auth",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminBatchJobsResource",
-                            label: "batchJobs",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminCollectionsResource",
-                            label: "collections",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminCurrenciesResource",
-                            label: "currencies",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminCustomerGroupsResource",
-                            label: "customerGroups",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminCustomersResource",
-                            label: "customers",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminDiscountsResource",
-                            label: "discounts",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminDraftOrdersResource",
-                            label: "draftOrders",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminGiftCardsResource",
-                            label: "giftCards",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminInvitesResource",
-                            label: "invites",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminNotesResource",
-                            label: "notes",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminNotificationsResource",
-                            label: "notifications",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminOrdersResource",
-                            label: "orders",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminOrderEditsResource",
-                            label: "orderEdits",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminPriceListResource",
-                            label: "priceLists",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminProductsResource",
-                            label: "products",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminProductTagsResource",
-                            label: "productTags",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminProductTypesResource",
-                            label: "productTypes",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminRegionsResource",
-                            label: "regions",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminReturnReasonsResource",
-                            label: "returnReasons",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminReturnsResource",
-                            label: "returns",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminSalesChannelsResource",
-                            label: "salesChannels",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminShippingOptionsResource",
-                            label: "shippingOptions",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminShippingProfilesResource",
-                            label: "shippingProfiles",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminStoresResource",
-                            label: "store",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminSwapsResource",
-                            label: "swaps",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminTaxRatesResource",
-                            label: "taxRates",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminUploadsResource",
-                            label: "uploads",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminUsersResource",
-                            label: "users",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/AdminVariantsResource",
-                            label: "variants",
-                        },
-                    ],
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/AuthResource",
-                    label: "auth",
-                },
-                {
-                    type: "category",
-                    label: "carts",
-                    link: {
-                        type: "doc",
-                        id: "references/js-client/classes/CartsResource",
-                    },
-                    collapsed: true,
-                    items: [{
-                        type: "doc",
-                        id: "references/js-client/classes/LineItemsResource",
-                        label: "lineItems",
-                    }, ],
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/CollectionsResource",
-                    label: "collections",
-                },
-                {
-                    type: "category",
-                    label: "customers",
-                    collapsed: true,
-                    link: {
-                        type: "doc",
-                        id: "references/js-client/classes/CustomerResource",
-                    },
-                    items: [{
-                            type: "doc",
-                            id: "references/js-client/classes/AddressesResource",
-                            label: "addresses",
-                        },
-                        {
-                            type: "doc",
-                            id: "references/js-client/classes/PaymentMethodsResource",
-                            label: "paymentMethods",
-                        },
-                    ],
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/GiftCardsResource",
-                    label: "giftCards",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/OrdersResource",
-                    label: "orders",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/OrderEditsResource",
-                    label: "orderEdits",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/PaymentMethodsResource",
-                    label: "paymentMethods",
-                },
-                {
-                    type: "category",
-                    label: "products",
-                    link: {
-                        type: "doc",
-                        id: "references/js-client/classes/ProductsResource",
-                    },
-                    collapsed: true,
-                    items: [{
-                        type: "doc",
-                        id: "references/js-client/classes/ProductVariantsResource",
-                        label: "variants",
-                    }, ],
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/RegionsResource",
-                    label: "regions",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/ReturnReasonsResource",
-                    label: "returnReasons",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/ReturnsResource",
-                    label: "returns",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/ShippingOptionsResource",
-                    label: "shippingOptions",
-                },
-                {
-                    type: "doc",
-                    id: "references/js-client/classes/SwapsResource",
-                    label: "swaps",
-                },
-            ],
-        },
+          },
+        ],
+      },
     ],
-    entitiesSidebar: [{
-            type: "ref",
-            id: "development/overview",
-            label: "Back to Medusa Development",
-            customProps: {
-                sidebar_is_back_link: true,
-                sidebar_icon: "back-arrow",
+  ],
+  userGuideSidebar: [
+    {
+      type: "doc",
+      id: "user-guide",
+      label: "User Guide",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "user",
+      },
+    },
+    {
+      type: "autogenerated",
+      dirName: "user-guide",
+    },
+  ],
+  servicesSidebar: [
+    {
+      type: "ref",
+      id: "development/overview",
+      label: "Back to Medusa Development",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "html",
+      value: "Services Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "autogenerated",
+      dirName: "references/services/classes",
+    },
+  ],
+  jsClientSidebar: [
+    {
+      type: "ref",
+      id: "homepage",
+      label: "Back to home",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "js-client/overview",
+      label: "Medusa JS Client",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "javascript",
+      },
+    },
+    {
+      type: "doc",
+      id: "js-client/overview",
+      label: "Medusa JS Client",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "javascript",
+      },
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Resources",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "category",
+          label: "admin",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/Admin",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminAuthResource",
+              label: "auth",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminBatchJobsResource",
+              label: "batchJobs",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCollectionsResource",
+              label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCurrenciesResource",
+              label: "currencies",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCustomerGroupsResource",
+              label: "customerGroups",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCustomersResource",
+              label: "customers",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminDiscountsResource",
+              label: "discounts",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminDraftOrdersResource",
+              label: "draftOrders",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminGiftCardsResource",
+              label: "giftCards",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminInvitesResource",
+              label: "invites",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminNotesResource",
+              label: "notes",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminNotificationsResource",
+              label: "notifications",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminOrdersResource",
+              label: "orders",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminPriceListResource",
+              label: "priceLists",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminProductsResource",
+              label: "products",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminProductTagsResource",
+              label: "productTags",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminProductTypesResource",
+              label: "productTypes",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminRegionsResource",
+              label: "regions",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminReturnReasonsResource",
+              label: "returnReasons",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminReturnsResource",
+              label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSalesChannelsResource",
+              label: "salesChannels",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminShippingOptionsResource",
+              label: "shippingOptions",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminShippingProfilesResource",
+              label: "shippingProfiles",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminStoresResource",
+              label: "store",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSwapsResource",
+              label: "swaps",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminTaxRatesResource",
+              label: "taxRates",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminUploadsResource",
+              label: "uploads",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminUsersResource",
+              label: "users",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminVariantsResource",
+              label: "variants",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/AuthResource",
+          label: "auth",
+        },
+        {
+          type: "category",
+          label: "carts",
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/CartsResource",
+          },
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/LineItemsResource",
+              label: "lineItems",
             },
         },
         {
-            type: "html",
-            value: "Entities Reference",
-            customProps: {
-                sidebar_is_title: true,
-                sidebar_icon: "folder-open",
-            },
+          type: "doc",
+          id: "references/js-client/classes/CollectionsResource",
+          label: "collections",
         },
         {
-            type: "autogenerated",
-            dirName: "references/entities/classes",
+          type: "category",
+          label: "customers",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/CustomerResource",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/AddressesResource",
+              label: "addresses",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/PaymentMethodsResource",
+              label: "paymentMethods",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/GiftCardsResource",
+          label: "giftCards",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/OrdersResource",
+          label: "orders",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/OrderEditsResource",
+          label: "orderEdits",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/PaymentMethodsResource",
+          label: "paymentMethods",
+        },
+        {
+          type: "category",
+          label: "products",
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/ProductsResource",
+          },
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/ProductVariantsResource",
+              label: "variants",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/RegionsResource",
+          label: "regions",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ReturnReasonsResource",
+          label: "returnReasons",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ReturnsResource",
+          label: "returns",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ShippingOptionsResource",
+          label: "shippingOptions",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/SwapsResource",
+          label: "swaps",
         },
     ],
 }

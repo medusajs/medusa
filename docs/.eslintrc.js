@@ -18,8 +18,8 @@ module.exports = {
   ],
   settings: {
     react: {
-        version: "detect"
-    }
+      version: "detect",
+    },
   },
   rules: {
     "no-undef": "off",
@@ -30,8 +30,6 @@ module.exports = {
     curly: ["error", "all"],
     "new-cap": "off",
     "require-jsdoc": "off",
-    "no-unused-expressions": "off",
-    "no-unused-vars": "off",
     camelcase: "off",
     "no-invalid-this": "off",
     "max-len": [
@@ -78,15 +76,15 @@ module.exports = {
     "space-infix-ops": "off",
     "eol-last": ["error", "always"],
     "react/prop-types": "off",
-    "react/jsx-no-undef": "off"
+    "react/jsx-no-undef": "off",
   },
   env: {
     es6: true,
     node: true,
   },
   ignorePatterns: [
-    'docs/content/references/**',
-    'docs/content/**/events-list.md'
+    "docs/content/references/**",
+    "docs/content/**/events-list.md",
   ],
   overrides: [
     {
@@ -115,6 +113,7 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
       },
     },
   ],
