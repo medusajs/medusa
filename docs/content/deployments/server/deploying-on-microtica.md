@@ -73,7 +73,7 @@ The second step provides customization posibilities by configuring environment v
 
 Add an application name and the admin credentials that will be used to create an initial admin user with which you can later sign in to your Medusa Admin. 
 
-Choose whether you want a production Medusa Server environment or a development one. In production mode, this template will provision **managed RDS PostgreSQL and Redis instances**. In development mode, the template will use **local SQLite and a fake Redis instance**.
+Then, choose whether you want a production Medusa Backend environment or a development one. The production template will provision your managed RDS PostgreSQL and Redis instances. On the other hand, the development template will use a local SQLite and a fake Redis instance.
 
 ![Configure Template](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f9d62c7658915a3788_ERA-ETfPfTiCQ8wDPQZX6IxCZiDhX9GIj-jNTxIUfh6AKdC0BjdVKmuJbaaUlzQeITZWW00Ro1vFZj2R_arYBqD1AbWwlygPwzMOlwYGXby9ZtZ4pfI1A7jZ-oI4fmWHA3VmXtB1QR8NERVxEsT9R1zPQujSTIaWtQUs4gMAM6rVvA6iOfQZR7Qx1NcY.png)
 
