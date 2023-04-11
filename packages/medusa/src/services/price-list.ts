@@ -412,6 +412,13 @@ class PriceListService extends TransactionBaseService {
         })
       )
 
+      if (priceListId) {
+        const variantsWithPriceList = variants.filter((variant) =>
+          variant.prices.some((price) => price.price_list_id === priceListId)
+        )
+        return [variantsWithPriceList, variantsWithPriceList.length]
+      }
+
       return [variantsWithPrices, count]
     })
   }
