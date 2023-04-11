@@ -5789,7 +5789,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6028,7 +6028,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6039,7 +6039,7 @@ __metadata:
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
@@ -6057,7 +6057,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
     typescript: ^4.4.4
     ulid: ^2.3.0
   languageName: unknown
@@ -8166,10 +8166,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sqltools/formatter@npm:^1.2.2":
-  version: 1.2.3
-  resolution: "@sqltools/formatter@npm:1.2.3"
-  checksum: c65c212db3b0ff20e9e26091a847118ef09afe6fa7984a5a24ce04fcc89585ae9797e47ef3f388ca7a7cb34b3a3c9938eb5859d2d2cc80ac0fbc55e05c143295
+"@sqltools/formatter@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "@sqltools/formatter@npm:1.2.5"
+  checksum: 4b4fa62b8cd4880784b71cc5edd4a13da04fda0a915c14282765a8ec1a900a495e69b322704413e2052d221b5646d9fb0e20e87911f9a8f438f33180eecb11a4
   languageName: node
   linkType: hard
 
@@ -13173,10 +13173,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-root-path@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "app-root-path@npm:3.0.0"
-  checksum: 13e78f5a393193dbaf8ba8cecb9c704f112830388a18f334c66615bdcab867287b671e51a88c2d2b5404e872318ebe1e877ee25af6c192e75a4370158e33fb5d
+"app-root-path@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "app-root-path@npm:3.1.0"
+  checksum: 4a0fd976de1bffcdb18a5e1f8050091f15d0780e0582bca99aaa9d52de71f0e08e5185355fcffc781180bfb898499e787a2f5ed79b9c448b942b31dc947acaa9
   languageName: node
   linkType: hard
 
@@ -17345,7 +17345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0, date-fns@npm:^2.28.0":
+"date-fns@npm:^2.0.1, date-fns@npm:^2.24.0":
   version: 2.29.3
   resolution: "date-fns@npm:2.29.3"
   checksum: aa9128c876ef69a05988029d6aa3d7e5c47a1e978f18b77b48126683d1a2e6605a16c3f5293ca9f4ca790d0755b5061fcea5b469f097871cd53f6590a5c1adc4
@@ -18130,7 +18130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.0, dotenv@npm:^16.0.3":
+"dotenv@npm:^16.0.3":
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
   checksum: 109457ac5f9e930ca8066ea33887b6f839ab24d647a7a8b49ddcd1f32662e2c35591c5e5b9819063e430148a664d0927f0cbe60cf9575d89bc524f47ff7e78f0
@@ -23366,7 +23366,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -23387,7 +23387,7 @@ __metadata:
     medusa-fulfillment-webshipper: 1.3.8
     medusa-interfaces: 1.3.7
     medusa-plugin-sendgrid: 1.3.8
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -23403,7 +23403,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -29711,6 +29711,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mkdirp@npm:^2.1.3":
+  version: 2.1.6
+  resolution: "mkdirp@npm:2.1.6"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 96f551c651dd8f5f9435d53df1a7b9bfc553be769ee6da5192c37c1f303a376ef1c6996f96913d4a8d357060451d4526a346031d1919f92c58806a5fa3cd8dfe
+  languageName: node
+  linkType: hard
+
 "mlly@npm:^1.1.0, mlly@npm:^1.1.1":
   version: 1.1.1
   resolution: "mlly@npm:1.1.1"
@@ -35431,7 +35440,7 @@ __metadata:
     typedoc-plugin-markdown: ^3.13.4
     typedoc-plugin-merge-modules: ^4.0.1
     typedoc-plugin-reference-excluder: ^1.0.0
-    typeorm: ^0.3.11
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -38559,7 +38568,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.4.1":
+"tslib@npm:^2.4.1, tslib@npm:^2.5.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: e32fc99cc730dd514e53c44e668d76016e738f0bcc726aad5dbd2d335cf19b87a95a9b1e4f0a9993e370f1d702b5e471cdd4acabcac428a3099d496b9af2021e
@@ -38959,27 +38968,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.11":
-  version: 0.3.11
-  resolution: "typeorm@npm:0.3.11"
+"typeorm@npm:^0.3.14":
+  version: 0.3.14
+  resolution: "typeorm@npm:0.3.14"
   dependencies:
-    "@sqltools/formatter": ^1.2.2
-    app-root-path: ^3.0.0
+    "@sqltools/formatter": ^1.2.5
+    app-root-path: ^3.1.0
     buffer: ^6.0.3
-    chalk: ^4.1.0
+    chalk: ^4.1.2
     cli-highlight: ^2.1.11
-    date-fns: ^2.28.0
-    debug: ^4.3.3
-    dotenv: ^16.0.0
-    glob: ^7.2.0
-    js-yaml: ^4.1.0
-    mkdirp: ^1.0.4
+    debug: ^4.3.4
+    dotenv: ^16.0.3
+    glob: ^8.1.0
+    mkdirp: ^2.1.3
     reflect-metadata: ^0.1.13
     sha.js: ^2.4.11
-    tslib: ^2.3.1
-    uuid: ^8.3.2
-    xml2js: ^0.4.23
-    yargs: ^17.3.1
+    tslib: ^2.5.0
+    uuid: ^9.0.0
+    yargs: ^17.6.2
   peerDependencies:
     "@google-cloud/spanner": ^5.18.0
     "@sap/hana-client": ^2.12.25
@@ -38987,8 +38993,8 @@ __metadata:
     hdb-pool: ^0.1.6
     ioredis: ^5.0.4
     mongodb: ^3.6.0
-    mssql: ^7.3.0
-    mysql2: ^2.2.5
+    mssql: ^9.1.1
+    mysql2: ^2.2.5 || ^3.0.1
     oracledb: ^5.1.0
     pg: ^8.5.1
     pg-native: ^3.0.0
@@ -39037,7 +39043,7 @@ __metadata:
     typeorm: cli.js
     typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
     typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: a72d406658754ca9cfd67a075ec234740bf4f96fb8a9ee283fe0eb92872357a977233dbde009063280fe059cd2af3ef72cd38dbc29631eed0c2e5f9355867bfc
+  checksum: 26190e9c8f0cd1f030df76f94d8fd8ae40f6ddab5cd037b424c1bbedf0353a441000d10d0ecebc663cc853afab33a2fc538f0a6287330e4338aa59d1258888ce
   languageName: node
   linkType: hard
 
@@ -40914,7 +40920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xml2js@npm:^0.4.23, xml2js@npm:^0.4.5":
+"xml2js@npm:^0.4.5":
   version: 0.4.23
   resolution: "xml2js@npm:0.4.23"
   dependencies:
@@ -41165,6 +41171,21 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^21.1.1
   checksum: dd5c89aa8186d2a18625b26b68beb635df648617089135e9661107a92561056427bbd41dbfa228db5a7d968ea1043d96c036c2eb978acf7b61a0ae48bf3be206
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^17.6.2":
+  version: 17.7.1
+  resolution: "yargs@npm:17.7.1"
+  dependencies:
+    cliui: ^8.0.1
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.3
+    y18n: ^5.0.5
+    yargs-parser: ^21.1.1
+  checksum: 0ed3b7694d94da777f3591f1d786d947ed2e59b897da0a0c30e541109ae087979ac26b4ec39557f5e9c4592f19806447963fb132049b9806a1d416bcdd24d2b4
   languageName: node
   linkType: hard
 
