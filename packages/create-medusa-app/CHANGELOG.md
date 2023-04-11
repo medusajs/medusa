@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.10
+
+### Patch Changes
+
+- [#3376](https://github.com/medusajs/medusa/pull/3376) [`88392e017`](https://github.com/medusajs/medusa/commit/88392e017653b53069793bd2ee451c2e6b7bcf17) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(create-medusa-app): Remove admin + Gatsby starter from npx
+
 ## 0.0.10-rc.0
 
 ### Patch Changes

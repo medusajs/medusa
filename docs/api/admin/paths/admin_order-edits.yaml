@@ -1,0 +1,119 @@
+get:
+  operationId: GetOrderEdits
+  summary: List OrderEdits
+  description: List OrderEdits.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: q
+      description: Query used for searching order edit internal note.
+      schema:
+        type: string
+    - in: query
+      name: order_id
+      description: List order edits by order id.
+      schema:
+        type: string
+    - in: query
+      name: limit
+      description: The number of items in the response
+      schema:
+        type: number
+        default: '20'
+    - in: query
+      name: offset
+      description: The offset of items in response
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  x-codegen:
+    method: list
+    queryParams: GetOrderEditsParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_order-edits/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_order-edits/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Order Edits
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminOrderEditsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostOrderEdits
+  summary: Create an OrderEdit
+  description: Creates an OrderEdit.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostOrderEditsReq.yaml
+  x-authenticated: true
+  x-codegen:
+    method: create
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_order-edits/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_order-edits/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Order Edits
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminOrderEditsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

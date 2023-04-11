@@ -10,7 +10,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /admin/product-categories/{id}/products/batch
  * operationId: "PostProductCategoriesCategoryProductsBatch"
- * summary: "Add Products to a category"
+ * summary: "Add Products to a Category"
  * description: "Assign a batch of products to a product category."
  * x-authenticated: true
  * parameters:
@@ -32,10 +32,10 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.addProducts(product_category_id, {
+ *       medusa.admin.productCategories.addProducts(productCategoryId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
@@ -46,7 +46,7 @@ import { FindParams } from "../../../../types/common"
  *     label: cURL
  *     source: |
  *       curl --location \
- *       --request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \
+ *       --request POST 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

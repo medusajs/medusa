@@ -67,6 +67,16 @@ import {
  *   method: list
  *   queryParams: AdminGetReservationsParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.reservations.list()
+ *       .then(({ reservations, count, limit, offset }) => {
+ *         console.log(reservations.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

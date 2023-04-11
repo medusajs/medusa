@@ -332,6 +332,15 @@ class LineItemService extends TransactionBaseService {
       unit_price = context.variantPricing?.calculated_price ?? undefined
     }
 
+    if (unit_price == null) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot generate line item for variant "${
+          variant.title ?? variant.product.title ?? variant.id
+        }" without a price`
+      )
+    }
+
     const rawLineItem: Partial<LineItem> = {
       unit_price: unit_price,
       title: variant.product.title,

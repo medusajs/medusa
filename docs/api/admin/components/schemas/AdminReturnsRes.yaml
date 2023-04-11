@@ -1,4 +1,10 @@
 type: object
+x-expanded-relation:
+  field: return
+  relations:
+    - swap
+required:
+  - return
 properties:
   return:
     $ref: ./Return.yaml

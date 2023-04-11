@@ -187,6 +187,9 @@ export const OrderServiceMock = {
   retrieveByCartId: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve({ id: IdMap.getId("test-order") })
   }),
+  retrieveByCartIdWithTotals: jest.fn().mockImplementation((cartId) => {
+    return Promise.resolve({ id: IdMap.getId("test-order") })
+  }),
   decorate: jest.fn().mockImplementation((order) => {
     order.decorated = true
     return order

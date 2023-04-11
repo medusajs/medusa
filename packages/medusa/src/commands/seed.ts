@@ -13,8 +13,8 @@ import Logger from "../loaders/logger"
 import featureFlagLoader from "../loaders/feature-flags"
 
 import {
-  ProductService,
   ProductCategoryService,
+  ProductService,
   ProductVariantService,
   RegionService,
   ShippingOptionService,
@@ -22,7 +22,6 @@ import {
   StoreService,
   UserService,
 } from "../services"
-import { ProductCategory } from "../models"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
@@ -234,8 +233,10 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       }
     }
 
-    for (const c of categories) {
-      await createProductCategory(c, null)
+    if (dbType !== "sqlite") {
+      for (const c of categories) {
+        await createProductCategory(c, null)
+      }
     }
   })
 

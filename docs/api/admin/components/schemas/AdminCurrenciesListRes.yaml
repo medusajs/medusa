@@ -1,4 +1,9 @@
 type: object
+required:
+  - currencies
+  - count
+  - offset
+  - limit
 properties:
   currencies:
     type: array
