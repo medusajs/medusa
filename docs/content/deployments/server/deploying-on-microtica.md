@@ -67,7 +67,7 @@ Before you can deploy your Medusa backend you need to connect your preferred Git
 
 If you already have a Medusa backend repository that you want to deploy then you need to perform a couple of changes in your source code. Follow [this tutorial to deploy and existing Medusa Backend app](https://docs.microtica.com/medusa-server?utm_source=medusa&utm_medium=docs&utm_campaign=medusa#xUBRz).
 
-### 2. Configure the Template
+### Step 2: Configure the Template
 
 The second step provides customization posibilities by configuring environment variables. Add an application name and the admin credentials **that will be used to create an initial admin user** with which you can later sign in to your Medusa Admin. 
 
