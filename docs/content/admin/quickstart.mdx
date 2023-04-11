@@ -17,12 +17,16 @@ The admin dashboard is now shipped as an NPM package, and the previous GitHub re
 
 ## Overview
 
-The admin dashboard is installed on the Medusa backend. Setting it up depends on how you intend to use it:
+The admin dashboard is installed on the Medusa backend. The admin dashboard starts when you start the Medusa backend. This also means you can later deploy the Medusa backend along with the admin dashboard on the same hosting.
+
+This guide will explain the steps and configurations required to set up the admin dashboard.
+
+<!-- The admin dashboard is installed on the Medusa backend. Setting it up depends on how you intend to use it:
 
 1. [Served alongside the Medusa backend](#option-1-install-and-serve-admin-with-the-backend): with this approach, the admin dashboard starts when you start the Medusa backend. This also means you can later deploy the Medusa backend along with the admin dashboard on the same hosting.
 2. [Served separately from the Medusa backend](#option-2-install-and-serve-admin-separately): with this approach, the admin dashboard starts separately from the Medusa backend. You still need the Medusa backend to be running as the admin uses its APIs. This is useful if you intend to later deploy the admin dashboard on a different hosting than the Medusa Backend, such as using Vercel.
 
-This guide will explain the steps and configurations required for both approaches.
+This guide will explain the steps and configurations required for both approaches. -->
 
 ---
 
@@ -46,15 +50,19 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ---
 
-## Option 1: Install and Serve Admin with the Backend
+<!-- ## Option 1: Install and Serve Admin with the Backend -->
+
+## Install and Serve Admin with the Backend
 
 This section explains how to install the admin to be served with the Medusa Backend and later deployed together.
 
-:::note
+<!-- :::note
 
 If you decide later to serve the admin for development separately or deploy it on a different hosting, you can go back and follow the steps in [Option 2](#option-2-install-and-serve-admin-serparately).
 
 :::
+
+-->
 
 ### Step 1: Install the Package
 
@@ -117,6 +125,8 @@ This starts the Medusa Backend and the admin dashboard. By default, the admin wi
 
 ---
 
+<!-- 
+
 ## Option 2: Install and Serve Admin Separately
 
 This section explains how to install the admin dashboard using approach 2, which allows you to serve and later deploy the admin separately.
@@ -172,6 +182,8 @@ This runs the admin dashboard on `localhost:7001`.
 />
 
 ---
+
+-->
 
 ## Demo Credentials
 
