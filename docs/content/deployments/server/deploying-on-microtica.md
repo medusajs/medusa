@@ -91,7 +91,7 @@ Finally, a deployment summary of what will be provisioned on your AWS account is
 
 ![Deployment Summary](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f932d1b32052287126_h96ejVytOhLLEUCeIWbQu-OG4oxJQqj5z9ZJXjH5EboT5gnw6s61hl2mvHcUaGQUyJMQtNdyb4hdFWDvYlFBa8wznkBus7nkXR_0JAIRvN5QDdZP6WCDNSzYeBSJcoV-ifDdUHzJODF_Oxv6mgIsHtpj92PA6VgQsaYM0n_xyzV-lhalH6kdR-tku2hb.png)
 
-**It will take around ten minutes for the solution to be deployed on your cloud account.**
+It will take around ten minutes for the solution to be deployed on your cloud account.
 
 You can follow the build pipeline in real-time by clicking the **View Logs** button. 
 
