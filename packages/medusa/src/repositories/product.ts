@@ -5,15 +5,11 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { Product, ProductCategory, ProductVariant } from "../models"
+import { Product, ProductCategory } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { ProductFilterOptions } from "../types/product"
-import {
-  isObject,
-  fetchCategoryDescendantsIds,
-} from "../utils"
-import { objectToStringPath } from "@medusajs/utils"
+import { fetchCategoryDescendantsIds } from "../utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -85,21 +81,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
 
-    // TODO: https://github.com/typeorm/typeorm/issues/9719
-    // https://github.com/typeorm/typeorm/issues/6294
-    // Cleanup the repo and fix order/skip/take and relation load strategy when those issues are resolved
-
-    const orderFieldsCollectionPointSeparated = objectToStringPath(
-      options.order ?? {}
-    )
-
-    const isDepth1 = !orderFieldsCollectionPointSeparated.some(
-      (field) => field.indexOf(".") !== -1
-    )
-    options_.relationLoadStrategy = isDepth1
-      ? options_.relationLoadStrategy
-      : "join"
-
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
 
@@ -156,20 +137,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           },
         },
       ]
-    }
-
-    // Add explicit ordering for variant ranking on the variants join directly
-    // This constraint is applied if no other order is applied
-    if (options_.relations.variants && !isObject(options_.order?.variants)) {
-      queryBuilder.leftJoin(
-        (subQueryBuilder) => {
-          return subQueryBuilder
-            .from(ProductVariant, "v")
-            .orderBy("v.variant_rank", "ASC")
-        },
-        "variants",
-        "product.id = variants.product_id"
-      )
     }
 
     if (priceListId) {
