@@ -16,7 +16,13 @@ import {
 } from "."
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Cart, Discount, LineItem, Region } from "../models"
+import {
+  Cart,
+  Discount,
+  DiscountConditionType,
+  LineItem,
+  Region,
+} from "../models"
 import {
   AllocationType as DiscountAllocation,
   DiscountRule,
@@ -75,9 +81,13 @@ class DiscountService extends TransactionBaseService {
     customerService,
     eventBusService,
     featureFlagRouter,
+    logger,
   }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
+
+    // @ts-ignore
+    this.logger = logger
 
     this.discountRepository_ = discountRepository
     this.discountRuleRepository_ = discountRuleRepository
@@ -728,10 +738,21 @@ class DiscountService extends TransactionBaseService {
                 `Discount ${disc.code} is not valid for customer`
               )
             }
+          } else if (this.hasCustomersGroupCondition(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Cannot apply discount ${disc.code} because customer id is undefined`
+            )
           }
         })
       )
     })
+  }
+
+  hasCustomersGroupCondition(discount: Discount): boolean {
+    return discount.rule.conditions.some(
+      (cond) => cond.type === DiscountConditionType.CUSTOMER_GROUPS
+    )
   }
 
   hasReachedLimit(discount: Discount): boolean {
@@ -797,7 +818,9 @@ class DiscountService extends TransactionBaseService {
 
       return await discountConditionRepo.canApplyForCustomer(
         discountRuleId,
-        customer.id
+        customer.id,
+        // @ts-ignore
+        this.logger
       )
     })
   }
