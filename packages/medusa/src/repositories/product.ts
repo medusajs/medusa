@@ -9,10 +9,7 @@ import { Product, ProductCategory, ProductVariant } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { ProductFilterOptions } from "../types/product"
-import {
-  isObject,
-  fetchCategoryDescendantsIds,
-} from "../utils"
+import { fetchCategoryDescendantsIds, isObject } from "../utils"
 import { objectToStringPath } from "@medusajs/utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
@@ -66,6 +63,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options_.relationLoadStrategy = "query"
 
     const queryBuilder = await this.prepareQueryBuilder_(options_, q)
+
     return await queryBuilder.getManyAndCount()
   },
 

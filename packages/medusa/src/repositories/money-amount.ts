@@ -299,7 +299,7 @@ export const MoneyAmountRepository = dataSource
         )
       }
 
-      const prices = await qb.getRawMany()
+      const prices = await qb.getMany()
       return groupBy(prices, "variant_id")
     },
 
