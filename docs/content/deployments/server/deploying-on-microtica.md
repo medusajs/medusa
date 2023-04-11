@@ -81,7 +81,7 @@ Then, choose whether you want a production Medusa Backend environment or a devel
 
 In the last step you select the environment in which you want to deploy the template. An existing default environment called `development` will be preselected here, or you can create a new environment.  
 
-Connect your AWS account when prompted. This process takes only a few seconds, so afterward only choose the region you want to deploy in. 
+Then, connect your AWS account when prompted. This process takes only a few seconds, so afterward only choose the region you want to deploy in. 
 
 ![Connect AWS account](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f98144a7eb845dabee_GYZFu6wD5huAf6H5sCs4qpz09wQOaI2IMThsEd0CwR4PePc1ryF4mAlb4YkTZdIkX3Mnh_OzEr9bdm2r1_5GkYHHlFgHksP_hDj7DmlnitZmWaotj5th3R4wHK6gJzhIDmjfXeCk30YdK1kaeGH41JRCyteVH9y3YqzIyGz8xQlcDYKCoWVxDey47mPw.png)
 
