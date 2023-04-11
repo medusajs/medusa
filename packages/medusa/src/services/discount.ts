@@ -81,13 +81,9 @@ class DiscountService extends TransactionBaseService {
     customerService,
     eventBusService,
     featureFlagRouter,
-    logger,
   }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    // @ts-ignore
-    this.logger = logger
 
     this.discountRepository_ = discountRepository
     this.discountRuleRepository_ = discountRuleRepository
@@ -818,9 +814,7 @@ class DiscountService extends TransactionBaseService {
 
       return await discountConditionRepo.canApplyForCustomer(
         discountRuleId,
-        customer.id,
-        // @ts-ignore
-        this.logger
+        customer.id
       )
     })
   }
