@@ -87,7 +87,7 @@ Then, connect your AWS account when prompted. This process takes only a few seco
 
 ### Step 4: Deploy to AWS
 
-Finally, a deployment summary of what will be provisioned on your AWS account is presented. Click on **Deploy** to trigger a deployment of the template and start creating the infrastructure for a Medusa Server.
+Finally, a deployment summary of what will be provisioned on your AWS account is presented. Click on the "Deploy" button to trigger a deployment of the template and start creating the infrastructure for a Medusa backend.
 
 ![Deployment Summary](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f932d1b32052287126_h96ejVytOhLLEUCeIWbQu-OG4oxJQqj5z9ZJXjH5EboT5gnw6s61hl2mvHcUaGQUyJMQtNdyb4hdFWDvYlFBa8wznkBus7nkXR_0JAIRvN5QDdZP6WCDNSzYeBSJcoV-ifDdUHzJODF_Oxv6mgIsHtpj92PA6VgQsaYM0n_xyzV-lhalH6kdR-tku2hb.png)
 
