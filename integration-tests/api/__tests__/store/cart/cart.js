@@ -1135,7 +1135,7 @@ describe("/store/carts", () => {
       } catch (error) {
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual(
-          "Cannot apply discount TEST because customer id is undefined"
+          "Discount TEST is only valid for specific customer"
         )
       }
     })

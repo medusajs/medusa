@@ -737,7 +737,7 @@ class DiscountService extends TransactionBaseService {
           } else if (this.hasCustomersGroupCondition(disc)) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
-              `Cannot apply discount ${disc.code} because customer id is undefined`
+              `Discount ${disc.code} is only valid for specific customer`
             )
           }
         })
