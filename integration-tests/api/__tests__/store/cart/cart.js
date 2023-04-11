@@ -1083,7 +1083,7 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("throws if no customer associated with the cart while applying a customer groups discount", async () => {
+    it("throws if no customer is associated with the cart while applying a customer groups discount", async () => {
       const api = useApi()
 
       await simpleCustomerGroupFactory(dbConnection, {
