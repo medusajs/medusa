@@ -2,10 +2,9 @@
  * Custom sidebar definitions:
  * - To declare a sidebar element as part of the homepage sidebar, add className: 'homepage-sidebar-item'
  * - To add an icon:
- *   - add the icon in www/docs/src/theme/Icon/<IconName>/index.js as a React SVG element if it doesn't exist, where `<IconName>` is the camel case name of the icon
+ *   - add the icon in www/docs/src/theme/Icon/<IconName>/index.ts as a React SVG element if it doesn't exist, where `<IconName>` is the camel case name of the icon
  *   - add the mapping to the icon in www/docs/src/theme/Icon/index.js
  *   - add in customProps sidebar_icon: 'icon-name'
- * - To add a divider line, add in customProps sidebar_is_divider_line: true and set value/label to any value
  * - To add a group divider add in customProps sidebar_is_group_divider: true and set the label/value to the title that should appear in the divider.
  * - To add a back item, add in customProps:
  *   - sidebar_is_back_link: true
@@ -457,12 +456,9 @@ module.exports = {
           label: "Regions",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/regions-and-currencies/currencies",
           label: "Currencies",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
@@ -477,12 +473,9 @@ module.exports = {
           label: "Admin: Manage Regions",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/regions-and-currencies/admin/manage-currencies",
           label: "Admin: Manage Currencies",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",

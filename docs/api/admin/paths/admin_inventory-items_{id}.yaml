@@ -1,7 +1,7 @@
 get:
   operationId: GetInventoryItemsInventoryItem
-  summary: Retrive an Inventory Item.
-  description: Retrives an Inventory Item.
+  summary: Get an Inventory Item
+  description: Retrieves an Inventory Item.
   x-authenticated: true
   parameters:
     - in: path
@@ -58,7 +58,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostInventoryItemsInventoryItem
-  summary: Update an Inventory Item.
+  summary: Update an Inventory Item
   description: Updates an Inventory Item.
   x-authenticated: true
   parameters:

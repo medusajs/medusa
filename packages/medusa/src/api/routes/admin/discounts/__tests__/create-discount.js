@@ -7,8 +7,8 @@ const validRegionId = IdMap.getId("region-france")
 describe("POST /admin/discounts", () => {
   const adminSession = {
     jwt: {
-      userId: IdMap.getId("admin_user")
-    }
+      userId: IdMap.getId("admin_user"),
+    },
   }
 
   describe("successful creation", () => {

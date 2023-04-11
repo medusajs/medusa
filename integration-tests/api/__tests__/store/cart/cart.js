@@ -1083,6 +1083,63 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("throws if no customer is associated with the cart while applying a customer groups discount", async () => {
+      const api = useApi()
+
+      await simpleCustomerGroupFactory(dbConnection, {
+        id: "customer-group-2",
+        name: "Loyal",
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-2"],
+            },
+          ],
+        },
+      })
+
+      try {
+        await api.post("/store/carts/test-customer-discount", {
+          discounts: [{ code: "TEST" }],
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "Discount TEST is only valid for specific customer"
+        )
+      }
+    })
+
     it("successfully removes adjustments upon update without discounts", async () => {
       const discountData = {
         code: "MEDUSA185DKK",
