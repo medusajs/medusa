@@ -117,3 +117,10 @@ The environment variables can be updated, added, or configured after deployment 
 
 You can read more about the built-in environment variables, as well as how to specify custom environment variables in the Medusa backend runtime [in Microtica documentation](https://docs.microtica.com/medusa-server?utm_source=medusa&utm_medium=docs&utm_campaign=medusa#z8li6). 
 
+---
+
+## Automated deployments
+
+Any updates to the backend (e.g. updating the Medusa core version) are deployed automatically when changes are committed to the repository. Microtica will handle the entire process of building and deploying your application on your connected AWS account.
+
+
