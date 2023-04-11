@@ -69,7 +69,9 @@ If you already have a Medusa backend repository that you want to deploy then you
 
 ### Step 2: Configure the Template
 
-The second step provides customization posibilities by configuring environment variables. Add an application name and the admin credentials **that will be used to create an initial admin user** with which you can later sign in to your Medusa Admin. 
+The second step provides customization posibilities by configuring environment variables.
+
+Add an application name and the admin credentials that will be used to create an initial admin user with which you can later sign in to your Medusa Admin. 
 
 Choose whether you want a production Medusa Server environment or a development one. In production mode, this template will provision **managed RDS PostgreSQL and Redis instances**. In development mode, the template will use **local SQLite and a fake Redis instance**.
 
