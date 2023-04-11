@@ -77,7 +77,7 @@ Then, choose whether you want a production Medusa Backend environment or a devel
 
 ![Configure Template](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f9d62c7658915a3788_ERA-ETfPfTiCQ8wDPQZX6IxCZiDhX9GIj-jNTxIUfh6AKdC0BjdVKmuJbaaUlzQeITZWW00Ro1vFZj2R_arYBqD1AbWwlygPwzMOlwYGXby9ZtZ4pfI1A7jZ-oI4fmWHA3VmXtB1QR8NERVxEsT9R1zPQujSTIaWtQUs4gMAM6rVvA6iOfQZR7Qx1NcY.png)
 
-### 3. Connect an AWS account 
+### Step 3: Connect an AWS account 
 
 In the last step you select the environment in which you want to deploy the template. An existing default environment called `development` will be preselected here, or you can create a new environment.  
 
