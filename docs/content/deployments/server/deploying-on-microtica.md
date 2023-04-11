@@ -97,7 +97,7 @@ You can follow the build pipeline in real-time by clicking the **View Logs** but
 
 ![Building Resources](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f9a465c27cf7090e5f_gxwdXAAmUxHsSyJlgScHuu4m7GiFTNnwW-OZoAhDC8v-Ez3KmsK-OCKfF2Qe2JUtxMyih7jCA7n-hAZnx0fdFjv-TWyDuoAUvftSRE9hqmPB1gVhG6lH0IhXqbliou1VnAVDvlCtHobzlUrrDhnCmzob9PfdNGrzlhwsL60QsAXJm1gIPE27J6P_Y2Y3.png)
 
-Once the build process is complete, a new deployment with the infrastructure resources is triggered. You can follow the logs of the deployment process by clicking the **View deployment** button, and then selecting the deployment from the list. 
+Once the build process is complete, a new deployment with the infrastructure resources is triggered. You can follow the logs of the deployment process by clicking the "View deployment" button, and then selecting the deployment from the list. 
 
 ![Deployment Logs](https://global-uploads.webflow.com/62b04b3a715c202b5fa1408b/639727f93aa3974438e56689_vF-4U1L5B_sQQJdrjaE_bdlN2hdTsOcn5eWVRfgzF1UqNAuWAqN2zh9ttWp6SW2jjCqPUNLpRsL4j01FR5emAMcJqCbfwbaBv3Np49JH6hpggYm3rmY-xYCOg8H0dooKnC4x_sTD-JreveLzUxBMxQI3M0gCm-8B2YJ5eJj7dU8mf8qlSTYmnpnExIvB.png)
 
