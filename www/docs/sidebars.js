@@ -191,15 +191,6 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "deployments/server/deploying-on-qovery",
-              label: "Deploy on Qovery",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
-              },
-            },
-            {
-              type: "doc",
               id: "deployments/server/deploying-on-railway",
               label: "Deploy on Railway",
               customProps: {
@@ -207,6 +198,19 @@ module.exports = {
                   light:
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png",
+                },
+              },
+            },
+            {
+              type: "doc",
+              id: "deployments/server/deploying-on-qovery",
+              label: "Deploy on Qovery",
+              customProps: {
+                image:
+                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
+                badge: {
+                  variant: "orange",
+                  children: "Deprecated",
                 },
               },
             },
