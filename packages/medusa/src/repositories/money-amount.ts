@@ -233,7 +233,7 @@ export const MoneyAmountRepository = dataSource
       customer_id?: string,
       include_discount_prices?: boolean,
       include_tax_inclusive_pricing = false
-    ): Promise<Record<string, MoneyAmount[]>> {
+    ): Promise<[Record<string, MoneyAmount[]>, number]> {
       variant_ids = Array.isArray(variant_ids) ? variant_ids : [variant_ids]
 
       const date = new Date()
@@ -299,8 +299,10 @@ export const MoneyAmountRepository = dataSource
         )
       }
 
-      const prices = await qb.getMany()
-      return groupBy(prices, "variant_id")
+      const [prices, count] = await qb.getManyAndCount()
+      const groupedPrices = groupBy(prices, "variant_id")
+
+      return [groupedPrices, count]
     },
 
     async updatePriceListPrices(

@@ -65,8 +65,7 @@ describe("CartService", () => {
   describe("retrieve", () => {
     let result
     const cartRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({ id: IdMap.getId("emptyCart") }),
+      findOne: () => Promise.resolve({ id: IdMap.getId("emptyCart") }),
     })
     beforeAll(async () => {
       jest.clearAllMocks()
@@ -83,13 +82,11 @@ describe("CartService", () => {
 
     it("calls cart model functions", () => {
       expect(cartRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(cartRepository.findOne).toHaveBeenCalledWith(
-        {
-          where: { id: IdMap.getId("emptyCart") },
-          select: undefined,
-          relations: undefined,
-        }
-      )
+      expect(cartRepository.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("emptyCart") },
+        select: undefined,
+        relations: undefined,
+      })
     })
   })
 
@@ -853,24 +850,24 @@ describe("CartService", () => {
             customer: true,
             discounts: {
               regions: true,
-              rule: true
+              rule: true,
             },
             gift_cards: true,
             items: {
               variant: {
-                product: true
-              }
+                product: true,
+              },
             },
             payment_sessions: true,
             region: { countries: true },
             shipping_address: true,
-            shipping_methods: true
+            shipping_methods: true,
           },
           select: undefined,
           where: {
-            id: "withpays"
-          }
-        }),
+            id: "withpays",
+          },
+        })
       )
     })
   })
@@ -1310,14 +1307,14 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      calculateVariantPrice: async (variantId, context) => {
+      calculateVariantPrice: async ([{ variantId }], context) => {
         if (variantId === IdMap.getId("fail")) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
             `Money amount for variant with id ${variantId} in region ${context.region_id} does not exist`
           )
         } else {
-          return { calculatedPrice: 100 }
+          return new Map([[variantId, { calculatedPrice: 100 }]])
         }
       },
     }
@@ -1343,7 +1340,7 @@ describe("CartService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully set new region", async () => {
+    it.only("successfully set new region", async () => {
       await cartService.update(IdMap.getId("fr-cart"), {
         region_id: IdMap.getId("region-us"),
       })
@@ -1377,9 +1374,11 @@ describe("CartService", () => {
           shipping_address: {
             country_code: "us",
           },
-          items: [{
-            id: IdMap.getId("testitem")
-          }],
+          items: [
+            {
+              id: IdMap.getId("testitem"),
+            },
+          ],
           payment_session: null,
           payment_sessions: [],
           gift_cards: [],

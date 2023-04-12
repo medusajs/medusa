@@ -14,7 +14,11 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
-    data: { variantId: string; taxRates?: TaxServiceRate[] }[],
+    data: {
+      variantId: string
+      taxRates?: TaxServiceRate[]
+      quantity?: number
+    }[],
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 
@@ -30,7 +34,11 @@ export abstract class AbstractPriceSelectionStrategy
   implements IPriceSelectionStrategy
 {
   public abstract calculateVariantPrice(
-    data: { variantId: string; taxRates: TaxServiceRate[] }[],
+    data: {
+      variantId: string
+      taxRates: TaxServiceRate[]
+      quantity?: number
+    }[],
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 
@@ -52,7 +60,6 @@ export function isPriceSelectionStrategy(
 export type PriceSelectionContext = {
   cart_id?: string
   customer_id?: string
-  quantity?: number
   region_id?: string
   currency_code?: string
   include_discount_prices?: boolean

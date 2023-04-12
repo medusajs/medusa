@@ -34,15 +34,19 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   }
 
   async calculateVariantPrice(
-    data: { variantId: string; taxRates?: TaxServiceRate[] }[],
+    data: {
+      variantId: string
+      taxRates?: TaxServiceRate[]
+      quantity?: number
+    }[],
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>> {
     const dataMap = new Map(data.map((d) => [d.variantId, d]))
 
     const cacheKeysMap = new Map(
-      data.map(({ variantId }) => [
+      data.map(({ variantId, quantity }) => [
         variantId,
-        this.getCacheKey(variantId, context),
+        this.getCacheKey(variantId, { ...context, quantity }),
       ])
     )
 
@@ -82,7 +86,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     ) {
       results = await this.calculateVariantPrice_new(nonCachedData, context)
     } else {
-      /* result = await this.calculateVariantPrice_old(variantId, context)*/
+      results = await this.calculateVariantPrice_old(nonCachedData, context)
     }
 
     await Promise.all(
@@ -96,12 +100,16 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   }
 
   private async calculateVariantPrice_new(
-    data: { variantId: string; taxRates?: TaxServiceRate[] }[],
+    data: {
+      variantId: string
+      taxRates?: TaxServiceRate[]
+      quantity?: number
+    }[],
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>> {
     const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
-    const variantsPrices = await moneyRepo.findManyForVariantInRegion(
+    const [variantsPrices] = await moneyRepo.findManyForVariantInRegion(
       data.map((d) => d.variantId),
       context.region_id,
       context.currency_code,
@@ -113,6 +121,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     const variantPricesMap = new Map<string, PriceSelectionResult>()
 
     for (const [variantId, prices] of Object.entries(variantsPrices)) {
+      const dataItem = data.find((d) => d.variantId === variantId)!
+
       const result: PriceSelectionResult = {
         originalPrice: null,
         calculatedPrice: null,
@@ -170,7 +180,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
         }
 
         if (
-          isValidQuantity(ma, context.quantity) &&
+          isValidQuantity(ma, dataItem.quantity) &&
           isValidAmount(ma.amount, result, isTaxInclusive, taxRate) &&
           ((context.currency_code &&
             ma.currency_code === context.currency_code) ||
@@ -188,78 +198,82 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     return variantPricesMap
   }
 
-  /* private async calculateVariantPrice_old(
-    variant_id: string,
+  private async calculateVariantPrice_old(
+    data: {
+      variantId: string
+      taxRates?: TaxServiceRate[]
+      quantity?: number
+    }[],
     context: PriceSelectionContext
-  ): Promise<PriceSelectionResult> {
+  ): Promise<Map<string, PriceSelectionResult>> {
     const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
-    const [prices, count] = await moneyRepo.findManyForVariantInRegion(
-      variant_id,
+    const [variantsPrices] = await moneyRepo.findManyForVariantInRegion(
+      data.map((d) => d.variantId),
       context.region_id,
       context.currency_code,
       context.customer_id,
       context.include_discount_prices
     )
 
-    if (!count) {
-      return {
+    const variantPricesMap = new Map<string, PriceSelectionResult>()
+
+    for (const [variantId, prices] of Object.entries(variantsPrices)) {
+      const dataItem = data.find((d) => d.variantId === variantId)!
+
+      const result: PriceSelectionResult = {
         originalPrice: null,
         calculatedPrice: null,
-        prices: [],
-      }
-    }
-
-    const result: PriceSelectionResult = {
-      originalPrice: null,
-      calculatedPrice: null,
-      prices,
-    }
-
-    if (!context) {
-      return result
-    }
-
-    for (const ma of prices) {
-      delete ma.currency
-      delete ma.region
-
-      if (
-        context.region_id &&
-        ma.region_id === context.region_id &&
-        ma.price_list_id === null &&
-        ma.min_quantity === null &&
-        ma.max_quantity === null
-      ) {
-        result.originalPrice = ma.amount
+        prices,
       }
 
-      if (
-        context.currency_code &&
-        ma.currency_code === context.currency_code &&
-        ma.price_list_id === null &&
-        ma.min_quantity === null &&
-        ma.max_quantity === null &&
-        result.originalPrice === null // region prices take precedence
-      ) {
-        result.originalPrice = ma.amount
+      if (!prices.length || !context) {
+        variantPricesMap.set(variantId, result)
       }
 
-      if (
-        isValidQuantity(ma, context.quantity) &&
-        (result.calculatedPrice === null ||
-          ma.amount < result.calculatedPrice) &&
-        ((context.currency_code &&
-          ma.currency_code === context.currency_code) ||
-          (context.region_id && ma.region_id === context.region_id))
-      ) {
-        result.calculatedPrice = ma.amount
-        result.calculatedPriceType = ma.price_list?.type || PriceType.DEFAULT
+      for (const ma of prices) {
+        delete ma.currency
+        delete ma.region
+
+        if (
+          context.region_id &&
+          ma.region_id === context.region_id &&
+          ma.price_list_id === null &&
+          ma.min_quantity === null &&
+          ma.max_quantity === null
+        ) {
+          result.originalPrice = ma.amount
+        }
+
+        if (
+          context.currency_code &&
+          ma.currency_code === context.currency_code &&
+          ma.price_list_id === null &&
+          ma.min_quantity === null &&
+          ma.max_quantity === null &&
+          result.originalPrice === null // region prices take precedence
+        ) {
+          result.originalPrice = ma.amount
+        }
+
+        if (
+          isValidQuantity(ma, dataItem.quantity) &&
+          (result.calculatedPrice === null ||
+            ma.amount < result.calculatedPrice) &&
+          ((context.currency_code &&
+            ma.currency_code === context.currency_code) ||
+            (context.region_id && ma.region_id === context.region_id))
+        ) {
+          result.calculatedPrice = ma.amount
+          result.calculatedPriceType = ma.price_list?.type || PriceType.DEFAULT
+        }
       }
+
+      variantPricesMap.set(variantId, result)
     }
 
-    return result
-  }*/
+    return variantPricesMap
+  }
 
   public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
     await Promise.all(
@@ -271,7 +285,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
 
   private getCacheKey(
     variantId: string,
-    context: PriceSelectionContext
+    context: PriceSelectionContext & { quantity?: number }
   ): string {
     const taxRate =
       context.tax_rates?.reduce(
@@ -310,7 +324,7 @@ const isValidAmount = (
   return false
 }
 
-const isValidQuantity = (price, quantity): boolean =>
+const isValidQuantity = (price, quantity?: number): boolean =>
   (isDefined(quantity) && isValidPriceWithQuantity(price, quantity)) ||
   (typeof quantity === "undefined" && isValidPriceWithoutQuantity(price))
 

@@ -722,10 +722,9 @@ class ProductVariantService extends TransactionBaseService {
 
       const prices = await this.priceSelectionStrategy_
         .withTransaction(manager)
-        .calculateVariantPrice([{ variantId }], {
+        .calculateVariantPrice([{ variantId, quantity: context.quantity }], {
           region_id: context.regionId,
           currency_code: region.currency_code,
-          quantity: context.quantity,
           customer_id: context.customer_id,
           include_discount_prices: !!context.include_discount_prices,
         })
