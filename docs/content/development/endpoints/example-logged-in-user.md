@@ -13,9 +13,9 @@ This documentation does not explain the basics of [middlewares](./add-middleware
 
 ## Step 1: Create the Middleware
 
-Create the file `src/api/middlewareds/logged-in-user.ts` with the following content:
+Create the file `src/api/middlewares/logged-in-user.ts` with the following content:
 
-```ts title=src/api/middlewareds/logged-in-user.ts
+```ts title=src/api/middlewares/logged-in-user.ts
 import { User, UserService } from "@medusajs/medusa"
 
 export async function registerLoggedInUser(req, res, next) {
@@ -43,7 +43,13 @@ This retrieves the ID of the current user to retrieve an instance of it, then re
 
 ## Step 2: Apply Middleware on Endpoint
 
-Create the file `src/api/routes/create-product.ts` with the following content:
+If you don't have the `cors` package installed, make sure to install it first:
+
+```bash npm2yarn
+npm install cors
+```
+
+Then, create the file `src/api/routes/create-product.ts` with the following content:
 
 ```ts title=src/api/routes/create-product.ts
 import cors from "cors"
@@ -91,7 +97,7 @@ Create the file `src/api/index.ts` with the following content:
 import configLoader from "@medusajs/medusa/dist/loaders/config"
 import createProductRouter from "./routes/create-product"
 
-export default async function (rootDirectory: string) {
+export default function (rootDirectory: string) {
   const config = await configLoader(rootDirectory)
 
   const adminCors = {
