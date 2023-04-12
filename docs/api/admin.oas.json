@@ -1901,7 +1901,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.currencies.update(code, {\n  includes_tax: true\n})\n.then(({ currency }) => {\n  console.log(currency.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.currencies.update(code, {\n  includes_tax: true\n})\n.then(({ currency }) => {\n  console.log(currency.code);\n});\n"
           },
           {
             "lang": "Shell",
@@ -21062,7 +21062,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.store.addCurrency('eur')\n.then(({ store }) => {\n  console.log(store.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.store.addCurrency('eur')\n.then(({ store }) => {\n  console.log(store.currencies);\n});\n"
           },
           {
             "lang": "Shell",
@@ -21139,7 +21139,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.store.deleteCurrency('eur')\n.then(({ store }) => {\n  console.log(store.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.store.deleteCurrency('eur')\n.then(({ store }) => {\n  console.log(store.currencies);\n});\n"
           },
           {
             "lang": "Shell",
@@ -28547,6 +28547,10 @@
             "type": "string",
             "description": "The name to identify the Product Category by."
           },
+          "description": {
+            "type": "string",
+            "description": "An optional text field to describe the Product Category by."
+          },
           "handle": {
             "type": "string",
             "description": "A handle to be used in slugs."
@@ -28578,6 +28582,10 @@
           "name": {
             "type": "string",
             "description": "The name to identify the Product Category by."
+          },
+          "description": {
+            "type": "string",
+            "description": "An optional text field to describe the Product Category by."
           },
           "handle": {
             "type": "string",
