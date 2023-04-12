@@ -265,6 +265,12 @@ Then, go to `<YOUR_APP_URL>/store/products`. If the deployment was successful, y
 
 ### Testing the Admin
 
+:::note
+
+Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/quickstart.mdx#build-command-options) command as part of the start command of your backend.
+
+:::
+
 If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
 
 ---
