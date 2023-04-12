@@ -21,8 +21,8 @@ class MemcachedCacheService implements ICacheService {
     options: MemcachedCacheModuleOptions
   ) {
     this.memcached = cacheMemcachedConnection
-    this.TTL = options.ttl || DEFAULT_CACHE_TIME
-    this.namespace = options.namespace || DEFAULT_NAMESPACE
+    this.TTL = options.ttl ?? DEFAULT_CACHE_TIME
+    this.namespace = options.namespace ?? DEFAULT_NAMESPACE
   }
   /**
    * Set a key/value pair to the cache.
@@ -30,7 +30,7 @@ class MemcachedCacheService implements ICacheService {
    * @param data
    * @param ttl
    */
-  async set(
+  set(
     key: string,
     data: Record<string, unknown>,
     ttl: number = this.TTL
@@ -55,7 +55,7 @@ class MemcachedCacheService implements ICacheService {
    * Retrieve a cached value belonging to the given key.
    * @param cacheKey
    */
-  async get<T>(cacheKey: string): Promise<T | null> {
+  get<T>(cacheKey: string): Promise<T | null> {
     return new Promise((res) => {
       this.memcached.get(this.getCacheKey(cacheKey), (err, data) => {
         if (err) {
@@ -75,7 +75,7 @@ class MemcachedCacheService implements ICacheService {
    * Invalidate cache for a specific key.
    * @param key
    */
-  async invalidate(key: string): Promise<void> {
+  invalidate(key: string): Promise<void> {
     return new Promise((res, rej) => {
       this.memcached.del(this.getCacheKey(key), (err) => {
         if (err) {
