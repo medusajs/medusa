@@ -18,12 +18,53 @@
 module.exports = {
     homepage: [{
             type: "doc",
-            id: "homepage",
-            label: "Overview",
-            customProps: {
-                sidebar_icon: "book-open",
+            id: "deployments/server/index",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "deployments/server/deploying-on-heroku",
+              label: "Deploy on Heroku",
+              customProps: {
+                image:
+                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739927/Medusa%20Docs/Other/xNvxSkf_l230wq.png",
+              },
             },
-            className: "homepage-sidebar-item",
+            {
+              type: "doc",
+              id: "deployments/server/deploying-on-digital-ocean",
+              label: "Deploy on DigitalOcean",
+              customProps: {
+                image:
+                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739945/Medusa%20Docs/Other/aahqJp4_lbtfdz.png",
+              },
+            },
+            {
+              type: "doc",
+              id: "deployments/server/deploying-on-railway",
+              label: "Deploy on Railway",
+              customProps: {
+                themedImage: {
+                  light:
+                    "https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png",
+                  dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png",
+                },
+              },
+            },
+            {
+              type: "doc",
+              id: "deployments/server/deploying-on-qovery",
+              label: "Deploy on Qovery",
+              customProps: {
+                image:
+                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
+                badge: {
+                  variant: "orange",
+                  children: "Deprecated",
+                },
+              },
+            },
+          ],
         },
         {
             type: "doc",
@@ -104,13 +145,9 @@ module.exports = {
             className: "homepage-sidebar-item",
         },
         {
-            type: "ref",
-            id: "js-client/overview",
-            label: "JavaScript Client",
-            customProps: {
-                sidebar_icon: "javascript",
-            },
-            className: "homepage-sidebar-item",
+          type: "doc",
+          id: "modules/regions-and-currencies/currencies",
+          label: "Currencies",
         },
         {
             type: "doc",
@@ -130,13 +167,9 @@ module.exports = {
             className: "homepage-sidebar-item",
         },
         {
-            type: "doc",
-            id: "cli/reference",
-            label: "Medusa CLI",
-            customProps: {
-                sidebar_icon: "command-line",
-            },
-            className: "homepage-sidebar-item",
+          type: "doc",
+          id: "modules/regions-and-currencies/admin/manage-currencies",
+          label: "Admin: Manage Currencies",
         },
         {
             type: "doc",

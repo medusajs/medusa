@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.2.11
+
+### Patch Changes
+
+- Updated dependencies [[`654a54622`](https://github.com/medusajs/medusa/commit/654a54622303139e7180538bd686630ad9a46cfd), [`abdb74d99`](https://github.com/medusajs/medusa/commit/abdb74d997f49f994bff49787a396179982843b0)]:
+  - @medusajs/utils@1.8.1
+  - @medusajs/modules-sdk@1.8.1
+
 ## 0.2.10
 
 ### Patch Changes

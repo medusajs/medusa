@@ -5,5 +5,5 @@ medusa.admin.currencies.update(code, {
   includes_tax: true
 })
 .then(({ currency }) => {
-  console.log(currency.id);
+  console.log(currency.code);
 });
