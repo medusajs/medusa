@@ -235,5 +235,5 @@ export class ProductVariantPricesCreateReq {
  *         description: Boolean indicating if variant is purchasable.
  */
 export type DecoratedVariant = PricedVariant & {
-  purchasable: boolean
+  purchasable?: boolean
 }
