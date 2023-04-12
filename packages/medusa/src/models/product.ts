@@ -33,7 +33,6 @@ export enum ProductStatus {
 }
 
 @Entity()
-@Index()
 export class Product extends SoftDeletableEntity {
   @Column()
   title: string
