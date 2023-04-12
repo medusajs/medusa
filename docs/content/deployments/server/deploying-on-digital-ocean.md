@@ -263,6 +263,10 @@ Then, go to `<YOUR_APP_URL>/store/products`. If the deployment was successful, y
 
 ![JSON response with list of products](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002196/Medusa%20Docs/Digital%20Ocean/5xTdMbY_pqwyzy.png)
 
+### Testing the Admin
+
+If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
+
 ---
 
 ## Run Commands on Your Backend

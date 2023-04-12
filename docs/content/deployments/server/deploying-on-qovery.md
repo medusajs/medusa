@@ -494,6 +494,10 @@ Once the command finishes and the deployment is successful, you can access your 
 
 You can access any of the endpoints on your backend using the backend URL. For example, you can get the list of products using the endpoint `/store/products`.
 
+### Testing the Admin
+
+If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
+
 ---
 
 ## Run Commands on the Backend
