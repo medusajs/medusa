@@ -526,12 +526,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/customers/backend/send-confirmation",
           label: "Backend: Send SignUp Email",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
