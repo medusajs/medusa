@@ -527,7 +527,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "/modules/customers/backend/send-confirmation",
+          id: "modules/customers/backend/send-confirmation",
           label: "Backend: Send SignUp Email",
         },
         {
