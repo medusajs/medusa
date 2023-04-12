@@ -121,7 +121,7 @@ You can read more about the built-in environment variables, as well as how to sp
 
 ## Updating your Deployed Backend
 
-Any updates to the backend (e.g. updating the Medusa core version) are deployed automatically when changes are committed to the repository. Microtica will handle the entire process of building and deploying your application on your connected AWS account.
+Any updates to the backend (for example, updating the Medusa core version) are deployed automatically when changes are committed to the repository. Microtica will handle the entire process of building and deploying your application on your connected AWS account.
 
 
 
