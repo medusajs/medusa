@@ -244,24 +244,30 @@ class LineItemService extends TransactionBaseService {
         )
 
         const variantsMap = new Map<string, ProductVariant>()
-        const variantIdsToCalculatePricingFor: string[] = []
+        const variantsToCalculatePricingFor: {
+          variantId: string
+          quantity: number
+        }[] = []
 
         for (const variant of variants) {
           variantsMap.set(variant.id, variant)
+
           const variantResolvedData = resolvedDataMap.get(variant.id)
           if (
             resolvedContext.unit_price == null &&
             variantResolvedData?.unit_price == null
           ) {
-            variantIdsToCalculatePricingFor.push(variant.id)
+            variantsToCalculatePricingFor.push({
+              variantId: variant.id,
+              quantity: variantResolvedData!.quantity,
+            })
           }
         }
 
         const variantsPricing = await this.pricingService_
           .withTransaction(transactionManager)
-          .getProductVariantsPricing(variantIdsToCalculatePricingFor, {
+          .getProductVariantsPricing(variantsToCalculatePricingFor, {
             region_id: regionId,
-            quantity: quantity,
             customer_id: context?.customer_id,
             include_discount_prices: true,
           })
