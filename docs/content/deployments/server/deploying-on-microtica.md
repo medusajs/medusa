@@ -7,6 +7,8 @@ addHowToData: true
 
 In this document, you'll learn how to deploy your Medusa backend on your AWS account with Microtica. 
 
+## Overview
+
 [Microtica](https://microtica.com) is a cloud-native delivery platform that enables you to deploy infrastructure and applications to your AWS account, while providing actionable insights to help you optimize resources, performance, & costs. 
 
 Alternatively, you can use this button to deploy the Medusa backend to Microtica directly:
