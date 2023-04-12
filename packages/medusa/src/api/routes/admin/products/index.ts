@@ -1,12 +1,14 @@
-import { Router } from "express"
 import "reflect-metadata"
-import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
+
 import { FindParams, PaginatedResponse } from "../../../../types/common"
-import { PricedProduct } from "../../../../types/pricing"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
 import middlewares, { transformQuery } from "../../../middlewares"
-import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+
 import { AdminGetProductsParams } from "./list-products"
+import { DecoratedProduct } from "../../../../types/product"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { Router } from "express"
+import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
 
 const route = Router()
 
@@ -267,7 +269,7 @@ export type AdminProductsDeleteRes = {
  *   products:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/PricedProduct"
+ *       $ref: "#/components/schemas/DecoratedProduct"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -279,7 +281,7 @@ export type AdminProductsDeleteRes = {
  *     description: The number of items per page
  */
 export type AdminProductsListRes = PaginatedResponse & {
-  products: (PricedProduct | Product)[]
+  products: (DecoratedProduct | Product)[]
 }
 
 /**

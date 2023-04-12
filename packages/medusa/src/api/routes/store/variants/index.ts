@@ -1,9 +1,9 @@
+import { DecoratedVariant } from "../../../../types/product-variant"
 import { Router } from "express"
-import { PricedVariant } from "../../../../types/pricing"
-import middlewares from "../../../middlewares"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import middlewares from "../../../middlewares"
 import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
+import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 
 const route = Router()
 
@@ -33,10 +33,10 @@ export const defaultStoreVariantRelations = ["prices", "options", "product"]
  *   - variant
  * properties:
  *   variant:
- *     $ref: "#/components/schemas/PricedVariant"
+ *     $ref: "#/components/schemas/DecoratedVariant"
  */
 export type StoreVariantsRes = {
-  variant: PricedVariant
+  variant: DecoratedVariant
 }
 
 /**
@@ -54,10 +54,10 @@ export type StoreVariantsRes = {
  *   variants:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/PricedVariant"
+ *       $ref: "#/components/schemas/DecoratedVariant"
  */
 export type StoreVariantsListRes = {
-  variants: PricedVariant[]
+  variants: DecoratedVariant[]
 }
 
 export * from "./list-variants"

@@ -1,12 +1,13 @@
-import { Router } from "express"
-
-import { ProductVariant } from "../../../../models/product-variant"
-import { PaginatedResponse } from "../../../../types/common"
-import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+
 import { AdminGetVariantParams } from "./get-variant"
 import { AdminGetVariantsParams } from "./list-variants"
+import { DecoratedVariant } from "../../../../types/product-variant"
+import { PaginatedResponse } from "../../../../types/common"
+import { PricedVariant } from "../../../../types/pricing"
+import { ProductVariant } from "../../../../models/product-variant"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -90,7 +91,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *   variants:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/PricedVariant"
+ *       $ref: "#/components/schemas/DecoratedVariant"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -102,7 +103,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     description: The number of items per page
  */
 export type AdminVariantsListRes = PaginatedResponse & {
-  variants: PricedVariant[]
+  variants: DecoratedVariant[]
 }
 
 /**
