@@ -14280,7 +14280,7 @@
               ],
               "properties": {
                 "code": {
-                  "description": "The code that a Discount is identifed by.",
+                  "description": "The code that a Discount is identified by.",
                   "type": "string"
                 }
               }
