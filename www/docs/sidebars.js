@@ -456,12 +456,9 @@ module.exports = {
           label: "Regions",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/regions-and-currencies/currencies",
           label: "Currencies",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
@@ -476,12 +473,9 @@ module.exports = {
           label: "Admin: Manage Regions",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/regions-and-currencies/admin/manage-currencies",
           label: "Admin: Manage Currencies",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",

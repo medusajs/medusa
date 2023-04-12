@@ -1443,7 +1443,9 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const discounts = await this.discountService_
           .withTransaction(transactionManager)
-          .listByCodes(discountCodes, { relations: ["rule", "regions"] })
+          .listByCodes(discountCodes, {
+            relations: ["rule", "rule.conditions", "regions"],
+          })
 
         await this.discountService_
           .withTransaction(transactionManager)
