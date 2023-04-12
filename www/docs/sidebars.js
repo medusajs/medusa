@@ -209,8 +209,8 @@ module.exports = {
                             label: 'Deploy on Microtica',
                             customProps: {
                                 themedImage: {
-                                    light: 'https://imgur.com/a/DxBtp2L',
-                                    dark: 'https://imgur.com/Lg7NHQk'
+                                    light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1681296578/Medusa%20Docs/Other/aF4ZuDS_t11rcu.png',
+                                    dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1681296612/Medusa%20Docs/Other/Lg7NHQk_qo6oax.png'
                                 }
                             }
                         }
