@@ -105,7 +105,7 @@ Once the build process is complete, a new deployment with the infrastructure res
 
 ---
 
-## Preview the environment
+## Test the Backend
 
 After the deployment is finished, navigate to Resources → [AppName] (Medusa in this example) → Overview. Then, under the Resource Outputs section you should see the AccessUrl. This is the backend's URL that you can use to access API endpoints. You can try getting the list of products using the endpoint `/store/products`.
 
