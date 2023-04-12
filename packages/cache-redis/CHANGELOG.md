@@ -1,5 +1,12 @@
 # @medusajs/cache-redis
 
+## 1.8.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes
