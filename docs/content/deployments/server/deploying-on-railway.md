@@ -142,6 +142,7 @@ JWT_SECRET=something
 COOKIE_SECRET=something
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 REDIS_URL=${{Redis.REDIS_URL}}
+DATABASE_TYPE=postgres
 ```
 
 Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
