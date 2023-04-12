@@ -206,7 +206,13 @@ const sanitizeOAS = async (
 ): Promise<void> => {
   const { all: logs } = await execa(
     "yarn",
-    ["redocly", "bundle", srcFile, `--output=${outFile}`, `--config=${configFile}`],
+    [
+      "redocly",
+      "bundle",
+      srcFile,
+      `--output=${outFile}`,
+      `--config=${configFile}`,
+    ],
     { cwd: basePath, all: true }
   )
   console.log(logs)
@@ -222,9 +228,9 @@ const circularReferenceCheck = async (srcFile: string): Promise<void> => {
       const hint = formatHintRecommendation(recommendation)
       errorMessage += `
 Within redocly-config.yaml, try adding the following:
-"""
+###
 ${hint}
-"""
+###
 `
     }
     throw new Error(errorMessage)
