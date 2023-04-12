@@ -111,7 +111,7 @@ After the deployment is finished, navigate to Resources → [AppName] (Medusa in
 
 ---
 
-## Add environment variables
+## Add Environment Variables
 
 The environment variables can be updated, added, or configured after deployment as well. You can access them with `process.env.<VARIABLE NAME>`.
 
