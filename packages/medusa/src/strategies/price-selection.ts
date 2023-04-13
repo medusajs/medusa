@@ -109,7 +109,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }[],
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>> {
-    const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
+    const moneyRepo = this.activeManager_.withRepository(
+      this.moneyAmountRepository_
+    )
 
     const [variantsPrices] = await moneyRepo.findManyForVariantInRegion(
       data.map((d) => d.variantId),
@@ -207,7 +209,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }[],
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>> {
-    const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
+    const moneyRepo = this.activeManager_.withRepository(
+      this.moneyAmountRepository_
+    )
 
     const [variantsPrices] = await moneyRepo.findManyForVariantInRegion(
       data.map((d) => d.variantId),
