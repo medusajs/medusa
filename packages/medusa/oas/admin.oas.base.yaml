@@ -222,6 +222,24 @@ info:
     
     For example, if the `count` is 100 and the `limit` is 50, you can divide the `count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
 
+    ### Sort Order
+
+    The `order` field available on endpoints supporting pagination allows you to sort the retrieved items by an attribute of that item. For example, you can sort products by their `created_at` attribute by setting `order` to `created_at`:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?order=created_at" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+
+    By default, the sort direction will be ascending. To change it to descending, pass a dash (`-`) before the attribute name. For example:
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?order=-created_at" \
+    -H 'Authorization: Bearer {api_token}'
+    ```
+    
+    This sorts the products by their `created_at` attribute in the descending order.
+
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
