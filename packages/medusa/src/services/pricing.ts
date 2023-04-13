@@ -467,10 +467,9 @@ class PricingService extends TransactionBaseService {
 
     return variantsData.map(({ variant }) => {
       const variantPricing = variantsPricingMap.get(variant.id)!
-      return {
-        ...variant,
-        ...variantPricing,
-      }
+      console.log("variantPricing", variantPricing)
+      Object.assign(variant, variantPricing)
+      return variant as unknown as PricedVariant
     })
   }
 
