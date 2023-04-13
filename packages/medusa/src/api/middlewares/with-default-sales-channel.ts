@@ -3,13 +3,19 @@ import { SalesChannelService } from "../../services"
 
 /**
  * Middleware that includes the default sales channel on the request, if no sales channels present
- * @param asArray Whether to include the default sales channel id as an array or just a string
+ * @param context Object of options
+ * @param context.attachChannelAsArray Whether to attach the default sales channel as an array or just a string
  */
-export function withDefaultSalesChannel(
-  asArray?: boolean
-): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+export function withDefaultSalesChannel({
+  attachChannelAsArray,
+}: {
+  attachChannelAsArray?: boolean
+}): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, _, next: NextFunction) => {
-    if (req.query.sales_channel_id?.length) {
+    if (
+      req.query.sales_channel_id?.length ||
+      req.get("x-publishable-api-key")
+    ) {
       return next()
     }
 
@@ -19,7 +25,7 @@ export function withDefaultSalesChannel(
 
     const defaultSalesChannel = await salesChannelService.retrieveDefault()
     if (defaultSalesChannel?.id) {
-      req.query.sales_channel_id = asArray
+      req.query.sales_channel_id = attachChannelAsArray
         ? [defaultSalesChannel.id]
         : defaultSalesChannel.id
     }
