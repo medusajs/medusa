@@ -173,7 +173,7 @@ import { IInventoryService } from "@medusajs/types"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
- *   - (query) order {string} Defines how results are ordered. E.g.: `-created_at` for highest value first, `created_at` for lowest value first.
+ *   - (query) order {string} Specify how results are ordered. E.g.: `-created_at` for highest value first, `created_at` for lowest value first.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetProductsParams

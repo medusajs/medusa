@@ -139,7 +139,7 @@ import { defaultStoreCategoryScope } from "../product-categories"
  *   - (query) limit=100 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
- *   - (query) order {string} the field used to order the products.
+ *   - (query) order {string} Specify how results are ordered. E.g.: `-created_at` for highest value first, `created_at` for lowest value first.
  *   - (query) cart_id {string} The id of the Cart to set prices based on.
  *   - (query) region_id {string} The id of the Region to set prices based on.
  *   - (query) currency_code {string} The currency code to use for price selection.
@@ -154,8 +154,8 @@ import { defaultStoreCategoryScope } from "../product-categories"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.products.list()
  *       .then(({ products, limit, offset, count }) => {
- *         console.log(products.length);
- *       });
+ *         console.log(products.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -204,7 +204,7 @@ export default async (req, res) => {
   filterableFields["categories"] = {
     ...(filterableFields.categories || {}),
     // Store APIs are only allowed to query active and public categories
-    ...defaultStoreCategoryScope
+    ...defaultStoreCategoryScope,
   }
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
