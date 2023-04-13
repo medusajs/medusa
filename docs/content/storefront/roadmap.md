@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the different resources you need and the general steps to take while building your custom storefront that's connected to your Medusa backend.'
+description: 'Learn about the different resources you need and the general steps to take while building your custom storefront that is connected to your Medusa backend.'
 ---
 
 # Build Your Own Storefront Roadmap

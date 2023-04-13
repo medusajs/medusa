@@ -11,6 +11,7 @@ import IconBookOpen from './BookOpen';
 import IconBug from './Bug';
 import IconBugAntSolid from './BugAntSolid';
 import IconBuildingSolid from './BuildingSolid';
+import IconBuildingStorefront from './BuildingStorefront';
 import IconBuildingTax from './BuildingTax';
 import IconCalendar from './Calendar';
 import IconCashSolid from './CashSolid';
@@ -95,6 +96,7 @@ export default {
   'bug': IconBug,
   'bug-ant-solid': IconBugAntSolid,
   'building-solid': IconBuildingSolid,
+  'building-storefront': IconBuildingStorefront,
   'building-tax': IconBuildingTax,
   'calendar': IconCalendar,
   'cash-solid': IconCashSolid,
