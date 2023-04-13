@@ -61,6 +61,7 @@ A product category is stored in the database as a `ProductCategory` entity. So
 
 - `id`: The ID of the product category.
 - `name`: The name of the product category.
+- `description`: An optional string used to add a description for the product category.
 - `handle`: A string indicating a slug path of the category. It’s useful when creating a page on your storefront for the category, as the `handle` can be used as the path in the URL.
 - `is_active`: A boolean value indicating the status of the Product Category.
 - `is_internal`: A boolean value indicating the visibility of the Product Category.
