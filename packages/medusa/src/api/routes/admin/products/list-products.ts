@@ -173,7 +173,7 @@ import { IInventoryService } from "@medusajs/types"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
- *   - (query) order {string} the field used to order the products.
+ *   - (query) order {string} Defines how results are ordered. E.g.: `-created_at` for highest value first, `created_at` for lowest value first.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetProductsParams
@@ -186,8 +186,8 @@ import { IInventoryService } from "@medusajs/types"
  *       // must be previously logged in or use api token
  *       medusa.admin.products.list()
  *       .then(({ products, limit, offset, count }) => {
- *         console.log(products.length);
- *       });
+ *         console.log(products.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
