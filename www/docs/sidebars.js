@@ -628,7 +628,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/products/store/use-categories",
+          id: "modules/products/storefront/use-categories",
           label: "Storefront: Use Categories",
         },
         {
