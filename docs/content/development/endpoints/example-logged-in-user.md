@@ -98,7 +98,7 @@ import configLoader from "@medusajs/medusa/dist/loaders/config"
 import createProductRouter from "./routes/create-product"
 
 export default function (rootDirectory: string) {
-  const config = await configLoader(rootDirectory)
+  const config = configLoader(rootDirectory)
 
   const adminCors = {
     origin: config.projectConfig.admin_cors.split(","),
