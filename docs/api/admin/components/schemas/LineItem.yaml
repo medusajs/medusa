@@ -199,6 +199,10 @@ properties:
     type: integer
     example: 0
   discount_total:
+    description: The total of discount of the line item rounded
+    type: integer
+    example: 0
+  raw_discount_total:
     description: The total of discount of the line item
     type: integer
     example: 0

@@ -18,11 +18,12 @@ import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Cart,
-  Customer,
   Discount,
+  DiscountConditionType,
   LineItem,
-  OrderStatus,
   Region,
+  Customer,
+  OrderStatus,
 } from "../models"
 import {
   AllocationType as DiscountAllocation,
@@ -723,6 +724,13 @@ class DiscountService extends TransactionBaseService {
             )
           }
 
+          if (!cart.customer_id && this.hasCustomersGroupCondition(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} is only valid for specific customer`
+            )
+          }
+
           const isValidForRegion = await this.isValidForRegion(
             disc,
             cart.region_id
@@ -750,6 +758,12 @@ class DiscountService extends TransactionBaseService {
         })
       )
     })
+  }
+
+  hasCustomersGroupCondition(discount: Discount): boolean {
+    return discount.rule.conditions.some(
+      (cond) => cond.type === DiscountConditionType.CUSTOMER_GROUPS
+    )
   }
 
   hasReachedLimit(discount: Discount): boolean {

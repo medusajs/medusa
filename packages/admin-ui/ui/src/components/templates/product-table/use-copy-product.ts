@@ -97,6 +97,8 @@ const useCopyProduct = () => {
           return acc
         }, {} as NonNullable<AdminPostProductsReq["variants"]>[0])
 
+        variantBase.prices = []
+
         if (prices && prices.length) {
           variantBase.prices = prices.map((price) => ({
             amount: price.amount,

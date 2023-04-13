@@ -1,5 +1,20 @@
 # Change Log
 
+## 1.1.43
+
+### Patch Changes
+
+- [#3763](https://github.com/medusajs/medusa/pull/3763) [`4104d9ccb`](https://github.com/medusajs/medusa/commit/4104d9ccb25276c85b5363f85e14b3093e64df85) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(plugin-discount-generator,plugin-economic,plugin-mailchimp,plugin-restock-notification,plugin-sendgrid,plugin-wishlist): Temporarily remove payload validation in some plugins
+
+## 1.1.42
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
 ## 1.1.42-rc.0
 
 ### Patch Changes
