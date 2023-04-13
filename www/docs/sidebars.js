@@ -633,16 +633,13 @@ module.exports = {
           label: "Admin: Import Products",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/products/storefront/show-products",
           label: "Storefront: Show Products",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
-          id: "modules/products/store/use-categories",
+          id: "modules/products/storefront/use-categories",
           label: "Storefront: Use Categories",
         },
         {
