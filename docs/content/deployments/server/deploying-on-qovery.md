@@ -5,6 +5,12 @@ addHowToData: true
 
 # Deploy Your Medusa Backend on Qovery
 
+:::warning
+
+The deployment to Qovery rely on Docker. However, support and maintenance for Docker has been dropped in the [Medusa backend's default starter](https://github.com/medusajs/medusa-starter-default). So, the steps in this guide may not work as expected or can reference files that no longer exist in your step. It's kept for reference and to support previous deployments of Medusa to Qovery.
+
+:::
+
 In this document, you'll learn how to deploy your Medusa backend on Qovery with the help of Terraform. 
 
 [Qovery](https://www.qovery.com/) is a Continuous Deployment Platform that provides you with the developer experience of Heroku on top of your cloud provider (For example, AWS, DigitalOcean).
@@ -434,12 +440,6 @@ Next, it creates a new project, environment, PostgreSQL database, and a Redis da
 
 Finally, it creates the Medusa app and sets all the necessary environment variables needed to run it.
 
-:::tip
-
-This deployment uses Docker. By default, you should have the files [`Dockerfile`](https://github.com/medusajs/medusa-starter-default/blob/master/Dockerfile) and [`docker-compose.yml`](https://github.com/medusajs/medusa-starter-default/blob/master/docker-compose.yml)` in the root of your Medusa backend.
-
-:::
-
 ### Change develop.sh
 
 The `Dockerfile` runs the file `develop.sh` to start the backend. Change the content of `develop.sh` to the following:
@@ -493,6 +493,16 @@ Once the command finishes and the deployment is successful, you can access your 
 ![open button at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002245/Medusa%20Docs/Qovery/Ji59ZSJ_nrkpvb.png)
 
 You can access any of the endpoints on your backend using the backend URL. For example, you can get the list of products using the endpoint `/store/products`.
+
+### Testing the Admin
+
+:::note
+
+Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/quickstart.mdx#build-command-options) command as part of the start command of your backend.
+
+:::
+
+If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
 
 ---
 
