@@ -457,9 +457,9 @@ class PricingService extends TransactionBaseService {
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
 
-    const variantsPricingMap = await this.getProductVariantPricing_(
+    const variantsPricingMap = await this.getProductVariantPricing(
       variantsData.map((v) => ({
-        variantId: v.variant.id,
+        variant: v.variant,
         quantity: v.quantity,
       })),
       pricingContext
