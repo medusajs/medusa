@@ -633,8 +633,8 @@ module.exports = {
           label: "Admin: Import Products",
         },
         {
-          type: "link",
-          href: "modules/products/storefront/show-products",
+          type: "doc",
+          id: "modules/products/storefront/show-products",
           label: "Storefront: Show Products",
         },
         {
