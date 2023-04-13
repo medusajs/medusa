@@ -305,6 +305,19 @@ describe("/admin/product-categories", () => {
       expect(response.data.product_categories[0].id).toEqual(productCategory.id)
     })
 
+    it("filters based on handle attribute of the data model", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?handle=${productCategory.handle}`,
+        adminHeaders,
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories[0].id).toEqual(productCategory.id)
+    })
+
     it("filters based on free text on name and handle columns", async () => {
       const api = useApi()
 
