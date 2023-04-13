@@ -229,13 +229,12 @@ class PricingService extends TransactionBaseService {
 
     let productRates: Map<string, TaxServiceRate[]> = new Map()
 
-    // Here we assume that the variants belongs to the same product since the context is shared
-    const productId = data[0].variant.product_id
-
     if (
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
+      // Here we assume that the variants belongs to the same product since the context is shared
+      const productId = data[0].variant.product_id
       productRates = await this.taxProviderService.getRegionRatesForProduct(
         productId,
         {
@@ -324,12 +323,11 @@ class PricingService extends TransactionBaseService {
         { select: ["id", "product_id"] }
       )
 
-    // Here we assume that the variants belongs to the same product since the context is shared
-    const productId = variants[0].product_id
-
     let productsRatesMap: Map<string, TaxServiceRate[]> = new Map()
 
     if (pricingContext.price_selection.region_id) {
+      // Here we assume that the variants belongs to the same product since the context is shared
+      const productId = variants[0]?.product_id
       productsRatesMap = await this.taxProviderService
         .withTransaction(this.activeManager_)
         .getRegionRatesForProduct(productId, {

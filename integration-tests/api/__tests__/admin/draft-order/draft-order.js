@@ -437,7 +437,7 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
-    it.only("creates a draft order with product variant with custom price and custom item price set to 0", async () => {
+    it("creates a draft order with product variant with custom price and custom item price set to 0", async () => {
       const api = useApi()
 
       const payload = {

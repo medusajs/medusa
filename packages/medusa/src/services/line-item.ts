@@ -264,13 +264,17 @@ class LineItemService extends TransactionBaseService {
           }
         }
 
-        const variantsPricing = await this.pricingService_
-          .withTransaction(transactionManager)
-          .getProductVariantsPricing(variantsToCalculatePricingFor, {
-            region_id: regionId,
-            customer_id: context?.customer_id,
-            include_discount_prices: true,
-          })
+        let variantsPricing = {}
+
+        if (variantsToCalculatePricingFor.length) {
+          variantsPricing = await this.pricingService_
+            .withTransaction(transactionManager)
+            .getProductVariantsPricing(variantsToCalculatePricingFor, {
+              region_id: regionId,
+              customer_id: context?.customer_id,
+              include_discount_prices: true,
+            })
+        }
 
         const generatedItems: LineItem[] = []
 
