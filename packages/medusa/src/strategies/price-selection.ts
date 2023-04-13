@@ -36,7 +36,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   async calculateVariantPrice(
     data: {
       variantId: string
-      taxRates?: TaxServiceRate[]
       quantity?: number
     }[],
     context: PriceSelectionContext
@@ -52,7 +51,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
 
     const nonCachedData: {
       variantId: string
-      taxRates?: TaxServiceRate[]
+      quantity?: number
     }[] = []
 
     const variantPricesMap = new Map<string, PriceSelectionResult>()
@@ -63,6 +62,10 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
           return await this.cacheService_.get<PriceSelectionResult>(cacheKey)
         })
       )
+
+      if (!cacheHits.length) {
+        nonCachedData.push(...dataMap.values())
+      }
 
       for (const [index, cacheHit] of cacheHits.entries()) {
         const variantId = data[index].variantId
@@ -96,13 +99,12 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       })
     )
 
-    return results
+    return variantPricesMap
   }
 
   private async calculateVariantPrice_new(
     data: {
       variantId: string
-      taxRates?: TaxServiceRate[]
       quantity?: number
     }[],
     context: PriceSelectionContext
@@ -201,7 +203,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private async calculateVariantPrice_old(
     data: {
       variantId: string
-      taxRates?: TaxServiceRate[]
       quantity?: number
     }[],
     context: PriceSelectionContext

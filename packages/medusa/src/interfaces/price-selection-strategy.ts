@@ -16,7 +16,6 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
   calculateVariantPrice(
     data: {
       variantId: string
-      taxRates?: TaxServiceRate[]
       quantity?: number
     }[],
     context: PriceSelectionContext

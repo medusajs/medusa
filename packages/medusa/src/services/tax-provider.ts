@@ -247,6 +247,15 @@ class TaxProviderService extends TransactionBaseService {
     lineItems: LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
+    const productIds = lineItems
+      .map((l) => l?.variant?.product_id)
+      .filter((p) => p)
+
+    const productRatesMap = await this.getRegionRatesForProduct(
+      productIds,
+      calculationContext.region
+    )
+
     const calculationLines = await Promise.all(
       lineItems.map(async (l) => {
         if (l.is_return) {
@@ -263,12 +272,7 @@ class TaxProviderService extends TransactionBaseService {
         if (l.variant?.product_id) {
           return {
             item: l,
-            rates: (
-              await this.getRegionRatesForProduct(
-                [l.variant.product_id],
-                calculationContext.region
-              )
-            ).get(l.variant.product_id)!,
+            rates: productRatesMap.get(l.variant.product_id) ?? [],
           }
         }
 

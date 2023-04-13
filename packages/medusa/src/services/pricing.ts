@@ -161,11 +161,12 @@ class PricingService extends TransactionBaseService {
   }
 
   private async getProductVariantPricing_(
-    data: { variantId: string; taxRates: TaxServiceRate[] }[],
+    data: {
+      variantId: string
+      quantity?: number
+    }[],
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
-    const dataMap = new Map(data.map((d) => [d.variantId, d]))
-
     const variantsPricing = await this.priceSelectionStrategy
       .withTransaction(this.activeManager_)
       .calculateVariantPrice(data, context.price_selection)
@@ -188,7 +189,7 @@ class PricingService extends TransactionBaseService {
       }
 
       if (context.automatic_taxes && context.price_selection.region_id) {
-        const taxRates = dataMap.get(variantId)!.taxRates
+        const taxRates = context.price_selection.tax_rates || []
         const taxResults = this.calculateTaxes(pricingResult, taxRates)
 
         pricingResult.original_price_incl_tax =
@@ -208,14 +209,17 @@ class PricingService extends TransactionBaseService {
 
   /**
    * Gets the prices for a product variant.
-   * @param variant - the id of the variant to get prices for
+   * @param data
    * @param context - the price selection context to use
    * @return The product variant prices
    */
   async getProductVariantPricing(
-    variant: Pick<ProductVariant, "id" | "product_id">,
+    data: {
+      variant: Pick<ProductVariant, "id" | "product_id">
+      quantity?: number
+    }[],
     context: PriceSelectionContext | PricingContext
-  ): Promise<ProductVariantPricing> {
+  ): Promise<Map<string, ProductVariantPricing>> {
     let pricingContext: PricingContext
     if ("automatic_taxes" in context) {
       pricingContext = context
@@ -223,28 +227,32 @@ class PricingService extends TransactionBaseService {
       pricingContext = await this.collectPricingContext(context)
     }
 
-    let productRates: TaxServiceRate[] = []
+    let productRates: Map<string, TaxServiceRate[]> = new Map()
+
+    // Here we assume that the variants belongs to the same product since the context is shared
+    const productId = data[0].variant.product_id
+
     if (
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      productRates = (
-        await this.taxProviderService.getRegionRatesForProduct(
-          [variant.product_id],
-          {
-            id: pricingContext.price_selection.region_id,
-            tax_rate: pricingContext.tax_rate,
-          }
-        )
-      ).get(variant.product_id)!
+      productRates = await this.taxProviderService.getRegionRatesForProduct(
+        productId,
+        {
+          id: pricingContext.price_selection.region_id,
+          tax_rate: pricingContext.tax_rate,
+        }
+      )
+      pricingContext.price_selection.tax_rates = productRates.get(productId)
     }
 
-    return (
-      await this.getProductVariantPricing_(
-        [{ variantId: variant.id, taxRates: productRates }],
-        pricingContext
-      )
-    ).get(variant.id)!
+    return await this.getProductVariantPricing_(
+      data.map((v) => ({
+        variantId: v.variant.id,
+        quantity: v.quantity,
+      })),
+      pricingContext
+    )
   }
 
   /**
@@ -284,11 +292,9 @@ class PricingService extends TransactionBaseService {
       ).get(product_id)!
     }
 
+    pricingContext.price_selection.tax_rates = productRates
     return (
-      await this.getProductVariantPricing_(
-        [{ variantId, taxRates: productRates }],
-        pricingContext
-      )
+      await this.getProductVariantPricing_([{ variantId }], pricingContext)
     ).get(variantId)!
   }
 
@@ -309,6 +315,8 @@ class PricingService extends TransactionBaseService {
       pricingContext = await this.collectPricingContext(context)
     }
 
+    const dataMap = new Map(data.map((d) => [d.variantId, d]))
+
     const variants = await this.productVariantService
       .withTransaction(this.activeManager_)
       .list(
@@ -316,24 +324,27 @@ class PricingService extends TransactionBaseService {
         { select: ["id", "product_id"] }
       )
 
+    // Here we assume that the variants belongs to the same product since the context is shared
+    const productId = variants[0].product_id
+
     let productsRatesMap: Map<string, TaxServiceRate[]> = new Map()
 
     if (pricingContext.price_selection.region_id) {
       productsRatesMap = await this.taxProviderService
         .withTransaction(this.activeManager_)
-        .getRegionRatesForProduct(
-          variants.map((v) => v.product_id),
-          {
-            id: pricingContext.price_selection.region_id,
-            tax_rate: pricingContext.tax_rate,
-          }
-        )
+        .getRegionRatesForProduct(productId, {
+          id: pricingContext.price_selection.region_id,
+          tax_rate: pricingContext.tax_rate,
+        })
+
+      pricingContext.price_selection.tax_rates =
+        productsRatesMap.get(productId)!
     }
 
     const variantsPricingMap = await this.getProductVariantPricing_(
       variants.map((v) => ({
         variantId: v.id,
-        taxRates: productsRatesMap.get(v.product_id) ?? [],
+        quantity: dataMap.get(v.id)!.quantity,
       })),
       pricingContext
     )
@@ -372,13 +383,17 @@ class PricingService extends TransactionBaseService {
     await Promise.all(
       data.map(async ({ productId, variants }) => {
         const pricingData = variants.map((variant) => {
-          const taxRates = taxRatesMap?.get(productId) || []
-          return { variantId: variant.id, taxRates }
+          return { variantId: variant.id }
         })
+
+        const context_ = { ...context }
+        if (context_.automatic_taxes && context_.price_selection.region_id) {
+          context_.price_selection.tax_rates = taxRatesMap.get(productId)!
+        }
 
         const variantsPricingMap = await this.getProductVariantPricing_(
           pricingData,
-          context
+          context_
         )
 
         const productVariantsPricing = productsPricingMap.get(productId) || {}
@@ -434,28 +449,31 @@ class PricingService extends TransactionBaseService {
 
   /**
    * Set additional prices on a list of product variants.
-   * @param variants - list of variants on which to set additional prices
+   * @param variantsData
    * @param context - the price selection context to use
    * @return A list of products with variants decorated with prices
    */
   async setVariantPrices(
-    variants: ProductVariant[],
+    variantsData: { variant: ProductVariant; quantity?: number }[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
 
-    return await Promise.all(
-      variants.map(async (variant) => {
-        const variantPricing = await this.getProductVariantPricing(
-          variant,
-          pricingContext
-        )
-        return {
-          ...variant,
-          ...variantPricing,
-        }
-      })
+    const variantsPricingMap = await this.getProductVariantPricing_(
+      variantsData.map((v) => ({
+        variantId: v.variant.id,
+        quantity: v.quantity,
+      })),
+      pricingContext
     )
+
+    return variantsData.map(({ variant }) => {
+      const variantPricing = variantsPricingMap.get(variant.id)!
+      return {
+        ...variant,
+        ...variantPricing,
+      }
+    })
   }
 
   /**
