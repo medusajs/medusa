@@ -1,1 +1,1 @@
-export * from "./response-compression"
+export * from "./http-compression"

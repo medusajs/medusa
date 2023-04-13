@@ -8,13 +8,16 @@ import { shouldCompressResponse, compressionOptions } from "../utils/api"
 // guaranteed to get dependencies
 export default (container, config) => {
   const app = Router()
+  const httpCompressionOptions = compressionOptions(config)
 
-  app.use(
-    compression({
-      filter: shouldCompressResponse,
-      ...compressionOptions(config),
-    })
-  )
+  if (httpCompressionOptions.enabled) {
+    app.use(
+      compression({
+        filter: shouldCompressResponse,
+        ...httpCompressionOptions,
+      })
+    )
+  }
 
   admin(app, container, config)
   store(app, container, config)

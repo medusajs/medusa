@@ -15,7 +15,9 @@ module.exports = {
     database_type: "postgres",
     jwt_secret: "test",
     cookie_secret: "test",
-    response_compression_enabled: enableResponseCompression
+    http_compression: {
+      enabled: enableResponseCompression
+    }
   },
   modules: {
     cacheService: {

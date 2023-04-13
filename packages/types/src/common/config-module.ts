@@ -13,7 +13,8 @@ type SessionOptions = {
   ttl?: number
 }
 
-export type ResponseCompressionOptions = {
+export type HttpCompressionOptions = {
+  enabled?: boolean
   level?: number
   memLevel?: number
   threshold?: number | string
@@ -33,8 +34,7 @@ export type ProjectConfigOptions = {
   database_schema?: string
   database_logging: LoggerOptions
 
-  response_compression_enabled?: boolean
-  response_compression_options?: ResponseCompressionOptions
+  http_compression?: HttpCompressionOptions
 
   database_extra?: Record<string, unknown> & {
     ssl: { rejectUnauthorized: false }
