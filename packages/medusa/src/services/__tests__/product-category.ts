@@ -39,7 +39,7 @@ describe("ProductCategoryService", () => {
         .catch((e) => e)
 
       expect(categoryResponse.message).toBe(
-        `ProductCategory with id: ${invalidID} was not found`
+        `ProductCategory with id or handle: ${invalidID} was not found`
       )
     })
   })
@@ -229,7 +229,7 @@ describe("ProductCategoryService", () => {
         .catch((e) => e)
 
       expect(error.message).toBe(
-        `ProductCategory with id: ${IdMap.getId(
+        `ProductCategory with id or handle: ${IdMap.getId(
           invalidProdCategoryId
         )} was not found`
       )
