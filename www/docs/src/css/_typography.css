@@ -86,14 +86,6 @@ video {
   margin-bottom: 0;
 }
 
-.markdown p + p > img:not(.ui-icon) {
-  margin-top: var(--ifm-base-margin-vertical);
-}
-
-p + img:not(.ui-icon) {
-  margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
-}
-
 h1 + .cards-grid,
 h1 + .card-wrapper,
 h2 + .cards-grid,
