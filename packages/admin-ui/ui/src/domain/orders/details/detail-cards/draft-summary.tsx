@@ -198,7 +198,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
                 </div>
                 {inventoryEnabled && (
                   <ReservationIndicator
-                    reservations={reservations}
+                    reservations={reservationItemsMap[item.id]}
                     lineItem={item}
                   />
                 )}
