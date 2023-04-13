@@ -623,7 +623,7 @@ module.exports = {
         },
         {
           type: "link",
-          href: "modules/products/store/show-products",
+          href: "modules/products/storefront/show-products",
           label: "Storefront: Show Products",
         },
         {
