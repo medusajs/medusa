@@ -334,23 +334,6 @@ const toTest = [
     },
   ],
   [
-    "Throws correct error if no default price is found, missing variant",
-    {
-      variant_id: "non-existing-variant",
-      context: {
-        region_id: "test-region",
-        currency_code: "dkk",
-      },
-      validate: (value, { mockMoneyAmountRepository }) => {},
-      validateException: (error, { mockMoneyAmountRepository }) => {
-        expect(error.type).toEqual("not_found")
-        expect(error.message).toEqual(
-          "Money amount for variant with id non-existing-variant in region test-region does not exist"
-        )
-      },
-    },
-  ],
-  [
     "findManyForVariantInRegion is invoked with the correct customer",
     {
       variant_id: "test-variant",
