@@ -203,7 +203,7 @@ export default async (req, res) => {
   filterableFields["categories"] = {
     ...(filterableFields.categories || {}),
     // Store APIs are only allowed to query active and public categories
-    ...defaultStoreCategoryScope
+    ...defaultStoreCategoryScope,
   }
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
