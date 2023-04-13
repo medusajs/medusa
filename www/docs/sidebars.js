@@ -623,11 +623,8 @@ module.exports = {
         },
         {
           type: "link",
-          href: "#",
+          href: "modules/products/store/show-products",
           label: "Storefront: Show Products",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
