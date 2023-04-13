@@ -13,6 +13,12 @@ In this document, you’ll learn how to deploy your Medusa backend to Railway.
 
 Railway provides a free plan that allows you to deploy your Medusa backend along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
 
+:::note
+
+If you're deploying the admin plugin along with the backend, you'll need at least the Developer plan. The resources provided by the starter plan will cause memory errors.
+
+:::
+
 ---
 
 ## Prerequisites
@@ -90,12 +96,6 @@ On the Railway dashboard:
 
 A new database will be created and, after a few seconds, you will be redirected to the project page where you will see the newly-created database.
 
-To find the PostgreSQL database URL which you’ll need later:
-
-1. Click on the PostgreSQL card.
-2. Choose the Connect tab.
-3. Copy the Postgres Connection URL.
-
 ### Create the Redis Database
 
 In the same project view:
@@ -105,12 +105,6 @@ In the same project view:
 3. Choose Add Redis**.**
 
 A new Redis database will be added to the project view in a few seconds. Click on it to open the database sidebar.
-
-To find the Redis database URL which you’ll need later:
-
-1. Click on the Redis card.
-2. Choose the Connect tab.
-3. Copy the Redis Connection URL.
 
 
 ### Note about Modules
@@ -146,17 +140,20 @@ To configure the environment variables of your Medusa backend:
 PORT=9000
 JWT_SECRET=something
 COOKIE_SECRET=something
-DATABASE_URL=<YOUR_DATABASE_URL>
-REDIS_URL=<YOUR_REDIS_URL>
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+REDIS_URL=${{Redis.REDIS_URL}}
+DATABASE_TYPE=postgres
 ```
 
-Where `<YOUR_DATABASE_URL>` and `<YOUR_REDIS_URL>` are the URLs you copied earlier when you created the PostgreSQL and Redis databases respectively.
+Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
 
 :::warning
 
-It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and ****`COOKIE_SECRET`.
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
 
 :::
+
+Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa admin or your modules.
 
 ### Change Start Command
 
@@ -169,7 +166,7 @@ To change the start command of your Medusa backend:
 3. Paste the following in the Start Command field:
 
 ```bash
-medusa migrations run && medusa develop
+medusa migrations run && medusa start
 ```
 
 ### Add Domain Name
@@ -193,6 +190,16 @@ After the backend is redeployed successfully, open the app in your browser using
 If you generated a random domain, you can find it by clicking on the GitHub repository’s card → Deployment tab.
 
 :::
+
+### Testing the Admin
+
+:::note
+
+Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/quickstart.mdx#build-command-options) command as part of the start command of your backend.
+
+:::
+
+If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
 
 ---
 

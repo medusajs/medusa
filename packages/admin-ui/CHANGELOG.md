@@ -1,5 +1,18 @@
 # @medusajs/admin-ui
 
+## 1.8.1
+
+### Patch Changes
+
+- [#3750](https://github.com/medusajs/medusa/pull/3750) [`6f48cc57b`](https://github.com/medusajs/medusa/commit/6f48cc57bc0b06925a707278a6d820f0e2e0fe81) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): correct notification text on fulfillment cancel
+
+- [#3755](https://github.com/medusajs/medusa/pull/3755) [`72b76bbd3`](https://github.com/medusajs/medusa/commit/72b76bbd3c36e06c1536e115dea9ac6de659d482) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): display SC update notification
+
+- [#3768](https://github.com/medusajs/medusa/pull/3768) [`d533caa4c`](https://github.com/medusajs/medusa/commit/d533caa4c2986c1c9e320cce97423b0cdc213b6c) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa, admin-ui): add description field to product categories
+
+- Updated dependencies [[`c24c2a973`](https://github.com/medusajs/medusa/commit/c24c2a9732bb0d1aff481b723e421b7fcb49a1f0), [`30ee10fdd`](https://github.com/medusajs/medusa/commit/30ee10fddd7d8e2f7d742101aad10d2c688ac98e)]:
+  - medusa-react@5.0.1
+
 ## 1.8.0
 
 ### Patch Changes
