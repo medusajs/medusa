@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:70](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L70)
+[medusa/src/services/payment-provider.ts:70](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L70)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:55](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L55)
+[medusa/src/services/payment-provider.ts:55](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L55)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:65](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L65)
+[medusa/src/services/payment-provider.ts:65](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L65)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:68](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L68)
+[medusa/src/services/payment-provider.ts:68](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L68)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:66](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L66)
+[medusa/src/services/payment-provider.ts:66](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L66)
 
 ___
 
@@ -122,7 +122,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:58](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L58)
+[medusa/src/services/payment-provider.ts:58](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L58)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:59](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L59)
+[medusa/src/services/payment-provider.ts:59](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L59)
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L56)
+[medusa/src/services/payment-provider.ts:56](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L56)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:64](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L64)
+[medusa/src/services/payment-provider.ts:64](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L64)
 
 ___
 
@@ -176,7 +176,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -194,7 +194,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ___
 
@@ -208,7 +208,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:60](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L60)
+[medusa/src/services/payment-provider.ts:60](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L60)
 
 ## Methods
 
@@ -247,7 +247,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -268,7 +268,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:523](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L523)
+[medusa/src/services/payment-provider.ts:523](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L523)
 
 ___
 
@@ -290,7 +290,7 @@ Build the create session context for both legacy and new API
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:840](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L840)
+[medusa/src/services/payment-provider.ts:840](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L840)
 
 ___
 
@@ -310,7 +310,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:597](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L597)
+[medusa/src/services/payment-provider.ts:597](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L597)
 
 ___
 
@@ -330,7 +330,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:636](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L636)
+[medusa/src/services/payment-provider.ts:636](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L636)
 
 ___
 
@@ -350,7 +350,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:471](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L471)
+[medusa/src/services/payment-provider.ts:471](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L471)
 
 ___
 
@@ -373,7 +373,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:205](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L205)
+[medusa/src/services/payment-provider.ts:205](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L205)
 
 ▸ **createSession**(`sessionInput`): `Promise`<`PaymentSession`\>
 
@@ -391,7 +391,7 @@ Creates a payment session with the given provider.
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:211](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L211)
+[medusa/src/services/payment-provider.ts:211](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L211)
 
 ___
 
@@ -411,7 +411,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:402](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L402)
+[medusa/src/services/payment-provider.ts:402](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L402)
 
 ___
 
@@ -431,7 +431,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:625](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L625)
+[medusa/src/services/payment-provider.ts:625](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L625)
 
 ___
 
@@ -445,7 +445,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:102](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L102)
+[medusa/src/services/payment-provider.ts:102](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L102)
 
 ___
 
@@ -468,7 +468,7 @@ List all the payments according to the given selector and config.
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:154](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L154)
+[medusa/src/services/payment-provider.ts:154](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L154)
 
 ___
 
@@ -493,7 +493,7 @@ Process the collected data. Can be used every time we need to process some colle
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:930](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L930)
+[medusa/src/services/payment-provider.ts:930](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L930)
 
 ___
 
@@ -522,7 +522,7 @@ the payment session
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:301](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L301)
+[medusa/src/services/payment-provider.ts:301](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L301)
 
 ___
 
@@ -545,7 +545,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:766](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L766)
+[medusa/src/services/payment-provider.ts:766](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L766)
 
 ___
 
@@ -568,7 +568,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:667](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L667)
+[medusa/src/services/payment-provider.ts:667](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L667)
 
 ___
 
@@ -588,7 +588,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:83](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L83)
+[medusa/src/services/payment-provider.ts:83](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L83)
 
 ___
 
@@ -611,7 +611,7 @@ Retrieve a payment entity with the given id.
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:114](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L114)
+[medusa/src/services/payment-provider.ts:114](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L114)
 
 ___
 
@@ -641,7 +641,7 @@ the payment provider
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:442](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L442)
+[medusa/src/services/payment-provider.ts:442](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L442)
 
 ___
 
@@ -662,7 +662,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:817](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L817)
+[medusa/src/services/payment-provider.ts:817](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L817)
 
 ___
 
@@ -685,7 +685,7 @@ Return the payment session for the given id.
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:172](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L172)
+[medusa/src/services/payment-provider.ts:172](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L172)
 
 ___
 
@@ -715,7 +715,7 @@ Create or update a Payment session data.
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:882](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L882)
+[medusa/src/services/payment-provider.ts:882](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L882)
 
 ___
 
@@ -739,7 +739,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -759,7 +759,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:949](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L949)
+[medusa/src/services/payment-provider.ts:949](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L949)
 
 ___
 
@@ -782,7 +782,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:512](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L512)
+[medusa/src/services/payment-provider.ts:512](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L512)
 
 ___
 
@@ -810,7 +810,7 @@ the payment session
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:342](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L342)
+[medusa/src/services/payment-provider.ts:342](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L342)
 
 ___
 
@@ -831,7 +831,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:569](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/services/payment-provider.ts#L569)
+[medusa/src/services/payment-provider.ts:569](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/services/payment-provider.ts#L569)
 
 ___
 
@@ -855,4 +855,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/66c59d54f/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3efe13eef/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

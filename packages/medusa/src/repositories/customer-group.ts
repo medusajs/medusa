@@ -13,7 +13,7 @@ import {
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { buildLegacyFieldsListFrom } from "../utils"
+import { objectToStringPath } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
 
 export type DefaultWithoutRelations = Omit<
@@ -135,10 +135,10 @@ export const CustomerGroupRepository = dataSource
         return [toReturn, toReturn.length]
       }
 
-      const legacyRelations = buildLegacyFieldsListFrom(relations)
+      const legacyRelations = objectToStringPath(relations)
       const groupedRelations = getGroupedRelations(legacyRelations)
 
-      const legacySelect = buildLegacyFieldsListFrom(
+      const legacySelect = objectToStringPath(
         idsOrOptionsWithoutRelations.select
       )
       const entitiesIdsWithRelations = await queryEntityWithIds(

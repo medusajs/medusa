@@ -5,7 +5,7 @@ import { MedusaError } from "@medusajs/utils"
  * @oas [get] /admin/reservations/{id}
  * operationId: "GetReservationsReservation"
  * summary: "Get a Reservation"
- * description: "Retrieves a single reservation using its id"
+ * description: "Retrieves a single reservation using its ID"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the reservation to retrieve.
@@ -16,7 +16,7 @@ import { MedusaError } from "@medusajs/utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.reservations.retrieve(reservation_id)
+ *       medusa.admin.reservations.retrieve(reservationId)
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
  *       });
