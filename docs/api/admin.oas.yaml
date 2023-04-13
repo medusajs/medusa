@@ -1602,7 +1602,7 @@ paths:
               includes_tax: true
             })
             .then(({ currency }) => {
-              console.log(currency.id);
+              console.log(currency.code);
             });
         - lang: Shell
           label: cURL
@@ -16196,7 +16196,7 @@ paths:
             // must be previously logged in or use api token
             medusa.admin.store.addCurrency('eur')
             .then(({ store }) => {
-              console.log(store.id);
+              console.log(store.currencies);
             });
         - lang: Shell
           label: cURL
@@ -16253,7 +16253,7 @@ paths:
             // must be previously logged in or use api token
             medusa.admin.store.deleteCurrency('eur')
             .then(({ store }) => {
-              console.log(store.id);
+              console.log(store.currencies);
             });
         - lang: Shell
           label: cURL
@@ -21814,6 +21814,9 @@ components:
         name:
           type: string
           description: The name to identify the Product Category by.
+        description:
+          type: string
+          description: An optional text field to describe the Product Category by.
         handle:
           type: string
           description: A handle to be used in slugs.
@@ -21837,6 +21840,9 @@ components:
         name:
           type: string
           description: The name to identify the Product Category by.
+        description:
+          type: string
+          description: An optional text field to describe the Product Category by.
         handle:
           type: string
           description: An optional handle to be used in slugs, if none is provided we will kebab-case the title.
