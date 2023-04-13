@@ -98,20 +98,30 @@ class ProductCategoryService extends TransactionBaseService {
    * @return the product category.
    */
   async retrieve(
-    productCategoryId: string,
+    productCategoryIdOrHandle: string,
     config: FindConfig<ProductCategory> = {},
     selector: Selector<ProductCategory> = {},
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<ProductCategory> {
-    if (!isDefined(productCategoryId)) {
+    if (!isDefined(productCategoryIdOrHandle)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `"productCategoryId" must be defined`
+        `"productCategoryIdOrHandle" must be defined`
       )
     }
 
-    const selectors = Object.assign({ id: productCategoryId }, selector)
-    const query = buildQuery(selectors, config)
+    const query = buildQuery(selector, config)
+    query.where = [
+      {
+        ...query.where,
+        id: productCategoryIdOrHandle
+      },
+      {
+        ...query.where,
+        handle: productCategoryIdOrHandle
+      }
+    ]
+
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
@@ -124,7 +134,7 @@ class ProductCategoryService extends TransactionBaseService {
     if (!productCategory) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `ProductCategory with id: ${productCategoryId} was not found`
+        `ProductCategory with id or handle: ${productCategoryIdOrHandle} was not found`
       )
     }
 

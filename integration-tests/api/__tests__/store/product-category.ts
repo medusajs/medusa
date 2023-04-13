@@ -84,19 +84,20 @@ describe("/store/product-categories", () => {
     })
   })
 
-  describe("GET /store/product-categories/:id", () => {
+  describe("GET /store/product-categories/:id-or-handle", () => {
     afterEach(async () => {
       const db = useDb()
       return await db.teardown()
     })
 
-    it("gets product category with children tree and parent", async () => {
+    it("gets product category with children tree and parent by ID", async () => {
       const api = useApi()
 
       const response = await api.get(
         `/store/product-categories/${productCategory.id}?fields=handle,name,description`,
       )
 
+      expect(response.status).toEqual(200)
       expect(response.data.product_category).toEqual(
         expect.objectContaining({
           id: productCategory.id,
@@ -123,8 +124,42 @@ describe("/store/product-categories", () => {
           ]
         })
       )
+    })
+
+    it("gets product category with children tree and parent by handle", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/product-categories/${productCategory.handle}`,
+      )
 
       expect(response.status).toEqual(200)
+      expect(response.data.product_category).toEqual(
+        expect.objectContaining({
+          id: productCategory.id,
+          handle: productCategory.handle,
+          name: productCategory.name,
+          description: "",
+          parent_category: expect.objectContaining({
+            id: productCategoryParent.id,
+            handle: productCategoryParent.handle,
+            name: productCategoryParent.name,
+            description: "test description"
+          }),
+          category_children: [
+            expect.objectContaining({
+              id: productCategoryChild4.id,
+              handle: productCategoryChild4.handle,
+              name: productCategoryChild4.name,
+            }),
+            expect.objectContaining({
+              id: productCategoryChild.id,
+              handle: productCategoryChild.handle,
+              name: productCategoryChild.name,
+            }),
+          ]
+        })
+      )
     })
 
     it("throws error on querying not allowed fields", async () => {
@@ -149,7 +184,7 @@ describe("/store/product-categories", () => {
       expect(error.response.status).toEqual(404)
       expect(error.response.data.type).toEqual('not_found')
       expect(error.response.data.message).toEqual(
-        `ProductCategory with id: ${productCategoryChild2.id} was not found`
+        `ProductCategory with id or handle: ${productCategoryChild2.id} was not found`
       )
     })
 
@@ -163,7 +198,7 @@ describe("/store/product-categories", () => {
       expect(error.response.status).toEqual(404)
       expect(error.response.data.type).toEqual('not_found')
       expect(error.response.data.message).toEqual(
-        `ProductCategory with id: ${productCategoryChild3.id} was not found`
+        `ProductCategory with id or handle: ${productCategoryChild3.id} was not found`
       )
     })
   })

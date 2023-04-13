@@ -50,7 +50,7 @@ describe("/admin/product-categories", () => {
     medusaProcess.kill()
   })
 
-  describe("GET /admin/product-categories/:id", () => {
+  describe("GET /admin/product-categories/:id-or-handle", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
@@ -83,11 +83,50 @@ describe("/admin/product-categories", () => {
       return await db.teardown()
     })
 
-    it("gets product category with children tree and parent", async () => {
+    it("gets product category with children tree and parent by ID", async () => {
       const api = useApi()
 
       const response = await api.get(
         `/admin/product-categories/${productCategory.id}`,
+        adminHeaders
+      )
+
+      expect(response.data.product_category).toEqual(
+        expect.objectContaining({
+          id: productCategory.id,
+          name: productCategory.name,
+          handle: productCategory.handle,
+          parent_category: expect.objectContaining({
+            id: productCategoryParent.id,
+            name: productCategoryParent.name,
+            handle: productCategoryParent.handle,
+          }),
+          category_children: [
+            expect.objectContaining({
+              id: productCategoryChild.id,
+              name: productCategoryChild.name,
+              handle: productCategoryChild.handle,
+              category_children: [
+                expect.objectContaining({
+                  id: productCategoryChild2.id,
+                  name: productCategoryChild2.name,
+                  handle: productCategoryChild2.handle,
+                  category_children: []
+                })
+              ]
+            })
+          ]
+        })
+      )
+
+      expect(response.status).toEqual(200)
+    })
+
+    it("gets product category with children tree and parent by handle", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories/${productCategory.handle}`,
         adminHeaders
       )
 
@@ -756,7 +795,7 @@ describe("/admin/product-categories", () => {
       expect(error.response.status).toEqual(404)
       expect(error.response.data.type).toEqual("not_found")
       expect(error.response.data.message).toEqual(
-        "ProductCategory with id: not-found-id was not found"
+        "ProductCategory with id or handle: not-found-id was not found"
       )
     })
 
@@ -1121,7 +1160,7 @@ describe("/admin/product-categories", () => {
 
       expect(error.response.status).toEqual(404)
       expect(error.response.data).toEqual({
-        message: "ProductCategory with id: invalid-category-id was not found",
+        message: "ProductCategory with id or handle: invalid-category-id was not found",
         type: "not_found",
       })
     })
@@ -1246,7 +1285,7 @@ describe("/admin/product-categories", () => {
 
       expect(error.response.status).toEqual(404)
       expect(error.response.data).toEqual({
-        message: "ProductCategory with id: invalid-category-id was not found",
+        message: "ProductCategory with id or handle: invalid-category-id was not found",
         type: "not_found",
       })
     })
