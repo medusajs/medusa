@@ -13,7 +13,8 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * description: "Retrieve a list of product categories."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching product category names orhandles.
+ *   - (query) q {string} Query used for searching product category names or handles.
+ *   - (query) handle {string} Query used for searching product category by handle.
  *   - (query) is_internal {boolean} Search for only internal categories.
  *   - (query) is_active {boolean} Search for only active categories
  *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
@@ -93,6 +94,10 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsString()
+  @IsOptional()
+  handle?: string
 
   @IsBoolean()
   @IsOptional()

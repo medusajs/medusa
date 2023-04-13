@@ -201,6 +201,17 @@ module.exports = {
                 },
               },
             },
+{
+                            type: 'doc',
+                            id: 'deployments/server/deploying-on-microtica',
+                            label: 'Deploy on Microtica',
+                            customProps: {
+                                themedImage: {
+                                    light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1681296578/Medusa%20Docs/Other/aF4ZuDS_t11rcu.png',
+                                    dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1681296612/Medusa%20Docs/Other/Lg7NHQk_qo6oax.png'
+                                }
+                            }
+                        },
             {
               type: "doc",
               id: "deployments/server/deploying-on-qovery",
@@ -622,16 +633,13 @@ module.exports = {
           label: "Admin: Import Products",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/products/storefront/show-products",
           label: "Storefront: Show Products",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
-          id: "modules/products/store/use-categories",
+          id: "modules/products/storefront/use-categories",
           label: "Storefront: Use Categories",
         },
         {
