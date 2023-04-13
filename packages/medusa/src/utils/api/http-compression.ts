@@ -11,7 +11,7 @@ export function shouldCompressResponse(req: Request, res: Response) {
   const { projectConfig } = req.scope.resolve("configModule")
   const { enabled } = compressionOptions(projectConfig)
 
-  if (enabled !== true) {
+  if (!enabled) {
     return false
   }
 
