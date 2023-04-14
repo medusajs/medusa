@@ -120,4 +120,8 @@ export interface ProductVariant {
    * An optional key-value map with additional details
    */
   metadata: Record<string, any> | null
+  /**
+   * A boolean value indicating whether the Product Variant is purchasable.
+   */
+  purchasable?: boolean
 }

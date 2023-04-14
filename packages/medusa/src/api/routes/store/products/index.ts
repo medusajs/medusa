@@ -2,9 +2,9 @@ import "reflect-metadata"
 
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 
-import { DecoratedProduct } from "../../../../types/product"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { PaginatedResponse } from "../../../../types/common"
+import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../.."
 import { Router } from "express"
 import { StoreGetProductsParams } from "./list-products"
@@ -124,14 +124,16 @@ export * from "./search"
  *     - variants
  *     - variants.options
  *     - variants.prices
+ *   totals:
+ *     - variants.purchasable
  * required:
  *   - product
  * properties:
  *   product:
- *     $ref: "#/components/schemas/DecoratedProduct"
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type StoreProductsRes = {
-  product: DecoratedProduct
+  product: PricedProduct
 }
 
 /**
@@ -165,6 +167,8 @@ export type StorePostSearchRes = {
  *     - variants
  *     - variants.options
  *     - variants.prices
+ *   totals:
+ *     - variants.purchasable
  * required:
  *   - products
  *   - count
@@ -174,7 +178,7 @@ export type StorePostSearchRes = {
  *   products:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/DecoratedProduct"
+ *       $ref: "#/components/schemas/PricedProduct"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -186,5 +190,5 @@ export type StorePostSearchRes = {
  *     description: The number of items per page
  */
 export type StoreProductsListRes = PaginatedResponse & {
-  products: DecoratedProduct[]
+  products: PricedProduct[]
 }

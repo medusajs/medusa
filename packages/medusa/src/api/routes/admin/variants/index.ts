@@ -2,7 +2,6 @@ import middlewares, { transformQuery } from "../../../middlewares"
 
 import { AdminGetVariantParams } from "./get-variant"
 import { AdminGetVariantsParams } from "./list-variants"
-import { DecoratedVariant } from "../../../../types/product-variant"
 import { PaginatedResponse } from "../../../../types/common"
 import { PricedVariant } from "../../../../types/pricing"
 import { ProductVariant } from "../../../../models/product-variant"
@@ -82,6 +81,8 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     - options
  *     - prices
  *     - product
+ *   totals:
+ *     - purchasable
  * required:
  *   - variants
  *   - count
@@ -91,7 +92,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *   variants:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/DecoratedVariant"
+ *       $ref: "#/components/schemas/PricedVariant"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -103,7 +104,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     description: The number of items per page
  */
 export type AdminVariantsListRes = PaginatedResponse & {
-  variants: DecoratedVariant[]
+  variants: PricedVariant[]
 }
 
 /**

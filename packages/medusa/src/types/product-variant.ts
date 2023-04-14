@@ -221,19 +221,3 @@ export class ProductVariantPricesCreateReq {
   @IsInt()
   max_quantity?: number
 }
-
-/**
- * @schema DecoratedVariant
- * title: "Decorated Product Variant"
- * type: object
- * allOf:
- *   - $ref: "#/components/schemas/PricedVariant"
- *   - type: object
- *     properties:
- *       purchasable:
- *         type: boolean
- *         description: Boolean indicating if variant is purchasable.
- */
-export type DecoratedVariant = PricedVariant & {
-  purchasable?: boolean
-}
