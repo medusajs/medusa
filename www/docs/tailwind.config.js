@@ -435,113 +435,132 @@ module.exports = {
           },
         },
       },
-      fontFamily: {
-        base: [
-          "Inter",
-          "BlinkMacSystemFont",
-          "-apple-system",
-          "Segoe UI",
-          "Roboto",
-          "Oxygen",
-          "Ubuntu",
-          "Cantarell",
-          "Fira Sans",
-          "Droid Sans",
-          "Helvetica Neue",
-          "Helvetica",
-          "Arial",
-          "sans-serif",
-        ],
-        monospace: [
-          "Roboto Mono",
-          "SFMono-Regular",
-          "Menlo",
-          "Monaco",
-          "Consolas",
-          "Liberation Mono",
-          "Courier New",
-          "monospace",
-        ],
+      borderRadius: {
+        DEFAULT: "8px",
       },
-      fontSize: {
-        "body-regular-plus": [
-          "14px",
-          {
-            lineHeight: "24px",
-            fontWeight: "500",
-          },
-        ],
-        "body-regular": [
-          "14px",
-          {
-            lineHeight: "24px",
-            fontWeight: "400",
-          },
-        ],
-        h1: [
-          "32px",
-          {
-            lineHeight: "44px",
-            fontWeight: "500",
-          },
-        ],
-        h2: [
-          "24px",
-          {
-            lineHeight: "32px",
-            fontWeight: "500",
-          },
-        ],
-        h3: [
-          "18px",
-          {
-            lineHeight: "28px",
-            fontWeight: "500",
-          },
-        ],
-        "label-large-plus": [
-          "16px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-regular-plus": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-regular": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "label-small-plus": [
-          "13px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-small": [
-          "13px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "label-x-small": [
-          "12px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
+      lineHeight: {
+        DEFAULT: "24px",
       },
+      backgroundImage: {
+        "primary-gradient":
+          "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
+      },
+      screens: {
+        xl: "1419px",
+      },
+    },
+    fontFamily: {
+      base: [
+        "Inter",
+        "BlinkMacSystemFont",
+        "-apple-system",
+        "Segoe UI",
+        "Roboto",
+        "Oxygen",
+        "Ubuntu",
+        "Cantarell",
+        "Fira Sans",
+        "Droid Sans",
+        "Helvetica Neue",
+        "Helvetica",
+        "Arial",
+        "sans-serif",
+      ],
+      monospace: [
+        "Roboto Mono",
+        "SFMono-Regular",
+        "Menlo",
+        "Monaco",
+        "Consolas",
+        "Liberation Mono",
+        "Courier New",
+        "monospace",
+      ],
+    },
+    fontSize: {
+      "body-regular-plus": [
+        "14px",
+        {
+          lineHeight: "24px",
+          fontWeight: "500",
+        },
+      ],
+      "body-regular": [
+        "14px",
+        {
+          lineHeight: "24px",
+          fontWeight: "400",
+        },
+      ],
+      h1: [
+        "32px",
+        {
+          lineHeight: "44px",
+          fontWeight: "500",
+        },
+      ],
+      h2: [
+        "24px",
+        {
+          lineHeight: "32px",
+          fontWeight: "500",
+        },
+      ],
+      h3: [
+        "18px",
+        {
+          lineHeight: "28px",
+          fontWeight: "500",
+        },
+      ],
+      "label-large-plus": [
+        "16px",
+        {
+          lineHeight: "20px",
+          fontWeight: "500",
+        },
+      ],
+      "label-regular-plus": [
+        "14px",
+        {
+          lineHeight: "20px",
+          fontWeight: "500",
+        },
+      ],
+      "label-regular": [
+        "14px",
+        {
+          lineHeight: "20px",
+          fontWeight: "400",
+        },
+      ],
+      "label-small-plus": [
+        "13px",
+        {
+          lineHeight: "20px",
+          fontWeight: "500",
+        },
+      ],
+      "label-small": [
+        "13px",
+        {
+          lineHeight: "20px",
+          fontWeight: "400",
+        },
+      ],
+      "label-x-small": [
+        "12px",
+        {
+          lineHeight: "20px",
+          fontWeight: "500",
+        },
+      ],
+    },
+    spacing: {
+      px: "1px",
+      0: "0px",
+      1: "16px",
+      2: "32px",
     },
   },
   plugins: [],
