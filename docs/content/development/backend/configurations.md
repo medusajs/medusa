@@ -445,8 +445,6 @@ module.exports = {
 }
 ```
 
-To disable compression for specific endpoints, you can pass in the request header `"x-no-compression": true`.
-
 Where:
 
 - `enabled`: A boolean flag that indicates where HTTP compression is enabled. It is disabled by default.
@@ -454,6 +452,7 @@ Where:
 - `memLevel`: A `number` value that specifies how much memory should be allocated for the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). The default value is 8.
 - `threshold`: A `number` or a `string` value in bytes that specifies the minimum response body size that compression is applied on. This is the number of bytes or any string accepted by the bytes module. The default value is `1024`.
 
+To disable compression for specific endpoints, you can pass in the request header `"x-no-compression": true`.
 
 
 :::tip
