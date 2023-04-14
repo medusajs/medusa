@@ -73,8 +73,6 @@ export default function CloudinaryImage ({ src, ...props }) {
   }
 
   return (
-    <p className="cloudinary-image-wrapper">
-      <MDXImg {...props} src={image.toURL()} />
-    </p>
+    <MDXImg {...props} src={image.toURL()} />
   )
 }
