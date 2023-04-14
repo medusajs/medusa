@@ -9,6 +9,99 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        white: "#FFFFFF",
+        gray: {
+          50: "#F8F9FA",
+          100: "#F1F3F5",
+          200: "#ECEEF0",
+          300: "#ECEDEE",
+          400: "#E6E8EB",
+          500: "#DFE3E6",
+          600: "#C1C8CD",
+          700: "#889096",
+          800: "#787F85",
+          900: "#687076",
+        },
+        black: {
+          50: "#697177",
+          100: "#3A3F42",
+          200: "#2B2F31",
+          300: "#202425",
+          400: "#28282C",
+          500: "#26292B",
+          600: "#151718",
+          700: "#1C1C1F",
+          800: "#11181C",
+          900: "#1A1D1E",
+        },
+        green: {
+          50: "#DDF3E4",
+          100: "#CCEBD7",
+          200: "#B4DFC4",
+          300: "#4CC38A",
+          400: "#30A46C",
+          500: "#18794E",
+          600: "#164430",
+          700: "#133929",
+          800: "#113123",
+        },
+        blue: {
+          50: "#E1F0FF",
+          100: "#CEE7FE",
+          200: "#B7D9F8",
+          300: "#52A9FF",
+          400: "#0091FF",
+          500: "#006ADC",
+          600: "#0D3868",
+          700: "#0F3058",
+          800: "#102A4C",
+        },
+        purple: {
+          50: "#EDE9FE",
+          100: "#E4DEFC",
+          200: "#D7CFF9",
+          300: "#9E8CFC",
+          400: "#7C66DC",
+          500: "#6E56CF",
+          600: "#644FC1",
+          700: "#5746AF",
+          800: "#5842C3",
+          900: "#392C72",
+        },
+        orange: {
+          50: "#FFECBC",
+          100: "#FFE3A2",
+          200: "#FFD386",
+          300: "#FFB224",
+          400: "#F1A10D",
+          500: "#AD5700",
+          600: "#573300",
+          700: "#4A2900",
+          800: "#3F2200",
+        },
+        red: {
+          50: "#FFE5E5",
+          100: "#FDD8D8",
+          200: "#F9C6C6",
+          300: "#FF6369",
+          400: "#F2555A",
+          500: "#E5484D",
+          600: "#DC3D43",
+          700: "#CD2B31",
+          800: "#AA2429",
+          900: "#671E22",
+        },
+        pink: {
+          50: "#FCE5F3",
+          100: "#F9D8EC",
+          200: "#F3C6E2",
+          300: "#F65CB6",
+          400: "#D6409F",
+          500: "#CD1D8D",
+          600: "#601D48",
+          700: "#501B3F",
+          800: "#451A37",
+        },
         /* docs colors */
         medusa: {
           bg: {
@@ -341,6 +434,113 @@ module.exports = {
             dark: "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
           },
         },
+      },
+      fontFamily: {
+        base: [
+          "Inter",
+          "BlinkMacSystemFont",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Oxygen",
+          "Ubuntu",
+          "Cantarell",
+          "Fira Sans",
+          "Droid Sans",
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
+        monospace: [
+          "Roboto Mono",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "Liberation Mono",
+          "Courier New",
+          "monospace",
+        ],
+      },
+      fontSize: {
+        "body-regular-plus": [
+          "14px",
+          {
+            lineHeight: "24px",
+            fontWeight: "500",
+          },
+        ],
+        "body-regular": [
+          "14px",
+          {
+            lineHeight: "24px",
+            fontWeight: "400",
+          },
+        ],
+        h1: [
+          "32px",
+          {
+            lineHeight: "44px",
+            fontWeight: "500",
+          },
+        ],
+        h2: [
+          "24px",
+          {
+            lineHeight: "32px",
+            fontWeight: "500",
+          },
+        ],
+        h3: [
+          "18px",
+          {
+            lineHeight: "28px",
+            fontWeight: "500",
+          },
+        ],
+        "label-large-plus": [
+          "16px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "label-regular-plus": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "label-regular": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "label-small-plus": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "label-small": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "label-x-small": [
+          "12px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
       },
     },
   },
