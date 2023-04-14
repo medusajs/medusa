@@ -8,7 +8,7 @@ module.exports = {
   darkMode: ["class", `[data-theme="dark"]`], // hooks into docusaurus' dark mode settigns
   theme: {
     extend: {
-      colors: ({ theme }) => ({
+      colors: {
         white: "#FFFFFF",
         gray: {
           50: "#F8F9FA",
@@ -445,9 +445,10 @@ module.exports = {
             },
           },
         },
-      }),
+      },
       borderRadius: {
         DEFAULT: "8px",
+        sm: "4px",
       },
       lineHeight: {
         DEFAULT: "24px",

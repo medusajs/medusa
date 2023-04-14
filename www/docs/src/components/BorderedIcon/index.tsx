@@ -1,7 +1,6 @@
 import React from "react"
 import ThemedImage from "@theme/ThemedImage"
 import clsx from "clsx"
-import styles from "./styles.module.css"
 import Bordered from "../Bordered/index"
 import { IconProps } from "@site/src/theme/Icon/index"
 
@@ -25,20 +24,23 @@ const BorderedIcon: React.FC<BorderedIconProp> = ({
 }) => {
   return (
     <Bordered wrapperClassName={wrapperClassName}>
-      <span className={clsx(styles.borderedIconWrapper, iconWrapperClassName)}>
+      <span
+        className={clsx(
+          "tw-inline-flex tw-justify-center tw-items-center tw-rounded-sm tw-p-[2px] tw-bg-medusa-bg-component dark:tw-bg-medusa-bg-component-dark",
+          iconWrapperClassName
+        )}
+      >
         {!IconComponent && (
           <ThemedImage
             sources={{
               light: icon.light,
               dark: icon.dark || icon.light,
             }}
-            className={clsx(styles.icon, iconClassName, "bordered-icon")}
+            className={clsx(iconClassName, "bordered-icon")}
           />
         )}
         {IconComponent && (
-          <IconComponent
-            className={clsx(styles.icon, iconClassName, "bordered-icon")}
-          />
+          <IconComponent className={clsx(iconClassName, "bordered-icon")} />
         )}
       </span>
     </Bordered>
