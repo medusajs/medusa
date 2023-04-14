@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.2.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.8.2
+
 ## 0.2.11
 
 ### Patch Changes
