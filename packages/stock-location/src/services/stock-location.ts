@@ -4,6 +4,7 @@ import {
   FilterableStockLocationProps,
   FindConfig,
   IEventBusService,
+  MODULE_RESOURCE_TYPE,
   SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
@@ -54,7 +55,8 @@ export default class StockLocationService {
    * @return A list of stock locations.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async list(
     selector: FilterableStockLocationProps = {},
@@ -75,7 +77,8 @@ export default class StockLocationService {
    * @return A list of stock locations and the count of matching stock locations.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async listAndCount(
     selector: FilterableStockLocationProps = {},
@@ -97,7 +100,8 @@ export default class StockLocationService {
    * @throws If the stock location ID is not definedor the stock location with the given ID was not found.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieve(
     stockLocationId: string,
@@ -133,7 +137,8 @@ export default class StockLocationService {
    * @returns The created stock location.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async create(
     data: CreateStockLocationInput,
@@ -179,7 +184,8 @@ export default class StockLocationService {
    * @returns The updated stock location.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async update(
     stockLocationId: string,
@@ -227,7 +233,8 @@ export default class StockLocationService {
    * @returns The updated stock location address.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   protected async updateAddress(
     addressId: string,
@@ -270,7 +277,8 @@ export default class StockLocationService {
    * @returns An empty promise.
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async delete(
     id: string,

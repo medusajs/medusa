@@ -10,6 +10,7 @@ import {
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
+  MODULE_RESOURCE_TYPE,
   ReservationItemDTO,
   SharedContext,
   UpdateInventoryLevelInput,
@@ -61,7 +62,8 @@ export default class InventoryService implements IInventoryService {
    * @return A tuple of inventory items and their total count
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
@@ -82,7 +84,8 @@ export default class InventoryService implements IInventoryService {
    * @return A tuple of inventory levels and their total count
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async listInventoryLevels(
     selector: FilterableInventoryLevelProps,
@@ -107,7 +110,8 @@ export default class InventoryService implements IInventoryService {
    * @return A tuple of reservation items and their total count
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async listReservationItems(
     selector: FilterableReservationItemProps,
@@ -132,7 +136,8 @@ export default class InventoryService implements IInventoryService {
    * @return The retrieved inventory item
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieveInventoryItem(
     inventoryItemId: string,
@@ -154,7 +159,8 @@ export default class InventoryService implements IInventoryService {
    * @return the retrieved inventory level
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieveInventoryLevel(
     inventoryItemId: string,
@@ -181,7 +187,8 @@ export default class InventoryService implements IInventoryService {
    * @return the retrieved reservation level
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieveReservationItem(
     reservationId: string,
@@ -200,7 +207,8 @@ export default class InventoryService implements IInventoryService {
    * @return The created reservation item
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async createReservationItem(
     input: CreateReservationItemInput,
@@ -237,7 +245,8 @@ export default class InventoryService implements IInventoryService {
    * @return The created inventory item
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async createInventoryItem(
     input: CreateInventoryItemInput,
@@ -256,7 +265,8 @@ export default class InventoryService implements IInventoryService {
    * @return The created inventory level
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async createInventoryLevel(
     input: CreateInventoryLevelInput,
@@ -272,7 +282,8 @@ export default class InventoryService implements IInventoryService {
    * @return The updated inventory item
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async updateInventoryItem(
     inventoryItemId: string,
@@ -292,7 +303,8 @@ export default class InventoryService implements IInventoryService {
    * @param inventoryItemId - the id of the inventory item to delete
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteInventoryItem(
     inventoryItemId: string,
@@ -307,7 +319,8 @@ export default class InventoryService implements IInventoryService {
   }
 
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteInventoryItemLevelByLocationId(
     locationId: string,
@@ -320,7 +333,8 @@ export default class InventoryService implements IInventoryService {
   }
 
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteReservationItemByLocationId(
     locationId: string,
@@ -338,7 +352,8 @@ export default class InventoryService implements IInventoryService {
    * @param locationId - the id of the location associated with the level
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteInventoryLevel(
     inventoryItemId: string,
@@ -366,7 +381,8 @@ export default class InventoryService implements IInventoryService {
    * @return The updated inventory level
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async updateInventoryLevel(
     inventoryItemId: string,
@@ -401,7 +417,8 @@ export default class InventoryService implements IInventoryService {
    * @return The updated inventory level
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async updateReservationItem(
     reservationItemId: string,
@@ -420,7 +437,8 @@ export default class InventoryService implements IInventoryService {
    * @param lineItemId - the id of the line item associated with the reservation item
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteReservationItemsByLineItem(
     lineItemId: string,
@@ -437,7 +455,8 @@ export default class InventoryService implements IInventoryService {
    * @param reservationItemId - the id of the reservation item to delete
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteReservationItem(
     reservationItemId: string | string[],
@@ -455,7 +474,8 @@ export default class InventoryService implements IInventoryService {
    * @throws when the inventory level is not found
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async adjustInventory(
     inventoryItemId: string,
@@ -494,7 +514,8 @@ export default class InventoryService implements IInventoryService {
    * @throws when the inventory item is not found
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieveAvailableQuantity(
     inventoryItemId: string,
@@ -532,7 +553,8 @@ export default class InventoryService implements IInventoryService {
    * @throws when the inventory item is not found
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieveStockedQuantity(
     inventoryItemId: string,
@@ -570,7 +592,8 @@ export default class InventoryService implements IInventoryService {
    * @throws when the inventory item is not found
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async retrieveReservedQuantity(
     inventoryItemId: string,
@@ -608,7 +631,8 @@ export default class InventoryService implements IInventoryService {
    * @return Whether there is sufficient inventory
    */
   @InjectEntityManager(
-    (target) => target.moduleDeclaration?.resources === "ISOLATED"
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async confirmInventory(
     inventoryItemId: string,
