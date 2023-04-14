@@ -44,7 +44,7 @@ export interface StorePostCartsCartReq {
    */
   discounts?: Array<{
     /**
-     * The code that a Discount is identifed by.
+     * The code that a Discount is identified by.
      */
     code: string
   }>

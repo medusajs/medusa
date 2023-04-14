@@ -1,5 +1,15 @@
 # @medusajs/inventory
 
+## 1.8.1
+
+### Patch Changes
+
+- [#3778](https://github.com/medusajs/medusa/pull/3778) [`654a54622`](https://github.com/medusajs/medusa/commit/654a54622303139e7180538bd686630ad9a46cfd) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump Typeorm
+
+- Updated dependencies [[`654a54622`](https://github.com/medusajs/medusa/commit/654a54622303139e7180538bd686630ad9a46cfd), [`abdb74d99`](https://github.com/medusajs/medusa/commit/abdb74d997f49f994bff49787a396179982843b0)]:
+  - @medusajs/utils@1.8.1
+  - @medusajs/modules-sdk@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes
