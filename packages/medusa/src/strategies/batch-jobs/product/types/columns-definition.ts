@@ -518,6 +518,35 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
 
+  "Product Category": {
+    name: "Product Category Handle",
+    importDescriptor: {
+      match: /Category Handle \d+/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.categories"] = builtLine["product.categories"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        const categories = builtLine["product.categories"] as Record<
+          string,
+          string | number
+        >[]
+
+        categories.push({ handle: value })
+
+        return builtLine
+      },
+    },
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Product Category Handle ${index + 1}`
+      },
+    },
+  },
+
   // PRICES
 
   "Price Region": {

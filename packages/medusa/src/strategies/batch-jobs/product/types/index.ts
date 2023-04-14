@@ -3,6 +3,7 @@ import { Selector } from "../../../../types/common"
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
 import {
   BatchJobService,
+  ProductCategoryService,
   ProductCollectionService,
   ProductService,
   ProductVariantService,
@@ -82,6 +83,7 @@ export type ProductImportInjectedProps = {
   salesChannelService: SalesChannelService
   regionService: RegionService
   productCollectionService: ProductCollectionService
+  productCategoryService: ProductCategoryService
   fileService: typeof FileService
 
   featureFlagRouter: FlagRouter
