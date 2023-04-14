@@ -102,20 +102,6 @@ module.exports = {
           700: "#501B3F",
           800: "#451A37",
         },
-        boxShadow: {
-          overlay: {
-            DEFAULT: "0px 2px 16px rgba(0, 0, 0, 0.08)",
-            dark: "0px 2px 16px rgba(0, 0, 0, 0.32)",
-          },
-          "field-focused": {
-            DEFAULT: "0px 0px 0px 4px #EDE9FE",
-            dark: "0px 0px 0px 4px #2C2250",
-          },
-          "button-focused": {
-            DEFAULT: "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
-            dark: "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
-          },
-        },
         /* docs colors */
         medusa: {
           bg: {
@@ -446,6 +432,15 @@ module.exports = {
           },
         },
       },
+      boxShadow: {
+        overlay: "0px 2px 16px rgba(0, 0, 0, 0.08)",
+        "overlay-dark": "0px 2px 16px rgba(0, 0, 0, 0.32)",
+        "field-focused": "0px 0px 0px 4px #EDE9FE",
+        "field-focused-dark": "0px 0px 0px 4px #2C2250",
+        "button-focused": "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
+        "button-focused-dark":
+          "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+      },
       borderRadius: {
         DEFAULT: "8px",
         sm: "4px",
@@ -581,6 +576,7 @@ module.exports = {
       0.4: "7px",
       0.5: "8px",
       1: "16px",
+      1.5: "24px",
       2: "32px",
     },
   },

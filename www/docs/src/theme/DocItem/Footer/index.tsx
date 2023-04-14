@@ -17,7 +17,10 @@ export default function FooterWrapper(props: Props): JSX.Element {
     <>
       {!metadata.frontMatter?.hide_footer && (
         <div className="docusaurus-mt-lg doc-footer">
-          <Feedback {...footerFeedback} />
+          <Feedback
+            {...footerFeedback}
+            className="tw-border-0 tw-border-t tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark"
+          />
           <Footer {...props} />
         </div>
       )}

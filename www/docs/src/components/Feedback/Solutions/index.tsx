@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { request } from "@octokit/request"
-import "./index.css"
+// import "./index.css"
 
 type SolutionsProps = {
   feedback: boolean
@@ -59,14 +59,14 @@ const Solutions: React.FC<SolutionsProps> = ({ feedback, message }) => {
   return (
     <>
       {possibleSolutions.length > 0 && (
-        <div className="solutions-wrapper">
-          <span className="solutions-message">
+        <div className="tw-text-label-large-plus tw-font-normal">
+          <span className="tw-inline-block tw-my-1 tw-mx-0">
             If you faced a problem, here are some possible solutions from
             GitHub:
           </span>
           <ul>
             {possibleSolutions.map((solution) => (
-              <li key={solution.url}>
+              <li key={solution.url} className="tw-mb-0.5 last:tw-mb-0">
                 <a href={solution.html_url} target="_blank" rel="noreferrer">
                   {solution.title}
                 </a>
