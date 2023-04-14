@@ -1,9 +1,11 @@
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
   TaxCalculationContext,
   TransactionBaseService,
 } from "../interfaces"
-import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Discount,
   DiscountRuleType,
@@ -14,12 +16,10 @@ import {
   ShippingMethod,
   ShippingMethodTaxLine,
 } from "../models"
-import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../utils/flag-router"
 import { calculatePriceTaxAmount } from "../utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter } from "../utils/flag-router"
+import { TaxProviderService } from "./index"
 
 type LineItemTotals = {
   unit_price: number
@@ -33,6 +33,23 @@ type LineItemTotals = {
   discount_total: number
 
   raw_discount_total: number
+}
+
+type GetLineItemTotalsContext = {
+  includeTax?: boolean
+  calculationContext: TaxCalculationContext
+  lineItemsTaxLinesMap: {
+    [lineItemId: string]: LineItemTaxLine[]
+  }
+}
+
+type GetShippingMethodTotalsContext = {
+  includeTax?: boolean
+  calculationContext: TaxCalculationContext
+  discounts?: Discount[]
+  shippingMethodsTaxLinesMap: {
+    [shippingMethodId: string]: ShippingMethodTaxLine[]
+  }
 }
 
 type GiftCardTransaction = {
@@ -60,19 +77,16 @@ type InjectedDependencies = {
 }
 
 export default class NewTotalsService extends TransactionBaseService {
-  protected readonly taxProviderService_: TaxProviderService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
-    taxProviderService,
     featureFlagRouter,
     taxCalculationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.taxProviderService_ = taxProviderService
     this.featureFlagRouter_ = featureFlagRouter
     this.taxCalculationStrategy_ = taxCalculationStrategy
   }
@@ -89,43 +103,35 @@ export default class NewTotalsService extends TransactionBaseService {
     {
       includeTax,
       calculationContext,
-      taxRate,
-    }: {
-      includeTax?: boolean
-      calculationContext: TaxCalculationContext
-      taxRate?: number | null
-    }
+      lineItemsTaxLinesMap,
+    }: GetLineItemTotalsContext
   ): Promise<{ [lineItemId: string]: LineItemTotals }> {
     items = Array.isArray(items) ? items : [items]
 
-    let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
+    // let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
 
-    if (!taxRate && includeTax) {
-      // Use existing tax lines if they are present
-      const itemContainsTaxLines = items.some((item) => item.tax_lines?.length)
-      if (itemContainsTaxLines) {
-        items.forEach((item) => {
-          lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
-        })
-      } else {
-        const { lineItemsTaxLines } = await this.taxProviderService_
-          .withTransaction(this.activeManager_)
-          .getTaxLinesMap(items, calculationContext)
-        lineItemsTaxLinesMap = lineItemsTaxLines
-      }
-    }
-
-    const calculationMethod = taxRate
-      ? this.getLineItemTotalsLegacy.bind(this)
-      : this.getLineItemTotals_.bind(this)
+    // if (!taxRate && includeTax) {
+    //   // Use existing tax lines if they are present
+    //   const itemContainsTaxLines = items.some((item) => item.tax_lines?.length)
+    //   if (itemContainsTaxLines) {
+    //     items.forEach((item) => {
+    //       lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
+    //     })
+    //   } else {
+    //     const { lineItemsTaxLines } = await this.taxProviderService_
+    //       .withTransaction(this.activeManager_)
+    //       .getTaxLinesMap(items, calculationContext)
+    //     lineItemsTaxLinesMap = lineItemsTaxLines
+    //   }
+    // }
 
     const itemsTotals: { [lineItemId: string]: LineItemTotals } = {}
+
     for (const item of items) {
       const lineItemAllocation =
         calculationContext.allocation_map[item.id] || {}
 
-      itemsTotals[item.id] = await calculationMethod(item, {
-        taxRate,
+      itemsTotals[item.id] = await this.getLineItemTotals_(item, {
         includeTax,
         lineItemAllocation,
         taxLines: lineItemsTaxLinesMap[item.id],
@@ -245,86 +251,6 @@ export default class NewTotalsService extends TransactionBaseService {
   }
 
   /**
-   * Calculate and return the legacy calculated totals using the tax rate
-   * @param item
-   * @param taxRate
-   * @param lineItemAllocation
-   * @param calculationContext
-   */
-  protected async getLineItemTotalsLegacy(
-    item: LineItem,
-    {
-      taxRate,
-      lineItemAllocation,
-      calculationContext,
-    }: {
-      lineItemAllocation: LineAllocationsMap[number]
-      calculationContext: TaxCalculationContext
-      taxRate: number
-    }
-  ): Promise<LineItemTotals> {
-    let subtotal = item.unit_price * item.quantity
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        TaxInclusivePricingFeatureFlag.key
-      ) &&
-      item.includes_tax
-    ) {
-      subtotal = 0 // in that case we need to know the tax rate to compute it later
-    }
-
-    const raw_discount_total = lineItemAllocation.discount?.amount ?? 0
-    const discount_total = Math.round(raw_discount_total)
-
-    const totals: LineItemTotals = {
-      unit_price: item.unit_price,
-      quantity: item.quantity,
-      subtotal,
-      discount_total,
-      total: subtotal - discount_total,
-      original_total: subtotal,
-      original_tax_total: 0,
-      tax_total: 0,
-      tax_lines: [],
-
-      raw_discount_total,
-    }
-
-    taxRate = taxRate / 100
-
-    const includesTax =
-      this.featureFlagRouter_.isFeatureEnabled(
-        TaxInclusivePricingFeatureFlag.key
-      ) && item.includes_tax
-    const taxIncludedInPrice = !item.includes_tax
-      ? 0
-      : Math.round(
-          calculatePriceTaxAmount({
-            price: item.unit_price,
-            taxRate: taxRate,
-            includesTax,
-          })
-        )
-    totals.subtotal = Math.round(
-      (item.unit_price - taxIncludedInPrice) * item.quantity
-    )
-    totals.total = totals.subtotal
-
-    totals.original_tax_total = Math.round(totals.subtotal * taxRate)
-    totals.tax_total = Math.round((totals.subtotal - discount_total) * taxRate)
-
-    totals.total += totals.tax_total
-
-    if (includesTax) {
-      totals.original_total += totals.subtotal
-    }
-
-    totals.original_total += totals.original_tax_total
-
-    return totals
-  }
-
-  /**
    * Return the amount that can be refund on a line item
    * @param lineItem
    * @param calculationContext
@@ -343,16 +269,6 @@ export default class NewTotalsService extends TransactionBaseService {
       taxRate,
     }: { calculationContext: TaxCalculationContext; taxRate?: number | null }
   ): number {
-    /*
-     * Used for backcompat with old tax system
-     */
-    if (taxRate != null) {
-      return this.getLineItemRefundLegacy(lineItem, {
-        calculationContext,
-        taxRate,
-      })
-    }
-
     const includesTax =
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
@@ -392,49 +308,6 @@ export default class NewTotalsService extends TransactionBaseService {
     }, 0)
 
     return lineSubtotal + taxTotal
-  }
-
-  /**
-   * @param lineItem
-   * @param calculationContext
-   * @param taxRate
-   * @protected
-   */
-  protected getLineItemRefundLegacy(
-    lineItem: {
-      id: string
-      unit_price: number
-      includes_tax: boolean
-      quantity: number
-    },
-    {
-      calculationContext,
-      taxRate,
-    }: { calculationContext: TaxCalculationContext; taxRate: number }
-  ): number {
-    const includesTax =
-      this.featureFlagRouter_.isFeatureEnabled(
-        TaxInclusivePricingFeatureFlag.key
-      ) && lineItem.includes_tax
-
-    const taxAmountIncludedInPrice = !includesTax
-      ? 0
-      : Math.round(
-          calculatePriceTaxAmount({
-            price: lineItem.unit_price,
-            taxRate: taxRate / 100,
-            includesTax,
-          })
-        )
-
-    const discountAmount =
-      calculationContext.allocation_map[lineItem.id]?.discount?.amount ?? 0
-
-    const lineSubtotal =
-      (lineItem.unit_price - taxAmountIncludedInPrice) * lineItem.quantity -
-      discountAmount
-
-    return Math.round(lineSubtotal * (1 + taxRate / 100))
   }
 
   /**
@@ -574,62 +447,50 @@ export default class NewTotalsService extends TransactionBaseService {
     {
       includeTax,
       discounts,
-      taxRate,
       calculationContext,
-    }: {
-      includeTax?: boolean
-      calculationContext: TaxCalculationContext
-      discounts?: Discount[]
-      taxRate?: number | null
-    }
+      shippingMethodsTaxLinesMap,
+    }: GetShippingMethodTotalsContext
   ): Promise<{ [shippingMethodId: string]: ShippingMethodTotals }> {
     shippingMethods = Array.isArray(shippingMethods)
       ? shippingMethods
       : [shippingMethods]
 
-    let shippingMethodsTaxLinesMap: {
-      [shippingMethodId: string]: ShippingMethodTaxLine[]
-    } = {}
+    // let shippingMethodsTaxLinesMap: {
+    //   [shippingMethodId: string]: ShippingMethodTaxLine[]
+    // } = {}
 
-    if (!taxRate && includeTax) {
-      // Use existing tax lines if they are present
-      const shippingMethodContainsTaxLines = shippingMethods.some(
-        (method) => method.tax_lines?.length
-      )
-      if (shippingMethodContainsTaxLines) {
-        shippingMethods.forEach((sm) => {
-          shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
-        })
-      } else {
-        const calculationContextWithGivenMethod = {
-          ...calculationContext,
-          shipping_methods: shippingMethods,
-        }
-        const { shippingMethodsTaxLines } = await this.taxProviderService_
-          .withTransaction(this.activeManager_)
-          .getTaxLinesMap([], calculationContextWithGivenMethod)
-        shippingMethodsTaxLinesMap = shippingMethodsTaxLines
-      }
-    }
-
-    const calculationMethod = taxRate
-      ? this.getShippingMethodTotalsLegacy.bind(this)
-      : this.getShippingMethodTotals_.bind(this)
+    // if (!taxRate && includeTax) {
+    //   // Use existing tax lines if they are present
+    //   const shippingMethodContainsTaxLines = shippingMethods.some(
+    //     (method) => method.tax_lines?.length
+    //   )
+    //   if (shippingMethodContainsTaxLines) {
+    //     shippingMethods.forEach((sm) => {
+    //       shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
+    //     })
+    //   } else {
+    //     const calculationContextWithGivenMethod = {
+    //       ...calculationContext,
+    //       shipping_methods: shippingMethods,
+    //     }
+    //     const { shippingMethodsTaxLines } = await this.taxProviderService_
+    //       .withTransaction(this.activeManager_)
+    //       .getTaxLinesMap([], calculationContextWithGivenMethod)
+    //     shippingMethodsTaxLinesMap = shippingMethodsTaxLines
+    //   }
+    // }
 
     const shippingMethodsTotals: {
       [lineItemId: string]: ShippingMethodTotals
     } = {}
     for (const shippingMethod of shippingMethods) {
-      shippingMethodsTotals[shippingMethod.id] = await calculationMethod(
-        shippingMethod,
-        {
+      shippingMethodsTotals[shippingMethod.id] =
+        await this.getShippingMethodTotals_(shippingMethod, {
           includeTax,
           calculationContext,
           taxLines: shippingMethodsTaxLinesMap[shippingMethod.id],
           discounts,
-          taxRate,
-        }
-      )
+        })
     }
 
     return shippingMethodsTotals
@@ -705,51 +566,6 @@ export default class NewTotalsService extends TransactionBaseService {
         totals.total += totals.tax_total
       }
     }
-
-    const hasFreeShipping = discounts?.some(
-      (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
-    )
-
-    if (hasFreeShipping) {
-      totals.total = 0
-      totals.subtotal = 0
-      totals.tax_total = 0
-    }
-
-    return totals
-  }
-
-  /**
-   * Calculate and return the shipping method totals legacy using teh tax rate
-   * @param shippingMethod
-   * @param calculationContext
-   * @param taxRate
-   * @param discounts
-   */
-  protected async getShippingMethodTotalsLegacy(
-    shippingMethod: ShippingMethod,
-    {
-      calculationContext,
-      discounts,
-      taxRate,
-    }: {
-      calculationContext: TaxCalculationContext
-      discounts?: Discount[]
-      taxRate: number
-    }
-  ): Promise<ShippingMethodTotals> {
-    const totals: ShippingMethodTotals = {
-      price: shippingMethod.price,
-      original_total: shippingMethod.price,
-      total: shippingMethod.price,
-      subtotal: shippingMethod.price,
-      original_tax_total: 0,
-      tax_total: 0,
-      tax_lines: [],
-    }
-
-    totals.original_tax_total = Math.round(totals.price * (taxRate / 100))
-    totals.tax_total = Math.round(totals.price * (taxRate / 100))
 
     const hasFreeShipping = discounts?.some(
       (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
