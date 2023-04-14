@@ -8,10 +8,14 @@
     "paths": {
       "@site/*": ["./*"],
       "@medusajs/docs-ui/*": ["./src/components/*"]
-    }
+    },
+    "allowJs": true
   },
   "typeRoots": ["./node_modules/@types", "./src/types"],
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "docusaurus.config.js",
+    "sidebars.js",
+    "tailwind.config.js"
   ]
 }

@@ -552,6 +552,13 @@ module.exports = {
         "12px",
         {
           lineHeight: "20px",
+          fontWeight: "400",
+        },
+      ],
+      "label-x-small-plus": [
+        "12px",
+        {
+          lineHeight: "20px",
           fontWeight: "500",
         },
       ],
@@ -559,6 +566,8 @@ module.exports = {
     spacing: {
       px: "1px",
       0: "0px",
+      0.4: "7px",
+      0.5: "8px",
       1: "16px",
       2: "32px",
     },
