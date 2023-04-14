@@ -455,6 +455,9 @@ module.exports = {
       screens: {
         xl: "1419px",
       },
+      transitionTimingFunction: {
+        ease: "ease",
+      },
     },
     fontFamily: {
       base: [
@@ -578,6 +581,22 @@ module.exports = {
       1: "16px",
       1.5: "24px",
       2: "32px",
+      3: "48ps",
+      4: "64px",
+      5: "80px",
+      6: "96px",
+      7: "112px",
+      8: "128px",
+    },
+    backgroundImage: {
+      "large-card": "url('/img/squares-bg-light.svg')",
+      "large-card-dark": "url('/img/squares-bg.svg')",
+      "large-card-fade":
+        "linear-gradient(transparent, url('/img/squares-bg-light.svg'))",
+      "large-card-fade-dark":
+        "linear-gradient(transparent, url('/img/squares-bg.svg'))",
+      "large-card-fade-hover": "linear-gradient(transparent, #1C1C1F)",
+      "large-card-fade-hover-dark": "linear-gradient(transparent, #232326)",
     },
   },
   plugins: [],
