@@ -1,0 +1,10 @@
+title: Product with decorated variants
+type: object
+allOf:
+  - $ref: ./Product.yaml
+  - type: object
+    properties:
+      variants:
+        type: array
+        items:
+          $ref: ./DecoratedVariant.yaml
