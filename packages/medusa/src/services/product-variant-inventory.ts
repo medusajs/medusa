@@ -639,24 +639,22 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
     salesChannelId: string | string[] | undefined,
-    variantInventoryMap?: Map<string, ProductVariantInventoryItem[]>
+    variantInventoryMap: Map<string, ProductVariantInventoryItem[]> = new Map()
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
     }
 
-    if (!variantInventoryMap) {
+    if (!variantInventoryMap.size) {
       const variantInventories = await this.listByVariant(
         variants.map((v) => v.id)
       )
 
-      variantInventoryMap = new Map()
-
       variantInventories.forEach((inventory) => {
         const variantId = inventory.variant_id
-        const currentInventories = variantInventoryMap!.get(variantId) || []
+        const currentInventories = variantInventoryMap.get(variantId) || []
         currentInventories.push(inventory)
-        variantInventoryMap!.set(variantId, currentInventories)
+        variantInventoryMap.set(variantId, currentInventories)
       })
     }
 
@@ -673,7 +671,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           return variant
         }
 
-        const variantInventory = variantInventoryMap!.get(variant.id) || []
+        const variantInventory = variantInventoryMap.get(variant.id) || []
 
         if (!variantInventory.length) {
           variant.inventory_quantity = 0
