@@ -211,7 +211,7 @@ class ProductVariantService extends TransactionBaseService {
 
       const results = await Promise.all(
         variants_.map(async (variant) => {
-          const { prices, ...rest } = variant
+          const { prices, options, ...rest } = variant
 
           if (!rest.variant_rank) {
             rest.variant_rank = computedRank
@@ -227,7 +227,7 @@ class ProductVariantService extends TransactionBaseService {
 
           const result = await variantRepo.save(productVariant)
 
-          if (prices) {
+          if (prices?.length) {
             variantPricesToUpdate.push({ id: result.id, prices })
           }
 
