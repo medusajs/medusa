@@ -8,7 +8,7 @@ module.exports = {
   darkMode: ["class", `[data-theme="dark"]`], // hooks into docusaurus' dark mode settigns
   theme: {
     extend: {
-      colors: {
+      colors: ({ theme }) => ({
         white: "#FFFFFF",
         gray: {
           50: "#F8F9FA",
@@ -101,6 +101,20 @@ module.exports = {
           600: "#601D48",
           700: "#501B3F",
           800: "#451A37",
+        },
+        boxShadow: {
+          overlay: {
+            DEFAULT: "0px 2px 16px rgba(0, 0, 0, 0.08)",
+            dark: "0px 2px 16px rgba(0, 0, 0, 0.32)",
+          },
+          "field-focused": {
+            DEFAULT: "0px 0px 0px 4px #EDE9FE",
+            dark: "0px 0px 0px 4px #2C2250",
+          },
+          "button-focused": {
+            DEFAULT: "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
+            dark: "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+          },
         },
         /* docs colors */
         medusa: {
@@ -420,21 +434,18 @@ module.exports = {
             },
           },
         },
-        boxShadow: {
-          overlay: {
-            DEFAULT: "0px 2px 16px rgba(0, 0, 0, 0.08)",
-            dark: "0px 2px 16px rgba(0, 0, 0, 0.32)",
-          },
-          "field-focused": {
-            DEFAULT: "0px 0px 0px 4px #EDE9FE",
-            dark: "0px 0px 0px 4px #2C2250",
-          },
-          "button-focused": {
-            DEFAULT: "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
-            dark: "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+        /* docs defaults */
+        docs: {
+          bg: {
+            DEFAULT: "#FFFFFF",
+            dark: "#161618",
+            surface: {
+              DEFAULT: "#F8F9FA",
+              dark: "#1C1C1F",
+            },
           },
         },
-      },
+      }),
       borderRadius: {
         DEFAULT: "8px",
       },
