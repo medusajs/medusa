@@ -62,7 +62,7 @@ Customers should be able to add products to cart and go through the checkout flo
 
 Customers should be able to register, log-in, edit their profile, and view their orders.
 
-This guide explains how to implement customer profile functionalities in your storefront.
+[This guide](../modules/customers/storefront/implement-customer-profiles.mdx) explains how to implement customer profile functionalities in your storefront.
 
 ### More Functionalities
 
