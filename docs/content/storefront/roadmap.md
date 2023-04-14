@@ -50,7 +50,7 @@ Regions allow businesses to serve customers globally. On a storefront, the custo
 
 Customers should be able to browse products in your storefront and view their details.
 
-This guide explains how you can list products in your store and show a single product’s detail.
+[This guide](../modules/products/storefront/show-products.mdx) explains how you can list products in your store and show a single product’s detail.
 
 ### Implement Cart and Checkout
 
