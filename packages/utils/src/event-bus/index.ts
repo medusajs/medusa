@@ -23,7 +23,15 @@ export abstract class AbstractEventBusModuleService
   ): Promise<void>
   abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
-  protected storeSubscribers({ event, subscriberId, subscriber }) {
+  protected storeSubscribers({
+    event,
+    subscriberId,
+    subscriber,
+  }: {
+    event: string | symbol
+    subscriberId: string
+    subscriber: EventBusTypes.Subscriber
+  }) {
     const newSubscriberDescriptor = { subscriber, id: subscriberId }
 
     const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
