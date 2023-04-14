@@ -90,7 +90,7 @@ module.exports = {
   ignorePatterns: [],
   overrides: [
     {
-      files: ["*.ts", "*.tsx"],
+      files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["plugin:@typescript-eslint/recommended"],
       parser: "@typescript-eslint/parser",

@@ -12,9 +12,6 @@
   },
   "typeRoots": ["./node_modules/@types", "./src/types"],
   "include": [
-    "src/*",
-    "docusaurus.config.js",
-    "sidebars.js",
-    "tailwind.config.js"
+    "src/**/*"
   ]
 }
