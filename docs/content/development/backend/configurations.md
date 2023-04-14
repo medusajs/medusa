@@ -426,7 +426,9 @@ In the default Medusa starter, the in-memory cache module is used. This module i
 
 ## Http Compression
 
-This configuration is enable http compression from the application layer. If you have access to the http server, the recommended approach would be to enable it there. However, some platforms don't offer access to the http layer and in those cases, this is a good alternative. To enable http compression, this is what you need to do:
+This configuration enables HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative. 
+
+To enable HTTP compression, add the `http_compression` option in the `projectConfig` property in `medusa-config.js`:
 
 In `medusa-config.js`:
 ```js
