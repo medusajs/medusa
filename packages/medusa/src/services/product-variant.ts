@@ -211,7 +211,7 @@ class ProductVariantService extends TransactionBaseService {
 
       const results = await Promise.all(
         variants_.map(async (variant) => {
-          const { prices, options, ...rest } = variant
+          const { prices, ...rest } = variant
 
           if (!rest.variant_rank) {
             rest.variant_rank = computedRank
