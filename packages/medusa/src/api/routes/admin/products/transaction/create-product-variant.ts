@@ -142,12 +142,14 @@ export const createVariantsTransaction = async (
     }[]
   ) {
     return await Promise.all(
-      data.map(async ({ variant, inventoryItem }) => {
-        return productVariantInventoryServiceTx.attachInventoryItem(
-          variant.id,
-          inventoryItem.id
-        )
-      })
+      data
+        .filter((d) => d)
+        .map(async ({ variant, inventoryItem }) => {
+          return productVariantInventoryServiceTx.attachInventoryItem(
+            variant.id,
+            inventoryItem.id
+          )
+        })
     )
   }
 
