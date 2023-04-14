@@ -1,8 +1,9 @@
+import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import {
   ReservationType,
   updateInventoryAndReservations,
 } from "@medusajs/medusa"
-import { MedusaError, humanizeAmount } from "medusa-core-utils"
+
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 
@@ -108,7 +109,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -117,7 +118,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -183,15 +184,19 @@ class BrightpearlService extends BaseService {
         availabilities = Object.assign(availabilities, chunkAvails)
       }
 
-      return Promise.all(
+      const [variants] = await this.productVariantService_.listAndCount({
+        sku: bpProducts.map(({ SKU }) => SKU),
+      })
+
+      const variantsMap = new Map(
+        variants.filter((variant) => !!variant.sku).map((v) => [v.sku, v])
+      )
+
+      const variantUpdates = await Promise.all(
         bpProducts.map(async (bpProduct) => {
           const { SKU: sku, productId } = bpProduct
 
-          const variant = await this.productVariantService_
-            .retrieveBySKU(sku, {
-              select: ["id", "manage_inventory", "inventory_quantity"],
-            })
-            .catch((_) => undefined)
+          const variant = variantsMap.get(sku)
 
           const productAvailability = availabilities[productId]
 
@@ -207,13 +212,15 @@ class BrightpearlService extends BaseService {
 
           if (variant && variant.manage_inventory) {
             if (parseInt(variant.inventory_quantity) !== parseInt(onHand)) {
-              return this.productVariantService_.update(variant.id, {
-                inventory_quantity: parseInt(onHand),
-              })
+              return {
+                variant,
+                update: { inventory_quantity: parseInt(onHand) },
+              }
             }
           }
         })
       )
+      return this.productVariantService_.update(variantUpdates.filter(Boolean))
     }
   }
 
