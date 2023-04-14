@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-oas-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "OAS CLI",
   "main": "dist/index.js",
   "bin": {
@@ -35,7 +35,7 @@
     "test": "NODE_OPTIONS='--unhandled-rejections=strict' jest src"
   },
   "dependencies": {
-    "@medusajs/medusa": "1.8.1",
+    "@medusajs/medusa": "1.8.2",
     "@medusajs/openapi-typescript-codegen": "0.2.1",
     "@readme/json-schema-ref-parser": "^1.2.0",
     "@readme/openapi-parser": "^2.4.0",
