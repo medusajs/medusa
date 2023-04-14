@@ -1,27 +1,27 @@
+import React, { useEffect, useReducer, useRef, useState } from "react"
+import clsx from "clsx"
+
+import algoliaSearchHelper from "algoliasearch-helper"
+import algoliaSearch from "algoliasearch/lite"
+
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment"
+import Head from "@docusaurus/Head"
+import Link from "@docusaurus/Link"
+import { useAllDocsData } from "@docusaurus/plugin-content-docs/client"
 import {
   HtmlClassNameProvider,
   useEvent,
   usePluralForm,
+  useSearchQueryString,
 } from "@docusaurus/theme-common"
-import React, { useEffect, useReducer, useRef, useState } from "react"
+import { useTitleFormatter } from "@docusaurus/theme-common/internal"
 import Translate, { translate } from "@docusaurus/Translate"
-import {
-  useSearchPage,
-  useTitleFormatter,
-} from "@docusaurus/theme-common/internal"
-
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment"
-import Head from "@docusaurus/Head"
-import Layout from "@theme/Layout"
-import Link from "@docusaurus/Link"
-import algoliaSearch from "algoliasearch/lite"
-import algoliaSearchHelper from "algoliasearch-helper"
-import clsx from "clsx"
-import styles from "./styles.module.css"
-import { useAllDocsData } from "@docusaurus/plugin-content-docs/client"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
-import { ThemeConfig } from "@medusajs/docs"
 import { useSearchResultUrlProcessor } from "@docusaurus/theme-search-algolia/client"
+import Layout from "@theme/Layout"
+
+import styles from "./styles.module.css"
+import { ThemeConfig } from "@medusajs/docs"
 
 // Very simple pluralization: probably good enough for now
 function useDocumentsFoundPlural() {
@@ -147,16 +147,15 @@ type ResultDispatcher =
 function SearchPageContent(): JSX.Element {
   const {
     siteConfig: { themeConfig },
-    i18n: { currentLocale },
   } = useDocusaurusContext()
   const {
-    algolia: { appId, apiKey, indexName, externalUrlRegex },
+    algolia: { appId, apiKey, indexName },
   } = themeConfig as ThemeConfig
   const processSearchResultUrl = useSearchResultUrlProcessor()
   const documentsFoundPlural = useDocumentsFoundPlural()
 
   const docsSearchVersionsHelpers = useDocsSearchVersionsHelpers()
-  const { searchQuery, setSearchQuery } = useSearchPage()
+  const [searchQuery, setSearchQuery] = useSearchQueryString()
   const initialSearchResultState: ResultDispatcherState = {
     items: [],
     query: null,
@@ -305,9 +304,6 @@ function SearchPageContent(): JSX.Element {
   }
 
   const makeSearch = useEvent((page?: number) => {
-    if (!page) {
-      page = 0
-    }
     // These commented out line are from algolia's implementation
     // we might need them in the future
     // algoliaHelper.addDisjunctiveFacetRefinement("docusaurus_tag", "default")
@@ -322,7 +318,10 @@ function SearchPageContent(): JSX.Element {
     //   }
     // )
 
-    algoliaHelper.setQuery(searchQuery).setPage(page).search()
+    algoliaHelper
+      .setQuery(searchQuery)
+      .setPage(page || 0)
+      .search()
   })
 
   useEffect(() => {
