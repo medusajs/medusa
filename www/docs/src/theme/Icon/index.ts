@@ -86,6 +86,7 @@ export type IconProps = {
   width?: number
   height?: number
   strokeWidth?: number | string
+  iconColorClassName?: string
 } & React.HTMLAttributes<SVGElement>
 
 export default {

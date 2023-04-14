@@ -11,16 +11,28 @@ type SocialLinksProps = {
 
 const SocialLinks: React.FC<SocialLinksProps> = ({ links = [] }) => {
   const socialIcons = {
-    twitter: <IconTwitter />,
-    github: <IconGitHub />,
-    discord: <IconDiscord />,
-    linkedin: <IconLinkedIn />,
+    twitter: (
+      <IconTwitter iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+    ),
+    github: (
+      <IconGitHub iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+    ),
+    discord: (
+      <IconDiscord iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+    ),
+    linkedin: (
+      <IconLinkedIn iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+    ),
   }
 
   return (
-    <div className="social-links">
+    <div className="tw-flex tw-items-center">
       {links.map((link) => (
-        <a className="social-link" href={link.href} key={link.type}>
+        <a
+          className="tw-group tw-ml-1 first:tw-ml-0"
+          href={link.href}
+          key={link.type}
+        >
           {socialIcons[link.type]}
         </a>
       ))}

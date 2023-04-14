@@ -1,7 +1,7 @@
 import React from "react"
 import { IconProps } from ".."
 
-const IconBolt: React.FC<IconProps> = (props) => {
+const IconBolt: React.FC<IconProps> = ({ iconColorClassName, ...props }) => {
   return (
     <svg
       width={props.width || 20}
@@ -13,7 +13,10 @@ const IconBolt: React.FC<IconProps> = (props) => {
     >
       <path
         d="M3.125 11.25L11.875 1.875L10 8.75H16.875L8.125 18.125L10 11.25H3.125Z"
-        stroke="var(--ifm-icon-color)"
+        className={
+          iconColorClassName ||
+          "tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+        }
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
