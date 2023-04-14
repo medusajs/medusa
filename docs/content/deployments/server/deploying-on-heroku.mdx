@@ -239,6 +239,16 @@ The backend's URL is available under "Web URL". You can copy it and perform requ
 
 For example, you can send a request to `<YOUR_BACKEND_URL>/store/products` and you should receive a JSON response with the products in your store.
 
+### Testing the Admin
+
+:::note
+
+Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/quickstart.mdx#build-command-options) command as part of the `serve` command of your backend.
+
+:::
+
+If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
+
 ### Troubleshooting: Inspect Build Logs
 
 If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa backend:

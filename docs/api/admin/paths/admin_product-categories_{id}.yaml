@@ -126,7 +126,7 @@ post:
 delete:
   operationId: DeleteProductCategoriesCategory
   summary: Delete a Product Category
-  description: Deletes a ProductCategory.
+  description: Deletes a Product Category.
   x-authenticated: true
   parameters:
     - in: path

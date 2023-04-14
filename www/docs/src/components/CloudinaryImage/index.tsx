@@ -100,11 +100,7 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({ src, ...props }) => {
     image.resize(resizeAction)
   }
 
-  return (
-    <p className="cloudinary-image-wrapper">
-      <MDXImg {...props} src={image.toURL()} />
-    </p>
-  )
+  return <MDXImg {...props} src={image.toURL()} />
 }
 
 export default CloudinaryImage

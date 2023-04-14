@@ -39,7 +39,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Generated Services Reference (automated)'
-          base: 'master'
+          base: 'develop'
           title: 'chore(docs): Generated Services Reference (automated)'
           labels: 'type: chore'
           add-paths: docs/content/references/services/**

@@ -71,7 +71,7 @@ const Feedback: React.FC<FeedbackProps> = ({
               (feedback === null && positiveFeedback)
                 ? "yes"
                 : "no",
-            message,
+            message: message?.length ? message : null,
             uuid: id,
           },
           function () {

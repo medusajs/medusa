@@ -1,11 +1,10 @@
 plugins:
-  - "./plugins/plugin.js"
+  - "./plugins/medusa/index.js"
 
 # Allows to replace a $ref with `type: object` in order to avoid infinite loops
 # when Redocly attempts to render circular references.
 decorators:
-  plugin/circular-patch:
-    verbose: false
+  medusa/circular-patch:
     schemas:
       Address:
         - Customer
@@ -143,7 +142,7 @@ theme:
     theme:
       colors:
         primary:
-          dart: "#242526"
+          dark: "#242526"
       sidebar:
         width: "250px"
     disableSearch: true
