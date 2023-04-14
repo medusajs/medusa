@@ -97,6 +97,15 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "doc",
+      id: "storefront/roadmap",
+      label: "Build a Storefront",
+      customProps: {
+        sidebar_icon: "building-storefront",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
       type: "html",
       value: "SDKs",
       customProps: {
