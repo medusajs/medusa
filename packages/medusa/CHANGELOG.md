@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.8.2
+
+### Patch Changes
+
+- [#3829](https://github.com/medusajs/medusa/pull/3829) [`6bb1654b6`](https://github.com/medusajs/medusa/commit/6bb1654b61880f8658bf1395e4ccef860780aac4) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): List products end points
+
+- [#3825](https://github.com/medusajs/medusa/pull/3825) [`95d338262`](https://github.com/medusajs/medusa/commit/95d338262b63e3daa6697bb23806980a8b5e5cdc) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa): allow category api to be filtered by handle
+
+- [#3785](https://github.com/medusajs/medusa/pull/3785) [`4f58ddee0`](https://github.com/medusajs/medusa/commit/4f58ddee03509a4c46af160e5824cba80d4c950a) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,utils): add server level configurable http compression
+
+- Updated dependencies [[`4f58ddee0`](https://github.com/medusajs/medusa/commit/4f58ddee03509a4c46af160e5824cba80d4c950a)]:
+  - @medusajs/types@1.8.2
+  - @medusajs/modules-sdk@1.8.2
+
 ## 1.8.1
 
 ### Patch Changes
