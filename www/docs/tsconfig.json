@@ -10,5 +10,8 @@
       "@medusajs/docs-ui/*": ["./src/components/*"]
     }
   },
-  "typeRoots": ["./node_modules/@types", "./src/types"]
+  "typeRoots": ["./node_modules/@types", "./src/types"],
+  "include": [
+    "src/**/*"
+  ]
 }

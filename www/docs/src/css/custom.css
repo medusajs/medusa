@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('./_medusa.css');
 @import url('./_variables.css');
 

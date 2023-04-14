@@ -16,6 +16,7 @@
   
   /* Colors */
   --ifm-color-primary: var(--medusa-text-base);
+  /* --ifm-background-color: theme(colors.medusa.bg.base.DEFAULT); */
   --ifm-background-color: var(--medusa-bg-base);
   --ifm-background-surface-color: var(--medusa-bg-subtle);
   --ifm-color-content: var(--medusa-text-subtle) !important;
