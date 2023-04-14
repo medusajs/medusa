@@ -14,6 +14,7 @@ export const MedusaErrorTypes = {
   UNEXPECTED_STATE: "unexpected_state",
   CONFLICT: "conflict",
   PAYMENT_AUTHORIZATION_ERROR: "payment_authorization_error",
+  CUSTOMER_DISCOUNT_LIMIT_REACHED: "customer_discount_limit_reached",
 }
 
 export const MedusaErrorCodes = {

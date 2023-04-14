@@ -1447,9 +1447,19 @@ class CartService extends TransactionBaseService {
             relations: ["rule", "rule.conditions", "regions"],
           })
 
-        await this.discountService_
-          .withTransaction(transactionManager)
-          .validateDiscountForCartOrThrow(cart, discounts)
+        try {
+          await this.discountService_
+            .withTransaction(transactionManager)
+            .validateDiscountForCartOrThrow(cart, discounts)
+        } catch (error) {
+          if (
+            error &&
+            error.type === MedusaError.Types.CUSTOMER_DISCOUNT_LIMIT_REACHED
+          ) {
+            await this.removeDiscount(cart.id, error.code)
+          }
+          throw error
+        }
 
         const rules: Map<string, DiscountRule> = new Map()
         const discountsMap = new Map(
