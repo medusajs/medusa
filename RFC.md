@@ -21,6 +21,19 @@ Link to the new https://docs.medusajs.com/deployments/server/deploy-with-pm2
 Add pm2 as a dependency to medusa-starter-default and add a new command, for example "yarn start-production": "medusa run migrations && pm2 !!WRITE"
 Link to the new docs page about pm2 in each "deploying on X", explaining it in more detail.
 
+# Django docs and other posts to take inspiration from
+- https://docs.djangoproject.com/en/4.1/howto/deployment/wsgi/gunicorn/
+- https://docs.djangoproject.com/en/4.1/howto/deployment/
+- https://serverfault.com/questions/331256/why-do-i-need-nginx-and-something-like-gunicorn
+- https://vsupalov.com/what-is-gunicorn/
 
 # Note
-I will follow this pull request through with all necessary changes, if you'd not rather do it internally and if you not think this change is not needed.
+I will follow this pull request through with all necessary changes. If you'd rather do it internally and or if you think this change is not needed, give me a hint :)
+
+# The entrypoint in medusa-starter-default
+Right now before making this PR, I was trying to figure out how to start medusa with pm2 i.e. finding out what's the entry point to "medusa develop" and it was pretty hard to now where the entrypoint js file is for medusa develop.
+Noticed right now, there was a commit yesterday from adrien with an index.js in medusa-starter. So maybe you're already working on, what I'm suggesting in this RFC.
+https://github.com/medusajs/medusa-starter-default/commit/b0328836d4d829e58ec289f9b968a3786c5ff389
+
+# Questions
+Did I go the right route with doing a pull request as an RFC, or would you rather have it posted as an issue or a discussion? My thought process went like this: Since I will see this through if you think it a good idea and also that I wish to get feedback it fits as an RFC. An issue is for yes issues. And discussions, simply don't get that much notice and since I've put though and time into this, it deserves at least a little feedback since it might help many people deploying medusa in production, especially those that never but a nodejs application into production.
