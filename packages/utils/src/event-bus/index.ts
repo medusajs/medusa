@@ -72,7 +72,7 @@ export abstract class AbstractEventBusModuleService
 
     this.storeSubscribers({
       event,
-      subscriberId: context?.subscriberId ?? randId,
+      subscriberId: context?.subscriberId ?? `${event}-${randId}`,
       subscriber,
     })
 
