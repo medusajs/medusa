@@ -620,11 +620,17 @@ class DiscountService extends TransactionBaseService {
 
       const { type, value, allocation } = discount.rule
 
-      const calculationContext = await this.totalsService_
-        .withTransaction(transactionManager)
-        .getCalculationContext(calculationContextData, {
-          exclude_shipping: true,
-        })
+      const taxProviderServiceTax = this.taxProviderService_.withTransaction(
+        this.activeManager_
+      )
+
+      const calculationContext =
+        await taxProviderServiceTax.getCalculationContext(
+          calculationContextData,
+          {
+            exclude_shipping: true,
+          }
+        )
 
       let fullItemPrice = lineItem.unit_price * lineItem.quantity
       const includesTax =
@@ -634,17 +640,12 @@ class DiscountService extends TransactionBaseService {
 
       let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
 
-      if (!calculationContextData?.region?.tax_rate && includesTax) {
-        // Use existing tax lines if they are present
-        if (lineItem.tax_lines?.length) {
-          lineItemsTaxLinesMap[lineItem.id] = lineItem.tax_lines ?? []
-        } else {
-          const { lineItemsTaxLines } = await this.taxProviderService_
-            .withTransaction(this.activeManager_)
-            .getTaxLinesMap([lineItem], calculationContext)
-
-          lineItemsTaxLinesMap = lineItemsTaxLines
-        }
+      if (!includesTax) {
+        lineItemsTaxLinesMap =
+          await taxProviderServiceTax.generateLineItemsTaxLinesMap(
+            [lineItem],
+            calculationContext
+          )
       }
 
       if (includesTax) {
