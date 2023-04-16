@@ -147,6 +147,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
       let dynamicSalesChannelsColumnCount = 0
+      let dynamicProductCategoriesColumnCount = 0
       let pricesData = new Set<string>()
 
       while (offset < productCount) {
@@ -172,6 +173,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         dynamicSalesChannelsColumnCount = Math.max(
           shapeData.salesChannelsColumnCount,
           dynamicSalesChannelsColumnCount
+        )
+        dynamicProductCategoriesColumnCount = Math.max(
+          shapeData.productCategoriesColumnCount,
+          dynamicProductCategoriesColumnCount
         )
         pricesData = new Set([...pricesData, ...shapeData.pricesData])
 
@@ -575,11 +580,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     optionColumnCount: number
     imageColumnCount: number
     salesChannelsColumnCount: number
+    productCategoriesColumnCount: number
     pricesData: Set<string>
   } {
     let optionColumnCount = 0
     let imageColumnCount = 0
     let salesChannelsColumnCount = 0
+    let productCategoriesColumnCount = 0
     const pricesData = new Set<string>()
 
     // Retrieve the highest count of each object to build the dynamic columns later
@@ -589,6 +596,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       const imageCount = product?.images?.length ?? 0
       imageColumnCount = Math.max(imageColumnCount, imageCount)
+
+      const categoriesCount = product?.categories?.length ?? 0
+      productCategoriesColumnCount = Math.max(
+        productCategoriesColumnCount,
+        categoriesCount
+      )
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
@@ -624,6 +637,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       optionColumnCount,
       imageColumnCount,
       salesChannelsColumnCount,
+      productCategoriesColumnCount,
       pricesData,
     }
   }
