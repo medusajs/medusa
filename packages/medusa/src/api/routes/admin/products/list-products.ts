@@ -231,31 +231,41 @@ export default async (req, res) => {
 
   const { skip, take, relations } = req.listConfig
 
-  const [rawProducts, count] = await productService.listAndCount(
-    req.filterableFields,
-    req.listConfig
+  const manager = req.scope.resolve("manager")
+
+  const [products, count] = await manager.transaction(
+    async (transactionManager) => {
+      const [rawProducts, count] = await productService
+        .withTransaction(transactionManager)
+        .listAndCount(req.filterableFields, req.listConfig)
+
+      let products: (Product | PricedProduct)[] = rawProducts
+
+      const includesPricing = ["variants", "variants.prices"].every(
+        (relation) => relations?.includes(relation)
+      )
+      if (includesPricing) {
+        products = await pricingService
+          .withTransaction(transactionManager)
+          .setProductPrices(rawProducts)
+      }
+
+      if (inventoryService) {
+        const [salesChannelsIds] = await salesChannelService
+          .withTransaction(transactionManager)
+          .listAndCount({}, { select: ["id"] })
+
+        products = await productVariantInventoryService
+          .withTransaction(transactionManager)
+          .setProductAvailability(
+            products,
+            salesChannelsIds.map((salesChannel) => salesChannel.id)
+          )
+      }
+
+      return [products, count]
+    }
   )
-
-  let products: (Product | PricedProduct)[] = rawProducts
-
-  const includesPricing = ["variants", "variants.prices"].every((relation) =>
-    relations?.includes(relation)
-  )
-  if (includesPricing) {
-    products = await pricingService.setProductPrices(rawProducts)
-  }
-
-  if (inventoryService) {
-    const [salesChannelsIds] = await salesChannelService.listAndCount(
-      {},
-      { select: ["id"] }
-    )
-
-    products = await productVariantInventoryService.setProductAvailability(
-      products,
-      salesChannelsIds.map((salesChannel) => salesChannel.id)
-    )
-  }
 
   res.json({
     products,

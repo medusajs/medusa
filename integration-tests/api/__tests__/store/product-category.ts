@@ -300,6 +300,18 @@ describe("/store/product-categories", () => {
       expect(response.data.product_categories[0].id).toEqual(productCategoryParent.id)
     })
 
+    it("filters based on handle attribute of the data model", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/product-categories?handle=${productCategory.handle}`,
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories[0].id).toEqual(productCategory.id)
+    })
+
     it("filters based on parent category", async () => {
       const api = useApi()
 

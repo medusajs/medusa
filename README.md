@@ -20,13 +20,13 @@
   Building blocks for digital commerce
 </p>
 <p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
   </a>
   <a href="https://circleci.com/gh/medusajs/medusa">
     <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
   </a>
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
     <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
@@ -62,7 +62,7 @@ Check out all [available Medusa plugins](https://medusajs.com/plugins/).
 
 The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
 
-Our [Contribution Guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) describes how to contribute to the codebase and Docs.
+Our [Contribution Guide](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md) describes how to contribute to the codebase and Docs.
 
 Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
 
@@ -75,4 +75,4 @@ Join our [Discord server](https://discord.com/invite/medusajs) to meet other com
 
 ## License
 
-Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/master/LICENSE).
+Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE).

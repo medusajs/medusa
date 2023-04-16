@@ -1,5 +1,14 @@
 # @medusajs/oas-cli
 
+## 0.2.2
+
+### Patch Changes
+
+- [#3745](https://github.com/medusajs/medusa/pull/3745) [`1456056e8`](https://github.com/medusajs/medusa/commit/1456056e8f9d48cc1cb64c1836a6de5d5b263b05) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(oas): new medusa-oas docs for Redocly and circular references
+
+- Updated dependencies [[`6bb1654b6`](https://github.com/medusajs/medusa/commit/6bb1654b61880f8658bf1395e4ccef860780aac4), [`95d338262`](https://github.com/medusajs/medusa/commit/95d338262b63e3daa6697bb23806980a8b5e5cdc), [`4f58ddee0`](https://github.com/medusajs/medusa/commit/4f58ddee03509a4c46af160e5824cba80d4c950a)]:
+  - @medusajs/medusa@1.8.2
+
 ## 0.2.1
 
 ### Patch Changes
