@@ -518,6 +518,65 @@ class TaxProviderService extends TransactionBaseService {
     }
   }
 
+  async generateLineItemsTaxLinesMap(
+    items: LineItem[],
+    calculationContext: TaxCalculationContext
+  ): Promise<{
+    [lineItemId: string]: LineItemTaxLine[]
+  }> {
+    let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
+
+    const itemContainsTaxLines = items.some((item) => item.tax_lines?.length)
+
+    // Use existing tax lines if they are present
+    if (itemContainsTaxLines) {
+      items.forEach((item) => {
+        lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
+      })
+    } else {
+      const { lineItemsTaxLines } = await this.getTaxLinesMap(
+        items,
+        calculationContext
+      )
+      lineItemsTaxLinesMap = lineItemsTaxLines
+    }
+
+    return lineItemsTaxLinesMap
+  }
+
+  async generateShippingMethodsTaxLinesMap(
+    shippingMethods: ShippingMethod[],
+    calculationContext: TaxCalculationContext
+  ): Promise<{
+    [shippingMethodId: string]: ShippingMethodTaxLine[]
+  }> {
+    let shippingMethodsTaxLinesMap: {
+      [shippingMethodId: string]: ShippingMethodTaxLine[]
+    } = {}
+
+    // Use existing tax lines if they are present
+    const shippingMethodContainsTaxLines = shippingMethods.some(
+      (method) => method.tax_lines?.length
+    )
+    if (shippingMethodContainsTaxLines) {
+      shippingMethods.forEach((sm) => {
+        shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
+      })
+    } else {
+      const calculationContextWithGivenMethod = {
+        ...calculationContext,
+        shipping_methods: shippingMethods,
+      }
+      const { shippingMethodsTaxLines } = await this.getTaxLinesMap(
+        [],
+        calculationContextWithGivenMethod
+      )
+      shippingMethodsTaxLinesMap = shippingMethodsTaxLines
+    }
+
+    return shippingMethodsTaxLinesMap
+  }
+
   /**
    * The cache key to get cache hits by.
    * @param id - the entity id to cache

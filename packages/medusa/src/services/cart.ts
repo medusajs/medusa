@@ -2550,17 +2550,23 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     totalsConfig: TotalsConfig = {}
   ): Promise<WithRequiredProperty<Cart, "total">> {
-    const calculationContext =
-      await this.taxProviderService_.getCalculationContext(cart)
+    const taxProviderServiceTx = this.taxProviderService_.withTransaction(
+      this.activeManager_
+    )
+
+    const calculationContext = await taxProviderServiceTx.getCalculationContext(
+      cart
+    )
 
     const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
     const cartItems = [...(cart.items ?? [])]
     const cartShippingMethods = [...(cart.shipping_methods ?? [])]
 
     if (includeTax) {
-      const taxLinesMaps = await this.taxProviderService_
-        .withTransaction(this.activeManager_)
-        .getTaxLinesMap(cartItems, calculationContext)
+      const taxLinesMaps = await taxProviderServiceTx.getTaxLinesMap(
+        cartItems,
+        calculationContext
+      )
 
       cartItems.forEach((item) => {
         if (item.is_return) {
@@ -2579,39 +2585,17 @@ class CartService extends TransactionBaseService {
     } = {}
 
     if (includeTax) {
-      // Use existing tax lines if they are present
-      const itemContainsTaxLines = cartItems.some(
-        (item) => item.tax_lines?.length
-      )
-      if (itemContainsTaxLines) {
-        cartItems.forEach((item) => {
-          lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
-        })
-      } else {
-        const { lineItemsTaxLines } = await this.taxProviderService_
-          .withTransaction(this.activeManager_)
-          .getTaxLinesMap(cartItems, calculationContext)
-        lineItemsTaxLinesMap = lineItemsTaxLines
-      }
+      lineItemsTaxLinesMap =
+        await taxProviderServiceTx.generateLineItemsTaxLinesMap(
+          cartItems,
+          calculationContext
+        )
 
-      // Use existing tax lines if they are present
-      const shippingMethodContainsTaxLines = cartShippingMethods.some(
-        (method) => method.tax_lines?.length
-      )
-      if (shippingMethodContainsTaxLines) {
-        cartShippingMethods.forEach((sm) => {
-          shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
-        })
-      } else {
-        const calculationContextWithGivenMethod = {
-          ...calculationContext,
-          shipping_methods: cartShippingMethods,
-        }
-        const { shippingMethodsTaxLines } = await this.taxProviderService_
-          .withTransaction(this.activeManager_)
-          .getTaxLinesMap([], calculationContextWithGivenMethod)
-        shippingMethodsTaxLinesMap = shippingMethodsTaxLines
-      }
+      shippingMethodsTaxLinesMap =
+        await taxProviderServiceTx.generateShippingMethodsTaxLinesMap(
+          cartShippingMethods,
+          calculationContext
+        )
     }
 
     const itemsTotals = await TotalsUtils.TotalsService.getLineItemTotals(

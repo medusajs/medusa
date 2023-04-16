@@ -1797,8 +1797,13 @@ class OrderService extends TransactionBaseService {
       totalsFieldsOrContext = {}
     }
 
-    const calculationContext =
-      await this.taxProviderService_.getCalculationContext(order)
+    const taxProviderServiceTx = this.taxProviderService_.withTransaction(
+      this.activeManager_
+    )
+
+    const calculationContext = await taxProviderServiceTx.getCalculationContext(
+      order
+    )
 
     const { returnable_items } = totalsFieldsOrContext?.includes ?? {}
 
@@ -1829,39 +1834,16 @@ class OrderService extends TransactionBaseService {
     } = {}
 
     if (!order.tax_rate) {
-      // Use existing tax lines if they are present
-      const itemContainsTaxLines = allItems.some(
-        (item) => item.tax_lines?.length
-      )
-      if (itemContainsTaxLines) {
-        allItems.forEach((item) => {
-          lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
-        })
-      } else {
-        const { lineItemsTaxLines } = await this.taxProviderService_
-          .withTransaction(this.activeManager_)
-          .getTaxLinesMap(allItems, calculationContext)
-        lineItemsTaxLinesMap = lineItemsTaxLines
-      }
-
-      // Use existing tax lines if they are present
-      const shippingMethodContainsTaxLines = orderShippingMethods.some(
-        (method) => method.tax_lines?.length
-      )
-      if (shippingMethodContainsTaxLines) {
-        orderShippingMethods.forEach((sm) => {
-          shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
-        })
-      } else {
-        const calculationContextWithGivenMethod = {
-          ...calculationContext,
-          shipping_methods: orderShippingMethods,
-        }
-        const { shippingMethodsTaxLines } = await this.taxProviderService_
-          .withTransaction(this.activeManager_)
-          .getTaxLinesMap([], calculationContextWithGivenMethod)
-        shippingMethodsTaxLinesMap = shippingMethodsTaxLines
-      }
+      lineItemsTaxLinesMap =
+        await taxProviderServiceTx.generateLineItemsTaxLinesMap(
+          allItems,
+          calculationContext
+        )
+      shippingMethodsTaxLinesMap =
+        await taxProviderServiceTx.generateShippingMethodsTaxLinesMap(
+          orderShippingMethods,
+          calculationContext
+        )
     }
 
     const itemsTotals = await TotalsUtils.TotalsService.getLineItemTotals(
