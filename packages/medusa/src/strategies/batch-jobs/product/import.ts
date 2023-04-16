@@ -30,8 +30,10 @@ import {
 import {
   productImportColumnsDefinition,
   productImportSalesChannelsColumnsDefinition,
+  productImportProductCategoriesColumnsDefinition,
 } from "./types/columns-definition"
 import { transformProductData, transformVariantData } from "./utils"
+import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
 
 /**
  * Process this many variant rows before reporting progress.
@@ -90,11 +92,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+    const isProductCategoriesFeatureOn = featureFlagRouter.isFeatureEnabled(
+      ProductCategoryFeatureFlag.key
+    )
+
     this.csvParser_ = new CsvParser({
       columns: [
         ...productImportColumnsDefinition.columns,
         ...(isSalesChannelsFeatureOn
           ? productImportSalesChannelsColumnsDefinition.columns
+          : []),
+        ...(isProductCategoriesFeatureOn
+          ? productImportProductCategoriesColumnsDefinition.columns
           : []),
       ],
     })
@@ -422,6 +431,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+    const isProductCategoriesFeatureOn =
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+
     for (const productOp of productOps) {
       const productData = transformProductData(productOp)
 
@@ -448,7 +460,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           delete productData.collection
         }
 
-        if (productOp["product.categories"]) {
+        if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
           productOp["product.categories"] = await this.processCategories(
             productOp["product.categories"] as string[]
           )
@@ -491,6 +503,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+    const isProductCategoriesFeatureOn =
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+
     for (const productOp of productOps) {
       const productData = transformProductData(productOp)
       try {
@@ -518,7 +533,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           delete productData.collection
         }
 
-        if (productOp["product.categories"]) {
+        if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
           productOp["product.categories"] = await this.processCategories(
             productOp["product.categories"] as string[]
           )
