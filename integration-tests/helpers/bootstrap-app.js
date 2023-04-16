@@ -13,7 +13,6 @@ module.exports = {
       expressApp: app,
       isTest: false,
     })
-
     const PORT = await getPort()
 
     return {

@@ -32,7 +32,6 @@ describe("/store/carts", () => {
     dbConnection = await initDb({ cwd })
     const { container, app, port } = await bootstrapApp({ cwd })
     appContainer = container
-
     setPort(port)
     express = app.listen(port, (err) => {
       process.send(port)
