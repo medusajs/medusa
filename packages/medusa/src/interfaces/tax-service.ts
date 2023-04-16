@@ -1,12 +1,13 @@
 import { BaseService } from "medusa-interfaces"
 
+import { Address } from "../models/address"
+import { Customer } from "../models/customer"
 import { LineItem } from "../models/line-item"
 import { Region } from "../models/region"
-import { Address } from "../models/address"
 import { ShippingMethod } from "../models/shipping-method"
-import { Customer } from "../models/customer"
 import { ProviderTaxLine, TaxServiceRate } from "../types/tax-service"
 import { LineAllocationsMap } from "../types/totals"
+import { ITaxCalculationStrategy } from "./tax-calculation-strategy"
 
 /**
  * A shipping method and the tax rates that have been configured to apply to the
@@ -37,6 +38,7 @@ export type TaxCalculationContext = {
   is_return: boolean
   shipping_methods: ShippingMethod[]
   allocation_map: LineAllocationsMap
+  tax_calculation_strategy: ITaxCalculationStrategy
 }
 
 /**

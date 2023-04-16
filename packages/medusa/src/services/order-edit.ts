@@ -1,14 +1,4 @@
-import {
-  AddOrderEditLineItemInput,
-  CreateOrderEditInput,
-} from "../types/order-edit"
-import {
-  Cart,
-  Order,
-  OrderEdit,
-  OrderEditItemChangeType,
-  OrderEditStatus,
-} from "../models"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   DeepPartial,
   EntityManager,
@@ -16,23 +6,32 @@ import {
   ILike,
   IsNull,
 } from "typeorm"
+import {
+  Cart,
+  Order,
+  OrderEdit,
+  OrderEditItemChangeType,
+  OrderEditStatus,
+} from "../models"
 import { FindConfig, Selector } from "../types/common"
+import {
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput,
+} from "../types/order-edit"
+import { buildQuery, isString } from "../utils"
 import {
   LineItemAdjustmentService,
   LineItemService,
-  NewTotalsService,
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
   TotalsService,
 } from "./index"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import { buildQuery, isString } from "../utils"
 
-import EventBusService from "./event-bus"
 import { IInventoryService } from "@medusajs/types"
-import { OrderEditRepository } from "../repositories/order-edit"
 import { TransactionBaseService } from "../interfaces"
+import { OrderEditRepository } from "../repositories/order-edit"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -40,7 +39,6 @@ type InjectedDependencies = {
 
   orderService: OrderService
   totalsService: TotalsService
-  newTotalsService: NewTotalsService
   lineItemService: LineItemService
   eventBusService: EventBusService
   taxProviderService: TaxProviderService
@@ -64,7 +62,6 @@ export default class OrderEditService extends TransactionBaseService {
 
   protected readonly orderService_: OrderService
   protected readonly totalsService_: TotalsService
-  protected readonly newTotalsService_: NewTotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
   protected readonly taxProviderService_: TaxProviderService
@@ -78,7 +75,6 @@ export default class OrderEditService extends TransactionBaseService {
     lineItemService,
     eventBusService,
     totalsService,
-    newTotalsService,
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
@@ -92,7 +88,6 @@ export default class OrderEditService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
     this.totalsService_ = totalsService
-    this.newTotalsService_ = newTotalsService
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService

@@ -7,4 +7,6 @@ export * from "./modules-sdk"
 export * from "./search"
 export * from "./shared-context"
 export * from "./stock-location"
+export * from "./tax"
 export * from "./transaction-base"
+

@@ -2,12 +2,18 @@ import { AwilixContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
 import { In } from "typeorm"
 
-import { ICacheService, IEventBusService } from "@medusajs/types"
+import {
+  ICacheService,
+  IEventBusService,
+  ITaxCalculationStrategy,
+  TaxCalculationContext,
+} from "@medusajs/types"
+import { TotalsService } from "@medusajs/utils"
 import {
   ITaxService,
   ItemTaxCalculationLine,
-  TaxCalculationContext,
-  TransactionBaseService
+  // TaxCalculationContext,
+  TransactionBaseService,
 } from "../interfaces"
 import {
   Cart,
@@ -16,18 +22,26 @@ import {
   Region,
   ShippingMethod,
   ShippingMethodTaxLine,
-  TaxProvider
+  TaxProvider,
 } from "../models"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
+import { CalculationContextData } from "../types/totals"
 import TaxRateService from "./tax-rate"
 
 type RegionDetails = {
   id: string
   tax_rate: number | null
+}
+
+type CalculationContextOptions = {
+  is_return?: boolean
+  exclude_shipping?: boolean
+  exclude_gift_cards?: boolean
+  exclude_discounts?: boolean
 }
 
 /**
@@ -37,6 +51,7 @@ class TaxProviderService extends TransactionBaseService {
   protected readonly container_: AwilixContainer
   protected readonly cacheService_: ICacheService
   protected readonly taxRateService_: TaxRateService
+  protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly taxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
@@ -50,6 +65,7 @@ class TaxProviderService extends TransactionBaseService {
     this.taxLineRepo_ = container["lineItemTaxLineRepository"]
     this.smTaxLineRepo_ = container["shippingMethodTaxLineRepository"]
     this.taxRateService_ = container["taxRateService"]
+    this.taxCalculationStrategy_ = container["taxCalculationStrategy"]
     this.eventBus_ = container["eventBusService"]
     this.taxProviderRepo_ = container["taxProviderRepository"]
   }
@@ -465,6 +481,41 @@ class TaxProviderService extends TransactionBaseService {
     await this.cacheService_.set(cacheKey, toReturn)
 
     return toReturn
+  }
+
+  /**
+   * Prepares the calculation context for a tax total calculation.
+   * @param calculationContextData - the calculationContextData to get the calculation context for
+   * @param options - options to gather context by
+   * @return the tax calculation context
+   */
+  async getCalculationContext(
+    calculationContextData: CalculationContextData,
+    options: CalculationContextOptions = {}
+  ): Promise<TaxCalculationContext> {
+    const allocationMap = await TotalsService.getAllocationMap(
+      calculationContextData,
+      {
+        exclude_gift_cards: options.exclude_gift_cards,
+        exclude_discounts: options.exclude_discounts,
+      }
+    )
+
+    let shippingMethods: ShippingMethod[] = []
+    // Default to include shipping methods
+    if (!options.exclude_shipping) {
+      shippingMethods = calculationContextData.shipping_methods || []
+    }
+
+    return {
+      shipping_address: calculationContextData.shipping_address,
+      shipping_methods: shippingMethods,
+      customer: calculationContextData.customer,
+      region: calculationContextData.region,
+      is_return: options.is_return ?? false,
+      allocation_map: allocationMap,
+      tax_calculation_strategy: this.taxCalculationStrategy_,
+    }
   }
 
   /**

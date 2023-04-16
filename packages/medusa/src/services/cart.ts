@@ -1,15 +1,15 @@
+import { TotalsUtils } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
   LineItemAdjustmentService,
   LineItemService,
-  NewTotalsService,
   PaymentProviderService,
   ProductService,
   ProductVariantInventoryService,
@@ -26,16 +26,18 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
   LineItem,
+  LineItemTaxLine,
   PaymentSession,
   PaymentSessionStatus,
   SalesChannel,
   ShippingMethod,
+  ShippingMethodTaxLine,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -46,9 +48,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -83,7 +85,6 @@ type InjectedDependencies = {
   discountService: DiscountService
   giftCardService: GiftCardService
   totalsService: TotalsService
-  newTotalsService: NewTotalsService
   customShippingOptionService: CustomShippingOptionService
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
@@ -123,7 +124,6 @@ class CartService extends TransactionBaseService {
   protected readonly giftCardService_: GiftCardService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly totalsService_: TotalsService
-  protected readonly newTotalsService_: NewTotalsService
   protected readonly customShippingOptionService_: CustomShippingOptionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
@@ -147,7 +147,6 @@ class CartService extends TransactionBaseService {
     discountService,
     giftCardService,
     totalsService,
-    newTotalsService,
     addressRepository,
     paymentSessionRepository,
     customShippingOptionService,
@@ -175,7 +174,6 @@ class CartService extends TransactionBaseService {
     this.discountService_ = discountService
     this.giftCardService_ = giftCardService
     this.totalsService_ = totalsService
-    this.newTotalsService_ = newTotalsService
     this.addressRepository_ = addressRepository
     this.paymentSessionRepository_ = paymentSessionRepository
     this.customShippingOptionService_ = customShippingOptionService
@@ -2518,7 +2516,7 @@ class CartService extends TransactionBaseService {
               ],
             })
 
-        const calculationContext = await this.totalsService_
+        const calculationContext = await this.taxProviderService_
           .withTransaction(transactionManager)
           .getCalculationContext(cart)
 
@@ -2552,13 +2550,9 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     totalsConfig: TotalsConfig = {}
   ): Promise<WithRequiredProperty<Cart, "total">> {
-    const newTotalsServiceTx = this.newTotalsService_.withTransaction(
-      this.activeManager_
-    )
+    const calculationContext =
+      await this.taxProviderService_.getCalculationContext(cart)
 
-    const calculationContext = await this.totalsService_.getCalculationContext(
-      cart
-    )
     const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
     const cartItems = [...(cart.items ?? [])]
     const cartShippingMethods = [...(cart.shipping_methods ?? [])]
@@ -2579,18 +2573,65 @@ class CartService extends TransactionBaseService {
       })
     }
 
-    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(cartItems, {
-      includeTax,
-      calculationContext,
-    })
-    const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
-      cartShippingMethods,
+    let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
+    let shippingMethodsTaxLinesMap: {
+      [shippingMethodId: string]: ShippingMethodTaxLine[]
+    } = {}
+
+    if (includeTax) {
+      // Use existing tax lines if they are present
+      const itemContainsTaxLines = cartItems.some(
+        (item) => item.tax_lines?.length
+      )
+      if (itemContainsTaxLines) {
+        cartItems.forEach((item) => {
+          lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
+        })
+      } else {
+        const { lineItemsTaxLines } = await this.taxProviderService_
+          .withTransaction(this.activeManager_)
+          .getTaxLinesMap(cartItems, calculationContext)
+        lineItemsTaxLinesMap = lineItemsTaxLines
+      }
+
+      // Use existing tax lines if they are present
+      const shippingMethodContainsTaxLines = cartShippingMethods.some(
+        (method) => method.tax_lines?.length
+      )
+      if (shippingMethodContainsTaxLines) {
+        cartShippingMethods.forEach((sm) => {
+          shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
+        })
+      } else {
+        const calculationContextWithGivenMethod = {
+          ...calculationContext,
+          shipping_methods: cartShippingMethods,
+        }
+        const { shippingMethodsTaxLines } = await this.taxProviderService_
+          .withTransaction(this.activeManager_)
+          .getTaxLinesMap([], calculationContextWithGivenMethod)
+        shippingMethodsTaxLinesMap = shippingMethodsTaxLines
+      }
+    }
+
+    const itemsTotals = await TotalsUtils.TotalsService.getLineItemTotals(
+      cartItems,
       {
-        discounts: cart.discounts,
         includeTax,
         calculationContext,
+        lineItemsTaxLinesMap,
       }
     )
+    const shippingTotals =
+      await TotalsUtils.TotalsService.getShippingMethodTotals(
+        cartShippingMethods,
+        {
+          discounts: cart.discounts,
+          includeTax,
+          calculationContext,
+          shippingMethodsTaxLinesMap,
+        }
+      )
 
     cart.subtotal = 0
     cart.discount_total = 0
@@ -2622,7 +2663,7 @@ class CartService extends TransactionBaseService {
       }
     )
 
-    const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
+    const giftCardTotal = await TotalsUtils.TotalsService.getGiftCardTotals(
       cart.subtotal - cart.discount_total,
       {
         region: cart.region,
@@ -2642,7 +2683,9 @@ class CartService extends TransactionBaseService {
       cart.subtotal +
       cart.shipping_total +
       cart.tax_total -
-      (cart.gift_card_total + cart.discount_total + cart.gift_card_tax_total)
+      ((cart?.gift_card_total ?? 0) +
+        cart.discount_total +
+        (cart?.gift_card_tax_total ?? 0))
 
     return cart as Cart & { total: number }
   }

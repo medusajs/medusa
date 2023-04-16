@@ -1,5 +1,10 @@
 import { IInventoryService } from "@medusajs/types"
-import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
+import {
+  isDefined,
+  MedusaError,
+  TotalsUtils,
+  TransactionBaseService,
+} from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -18,7 +23,6 @@ import {
   FulfillmentService,
   GiftCardService,
   LineItemService,
-  NewTotalsService,
   PaymentProviderService,
   ProductVariantInventoryService,
   RegionService,
@@ -37,11 +41,13 @@ import {
   FulfillmentStatus,
   GiftCard,
   LineItem,
+  LineItemTaxLine,
   Order,
   OrderStatus,
   Payment,
   PaymentStatus,
   Return,
+  ShippingMethodTaxLine,
   Swap,
   TrackingLink,
 } from "../models"
@@ -78,7 +84,6 @@ type InjectedDependencies = {
   fulfillmentService: FulfillmentService
   lineItemService: LineItemService
   totalsService: TotalsService
-  newTotalsService: NewTotalsService
   taxProviderService: TaxProviderService
   regionService: RegionService
   cartService: CartService
@@ -121,7 +126,6 @@ class OrderService extends TransactionBaseService {
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly lineItemService_: LineItemService
   protected readonly totalsService_: TotalsService
-  protected readonly newTotalsService_: NewTotalsService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly regionService_: RegionService
   protected readonly cartService_: CartService
@@ -145,7 +149,6 @@ class OrderService extends TransactionBaseService {
     fulfillmentService,
     lineItemService,
     totalsService,
-    newTotalsService,
     taxProviderService,
     regionService,
     cartService,
@@ -166,7 +169,6 @@ class OrderService extends TransactionBaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.lineItemService_ = lineItemService
     this.totalsService_ = totalsService
-    this.newTotalsService_ = newTotalsService
     this.taxProviderService_ = taxProviderService
     this.regionService_ = regionService
     this.fulfillmentService_ = fulfillmentService
@@ -667,7 +669,7 @@ class OrderService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       const shippingMethods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
 
@@ -775,7 +777,7 @@ class OrderService extends TransactionBaseService {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
-            (method.tax_lines as any) = undefined
+            ;(method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
               order_id: order.id,
             })
@@ -1795,13 +1797,8 @@ class OrderService extends TransactionBaseService {
       totalsFieldsOrContext = {}
     }
 
-    const newTotalsServiceTx = this.newTotalsService_.withTransaction(
-      this.activeManager_
-    )
-
-    const calculationContext = await this.totalsService_.getCalculationContext(
-      order
-    )
+    const calculationContext =
+      await this.taxProviderService_.getCalculationContext(order)
 
     const { returnable_items } = totalsFieldsOrContext?.includes ?? {}
 
@@ -1826,20 +1823,66 @@ class OrderService extends TransactionBaseService {
 
     const orderShippingMethods = [...(order.shipping_methods ?? [])]
 
-    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(allItems, {
-      taxRate: order.tax_rate,
-      includeTax: true,
-      calculationContext,
-    })
-    const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
-      orderShippingMethods,
+    let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
+    let shippingMethodsTaxLinesMap: {
+      [shippingMethodId: string]: ShippingMethodTaxLine[]
+    } = {}
+
+    if (!order.tax_rate) {
+      // Use existing tax lines if they are present
+      const itemContainsTaxLines = allItems.some(
+        (item) => item.tax_lines?.length
+      )
+      if (itemContainsTaxLines) {
+        allItems.forEach((item) => {
+          lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
+        })
+      } else {
+        const { lineItemsTaxLines } = await this.taxProviderService_
+          .withTransaction(this.activeManager_)
+          .getTaxLinesMap(allItems, calculationContext)
+        lineItemsTaxLinesMap = lineItemsTaxLines
+      }
+
+      // Use existing tax lines if they are present
+      const shippingMethodContainsTaxLines = orderShippingMethods.some(
+        (method) => method.tax_lines?.length
+      )
+      if (shippingMethodContainsTaxLines) {
+        orderShippingMethods.forEach((sm) => {
+          shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
+        })
+      } else {
+        const calculationContextWithGivenMethod = {
+          ...calculationContext,
+          shipping_methods: orderShippingMethods,
+        }
+        const { shippingMethodsTaxLines } = await this.taxProviderService_
+          .withTransaction(this.activeManager_)
+          .getTaxLinesMap([], calculationContextWithGivenMethod)
+        shippingMethodsTaxLinesMap = shippingMethodsTaxLines
+      }
+    }
+
+    const itemsTotals = await TotalsUtils.TotalsService.getLineItemTotals(
+      allItems,
       {
-        taxRate: order.tax_rate,
-        discounts: order.discounts,
         includeTax: true,
         calculationContext,
+        lineItemsTaxLinesMap,
       }
     )
+
+    const shippingTotals =
+      await TotalsUtils.TotalsService.getShippingMethodTotals(
+        orderShippingMethods,
+        {
+          discounts: order.discounts,
+          includeTax: true,
+          calculationContext,
+          shippingMethodsTaxLinesMap,
+        }
+      )
 
     order.subtotal = 0
     order.discount_total = 0
@@ -1856,7 +1899,7 @@ class OrderService extends TransactionBaseService {
 
     order.items = (order.items || []).map((item) => {
       item.quantity = item.quantity - (item.returned_quantity || 0)
-      const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+      const refundable = TotalsUtils.TotalsService.getLineItemRefund(item, {
         calculationContext,
         taxRate: order.tax_rate,
       })
@@ -1888,7 +1931,7 @@ class OrderService extends TransactionBaseService {
       }
     )
 
-    const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
+    const giftCardTotal = await TotalsUtils.TotalsService.getGiftCardTotals(
       order.subtotal - order.discount_total,
       {
         region: order.region,
@@ -1905,7 +1948,7 @@ class OrderService extends TransactionBaseService {
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
         item.quantity = item.quantity - (item.returned_quantity || 0)
-        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+        const refundable = TotalsUtils.TotalsService.getLineItemRefund(item, {
           calculationContext,
           taxRate: order.tax_rate,
         })
@@ -1923,7 +1966,7 @@ class OrderService extends TransactionBaseService {
     for (const claim of order.claims ?? []) {
       claim.additional_items = claim.additional_items.map((item) => {
         item.quantity = item.quantity - (item.returned_quantity || 0)
-        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+        const refundable = TotalsUtils.TotalsService.getLineItemRefund(item, {
           calculationContext,
           taxRate: order.tax_rate,
         })

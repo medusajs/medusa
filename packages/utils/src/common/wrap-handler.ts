@@ -4,7 +4,7 @@ type handler = (req: Request, res: Response) => Promise<void>
 
 export const wrapHandler = (fn: handler): RequestHandler => {
   return (
-    req: Request & { errors?: Error[] },
+    req: Request & { errors?: Error[] | string[] },
     res: Response,
     next: NextFunction
   ) => {

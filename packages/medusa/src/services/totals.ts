@@ -28,6 +28,7 @@ import {
 } from "../types/totals"
 import { NewTotalsService, TaxProviderService } from "./index"
 
+import { TotalsUtils } from "@medusajs/utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { calculatePriceTaxAmount } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -105,13 +106,11 @@ type CalculationContextOptions = {
  */
 class TotalsService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
-  protected readonly newTotalsService_: NewTotalsService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     taxProviderService,
-    newTotalsService,
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
@@ -119,7 +118,6 @@ class TotalsService extends TransactionBaseService {
     super(arguments[0])
 
     this.taxProviderService_ = taxProviderService
-    this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
 
     this.featureFlagRouter_ = featureFlagRouter
@@ -989,7 +987,7 @@ class TotalsService extends TransactionBaseService {
       giftCardable = subtotal - discountTotal
     }
 
-    return await this.newTotalsService_.getGiftCardTotals(giftCardable, {
+    return await TotalsUtils.TotalsService.getGiftCardTotals(giftCardable, {
       region: cartOrOrder.region,
       giftCards: cartOrOrder.gift_cards || [],
       giftCardTransactions: cartOrOrder["gift_card_transactions"] || [],
@@ -1046,6 +1044,7 @@ class TotalsService extends TransactionBaseService {
       region: calculationContextData.region,
       is_return: options.is_return ?? false,
       allocation_map: allocationMap,
+      tax_calculation_strategy: this.taxCalculationStrategy_,
     }
   }
 

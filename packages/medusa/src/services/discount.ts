@@ -1,6 +1,7 @@
+import { TotalsUtils } from "@medusajs/utils"
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   DeepPartial,
   EntityManager,
@@ -9,9 +10,9 @@ import {
   In,
 } from "typeorm"
 import {
-  NewTotalsService,
   ProductService,
   RegionService,
+  TaxProviderService,
   TotalsService,
 } from "."
 import { TransactionBaseService } from "../interfaces"
@@ -21,6 +22,7 @@ import {
   Discount,
   DiscountConditionType,
   LineItem,
+  LineItemTaxLine,
   Region,
 } from "../models"
 import {
@@ -62,7 +64,7 @@ class DiscountService extends TransactionBaseService {
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly discountConditionService_: DiscountConditionService
   protected readonly totalsService_: TotalsService
-  protected readonly newTotalsService_: NewTotalsService
+  protected readonly taxProviderService_: TaxProviderService
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
   protected readonly eventBus_: EventBusService
@@ -75,7 +77,7 @@ class DiscountService extends TransactionBaseService {
     discountConditionRepository,
     discountConditionService,
     totalsService,
-    newTotalsService,
+    taxProviderService,
     productService,
     regionService,
     customerService,
@@ -91,7 +93,7 @@ class DiscountService extends TransactionBaseService {
     this.discountConditionRepository_ = discountConditionRepository
     this.discountConditionService_ = discountConditionService
     this.totalsService_ = totalsService
-    this.newTotalsService_ = newTotalsService
+    this.taxProviderService_ = taxProviderService
     this.productService_ = productService
     this.regionService_ = regionService
     this.customerService_ = customerService
@@ -630,12 +632,27 @@ class DiscountService extends TransactionBaseService {
           TaxInclusivePricingFeatureFlag.key
         ) && lineItem.includes_tax
 
+      let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
+
+      if (!calculationContextData?.region?.tax_rate && includesTax) {
+        // Use existing tax lines if they are present
+        if (lineItem.tax_lines?.length) {
+          lineItemsTaxLinesMap[lineItem.id] = lineItem.tax_lines ?? []
+        } else {
+          const { lineItemsTaxLines } = await this.taxProviderService_
+            .withTransaction(this.activeManager_)
+            .getTaxLinesMap([lineItem], calculationContext)
+
+          lineItemsTaxLinesMap = lineItemsTaxLines
+        }
+      }
+
       if (includesTax) {
-        const lineItemTotals = await this.newTotalsService_
-          .withTransaction(transactionManager)
-          .getLineItemTotals([lineItem], {
+        const lineItemTotals =
+          await TotalsUtils.TotalsService.getLineItemTotals([lineItem], {
             includeTax: true,
             calculationContext,
+            lineItemsTaxLinesMap,
           })
         fullItemPrice = lineItemTotals[lineItem.id].subtotal
       }
@@ -649,14 +666,12 @@ class DiscountService extends TransactionBaseService {
         // when a fixed discount should be applied to the total,
         // we create line adjustments for each item with an amount
         // relative to the subtotal
-        const discountedItems = calculationContextData.items.filter(
-          (item) => item.allow_discounts
-        )
-        const totals = await this.newTotalsService_.getLineItemTotals(
-          discountedItems,
+        const totals = await TotalsUtils.TotalsService.getLineItemTotals(
+          lineItem.allow_discounts ? [lineItem] : [],
           {
             includeTax: includesTax,
             calculationContext,
+            lineItemsTaxLinesMap,
           }
         )
         const subtotal = Object.values(totals).reduce((subtotal, total) => {
