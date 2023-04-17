@@ -10,16 +10,20 @@ export const getCustomViteDevConfig = ({
   const uiPath = resolve(__dirname, "..", "..", "ui")
 
   return {
+    plugins: [react()],
     define: {
       __BASE__: JSON.stringify("/"),
       __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
     },
-    plugins: [react()],
     root: uiPath,
-    mode: "development",
-    cacheDir: resolve(uiPath, ".vite"),
-    optimizeDeps: {
-      force: true,
+    resolve: {
+      alias: {
+        "@tanstack/react-query": resolve(
+          require.resolve("@tanstack/react-query")
+        ),
+        "react-dom": resolve(require.resolve("react-dom")),
+        react: resolve(require.resolve("react")),
+      },
     },
     server: {
       port,
