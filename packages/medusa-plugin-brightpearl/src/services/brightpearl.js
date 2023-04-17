@@ -184,43 +184,108 @@ class BrightpearlService extends BaseService {
         availabilities = Object.assign(availabilities, chunkAvails)
       }
 
-      const [variants] = await this.productVariantService_.listAndCount({
-        sku: bpProducts.map(({ SKU }) => SKU),
-      })
+      if (!this.inventoryService_) {
+        const [variants] = await this.productVariantService_.listAndCount({
+          sku: bpProducts.map(({ SKU }) => SKU),
+        })
 
-      const variantsMap = new Map(
-        variants.filter((variant) => !!variant.sku).map((v) => [v.sku, v])
-      )
+        const variantsMap = new Map(
+          variants.filter((variant) => !!variant.sku).map((v) => [v.sku, v])
+        )
 
-      const variantUpdates = await Promise.all(
-        bpProducts.map(async (bpProduct) => {
-          const { SKU: sku, productId } = bpProduct
+        const variantUpdates = await Promise.all(
+          bpProducts.map(async (bpProduct) => {
+            const { SKU: sku, productId } = bpProduct
 
-          const variant = variantsMap.get(sku)
+            const variant = variantsMap.get(sku)
 
-          const productAvailability = availabilities[productId]
+            const productAvailability = availabilities[productId]
 
-          let onHand = 0
-          if (
-            productAvailability &&
-            productAvailability.warehouses &&
-            productAvailability.warehouses[`${this.options.warehouse}`]
-          ) {
-            onHand =
-              productAvailability.warehouses[`${this.options.warehouse}`].onHand
-          }
+            let onHand = 0
+            if (
+              productAvailability &&
+              productAvailability.warehouses &&
+              productAvailability.warehouses[`${this.options.warehouse}`]
+            ) {
+              onHand =
+                productAvailability.warehouses[`${this.options.warehouse}`]
+                  .onHand
+            }
 
-          if (variant && variant.manage_inventory) {
-            if (parseInt(variant.inventory_quantity) !== parseInt(onHand)) {
-              return {
-                variant,
-                update: { inventory_quantity: parseInt(onHand) },
+            if (variant && variant.manage_inventory) {
+              if (parseInt(variant.inventory_quantity) !== parseInt(onHand)) {
+                return {
+                  variant,
+                  update: { inventory_quantity: parseInt(onHand) },
+                }
               }
             }
-          }
+          })
+        )
+        return this.productVariantService_.update(
+          variantUpdates.filter(Boolean)
+        )
+      } else {
+        const inventoryItems = await this.inventoryService_.listInventoryItems({
+          sku: bpProducts.map(({ SKU }) => SKU),
         })
-      )
-      return this.productVariantService_.update(variantUpdates.filter(Boolean))
+
+        const itemMap = new Map(inventoryItems.map((i) => [i.id, i.sku]))
+
+        const [inventoryLevels] =
+          await this.inventoryService_.listInventoryLevels({
+            inventory_item_id: inventoryItems.map((i) => i.id),
+          })
+
+        const locations = (
+          await this.stockLocationService_.list({
+            id: [...new Set(inventoryLevels.map((ri) => ri.location_id))],
+          })
+        ).filter((location) => location.metadata?.bp_id)
+
+        const inventoryMap = inventoryLevels.reduce((acc, level) => {
+          const itemSku = itemMap.get(level.inventory_item_id)
+          if (!itemSku) {
+            return acc
+          }
+
+          const locationsMap = acc.get(itemSku)
+          if (!locationsMap) {
+            acc.set(itemSku, new Map([[level.location_id, level]]))
+          } else {
+            locationsMap.set(level.location_id, level)
+          }
+
+          return acc
+        }, new Map())
+
+        await Promise.all(
+          bpProducts.map(async (bpProduct) => {
+            const { SKU: sku, productId } = bpProduct
+
+            const productAvailability = availabilities[productId]
+
+            await Promise.all(
+              locations.map(async (location) => {
+                const warehouseData =
+                  productAvailability.warehouses[`${location.metadata.bp_id}`]
+
+                const inventoryLevel = inventoryMap.get(sku)?.get(location.id)
+
+                if (!inventoryLevel || !warehouseData) {
+                  return
+                }
+
+                await this.adjustMedusaLocationLevel_(
+                  location,
+                  inventoryLevel,
+                  warehouseData
+                )
+              })
+            )
+          })
+        )
+      }
     }
   }
 
@@ -242,20 +307,7 @@ class BrightpearlService extends BaseService {
     })
   }
 
-  async adjustMedusaLocationLevel_(
-    location,
-    inventoryMap,
-    productAvailability
-  ) {
-    // TODO: Assuming we have a 1 to 1 mapping of inventory items
-    const inventoryLevel = inventoryMap[location.id][0]
-    const warehouseData =
-      productAvailability.warehouses[`${location.metadata.bp_id}`]
-
-    if (!warehouseData) {
-      return
-    }
-
+  async adjustMedusaLocationLevel_(location, inventoryLevel, warehouseData) {
     const externallyReservedQuantityAdjustment =
       warehouseData.inStock -
       warehouseData.onHand -
@@ -350,14 +402,23 @@ class BrightpearlService extends BaseService {
     )
 
     await Promise.all(
-      locations.map(
-        async (location) =>
-          await this.adjustMedusaLocationLevel_(
-            location,
-            inventoryMap,
-            productAvailability
-          )
-      )
+      locations.map(async (location) => {
+        // TODO: Assuming we have a 1 to 1 mapping of inventory items
+        const inventoryLevel = inventoryMap[location.id][0]
+
+        const warehouseData =
+          productAvailability.warehouses[`${location.metadata.bp_id}`]
+
+        if (!warehouseData) {
+          return
+        }
+
+        await this.adjustMedusaLocationLevel_(
+          location,
+          inventoryLevel,
+          warehouseData
+        )
+      })
     )
   }
 
