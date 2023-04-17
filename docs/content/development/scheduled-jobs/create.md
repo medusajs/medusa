@@ -112,13 +112,17 @@ Cron Jobs only run while the Medusa backend is running.
 
 :::
 
-In your terminal run the following command to run your Medusa backend:
+Before you run the Medusa backend, make sure to build your code that's under the `src` directory into the `dist` directory with the following command:
+
+```bash npm2yarn
+npm run build
+```
+
+Then, run the following command to start your Medusa backend:
 
 ```bash npm2yarn
 npm run start
 ```
-
-This builds your code under the `src` directory into the `dist` directory, then runs the Medusa backend.
 
 If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa backend:
 

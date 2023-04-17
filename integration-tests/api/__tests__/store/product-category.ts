@@ -38,6 +38,7 @@ describe("/store/product-categories", () => {
   beforeEach(async () => {
     productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
       name: "category parent",
+      description: "test description",
       is_active: true,
       is_internal: false,
       rank: 0,
@@ -93,7 +94,7 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories/${productCategory.id}?fields=handle,name`,
+        `/store/product-categories/${productCategory.id}?fields=handle,name,description`,
       )
 
       expect(response.data.product_category).toEqual(
@@ -101,10 +102,12 @@ describe("/store/product-categories", () => {
           id: productCategory.id,
           handle: productCategory.handle,
           name: productCategory.name,
+          description: "",
           parent_category: expect.objectContaining({
             id: productCategoryParent.id,
             handle: productCategoryParent.handle,
             name: productCategoryParent.name,
+            description: "test description"
           }),
           category_children: [
             expect.objectContaining({
@@ -295,6 +298,18 @@ describe("/store/product-categories", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.product_categories[0].id).toEqual(productCategoryParent.id)
+    })
+
+    it("filters based on handle attribute of the data model", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/product-categories?handle=${productCategory.handle}`,
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories[0].id).toEqual(productCategory.id)
     })
 
     it("filters based on parent category", async () => {

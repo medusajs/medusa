@@ -46,7 +46,9 @@ Run the following command to reflect schema changes into your database:
 medusa migrations run
 ```
 
-You can now start the Medusa backend and use the inventory module in your commerce application.
+### Step 4: Run Migration Script
+
+After installing the Stock Location module, make sure to [run the migration script](#run-migration-script)
 
 ---
 
@@ -82,6 +84,20 @@ Run the following command to reflect schema changes into your database:
 
 ```bash
 medusa migrations run
+```
+
+### Step 4: Run Migration Script
+
+After installing both modules, make sure to [run the migration script](#run-migration-script)
+
+---
+
+## Run Migration Script
+
+After installing both modules, run the following command to migrate current product variant information to fit the schema changes introduced by the modules:
+
+```bash
+node ./node_modules/@medusajs/medusa/dist/scripts/migrate-inventory-items.js
 ```
 
 You can now start the Medusa backend and use the stock location module in your commerce application.

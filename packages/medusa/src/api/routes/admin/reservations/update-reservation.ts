@@ -8,7 +8,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
 /**
  * @oas [post] /admin/reservations/{id}
  * operationId: "PostReservationsReservation"
- * summary: "Updates a Reservation"
+ * summary: "Update a Reservation"
  * description: "Updates a Reservation which can be associated with any resource as required."
  * x-authenticated: true
  * parameters:
@@ -25,11 +25,11 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.reservations.update(reservation.id, {
+ *       medusa.admin.reservations.update(reservationId, {
  *         quantity: 3
  *       })
- *       .then(({ reservations }) => {
- *         console.log(reservations.id);
+ *       .then(({ reservation }) => {
+ *         console.log(reservation.id);
  *       });
  *   - lang: Shell
  *     label: cURL

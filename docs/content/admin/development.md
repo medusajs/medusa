@@ -7,6 +7,12 @@ addHowToData: true
 
 In this document, you’ll learn how to customize the Medusa admin by forking it, and how to keep it updated with changes from the main repository.
 
+:::warning
+
+This guide explains how to customize the Medusa Admin repository, which is now deprecated. This guide doesn't work with the [admin plugin](./quickstart.mdx).
+
+:::
+
 ## Overview
 
 Although Medusa provides an intuitive admin that should cover all your ecommerce needs, you are free to customize the Medusa admin as you see fit.

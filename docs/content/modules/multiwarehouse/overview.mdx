@@ -22,6 +22,29 @@ Multi-warehouse in Medusa is composed of two modules: an inventory module - whic
   }
 }} />
 
+You can also create your own modules and use them with the Medusa backend.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/multiwarehouse/backend/create-inventory-service',
+    label: 'Backend: Create Inventory Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an inventory service to be used in a custom inventory module.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/multiwarehouse/backend/create-stock-location-service',
+    label: 'Backend: Create Stock Location Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a stock location service to be used in a custom stock location module.'
+    }
+  },
+]} />
+
 ---
 
 ## Features
@@ -42,12 +65,11 @@ Admins can manage the stock locations, which are the places they store their pro
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/multiwarehouse/admin/manage-stock-locations',
     label: 'Admin: Manage Stock Locations',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage stock locations using admin APIs.',
-      isSoon: true,
     }
   },
 ]} />
@@ -68,12 +90,11 @@ Admins can manage the inventory of product variants across the different stock l
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/multiwarehouse/admin/manage-inventory-items',
     label: 'Admin: Manage Inventory',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage inventory using the admin APIs.',
-      isSoon: true,
     }
   },
 ]} />
@@ -94,12 +115,11 @@ Admins can manage item allocations to choose which stock location to fulfill ite
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/multiwarehouse/admin/manage-item-allocations-in-orders',
     label: 'Admin: Manage Allocations in Orders',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage allocations of items in an order using the admin APIs.',
-      isSoon: true,
     }
   },
 ]} />

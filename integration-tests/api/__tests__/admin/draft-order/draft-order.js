@@ -80,6 +80,41 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("creates a draft order cart containing variant without prices should fail", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant-without-prices",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/draft-orders", payload, adminReqConfig)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(400)
+      expect(response.data.type).toEqual("invalid_data")
+      expect(response.data.message).toEqual(
+        `Cannot generate line item for variant "test variant without prices" without a price`
+      )
+    })
+
     it("creates a draft order with a custom shipping option price", async () => {
       const api = useApi()
 
