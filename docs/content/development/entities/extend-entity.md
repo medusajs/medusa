@@ -169,9 +169,17 @@ For example, if you added a custom attribute in the `Product` entity and you wan
 
 ```ts title=src/loaders/extend-product-fields.ts
 export default async function () {
-  const imports = (await import("@medusajs/medusa/dist/api/routes/store/products/index")) as any
-  imports.allowedStoreProductsFields = [...imports.allowedStoreProductsFields, "customAttribute"]
-  imports.defaultStoreProductsFields = [...imports.defaultStoreProductsFields, "customAttribute"]
+  const imports = (await import(
+    "@medusajs/medusa/dist/api/routes/store/products/index"
+  )) as any
+  imports.allowedStoreProductsFields = [
+    ...imports.allowedStoreProductsFields,
+    "customAttribute",
+  ]
+  imports.defaultStoreProductsFields = [
+    ...imports.defaultStoreProductsFields,
+    "customAttribute",
+  ]
 }
 ```
 
