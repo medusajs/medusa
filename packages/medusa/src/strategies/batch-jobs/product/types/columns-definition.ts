@@ -809,7 +809,7 @@ export const productImportProductCategoriesColumnsDefinition: CsvSchema<
   TParsedProductImportRowData,
   TBuiltProductImportLine
 > = {
-  columns: Object.entries(productSalesChannelColumnsDefinition)
+  columns: Object.entries(productCategoriesColumnsDefinition)
     .map(([name, def]) => {
       return def.importDescriptor && { name, ...def.importDescriptor }
     })
