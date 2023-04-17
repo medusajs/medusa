@@ -17,6 +17,9 @@ export const getCustomViteDevConfig = ({
     plugins: [react()],
     root: uiPath,
     mode: "development",
+    optimizeDeps: {
+      force: true,
+    },
     server: {
       port,
     },
