@@ -104,11 +104,11 @@ class ProductCategoryService extends TransactionBaseService {
     selector: Selector<ProductCategory> = {},
     treeSelector: QuerySelector<ProductCategory> = {}
   ) {
-    const query = buildQuery(selector, config)
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
 
+    const query = buildQuery(selector, config)
     const productCategory = await productCategoryRepo.findOneWithDescendants(
       query,
       treeSelector
@@ -116,7 +116,7 @@ class ProductCategoryService extends TransactionBaseService {
 
     if (!productCategory) {
       const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
+        .map(([key, value]) => `${key}: ${value}`)
         .join(", ")
 
       throw new MedusaError(
@@ -149,8 +149,8 @@ class ProductCategoryService extends TransactionBaseService {
       )
     }
 
-    Object.assign({}, selector, { id: productCategoryId })
-    return this.retrieve_(config, selector, treeSelector)
+    const selectors = Object.assign({}, { id: productCategoryId }, selector)
+    return this.retrieve_(config, selectors, treeSelector)
   }
 
   /**
@@ -175,8 +175,8 @@ class ProductCategoryService extends TransactionBaseService {
       )
     }
 
-    Object.assign({}, selector, { handle })
-    return this.retrieve_(config, selector, treeSelector)
+    const selectors = Object.assign({}, { handle }, selector)
+    return this.retrieve_(config, selectors, treeSelector)
   }
 
   /**
