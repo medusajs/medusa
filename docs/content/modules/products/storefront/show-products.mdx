@@ -291,7 +291,15 @@ You must pass one of the [pricing parameters](#product-pricing-parameters) to th
 
 :::
 
-Prices in Medusa are stored as the price entered by the admin multiplied by a 100. So, to show the correct price, you would need to convert it to a decimal with a method like this:
+By default, prices in Medusa are stored as the price entered by the admin multiplied by a 100.
+
+:::note
+
+This is the behaviour if you're using the admin dashboard to create products. If you're using a different logic to create products and store prices, you can skip the instructions in this section.
+
+:::
+
+So, to show the correct price, you would need to convert it to its actual price with a method like this:
 
 ```ts
 const convertToDecimal = (amount: number) => {
