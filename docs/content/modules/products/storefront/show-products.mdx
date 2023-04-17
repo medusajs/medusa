@@ -198,7 +198,7 @@ To expand the categories of each product, you can pass `categories` to the `expa
 
 ```ts
 medusa.products.list({
-  expand: 'categories'
+  expand: "categories",
 })
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
@@ -214,7 +214,7 @@ import { Product } from "@medusajs/medusa"
 
 const Products = () => {
   const { products, isLoading } = useProducts({
-    expand: 'categories'
+    expand: "categories",
   })
 
   return (
