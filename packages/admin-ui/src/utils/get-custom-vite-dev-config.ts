@@ -17,6 +17,7 @@ export const getCustomViteDevConfig = ({
     plugins: [react()],
     root: uiPath,
     mode: "development",
+    cacheDir: resolve(uiPath, ".vite"),
     optimizeDeps: {
       force: true,
     },
