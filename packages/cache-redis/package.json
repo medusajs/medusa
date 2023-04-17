@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cache-redis",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Redis Cache Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -17,7 +17,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "1.8.1",
+    "@medusajs/types": "1.8.2",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
@@ -30,7 +30,7 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "1.8.1",
+    "@medusajs/modules-sdk": "1.8.2",
     "awilix": "^8.0.0",
     "ioredis": "^5.3.1"
   }

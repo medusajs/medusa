@@ -1,6 +1,6 @@
 const CircularPatch = require("./decorators/circular-patch")
 
-const id = "plugin"
+const id = "medusa"
 
 const decorators = {
   oas3: {

@@ -52,7 +52,7 @@ npm install cors
 Then, create the file `src/api/routes/create-product.ts` with the following content:
 
 ```ts title=src/api/routes/create-product.ts
-import cors from "cors"
+import * as cors from "cors"
 import { Router } from "express"
 import { 
   registerLoggedInUser,
@@ -98,7 +98,7 @@ import configLoader from "@medusajs/medusa/dist/loaders/config"
 import createProductRouter from "./routes/create-product"
 
 export default function (rootDirectory: string) {
-  const config = await configLoader(rootDirectory)
+  const config = configLoader(rootDirectory)
 
   const adminCors = {
     origin: config.projectConfig.admin_cors.split(","),

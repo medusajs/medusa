@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -26,7 +26,7 @@
     "directory": "packages/admin"
   },
   "dependencies": {
-    "@medusajs/admin-ui": "1.8.1",
+    "@medusajs/admin-ui": "1.8.2",
     "commander": "^10.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
@@ -37,7 +37,7 @@
     "ts-dedent": "^2.2.0"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.8.1"
+    "@medusajs/medusa": "1.8.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
