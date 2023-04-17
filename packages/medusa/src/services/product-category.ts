@@ -104,7 +104,7 @@ class ProductCategoryService extends TransactionBaseService {
     selector: Selector<ProductCategory> = {},
     treeSelector: QuerySelector<ProductCategory> = {}
   ) {
-    const query = buildQuery(selectors, config)
+    const query = buildQuery(selector, config)
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )

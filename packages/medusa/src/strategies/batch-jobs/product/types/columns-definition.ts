@@ -741,7 +741,25 @@ export const productCategoriesColumnsDefinition: ProductColumnDefinition = {
     exportDescriptor: {
       isDynamic: true,
       buildDynamicColumnName: (index: number) => {
-        return `Product Categories ${index + 1} Handle`
+        return `Product Category ${index + 1} Handle`
+      },
+    },
+  },
+  "Product Category Name": {
+    name: "Product Category Name",
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Product Category ${index + 1} Name`
+      },
+    },
+  },
+  "Product Category Description": {
+    name: "Product Category Description",
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Product Category ${index + 1} Description`
       },
     },
   },

@@ -88,7 +88,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     }
 
     if (featureFlagRouter.isFeatureEnabled(ProductCategoryFeatureFlag.key)) {
-      this.defaultRelations_.push("product_categories")
+      this.defaultRelations_.push("categories")
     }
   }
 
@@ -202,6 +202,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
               dynamicImageColumnCount,
               dynamicOptionColumnCount,
               dynamicSalesChannelsColumnCount,
+              dynamicProductCategoriesColumnCount,
               prices: [...pricesData].map((stringifyData) =>
                 JSON.parse(stringifyData)
               ),
@@ -429,13 +430,44 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     ]!.exportDescriptor as DynamicProductExportDescriptor)!
       .buildDynamicColumnName
 
+    const columnNameNameBuilder = (this.productCategoriesColumnDefinitions[
+      "Product Category Name"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    const columnNameDescriptionBuilder = (this
+      .productCategoriesColumnDefinitions["Product Category Description"]!
+      .exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
     for (let i = 0; i < maxCategoriesCount; ++i) {
-      const columnNameId = columnNameHandleBuilder(i)
+      let columnNameId = columnNameHandleBuilder(i)
 
       this.columnsDefinition[columnNameId] = {
         name: columnNameId,
         exportDescriptor: {
           accessor: (product: Product) => product?.categories[i]?.handle ?? "",
+          entityName: "product",
+        },
+      }
+
+      columnNameId = columnNameNameBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) => product?.categories[i]?.name ?? "",
+          entityName: "product",
+        },
+      }
+
+      columnNameId = columnNameDescriptionBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) =>
+            product?.categories[i]?.description ?? "",
           entityName: "product",
         },
       }
