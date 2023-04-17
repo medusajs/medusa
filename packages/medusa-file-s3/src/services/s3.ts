@@ -14,15 +14,14 @@ import { PutObjectRequest } from "aws-sdk/clients/s3"
 import { ClientConfiguration } from "aws-sdk/clients/s3"
 
 class S3Service extends AbstractFileService implements IFileService {
-  // eslint-disable-next-line no-empty-pattern
-  private bucket_: string
-  private s3Url_: string
-  private accessKeyId_: string
-  private secretAccessKey_: string
-  private region_: string
-  private endpoint_: string
-  private awsConfigObject_: any
-  private downloadFileDuration_: string
+  protected bucket_: string
+  protected s3Url_: string
+  protected accessKeyId_: string
+  protected secretAccessKey_: string
+  protected region_: string
+  protected endpoint_: string
+  protected awsConfigObject_: any
+  protected downloadFileDuration_: string
 
   constructor({}, options) {
     super({}, options)
@@ -37,7 +36,7 @@ class S3Service extends AbstractFileService implements IFileService {
     this.awsConfigObject_ = options.aws_config_object ?? {}
   }
 
-  private getClient = (overwriteConfig: Partial<ClientConfiguration> = {}) => {
+  protected getClient(overwriteConfig: Partial<ClientConfiguration> = {}) {
     const config: ClientConfiguration = {
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
@@ -51,11 +50,11 @@ class S3Service extends AbstractFileService implements IFileService {
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
-    return this.uploadFile(file)
+    return await this.uploadFile(file)
   }
 
   async uploadProtected(file: Express.Multer.File) {
-    return this.uploadFile(file, { acl: "private" })
+    return await this.uploadFile(file, { acl: "private" })
   }
 
   async uploadFile(

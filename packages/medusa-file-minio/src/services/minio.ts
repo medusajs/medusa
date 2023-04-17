@@ -14,16 +14,16 @@ import { MedusaError } from "medusa-core-utils"
 import { ClientConfiguration, PutObjectRequest } from "aws-sdk/clients/s3"
 
 class MinioService extends AbstractFileService implements IFileService {
-  private bucket_: string
-  private accessKeyId_: string
-  private secretAccessKey_: string
-  private private_bucket_: string
-  private private_access_key_id_: string
-  private private_secret_access_key_: string
-  private endpoint_: string
-  private s3ForcePathStyle_: boolean
-  private signatureVersion_: string
-  private downloadUrlDuration: string | number
+  protected bucket_: string
+  protected accessKeyId_: string
+  protected secretAccessKey_: string
+  protected private_bucket_: string
+  protected private_access_key_id_: string
+  protected private_secret_access_key_: string
+  protected endpoint_: string
+  protected s3ForcePathStyle_: boolean
+  protected signatureVersion_: string
+  protected downloadUrlDuration: string | number
 
   constructor({}, options) {
     super({}, options)
@@ -42,12 +42,12 @@ class MinioService extends AbstractFileService implements IFileService {
     this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
   }
 
-  private buildUrl(bucket: string, key: string) {
+  protected buildUrl(bucket: string, key: string) {
     return `${this.endpoint_}/${bucket}/${key}`
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
-    return this.uploadFile(file)
+    return await this.uploadFile(file)
   }
 
   async uploadProtected(
@@ -55,7 +55,7 @@ class MinioService extends AbstractFileService implements IFileService {
   ): Promise<FileServiceUploadResult> {
     this.validatePrivateBucketConfiguration_(true)
 
-    return this.uploadFile(file, { isProtected: true })
+    return await this.uploadFile(file, { isProtected: true })
   }
 
   protected async uploadFile(
@@ -123,7 +123,7 @@ class MinioService extends AbstractFileService implements IFileService {
       contentType?: string
     }
   ) {
-    const usePrivateBucket: boolean = fileData.usePrivateBucket ?? false
+    const usePrivateBucket = !!fileData.usePrivateBucket
 
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
 
@@ -151,7 +151,7 @@ class MinioService extends AbstractFileService implements IFileService {
   async getDownloadStream(
     fileData: GetUploadedFileType & { usePrivateBucket?: boolean }
   ) {
-    const usePrivateBucket: boolean = !!fileData.usePrivateBucket
+    const usePrivateBucket = !!fileData.usePrivateBucket
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
     const client = this.getClient(usePrivateBucket)
 
@@ -190,7 +190,7 @@ class MinioService extends AbstractFileService implements IFileService {
     }
   }
 
-  private getClient(
+  protected getClient(
     usePrivateBucket = false,
     additionalConfiguration: Partial<ClientConfiguration> = {}
   ) {
@@ -206,25 +206,6 @@ class MinioService extends AbstractFileService implements IFileService {
       signatureVersion: this.signatureVersion_,
       ...additionalConfiguration,
     })
-  }
-
-  updateAwsConfig_(usePrivateBucket = false, additionalConfiguration = {}) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: usePrivateBucket
-          ? this.private_access_key_id_
-          : this.accessKeyId_,
-        secretAccessKey: usePrivateBucket
-          ? this.private_secret_access_key_
-          : this.secretAccessKey_,
-        endpoint: this.endpoint_,
-        s3ForcePathStyle: this.s3ForcePathStyle_,
-        signatureVersion: this.signatureVersion_,
-        ...additionalConfiguration,
-      },
-      true
-    )
   }
 }
 
