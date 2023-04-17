@@ -588,12 +588,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/products/products",
           label: "Products",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",

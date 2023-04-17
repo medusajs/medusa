@@ -40,6 +40,44 @@ This exports a function that returns an Express router. The function receives tw
 - `rootDirectory` is the absolute path to the root directory that your backend is running from.
 - `pluginOptions` is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
 
+### Defining Multiple Routes or Middlewares
+
+Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware.md).
+
+For example:
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  router.get("/hello", (req, res) => {
+    res.json({
+      message: "Welcome to My Store!",
+    })
+  })
+
+  // you can also define the middleware
+  // in another file and import it
+  const middleware = (res, req, next) => {
+    // TODO define global middleware
+    console.log("hello from middleware")
+    next()
+  }
+
+  const anotherRouter = Router()
+  router.get("/store/*", (req, res, next) => {
+    // TODO perform an actions for all store endpoints
+    next()
+  })
+
+  return [middleware, router, anotherRouter]
+}
+```
+
+This allows you to export multiple routers and middlewares from the same file. You can also import the routers, routes, and middlewares from other files, then import them in `src/api/index.ts` instead of defining them within the same file.
+
 ### Endpoints Path
 
 Your endpoint can be under any path you wish.
@@ -109,115 +147,6 @@ router.options("/admin/hello", cors(corsOptions))
 router.get("/admin/hello", cors(corsOptions), (req, res) => {
   // ...
 })
-```
-
----
-
-## Create Multiple Endpoints
-
-### Same File
-
-You can add more than one endpoint in `src/api/index.ts`:
-
-```ts title=src/api/index.ts
-router.options("/store/hello", cors(storeCorsOptions))
-router.get(
-  "/store/hello", 
-  cors(storeCorsOptions), 
-  (req, res) => {
-    res.json({
-      message: "Welcome to Your Store!",
-    })
-  }
-)
-
-router.options("/admin/hello", cors(adminCorsOptions))
-router.get(
-  "/admin/hello",
-  cors(adminCorsOptions),
-  (req, res) => {
-    res.json({
-      message: "Welcome to Your Admin!",
-    })
-  }
-)
-```
-
-### Multiple Files
-
-Alternatively, you can add multiple files for each endpoint or set of endpoints for readability and easy maintenance.
-
-To do that with the previous example, first, create the file `src/api/store.ts` with the following content:
-
-```ts title=src/api/store.ts
-import cors from "cors"
-import { projectConfig } from "../../medusa-config"
-
-export default (router) => {
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-  router.options("/store/hello", cors(storeCorsOptions))
-  router.get(
-    "/store/hello", 
-    cors(storeCorsOptions),
-    (req, res) => {
-      res.json({
-        message: "Welcome to Your Store!",
-      })
-    }
-  )
-}
-```
-
-You export a function that receives an Express router as a parameter and adds the endpoint `store/hello` to it.
-
-Next, create the file `src/api/admin.ts` with the following content:
-
-```ts title=src/api/admin.ts
-import cors from "cors"
-import { projectConfig } from "../../medusa-config"
-
-export default (router) => {
-  const adminCorsOptions = {
-    origin: projectConfig.admin_cors.split(","),
-    credentials: true,
-  }
-  router.options("/admin/hello", cors(adminCorsOptions))
-  router.get(
-    "/admin/hello",
-    cors(adminCorsOptions),
-    (req, res) => {
-      res.json({
-        message: "Welcome to Your Admin!",
-      })
-    }
-  )
-}
-```
-
-Again, you export a function that receives an Express router as a parameter and adds the endpoint `admin/hello` to it.
-
-Finally, in `src/api/index.ts` import the two functions at the beginning of the file:
-
-```ts title=src/api/index.ts
-import { Router } from "express"
-import storeRoutes from "./store"
-import adminRoutes from "./admin"
-```
-
-and in the exported function, call each of the functions passing them the Express router:
-
-```ts title=src/api/index.ts
-export default () => {
-  const router = Router()
-
-  storeRoutes(router)
-  adminRoutes(router)
-
-  return router
-}
 ```
 
 ---
