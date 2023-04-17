@@ -35,7 +35,7 @@ In some simple cases, you might just need to store additional values within the 
 
 ```tsx
 metadata = {
-  "someKey": "someValue"
+  "someKey": "someValue",
 }
 ```
 
