@@ -73,6 +73,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 export default async (req, res) => {
   const { id } = req.params
   const validated = req.validatedBody as StorePostCartsCartReq
+  let error
 
   const cartService: CartService = req.scope.resolve("cartService")
   const manager: EntityManager = req.scope.resolve("manager")
@@ -82,20 +83,34 @@ export default async (req, res) => {
   }
 
   await manager.transaction(async (transactionManager) => {
-    await cartService.withTransaction(transactionManager).update(id, validated)
-
-    const updated = await cartService
-      .withTransaction(transactionManager)
-      .retrieve(id, {
-        relations: ["payment_sessions", "shipping_methods"],
-      })
-
-    if (updated.payment_sessions?.length && !validated.region_id) {
+    try {
       await cartService
         .withTransaction(transactionManager)
-        .setPaymentSessions(id)
+        .update(id, validated)
+
+      const updated = await cartService
+        .withTransaction(transactionManager)
+        .retrieve(id, {
+          relations: ["payment_sessions", "shipping_methods"],
+        })
+
+      if (updated.payment_sessions?.length && !validated.region_id) {
+        await cartService
+          .withTransaction(transactionManager)
+          .setPaymentSessions(id)
+      }
+    } catch (err) {
+      error = err
     }
   })
+
+  if (error) {
+    return res.status(400).json({
+      message: error.message,
+      type: error?.type,
+      code: error?.code,
+    })
+  }
 
   const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,

@@ -784,7 +784,7 @@ class DiscountService extends TransactionBaseService {
 
     const manager = this.manager_
     const orderRepo = manager.withRepository(this.orderRepository_)
-    const [orders, count] = await orderRepo.findAndCount({
+    const [, count] = await orderRepo.findAndCount({
       relations: {
         discounts: true,
       },
