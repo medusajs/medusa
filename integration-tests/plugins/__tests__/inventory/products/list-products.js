@@ -226,7 +226,6 @@ describe("Create Variant", () => {
             id: `${productId}-2`,
             variants: [
               expect.objectContaining({
-                inventory_quantity: 0,
                 purchasable: true,
               }),
             ],
@@ -296,7 +295,6 @@ describe("Create Variant", () => {
             id: `${productId}-2`,
             variants: [
               expect.objectContaining({
-                inventory_quantity: 0,
                 purchasable: true,
               }),
             ],

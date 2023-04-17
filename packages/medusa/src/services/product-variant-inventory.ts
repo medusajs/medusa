@@ -674,7 +674,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         const variantInventory = variantInventoryMap.get(variant.id) || []
 
         if (!variantInventory.length) {
-          variant.inventory_quantity = 0
+          delete variant.inventory_quantity
           variant.purchasable = true
           return variant
         }
