@@ -84,7 +84,11 @@ export const FormattedFulfillment = ({
       default:
         return cancelFulfillment.mutate(fulfillment.id, {
           onSuccess: () =>
-            notification("Success", "Successfully canceled order", "success"),
+            notification(
+              "Success",
+              "Successfully canceled fulfillment",
+              "success"
+            ),
           onError: (err) =>
             notification("Error", getErrorMessage(err), "error"),
         })

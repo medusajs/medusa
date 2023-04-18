@@ -1,0 +1,410 @@
+---
+description: 'Learn how to import products into Medusa using the Admin REST APIs. The steps include uploading a CSV file, creating a batch job for the import, and confirming the batch job.'
+addHowToData: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Bulk Import Products
+
+In this document, you’ll learn how to use the Admin APIs to bulk import products into a Medusa backend.
+
+## Overview
+
+Using Medusa’s [Batch Job Admin APIs](/api/admin/#tag/Batch-Job), you can import products into your Medusa backend. This will either add new products or update existing products.
+
+---
+
+## Prerequisites
+
+### Medusa Components
+
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
+
+### File Service Plugin
+
+Part of the process of importing products is uploading a CSV file. This requires a file service plugin to be installed on your backend. If you don’t have any installed, you can install one of the following options:
+
+- [MinIO](../../../plugins/file-service/minio.md) (At least version `1.1.0`)
+- [Spaces](../../../plugins/file-service/spaces.md)
+
+### CSV File
+
+You must have a CSV file that you will use to import products into your Medusa backend. You can check [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/product-import-1.3.8.csv) to see which format is required for your import.
+
+:::note
+
+If you have Sales Channels enabled on your backend, you must use [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/product-import-sales-channels.csv) instead.
+
+:::
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### Authenticated Admin User
+
+You must be an authenticated admin user before following along with the steps in the tutorial.
+
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
+
+---
+
+## 1. Upload CSV File
+
+The first step is to upload the CSV file that you want to import products.
+
+You can do that by sending the following request to the [Upload Files](/api/admin/#tag/Upload/operation/PostUploads) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.uploads.create(file) // file is an instance of File
+.then(({ uploads }) => {
+  const key = uploads[0].key
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUploadFile } from "medusa-react"
+
+const ImportProducts = () => {
+  const uploadFile = useAdminUploadFile()
+  // ...
+
+  const handleFileUpload = (file: File) => {
+    uploadFile.mutate(file)
+  }
+
+  // ...
+}
+
+export default ImportProducts
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+const formData = new FormData()
+formData.append("files", file) // file is an instance of File
+
+fetch(`<BACKEND_URL>/admin/uploads`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+  body: formData,
+})
+.then((response) => response.json())
+.then(({ uploads }) => {
+  const key = uploads[0].key
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/uploads' \
+  -H 'Authorization: Bearer <API_TOKEN>' \
+  -H 'Content-Type: text/csv' \
+  -F 'files=@"<FILE_PATH_1>"'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns an array of uploads. Each item in the array is an object that includes the properties `url` and `key`. You’ll need the `key` to import the products next.
+
+---
+
+## 2. Create a Batch Job for Product Import
+
+To start a new product import, you must create a batch job.
+
+You can do that by sending the following request to the [Create a Batch Job](/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.batchJobs.create({
+  type: "product-import",
+  context: {
+    fileKey: key, // obtained from previous step
+  },
+  dry_run: true,
+})
+.then(( batch_job ) => {
+  console.log(batch_job.status)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateBatchJob } from "medusa-react"
+
+const ImportProducts = () => {
+  const createBatchJob = useAdminCreateBatchJob()
+  // ...
+
+  const handleCreateBatchJob = () => {
+    createBatchJob.mutate({
+      type: "product-import",
+      context: {
+        fileKey: key, // obtained from previous step
+      },
+      dry_run: true,
+    })
+  }
+
+  // ...
+}
+
+export default ImportProducts
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/batch-jobs`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    type: "product-import",
+    context: {
+      fileKey: key, // obtained from previous step
+    },
+    dry_run: true,
+  }),
+})
+.then((response) => response.json())
+.then(({ batch_job }) => {
+  console.log(batch_job.status)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "type": "product-import",
+    "context": { 
+        "fileKey": "<KEY>"
+    },
+    "dry_run": true
+}'
+# <KEY> is the key you obtained from the previous step
+```
+
+</TabItem>
+</Tabs>
+
+In the body of the request, you must pass the following parameters:
+
+- `type`: Batch jobs can be of different types. For product imports, the type should always be `product-import`.
+- `context`: An object that must contain the `fileKey` property. The value of this property is the key received when you uploaded the CSV file.
+- `dry_run`: This is optional to include. If not set or if its value is `false`, the product import will start right after you send this request. Settings its value to `true` allows you to retrieve afterward a brief of the number of products that will be added or updated, or the number of rejected products.
+
+This request returns the batch job with its details such as the `status` or `id`.
+
+:::note
+
+If you don’t set `dry_run` or you set it to `false`, you don’t need to follow the rest of these steps.
+
+:::
+
+---
+
+## (Optional) Retrieve Batch Job
+
+After creating the batch job, it will be pre-processed. At this point, the CSV file will be validated, and the number of products to add and update, or that are rejected are counted.
+
+You can retrieve all the details of the batch job, including its status and the brief statistics related to the products by sending the following request:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.batchJobs.retrieve(batchJobId)
+.then(( batch_job ) => {
+  console.log(batch_job.status, batch_job.result)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminBatchJob } from "medusa-react"
+
+const ImportProducts = () => {
+  const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+  // ...
+
+  return (
+    <div>
+      {/* ... */}
+      {isLoading && <span>Loading</span>}
+      {batch_job && (
+        <span>
+          Status: {batch_job.status}. 
+          Number of Products: {batch_job.result.count}
+        </span>
+      )}
+    </div>
+  )
+}
+
+export default ImportProducts
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ batch_job }) => {
+  console.log(batch_job.status, batch_job.result)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+# <BATCH_JOB_ID> is the ID of the batch job
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the batch job’s ID as a parameter, which can be retrieved from the previous request. It returns the batch job in the response.
+
+If the batch job has been pre-processed, the status of the batch job will be `pre_processed` and the `result` property will contain details about the import.
+
+Here’s an example of the `result` property:
+
+```json noReport
+"result": {
+    "count": 5, // Total number of products to be created or updated
+    "stat_descriptors": [ //details about the products to be created/updated
+        {
+            "key": "product-import-count",
+            "name": "Products/variants to import",
+            "message": "There will be 2 products created..."
+        }
+    ],
+    "advancement_count": 0 //number of products processed so far.
+},
+```
+
+---
+
+## 3. Confirm Batch Job
+
+A batch job can be confirmed only once the batch job has the status `pre_processed`. Once you confirm a batch job, the product import will start which will create or update products on your backend.
+
+To confirm a batch job send the following request:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.batchJobs.confirm(batchJobId)
+.then(( batch_job ) => {
+  console.log(batch_job.status)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminConfirmBatchJob } from "medusa-react"
+
+const ImportProducts = () => {
+  const confirmBatchJob = useAdminConfirmBatchJob(batchJobId)
+  // ...
+
+  const handleConfirmJob = () => {
+    confirmBatchJob.mutate()
+  }
+  
+  // ...
+}
+
+export default ImportProducts
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
+  method: "POST",
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ batch_job }) => {
+  console.log(batch_job.status)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+-H 'Authorization: Bearer <API_TOKEN>'
+# <BATCH_JOB_ID> is the ID of the batch job
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the ID of the batch job as a path parameter and returns the updated batch job. The returned batch job should have the status `confirmed`, which indicates that the batch job will now start processing.
+
+### Checking the Status After Confirmation
+
+After confirming the batch job, you can check the status while it is processing at any given point by [retrieving the batch job](#optional-retrieve-batch-job). Based on the status, you can infer the progress of the batch job:
+
+- If the status is `processing`, it means that the import is currently in progress. You can also check `result.advancement_count` to find out how many products have been created or updated so far.
+- If the status is `failed`, it means an error has occurred during the import. You can check the error in `result.errors`.
+- If the status is `completed`, it means the import has finished successfully.
+
+---
+
+## See Also
+
+- [Batch Jobs Overview](../../../development/batch-jobs/index.mdx)

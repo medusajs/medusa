@@ -8,12 +8,12 @@ import {
   WhereExpressionBuilder,
 } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { dataSource } from "../loaders/database"
 import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-import { dataSource } from "../loaders/database"
 import { ProductVariantPrice } from "../types/product-variant"
 import { isString } from "../utils"
 
@@ -34,7 +34,6 @@ export const MoneyAmountRepository = dataSource
         .into(MoneyAmount)
         .values(data)
 
-      // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
       if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
         const rawMoneyAmounts = await queryBuilder.execute()
         return rawMoneyAmounts.generatedMaps.map((d) =>

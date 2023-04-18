@@ -47,13 +47,13 @@ import {
   setMetadata,
 } from "../utils"
 
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { CartRepository } from "../repositories/cart"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {

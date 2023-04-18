@@ -1,8 +1,15 @@
-import { IStockLocationService } from "@medusajs/types"
-import { Type } from "class-transformer"
-import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { Request, Response } from "express"
+import { Transform, Type } from "class-transformer"
+
 import { FindParams } from "../../../../types/common"
+import { IStockLocationService } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/stock-locations
@@ -29,7 +36,6 @@ import { FindParams } from "../../../../types/common"
  *       // must be previously logged in or use api token
  *       medusa.admin.stockLocations.create({
  *         name: 'Main Warehouse',
- *         location_id: 'sloc'
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
@@ -138,6 +144,8 @@ class StockLocationAddress {
  */
 export class AdminPostStockLocationsReq {
   @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => value?.trim())
   name: string
 
   @IsOptional()

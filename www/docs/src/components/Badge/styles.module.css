@@ -1,0 +1,33 @@
+.badge {
+  font-size: var(--medusa-label-x-small-plus-size);
+  line-height: var(--medusa-label-x-small-plus-line-height);
+  font-weight: var(--medusa-label-x-small-plus-font-weight);
+  padding: 1px 7px;
+  border-radius: var(--ifm-global-radius);
+  border: 1px solid;
+  text-align: center;
+}
+
+.purpleBadge {
+  background-color: var(--medusa-tag-purple-bg);
+  border-color: var(--medusa-tag-purple-border);
+  color: var(--medusa-tag-purple-text);
+}
+
+.orangeBadge {
+  background-color: var(--medusa-tag-orange-bg);
+  border-color: var(--medusa-tag-orange-border);
+  color: var(--medusa-tag-orange-text);
+}
+
+.greenBadge {
+  background-color: var(--medusa-tag-green-bg);
+  border-color: var(--medusa-tag-green-border);
+  color: var(--medusa-tag-green-text);
+}
+
+.blueBadge {
+  background-color: var(--medusa-tag-blue-bg);
+  border-color: var(--medusa-tag-blue-border);
+  color: var(--medusa-tag-blue-text);
+}

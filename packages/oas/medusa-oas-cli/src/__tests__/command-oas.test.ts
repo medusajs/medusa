@@ -1,26 +1,19 @@
-import execa from "execa"
 import fs from "fs/promises"
-import * as yaml from "js-yaml"
 import { OpenAPIObject, SchemaObject } from "openapi3-ts"
 import { OperationObject } from "openapi3-ts/src/model/OpenApi"
-import os from "os"
 import path from "path"
 import { v4 as uid } from "uuid"
+import { getTmpDirectory } from "../utils/fs-utils"
+import { readYaml } from "../utils/yaml-utils"
+import { readJson } from "../utils/json-utils"
+import execa from "execa"
 
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
 )
 const basePath = path.resolve(__dirname, `../../`)
 
-const getTmpDirectory = async () => {
-  /**
-   * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
-   */
-  const tmpDir = process.env["RUNNER_TEMP"] ?? os.tmpdir()
-  return await fs.mkdtemp(tmpDir)
-}
-
-const runCLI = async (command: string, options: string[] = []) => {
+export const runCLI = async (command: string, options: string[] = []) => {
   const params = ["run", "medusa-oas", command, ...options]
   try {
     const { all: logs } = await execa("yarn", params, {
@@ -28,23 +21,8 @@ const runCLI = async (command: string, options: string[] = []) => {
       all: true,
     })
   } catch (err) {
-    console.error(err)
-    throw err
+    throw new Error(err.message + err.all)
   }
-}
-
-const isFile = async (filePath): Promise<boolean> => {
-  return (await fs.lstat(path.resolve(filePath))).isFile()
-}
-
-const readJsonFile = async (filePath): Promise<unknown> => {
-  const jsonString = await fs.readFile(filePath, "utf8")
-  return JSON.parse(jsonString)
-}
-
-const readYamlFile = async (filePath): Promise<unknown> => {
-  const yamlString = await fs.readFile(filePath, "utf8")
-  return yaml.load(yamlString)
 }
 
 const listOperations = (oas: OpenAPIObject): OperationObject[] => {
@@ -91,7 +69,7 @@ describe("command oas", () => {
       const outDir = path.resolve(tmpDir, uid())
       await runCLI("oas", ["--type", "admin", "--out-dir", outDir])
       const generatedFilePath = path.resolve(outDir, "admin.oas.json")
-      oas = (await readJsonFile(generatedFilePath)) as OpenAPIObject
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
 
     it("generates oas with admin routes only", async () => {
@@ -106,7 +84,7 @@ describe("command oas", () => {
         "oas",
         "admin.oas.base.yaml"
       )
-      const oasBase = (await readYamlFile(yamlFilePath)) as OpenAPIObject
+      const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject
       expect(oas.info.title).toEqual(oasBase.info.title)
     })
   })
@@ -118,7 +96,7 @@ describe("command oas", () => {
       const outDir = path.resolve(tmpDir, uid())
       await runCLI("oas", ["--type", "store", "--out-dir", outDir])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
-      oas = (await readJsonFile(generatedFilePath)) as OpenAPIObject
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
 
     it("generates oas with store routes only", async () => {
@@ -133,7 +111,7 @@ describe("command oas", () => {
         "oas",
         "store.oas.base.yaml"
       )
-      const oasBase = (await readYamlFile(yamlFilePath)) as OpenAPIObject
+      const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject
       expect(oas.info.title).toEqual(oasBase.info.title)
     })
   })
@@ -145,7 +123,7 @@ describe("command oas", () => {
       const outDir = path.resolve(tmpDir, uid())
       await runCLI("oas", ["--type", "combined", "--out-dir", outDir])
       const generatedFilePath = path.resolve(outDir, "combined.oas.json")
-      oas = (await readJsonFile(generatedFilePath)) as OpenAPIObject
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
 
     it("generates oas with admin and store routes", async () => {
@@ -160,7 +138,7 @@ describe("command oas", () => {
         "oas",
         "default.oas.base.yaml"
       )
-      const oasBase = (await readYamlFile(yamlFilePath)) as OpenAPIObject
+      const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject
       expect(oas.info.title).toEqual(oasBase.info.title)
     })
 
@@ -244,7 +222,7 @@ describe("command oas", () => {
         additionalPath,
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
-      oas = (await readJsonFile(generatedFilePath)) as OpenAPIObject
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
 
     it("should add new path to existing paths", async () => {
@@ -379,7 +357,7 @@ components:
         filePath,
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
-      oas = (await readJsonFile(generatedFilePath)) as OpenAPIObject
+      oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
 
     it("should add new path to existing paths", async () => {

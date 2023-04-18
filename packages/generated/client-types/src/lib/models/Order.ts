@@ -206,6 +206,10 @@ export interface Order {
   /**
    * The total of discount
    */
+  raw_discount_total?: number
+  /**
+   * The total of discount rounded
+   */
   discount_total?: number
   /**
    * The total of tax

@@ -1,0 +1,76 @@
+---
+description: "Learn what endpoints are in Medusa. Endpoints are REST APIs that allow a frontend or external system to interact with the Backend."
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Endpoints
+
+In this document, you’ll learn what endpoints are in Medusa.
+
+## Introduction
+
+The Medusa Backend is a web server built on top of [Express](https://expressjs.com/), a Node.js web framework. This provides developers with all the functionalities available within Express during development. One of those are endpoints.
+
+Endpoints are REST APIs that allow a frontend or an external system to interact with the Medusa Backend to retrieve and process data, or perform business logic. Endpoints are [Express routes](https://expressjs.com/en/starter/basic-routing.html).
+
+Each [Commerce Module](../../modules/overview.mdx) contains a set of endpoints specific to the functionalities that it provides. Since the core package that powers the Medusa Backend acts as an orchestrator of Commerce Modules and exposes their endpoints, the endpoints of each of these Commerce Modules are available within the Medusa Backend.
+
+The Commerce Modules provide two types of endpoints: Store APIs and Admin APIs. The Store APIs are typically accessed from the storefront. For example, you can use the Store APIs to show customers available products or implement a cart and checkout flow.
+
+The Admin APIs are typically accessed from an admin dashboard. For example, you can use the Admin APIs to allow admins to manage the store’s data such as products, orders, and so on.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/api/store',
+    label: 'Store APIs',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check out available Store REST APIs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/api/admin',
+    label: 'Admin APIs',
+    customProps: {
+      icon: Icons['server-solid'],
+      description: 'Check out available Admin REST APIs.'
+    }
+  },
+]} />
+
+---
+
+## Custom Development
+
+Aside from using the endpoints that Commerce Modules, developers can create their own REST APIs either directly in the Medusa Backend, in a plugin, or in a custom Commerce Module.
+
+:::tip
+
+As the core Medusa package is completely customizable, developers can also extend the functionality even further to implement GraphQL endpoints.
+
+:::
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/endpoints/create',
+    label: 'Create an Endpoint',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an endpoint in Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/endpoints/add-middleware',
+    label: 'Add a Middleware',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add a middleware in Medusa.'
+    }
+  },
+]} />

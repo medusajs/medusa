@@ -6,17 +6,18 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
 import { Order, Return } from "../../../../models"
 import {
   EventBusService,
   OrderService,
-  ReturnService
+  ReturnService,
 } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { OrdersReturnItem } from "../../../../types/orders"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/return
@@ -241,7 +242,9 @@ export default async (req, res) => {
 
                   return {
                     response_code: 200,
-                    response_body: { order },
+                    response_body: {
+                      order: cleanResponseData(order, []),
+                    },
                   }
                 })
             })

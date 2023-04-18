@@ -326,12 +326,12 @@ class ProductService extends TransactionBaseService {
     return await productTypeRepository.find({})
   }
 
-  async listTagsByUsage(count = 10): Promise<ProductTag[]> {
+  async listTagsByUsage(take = 10): Promise<ProductTag[]> {
     const productTagRepo = this.activeManager_.withRepository(
       this.productTagRepository_
     )
 
-    return await productTagRepo.listTagsByUsage(count)
+    return await productTagRepo.listTagsByUsage(take)
   }
 
   /**
@@ -473,9 +473,6 @@ class ProductService extends TransactionBaseService {
   ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
-      const productVariantRepo = manager.withRepository(
-        this.productVariantRepository_
-      )
       const productTagRepo = manager.withRepository(this.productTagRepository_)
       const productTypeRepo = manager.withRepository(
         this.productTypeRepository_

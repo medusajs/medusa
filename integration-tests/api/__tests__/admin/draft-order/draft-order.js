@@ -80,6 +80,41 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("creates a draft order cart containing variant without prices should fail", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant-without-prices",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/draft-orders", payload, adminReqConfig)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(400)
+      expect(response.data.type).toEqual("invalid_data")
+      expect(response.data.message).toEqual(
+        `Cannot generate line item for variant "test variant without prices" without a price`
+      )
+    })
+
     it("creates a draft order with a custom shipping option price", async () => {
       const api = useApi()
 
@@ -572,11 +607,10 @@ describe("/admin/draft-orders", () => {
         (item) => item.variant_id === testVariant2Id
       )
 
-      const lineItem1WeightInTotal = 0.444 // line item amount / amount
-      const lineItem2WeightInTotal = 0.556 // line item amount / amount
-
       expect(draftOrder.cart.items).toHaveLength(2)
 
+      expect(lineItem1.adjustments).toHaveLength(1)
+      expect(lineItem1.adjustments[0].amount).toBeCloseTo(444, 0) // discountAmount * (line item amount / amount) = 444.4444444444
       expect(lineItem1).toEqual(
         expect.objectContaining({
           variant_id: testVariantId,
@@ -585,7 +619,6 @@ describe("/admin/draft-orders", () => {
           adjustments: expect.arrayContaining([
             expect.objectContaining({
               item_id: lineItem1.id,
-              amount: discountAmount * lineItem1WeightInTotal,
               description: "discount",
               discount_id: discount.id,
             }),
@@ -593,6 +626,8 @@ describe("/admin/draft-orders", () => {
         })
       )
 
+      expect(lineItem2.adjustments).toHaveLength(1)
+      expect(lineItem2.adjustments[0].amount).toBeCloseTo(556, 0) // discountAmount * (line item amount / amount) = 555.5555555555
       expect(lineItem2).toEqual(
         expect.objectContaining({
           variant_id: testVariant2Id,
@@ -601,7 +636,6 @@ describe("/admin/draft-orders", () => {
           adjustments: expect.arrayContaining([
             expect.objectContaining({
               item_id: lineItem2.id,
-              amount: discountAmount * lineItem2WeightInTotal,
               description: "discount",
               discount_id: discount.id,
             }),

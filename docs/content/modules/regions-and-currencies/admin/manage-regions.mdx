@@ -1,0 +1,556 @@
+---
+description: 'Learn how to implement region-related functionalities for admins using the REST APIs. This includes how to list regions, and create, update, and delete regions.'
+addHowToData: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Manage Regions using Admin APIs
+
+In this document, you’ll learn how to manage regions using the Admin APIs.
+
+## Overview
+
+Using the [region admin REST APIs](/api/admin/#tag/Region), you can manage regions in your store, including creating, updating, and deleting regions.
+
+### Scenario
+
+You want to add or use the following admin functionalities:
+
+- List regions
+- Create a region
+- Update a region
+- Add shipping options to a region
+- Delete a Region
+
+:::info
+
+You can use Medusa’s Admin APIs to achieve more functionalities as well. Check out the [API reference](/api/admin/#tag/Region) to learn more.
+
+:::
+
+---
+
+## Prerequisites
+
+### Medusa Components
+
+It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### Authenticated Admin User
+
+You must be an authenticated admin user before following along with the steps in the tutorial.
+
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
+
+---
+
+## List Regions
+
+You can retrieve regions available on your backend using the [List Regions](/api/admin/#tag/Region/operation/GetRegions) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.regions.list()
+.then(({ regions, limit, offset, count }) => {
+  console.log(regions.length)
+  // display regions
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Region } from "@medusajs/medusa"
+import { useAdminRegions } from "medusa-react"
+
+const Regions = () => {
+  const { regions, isLoading } = useAdminRegions()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {regions && !regions.length && <span>No Regions</span>}
+      {regions && regions.length > 0 && (
+        <ul>
+          {regions.map((region: Region) => (
+            <li key={region.id}>{region.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Regions
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/regions`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ regions, limit, offset, count }) => {
+  console.log(regions.length)
+  // display regions
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/admin/regions' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns an array of regions, as well as [pagination fields](/api/admin/#section/Pagination).
+
+You can also pass filters and other selection query parameters to the request. Check out the [API reference](/api/admin/#tag/Region/operation/GetRegions) for more details on available query parameters.
+
+---
+
+## Create a Region
+
+You can create a region by sending a request to the [Create a Region](/api/admin/#tag/Region/operation/PostRegions) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.regions.create({
+  name: "Europe",
+  currency_code: "eur",
+  tax_rate: 0,
+  payment_providers: [
+    "manual",
+  ],
+  fulfillment_providers: [
+    "manual",
+  ],
+  countries: [
+    "DK",
+  ],
+})
+.then(({ region }) => {
+  console.log(region.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateRegion } from "medusa-react"
+
+const CreateRegion = () => {
+  const createRegion = useAdminCreateRegion()
+  // ...
+
+  const handleCreate = () => {
+    createRegion.mutate({
+      name: "Europe",
+      currency_code: "eur",
+      tax_rate: 0,
+      payment_providers: [
+        "manual",
+      ],
+      fulfillment_providers: [
+        "manual",
+      ],
+      countries: [
+        "DK",
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CreateRegion
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/regions`, {
+  credentials: "include",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: "Europe",
+    currency_code: "eur",
+    tax_rate: 0,
+    payment_providers: [
+      "manual",
+    ],
+    fulfillment_providers: [
+      "manual",
+    ],
+    countries: [
+      "DK",
+    ],
+  }),
+})
+.then((response) => response.json())
+.then(({ region }) => {
+  console.log(region.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/regions' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Europe",
+    "currency_code": "eur",
+    "tax_rate": 0,
+    "payment_providers": [
+      "manual"
+    ],
+    "fulfillment_providers": [
+      "manual"
+    ],
+    "countries": [
+      "DK"
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the following body parameters:
+
+- `name`: The name of the region.
+- `currency_code`: The 3 character ISO currency code.
+- `tax_rate`: The tax rate in the Region.
+- `payment_providers`: An array of payment processor IDs. The array must contain at least one item.
+- `fulfillment_providers`: An array of fulfillment provider IDs. The array must contain at least one item.
+- `countries`: An array of the 2 character ISO code of the countries included in the region.
+
+This request also accepts optional parameters, which you can view in the [API reference](/api/admin/#tag/Region/operation/PostRegions).
+
+The request returns the created region in the response.
+
+---
+
+## Update a Region
+
+You can update any of the region’s fields and configurations. The REST APIs offer different APIs for updating specific configurations, such as the [Add Country](/api/admin/#tag/Region/operation/PostRegionsRegionCountries) endpoint.
+
+Alternatively, you can update the details of a region using the [Update a Region](/api/admin/#tag/Region/operation/PostRegionsRegion) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.regions.update(regionId, {
+  countries: [
+    "DK",
+    "DE",
+  ],
+})
+.then(({ region }) => {
+  console.log(region.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateRegion } from "medusa-react"
+
+const UpdateRegion = () => {
+  const updateRegion = useAdminUpdateRegion(regionId)
+  // ...
+
+  const handleUpdate = () => {
+    updateRegion.mutate({
+      countries: [
+        "DK",
+        "DE",
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default UpdateRegion
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
+  credentials: "include",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    countries: [
+      "DK",
+      "DE",
+    ],
+  }),
+})
+.then((response) => response.json())
+.then(({ region }) => {
+  console.log(region.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "countries": [
+      "DK",
+      "DE"
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts in its body parameters any of the region’s fields that you want to update. In the example above, you update the list of countries that are included in that region.
+
+You can see the list of accepted fields in the [API reference](/api/admin/#tag/Region/operation/PostRegionsRegion).
+
+This request returns the full object of the updated region.
+
+:::tip
+
+In the example above, the list of countries replace any countries that were previously in the region. So, if you’re adding a country, make sure to include previously added countries as well.
+
+:::
+
+---
+
+## Add a Shipping Option to a Region
+
+You can add a shipping option to a region by sending a request to the [Create Shipping Option](/api/admin/#tag/Shipping-Option/operation/PostShippingOptions) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.shippingOptions.create({
+  name: "PostFake",
+  region_id: regionId,
+  provider_id: "manual",
+  data: {
+  },
+  price_type: "flat_rate",
+  amount: 1000,
+})
+.then(({ shipping_option }) => {
+  console.log(shipping_option.id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateShippingOption } from "medusa-react"
+
+const Region = () => {
+  const createShippingOption = useAdminCreateShippingOption()
+  // ...
+
+  const handleCreate = () => {
+    createShippingOption.mutate({
+      name: "PostFake",
+      region_id: regionId,
+      provider_id: "manual",
+      data: {
+      },
+      price_type: "flat_rate",
+      amount: 1000,
+    })
+  }
+
+  // ...
+}
+
+export default Region
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/shipping-options`, {
+  credentials: "include",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: "PostFake",
+    region_id: regionId,
+    provider_id: "manual",
+    price_type: "flat_rate",
+    data: {
+    },
+    amount: 1000,
+  }),
+})
+.then((response) => response.json())
+.then(({ shipping_option }) => {
+  console.log(shipping_option.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X POST '<BACKEND_URL>/admin/shipping-options' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "name": "PostFake",
+    "region_id": "<REGION_ID>",
+    "provider_id": "manual",
+    "price_type": "flat_rate",
+    "data": {},
+    "amount": 1000
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the following body parameters:
+
+- `name`: The name of the shipping option.
+- `region_id`: The ID of the region.
+- `provider_id`: The ID of the fulfillment provider. The fulfillment provider must be enabled in the region.
+- `data`: An object of data needed for the fulfillment provider to handle shipping with this shipping option. If none is required, you can pass an empty object.
+- `price_type`: The price type of the shipping option. Can be `flat_rate` for fixed price, or `calculated` for prices that are calculated using custom logic.
+- If `price_type` is `flat_rate`, the `amount` field is then required. It is the price of the shipping option. If `price_type` is `calculated`, `amount` is not required.
+
+The `is_return` body parameter can also be passed if the shipping option is a return shipping option. Its boolean value indicates whether the shipping option is a return option or not.
+
+This request accepts other optional body parameters, which you can learn more about in the [API reference](/api/admin/#tag/Shipping-Option/operation/PostShippingOptions).
+
+This request returns the created shipping option.
+
+:::tip
+
+You can also manage shipping options such as list, update, and delete. You can learn more in the [API reference](/api/admin/#tag/Shipping-Option).
+
+:::
+
+---
+
+## Delete a Region
+
+You can delete a region by sending a request to the [Delete a Region](/api/admin/#tag/Region/operation/DeleteRegionsRegion) endpoint:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.admin.regions.delete(regionId)
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteRegion } from "medusa-react"
+
+const Region = () => {
+  const deleteRegion = useAdminDeleteRegion(regionId)
+  // ...
+
+  const handleDelete = () => {
+    deleteRegion.mutate()
+  }
+
+  // ...
+}
+
+export default Region
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
+  credentials: "include",
+  method: "DELETE",
+})
+.then((response) => response.json())
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X DELETE '<BACKEND_URL>/admin/regions/<REGION_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the region ID as a path parameter. It deletes the region and returns the following fields:
+
+- `id`: The ID of the deleted region.
+- `object`: The type of object that was deleted. In this case, the value will be `region`.
+- `deleted`: A boolean value indicating whether the region was deleted.
+
+---
+
+## See Also
+
+- [Use regions on the storefront](../storefront/use-regions.mdx)

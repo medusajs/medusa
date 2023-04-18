@@ -98,7 +98,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformIncludesOptions(allowedOrderIncludes),
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
-      defaultFields: defaultAdminOrdersFields,
+      defaultFields: defaultFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)

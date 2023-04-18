@@ -1443,7 +1443,9 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const discounts = await this.discountService_
           .withTransaction(transactionManager)
-          .listByCodes(discountCodes, { relations: ["rule", "regions"] })
+          .listByCodes(discountCodes, {
+            relations: ["rule", "rule.conditions", "regions"],
+          })
 
         await this.discountService_
           .withTransaction(transactionManager)
@@ -2600,7 +2602,7 @@ class CartService extends TransactionBaseService {
       const itemWithTotals = Object.assign(item, itemsTotals[item.id] ?? {})
 
       cart.subtotal! += itemWithTotals.subtotal ?? 0
-      cart.discount_total! += itemWithTotals.discount_total ?? 0
+      cart.discount_total! += itemWithTotals.raw_discount_total ?? 0
       cart.item_tax_total! += itemWithTotals.tax_total ?? 0
 
       return itemWithTotals
@@ -2627,10 +2629,14 @@ class CartService extends TransactionBaseService {
         giftCards: cart.gift_cards,
       }
     )
+
     cart.gift_card_total = giftCardTotal.total || 0
     cart.gift_card_tax_total = giftCardTotal.tax_total || 0
 
     cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
+
+    cart.raw_discount_total = cart.discount_total
+    cart.discount_total = Math.round(cart.discount_total)
 
     cart.total =
       cart.subtotal +

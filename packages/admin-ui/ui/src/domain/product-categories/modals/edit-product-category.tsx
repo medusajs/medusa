@@ -3,15 +3,18 @@ import { useEffect, useState } from "react"
 import { ProductCategory } from "@medusajs/medusa"
 import { useAdminUpdateProductCategory } from "medusa-react"
 
-import SideModal from "../../../components/molecules/modal/side-modal"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
-import Select from "../../../components/molecules/select"
+import TextArea from "../../../components/molecules/textarea"
+import SideModal from "../../../components/molecules/modal/side-modal"
+import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
+import { Option } from "../../../types/shared"
+import { getErrorMessage } from "../../../utils/error-messages"
 import TreeCrumbs from "../components/tree-crumbs"
 
-const visibilityOptions = [
+const visibilityOptions: Option[] = [
   {
     label: "Public",
     value: "public",
@@ -19,7 +22,7 @@ const visibilityOptions = [
   { label: "Private", value: "private" },
 ]
 
-const statusOptions = [
+const statusOptions: Option[] = [
   { label: "Active", value: "active" },
   { label: "Inactive", value: "inactive" },
 ]
@@ -40,6 +43,7 @@ function EditProductCategoriesSideModal(
 
   const [name, setName] = useState("")
   const [handle, setHandle] = useState("")
+  const [description, setDescription] = useState("")
   const [isActive, setIsActive] = useState(true)
   const [isPublic, setIsPublic] = useState(true)
 
@@ -53,6 +57,7 @@ function EditProductCategoriesSideModal(
     if (activeCategory) {
       setName(activeCategory.name)
       setHandle(activeCategory.handle)
+      setDescription(activeCategory.description)
       setIsActive(activeCategory.is_active)
       setIsPublic(!activeCategory.is_internal)
     }
@@ -63,6 +68,7 @@ function EditProductCategoriesSideModal(
       await updateCategory({
         name,
         handle,
+        description,
         is_active: isActive,
         is_internal: !isPublic,
       })
@@ -70,8 +76,7 @@ function EditProductCategoriesSideModal(
       notification("Success", "Successfully updated the category", "success")
       close()
     } catch (e) {
-      const errorMessage =
-        e.response?.data?.message || "Failed to update the category"
+      const errorMessage = getErrorMessage(e) || "Failed to update the category"
       notification("Error", errorMessage, "error")
     }
   }
@@ -129,19 +134,26 @@ function EditProductCategoriesSideModal(
             onChange={(ev) => setHandle(ev.target.value)}
           />
 
-          <Select
+          <TextArea
+            label="Description"
+            name="description"
+            value={description}
+            className="my-6"
+            placeholder="Give this category a description"
+            onChange={(ev) => setDescription(ev.target.value)}
+          />
+
+          <NextSelect
             label="Status"
             options={statusOptions}
-            menuPortalStyles={{ zIndex: 300 }}
             value={statusOptions[isActive ? 0 : 1]}
             onChange={(o) => setIsActive(o.value === "active")}
           />
 
-          <Select
+          <NextSelect
             className="my-6"
             label="Visibility"
             options={visibilityOptions}
-            menuPortalStyles={{ zIndex: 300 }}
             value={visibilityOptions[isPublic ? 0 : 1]}
             onChange={(o) => setIsPublic(o.value === "public")}
           />

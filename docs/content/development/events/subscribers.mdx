@@ -1,0 +1,45 @@
+---
+description: 'Learn what subscribers are in Medusa. Subscribers are used to listen to triggered events to perform an action.'
+---
+
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
+
+# Subscribers
+
+In this document, you'll learn what Subscribers are in Medusa.
+
+## What are Subscribers
+
+Subscribers register handlers for an events and allows you to perform an action when that event occurs. For example, if you want to send your customer an email when they place an order, then you can listen to the `order.placed` event and send the email when the event is emitted.
+
+Natively in Medusa there are subscribers to handle different events. However, you can also create your own custom subscribers.
+
+Custom subscribers are TypeScript or JavaScript files in your project's `src/subscribers` directory. Files here should export classes, which will be treated as subscribers by Medusa. By convention, the class name should end with `Subscriber` and the file name should be the camel-case version of the class name without `Subscriber`. For example, the `WelcomeSubscriber` class is in the file `src/subscribers/welcome.ts`.
+
+Whenever an event is emitted, the subscriber’s registered handler method is executed. The handler method receives as a parameter an object that holds data related to the event. For example, if an order is placed the `order.placed` event will be emitted and all the handlers will receive the order id in the parameter object.
+
+### Example Use Cases
+
+Subscribers are useful in many use cases, including:
+
+- Send a confirmation email to the customer when they place an order by subscribing to the `order.placed` event.
+- Automatically assign new customers to a customer group by subscribing to the `customer.created`.
+- Handle custom events that you emit
+
+---
+
+## Custom Development
+
+Developers can create custom subscribers in the Medusa backend, a plugin, or in a Commerce Module.
+
+<DocCard item={{
+    type: 'link',
+    href: '/development/events/create-subscriber',
+    label: 'Create a Subscriber',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a subscriber in Medusa.'
+    }
+  }}
+/>

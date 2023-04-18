@@ -1,0 +1,63 @@
+---
+description: 'Learn what Services are in Medusa. Services represent bundled helper methods that you want to use across your commerce application.'
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Services
+
+In this document, you'll learn about what Services are in Medusa.
+
+## What are Services
+
+Services in Medusa represent bundled helper methods that you want to use across your commerce application. By convention, they represent a certain entity or functionality in Medusa.
+
+For example, you can use Medusa’s `productService` to get the list of products, as well as perform other functionalities related to products. There’s also an `authService` that provides functionalities like authenticating customers and users.
+
+In the Medusa backend, custom services are TypeScript or JavaScript files located in the `src/services` directory. Each service should be a class that extends the `TransactionBaseService` class from the core Medusa package `@medusajs/medusa`. Each file you create in `src/services` should hold one service and export it.
+
+The file name is important as it determines the name of the service when you need to use it elsewhere. The name of the service will be registered in the dependency container as the camel-case version of the file name with `Service` appended to the end of the name. Other resources, such as other services or endpoints, will use that name when resolving the service from the dependency container.
+
+For example, if the file name is `hello.ts`, the service will be registered as `helloService` in the dependency container. If the file name is `hello-world.ts`, the service name will be registered as `helloWorldService`.
+
+:::note
+
+You can learn more about the dependency container and how it works in the [dependency injection](../fundamentals/dependency-injection.md) documentation.
+
+:::
+
+The service must then be transpiled using the `build` command, which moves them to the `dist` directory, to be used across your commerce application.
+
+:::tip
+
+If you're creating a service in a plugin, learn more about the required structure [here](../plugins/create.md#plugin-structure).
+
+:::
+
+---
+
+## Custom Development
+
+Developers can create custom services in the Medusa backend, a plugin, or in a Commerce Module.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/services/create-service',
+    label: 'Create a Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a service in Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/services/extend-service',
+    label: 'Extend a Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to extend a core Medusa service.'
+    }
+  },
+]} />

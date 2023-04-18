@@ -1,0 +1,54 @@
+type: object
+properties:
+  sku:
+    description: The unique SKU for the Product Variant.
+    type: string
+  ean:
+    description: The EAN number of the item.
+    type: string
+  upc:
+    description: The UPC number of the item.
+    type: string
+  barcode:
+    description: A generic GTIN field for the Product Variant.
+    type: string
+  hs_code:
+    description: The Harmonized System code for the Product Variant.
+    type: string
+  inventory_quantity:
+    description: The amount of stock kept for the Product Variant.
+    type: integer
+    default: 0
+  allow_backorder:
+    description: Whether the Product Variant can be purchased when out of stock.
+    type: boolean
+  manage_inventory:
+    description: >-
+      Whether Medusa should keep track of the inventory for this Product
+      Variant.
+    type: boolean
+    default: true
+  weight:
+    description: The wieght of the Product Variant.
+    type: number
+  length:
+    description: The length of the Product Variant.
+    type: number
+  height:
+    description: The height of the Product Variant.
+    type: number
+  width:
+    description: The width of the Product Variant.
+    type: number
+  origin_country:
+    description: The country of origin of the Product Variant.
+    type: string
+  mid_code:
+    description: The Manufacturer Identification code for the Product Variant.
+    type: string
+  material:
+    description: The material composition of the Product Variant.
+    type: string
+  metadata:
+    description: An optional set of key-value pairs with additional information.
+    type: object

@@ -1,6 +1,5 @@
 import { CustomerGroup } from "@medusajs/medusa"
 import { useAdminCustomerGroups } from "medusa-react"
-import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   HeaderGroup,
@@ -11,13 +10,11 @@ import {
   useSortBy,
   useTable,
 } from "react-table"
-import CustomerGroupContext, {
-  CustomerGroupContextContainer,
-} from "../../../domain/customers/groups/context/customer-group-context"
 import useQueryFilters from "../../../hooks/use-query-filters"
 import useSetSearchParams from "../../../hooks/use-set-search-params"
 import DetailsIcon from "../../fundamentals/details-icon"
-import EditIcon from "../../fundamentals/icons/edit-icon"
+import TrashIcon from "../../fundamentals/icons/trash-icon"
+import { ActionType } from "../../molecules/actionables"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import { CUSTOMER_GROUPS_TABLE_COLUMNS } from "./config"
@@ -92,18 +89,18 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
   const { row } = props
 
   const navigate = useNavigate()
-  const { showModal } = useContext(CustomerGroupContext)
 
-  const actions = [
-    {
-      label: "Edit",
-      onClick: showModal,
-      icon: <EditIcon size={20} />,
-    },
+  const actions: ActionType[] = [
     {
       label: "Details",
       onClick: () => navigate(row.original.id),
       icon: <DetailsIcon size={20} />,
+    },
+    {
+      label: "Delete",
+      onClick: () => {},
+      icon: <TrashIcon size={20} />,
+      variant: "danger",
     },
   ]
 
@@ -223,11 +220,7 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
         <Table.Body {...table.getTableBodyProps()}>
           {table.rows.map((row) => {
             table.prepareRow(row)
-            return (
-              <CustomerGroupContextContainer key={row.id} group={row.original}>
-                <CustomerGroupsTableRow row={row} />
-              </CustomerGroupContextContainer>
-            )
+            return <CustomerGroupsTableRow row={row} key={row.id} />
           })}
         </Table.Body>
       </Table>

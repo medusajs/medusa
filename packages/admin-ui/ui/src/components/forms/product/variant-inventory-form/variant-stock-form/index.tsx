@@ -1,7 +1,7 @@
 import { Controller, useFieldArray, UseFormReturn } from "react-hook-form"
 import { nestedForm } from "../../../../../utils/nested-form"
 import React, { useMemo, useState } from "react"
-
+import clsx from "clsx"
 import Accordion from "../../../../organisms/accordion"
 import BuildingsIcon from "../../../../fundamentals/icons/buildings-icon"
 import Button from "../../../../fundamentals/button"
@@ -342,24 +342,39 @@ const ManageLocationsForm = ({
     setSelectedLocations(locationOptions.map((l) => l.id))
   }
 
+  const locationsAvailable = !!locationOptions.length
+
   return (
     <div className="h-full w-full">
       <form onSubmit={handleSubmit}>
         <Modal.Content>
           <div>
-            <div className="border-grey-20 pb-base text-grey-50 flex w-full items-center justify-between border-b">
-              <div className="">
-                <p>Select locations that stock the selected variant</p>
-                <p>{`(${selectedLocations.length} of ${locationOptions.length} selected)`}</p>
+            <div
+              className={clsx(
+                "border-grey-20 text-grey-50 flex w-full items-center justify-between",
+                { "pb-base border-b": locationsAvailable }
+              )}
+            >
+              <div>
+                <p>
+                  {locationsAvailable
+                    ? "Select locations that stock the selected variant"
+                    : "You don't have any locations"}
+                </p>
+                {locationsAvailable && (
+                  <p>{`(${selectedLocations.length} of ${locationOptions.length} selected)`}</p>
+                )}
               </div>
-              <Button
-                size="small"
-                variant="ghost"
-                className="border"
-                onClick={handleSelectAll}
-              >
-                Select all
-              </Button>
+              {locationsAvailable && (
+                <Button
+                  size="small"
+                  variant="ghost"
+                  className="border"
+                  onClick={handleSelectAll}
+                >
+                  Select all
+                </Button>
+              )}
             </div>
             {locationOptions.map((loc) => {
               const existingLevel = selectedLocations.find((l) => l === loc.id)

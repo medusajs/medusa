@@ -1,37 +1,39 @@
 import { AdminPostStockLocationsReq, SalesChannel } from "@medusajs/medusa"
-import {
-  useAdminAddLocationToSalesChannel,
-  useAdminCreateStockLocation
-} from "medusa-react"
 import GeneralForm, { GeneralFormType } from "../components/general-form"
-
 import {
   StockLocationAddressDTO,
-  StockLocationAddressInput
+  StockLocationAddressInput,
 } from "@medusajs/types"
-import { useForm } from "react-hook-form"
+import {
+  useAdminAddLocationToSalesChannel,
+  useAdminCreateStockLocation,
+} from "medusa-react"
+
+import Accordion from "../../../../components/organisms/accordion"
+import AddressForm from "../components/address-form"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import FocusModal from "../../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../../components/organisms/accordion"
 import DeletePrompt from "../../../../components/organisms/delete-prompt"
-import useNotification from "../../../../hooks/use-notification"
-import useToggleState from "../../../../hooks/use-toggle-state"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import FocusModal from "../../../../components/molecules/modal/focus-modal"
+import React from "react"
+import SalesChannelsForm from "../components/sales-channels-form"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
-import AddressForm from "../components/address-form"
-import SalesChannelsForm from "../components/sales-channels-form"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { useForm } from "react-hook-form"
+import useNotification from "../../../../hooks/use-notification"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 type NewLocationForm = {
   general: GeneralFormType
   address: StockLocationAddressDTO
   salesChannels: {
-    channels: SalesChannel[]
+    channels: Omit<SalesChannel, "locations">[]
   }
 }
 
 const NewLocation = ({ onClose }: { onClose: () => void }) => {
+  const [accordionValue, setAccordionValue] = React.useState("general")
   const form = useForm<NewLocationForm>({
     defaultValues: {
       general: {
@@ -80,39 +82,49 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
     }
   }
 
-  const onSubmit = () =>
-    handleSubmit(async (data) => {
-      const { locationPayload, salesChannelsPayload } = createPayload(data)
-      try {
-        const { stock_location } = await createStockLocation(locationPayload)
-        Promise.all(
-          salesChannelsPayload.map((salesChannel) =>
-            createSalesChannelAssociationPromise(
-              salesChannel.id,
-              stock_location.id
-            )
+  const onSubmit = async (data) => {
+    if (!data.general.name) {
+      setAccordionValue("general")
+      return
+    }
+
+    const addressFields = [data.address.address_1, data.address.country_code]
+    if (addressFields.some(Boolean) && !addressFields.every(Boolean)) {
+      setAccordionValue("general")
+      return
+    }
+
+    const { locationPayload, salesChannelsPayload } = createPayload(data)
+    try {
+      const { stock_location } = await createStockLocation(locationPayload)
+      Promise.all(
+        salesChannelsPayload.map((salesChannel) =>
+          createSalesChannelAssociationPromise(
+            salesChannel.id,
+            stock_location.id
           )
         )
-          .then(() => {
-            notification("Success", "Location added successfully", "success")
-          })
-          .catch(() => {
-            notification(
-              "Error",
-              "Location was created successfully, but there was an error associating sales channels",
-              "error"
-            )
-          })
-          .finally(() => {
-            onClose()
-          })
-      } catch (err) {
-        notification("Error", getErrorMessage(err), "error")
-      }
-    })
+      )
+        .then(() => {
+          notification("Success", "Location added successfully", "success")
+        })
+        .catch(() => {
+          notification(
+            "Error",
+            "Location was created successfully, but there was an error associating sales channels",
+            "error"
+          )
+        })
+        .finally(() => {
+          onClose()
+        })
+    } catch (err) {
+      notification("Error", getErrorMessage(err), "error")
+    }
+  }
 
   return (
-    <form className="w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <FocusModal>
         <FocusModal.Header>
           <div className="medium:w-8/12 flex w-full justify-between px-8">
@@ -138,9 +150,8 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
               <Button
                 size="small"
                 variant="primary"
-                type="button"
+                type="submit"
                 disabled={!isDirty}
-                onClick={onSubmit()}
               >
                 Add location
               </Button>
@@ -152,7 +163,11 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             <h1 className="mb-base text-grey-90 text-xlarge px-1 font-semibold">
               Add new location
             </h1>
-            <Accordion defaultValue={"general"} type="single">
+            <Accordion
+              value={accordionValue}
+              onValueChange={setAccordionValue}
+              type="single"
+            >
               <Accordion.Item
                 value={"general"}
                 title={"General Information"}

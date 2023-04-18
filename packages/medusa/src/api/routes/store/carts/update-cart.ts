@@ -14,6 +14,7 @@ import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -100,7 +101,7 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  res.json({ cart: data })
+  res.json({ cart: cleanResponseData(data, []) })
 }
 
 class GiftCard {
@@ -167,7 +168,7 @@ class Discount {
  *         - code
  *       properties:
  *         code:
- *           description: "The code that a Discount is identifed by."
+ *           description: "The code that a Discount is identified by."
  *           type: string
  *   customer_id:
  *     description: "The ID of the Customer to associate the Cart with."

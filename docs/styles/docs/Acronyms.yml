@@ -71,3 +71,5 @@ exceptions:
   - SID
   - VIP
   - UPS
+  - RMA
+  - JSONB

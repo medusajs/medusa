@@ -1,8 +1,9 @@
 import { Discount } from "@medusajs/medusa"
-import React, { useState } from "react"
+import React from "react"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
 import NumberedItem from "../../../../components/molecules/numbered-item"
 import BodyCard from "../../../../components/organisms/body-card"
+import useToggleState from "../../../../hooks/use-toggle-state"
 import EditConfigurations from "./edit-configurations"
 import useDiscountConfigurations from "./use-discount-configurations"
 
@@ -12,7 +13,7 @@ type ConfigurationsProps = {
 
 const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
   const configurations = useDiscountConfigurations(discount)
-  const [showModal, setShowModal] = useState(false)
+  const { state, open, close } = useToggleState()
 
   return (
     <>
@@ -22,7 +23,7 @@ const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
         actionables={[
           {
             label: "Edit configurations",
-            onClick: () => setShowModal(true),
+            onClick: open,
             icon: <EditIcon size={20} />,
           },
         ]}
@@ -47,12 +48,8 @@ const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
           ))}
         </div>
       </BodyCard>
-      {showModal && (
-        <EditConfigurations
-          discount={discount}
-          onClose={() => setShowModal(false)}
-        />
-      )}
+
+      <EditConfigurations discount={discount} onClose={close} open={state} />
     </>
   )
 }

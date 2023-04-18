@@ -1,0 +1,203 @@
+---
+description: "Learn about development with Medusa, fundamental concepts, and more."
+hide_table_of_contents: true
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# Medusa Development
+
+This part of the documentation provides you with the fundamental concepts and guides that can help you build and customize commerce applications with Medusa.
+    
+## Introduction
+
+Medusa is a set of tools that developers can use to build digital commerce applications. Whether you want to offer unique customer experiences, create powerful automations, or build rich commerce applications like marketplaces, Medusa provides all the necessary tools.
+
+Other ecommerce platforms offer a finite set of features accessible through an API. Medusa is different because it provides building blocks for businesses and developers to build commerce features. This means that you can extend your commerce API for your exact needs.
+
+Medusa's building blocks ship as NPM packages of the following types:
+
+- [Commerce Modules](../modules/overview.mdx), which are isolated commerce logic for different domains. For example, an Inventory Module.
+- A core package responsible for orchestrating the different commerce modules and exposing REST APIs.
+
+---
+
+## How Does Medusa Work
+
+The core package is the NPM package `@medusajs/medusa`. It's a Node.js server built with Express and other tools that offer functionalities for managing events, caching, job queues, and more.
+
+The core package has two main objectives.
+
+### Orchestrate Commerce Modules
+
+When you build a commerce application with Medusa, you’ll typically interact with more than one commerce module. The core package manages relationships between modules, and forwarding calls to modules at the right time during business logic execution.
+
+For example, imagine an Inventory module that contains lightweight logic to increment and decrement stock levels for a Stock-Keeping Unit (SKU). In a commerce application, you typically want to associate the stock levels with a specific product. Medusa offers both an Inventory module and a Product module, and the core package creates associations between these modules and executing the related business logic. So, the core package contains code similar to this:
+
+```ts
+function handler(req, res) {
+  // ...
+
+  // associate a product with an inventory item
+  const product = await productService.create(data)
+  const inventoryItem = await inventoryService.create(
+    inventoryData
+  )
+  await productVariantInventoryService.associate(
+    product.id, 
+    inventoryItem.id
+  )
+
+  // ...
+}
+```
+
+### Expose REST APIs
+
+The goal of orchestrating the modules is to expose an API that client applications, like websites or apps, can consume. By default, Medusa’s core package exposes a REST API that offers commerce functionalities similar to what other platforms give you.
+
+The core package also holds the logic that allows developers to extend and add custom endpoints, among other available customizations.
+
+---
+
+## Backend First Steps
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/development/backend/install',
+    label: 'Backend Quickstart',
+    customProps: {
+      icon: Icons['server-stack-solid'],
+      description: 'Learn how to install a Medusa backend and the available next steps.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/backend/prepare-environment',
+    label: 'Prepare Environment',
+    customProps: {
+      icon: Icons['tools-solid'],
+      description: 'Install tools that supercharge development with Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/backend/configurations',
+    label: 'Configure Backend',
+    customProps: {
+      icon: Icons['cog-six-tooth-solid'],
+      description: 'Learn how to configure the Medusa backend.'
+    }
+  },
+]} />
+
+---
+
+## Understanding Fundamental Concepts
+
+These concepts will guide you through your development and building customization with Medusa.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/development/entities/overview',
+    label: 'Entities',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'A class representation of database tables to handle commerce data.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/endpoints/overview',
+    label: 'Endpoints',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'REST APIs that frontends consume to communicate with the backend.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/services/overview',
+    label: 'Services',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Utility classes associated with Entities or a specific functionality.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/events/index',
+    label: 'Events and Subscribers',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Perform an asynchronous task when an action occurs.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/scheduled-jobs/overview',
+    label: 'Scheduled Jobs',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Automate tasks to be executed at specified times.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/plugins/overview',
+    label: 'Plugins',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Publish customizations as NPM packages to be reused.'
+    }
+  },
+]} />
+
+---
+
+## Medusa Use Cases
+
+To better understand how you can use Medusa, here are some common use cases that Medusa is the ideal solution for.
+
+### Ecommerce Building Blocks
+
+Developers can set up the core package and handpick the Commerce Modules they want to use. This gives them great flexibility in choosing the features they want to provide in their ecommerce store, while utilizing the powerful architecture in the core package.
+
+![Ecommerce Building Blocks](https://res.cloudinary.com/dza7lstvk/image/upload/v1678954316/Medusa%20Docs/Diagrams/ecommerce-building-blocks_llgnn2.jpg)
+
+Developers can modify and tailor the modules that Medusa offers to their use case. They can also create custom Modules to implement new features. All these modules become building blocks that shape their ecommerce system.
+
+### Medusa in Microservices Architectures
+
+Medusa’s Commerce Modules can be used in isolation from the core package and within a larger ecosystem. For example, you can use Medusa’s Cart module within a blog to allow readers to buy merch.
+
+![Medusa in Microservices Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1678954316/Medusa%20Docs/Diagrams/microservices-architecture-use-case_vubgno.jpg)
+
+Developers can benefit from Medusa’s Modules that provide essential ecommerce features while maintaining the ecommerce ecosystem of their choice. Commerce Modules can be installed in your setup as NPM packages.
+
+### Vertical Ecommerce Platforms
+
+A Vertical Ecommerce Platform is a platform that provides features and functionalities specialized for a type of business sector. For example, a platform for pharmaceuticals.
+
+Developers can use Medusa to build a vertical ecommerce platform as it provides the stepping stones that eliminate the need to reinvent the wheel for basic ecommerce features, but are customizable enough to be changed for their use case.
+
+### Out-of-Box APIs
+
+Since Medusa’s Commerce Modules are NPM packages, they can be installed and used in any JavaScript project.
+
+By installing a Module in your project and expose its APIs based on the framework you’re using, you can get ecommerce REST APIs right from your frontend framework without having to create a separate project.
+
+### Full-Fledged Ecommerce System
+
+Developers can use Medusa’s toolkit to create their ecommerce system. With the use of the [create-medusa-app](../create-medusa-app.mdx) command, developers can set up a Medusa Backend, Medusa admin, and a storefront.
+
+![Full-Fledged Ecommerce System](https://res.cloudinary.com/dza7lstvk/image/upload/v1678954316/Medusa%20Docs/Diagrams/fully-fledged-ecom_qqwraq.jpg)
+
+Developers can still benefit from customization opportunities here that Medusa provides. This includes creating resources such as endpoints and services, creating plugins, integrating third-party services, create a custom storefront, and more.
+
+### Your Own Use Case
+
+Medusa’s vision is to allow developers to build anything they want using it. There are no limitations to what you can build and the ideas you can come up with. If you have an idea, you can use Medusa’s tools to start building it.

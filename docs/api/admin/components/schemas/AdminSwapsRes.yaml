@@ -1,4 +1,24 @@
 type: object
+x-expanded-relations:
+  field: swap
+  relations:
+    - additional_items
+    - additional_items.adjustments
+    - cart
+    - cart.items
+    - cart.items.adjustments
+    - cart.items.variant
+    - fulfillments
+    - order
+    - payment
+    - return_order
+    - shipping_address
+    - shipping_methods
+  eager:
+    - fulfillments.items
+    - shipping_methods.shipping_option
+required:
+  - swap
 properties:
   swap:
     $ref: ./Swap.yaml

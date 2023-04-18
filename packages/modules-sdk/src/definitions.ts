@@ -4,21 +4,29 @@ import {
   MODULE_SCOPE,
 } from "@medusajs/types"
 
-export const MODULE_DEFINITIONS: ModuleDefinition[] = [
-  {
-    key: "eventBus",
+export enum Modules {
+  EVENT_BUS = "eventBus",
+  STOCK_LOCATION = "stockLocationService",
+  INVENTORY = "inventoryService",
+  CACHE = "cacheService",
+}
+
+export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
+  [Modules.EVENT_BUS]: {
+    key: Modules.EVENT_BUS,
     registrationName: "eventBusModuleService",
     defaultPackage: "@medusajs/event-bus-local",
     label: "EventBusModuleService",
     canOverride: true,
     isRequired: true,
+    dependencies: ["logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
-  {
-    key: "stockLocationService",
+  [Modules.STOCK_LOCATION]: {
+    key: Modules.STOCK_LOCATION,
     registrationName: "stockLocationService",
     defaultPackage: false,
     label: "StockLocationService",
@@ -30,8 +38,8 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
       resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
-  {
-    key: "inventoryService",
+  [Modules.INVENTORY]: {
+    key: Modules.INVENTORY,
     registrationName: "inventoryService",
     defaultPackage: false,
     label: "InventoryService",
@@ -43,8 +51,8 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
       resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
-  {
-    key: "cacheService",
+  [Modules.CACHE]: {
+    key: Modules.CACHE,
     registrationName: "cacheService",
     defaultPackage: "@medusajs/cache-inmemory",
     label: "CacheService",
@@ -55,6 +63,9 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
       resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
-]
+}
+
+export const MODULE_DEFINITIONS: ModuleDefinition[] =
+  Object.values(ModulesDefinition)
 
 export default MODULE_DEFINITIONS

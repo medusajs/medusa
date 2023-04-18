@@ -22,6 +22,6 @@ const moduleDefinition: ModuleExports = {
 }
 
 export default moduleDefinition
-
 export * from "./initialize"
+export { revertMigration, runMigrations } from "./migrations/run-migration"
 export * from "./types"

@@ -487,35 +487,43 @@ class OrderService extends TransactionBaseService {
     cartId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    const query = {
-      where: { cart_id: cartId },
-    } as FindConfig<Order>
-
-    if (relations && relations.length > 0) {
-      query.relations = relations
+    if (!isDefined(cartId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"cartId" must be defined`
+      )
     }
 
-    query.select = select?.length ? select : undefined
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
-    const raw = await orderRepo.findOne(query)
+    const query = buildQuery({ cart_id: cartId }, config)
+
+    if (!(config.select || []).length) {
+      query.select = undefined
+    }
+
+    const queryRelations = { ...query.relations }
+    delete query.relations
+
+    const raw = await orderRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with cart id: ${cartId} was not found`
+        `Order with cart id ${cartId} was not found`
       )
     }
 
-    if (!totalsToSelect?.length) {
-      return raw
-    }
+    return raw
+  }
 
-    return await this.decorateTotals(raw, totalsToSelect)
+  async retrieveByCartIdWithTotals(
+    cartId: string,
+    options: FindConfig<Order> = {}
+  ): Promise<Order> {
+    const relations = this.getTotalsRelations(options)
+    const order = await this.retrieveByCartId(cartId, { ...options, relations })
+    return await this.decorateTotals(order, {})
   }
 
   /**
@@ -659,7 +667,7 @@ class OrderService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       const shippingMethods = cart.shipping_methods.map((method) => {
-        ;(method.tax_lines as any) = undefined
+        (method.tax_lines as any) = undefined
         return method
       })
 
@@ -767,7 +775,7 @@ class OrderService extends TransactionBaseService {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
-            ;(method.tax_lines as any) = undefined
+            (method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
               order_id: order.id,
             })
@@ -957,8 +965,16 @@ class OrderService extends TransactionBaseService {
         where: { id: order.billing_address_id },
       })
 
+      if (address.metadata) {
+        address.metadata = setMetadata(addr, address.metadata)
+      }
+
       await addrRepo.save({ ...addr, ...address })
     } else {
+      if (address.metadata) {
+        address.metadata = setMetadata(null, address.metadata)
+      }
+
       order.billing_address = addrRepo.create({ ...address })
     }
   }
@@ -1834,6 +1850,7 @@ class OrderService extends TransactionBaseService {
     order.paid_total =
       order.payments?.reduce((acc, next) => (acc += next.amount), 0) || 0
     order.refundable_amount = order.paid_total - order.refunded_total || 0
+
     let item_tax_total = 0
     let shipping_tax_total = 0
 
@@ -1847,7 +1864,7 @@ class OrderService extends TransactionBaseService {
       Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
       order.subtotal += item.subtotal ?? 0
-      order.discount_total += item.discount_total ?? 0
+      order.discount_total += item.raw_discount_total ?? 0
       item_tax_total += item.tax_total ?? 0
 
       if (isReturnableItem(item)) {
@@ -1920,6 +1937,9 @@ class OrderService extends TransactionBaseService {
         return item
       })
     }
+
+    order.raw_discount_total = order.discount_total
+    order.discount_total = Math.round(order.discount_total)
 
     order.total =
       order.subtotal +

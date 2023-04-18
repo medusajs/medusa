@@ -1,4 +1,3 @@
-import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header"
 import React, {
   ChangeEventHandler,
   FocusEventHandler,
@@ -6,11 +5,12 @@ import React, {
   useImperativeHandle,
   useRef,
 } from "react"
+import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header"
 
+import clsx from "clsx"
 import InputError from "../../atoms/input-error"
 import MinusIcon from "../../fundamentals/icons/minus-icon"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
-import clsx from "clsx"
 
 export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
   InputHeaderProps & {
@@ -26,7 +26,6 @@ export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
     props?: React.HTMLAttributes<HTMLDivElement>
   }
 
-// eslint-disable-next-line react/display-name
 const InputField = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -139,6 +138,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
                 onMouseDown={(e) => e.preventDefault()}
                 className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft mr-2 h-4 w-4 cursor-pointer outline-none"
                 type="button"
+                tabIndex={-1}
               >
                 <MinusIcon size={16} />
               </button>
@@ -147,6 +147,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
                 onClick={onNumberIncrement}
                 className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft h-4 w-4 cursor-pointer outline-none"
                 type="button"
+                tabIndex={-1}
               >
                 <PlusIcon size={16} />
               </button>
@@ -158,5 +159,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
     )
   }
 )
+
+InputField.displayName = "InputField"
 
 export default InputField
