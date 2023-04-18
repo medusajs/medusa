@@ -111,7 +111,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -120,7 +120,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -346,12 +346,14 @@ class BrightpearlService extends BaseService {
   async adjustMedusaLocationLevel_(location, inventoryLevel, warehouseData) {
     const manager = this.transactionManager_ ?? this.manager_
 
-    await this.inventoryService_.updateInventoryLevel(
-      inventoryLevel.inventory_item_id,
-      inventoryLevel.location_id,
-      { stocked_quantity: warehouseData.inStock },
-      { transactionManager: manager }
-    )
+    if (inventoryLevel.stocked_quantity !== warehouseData.inStock) {
+      await this.inventoryService_.updateInventoryLevel(
+        inventoryLevel.inventory_item_id,
+        inventoryLevel.location_id,
+        { stocked_quantity: warehouseData.inStock },
+        { transactionManager: manager }
+      )
+    }
 
     const externallyReservedQuantityAdjustment =
       warehouseData.inStock -
