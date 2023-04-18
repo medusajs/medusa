@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { BatchJob, ProductCategory, SalesChannel } from "../../../models"
+import { BatchJob, SalesChannel } from "../../../models"
 import {
   BatchJobService,
   ProductCategoryService,
@@ -461,7 +461,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         }
 
         if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
-          productOp["product.categories"] = await this.processCategories(
+          productData["categories"] = await this.processCategories(
             productOp["product.categories"] as string[]
           )
         }
@@ -534,7 +534,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         }
 
         if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
-          productOp["product.categories"] = await this.processCategories(
+          productData["categories"] = await this.processCategories(
             productOp["product.categories"] as string[]
           )
         }
