@@ -385,15 +385,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    *
    * @param data array of product category handles
    */
-  private async processCategories(data: string[]): Promise<{ id: string }[]> {
+  private async processCategories(
+    data: { handle: string }[]
+  ): Promise<{ id: string }[]> {
     const retIds: { id: string }[] = []
     const transactionManager = this.transactionManager_ ?? this.manager_
     const productCategoryService =
       this.productCategoryService_.withTransaction(transactionManager)
 
-    for (const handle of data) {
+    for (const category of data) {
       const categoryPartial = (await productCategoryService.retrieveByHandle(
-        handle,
+        category.handle,
         {
           select: ["id"],
         }
@@ -462,7 +464,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
           productData["categories"] = await this.processCategories(
-            productOp["product.categories"] as string[]
+            productOp["product.categories"] as { handle: string }[]
           )
         }
 
@@ -535,7 +537,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
           productData["categories"] = await this.processCategories(
-            productOp["product.categories"] as string[]
+            productOp["product.categories"] as { handle: string }[]
           )
         }
 
