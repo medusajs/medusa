@@ -60,15 +60,15 @@ You can list products as an admin using the [List Products endpoint](/api/admin#
 ```ts
 medusa.admin.products.list()
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-});
+  console.log(products.length)
+})
 ```
 
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useAdminProducts } from 'medusa-react';
+import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
   const { products, isLoading } = useAdminProducts()
@@ -85,10 +85,10 @@ const Products = () => {
         </ul>
       )}
     </div>
-  );
+  )
 }
 
-export default Products;
+export default Products
 ```
 
 </TabItem>
@@ -100,8 +100,8 @@ fetch(`<BACKEND_URL>/admin/products`, {
 })
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-});
+  console.log(products.length)
+})
 ```
 
 </TabItem>
@@ -132,54 +132,54 @@ You can create a product by sending a request to the [Create a Product endpoint]
 
 ```ts
 medusa.admin.products.create({
-  title: 'Shirt',
+  title: "Shirt",
   is_giftcard: false,
   discountable: true,
   options: [
     {
-      title: 'Color'
+      title: "Color",
     },
     {
-      title: 'Size'
-    }
+      title: "Size",
+    },
   ],
   variants: [
     {
-      title: 'White Small Shirt',
+      title: "White Small Shirt",
       prices: [
         {
           amount: 1000,
-          currency_code
-        }
+          currency_code,
+        },
       ],
       options: [
         {
-          value: 'White'
+          value: "White",
         },
         {
-          value: 'Small'
-        }
-      ]
-    }
+          value: "Small",
+        },
+      ],
+    },
   ],
   collection_id,
   categories: [
     {
-      id: categoryId
-    }
+      id: categoryId,
+    },
   ],
   type: {
-    value: typeValue
+    value: typeValue,
   },
   tags: [
     {
-      value: tagValue
-    }
-  ]
+      value: tagValue,
+    },
+  ],
 })
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -194,50 +194,50 @@ const CreateProduct = () => {
 
   const handleCreate = () => {
     createProduct.mutate({
-      title: 'Shirt',
+      title: "Shirt",
       is_giftcard: false,
       discountable: true,
       options: [
         {
-          title: 'Color'
+          title: "Color",
         },
         {
-          title: 'Size'
-        }
+          title: "Size",
+        },
       ],
       variants: [
         {
-          title: 'White Small Shirt',
+          title: "White Small Shirt",
           prices: [
             {
               amount: 1000,
-              currency_code
-            }
+              currency_code,
+            },
           ],
           options: [
             {
-              value: 'White'
+              value: "White",
             },
             {
-              value: 'Small'
-            }
-          ]
-        }
+              value: "Small",
+            },
+          ],
+        },
       ],
       collection_id,
       categories: [
         {
-          id: categoryId
-        }
+          id: categoryId,
+        },
       ],
       type: {
-        value: typeValue
+        value: typeValue,
       },
       tags: [
         {
-          value: tagValue
-        }
-      ]
+          value: tagValue,
+        },
+      ],
     })
   }
 
@@ -258,54 +258,54 @@ fetch(`<BACKEND_URL>/admin/products`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'Shirt',
+    title: "Shirt",
     options: [
       {
-        title: 'Color'
+        title: "Color",
       },
       {
-        title: 'Size'
-      }
+        title: "Size",
+      },
     ],
     variants: [
       {
-        title: 'White Small Shirt',
+        title: "White Small Shirt",
         prices: [
           {
             amount: 1000,
-            currency_code
-          }
+            currency_code,
+          },
         ],
         options: [
           {
-            value: 'White'
+            value: "White",
           },
           {
-            value: 'Small'
-          }
-        ]
-      }
+            value: "Small",
+          },
+        ],
+      },
     ],
     collection_id,
     categories: [
       {
-        id: categoryId
-      }
+        id: categoryId,
+      },
     ],
     type: {
-      value: typeValue
+      value: typeValue,
     },
     tags: [
       {
-        value: tagValue
-      }
-    ]
+        value: tagValue,
+      },
+    ],
   }),
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -405,8 +405,8 @@ You can retrieve a single product as an admin by sending a request to the [Get a
 ```ts
 medusa.admin.products.retrieve(productId)
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -442,8 +442,8 @@ fetch(`<BACKEND_URL>/admin/products/${productId}`, {
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -472,11 +472,11 @@ You can update a product by sending a request to the [Update Product endpoint](h
 
 ```ts
 medusa.admin.products.update(productId, {
-  title: 'Shirt',
+  title: "Shirt",
 })
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -493,7 +493,7 @@ const UpdateProduct = () => {
 
   const handleUpdate = () => {
     updateProduct.mutate({
-      title: 'Shirt',
+      title: "Shirt",
     })
   }
 
@@ -514,13 +514,13 @@ fetch(`<BACKEND_URL>/admin/products/${productId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'Shirt',
+    title: "Shirt",
   }),
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -563,11 +563,11 @@ You can add a product option to a product by sending a request to the [Add Produ
 
 ```ts
 medusa.admin.products.addOption(productId, {
-  title: 'Size'
+  title: "Size",
 })
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -584,7 +584,7 @@ const CreateProductOption = () => {
 
   const handleCreate = () => {
     createOption.mutate({
-      title: 'Size',
+      title: "Size",
     })
   }
 
@@ -605,13 +605,13 @@ fetch(`<BACKEND_URL>/admin/products/${productId}/options`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'Size'
+    title: "Size",
   }),
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -642,11 +642,11 @@ You can update a product option by sending a request to the [Update Product Opti
 
 ```ts
 medusa.admin.products.updateOption(productId, optionId, {
-  title: 'Size'
+  title: "Size",
 })
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -664,7 +664,7 @@ const UpdateProductOption = () => {
   const handleUpdate = () => {
     updateOption.mutate({
       option_id,
-      title: 'Size',
+      title: "Size",
     })
   }
 
@@ -677,6 +677,8 @@ export default UpdateProductOption
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/products/${productId}/options/${optionId}`, {
   credentials: "include",
@@ -685,13 +687,13 @@ fetch(`<BACKEND_URL>/admin/products/${productId}/options/${optionId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'Size'
+    title: "Size",
   }),
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -724,9 +726,9 @@ You can delete a product option by sending a request to the [Delete Product Opti
 
 ```ts
 medusa.admin.products.deleteOption(productId, optionId)
-.then(({ option_id, object, delete, product }) => {
-  console.log(product.options);
-});
+.then(({ option_id, object, deleted, product }) => {
+  console.log(product.options)
+})
 ```
 
 </TabItem>
@@ -754,15 +756,17 @@ export default DeleteProductOption
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/products/${productId}/options/${optionId}`, {
   credentials: "include",
   method: "DELETE",
 })
 .then((response) => response.json())
-.then(({ option_id, object, delete, product }) => {
-  console.log(product.options);
-});
+.then(({ option_id, object, deleted, product }) => {
+  console.log(product.options)
+})
 ```
 
 </TabItem>
@@ -804,23 +808,23 @@ You can create a product variant by sending a request to the [Create Product Var
 
 ```ts
 medusa.admin.products.createVariant(product_id, {
-  title: 'White Shirt',
+  title: "White Shirt",
   prices: [
     {
       amount: 1000,
-      currency_code: "USD"
-    }
+      currency_code: "USD",
+    },
   ],
   options: [
     {
       option_id,
-      value: 'White'
-    }
-  ]
+      value: "White",
+    },
+  ],
 })
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -837,19 +841,19 @@ const CreateProductVariant = () => {
 
   const handleCreate = () => {
     createVariant.mutate({
-      title: 'White Shirt',
+      title: "White Shirt",
       prices: [
         {
           amount: 1000,
-          currency_code: "USD"
-        }
+          currency_code: "USD",
+        },
       ],
       options: [
         {
           option_id,
-          value: 'White'
-        }
-      ]
+          value: "White",
+        },
+      ],
     })
   }
 
@@ -870,25 +874,25 @@ fetch(`<BACKEND_URL>/admin/products/${productId}/variants`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'White Shirt',
+    title: "White Shirt",
     prices: [
       {
         amount: 1000,
-        currency_code: "USD"
-      }
+        currency_code: "USD",
+      },
     ],
     options: [
       {
         option_id,
-        value: 'White'
-      }
-    ]
+        value: "White",
+      },
+    ],
   }),
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -939,11 +943,11 @@ You can update a product variant by sending a request to the [Update a Product V
 
 ```ts
 medusa.admin.products.updateVariant(productId, variantId, {
-  title: 'White Shirt',
+  title: "White Shirt",
 })
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -961,7 +965,7 @@ const UpdateProductVariant = () => {
   const handleUpdate = () => {
     updateVariant.mutate({
       variant_id,
-      title: 'White Shirt'
+      title: "White Shirt",
     })
   }
 
@@ -974,6 +978,8 @@ export default UpdateProductVariant
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/products/${productId}/variants/${variantId}`, {
   credentials: "include",
@@ -982,13 +988,13 @@ fetch(`<BACKEND_URL>/admin/products/${productId}/variants/${variantId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'White Shirt',
+    title: "White Shirt",
   }),
 })
 .then((response) => response.json())
 .then(({ product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -1022,8 +1028,8 @@ You can delete a product variant by sending a request to the [Delete a Product V
 ```ts
 medusa.admin.products.deleteVariant(productId, variantId)
 .then(({ variant_id, object, deleted, product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -1051,6 +1057,8 @@ export default DeleteProductVariant
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/products/${productId}/variants/${variantId}`, {
   credentials: "include",
@@ -1058,8 +1066,8 @@ fetch(`<BACKEND_URL>/admin/products/${productId}/variants/${variantId}`, {
 })
 .then((response) => response.json())
 .then(({ variant_id, object, deleted, product }) => {
-  console.log(product.id);
-});
+  console.log(product.id)
+})
 ```
 
 </TabItem>
@@ -1094,8 +1102,8 @@ You can delete a product by sending a request to the [Delete a Product endpoint]
 ```ts
 medusa.admin.products.delete(productId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -1130,8 +1138,8 @@ fetch(`<BACKEND_URL>/admin/products/${productId}`, {
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
