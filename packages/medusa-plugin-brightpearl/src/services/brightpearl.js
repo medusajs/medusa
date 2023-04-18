@@ -346,6 +346,13 @@ class BrightpearlService extends BaseService {
   async adjustMedusaLocationLevel_(location, inventoryLevel, warehouseData) {
     const manager = this.transactionManager_ ?? this.manager_
 
+    await this.inventoryService_.updateInventoryLevel(
+      inventoryLevel.inventory_item_id,
+      inventoryLevel.location_id,
+      { stocked_quantity: warehouseData.inStock },
+      { transactionManager: manager }
+    )
+
     const externallyReservedQuantityAdjustment =
       warehouseData.inStock -
       warehouseData.onHand -
