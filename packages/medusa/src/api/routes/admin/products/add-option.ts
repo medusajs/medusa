@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /admin/products/{id}/options
  * operationId: "PostProductsProductOptions"
- * summary: "Add an Option"
+ * summary: "Add a Product Option"
  * x-authenticated: true
  * description: "Adds a Product Option to a Product"
  * parameters:
