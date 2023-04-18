@@ -82,7 +82,14 @@ const MediaForm = ({ form }: Props) => {
             onFileChosen={handleFilesChosen}
             placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
             multiple
-            filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
+            filetypes={[
+              "image/gif",
+              "image/jpeg",
+              "image/png",
+              "image/webp",
+              "model/gltf-binary",
+              "application/object",
+            ]}
             className="py-large"
           />
         </div>
