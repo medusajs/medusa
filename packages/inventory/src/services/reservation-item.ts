@@ -7,11 +7,11 @@ import {
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  buildQuery,
+  isDefined,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
@@ -174,7 +174,7 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const item = await this.retrieve(reservationItemId)
+    const item = await this.retrieve(reservationItemId, undefined, context)
 
     const shouldUpdateQuantity =
       isDefined(data.quantity) && data.quantity !== item.quantity
@@ -299,10 +299,10 @@ export default class ReservationItemService {
       : [reservationItemId]
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
-    const items = await this.list({ id: ids })
+    const items = await this.list({ id: ids }, undefined, context)
 
     const promises: Promise<unknown>[] = items.map(async (item) => {
-      this.inventoryLevelService_.adjustReservedQuantity(
+      await this.inventoryLevelService_.adjustReservedQuantity(
         item.inventory_item_id,
         item.location_id,
         item.quantity * -1,
