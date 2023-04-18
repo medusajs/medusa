@@ -156,3 +156,49 @@ medusa migrations run
 You should see that your migration was executed, which means your changes were reflected in the database schema.
 
 You can now use your extended entity and its repository throughout your commerce application.
+
+---
+
+## Access Custom Attributes and Relations in Core Endpoints
+
+After you add custom attributes, you'll notice that these attributes aren't returned as part of the response fields of core endpoints. Core endpoints have a defined set of fields and relations that can be returned by default in requests.
+
+To change that and ensure your custom attribute is returned in your request, you can extend the allowed fields of a set of endpoints in a loader file and add your attribute into them.
+
+For example, if you added a custom attribute in the `Product` entity and you want to ensure it's returned in all the product's store endpoints (endpoints under the prefix `/store/products`), you can create a file under the `src/loaders` directory in your Medusa backend with the following content:
+
+```ts title=src/loaders/extend-product-fields.ts
+export default async function () {
+  const imports = (await import(
+    "@medusajs/medusa/dist/api/routes/store/products/index"
+  )) as any
+  imports.allowedStoreProductsFields = [
+    ...imports.allowedStoreProductsFields,
+    "customAttribute",
+  ]
+  imports.defaultStoreProductsFields = [
+    ...imports.defaultStoreProductsFields,
+    "customAttribute",
+  ]
+}
+```
+
+In the code snippet above, you import `@medusajs/medusa/dist/api/routes/store/products/index`, which is where all the product's store endpoints are exported. In that file, there are the following defined variables:
+
+- `allowedStoreProductsFields`: The fields or attributes of a product that are allowed to be retrieved and returned in the product's store endpoints. This would allow you to pass your custom attribute in the `fields` request parameter of the product's store endpoints.
+- `defaultStoreProductsFields`: The fields or attributes of a product that are retrieved and returned by default in the product's store endpoints.
+
+You change the values of these variables and pass the name of your custom attribute. Make sure to change `customAttribute` to the name of your custom attribute.
+
+:::tip
+
+Before you test out the above change, make sure to build your changes before you start the Medusa backend.
+
+:::
+
+You can also add custom relations by changing the following defined variables:
+
+- `allowedStoreProductsRelations`: The relations of a product that are allowed to be retrieved and returned in the product's store endpoints. This would allow you to pass your custom relation in the `expand` request parameter of the product's store endpoints.
+- `defaultStoreProductsRelations`: The relations of a product that are retrieved and returned by default in the product's store endpoints.
+
+If you want to apply this example for a different entity or set of endpoints, you would need to change the import path `@medusajs/medusa/dist/api/routes/store/products/index` to the path of the endpoints you're targeting. You also need to change `allowedStoreProductsFields` and `defaultStoreProductsFields` to the names of the variables in that file, and the same goes for relations. Typically, these names would be of the format `(allowed|default)(Store|Admin)(Entity)(Fields|Relation)`.

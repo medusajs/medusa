@@ -18,7 +18,7 @@ Customers can view and purchase gift card products. Then, customers can redeem t
 
 You want to implement the following features in a storefront:
 
-- Show the gift card product to the customer.
+- Show gift card products to the customer.
 - View details of a gift card by its code.
 - Redeem a gift card during checkout.
 
@@ -69,10 +69,10 @@ medusa.products.list({
 })
 .then(({ products, limit, offset, count }) => {
   if (products.length) {
-    // gift card product exists
-    const giftcard = products[0]
+    // gift card products exist
+    
   } else {
-    // no gift card product is created
+    // no gift card products are created
   }
 })
 ```
@@ -84,7 +84,7 @@ medusa.products.list({
 import { Product } from "@medusajs/medusa"
 import { useProducts } from "medusa-react"
 
-const GiftCard = () => {
+const GiftCards = () => {
   const { products, isLoading } = useProducts({
     is_giftcard: true,
   })
@@ -106,7 +106,7 @@ const GiftCard = () => {
   )
 }
 
-export default GiftCard
+export default GiftCards
 ```
 
 </TabItem>
@@ -119,10 +119,9 @@ fetch(`<BACKEND_URL>/store/products?is_giftcard=true`, {
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   if (products.length) {
-    // gift card product exists
-    const giftcard = products[0]
+    // gift card products exist
   } else {
-    // no gift card product is created
+    // no gift card products are created
   }
 })
 ```
@@ -132,9 +131,9 @@ fetch(`<BACKEND_URL>/store/products?is_giftcard=true`, {
 
 The request does not require any parameters. You can pass query parameters to filter the returned products.
 
-You can use the `is_giftcard` query parameter to retrieve only the gift card product by setting it to `true`. To view other available parameters, check out the [API reference](/api/store/#tag/Product/operation/GetProducts)
+You can use the `is_giftcard` query parameter to retrieve only the gift card products by setting its value to `true`. To view other available parameters, check out the [API reference](/api/store/#tag/Product/operation/GetProducts)
 
-The request returns the `products` array in the response, which holds the gift card in it, if it’s available. It also returns [pagination fields](/api/store/#section/Pagination).
+The request returns the `products` array in the response, which holds the gift cards in it, if they're available. It also returns [pagination fields](/api/store/#section/Pagination).
 
 ### Show Gift Card’s Denominations
 
