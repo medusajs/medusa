@@ -747,6 +747,10 @@ export const productCategoriesColumnsDefinition: ProductColumnDefinition = {
   },
   "Product Category Name": {
     name: "Product Category Name",
+    importDescriptor: {
+      match: /Product Category \d+ Name/,
+      reducer: (builtLine) => builtLine,
+    },
     exportDescriptor: {
       isDynamic: true,
       buildDynamicColumnName: (index: number) => {
@@ -756,6 +760,10 @@ export const productCategoriesColumnsDefinition: ProductColumnDefinition = {
   },
   "Product Category Description": {
     name: "Product Category Description",
+    importDescriptor: {
+      match: /Product Category \d+ Description/,
+      reducer: (builtLine) => builtLine,
+    },
     exportDescriptor: {
       isDynamic: true,
       buildDynamicColumnName: (index: number) => {
