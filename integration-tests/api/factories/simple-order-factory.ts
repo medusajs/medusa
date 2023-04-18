@@ -1,5 +1,3 @@
-import { DataSource } from "typeorm"
-import faker from "faker"
 import {
   Discount,
   FulfillmentStatus,
@@ -7,31 +5,33 @@ import {
   PaymentStatus,
   Refund,
 } from "@medusajs/medusa"
-import {
-  DiscountFactoryData,
-  simpleDiscountFactory,
-} from "./simple-discount-factory"
-import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
-import {
-  LineItemFactoryData,
-  simpleLineItemFactory,
-} from "./simple-line-item-factory"
+import faker from "faker"
+import { DataSource } from "typeorm"
 import {
   AddressFactoryData,
   simpleAddressFactory,
 } from "./simple-address-factory"
 import {
-  ShippingMethodFactoryData,
-  simpleShippingMethodFactory,
-} from "./simple-shipping-method-factory"
+  CustomerFactoryData,
+  simpleCustomerFactory,
+} from "./simple-customer-factory"
+import {
+  DiscountFactoryData,
+  simpleDiscountFactory,
+} from "./simple-discount-factory"
+import {
+  LineItemFactoryData,
+  simpleLineItemFactory,
+} from "./simple-line-item-factory"
+import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
 import {
   SalesChannelFactoryData,
   simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
 import {
-  CustomerFactoryData,
-  simpleCustomerFactory,
-} from "./simple-customer-factory"
+  ShippingMethodFactoryData,
+  simpleShippingMethodFactory,
+} from "./simple-shipping-method-factory"
 
 export type OrderFactoryData = {
   id?: string

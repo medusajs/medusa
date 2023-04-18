@@ -51,7 +51,7 @@ export default function Feedback ({
           url: location.pathname,
           label: document.title,
           feedback: (feedback !== null && feedback) || (feedback === null && positiveFeedback) ? 'yes' : 'no',
-          message,
+          message: message?.length ? message : null,
           uuid: id
         }, function () {
           if (showForm) {

@@ -12,7 +12,7 @@ In this document, you’ll learn how to create a [Migration](./overview.mdx) usi
 To create a migration that makes changes to your Medusa schema, run the following command:
 
 ```bash
-npx typeorm migration:create -n UserChanged --dir src/migrations
+npx typeorm migration:create src/migrations/UserChanged
 ```
 
 This will create the migration file in the path you specify. You can use this without the need to install Typeorm's CLI tool. You can then go ahead and make changes to it as necessary.

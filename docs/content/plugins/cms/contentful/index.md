@@ -59,31 +59,21 @@ Set the value for `CONTENTFUL_ENV` to `master`.
 
 #### Value of CONTENTFUL_SPACE_ID
 
-To retrieve the value of `CONTENTFUL_SPACE_ID`, go to your [Contentful Space dashboard](https://app.contentful.com/). Then, choose Settings in the navigation bar and select API keys from the dropdown.
+To retrieve the value of `CONTENTFUL_SPACE_ID`:
 
-![Click on Settings then select API keys from the dropdown](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001360/Medusa%20Docs/Contentful/hvp6zo5_uaqtmi.png)
-
-On the APIs page, click Add API Key.
-
-![Click on the Add API Key button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001375/Medusa%20Docs/Contentful/KlH2BDg_fiqd80.png)
-
-In the form, enter a name for the API key and click Save.
-
-![A form with the name of API key entered](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001385/Medusa%20Docs/Contentful/hOG1RqM_tmctae.png)
-
-Then, copy the value of Space ID and set it as the value of `CONTENTFUL_SPACE_ID`.
+1. Go to your [Contentful Space dashboard](https://app.contentful.com/). Then, choose Settings in the navigation bar and select API keys from the dropdown.
+2. On the APIs page, click Add API Key.
+3. In the form, enter a name for the API key and click Save.
+4. Copy the value of Space ID and set it as the value of `CONTENTFUL_SPACE_ID`.
 
 #### Value of CONTENTFUL_ACCESS_TOKEN
 
-Go back to the API Keys page and click on the Content management tokens tab.
+To retrieve the value of `CONTENTFUL_ACCESS_TOKEN`:
 
-![API Keys page with Content management tokens tab opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001394/Medusa%20Docs/Contentful/7nWx1xk_co8ykw.png)
-
-Click on Generate personal token. A pop-up will open where you have to enter a name for the token.
-
-![Pop up model for Personal Access Token with token name entered](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001403/Medusa%20Docs/Contentful/y6R81pH_yhbg1u.png)
-
-Once you click Generate, a personal access token will be generated. Use it to set the value of `CONTENTFUL_ACCESS_TOKEN`.
+1. Go back to the API Keys page and click on the Content management tokens tab.
+2. Click on Generate personal token.
+3. In the pop-up that opens, enter a name for the token.
+4. Click the Generate button. A personal access token will be generated. Use it to set the value of `CONTENTFUL_ACCESS_TOKEN`.
 
 :::warning
 
@@ -150,8 +140,6 @@ npm run migrate:contentful
 
 Once this command finishes executing, in your Contentful Space dashboard click on Content Model in the navigation bar. You should see a list of new content models added.
 
-![Content Model page filled with new content models](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001419/Medusa%20Docs/Contentful/ZDJPNkr_avr7gy.png)
-
 ### Seed Content to Contentful
 
 The next step is to seed the Contentful Space with some content data.
@@ -163,8 +151,6 @@ npm run seed:contentful
 ```
 
 After this command finishes running, in your Contentful Space dashboard click on Content in the navigation bar. You should see a list of new content added.
-
-![Content page filled with new content](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001429/Medusa%20Docs/Contentful/bfgFxPg_jb4zok.png)
 
 ### (Optional) Seed Medusa Database
 
@@ -186,15 +172,32 @@ npm run start
 
 If you seeded the database with demo data, you should see that events related to the products are triggered.
 
-![Seed the database](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001440/Medusa%20Docs/Contentful/ci4accp_okaro3.png)
-
-The Contentful integration ensures a two-way sync between the Medusa backend and Contentful. So, when new products are added to Medusa, these products will be added to your Contentful Space as well.
+The Contentful integration ensures a sync between the Medusa backend and Contentful. So, when new products are added to Medusa, these products will be added to your Contentful Space as well.
 
 ---
 
 ## (Optional) Add Products with the Medusa Admin
 
 Using the Medusa admin, you can add products to your Medusa backend. This will trigger product events that subsequently add these products to Contentful.
+
+---
+
+## (Optional) Two-way Sync with Contentful
+
+This section explains how you can establish a two-way sync between Medusa and Contentful. This would ensure that not only is the data updated from the Medusa backend to Contentful, but also ensure the updates are relayed from Contentful to the Medusa backend.
+
+However, to perform this sync, it's required that you deploy your backend so that it can be publically accessible. You can learn how to do that through the [backend deployment](../../../deployments/server/index.mdx) guides.
+
+Configuring two-way sync requires configuring Webhooks in Contentful. To do that:
+
+1. On your Contentful Space Dashboard, click on Settings from the navigation bar, then choose Webhooks.
+2. Click on the Add Webhook button.
+3. In the form, enter a name for the webhook.
+4. In the URL field, choose the method `POST` and in the input next to it enter the URL `<BACKEND_URL>/hooks/contentful` where `<BACKEND_URL>` is the URL of your production Medusa backend.
+5. Scroll down to find the Content Type select field. Choose `application/json` as its value.
+6. You can leave the rest of the fields the same and click on the Save button.
+
+Now, every time you change a product’s data on your Contentful Space it will be updated on your Medusa backend as well.
 
 ---
 
@@ -208,27 +211,18 @@ To do that, open your Contentful Space Dashboard and click on Content in the Nav
 
 Click on the checkbox at the top of the table to select all products then click Publish to publish these products.
 
-![Select all products' checkboxes and click the publish button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001452/Medusa%20Docs/Contentful/3NrH5tJ_f16iym.png)
-
 ### Added Featured Products
 
 On the homepage of the storefront, there’s a featured products tile that shows a set of products. Before running the storefront, you must add at least one product to the list.
 
-To do that, open your Contentful Space Dashboard and click on Content in the Navigation bar. Make sure the select field next to the search bar is set to Any and search for Featured Products. You should find one content of the type Tile Section.
+To do that:
 
-![Search for the featured products tile section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001462/Medusa%20Docs/Contentful/2gS0ozY_b2tpsb.png)
-
-Click on it. You should find on the page an empty Tiles section where you can add tiles and products.
-
-![On the content's page find the empty tiles section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001472/Medusa%20Docs/Contentful/inuN1OB_ipiszl.png)
-
-Click on Add content then on Add existing content and pick some of the products you want to show on the homepage.
-
-![Add at least 1 product as a tile](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001500/Medusa%20Docs/Contentful/N5m4LbF_fb97tm.png)
-
-Once you’re done adding products, click on Publish changes in the right sidebar.
-
-![Click on the publish changes button on the right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001508/Medusa%20Docs/Contentful/URNpkXq_cb5ppp.png)
+1. Open your Contentful Space Dashboard and click on Content in the Navigation bar.
+2. Set the select field next to the search bar Any and search for Featured Products. You should find one content of the type Tile Section.
+3. Click on the result. You should find on the page an empty Tiles section where you can add tiles and products.
+4. Click on the "Add content" button, then on "Add existing content" from the dropdown.
+5. Pick some of the products you want to show on the homepage.
+6. Once you’re done adding products, click on Publish changes in the right sidebar.
 
 ---
 
@@ -261,23 +255,21 @@ CONTENTFUL_ACCESS_TOKEN=
 
 The value of `CONTENTFUL_SPACE_ID` is the same value you [retrieved while setting up the Medusa backend](#value-of-contentful_space_id).
 
-To retrieve the value of `CONTENTFUL_ACCESS_TOKEN`, on your Contentful Space dashboard click on Settings then API keys. Then, choose the API key you created in the previous section.
+To retrieve the value of `CONTENTFUL_ACCESS_TOKEN`:
 
-You should find the field "Content Delivery API - access token”. Copy its value and set it as the value of `CONTENTFUL_ACCESS_TOKEN`.
-
-![Copy the value of the Content Delivery API access token](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001522/Medusa%20Docs/Contentful/a7dl7DI_mziogm.png)
+1. On your Contentful Space dashboard click on Settings in the navigation bar then choose API keys. 
+2. Choose the API key you created in the previous section.
+3. You should find the field "Content Delivery API - access token”. Copy its value and set it as the value of `CONTENTFUL_ACCESS_TOKEN`.
 
 ### Start Storefront
 
 Make sure the Medusa backend is still running. Then, start the storefront:
 
-```bash
+```bash npm2yarn
 npm run start
 ```
 
 This starts the storefront at `localhost:8000`. Open it in your browser and you should see on the homepage the Featured Product section with the products you chose on Contentful.
-
-![The storefront with the featured products section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001537/Medusa%20Docs/Contentful/f6xwYbS_w1v993.png)
 
 ---
 
