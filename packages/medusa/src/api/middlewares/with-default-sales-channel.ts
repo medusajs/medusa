@@ -23,12 +23,18 @@ export function withDefaultSalesChannel({
       "salesChannelService"
     )
 
-    const defaultSalesChannel = await salesChannelService.retrieveDefault()
-    if (defaultSalesChannel?.id) {
-      req.query.sales_channel_id = attachChannelAsArray
-        ? [defaultSalesChannel.id]
-        : defaultSalesChannel.id
+    try {
+      const defaultSalesChannel = await salesChannelService.retrieveDefault()
+      if (defaultSalesChannel?.id) {
+        req.query.sales_channel_id = attachChannelAsArray
+          ? [defaultSalesChannel.id]
+          : defaultSalesChannel.id
+      }
+    } catch {
+      // swallow the error? default SC is not technically necessary for these
+      // requests to finish. Log this situation somewhere?
+    } finally {
+      next()
     }
-    next()
   }
 }
