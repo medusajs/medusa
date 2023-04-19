@@ -7,6 +7,12 @@ addHowToData: true
 
 In this document, you’ll learn how to customize the Contentful integration with Medusa and how to customize the Gatsby storefront that is connected to Contentful.
 
+:::warning
+
+This guide covers how to customize the Gatsby storefront which is now deprecated. It's recommended to integrate Contentful into either the Next.js storefront or your custom storefront.
+
+:::
+
 ## Overview
 
 Part of what makes the integration between Medusa and Contentful powerful is that it’s completely customizable.
