@@ -4,7 +4,6 @@ import {
   LineItemService,
   OrderService,
   PaymentProviderService,
-  ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
   TotalsService
@@ -15,13 +14,11 @@ import { Order, Swap } from "../../models"
 import CartService from "../cart"
 import EventBusService from "../event-bus"
 import { IInventoryLocationStrategy } from "../../interfaces/inventory-location"
+import { InventoryLocationStrategyMock } from "../../strategies/__mocks__/inventory-location"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import {
   LineItemAdjustmentServiceMock
 } from "../__mocks__/line-item-adjustment"
-import {
-  ProductVariantInventoryServiceMock
-} from "../__mocks__/product-variant-inventory"
 import { SwapRepository } from "../../repositories/swap"
 import SwapService from "../swap"
 
@@ -879,7 +876,7 @@ describe("SwapService", () => {
     } as unknown as PaymentProviderService
 
     const inventoryLocationStrategy = {
-      ...ProductVariantInventoryServiceMock,
+      ...InventoryLocationStrategyMock,
       withTransaction: function () {
         return this
       },
@@ -974,7 +971,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        productVariantInventoryService: inventoryLocationStrategy,
+        inventoryLocationStrategy,
       })
 
       it("fails to register cart completion when swap is canceled", async () => {

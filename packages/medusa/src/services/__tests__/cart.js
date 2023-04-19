@@ -1,27 +1,34 @@
-import _ from "lodash"
-import { asClass, asValue, createContainer } from "awilix"
-import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { IsNull, Not } from "typeorm"
+import {
+  NewTotalsService,
+  SalesChannelInventoryService,
+  SalesChannelLocationService,
+  TaxProviderService,
+} from "../index"
+import { asClass, asValue, createContainer } from "awilix"
+
 import CartService from "../cart"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
-import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { newTotalsServiceMock } from "../__mocks__/new-totals"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { PaymentSessionStatus } from "../../models"
-import { NewTotalsService, TaxProviderService } from "../index"
-import { cacheServiceMock } from "../__mocks__/cache"
+import { CustomerServiceMock } from "../__mocks__/customer"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { FlagRouter } from "../../utils/flag-router"
+import InventoryLocationStrategy from "../../strategies/inventory-location"
+import { InventoryLocationStrategyMock } from "../../strategies/__mocks__/inventory-location"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import { MedusaError } from "medusa-core-utils"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { PaymentSessionStatus } from "../../models"
 import { ProductServiceMock } from "../__mocks__/product"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
-import { LineItemServiceMock } from "../__mocks__/line-item"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
-import { CustomerServiceMock } from "../__mocks__/customer"
-import TaxCalculationStrategy from "../../strategies/tax-calculation"
 import SystemTaxService from "../system-tax"
-import { IsNull, Not } from "typeorm"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import _ from "lodash"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -325,8 +332,8 @@ describe("CartService", () => {
       },
     }
 
-    const productVariantInventoryService = {
-      ...ProductVariantInventoryServiceMock,
+    const inventoryLocationStrategy = {
+      ...InventoryLocationStrategyMock,
       confirmInventory: jest
         .fn()
         .mockImplementation((variantId, _quantity, options) => {
@@ -400,7 +407,7 @@ describe("CartService", () => {
       newTotalsService: newTotalsServiceMock,
       eventBusService,
       shippingOptionService,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
       productVariantService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
@@ -568,8 +575,8 @@ describe("CartService", () => {
       },
     }
 
-    const productVariantInventoryService = {
-      ...ProductVariantInventoryServiceMock,
+    const inventoryLocationStrategy = {
+      ...InventoryLocationStrategyMock,
       confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
         if (variantId !== IdMap.getId("cannot-cover")) {
           return true
@@ -621,7 +628,7 @@ describe("CartService", () => {
       newTotalsService: newTotalsServiceMock,
       eventBusService,
       shippingOptionService,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
       productVariantService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
@@ -898,8 +905,8 @@ describe("CartService", () => {
         return this
       },
     }
-    const productVariantInventoryService = {
-      ...ProductVariantInventoryServiceMock,
+    const inventoryLocationStrategy = {
+      ...InventoryLocationStrategyMock,
       confirmInventory: jest
         .fn()
         .mockImplementation((id) => id !== IdMap.getId("cannot-cover")),
@@ -939,7 +946,7 @@ describe("CartService", () => {
       lineItemService,
       eventBusService,
       newTotalsService: newTotalsServiceMock,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
       featureFlagRouter: new FlagRouter({}),
@@ -2640,6 +2647,17 @@ describe("CartService", () => {
       .register("taxProviderService", asClass(TaxProviderService))
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
+      .register(
+        "salesChannelLocationService",
+        asClass(SalesChannelLocationService)
+      )
+      .register(
+        "salesChannelInventoryService",
+        asClass(SalesChannelInventoryService)
+      )
+      .register("inventoryLocationStrategy", asClass(InventoryLocationStrategy))
+      .register("inventoryService", asValue(undefined))
+      .register("stockLocationService", asValue(undefined))
 
     const cartService = container.resolve("cartService")
 

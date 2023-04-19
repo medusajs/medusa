@@ -51,6 +51,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     swapService,
     inventoryService,
     eventBusService,
+    inventoryLocationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -60,6 +61,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     this.cartService_ = cartService
     this.orderService_ = orderService
     this.swapService_ = swapService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
     this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
   }

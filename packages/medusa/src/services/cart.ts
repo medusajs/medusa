@@ -93,7 +93,7 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
-  inventoryLocationStrategy: AbstractInventoryLocationStrategy
+  inventoryLocationStrategy: IInventoryLocationStrategy
 }
 
 type TotalsConfig = {
@@ -135,9 +135,7 @@ class CartService extends TransactionBaseService {
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
-  protected readonly productVariantInventoryService_: ProductVariantInventoryService
-  // eslint-disable-next-line max-len
-  protected readonly inventoryLocationStrategy_: AbstractInventoryLocationStrategy
+  protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
 
   constructor({
     cartRepository,
@@ -164,7 +162,6 @@ class CartService extends TransactionBaseService {
     salesChannelService,
     featureFlagRouter,
     storeService,
-    productVariantInventoryService,
     inventoryLocationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -195,7 +192,6 @@ class CartService extends TransactionBaseService {
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
     this.inventoryLocationStrategy_ = inventoryLocationStrategy
-    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**

@@ -1,9 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+
+import { InventoryLocationStrategyMock } from "../../strategies/__mocks__/inventory-location"
 import { LineItemServiceMock } from "../__mocks__/line-item"
-import { newTotalsServiceMock } from "../__mocks__/new-totals"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import OrderService from "../order"
+import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 describe("OrderService", () => {
   const totalsService = {
@@ -53,8 +54,8 @@ describe("OrderService", () => {
     },
   }
 
-  const productVariantInventoryService = {
-    ...ProductVariantInventoryServiceMock,
+  const inventoryLocationStrategy = {
+    ...InventoryLocationStrategyMock,
   }
 
   describe("createFromCart", () => {
@@ -150,7 +151,7 @@ describe("OrderService", () => {
       regionService,
       eventBusService,
       cartService,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
     })
 
     beforeEach(async () => {
@@ -706,7 +707,7 @@ describe("OrderService", () => {
       paymentProviderService,
       fulfillmentService,
       eventBusService,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
     })
 
     beforeEach(async () => {

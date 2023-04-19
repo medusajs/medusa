@@ -49,7 +49,6 @@ type InjectedProps = {
   totalsService: TotalsService
   eventBusService: EventBusService
   lineItemService: LineItemService
-  productVariantInventoryService: ProductVariantInventoryService
   fulfillmentService: FulfillmentService
   shippingOptionService: ShippingOptionService
   paymentProviderService: PaymentProviderService
@@ -87,8 +86,6 @@ class SwapService extends TransactionBaseService {
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly customShippingOptionService_: CustomShippingOptionService
-  // eslint-disable-next-line max-len
-  protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
 
   constructor({
@@ -102,7 +99,6 @@ class SwapService extends TransactionBaseService {
     shippingOptionService,
     fulfillmentService,
     orderService,
-    productVariantInventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
     inventoryLocationStrategy,
@@ -119,7 +115,6 @@ class SwapService extends TransactionBaseService {
     this.fulfillmentService_ = fulfillmentService
     this.orderService_ = orderService
     this.shippingOptionService_ = shippingOptionService
-    this.productVariantInventoryService_ = productVariantInventoryService
     this.eventBus_ = eventBusService
     this.customShippingOptionService_ = customShippingOptionService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
@@ -796,7 +791,7 @@ class SwapService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       swap.shipping_methods = cart.shipping_methods.map((method) => {
-        ;(method.tax_lines as any) = undefined
+        (method.tax_lines as any) = undefined
         return method
       })
       swap.confirmed_at = new Date()

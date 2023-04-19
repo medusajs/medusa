@@ -1,7 +1,7 @@
-import { MockManager } from "medusa-test-utils"
 import CartCompletionStrategy from "../cart-completion"
+import { InventoryLocationStrategyMock } from "../__mocks__/inventory-location"
+import { MockManager } from "medusa-test-utils"
 import { newTotalsServiceMock } from "../../services/__mocks__/new-totals"
-import { ProductVariantInventoryServiceMock } from "../../services/__mocks__/product-variant-inventory"
 
 const IdempotencyKeyServiceMock = {
   withTransaction: function () {
@@ -219,7 +219,7 @@ describe("CartCompletionStrategy", () => {
         const idempotencyKeyServiceMock = IdempotencyKeyServiceMock
 
         const completionStrat = new CartCompletionStrategy({
-          productVariantInventoryService: ProductVariantInventoryServiceMock,
+          inventoryLocationStrategy: InventoryLocationStrategyMock,
           cartService: cartServiceMock,
           idempotencyKeyService: idempotencyKeyServiceMock,
           orderService: orderServiceMock,

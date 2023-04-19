@@ -1,7 +1,9 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import idMap from "medusa-test-utils/dist/id-map"
+
+import { InventoryLocationStrategyMock } from "../../strategies/__mocks__/inventory-location"
 import ReturnService from "../return"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
+import idMap from "medusa-test-utils/dist/id-map"
+
 describe("ReturnService", () => {
   describe("receive", () => {
     const returnRepository = MockRepository({
@@ -114,7 +116,7 @@ describe("ReturnService", () => {
       lineItemService,
       orderService,
       returnRepository,
-      productVariantInventoryService: ProductVariantInventoryServiceMock,
+      inventoryLocationStrategy: InventoryLocationStrategyMock,
     })
 
     beforeEach(async () => {
@@ -158,10 +160,10 @@ describe("ReturnService", () => {
       )
 
       expect(
-        ProductVariantInventoryServiceMock.adjustInventory
+        InventoryLocationStrategyMock.adjustInventory
       ).toHaveBeenCalledTimes(1)
       expect(
-        ProductVariantInventoryServiceMock.adjustInventory
+        InventoryLocationStrategyMock.adjustInventory
       ).toHaveBeenCalledWith("test-variant", undefined, 10)
     })
 
@@ -176,13 +178,13 @@ describe("ReturnService", () => {
       )
 
       expect(
-        ProductVariantInventoryServiceMock.adjustInventory
+        InventoryLocationStrategyMock.adjustInventory
       ).toHaveBeenCalledTimes(2)
       expect(
-        ProductVariantInventoryServiceMock.adjustInventory
+        InventoryLocationStrategyMock.adjustInventory
       ).toHaveBeenCalledWith("test-variant", undefined, 10)
       expect(
-        ProductVariantInventoryServiceMock.adjustInventory
+        InventoryLocationStrategyMock.adjustInventory
       ).toHaveBeenCalledWith("test-variant-2", undefined, 10)
 
       expect(returnRepository.save).toHaveBeenCalledTimes(1)

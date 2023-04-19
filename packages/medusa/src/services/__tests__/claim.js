@@ -1,6 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+
 import ClaimService from "../claim"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
+import { InventoryLocationStrategyMock } from "../../strategies/__mocks__/inventory-location"
 
 const withTransactionMock = jest.fn()
 const eventBusService = {
@@ -94,8 +95,8 @@ describe("ClaimService", () => {
       },
     }
 
-    const productVariantInventoryService = {
-      ...ProductVariantInventoryServiceMock,
+    const inventoryLocationStrategy = {
+      ...InventoryLocationStrategyMock,
       withTransaction: function () {
         withTransactionMock("inventory")
         return this
@@ -119,7 +120,7 @@ describe("ClaimService", () => {
       returnService,
       lineItemService,
       claimItemService,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
       eventBusService,
     })
 
@@ -158,15 +159,15 @@ describe("ClaimService", () => {
         1
       )
 
-      expect(
-        productVariantInventoryService.reserveQuantity
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        productVariantInventoryService.reserveQuantity
-      ).toHaveBeenCalledWith("var_123", 1, {
-        lineItemId: "test_item",
-        salesChannelId: undefined,
-      })
+      expect(inventoryLocationStrategy.reserveQuantity).toHaveBeenCalledTimes(1)
+      expect(inventoryLocationStrategy.reserveQuantity).toHaveBeenCalledWith(
+        "var_123",
+        1,
+        {
+          lineItemId: "test_item",
+          salesChannelId: undefined,
+        }
+      )
 
       expect(withTransactionMock).toHaveBeenCalledWith("claimItem")
       expect(claimItemService.create).toHaveBeenCalledTimes(1)

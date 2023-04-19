@@ -1,6 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+
 import FulfillmentService from "../fulfillment"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
+import { InventoryLocationStrategyMock } from "../../strategies/__mocks__/inventory-location"
 
 describe("FulfillmentService", () => {
   describe("createFulfillment", () => {
@@ -35,7 +36,7 @@ describe("FulfillmentService", () => {
       fulfillmentRepository,
       shippingProfileService,
       lineItemRepository,
-      productVariantInventoryService: ProductVariantInventoryServiceMock,
+      inventoryLocationStrategy: InventoryLocationStrategyMock,
     })
 
     beforeEach(async () => {
@@ -134,7 +135,7 @@ describe("FulfillmentService", () => {
       fulfillmentProviderService,
       fulfillmentRepository,
       lineItemService,
-      productVariantInventoryService: ProductVariantInventoryServiceMock,
+      inventoryLocationStrategy: InventoryLocationStrategyMock,
     })
 
     beforeEach(async () => {
