@@ -1,6 +1,35 @@
-import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
+import {
+  AbstractInventoryLocationStrategy,
+  IInventoryLocationStrategy,
+} from "../interfaces/inventory-location"
+import {
+  Address,
+  Cart,
+  CustomShippingOption,
+  Customer,
+  Discount,
+  DiscountRule,
+  DiscountRuleType,
+  LineItem,
+  PaymentSession,
+  PaymentSessionStatus,
+  SalesChannel,
+  ShippingMethod,
+} from "../models"
+import {
+  AddressPayload,
+  FindConfig,
+  TotalField,
+  WithRequiredProperty,
+} from "../types/common"
+import {
+  CartCreateProps,
+  CartUpdateProps,
+  FilterableCartProps,
+  LineItemUpdate,
+  LineItemValidateData,
+  isCart,
+} from "../types/cart"
 import {
   CustomShippingOptionService,
   CustomerService,
@@ -21,44 +50,20 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import {
-  Address,
-  Cart,
-  CustomShippingOption,
-  Customer,
-  Discount,
-  DiscountRule,
-  DiscountRuleType,
-  LineItem,
-  PaymentSession,
-  PaymentSessionStatus,
-  SalesChannel,
-  ShippingMethod,
-} from "../models"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, isString, setMetadata } from "../utils"
+import { isEmpty, isEqual } from "lodash"
+
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
-import {
-  CartCreateProps,
-  CartUpdateProps,
-  FilterableCartProps,
-  LineItemUpdate,
-  LineItemValidateData,
-  isCart,
-} from "../types/cart"
-import {
-  AddressPayload,
-  FindConfig,
-  TotalField,
-  WithRequiredProperty,
-} from "../types/common"
-import { PaymentSessionInput } from "../types/payment"
-import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
+import { LineItemRepository } from "../repositories/line-item"
+import { PaymentSessionInput } from "../types/payment"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {
@@ -88,6 +93,7 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
+  inventoryLocationStrategy: AbstractInventoryLocationStrategy
 }
 
 type TotalsConfig = {
@@ -130,6 +136,8 @@ class CartService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  // eslint-disable-next-line max-len
+  protected readonly inventoryLocationStrategy_: AbstractInventoryLocationStrategy
 
   constructor({
     cartRepository,
@@ -157,6 +165,7 @@ class CartService extends TransactionBaseService {
     featureFlagRouter,
     storeService,
     productVariantInventoryService,
+    inventoryLocationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -185,6 +194,7 @@ class CartService extends TransactionBaseService {
     this.salesChannelService_ = salesChannelService
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
     this.productVariantInventoryService_ = productVariantInventoryService
   }
 
@@ -674,7 +684,7 @@ class CartService extends TransactionBaseService {
         // Confirm inventory or throw error
         if (lineItem.variant_id) {
           const isCovered =
-            await this.productVariantInventoryService_.confirmInventory(
+            await this.inventoryLocationStrategy_.confirmInventory(
               lineItem.variant_id,
               quantity,
               { salesChannelId: cart.sales_channel_id }
@@ -796,10 +806,8 @@ class CartService extends TransactionBaseService {
 
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
-        const productVariantInventoryServiceTx =
-          this.productVariantInventoryService_.withTransaction(
-            transactionManager
-          )
+        const inventoryLocationStrategyTx =
+          this.inventoryLocationStrategy_.withTransaction(transactionManager)
 
         const existingItems = await lineItemServiceTx.list(
           {
@@ -835,7 +843,7 @@ class CartService extends TransactionBaseService {
 
           if (item.variant_id) {
             const isSufficient =
-              await productVariantInventoryServiceTx.confirmInventory(
+              await inventoryLocationStrategyTx.confirmInventory(
                 item.variant_id,
                 item.quantity,
                 { salesChannelId: cart.sales_channel_id }
@@ -954,7 +962,7 @@ class CartService extends TransactionBaseService {
             const cart = await this.retrieve(cartId, { select: select })
 
             const hasInventory =
-              await this.productVariantInventoryService_.confirmInventory(
+              await this.inventoryLocationStrategy_.confirmInventory(
                 lineItem.variant_id,
                 lineItemUpdate.quantity,
                 { salesChannelId: cart.sales_channel_id }

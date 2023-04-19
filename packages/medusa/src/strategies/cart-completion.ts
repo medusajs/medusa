@@ -16,6 +16,7 @@ import {
   ProductVariantInventoryService,
 } from "../services"
 
+import { AbstractInventoryLocationStrategy } from "../interfaces/inventory-location"
 import CartService from "../services/cart"
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../services/idempotency-key"
@@ -25,6 +26,7 @@ import SwapService from "../services/swap"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
+  inventoryLocationStrategy: AbstractInventoryLocationStrategy
   paymentProviderService: PaymentProviderService
   idempotencyKeyService: IdempotencyKeyService
   cartService: CartService
@@ -38,6 +40,8 @@ type InjectedDependencies = {
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  // eslint-disable-next-line max-len
+  protected readonly inventoryLocationStrategy_: AbstractInventoryLocationStrategy
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly idempotencyKeyService_: IdempotencyKeyService
   protected readonly cartService_: CartService
@@ -310,15 +314,15 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       MedusaError | undefined
     ][] = []
     if (!allowBackorder) {
-      const productVariantInventoryServiceTx =
-        this.productVariantInventoryService_.withTransaction(manager)
+      const inventoryLocationStrategyTx =
+        this.inventoryLocationStrategy_.withTransaction(manager)
 
       reservations = await Promise.all(
         cart.items.map(async (item) => {
           if (item.variant_id) {
             try {
               const inventoryConfirmed =
-                await productVariantInventoryServiceTx.confirmInventory(
+                await inventoryLocationStrategyTx.confirmInventory(
                   item.variant_id,
                   item.quantity,
                   { salesChannelId: cart.sales_channel_id }
@@ -333,7 +337,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
               }
 
               return [
-                await productVariantInventoryServiceTx.reserveQuantity(
+                await inventoryLocationStrategyTx.reserveQuantity(
                   item.variant_id,
                   item.quantity,
                   {

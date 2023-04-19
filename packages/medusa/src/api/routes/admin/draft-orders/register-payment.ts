@@ -11,6 +11,7 @@ import {
 } from "../../../../types/orders"
 
 import { EntityManager } from "typeorm"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { MedusaError } from "medusa-core-utils"
 import { Order } from "../../../../models"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -80,6 +81,9 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   const order = await entityManager.transaction(async (manager) => {
@@ -114,6 +118,13 @@ export default async (req, res) => {
         select: defaultOrderFields,
       })
 
+    // TODO: Re-enable when we have a way to handle inventory for draft orders on creation
+    if (!inventoryService) {
+      await reserveQuantityForDraftOrder(order, {
+        inventoryLocationStrategy,
+      })
+    }
+
     return order
   })
 
@@ -123,16 +134,16 @@ export default async (req, res) => {
 export const reserveQuantityForDraftOrder = async (
   order: Order,
   context: {
-    productVariantInventoryService: ProductVariantInventoryService
+    inventoryLocationStrategy: IInventoryLocationStrategy
     locationId?: string
   }
 ) => {
-  const { productVariantInventoryService, locationId } = context
+  const { inventoryLocationStrategy, locationId } = context
   await Promise.all(
     order.items.map(async (item) => {
       if (item.variant_id) {
         const inventoryConfirmed =
-          await productVariantInventoryService.confirmInventory(
+          await inventoryLocationStrategy.confirmInventory(
             item.variant_id,
             item.quantity,
             { salesChannelId: order.sales_channel_id }
@@ -146,7 +157,7 @@ export const reserveQuantityForDraftOrder = async (
           )
         }
 
-        await productVariantInventoryService.reserveQuantity(
+        await inventoryLocationStrategy.reserveQuantity(
           item.variant_id,
           item.quantity,
           {
