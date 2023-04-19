@@ -45,7 +45,7 @@ There are other important attributes discussed in later sections. Check out the 
 
 You have full freedom in how you create your orders. Within the Medusa backend, there are two defined ways when an order is created:
 
-1. Using a cart: The customer adds products to their cart and go through the checkout process to place the order. Learn about the cart completion process here.
+1. Using a cart: The customer adds products to their cart and go through the checkout process to place the order. Learn about the [cart completion process here](../carts-and-checkout/cart.md#cart-completion-process).
 2. Using draft orders: the merchant can create draft orders without the customer’s involvement. This includes a very similar process of adding products to the draft order, supplying the shipping and billing addresses, and more. The draft order can later be turned into a regular order.
 
 ---
