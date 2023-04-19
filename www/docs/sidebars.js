@@ -653,12 +653,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/carts-and-checkout/cart",
           label: "Cart",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",

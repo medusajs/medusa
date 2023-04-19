@@ -74,7 +74,7 @@ export class IdempotencyKey {
  *     description: The unique randomly generated key used to determine the state of a process.
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: Date which the idempotency key was locked.
