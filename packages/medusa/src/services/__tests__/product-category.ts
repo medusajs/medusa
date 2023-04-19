@@ -63,7 +63,10 @@ describe("ProductCategoryService", () => {
         },
         validID,
         {},
-        false,
+        {
+          depth: undefined,
+          includeDescendantsTree: false
+        },
       )
     })
 
@@ -93,7 +96,10 @@ describe("ProductCategoryService", () => {
         },
         undefined,
         {},
-        true,
+        {
+          depth: undefined,
+          includeDescendantsTree: true
+        },
       )
     })
   })
