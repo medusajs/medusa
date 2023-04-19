@@ -1,9 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
-
 import {
   Cart,
   CartType,
@@ -19,10 +13,6 @@ import {
   SwapFulfillmentStatus,
   SwapPaymentStatus,
 } from "../models"
-import { SwapRepository } from "../repositories/swap"
-import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { CreateShipmentConfig } from "../types/fulfillment"
-import { OrdersReturnItem } from "../types/orders"
 import {
   CartService,
   CustomShippingOptionService,
@@ -37,6 +27,16 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
+import { EntityManager, In } from "typeorm"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, setMetadata, validateId } from "../utils"
+
+import { CreateShipmentConfig } from "../types/fulfillment"
+import { IInventoryLocationStrategy } from "../interfaces/inventory-location"
+import { OrdersReturnItem } from "../types/orders"
+import { SwapRepository } from "../repositories/swap"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedProps = {
   manager: EntityManager
@@ -55,6 +55,7 @@ type InjectedProps = {
   paymentProviderService: PaymentProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   customShippingOptionService: CustomShippingOptionService
+  inventoryLocationStrategy: IInventoryLocationStrategy
 }
 
 /**
@@ -88,6 +89,7 @@ class SwapService extends TransactionBaseService {
   protected readonly customShippingOptionService_: CustomShippingOptionService
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
 
   constructor({
     swapRepository,
@@ -103,6 +105,7 @@ class SwapService extends TransactionBaseService {
     productVariantInventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
+    inventoryLocationStrategy,
   }: InjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -120,6 +123,7 @@ class SwapService extends TransactionBaseService {
     this.eventBus_ = eventBusService
     this.customShippingOptionService_ = customShippingOptionService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
   }
 
   /**
@@ -773,7 +777,7 @@ class SwapService extends TransactionBaseService {
         await Promise.all(
           items.map(async (item) => {
             if (item.variant_id) {
-              await this.productVariantInventoryService_.reserveQuantity(
+              await this.inventoryLocationStrategy_.reserveQuantity(
                 item.variant_id,
                 item.quantity,
                 {
@@ -792,7 +796,7 @@ class SwapService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       swap.shipping_methods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
       swap.confirmed_at = new Date()

@@ -1,9 +1,11 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import {
   LineItemService,
   ProductVariantInventoryService,
 } from "../../../../services"
+
+import { EntityManager } from "typeorm"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /admin/orders/{id}/line-items/{line_item_id}/reserve
@@ -60,8 +62,8 @@ export default async (req, res) => {
   const { validatedBody } = req as {
     validatedBody: AdminOrdersOrderLineItemReservationReq
   }
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
 
   const manager: EntityManager = req.scope.resolve("manager")
 
@@ -81,10 +83,10 @@ export default async (req, res) => {
 
     const quantity = validatedBody.quantity || lineItem.quantity
 
-    const productVariantInventoryServiceTx =
-      productVariantInventoryService.withTransaction(manager)
+    const inventoryLocationStrategyTx =
+      inventoryLocationStrategy.withTransaction(manager)
 
-    return await productVariantInventoryServiceTx.reserveQuantity(
+    return await inventoryLocationStrategyTx.reserveQuantity(
       lineItem.variant_id,
       quantity,
       {

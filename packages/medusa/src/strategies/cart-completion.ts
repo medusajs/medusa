@@ -11,22 +11,18 @@ import { IdempotencyKey, Order } from "../models"
 import OrderService, {
   ORDER_CART_ALREADY_EXISTS_ERROR,
 } from "../services/order"
-import {
-  PaymentProviderService,
-  ProductVariantInventoryService,
-} from "../services"
 
-import { AbstractInventoryLocationStrategy } from "../interfaces/inventory-location"
 import CartService from "../services/cart"
 import { EntityManager } from "typeorm"
+import { IInventoryLocationStrategy } from "../interfaces/inventory-location"
 import IdempotencyKeyService from "../services/idempotency-key"
 import { MedusaError } from "medusa-core-utils"
+import { PaymentProviderService } from "../services"
 import { RequestContext } from "../types/request"
 import SwapService from "../services/swap"
 
 type InjectedDependencies = {
-  productVariantInventoryService: ProductVariantInventoryService
-  inventoryLocationStrategy: AbstractInventoryLocationStrategy
+  inventoryLocationStrategy: IInventoryLocationStrategy
   paymentProviderService: PaymentProviderService
   idempotencyKeyService: IdempotencyKeyService
   cartService: CartService
@@ -38,10 +34,7 @@ type InjectedDependencies = {
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
-  // eslint-disable-next-line max-len
-  protected readonly productVariantInventoryService_: ProductVariantInventoryService
-  // eslint-disable-next-line max-len
-  protected readonly inventoryLocationStrategy_: AbstractInventoryLocationStrategy
+  protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly idempotencyKeyService_: IdempotencyKeyService
   protected readonly cartService_: CartService
@@ -51,7 +44,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   protected readonly eventBusService_: IEventBusService
 
   constructor({
-    productVariantInventoryService,
     paymentProviderService,
     idempotencyKeyService,
     cartService,
@@ -64,7 +56,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     super(arguments[0])
 
     this.paymentProviderService_ = paymentProviderService
-    this.productVariantInventoryService_ = productVariantInventoryService
     this.idempotencyKeyService_ = idempotencyKeyService
     this.cartService_ = cartService
     this.orderService_ = orderService

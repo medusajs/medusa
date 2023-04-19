@@ -9,7 +9,7 @@ import { ReservationItemDTO, ReserveQuantityContext } from "@medusajs/types"
 
 import { TransactionBaseService } from "@medusajs/utils"
 
-export interface IInventoryLocationStrategy {
+export interface IInventoryLocationStrategy extends TransactionBaseService {
   confirmInventory(
     variantId: string,
     quantity: number,

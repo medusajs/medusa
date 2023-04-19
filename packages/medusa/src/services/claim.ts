@@ -1,6 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import {
   ClaimFulfillmentStatus,
   ClaimOrder,
@@ -11,29 +8,34 @@ import {
   Order,
   ReturnItem,
 } from "../models"
-import { AddressRepository } from "../repositories/address"
-import { ClaimRepository } from "../repositories/claim"
-import { LineItemRepository } from "../repositories/line-item"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
   CreateClaimInput,
   CreateClaimItemInput,
   UpdateClaimInput,
 } from "../types/claim"
-import { FindConfig } from "../types/common"
+import { DeepPartial, EntityManager } from "typeorm"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { buildQuery, setMetadata } from "../utils"
+
+import { AddressRepository } from "../repositories/address"
 import ClaimItemService from "./claim-item"
+import { ClaimRepository } from "../repositories/claim"
 import EventBusService from "./event-bus"
-import FulfillmentService from "./fulfillment"
+import { FindConfig } from "../types/common"
 import FulfillmentProviderService from "./fulfillment-provider"
+import FulfillmentService from "./fulfillment"
+import { IInventoryLocationStrategy } from "../interfaces/inventory-location"
+import { LineItemRepository } from "../repositories/line-item"
 import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
 import ProductVariantInventoryService from "./product-variant-inventory"
 import RegionService from "./region"
 import ReturnService from "./return"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -53,6 +55,7 @@ type InjectedDependencies = {
   shippingOptionService: ShippingOptionService
   taxProviderService: TaxProviderService
   totalsService: TotalsService
+  inventoryLocationStrategy: IInventoryLocationStrategy
 }
 
 export default class ClaimService extends TransactionBaseService {
@@ -82,6 +85,7 @@ export default class ClaimService extends TransactionBaseService {
   protected readonly totalsService_: TotalsService
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
 
   constructor({
     addressRepository,
@@ -100,6 +104,7 @@ export default class ClaimService extends TransactionBaseService {
     shippingOptionService,
     taxProviderService,
     totalsService,
+    inventoryLocationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -120,6 +125,7 @@ export default class ClaimService extends TransactionBaseService {
     this.shippingOptionService_ = shippingOptionService
     this.taxProviderService_ = taxProviderService
     this.totalsService_ = totalsService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
   }
 
   async update(id: string, data: UpdateClaimInput): Promise<ClaimOrder> {
@@ -390,7 +396,7 @@ export default class ClaimService extends TransactionBaseService {
           await Promise.all(
             newItems.map(async (newItem) => {
               if (newItem.variant_id) {
-                await this.productVariantInventoryService_.reserveQuantity(
+                await this.inventoryLocationStrategy_.reserveQuantity(
                   newItem.variant_id,
                   newItem.quantity,
                   {

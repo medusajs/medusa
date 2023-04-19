@@ -1,3 +1,4 @@
+import { Fulfillment, LineItem } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -8,17 +9,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
-
-import { EntityManager } from "typeorm"
 import {
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { Fulfillment, LineItem } from "../../../../models"
+import { Transform, Type } from "class-transformer"
+
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [post] /admin/orders/{id}/fulfillment
@@ -103,9 +104,9 @@ export default async (req, res) => {
   }
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
-    "productVariantInventoryService"
-  )
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
@@ -134,13 +135,13 @@ export default async (req, res) => {
         ],
       })
 
-      const pvInventoryServiceTx =
-        pvInventoryService.withTransaction(transactionManager)
+      const inventoryLocationStrategyTx =
+        inventoryLocationStrategy.withTransaction(transactionManager)
 
       await updateInventoryAndReservations(
         fulfillments.filter((f) => !existingFulfillmentSet.has(f.id)),
         {
-          inventoryService: pvInventoryServiceTx,
+          inventoryService: inventoryLocationStrategyTx,
           locationId: validatedBody.location_id,
         }
       )
@@ -157,7 +158,7 @@ export default async (req, res) => {
 export const updateInventoryAndReservations = async (
   fulfillments: Fulfillment[],
   context: {
-    inventoryService: ProductVariantInventoryService
+    inventoryService: IInventoryLocationStrategy
     locationId: string
   }
 ) => {

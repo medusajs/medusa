@@ -1,14 +1,20 @@
-import { IInventoryService } from "@medusajs/types"
-import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
 import {
-  EntityManager,
-  FindManyOptions,
-  FindOptionsWhere,
-  ILike,
-  IsNull,
-  Not,
-  Raw,
-} from "typeorm"
+  Address,
+  Cart,
+  ClaimOrder,
+  Fulfillment,
+  FulfillmentItem,
+  FulfillmentStatus,
+  GiftCard,
+  LineItem,
+  Order,
+  OrderStatus,
+  Payment,
+  PaymentStatus,
+  Return,
+  Swap,
+  TrackingLink,
+} from "../models"
 import {
   CartService,
   CustomerService,
@@ -27,33 +33,22 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import {
-  Address,
-  Cart,
-  ClaimOrder,
-  Fulfillment,
-  FulfillmentItem,
-  FulfillmentStatus,
-  GiftCard,
-  LineItem,
-  Order,
-  OrderStatus,
-  Payment,
-  PaymentStatus,
-  Return,
-  Swap,
-  TrackingLink,
-} from "../models"
-import { AddressRepository } from "../repositories/address"
-import { OrderRepository } from "../repositories/order"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
 } from "../types/fulfillment"
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+  Not,
+  Raw,
+} from "typeorm"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
+import { MedusaError, TransactionBaseService, isDefined } from "@medusajs/utils"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
-import { CreateShippingMethodDto } from "../types/shipping-options"
 import {
   buildQuery,
   buildRelations,
@@ -61,8 +56,15 @@ import {
   isString,
   setMetadata,
 } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
+
+import { AddressRepository } from "../repositories/address"
+import { CreateShippingMethodDto } from "../types/shipping-options"
 import EventBusService from "./event-bus"
+import { FlagRouter } from "../utils/flag-router"
+import { IInventoryLocationStrategy } from "../interfaces/inventory-location"
+import { IInventoryService } from "@medusajs/types"
+import { OrderRepository } from "../repositories/order"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -88,7 +90,7 @@ type InjectedDependencies = {
   inventoryService: IInventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
-  productVariantInventoryService: ProductVariantInventoryService
+  inventoryLocationStrategy: IInventoryLocationStrategy
 }
 
 class OrderService extends TransactionBaseService {
@@ -131,8 +133,7 @@ class OrderService extends TransactionBaseService {
   protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
-  // eslint-disable-next-line max-len
-  protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
 
   constructor({
     orderRepository,
@@ -154,7 +155,7 @@ class OrderService extends TransactionBaseService {
     draftOrderService,
     eventBusService,
     featureFlagRouter,
-    productVariantInventoryService,
+    inventoryLocationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -178,7 +179,7 @@ class OrderService extends TransactionBaseService {
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
     this.featureFlagRouter_ = featureFlagRouter
-    this.productVariantInventoryService_ = productVariantInventoryService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
   }
 
   /**
@@ -667,7 +668,7 @@ class OrderService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       const shippingMethods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
 
@@ -775,7 +776,7 @@ class OrderService extends TransactionBaseService {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
-            (method.tax_lines as any) = undefined
+            ;(method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
               order_id: order.id,
             })
@@ -1213,13 +1214,14 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
-      const inventoryServiceTx =
-        this.productVariantInventoryService_.withTransaction(manager)
+      const inventoryLocationStrategyTxTx =
+        this.inventoryLocationStrategy_.withTransaction(manager)
 
       await Promise.all(
         order.items.map(async (item) => {
           if (item.variant_id) {
-            return await inventoryServiceTx.deleteReservationsByLineItem(
+            // eslint-disable-next-line max-len
+            return await inventoryLocationStrategyTxTx.deleteReservationsByLineItem(
               item.id,
               item.variant_id,
               item.quantity
