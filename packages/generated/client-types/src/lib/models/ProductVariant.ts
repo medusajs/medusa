@@ -121,7 +121,14 @@ export interface ProductVariant {
    */
   metadata: Record<string, any> | null
   /**
+   * Only used with the inventory modules.
    * A boolean value indicating whether the Product Variant is purchasable.
+   * A variant is purchasable if:
+   * - inventory is not managed
+   * - it has no inventory items
+   * - it is in stock
+   * - it is backorderable.
+   *
    */
   purchasable?: boolean
 }
