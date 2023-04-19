@@ -18,17 +18,17 @@ export default {
         return
       }
 
-      const country = await regionService
-        .validateCountry(data.country_code)
+      const region = await regionService
+        .retrieveByCountryCode(data.country_code)
         .catch(() => void 0)
 
-      if (!country) {
+      if (!region) {
         next()
         return
       }
 
-      req.body.region_id = country.region_id
-      req.body.country_code = country.iso_2
+      req.body.region_id = region.id
+      req.body.country_code = data.country_code.toLowerCase()
 
       next()
     } catch (error) {
