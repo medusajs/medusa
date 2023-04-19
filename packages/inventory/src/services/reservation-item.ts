@@ -243,7 +243,7 @@ export default class ReservationItemService {
     )
 
     const ops: Promise<unknown>[] = [
-      itemRepository.softDelete({ line_item_id: lineItemId })
+      itemRepository.softDelete({ line_item_id: lineItemId }),
     ]
     for (const item of items) {
       ops.push(
