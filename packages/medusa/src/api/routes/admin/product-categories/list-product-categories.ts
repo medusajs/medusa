@@ -1,10 +1,8 @@
-import { IsOptional, IsString, IsBoolean } from "class-validator"
 import { Request, Response } from "express"
-import { Transform } from "class-transformer"
+import { IsString, IsOptional } from "class-validator"
 
 import { ProductCategoryService } from "../../../../services"
-import { extendedFindParamsMixin } from "../../../../types/common"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { GetProductCategoriesParams } from "../../../../types/product-category"
 
 /**
  * @oas [get] /admin/product-categories
@@ -18,6 +16,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) is_internal {boolean} Search for only internal categories.
  *   - (query) is_active {boolean} Search for only active categories
  *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
+ *   - (query) depth {number} retrieve categories at a certain depth. depth is a number greater than 0.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
@@ -87,23 +86,8 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
-  limit: 100,
-  offset: 0,
-}) {
-  @IsString()
-  @IsOptional()
-  q?: string
-
-  @IsString()
-  @IsOptional()
-  handle?: string
-
-  @IsBoolean()
-  @IsOptional()
-  @Transform(({ value }) => optionalBooleanMapper.get(value))
-  include_descendants_tree?: boolean
-
+// eslint-disable-next-line max-len
+export class AdminGetProductCategoriesParams extends GetProductCategoriesParams {
   @IsString()
   @IsOptional()
   is_internal?: boolean
@@ -111,11 +95,4 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   is_active?: boolean
-
-  @IsString()
-  @IsOptional()
-  @Transform(({ value }) => {
-    return value === "null" ? null : value
-  })
-  parent_category_id?: string | null
 }

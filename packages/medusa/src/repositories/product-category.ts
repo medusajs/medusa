@@ -7,7 +7,11 @@ import {
   FindOneOptions,
 } from "typeorm"
 import { ProductCategory } from "../models/product-category"
-import { ExtendedFindConfig, QuerySelector } from "../types/common"
+import {
+  ExtendedFindConfig,
+  QuerySelector,
+  FindTreeOptions,
+} from "../types/common"
 import { dataSource } from "../loaders/database"
 import { objectToStringPath } from "@medusajs/utils"
 import { isEmpty } from "lodash"
@@ -38,10 +42,13 @@ export const ProductCategoryRepository = dataSource
       },
       q?: string,
       treeScope: QuerySelector<ProductCategory> = {},
-      includeTree = false
+      treeOptions: FindTreeOptions = {
+        includeDescendantsTree: false,
+      }
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
+      const { includeDescendantsTree, depth } = treeOptions
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
       const columnsSelected = objectToStringPath(options_.select)
@@ -51,7 +58,9 @@ export const ProductCategoryRepository = dataSource
         const modelColumns = this.metadata.ownColumns.map(
           (column) => column.propertyName
         )
-        const selectColumns = columnsSelected.length ? columnsSelected : modelColumns
+        const selectColumns = columnsSelected.length
+          ? columnsSelected
+          : modelColumns
 
         return selectColumns.map((column) => {
           return `${relationName}.${column}`
@@ -69,16 +78,30 @@ export const ProductCategoryRepository = dataSource
         delete options_.where?.name
         delete options_.where?.handle
 
-        options_.where = [{
-          ...options_.where,
-          name: ILike(`%${q}%`)
-        }, {
-          ...options_.where,
-          handle: ILike(`%${q}%`)
-        }]
+        options_.where = [
+          {
+            ...options_.where,
+            name: ILike(`%${q}%`),
+          },
+          {
+            ...options_.where,
+            handle: ILike(`%${q}%`),
+          },
+        ]
       }
 
       queryBuilder.where(options_.where)
+
+      if (typeof depth === "number") {
+        // Depth is a number greater than 0, with this regex, we are checking how
+        // many period (.) characters are present in a record. A top level category
+        // has one period, this is depth 1. Depth = total of all periods in mpath string
+        const regexPattern = `^(?:[^.]*\\.){${depth}}[^.]*$`
+
+        queryBuilder.andWhere("product_category.mpath ~ :regexPattern", {
+          regexPattern,
+        })
+      }
 
       const includedTreeRelations: string[] = relationsSelected.filter((rel) =>
         ProductCategory.treeRelations.includes(rel)
@@ -111,7 +134,7 @@ export const ProductCategoryRepository = dataSource
 
       let [categories, count] = await queryBuilder.getManyAndCount()
 
-      if (includeTree) {
+      if (includeDescendantsTree) {
         categories = await Promise.all(
           categories.map(async (productCategory) => {
             productCategory = await this.findDescendantsTree(productCategory)

@@ -9,6 +9,7 @@ import {
   QuerySelector,
   Selector,
   TreeQuerySelector,
+  FindTreeOptions,
 } from "../types/common"
 import {
   CreateProductCategoryInput,
@@ -69,6 +70,14 @@ class ProductCategoryService extends TransactionBaseService {
     const includeDescendantsTree = !!selector.include_descendants_tree
     delete selector.include_descendants_tree
 
+    const treeDepth = selector.depth
+    delete selector.depth
+
+    const treeOptions: FindTreeOptions = {
+      includeDescendantsTree,
+      depth: treeDepth,
+    }
+
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
@@ -87,7 +96,7 @@ class ProductCategoryService extends TransactionBaseService {
       query,
       q,
       treeSelector,
-      includeDescendantsTree
+      treeOptions
     )
   }
 

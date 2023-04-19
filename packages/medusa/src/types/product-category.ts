@@ -1,13 +1,17 @@
-import { Transform } from "class-transformer"
+import { Transform, Type } from "class-transformer"
+import { extendedFindParamsMixin } from "./common"
 import {
   IsNotEmpty,
   IsOptional,
   IsString,
   IsBoolean,
   ValidateIf,
+  IsNumber,
+  Min,
 } from "class-validator"
 import { isDefined } from "medusa-core-utils"
 import { ProductCategory } from "../models"
+import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 
 export const tempReorderRank = 99999
 type ProductCategoryInput = {
@@ -28,7 +32,13 @@ export type UpdateProductCategoryInput = ProductCategoryInput & {
 }
 
 export class AdminProductCategoriesReqBase {
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    if (value === "null") {
+      return null
+    } else {
+      return value
+    }
+  })
   @ValidateIf((input) => isDefined(input.description))
   @IsString()
   description?: string
@@ -51,6 +61,37 @@ export class AdminProductCategoriesReqBase {
     return value === "null" ? null : value
   })
   parent_category_id?: string | null
+}
+
+export class GetProductCategoriesParams extends extendedFindParamsMixin({
+  limit: 100,
+  offset: 0,
+}) {
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  @IsString()
+  @IsOptional()
+  handle?: string
+
+  @IsNumber()
+  @IsOptional()
+  @Min(1)
+  @Type(() => Number)
+  depth?: number
+
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
+  parent_category_id?: string | null
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
+  include_descendants_tree?: boolean
 }
 
 export class ProductBatchProductCategory {
