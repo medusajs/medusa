@@ -228,6 +228,12 @@ To do that:
 
 ## Setup Gatsby Storefront
 
+:::warning
+
+This Gatsby storefront is deprecated. It's recommended to integrate Contentful into either the Next.js storefront or your custom storefront.
+
+:::
+
 In this section, you’ll set up the Gatsby storefront of your Medusa backend.
 
 In your terminal in a different directory of the Medusa backend, run the following command:
