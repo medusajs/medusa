@@ -22,7 +22,7 @@ import {
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
-import { createVariantTransaction } from "./transaction/create-product-variant"
+import { createVariantsTransaction } from "./transaction/create-product-variant"
 
 /**
  * @oas [post] /admin/products/{id}/variants
@@ -131,7 +131,7 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
 
   await manager.transaction(async (transactionManager) => {
-    await createVariantTransaction(
+    await createVariantsTransaction(
       {
         manager: transactionManager,
         inventoryService,
@@ -139,7 +139,7 @@ export default async (req, res) => {
         productVariantService,
       },
       id,
-      validated as CreateProductVariantInput
+      [validated as CreateProductVariantInput]
     )
   })
 
