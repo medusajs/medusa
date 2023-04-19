@@ -33,7 +33,7 @@ There are other important attributes discussed in later sections. Check out the 
 
 ## Cart Totals Calculation
 
-By default, the cart entity doesn’t hold any details regarding the totals. These are computed and added to the cart entity using the `CartService`'s [decorateTotals method](../../references/services/classes/CartService.md#decoratetotals). There's also a dedicated method in the `CartService`, [retrieveWithTotals](../../references/services/classes/CartService.md#retrieveWithTotals), attaching the totals, so that you don't have to worry about it. It is recommended to use this method by default when you need to retrieve the cart. 
+By default, the `Cart` entity doesn’t hold any details regarding the totals. These are computed and added to the cart entity using the `CartService`'s [decorateTotals method](../../references/services/classes/CartService.md#decoratetotals). There's also a dedicated method in the `CartService`, [retrieveWithTotals](../../references/services/classes/CartService.md#retrieveWithTotals), attaching the totals, so that you don't have to worry about it. It is recommended to use this method by default when you need to retrieve the cart. 
 
 The cart’s totals are calculated based on the content and context of the cart. This includes the selected region, whether tax-inclusive pricing is enabled, the chosen shipping methods, and more.
 
