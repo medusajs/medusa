@@ -717,12 +717,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/orders",
           label: "Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
