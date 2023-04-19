@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express"
+import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
+import { FlagRouter } from "../../utils/flag-router"
 
 /**
  * Middleware that includes the default sales channel on the request, if no sales channels present
@@ -12,7 +14,12 @@ export function withDefaultSalesChannel({
   attachChannelAsArray?: boolean
 }): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, _, next: NextFunction) => {
+    const featureFlagRouter = req.scope.resolve(
+      "featureFlagRouter"
+    ) as FlagRouter
+
     if (
+      !featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) ||
       req.query.sales_channel_id?.length ||
       req.get("x-publishable-api-key")
     ) {
@@ -31,8 +38,6 @@ export function withDefaultSalesChannel({
           : defaultSalesChannel.id
       }
     } catch {
-      // swallow the error? default SC is not technically necessary for these
-      // requests to finish. Log this situation somewhere?
     } finally {
       next()
     }
