@@ -137,7 +137,6 @@ export const ProductCategoryRepository = dataSource
       if (includeDescendantsTree) {
         categories = await Promise.all(
           categories.map(async (productCategory) => {
-            console.log("descendantsDepth - ", descendantsDepth)
             productCategory = await this.findDescendantsTree(productCategory, {
               depth: descendantsDepth,
             })
