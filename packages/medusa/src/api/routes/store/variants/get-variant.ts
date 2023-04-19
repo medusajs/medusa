@@ -5,11 +5,12 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsOptional, IsString } from "class-validator"
 
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { defaultStoreVariantRelations } from "."
 import { validator } from "../../../../utils/validator"
-import { IsOptional, IsString } from "class-validator"
 
 /**
  * @oas [get] /store/variants/{variant_id}
@@ -68,8 +69,10 @@ export default async (req, res) => {
     "productVariantService"
   )
   const pricingService: PricingService = req.scope.resolve("pricingService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
+
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
@@ -105,7 +108,7 @@ export default async (req, res) => {
     include_discount_prices: true,
   })
 
-  const [variant] = await productVariantInventoryService.setVariantAvailability(
+  const [variant] = await inventoryLocationStrategy.setVariantAvailability(
     variantRes,
     sales_channel_id
   )

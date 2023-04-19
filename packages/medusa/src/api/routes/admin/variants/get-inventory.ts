@@ -3,13 +3,15 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
 } from "@medusajs/types"
-import { SalesChannel } from "../../../../models"
 import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../services"
-import ProductVariantService from "../../../../services/product-variant"
+
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
+import ProductVariantService from "../../../../services/product-variant"
+import { SalesChannel } from "../../../../models"
 import { joinLevels } from "../inventory-items/utils/join-levels"
 
 /**
@@ -82,6 +84,9 @@ export default async (req, res) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
 
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
+
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
@@ -112,6 +117,7 @@ export default async (req, res) => {
 
   const inventory =
     await productVariantInventoryService.listInventoryItemsByVariant(variant.id)
+
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
   if (inventory.length) {
@@ -127,7 +133,7 @@ export default async (req, res) => {
 
         const quantity =
           // eslint-disable-next-line max-len
-          await productVariantInventoryService.getVariantQuantityFromVariantInventoryItems(
+          await inventoryLocationStrategy.getVariantQuantityFromVariantInventoryItems(
             variantInventoryItems,
             channel.id
           )

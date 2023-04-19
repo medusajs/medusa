@@ -1,22 +1,6 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import {
-  FulfillmentStatus,
-  LineItem,
-  Order,
-  PaymentStatus,
-  Return,
-  ReturnItem,
-  ReturnStatus,
-} from "../models"
-import { ReturnRepository } from "../repositories/return"
-import { ReturnItemRepository } from "../repositories/return-item"
-import { FindConfig, Selector } from "../types/common"
-import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
-import { buildQuery, setMetadata } from "../utils"
-
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
 import {
   FulfillmentProviderService,
   LineItemService,
@@ -27,6 +11,23 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import {
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentStatus,
+  Return,
+  ReturnItem,
+  ReturnStatus,
+} from "../models"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, setMetadata } from "../utils"
+
+import { IInventoryLocationStrategy } from "../interfaces/inventory-location"
+import { OrdersReturnItem } from "../types/orders"
+import { ReturnItemRepository } from "../repositories/return-item"
+import { ReturnRepository } from "../repositories/return"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -39,7 +40,7 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   fulfillmentProviderService: FulfillmentProviderService
   orderService: OrderService
-  productVariantInventoryService: ProductVariantInventoryService
+  inventoryLocationStrategy: IInventoryLocationStrategy
 }
 
 type Transformer = (
@@ -58,8 +59,7 @@ class ReturnService extends TransactionBaseService {
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly returnReasonService_: ReturnReasonService
   protected readonly orderService_: OrderService
-  // eslint-disable-next-line
-  protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly inventoryLocationStrategy_: IInventoryLocationStrategy
 
   constructor({
     totalsService,
@@ -71,7 +71,7 @@ class ReturnService extends TransactionBaseService {
     taxProviderService,
     fulfillmentProviderService,
     orderService,
-    productVariantInventoryService,
+    inventoryLocationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -85,7 +85,7 @@ class ReturnService extends TransactionBaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.returnReasonService_ = returnReasonService
     this.orderService_ = orderService
-    this.productVariantInventoryService_ = productVariantInventoryService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
   }
 
   /**
@@ -669,13 +669,13 @@ class ReturnService extends TransactionBaseService {
         })
       }
 
-      const productVarInventoryTx =
-        this.productVariantInventoryService_.withTransaction(manager)
+      const inventoryLocationStrategyTx =
+        this.inventoryLocationStrategy_.withTransaction(manager)
 
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
         if (orderItem && orderItem.variant_id) {
-          await productVarInventoryTx.adjustInventory(
+          await inventoryLocationStrategyTx.adjustInventory(
             orderItem.variant_id,
             result.location_id!,
             line.received_quantity

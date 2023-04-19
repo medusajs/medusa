@@ -1,4 +1,3 @@
-import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,6 +5,9 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
+import { IsOptional, IsString } from "class-validator"
+
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
@@ -75,8 +77,8 @@ export default async (req, res) => {
 
   const customer_id = req.user?.customer_id
 
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -112,7 +114,7 @@ export default async (req, res) => {
     }
   )
 
-  const [product] = await productVariantInventoryService.setProductAvailability(
+  const [product] = await inventoryLocationStrategy.setProductAvailability(
     pricedProductArray,
     sales_channel_id
   )

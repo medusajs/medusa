@@ -1,4 +1,3 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,15 +5,17 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { Type } from "class-transformer"
-import { omit } from "lodash"
-import { defaultStoreVariantRelations } from "."
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
+import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
+import { Type } from "class-transformer"
+import { defaultStoreVariantRelations } from "."
+import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /store/variants
@@ -137,8 +138,10 @@ export default async (req, res) => {
     "productVariantService"
   )
   const cartService: CartService = req.scope.resolve("cartService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
+
   const regionService: RegionService = req.scope.resolve("regionService")
 
   const rawVariants = await variantService.list(filterableFields, listConfig)
@@ -164,7 +167,7 @@ export default async (req, res) => {
     include_discount_prices: true,
   })
 
-  const variants = await productVariantInventoryService.setVariantAvailability(
+  const variants = await inventoryLocationStrategy.setVariantAvailability(
     pricedVariants,
     sales_channel_id
   )

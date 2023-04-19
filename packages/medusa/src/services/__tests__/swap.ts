@@ -1,8 +1,3 @@
-import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { Order, Swap } from "../../models"
-import { SwapRepository } from "../../repositories/swap"
-import CartService from "../cart"
-import EventBusService from "../event-bus"
 import {
   CustomShippingOptionService,
   FulfillmentService,
@@ -14,14 +9,21 @@ import {
   ShippingOptionService,
   TotalsService
 } from "../index"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { Order, Swap } from "../../models"
+
+import CartService from "../cart"
+import EventBusService from "../event-bus"
+import { IInventoryLocationStrategy } from "../../interfaces/inventory-location"
 import LineItemAdjustmentService from "../line-item-adjustment"
-import SwapService from "../swap"
 import {
   LineItemAdjustmentServiceMock
 } from "../__mocks__/line-item-adjustment"
 import {
   ProductVariantInventoryServiceMock
 } from "../__mocks__/product-variant-inventory"
+import { SwapRepository } from "../../repositories/swap"
+import SwapService from "../swap"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
@@ -108,8 +110,8 @@ const paymentProviderService = {
 
 const orderService = {} as unknown as OrderService
 const returnService = {} as unknown as ReturnService
-const productVariantInventoryService =
-  {} as unknown as ProductVariantInventoryService
+const inventoryLocationStrategy =
+  {} as unknown as IInventoryLocationStrategy
 const fulfillmentService = {} as unknown as FulfillmentService
 const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
 
@@ -124,7 +126,7 @@ const defaultProps = {
   totalsService: totalsService,
   eventBusService: eventBusService,
   lineItemService: lineItemService,
-  productVariantInventoryService: productVariantInventoryService,
+  inventoryLocationStrategy,
   fulfillmentService: fulfillmentService,
   shippingOptionService: shippingOptionService,
   paymentProviderService: paymentProviderService,
@@ -876,12 +878,12 @@ describe("SwapService", () => {
       },
     } as unknown as PaymentProviderService
 
-    const productVariantInventoryService = {
+    const inventoryLocationStrategy = {
       ...ProductVariantInventoryServiceMock,
       withTransaction: function () {
         return this
       },
-    } as unknown as ProductVariantInventoryService
+    } as unknown as IInventoryLocationStrategy
 
     describe("success", () => {
       const cart = {
@@ -913,7 +915,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        productVariantInventoryService,
+        inventoryLocationStrategy,
       })
 
       it("creates a shipment", async () => {
@@ -924,7 +926,7 @@ describe("SwapService", () => {
         })
 
         expect(
-          productVariantInventoryService.reserveQuantity
+          inventoryLocationStrategy.reserveQuantity
         ).toHaveBeenCalledWith("variant", 2, {
           lineItemId: "1",
           salesChannelId: undefined,
@@ -972,7 +974,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        productVariantInventoryService,
+        productVariantInventoryService: inventoryLocationStrategy,
       })
 
       it("fails to register cart completion when swap is canceled", async () => {

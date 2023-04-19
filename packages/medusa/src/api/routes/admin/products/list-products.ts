@@ -7,6 +7,7 @@ import {
 } from "../../../../services"
 
 import { FilterableProductProps } from "../../../../types/product"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { IInventoryService } from "@medusajs/types"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
@@ -222,8 +223,8 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
@@ -255,7 +256,7 @@ export default async (req, res) => {
           .withTransaction(transactionManager)
           .listAndCount({}, { select: ["id"] })
 
-        products = await productVariantInventoryService
+        products = await inventoryLocationStrategy
           .withTransaction(transactionManager)
           .setProductAvailability(
             products,

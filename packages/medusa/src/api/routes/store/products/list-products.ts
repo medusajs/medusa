@@ -1,4 +1,8 @@
-import { Transform, Type } from "class-transformer"
+import {
+  CartService,
+  ProductService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -7,20 +11,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import {
-  CartService,
-  ProductService,
-  ProductVariantInventoryService,
-} from "../../../../services"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import PricingService from "../../../../services/pricing"
+import { Transform, Type } from "class-transformer"
+
 import { DateComparisonOperator } from "../../../../types/common"
-import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { IsType } from "../../../../utils/validators/is-type"
+import { PriceSelectionParams } from "../../../../types/price-selection"
+import PricingService from "../../../../services/pricing"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /store/products
@@ -181,8 +183,9 @@ import { defaultStoreCategoryScope } from "../product-categories"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
 
@@ -261,7 +264,7 @@ export default async (req, res) => {
             customer_id: req.user?.customer_id,
             include_discount_prices: true,
           }),
-        productVariantInventoryService
+        inventoryLocationStrategy
           .withTransaction(transactionManager)
           .setProductAvailability(
             computedProducts,

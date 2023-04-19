@@ -7,9 +7,10 @@ import {
 
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { validator } from "../../../../utils/validator"
 import { updateInventoryAndReservations } from "./create-fulfillment"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments
@@ -82,9 +83,9 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const swapService: SwapService = req.scope.resolve("swapService")
   const entityManager: EntityManager = req.scope.resolve("manager")
-  const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
-    "productVariantInventoryService"
-  )
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
 
   await entityManager.transaction(async (manager) => {
     const swapServiceTx = swapService.withTransaction(manager)
@@ -119,12 +120,10 @@ export default async (req, res) => {
         ],
       })
 
-      const pvInventoryServiceTx = pvInventoryService.withTransaction(manager)
-
       await updateInventoryAndReservations(
         fulfillments.filter((f) => !existingFulfillmentSet.has(f.id)),
         {
-          inventoryService: pvInventoryServiceTx,
+          inventoryService: inventoryLocationStrategy.withTransaction(manager),
           locationId: validated.location_id,
         }
       )

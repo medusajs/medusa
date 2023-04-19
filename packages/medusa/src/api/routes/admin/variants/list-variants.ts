@@ -8,6 +8,7 @@ import {
 import { IsInt, IsOptional, IsString } from "class-validator"
 
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { IInventoryService } from "@medusajs/types"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
@@ -162,8 +163,9 @@ export default async (req, res) => {
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
 
   if (inventoryService) {
     const [salesChannelsIds] = await salesChannelService.listAndCount(
@@ -171,7 +173,7 @@ export default async (req, res) => {
       { select: ["id"] }
     )
 
-    variants = (await productVariantInventoryService.setVariantAvailability(
+    variants = (await inventoryLocationStrategy.setVariantAvailability(
       variants,
       salesChannelsIds.map((salesChannel) => salesChannel.id)
     )) as PricedVariant[]

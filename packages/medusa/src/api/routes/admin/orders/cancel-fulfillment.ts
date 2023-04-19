@@ -4,11 +4,12 @@ import {
   ProductVariantInventoryService,
 } from "../../../../services"
 
+import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { Fulfillment } from "../../../../models"
+import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
 import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { Fulfillment } from "../../../../models"
-import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -70,10 +71,12 @@ export default async (req, res) => {
   const { id, fulfillment_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
+
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
+
+  const inventoryLocationStrategy: IInventoryLocationStrategy =
+    req.scope.resolve("inventoryLocationStrategy")
 
   const fulfillmentService: FulfillmentService =
     req.scope.resolve("fulfillmentService")
@@ -99,8 +102,8 @@ export default async (req, res) => {
 
     if (fulfillment.location_id && inventoryService) {
       await adjustInventoryForCancelledFulfillment(fulfillment, {
-        productVariantInventoryService:
-          productVariantInventoryService.withTransaction(transactionManager),
+        inventoryLocationStrategy:
+          inventoryLocationStrategy.withTransaction(transactionManager),
       })
     }
   })
@@ -115,14 +118,14 @@ export default async (req, res) => {
 export const adjustInventoryForCancelledFulfillment = async (
   fulfillment: Fulfillment,
   context: {
-    productVariantInventoryService: ProductVariantInventoryService
+    inventoryLocationStrategy: IInventoryLocationStrategy
   }
 ) => {
-  const { productVariantInventoryService } = context
+  const { inventoryLocationStrategy } = context
   await Promise.all(
     fulfillment.items.map(async ({ item, quantity }) => {
       if (item.variant_id) {
-        await productVariantInventoryService.adjustInventory(
+        await inventoryLocationStrategy.adjustInventory(
           item.variant_id,
           fulfillment.location_id!,
           quantity
