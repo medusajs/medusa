@@ -70,11 +70,15 @@ class ProductCategoryService extends TransactionBaseService {
     const includeDescendantsTree = !!selector.include_descendants_tree
     delete selector.include_descendants_tree
 
+    const descendantsDepth = selector.descendants_depth
+    delete selector.descendants_depth
+
     const treeDepth = selector.depth
     delete selector.depth
 
     const treeOptions: FindTreeOptions = {
       includeDescendantsTree,
+      descendantsDepth,
       depth: treeDepth,
     }
 

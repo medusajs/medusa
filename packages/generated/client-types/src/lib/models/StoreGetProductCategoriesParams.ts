@@ -21,6 +21,10 @@ export interface StoreGetProductCategoriesParams {
    */
   include_descendants_tree?: boolean
   /**
+   * Descendants categories at retreived upto a certain depth. descendants_depth is a number greater than 0.
+   */
+  descendants_depth?: number
+  /**
    * retrieve categories at a certain depth. depth is a number greater than 0.
    */
   depth?: number

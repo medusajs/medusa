@@ -48,7 +48,7 @@ export const ProductCategoryRepository = dataSource
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
-      const { includeDescendantsTree, depth } = treeOptions
+      const { includeDescendantsTree, depth, descendantsDepth } = treeOptions
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
       const columnsSelected = objectToStringPath(options_.select)
@@ -137,7 +137,10 @@ export const ProductCategoryRepository = dataSource
       if (includeDescendantsTree) {
         categories = await Promise.all(
           categories.map(async (productCategory) => {
-            productCategory = await this.findDescendantsTree(productCategory)
+            console.log("descendantsDepth - ", descendantsDepth)
+            productCategory = await this.findDescendantsTree(productCategory, {
+              depth: descendantsDepth,
+            })
 
             return sortChildren(productCategory, treeScope)
           })

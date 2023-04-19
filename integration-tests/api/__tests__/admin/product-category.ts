@@ -300,6 +300,20 @@ describe("/admin/product-categories", () => {
       )
     })
 
+    it("throws error when descendants_depth < 1", async () => {
+      const api = useApi()
+
+      const error = await api
+        .get(`/admin/product-categories?descendants_depth=0`, adminHeaders)
+        .catch((e) => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("invalid_data")
+      expect(error.response.data.message).toEqual(
+        "descendants_depth must not be less than 1"
+      )
+    })
+
     it("gets list of product category at a depth of 4", async () => {
       const api = useApi()
 
@@ -311,10 +325,7 @@ describe("/admin/product-categories", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(4)
       expect(response.data.limit).toEqual(100)
-      console.log(
-        "response.data.product_categories - ",
-        response.data.product_categories
-      )
+
       expect(response.data.product_categories).toEqual([
         expect.objectContaining({ id: productCategoryChild2.id }),
         expect.objectContaining({ id: productCategoryChild1.id }),
@@ -350,10 +361,7 @@ describe("/admin/product-categories", () => {
         `/admin/product-categories?depth=4&q=rank 2`,
         adminHeaders
       )
-      console.log(
-        "response.data.product_categories - ",
-        response.data.product_categories
-      )
+
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.offset).toEqual(0)
@@ -387,7 +395,7 @@ describe("/admin/product-categories", () => {
       const response = await api
         .get(`/admin/product-categories?is_internal=true`, adminHeaders)
         .catch((e) => e)
-      console.log("response - ", response)
+
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.product_categories[0].id).toEqual(productCategory.id)
@@ -449,6 +457,122 @@ describe("/admin/product-categories", () => {
 
       const response = await api.get(
         `/admin/product-categories?parent_category_id=null&include_descendants_tree=true`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual([
+        expect.objectContaining({
+          id: productCategoryParent.id,
+          rank: 0,
+          handle: productCategoryParent.handle,
+          category_children: [
+            expect.objectContaining({
+              id: productCategory.id,
+              rank: 0,
+              handle: productCategory.handle,
+              category_children: [
+                expect.objectContaining({
+                  id: productCategoryChild.id,
+                  category_children: [
+                    expect.objectContaining({
+                      id: productCategoryChild2.id,
+                      category_children: [],
+                      handle: productCategoryChild2.handle,
+                      rank: 0,
+                    }),
+                    expect.objectContaining({
+                      id: productCategoryChild1.id,
+                      category_children: [],
+                      handle: productCategoryChild1.handle,
+                      rank: 1,
+                    }),
+                    expect.objectContaining({
+                      id: productCategoryChild0.id,
+                      category_children: [],
+                      handle: productCategoryChild0.handle,
+                      rank: 2,
+                    }),
+                    expect.objectContaining({
+                      id: productCategoryChild3.id,
+                      category_children: [],
+                      handle: productCategoryChild3.handle,
+                      rank: 3,
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("adds all descendants to categories in a nested way upto depth of 1", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true&descendants_depth=1`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual([
+        expect.objectContaining({
+          id: productCategoryParent.id,
+          rank: 0,
+          handle: productCategoryParent.handle,
+          category_children: [
+            expect.objectContaining({
+              id: productCategory.id,
+              rank: 0,
+              handle: productCategory.handle,
+              category_children: []
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("adds all descendants to categories in a nested way upto depth of 2", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true&descendants_depth=2`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual([
+        expect.objectContaining({
+          id: productCategoryParent.id,
+          rank: 0,
+          handle: productCategoryParent.handle,
+          category_children: [
+            expect.objectContaining({
+              id: productCategory.id,
+              rank: 0,
+              handle: productCategory.handle,
+              category_children: [
+                expect.objectContaining({
+                  id: productCategoryChild.id,
+                  category_children: [],
+                }),
+              ],
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("adds all descendants to categories in a nested way upto an unreasonable depth", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true&descendants_depth=999`,
         adminHeaders
       )
 

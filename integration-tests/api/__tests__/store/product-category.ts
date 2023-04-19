@@ -247,6 +247,21 @@ describe("/store/product-categories", () => {
       )
     })
 
+    it("throws error when descendants_depth < 1", async () => {
+      const api = useApi()
+
+      const error = await api
+        .get(`/store/product-categories?descendants_depth=0`)
+        .catch((e) => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("invalid_data")
+      expect(error.response.data.message).toEqual(
+        "descendants_depth must not be less than 1"
+      )
+    })
+
+
     it("gets list of product category at a depth of 1", async () => {
       const api = useApi()
 
@@ -321,11 +336,80 @@ describe("/store/product-categories", () => {
       expect(response.data.product_categories).toEqual([])
     })
 
-    it("gets list of product category with all childrens when include_descendants_tree=true", async () => {
+    it("gets list of product category with all children when include_descendants_tree=true", async () => {
       const api = useApi()
 
       const response = await api.get(
         `/store/product-categories?parent_category_id=null&include_descendants_tree=true`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: productCategoryParent.id,
+            parent_category: null,
+            rank: 0,
+            category_children: [
+              expect.objectContaining({
+                id: productCategory.id,
+                parent_category_id: productCategoryParent.id,
+                rank: 0,
+                category_children: [
+                  expect.objectContaining({
+                    id: productCategoryChild4.id,
+                    parent_category_id: productCategory.id,
+                    category_children: [],
+                    rank: 2,
+                  }),
+                  expect.objectContaining({
+                    id: productCategoryChild.id,
+                    parent_category_id: productCategory.id,
+                    category_children: [],
+                    rank: 3,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ])
+      )
+    })
+
+    it("gets list of product category with all children upto depth of 1", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/product-categories?parent_category_id=null&include_descendants_tree=true&descendants_depth=1`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: productCategoryParent.id,
+            parent_category: null,
+            rank: 0,
+            category_children: [
+              expect.objectContaining({
+                id: productCategory.id,
+                parent_category_id: productCategoryParent.id,
+                rank: 0,
+                category_children: [],
+              }),
+            ],
+          }),
+        ])
+      )
+    })
+
+    it("gets list of product category with all children upto depth of an unreasonable amount", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/product-categories?parent_category_id=null&include_descendants_tree=true&descendants_depth=999`
       )
 
       expect(response.status).toEqual(200)

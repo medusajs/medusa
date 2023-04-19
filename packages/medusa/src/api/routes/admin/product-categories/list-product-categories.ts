@@ -16,6 +16,7 @@ import { GetProductCategoriesParams } from "../../../../types/product-category"
  *   - (query) is_internal {boolean} Search for only internal categories.
  *   - (query) is_active {boolean} Search for only active categories
  *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
+ *   - (query) descendants_depth {number} Descendants categories at retreived upto a certain depth. descendants_depth is a number greater than 0.
  *   - (query) depth {number} retrieve categories at a certain depth. depth is a number greater than 0.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.

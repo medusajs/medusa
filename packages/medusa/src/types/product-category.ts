@@ -75,12 +75,6 @@ export class GetProductCategoriesParams extends extendedFindParamsMixin({
   @IsOptional()
   handle?: string
 
-  @IsNumber()
-  @IsOptional()
-  @Min(1)
-  @Type(() => Number)
-  depth?: number
-
   @IsString()
   @IsOptional()
   @Transform(({ value }) => {
@@ -88,10 +82,22 @@ export class GetProductCategoriesParams extends extendedFindParamsMixin({
   })
   parent_category_id?: string | null
 
+  @IsNumber()
+  @IsOptional()
+  @Min(1)
+  @Type(() => Number)
+  depth?: number
+
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   include_descendants_tree?: boolean
+
+  @IsNumber()
+  @IsOptional()
+  @Min(1)
+  @Type(() => Number)
+  descendants_depth?: number
 }
 
 export class ProductBatchProductCategory {
