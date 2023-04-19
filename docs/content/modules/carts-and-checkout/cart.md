@@ -8,8 +8,7 @@ In this document, you’ll learn about the Cart entity, its relation to other en
 
 ## Overview
 
-The cart allows customers to go from browsing products to completing an order. Many actions can be performed on a cart, like adding line items, applying discounts, creating shipping methods, and more before eventually completing it and creating an Order.
-
+The cart allows customers to go from browsing products to completing an order. Many actions can be performed on a cart, like adding line items, applying discounts, creating shipping methods, and more before eventually completing it and creating an [Order](../orders/orders.md).
 
 ---
 
