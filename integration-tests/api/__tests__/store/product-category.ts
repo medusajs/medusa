@@ -237,13 +237,13 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const error = await api
-        .get(`/store/product-categories?depth=0`)
+        .get(`/store/product-categories?depth[]=0`)
         .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("invalid_data")
       expect(error.response.data.message).toEqual(
-        "depth must not be less than 1"
+        "each value in depth must not be less than 1"
       )
     })
 
@@ -265,7 +265,7 @@ describe("/store/product-categories", () => {
     it("gets list of product category at a depth of 1", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/product-categories?depth=1`)
+      const response = await api.get(`/store/product-categories?depth[]=1`)
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
@@ -288,7 +288,7 @@ describe("/store/product-categories", () => {
     it("gets list of product category at a depth of 3", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/product-categories?depth=3`)
+      const response = await api.get(`/store/product-categories?depth[]=3`)
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
@@ -305,11 +305,34 @@ describe("/store/product-categories", () => {
       ])
     })
 
+    it("gets list of product category at a depth of 3 and 1", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/product-categories?depth[]=3&depth[]=1`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(3)
+      expect(response.data.offset).toEqual(0)
+      expect(response.data.limit).toEqual(100)
+
+      expect(response.data.product_categories).toEqual([
+        expect.objectContaining({
+          id: productCategoryParent.id,
+        }),
+        expect.objectContaining({
+          id: productCategoryChild4.id,
+        }),
+        expect.objectContaining({
+          id: productCategoryChild.id,
+        }),
+      ])
+    })
+
     it("searches for product category at a depth of 3", async () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories?depth=3&q=child 4`
+        `/store/product-categories?depth[]=3&q=child 4`
       )
 
       expect(response.status).toEqual(200)
@@ -327,7 +350,7 @@ describe("/store/product-categories", () => {
     it("returns empty array at unreasonably high depth", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/product-categories?depth=100`)
+      const response = await api.get(`/store/product-categories?depth[]=100`)
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(0)

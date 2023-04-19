@@ -92,11 +92,14 @@ export const ProductCategoryRepository = dataSource
 
       queryBuilder.where(options_.where)
 
-      if (typeof depth === "number") {
+      if (Array.isArray(depth) && depth.length > 0) {
         // Depth is a number greater than 0, with this regex, we are checking how
         // many period (.) characters are present in a record. A top level category
         // has one period, this is depth 1. Depth = total of all periods in mpath string
-        const regexPattern = `^(?:[^.]*\\.){${depth}}[^.]*$`
+        const regexPatterns = depth
+          .map((d) => `(?:[^.]*\\.){${d}}[^.]*`)
+          .join("|")
+        const regexPattern = `^(?:${regexPatterns})$`
 
         queryBuilder.andWhere("product_category.mpath ~ :regexPattern", {
           regexPattern,

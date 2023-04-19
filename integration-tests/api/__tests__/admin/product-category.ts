@@ -290,13 +290,13 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const error = await api
-        .get(`/admin/product-categories?depth=0`, adminHeaders)
+        .get(`/admin/product-categories?depth[]=0`, adminHeaders)
         .catch((e) => e)
 
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("invalid_data")
       expect(error.response.data.message).toEqual(
-        "depth must not be less than 1"
+        "each value in depth must not be less than 1"
       )
     })
 
@@ -318,7 +318,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?depth=4`,
+        `/admin/product-categories?depth[]=4`,
         adminHeaders
       )
 
@@ -334,11 +334,32 @@ describe("/admin/product-categories", () => {
       ])
     })
 
+    it("gets list of product category at a depth of 4 and 1", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?depth[]=4&depth[]=1`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(5)
+      expect(response.data.limit).toEqual(100)
+
+      expect(response.data.product_categories).toEqual([
+        expect.objectContaining({ id: productCategoryParent.id }),
+        expect.objectContaining({ id: productCategoryChild2.id }),
+        expect.objectContaining({ id: productCategoryChild1.id }),
+        expect.objectContaining({ id: productCategoryChild0.id }),
+        expect.objectContaining({ id: productCategoryChild3.id }),
+      ])
+    })
+
     it("gets list of product category at a depth of 1", async () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?depth=1`,
+        `/admin/product-categories?depth[]=1`,
         adminHeaders
       )
 
@@ -358,7 +379,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?depth=4&q=rank 2`,
+        `/admin/product-categories?depth[]=4&q=rank 2`,
         adminHeaders
       )
 
@@ -378,7 +399,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?depth=100`,
+        `/admin/product-categories?depth[]=100`,
         adminHeaders
       )
 

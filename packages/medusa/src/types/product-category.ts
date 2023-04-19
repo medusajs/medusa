@@ -7,6 +7,7 @@ import {
   IsBoolean,
   ValidateIf,
   IsNumber,
+  IsArray,
   Min,
 } from "class-validator"
 import { isDefined } from "medusa-core-utils"
@@ -82,11 +83,12 @@ export class GetProductCategoriesParams extends extendedFindParamsMixin({
   })
   parent_category_id?: string | null
 
-  @IsNumber()
+  @IsArray()
   @IsOptional()
-  @Min(1)
+  @IsNumber({}, { each: true })
+  @Min(1, { each: true })
   @Type(() => Number)
-  depth?: number
+  depth?: number[]
 
   @IsBoolean()
   @IsOptional()

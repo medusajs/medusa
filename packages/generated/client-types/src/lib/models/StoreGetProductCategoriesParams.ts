@@ -25,9 +25,9 @@ export interface StoreGetProductCategoriesParams {
    */
   descendants_depth?: number
   /**
-   * retrieve categories at a certain depth. depth is a number greater than 0.
+   * Query categories at a certain depth. depth is an array of number greater than 0.
    */
-  depth?: number
+  depth?: Array<number>
   /**
    * How many product categories to skip in the result.
    */

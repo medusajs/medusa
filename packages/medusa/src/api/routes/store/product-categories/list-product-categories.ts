@@ -16,7 +16,15 @@ import { defaultStoreCategoryScope } from "."
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
  *   - (query) descendants_depth {number} Descendants categories at retreived upto a certain depth. descendants_depth is a number greater than 0.
- *   - (query) depth {number} retrieve categories at a certain depth. depth is a number greater than 0.
+ *   - in: query
+ *     name: depth
+ *     style: form
+ *     explode: false
+ *     description: Query categories at a certain depth. depth is an array of number greater than 0.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: number
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
  * x-codegen:
