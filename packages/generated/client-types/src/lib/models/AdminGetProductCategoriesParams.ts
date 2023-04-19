@@ -25,6 +25,10 @@ export interface AdminGetProductCategoriesParams {
    */
   include_descendants_tree?: boolean
   /**
+   * retrieve categories at a certain depth. depth is a number greater than 0.
+   */
+  depth?: number
+  /**
    * Returns categories scoped by parent
    */
   parent_category_id?: string

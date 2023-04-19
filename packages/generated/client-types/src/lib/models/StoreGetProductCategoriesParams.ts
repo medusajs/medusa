@@ -21,6 +21,10 @@ export interface StoreGetProductCategoriesParams {
    */
   include_descendants_tree?: boolean
   /**
+   * retrieve categories at a certain depth. depth is a number greater than 0.
+   */
+  depth?: number
+  /**
    * How many product categories to skip in the result.
    */
   offset?: number
