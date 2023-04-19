@@ -149,7 +149,7 @@ class ProductCategoryService extends TransactionBaseService {
       )
     }
 
-    const selectors = Object.assign({}, { id: productCategoryId }, selector)
+    const selectors = Object.assign({ id: productCategoryId }, selector)
     return this.retrieve_(config, selectors, treeSelector)
   }
 
@@ -175,7 +175,7 @@ class ProductCategoryService extends TransactionBaseService {
       )
     }
 
-    const selectors = Object.assign({}, { handle }, selector)
+    const selectors = Object.assign({ handle }, selector)
     return this.retrieve_(config, selectors, treeSelector)
   }
 
