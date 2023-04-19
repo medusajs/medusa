@@ -48,7 +48,7 @@ describe("ProductCategoryService", () => {
     it("successfully retrieves an array of product category", async () => {
       const validID = IdMap.getId(validProdCategoryId)
       const [result, count] = await productCategoryService
-        .listAndCount({ q: validID })
+        .listAndCount({ q: validID, depth: 5, descendants_depth: 5 })
 
       expect(count).toEqual(1)
       expect(result.length).toEqual(1)
@@ -64,7 +64,8 @@ describe("ProductCategoryService", () => {
         validID,
         {},
         {
-          depth: undefined,
+          depth: 5,
+          descendantsDepth: 5,
           includeDescendantsTree: false
         },
       )
@@ -98,6 +99,7 @@ describe("ProductCategoryService", () => {
         {},
         {
           depth: undefined,
+          descendantsDepth: undefined,
           includeDescendantsTree: true
         },
       )
