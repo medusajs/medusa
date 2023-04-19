@@ -674,7 +674,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         })
 
         variant.inventory_quantity = locations.reduce(
-          (acc, next) => acc + (next.stocked_quantity || 0),
+          (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
           0
         )
 
