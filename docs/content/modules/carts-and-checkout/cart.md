@@ -8,9 +8,8 @@ In this document, you’ll learn about the Cart entity, its relation to other en
 
 ## Overview
 
-The cart is a virtual shopping cart that customers use to choose products they want to eventually purchase. They can set the quantity, add discounts, and more before they proceed to the checkout.
+The cart allows customers to go from browsing products to completing an order. Many actions can be performed on a cart, like adding line items, applying discounts, creating shipping methods, and more before eventually completing it and creating an Order.
 
-In Medusa, a cart isn’t only used to check out and place an order. It’s also used to create swaps.
 
 ---
 
@@ -28,15 +27,15 @@ A cart is represented by the `Cart` entity. Some of the `Cart` entity’s attrib
 - `completed_at`: the date the cart was completed. A completed cart means that it has been used for its main purpose. For example, if the cart is used to place an order, then a completed cart means that the order was placed.
 - `payment_authorized_at`: the date a payment was authorized.
 
-There are other important attributes discussed in later sections. You can also check out the [full Cart entity in the entities reference](../../references/entities/classes/Cart.md).
+There are other important attributes discussed in later sections. Check out the [full Cart entity in the entities reference](../../references/entities/classes/Cart.md).
 
 ---
 
 ## Cart Totals Calculation
 
-By default, the cart entity doesn’t hold any details regarding cart totals. These are created and added to a cart object using the `CartService`'s [decorateTotals method](../../references/services/classes/CartService.md#decoratetotals). This method is used by endpoints and services that require retrieving the cart’s totals.
+By default, the cart entity doesn’t hold any details regarding the totals. These are computed and added to the cart entity using the `CartService`'s [decorateTotals method](../../references/services/classes/CartService.md#decoratetotals). There's also a dedicated method in the `CartService`, [retrieveWithTotals](../../references/services/classes/CartService.md#retrieveWithTotals), attaching the totals, so that you don't have to worry about it. It is recommended to use this method by default when you need to retrieve the cart. 
 
-The cart’s totals are created based on the context of the cart. This includes the selected region, whether tax-inclusive pricing is enabled, the chosen shipping methods, and more.
+The cart’s totals are calculated based on the content and context of the cart. This includes the selected region, whether tax-inclusive pricing is enabled, the chosen shipping methods, and more.
 
 The calculated cart’s totals include:
 
@@ -57,7 +56,7 @@ If you have tax-inclusive pricing enabled, you can learn about other available t
 
 :::
 
-The cart’s totals are retrieved by default in all the [cart’s store APIs](https://docs.medusajs.com/api/store#tag/Carts). You can also retrieve a cart with its totals within your code using the `CartService`'s [retrieveWithTotals method](../../references/services/classes/CartService.md#retrievewithtotals).
+The cart’s totals are retrieved by default in all the [cart’s store APIs](https://docs.medusajs.com/api/store#tag/Carts).
 
 ---
 
@@ -65,7 +64,7 @@ The cart’s totals are retrieved by default in all the [cart’s store APIs](ht
 
 The cart completion functionality is implemented inside the strategy `cartCompletionStrategy`. This allows you to customize how the process is implemented in your store.
 
-The cart completion process starts when the checkout process is completed by sending a request to the [Complete Cart endpoint](https://docs.medusajs.com/api/store#tag/Carts/operation/PostCartsCartComplete).
+You initiate the cart completion process by sending a request to the [Complete Cart endpoint](https://docs.medusajs.com/api/store#tag/Carts/operation/PostCartsCartComplete).
 
 ### Idempotency Key
 
@@ -85,7 +84,7 @@ The process is implemented as follows:
 
 1. When the idempotency key’s recovery point is set to `started`, the tax lines are created for the items in the cart. This is done using the `CartService`'s [createTaxLines method](../../references/services/classes/CartService.md#createtaxlines). If that is completed with no errors, the recovery point is set to `tax_lines_created` and the process continues.
 2. When the idempotency key’s recovery point is set to `tax_lines_created`, the payment is authorized using the `CartService`'s method [authorizePayment](../../references/services/classes/CartService.md#authorizepayment). If the payment requires more action or is pending authorization, then the tax lines that were created in the previous steps are deleted and the cart completion process is terminated. Once the payment is authorized, the process can be restarted.
-3. When the idempotency key’s recovery point is set to `payment_authorized`, tax lines are created again the same way as the first step. Then, the inventory of each of the items in the cart is confirmed using the `ProductVariantInventoryService`'s method [confirmInventory](../../references/services/classes/ProductVariantInventoryService.md#confirminventory). If an item’s quantity is available in the inventory, the quantity is reserved using the `ProductVariantInventoryService`'s method [reserveQuantity](../../references/services/classes/ProductVariantInventoryService.md#reservequantity). If any item has insufficient inventory, any item reservations that were created are deleted, the payment is canceled, and an error is thrown, terminating the cart completion process. If all item quantities are confirmed to be available:
+3. When the idempotency key’s recovery point is set to `payment_authorized`, tax lines are created again the same way as the first step. Then, the inventory of each of the items in the cart is confirmed using the `ProductVariantInventoryService`'s method [confirmInventory](../../references/services/classes/ProductVariantInventoryService.md#confirminventory). If an item is in stock, the quantity is reserved using the `ProductVariantInventoryService`'s method [reserveQuantity](../../references/services/classes/ProductVariantInventoryService.md#reservequantity). If an item is out of stock, any item reservations that were created are deleted, the payment is canceled, and an error is thrown, terminating the cart completion process. If all item quantities are confirmed to be available:
     1. If the cart belongs to a swap (the `type` attribute is set to `swap`), the swap is registered as completed using the `SwapService`'s [registerCartCompletion method](../../references/services/classes/SwapService.md#registercartcompletion) and the inventory item reservations are removed using the Inventory module. The process ends successfully here for a swap.
     2. If the cart belongs to an order, the order is created using the `OrderService`'s method [createFromCart](../../references/services/classes/OrderService.md#createfromcart). The order is then retrieved and sent in the response.
 4. Once the process detailed above is done, the idempotency key’s recovery point is set to `finished`.
