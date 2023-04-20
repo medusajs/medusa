@@ -1,16 +1,17 @@
 import { EntityManager, In } from "typeorm"
 import {
   ICacheService,
+  IEventBusService,
   IInventoryService,
   IStockLocationService,
   InventoryItemDTO,
   ReservationItemDTO,
   ReserveQuantityContext,
-  IEventBusService,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
 import { MedusaError, TransactionBaseService, isDefined } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
+
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
@@ -27,10 +28,6 @@ type InjectedDependencies = {
 }
 
 class ProductVariantInventoryService extends TransactionBaseService {
-  static readonly Events = {
-    RESERVATION_CREATED: "product_variant_inventory.reservation_created",
-  }
-
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -408,17 +405,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
           inventory_item_id: inventoryPart.inventory_item_id,
           quantity: itemQuantity,
         })
-      })
-    )
-
-    // emit event
-    await Promise.all(
-      reservationItems.map(async (reservationItem) => {
-        await this.eventBusService_
-          .withTransaction(this.activeManager_)
-          .emit(ProductVariantInventoryService.Events.RESERVATION_CREATED, {
-            reservationItemId: reservationItem.id,
-          })
       })
     )
 

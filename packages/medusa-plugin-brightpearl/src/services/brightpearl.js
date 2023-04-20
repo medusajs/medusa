@@ -638,15 +638,15 @@ class BrightpearlService extends BaseService {
   }
 
   async createReservation(eventData) {
-    const { reservationItemId } = eventData
+    const { id } = eventData
 
-    if (!reservationItemId?.length) {
+    if (!id?.length) {
       return []
     }
 
     const [[reservationItem]] =
       await this.inventoryService_.listReservationItems({
-        id: reservationItemId,
+        id,
       })
 
     const client = await this.getClient()
