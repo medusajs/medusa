@@ -6083,8 +6083,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
   dependencies:
-    "@medusajs/medusa": 1.8.2
-    "@medusajs/openapi-typescript-codegen": 0.2.1
+    "@medusajs/medusa": "workspace:*"
+    "@medusajs/openapi-typescript-codegen": "workspace:*"
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.0.0-beta.123
@@ -6104,7 +6104,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@1.8.2, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@1.8.2, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6201,7 +6201,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/openapi-typescript-codegen@0.2.1, @medusajs/openapi-typescript-codegen@workspace:packages/oas/openapi-typescript-codegen":
+"@medusajs/openapi-typescript-codegen@workspace:*, @medusajs/openapi-typescript-codegen@workspace:packages/oas/openapi-typescript-codegen":
   version: 0.0.0-use.local
   resolution: "@medusajs/openapi-typescript-codegen@workspace:packages/oas/openapi-typescript-codegen"
   dependencies:
@@ -6227,8 +6227,10 @@ __metadata:
     handlebars: ^4.7.7
     jest: ^25.5.4
     json-schema-ref-parser: ^9.0.9
+    lodash: ^4.17.21
     node-fetch: 2.6.7
     pascalcase: ^2.0.0
+    pluralize: ^8.0.0
     qs: 6.10.3
     rollup: 3.9.1
     rollup-plugin-terser: 7.0.2

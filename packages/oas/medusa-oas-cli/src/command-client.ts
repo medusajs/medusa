@@ -22,6 +22,11 @@ export const commandOptions: Option[] = [
   ).makeOptionMandatory(),
 
   new Option(
+    "--prefix-hooks <prefix>",
+    "Customize default hooks prefix. By default, will use --type value."
+  ),
+
+  new Option(
     "-s, --src-file <srcFile>",
     "Path to source OAS JSON file."
   ).makeOptionMandatory(),
@@ -90,6 +95,7 @@ export async function execute(cliParams: OptionValues) {
   const srcFile = path.resolve(cliParams.srcFile)
   const outDir = path.resolve(cliParams.outDir)
   const apiName = cliParams.type
+  const prefixHooks = cliParams.prefixHooks ?? apiName
   const packageNames: PackageNames = {
     models: cliParams.typesPackage,
     client: cliParams.clientPackage,
@@ -108,7 +114,14 @@ export async function execute(cliParams: OptionValues) {
   await mkdir(outDir, { recursive: true })
 
   const oas = await getOASFromFile(srcFile)
-  await generateClientSDK(oas, outDir, apiName, exportComponent, packageNames)
+  await generateClientSDK(
+    oas,
+    outDir,
+    apiName,
+    prefixHooks,
+    exportComponent,
+    packageNames
+  )
 
   console.log(
     `⚫️ Client generated - ${apiName} - ${exportComponent} - ${outDir}`
@@ -127,6 +140,7 @@ const generateClientSDK = async (
   oas: OpenAPIObject,
   targetDir: string,
   apiName: string,
+  prefixHooks: string,
   exportComponent: "all" | "types" | "client" | "hooks",
   packageNames: PackageNames = {}
 ) => {
@@ -169,6 +183,7 @@ const generateClientSDK = async (
     indent: Indent.SPACE_2,
     postfixServices: "Service",
     postfixModels: "",
+    prefixHooks,
     clientName: `Medusa${upperFirst(apiName)}`,
     request: undefined,
     packageNames,

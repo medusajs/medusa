@@ -9,7 +9,7 @@ const getQueryString = (params: Record<string, any>): string => {
 		if (isDefined(value)) {
 			if (Array.isArray(value)) {
 				value.forEach(v => {
-					process(key, v);
+					process(`${key}[]`, v);
 				});
 			} else if (typeof value === 'object') {
 				Object.entries(value).forEach(([k, v]) => {

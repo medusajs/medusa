@@ -1,6 +1,6 @@
 {{>header}}
 
-import { UseQueryOptions, UseMutationOptions, QueryKey } from "react-query"
+import { UseQueryOptions, UseMutationOptions, QueryKey } from "@tanstack/react-query"
 
 export type UseQueryOptionsWrapper<
   TQueryFnData = unknown,
@@ -21,3 +21,13 @@ export type UseMutationOptionsWrapper<
   UseMutationOptions<TData, TError, TVariables, TContext>,
   'mutationKey' | 'mutationFn'
 >
+
+export const queryKeysFactory = (globalKey: string) => {
+  return {
+    all: [globalKey],
+    lists: () => [globalKey],
+    list: (query?: unknown) => [globalKey],
+    details: () => [globalKey],
+    detail: (id: unknown) => [globalKey],
+  } as const
+}

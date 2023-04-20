@@ -1,9 +1,16 @@
 {{~#if parameters}}
 	{{~#if parametersPath}}
 		{{~#each parametersPath}}
-  			{{~{name}}}{{#unless @last}},{{/unless}}
+      {{~#if ../onlyPathFirst}}
+        {{~#if @first}}
+          {{~{name}}}
+        {{~/if}}
+      {{~else}}
+        {{~{name}}}{{#unless @last}},{{/unless}}
+      {{~/if}}
 		{{~/each}}
 	{{~/if}}
+  {{~#unless skipBody~}}
 	{{~#if parametersBody}}
 		{{~#if parametersPath}},{{/if}}
 		{{~#with parametersBody}}
@@ -11,8 +18,9 @@
 		{{~/with}}
 		{{~#if parametersQuery}},{{/if}}
 	{{~/if}}
+  {{/unless~}}
 	{{~#if parametersQuery}}
-		{{~#if parametersPath}}{{#unless parametersBody}},{{/unless}}{{/if~}}
+		{{~#if parametersPath}}{{~#if skipBody~}},{{else}}{{#unless parametersBody}},{{/unless}}{{/if}}{{/if~}}
 		queryParams
 	{{~/if}}
 {{~/if}}

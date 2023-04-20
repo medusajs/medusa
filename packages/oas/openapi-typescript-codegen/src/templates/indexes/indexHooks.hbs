@@ -2,6 +2,6 @@
 
 {{#if services}}
 {{#each services}}
-export * from './use{{{pascalCase name}}}';
+export * from './use{{{pascalCase @root.prefixHooks}}}{{{pascalCase name}}}';
 {{/each}}
 {{/if}}

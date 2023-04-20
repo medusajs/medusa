@@ -16,4 +16,6 @@ export interface Operation extends OperationParameters {
   results: OperationResponse[]
   responseHeader: string | null
   codegen: OperationCodegen
+  isQueryParamsRequired: boolean
+  hookName?: string
 }

@@ -143,4 +143,30 @@ export const registerHandlebarHelpers = (root: {
   Handlebars.registerHelper("pascalCase", function (value: string): string {
     return pascalCase(value)
   })
+
+  Handlebars.registerHelper("or", function (this: unknown, ...args: any[]) {
+    const options = args.pop()
+    for (const arg of args) {
+      if (arg && !(Array.isArray(arg) && arg.length === 0)) {
+        return options.fn(this)
+      }
+    }
+    return options.inverse(this)
+  })
+
+  Handlebars.registerHelper(
+    "gte",
+    function (
+      this: unknown,
+      array: any[],
+      length: number,
+      options?: Handlebars.HelperOptions
+    ) {
+      const condition = Array.isArray(array) && array.length >= length
+      if (options && options.inverse) {
+        return condition ? options.fn(this) : options.inverse(this)
+      }
+      return condition
+    }
+  )
 }

@@ -11,6 +11,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - (path) id=* {string} The id of the Cart.
  * x-codegen:
  *   method: retrieve
+ *   hook: useGetCart
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

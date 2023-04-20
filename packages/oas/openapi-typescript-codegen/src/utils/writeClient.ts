@@ -41,6 +41,7 @@ import { formatIndentation as i } from "./formatIndentation"
  * @param packageNames Package name to use in import statements.
  * @param postfixServices Service name postfix
  * @param postfixModels Model name postfix
+ * @param prefixHooks Hook name prefix
  * @param clientName Custom client class name
  * @param request Path to custom request file
  */
@@ -60,6 +61,7 @@ export const writeClient = async (
   packageNames: PackageNames,
   postfixServices: string,
   postfixModels: string,
+  prefixHooks: string,
   clientName?: string,
   request?: string
 ): Promise<void> => {
@@ -133,6 +135,7 @@ export const writeClient = async (
       useOptions,
       indent,
       postfixServices,
+      prefixHooks,
       clientName,
       packageNames
     )
@@ -148,6 +151,7 @@ export const writeClient = async (
       exportSchemas,
       postfixServices,
       postfixModels,
+      prefixHooks,
       clientName
     )
   }

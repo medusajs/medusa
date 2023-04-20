@@ -1,13 +1,16 @@
+import camelCase from "camelcase"
+import { cloneDeep } from "lodash"
+import pascalCase from "pascalcase"
 import { resolve } from "path"
-
+import { singular } from "pluralize"
 import type { Service } from "../client/interfaces/Service"
 import type { HttpClient } from "../HttpClient"
 import type { Indent } from "../Indent"
+import { PackageNames } from "../index"
 import { writeFile } from "./fileSystem"
 import { formatCode as f } from "./formatCode"
 import { formatIndentation as i } from "./formatIndentation"
 import type { Templates } from "./registerHandlebarTemplates"
-import { PackageNames } from "../index"
 
 /**
  * Generate Services using the Handlebar template and write to disk.
@@ -19,6 +22,7 @@ import { PackageNames } from "../index"
  * @param useOptions Use options or arguments functions
  * @param indent Indentation options (4, 2 or tab)
  * @param postfixServices Service name postfix
+ * @param prefixHooks Hook name prefix
  * @param clientName Custom client class name
  * @param packageNames Package name to use in import statements.
  */
@@ -31,17 +35,47 @@ export const writeClientHooks = async (
   useOptions: boolean,
   indent: Indent,
   postfixServices: string,
+  prefixHooks: string,
   clientName?: string,
   packageNames: PackageNames = {}
 ): Promise<void> => {
   for (const service of services) {
-    const file = resolve(outputPath, `use${service.name}.ts`)
+    const formattedPrefixHooks = pascalCase(prefixHooks)
+
+    const clonedService = cloneDeep(service)
+    clonedService.operations = clonedService.operations.map((operation) => {
+      if (operation.codegen.hook) {
+        operation.hookName = operation.codegen.hook
+        return operation
+      }
+      const serviceName =
+        operation.codegen.method && operation.codegen.method !== "list"
+          ? pascalCase(singular(service.name))
+          : pascalCase(service.name)
+      const methodName =
+        operation.name && ["retrieve", "list"].includes(operation.name)
+          ? ""
+          : pascalCase(operation.name)
+      operation.hookName = `use${formattedPrefixHooks}${methodName}${serviceName}`
+      return operation
+    })
+
+    const queryKeysExportName = camelCase(
+      `${prefixHooks}${singular(service.name)}Keys`
+    )
+
+    const file = resolve(
+      outputPath,
+      `use${formattedPrefixHooks}${service.name}.ts`
+    )
     const templateResult = templates.exports.hook({
-      ...service,
+      ...clonedService,
       httpClient,
       useUnionTypes,
       useOptions,
       postfixServices,
+      prefixHooks,
+      queryKeysExportName,
       clientName,
       packageNames,
     })

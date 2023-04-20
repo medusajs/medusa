@@ -2,21 +2,29 @@
 	{{~#if parametersPath}}
 
 		{{#each parametersPath}}
-  			{{{name}}}{{>isRequired}}: {{>type}}{{#if default}} = {{{default}}}{{/if}}{{#unless @last}},
-			{{/unless}}
+      {{~#if ../onlyPathFirst}}
+        {{~#if @first}}
+          {{~{name}}}{{>isRequired}}: {{>type}}{{#if default}} = {{{default}}}{{/if}}
+        {{~/if}}
+      {{~else}}
+        {{{name}}}{{>isRequired}}: {{>type}}{{#if default}} = {{{default}}}{{/if}}{{#unless @last}},
+			  {{/unless}}
+      {{/if}}
 		{{~/each}}
 	{{~/if}}
-	{{~#if parametersBody}}
-		{{~#if parametersPath}},{{/if}}
-		{{#with parametersBody}}
-			{{{name}}}: {{>type}}
-		{{~/with}}
-		{{~#if parametersQuery}},{{/if}}
-	{{~/if}}
+  {{~#unless skipBody~}}
+    {{~#if parametersBody}}
+      {{~#if parametersPath}},{{/if}}
+      {{#with parametersBody}}
+        {{{name}}}: {{>type}}
+      {{~/with}}
+      {{~#if parametersQuery}},{{/if}}
+    {{~/if}}
+  {{/unless~}}
 	{{~#if parametersQuery}}
-		{{~#if parametersPath}}{{#unless parametersBody}},{{/unless}}{{/if}}
-		{{#if codegen.queryParams}}
-			queryParams: {{codegen.queryParams}}
+		{{~#if parametersPath}}{{~#if skipBody~}},{{else}}{{#unless parametersBody}},{{/unless}}{{/if}}{{/if}}
+		{{#if codegen.params}}
+			queryParams: {{codegen.params}} {{#unless isQueryParamsRequired}}= {}{{/unless}}
 		{{~else~}}
 			queryParams: {
 				{{#each parametersQuery}}
@@ -32,7 +40,7 @@
 					{{/ifdef}}
 					{{{prop}}}{{>isRequired}}: {{>type}},
 				{{/each}}
-			}
+			} {{#unless isQueryParamsRequired}}= {}{{/unless}}
 		{{~/if}}
 	{{~/if}}
 {{~/if}}

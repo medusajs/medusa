@@ -33,6 +33,7 @@ export type Options = {
   packageNames?: PackageNames
   postfixServices?: string
   postfixModels?: string
+  prefixHooks?: string
   request?: string
   write?: boolean
 }

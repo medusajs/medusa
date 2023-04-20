@@ -32,6 +32,7 @@ export type Options = {
   packageNames?: PackageNames
   postfixServices?: string
   postfixModels?: string
+  prefixHooks?: string
   request?: string
   write?: boolean
 }
@@ -55,6 +56,7 @@ export type Options = {
  * @param packageNames Package name to use in import statements.
  * @param postfixServices Service name postfix
  * @param postfixModels Model name postfix
+ * @param prefixHooks Hook name prefix
  * @param request Path to custom request file
  * @param write Write the files to disk (true or false)
  */
@@ -72,6 +74,7 @@ export const generate = async ({
   exportSchemas = false,
   indent = Indent.SPACE_4,
   packageNames = {},
+  prefixHooks = "",
   postfixServices = "Service",
   postfixModels = "",
   request,
@@ -104,6 +107,7 @@ export const generate = async ({
       packageNames,
       postfixServices,
       postfixModels,
+      prefixHooks,
       clientName,
       request
     )

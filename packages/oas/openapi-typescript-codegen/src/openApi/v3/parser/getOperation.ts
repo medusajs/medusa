@@ -49,6 +49,7 @@ export const getOperation = (
     results: [],
     responseHeader: null,
     codegen,
+    isQueryParamsRequired: false,
   }
 
   // Parse the operation parameters (path, query, body, etc).
@@ -88,6 +89,10 @@ export const getOperation = (
   if (codegen.queryParams) {
     operation.imports.push(codegen.queryParams)
   }
+
+  operation.isQueryParamsRequired = operation.parametersQuery.some(
+    (parameterQuery) => parameterQuery.isRequired
+  )
 
   operation.parameters = operation.parameters.sort(sortByRequired)
 

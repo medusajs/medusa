@@ -30,7 +30,9 @@
     "fs-extra": "^10.1.0",
     "handlebars": "^4.7.7",
     "json-schema-ref-parser": "^9.0.9",
-    "pascalcase": "^2.0.0"
+    "lodash": "^4.17.21",
+    "pascalcase": "^2.0.0",
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.14.3",

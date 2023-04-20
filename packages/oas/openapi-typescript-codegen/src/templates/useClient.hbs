@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { createContext, useContext, ReactNode } from 'react';
-import { QueryClientProvider, QueryClientProviderProps } from 'react-query';
+import { QueryClientProvider, QueryClientProviderProps } from '@tanstack/react-query';
 {{#if packageNames.client}}
 import { {{{clientName}}} } from '{{{packageNames.client}}}';
 {{else}}

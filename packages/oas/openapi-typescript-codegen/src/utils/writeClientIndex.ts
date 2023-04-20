@@ -138,6 +138,7 @@ export const writeClientIndexHooks = async (
   exportSchemas: boolean,
   postfixServices: string,
   postfixModels: string,
+  prefixHooks: string,
   clientName?: string
 ): Promise<void> => {
   const templateResult = templates.indexes.indexHooks({
@@ -149,6 +150,7 @@ export const writeClientIndexHooks = async (
     useUnionTypes,
     postfixServices,
     postfixModels,
+    prefixHooks,
     clientName,
     server: client.server,
     version: client.version,
