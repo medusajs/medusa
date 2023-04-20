@@ -727,12 +727,9 @@ module.exports = {
           label: "Swaps",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/returns",
           label: "Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
