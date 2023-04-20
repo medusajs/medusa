@@ -73,15 +73,15 @@ export interface AdminPostDiscountsDiscountReq {
   /**
    * The time at which the Discount should no longer be available.
    */
-  ends_at?: string
+  ends_at?: string | null
   /**
    * Duration the discount runs between
    */
-  valid_duration?: string
+  valid_duration?: string | null
   /**
    * Maximum times the discount can be used
    */
-  usage_limit?: number
+  usage_limit?: number | null
   /**
    * A list of Region ids representing the Regions in which the Discount can be used.
    */

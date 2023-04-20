@@ -5,6 +5,10 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface InventoryItemDTO {
   /**
+   * The id of the Inventory Item.
+   */
+  id: string
+  /**
    * The Stock Keeping Unit (SKU) code of the Inventory Item.
    */
   sku: string

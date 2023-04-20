@@ -9,15 +9,15 @@ export interface VariantInventory {
   /**
    * the id of the variant
    */
-  id?: string
+  id: string
   /**
    * the stock location address ID
    */
-  inventory?: ResponseInventoryItem
+  inventory: Array<ResponseInventoryItem>
   /**
    * An optional key-value map with additional details
    */
-  sales_channel_availability?: {
+  sales_channel_availability: Array<{
     /**
      * Sales channel name
      */
@@ -30,5 +30,5 @@ export interface VariantInventory {
      * Available quantity in sales channel
      */
     available_quantity?: number
-  }
+  }>
 }

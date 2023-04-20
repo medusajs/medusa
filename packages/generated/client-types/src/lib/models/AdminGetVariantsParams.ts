@@ -5,13 +5,17 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetVariantsParams {
   /**
+   * A search query to filter by.
+   */
+  q?: string
+  /**
    * A Product Variant id to filter by.
    */
   id?: string
   /**
    * A comma separated list of Product Variant ids to filter by.
    */
-  ids?: string
+  ids?: Array<string>
   /**
    * A comma separated list of Product Variant relations to load.
    */

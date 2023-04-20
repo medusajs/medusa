@@ -10,8 +10,8 @@ import type { PaymentProvider } from "./PaymentProvider"
 import type { Store } from "./Store"
 
 export type ExtendedStoreDTO = Store & {
-  payment_providers: PaymentProvider
-  fulfillment_providers: FulfillmentProvider
+  payment_providers: Array<PaymentProvider>
+  fulfillment_providers: Array<FulfillmentProvider>
   feature_flags: FeatureFlagsResponse
   modules: ModulesResponse
 }

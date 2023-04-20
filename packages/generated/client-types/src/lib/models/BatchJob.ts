@@ -47,25 +47,7 @@ export interface BatchJob {
   /**
    * The result of the batch job.
    */
-  result:
-    | (Record<string, any> & {
-        count?: number
-        advancement_count?: number
-        progress?: number
-        errors?: {
-          message?: string
-          code?: string | number
-          err?: any[]
-        }
-        stat_descriptors?: {
-          key?: string
-          name?: string
-          message?: string
-        }
-        file_key?: string
-        file_size?: number
-      })
-    | null
+  result: Record<string, any> | null
   /**
    * The date from which the job has been pre-processed.
    */

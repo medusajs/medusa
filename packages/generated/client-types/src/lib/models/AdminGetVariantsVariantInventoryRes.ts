@@ -6,5 +6,5 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { VariantInventory } from "./VariantInventory"
 
 export interface AdminGetVariantsVariantInventoryRes {
-  variant?: VariantInventory
+  variant: VariantInventory
 }

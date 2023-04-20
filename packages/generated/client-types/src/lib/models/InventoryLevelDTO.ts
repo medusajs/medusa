@@ -5,6 +5,10 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface InventoryLevelDTO {
   /**
+   * The id of the Inventory Level.
+   */
+  id: string
+  /**
    * the item location ID
    */
   location_id: string

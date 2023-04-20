@@ -27,5 +27,5 @@ export interface AdminPostProductCategoriesReq {
   /**
    * The ID of the parent product category
    */
-  parent_category_id?: string
+  parent_category_id?: string | null
 }

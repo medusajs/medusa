@@ -48,4 +48,8 @@ export interface AdminPostRegionsRegionReq {
    * A list of countries' 2 ISO Characters that should be included in the Region.
    */
   countries?: Array<string>
+  /**
+   * An optional key-value map with additional details about the Region.
+   */
+  metadata?: Record<string, any>
 }

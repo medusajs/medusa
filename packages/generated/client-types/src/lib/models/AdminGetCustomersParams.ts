@@ -20,4 +20,12 @@ export interface AdminGetCustomersParams {
    * a search term to search email, first_name, and last_name.
    */
   q?: string
+  /**
+   * whether or not the customer has an account.
+   */
+  has_account?: boolean
+  /**
+   * group IDs to search customers by.
+   */
+  groups?: Array<string>
 }

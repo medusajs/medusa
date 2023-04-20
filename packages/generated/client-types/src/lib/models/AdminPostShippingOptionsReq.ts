@@ -19,7 +19,7 @@ export interface AdminPostShippingOptionsReq {
   /**
    * The ID of the Shipping Profile to add the Shipping Option to.
    */
-  profile_id?: number
+  profile_id?: string
   /**
    * The data needed for the Fulfillment Provider to handle shipping with this Shipping Option.
    */

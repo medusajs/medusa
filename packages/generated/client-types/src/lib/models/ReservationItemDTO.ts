@@ -24,6 +24,10 @@ export interface ReservationItemDTO {
    */
   quantity: number
   /**
+   * The id of the line item that the reservation is for
+   */
+  line_item_id?: string | null
+  /**
    * An optional key-value map with additional details
    */
   metadata?: Record<string, any>
