@@ -773,12 +773,9 @@ module.exports = {
           label: "Backend: Send Order Claim Email",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-orders",
           label: "Admin: Manage Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
