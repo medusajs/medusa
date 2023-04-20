@@ -68,8 +68,8 @@ You can list orders by sending a request to the [List Orders endpoint](/api/admi
 ```ts
 medusa.admin.orders.list()
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -108,8 +108,8 @@ fetch(`<BACKEND_URL>/admin/orders`, {
 })
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -142,11 +142,11 @@ medusa.admin.orders.list({
   // the JS client requires these fields
   // to be passed
   offset,
-  limit
+  limit,
 })
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -161,7 +161,7 @@ const Orders = () => {
     // the JS client requires these fields
     // to be passed
     offset,
-    limit
+    limit,
   })
 
   return (
@@ -191,8 +191,8 @@ fetch(`<BACKEND_URL>/admin/orders?status[]=completed`, {
 })
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -220,16 +220,16 @@ Another example is filtering the orders by a sales channel:
 ```ts
 medusa.admin.orders.list({
   sales_channel_id: [
-    salesChannelId
+    salesChannelId,
   ],
   // the JS client requires these fields
   // to be passed
   offset,
-  limit
+  limit,
 })
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -241,12 +241,12 @@ import { useAdminOrders } from "medusa-react"
 const Orders = () => {
   const { orders, isLoading } = useAdminOrders({
     sales_channel_id: [
-      salesChannelId
+      salesChannelId,
     ],
     // the JS client requires these fields
     // to be passed
     offset,
-    limit
+    limit,
   })
 
   return (
@@ -270,14 +270,16 @@ export default Orders
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/orders?sales_channel_id[]=${salesChannelId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -300,16 +302,16 @@ You can also combine filters together:
 medusa.admin.orders.list({
   status: ["completed"],
   sales_channel_id: [
-    salesChannelId
+    salesChannelId,
   ],
   // the JS client requires these fields
   // to be passed
   offset,
-  limit
+  limit,
 })
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -322,12 +324,12 @@ const Orders = () => {
   const { orders, isLoading } = useAdminOrders({
     status: ["completed"],
     sales_channel_id: [
-      salesChannelId
+      salesChannelId,
     ],
     // the JS client requires these fields
     // to be passed
     offset,
-    limit
+    limit,
   })
 
   return (
@@ -351,14 +353,16 @@ export default Orders
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=${salesChannelId}`, {
   credentials: "include",
 })
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -384,8 +388,8 @@ You can retrieve an order by sending a request to the [Get an Order endpoint](/a
 ```ts
 medusa.admin.orders.retrieve(orderId)
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -421,8 +425,8 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -464,11 +468,11 @@ You can update any of the above details of an order by sending a request to the 
 
 ```ts
 medusa.admin.orders.update(orderId, {
-  email
+  email,
 })
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -485,7 +489,7 @@ const UpdateOrder = () => {
 
   const handleUpdate = () => {
     updateOrder.mutate({
-      email
+      email,
     })
   }
 
@@ -506,13 +510,13 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    email
+    email,
   }),
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -550,8 +554,8 @@ You can capture an orderâ€™s payment by sending a request to the [Capture Orderâ
 ```ts
 medusa.admin.orders.capturePayment(orderId)
 .then(({ order }) => {
-  console.log(order.payment_status);
-});
+  console.log(order.payment_status)
+})
 ```
 
 </TabItem>
@@ -587,8 +591,8 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/capture`, {
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.payment_status);
-});
+  console.log(order.payment_status)
+})
 ```
 
 </TabItem>
@@ -618,11 +622,11 @@ To refund payment, send a request to the [Refund Payment endpoint](/api/admin#ta
 ```ts
 medusa.admin.orders.refundPayment(orderId, {
   amount,
-  reason
+  reason,
 })
 .then(({ order }) => {
-  console.log(order.payment_status, order.refunded_total);
-});
+  console.log(order.payment_status, order.refunded_total)
+})
 ```
 
 </TabItem>
@@ -640,7 +644,7 @@ const RefundPayment = () => {
   const handleRefund = () => {
     refundPayment.mutate({
       amount,
-      reason
+      reason,
     })
   }
 
@@ -662,13 +666,13 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/refund`, {
   },
   body: JSON.stringify({
     amount,
-    reason
+    reason,
   }),
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.payment_status, order.refunded_total);
-});
+  console.log(order.payment_status, order.refunded_total)
+})
 ```
 
 </TabItem>
@@ -714,13 +718,13 @@ medusa.admin.orders.createFulfillment(orderId, {
   items: [
     {
       itemId,
-      quantity
-    }
-  ]
+      quantity,
+    },
+  ],
 })
 .then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments);
-});
+  console.log(order.fulfillment_status, order.fulfillments)
+})
 ```
 
 </TabItem>
@@ -740,9 +744,9 @@ const CreateFuilfillment = () => {
       items: [
         {
           itemId,
-          quantity
-        }
-      ]
+          quantity,
+        },
+      ],
     })
   }
 
@@ -766,15 +770,15 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillment`, {
     items: [
       {
         itemId,
-        quantity
-      }
-    ]
+        quantity,
+      },
+    ],
   }),
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments);
-});
+  console.log(order.fulfillment_status, order.fulfillments)
+})
 ```
 
 </TabItem>
@@ -819,11 +823,11 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
 
 ```ts
 medusa.admin.orders.createShipment(orderId, {
-  fulfillment_id
+  fulfillment_id,
 })
 .then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments);
-});
+  console.log(order.fulfillment_status, order.fulfillments)
+})
 ```
 
 </TabItem>
@@ -840,7 +844,7 @@ const CreateShipment = () => {
 
   const handleCreate = () => {
     createShipment.mutate({
-      fulfillment_id
+      fulfillment_id,
     })
   }
 
@@ -861,13 +865,13 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/shipment`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    fulfillment_id
+    fulfillment_id,
   }),
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments);
-});
+  console.log(order.fulfillment_status, order.fulfillments)
+})
 ```
 
 </TabItem>
@@ -901,8 +905,8 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment end
 ```ts
 medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
 .then(({ order }) => {
-  console.log(order.fulfillment_status);
-});
+  console.log(order.fulfillment_status)
+})
 ```
 
 </TabItem>
@@ -930,6 +934,8 @@ export default CancelFulfillment
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cancel`, {
   credentials: "include",
@@ -937,8 +943,8 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cance
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -968,8 +974,8 @@ You can mark an order completed, changing its status, by sending a request to th
 ```ts
 medusa.admin.orders.complete(orderId)
 .then(({ order }) => {
-  console.log(order.status);
-});
+  console.log(order.status)
+})
 ```
 
 </TabItem>
@@ -1004,8 +1010,8 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/complete`, {
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.status);
-});
+  console.log(order.status)
+})
 ```
 
 </TabItem>
@@ -1035,8 +1041,8 @@ You can cancel an order by sending a request to the [Cancel Order endpoint](/api
 ```ts
 medusa.admin.orders.cancel(orderId)
 .then(({ order }) => {
-  console.log(order.status);
-});
+  console.log(order.status)
+})
 ```
 
 </TabItem>
@@ -1071,8 +1077,8 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/cancel`, {
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.status);
-});
+  console.log(order.status)
+})
 ```
 
 </TabItem>
@@ -1102,8 +1108,8 @@ You can archive an order by sending a request to the [Archive Order endpoint](/a
 ```ts
 medusa.admin.orders.archive(orderId)
 .then(({ order }) => {
-  console.log(order.status);
-});
+  console.log(order.status)
+})
 ```
 
 </TabItem>
@@ -1138,8 +1144,8 @@ fetch(`<BACKEND_URL>/admin/orders/${orderId}/archive`, {
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.status);
-});
+  console.log(order.status)
+})
 ```
 
 </TabItem>
