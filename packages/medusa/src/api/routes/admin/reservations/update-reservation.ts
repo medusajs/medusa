@@ -18,6 +18,8 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *    application/json:
  *      schema:
  *        $ref: "#/components/schemas/AdminPostReservationsReservationReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

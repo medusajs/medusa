@@ -183,41 +183,45 @@ export class BatchJob extends SoftDeletableEntity {
  *  result:
  *    description: The result of the batch job.
  *    nullable: true
- *    allOf:
- *    - type: object
- *      example: {}
- *    - type: object
- *      properties:
- *        count:
- *          type: number
- *        advancement_count:
- *          type: number
- *        progress:
- *          type: number
- *        errors:
- *          type: object
- *          properties:
- *            message:
- *              type: string
- *            code:
- *              oneOf:
- *                - type: string
- *                - type: number
- *            err:
- *              type: array
- *        stat_descriptors:
- *          type: object
- *          properties:
- *            key:
- *              type: string
- *            name:
- *              type: string
- *            message:
- *              type: string
- *        file_key:
- *          type: string
- *        file_size:
- *          type: number
+ *    type: object
+ *    additionalProperties: true
+ *    properties:
+ *      count:
+ *        type: number
+ *      advancement_count:
+ *        type: number
+ *      progress:
+ *        type: number
+ *      errors:
+ *        type: array
+ *        items:
+ *          oneOf:
+ *            - type: string
+ *            - type: object
+ *              additionalProperties: true
+ *              required:
+ *                - message
+ *                - code
+ *              properties:
+ *                message:
+ *                  type: string
+ *                code:
+ *                  oneOf:
+ *                    - type: string
+ *                    - type: number
+ *      stat_descriptors:
+ *        type: object
+ *        properties:
+ *          key:
+ *            type: string
+ *          name:
+ *            type: string
+ *          message:
+ *            type: string
+ *      file_key:
+ *        type: string
+ *      file_size:
+ *        type: number
  *    example:
  *      errors:
  *        - err: []

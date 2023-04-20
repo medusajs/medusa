@@ -9,6 +9,8 @@ import { MedusaError } from "@medusajs/utils"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the reservation to retrieve.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

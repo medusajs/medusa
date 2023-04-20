@@ -116,8 +116,9 @@ export default async (req: Request, res: Response) => {
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
  *   parent_category_id:
- *     type: string
  *     description: The ID of the parent product category
+ *     nullable: true
+ *     type: string
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesReq extends AdminProductCategoriesReqBase {

@@ -139,7 +139,7 @@ class OptionRequirement {
  *     type: string
  *   profile_id:
  *     description: "The ID of the Shipping Profile to add the Shipping Option to."
- *     type: number
+ *     type: string
  *   data:
  *     description: "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option."
  *     type: object

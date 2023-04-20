@@ -28,7 +28,7 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimFulfillmentsReq"
  * x-codegen:
  *   method: fulfillClaim
- *   params: AdminPostOrdersOrderClaimsClaimFulfillmentsReq
+ *   params: AdminPostOrdersOrderClaimsClaimFulfillmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -129,7 +129,12 @@ export default async (req, res) => {
 /**
  * @schema AdminPostInventoryItemsReq
  * type: object
+ * required:
+ *   - variant_id
  * properties:
+ *   variant_id:
+ *     description: The id of the Product Variant to create an Inventory Item for.
+ *     type: string
  *   sku:
  *     description: The unique SKU for the Product Variant.
  *     type: string

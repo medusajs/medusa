@@ -13,8 +13,12 @@ import fs from "fs"
  *         type: object
  *         properties:
  *           files:
- *             type: string
- *             format: binary
+ *             type: array
+ *             items:
+ *               type: string
+ *               format: binary
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

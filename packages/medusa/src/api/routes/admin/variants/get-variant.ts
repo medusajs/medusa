@@ -1,5 +1,4 @@
 import { PricingService, ProductVariantService } from "../../../../services"
-
 import { FindParams } from "../../../../types/common"
 
 /**
@@ -35,7 +34,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Products
+ *   - Variants
  * responses:
  *   200:
  *     description: OK

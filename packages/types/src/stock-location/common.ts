@@ -144,7 +144,9 @@ export type StockLocationDTO = {
  *   - type: object
  *     properties:
  *       sales_channels:
- *         $ref: "#/components/schemas/SalesChannel"
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/SalesChannel"
  */
 export type StockLocationExpandedDTO = StockLocationDTO & {
   sales_channels?: any[] // TODO: SalesChannel type

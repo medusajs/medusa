@@ -1,6 +1,5 @@
-import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
-
 import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
+import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
 import { TaxServiceRate } from "./tax-service"
 
 export type ProductVariantPricing = {
@@ -61,7 +60,7 @@ export type ShippingOptionPricing = {
  *         type: number
  *         description: The taxes applied.
  */
-export type PricedShippingOption = Partial<ShippingOption> &
+export type PricedShippingOption = Omit<ShippingOption, "beforeInsert"> &
   ShippingOptionPricing
 
 /**
@@ -106,7 +105,8 @@ export type PricedShippingOption = Partial<ShippingOption> &
  *               type: string
  *               description: The code of the tax rate
  */
-export type PricedVariant = Partial<ProductVariant> & ProductVariantPricing
+export type PricedVariant = Omit<ProductVariant, "beforeInsert"> &
+  ProductVariantPricing
 
 /**
  * @schema PricedProduct
@@ -121,6 +121,6 @@ export type PricedVariant = Partial<ProductVariant> & ProductVariantPricing
  *         items:
  *           $ref: "#/components/schemas/PricedVariant"
  */
-export type PricedProduct = Omit<Partial<Product>, "variants"> & {
+export type PricedProduct = Omit<Product, "variants" | "beforeInsert"> & {
   variants: PricedVariant[]
 }

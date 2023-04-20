@@ -12,6 +12,8 @@ import { IsString } from "class-validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostUploadsDownloadUrlReq"
+ * x-codegen:
+ *   method: getPresignedDownloadUrl
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

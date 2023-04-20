@@ -49,11 +49,7 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant:
- *               type: object
- *               $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
+ *           $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -150,6 +146,17 @@ type SalesChannelDTO = Omit<SalesChannel, "beforeInsert" | "locations"> & {
   locations: string[]
 }
 
+/**
+ * @schema LevelWithAvailability
+ * allOf:
+ *   - $ref: "#/components/schemas/InventoryLevelDTO"
+ *   - type: object
+ *     required:
+ *       - available_quantity
+ *     properties:
+ *       available_quantity:
+ *         type: number
+ */
 export type LevelWithAvailability = InventoryLevelDTO & {
   available_quantity: number
 }
@@ -159,39 +166,47 @@ export type LevelWithAvailability = InventoryLevelDTO & {
  * allOf:
  *   - $ref: "#/components/schemas/InventoryItemDTO"
  *   - type: object
- *     required:
- *      - available_quantity
  *     properties:
- *       available_quantity:
- *         type: number
+ *       location_levels:
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/LevelWithAvailability"
  */
-export type ResponseInventoryItem = Partial<InventoryItemDTO> & {
+export type ResponseInventoryItem = InventoryItemDTO & {
   location_levels?: LevelWithAvailability[]
 }
 
 /**
  * @schema VariantInventory
  * type: object
+ * required:
+ *   - id
+ *   - inventory
+ *   - sales_channel_availability
  * properties:
  *   id:
  *     description: the id of the variant
  *     type: string
  *   inventory:
  *     description: the stock location address ID
- *     $ref: "#/components/schemas/ResponseInventoryItem"
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ResponseInventoryItem"
  *   sales_channel_availability:
- *     type: object
  *     description: An optional key-value map with additional details
- *     properties:
- *       channel_name:
- *         description: Sales channel name
- *         type: string
- *       channel_id:
- *         description: Sales channel id
- *         type: string
- *       available_quantity:
- *         description: Available quantity in sales channel
- *         type: number
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         channel_name:
+ *           description: Sales channel name
+ *           type: string
+ *         channel_id:
+ *           description: Sales channel id
+ *           type: string
+ *         available_quantity:
+ *           description: Available quantity in sales channel
+ *           type: number
  */
 export type VariantInventory = {
   id: string
@@ -206,6 +221,8 @@ export type VariantInventory = {
 /**
  * @schema AdminGetVariantsVariantInventoryRes
  * type: object
+ * required:
+ *   - variant
  * properties:
  *   variant:
  *     type: object

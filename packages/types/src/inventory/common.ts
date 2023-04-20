@@ -7,8 +7,12 @@ import {
  * @schema InventoryItemDTO
  * type: object
  * required:
+ *   - id
  *   - sku
  * properties:
+ *   id:
+ *     description: The id of the Inventory Item.
+ *     type: string
  *   sku:
  *     description: The Stock Keeping Unit (SKU) code of the Inventory Item.
  *     type: string
@@ -97,6 +101,10 @@ export type InventoryItemDTO = {
  *   quantity:
  *     description: "The id of the reservation item"
  *     type: number
+ *   line_item_id:
+ *     description: "The id of the line item that the reservation is for"
+ *     nullable: true
+ *     type: string
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details
@@ -130,12 +138,16 @@ export type ReservationItemDTO = {
  * @schema InventoryLevelDTO
  * type: object
  * required:
+ *   - id
  *   - inventory_item_id
  *   - location_id
  *   - stocked_quantity
  *   - reserved_quantity
  *   - incoming_quantity
  * properties:
+ *   id:
+ *     description: The id of the Inventory Level.
+ *     type: string
  *   location_id:
  *     description: the item location ID
  *     type: string

@@ -11,6 +11,8 @@ import { IsString } from "class-validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteUploadsReq"
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

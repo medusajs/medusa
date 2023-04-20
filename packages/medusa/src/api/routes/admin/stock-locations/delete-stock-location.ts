@@ -10,6 +10,8 @@ import { SalesChannelLocationService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -37,19 +39,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Stock Location.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: stock_location
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Stock Location was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminStockLocationsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */

@@ -181,16 +181,19 @@ export default async (req: Request, res: Response) => {
  *     format: date-time
  *     description: The time at which the Discount should be available.
  *   ends_at:
+ *     description: The time at which the Discount should no longer be available.
+ *     nullable: true
  *     type: string
  *     format: date-time
- *     description: The time at which the Discount should no longer be available.
  *   valid_duration:
- *     type: string
  *     description: Duration the discount runs between
+ *     nullable: true
+ *     type: string
  *     example: P3Y6M4DT12H30M5S
  *   usage_limit:
- *     type: number
  *     description: Maximum times the discount can be used
+ *     nullable: true
+ *     type: number
  *   regions:
  *     description: A list of Region ids representing the Regions in which the Discount can be used.
  *     type: array

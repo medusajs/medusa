@@ -142,6 +142,9 @@ export default async (req, res) => {
  *     type: array
  *     items:
  *       type: string
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details about the Region.
  */
 export class AdminPostRegionsRegionReq {
   @IsString()

@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsInt, Min, IsNotEmpty } from "class-validator"
+import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -116,8 +116,9 @@ export default async (req: Request, res: Response) => {
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
  *   parent_category_id:
- *     type: string
  *     description: The ID of the parent product category
+ *     nullable: true
+ *     type: string
  *   rank:
  *     type: number
  *     description: The rank of the category in the tree node (starting from 0)

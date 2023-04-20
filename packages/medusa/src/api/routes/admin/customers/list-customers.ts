@@ -15,7 +15,16 @@ import customerController from "../../../../controllers/customers"
  *   - (query) offset=0 {integer} The items to skip before result.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
  *   - (query) q {string} a search term to search email, first_name, and last_name.
- *   - (query) groups[] {string} group IDs to search customers by.
+ *   - (query) has_account {boolean} whether or not the customer has an account.
+ *   - in: query
+ *     name: groups
+ *     style: form
+ *     explode: false
+ *     description: group IDs to search customers by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomersParams

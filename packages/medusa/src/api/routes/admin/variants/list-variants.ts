@@ -23,8 +23,17 @@ import { omit } from "lodash"
  * description: "Retrieves a list of Product Variants"
  * x-authenticated: true
  * parameters:
+ *   - (query) q {string} A search query to filter by.
  *   - (query) id {string} A Product Variant id to filter by.
- *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
+ *   - in: query
+ *     name: ids
+ *     description: A comma separated list of Product Variant ids to filter by.
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  *   - (query) expand {string} A comma separated list of Product Variant relations to load.
  *   - (query) fields {string} A comma separated list of Product Variant fields to include.
  *   - (query) offset=0 {number} How many product variants to skip in the result.
