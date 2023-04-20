@@ -248,7 +248,7 @@ export class Swap extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
