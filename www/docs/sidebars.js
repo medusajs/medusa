@@ -763,12 +763,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/backend/send-order-confirmation",
           label: "Backend: Send Confirmation Email",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
