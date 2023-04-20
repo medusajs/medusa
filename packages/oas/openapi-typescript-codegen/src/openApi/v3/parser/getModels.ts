@@ -34,11 +34,11 @@ export const getModels = (openApi: OpenApi): Model[] => {
 
   /**
    * Bundle all query parameters in a single typed object
-   * when x-codegen.queryParams is declared on the operation.
+   * when x-codegen.params is declared on the operation.
    */
   const operations = listOperations(openApi)
   for (const operation of operations) {
-    if (operation.codegen.queryParams) {
+    if (operation.codegen.params) {
       const definition = getDefinitionFromParametersQuery(
         operation.parametersQuery
       )
@@ -46,7 +46,7 @@ export const getModels = (openApi: OpenApi): Model[] => {
         openApi,
         definition,
         true,
-        operation.codegen.queryParams
+        operation.codegen.params
       )
       models.push(model)
     }

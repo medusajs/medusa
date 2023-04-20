@@ -44,10 +44,10 @@ describe("getOperation", () => {
     )
   })
 
-  it("should add x-codegen.queryParams to imports", () => {
+  it("should add x-codegen.params to imports", () => {
     const op: OpenApiOperation = {
       "x-codegen": {
-        queryParams: "OrdersQueryParams",
+        params: "OrdersQueryParams",
       },
       responses: {
         "200": {

@@ -120,13 +120,13 @@ describe("getModels", () => {
     )
   })
 
-  it("should convert query parameters into a schema when x-codegen.queryParams is declared", () => {
+  it("should convert query parameters into a schema when x-codegen.params is declared", () => {
     openApi.paths = {
       "/": {
         get: {
           operationId: "GetOrder",
           "x-codegen": {
-            queryParams: "GetOrderQueryParams",
+            params: "GetOrderQueryParams",
           },
           parameters: [
             {

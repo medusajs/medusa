@@ -86,7 +86,11 @@ export const getOperation = (
   }
 
   if (codegen.queryParams) {
-    operation.imports.push(codegen.queryParams)
+    codegen.params = codegen.queryParams
+    delete codegen.queryParams
+  }
+  if (codegen.params) {
+    operation.imports.push(codegen.params)
   }
 
   operation.parameters = operation.parameters.sort(sortByRequired)

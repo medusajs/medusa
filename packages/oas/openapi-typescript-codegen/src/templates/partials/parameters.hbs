@@ -15,8 +15,8 @@
 	{{~/if}}
 	{{~#if parametersQuery}}
 		{{~#if parametersPath}}{{#unless parametersBody}},{{/unless}}{{/if}}
-		{{#if codegen.queryParams}}
-			queryParams: {{codegen.queryParams}}
+		{{#if codegen.params}}
+			queryParams: {{codegen.params}}
 		{{~else~}}
 			queryParams: {
 				{{#each parametersQuery}}
