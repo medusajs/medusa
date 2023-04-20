@@ -604,20 +604,34 @@ class WebshipperFulfillmentService extends FulfillmentService {
       include_tax: true,
       use_tax_lines: true,
     })
-    return {
+
+    const webShipperItem = {
       ext_ref: item.id,
-      sku: item?.variant?.sku || "N/A",
       description: item.title,
       quantity: quantity,
-      country_of_origin:
-        item?.variant?.origin_country ||
-        item?.variant?.product?.origin_country ||
-        "N/A",
-      tarif_number:
-        item?.variant?.hs_code || item?.variant?.product?.hs_code || "N/A",
       unit_price: humanizeAmount(totals.unit_price, order.currency_code),
       vat_percent: totals.tax_lines.reduce((acc, next) => acc + next.rate, 0),
     }
+
+    const coo =
+      item?.variant?.origin_country || item?.variant?.product?.origin_country
+    const sku = item?.variant?.sku
+    const tarifNumber =
+      item?.variant?.hs_code || item?.variant?.product?.hs_code
+
+    if (coo) {
+      webShipperItem.country_of_origin = coo
+    }
+
+    if (sku) {
+      webShipperItem.sku = sku
+    }
+
+    if (tarifNumber) {
+      webShipperItem.tarif_number = tarifNumber
+    }
+
+    return webShipperItem
   }
 }
 
