@@ -682,7 +682,7 @@ module.exports = {
         {
           type: "doc",
           id: "modules/carts-and-checkout/backend/add-payment-provider",
-          label: "Backend: Create Payment Provider",
+          label: "Backend: Create Payment Processor",
         },
         {
           type: "doc",
