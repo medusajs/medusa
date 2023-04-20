@@ -133,7 +133,9 @@ class OrderConfirmationSubscriber {
     )
   }
 
-  handleOrderConfirmation = async (data: Record<string, any>) => {
+  handleOrderConfirmation = async (
+    data: Record<string, any>
+  ) => {
     // TODO: handle event
   }
 }
@@ -165,7 +167,10 @@ type InjectedDependencies = {
 class OrderConfirmationSubscriber {
   protected readonly orderService_: OrderService
 
-  constructor({ eventBusService, orderService }: InjectedDependencies) {
+  constructor({ 
+    eventBusService, 
+    orderService,
+  }: InjectedDependencies) {
     this.orderService_ = orderService
     eventBusService.subscribe(
       "order.placed", 
@@ -173,10 +178,12 @@ class OrderConfirmationSubscriber {
     )
   }
 
-  handleOrderConfirmation = async (data: Record<string, any>) => {
+  handleOrderConfirmation = async (
+    data: Record<string, any>
+  ) => {
     const order = await this.orderService_.retrieve(data.id, {
       // you can include other relations as well
-      relations: ['items']
+      relations: ["items"],
     })
     // TODO: handle event
   }
@@ -210,7 +217,11 @@ class OrderConfirmationSubscriber {
   protected readonly orderService_: OrderService
   protected readonly sendgridService_: any
 
-  constructor({ eventBusService, orderService, sendgridService }: InjectedDependencies) {
+  constructor({ 
+    eventBusService, 
+    orderService, 
+    sendgridService,
+  }: InjectedDependencies) {
     this.orderService_ = orderService
     this.sendgridService_ = sendgridService
     eventBusService.subscribe(
@@ -219,9 +230,12 @@ class OrderConfirmationSubscriber {
     )
   }
 
-  handleOrderConfirmation = async (data: Record<string, any>) => {
+  handleOrderConfirmation = async (
+    data: Record<string, any>
+  ) => {
     const order = await this.orderService_.retrieve(data.id, {
-      relations: ['items'] // you can include other relations as well
+      // you can include other relations as well
+      relations: ["items"],
     })
     this.sendgridService_.sendEmail({
       templateId: "order-confirmation",
@@ -230,7 +244,7 @@ class OrderConfirmationSubscriber {
       data: {
         // any data necessary for your template...
         items: order.items,
-        status: order.status
+        status: order.status,
       },
     })
   }
