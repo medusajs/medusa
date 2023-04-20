@@ -128,9 +128,9 @@ By default, the categories are not retrieved along with their nested children. T
 
 ---
 
-## Get a Category
+## Get a Category by ID
 
-You can retrieve a single product category by using the [Get a Product Category endpoint](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory):
+You can retrieve a single product category by its ID using the [Get a Product Category endpoint](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory):
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -191,6 +191,98 @@ curl -L -X GET '<BACKEND_URL>/store/product-categories/<CAT_ID>' \
 This request requires the product category ID as a path parameter. You can also pass query parameters such as `expand` and `fields` as explained in the [API reference](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory).
 
 The request returns the category as an object.
+
+---
+
+## Get a Category by Its Handle
+
+On the storefront, you may use the handle of a category as its page’s path. For example, instead of displaying the category's details on the path `/categories/pcat_123`, you can display it on the path `/categories/women`, where `women` is the handle of the category. This type of URL is human-readable and is good for Search Engine Optimization (SEO)
+
+You can retrieve the details of a category by its handle by sending a request to the List Categories endpoint, passing the `handle` as a filter:
+
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.productCategories.list({
+  handle: "women",
+})
+.then(({ product_categories, limit, offset, count }) => {
+  if (!product_categories.length) {
+    // category does not exist
+  }
+  const category = product_categories[0]
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useProductCategories } from "medusa-react"
+import { ProductCategory } from "@medusajs/medusa"
+
+function Categories() {
+  const { 
+    product_categories, 
+    isLoading,
+  } = useProductCategories({
+    handle: "women",
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {product_categories && !product_categories.length && (
+        <span>No Categories</span>
+      )}
+      {product_categories && product_categories.length > 0 && (
+        <ul>
+          {product_categories.map(
+            (category: ProductCategory) => (
+              <li key={category.id}>{category.name}</li>
+            )
+          )}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Categories
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/store/product-categories?handle=women`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ product_categories, limit, offset, count }) => {
+  if (!product_categories.length) {
+    // category does not exist
+  }
+  const category = product_categories[0]
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/store/product-categories?handle=women' \
+-H 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+As the `handle` of each category is unique, when you pass the handle as a filter you’ll either:
+
+- receive an empty `product_categories` array, meaning the category doesn’t exist;
+- or you’ll receive a `product_categories` array with one item being the category you’re looking for. In this case, you can access the category at index `0`. You can then display the product category as expected.
 
 ---
 
