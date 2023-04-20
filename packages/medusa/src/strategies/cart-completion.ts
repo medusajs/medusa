@@ -392,14 +392,13 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         } else {
           throw error
         }
-      } else if (
-        this.inventoryService_ &&
-        reservations.every(([reservation]) => !!reservation)
-      ) {
+      } else if (this.inventoryService_) {
         await this.eventBusService_.emit("reservation-items.bulk-created", {
-          ids: reservations.flatMap(([reservationItemArr]) =>
-            reservationItemArr!.map((item) => item.id)
-          ),
+          ids: reservations
+            .filter(([reservation]) => !!reservation)
+            .flatMap(([reservationItemArr]) =>
+              reservationItemArr!.map((item) => item.id)
+            ),
         })
       }
     }
