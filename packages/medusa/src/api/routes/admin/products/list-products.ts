@@ -7,10 +7,10 @@ import {
 } from "../../../../services"
 
 import { FilterableProductProps } from "../../../../types/product"
+import { IInventoryService } from "@medusajs/types"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
-import { IInventoryService } from "@medusajs/types"
 
 /**
  * @oas [get] /admin/products
