@@ -10,6 +10,8 @@ In this document, you’ll learn what swaps are, swap processes implemented in t
 
 After an order is created and fulfilled, the customer may need to replace an item they received with another. They can then create a swap, requesting to return an item they have in place for a new item. The swap, similar to an order, can then be paid, fulfilled, and more.
 
+The Medusa core provides the necessary implementation and functionalities that allow you to integrate swaps in your store and automate the Return Merchandise Authorization (RMA) flow.
+
 ---
 
 ## Swap Entity Overview
