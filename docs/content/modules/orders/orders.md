@@ -1,5 +1,5 @@
 ---
-description: "Customers place orders to purchase products from an ecommerce business. Learn about the available features and guides."
+description: "Learn about the orders architecture, how they’re created, and their relation to other entities."
 ---
 
 # Orders Architecture Overview
@@ -10,7 +10,7 @@ In this document, you’ll learn about the orders architecture, how they’re cr
 
 Orders are placed by customers who purchase items from your store. They involve intricate commerce operations related to inventory, fulfillment, payment, and more.
 
-Medusa supports order features such as order editing, creating swaps for orders, returning orders, and more. These features allow merchants to handle and automate Return Merchandise Automation (RMA) flows.
+Medusa supports order features such as order editing, creating swaps for orders, returning orders, and more. These features allow merchants to handle and automate Return Merchandise Authorization (RMA) flows.
 
 :::note
 
@@ -25,7 +25,7 @@ As the Order domain is large in features and details, some features such as Retu
 Some of the attributes of the `Order` entity include:
 
 - `fulfillment_status`: a string indicating the status of the order’s fulfillment. Its possible values can determine whether all items have been fulfilled, shipped, or returned.
-- `payment_status`: a string indicating the status of the order’s payment. It’s possible values can determine whether the payment of the order has been captured or refunded.
+- `payment_status`: a string indicating the status of the order’s payment. Its possible values can determine whether the payment of the order has been captured or refunded.
 - `status`: a string indicating the overall status of the order. Its values can be:
   - `pending`: this is the default status of the order after it has been created.
   - `completed`: the order is marked as completed. A merchant typically marks the order as completed after the order has been fulfilled and paid.
