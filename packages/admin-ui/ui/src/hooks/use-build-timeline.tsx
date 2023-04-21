@@ -561,7 +561,7 @@ function getLineItem(allItems, itemId) {
   }
 }
 
-function findInitialItemId(edits, originalId) {
+function findOriginalItemId(edits, originalId) {
   let currentId = originalId
 
   edits = edits
@@ -583,7 +583,7 @@ function findInitialItemId(edits, originalId) {
 function getReturnItems(allItems, edits, item) {
   let id = item.item_id
   if (edits) {
-    id = findInitialItemId(edits, id)
+    id = findOriginalItemId(edits, id)
   }
 
   const line = allItems.find((li) => li.id === id)
@@ -637,7 +637,7 @@ function getWasRefundClaim(claimId, order) {
 function getFulfilmentItem(allItems, edits, item) {
   let id = item.item_id
   if (edits) {
-    id = findInitialItemId(edits, id)
+    id = findOriginalItemId(edits, id)
   }
 
   const line = allItems.find((line) => line.id === id)
