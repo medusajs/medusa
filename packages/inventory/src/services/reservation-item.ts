@@ -132,9 +132,9 @@ export default class ReservationItemService {
     @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem> {
     const manager = context.transactionManager!
-    const itemRepository = manager.getRepository(ReservationItem)
+    const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const inventoryItem = itemRepository.create({
+    const reservationItem = reservationItemRepository.create({
       inventory_item_id: data.inventory_item_id,
       line_item_id: data.line_item_id,
       location_id: data.location_id,
@@ -143,8 +143,8 @@ export default class ReservationItemService {
       external_id: data.external_id,
     })
 
-    const [newInventoryItem] = await Promise.all([
-      itemRepository.save(inventoryItem),
+    const [newReservationItem] = await Promise.all([
+      reservationItemRepository.save(reservationItem),
       this.inventoryLevelService_.adjustReservedQuantity(
         data.inventory_item_id,
         data.location_id,
@@ -154,10 +154,10 @@ export default class ReservationItemService {
     ])
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
-      id: newInventoryItem.id,
+      id: newReservationItem.id,
     })
 
-    return newInventoryItem
+    return newReservationItem
   }
 
   /**
