@@ -3,7 +3,7 @@ description: 'Learn how to send a confirmation email to the customer after they 
 addHowToData: true
 ---
 
-# How to Send Confirmation Email
+# How to Send Sign Up Confirmation Email
 
 In this document, you’ll learn how to send a confirmation email to the customer after they sign up.
 
@@ -23,7 +23,7 @@ It’s assumed you already have the Medusa backend installed. If not, you can ei
 
 ### Event Bus Module
 
-The triggered events are relayed to the listening subscribers using an event bus module. So, it’s required to have an event bus module installed and configured on your Medusa backend.
+The event bus module trigger the event to the listening subscribers. So, it’s required to have an event bus module installed and configured on your Medusa backend.
 
 The [Local Event Bus module](../../../development/events/modules/local.md) works in a development environment. For production, it’s recommended to use the [Redis Event Bus module](../../../development/events/modules/redis.md).
 
