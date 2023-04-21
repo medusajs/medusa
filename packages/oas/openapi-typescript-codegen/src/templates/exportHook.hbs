@@ -13,7 +13,7 @@ import type { {{{this}}} } from '../models/{{{this}}}';
 	{{/each}}
 {{/if}}
 
-const QUERY_KEY = '{{{name}}}';
+const QUERY_KEY = '{{{camelCase name}}}';
 export const {{{queryKeysExportName}}} = queryKeysFactory(QUERY_KEY);
 
 {{#each operations}}
