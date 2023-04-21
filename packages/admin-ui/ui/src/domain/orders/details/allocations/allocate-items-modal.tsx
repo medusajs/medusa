@@ -1,5 +1,5 @@
 import { Controller, useForm, useWatch } from "react-hook-form"
-import { LineItem, Order, ReservationItemDTO } from "@medusajs/medusa"
+import { LineItem } from "@medusajs/medusa"
 import { NestedForm, nestedForm } from "../../../../utils/nested-form"
 import React, { useEffect, useMemo } from "react"
 import {
@@ -20,6 +20,7 @@ import { getErrorMessage } from "../../../../utils/error-messages"
 import { getFulfillableQuantity } from "../create-fulfillment/item-table"
 import { sum } from "lodash"
 import useNotification from "../../../../hooks/use-notification"
+import { ReservationItemDTO } from "@medusajs/types"
 
 type AllocationModalFormData = {
   location?: { label: string; value: string }
@@ -27,13 +28,13 @@ type AllocationModalFormData = {
 }
 
 type AllocateItemsModalProps = {
-  order: Order
+  items: LineItem[]
   reservationItemsMap: Record<string, ReservationItemDTO[]>
   close: () => void
 }
 
 const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
-  order,
+  items,
   close,
   reservationItemsMap,
 }) => {
@@ -175,7 +176,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
                   <p className="inter-base-regular">
                     Select the number of items that you wish to allocate.
                   </p>
-                  {order.items?.map((item, i) => {
+                  {items?.map((item, i) => {
                     return (
                       <AllocationLineItem
                         form={nestedForm(form, `items.${i}` as "items.0")}
