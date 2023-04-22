@@ -6426,7 +6426,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@1.8.2, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@1.8.2, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:

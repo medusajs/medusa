@@ -1,4 +1,5 @@
 import React from "react"
+import ExtensionTest from "./../../../../../test-server/dist/extensions/product-details"
 import App from "./App"
 import { InjectionProvider } from "./providers/injection-provider"
 import { Providers } from "./providers/providers"
@@ -106,6 +107,8 @@ class MedusaApp {
   }
 
   async initialize() {
+    console.warn(JSON.stringify(this.plugins, null, 2))
+
     for (const plugin of this.plugins) {
       await plugin.extension.register(this)
     }
@@ -118,6 +121,7 @@ class MedusaApp {
       <React.StrictMode>
         <Providers>
           <InjectionProvider injectionZones={this.injectionZones}>
+            <ExtensionTest />
             <App />
           </InjectionProvider>
         </Providers>

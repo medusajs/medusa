@@ -6,17 +6,28 @@ export async function generateExtensionsEntrypoint(
   extensions: LoadedExtension[],
   dest: string
 ) {
-  const imports = extensions.map((extension, i) => {
-    const relativePath = path.relative(path.dirname(dest), extension.path)
-
-    return `import ${extension.name}${i} from './${relativePath}';`
-  })
-
-  const exports = `export const plugins = [${extensions
+  const imports = extensions
     .map((extension, i) => {
-      return `${extension.name}${i}`
-    })
-    .join(",")}]`
+      const relativePath = path.relative(path.dirname(dest), extension.path)
 
-  return `${imports.join("")}${exports}`
+      return `import ${extension.name}${i} from './${relativePath}';`
+    })
+    .join("\n")
+
+  const exports = `const plugins = {${extensions
+    .map((extension, i) => {
+      return `Component${i}: ${extension.name}${i},`
+    })
+    .join("\n")}
+    }`
+
+  const content = `
+    ${imports}
+
+    ${exports}
+
+    export default plugins
+  `
+
+  return content
 }

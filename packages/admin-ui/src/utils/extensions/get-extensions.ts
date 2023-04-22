@@ -3,7 +3,7 @@ import { LoadedExtension } from "../../types/extensions"
 import { listDirectories } from "./list-directories"
 
 export const getLocalExtensions = async () => {
-  const root = path.resolve(process.cwd(), "src", "extensions")
+  const root = path.resolve(process.cwd(), "dist", "extensions")
 
   const extensionNames = await listDirectories(root)
 
