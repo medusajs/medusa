@@ -2,7 +2,11 @@ import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
 } from "../interfaces"
-import { IInventoryService, ReservationItemDTO } from "@medusajs/types"
+import {
+  IEventBusService,
+  IInventoryService,
+  ReservationItemDTO,
+} from "@medusajs/types"
 import { IdempotencyKey, Order } from "../models"
 import OrderService, {
   ORDER_CART_ALREADY_EXISTS_ERROR,
@@ -28,6 +32,7 @@ type InjectedDependencies = {
   swapService: SwapService
   manager: EntityManager
   inventoryService: IInventoryService
+  eventBusService: IEventBusService
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
@@ -39,6 +44,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   protected readonly orderService_: OrderService
   protected readonly swapService_: SwapService
   protected readonly inventoryService_: IInventoryService
+  protected readonly eventBusService_: IEventBusService
 
   constructor({
     productVariantInventoryService,
@@ -48,6 +54,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     orderService,
     swapService,
     inventoryService,
+    eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -59,6 +66,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     this.orderService_ = orderService
     this.swapService_ = swapService
     this.inventoryService_ = inventoryService
+    this.eventBusService_ = eventBusService
   }
 
   async complete(
@@ -384,6 +392,14 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         } else {
           throw error
         }
+      } else if (this.inventoryService_) {
+        await this.eventBusService_.emit("reservation-items.bulk-created", {
+          ids: reservations
+            .filter(([reservation]) => !!reservation)
+            .flatMap(([reservationItemArr]) =>
+              reservationItemArr!.map((item) => item.id)
+            ),
+        })
       }
     }
 
