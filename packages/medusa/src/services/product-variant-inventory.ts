@@ -1,6 +1,7 @@
 import { EntityManager, In } from "typeorm"
 import {
   ICacheService,
+  IEventBusService,
   IInventoryService,
   IStockLocationService,
   InventoryItemDTO,
@@ -23,14 +24,19 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
+  eventBusService: IEventBusService
 }
 
 class ProductVariantInventoryService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly salesChannelInventoryService_: SalesChannelInventoryService
   protected readonly productVariantService_: ProductVariantService
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
+  protected readonly eventBusService_: IEventBusService
   protected readonly cacheService_: ICacheService
 
   constructor({
@@ -39,6 +45,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     salesChannelInventoryService,
     productVariantService,
     inventoryService,
+    eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -48,6 +55,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
+    this.eventBusService_ = eventBusService
   }
 
   /**
@@ -106,6 +114,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         { select: ["id"] }
       )
       locationIds = stockLocations.map((l) => l.id)
+    }
+
+    if (locationIds.length === 0) {
+      return false
     }
 
     const hasInventory = await Promise.all(
@@ -346,7 +358,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     const toReserve = {
-      type: "order",
       line_item_id: context.lineItemId,
     }
 
@@ -385,7 +396,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0].location_id
     }
 
-    return await Promise.all(
+    const reservationItems = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.createReservationItem({
@@ -396,6 +407,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
         })
       })
     )
+
+    return reservationItems
   }
 
   /**
