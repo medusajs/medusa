@@ -29706,7 +29706,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     lodash: ^4.17.21
-    meilisearch: ^0.31.1
+    meilisearch: ^0.32.3
     typescript: ^4.9.5
   languageName: unknown
   linkType: soft
@@ -29987,12 +29987,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"meilisearch@npm:^0.31.1":
-  version: 0.31.1
-  resolution: "meilisearch@npm:0.31.1"
+"meilisearch@npm:^0.32.3":
+  version: 0.32.3
+  resolution: "meilisearch@npm:0.32.3"
   dependencies:
     cross-fetch: ^3.1.5
-  checksum: 142f3c401b56723f28376d1e323eeb9bdffecfbf880d239f38c8950663dc97c3f82cd2ef1af0b5e91cb013f63b7fa0628d63980036a1db351a27101097666237
+  checksum: 5f6553812b864c3933edd69ce09a65381680c6fdca8f672b2d15a04abdaf9c2acbb76a7b35cc25edc5111af19265f8043e50b52262dc78384e49cf8a895710ce
   languageName: node
   linkType: hard
 
