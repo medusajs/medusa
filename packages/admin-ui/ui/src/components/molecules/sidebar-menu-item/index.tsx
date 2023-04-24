@@ -1,35 +1,34 @@
 import React, { useCallback } from "react"
 import Collapsible from "react-collapsible"
 import { NavLink } from "react-router-dom"
-import Badge from "../../fundamentals/badge"
 
 type SidebarMenuSubitemProps = {
   pageLink: string
   text: string
+  partiallyActive?: boolean
 }
 
 type SidebarMenuItemProps = {
   pageLink: string
   text: string
+  // eslint-disable-next-line no-undef
   icon: JSX.Element
   triggerHandler: () => any
   subItems?: SidebarMenuSubitemProps[]
-  isNew?: boolean
+  end?: boolean
 }
 
-const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
-  SubItem: (props: SidebarMenuSubitemProps) => JSX.Element
-} = ({
+const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   pageLink,
   icon,
   text,
   triggerHandler,
   subItems = [],
-  isNew,
+  end,
 }: SidebarMenuItemProps) => {
   const styles =
-    "group py-1.5 my-0.5 rounded-rounded flex text-grey-50 hover:bg-grey-10 items-center px-2"
-  const activeStyles = "bg-grey-10 is-active"
+    "py-1.5 px-3 my-0.5 rounded-base flex text-grey-90 hover:bg-grey-10 items-center"
+  const activeStyles = "bg-grey-10 text-violet-60"
   const classNameFn = useCallback(
     ({ isActive }) => (isActive ? `${styles} ${activeStyles}` : styles),
     []
@@ -41,14 +40,9 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
       transitionCloseTime={150}
       {...triggerHandler()}
       trigger={
-        <NavLink className={classNameFn} to={pageLink}>
+        <NavLink className={classNameFn} end={end} to={pageLink}>
           <span className="items-start">{icon}</span>
-          <span className="group-[.is-active]:text-grey-90 ml-3">{text}</span>
-          {isNew && (
-            <Badge variant={"new-feature"} className="ml-auto">
-              New
-            </Badge>
-          )}
+          <span className="ml-3">{text}</span>
         </NavLink>
       }
     >
@@ -60,7 +54,11 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
   )
 }
 
-const SubItem = ({ pageLink, text }: SidebarMenuSubitemProps) => {
+const SubItem = ({
+  pageLink,
+  text,
+  partiallyActive, // TODO: do we need partially active?
+}: SidebarMenuSubitemProps) => {
   const styles = "py-0.5 px-1 my-0.5 rounded-base flex hover:bg-grey-10"
   const activeStyles = "bg-grey-10 font-semibold"
   const classNameFn = useCallback(
@@ -75,6 +73,7 @@ const SubItem = ({ pageLink, text }: SidebarMenuSubitemProps) => {
   )
 }
 
-SidebarMenuItem.SubItem = SubItem
+//TODO: What is this about?
+// SidebarMenuItem.SubItem = SubItem
 
 export default SidebarMenuItem

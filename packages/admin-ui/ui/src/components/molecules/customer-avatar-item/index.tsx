@@ -11,7 +11,7 @@ type CustomerAvatarItemProps = {
 }
 
 const CustomerAvatarItem: React.FC<CustomerAvatarItemProps> = ({
-  color = "bg-grey-80",
+  color = "bg-violet-60",
   customer,
 }: CustomerAvatarItemProps) => {
   const identifier =
@@ -22,11 +22,11 @@ const CustomerAvatarItem: React.FC<CustomerAvatarItemProps> = ({
       : "-"
 
   return (
-    <div className="flex w-full items-center py-1.5">
-      <div className="h-[24px] w-[24px]">
+    <div className="flex items-center py-1.5 w-full">
+      <div className="w-[24px] h-[24px]">
         <Avatar user={customer} color={color} />
       </div>
-      <span className="w-40 truncate pl-2.5">{identifier}</span>
+      <span className="pl-2.5 w-40 truncate">{identifier}</span>
     </div>
   )
 }

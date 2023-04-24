@@ -1,10 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import {
-  FormProvider,
-  useForm,
-  useFormContext,
-  UseFormReturn,
-} from "react-hook-form"
+import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import {
   AllocationType,
   ConditionMap,
@@ -181,7 +176,6 @@ export const DiscountFormProvider = ({
           updateCondition,
           setConditions,
           handleReset,
-          form: methods,
         }}
       >
         {children}
@@ -202,7 +196,6 @@ const DiscountFormContext = React.createContext<{
   updateCondition: (props: UpdateConditionProps) => void
   setConditions: Dispatch<SetStateAction<ConditionMap>>
   handleReset: () => void
-  form: UseFormReturn<DiscountFormValues>
 } | null>(null)
 
 export const useDiscountForm = () => {

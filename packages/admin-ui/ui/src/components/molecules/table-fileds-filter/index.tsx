@@ -7,7 +7,7 @@ import Button from "../../fundamentals/button"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 import Checkbox from "../../atoms/checkbox"
 
-/** ****************** TYPES ********************/
+/******************** TYPES ********************/
 
 type Field = {
   id: string
@@ -36,7 +36,7 @@ type FieldMenuItemProps = {
   onChange: () => void
 }
 
-/** ****************** COMPONENTS ********************/
+/******************** COMPONENTS ********************/
 
 /**
  * Table field chip component.
@@ -44,7 +44,7 @@ type FieldMenuItemProps = {
 function Chip(props: ChipProps) {
   const { remove, short } = props
   return (
-    <div className="text-small text-grey-70 border-gray-70 mr-1 inline-flex h-[32px] shrink-0 items-center gap-1 rounded-lg border px-3 last:mr-2">
+    <div className="rounded-lg h-[32px] inline-flex gap-1 shrink-0 items-center text-small text-grey-70 border border-gray-70 px-3 mr-1 last:mr-2">
       {short}
       <CrossIcon
         className="text-grey-40 cursor-pointer"
@@ -64,7 +64,7 @@ function FieldMenuItem(props: FieldMenuItemProps) {
     <DropdownMenu.Item>
       <Checkbox
         checked={checked}
-        className="hover:bg-grey-10 text-small mx-2 h-[32px] rounded px-[6px]"
+        className="px-[6px] mx-2 h-[32px] hover:bg-grey-10 rounded text-small"
         onChange={onChange}
         label={
           typeof field.label === "function"
@@ -76,7 +76,7 @@ function FieldMenuItem(props: FieldMenuItemProps) {
   )
 }
 
-/** ****************** CONTAINERS ********************/
+/******************** CONTAINERS ********************/
 
 /**
  * The dropdown menu for selecting currently active table fields.
@@ -129,12 +129,8 @@ function FieldsMenu(props: FieldsMenuProps) {
   return (
     <DropdownMenu.Root open={open}>
       <DropdownMenu.Trigger>
-        <Button
-          onClick={onTriggerClick}
-          variant="secondary"
-          className="text-small text-grey-90 inline-flex h-[32px] rounded-lg px-3 font-semibold"
-        >
-          <span className="flex items-center gap-1 whitespace-nowrap">
+        <Button onClick={onTriggerClick} variant="secondary" size="small">
+          <span className="flex whitespace-nowrap items-center gap-1">
             Add fields <PlusIcon size={14} />
           </span>
         </Button>
@@ -142,7 +138,7 @@ function FieldsMenu(props: FieldsMenuProps) {
 
       <DropdownMenu.Content
         ref={contentRef}
-        className="w-[240px] rounded-xl bg-white p-2 shadow"
+        className="w-[240px] bg-white shadow rounded-xl p-2"
       >
         {fields.map((f) => (
           <FieldMenuItem
@@ -179,8 +175,8 @@ function TableFieldsFilters(props: TableFieldsFilterProps) {
   const visibleFields = _selected.map((id) => fields.find((f) => f.id === id))
 
   return (
-    <div className="flex flex-wrap items-center gap-y-2">
-      <span className="text-small mr-2 whitespace-nowrap font-semibold text-gray-500">
+    <div className="flex-wrap flex items-center gap-y-2">
+      <span className="text-small font-semibold whitespace-nowrap text-gray-500 mr-2">
         Currently editing these fields:
       </span>
 

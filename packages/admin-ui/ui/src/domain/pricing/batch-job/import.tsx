@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import { BatchJob } from "@medusajs/medusa"
 import {
@@ -12,7 +12,7 @@ import {
 
 import UploadModal from "../../../components/organisms/upload-modal"
 import useNotification from "../../../hooks/use-notification"
-import { usePolling } from "../../../providers/polling-provider"
+import { PollingContext } from "../../../context/polling"
 
 /**
  * Hook returns a batch job. The endpoint is polled every 2s while the job is processing.
@@ -52,7 +52,7 @@ function ImportPrices(props: ImportPricesProps) {
 
   const notification = useNotification()
 
-  const { resetInterval } = usePolling()
+  const { resetInterval } = useContext(PollingContext)
 
   const { mutateAsync: deleteFile } = useAdminDeleteFile()
   const { mutateAsync: uploadFile } = useAdminUploadFile()
@@ -148,7 +148,7 @@ function ImportPrices(props: ImportPricesProps) {
       }
       cancelBathJob()
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 

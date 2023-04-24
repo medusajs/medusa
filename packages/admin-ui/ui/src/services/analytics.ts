@@ -1,17 +1,15 @@
 import { AdminAnalyticsConfigRes } from "@medusajs/medusa"
 import { AnalyticsBrowser } from "@segment/analytics-next"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { WRITE_KEY } from "../constants/analytics"
-import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
-import { useFeatureFlag } from "../providers/feature-flag-provider"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { WRITE_KEY } from "../components/constants/analytics"
+import { useFeatureFlag } from "../context/feature-flag"
+import { medusaUrl } from "./config"
 
 // API
 
-const ANALYTICS_BASE = "admin/analytics-configs"
-
 const client = axios.create({
-  baseURL: MEDUSA_BACKEND_URL,
+  baseURL: `${medusaUrl}/admin/analytics-configs`,
   withCredentials: true,
 })
 
@@ -25,7 +23,7 @@ export const analytics = AnalyticsBrowser.load({
  */
 export const getAnalyticsConfig =
   async (): Promise<AdminAnalyticsConfigRes> => {
-    const { data } = await client.get(ANALYTICS_BASE)
+    const { data } = await client.get("/")
     return data
   }
 
@@ -40,7 +38,7 @@ type CreateConfigPayload = {
 export const createAnalyticsConfig = async (
   payload: CreateConfigPayload
 ): Promise<AdminAnalyticsConfigRes> => {
-  const { data } = await client.post(ANALYTICS_BASE, payload)
+  const { data } = await client.post("/", payload)
   return data
 }
 
@@ -55,7 +53,7 @@ type UpdateConfigPayload = {
 export const updateAnalyticsConfig = async (
   payload: UpdateConfigPayload
 ): Promise<AdminAnalyticsConfigRes> => {
-  const { data } = await client.post(`${ANALYTICS_BASE}/update`, payload)
+  const { data } = await client.post("/update", payload)
   return data
 }
 
@@ -75,7 +73,7 @@ export const useAdminAnalyticsConfig = () => {
 
   const { data, ...rest } = useQuery(
     ANALYTICS_CONFIG_KEY,
-    async () => getAnalyticsConfig(),
+    () => getAnalyticsConfig(),
     {
       retry: false,
       enabled: isFeatureEnabled("analytics"),
@@ -89,7 +87,7 @@ export const useAdminUpdateAnalyticsConfig = () => {
   const invalidateAnalyticsConfig = useInvalidateAnalyticsConfig()
 
   const mutation = useMutation(
-    async (payload: UpdateConfigPayload) => updateAnalyticsConfig(payload),
+    (payload: UpdateConfigPayload) => updateAnalyticsConfig(payload),
     {
       onSuccess: invalidateAnalyticsConfig,
     }
@@ -102,7 +100,7 @@ export const useAdminCreateAnalyticsConfig = () => {
   const invalidateAnalyticsConfig = useInvalidateAnalyticsConfig()
 
   const mutation = useMutation(
-    async (payload: CreateConfigPayload) => createAnalyticsConfig(payload),
+    (payload: CreateConfigPayload) => createAnalyticsConfig(payload),
     {
       onSuccess: invalidateAnalyticsConfig,
     }

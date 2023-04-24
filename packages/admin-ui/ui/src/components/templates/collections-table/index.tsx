@@ -1,7 +1,9 @@
 import { useAdminCollections } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { usePagination, useTable } from "react-table"
+import { useSelectedVendor } from "../../../context/vendor"
 import { useDebounce } from "../../../hooks/use-debounce"
+import { useUserPermissions } from "../../../hooks/use-permissions"
 import Spinner from "../../atoms/spinner"
 import Table from "../../molecules/table"
 import { FilteringOptionProps } from "../../molecules/table/filtering-option"
@@ -148,7 +150,7 @@ const CollectionsTable: React.FC = () => {
           <Table.Body {...getTableBodyProps()}>
             <Table.Row>
               <Table.Cell colSpan={columns.length}>
-                <div className="pt-2xlarge flex w-full items-center justify-center">
+                <div className="w-full pt-2xlarge flex items-center justify-center">
                   <Spinner size={"large"} variant={"secondary"} />
                 </div>
               </Table.Cell>
@@ -170,13 +172,20 @@ const CollectionsTable: React.FC = () => {
 const CollectionRow = ({ row }) => {
   const collection = row.original
   const { getActions } = useCollectionActions(collection)
+  const { isStoreView, isPrimary } = useSelectedVendor()
+  const { isAdmin } = useUserPermissions()
+  const canEdit = isAdmin && (isStoreView || isPrimary)
 
   return (
     <Table.Row
       color={"inherit"}
-      linkTo={`/a/collections/${collection.id}`}
-      actions={getActions(collection)}
+      linkTo={canEdit ? `/admin/collections/${collection.id}` : false}
+      actions={canEdit ? getActions(collection) : []}
       {...row.getRowProps()}
+      className={{
+        ...row.getRowProps().className,
+        "pointer-events-none": !canEdit,
+      }}
     >
       {row.cells.map((cell, index) => {
         return (

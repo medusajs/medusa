@@ -72,7 +72,9 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
       fulfillment.claim_order_id || fulfillment.swap_id || fulfillment.order_id
     const [type] = resourceId.split("_")
 
-    const tracking_numbers = data.tracking_numbers.map((tn) => tn.value)
+    const tracking_numbers = data.tracking_numbers
+      .map((tn) => tn.value)
+      .filter((tn) => !!tn) // Filter out empty strings
 
     type actionType =
       | typeof markOrderShipped
@@ -127,7 +129,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
     <Modal handleClose={handleCancel} isLargeModal>
       <form
         onSubmit={handleSubmit(onSubmit, (errors) => {
-          console.log(errors)
+          console.error(errors)
         })}
       >
         <Modal.Body>
@@ -164,7 +166,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                 ))}
               </div>
             </div>
-            <div className="mt-4 flex w-full justify-end">
+            <div className="flex w-full justify-end mt-4">
               <Button
                 size="small"
                 onClick={() => appendTracking({ value: undefined })}
@@ -176,13 +178,13 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-between">
+            <div className="flex w-full justify-between">
               <div
-                className="flex h-full cursor-pointer items-center"
+                className="items-center h-full flex cursor-pointer"
                 onClick={() => setNoNotis(!noNotis)}
               >
                 <div
-                  className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
+                  className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border rounded-base ${
                     !noNotis && "bg-violet-60"
                   }`}
                 >
@@ -197,24 +199,22 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   checked={!noNotis}
                   type="checkbox"
                 />
-                <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
+                <span className="ml-3 flex items-center text-grey-90 gap-x-xsmall">
                   Send notifications
                   <IconTooltip content="" />
                 </span>
               </div>
-              <div className="flex">
+              <div className="flex gap-2">
                 <Button
                   variant="ghost"
-                  className="text-small mr-2 w-32 justify-center"
-                  size="large"
+                  size="small"
                   onClick={handleCancel}
                   type="button"
                 >
                   Cancel
                 </Button>
                 <Button
-                  size="large"
-                  className="text-small w-32 justify-center"
+                  size="small"
                   variant="primary"
                   type="submit"
                   loading={isSubmitting}

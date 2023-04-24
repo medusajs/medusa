@@ -47,6 +47,7 @@ const allowedFilters = [
   "status",
   "collection_id",
   "payment_status",
+  "tags",
   "created_at",
   "q",
   "offset",
@@ -154,10 +155,7 @@ export const useProductFilters = (
     existing = existing.substring(1)
   }
 
-  const initial = useMemo(
-    () => parseQueryString(existing, defaultFilters),
-    [existing, defaultFilters]
-  )
+  const filterState = parseQueryString(existing, defaultFilters)
 
   const initialTabs = useMemo(() => {
     const storageString = localStorage.getItem("products::filters")
@@ -179,7 +177,8 @@ export const useProductFilters = (
     return []
   }, [])
 
-  const [state, dispatch] = useReducer(reducer, initial)
+  const [state, dispatch] = useReducer(reducer, filterState)
+
   const [tabs, setTabs] = useState(initialTabs)
 
   const setDateFilter = (filter: ProductDateFilter | null) => {
@@ -531,7 +530,7 @@ const parseQueryString = (
       filter: null,
     },
     offset: 0,
-    limit: 15,
+    limit: 50,
     additionalFilters: additionals,
   }
 
@@ -570,6 +569,15 @@ const parseQueryString = (
           case "collection_id": {
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.collection = {
+                open: true,
+                filter: value,
+              }
+            }
+            break
+          }
+          case "tags": {
+            if (typeof value === "string" || Array.isArray(value)) {
+              defaultVal.tags = {
                 open: true,
                 filter: value,
               }

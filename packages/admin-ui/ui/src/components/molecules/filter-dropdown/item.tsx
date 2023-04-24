@@ -2,7 +2,7 @@ import * as RadixCollapsible from "@radix-ui/react-collapsible"
 import * as RadixPopover from "@radix-ui/react-popover"
 import clsx from "clsx"
 import moment from "moment"
-import { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { DateFilters } from "../../../utils/filters"
 import { addHours, atMidnight, dateToUnixTimestamp } from "../../../utils/time"
 import { CalendarComponent } from "../../atoms/date-picker/date-picker"
@@ -96,7 +96,7 @@ const FilterDropdownItem = ({
       >
         <RadixCollapsible.Trigger
           className={clsx(
-            "hover:bg-grey-5 flex w-full items-center justify-between rounded py-1.5 px-3",
+            "py-1.5 px-3 flex w-full items-center hover:bg-grey-5 rounded justify-between",
             {
               "inter-small-semibold": open,
               "inter-small-regular": !open,
@@ -105,7 +105,7 @@ const FilterDropdownItem = ({
         >
           <div className="flex items-center">
             <div
-              className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
+              className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border rounded-base ${
                 open && "bg-violet-60"
               }`}
             >
@@ -130,17 +130,17 @@ const FilterDropdownItem = ({
         </RadixCollapsible.Trigger>
         <RadixCollapsible.Content className="w-full">
           {hasPrev && (
-            <div className="flex py-2 pl-6">
+            <div className="py-2 pl-6 flex">
               <button
                 onClick={handlePrev}
-                className="hover:text-violet-60 text-grey-90 font-semibold"
+                className="font-semibold hover:text-violet-60 text-grey-90"
               >
                 Back
               </button>
             </div>
           )}
           {isLoading ? (
-            <div className="flex items-center justify-center py-1">
+            <div className="py-1 flex justify-center items-center">
               <Spinner size={"large"} variant={"secondary"} />
             </div>
           ) : filterTitle === "Date" ? (
@@ -167,7 +167,7 @@ const FilterDropdownItem = ({
               return (
                 <div
                   className={clsx(
-                    "hover:bg-grey-20 my-1 flex w-full items-center rounded py-1.5 pl-6",
+                    "w-full flex hover:bg-grey-20 my-1 py-1.5 pl-6 items-center rounded",
                     {
                       "inter-small-semibold": checked[value],
                       "inter-small-regular": !checked[value],
@@ -177,7 +177,7 @@ const FilterDropdownItem = ({
                   onClick={() => onCheck(value)}
                 >
                   <div
-                    className={`text-grey-0 border-grey-30 rounded-base mr-2 flex h-5 w-5 justify-center border ${
+                    className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border mr-2 rounded-base ${
                       checked[value] === true && "bg-violet-60"
                     }`}
                   >
@@ -201,10 +201,10 @@ const FilterDropdownItem = ({
             })
           )}
           {hasMore && (
-            <div className="flex py-2 pl-6">
+            <div className="py-2 pl-6 flex">
               <button
                 onClick={handleNext}
-                className="hover:text-violet-60 text-grey-90 font-semibold"
+                className="font-semibold hover:text-violet-60 text-grey-90"
               >
                 Show more
               </button>
@@ -417,7 +417,7 @@ const DateFilter = ({
       case DateFilters.InTheLast:
       case DateFilters.OlderThan:
         return (
-          <div className="flex w-full flex-col">
+          <div className="flex flex-col w-full">
             <InputField
               className="pt-0 pb-1"
               type="number"
@@ -429,7 +429,7 @@ const DateFilter = ({
             />
             <RightPopover
               trigger={
-                <div className="bg-grey-5 border-grey-20 inter-small-semibold text-grey-90 flex w-full items-center justify-between rounded border px-3 py-1.5">
+                <div className="flex w-full items-center justify-between bg-grey-5 border border-grey-20 rounded inter-small-semibold text-grey-90 px-3 py-1.5">
                   <label>{daysMonthsValue}</label>
                   <span className="text-grey-50">
                     <ArrowRightIcon size={16} />
@@ -449,10 +449,10 @@ const DateFilter = ({
       case DateFilters.After:
       case DateFilters.Before:
         return (
-          <div className="flex w-full flex-col">
+          <div className="flex flex-col w-full">
             <RightPopover
               trigger={
-                <div className="bg-grey-5 border-grey-20 inter-small-semibold text-grey-90 flex w-full items-center justify-between rounded border px-3 py-1.5">
+                <div className="flex w-full items-center justify-between bg-grey-5 border border-grey-20 rounded inter-small-semibold text-grey-90 px-3 py-1.5">
                   <label>
                     {startDate ? moment(startDate).format("MM.DD.YYYY") : "-"}
                   </label>
@@ -471,13 +471,16 @@ const DateFilter = ({
             </RightPopover>
           </div>
         )
+
+      default:
+        return <span>{currentFilter} - coming soon!</span>
     }
   }
   return (
     <div className="pl-9">
       <RightPopover
         trigger={
-          <div className="bg-grey-5 border-grey-20 inter-small-semibold text-grey-90 flex w-full items-center justify-between rounded border px-3 py-1.5">
+          <div className="flex w-full items-center justify-between bg-grey-5 border border-grey-20 rounded inter-small-semibold text-grey-90 px-3 py-1.5">
             <label>{currentFilter}</label>
             <span className="text-grey-50">
               <ArrowRightIcon size={16} />
@@ -506,7 +509,7 @@ const PopoverOptions = ({ options, onClick, selectedItem }) => {
             onClick(item)
           }}
           className={clsx(
-            "hover:bg-grey-5 my-1 flex cursor-pointer items-center rounded px-3 py-1.5",
+            "px-3 py-1.5 my-1 flex items-center rounded hover:bg-grey-5 cursor-pointer",
             {
               "inter-small-semibold": item === selectedItem,
               "inter-small-regular": item !== selectedItem,
@@ -515,15 +518,15 @@ const PopoverOptions = ({ options, onClick, selectedItem }) => {
         >
           <div
             className={clsx(
-              "mr-2 flex h-4 w-4 items-center justify-center rounded-full",
+              "rounded-full flex items-center justify-center mr-2 w-4 h-4",
               {
-                "border-violet-60 border-2": item === selectedItem,
-                "border-grey-30 border ": item !== selectedItem,
+                "border-2 border-violet-60": item === selectedItem,
+                "border border-grey-30 ": item !== selectedItem,
               }
             )}
           >
             {item === selectedItem && (
-              <div className="bg-violet-60 h-2 w-2 rounded-full" />
+              <div className="rounded-full w-2 h-2 bg-violet-60" />
             )}
           </div>
           {item}
@@ -535,7 +538,7 @@ const PopoverOptions = ({ options, onClick, selectedItem }) => {
 
 const RightPopover = ({ trigger, children }) => (
   <RadixPopover.Root>
-    <RadixPopover.Trigger className="my-1 w-full">
+    <RadixPopover.Trigger className="w-full my-1">
       {trigger}
     </RadixPopover.Trigger>
     <RadixPopover.Content
@@ -543,7 +546,7 @@ const RightPopover = ({ trigger, children }) => (
       align="start"
       alignOffset={-8}
       sideOffset={20}
-      className="bg-grey-0 rounded-rounded shadow-dropdown top-2/4 flex flex-col p-2"
+      className="flex flex-col bg-grey-0 rounded-rounded shadow-dropdown p-2 top-2/4"
     >
       {children}
     </RadixPopover.Content>

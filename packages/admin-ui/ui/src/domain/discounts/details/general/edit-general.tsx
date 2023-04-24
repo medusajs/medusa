@@ -1,62 +1,53 @@
 import { Discount } from "@medusajs/medusa"
-import { useAdminUpdateDiscount } from "medusa-react"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import DiscountGeneralForm, {
-  DiscountGeneralFormType,
-} from "../../../../components/forms/discount/discount-general-form"
-import MetadataForm, {
-  getMetadataFormValues,
-  getSubmittableMetadata,
-  MetadataFormType,
-} from "../../../../components/forms/general/metadata-form"
+import { useAdminRegions, useAdminUpdateDiscount } from "medusa-react"
+import React, { useEffect, useMemo } from "react"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
+import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
+import { NextSelect } from "../../../../components/molecules/select/next-select"
+import TextArea from "../../../../components/molecules/textarea"
+import CurrencyInput from "../../../../components/organisms/currency-input"
 import useNotification from "../../../../hooks/use-notification"
+import { Option } from "../../../../types/shared"
 import { getErrorMessage } from "../../../../utils/error-messages"
-import { nestedForm } from "../../../../utils/nested-form"
 
 type EditGeneralProps = {
   discount: Discount
-  open: boolean
   onClose: () => void
 }
 
 type GeneralForm = {
-  general: DiscountGeneralFormType
-  metadata: MetadataFormType
+  regions: Option[]
+  code: string
+  description: string
+  value: number
 }
 
-const EditGeneral: React.FC<EditGeneralProps> = ({
-  discount,
-  open,
-  onClose,
-}) => {
+const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
   const { mutate, isLoading } = useAdminUpdateDiscount(discount.id)
   const notification = useNotification()
 
-  const form = useForm<GeneralForm>({
-    defaultValues: getDefaultValues(discount),
+  const { control, handleSubmit, reset, register } = useForm<GeneralForm>({
+    defaultValues: mapGeneral(discount),
   })
 
-  const { handleSubmit, reset } = form
-
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = (data: GeneralForm) => {
     mutate(
       {
-        regions: data.general.region_ids.map((r) => r.value),
-        code: data.general.code,
+        regions: data.regions.map((r) => r.value),
+        code: data.code,
         rule: {
           id: discount.rule.id,
-          description: data.general.description,
-          value: data.general.value,
+          description: data.description,
+          value: data.value,
           allocation: discount.rule.allocation,
         },
-        metadata: getSubmittableMetadata(data.metadata),
       },
       {
-        onSuccess: () => {
+        onSuccess: ({ discount }) => {
           notification("Success", "Discount updated successfully", "success")
+          reset(mapGeneral(discount))
           onClose()
         },
         onError: (error) => {
@@ -64,41 +55,150 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
         },
       }
     )
-  })
+  }
 
   useEffect(() => {
-    if (open) {
-      reset(getDefaultValues(discount))
+    reset(mapGeneral(discount))
+  }, [discount])
+
+  const type = discount.rule.type
+
+  const { regions } = useAdminRegions()
+
+  const regionOptions = useMemo(() => {
+    return regions
+      ? regions.map((r) => ({
+          label: r.name,
+          value: r.id,
+        }))
+      : []
+  }, [regions])
+
+  const selectedRegions = useWatch({
+    control,
+    name: "regions",
+  })
+
+  const fixedCurrency = useMemo(() => {
+    if (type === "fixed" && selectedRegions?.length) {
+      return regions?.find((r) => r.id === selectedRegions[0].value)
+        ?.currency_code
     }
-  }, [discount, reset, open])
+  }, [selectedRegions, type, regions])
 
   return (
-    <Modal open={open} handleClose={onClose}>
-      <Modal.Body>
-        <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">Edit general information</h1>
-        </Modal.Header>
-        <form onSubmit={onSubmit}>
+    <Modal handleClose={onClose}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Modal.Body>
+          <Modal.Header handleClose={onClose}>
+            <h1 className="inter-xlarge-semibold">Edit general information</h1>
+          </Modal.Header>
           <Modal.Content>
-            <div className="gap-y-xlarge flex flex-col">
-              <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
-                <DiscountGeneralForm
-                  form={nestedForm(form, "general")}
-                  type={discount.rule.type}
-                  isEdit
-                />
-              </div>
-              <div>
-                <h2 className="inter-base-semibold mb-base">Metadata</h2>
-                <MetadataForm form={nestedForm(form, "metadata")} />
-              </div>
+            <Controller
+              name="regions"
+              control={control}
+              rules={{
+                required: "Atleast one region is required",
+                validate: (value) =>
+                  Array.isArray(value) ? value.length > 0 : !!value,
+              }}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <NextSelect
+                    value={value}
+                    onChange={(value) => {
+                      onChange(type === "fixed" ? [value] : value)
+                    }}
+                    label="Choose valid regions"
+                    isMulti={type !== "fixed"}
+                    selectAll={type !== "fixed"}
+                    isSearchable
+                    required
+                    options={regionOptions}
+                  />
+                )
+              }}
+            />
+            <div className="flex gap-x-base gap-y-base my-base">
+              <InputField
+                label="Code"
+                className="flex-1"
+                placeholder="SUMMERSALE10"
+                required
+                {...register("code", { required: "Code is required" })}
+              />
+
+              {type !== "free_shipping" && (
+                <>
+                  {type === "fixed" ? (
+                    <div className="flex-1">
+                      <CurrencyInput.Root
+                        size="small"
+                        currentCurrency={fixedCurrency ?? "USD"}
+                        readOnly
+                        hideCurrency
+                      >
+                        <Controller
+                          name="value"
+                          control={control}
+                          rules={{
+                            required: "Amount is required",
+                            min: 1,
+                          }}
+                          render={({ field: { value, onChange } }) => {
+                            return (
+                              <CurrencyInput.Amount
+                                label={"Amount"}
+                                required
+                                amount={value}
+                                onChange={onChange}
+                              />
+                            )
+                          }}
+                        />
+                      </CurrencyInput.Root>
+                    </div>
+                  ) : (
+                    <div className="flex-1">
+                      <InputField
+                        label="Percentage"
+                        min={0}
+                        required
+                        type="number"
+                        placeholder="10"
+                        prefix={"%"}
+                        {...register("value", {
+                          required: "Percentage is required",
+                          valueAsNumber: true,
+                        })}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
             </div>
+
+            <div className="text-grey-50 inter-small-regular flex flex-col mb-6">
+              <span>
+                The code your customers will enter during checkout. This will
+                appear on your customer’s invoice.
+              </span>
+              <span>Uppercase letters and numbers only.</span>
+            </div>
+            <TextArea
+              label="Description"
+              required
+              placeholder="Summer Sale 2022"
+              rows={1}
+              {...register("description", {
+                required: "Description is required",
+              })}
+            />
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
+            <div className="gap-x-xsmall flex items-center justify-end w-full">
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="small"
                 type="button"
                 onClick={onClose}
@@ -112,29 +212,22 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 disabled={isLoading}
                 loading={isLoading}
               >
-                Save and close
+                Save
               </Button>
             </div>
           </Modal.Footer>
-        </form>
-      </Modal.Body>
+        </Modal.Body>
+      </form>
     </Modal>
   )
 }
 
-const getDefaultValues = (discount: Discount): GeneralForm | undefined => {
+const mapGeneral = (discount: Discount): GeneralForm => {
   return {
-    general: {
-      code: discount.code,
-      description: discount.rule.description,
-      region_ids: discount.regions.map((r) => ({
-        label: r.name,
-        value: r.id,
-        currency_code: r.currency_code,
-      })),
-      value: discount.rule.value,
-    },
-    metadata: getMetadataFormValues(discount.metadata),
+    regions: discount.regions.map((r) => ({ label: r.name, value: r.id })),
+    code: discount.code,
+    description: discount.rule.description,
+    value: discount.rule.value,
   }
 }
 

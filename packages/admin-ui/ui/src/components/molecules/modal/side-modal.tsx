@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react"
+import React, { PropsWithChildren } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const MODAL_WIDTH = 560
@@ -22,7 +22,6 @@ function SideModal(props: SideModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ ease: "easeInOut" }}
             style={{
               position: "absolute",
               top: 0,
@@ -34,7 +33,6 @@ function SideModal(props: SideModalProps) {
             }}
           ></motion.div>
           <motion.div
-            transition={{ ease: "easeInOut" }}
             initial={{ right: -MODAL_WIDTH }}
             style={{
               position: "fixed",
@@ -43,9 +41,9 @@ function SideModal(props: SideModalProps) {
               background: "white",
               right: 0,
               top: 0,
-              zIndex: 200,
+              zIndex: 9999,
             }}
-            className="overflow-hidden rounded border"
+            className="rounded border"
             animate={{ right: 0 }}
             exit={{ right: -MODAL_WIDTH }}
           >

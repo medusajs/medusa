@@ -16,13 +16,13 @@ const defaultQueryFilters = {
 }
 
 const PricesSection = ({ isEdit = false, id }: PricesSectionProps) => {
-  const {
-    products = [],
-    isInitialLoading,
-    isLoading,
-  } = useAdminPriceListProducts(id!, defaultQueryFilters, {
-    enabled: isEdit,
-  })
+  const { products = [], isLoading } = useAdminPriceListProducts(
+    id!,
+    defaultQueryFilters,
+    {
+      enabled: isEdit,
+    }
+  )
 
   const [selectedProducts, setSelectedProducts] = React.useState<Product[]>([])
   const mergedProducts = merge(products, selectedProducts)
@@ -38,9 +38,8 @@ const PricesSection = ({ isEdit = false, id }: PricesSectionProps) => {
     >
       <ProductPrices
         products={mergedProducts}
-        isLoading={isEdit ? isLoading : isInitialLoading}
+        isLoading={isLoading}
         setProducts={setSelectedProducts}
-        onFileChosen={console.log}
       />
     </Accordion.Item>
   )

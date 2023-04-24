@@ -1,6 +1,7 @@
-import { useAdminProducts } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { usePagination, useTable } from "react-table"
+import { useSelectedVendor } from "../../../context/vendor"
+import { useAdminProducts } from "medusa-react"
 import { useDebounce } from "../../../hooks/use-debounce"
 import Medusa from "../../../services/api"
 import Button from "../../fundamentals/button"
@@ -25,12 +26,15 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
   const [numPages, setNumPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(0)
   const debouncedSearchTerm = useDebounce(query, 500)
+  const { isVendorView, selectedVendor } = useSelectedVendor()
 
   const [showDelete, setShowDelete] = useState(false)
   const [idToDelete, setIdToDelete] = useState<string | undefined>(undefined)
 
   const { isLoading, count, products, refetch } = useAdminProducts({
     q: debouncedSearchTerm,
+    vendor_id:
+      isVendorView && selectedVendor?.id ? [selectedVendor.id] : undefined,
     collection_id: [collectionId],
     limit: limit,
     offset,
@@ -89,7 +93,7 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
           id: "actions",
           Cell: ({ row }) => {
             return (
-              <Table.Cell className="pr-2xsmall w-[0%]">
+              <Table.Cell className="w-[0%] pr-2xsmall">
                 <Button
                   variant="ghost"
                   size="small"

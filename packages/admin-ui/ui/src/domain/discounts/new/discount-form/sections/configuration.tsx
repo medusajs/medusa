@@ -63,7 +63,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
   return (
     <div className="flex flex-col">
       <Accordion
-        className="text-grey-90 pt-7"
+        className="pt-7 text-grey-90"
         type="multiple"
         value={openItems || []}
         onValueChange={(values) => {
@@ -88,7 +88,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
             >
               <div
                 className={clsx(
-                  "gap-xsmall flex items-center",
+                  "flex items-center gap-xsmall",
                   marginTransition,
                   {
                     "mt-4": openItems.indexOf("starts_at") > -1,
@@ -132,7 +132,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
             >
               <div
                 className={clsx(
-                  "gap-xsmall flex items-center",
+                  "flex items-center gap-xsmall",
                   marginTransition,
                   {
                     "mt-4": openItems.indexOf("ends_at") > -1,
@@ -183,6 +183,35 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
               >
                 <InputField
                   {...register("usage_limit", { valueAsNumber: true })}
+                  label="Number of redemptions"
+                  type="number"
+                  placeholder="5"
+                  min={1}
+                />
+              </div>
+            </Accordion.Item>
+
+            <Accordion.Item
+              headingSize="medium"
+              forceMountContent
+              className="border-b-0"
+              title="Limit the number of customer redemptions?"
+              subtitle="Limit applies per customer."
+              tooltip="If you wish to limit the amount of times a particular customer can redeem this discount, you can set a limit here."
+              value="customer_usage_limit"
+              customTrigger={
+                <Switch
+                  checked={openItems.indexOf("customer_usage_limit") > -1}
+                />
+              }
+            >
+              <div
+                className={clsx(marginTransition, {
+                  "mt-4": openItems.indexOf("customer_usage_limit") > -1,
+                })}
+              >
+                <InputField
+                  {...register("customer_usage_limit", { valueAsNumber: true })}
                   label="Number of redemptions"
                   type="number"
                   placeholder="5"

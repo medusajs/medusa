@@ -1,6 +1,6 @@
 import { User } from "@medusajs/medusa"
 import { useAdminGetSession, useAdminUpdateUser } from "medusa-react"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import InputField from "../../../../components/molecules/input"
@@ -63,8 +63,8 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
       </Modal.Header>
       <Modal.Body>
         <Modal.Content>
-          <div className="gap-y-base flex flex-col">
-            <div className="gap-x-base grid grid-cols-2">
+          <div className="flex flex-col gap-y-base">
+            <div className="grid grid-cols-2 gap-x-base">
               <InputField
                 {...register("first_name")}
                 errors={errors}
@@ -78,9 +78,9 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
             </div>
           </div>
         </Modal.Content>
-        <Modal.Footer className="border-grey-20 pt-base border-t">
-          <div className="gap-x-xsmall flex w-full items-center justify-end">
-            <Button variant="secondary" size="small" onClick={onClose}>
+        <Modal.Footer className="border-t border-grey-20 pt-base">
+          <div className="flex items-center justify-end gap-2 w-full">
+            <Button variant="ghost" size="small">
               Cancel
             </Button>
             <Button

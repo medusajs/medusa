@@ -26,7 +26,7 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
   const { updateCondition, updateAndSave } = useConditions()
 
   return (
-    <div className="gap-x-xsmall flex w-full justify-end">
+    <div className="flex items-center justify-end w-full gap-2">
       <Button variant="ghost" size="small" onClick={onClose}>
         Cancel
       </Button>

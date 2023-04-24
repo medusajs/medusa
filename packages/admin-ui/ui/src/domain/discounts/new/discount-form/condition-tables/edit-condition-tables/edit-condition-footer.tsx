@@ -23,7 +23,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
 }) => {
   const { updateCondition } = useDiscountForm()
   return (
-    <div className="gap-x-xsmall flex w-full items-center justify-end">
+    <div className="flex items-center justify-end w-full gap-2">
       <Button variant="secondary" size="small" onClick={onClose}>
         Cancel
       </Button>
@@ -52,7 +52,6 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
           })
           onClose()
         }}
-        className="min-w-[128px]"
       >
         Save
       </Button>

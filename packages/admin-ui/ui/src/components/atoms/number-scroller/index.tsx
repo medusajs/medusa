@@ -18,7 +18,7 @@ const NumberScroller: React.FC<NumberScrollerProps> = ({
     <div
       {...props}
       className={clsx(
-        "time-list flex h-[305px] flex-col overflow-y-auto",
+        "flex flex-col time-list h-[305px] overflow-y-auto",
         className
       )}
     >
@@ -27,18 +27,14 @@ const NumberScroller: React.FC<NumberScrollerProps> = ({
           <div
             key={i}
             className={clsx(
-              "inter-base-regular hover:bg-grey-20 h-[40px] w-[40px] rounded last:mb-4",
+              "w-[40px] h-[40px] last:mb-4 rounded inter-base-regular hover:bg-grey-20",
               {
-                "bg-violet-60 text-grey-0 inter-base-semibold hover:bg-violet-50":
+                "bg-violet-60 hover:bg-violet-50 text-grey-0 inter-base-semibold":
                   n === selected,
               }
             )}
           >
-            <button
-              onClick={() => onSelect(n)}
-              className="h-full w-full py-2"
-              type="button"
-            >
+            <button onClick={() => onSelect(n)} className="w-full h-full py-2">
               {n.toLocaleString("en-US", { minimumIntegerDigits: 2 })}
             </button>
           </div>

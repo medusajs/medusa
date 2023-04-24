@@ -1,3 +1,5 @@
+import React from "react"
+
 import StatusDot from "../../../../components/fundamentals/status-indicator"
 
 export const PaymentStatusComponent = ({ status }) => {
@@ -5,7 +7,7 @@ export const PaymentStatusComponent = ({ status }) => {
     case "captured":
       return <StatusDot title="Paid" variant="success" />
     case "awaiting":
-      return <StatusDot title="Awaiting payment" variant="danger" />
+      return <StatusDot title="Awaiting" variant="default" />
     case "canceled":
       return <StatusDot title="Canceled" variant="danger" />
     case "requires_action":

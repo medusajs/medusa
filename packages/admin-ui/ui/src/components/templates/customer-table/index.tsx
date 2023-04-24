@@ -1,9 +1,11 @@
+import { Customer } from "@medusajs/medusa"
 import { isEmpty } from "lodash"
 import { useAdminCustomers } from "medusa-react"
 import qs from "qs"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
+import { useSelectedVendor } from "../../../context/vendor"
 import DetailsIcon from "../../fundamentals/details-icon"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import Table from "../../molecules/table"
@@ -14,7 +16,7 @@ import { useCustomerFilters } from "./use-customer-filters"
 const DEFAULT_PAGE_SIZE = 15
 
 const defaultQueryProps = {
-  expand: "orders",
+  expand: "shipping_addresses",
 }
 
 const CustomerTable = () => {
@@ -27,6 +29,7 @@ const CustomerTable = () => {
     queryObject,
     representationObject,
   } = useCustomerFilters(location.search, defaultQueryProps)
+  const { isVendorView, selectedVendor } = useSelectedVendor()
 
   const offs = parseInt(queryObject.offset) || 0
   const lim = parseInt(queryObject.limit) || DEFAULT_PAGE_SIZE
@@ -34,6 +37,7 @@ const CustomerTable = () => {
   const { customers, isLoading, count } = useAdminCustomers(
     {
       ...queryObject,
+      vendor_id: isVendorView ? selectedVendor?.id : null,
     },
     {
       keepPreviousData: true,
@@ -66,10 +70,10 @@ const CustomerTable = () => {
     previousPage,
     // Get the state from the instance
     state: { pageIndex },
-  } = useTable(
+  } = useTable<Customer>(
     {
       columns,
-      data: customers || [],
+      data: customers ?? [],
       manualPagination: true,
       initialState: {
         pageSize: lim,
@@ -114,7 +118,7 @@ const CustomerTable = () => {
 
   const updateUrlFromFilter = (obj = {}) => {
     const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/discounts`, "", `${`?${stringified}`}`)
+    window.history.replaceState(`/admin/discounts`, "", `${`?${stringified}`}`)
   }
 
   const refreshWithFilters = () => {

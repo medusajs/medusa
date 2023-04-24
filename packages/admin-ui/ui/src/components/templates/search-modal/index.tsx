@@ -74,41 +74,43 @@ const SearchModal = ({ handleClose }) => {
       <RadixDialog.Portal>
         <RadixDialog.Overlay
           className={clsx(
-            "fixed inset-0 z-50 pt-[140px] pb-[100px] backdrop-blur-sm",
+            "fixed pt-[140px] pb-[100px] z-50 inset-0 backdrop-blur-sm",
             { flex: totalLength > 0 }
           )}
         >
           <RadixDialog.Content
             className={clsx(
-              "bg-grey-0 rounded-rounded shadow-searchModal mx-auto flex max-w-[640px] flex-1"
+              "max-w-[640px] flex-1 flex mx-auto bg-grey-0 rounded-rounded shadow-searchModal"
             )}
           >
-            <div className="py-large flex flex-1 flex-col">
-              <div className="pb-large px-xlarge border-grey-20 flex items-center gap-x-4 border-b border-solid">
+            <div className="py-large flex-1 flex flex-col">
+              <div className="flex items-center gap-x-4 pb-large border-solid px-xlarge border-b border-grey-20">
                 <SearchIcon className="text-grey-40" />
                 <Input
                   className="flex-1"
                   onChange={onChange}
                   value={q}
-                  placeholder="Start typing to search..."
+                  placeholder="Search typing to search..."
                   {...getInputProps()}
                 />
-                <Tooltip
-                  className="bg-grey-0"
-                  onClick={handleClear}
-                  content="Clear search"
-                >
-                  <CrossIcon className="text-grey-50 flex" />
-                </Tooltip>
+                {q && (
+                  <Tooltip
+                    className="bg-grey-0"
+                    onClick={handleClear}
+                    content="Clear search"
+                  >
+                    <CrossIcon className="flex text-grey-50" />
+                  </Tooltip>
+                )}
               </div>
-              <KeyboardShortcuts className="mt-xlarge px-xlarge text-grey-40 inter-small-regular flex items-center gap-x-3" />
+              <KeyboardShortcuts className="mt-xlarge px-xlarge flex items-center gap-x-3 text-grey-40 inter-small-regular" />
               {totalLength > 0 ? (
                 <ul
                   {...getULProps()}
-                  className="mt-large px-xlarge flex-1 overflow-y-auto"
+                  className="flex-1 overflow-y-auto mt-large px-xlarge"
                 >
                   {isFetching ? (
-                    <div className="pt-2xlarge flex w-full items-center justify-center">
+                    <div className="w-full pt-2xlarge flex items-center justify-center">
                       <Spinner size={"large"} variant={"secondary"} />
                     </div>
                   ) : (

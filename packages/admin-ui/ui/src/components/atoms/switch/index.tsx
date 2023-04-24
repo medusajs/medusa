@@ -1,30 +1,39 @@
 import * as RadixSwitch from "@radix-ui/react-switch"
 import clsx from "clsx"
-import React from "react"
+import { forwardRef } from "react"
+
+export interface SwitchProps extends RadixSwitch.SwitchProps {
+  label?: string
+}
 
 /**
  * A controlled switch component atom.
  */
-const Switch = React.forwardRef<HTMLButtonElement, RadixSwitch.SwitchProps>(
-  (props, ref) => {
-    return (
+const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
+  ({ label, className, ...props }, ref) => (
+    <div className={clsx("flex items-center gap-2")}>
       <RadixSwitch.Root
-        ref={ref}
         {...props}
+        ref={ref}
+        id={props.id || props.name}
+        disabled={props.disabled}
         className={clsx(
-          "transition-bg radix-state-checked:bg-violet-60 h-[18px] w-8 rounded-full bg-gray-300"
+          "w-8 h-[18px] rounded-full transition-bg !bg-grey-30 radix-state-checked:!bg-violet-60 cursor-pointer"
         )}
       >
         <RadixSwitch.Thumb
           className={clsx(
-            "radix-state-checked:translate-x-[19px] block h-2 w-2 translate-x-[5px] rounded-full bg-white transition-transform"
+            "w-2 h-2 bg-white rounded-full block transition-transform translate-x-[5px] radix-state-checked:translate-x-[19px]"
           )}
         />
       </RadixSwitch.Root>
-    )
-  }
+      {label && (
+        <label htmlFor={props.id || props.name} className="cursor-pointer">
+          {label}
+        </label>
+      )}
+    </div>
+  )
 )
-
-Switch.displayName = "Switch"
 
 export default Switch

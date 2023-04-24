@@ -1,6 +1,6 @@
 import { Order } from "@medusajs/medusa"
 import { useAdminRefundPayment } from "medusa-react"
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 
 import Button from "../../../../components/fundamentals/button"
@@ -92,8 +92,8 @@ const RefundMenu = ({
           </Modal.Header>
           <Modal.Content>
             {isSystemPayment && (
-              <div className="inter-small-regular bg-orange-5 rounded-rounded mb-6 flex p-4 text-orange-50">
-                <div className="mr-3 h-full">
+              <div className="inter-small-regular mb-6 p-4 text-orange-50 bg-orange-5 rounded-rounded flex">
+                <div className="h-full mr-3">
                   <AlertIcon size={20} />
                 </div>
                 <div className="flex flex-col">
@@ -105,7 +105,7 @@ const RefundMenu = ({
               </div>
             )}
             <span className="inter-base-semibold">Details</span>
-            <div className="gap-y-base mt-4 grid">
+            <div className="grid gap-y-base mt-4">
               <CurrencyInput.Root
                 size="small"
                 currentCurrency={order.currency_code}
@@ -156,13 +156,13 @@ const RefundMenu = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full  justify-between">
+            <div className="flex w-full justify-between">
               <div
-                className="flex h-full cursor-pointer items-center"
+                className="items-center h-full flex cursor-pointer"
                 onClick={() => setNoNotification(!noNotification)}
               >
                 <div
-                  className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
+                  className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border rounded-base ${
                     !noNotification && "bg-violet-60"
                   }`}
                 >
@@ -178,24 +178,18 @@ const RefundMenu = ({
                   onChange={() => setNoNotification(!noNotification)}
                   type="checkbox"
                 />
-                <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
+                <span className="ml-3 flex items-center text-grey-90 gap-x-xsmall">
                   Send notifications
                   <IconTooltip content="Notify customer of created return" />
                 </span>
               </div>
-              <div className="gap-x-xsmall flex">
-                <Button
-                  onClick={onDismiss}
-                  size="small"
-                  className="w-[112px]"
-                  variant="ghost"
-                >
+              <div className="flex gap-2">
+                <Button onClick={onDismiss} size="small" variant="ghost">
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   size="small"
-                  className="w-[112px]"
                   variant="primary"
                   loading={isLoading}
                   disabled={isLoading}

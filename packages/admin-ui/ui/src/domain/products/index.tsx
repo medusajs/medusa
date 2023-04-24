@@ -1,12 +1,14 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import Edit from "./edit"
 import Overview from "./overview"
 
 const ProductsRoute = () => {
+  const location = useLocation()
+
   return (
     <Routes>
       <Route index element={<Overview />} />
-      <Route path="/:id" element={<Edit />} />
+      <Route key={location.key} path="/:id" element={<Edit />} />
     </Routes>
   )
 }

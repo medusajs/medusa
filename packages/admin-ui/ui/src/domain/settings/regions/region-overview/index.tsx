@@ -1,13 +1,14 @@
-import { useAdminRegions } from "medusa-react"
+import { useAdminRegions, useAdminStore } from "medusa-react"
 import React, { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Fade from "../../../../components/atoms/fade-wrapper"
 import Button from "../../../../components/fundamentals/button"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
 import RadioGroup from "../../../../components/organisms/radio-group"
 import Section from "../../../../components/organisms/section"
+import { useStorePermissions } from "../../../../hooks/use-store-permissions"
 import useToggleState from "../../../../hooks/use-toggle-state"
-import { useAnalytics } from "../../../../providers/analytics-provider"
+import { useBasePath } from "../../../../utils/routePathing"
 import NewRegion from "../new"
 import RegionCard from "./region-card"
 
@@ -15,14 +16,12 @@ type Props = {
   id?: string
 }
 
-const RegionOverview = ({ id }: Props) => {
+const RegionOverview = ({ id }) => {
+  const { regions, isLoading } = useAdminRegions()
+  const basePath = useBasePath()
+  const { canCreateRegions } = useStorePermissions()
+
   const navigate = useNavigate()
-  const { trackRegions } = useAnalytics()
-  const { regions, isLoading } = useAdminRegions(undefined, {
-    onSuccess: ({ regions, count }) => {
-      trackRegions({ regions: regions.map((r) => r.name), count })
-    },
-  })
   const [selectedRegion, setSelectedRegion] = React.useState<
     string | undefined
   >(id)
@@ -43,7 +42,7 @@ const RegionOverview = ({ id }: Props) => {
     }
 
     if (!selectedRegion && regions && regions.length > 0) {
-      navigate(`/a/settings/regions/${regions[0].id}`, {
+      navigate(`${basePath}/settings/regions/${regions[0].id}`, {
         replace: true,
       })
     }
@@ -52,7 +51,7 @@ const RegionOverview = ({ id }: Props) => {
   const handleChange = (id: string) => {
     if (id !== selectedRegion) {
       setSelectedRegion(id)
-      navigate(`/a/settings/regions/${id}`)
+      navigate(`${basePath}/settings/regions/${id}`)
     }
   }
 
@@ -63,16 +62,18 @@ const RegionOverview = ({ id }: Props) => {
       <Section
         title="Regions"
         customActions={
-          <div>
-            <Button
-              variant="ghost"
-              size="small"
-              className="h-xlarge w-xlarge"
-              onClick={toggle}
-            >
-              <PlusIcon />
-            </Button>
-          </div>
+          canCreateRegions && (
+            <div>
+              <Button
+                variant="ghost"
+                size="small"
+                className="w-8 h-8"
+                onClick={toggle}
+              >
+                <PlusIcon />
+              </Button>
+            </div>
+          )
         }
         className="h-full"
       >

@@ -1,5 +1,5 @@
 import { useAdminCreateTaxRate } from "medusa-react"
-import { useContext } from "react"
+import React, { useContext } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -108,7 +108,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
               {(product_types.length > 0 ||
                 products.length > 0 ||
                 shipping_options.length > 0) && (
-                <div className="gap-base flex flex-col">
+                <div className="flex flex-col gap-base">
                   {products.length > 0 && (
                     <TaxRuleItem
                       onDelete={() =>
@@ -210,7 +210,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                       )
                     )
                   }}
-                  className="mt-base w-full"
+                  className="w-full mt-base"
                   size="medium"
                   variant="secondary"
                 >
@@ -220,13 +220,12 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
                 type="button"
                 onClick={onDismiss}
                 variant="ghost"
                 size="small"
-                className="w-eventButton justify-center"
               >
                 Cancel
               </Button>
@@ -234,7 +233,6 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                 type="submit"
                 variant="primary"
                 size="small"
-                className="w-eventButton justify-center"
                 loading={isLoading}
                 disabled={isLoading}
               >

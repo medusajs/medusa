@@ -1,4 +1,5 @@
 import React from "react"
+import { shippingTypeDisplayLabels } from "../../../definitions/shared"
 import Badge from "../../fundamentals/badge"
 
 enum RequirementType {
@@ -32,10 +33,10 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
   onEdit,
 }) => {
   return (
-    <div className="p-base rounded-base border-grey-20 flex items-baseline justify-between border">
+    <div className="flex items-baseline justify-between p-base rounded-base border border-grey-20">
       <div className="truncate">
         <div className="flex items-center">
-          <p className="inter-small-semibold mr-xsmall truncate">
+          <p className="inter-small-semibold truncate mr-xsmall">
             {option.name} {option.data.name && `(${option.data.name})`}{" "}
           </p>
           {option.admin_only && <Badge variant="primary">Not on website</Badge>}
@@ -44,13 +45,18 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
           {option.price_type === "flat_rate" ? "Flat Rate" : "Calculated"}:{" "}
           {option.amount !== undefined &&
             `${option.amount / 100} ${currency_code.toUpperCase()}`}
+        </p>
+        <p className="inter-small-regular text-grey-50 truncate">
           {option.requirements.length
             ? option.requirements.map((r) => {
-                const type =
-                  r.type === "max_subtotal" ? "Max. subtotal" : "Min. subtotal"
-                return ` - ${type}: ${
-                  r.amount / 100
-                } ${currency_code.toUpperCase()}`
+                return `
+                ${shippingTypeDisplayLabels[r.type]}: 
+                ${
+                  r.type.includes("_subtotal")
+                    ? r.amount / 100 + " " + currency_code.toUpperCase()
+                    : r.amount + " oz"
+                }, 
+                `
               })
             : null}
         </p>

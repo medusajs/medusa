@@ -1,15 +1,15 @@
-import { ReturnItem } from "@medusajs/medusa"
 import {
   useAdminCancelReturn,
   useAdminCancelSwap,
   useAdminOrder,
+  useAdminReceiveReturn,
   useAdminStore,
 } from "medusa-react"
+import { ReturnItem } from "@medusajs/medusa"
 import React, { useEffect, useState } from "react"
 
 import CreateFulfillmentModal from "../../../domain/orders/details/create-fulfillment"
-import { ReceiveReturnMenu } from "../../../domain/orders/details/receive-return"
-import useOrdersExpandParam from "../../../domain/orders/details/utils/use-admin-expand-paramter"
+import ReceiveMenu from "../../../domain/orders/details/returns/receive-menu"
 import { ExchangeEvent } from "../../../hooks/use-build-timeline"
 import useNotification from "../../../hooks/use-notification"
 import Medusa from "../../../services/api"
@@ -38,21 +38,21 @@ type ExchangeStatusProps = {
 }
 
 const ExchangeStatus: React.FC<ExchangeStatusProps> = ({ event }) => {
-  const divider = <div className="bg-grey-20 h-11 w-px" />
+  const divider = <div className="h-11 w-px bg-grey-20" />
 
   return (
-    <div className="inter-small-regular gap-x-base flex items-center">
-      <div className="gap-y-2xsmall flex flex-col">
+    <div className="flex items-center inter-small-regular gap-x-base">
+      <div className="flex flex-col gap-y-2xsmall">
         <span className="text-grey-50">Payment:</span>
         <PaymentStatus paymentStatus={event.paymentStatus} />
       </div>
       {divider}
-      <div className="gap-y-2xsmall flex flex-col">
+      <div className="flex flex-col gap-y-2xsmall">
         <span className="text-grey-50">Return:</span>
         <ReturnStatus returnStatus={event.returnStatus} />
       </div>
       {divider}
-      <div className="gap-y-2xsmall flex flex-col">
+      <div className="flex flex-col gap-y-2xsmall">
         <span className="text-grey-50">Fulfillment:</span>
         <FulfillmentStatus fulfillmentStatus={event.fulfillmentStatus} />
       </div>
@@ -75,10 +75,9 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
   >(undefined)
   const [payable, setPayable] = useState(true)
   const { store } = useAdminStore()
-  const { orderRelations } = useOrdersExpandParam()
-  const { order } = useAdminOrder(event.orderId, {
-    expand: orderRelations,
-  })
+  const { order } = useAdminOrder(event.orderId)
+
+  const { mutateAsync: receiveReturn } = useAdminReceiveReturn(event.returnId)
 
   const notification = useNotification()
 
@@ -109,12 +108,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
         store.swap_link_template?.replace(/\{cart_id\}/, event.exchangeCartId)
       )
     }
-  }, [
-    store?.swap_link_template,
-    event.exchangeCartId,
-    event.paymentStatus,
-    store,
-  ])
+  }, [store?.swap_link_template, event.exchangeCartId, event.paymentStatus])
 
   const paymentLink = getPaymentLink(
     payable,
@@ -131,6 +125,19 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
   const handleCancelReturn = async () => {
     await cancelReturn.mutateAsync()
     refetch()
+  }
+
+  const handleReceiveReturn = async (
+    items: { item_id: string; quantity: number }[]
+  ) => {
+    await receiveReturn(
+      { items },
+      {
+        onSuccess: () => {
+          refetch()
+        },
+      }
+    )
   }
 
   const handleProcessSwapPayment = () => {
@@ -195,10 +202,10 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
     noNotification: event.noNotification,
     topNode: getActions(event, actions),
     children: [
-      <div className="gap-y-base flex flex-col" key={event.id}>
+      <div className="flex flex-col gap-y-base">
         {event.canceledAt && (
           <div>
-            <span className="inter-small-semibold mr-2">Requested on:</span>
+            <span className="mr-2 inter-small-semibold">Requested on:</span>
             <span className="text-grey-50">
               {new Date(event.time).toUTCString()}
             </span>
@@ -208,7 +215,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
         {!event.canceledAt && paymentLink}
         {returnItems}
         {newItems}
-        <div className="gap-x-xsmall flex items-center">
+        <div className="flex items-center gap-x-xsmall">
           {event.returnStatus === "requested" && (
             <Button
               variant="secondary"
@@ -255,10 +262,11 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
         />
       )}
       {showReceiveReturn && order && (
-        <ReceiveReturnMenu
+        <ReceiveMenu
           order={order}
           returnRequest={event.raw.return_order}
-          onClose={() => setShowReceiveReturn(false)}
+          onReceiveSwap={handleReceiveReturn}
+          onDismiss={() => setShowReceiveReturn(false)}
         />
       )}
       {showCreateFulfillment && (
@@ -274,11 +282,11 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
 
 function getNewItems(event: ExchangeEvent) {
   return (
-    <div className="gap-y-small flex flex-col">
+    <div className="flex flex-col gap-y-small">
       <span className="inter-small-regular text-grey-50">New Items</span>
       <div>
-        {event.newItems.map((i, index) => (
-          <EventItemContainer key={index} item={i} />
+        {event.newItems.map((i) => (
+          <EventItemContainer item={i} />
         ))}
       </div>
     </div>
@@ -292,8 +300,8 @@ function getPaymentLink(
   exchangeCartId: string | undefined
 ) {
   return payable ? (
-    <div className="inter-small-regular gap-y-xsmall text-grey-50 flex flex-col">
-      <div className="gap-x-xsmall flex items-center">
+    <div className="inter-small-regular text-grey-50 flex flex-col gap-y-xsmall">
+      <div className="flex items-center gap-x-xsmall">
         {paymentFormatWarning && <IconTooltip content={paymentFormatWarning} />}
         <span>Payment link:</span>
       </div>
@@ -309,14 +317,13 @@ function getPaymentLink(
 
 function getReturnItems(event: ExchangeEvent) {
   return (
-    <div className="gap-y-small flex flex-col">
+    <div className="flex flex-col gap-y-small">
       <span className="inter-small-regular text-grey-50">Return Items</span>
       <div>
         {event.returnItems
           .filter((i) => !!i)
           .map((i: ReturnItem) => (
             <EventItemContainer
-              key={i.id}
               item={{ ...i, quantity: i.requestedQuantity }}
             />
           ))}

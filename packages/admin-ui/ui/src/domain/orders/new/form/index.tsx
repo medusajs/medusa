@@ -1,11 +1,16 @@
-import { Product, Region, ShippingOption } from "@medusajs/medusa"
+import { Region, ShippingOption } from "@medusajs/medusa"
 import {
   useAdminRegion,
   useAdminShippingOption,
   useAdminShippingOptions,
-  useMedusa,
 } from "medusa-react"
-import { createContext, ReactNode, useContext, useEffect, useMemo } from "react"
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react"
 import {
   FormProvider,
   useFieldArray,
@@ -16,7 +21,6 @@ import {
 } from "react-hook-form"
 import { AddressPayload } from "../../../../components/templates/address-form"
 import { Option } from "../../../../types/shared"
-import { extractUnitPrice } from "../../../../utils/prices"
 
 export type NewOrderForm = {
   shipping_address: AddressPayload
@@ -59,11 +63,6 @@ const NewOrderFormProvider = ({ children }: { children?: ReactNode }) => {
     },
   })
 
-  const items = useFieldArray({
-    control: form.control,
-    name: "items",
-  })
-
   const selectedRegion = useWatch({ control: form.control, name: "region" })
   const { region } = useAdminRegion(selectedRegion?.value!, {
     enabled: !!selectedRegion,
@@ -99,43 +98,6 @@ const NewOrderFormProvider = ({ children }: { children?: ReactNode }) => {
     }))
   }, [region])
 
-  const { client } = useMedusa()
-
-  useEffect(() => {
-    const updateItems = async () => {
-      if (items.fields.length) {
-        const itemsMap = items.fields.reduce((acc, next) => {
-          if (next.variant_id) {
-            acc[next.variant_id] = next
-          }
-          return acc
-        }, {} as { [key: string]: any })
-
-        const variantIds = items.fields
-          .map((v) => v.variant_id)
-          .filter(Boolean) as string[]
-
-        const { variants } = await client.admin.variants.list({
-          id: variantIds,
-          region_id: region?.id,
-        })
-
-        items.replace(
-          variants.map((variant) => ({
-            quantity: itemsMap[variant.id as string].quantity,
-            variant_id: variant.id,
-            title: variant.title as string,
-            unit_price: extractUnitPrice(variant, region as Region, false),
-            product_title: (variant.product as Product)?.title,
-            thumbnail: (variant.product as Product)?.thumbnail,
-          }))
-        )
-      }
-    }
-
-    updateItems()
-  }, [region])
-
   const { shipping_options } = useAdminShippingOptions(
     {
       region_id: region?.id,
@@ -145,6 +107,11 @@ const NewOrderFormProvider = ({ children }: { children?: ReactNode }) => {
       enabled: !!region,
     }
   )
+
+  const items = useFieldArray({
+    control: form.control,
+    name: "items",
+  })
 
   const validShippingOptions = useMemo(() => {
     if (!shipping_options) {

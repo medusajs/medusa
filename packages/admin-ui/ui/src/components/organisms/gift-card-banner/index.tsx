@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { currencies } from "../../../utils/currencies"
 import { normalizeAmount } from "../../../utils/prices"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
@@ -74,7 +75,7 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
         )} ${defaultCurrency.toUpperCase()}`
       })
       .filter(Boolean)
-  }, [variants, defaultCurrency])
+  }, [variants, defaultCurrency, currencies])
 
   return (
     <BannerCard title={title} thumbnail={thumbnail} actions={actions}>

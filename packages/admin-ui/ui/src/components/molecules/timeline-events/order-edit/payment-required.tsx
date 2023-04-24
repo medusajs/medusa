@@ -22,9 +22,11 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
     return null
   }
 
-  const amount = requestedEditDifferenceDue
-    ? order.total - order.paid_total + requestedEditDifferenceDue
-    : order.refunded_total - order.paid_total
+  const amount =
+    order.total +
+    order.refunded_total -
+    order.paid_total +
+    requestedEditDifferenceDue
 
   if (amount <= 0) {
     return null
@@ -56,7 +58,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
     >
       <Button
         size="small"
-        className="border-grey-20 mb-xsmall w-full border"
+        className="w-full border border-grey-20 mb-xsmall"
         variant="ghost"
         onClick={onCopyPaymentLinkClicked}
       >
@@ -64,7 +66,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
       </Button>
       <Button
         size="small"
-        className="border-grey-20 w-full border"
+        className="w-full border border-grey-20"
         variant="ghost"
         onClick={onMarkAsPaidClicked}
       >

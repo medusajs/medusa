@@ -1,31 +1,34 @@
-import { useAdminGetSession } from "medusa-react"
-import { ReactNode, useEffect } from "react"
+import React, { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Spinner from "../atoms/spinner"
+import { AccountContext } from "../../context/account"
+import { isBrowser } from "../../utils/is-browser"
 
-type PrivateRouteProps = {
-  children: ReactNode
-}
-
-const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { user, isLoading } = useAdminGetSession()
+const PrivateRoute = ({
+  component: Component,
+  location,
+  ...rest
+}: {
+  location?: any | undefined
+  component: any
+  [key: string]: any
+}) => {
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const account = useContext(AccountContext)
 
-  useEffect(() => {
-    if (!user && !isLoading) {
-      navigate("/login")
-    }
-  }, [user, isLoading, navigate])
-
-  if (user && !isLoading) {
-    return <>{children}</>
+  if (account.isLoggedIn) {
+    return <Component {...rest} />
+  } else if (!loading && isBrowser) {
+    account
+      .session()
+      .then((data) => {
+        setLoading(false)
+      })
+      .catch((err) => {
+        navigate("/login")
+      })
   }
-
-  return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <Spinner variant="secondary" />
-    </div>
-  )
+  return <>Loading...</>
 }
 
 export default PrivateRoute

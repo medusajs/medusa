@@ -1,0 +1,14 @@
+.sidebar-company-logo {
+  position: absolute;
+  pointer-events: none;
+  margin-bottom: 0 !important;
+}
+
+.vendor-selector {
+  position: relative;
+  cursor: pointer;
+}
+
+.vendor-selector .sidebar-company-logo {
+  height: 100%;
+}

@@ -1,5 +1,6 @@
 import { CustomerGroup } from "@medusajs/medusa"
 import { useAdminCustomerGroups } from "medusa-react"
+import React, { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   HeaderGroup,
@@ -10,11 +11,13 @@ import {
   useSortBy,
   useTable,
 } from "react-table"
+import CustomerGroupContext, {
+  CustomerGroupContextContainer,
+} from "../../../domain/customers/groups/context/customer-group-context"
 import useQueryFilters from "../../../hooks/use-query-filters"
 import useSetSearchParams from "../../../hooks/use-set-search-params"
 import DetailsIcon from "../../fundamentals/details-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import { ActionType } from "../../molecules/actionables"
+import EditIcon from "../../fundamentals/icons/edit-icon"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import { CUSTOMER_GROUPS_TABLE_COLUMNS } from "./config"
@@ -33,7 +36,7 @@ const defaultQueryProps = {
  */
 function CustomerGroupsPlaceholder() {
   return (
-    <div className="center flex h-full min-h-[756px] items-center justify-center">
+    <div className="h-full flex center justify-center items-center min-h-[756px]">
       <span className="text-xs text-gray-400">No customer groups yet</span>
     </div>
   )
@@ -89,18 +92,18 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
   const { row } = props
 
   const navigate = useNavigate()
+  const { showModal } = useContext(CustomerGroupContext)
 
-  const actions: ActionType[] = [
+  const actions = [
+    {
+      label: "Edit",
+      onClick: showModal,
+      icon: <EditIcon size={20} />,
+    },
     {
       label: "Details",
       onClick: () => navigate(row.original.id),
       icon: <DetailsIcon size={20} />,
-    },
-    {
-      label: "Delete",
-      onClick: () => {},
-      icon: <TrashIcon size={20} />,
-      variant: "danger",
     },
   ]
 
@@ -134,8 +137,14 @@ type CustomerGroupsTableProps = ReturnType<typeof useQueryFilters> & {
  * Root component of the customer groups table.
  */
 function CustomerGroupsTable(props: CustomerGroupsTableProps) {
-  const { customerGroups, queryObject, count, paginate, setQuery, isLoading } =
-    props
+  const {
+    customerGroups,
+    queryObject,
+    count,
+    paginate,
+    setQuery,
+    isLoading,
+  } = props
 
   const tableConfig: TableOptions<CustomerGroup> = {
     columns: CUSTOMER_GROUPS_TABLE_COLUMNS,
@@ -220,7 +229,11 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
         <Table.Body {...table.getTableBodyProps()}>
           {table.rows.map((row) => {
             table.prepareRow(row)
-            return <CustomerGroupsTableRow row={row} key={row.id} />
+            return (
+              <CustomerGroupContextContainer key={row.id} group={row.original}>
+                <CustomerGroupsTableRow row={row} />
+              </CustomerGroupContextContainer>
+            )
           })}
         </Table.Body>
       </Table>

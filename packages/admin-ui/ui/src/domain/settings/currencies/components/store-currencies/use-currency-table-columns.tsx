@@ -1,5 +1,5 @@
 import { Currency } from "@medusajs/medusa"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import { Column } from "react-table"
 import SortingIcon from "../../../../../components/fundamentals/icons/sorting-icon"
 import IndeterminateCheckbox from "../../../../../components/molecules/indeterminate-checkbox"
@@ -29,7 +29,7 @@ export const useCurrencyColumns = (): Column<Currency>[] => {
       },
       {
         Header: ({ column: { isSorted, isSortedDesc } }) => (
-          <div className="gap-x-2xsmall flex items-center">
+          <div className="flex items-center gap-x-2xsmall">
             <span>Name</span>
             <SortingIcon
               className="text-grey-40"
@@ -42,7 +42,7 @@ export const useCurrencyColumns = (): Column<Currency>[] => {
         accessor: "name",
         Cell: ({ row, value }) => {
           return (
-            <div className="gap-x-xsmall inter-small-regular flex items-center">
+            <div className="flex items-center gap-x-xsmall inter-small-regular">
               <span className="inter-small-semibold">
                 {row.original.code.toUpperCase()}
               </span>

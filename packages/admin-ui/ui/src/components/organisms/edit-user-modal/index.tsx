@@ -1,6 +1,8 @@
+import { UserRoles } from "@medusajs/medusa/dist/models/user"
+import React, { useContext, useState, useEffect } from "react"
+import { AccountContext } from "../../../context/account"
+import { useAdminUpdateUser } from "../../../hooks/admin/users/mutations"
 import { User } from "@medusajs/medusa"
-import { useAdminUpdateUser } from "medusa-react"
-import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -8,6 +10,8 @@ import FormValidator from "../../../utils/form-validator"
 import Button from "../../fundamentals/button"
 import InputField from "../../molecules/input"
 import Modal from "../../molecules/modal"
+import Select from "../../molecules/select"
+import { SelectPermission } from "../edit-user-permissions-modal"
 
 type EditUserModalProps = {
   handleClose: () => void
@@ -33,6 +37,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     formState: { errors },
   } = useForm<EditUserModalFormData>()
   const notification = useNotification()
+  const account = useContext(AccountContext)
 
   useEffect(() => {
     reset(mapUser(user))
@@ -61,7 +66,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             <span className="inter-xlarge-semibold">Edit User</span>
           </Modal.Header>
           <Modal.Content>
-            <div className="gap-large mb-base grid w-full grid-cols-2">
+            <div className="w-full grid grid-cols-2 gap-large mb-base">
               <InputField
                 label="First Name"
                 placeholder="First name..."
@@ -88,13 +93,8 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
             <InputField label="Email" disabled value={user.email} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full justify-end">
-              <Button
-                variant="ghost"
-                size="small"
-                onClick={handleClose}
-                className="mr-2"
-              >
+            <div className="flex items-center justify-end w-full gap-2">
+              <Button variant="ghost" size="small" onClick={handleClose}>
                 Cancel
               </Button>
               <Button

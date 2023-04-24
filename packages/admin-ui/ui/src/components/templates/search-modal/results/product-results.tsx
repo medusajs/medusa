@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import React from "react"
 import SectionCollapsible from "../section-collapsible"
 import { useAdminProducts } from "medusa-react"
 import useKeyboardNavigationList from "../use-keyboard-navigation-list"
@@ -27,20 +28,21 @@ const ProductResults = ({
                 index: offset + index,
               })}
               className={clsx(
-                "px-base focus:bg-grey-5 rounded-rounded group py-1.5",
+                "px-base py-1.5 group focus:bg-grey-5 rounded-rounded",
                 {
                   "bg-grey-5": selected === offset + index,
                 }
               )}
             >
               <Link
-                to={`/a/products/${product.id}`}
+                //TODO: Change this
+                to={`/admin/products/${product.id}`}
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center gap-x-3">
                   <img
                     src={product.thumbnail}
-                    className="h-[32px] w-[24px] rounded object-cover"
+                    className="h-[32px] w-[24px] object-cover rounded"
                   />
                   <p className="inter-small-regular text-grey-90">
                     {product.title}
@@ -48,7 +50,7 @@ const ProductResults = ({
                 </div>
                 <span
                   className={clsx(
-                    "text-grey-40 inter-small-regular group-focus:visible",
+                    "group-focus:visible text-grey-40 inter-small-regular",
                     {
                       invisible: selected !== offset + index,
                     }

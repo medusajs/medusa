@@ -96,8 +96,11 @@ const TagInput: React.FC<TagInputProps> = ({
           }
         }
         break
-      case ENTER_KEY: // Fall through
-        e.preventDefault()
+      case ENTER_KEY: // Creates new tag
+        if (value) {
+          handleAddValue(value)
+          e.preventDefault()
+        }
         break
       case TAB_KEY: // Creates new tag
         if (value) {
@@ -105,7 +108,6 @@ const TagInput: React.FC<TagInputProps> = ({
           e.preventDefault()
         }
         break
-
       case BACKSPACE_KEY: // Removes tag
         // if no element is currently highlighted, highlight last element
         if (!inputRef.current.selectionStart && highlighted === -1) {
@@ -175,20 +177,20 @@ const TagInput: React.FC<TagInputProps> = ({
       >
         <div
           className={clsx(
-            "bg-grey-5 shadow-border focus-within:outline-violet-60/10 focus-within:shadow-focus-border rounded-rounded box-border flex h-auto min-h-[40px] items-center px-3 transition-colors focus-within:outline focus-within:outline-4",
+            "h-auto min-h-[40px] bg-grey-5 shadow-border focus-within:outline-4 focus-within:outline focus-within:outline-violet-60/10 transition-colors focus-within:shadow-focus-border rounded-rounded flex items-center px-2 box-border",
             {
               "shadow-error-border focus-within:shadow-error-border focus-within:outline-rose-60/10":
                 invalid,
             }
           )}
         >
-          <div className="h-full">
-            <div className="gap-xsmall h-28px box-border flex w-full flex-wrap py-1.5">
+          <div className="h-full w-full">
+            <div className="w-full gap-xsmall flex flex-wrap box-border h-28px py-1.5">
               {values.map((v, index) => (
                 <div
                   key={index}
                   className={clsx(
-                    "bg-grey-20 rounded-rounded flex w-max items-center justify-center gap-x-1 whitespace-nowrap px-3 py-1",
+                    "flex items-center justify-center whitespace-nowrap w-max bg-grey-20 rounded-rounded px-3 py-1 gap-x-1",
                     {
                       ["!bg-grey-90"]: index === highlighted,
                     }
@@ -196,7 +198,7 @@ const TagInput: React.FC<TagInputProps> = ({
                 >
                   <span
                     className={clsx(
-                      "text-grey-50 inter-small-semibold inline-block",
+                      "inline-block text-grey-50 inter-small-semibold",
                       {
                         ["text-grey-20"]: index === highlighted,
                       }
@@ -205,7 +207,7 @@ const TagInput: React.FC<TagInputProps> = ({
                     {v}
                   </span>
                   <CrossIcon
-                    className="text-grey-40 inline cursor-pointer"
+                    className="inline cursor-pointer text-grey-40"
                     size="16"
                     onClick={() => handleRemove(index)}
                   />
@@ -217,7 +219,9 @@ const TagInput: React.FC<TagInputProps> = ({
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 onChange={handleInput}
-                className={clsx("flex-1 bg-transparent focus:outline-none")}
+                className={clsx(
+                  "focus:outline-none bg-transparent flex-1 min-w-0"
+                )}
                 placeholder={values?.length ? "" : placeholder} // only visible if no tags exist
                 {...props}
               />

@@ -1,0 +1,47 @@
+.rich-text-input .rich-text-input__editor {
+  @apply border border-grey-20 rounded-rounded w-full max-w-none mx-auto py-1.5 pl-3 pr-3;
+}
+
+.rich-text-input .rich-text-input__editor .codex-editor {
+  @apply min-h-[160px];
+}
+
+.rich-text-input .rich-text-input__editor .codex-editor__loader {
+  @apply absolute h-10 inset-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+.rich-text-input .rich-text-input__editor .ce-block:last-child h1.ce-header {
+  @apply pb-3;
+}
+
+.rich-text-input .rich-text-input__editor .ce-block:last-child h2.ce-header {
+  @apply pb-3;
+}
+
+.rich-text-input .rich-text-input__editor .ce-block:last-child h3.ce-header {
+  @apply pb-2;
+}
+
+.rich-text-input .rich-text-input__editor .ce-block:last-child h4.ce-header,
+.rich-text-input .rich-text-input__editor .ce-block:last-child h5.ce-header,
+.rich-text-input .rich-text-input__editor .ce-block:last-child h6.ce-header {
+  @apply pb-2;
+}
+
+.rich-text-input
+  .rich-text-input__editor
+  .ce-block:first-child
+  .cdx-nested-list {
+  @apply pt-1;
+}
+
+.rich-text-input
+  .rich-text-input__editor
+  .ce-block:last-child
+  .cdx-nested-list {
+  @apply pb-1;
+}
+
+.rich-text-input .rich-text-input__editor .codex-editor__redactor {
+  padding-bottom: 0 !important;
+}

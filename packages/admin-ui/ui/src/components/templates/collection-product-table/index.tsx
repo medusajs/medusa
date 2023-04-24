@@ -1,6 +1,7 @@
 import { useAdminProducts } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { Column, usePagination, useRowSelect, useTable } from "react-table"
+import { useSelectedVendor } from "../../../context/vendor"
 import { useDebounce } from "../../../hooks/use-debounce"
 import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
 import Table from "../../molecules/table"
@@ -25,13 +26,15 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
   const [filteringOptions, setFilteringOptions] = useState<
     FilteringOptionProps[]
   >([])
-
+  const { isVendorView, selectedVendor } = useSelectedVendor()
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
 
   const debouncedSearchTerm = useDebounce(query, 500)
 
   const { isLoading, count, products } = useAdminProducts({
     q: debouncedSearchTerm,
+    vendor_id:
+      isVendorView && selectedVendor?.id ? [selectedVendor.id] : undefined,
     limit: limit,
     offset,
   })
@@ -98,7 +101,7 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
           id: "selection",
           Cell: ({ row }) => {
             return (
-              <Table.Cell className="pl-base w-[5%]">
+              <Table.Cell className="w-[5%] pl-base">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Table.Cell>
             )

@@ -1,26 +1,57 @@
-import { useAdminStore } from "medusa-react"
-import React, { useState } from "react"
-
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
-import CartIcon from "../../fundamentals/icons/cart-icon"
-import CashIcon from "../../fundamentals/icons/cash-icon"
+import React, { useEffect, useState } from "react"
+import { useSelectedVendor } from "../../../context/vendor"
+import { useBasePath } from "../../../utils/routePathing"
+import CustomerIcon from "../../fundamentals/icons/customer-icon"
+import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon"
 import GearIcon from "../../fundamentals/icons/gear-icon"
-import GiftIcon from "../../fundamentals/icons/gift-icon"
-import SaleIcon from "../../fundamentals/icons/sale-icon"
+// import GiftIcon from "../../fundamentals/icons/gift-icon"
+// import PackageIcon from "../../fundamentals/icons/package-icon"
+// import PublishIcon from "../../fundamentals/icons/publish-icon"
 import TagIcon from "../../fundamentals/icons/tag-icon"
-import SwatchIcon from "../../fundamentals/icons/swatch-icon"
-import UsersIcon from "../../fundamentals/icons/users-icon"
+// import TileIcon from "../../fundamentals/icons/tile-icon"
+// import UsersIcon from "../../fundamentals/icons/users-icon"
+// import Select from "../../molecules/select"
+// import SidebarCompanyLogo from "../../molecules/sidebar-company-logo"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
-import UserMenu from "../../molecules/user-menu"
+import ListIcon from "../../fundamentals/icons/list-icon"
+import DocumentTextIcon from "../../fundamentals/icons/document-text-icon"
+import NewspaperIcon from "../../fundamentals/icons/newspaper-icon"
+import BuildingStorefrontIcon from "../../fundamentals/icons/building-storefront-icon"
+import { VendorSelector } from "./vendor-selector"
+import SaleIcon from "../../fundamentals/icons/sale-icon"
+import HomeIcon from "../../fundamentals/icons/home-icon"
+import MailIcon from "../../fundamentals/icons/mail-icon"
+import { useUserPermissions } from "../../../hooks/use-permissions"
+import Badge from "../../fundamentals/badge"
 
-const ICON_SIZE = 20
+import "./sidebar.css"
+import { useGetVendors } from "../../../hooks/admin/vendors"
+import BackButton from "../../atoms/back-button"
+import { useLocation } from "react-router-dom"
 
-const Sidebar: React.FC = () => {
+const ICON_SIZE = 18
+
+interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  toggleSidebar: (isOpen: boolean) => void
+}
+
+const Sidebar: React.FC<SideBarProps> = ({
+  className,
+  toggleSidebar,
+  ...props
+}) => {
+  const { isAdmin } = useUserPermissions()
   const [currentlyOpen, setCurrentlyOpen] = useState(-1)
+  const basePath = useBasePath()
+  const { vendors } = useGetVendors()
+  const { isStoreView, isVendorView, isPrimary } = useSelectedVendor()
+  const location = useLocation()
 
-  const { isFeatureEnabled } = useFeatureFlag()
-  const { store } = useAdminStore()
+  useEffect(() => {
+    if (location.pathname) {
+      toggleSidebar(false)
+    }
+  }, [location])
 
   const triggerHandler = () => {
     const id = triggerHandler.id++
@@ -33,86 +64,188 @@ const Sidebar: React.FC = () => {
   // infinite updates, and we do not want the variable to be free floating.
   triggerHandler.id = 0
 
-  const inventoryEnabled =
-    isFeatureEnabled("inventoryService") &&
-    isFeatureEnabled("stockLocationService")
+  if (!vendors) return null
+
+  const vendorPathForSingleVendor =
+    vendors.length > 1 ? basePath : `/vendor/${vendors[0].id}`
+  const adminPathForSingleVendor = vendors.length > 1 ? basePath : `/admin`
 
   return (
-    <div className="min-w-sidebar max-w-sidebar bg-gray-0 border-grey-20 py-base px-base h-screen overflow-y-auto border-r">
-      <div className="h-full">
-        <div className="flex justify-between px-2">
-          <div className="rounded-circle flex h-8 w-8 items-center justify-center border border-solid border-gray-300">
-            <UserMenu />
-          </div>
-        </div>
-        <div className="my-base flex flex-col px-2">
-          <span className="text-grey-50 text-small font-medium">Store</span>
-          <span className="text-grey-90 text-medium font-medium">
-            {store?.name}
-          </span>
-        </div>
-        <div className="py-3.5">
+    <div className={className} {...props}>
+      <VendorSelector vendors={vendors} />
+
+      <div className="min-w-sidebar max-w-sidebar h-screen overflow-y-auto bg-gray-0 border-r border-grey-20 py-base px-base pt-0">
+        {isAdmin && !isStoreView && vendors.length > 1 && (
+          <BackButton
+            className="block mt-2 -mb-3 -ml-3"
+            path="/admin"
+            label="Admin Home"
+          />
+        )}
+
+        <div className="font-semibold mt-5 flex flex-col text-small">
+          <h4 className="mb-2 inline-flex justify-start gap-1.5">
+            Store
+            {isPrimary && vendors.length > 1 && (
+              <span>
+                <Badge
+                  variant="primary"
+                  size="small"
+                  className="text-xs text-[10px] rounded-full top-0 px-2 py-0.5"
+                >
+                  primary
+                </Badge>
+              </span>
+            )}
+          </h4>
+
           <SidebarMenuItem
-            pageLink={"/a/orders"}
-            icon={<CartIcon size={ICON_SIZE} />}
+            pageLink={basePath}
+            icon={<HomeIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Orders"}
+            text="Home"
+            end={true}
           />
           <SidebarMenuItem
-            pageLink={"/a/products"}
+            pageLink={`${vendorPathForSingleVendor}/orders`}
+            icon={<DollarSignIcon size={ICON_SIZE} />}
+            triggerHandler={triggerHandler}
+            text="Orders"
+          />
+          <SidebarMenuItem
+            pageLink={`${vendorPathForSingleVendor}/products`}
             icon={<TagIcon size={ICON_SIZE} />}
-            text={"Products"}
+            text="Products"
             triggerHandler={triggerHandler}
           />
-          {isFeatureEnabled("product_categories") && (
+          <SidebarMenuItem
+            pageLink={`${vendorPathForSingleVendor}/customers`}
+            icon={<CustomerIcon size={ICON_SIZE} />}
+            triggerHandler={triggerHandler}
+            text="Customers"
+          />
+
+          {(isStoreView || isPrimary) && (
+            // Note: discounts are currently only an admin route
             <SidebarMenuItem
-              pageLink={"/a/product-categories"}
-              icon={<SwatchIcon size={ICON_SIZE} />}
-              text={"Categories"}
+              pageLink={`/admin/discounts`}
+              icon={<SaleIcon size={ICON_SIZE} />}
+              text="Discounts"
               triggerHandler={triggerHandler}
-              isNew
             />
           )}
-          <SidebarMenuItem
-            pageLink={"/a/customers"}
-            icon={<UsersIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={"Customers"}
-          />
-          {inventoryEnabled && (
-            <SidebarMenuItem
-              pageLink={"/a/inventory"}
-              icon={<BuildingsIcon size={ICON_SIZE} />}
-              triggerHandler={triggerHandler}
-              text={"Inventory"}
-              isNew
-            />
-          )}
-          <SidebarMenuItem
-            pageLink={"/a/discounts"}
-            icon={<SaleIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={"Discounts"}
-          />
-          <SidebarMenuItem
-            pageLink={"/a/gift-cards"}
-            icon={<GiftIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={"Gift Cards"}
-          />
-          <SidebarMenuItem
-            pageLink={"/a/pricing"}
-            icon={<CashIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={"Pricing"}
-          />
-          <SidebarMenuItem
-            pageLink={"/a/settings"}
-            icon={<GearIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={"Settings"}
-          />
         </div>
+
+        {(isStoreView || isPrimary) && (
+          <>
+            <div className="font-semibold mt-5 flex flex-col text-small">
+              <h4 className="mb-2">Content</h4>
+
+              <SidebarMenuItem
+                pageLink={`/admin/content/pages`}
+                icon={<DocumentTextIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text="Pages"
+              />
+              <SidebarMenuItem
+                pageLink={`/admin/content/posts`}
+                icon={<NewspaperIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text="Posts"
+              />
+              <SidebarMenuItem
+                pageLink={`/admin/content/navigation`}
+                icon={<ListIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text="Navigation"
+              />
+
+              {process.env.NODE_ENV === "development" && (
+                <SidebarMenuItem
+                  pageLink={`/admin/email/preview`}
+                  icon={<MailIcon size={ICON_SIZE} />}
+                  triggerHandler={triggerHandler}
+                  text="Email"
+                />
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Vendor Admin Settings */}
+        {isAdmin && !isPrimary && isVendorView && (
+          <div className="font-semibold mt-5 flex flex-col text-small">
+            <h4 className="mb-2">Settings</h4>
+            <SidebarMenuItem
+              pageLink={`${basePath}/settings`}
+              icon={<GearIcon size={ICON_SIZE} />}
+              triggerHandler={triggerHandler}
+              text={"Vendor Settings"}
+            />
+          </div>
+        )}
+
+        {/* Primary Admin Settings */}
+        {isAdmin && (isStoreView || isPrimary) && (
+          <div className="font-semibold mt-5 flex flex-col text-small">
+            <h4 className="mb-2">Settings</h4>
+
+            <SidebarMenuItem
+              pageLink={`/admin/vendors`}
+              icon={<BuildingStorefrontIcon size={ICON_SIZE} />}
+              triggerHandler={triggerHandler}
+              text={"Vendors"}
+            />
+
+            <SidebarMenuItem
+              pageLink={`${adminPathForSingleVendor}/users`}
+              icon={<CustomerIcon size={ICON_SIZE} />}
+              triggerHandler={triggerHandler}
+              text={"Users"}
+            />
+
+            {/* <SidebarMenuItem
+                pageLink={`/admin/taxes`}
+                icon={<PublishIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={"Taxes"}
+              />
+              <SidebarMenuItem
+
+                pageLink={`/admin/gift-cards`}
+                icon={<GiftIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={"Gift Cards"}
+              />
+              <SidebarMenuItem
+
+                pageLink={`/admin/discounts`}
+                icon={<SaleIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={"Global Promotions"}
+              /> */}
+
+            {(isVendorView || vendors.length === 1) && (
+              <SidebarMenuItem
+                pageLink={`${vendorPathForSingleVendor}/settings`}
+                icon={<GearIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={`${
+                  isVendorView || vendors.length === 1 ? "Vendor" : "Store"
+                } Settings`}
+              />
+            )}
+
+            {(isStoreView || isPrimary) && (
+              <SidebarMenuItem
+                pageLink={`/admin/settings`}
+                icon={<GearIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={`Store Settings`}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

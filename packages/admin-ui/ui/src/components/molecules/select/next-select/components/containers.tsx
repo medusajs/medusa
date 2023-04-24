@@ -10,7 +10,6 @@ import InputError from "../../../../atoms/input-error"
 
 type AdjacentContainerProps = {
   label?: string
-  htmlFor?: string
   helperText?: string
   required?: boolean
   name?: string
@@ -34,12 +33,9 @@ export const AdjacentContainer = forwardRef<
     ref
   ) => {
     return (
-      <div className="gap-y-xsmall flex w-full flex-col" ref={ref}>
+      <div className="flex flex-col gap-y-xsmall w-full" ref={ref}>
         {label && (
-          <label
-            className="inter-small-semibold text-grey-50"
-            id={`${name}_label`}
-          >
+          <label className="inter-small-semibold text-grey-50">
             {label}
             {required && <span className="text-rose-50">*</span>}
           </label>
@@ -76,11 +72,7 @@ export const SelectContainer = <
           "--is-rtl": isRtl,
           "--has-value": hasValue,
         },
-        clsx(
-          "pointer-events-auto relative",
-          { "text-grey-40": isDisabled },
-          className
-        )
+        clsx("relative pointer-events-auto", className)
       )}
     >
       {children}
@@ -116,7 +108,7 @@ export const ValueContainer = <
             "value-container--has-value": hasValue,
           },
           clsx(
-            "scrolling-touch group relative flex flex-1 flex-wrap items-center overflow-hidden",
+            "group flex items-center flex-wrap relative scrolling-touch overflow-hidden flex-1",
             {
               "gap-2xsmall": isMulti,
             },
@@ -125,14 +117,14 @@ export const ValueContainer = <
         )}
       >
         {value?.length > 0 && (
-          <div className="bg-grey-20 text-grey-50 px-small inter-small-semibold rounded-rounded gap-x-2xsmall flex h-7 cursor-default items-center">
+          <div className="h-7 bg-grey-20 text-grey-50 px-small inter-small-semibold flex items-center rounded-rounded gap-x-2xsmall cursor-default">
             <span>{value.length}</span>
           </div>
         )}
         <div className="relative grow">
           {children}
           {value?.length > 0 && inputValue === "" && (
-            <span className="inter-base-regular text-grey-50 absolute top-1/2 -translate-y-1/2">
+            <span className="absolute top-1/2 -translate-y-1/2 inter-base-regular text-grey-50">
               {selectedPlaceholder || label || "Selected"}
             </span>
           )}
@@ -151,7 +143,7 @@ export const ValueContainer = <
           "value-container--has-value": hasValue,
         },
         clsx(
-          "scrolling-touch relative flex flex-1 flex-wrap items-center overflow-hidden",
+          "flex items-center flex-wrap relative scrolling-touch overflow-hidden flex-1",
           {
             "gap-2xsmall": isMulti,
           },
@@ -181,7 +173,7 @@ export const IndicatorsContainer = <
         {
           "indicators-container": true,
         },
-        clsx("text-grey-50 gap-x-small px-small flex items-center", className)
+        clsx("text-grey-50 flex items-center gap-x-small px-small", className)
       )}
     >
       {children}

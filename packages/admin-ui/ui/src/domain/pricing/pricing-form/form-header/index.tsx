@@ -1,9 +1,10 @@
 import { useAdminCreatePriceList, useAdminUpdatePriceList } from "medusa-react"
+import React, { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
+import { FeatureFlagContext } from "../../../../context/feature-flag"
 import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import {
   mapFormValuesToCreatePriceList,
@@ -36,7 +37,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
   const createPriceList = useAdminCreatePriceList()
   const updatePriceList = useAdminUpdatePriceList(props.id!)
 
-  const { isFeatureEnabled } = useFeatureFlag()
+  const { isFeatureEnabled } = useContext(FeatureFlagContext)
 
   const onPublish = (values: CreatePriceListFormValues) => {
     const data = mapFormValuesToCreatePriceList(values, PriceListStatus.ACTIVE)
@@ -132,30 +133,24 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
   }
 
   return (
-    <div className="medium:w-8/12 flex w-full justify-between px-8">
+    <div className="medium:w-8/12 w-full px-8 flex justify-between">
       <Button
         size="small"
-        variant="ghost"
+        variant="secondary"
         onClick={closeForm}
-        className="rounded-rounded h-8 w-8 border"
+        className="w-8 h-8 p-0"
       >
-        <CrossIcon size={20} />
+        <CrossIcon className="w-5 h-5" />
       </Button>
-      <div className="gap-x-small flex">
+      <div className="gap-3 flex">
         <Button
           onClick={secondaryAction.onClick}
           size="small"
-          variant="ghost"
-          className="rounded-rounded border"
+          variant="secondary"
         >
           {secondaryAction.label}
         </Button>
-        <Button
-          size="small"
-          variant="primary"
-          onClick={mainAction.onClick}
-          className="rounded-rounded"
-        >
+        <Button size="small" variant="primary" onClick={mainAction.onClick}>
           {mainAction.label}
         </Button>
       </div>

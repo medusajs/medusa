@@ -1,9 +1,9 @@
 import clsx from "clsx"
-import React from "react"
+import React, { ReactNode } from "react"
 import IconTooltip from "../molecules/icon-tooltip"
 
 export type InputHeaderProps = {
-  label?: string
+  label?: ReactNode
   required?: boolean
   tooltipContent?: string
   tooltip?: React.ReactNode
@@ -20,14 +20,14 @@ const InputHeader: React.FC<InputHeaderProps> = ({
   return (
     <div
       className={clsx(
-        "inter-small-semibold text-grey-50 flex w-full items-center",
+        "w-full flex inter-small-semibold text-grey-50 items-center",
         className
       )}
     >
       <label>{label}</label>
-      {required && <div className="text-rose-50 "> *</div>}
+      {required && <div className="text-rose-50"> *</div>}
       {tooltip || tooltipContent ? (
-        <div className="ml-1.5 flex">
+        <div className="flex ml-1.5">
           {tooltip || <IconTooltip content={tooltipContent} />}
         </div>
       ) : null}

@@ -1,7 +1,7 @@
 import { useAdminLogin } from "medusa-react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import InputError from "../../atoms/input-error"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
 
@@ -14,63 +14,57 @@ type LoginCardProps = {
   toResetPassword: () => void
 }
 
-const LoginCard = ({ toResetPassword }: LoginCardProps) => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<FormValues>()
+const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false)
+  const { register, handleSubmit, reset } = useForm<FormValues>()
   const navigate = useNavigate()
-  const { mutate, isLoading } = useAdminLogin()
+  const login = useAdminLogin()
 
   const onSubmit = (values: FormValues) => {
-    mutate(values, {
+    login.mutate(values, {
       onSuccess: () => {
-        navigate("/a/orders")
+        navigate(`/admin`)
       },
       onError: () => {
-        setError(
-          "password",
-          {
-            type: "manual",
-            message: "These credentials do not match our records.",
-          },
-          {
-            shouldFocus: true,
-          }
-        )
+        setIsInvalidLogin(true)
+        reset()
       },
     })
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center">
-        <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-          Log in to Medusa
-        </h1>
-        <div>
-          <SigninInput
-            placeholder="Email"
-            {...register("email", { required: true })}
-            autoComplete="email"
-            className="mb-small"
-          />
-          <SigninInput
-            placeholder="Password"
-            type={"password"}
-            {...register("password", { required: true })}
-            autoComplete="current-password"
-            className="mb-xsmall"
-          />
-          <InputError errors={errors} name="password" />
-        </div>
+        <span className="inter-2xlarge-semibold mt-4 text-grey-90">
+          Welcome back!
+        </span>
+        <span className="inter-base-regular text-grey-50 mt-2">
+          It's great to see you 👋🏼
+        </span>
+        <span className="inter-base-regular text-grey-50 mb-xlarge">
+          Log in to your account below
+        </span>
+        <SigninInput
+          placeholder="Email..."
+          {...register("email", { required: true })}
+          autoComplete="email"
+        />
+        <SigninInput
+          placeholder="Password..."
+          type={"password"}
+          {...register("password", { required: true })}
+          autoComplete="current-password"
+        />
+        {isInvalidLogin && (
+          <span className="text-rose-50 w-full mt-2 inter-small-regular">
+            These credentials do not match our records
+          </span>
+        )}
         <Button
-          className="rounded-rounded inter-base-regular mt-4 w-[280px]"
-          variant="secondary"
-          size="medium"
+          className="rounded-rounded mt-4 w-[320px] inter-base-regular"
+          variant="primary"
+          size="large"
           type="submit"
-          loading={isLoading}
+          loading={login.isLoading}
         >
           Continue
         </Button>
@@ -78,7 +72,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
           className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
           onClick={toResetPassword}
         >
-          Forgot your password?
+          Reset password
         </span>
       </div>
     </form>

@@ -17,7 +17,7 @@ export const useFormActions = () => {
       },
       {
         onSuccess: () => {
-          navigate("/a/discounts")
+          navigate("/admin/discounts")
         },
       }
     )
@@ -31,7 +31,7 @@ export const useFormActions = () => {
       },
       {
         onSuccess: () => {
-          navigate("/a/discounts")
+          navigate("/admin/discounts")
         },
       }
     )

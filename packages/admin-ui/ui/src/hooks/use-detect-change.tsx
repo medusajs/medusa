@@ -1,4 +1,6 @@
-import { ReactNode, useEffect } from "react"
+// NOTE: This doesn't appear to be used anywhere in the codebase.
+
+import React, { ReactNode, useEffect } from "react"
 import { toast } from "react-hot-toast"
 import SaveNotification from "../components/atoms/save-notification"
 

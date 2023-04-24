@@ -1,6 +1,8 @@
 import { Region } from "@medusajs/medusa"
 import { useAdminShippingOptions } from "medusa-react"
+import React from "react"
 import Section from "../../../../../components/organisms/section"
+import { useSelectedVendor } from "../../../../../context/vendor"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import ShippingOptionCard from "../../components/shipping-option-card"
 import CreateReturnShippingOptionModal from "./create-return-shipping-option.modal"
@@ -10,6 +12,7 @@ type Props = {
 }
 
 const ReturnShippingOptions = ({ region }: Props) => {
+  const { isVendorView, selectedVendor } = useSelectedVendor()
   const { shipping_options: returnShippingOptions } = useAdminShippingOptions({
     region_id: region.id,
     is_return: true,
@@ -28,14 +31,20 @@ const ReturnShippingOptions = ({ region }: Props) => {
           },
         ]}
       >
-        <div className="gap-y-large flex flex-col">
+        <div className="flex flex-col gap-y-large">
           <p className="inter-base-regular text-grey-50">
             Enter specifics about available regional return shipment methods.
           </p>
-          <div className="gap-y-small flex flex-col">
-            {returnShippingOptions?.map((option) => {
-              return <ShippingOptionCard option={option} key={option.id} />
-            })}
+          <div className="flex flex-col gap-y-small">
+            {returnShippingOptions
+              ?.filter((o) =>
+                isVendorView
+                  ? o.profile?.vendor_id === selectedVendor?.id
+                  : !o?.profile?.vendor_id
+              )
+              ?.map((option) => (
+                <ShippingOptionCard option={option} key={option.id} />
+              ))}
           </div>
         </div>
       </Section>
@@ -43,6 +52,7 @@ const ReturnShippingOptions = ({ region }: Props) => {
         onClose={close}
         open={state}
         region={region}
+        vendor={isVendorView ? selectedVendor : undefined}
       />
     </>
   )

@@ -1,4 +1,5 @@
 import { ProductTag } from "@medusajs/medusa"
+import React from "react"
 import { Column, HeaderGroup, Row } from "react-table"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import Table from "../../../../../../components/molecules/table"
@@ -14,7 +15,7 @@ export const TagColumns: Column<ProductTag>[] = [
     Cell: ({ row: { original } }) => {
       return (
         <div className="w-[220px]">
-          <span className="bg-grey-10 rounded-rounded px-2 py-0.5">
+          <span className="bg-grey-10 px-2 py-0.5 rounded-rounded">
             #{original.value}
           </span>
         </div>

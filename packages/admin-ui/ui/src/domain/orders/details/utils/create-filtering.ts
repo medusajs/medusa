@@ -1,6 +1,6 @@
 import { ClaimItem, LineItem, Order } from "@medusajs/medusa"
 
-export const getAllReturnableItems = (
+export const filterItems = (
   order: Omit<Order, "beforeInserts">,
   isClaim: boolean
 ) => {
@@ -16,10 +16,8 @@ export const getAllReturnableItems = (
 
   if (order.claims && order.claims.length) {
     for (const claim of order.claims) {
-      if (claim.return_order?.status !== "canceled") {
-        claim.claim_items = claim.claim_items ?? []
-        claimedItems = [...claimedItems, ...claim.claim_items]
-      }
+      claim.claim_items = claim.claim_items ?? []
+      claimedItems = [...claimedItems, ...claim.claim_items]
 
       if (
         claim.fulfillment_status === "not_fulfilled" &&
@@ -43,10 +41,6 @@ export const getAllReturnableItems = (
   if (!isClaim) {
     if (order.swaps && order.swaps.length) {
       for (const swap of order.swaps) {
-        if (swap.fulfillment_status === "not_fulfilled") {
-          continue
-        }
-
         orderItems = swap.additional_items.reduce(
           (map, obj) =>
             map.set(obj.id, {

@@ -1,41 +1,33 @@
 import React, { useState } from "react"
-
+import { ToastOptions } from "react-hot-toast"
 import useNotification from "../../hooks/use-notification"
 import { getErrorMessage } from "../../utils/error-messages"
-import Button from "../fundamentals/button"
-import Modal from "../molecules/modal"
+import { Prompt, PromptProps } from "./prompt"
 
-type DeletePromptProps = {
-  heading?: string
-  text?: string
-  successText?: string | false
-  cancelText?: string
-  confirmText?: string
-  handleClose: () => void
+export interface DeletePromptProps extends PromptProps {
+  successText?: string | null
   onDelete: () => Promise<unknown>
+  notificationOptions?: ToastOptions
 }
 
 const DeletePrompt: React.FC<DeletePromptProps> = ({
-  heading = "Are you sure you want to delete?",
-  text = "",
-  successText = "Delete successful",
-  cancelText = "No, cancel",
-  confirmText = "Yes, remove",
   handleClose,
   onDelete,
+  successText,
+  confirmProps,
+  notificationOptions,
+  ...props
 }) => {
-  const notification = useNotification()
+  const notification = useNotification(notificationOptions)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleConfirm = (e) => {
     e.preventDefault()
 
     setIsLoading(true)
     onDelete()
       .then(() => {
-        if (successText) {
-          notification("Success", successText, "success")
-        }
+        if (successText) notification("Success", successText, "success")
       })
       .catch((err) => notification("Error", getErrorMessage(err), "error"))
       .finally(() => {
@@ -45,39 +37,23 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
   }
 
   return (
-    <Modal isLargeModal={false} handleClose={handleClose}>
-      <Modal.Body>
-        <Modal.Content>
-          <div className="flex flex-col">
-            <span className="inter-large-semibold">{heading}</span>
-            <span className="inter-base-regular text-grey-50 mt-1">{text}</span>
-          </div>
-        </Modal.Content>
-        <Modal.Footer>
-          <div className="gap-x-xsmall flex h-8 w-full justify-end">
-            <Button
-              variant="secondary"
-              className="justify-center"
-              size="small"
-              onClick={handleClose}
-            >
-              {cancelText}
-            </Button>
-            <Button
-              loading={isLoading}
-              size="small"
-              className="justify-center"
-              variant="nuclear"
-              onClick={handleSubmit}
-              disabled={isLoading}
-            >
-              {confirmText}
-            </Button>
-          </div>
-        </Modal.Footer>
-      </Modal.Body>
-    </Modal>
+    <Prompt
+      onCancel={handleClose}
+      onConfirm={handleConfirm}
+      handleClose={handleClose}
+      isLoading={isLoading}
+      confirmProps={{ variant: "nuclear", ...confirmProps }}
+      {...props}
+    />
   )
+}
+
+DeletePrompt.defaultProps = {
+  heading: "Are you sure you want to delete?",
+  text: "",
+  cancelText: "No, cancel",
+  confirmText: "Yes, remove",
+  successText: "Delete successful",
 }
 
 export default DeletePrompt

@@ -1,8 +1,7 @@
 import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
-import { useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
-import Spacer from "../../../components/atoms/spacer"
 import Button from "../../../components/fundamentals/button"
 import ExportIcon from "../../../components/fundamentals/icons/export-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -14,45 +13,61 @@ import AddCollectionModal from "../../../components/templates/collection-modal"
 import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
+import { useUserPermissions } from "../../../hooks/use-permissions"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { usePolling } from "../../../providers/polling-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { useBasePath } from "../../../utils/routePathing"
 import ImportProducts from "../batch-job/import"
+import { BulkUpdateProductsModal } from "../components/bulk-update-modal"
 import NewProduct from "../new"
+import { PollingContext } from "../../../context/polling"
+import EditIcon from "../../../components/fundamentals/icons/edit-icon"
+import { useSelectedVendor } from "../../../context/vendor"
+import ImportEtsyProducts from "../batch-job/etsy-import"
+import ProductImportButton from "../../../components/molecules/product-import-button"
 
-const VIEWS = ["products", "collections"]
+const AdminViews = ["products", "collections"]
+const VendorViews = ["products"]
 
 const Overview = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [view, setView] = useState("products")
+  const isVendorRoute = location.pathname.includes("vendor")
+  const basePath = useBasePath()
+  const permissions = useUserPermissions()
+  const { isStoreView, isPrimary } = useSelectedVendor()
+
+  const searchParams = new URLSearchParams(location.search)
+  const [view, setView] = useState(
+    searchParams.get("view") === "collections" && !isVendorRoute
+      ? "collections"
+      : "products"
+  )
   const {
     state: createProductState,
     close: closeProductCreate,
     open: openProductCreate,
   } = useToggleState()
 
-  const { resetInterval } = usePolling()
+  const { resetInterval } = useContext(PollingContext)
+
   const createBatchJob = useAdminCreateBatchJob()
 
   const notification = useNotification()
 
   const createCollection = useAdminCreateCollection()
 
-  useEffect(() => {
-    if (location.search.includes("?view=collections")) {
-      setView("collections")
-    }
-  }, [location])
-
-  useEffect(() => {
-    location.search = ""
-  }, [view])
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
 
   const CurrentView = () => {
     switch (view) {
       case "products":
-        return <ProductTable />
+        return (
+          <ProductTable
+            selectedIds={selectedIds}
+            updateSelectedIds={(ids) => setSelectedIds(ids)}
+          />
+        )
       default:
         return <CollectionsTable />
     }
@@ -63,14 +78,21 @@ const Overview = () => {
       case "products":
         return (
           <div className="flex space-x-2">
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => openImportModal()}
-            >
-              <UploadIcon size={20} />
-              Import Products
-            </Button>
+            {selectedIds.length > 0 && (
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => openBulkUpdateModal()}
+              >
+                <EditIcon size={20} />
+                Bulk Edit
+              </Button>
+            )}
+            <ProductImportButton
+              openModal={(type) => {
+                setImportModalType(type)
+              }}
+            />
             <Button
               variant="secondary"
               size="small"
@@ -79,44 +101,54 @@ const Overview = () => {
               <ExportIcon size={20} />
               Export Products
             </Button>
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={openProductCreate}
-            >
-              <PlusIcon size={20} />
-              New Product
-            </Button>
+            {isVendorRoute && (
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={openProductCreate}
+              >
+                <PlusIcon size={20} />
+                New Product
+              </Button>
+            )}
           </div>
         )
       default:
         return (
           <div className="flex space-x-2">
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => setShowNewCollection(!showNewCollection)}
-            >
-              <PlusIcon size={20} />
-              New Collection
-            </Button>
+            {permissions.productCollection.create &&
+              (isStoreView || isPrimary) && (
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => setShowNewCollection(!showNewCollection)}
+                >
+                  <PlusIcon size={20} />
+                  New Collection
+                </Button>
+              )}
           </div>
         )
     }
   }
 
   const [showNewCollection, setShowNewCollection] = useState(false)
+
+  const {
+    open: openBulkUpdateModal,
+    close: closeBulkUpdateModal,
+    state: bulkUpdateModalOpen,
+  } = useToggleState(false)
+
   const {
     open: openExportModal,
     close: closeExportModal,
     state: exportModalOpen,
   } = useToggleState(false)
 
-  const {
-    open: openImportModal,
-    close: closeImportModal,
-    state: importModalOpen,
-  } = useToggleState(false)
+  const [importModalType, setImportModalType] = useState<"etsy" | "csv" | null>(
+    null
+  )
 
   const handleCreateCollection = async (data, colMetadata) => {
     const metadata = colMetadata
@@ -133,7 +165,7 @@ const Overview = () => {
       {
         onSuccess: ({ collection }) => {
           notification("Success", "Successfully created collection", "success")
-          navigate(`/a/collections/${collection.id}`)
+          navigate(`${basePath}/collections/${collection.id}`)
           setShowNewCollection(false)
         },
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
@@ -163,14 +195,14 @@ const Overview = () => {
 
   return (
     <>
-      <div className="flex h-full grow flex-col">
-        <div className="flex w-full grow flex-col">
+      <div className="flex flex-col grow h-full">
+        <div className="w-full flex flex-col grow">
           <BodyCard
             forceDropdown={false}
-            customActionable={CurrentAction()}
+            customActionable={<CurrentAction />}
             customHeader={
               <TableViewHeader
-                views={VIEWS}
+                views={permissions.isAdmin ? AdminViews : VendorViews}
                 setActiveView={setView}
                 activeView={view}
               />
@@ -179,10 +211,8 @@ const Overview = () => {
           >
             <CurrentView />
           </BodyCard>
-          <Spacer />
         </div>
       </div>
-
       {showNewCollection && (
         <AddCollectionModal
           onClose={() => setShowNewCollection(!showNewCollection)}
@@ -197,9 +227,21 @@ const Overview = () => {
           loading={createBatchJob.isLoading}
         />
       )}
-      {importModalOpen && (
-        <ImportProducts handleClose={() => closeImportModal()} />
+      {bulkUpdateModalOpen && (
+        <BulkUpdateProductsModal
+          selectedProductIds={selectedIds}
+          close={() => closeBulkUpdateModal()}
+          onSave={() => setSelectedIds([])}
+        />
       )}
+      {importModalType === "etsy" && (
+        <ImportEtsyProducts handleClose={() => setImportModalType(null)} />
+      )}
+
+      {importModalType === "csv" && (
+        <ImportProducts handleClose={() => setImportModalType(null)} />
+      )}
+
       <Fade isVisible={createProductState} isFullScreen={true}>
         <NewProduct onClose={closeProductCreate} />
       </Fade>

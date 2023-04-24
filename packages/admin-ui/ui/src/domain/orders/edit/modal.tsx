@@ -37,8 +37,8 @@ function TotalsSection(props: TotalsSectionProps) {
 
   return (
     <>
-      <div className="bg-grey-20 mb-6 h-px w-full" />
-      <div className="mb-2 flex h-[40px] justify-between">
+      <div className="h-px w-full bg-grey-20 mb-6" />
+      <div className="flex justify-between h-[40px] mb-2">
         <span className="text-gray-500">Amount Paid</span>
         <span className="text-gray-900">
           {formatAmountWithSymbol({
@@ -49,8 +49,8 @@ function TotalsSection(props: TotalsSectionProps) {
         </span>
       </div>
 
-      <div className="mb-2 flex h-[40px] justify-between">
-        <span className="font-semibold text-gray-900">New Total</span>
+      <div className="flex justify-between h-[40px] mb-2">
+        <span className="text-gray-900 font-semibold">New Total</span>
         <span className="text-2xl font-semibold">
           {formatAmountWithSymbol({
             amount: newTotal,
@@ -75,7 +75,7 @@ function TotalsSection(props: TotalsSectionProps) {
         </span>
       </div>
 
-      <div className="bg-grey-20 mt-8 mb-6 h-px w-full" />
+      <div className="h-px w-full bg-grey-20 mt-8 mb-6" />
     </>
   )
 }
@@ -110,7 +110,7 @@ export function AddProductVariant(props: AddProductVariantProps) {
   return (
     <>
       <Modal.Content>
-        <div className="flex min-h-[680px] flex-col justify-between">
+        <div className="min-h-[680px] flex flex-col justify-between">
           <VariantsTable
             regionId={props.regionId}
             customerId={props.customerId}
@@ -121,7 +121,7 @@ export function AddProductVariant(props: AddProductVariantProps) {
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="space-x-xsmall flex w-full justify-end">
+        <div className="flex items-center justify-end w-full gap-2">
           <Button variant="secondary" size="small" onClick={onBack}>
             Back
           </Button>
@@ -160,14 +160,12 @@ function OrderEditModal(props: OrderEditModalProps) {
     refundedTotal,
   } = props
 
-  const filterRef = useRef()
   const notification = useNotification()
   const [note, setNote] = useState<string | undefined>()
   const [showFilter, setShowFilter] = useState(false)
   const [filterTerm, setFilterTerm] = useState<string>("")
 
   const showTotals = currentSubtotal !== orderEdit.subtotal
-  const hasChanges = !!orderEdit.changes.length
 
   const {
     mutateAsync: requestConfirmation,
@@ -205,12 +203,6 @@ function OrderEditModal(props: OrderEditModalProps) {
     close()
   }
 
-  useEffect(() => {
-    if (showFilter) {
-      filterRef.current.focus()
-    }
-  }, [showFilter])
-
   const onAddVariants = async (selectedVariants: ProductVariant[]) => {
     try {
       const promises = selectedVariants.map((v) =>
@@ -225,7 +217,7 @@ function OrderEditModal(props: OrderEditModalProps) {
     }
   }
 
-  const hideFilter = () => {
+  const toggleFilter = () => {
     if (showFilter) {
       setFilterTerm("")
     }
@@ -270,45 +262,36 @@ function OrderEditModal(props: OrderEditModalProps) {
           <h1 className="inter-xlarge-semibold">Edit Order</h1>
         </Modal.Header>
         <Modal.Content>
-          <div className="mb-4 flex items-center justify-between">
-            <span className="text-large font-semibold text-gray-900">
-              Items
-            </span>
-            <div className="flex items-center justify-between">
+          <div className="flex justify-between mb-6">
+            <span className="text-gray-900 font-semibold">Items</span>
+            <div className="flex gap-2 items-center justify-between">
               <Button
                 size="small"
                 variant="ghost"
-                className="border-grey-20 mr-2 h-[32px] flex-shrink-0 border text-gray-900"
+                className="border border-grey-20 text-gray-900 flex-shrink-0"
                 onClick={() =>
                   layeredModalContext.push(addProductVariantScreen)
                 }
               >
                 Add items
               </Button>
-              {!showFilter && (
-                <Button
-                  size="small"
-                  variant="secondary"
-                  className={clsx("h–[32px] h-full w-[32px] flex-shrink-0", {
-                    "focus:bg-grey-20": showFilter,
-                  })}
-                  onClick={() => setShowFilter(true)}
-                >
-                  <SearchIcon size={16} className="text-gray-500" />
-                </Button>
-              )}
               {showFilter && (
                 <InputField
-                  small
-                  deletable
-                  ref={filterRef}
                   value={filterTerm}
-                  onDelete={hideFilter}
                   placeholder="Filter items..."
                   onChange={(e) => setFilterTerm(e.target.value)}
-                  prefix={<SearchIcon size={14} className="text-gray-400" />}
                 />
               )}
+              <Button
+                size="small"
+                variant="secondary"
+                className={clsx("h-full flex-shrink-0", {
+                  "bg-gray-100": showFilter,
+                })}
+                onClick={toggleFilter}
+              >
+                <SearchIcon size={18} className="text-gray-500" />
+              </Button>
             </div>
           </div>
 
@@ -336,30 +319,25 @@ function OrderEditModal(props: OrderEditModalProps) {
               currencyCode={currencyCode}
               amountPaid={paidTotal - refundedTotal}
               newTotal={orderEdit.total}
-              differenceDue={
-                // TODO: more correct would be to have => diff_due = orderEdit_total_of_items_user_is_getting - paid_total + refunded_total
-                orderEdit.total - paidTotal // (orderEdit_total - refunded_total) - (paidTotal - refundedTotal)
-              }
+              differenceDue={orderEdit.total - paidTotal + refundedTotal}
             />
           )}
 
           {/* NOTE */}
-          {hasChanges && (
-            <div className="flex items-center justify-between">
-              <span className="text-gray-500">Note</span>
-              <InputField
-                className="max-w-[455px]"
-                placeholder="Add a note..."
-                onChange={(e) => setNote(e.target.value)}
-                value={note}
-              />
-            </div>
-          )}
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500">Note</span>
+            <InputField
+              className="max-w-[455px]"
+              placeholder="Add a note..."
+              onChange={(e) => setNote(e.target.value)}
+              value={note}
+            />
+          </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full items-center justify-end gap-2">
+          <div className="flex items-center justify-end w-full gap-2">
             <Button
-              variant="secondary"
+              variant="ghost"
               size="small"
               type="button"
               onClick={onCancel}
@@ -370,7 +348,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               variant="primary"
               size="small"
               type="button"
-              disabled={isUpdating || isRequestingConfirmation || !hasChanges}
+              disabled={isUpdating || isRequestingConfirmation}
               loading={isUpdating || isRequestingConfirmation}
               onClick={onSave}
             >
@@ -421,7 +399,7 @@ function OrderEditModalContainer(props: OrderEditModalContainerProps) {
   }, [activeOrderEditId])
 
   const onClose = () => {
-    // setActiveOrderEdit(undefined) -> context will unset active edit after flag toggle
+    setActiveOrderEdit(undefined)
     hideModal()
   }
 

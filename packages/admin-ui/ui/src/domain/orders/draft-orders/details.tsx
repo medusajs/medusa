@@ -1,4 +1,5 @@
 import { Address } from "@medusajs/medusa"
+import { JsonViewer } from "@textea/json-viewer"
 import {
   useAdminDeleteDraftOrder,
   useAdminDraftOrder,
@@ -10,7 +11,6 @@ import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import Avatar from "../../../components/atoms/avatar"
-import BackButton from "../../../components/atoms/back-button"
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
 import Spinner from "../../../components/atoms/spinner"
 import Badge from "../../../components/fundamentals/badge"
@@ -20,7 +20,7 @@ import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-i
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import StatusDot from "../../../components/fundamentals/status-indicator"
-import JSONView from "../../../components/molecules/json-view"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
 import BodyCard from "../../../components/organisms/body-card"
 import ConfirmationPrompt from "../../../components/organisms/confirmation-prompt"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
@@ -32,6 +32,7 @@ import extractCustomerName from "../../../utils/extract-customer-name"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import AddressModal from "../details/address-modal"
 import { DisplayTotal, FormattedAddress } from "../details/templates"
+import { useBasePath } from "../../../utils/routePathing"
 
 type DeletePromptData = {
   resource: string
@@ -41,6 +42,7 @@ type DeletePromptData = {
 
 const DraftOrderDetails = () => {
   const { id } = useParams()
+  const basePath = useBasePath()
 
   const initDeleteState: DeletePromptData = {
     resource: "",
@@ -125,20 +127,20 @@ const DraftOrderDetails = () => {
 
   return (
     <div>
-      <BackButton
-        path="/a/draft-orders"
-        label="Back to Draft Orders"
-        className="mb-xsmall"
+      <Breadcrumb
+        currentPage={"Draft Order Details"}
+        previousBreadcrumb={"Draft Orders"}
+        previousRoute={`${basePath}/draft-orders`}
       />
       {isLoading || !draft_order ? (
-        <BodyCard className="pt-2xlarge flex w-full items-center justify-center">
+        <BodyCard className="w-full pt-2xlarge flex items-center justify-center">
           <Spinner size={"large"} variant={"secondary"} />
         </BodyCard>
       ) : (
         <div className="flex space-x-4">
-          <div className="flex h-full w-full flex-col">
+          <div className="flex flex-col w-full h-full">
             <BodyCard
-              className={"mb-4 min-h-[200px] w-full"}
+              className={"w-full mb-4 min-h-[200px]"}
               title={`Order #${draft_order.display_id}`}
               subtitle={moment(draft_order.created_at).format(
                 "D MMMM YYYY hh:mm a"
@@ -150,7 +152,7 @@ const DraftOrderDetails = () => {
                     variant="secondary"
                     size="small"
                     onClick={() =>
-                      navigate(`/a/orders/${draft_order.order_id}`)
+                      navigate(`/admin/orders/${draft_order.order_id}}`)
                     }
                   >
                     Go to Order
@@ -183,7 +185,7 @@ const DraftOrderDetails = () => {
                     ]
               }
             >
-              <div className="mt-6 flex space-x-6 divide-x">
+              <div className="flex mt-6 space-x-6 divide-x">
                 <div className="flex flex-col">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
                     Email
@@ -211,15 +213,15 @@ const DraftOrderDetails = () => {
                 </div>
               </div>
             </BodyCard>
-            <BodyCard className={"mb-4 h-auto min-h-0 w-full"} title="Summary">
+            <BodyCard className={"w-full mb-4 min-h-0 h-auto"} title="Summary">
               <div className="mt-6">
                 {cart?.items?.map((item, i) => (
                   <div
                     key={i}
-                    className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]"
+                    className="flex justify-between mb-1 h-[64px] py-2 mx-[-5px] px-[5px] hover:bg-grey-5 rounded-rounded"
                   >
-                    <div className="flex justify-center space-x-4">
-                      <div className="rounded-rounded flex h-[48px] w-[36px] items-center justify-center">
+                    <div className="flex space-x-4 justify-center">
+                      <div className="flex h-[48px] w-[36px] rounded-rounded items-center justify-center">
                         {item?.thumbnail ? (
                           <img
                             src={item.thumbnail}
@@ -241,7 +243,7 @@ const DraftOrderDetails = () => {
                       </div>
                     </div>
                     <div className="flex  items-center">
-                      <div className="small:space-x-2 medium:space-x-4 large:space-x-6 mr-3 flex">
+                      <div className="flex small:space-x-2 medium:space-x-4 large:space-x-6 mr-3">
                         <div className="inter-small-regular text-grey-50">
                           {formatAmountWithSymbol({
                             amount: (item?.total ?? 0) / item.quantity,
@@ -276,9 +278,9 @@ const DraftOrderDetails = () => {
                 {cart?.discounts?.map((discount, index) => (
                   <div
                     key={index}
-                    className="mt-4 flex items-center justify-between"
+                    className="flex justify-between mt-4 items-center"
                   >
-                    <div className="inter-small-regular text-grey-90 flex items-center">
+                    <div className="flex inter-small-regular text-grey-90 items-center">
                       Discount:{" "}
                       <Badge className="ml-3" variant="default">
                         {discount.code}
@@ -314,7 +316,7 @@ const DraftOrderDetails = () => {
               </div>
             </BodyCard>
             <BodyCard
-              className={"mb-4 h-auto min-h-0 w-full"}
+              className={"w-full mb-4 min-h-0 h-auto"}
               title="Payment"
               customActionable={
                 draft_order?.status !== "completed" && <PaymentActionables />
@@ -343,7 +345,7 @@ const DraftOrderDetails = () => {
                   totalTitle={"Total to pay"}
                 />
                 {draft_order?.status !== "completed" && (
-                  <div className="text-grey-50 inter-small-regular mt-5 flex w-full items-center">
+                  <div className="text-grey-50 inter-small-regular w-full flex items-center mt-5">
                     <span className="mr-2.5">Payment link:</span>
                     {store?.payment_link_template ? (
                       <CopyToClipboard
@@ -358,7 +360,7 @@ const DraftOrderDetails = () => {
                 )}
               </div>
             </BodyCard>
-            <BodyCard className={"mb-4 h-auto min-h-0 w-full"} title="Shipping">
+            <BodyCard className={"w-full mb-4 min-h-0 h-auto"} title="Shipping">
               <div className="mt-6">
                 {cart?.shipping_methods.map((method) => (
                   <div className="flex flex-col" key={method.id}>
@@ -368,15 +370,19 @@ const DraftOrderDetails = () => {
                     <span className="inter-small-regular text-grey-90 mt-2">
                       {method?.shipping_option.name || ""}
                     </span>
-                    <div className="bg-grey-5 mt-8 flex h-full min-h-[100px] flex-col px-3 py-2">
+                    <div className="flex flex-col min-h-[100px] mt-8 bg-grey-5 px-3 py-2 h-full">
                       <span className="inter-base-semibold">
                         Data{" "}
                         <span className="text-grey-50 inter-base-regular">
                           (1 item)
                         </span>
                       </span>
-                      <div className="mt-4 flex flex-grow items-center">
-                        <JSONView data={method?.data} />
+                      <div className="flex flex-grow items-center mt-4">
+                        <JsonViewer
+                          rootName={"shipping_method"}
+                          value={method?.data}
+                          defaultInspectDepth={0}
+                        />
                       </div>
                     </div>
                   </div>
@@ -384,7 +390,7 @@ const DraftOrderDetails = () => {
               </div>
             </BodyCard>
             <BodyCard
-              className={"mb-4 h-auto min-h-0 w-full"}
+              className={"w-full mb-4 min-h-0 h-auto"}
               title="Customer"
               actionables={[
                 {
@@ -411,17 +417,18 @@ const DraftOrderDetails = () => {
                 {
                   label: "Go to Customer",
                   icon: <DetailsIcon size={"20"} />, // TODO: Change to Contact icon
-                  onClick: () => navigate(`/a/customers/${cart?.customer.id}`),
+                  onClick: () =>
+                    navigate(`/admin/customers/${cart?.customer.id}`),
                 },
               ]}
             >
               <div className="mt-6">
-                <div className="flex w-full items-center space-x-4">
-                  <div className="flex h-[40px] w-[40px] ">
+                <div className="flex w-full space-x-4 items-center">
+                  <div className="flex w-[40px] h-[40px] ">
                     <Avatar
                       user={cart?.customer}
                       font="inter-large-semibold"
-                      color="bg-grey-80"
+                      color="bg-fuschia-40"
                     />
                   </div>
                   <div>
@@ -440,12 +447,12 @@ const DraftOrderDetails = () => {
                     )}
                   </div>
                 </div>
-                <div className="mt-6 flex space-x-6 divide-x">
+                <div className="flex mt-6 space-x-6 divide-x">
                   <div className="flex flex-col">
                     <div className="inter-small-regular text-grey-50 mb-1">
                       Contact
                     </div>
-                    <div className="inter-small-regular flex flex-col">
+                    <div className="flex flex-col inter-small-regular">
                       <span>{cart?.email}</span>
                       <span>{cart?.shipping_address?.phone || ""}</span>
                     </div>
@@ -462,18 +469,22 @@ const DraftOrderDetails = () => {
               </div>
             </BodyCard>
             <BodyCard
-              className={"mb-4 h-auto min-h-0 w-full pt-[15px]"}
+              className={"w-full mb-4 min-h-0 h-auto"}
               title="Raw Draft Order"
             >
-              <JSONView data={draft_order!} />
+              <JsonViewer
+                style={{ marginTop: "15px" }}
+                rootName={"draft_order"}
+                value={draft_order!}
+              />
             </BodyCard>
           </div>
         </div>
       )}
       {addressModal && (
         <AddressModal
-          onClose={() => setAddressModal(null)}
-          onSave={updateOrder.mutate}
+          handleClose={() => setAddressModal(null)}
+          submit={updateOrder.mutate}
           address={addressModal.address}
           type={addressModal.type}
           allowedCountries={region?.countries}

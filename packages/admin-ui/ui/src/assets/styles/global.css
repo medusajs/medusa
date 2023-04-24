@@ -231,7 +231,7 @@
 
 @layer components {
   .badge {
-    @apply w-min py-0.5 px-2 rounded-rounded inter-small-semibold;
+    @apply w-min py-1 px-2.5 rounded-rounded inter-small-semibold whitespace-nowrap;
   }
 
   .badge-disabled {
@@ -239,7 +239,7 @@
   }
 
   .badge-primary {
-    @apply bg-violet-60 bg-opacity-10 text-violet-60;
+    @apply bg-violet-50 bg-opacity-10 text-violet-60;
   }
 
   .badge-danger {
@@ -259,7 +259,15 @@
   }
 
   .badge-default {
-    @apply inter-small-regular bg-grey-10 text-grey-90 whitespace-nowrap;
+    @apply bg-grey-10 text-grey-90;
+  }
+
+  .badge-medium {
+    @apply px-3 py-1.5 rounded-rounded inter-small-semibold;
+  }
+
+  .badge-large {
+    @apply px-base py-xsmall rounded-rounded inter-base-semibold;
   }
 
   .btn {
@@ -271,11 +279,15 @@
   }
 
   .btn-medium {
-    @apply inter-base-semibold px-base py-xsmall;
+    @apply inter-base-semibold px-base py-[7px];
   }
 
   .btn-small {
-    @apply inter-small-semibold px-small py-[6px];
+    @apply inter-small-semibold px-small py-[5px];
+  }
+
+  .btn-xsmall {
+    @apply inter-small-semibold px-xsmall py-[1px];
   }
 
   .btn-primary {
@@ -287,7 +299,7 @@
   }
 
   .btn-danger {
-    @apply bg-grey-0 text-rose-50 border border-grey-20 hover:bg-grey-10 active:bg-grey-20 disabled:bg-grey-0 disabled:text-grey-30;
+    @apply bg-grey-0 text-rose-50 border border-grey-20 hover:bg-grey-5 active:text-violet-60  focus:border-violet-60 disabled:bg-grey-0 disabled:text-grey-30;
   }
 
   .btn-nuclear {
@@ -302,10 +314,13 @@
     @apply btn btn-large btn-primary;
   }
   .btn-primary-medium {
-    @apply btn btn-medium;
+    @apply btn btn-medium btn-primary;
   }
   .btn-primary-small {
-    @apply btn btn-small;
+    @apply btn btn-small btn-primary;
+  }
+  .btn-primary-xsmall {
+    @apply btn btn-xsmall btn-primary;
   }
   .btn-secondary-large {
     @apply btn btn-large btn-seconday;
@@ -316,6 +331,9 @@
   .btn-secondary-small {
     @apply btn btn-small btn-seconday;
   }
+  .btn-secondary-xsmall {
+    @apply btn btn-xsmall btn-seconday;
+  }
   .btn-ghost-large {
     @apply btn btn-large btn-ghost;
   }
@@ -324,6 +342,210 @@
   }
   .btn-ghost-small {
     @apply btn btn-small btn-ghost;
+  }
+  .btn-ghost-xsmall {
+    @apply btn btn-xsmall btn-ghost;
+  }
+}
+
+@layer components {
+  .alert .alert__content a {
+    @apply underline;
+  }
+
+  .alert--primary {
+    @apply bg-violet-5 border-l-8 border-l-violet-20;
+  }
+
+  .alert--primary .alert__icon {
+    @apply text-violet-40;
+  }
+
+  .alert--primary .alert__title {
+    @apply text-violet-80;
+  }
+
+  .alert--primary .alert__content {
+    @apply text-violet-70;
+  }
+
+  .alert--primary .alert__content a {
+    @apply text-violet-80;
+  }
+
+  .alert--primary .alert__content a:hover {
+    @apply text-violet-50;
+  }
+
+  .alert--primary .alert__action,
+  .alert--primary .alert__dismiss {
+    @apply bg-violet-5 text-violet-80;
+  }
+
+  .alert--primary .alert__action:hover,
+  .alert--primary .alert__dismiss:hover {
+    @apply bg-violet-10;
+  }
+
+  .alert--primary .alert__action:focus,
+  .alert--primary .alert__dismiss:focus {
+    @apply ring-violet-40 ring-offset-violet-30;
+  }
+
+  .alert--danger {
+    @apply bg-rose-5 border-l-8 border-l-rose-20;
+  }
+
+  .alert--danger .alert__icon {
+    @apply text-rose-40;
+  }
+
+  .alert--danger .alert__title {
+    @apply text-rose-80;
+  }
+
+  .alert--danger .alert__content {
+    @apply text-rose-70;
+  }
+
+  .alert--danger .alert__content a {
+    @apply text-rose-80;
+  }
+
+  .alert--danger .alert__content a:hover {
+    @apply text-rose-50;
+  }
+
+  .alert--danger .alert__action,
+  .alert--danger .alert__dismiss {
+    @apply bg-rose-5 text-rose-80;
+  }
+
+  .alert--danger .alert__action:hover,
+  .alert--danger .alert__dismiss:hover {
+    @apply bg-rose-10;
+  }
+
+  .alert--danger .alert__action:focus,
+  .alert--danger .alert__dismiss:focus {
+    @apply ring-rose-40 ring-offset-rose-30;
+  }
+
+  .alert--success {
+    @apply bg-teal-5 border-l-8 border-l-teal-20;
+  }
+
+  .alert--success .alert__icon {
+    @apply text-teal-40;
+  }
+
+  .alert--success .alert__title {
+    @apply text-teal-80;
+  }
+
+  .alert--success .alert__content {
+    @apply text-teal-70;
+  }
+
+  .alert--success .alert__content a {
+    @apply text-teal-80;
+  }
+
+  .alert--success .alert__content a:hover {
+    @apply text-teal-60;
+  }
+
+  .alert--success .alert__action,
+  .alert--success .alert__dismiss {
+    @apply bg-teal-5 text-teal-80;
+  }
+
+  .alert--success .alert__action:hover,
+  .alert--success .alert__dismiss:hover {
+    @apply bg-teal-10;
+  }
+
+  .alert--success .alert__action:focus,
+  .alert--success .alert__dismiss:focus {
+    @apply ring-teal-40 ring-offset-teal-30;
+  }
+
+  .alert--warning {
+    @apply bg-yellow-5 border-l-8 border-l-yellow-20;
+  }
+
+  .alert--warning .alert__icon {
+    @apply text-yellow-40;
+  }
+
+  .alert--warning .alert__title {
+    @apply text-yellow-80;
+  }
+
+  .alert--warning .alert__content {
+    @apply text-yellow-70;
+  }
+
+  .alert--warning .alert__content a {
+    @apply text-yellow-80;
+  }
+
+  .alert--warning .alert__content a:hover {
+    @apply text-yellow-60;
+  }
+
+  .alert--warning .alert__action,
+  .alert--warning .alert__dismiss {
+    @apply bg-yellow-5 text-yellow-80;
+  }
+
+  .alert--warning .alert__action:hover,
+  .alert--warning .alert__dismiss:hover {
+    @apply bg-yellow-10;
+  }
+
+  .alert--warning .alert__action:focus,
+  .alert--warning .alert__dismis:focus {
+    @apply ring-yellow-40 ring-offset-yellow-30;
+  }
+
+  .alert--default {
+    @apply bg-grey-5 border-l-8 border-l-grey-20;
+  }
+
+  .alert--default .alert__icon {
+    @apply text-grey-40;
+  }
+
+  .alert--default .alert__title {
+    @apply text-grey-80;
+  }
+
+  .alert--default .alert__content {
+    @apply text-grey-70;
+  }
+
+  .alert--default .alert__content a {
+    @apply text-grey-80;
+  }
+
+  .alert--default .alert__content a:hover {
+    @apply text-grey-50;
+  }
+
+  .alert--default .alert__action,
+  .alert--default .alert__dismiss {
+    @apply bg-grey-5 text-grey-80;
+  }
+
+  .alert--default .alert__action:hover,
+  .alert--default .alert__dismiss:hover {
+    @apply bg-grey-10;
+  }
+
+  .alert--default .alert__action:focus,
+  .alert--default .alert__dismiss:focus {
+    @apply ring-grey-40 ring-offset-grey-30;
   }
 }
 

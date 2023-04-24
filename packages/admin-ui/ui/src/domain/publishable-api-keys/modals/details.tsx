@@ -45,21 +45,25 @@ function DetailsModal(props: DetailsModalProps) {
 
   return (
     <SideModal close={close} isVisible={!!selectedKey}>
-      <div className="flex h-full flex-col justify-between p-6">
+      <div className="flex flex-col justify-between h-[100%] p-6">
         {/* === HEADER === */}
 
         <div className="flex items-center justify-between">
           <h3 className="inter-large-semibold text-xl text-gray-900">
             Edit API key details
           </h3>
-          <Button variant="ghost" onClick={close}>
-            <CrossIcon size={20} className="text-grey-40" />
+          <Button
+            variant="ghost"
+            className="w-8 h-8 p-0 text-grey-50"
+            onClick={close}
+          >
+            <CrossIcon className="w-5 h-5" />
           </Button>
         </div>
         {/* === DIVIDER === */}
 
         <div
-          className="block h-[1px] bg-gray-200"
+          className="h-[1px] bg-gray-200 block"
           style={{ margin: "24px -24px" }}
         />
         {/* === BODY === */}
@@ -77,7 +81,7 @@ function DetailsModal(props: DetailsModalProps) {
         {/* === DIVIDER === */}
 
         <div
-          className="block h-[1px] bg-gray-200"
+          className="h-[1px] bg-gray-200 block"
           style={{ margin: "24px -24px" }}
         />
         {/* === FOOTER === */}

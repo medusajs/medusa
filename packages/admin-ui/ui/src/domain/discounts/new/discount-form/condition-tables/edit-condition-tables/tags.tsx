@@ -1,5 +1,5 @@
 import { useAdminProductTags } from "medusa-react"
-import { useState } from "react"
+import React, { useState } from "react"
 import Spinner from "../../../../../../components/atoms/spinner"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"

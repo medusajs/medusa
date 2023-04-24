@@ -1,137 +1,109 @@
-import { GiftCard } from "@medusajs/medusa"
-import { useAdminUpdateGiftCard } from "medusa-react"
-import { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import GiftCardEndsAtForm, {
-  GiftCardEndsAtFormType,
-} from "../../../components/forms/gift-card/gift-card-ends-at-form"
-import GiftCardRegionForm, {
-  GiftCardRegionFormType,
-} from "../../../components/forms/gift-card/gift-card-region-form"
+import { AdminPostGiftCardsGiftCardReq, Region } from "@medusajs/medusa"
+import React, { useMemo } from "react"
+import { Controller, useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
+import Select from "../../../components/molecules/select"
+import { Option } from "../../../types/shared"
 
 type EditGiftCardModalProps = {
-  onClose: () => void
-  open: boolean
-  giftCard: GiftCard
+  handleClose: () => void
+  handleSave: (update: AdminPostGiftCardsGiftCardReq) => void
+  updating: boolean
+  regions: Region[] | undefined
+  region: Region
 }
 
-type EditGiftCardFormType = {
-  region: GiftCardRegionFormType
-  ends_at: GiftCardEndsAtFormType
+type EditGiftCardModalFormData = {
+  region: Option
 }
 
 const EditGiftCardModal = ({
-  open,
-  onClose,
-  giftCard,
+  handleClose,
+  handleSave,
+  updating,
+  regions,
+  region,
 }: EditGiftCardModalProps) => {
-  const form = useForm<EditGiftCardFormType>({
-    defaultValues: getDefaultValues(giftCard),
-  })
-  const {
-    handleSubmit,
-    reset,
-    formState: { isDirty },
-  } = form
-
-  const { mutate, isLoading } = useAdminUpdateGiftCard(giftCard.id)
-
-  const notification = useNotification()
-
-  const onSubmit = handleSubmit((data) => {
-    mutate(
-      {
-        region_id: data.region.region_id.value,
-        ends_at: data.ends_at.ends_at,
+  const { control, handleSubmit } = useForm<EditGiftCardModalFormData>({
+    defaultValues: {
+      region: {
+        value: region.id,
+        label: region.name,
       },
-      {
-        onSuccess: () => {
-          notification(
-            "Updated Gift card",
-            "Gift card was succesfully updated",
-            "success"
-          )
-
-          onClose()
-        },
-        onError: (err) => {
-          notification(
-            "Failed to update Gift card",
-            getErrorMessage(err),
-            "error"
-          )
-        },
-      }
-    )
+    },
   })
 
-  useEffect(() => {
-    if (open) {
-      reset(getDefaultValues(giftCard))
-    }
-  }, [open, reset, giftCard])
+  const onSubmit = (data: EditGiftCardModalFormData) => {
+    handleSave({ region_id: data.region.value })
+  }
+
+  const regionOptions: Option[] = useMemo(() => {
+    return (
+      regions?.map((r) => ({
+        label: r.name,
+        value: r.id,
+      })) || []
+    )
+  }, [regions])
 
   return (
-    <Modal open={open} handleClose={onClose}>
-      <Modal.Body>
-        <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">Edit Gift Card</h1>
-        </Modal.Header>
-        <form onSubmit={onSubmit}>
+    <Modal handleClose={handleClose} isLargeModal={true}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Modal.Body isLargeModal={true}>
+          <Modal.Header handleClose={handleClose}>
+            <span className="inter-xlarge-semibold">
+              Edit Gift Card Details
+            </span>
+          </Modal.Header>
           <Modal.Content>
-            <div className="gap-y-xlarge flex flex-col">
-              <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
-                <GiftCardRegionForm form={nestedForm(form, "region")} />
-              </div>
-              <GiftCardEndsAtForm form={nestedForm(form, "ends_at")} />
-            </div>
+            {/* TODO: Missing backend support for updating code
+            <InputField
+              label="Code"
+              name="code"
+              value={code}
+              onChange={({ currentTarget }) => setCode(currentTarget.value)}
+              className="mb-4"
+            /> */}
+            <Controller
+              control={control}
+              name="region"
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Select
+                    label="Region"
+                    options={regionOptions}
+                    value={value}
+                    onChange={onChange}
+                  />
+                )
+              }}
+            />
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="small"
-                onClick={onClose}
+                onClick={handleClose}
                 type="button"
               >
                 Cancel
               </Button>
               <Button
+                loading={updating}
+                disabled={updating}
                 variant="primary"
                 size="small"
                 type="submit"
-                disabled={isLoading || !isDirty}
-                loading={isLoading}
               >
-                Save and close
+                Save
               </Button>
             </div>
           </Modal.Footer>
-        </form>
-      </Modal.Body>
+        </Modal.Body>
+      </form>
     </Modal>
   )
 }
-
-const getDefaultValues = (giftCard: GiftCard): EditGiftCardFormType => {
-  return {
-    region: {
-      region_id: {
-        label: giftCard.region.name,
-        value: giftCard.region.id,
-        currency_code: giftCard.region.currency_code,
-      },
-    },
-    ends_at: {
-      ends_at: giftCard.ends_at,
-    },
-  }
-}
-
 export default EditGiftCardModal

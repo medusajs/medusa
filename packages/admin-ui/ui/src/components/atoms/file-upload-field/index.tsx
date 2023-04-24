@@ -9,28 +9,25 @@ type FileUploadFieldProps = {
   className?: string
   multiple?: boolean
   text?: React.ReactElement | string
+  disabled?: boolean
 }
-
-const defaultText = (
-  <span>
-    Drop your images here, or{" "}
-    <span className="text-violet-60">click to browse</span>
-  </span>
-)
 
 const FileUploadField: React.FC<FileUploadFieldProps> = ({
   onFileChosen,
   filetypes,
   errorMessage,
   className,
-  text = defaultText,
+  text,
   placeholder = "",
   multiple = false,
+  disabled,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [fileUploadError, setFileUploadError] = useState(false)
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return
+
     const fileList = e.target.files
 
     if (fileList) {
@@ -39,6 +36,8 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
   }
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    if (disabled) return
+
     setFileUploadError(false)
 
     e.preventDefault()
@@ -64,6 +63,7 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
         }
       }
     }
+
     if (files.length === 1) {
       onFileChosen(files)
     } else {
@@ -71,25 +71,36 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
     }
   }
 
+  const defaultText = (
+    <span>
+      Drop your image{multiple ? "s" : ""} here, or{" "}
+      <span className="text-violet-60">click to browse</span>
+    </span>
+  )
+
   return (
     <div
       onClick={() => inputRef?.current?.click()}
       onDrop={handleFileDrop}
       onDragOver={(e) => e.preventDefault()}
       className={clsx(
-        "inter-base-regular text-grey-50 rounded-rounded border-grey-20 hover:border-violet-60 hover:text-grey-40 flex h-full w-full cursor-pointer select-none flex-col items-center justify-center border-2 border-dashed transition-colors",
+        "flex flex-col select-none text-grey-50 cursor-pointer items-center justify-center w-full h-full rounded-rounded border-2 border-dashed border-grey-20 transition-colors hover:border-violet-60 hover:text-grey-40 focus:!border-violet-60 focus:outline-none focus:shadow-cta py-6 px-6",
         className
       )}
+      role="button"
+      tabIndex={0}
     >
-      <div className="flex flex-col items-center">
-        <p>{text}</p>
-        {placeholder}
+      <div className="text-center">
+        <p>{text || defaultText}</p>
+        <div>{placeholder}</div>
       </div>
+
       {fileUploadError && (
         <span className="text-rose-60">
           {errorMessage || "Please upload an image file"}
         </span>
       )}
+
       <input
         ref={inputRef}
         accept={filetypes.join(", ")}
@@ -97,6 +108,7 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
         type="file"
         onChange={handleFileUpload}
         className="hidden"
+        disabled={disabled}
       />
     </div>
   )

@@ -1,3 +1,5 @@
+// NOTE: This doesn't appear to be used anywhere in the codebase.
+
 import React, { ReactNode } from "react"
 import type { Toast } from "react-hot-toast"
 import { toast as globalToast } from "react-hot-toast"
@@ -54,21 +56,21 @@ const SaveNotification: React.FC<SaveNotificationProps> = ({
   }
 
   return (
-    <ToasterContainer visible={toast.visible} className="pl-base w-[448px] p-0">
+    <ToasterContainer visible={toast.visible} className="p-0 pl-base w-[448px]">
       <div className="py-base">{getIcon(icon)}</div>
-      <div className="ml-small mr-base gap-y-2xsmall py-base flex flex-grow flex-col">
+      <div className="flex flex-col ml-small mr-base gap-y-2xsmall flex-grow py-base">
         <span className="inter-small-semibold">{title}</span>
         <span className="inter-small-regular text-grey-50">{message}</span>
       </div>
-      <div className="inter-small-semibold border-grey-20 flex h-full flex-col border-l">
+      <div className="flex flex-col inter-small-semibold border-l border-grey-20 h-full">
         <button
           onClick={handleSave}
-          className="inter-small-semibold border-grey-20 px-base text-violet-60 flex h-1/2 items-center justify-center border-b"
+          className="inter-small-semibold flex items-center justify-center h-1/2 border-b border-grey-20 px-base text-violet-60"
         >
           Publish
         </button>
         <button
-          className="inter-small-semibold px-base flex h-1/2 items-center justify-center"
+          className="inter-small-semibold flex items-center justify-center h-1/2 px-base"
           onClick={onDismiss}
         >
           Discard

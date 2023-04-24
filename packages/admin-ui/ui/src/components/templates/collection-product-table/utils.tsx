@@ -1,3 +1,4 @@
+import React from "react"
 import StatusIndicator from "../../fundamentals/status-indicator"
 
 export type SimpleProductType = {

@@ -1,21 +1,12 @@
-import {
-  ClaimOrder,
-  Order,
-  OrderEdit,
-  Refund,
-  Return,
-  Swap,
-} from "@medusajs/medusa"
+import { OrderEdit, Return, Swap } from "@medusajs/medusa"
 import {
   useAdminNotes,
   useAdminNotifications,
   useAdminOrder,
   useAdminOrderEdits,
 } from "medusa-react"
-import { useMemo } from "react"
-import useOrdersExpandParam from "../domain/orders/details/utils/use-admin-expand-paramter"
-import { useFeatureFlag } from "../providers/feature-flag-provider"
-import useStockLocations from "./use-stock-locations"
+import { useContext, useMemo } from "react"
+import { FeatureFlagContext } from "../context/feature-flag"
 
 export interface TimelineEvent {
   id: string
@@ -93,12 +84,10 @@ interface FulfillmentEvent extends TimelineEvent {
 
 export interface ItemsFulfilledEvent extends FulfillmentEvent {
   items: OrderItem[]
-  locationName?: string
 }
 
 export interface ItemsShippedEvent extends FulfillmentEvent {
   items: OrderItem[]
-  locationName?: string
 }
 
 export interface RefundEvent extends TimelineEvent {
@@ -106,7 +95,6 @@ export interface RefundEvent extends TimelineEvent {
   reason: string
   currencyCode: string
   note?: string
-  refund: Refund
 }
 
 enum ReturnStatus {
@@ -121,7 +109,6 @@ export interface ReturnEvent extends TimelineEvent {
   status: ReturnStatus
   currentStatus?: ReturnStatus
   raw: Return
-  order: Order
   refunded?: boolean
 }
 
@@ -142,16 +129,15 @@ export interface ExchangeEvent extends TimelineEvent, CancelableEvent {
 }
 
 export interface ClaimEvent extends TimelineEvent, CancelableEvent {
-  returnStatus: ReturnStatus
   fulfillmentStatus?: string
-  refundStatus: string
-  refundAmount: number
+  refundStatus?: string
+  refundAmount?: number
   currencyCode: string
   claimItems: OrderItem[]
   newItems: OrderItem[]
   claimType: string
-  claim: ClaimOrder
-  order: Order
+  claim: any
+  order: any
 }
 
 export interface NotificationEvent extends TimelineEvent {
@@ -160,15 +146,11 @@ export interface NotificationEvent extends TimelineEvent {
 }
 
 export const useBuildTimeline = (orderId: string) => {
-  const { orderRelations } = useOrdersExpandParam()
-
-  const { order, refetch } = useAdminOrder(orderId, {
-    expand: orderRelations,
-  })
+  const { order, refetch } = useAdminOrder(orderId, {})
 
   const { order_edits: edits } = useAdminOrderEdits({ order_id: orderId })
 
-  const { isFeatureEnabled } = useFeatureFlag()
+  const { isFeatureEnabled } = useContext(FeatureFlagContext)
 
   const { notes } = useAdminNotes({
     resource_id: orderId,
@@ -177,8 +159,6 @@ export const useBuildTimeline = (orderId: string) => {
   })
 
   const { notifications } = useAdminNotifications({ resource_id: orderId })
-
-  const { getLocationNameById } = useStockLocations()
 
   const events: TimelineEvent[] | undefined = useMemo(() => {
     if (!order) {
@@ -314,7 +294,6 @@ export const useBuildTimeline = (orderId: string) => {
         reason: event.reason,
         time: event.created_at,
         type: "refund",
-        refund: event,
       } as RefundEvent)
     }
 
@@ -323,10 +302,12 @@ export const useBuildTimeline = (orderId: string) => {
         id: event.id,
         time: event.created_at,
         type: "fulfilled",
-        items: event.items.map((item) => getFulfilmentItem(allItems, item)),
+        items: event.items.map((item) => ({
+          ...getLineItem(allItems, item.item_id),
+          quantity: item.quantity,
+        })),
         noNotification: event.no_notification,
         orderId: order.id,
-        locationName: getLocationNameById(event.location_id),
       } as ItemsFulfilledEvent)
 
       if (event.shipped_at) {
@@ -334,10 +315,12 @@ export const useBuildTimeline = (orderId: string) => {
           id: event.id,
           time: event.shipped_at,
           type: "shipped",
-          items: event.items.map((item) => getFulfilmentItem(allItems, item)),
+          items: event.items.map((item) => ({
+            ...getLineItem(allItems, item.item_id),
+            quantity: item.quantity,
+          })),
           noNotification: event.no_notification,
           orderId: order.id,
-          locationName: getLocationNameById(event.location_id),
         } as ItemsShippedEvent)
       }
     }
@@ -345,17 +328,13 @@ export const useBuildTimeline = (orderId: string) => {
     for (const event of order.returns) {
       events.push({
         id: event.id,
-        items: event.items
-          .map((i) => getReturnItems(allItems, i))
-          // After order edit is confirmed, line item that was returned can be deleted
-          .filter((i) => !!i),
+        items: event.items.map((i) => getReturnItems(allItems, i)),
         status: event.status,
         currentStatus: event.status,
         time: event.updated_at,
         type: "return",
         noNotification: event.no_notification,
         orderId: order.id,
-        order: order,
         raw: event as unknown as Return,
         refunded: getWasRefundClaim(event.claim_order_id, order),
       } as ReturnEvent)
@@ -363,17 +342,12 @@ export const useBuildTimeline = (orderId: string) => {
       if (event.status !== "requested") {
         events.push({
           id: event.id,
-          items: event.items
-            .map((i) => getReturnItems(allItems, i))
-            // After order edit is confirmed, line item that was returned can be deleted
-            .filter((i) => !!i),
+          items: event.items.map((i) => getReturnItems(allItems, i)),
           status: "requested",
           time: event.created_at,
           type: "return",
-          raw: event as unknown as Return,
           currentStatus: event.status,
           noNotification: event.no_notification,
-          order: order,
           orderId: order.id,
         } as ReturnEvent)
       }
@@ -442,7 +416,6 @@ export const useBuildTimeline = (orderId: string) => {
             },
           })),
           fulfillmentStatus: claim.fulfillment_status,
-          returnStatus: claim.return_order?.status,
           refundStatus: claim.payment_status,
           refundAmount: claim.refund_amount,
           currencyCode: order.currency_code,
@@ -604,19 +577,4 @@ function getWasRefundClaim(claimId, order) {
   }
 
   return claim.type === "refund"
-}
-
-function getFulfilmentItem(allItems, item) {
-  const line = allItems.find((line) => line.id === item.item_id)
-
-  if (!line) {
-    return
-  }
-
-  return {
-    title: line.title,
-    quantity: item.quantity,
-    thumbnail: line.thumbnail,
-    variant: { title: line?.variant?.title || "-" },
-  }
 }

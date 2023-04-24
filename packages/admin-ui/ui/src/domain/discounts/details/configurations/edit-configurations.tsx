@@ -1,55 +1,58 @@
 import { Discount } from "@medusajs/medusa"
 import { useAdminUpdateDiscount } from "medusa-react"
 import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import DiscountConfigurationForm, {
-  DiscountConfigurationFormType,
-} from "../../../../components/forms/discount/discount-configuration-form"
+import { Controller, useForm } from "react-hook-form"
+import DatePicker from "../../../../components/atoms/date-picker/date-picker"
+import TimePicker from "../../../../components/atoms/date-picker/time-picker"
 import Button from "../../../../components/fundamentals/button"
+import AvailabilityDuration from "../../../../components/molecules/availability-duration"
+import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
+import SwitchableItem from "../../../../components/molecules/switchable-item"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
-import { nestedForm } from "../../../../utils/nested-form"
 
 type EditConfigurationsProps = {
   discount: Discount
   onClose: () => void
-  open: boolean
 }
 
 type ConfigurationsForm = {
-  config: DiscountConfigurationFormType
+  starts_at: Date | null
+  ends_at: Date | null
+  usage_limit: number | null
+  valid_duration: string | null
+  customer_usage_limit: number | null
 }
 
 const EditConfigurations: React.FC<EditConfigurationsProps> = ({
   discount,
   onClose,
-  open,
 }) => {
   const { mutate, isLoading } = useAdminUpdateDiscount(discount.id)
   const notification = useNotification()
 
-  const form = useForm<ConfigurationsForm>({
-    defaultValues: getDefaultValues(discount),
+  const { control, handleSubmit, reset } = useForm<ConfigurationsForm>({
+    defaultValues: mapConfigurations(discount),
   })
 
-  const { handleSubmit, reset } = form
-
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = (data: ConfigurationsForm) => {
     mutate(
       {
-        starts_at: data.config.starts_at ?? new Date(),
-        ends_at: data.config.ends_at,
+        starts_at: data.starts_at ?? new Date(),
+        ends_at: data.ends_at,
         usage_limit:
-          data.config.usage_limit && data.config.usage_limit > 0
-            ? data.config.usage_limit
+          data.usage_limit && data.usage_limit > 0 ? data.usage_limit : null,
+        customer_usage_limit:
+          data.customer_usage_limit && data.customer_usage_limit > 0
+            ? data.customer_usage_limit
             : null,
-        valid_duration: data.config.valid_duration,
+        valid_duration: data.valid_duration,
       },
       {
         onSuccess: ({ discount }) => {
           notification("Success", "Discount updated successfully", "success")
-          reset(getDefaultValues(discount))
+          reset(mapConfigurations(discount))
           onClose()
         },
         onError: (error) => {
@@ -57,30 +60,188 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
         },
       }
     )
-  })
+  }
 
   useEffect(() => {
-    if (open) {
-      reset(getDefaultValues(discount))
-    }
-  }, [discount, reset, open])
+    reset(mapConfigurations(discount))
+  }, [discount])
 
   return (
-    <Modal open={open} handleClose={onClose} isLargeModal>
+    <Modal handleClose={onClose} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
           <h1 className="inter-xlarge-semibold">Edit configurations</h1>
         </Modal.Header>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Modal.Content>
-            <DiscountConfigurationForm form={nestedForm(form, "config")} />
+            <div className="flex flex-col gap-y-xlarge">
+              <Controller
+                name="starts_at"
+                defaultValue={discount.starts_at}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <SwitchableItem
+                      open={!!value}
+                      onSwitch={() => {
+                        if (value) {
+                          onChange(null)
+                        } else {
+                          onChange(new Date(discount.starts_at))
+                        }
+                      }}
+                      title="Discount has a start date?"
+                      description="Schedule the discount to activate in the future."
+                    >
+                      <div className="flex gap-x-xsmall items-center">
+                        <DatePicker
+                          date={value!}
+                          label="Start date"
+                          onSubmitDate={onChange}
+                        />
+                        <TimePicker
+                          label="Start time"
+                          date={value!}
+                          onSubmitDate={onChange}
+                        />
+                      </div>
+                    </SwitchableItem>
+                  )
+                }}
+              />
+              <Controller
+                name="ends_at"
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <SwitchableItem
+                      open={!!value}
+                      onSwitch={() => {
+                        if (value) {
+                          onChange(null)
+                        } else {
+                          onChange(
+                            new Date(
+                              new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+                            )
+                          )
+                        }
+                      }}
+                      title="Discount has an expiry date?"
+                      description="Schedule the discount to deactivate in the future."
+                    >
+                      <div className="flex gap-x-xsmall items-center">
+                        <DatePicker
+                          date={value!}
+                          label="Expiry date"
+                          onSubmitDate={onChange}
+                        />
+                        <TimePicker
+                          label="Expiry time"
+                          date={value!}
+                          onSubmitDate={onChange}
+                        />
+                      </div>
+                    </SwitchableItem>
+                  )
+                }}
+              />
+              <Controller
+                name="usage_limit"
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <SwitchableItem
+                      open={!!value}
+                      onSwitch={() => {
+                        if (value) {
+                          onChange(null)
+                        } else {
+                          onChange(10)
+                        }
+                      }}
+                      title="Limit the number of redemtions?"
+                      description="Limit applies across all customers, not per customer."
+                    >
+                      <InputField
+                        label="Number of redemptions"
+                        type="number"
+                        placeholder="5"
+                        min={1}
+                        defaultValue={value ?? undefined}
+                        onChange={(value) =>
+                          onChange(value.target.valueAsNumber)
+                        }
+                      />
+                    </SwitchableItem>
+                  )
+                }}
+              />
+              <Controller
+                name="customer_usage_limit"
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <SwitchableItem
+                      open={!!value}
+                      onSwitch={() => {
+                        if (value) {
+                          onChange(null)
+                        } else {
+                          onChange(10)
+                        }
+                      }}
+                      title="Limit the number of redemtions per customer?"
+                      description="Limit applies per customer."
+                    >
+                      <InputField
+                        label="Number of redemptions"
+                        type="number"
+                        placeholder="1"
+                        min={1}
+                        defaultValue={value ?? undefined}
+                        onChange={(value) =>
+                          onChange(value.target.valueAsNumber)
+                        }
+                      />
+                    </SwitchableItem>
+                  )
+                }}
+              />
+              {discount.is_dynamic && (
+                <Controller
+                  name="valid_duration"
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <SwitchableItem
+                        open={!!value}
+                        onSwitch={() => {
+                          if (value) {
+                            onChange(null)
+                          } else {
+                            onChange("P0Y0M0DT00H00M")
+                          }
+                        }}
+                        title="Availability duration?"
+                        description="Set the duration of the discount."
+                      >
+                        <AvailabilityDuration
+                          value={value ?? undefined}
+                          onChange={onChange}
+                        />
+                      </SwitchableItem>
+                    )
+                  }}
+                />
+              )}
+            </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
                 variant="ghost"
                 size="small"
-                className="min-w-[128px]"
                 type="button"
                 onClick={onClose}
               >
@@ -89,7 +250,6 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
               <Button
                 variant="primary"
                 size="small"
-                className="min-w-[128px]"
                 type="submit"
                 loading={isLoading}
                 disabled={isLoading}
@@ -104,14 +264,13 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
   )
 }
 
-const getDefaultValues = (discount: Discount): ConfigurationsForm => {
+const mapConfigurations = (discount: Discount): ConfigurationsForm => {
   return {
-    config: {
-      starts_at: new Date(discount.starts_at),
-      ends_at: discount.ends_at ? new Date(discount.ends_at) : null,
-      usage_limit: discount.usage_limit,
-      valid_duration: discount.valid_duration,
-    },
+    starts_at: new Date(discount.starts_at),
+    ends_at: discount.ends_at ? new Date(discount.ends_at) : null,
+    usage_limit: discount.usage_limit,
+    customer_usage_limit: discount.customer_usage_limit,
+    valid_duration: discount.valid_duration,
   }
 }
 

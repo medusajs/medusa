@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
-import Spacer from "../../../components/atoms/spacer"
 
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
@@ -8,6 +7,7 @@ import TableViewHeader from "../../../components/organisms/custom-table-header"
 import DraftOrderTable from "../../../components/templates/draft-order-table"
 import NewOrderFormProvider from "../new/form"
 import NewOrder from "../new/new-order"
+import { useBasePath } from "../../../utils/routePathing"
 import DraftOrderDetails from "./details"
 
 const VIEWS = ["orders", "drafts"]
@@ -29,15 +29,15 @@ const DraftOrderIndex = () => {
   }, [view])
 
   return (
-    <div className="flex h-full grow flex-col">
-      <div className="flex w-full grow flex-col">
+    <div className="flex flex-col grow h-full">
+      <div className="w-full flex flex-col grow">
         <BodyCard
           customHeader={
             <TableViewHeader
               views={VIEWS}
               setActiveView={(v) => {
                 if (v === "orders") {
-                  navigate(`/a/orders`)
+                  navigate(`${basePath}/orders`)
                 }
               }}
               activeView={view}
@@ -48,7 +48,6 @@ const DraftOrderIndex = () => {
         >
           <DraftOrderTable />
         </BodyCard>
-        <Spacer />
       </div>
       {showNewOrder && (
         <NewOrderFormProvider>

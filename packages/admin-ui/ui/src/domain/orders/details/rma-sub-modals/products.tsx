@@ -66,11 +66,11 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+              <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
                 {original.product.thumbnail ? (
                   <img
                     src={original.product.thumbnail}
-                    className="rounded-soft h-full object-cover"
+                    className="h-full object-cover rounded-soft"
                   />
                 ) : (
                   <ImagePlaceholder />
@@ -231,8 +231,8 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             immediateSearchFocus
             enableSearch
             searchPlaceholder="Search Products.."
-            searchValue={query}
             handleSearch={handleSearch}
+            searchValue={query}
             {...getTableProps()}
           >
             <Table.Body {...getTableBodyProps()}>
@@ -266,21 +266,11 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         </TableContainer>
       </Modal.Content>
       <Modal.Footer>
-        <div className="gap-x-xsmall flex w-full justify-end">
-          <Button
-            variant="ghost"
-            size="small"
-            className="w-[112px]"
-            onClick={() => pop()}
-          >
+        <div className="flex items-center justify-end w-full gap-2">
+          <Button variant="ghost" size="small" onClick={() => pop()}>
             Back
           </Button>
-          <Button
-            variant="primary"
-            className="w-[112px]"
-            size="small"
-            onClick={handleSubmit}
-          >
+          <Button variant="primary" size="small" onClick={handleSubmit}>
             Add
           </Button>
         </div>

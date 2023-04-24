@@ -3,6 +3,7 @@ import {
   useAdminProducts,
   useAdminStore,
 } from "medusa-react"
+import React from "react"
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import FileUploadField from "../../components/atoms/file-upload-field"
@@ -123,7 +124,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         onSuccess: () => {
           notification("Success", "Successfully created Gift Card", "success")
           refetch()
-          navigate("/a/gift-cards/manage")
+          navigate("/admin/gift-cards/manage")
         },
         onError: (err) => {
           notification("Error", getErrorMessage(err), "error")
@@ -134,7 +135,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
 
   return (
     <Modal handleClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit, (err) => console.log(err))}>
+      <form onSubmit={handleSubmit(onSubmit, (err) => console.error(err))}>
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <div>
@@ -145,7 +146,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             <div className="mb-base">
               <h3 className="inter-base-semibold">Gift Card Details</h3>
             </div>
-            <div className="gap-y-base flex flex-col">
+            <div className="flex flex-col gap-y-base">
               <InputField
                 label={"Name"}
                 required
@@ -160,13 +161,13 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
             <div className="mt-xlarge">
               <h3 className="inter-base-semibold">Thumbnail</h3>
-              <div className="mt-base h-[80px]">
+              <div className="h-[80px] mt-base">
                 {thumbnail ? (
                   <div className="flex items-center gap-x-6">
                     <img
                       src={thumbnail.url}
                       alt=""
-                      className="rounded-base h-20 w-20 object-cover object-center"
+                      className="w-20 h-20 rounded-base object-cover object-center"
                     />
                     <div className="flex flex-col gap-y-1">
                       <span className="inter-small-regular">
@@ -174,7 +175,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                       </span>
                       <div>
                         <button
-                          className="inter-small-semibold text-rose-50"
+                          className="text-rose-50 inter-small-semibold"
                           type="button"
                           onClick={() => setValue("thumbnail", null)}
                         >
@@ -201,12 +202,12 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
               <h3 className="inter-base-semibold mb-base">
                 Denominations<span className="text-rose-50">*</span>
               </h3>
-              <div className="gap-y-xsmall flex flex-col">
+              <div className="flex flex-col gap-y-xsmall">
                 {fields.map((denomination, index) => {
                   return (
                     <div
                       key={denomination.id}
-                      className="gap-x-base last:mb-large flex items-end"
+                      className="flex items-end gap-x-base last:mb-large"
                     >
                       <CurrencyInput.Root
                         currentCurrency={store?.default_currency_code}
@@ -235,7 +236,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                       <Button
                         variant="ghost"
                         size="large"
-                        className="text-grey-40 h-10 w-10"
+                        className="w-10 h-10 text-grey-40"
                         type="button"
                         onClick={() => remove(index)}
                       >
@@ -262,12 +263,11 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
                 type="submit"
                 variant="ghost"
                 size="small"
-                className="w-eventButton"
                 onClick={onClose}
               >
                 Cancel
@@ -276,7 +276,6 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 type="submit"
                 variant="primary"
                 size="small"
-                className="w-eventButton"
                 loading={isLoading}
                 disabled={isLoading}
               >

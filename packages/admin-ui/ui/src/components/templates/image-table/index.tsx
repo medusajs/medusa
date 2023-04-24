@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import { Controller } from "react-hook-form"
 import { Column, useTable } from "react-table"
 import { FormImage } from "../../../types/shared"
@@ -38,7 +38,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
           return (
             <div className="py-base ml-large">
               <img
-                className="h-[80px] w-[80px] rounded object-cover"
+                className="h-[80px] w-[80px] object-cover rounded"
                 src={value}
               />
             </div>
@@ -71,7 +71,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
       },
       {
         Header: () => (
-          <div className="flex items-center justify-center gap-x-[6px]">
+          <div className="flex gap-x-[6px] items-center justify-center">
             <span>Thumbnail</span>
             <IconTooltip content="Select which image you want to use as the thumbnail for this product" />
           </div>
@@ -97,7 +97,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
               onClick={() => onDelete(row.index)}
               variant="ghost"
               size="small"
-              className="text-grey-40 mx-6 cursor-pointer p-1"
+              className="p-1 text-grey-40 cursor-pointer mx-6"
               type="button"
             >
               <TrashIcon size={20} />
@@ -108,14 +108,19 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
     ]
   }, [])
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data,
-      defaultColumn: {
-        width: "auto",
-      },
-    })
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data,
+    defaultColumn: {
+      width: "auto",
+    },
+  })
 
   return (
     <Table {...getTableProps()}>

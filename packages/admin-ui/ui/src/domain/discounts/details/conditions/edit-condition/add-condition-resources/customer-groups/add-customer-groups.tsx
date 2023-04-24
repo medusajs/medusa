@@ -1,5 +1,5 @@
 import { useAdminCustomerGroups } from "medusa-react"
-import { useContext, useState } from "react"
+import React, { useContext, useState } from "react"
 import Modal from "../../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
@@ -53,8 +53,8 @@ const AddCustomerGroupsConditionsScreen = () => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="space-x-xsmall flex w-full justify-end">
-          <Button variant="secondary" size="small" onClick={pop}>
+        <div className="flex items-center justify-end w-full gap-2">
+          <Button variant="ghost" size="small" onClick={pop}>
             Cancel
           </Button>
           <Button

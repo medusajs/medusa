@@ -1,27 +1,32 @@
 import clsx from "clsx"
-import { useCallback, useContext, useEffect, useMemo } from "react"
-import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
+import { useCallback, useEffect, useMemo } from "react"
+
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  UseFormReturn,
+  useWatch,
+} from "react-hook-form"
 import { v4 as uuidv4 } from "uuid"
-import { CustomsFormType } from "../../../../components/forms/product/customs-form"
-import { DimensionsFormType } from "../../../../components/forms/product/dimensions-form"
-import CreateFlowVariantForm, {
-  CreateFlowVariantFormType
-} from "../../../../components/forms/product/variant-form/create-flow-variant-form"
-import { VariantOptionType } from "../../../../components/forms/product/variant-form/variant-select-options-form"
-import useCheckOptions from "../../../../components/forms/product/variant-form/variant-select-options-form/hooks"
+import { NewProductForm } from ".."
 import Button from "../../../../components/fundamentals/button"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
-import LayeredModal, {
-  LayeredModalContext
-} from "../../../../components/molecules/modal/layered-modal"
 import TagInput from "../../../../components/molecules/tag-input"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import useToggleState from "../../../../hooks/use-toggle-state"
 import { NestedForm } from "../../../../utils/nested-form"
+import { CustomsFormType } from "../../components/customs-form"
+import { DimensionsFormType } from "../../components/dimensions-form"
+import CreateFlowVariantForm, {
+  CreateFlowVariantFormType,
+} from "../../components/variant-form/create-flow-variant-form"
+import { VariantOptionType } from "../../components/variant-form/variant-select-options-form"
+import useCheckOptions from "../../components/variant-form/variant-select-options-form/hooks"
 import NewVariant from "./new-variant"
 
 type ProductOptionType = {
@@ -36,17 +41,18 @@ export type AddVariantsFormType = {
 }
 
 type Props = {
+  parentForm: UseFormReturn<NewProductForm>
   form: NestedForm<AddVariantsFormType>
   productCustoms: CustomsFormType
   productDimensions: DimensionsFormType
 }
 
 const AddVariantsForm = ({
+  parentForm,
   form,
   productCustoms,
   productDimensions,
 }: Props) => {
-  const layeredModalContext = useContext(LayeredModalContext)
   const { control, path, register } = form
 
   const { checkForDuplicate, getOptions } = useCheckOptions(form)
@@ -191,11 +197,38 @@ const AddVariantsForm = ({
     return true
   }
 
-  const enableVariants = useMemo(() => {
-    return watchedOptions?.length > 0
+  const enableVariants =
+    watchedOptions.length > 0
       ? watchedOptions.some((wo) => wo.values.length > 0)
       : false
-  }, [watchedOptions])
+
+  const variantOptionsList = useMemo(
+    () =>
+      watchedOptions.reduce(
+        (acc, option) => {
+          const newAcc: VariantOptionType[][] = []
+          option.values.forEach((value) => {
+            acc.forEach((a: VariantOptionType[]) => {
+              newAcc.push([
+                ...a.map((item) => ({
+                  title: item.title,
+                  option_id: item.option_id,
+                  option: item.option,
+                })),
+                {
+                  title: option.title,
+                  option_id: option.id,
+                  option: { value, option_id: option.id, label: value },
+                },
+              ])
+            })
+          })
+          return newAcc
+        },
+        [[]] as VariantOptionType[][]
+      ),
+    [watchedOptions]
+  )
 
   const appendNewOption = () => {
     appendOption({
@@ -258,10 +291,43 @@ const AddVariantsForm = ({
     updateOption(index, { ...option, values: [...option.values, value] })
   }
 
+  const generateVariants = () => {
+    const parentValues = parentForm.getValues()
+
+    variantOptionsList.forEach((variantOptions) => {
+      const toCheck = {
+        id: uuidv4(),
+        options: variantOptions.map((da) => da.option).filter((o) => !!o),
+      }
+      const exists = checkForDuplicate(toCheck)
+
+      if (exists) {
+        newVariantForm.setError("options", {
+          type: "deps",
+          message: "A variant with these options already exists.",
+        })
+        return
+      }
+
+      appendVariant({
+        ...createEmptyVariant(watchedOptions),
+        prices: { prices: parentValues.general.prices },
+        options: variantOptions,
+        general: {
+          ...parentValues.general,
+          title: `${variantOptions.reduce(
+            (acc, curr) => acc + ` ${curr.option?.label || ""}`,
+            ""
+          )} ${parentValues.general.title}`.trim(),
+        },
+      })
+    })
+  }
+
   return (
     <>
       <div>
-        <div className="gap-x-2xsmall flex items-center">
+        <div className="flex items-center gap-x-2xsmall">
           <h3 className="inter-base-semibold">Product options</h3>
           <IconTooltip
             type="info"
@@ -271,16 +337,16 @@ const AddVariantsForm = ({
         <div>
           {options.length > 0 && (
             <div className="mt-small">
-              <div className="inter-small-semibold mb-small gap-x-xsmall text-grey-50 grid grid-cols-[230px_1fr_40px]">
+              <div className="grid grid-cols-[230px_1fr_40px] gap-x-xsmall inter-small-semibold text-grey-50 mb-small">
                 <span>Option title</span>
                 <span>Variations (comma separated)</span>
               </div>
-              <div className="gap-y-xsmall grid grid-cols-1">
+              <div className="grid grid-cols-1 gap-y-xsmall">
                 {options.map((field, index) => {
                   return (
                     <div
                       key={field.fieldId}
-                      className="gap-x-xsmall grid grid-cols-[230px_1fr_40px]"
+                      className="grid grid-cols-[230px_1fr_40px] gap-x-xsmall"
                     >
                       <InputField
                         placeholder="Color..."
@@ -312,10 +378,10 @@ const AddVariantsForm = ({
                         variant="secondary"
                         size="small"
                         type="button"
-                        className="h-10"
+                        className="w-10 h-10 p-0 text-grey-50"
                         onClick={() => onDeleteProductOption(index)}
                       >
-                        <TrashIcon size={20} className="text-grey-40" />
+                        <TrashIcon className="w-5 h-5" />
                       </Button>
                     </div>
                   )
@@ -326,7 +392,7 @@ const AddVariantsForm = ({
           <Button
             variant="secondary"
             size="small"
-            className="mt-base h-10 w-full"
+            className="h-10 w-full mt-base"
             type="button"
             onClick={appendNewOption}
           >
@@ -334,7 +400,7 @@ const AddVariantsForm = ({
             <span>Add an option</span>
           </Button>
           <div className="mt-xlarge">
-            <div className="gap-x-2xsmall flex items-center">
+            <div className="flex items-center gap-x-2xsmall">
               <h3
                 className={clsx("inter-base-semibold", {
                   "opacity-50": !options.length,
@@ -345,18 +411,36 @@ const AddVariantsForm = ({
                   ({variants?.length || 0})
                 </span>
               </h3>
+
               {!enableVariants && (
                 <IconTooltip
                   type="info"
                   content="You must add at least one product option before you can begin adding product variants."
                 />
               )}
+
+              <div className="flex-auto"></div>
+
+              {options.length > 0 &&
+                variantOptionsList.length !== variants?.length && (
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    type="button"
+                    onClick={generateVariants}
+                  >
+                    {variants?.length > 0
+                      ? `Generate Variants from Unused Options`
+                      : `Generate Variants from Options`}
+                  </Button>
+                )}
             </div>
+
             {variants?.length > 0 && (
               <div className="mt-small">
-                <div className="inter-small-semibold pr-base text-grey-50 grid grid-cols-[1fr_90px_100px_48px]">
+                <div className="grid grid-cols-[1fr_90px_100px_48px] inter-small-semibold text-grey-50 pr-base">
                   <p>Variant</p>
-                  <div className="mr-xlarge flex justify-end">
+                  <div className="flex justify-end mr-xlarge">
                     <p>Inventory</p>
                   </div>
                 </div>
@@ -384,7 +468,7 @@ const AddVariantsForm = ({
             <Button
               variant="secondary"
               size="small"
-              className="mt-base h-10 w-full"
+              className="h-10 w-full mt-base"
               type="button"
               disabled={!enableVariants}
               onClick={onToggleForm}
@@ -396,11 +480,7 @@ const AddVariantsForm = ({
         </div>
       </div>
 
-      <LayeredModal
-        context={layeredModalContext}
-        open={state}
-        handleClose={onToggleForm}
-      >
+      <Modal open={state} handleClose={onToggleForm}>
         <Modal.Body>
           <Modal.Header handleClose={onToggleForm}>
             <h1 className="inter-xlarge-semibold">Create Variant</h1>
@@ -413,9 +493,9 @@ const AddVariantsForm = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="small"
                 type="button"
                 onClick={onToggleForm}
@@ -433,7 +513,7 @@ const AddVariantsForm = ({
             </div>
           </Modal.Footer>
         </Modal.Body>
-      </LayeredModal>
+      </Modal>
     </>
   )
 }

@@ -1,0 +1,64 @@
+.cdx-nested-list--ordered > .cdx-nested-list__item::before {
+  content: counter(item) ". " !important;
+}
+
+.codex-editor--narrow .ce-toolbox,
+.codex-editor--narrow .ce-settings {
+  @apply right-0;
+}
+
+.codex-editor--narrow .ce-toolbox .ce-popover,
+.codex-editor--narrow .ce-settings .ce-popover {
+  @apply !left-auto !right-0;
+}
+
+.ce-popover__custom-content > div {
+  @apply flex border border-grey-20 rounded-md;
+}
+
+.ce-popover__custom-content > div > .cdx-settings-button {
+  @apply flex-1 rounded-none hover:bg-grey-5;
+}
+
+.ce-popover__custom-content > div > .cdx-settings-button:first-child {
+  @apply rounded-l-md;
+}
+
+.ce-popover__custom-content > div > .cdx-settings-button:last-child {
+  @apply rounded-r-md;
+}
+
+.ce-popover__item.ce-popover__item--active,
+.ce-popover__item.ce-popover__item--focused,
+.cdx-settings-button.cdx-settings-button--active,
+.cdx-settings-button.ce-popover__item--focused {
+  @apply !bg-violet-5 hover:!bg-violet-5 !text-violet-700;
+}
+
+.ce-popover__item.ce-popover__item--focused,
+.cdx-settings-button.ce-popover__item--focused,
+.ce-conversion-tool.ce-conversion-tool--focused {
+  @apply !bg-violet-5;
+  box-shadow: inset 0 0 0 1px theme("colors.violet.20") !important;
+}
+
+.ce-inline-tool.ce-inline-tool--active {
+  @apply text-violet-700;
+}
+
+.ce-popover__item--confirmation,
+.ce-popover__item--confirmation.ce-popover__item--focused {
+  @apply !bg-rose-50 hover:!bg-rose-50;
+}
+
+.ce-popover__item--confirmation.ce-popover__item--focused {
+  box-shadow: inset 0 0 0 1px theme("colors.rose.60") !important;
+}
+
+.ce-popover__item--confirmation .ce-popover__item-icon {
+  @apply text-rose-60;
+}
+
+.ce-popover__custom-content > div > .cdx-settings-button svg {
+  @apply fill-current;
+}

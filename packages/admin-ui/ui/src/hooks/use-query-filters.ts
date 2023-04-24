@@ -57,7 +57,7 @@ type QueryObject = Partial<Pick<FilterState, "q">> &
  * Transform and merge state values with provided `toQuery` object and
  * return an object containing params.
  */
-function buildQueryObject(state: FilterState, toQuery: QueryObject) {
+export function buildQueryObject(state: FilterState, toQuery: QueryObject) {
   toQuery = toQuery || {}
   for (const [key, value] of Object.entries(state)) {
     if (key === "q") {

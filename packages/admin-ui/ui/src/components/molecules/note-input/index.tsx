@@ -44,17 +44,17 @@ const NoteInput: React.FC<NoteInputProps> = ({ onSubmit }) => {
   return (
     <form>
       <div
-        className="py-xsmall px-small bg-grey-5 border-grey-20 rounded-rounded flex items-center border"
+        className="flex items-center py-xsmall px-small bg-grey-5 border border-grey-20 rounded-rounded"
         onClick={() => inputRef.current?.focus()}
       >
-        <div className="gap-x-small flex flex-grow items-center">
+        <div className="flex items-center gap-x-small flex-grow">
           <EmojiPicker onEmojiClick={handleAddEmoji} />
           <input
             type="text"
             placeholder="Write a note..."
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="inter-base-regular placeholder:text-grey-40 flex-grow bg-transparent focus:outline-none"
+            className="flex-grow bg-transparent inter-base-regular placeholder:text-grey-40 focus:outline-none"
             ref={inputRef}
             id="note-input"
             autoComplete="off"

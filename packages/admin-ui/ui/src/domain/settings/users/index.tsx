@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
-import BackButton from "../../../components/atoms/back-button"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import Medusa from "../../../services/api"
 import BodyCard from "../../../components/organisms/body-card"
 import InviteModal from "../../../components/organisms/invite-modal"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import UserTable from "../../../components/templates/user-table"
-import Medusa from "../../../services/api"
+import { Invite, User } from "@medusajs/medusa/dist/models"
 
-const Users: React.FC = () => {
-  const [users, setUsers] = useState([])
-  const [invites, setInvites] = useState([])
+const TeamMembers: React.FC = ({ store }) => {
+  const [users, setUsers] = useState<User[]>([])
+  const [invites, setInvites] = useState<Invite[]>([])
   const [shouldRefetch, setShouldRefetch] = useState(0)
   const [showInviteModal, setShowInviteModal] = useState(false)
 
@@ -44,29 +44,25 @@ const Users: React.FC = () => {
   ]
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex w-full grow flex-col">
-        <BackButton
-          path="/a/settings"
-          label="Back to settings"
-          className="mb-xsmall"
-        />
+    <div className="flex flex-col ">
+      <div className="w-full flex flex-col grow">
         <BodyCard
-          title="The Team"
-          subtitle="Manage users of your Medusa Store"
+          title="Team"
+          subtitle="Manage who has access to the store"
           actionables={actionables}
         >
-          <div className="flex grow flex-col justify-between">
+          <div className="flex grow  flex-col pt-2">
             <UserTable
               users={users}
               invites={invites}
               triggerRefetch={triggerRefetch}
             />
-            <p className="inter-small-regular text-grey-50">
-              {users.length} member
-              {users.length === 1 ? "" : "s"}
-            </p>
           </div>
+          <div className="inter-small-regular text-grey-50">
+            {users.length} member
+            {users.length === 1 ? "" : "s"}
+          </div>
+
           {showInviteModal && (
             <InviteModal
               handleClose={() => {
@@ -81,4 +77,4 @@ const Users: React.FC = () => {
   )
 }
 
-export default Users
+export default TeamMembers

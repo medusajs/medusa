@@ -1,6 +1,6 @@
 import { useAdminPriceList } from "medusa-react"
 import { useParams } from "react-router-dom"
-import BackButton from "../../../components/atoms/back-button"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
 import RawJSON from "../../../components/organisms/raw-json"
 import { mapPriceListToFormValues } from "../pricing-form/form/mappers"
 import { PriceListFormProvider } from "../pricing-form/form/pricing-form-context"
@@ -13,21 +13,25 @@ const PricingDetails = () => {
   const { price_list, isLoading } = useAdminPriceList(id!)
 
   return (
-    <div className="pb-large">
-      <BackButton
-        label="Back to Pricing"
-        path="/a/pricing"
-        className="mb-xsmall"
+    <div className="pb-xlarge">
+      <Breadcrumb
+        currentPage="Edit price list"
+        previousBreadcrumb="Pricing"
+        previousRoute="/admin/pricing"
       />
 
       {!isLoading && price_list ? (
         <PriceListFormProvider priceList={mapPriceListToFormValues(price_list)}>
-          <div className="gap-y-xsmall flex flex-col">
-            <Header priceList={price_list} />
-
+          <Header priceList={price_list} />
+          <div className="mt-4 w-full">
             <PricesDetails id={price_list?.id} />
-
-            <RawJSON data={price_list} title="Raw price list" />
+          </div>
+          <div className="mt-xlarge">
+            <RawJSON
+              data={price_list}
+              title="Raw price list"
+              rootName="price_list"
+            />
           </div>
         </PriceListFormProvider>
       ) : null}

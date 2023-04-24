@@ -1,4 +1,4 @@
-import {
+import React, {
   forwardRef,
   MutableRefObject,
   ReactElement,
@@ -40,14 +40,12 @@ const Select = forwardRef(
       <AdjacentContainer
         ref={containerRef}
         label={label}
-        htmlFor={name}
         helperText={helperText}
         required={required}
         name={name}
         errors={errors}
       >
         <ReactSelect
-          aria-labelledby={`${name}_label`}
           ref={ref}
           name={name}
           {...selectProps}

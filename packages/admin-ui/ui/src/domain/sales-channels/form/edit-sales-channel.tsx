@@ -1,5 +1,5 @@
 import { useAdminUpdateSalesChannel } from "medusa-react"
-import { useState } from "react"
+import React, { useState } from "react"
 
 import { SalesChannel } from "@medusajs/medusa"
 
@@ -57,7 +57,7 @@ function EditSalesChannel(props: EditSalesChannelProps) {
             General info
           </div>
 
-          <div className="flex w-full flex-col gap-3">
+          <div className="w-full flex flex-col gap-3">
             <InputField
               label="Name"
               name="name"
@@ -73,19 +73,13 @@ function EditSalesChannel(props: EditSalesChannelProps) {
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full justify-end">
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={handleClose}
-              className="mr-2"
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={handleClose}>
               Close
             </Button>
             <Button
               disabled={!name.length || isLoading}
               variant="primary"
-              className="min-w-[100px]"
               size="small"
               onClick={handleSubmit}
               loading={isLoading}

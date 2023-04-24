@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import React, { useContext } from "react"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import LayeredModal, {
@@ -54,7 +54,7 @@ const EditConditionsModal = ({ open, condition, discount, onClose }: Props) => {
           </Modal.Header>
           {renderModalContext()}
           <Modal.Footer>
-            <div className="flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
                 variant="primary"
                 size="small"

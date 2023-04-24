@@ -1,15 +1,14 @@
-import { ReactNode } from "react"
-
-import { ActionType } from "../../../../components/molecules/actionables"
-import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
 import { Discount } from "@medusajs/medusa"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import moment from "moment"
 import { parse } from "iso8601-duration"
-import { removeNullish } from "../../../../utils/remove-nullish"
 import { useAdminUpdateDiscount } from "medusa-react"
+import moment from "moment"
+import React, { ReactNode } from "react"
+import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
+import { ActionType } from "../../../../components/molecules/actionables"
 import useNotification from "../../../../hooks/use-notification"
+import { getErrorMessage } from "../../../../utils/error-messages"
+import { removeNullish } from "../../../../utils/remove-nullish"
 
 type displaySetting = {
   title: string
@@ -18,9 +17,9 @@ type displaySetting = {
 }
 
 const DisplaySettingsDateDescription = ({ date }: { date: Date }) => (
-  <div className="text-grey-50 inter-small-regular flex ">
+  <div className="flex text-grey-50 inter-small-regular ">
     {moment.utc(date).format("ddd, DD MMM YYYY")}
-    <span className="ml-3 flex items-center">
+    <span className="flex items-center ml-3">
       <ClockIcon size={16} />
       <span className="ml-2.5">{moment.utc(date).format("UTC HH:mm")}</span>
     </span>
@@ -88,6 +87,39 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification("Success", "Redemption limit removed", "success")
+                },
+                onError: (error) => {
+                  notification("Error", getErrorMessage(error), "error")
+                },
+              }
+            ),
+        },
+      ],
+    })
+  }
+  if (discount.customer_usage_limit) {
+    conditions.push({
+      title: "Customer redemption limit",
+      description: (
+        <CommonDescription
+          text={discount.customer_usage_limit.toLocaleString("en")}
+        />
+      ),
+      actions: [
+        {
+          label: "Delete configuration",
+          icon: <TrashIcon size={20} />,
+          variant: "danger",
+          onClick: async () =>
+            await updateDiscount.mutateAsync(
+              { customer_usage_limit: null },
+              {
+                onSuccess: () => {
+                  notification(
+                    "Success",
+                    "Customer redemption limit removed",
+                    "success"
+                  )
                 },
                 onError: (error) => {
                   notification("Error", getErrorMessage(error), "error")

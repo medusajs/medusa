@@ -1,3 +1,5 @@
+import React from "react"
+
 export const TrackingLink = ({ trackingLink }) => {
   if (trackingLink.url) {
     return (
@@ -5,14 +7,13 @@ export const TrackingLink = ({ trackingLink }) => {
         style={{ textDecoration: "none" }}
         target="_blank"
         href={trackingLink.url}
-        rel="noreferrer"
       >
-        <div className="text-blue-60 ml-2">{trackingLink.tracking_number} </div>
+        <div className="text-violet-60">{trackingLink.tracking_number}</div>
       </a>
     )
   } else {
     return (
-      <span className="text-blue-60 ml-2">{trackingLink.tracking_number} </span>
+      <span className="text-violet-60">{trackingLink.tracking_number}</span>
     )
   }
 }

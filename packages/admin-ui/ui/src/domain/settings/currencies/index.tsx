@@ -1,13 +1,14 @@
+import { JsonViewer } from "@textea/json-viewer"
 import { useAdminStore } from "medusa-react"
 import { useNavigate } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import Tooltip from "../../../components/atoms/tooltip"
 import FeatureToggle from "../../../components/fundamentals/feature-toggle"
-import JSONView from "../../../components/molecules/json-view"
 import Section from "../../../components/organisms/section"
-import { useAnalytics } from "../../../providers/analytics-provider"
+import { useAnalytics } from "../../../context/analytics"
 import { getErrorStatus } from "../../../utils/get-error-status"
+import { useBasePath } from "../../../utils/routePathing"
 import CurrencyTaxSetting from "./components/currency-tax-setting"
 import DefaultStoreCurrency from "./components/default-store-currency"
 import StoreCurrencies from "./components/store-currencies"
@@ -22,6 +23,7 @@ const CurrencySettings = () => {
       })
     },
   })
+  const basePath = useBasePath()
 
   if (error) {
     let message = "An unknown error occurred"
@@ -42,8 +44,12 @@ const CurrencySettings = () => {
       <Section title="Error">
         <p className="inter-base-regular">{message}</p>
 
-        <div className="mt-base px-base py-xsmall">
-          <JSONView data={JSON.parse(JSON.stringify(error))} />
+        <div className="mt-base bg-grey-5 rounded-rounded px-base py-xsmall">
+          <JsonViewer
+            rootName="stack_trace"
+            defaultInspectDepth={0}
+            value={JSON.parse(JSON.stringify(error))}
+          />
         </div>
       </Section>
     )
@@ -52,7 +58,7 @@ const CurrencySettings = () => {
   if (status === "loading" || !store) {
     // temp, perhaps use skeletons?
     return (
-      <div className="flex h-[calc(100vh-64px)] w-full items-center justify-center">
+      <div className="w-full h-[calc(100vh-64px)] flex items-center justify-center">
         <Spinner variant="secondary" />
       </div>
     )
@@ -62,11 +68,11 @@ const CurrencySettings = () => {
     <div className="pb-xlarge">
       <BackButton
         label="Back to Settings"
-        path="/a/settings"
+        path={`${basePath}/settings`}
         className="mb-xsmall"
       />
-      <div className="gap-base grid grid-cols-3">
-        <div className="gap-y-xsmall col-span-2 flex flex-col ">
+      <div className="grid grid-cols-3 gap-base">
+        <div className="col-span-2 flex flex-col gap-y-xsmall ">
           <Section title="Currencies">
             <p className="text-grey-50 inter-base-regular mt-2xsmall">
               Manage the markets that you will operate within.
@@ -79,7 +85,7 @@ const CurrencySettings = () => {
             </div>
             <FeatureToggle featureFlag="tax_inclusive_pricing">
               <div className="cursor-default">
-                <div className="inter-small-semibold text-grey-50 mb-base flex items-center justify-between">
+                <div className="inter-small-semibold text-grey-50 flex items-center justify-between mb-base">
                   <p>Currency</p>
                   <Tooltip
                     side="top"
@@ -90,7 +96,7 @@ const CurrencySettings = () => {
                     <p>Tax Incl. Prices</p>
                   </Tooltip>
                 </div>
-                <div className="gap-base grid grid-cols-1">
+                <div className="grid grid-cols-1 gap-base">
                   {store.currencies
                     .sort((a, b) => {
                       return a.code > b.code ? 1 : -1

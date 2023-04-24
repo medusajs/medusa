@@ -3,20 +3,15 @@ import {
   useAdminCreateCollection,
   useAdminUpdateCollection,
 } from "medusa-react"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
-import MetadataForm, {
-  getSubmittableMetadata,
-  MetadataFormType,
-} from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import IconTooltip from "../../molecules/icon-tooltip"
 import InputField from "../../molecules/input"
 import Modal from "../../molecules/modal"
-import { MetadataField } from "../../organisms/metadata"
+import Metadata, { MetadataField } from "../../organisms/metadata"
 
 type CollectionModalProps = {
   onClose: () => void
@@ -28,7 +23,6 @@ type CollectionModalProps = {
 type CollectionModalFormData = {
   title: string
   handle: string | undefined
-  metadata: MetadataFormType
 }
 
 const CollectionModal: React.FC<CollectionModalProps> = ({
@@ -41,46 +35,38 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
   )
   const { mutate: create, isLoading: creating } = useAdminCreateCollection()
 
-  const form = useForm<CollectionModalFormData>({
-    defaultValues: {
-      title: collection?.title,
-      handle: collection?.handle,
-      metadata: {
-        entries: Object.entries(collection?.metadata || {}).map(
-          ([key, value]) => ({
-            key,
-            value: value as string,
-            state: "existing",
-          })
-        ),
-      },
-    },
-  })
-  const { register, handleSubmit, reset } = form
-
-  useEffect(() => {
-    if (collection) {
-      reset({
-        title: collection.title,
-        handle: collection.handle,
-        metadata: {
-          entries: Object.entries(collection.metadata || {}).map(
-            ([key, value]) => ({
-              key,
-              value: value as string,
-              state: "existing",
-            })
-          ),
-        },
-      })
-    }
-  }, [collection, reset])
+  const { register, handleSubmit, reset } = useForm<CollectionModalFormData>()
 
   const notification = useNotification()
+  const [metadata, setMetadata] = useState<MetadataField[]>([])
 
   if (isEdit && !collection) {
     throw new Error("Collection is required for edit")
   }
+
+  useEffect(() => {
+    register("title", { required: true })
+    register("handle")
+  }, [])
+
+  useEffect(() => {
+    if (isEdit && collection) {
+      reset({
+        title: collection.title,
+        handle: collection.handle,
+      })
+
+      if (collection.metadata) {
+        Object.entries(collection.metadata).map(([key, value]) => {
+          if (typeof value === "string") {
+            const newMeta = metadata
+            newMeta.push({ key, value })
+            setMetadata(newMeta)
+          }
+        })
+      }
+    }
+  }, [collection, isEdit])
 
   const submit = (data: CollectionModalFormData) => {
     if (isEdit) {
@@ -88,7 +74,12 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           title: data.title,
           handle: data.handle,
-          metadata: getSubmittableMetadata(data.metadata),
+          metadata: metadata.reduce((acc, next) => {
+            return {
+              ...acc,
+              [next.key]: next.value,
+            }
+          }, {}),
         },
         {
           onSuccess: () => {
@@ -109,7 +100,12 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           title: data.title,
           handle: data.handle,
-          metadata: getSubmittableMetadata(data.metadata),
+          metadata: metadata.reduce((acc, next) => {
+            return {
+              ...acc,
+              [next.key]: next.value,
+            }
+          }, {}),
         },
         {
           onSuccess: () => {
@@ -145,7 +141,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
           <Modal.Content>
             <div>
               <h2 className="inter-base-semibold mb-base">Details</h2>
-              <div className="gap-x-base flex items-center">
+              <div className="flex items-center gap-x-base">
                 <InputField
                   label="Title"
                   required
@@ -163,15 +159,14 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
                 />
               </div>
             </div>
-            <div className="mt-xlarge">
-              <h2 className="inter-base-semibold mb-base">Metadata</h2>
-              <MetadataForm form={nestedForm(form, "metadata")} />
+            <div className="mt-xlarge w-full">
+              <Metadata setMetadata={setMetadata} metadata={metadata} />
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="small"
                 type="button"
                 onClick={onClose}

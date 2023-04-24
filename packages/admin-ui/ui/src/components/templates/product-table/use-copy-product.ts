@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
 import { ProductStatus } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { useBasePath } from "../../../utils/routePathing"
 
 /**
  * Utility function to create a new title and handle for a copied product.
@@ -37,6 +38,7 @@ const useCopyProduct = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const { mutate } = useAdminCreateProduct()
+  const basePath = useBasePath()
 
   const handleCopyProduct = (product: Product) => {
     const {
@@ -80,7 +82,6 @@ const useCopyProduct = () => {
       variants.forEach((variant) => {
         const { prices, options, ...rest } = omit(variant, [
           "id",
-          "sku",
           "created_at",
           "updated_at",
           "deleted_at",
@@ -96,8 +97,6 @@ const useCopyProduct = () => {
 
           return acc
         }, {} as NonNullable<AdminPostProductsReq["variants"]>[0])
-
-        variantBase.prices = []
 
         if (prices && prices.length) {
           variantBase.prices = prices.map((price) => ({
@@ -164,7 +163,7 @@ const useCopyProduct = () => {
 
     mutate(base as AdminPostProductsReq, {
       onSuccess: ({ product: copiedProduct }) => {
-        navigate(`/a/products/${copiedProduct.id}`)
+        navigate(`${basePath}/products/${copiedProduct.id}`)
         notification("Success", "Created a new product", "success")
       },
       onError: (error) => {

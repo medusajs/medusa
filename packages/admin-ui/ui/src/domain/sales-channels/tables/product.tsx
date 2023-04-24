@@ -33,7 +33,7 @@ import Placeholder from "./placeholder"
 /* ************** TABLE CONFIG ************** */
 /* ****************************************** */
 
-const DEFAULT_PAGE_SIZE = 7
+const DEFAULT_PAGE_SIZE = 12
 
 /**
  * Default filtering config for querying products endpoint.
@@ -90,6 +90,7 @@ export const ProductTable = forwardRef(
       isAddTable,
       count,
       products,
+      selectedRowIds,
       setSelectedRowIds,
       removeProductFromSalesChannel,
     } = props
@@ -248,6 +249,7 @@ export const ProductTable = forwardRef(
             )
           }
           enableSearch={isAddTable}
+          searchValue={query}
           handleSearch={setQuery}
           {...getTableProps()}
         >
@@ -296,8 +298,8 @@ const ProductRow = ({ row, actions, onClick, disabled }) => {
       onClick={!disabled && onClick}
       color={"inherit"}
       className={clsx("cursor-pointer", {
-        "bg-grey-5": row.isSelected,
-        "pointer-events-none cursor-not-allowed opacity-40": disabled,
+        "bg-grey-5 cursor-pointer": row.isSelected,
+        "opacity-40 cursor-not-allowed pointer-events-none": disabled,
       })}
       actions={actions}
       {...row.getRowProps()}
@@ -335,13 +337,13 @@ function RemoveProductsPopup({
   return (
     <div
       className={clsx(
-        "pointer-events-none absolute bottom-1 flex w-full justify-center transition-all duration-200",
+        "absolute w-full bottom-1 flex justify-center transition-all duration-200 pointer-events-none",
         classes
       )}
     >
-      <div className="shadow-toaster pointer-events-auto flex h-[48px] min-w-[224px] items-center justify-around gap-3 rounded-lg border px-4 py-3">
+      <div className="h-[48px] min-w-[224px] rounded-lg border shadow-toaster flex items-center justify-around gap-3 px-4 py-3 pointer-events-auto">
         <span className="text-small text-grey-50">{total} selected</span>
-        <div className="bg-grey-20 h-[20px] w-[1px]" />
+        <div className="w-[1px] h-[20px] bg-grey-20" />
         <Button variant="danger" size="small" onClick={onRemove}>
           Remove
         </Button>
@@ -501,18 +503,12 @@ function SalesChannelProductsSelectModal(
           />
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full justify-end">
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={handleClose}
-              className="mr-2"
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={handleClose}>
               Close
             </Button>
             <Button
               variant="primary"
-              className="min-w-[100px]"
               size="small"
               onClick={handleSubmit}
               loading={isMutating}

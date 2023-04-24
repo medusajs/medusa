@@ -31,13 +31,13 @@ const SearchBar: React.FC = () => {
     <>
       <button
         onClick={() => setShowSearchModal(true)}
-        className="px-small flex basis-1/2 items-center py-[6px]"
+        className="flex basis-1/2 items-center px-small py-[6px]"
       >
         <SearchIcon className="text-grey-40" />
-        <div className="ml-5">
+        <div className="ml-5 whitespace-nowrap">
           <OSShortcut macModifiers="⌘" winModifiers="Ctrl" keys="K" />
         </div>
-        <span className="ml-xsmall text-grey-40 inter-base-regular">
+        <span className="ml-xsmall text-grey-40 inter-base-regular whitespace-nowrap">
           Search anything...
         </span>
       </button>

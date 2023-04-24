@@ -7,7 +7,7 @@ import {
   useAdminDeleteFile,
   useAdminStore,
 } from "medusa-react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import useNotification from "../../../hooks/use-notification"
 import { bytesConverter } from "../../../utils/bytes-converter"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -19,7 +19,6 @@ import MedusaIcon from "../../fundamentals/icons/medusa-icon"
 import { ActivityCard } from "../../molecules/activity-card"
 import BatchJobFileCard from "../../molecules/batch-job-file-card"
 import { batchJobDescriptionBuilder, BatchJobOperation } from "./utils"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
 
 /**
  * Retrieve a batch job and refresh the data depending on the last batch job status
@@ -82,6 +81,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
 
   const operation = {
     "product-import": BatchJobOperation.Import,
+    "etsy-product-import": BatchJobOperation.Import,
     "price-list-import": BatchJobOperation.Import,
     "product-export": BatchJobOperation.Export,
     "order-export": BatchJobOperation.Export,
@@ -97,8 +97,6 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
     batchJob.status !== "completed" &&
     batchJob.status !== "failed" &&
     batchJob.status !== "canceled"
-
-  const hasError = batchJob.status === "failed"
 
   const canDownload =
     batchJob.status === "completed" && batchJob.result?.file_key
@@ -160,11 +158,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
 
     const icon =
       batchJob.status !== "completed" && batchJob.status !== "canceled" ? (
-        batchJob.status === "failed" ? (
-          <CrossIcon size={18} />
-        ) : (
-          <Spinner size={"medium"} variant={"secondary"} />
-        )
+        <Spinner size={"medium"} variant={"secondary"} />
       ) : (
         <FileIcon
           className={clsx({
@@ -182,7 +176,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
           preprocessing: `Preparing ${operation.toLowerCase()}...`,
           processing: `Processing ${operation.toLowerCase()}...`,
           completed: `Successful ${operation.toLowerCase()}`,
-          failed: `Job failed`,
+          failed: `Failed batch ${operation.toLowerCase()} job`,
           canceled: `Canceled batch ${operation.toLowerCase()} job`,
         }[batchJob.status]
 
@@ -192,8 +186,6 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
         fileName={fileName}
         icon={icon}
         fileSize={fileSize}
-        hasError={hasError}
-        errorMessage={batchJob?.result?.errors?.join(" \n")}
       />
     )
   }
@@ -209,7 +201,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
         <Button
           onClick={onClick}
           size={"small"}
-          className={clsx("inter-small-regular flex justify-start", className)}
+          className={clsx("flex justify-start inter-small-regular", className)}
           variant={variant}
         >
           {text}
@@ -218,7 +210,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
     }
     return (
       (canDownload || canCancel) && (
-        <div className="mt-6 flex">
+        <div className="flex mt-6">
           {canDownload && (
             <div className="flex">
               {buildButton(onDeleteFile, "danger", "Delete")}
@@ -233,13 +225,12 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
 
   return (
     <ActivityCard
-      title={store?.name ?? "Medusa Team"}
-      icon={<MedusaIcon className="mr-3" size={20} />}
+      title={store?.name ?? "MarketHaus Team"}
       relativeTimeElapsed={relativeTimeElapsed.rtf}
       date={batchJob.created_at}
       shouldShowStatus={true}
     >
-      <div ref={activityCardRef} className="inter-small-regular flex flex-col">
+      <div ref={activityCardRef} className="flex flex-col inter-small-regular">
         <span>{batchJobActivityDescription}</span>
 
         {getBatchJobFileCard()}

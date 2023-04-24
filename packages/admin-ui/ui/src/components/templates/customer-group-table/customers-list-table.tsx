@@ -1,4 +1,3 @@
-import { UseMutateFunction } from "@tanstack/react-query"
 import {
   HeaderGroup,
   Row,
@@ -6,17 +5,18 @@ import {
   useSortBy,
   useTable,
 } from "react-table"
+import { UseMutateFunction } from "react-query"
 
 import { Customer } from "@medusajs/medusa"
 
-import { useNavigate } from "react-router-dom"
-import useQueryFilters from "../../../hooks/use-query-filters"
+import { CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS } from "./config"
+import Table from "../../molecules/table"
 import DetailsIcon from "../../fundamentals/details-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
-import Table from "../../molecules/table"
+import useQueryFilters from "../../../hooks/use-query-filters"
 import { FilteringOptionProps } from "../../molecules/table/filtering-option"
+import { useNavigate } from "react-router-dom"
 import TableContainer from "../../organisms/table-container"
-import { CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS } from "./config"
 
 /* ********************************** */
 /* ************** TYPES ************* */
@@ -85,7 +85,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
   const actions = [
     {
       label: "Details",
-      onClick: () => navigate(`/a/customers/${row.original.id}`),
+      onClick: () => navigate(`/admin/customers/${row.original.id}`),
       icon: <DetailsIcon size={20} />,
     },
     // {
@@ -108,7 +108,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
     <Table.Row
       color={"inherit"}
       actions={actions}
-      linkTo={`/a/customers/${props.row.original.id}`}
+      linkTo={`/admin/customers/${props.row.original.id}`}
       {...props.row.getRowProps()}
     >
       {props.row.cells.map((cell, index) => (

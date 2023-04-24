@@ -65,7 +65,7 @@ const CollapsibleTreeContent: React.FC<CollapsibleTreeContentProps> = ({
   return (
     <div
       className={clsx(
-        "mt-xsmall pl-5",
+        "pl-5 mt-xsmall",
         {
           hidden: !open,
           "animate-fade-in-top": open,
@@ -99,15 +99,15 @@ const CollapsibleTreeParent: React.FC<CollapsibleTreeParentProps> = ({
       <Container className={className}>
         <div className="flex items-center justify-between">
           <div className="gap-x-small flex items-center">{children}</div>
-          <div className="gap-x-xsmall flex items-center">
+          <div className="flex items-center gap-x-xsmall">
             {actions && (
               <Actionables customTrigger={Trigger()} actions={actions} />
             )}
-            <div className="rounded-circle bg-grey-20 h-5 w-px" />
+            <div className="h-5 w-px rounded-circle bg-grey-20" />
             <Button
               variant="ghost"
               size="small"
-              className="text-grey-50 p-[6px]"
+              className="p-[6px] text-grey-50"
               onClick={toggle}
             >
               {open ? <MinusIcon size={20} /> : <PlusIcon size={20} />}
@@ -136,16 +136,16 @@ const CollapsibleTreeLeaf: React.FC<CollapsibleTreeLeafProps> = ({
   return (
     <div
       className={clsx(
-        "col-tree pb-xsmall relative flex items-center last:pb-0",
+        "col-tree flex items-center relative pb-xsmall last:pb-0",
         className
       )}
     >
       <div className="absolute top-0 left-0 bottom-0">
-        <div className="border-grey-20 h-1/2 w-px border-l border-dashed" />
-        <div className="border-grey-20 bottom-half-dash h-1/2 w-px border-l border-dashed" />
+        <div className="border-l border-dashed border-grey-20 h-1/2 w-px" />
+        <div className="h-1/2 border-l border-dashed border-grey-20 w-px bottom-half-dash" />
       </div>
-      <div className="border-grey-20 mr-xsmall h-px w-[13px] border-t border-dashed" />
-      <Container className="inter-small-regular flex w-full items-center justify-between">
+      <div className="w-[13px] h-px border-t border-grey-20 border-dashed mr-xsmall" />
+      <Container className="w-full flex items-center justify-between inter-small-regular">
         {children}
         {actions && (
           <Actionables
@@ -168,7 +168,7 @@ const Container: React.FC<{ className?: string }> = ({
   return (
     <div
       className={clsx(
-        "rounded-rounded border-grey-20 py-2xsmall px-small border",
+        "rounded-rounded border border-grey-20 py-2xsmall px-small",
         className
       )}
     >
@@ -179,8 +179,8 @@ const Container: React.FC<{ className?: string }> = ({
 
 const Trigger = () => {
   return (
-    <Button variant="ghost" size="small" className="text-grey-50 p-[6px]">
-      <MoreHorizontalIcon size={20} />
+    <Button variant="ghost" size="small" className="w-8 h-8 p-0 text-grey-50">
+      <MoreHorizontalIcon className="w-5 h-5" />
     </Button>
   )
 }

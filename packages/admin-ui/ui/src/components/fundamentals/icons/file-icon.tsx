@@ -1,4 +1,4 @@
-import { FC } from "react"
+import React, { FC } from "react"
 import IconProps from "./types/icon-type"
 
 const FileIcon: FC<IconProps> = (props) => {

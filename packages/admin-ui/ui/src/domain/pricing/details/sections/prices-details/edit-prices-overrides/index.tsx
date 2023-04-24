@@ -70,7 +70,7 @@ const EditPricesOverridesModal = ({
 
   return (
     <LayeredModal isLargeModal context={context} handleClose={close}>
-      <Modal.Body className="flex h-[calc(100vh-134px)] flex-col">
+      <Modal.Body className="h-[calc(100vh-134px)] flex flex-col">
         <Modal.Header handleClose={close}>
           <h1 className="inter-xlarge-semibold">
             Price overrides{" "}
@@ -86,7 +86,7 @@ const EditPricesOverridesModal = ({
               <div>
                 <img
                   src={product.thumbnail || undefined}
-                  className="rounded-base h-5 w-4"
+                  className="w-4 h-5 rounded-base"
                 />
               </div>
               <span className="inter-small-semibold">{product.title}</span>
@@ -107,21 +107,11 @@ const EditPricesOverridesModal = ({
         </Modal.Content>
 
         <Modal.Footer>
-          <div className="flex h-8 w-full justify-end">
-            <Button
-              variant="ghost"
-              className="text-small rounded-rounded mr-2 w-32 justify-center"
-              size="large"
-              onClick={close}
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={close}>
               Cancel
             </Button>
-            <Button
-              disabled
-              size="large"
-              className="text-small rounded-rounded w-32 justify-center"
-              variant="primary"
-            >
+            <Button disabled size="small" variant="primary">
               Save
             </Button>
           </div>

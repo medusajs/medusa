@@ -1,5 +1,4 @@
-import { LineItemTaxLine, MoneyAmount, Order, Region } from "@medusajs/medusa"
-import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
+import { LineItemTaxLine, MoneyAmount, Order } from "@medusajs/medusa"
 import { currencies } from "./currencies"
 
 export function normalizeAmount(currency: string, amount: number): number {
@@ -15,44 +14,22 @@ export function displayAmount(currency: string, amount: number) {
   )
 }
 
-export const extractUnitPrice = (
-  item: PricedVariant,
-  region: Region,
-  withTax = true
-) => {
-  let itemPrice = item.original_price
-  let includesTax = item.original_price_includes_tax
-  let taxRate = item.original_tax
+export const extractUnitPrice = (item, region, withTax = true) => {
+  let itemPrice = item.unit_price
 
   if (itemPrice === undefined) {
     const regionPrice = item.prices.find(
       (p) => p.currency_code === region.currency_code
     )
 
-    if (!regionPrice) {
-      return 0
-    }
-
     itemPrice = regionPrice.amount
-    includesTax = region.includes_tax
-    taxRate = includesTax
-      ? (itemPrice * region.tax_rate) / (1 + region.tax_rate)
-      : itemPrice * region.tax_rate
   }
 
   if (itemPrice) {
-    if (includesTax) {
-      if (withTax) {
-        return itemPrice
-      } else {
-        return itemPrice - (taxRate ?? 0)
-      }
+    if (withTax) {
+      return itemPrice * (1 + region.tax_rate / 100)
     } else {
-      if (withTax) {
-        return itemPrice + (taxRate ?? 0)
-      } else {
-        return itemPrice
-      }
+      return itemPrice
     }
   }
 
@@ -89,7 +66,7 @@ export function persistedPrice(currency: string, amount: number): number {
 }
 
 export const stringDisplayPrice = ({ amount, currencyCode }) => {
-  if (typeof amount === "undefined" || !currencyCode) {
+  if (!amount || !currencyCode) {
     return `N/A`
   }
 

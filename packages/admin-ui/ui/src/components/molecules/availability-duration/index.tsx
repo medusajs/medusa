@@ -37,7 +37,7 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
 
   return (
     <div>
-      <div className="gap-x-xsmall gap-y-base mt-xlarge grid grid-cols-3 grid-rows-2">
+      <div className="grid grid-cols-3 grid-rows-2 gap-x-xsmall gap-y-base mt-xlarge">
         <InputField
           label="Years"
           type="number"

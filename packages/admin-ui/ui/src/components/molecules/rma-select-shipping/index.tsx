@@ -21,7 +21,7 @@ const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
   setUseCustomShippingPrice,
 }) => {
   return useCustomShippingPrice ? (
-    <div className="gap-x-base mt-4 flex w-full items-end">
+    <div className="flex items-end mt-4 gap-x-base w-full">
       <AmountInput
         label={`Shipping price (${inclTax ? "incl. tax" : "excl. tax"})`}
         currencyCode={currencyCode}
@@ -30,7 +30,7 @@ const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
       />
       <Button
         onClick={() => setUseCustomShippingPrice(false)}
-        className="text-grey-40 h-10 w-10"
+        className="w-10 h-10 text-grey-50"
         variant="ghost"
         size="small"
       >
@@ -38,11 +38,10 @@ const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
       </Button>
     </div>
   ) : (
-    <div className="mt-4 flex w-full justify-end">
+    <div className="flex w-full mt-4 justify-end">
       <Button
         onClick={() => setUseCustomShippingPrice(true)}
-        variant="ghost"
-        className="border-grey-20 border"
+        variant="secondary"
         size="small"
       >
         Add custom price

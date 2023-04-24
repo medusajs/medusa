@@ -1,14 +1,14 @@
 import qs from "query-string"
-import { useContext, useEffect, useMemo, useState } from "react"
-import { Controller, useWatch } from "react-hook-form"
-
-import { useAdminCustomer } from "medusa-react"
-
+import React, { useContext, useEffect, useMemo, useState } from "react"
+import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
 import AddressForm, {
   AddressType,
 } from "../../../../components/templates/address-form"
 import Medusa from "../../../../services/api"
+
+import { useAdminCustomer } from "medusa-react"
+import { Controller, useWatch } from "react-hook-form"
 import LockIcon from "../../../../components/fundamentals/icons/lock-icon"
 import InputField from "../../../../components/molecules/input"
 import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
@@ -18,7 +18,6 @@ import { Option } from "../../../../types/shared"
 import isNullishObject from "../../../../utils/is-nullish-object"
 import mapAddressToForm from "../../../../utils/map-address-to-form"
 import { nestedForm } from "../../../../utils/nested-form"
-import { isValidEmail } from "../../../../utils/email"
 import { useNewOrderForm } from "../form"
 
 const ShippingDetails = () => {
@@ -56,7 +55,7 @@ const ShippingDetails = () => {
     name: "customer_id",
   })
 
-  const { customer } = useAdminCustomer(customerId?.value!, {
+  const { customer, isLoading } = useAdminCustomer(customerId?.value!, {
     enabled: !!customerId?.value,
   })
 
@@ -71,15 +70,13 @@ const ShippingDetails = () => {
       ({ country_code }) =>
         !country_code || validCountryCodes.includes(country_code)
     )
-  }, [customer, validCountries])
+  }, [customer])
 
   const onCustomerSelect = (val: Option) => {
     const email = /\(([^()]*)\)$/.exec(val?.label)
 
     if (email) {
       form.setValue("email", email[1])
-    } else {
-      form.setValue("email", "")
     }
   }
 
@@ -105,17 +102,23 @@ const ShippingDetails = () => {
     name: "email",
   })
 
+  useEffect(() => {
+    if (!email) {
+      disableNextPage()
+    } else {
+      enableNextPage()
+    }
+  }, [email])
+
   const shippingAddress = useWatch({
     control: form.control,
     name: "shipping_address",
   })
 
-  /**
-   * Effect used to enable next step.
-   * A user can go to the next step if valid email is provided and all required address info is filled.
-   */
+  const [requiredFields, setRequiredFields] = useState(false)
+
   useEffect(() => {
-    if (!email || !isValidEmail(email)) {
+    if (!email) {
       disableNextPage()
       return
     }
@@ -130,32 +133,18 @@ const ShippingDetails = () => {
         !shippingAddress.postal_code
       ) {
         disableNextPage()
+        setRequiredFields(true)
       } else {
         enableNextPage()
       }
+    } else {
+      enableNextPage()
+      setRequiredFields(false)
     }
   }, [shippingAddress, email])
 
-  useEffect(() => {
-    // reset shipping address info when a different customer is selected
-    // or when "Create new" is clicked
-    form.setValue("shipping_address.first_name", "")
-    form.setValue("shipping_address.last_name", "")
-    form.setValue("shipping_address.phone", "")
-    form.setValue("shipping_address.address_1", "")
-    form.setValue("shipping_address.address_2", "")
-    form.setValue("shipping_address.city", "")
-    form.setValue("shipping_address.country_code", null)
-    form.setValue("shipping_address.province", "")
-    form.setValue("shipping_address.postal_code", "")
-  }, [customerId?.value, addNew])
-
-  useEffect(() => {
-    setAddNew(false)
-  }, [customerId?.value])
-
   return (
-    <div className="flex min-h-[705px] flex-col gap-y-8">
+    <div className="min-h-[705px] flex flex-col gap-y-8">
       <div>
         <span className="inter-base-semibold">
           Customer and shipping details
@@ -193,15 +182,19 @@ const ShippingDetails = () => {
           required
           // @ts-ignore
           prefix={
-            customerId ? (
+            !!customerId ? (
               <LockIcon size={16} className="text-grey-40" />
             ) : undefined
           }
-          tabIndex={customerId ? -1 : 0}
+          tabIndex={!!customerId ? -1 : 0}
         />
       </div>
 
-      {validAddresses.length && !addNew ? (
+      {isLoading ? (
+        <div>
+          <Spinner variant="primary" />
+        </div>
+      ) : validAddresses.length && !addNew ? (
         <div>
           <span className="inter-base-semibold">Choose existing addresses</span>
           <Controller
@@ -236,7 +229,7 @@ const ShippingDetails = () => {
             <Button
               variant="ghost"
               size="small"
-              className="border-grey-20 w-[112px] border"
+              className="border border-grey-20 w-[112px]"
               onClick={onCreateNew}
             >
               Create new
@@ -249,6 +242,7 @@ const ShippingDetails = () => {
             form={nestedForm(form, "shipping_address")}
             countryOptions={validCountries}
             type={AddressType.SHIPPING}
+            required={requiredFields}
           />
         </div>
       )}

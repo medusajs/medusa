@@ -1,6 +1,6 @@
 import { InputHeaderProps } from "../../fundamentals/input-header"
 
 export type DateTimePickerProps = {
-  date: Date | null
-  onSubmitDate: (newDate: Date | null) => void
+  date: Date
+  onSubmitDate: (newDate: Date) => void
 } & InputHeaderProps

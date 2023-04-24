@@ -10,12 +10,10 @@ type NotificationBellProps = ButtonProps & {
 const NotificationBell: React.FC<NotificationBellProps> = ({
   hasNotifications = false,
   ...attributes
-}) => {
-  return (
-    <Button className="h-8 w-8" size="small" {...attributes}>
-      {hasNotifications ? <BellNotiIcon /> : <BellIcon />}
-    </Button>
-  )
-}
+}) => (
+  <Button className="w-8 h-8 mr-3" size="small" {...attributes}>
+    {hasNotifications ? <BellNotiIcon /> : <BellIcon />}
+  </Button>
+)
 
 export default NotificationBell

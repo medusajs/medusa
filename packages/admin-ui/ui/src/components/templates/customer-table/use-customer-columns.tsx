@@ -1,5 +1,6 @@
+import { Vendor } from "@medusajs/medusa"
 import moment from "moment"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import { getColor } from "../../../utils/color"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
 
@@ -24,21 +25,6 @@ export const useCustomerColumns = () => {
       {
         Header: "Email",
         accessor: "email",
-      },
-      {
-        Header: "",
-        accessor: "col",
-      },
-      {
-        accessor: "orders",
-        Header: () => <div className="text-right">Orders</div>,
-        Cell: ({ cell: { value } }) => (
-          <div className="text-right">{value?.length || 0}</div>
-        ),
-      },
-      {
-        Header: "",
-        accessor: "col-2",
       },
     ],
     []

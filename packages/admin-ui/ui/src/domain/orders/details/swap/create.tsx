@@ -1,16 +1,11 @@
-import {
-  AdminPostOrdersOrderSwapsReq,
-  Order,
-  ProductVariant,
-  ReturnReason,
-  StockLocationDTO,
-} from "@medusajs/medusa"
-import { useAdminStockLocations } from "medusa-react"
+import { AdminPostOrdersOrderSwapsReq } from "@medusajs/medusa/dist/api"
+import { Order, ReturnReason } from "@medusajs/medusa/dist/models"
 import {
   useAdminCreateSwap,
   useAdminOrder,
   useAdminShippingOptions,
 } from "medusa-react"
+import { ProductVariant } from "medusa-react/dist/types"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
@@ -25,12 +20,11 @@ import Select from "../../../../components/molecules/select"
 import RMAReturnProductsTable from "../../../../components/organisms/rma-return-product-table"
 import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
 import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { Option } from "../../../../types/shared"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 import RMASelectProductSubModal from "../rma-sub-modals/products"
-import { getAllReturnableItems } from "../utils/create-filtering"
+import { filterItems } from "../utils/create-filtering"
 
 type SwapMenuProps = {
   order: Omit<Order, "beforeInsert">
@@ -65,48 +59,24 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
     undefined
   )
   const [noNotification, setNoNotification] = useState(order.no_notification)
-  const [selectedLocation, setSelectedLocation] = React.useState<{
-    value: string
-    label: string
-  } | null>(null)
-
-  const { isFeatureEnabled } = useFeatureFlag()
-  const isLocationFulfillmentEnabled =
-    isFeatureEnabled("inventoryService") &&
-    isFeatureEnabled("stockLocationService")
-
-  const {
-    stock_locations,
-    refetch: refetchLocations,
-    isLoading: isLoadingLocations,
-  } = useAdminStockLocations(
-    {},
-    {
-      enabled: isLocationFulfillmentEnabled,
-    }
-  )
-
-  React.useEffect(() => {
-    if (isLocationFulfillmentEnabled) {
-      refetchLocations()
-    }
-  }, [isLocationFulfillmentEnabled, refetchLocations])
 
   const notification = useNotification()
 
   // Includes both order items and swap items
   const allItems = useMemo(() => {
     if (order) {
-      return getAllReturnableItems(order, false)
+      return filterItems(order, false)
     }
     return []
   }, [order])
 
-  const { shipping_options: shippingOptions, isLoading: shippingLoading } =
-    useAdminShippingOptions({
-      is_return: true,
-      region_id: order.region_id,
-    })
+  const {
+    shipping_options: shippingOptions,
+    isLoading: shippingLoading,
+  } = useAdminShippingOptions({
+    is_return: true,
+    region_id: order.region_id,
+  })
 
   const returnTotal = useMemo(() => {
     const items = Object.keys(toReturn).map((t) =>
@@ -130,9 +100,8 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
 
   const additionalTotal = useMemo(() => {
     return itemsToAdd.reduce((acc, next) => {
-      let amount = next.prices.find(
-        (ma) => ma.region_id === order.region_id
-      )?.amount
+      let amount = next.prices.find((ma) => ma.region_id === order.region_id)
+        ?.amount
 
       if (!amount) {
         amount = next.prices.find(
@@ -224,10 +193,6 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
         noNotification !== order.no_notification ? noNotification : undefined,
     }
 
-    if (isLocationFulfillmentEnabled && selectedLocation) {
-      data.return_location_id = selectedLocation.value
-    }
-
     if (shippingMethod) {
       data.return_shipping = {
         option_id: shippingMethod.value,
@@ -296,38 +261,12 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               />
             )}
           </div>
-          {isLocationFulfillmentEnabled && (
-            <div className="my-8">
-              <h3 className="inter-base-semibold ">Location</h3>
-              <p className="inter-base-regular text-grey-50">
-                Choose which location you want to return the items to.
-              </p>
-              {isLoadingLocations ? (
-                <Spinner />
-              ) : (
-                <Select
-                  className="mt-2"
-                  placeholder="Select Location to Return to"
-                  value={selectedLocation}
-                  isMulti={false}
-                  onChange={setSelectedLocation}
-                  options={
-                    stock_locations?.map((sl: StockLocationDTO) => ({
-                      label: sl.name,
-                      value: sl.id,
-                    })) || []
-                  }
-                />
-              )}
-            </div>
-          )}
-
-          <div className="mt-8 flex items-center justify-between">
+          <div className="flex justify-between mt-8 items-center">
             <h3 className="inter-base-semibold ">Items to send</h3>
             {itemsToAdd.length === 0 ? (
               <Button
                 variant="ghost"
-                className="border-grey-20 border"
+                className="border border-grey-20"
                 size="small"
                 onClick={() => {
                   layeredModalContext.push(
@@ -358,7 +297,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               <div className="flex w-full justify-end">
                 <Button
                   variant="ghost"
-                  className="border-grey-20 border"
+                  className="border border-grey-20"
                   size="small"
                   onClick={() => {
                     layeredModalContext.push(
@@ -375,7 +314,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               </div>
             </>
           )}
-          <div className="text-grey-90 inter-small-regular mt-8 flex items-center justify-between">
+          <div className="flex text-grey-90 justify-between items-center inter-small-regular mt-8">
             <span>Return Total</span>
             <span>
               {formatAmountWithSymbol({
@@ -384,7 +323,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               })}
             </span>
           </div>
-          <div className="text-grey-90 inter-small-regular mt-2 flex items-center justify-between">
+          <div className="flex text-grey-90 justify-between items-center inter-small-regular mt-2">
             <span>Additional Total</span>
             <span>
               {formatAmountWithSymbol({
@@ -395,11 +334,11 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               })}
             </span>
           </div>
-          <div className="text-grey-90 inter-small-regular mt-2 flex items-center justify-between">
+          <div className="flex text-grey-90 justify-between items-center inter-small-regular mt-2">
             <span>Outbond Shipping</span>
             <span>Calculated at checkout</span>
           </div>
-          <div className="inter-base-semibold mt-4 flex items-center justify-between">
+          <div className="flex justify-between items-center inter-base-semibold mt-4">
             <span>Estimated difference</span>
             <span className="inter-large-semibold">
               {formatAmountWithSymbol({
@@ -414,11 +353,11 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
         <Modal.Footer>
           <div className="flex w-full justify-between">
             <div
-              className="flex h-full cursor-pointer items-center"
+              className="items-center h-full flex cursor-pointer"
               onClick={() => setNoNotification(!noNotification)}
             >
               <div
-                className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
+                className={`w-5 h-5 flex justify-center text-grey-0 border-grey-30 border rounded-base ${
                   !noNotification && "bg-violet-60"
                 }`}
               >
@@ -433,7 +372,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
                 checked={!noNotification}
                 type="checkbox"
               />
-              <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
+              <span className="ml-3 flex items-center text-grey-90 gap-x-xsmall">
                 Send notifications
                 <IconTooltip content="If unchecked the customer will not receive communication about this exchange" />
               </span>

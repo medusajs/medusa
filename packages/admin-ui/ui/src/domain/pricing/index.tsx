@@ -1,5 +1,4 @@
 import { Route, Routes, useNavigate } from "react-router-dom"
-import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
@@ -13,14 +12,14 @@ const PricingIndex = () => {
   const actionables = [
     {
       label: "Add price list",
-      onClick: () => navigate(`/a/pricing/new`),
+      onClick: () => navigate(`/admin/pricing/new`),
       icon: <PlusIcon size={20} />,
     },
   ]
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex w-full grow flex-col">
+    <div className="h-full flex flex-col">
+      <div className="w-full flex flex-col grow">
         <BodyCard
           actionables={actionables}
           customHeader={<TableViewHeader views={["Price lists"]} />}
@@ -28,7 +27,6 @@ const PricingIndex = () => {
         >
           <PricingTable />
         </BodyCard>
-        <Spacer />
       </div>
     </div>
   )

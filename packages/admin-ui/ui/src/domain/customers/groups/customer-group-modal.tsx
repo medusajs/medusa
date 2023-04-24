@@ -1,168 +1,108 @@
-import { CustomerGroup } from "@medusajs/medusa"
 import {
-  useAdminCreateCustomerGroup,
-  useAdminUpdateCustomerGroup,
-} from "medusa-react"
-import { useEffect } from "react"
+  AdminPostCustomerGroupsGroupReq,
+  AdminPostCustomerGroupsReq,
+  CustomerGroup,
+} from "@medusajs/medusa"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import {
-  CustomerGroupGeneralForm,
-  CustomerGroupGeneralFormType,
-} from "../../../components/forms/customer-group/customer-group-general-form"
-import MetadataForm, {
-  getMetadataFormValues,
-  getSubmittableMetadata,
-  MetadataFormType,
-} from "../../../components/forms/general/metadata-form"
 
 import Button from "../../../components/fundamentals/button"
+import Input from "../../../components/molecules/input"
 import Modal from "../../../components/molecules/modal"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
+import Metadata, { MetadataField } from "../../../components/organisms/metadata"
 
 type CustomerGroupModalProps = {
-  open: boolean
-  customerGroup?: CustomerGroup
-  onClose: () => void
-}
-
-type CustomerGroupModalFormType = {
-  general: CustomerGroupGeneralFormType
-  metadata: MetadataFormType
+  handleClose: () => void
+  initialData?: CustomerGroup
+  handleSubmit: (
+    data: AdminPostCustomerGroupsReq | AdminPostCustomerGroupsGroupReq
+  ) => void
 }
 
 /*
  * A modal for crating/editing customer groups.
  */
-function CustomerGroupModal({
-  customerGroup,
-  onClose,
-  open,
-}: CustomerGroupModalProps) {
-  const form = useForm<CustomerGroupModalFormType>({
-    defaultValues: getDefaultValues(customerGroup),
-  })
+function CustomerGroupModal(props: CustomerGroupModalProps) {
+  const { initialData, handleSubmit, handleClose } = props
 
-  const { mutate: update, isLoading: isUpdating } = useAdminUpdateCustomerGroup(
-    customerGroup?.id!
+  const isEdit = !!initialData
+
+  const [metadata, setMetadata] = useState<MetadataField[]>(
+    isEdit
+      ? Object.keys(initialData.metadata || {}).map((k) => ({
+          key: k,
+          value: initialData.metadata[k],
+        }))
+      : []
   )
-  const { mutate: create, isLoading: isCreating } =
-    useAdminCreateCustomerGroup()
 
-  const notification = useNotification()
-
-  const { reset, handleSubmit: handleFormSubmit } = form
-
-  useEffect(() => {
-    if (open) {
-      reset(getDefaultValues(customerGroup))
-    }
-  }, [customerGroup, open, reset])
-
-  const onSubmit = handleFormSubmit((data) => {
-    const { general, metadata } = data
-
-    const onSuccess = () => {
-      const title = customerGroup ? "Group Updated" : "Group Created"
-      const msg = customerGroup
-        ? "The customer group has been updated"
-        : "The customer group has been created"
-
-      notification(title, msg, "success")
-
-      onClose()
-    }
-
-    const onError = (err: Error) => {
-      notification("Error", getErrorMessage(err), "error")
-    }
-
-    if (customerGroup) {
-      update(
-        {
-          name: general.name,
-          metadata: getSubmittableMetadata(metadata),
-        },
-        {
-          onSuccess,
-          onError,
-        }
-      )
-    } else {
-      create(
-        {
-          name: general.name,
-          metadata: getSubmittableMetadata(metadata),
-        },
-        {
-          onSuccess,
-          onError,
-        }
-      )
-    }
-
-    onClose()
+  const { register, handleSubmit: handleFromSubmit } = useForm({
+    defaultValues: initialData,
   })
+
+  const onSubmit = (data) => {
+    const meta = {}
+    const initial = props.initialData?.metadata || {}
+
+    metadata.forEach((m) => (meta[m.key] = m.value))
+
+    for (const m in initial) {
+      if (!(m in meta)) {
+        meta[m] = null
+      }
+    }
+
+    const toSubmit = {
+      name: data.name,
+      metadata: meta,
+    }
+    handleSubmit(toSubmit)
+  }
 
   return (
-    <Modal open={open} handleClose={onClose}>
+    <Modal handleClose={handleClose}>
       <Modal.Body>
-        <Modal.Header handleClose={onClose}>
+        <Modal.Header handleClose={handleClose}>
           <span className="inter-xlarge-semibold">
-            {customerGroup ? "Edit" : "Create a New"} Customer Group
+            {props.initialData ? "Edit" : "Create a New"} Customer Group
           </span>
         </Modal.Header>
 
-        <form onSubmit={onSubmit}>
-          <Modal.Content>
-            <div className="gap-y-xlarge flex flex-col">
-              <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
-                <CustomerGroupGeneralForm form={nestedForm(form, "general")} />
-              </div>
-              <div>
-                <h2 className="inter-base-semibold mb-base">Metadata</h2>
-                <MetadataForm form={nestedForm(form, "metadata")} />
-              </div>
+        <Modal.Content>
+          <div className="space-y-4">
+            <span className="inter-base-semibold">Details</span>
+            <div className="flex space-x-4">
+              <Input
+                label="Title"
+                {...register("name")}
+                placeholder="Customer group name"
+                required
+              />
             </div>
-          </Modal.Content>
+          </div>
 
-          <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full justify-end">
-              <Button
-                variant="secondary"
-                className="text-small mr-2 w-32 justify-center"
-                size="small"
-                type="button"
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button size="small" variant="primary" type="submit">
-                <span>{customerGroup ? "Edit" : "Publish"} Group</span>
-              </Button>
-            </div>
-          </Modal.Footer>
-        </form>
+          <div className="mt-8">
+            <Metadata metadata={metadata} setMetadata={setMetadata} />
+          </div>
+        </Modal.Content>
+
+        <Modal.Footer>
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button
+              size="small"
+              variant="primary"
+              onClick={handleFromSubmit(onSubmit)}
+            >
+              <span>{props.initialData ? "Edit" : "Publish"} Group</span>
+            </Button>
+          </div>
+        </Modal.Footer>
       </Modal.Body>
     </Modal>
   )
-}
-
-const getDefaultValues = (
-  initialData?: CustomerGroup
-): CustomerGroupModalFormType | undefined => {
-  if (!initialData) {
-    return undefined
-  }
-
-  return {
-    general: {
-      name: initialData.name,
-    },
-    metadata: getMetadataFormValues(initialData.metadata),
-  }
 }
 
 export default CustomerGroupModal

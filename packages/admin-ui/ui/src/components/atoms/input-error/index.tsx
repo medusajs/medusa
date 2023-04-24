@@ -1,5 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message"
 import clsx from "clsx"
+import React from "react"
 import { MultipleFieldErrors } from "react-hook-form"
 import Tooltip from "../tooltip"
 
@@ -21,7 +22,7 @@ const InputError = ({ errors, name, className }: InputErrorProps) => {
       render={({ message, messages }) => {
         return (
           <div
-            className={clsx("inter-small-regular mt-2 text-rose-50", className)}
+            className={clsx("text-rose-50 inter-small-regular mt-2", className)}
           >
             {messages ? (
               <MultipleMessages messages={messages} />
@@ -42,12 +43,12 @@ const MultipleMessages = ({ messages }: { messages: MultipleFieldErrors }) => {
   const remainderErrors = errors.slice(1)
 
   return (
-    <div className="flex cursor-default items-center gap-x-1">
+    <div className="flex items-center gap-x-1 cursor-default">
       <p>{displayedError}</p>
       {remainderErrors?.length > 0 && (
         <Tooltip
           content={
-            <div className="inter-small-regular text-rose-50">
+            <div className="text-rose-50 inter-small-regular">
               {remainderErrors.map((e, i) => {
                 return (
                   <p key={i}>

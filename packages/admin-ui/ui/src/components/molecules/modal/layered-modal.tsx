@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import React, { ReactNode, useContext, useReducer } from "react"
 import Button from "../../fundamentals/button"
-import UTurnIcon from "../../fundamentals/icons/u-turn-icon"
+import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
 import Modal, { ModalProps } from "../../molecules/modal"
 
 enum LayeredModalActions {
@@ -10,17 +10,17 @@ enum LayeredModalActions {
   RESET,
 }
 
-export type LayeredModalScreen = {
+type LayeredModalScreen = {
   title: string
   subtitle?: string
   onBack: () => void
-  onConfirm?: () => void
+  onConfirm: () => void
   view: ReactNode
 }
 
 export type ILayeredModalContext = {
   screens: LayeredModalScreen[]
-  push: (screen: LayeredModalScreen) => void
+  push: (screen: ReactNode) => void
   pop: () => void
   reset: () => void
 }
@@ -98,10 +98,9 @@ const LayeredModal: React.FC<LayeredModalProps> = ({
     >
       <Modal.Body
         className={clsx(
-          "flex flex-col justify-between transition-transform duration-200",
+          "transition-transform translate-x-full flex flex-col justify-between duration-200",
           {
             "translate-x-0": typeof screen !== "undefined",
-            "translate-x-full": typeof screen === "undefined",
           }
         )}
       >
@@ -112,13 +111,13 @@ const LayeredModal: React.FC<LayeredModalProps> = ({
                 <Button
                   variant="ghost"
                   size="small"
-                  className="text-grey-50 h-8 w-8 border"
+                  className="text-grey-50 w-8 h-8"
                   onClick={screen.onBack}
                 >
-                  <UTurnIcon size={20} />
+                  <ArrowLeftIcon size={20} />
                 </Button>
-                <div className="gap-x-2xsmall flex items-center">
-                  <h2 className="inter-xlarge-semibold ml-4">{screen.title}</h2>
+                <div className="flex items-center gap-x-2xsmall">
+                  <h2 className="inter-xlarge-semibold ml-5">{screen.title}</h2>
                   {screen.subtitle && (
                     <span className="inter-xlarge-regular text-grey-50">
                       ({screen.subtitle})

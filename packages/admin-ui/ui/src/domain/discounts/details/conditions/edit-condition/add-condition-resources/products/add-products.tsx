@@ -1,9 +1,10 @@
 import { useAdminProducts } from "medusa-react"
-import { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import Button from "../../../../../../../components/fundamentals/button"
 import Modal from "../../../../../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../../../../../components/molecules/modal/layered-modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
+import { useDebounce } from "../../../../../../../hooks/use-debounce"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
 import { defaultQueryProps } from "../../../../..//new/discount-form/condition-tables/shared/common"
 import {
@@ -50,8 +51,8 @@ const AddProductConditionsScreen = () => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="space-x-xsmall flex w-full justify-end">
-          <Button variant="secondary" size="small" onClick={pop}>
+        <div className="flex items-center justify-end w-full gap-2">
+          <Button variant="ghost" size="small" onClick={pop}>
             Cancel
           </Button>
           <Button

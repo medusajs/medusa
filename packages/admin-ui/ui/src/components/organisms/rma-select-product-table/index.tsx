@@ -113,7 +113,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
       <Table.Head className="border-none">
         <Table.HeadRow className="text-grey-50 inter-small-semibold">
           <Table.HeadCell colSpan={2}>Product Details</Table.HeadCell>
-          <Table.HeadCell className="pr-8 text-right">Quantity</Table.HeadCell>
+          <Table.HeadCell className="text-right pr-8">Quantity</Table.HeadCell>
           <Table.HeadCell className="text-right">Refundable</Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
         </Table.HeadRow>
@@ -133,10 +133,10 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
             <Fragment key={item.id}>
               <Table.Row className={clsx("border-b-grey-0 hover:bg-grey-0")}>
                 <Table.Cell>
-                  <div className="ml-1 flex h-full items-center">
+                  <div className="items-center ml-1 h-full flex">
                     <div
                       onClick={() => handleReturnToggle(item)}
-                      className={`text-grey-0 border-grey-30 rounded-base mr-4 flex h-5 w-5 cursor-pointer justify-center border ${
+                      className={`mr-4 w-5 h-5 flex justify-center text-grey-0 border-grey-30 border cursor-pointer rounded-base ${
                         checked && "bg-violet-60"
                       }`}
                     >
@@ -155,14 +155,14 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                   </div>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="flex min-w-[240px] py-2">
-                    <div className="h-[40px] w-[30px] ">
+                  <div className="min-w-[240px] flex py-2">
+                    <div className="w-[30px] h-[40px] ">
                       <img
-                        className="h-full w-full rounded object-cover"
+                        className="h-full w-full object-cover rounded"
                         src={item.thumbnail}
                       />
                     </div>
-                    <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
+                    <div className="inter-small-regular text-grey-50 flex flex-col ml-4">
                       <span>
                         <span className="text-grey-90">{item.title}</span>
                       </span>
@@ -180,12 +180,12 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                     </div>
                   </div>
                 </Table.Cell>
-                <Table.Cell className="w-32 pr-8 text-right">
+                <Table.Cell className="text-right w-32 pr-8">
                   {item.id in toReturn ? (
-                    <div className="text-grey-50 flex w-full justify-end text-right ">
+                    <div className="flex w-full text-right justify-end text-grey-50 ">
                       <span
                         onClick={() => handleQuantity(-1, item)}
-                        className="hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                        className="w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 mr-2"
                       >
                         <MinusIcon size={16} />
                       </span>
@@ -193,7 +193,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                       <span
                         onClick={() => handleQuantity(1, item)}
                         className={clsx(
-                          "hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                          "w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 ml-2"
                         )}
                       >
                         <PlusIcon size={16} />
@@ -211,12 +211,12 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                     amount: item.refundable || 0,
                   })}
                 </Table.Cell>
-                <Table.Cell className="text-grey-40 pr-1 text-right">
+                <Table.Cell className="text-right text-grey-40 pr-1">
                   {order.currency_code.toUpperCase()}
                 </Table.Cell>
               </Table.Row>
               {checked && !isSwapOrClaim && (
-                <Table.Row className="hover:bg-grey-0 last:border-b-0">
+                <Table.Row className="last:border-b-0 hover:bg-grey-0">
                   <Table.Cell></Table.Cell>
                   <Table.Cell colSpan={2}>
                     <div className="max-w-[470px] truncate">
@@ -244,7 +244,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell colSpan={2}>
-                    <div className="mb-small flex w-full justify-end">
+                    <div className="flex w-full justify-end mb-small">
                       <Button
                         onClick={() =>
                           push(
@@ -261,7 +261,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                         }
                         variant="ghost"
                         size="small"
-                        className="border-grey-20 border"
+                        className="border border-grey-20"
                       >
                         Select Reason
                       </Button>

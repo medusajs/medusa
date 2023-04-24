@@ -7,7 +7,7 @@ type SidebarTeamMemberProps = {
 }
 
 const SidebarTeamMember: React.FC<SidebarTeamMemberProps> = ({
-  color = "bg-grey-80",
+  color = "bg-violet-60",
   user,
 }: SidebarTeamMemberProps) => {
   const fullName =
@@ -16,11 +16,11 @@ const SidebarTeamMember: React.FC<SidebarTeamMemberProps> = ({
       : user.email
 
   return (
-    <div className="flex w-full items-center bg-inherit px-2.5 py-1.5">
-      <div className="h-[24px] w-[24px]">
+    <div className="flex items-center bg-inherit px-2.5 py-1.5 w-full">
+      <div className="w-[24px] h-[24px]">
         <Avatar user={user} color={color} />
       </div>
-      <span className="w-40 truncate pl-2.5">{fullName}</span>
+      <span className="pl-2.5 w-40 truncate">{fullName}</span>
     </div>
   )
 }

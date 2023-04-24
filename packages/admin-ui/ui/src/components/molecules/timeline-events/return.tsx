@@ -1,9 +1,12 @@
 import clsx from "clsx"
-import { useAdminCancelReturn } from "medusa-react"
+import {
+  useAdminCancelReturn,
+  useAdminOrder,
+  useAdminReceiveReturn,
+} from "medusa-react"
 import React, { useState } from "react"
-import { ReceiveReturnMenu } from "../../../domain/orders/details/receive-return"
+import ReceiveMenu from "../../../domain/orders/details/returns/receive-menu"
 import { ReturnEvent } from "../../../hooks/use-build-timeline"
-import useToggleState from "../../../hooks/use-toggle-state"
 import Button from "../../fundamentals/button"
 import AlertIcon from "../../fundamentals/icons/alert-icon"
 import CancelIcon from "../../fundamentals/icons/cancel-icon"
@@ -22,13 +25,10 @@ type ReturnRequestedProps = {
 
 const Return: React.FC<ReturnRequestedProps> = ({ event, refetch }) => {
   const [showCancel, setShowCancel] = useState(false)
+  const [showReceive, setShowReceive] = useState(false)
   const cancelReturn = useAdminCancelReturn(event.id)
 
-  const {
-    state: showReceiveReturnMenu,
-    close: closeReceiveReturnMenu,
-    open: openReceiveReturnMenu,
-  } = useToggleState()
+  const { order } = useAdminOrder(event.orderId)
 
   const handleCancel = () => {
     cancelReturn.mutate(undefined, {
@@ -38,19 +38,27 @@ const Return: React.FC<ReturnRequestedProps> = ({ event, refetch }) => {
     })
   }
 
-  const eventContainerArgs = buildReturn(
-    event,
-    handleCancel,
-    openReceiveReturnMenu
-  )
+  const { mutateAsync: receiveReturn } = useAdminReceiveReturn(event.id)
 
-  if (event.raw?.claim_order_id) {
-    return null
+  const handleReceiveReturn = async (
+    items: { item_id: string; quantity: number }[],
+    refund?: number
+  ) => {
+    await receiveReturn(
+      { items, refund },
+      {
+        onSuccess: () => {
+          refetch()
+        },
+      }
+    )
   }
+
+  const args = buildReturn(event, handleCancel, () => setShowReceive(true))
 
   return (
     <>
-      <EventContainer {...eventContainerArgs} />
+      <EventContainer {...args} />
       {showCancel && (
         <DeletePrompt
           handleClose={() => setShowCancel(false)}
@@ -61,11 +69,13 @@ const Return: React.FC<ReturnRequestedProps> = ({ event, refetch }) => {
           text="Are you sure you want to cancel this return?"
         />
       )}
-      {showReceiveReturnMenu && (
-        <ReceiveReturnMenu
-          onClose={closeReceiveReturnMenu}
-          order={event.order}
+      {showReceive && order && (
+        <ReceiveMenu
+          onDismiss={() => setShowReceive(false)}
+          onReceiveReturn={handleReceiveReturn}
+          order={order}
           returnRequest={event.raw}
+          refunded={event.refunded}
         />
       )}
     </>
@@ -130,16 +140,15 @@ function buildReturn(
     children:
       event.status === "requested"
         ? [
-            event.items.map((i, index) => {
-              return <EventItemContainer key={index} item={i} />
+            event.items.map((i) => {
+              return <EventItemContainer item={i} />
             }),
-            React.createElement(React.Fragment, { key: "button" }, button),
+            button,
           ]
         : event.status === "received"
         ? [
-            event.items.map((i, index) => (
+            event.items.map((i) => (
               <EventItemContainer
-                key={index}
                 item={{ ...i, quantity: i.receivedQuantity ?? i.quantity }}
               />
             )),

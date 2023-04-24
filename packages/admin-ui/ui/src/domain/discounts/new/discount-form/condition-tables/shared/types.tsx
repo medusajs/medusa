@@ -1,5 +1,5 @@
 import { ProductType } from "@medusajs/medusa"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import { Column, HeaderGroup, Row } from "react-table"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import Table from "../../../../../../components/molecules/table"
@@ -42,7 +42,7 @@ export const useTypesColumns = () => {
     return [
       {
         Header: () => (
-          <div className="flex min-w-[626px] items-center gap-1">
+          <div className="flex items-center gap-1 min-w-[626px]">
             Type <SortingIcon size={16} />
           </div>
         ),

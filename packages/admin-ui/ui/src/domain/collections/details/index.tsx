@@ -10,7 +10,7 @@ import Spinner from "../../../components/atoms/spinner"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Actionables from "../../../components/molecules/actionables"
-import JSONView from "../../../components/molecules/json-view"
+import ViewRaw from "../../../components/molecules/view-raw"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { MetadataField } from "../../../components/organisms/metadata"
 import Section from "../../../components/organisms/section"
@@ -20,13 +20,18 @@ import ViewProductsTable from "../../../components/templates/collection-product-
 import useNotification from "../../../hooks/use-notification"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { useBasePath } from "../../../utils/routePathing"
+import { useUserPermissions } from "../../../hooks/use-permissions"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
 
-const CollectionDetails = () => {
+const CollectionDetails: React.FC<{}> = () => {
   const { id } = useParams()
-
-  const { collection, isLoading, refetch } = useAdminCollection(id!)
-  const deleteCollection = useAdminDeleteCollection(id!)
-  const updateCollection = useAdminUpdateCollection(id!)
+  const { isAdmin } = useUserPermissions()
+  const basePath = useBasePath()
+  const ensuredPath = location!.pathname.replace(`${basePath}/collections/`, ``)
+  const { collection, isLoading, refetch } = useAdminCollection(ensuredPath)
+  const deleteCollection = useAdminDeleteCollection(ensuredPath)
+  const updateCollection = useAdminUpdateCollection(ensuredPath)
   const [showEdit, setShowEdit] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
   const [showAddProducts, setShowAddProducts] = useState(false)
@@ -36,7 +41,7 @@ const CollectionDetails = () => {
 
   const handleDelete = () => {
     deleteCollection.mutate(undefined, {
-      onSuccess: () => navigate(`/a/collections`),
+      onSuccess: () => navigate(`/admin/collections`),
     })
   }
 
@@ -107,15 +112,15 @@ const CollectionDetails = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-        <BackButton
-          className="mb-xsmall"
-          path="/a/products?view=collections"
-          label="Back to Collections"
+      <div className="flex flex-col h-full">
+        <Breadcrumb
+          currentPage="Edit Collection"
+          previousBreadcrumb="Collections"
+          previousRoute={`${basePath}/products?view=collections`}
         />
-        <div className="rounded-rounded py-large px-xlarge border-grey-20 bg-grey-0 mb-large border">
+        <div className="rounded-rounded py-large px-xlarge border border-grey-20 bg-grey-0 mb-large">
           {isLoading || !collection ? (
-            <div className="flex h-12 w-full items-center">
+            <div className="flex items-center w-full h-12">
               <Spinner variant="secondary" size="large" />
             </div>
           ) : (
@@ -127,19 +132,23 @@ const CollectionDetails = () => {
                   </h2>
                   <Actionables
                     forceDropdown
-                    actions={[
-                      {
-                        label: "Edit Collection",
-                        onClick: () => setShowEdit(true),
-                        icon: <EditIcon size="20" />,
-                      },
-                      {
-                        label: "Delete",
-                        onClick: () => setShowDelete(!showDelete),
-                        variant: "danger",
-                        icon: <TrashIcon size="20" />,
-                      },
-                    ]}
+                    actions={
+                      isAdmin
+                        ? [
+                            {
+                              label: "Edit Collection",
+                              onClick: () => setShowEdit(true),
+                              icon: <EditIcon size="20" />,
+                            },
+                            {
+                              label: "Delete",
+                              onClick: () => setShowDelete(!showDelete),
+                              variant: "danger",
+                              icon: <TrashIcon size="20" />,
+                            },
+                          ]
+                        : []
+                    }
                   />
                 </div>
                 <p className="inter-small-regular text-grey-50">
@@ -147,10 +156,10 @@ const CollectionDetails = () => {
                 </p>
               </div>
               {collection.metadata && (
-                <div className="mt-large gap-y-base flex flex-col">
+                <div className="mt-large flex flex-col gap-y-base">
                   <h3 className="inter-base-semibold">Metadata</h3>
                   <div>
-                    <JSONView data={collection.metadata} />
+                    <ViewRaw raw={collection.metadata} name="metadata" />
                   </div>
                 </div>
               )}

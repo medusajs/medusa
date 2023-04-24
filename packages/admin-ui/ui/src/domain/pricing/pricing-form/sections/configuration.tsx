@@ -16,7 +16,9 @@ type ConfigurationProps = {
   priceList?: PriceList
 }
 
-const checkForEnabledConfigs = (config: ConfigurationFields): string[] => {
+const checkForEnabledConfigs = (
+  config: ConfigurationFields
+): string[] => {
   const enabledConfigs: string[] = []
 
   if (config.customer_groups && config.customer_groups.length > 0) {
@@ -34,8 +36,11 @@ const checkForEnabledConfigs = (config: ConfigurationFields): string[] => {
 
 const Configuration: React.FC<ConfigurationProps> = () => {
   const { customer_groups, isLoading } = useAdminCustomerGroups()
-  const { control, handleConfigurationSwitch, configFields } =
-    usePriceListForm()
+  const {
+    control,
+    handleConfigurationSwitch,
+    configFields,
+  } = usePriceListForm()
   const [openItems, setOpenItems] = useState<string[]>(
     checkForEnabledConfigs(configFields)
   )
@@ -70,7 +75,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
           >
             <div
               className={clsx(
-                "gap-xsmall accordion-margin-transition flex items-center",
+                "flex items-center gap-xsmall accordion-margin-transition",
                 {
                   "mt-4": openItems.indexOf("starts_at") > -1,
                 }
@@ -112,7 +117,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
           >
             <div
               className={clsx(
-                "gap-xsmall accordion-margin-transition flex items-center",
+                "flex items-center gap-xsmall accordion-margin-transition",
                 {
                   "mt-4": openItems.indexOf("ends_at") > -1,
                 }
@@ -155,11 +160,11 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             <Controller
               name="customer_groups"
               control={control}
-              render={({ field: { value, onChange, ref } }) => {
+              render={({ field: { value, onChange, ref }}) => {
                 return (
                   <div
                     className={clsx(
-                      "gap-xsmall accordion-margin-transition flex w-full items-center",
+                      "flex items-center gap-xsmall accordion-margin-transition w-full",
                       {
                         "mt-4": openItems.indexOf("customer_groups") > -1,
                       }

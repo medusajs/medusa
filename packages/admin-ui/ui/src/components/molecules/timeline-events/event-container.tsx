@@ -14,7 +14,7 @@ export enum EventIconColor {
   DEFAULT = "text-grey-50",
 }
 
-export type EventContainerProps = {
+type EventContainerProps = {
   icon: React.ReactNode
   iconColor?: EventIconColor
   title: string
@@ -25,7 +25,6 @@ export type EventContainerProps = {
   isFirst?: boolean
   expandable?: boolean
   children: ReactNode
-  detail?: string | React.ReactNode
 }
 
 const EventContainer: React.FC<EventContainerProps> = ({
@@ -39,7 +38,6 @@ const EventContainer: React.FC<EventContainerProps> = ({
   isFirst = false,
   expandable = false,
   children,
-  detail,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(!expandable)
 
@@ -50,12 +48,12 @@ const EventContainer: React.FC<EventContainerProps> = ({
   return (
     <div className="mb-base">
       <div className="flex items-center justify-between">
-        <div className="gap-x-xsmall flex items-center">
+        <div className="flex items-center gap-x-xsmall">
           <div className={clsx("h-5 w-5", iconColor)}>{icon}</div>
           <div className="inter-small-semibold">{title}</div>
           <div className="inter-small-regular text-grey-50"></div>
         </div>
-        <div className="gap-x-xsmall flex items-center">
+        <div className="flex items-center gap-x-xsmall">
           {noNotification && (
             <Tooltip content="Notifications related to this event are disabled">
               <BellOffIcon size={20} className="text-grey-40" />
@@ -73,14 +71,14 @@ const EventContainer: React.FC<EventContainerProps> = ({
           )}
         </div>
       </div>
-      <div className="gap-x-xsmall flex">
-        <div className="pt-base flex w-5 justify-center">
-          {!isFirst && <div className="min-h-[24px] w-px" />}
+      <div className="flex gap-x-xsmall">
+        <div className="w-5 flex justify-center pt-base">
+          {!isFirst && <div className="w-px min-h-[24px]" />}
         </div>
-        <div className="inter-small-regular mt-2xsmall w-full">
+        <div className="mt-2xsmall w-full inter-small-regular">
           <div className="flex items-center">
             <Tooltip content={new Date(time).toUTCString()}>
-              <div className="inter-small-regular text-grey-50">
+              <div className="text-grey-50 inter-small-regular">
                 {moment(time).fromNow()}
               </div>
             </Tooltip>
@@ -92,9 +90,8 @@ const EventContainer: React.FC<EventContainerProps> = ({
             {midNode}
           </div>
           {children && isExpanded && (
-            <div className="mt-small pb-base w-full">{children}</div>
+            <div className="mt-small w-full pb-base">{children}</div>
           )}
-          <div className="text-grey-50">{detail}</div>
         </div>
       </div>
     </div>
@@ -102,7 +99,7 @@ const EventContainer: React.FC<EventContainerProps> = ({
 }
 
 const Dot = ({ size = "2px", bg = "bg-grey-50" }) => {
-  return <div className={`aspect-square h-[2px] w-[2px] ${bg} rounded-full`} />
+  return <div className={`w-[2px] h-[2px] aspect-square ${bg} rounded-full`} />
 }
 
 export default EventContainer

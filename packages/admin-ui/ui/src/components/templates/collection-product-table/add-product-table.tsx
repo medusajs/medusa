@@ -1,6 +1,9 @@
+import { AdminGetProductsParams } from "@medusajs/medusa"
+import merge from "lodash/merge"
 import { useAdminProducts } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
+import { useSelectedVendor } from "../../../context/vendor"
 import { useDebounce } from "../../../hooks/use-debounce"
 import Button from "../../fundamentals/button"
 import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
@@ -8,34 +11,47 @@ import Modal from "../../molecules/modal"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import useCollectionProductColumns from "./use-collection-product-columns"
+import { SimpleProductType } from "./utils"
 
 type AddProductsTableProps = {
   existingRelations: any[]
   onSubmit: (selectedIds: string[], removedIds: string[]) => void
   onClose: () => void
+  query?: AdminGetProductsParams
+  showStatus?: boolean
 }
 
 const AddProductsTable: React.FC<AddProductsTableProps> = ({
   existingRelations,
   onSubmit,
   onClose,
+  query: queryOverride,
+  showStatus = true,
 }) => {
   const PAGE_SIZE = 10
   const [query, setQuery] = useState("")
   const [offset, setOffset] = useState(0)
   const [numPages, setNumPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(0)
-
+  const { isVendorView, selectedVendor } = useSelectedVendor()
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
   const [removedProducts, setRemovedProducts] = useState<any[]>([])
 
   const debouncedSearchTerm = useDebounce(query, 500)
 
-  const { isLoading, count, products } = useAdminProducts({
-    q: debouncedSearchTerm,
-    limit: PAGE_SIZE,
-    offset,
-  })
+  const { isLoading, count, products } = useAdminProducts(
+    merge(
+      {},
+      {
+        q: debouncedSearchTerm,
+        vendor_id:
+          isVendorView && selectedVendor?.id ? [selectedVendor?.id] : undefined,
+        limit: PAGE_SIZE,
+        offset,
+      },
+      queryOverride
+    )
+  )
 
   const columns = useCollectionProductColumns()
 
@@ -52,7 +68,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
     state: { pageIndex, pageSize, selectedRowIds },
   } = useTable(
     {
-      data: products || [],
+      data: (products || []) as SimpleProductType[],
       columns: columns,
       manualPagination: true,
       initialState: {
@@ -76,7 +92,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
           id: "selection",
           Cell: ({ row }) => {
             return (
-              <Table.Cell className="pl-base w-[5%]">
+              <Table.Cell className="w-[5%] pl-base">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Table.Cell>
             )
@@ -131,7 +147,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
   }
 
   const handleSearch = (q) => {
-    setOffset(0)
+    if (offset !== 0) setOffset(0)
     setQuery(q)
   }
 
@@ -179,8 +195,8 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
           >
             <Table
               enableSearch
-              handleSearch={handleSearch}
               searchValue={query}
+              handleSearch={handleSearch}
               searchPlaceholder="Search Products"
               {...getTableProps()}
               className="flex-grow"
@@ -195,7 +211,13 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
                       className="px-base"
                     >
                       {row.cells.map((cell, index) => {
-                        return cell.render("Cell", { index })
+                        if (!showStatus && cell.column.id === "status")
+                          return null
+
+                        return cell.render("Cell", {
+                          key: cell.column.id,
+                          index,
+                        })
                       })}
                     </Table.Row>
                   )
@@ -205,19 +227,13 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
           </TableContainer>
         </Modal.Content>
         <Modal.Footer>
-          <div className="gap-x-xsmall flex w-full items-center justify-end">
-            <Button
-              variant="ghost"
-              size="small"
-              className="w-eventButton"
-              onClick={onClose}
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={onClose}>
               Cancel
             </Button>
             <Button
               variant="primary"
               size="small"
-              className="w-eventButton"
               onClick={handleSubmit}
               disabled={disabled}
             >

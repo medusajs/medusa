@@ -1,25 +1,22 @@
+import React from "react"
 import * as RadixAvatar from "@radix-ui/react-avatar"
 import clsx from "clsx"
-import React from "react"
-import Spinner from "../spinner"
 
 type AvatarProps = {
   user?: {
     img?: string
     first_name?: string
     last_name?: string
-    email?: string
+    email: string
   }
   font?: string
   color?: string
-  isLoading?: boolean
 }
 
 const Avatar: React.FC<AvatarProps> = ({
   user,
   font = "inter-small-semibold",
-  color = "bg-grey-80",
-  isLoading = false,
+  color = "bg-violet-60",
 }) => {
   let username: string
 
@@ -34,26 +31,22 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <RadixAvatar.Root
       className={clsx(
-        "rounded-circle h-full w-full select-none items-center justify-center overflow-hidden",
+        "w-full h-full items-center justify-center overflow-hidden select-none rounded-circle",
         color
       )}
     >
       <RadixAvatar.Image
         src={user?.img}
         alt={username}
-        className="rounded-circle h-full w-full object-cover"
+        className="w-full h-full object-cover rounded-circle"
       />
       <RadixAvatar.Fallback
         className={clsx(
-          "text-grey-0 rounded-circle flex h-full w-full items-center justify-center bg-inherit",
+          "w-full h-full flex items-center justify-center bg-inherit text-grey-0 rounded-circle",
           font
         )}
       >
-        {isLoading ? (
-          <Spinner size="small" variant="primary" />
-        ) : (
-          username.slice(0, 1).toUpperCase()
-        )}
+        {username.slice(0, 1).toUpperCase()}
       </RadixAvatar.Fallback>
     </RadixAvatar.Root>
   )

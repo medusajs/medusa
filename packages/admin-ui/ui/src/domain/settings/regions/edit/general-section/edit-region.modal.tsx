@@ -1,16 +1,11 @@
 import { AdminPostRegionsRegionReq, Region } from "@medusajs/medusa"
 import { useAdminUpdateRegion } from "medusa-react"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import MetadataForm, {
-  getMetadataFormValues,
-  getSubmittableMetadata,
-  MetadataFormType,
-} from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
+import { useFeatureFlag } from "../../../../../context/feature-flag"
 import useNotification from "../../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { currencies } from "../../../../../utils/currencies"
 import { getErrorMessage } from "../../../../../utils/error-messages"
 import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper"
@@ -32,7 +27,6 @@ type Props = {
 type RegionEditFormType = {
   details: RegionDetailsFormType
   providers: RegionProvidersFormType
-  metadata: MetadataFormType
 }
 
 const EditRegionModal = ({ region, onClose, open }: Props) => {
@@ -54,7 +48,7 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
 
   useEffect(() => {
     reset(getDefaultValues(region))
-  }, [region, reset])
+  }, [region])
 
   const { mutate, isLoading } = useAdminUpdateRegion(region.id)
   const notifcation = useNotification()
@@ -68,7 +62,6 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
         (fp) => fp.value
       ),
       countries: data.details.countries.map((c) => c.value),
-      metadata: getSubmittableMetadata(data.metadata),
     }
 
     if (isFeatureEnabled("tax_inclusive_pricing")) {
@@ -98,21 +91,16 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
               <h3 className="inter-base-semibold mb-base">Details</h3>
               <RegionDetailsForm form={nestedForm(form, "details")} />
             </div>
-            <div className="bg-grey-20 my-xlarge h-px w-full" />
+            <div className="w-full h-px bg-grey-20 my-xlarge" />
             <div>
               <h3 className="inter-base-semibold mb-base">Providers</h3>
               <RegionProvidersForm form={nestedForm(form, "providers")} />
             </div>
-            <div className="bg-grey-20 my-xlarge h-px w-full" />
-            <div>
-              <h3 className="inter-base-semibold mb-base">Metadata</h3>
-              <MetadataForm form={nestedForm(form, "metadata")} />
-            </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="small"
                 type="button"
                 onClick={closeAndReset}
@@ -164,7 +152,6 @@ const getDefaultValues = (region: Region): RegionEditFormType => {
         ? region.payment_providers.map((p) => paymentProvidersMapper(p.id))
         : [],
     },
-    metadata: getMetadataFormValues(region.metadata),
   }
 }
 

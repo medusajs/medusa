@@ -52,14 +52,13 @@ const FilterDropdownContainer = ({
       <RadixPopover.Content
         sideOffset={8}
         style={heightStyle}
-        className="bg-grey-0 rounded-rounded shadow-dropdown z-40 max-w-[272px] overflow-y-auto py-4"
+        className="bg-grey-0 overflow-y-auto rounded-rounded shadow-dropdown max-w-[272px] py-4 z-40"
       >
-        <div className="border-grey-20 flex border-b px-4 pb-4">
+        <div className="flex px-4 pb-4 border-b border-grey-20 gap-2">
           <Button
             size="small"
             tabIndex={-1}
-            className="border-grey-20 mr-2 border"
-            variant="ghost"
+            variant="secondary"
             onClick={() => onClear()}
           >
             Clear
@@ -67,7 +66,7 @@ const FilterDropdownContainer = ({
           <Button
             tabIndex={-1}
             variant="primary"
-            className="w-44 justify-center"
+            className="w-44"
             size="small"
             onClick={() => onSubmit()}
           >
@@ -76,7 +75,7 @@ const FilterDropdownContainer = ({
         </div>
         {React.Children.map(children, (child) => {
           return (
-            <div className="border-grey-20 border-b py-2 px-4 last:border-0 last:pb-0">
+            <div className="border-b border-grey-20 py-2 px-4 last:pb-0 last:border-0">
               {child}
             </div>
           )

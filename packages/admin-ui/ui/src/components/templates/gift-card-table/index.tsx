@@ -104,7 +104,7 @@ const GiftCardTable = () => {
 
   const updateUrlFromFilter = (obj = {}) => {
     const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/gift-cards`, "", `${`?${stringified}`}`)
+    window.history.replaceState(`/admin/gift-cards`, "", `${`?${stringified}`}`)
   }
 
   const refreshWithFilters = () => {
@@ -162,7 +162,7 @@ const GiftCardTable = () => {
           <Table.Body {...getTableBodyProps()}>
             <Table.Row>
               <Table.Cell colSpan={columns.length}>
-                <div className="absolute mt-10 flex h-full w-full items-center justify-center">
+                <div className="flex w-full h-full absolute items-center justify-center mt-10">
                   <div className="">
                     <Spinner size={"large"} variant={"secondary"} />
                   </div>

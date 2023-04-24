@@ -1,5 +1,6 @@
-import { CustomerGroup } from "@medusajs/medusa"
+import { useContext, useEffect, useState } from "react"
 import { difference } from "lodash"
+import { CustomerGroup } from "@medusajs/medusa"
 import {
   useAdminAddCustomersToCustomerGroup,
   useAdminCustomerGroup,
@@ -7,21 +8,20 @@ import {
   useAdminDeleteCustomerGroup,
   useAdminRemoveCustomersFromCustomerGroup,
 } from "medusa-react"
-import { useEffect, useState } from "react"
 
+import BodyCard from "../../../components/organisms/body-card"
+import EditIcon from "../../../components/fundamentals/icons/edit-icon"
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import EditCustomersTable from "../../../components/templates/customer-group-table/edit-customers-table"
+import CustomersListTable from "../../../components/templates/customer-group-table/customers-list-table"
+import CustomerGroupContext, {
+  CustomerGroupContextContainer,
+} from "./context/customer-group-context"
+import useQueryFilters from "../../../hooks/use-query-filters"
+import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import { ActionType } from "../../../components/molecules/actionables"
-import BodyCard from "../../../components/organisms/body-card"
-import DeletePrompt from "../../../components/organisms/delete-prompt"
-import CustomersListTable from "../../../components/templates/customer-group-table/customers-list-table"
-import EditCustomersTable from "../../../components/templates/customer-group-table/edit-customers-table"
-import useQueryFilters from "../../../hooks/use-query-filters"
-import useToggleState from "../../../hooks/use-toggle-state"
-import CustomerGroupModal from "./customer-group-modal"
 
 /**
  * Default filtering config for querying customer group customers list endpoint.
@@ -37,7 +37,7 @@ const defaultQueryProps = {
  */
 function CustomersListPlaceholder() {
   return (
-    <div className="center flex h-full min-h-[756px] items-center justify-center">
+    <div className="h-full flex center justify-center items-center min-h-[756px]">
       <span className="text-xs text-gray-400">
         No customers in this group yet
       </span>
@@ -127,7 +127,7 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
     <BodyCard
       title="Customers"
       actionables={actions}
-      className="my-4 min-h-[756px] w-full"
+      className="w-full my-4 min-h-[756px]"
     >
       {showCustomersModal && (
         <EditCustomersTable
@@ -164,6 +164,7 @@ type CustomerGroupDetailsHeaderProps = {
  * Customers groups details page header.
  */
 function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
+  const { showModal } = useContext(CustomerGroupContext)
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
   const navigate = useNavigate()
@@ -172,12 +173,10 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
     props.customerGroup.id
   )
 
-  const { state, close, open } = useToggleState()
-
-  const actions: ActionType[] = [
+  const actions = [
     {
       label: "Edit",
-      onClick: open,
+      onClick: showModal,
       icon: <EditIcon size={20} />,
     },
     {
@@ -192,7 +191,7 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
 
   const onDeleteConfirmed = async () => {
     deleteGroup()
-    navigate("/a/customers/groups")
+    navigate("/admin/customers/groups")
   }
 
   const handleConfirmDialogClose = () => setShowDeleteConfirmation(false)
@@ -215,11 +214,6 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
           text="Are you sure you want to delete this customer group?"
         />
       )}
-      <CustomerGroupModal
-        open={state}
-        onClose={close}
-        customerGroup={props.customerGroup}
-      />
     </>
   )
 }
@@ -237,15 +231,17 @@ function CustomerGroupDetails() {
   }
 
   return (
-    <div className="-mt-4 pb-4">
-      <BackButton
-        path="/a/customers/groups"
-        label="Back to customer groups"
-        className="mb-4"
-      />
-      <CustomerGroupDetailsHeader customerGroup={customer_group} />
-      <CustomerGroupCustomersList group={customer_group} />
-    </div>
+    <CustomerGroupContextContainer group={customer_group}>
+      <div className="-mt-4 pb-4">
+        <BackButton
+          path="/admin/customers/groups"
+          label="Back to customer groups"
+          className="mb-4"
+        />
+        <CustomerGroupDetailsHeader customerGroup={customer_group} />
+        <CustomerGroupCustomersList group={customer_group} />
+      </div>
+    </CustomerGroupContextContainer>
   )
 }
 

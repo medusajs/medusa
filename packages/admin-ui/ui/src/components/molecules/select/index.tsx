@@ -1,12 +1,12 @@
 import clsx from "clsx"
 import React, {
-  CSSProperties,
   useContext,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from "react"
+
 import Primitive from "react-select"
 import AsyncPrimitive from "react-select/async"
 import AsyncCreatablePrimitive from "react-select/async-creatable"
@@ -23,7 +23,7 @@ export type SelectOption<T> = {
 
 type MultiSelectProps = InputHeaderProps & {
   // component props
-  label?: string
+  label: string
   required?: boolean
   name?: string
   className?: string
@@ -32,7 +32,6 @@ type MultiSelectProps = InputHeaderProps & {
   placeholder?: string
   isMultiSelect?: boolean
   labelledBy?: string
-  menuPortalStyles?: CSSProperties
   options: { label: string; value: string | null; disabled?: boolean }[]
   value:
     | { label: string; value: string }[]
@@ -47,7 +46,7 @@ type MultiSelectProps = InputHeaderProps & {
   enableSearch?: boolean
   isCreatable?: boolean
   clearSelected?: boolean
-  onCreateOption?: (value: string) => { value: string; label: string }
+  onCreateOption?: (value: string) => void
 }
 
 const SSelect = React.forwardRef(
@@ -71,7 +70,6 @@ const SSelect = React.forwardRef(
       placeholder = "Search...",
       options,
       onCreateOption,
-      menuPortalStyles = {},
     }: MultiSelectProps,
     ref
   ) => {
@@ -138,10 +136,10 @@ const SSelect = React.forwardRef(
         <div
           key={name}
           className={clsx(className, {
-            "rounded-t-rounded bg-white": isFocussed,
+            "bg-white rounded-t-rounded": isFocussed,
           })}
         >
-          <div className="text-grey-50 pointer-events-none mb-2 flex w-full cursor-pointer justify-between pr-0.5">
+          <div className="w-full flex text-grey-50 pr-0.5 justify-between pointer-events-none cursor-pointer mb-2">
             <InputHeader {...{ label, required, tooltip, tooltipContent }} />
           </div>
 
@@ -180,10 +178,13 @@ const SSelect = React.forwardRef(
               closeMenuOnSelect={!isMultiSelect}
               blurInputOnSelect={!isMultiSelect}
               styles={{
-                menuPortal: (base) => ({ ...base, ...menuPortalStyles }),
+                menuPortal: (base) => ({
+                  ...base,
+                  zIndex: 60,
+                }),
               }}
               hideSelectedOptions={false}
-              menuPortalTarget={portalRef?.current?.lastChild || document.body}
+              menuPortalTarget={portalRef?.current?.lastChild}
               menuPlacement="auto"
               backspaceRemovesValue={false}
               classNamePrefix="react-select"
@@ -193,7 +194,7 @@ const SSelect = React.forwardRef(
               components={SelectComponents}
             />
           }
-          {isFocussed && enableSearch && <div className="h-5 w-full" />}
+          {/* {isFocussed && enableSearch && <div className="w-full h-5" />} */}
         </div>
       </div>
     )

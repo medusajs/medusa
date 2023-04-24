@@ -42,6 +42,10 @@ type SelectableTableProps<T extends object> = {
   }) => React.ReactElement
 } & ReturnType<typeof useQueryFilters>
 
+let a: Omit<TableProps, "filteringOptions"> & {
+  filters?: Pick<TableProps, "filteringOptions">
+}
+
 export const SelectableTable = <
   T extends
     | Product
@@ -157,7 +161,9 @@ export const SelectableTable = <
         <Table
           {...options}
           {...table.getTableProps()}
-          handleSearch={options.enableSearch ? setSearchQuery : undefined}
+          handleSearch={(search) => {
+            if (options.enableSearch) setSearchQuery(search)
+          }}
           searchValue={searchQuery}
           className="relative"
         >

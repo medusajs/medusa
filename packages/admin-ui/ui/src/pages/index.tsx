@@ -1,19 +1,15 @@
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import Spinner from "../components/atoms/spinner"
+import React, { useContext } from "react"
+import { Navigate, useNavigate } from "react-router-dom"
 import SEO from "../components/seo"
+import Layout from "../components/templates/layout"
+import { AccountContext } from "../context/account"
+import { isBrowser } from "../utils/is-browser"
 
 const IndexPage = () => {
-  const navigate = useNavigate()
-  useEffect(() => {
-    navigate("/a/orders")
-  }, [])
-
   return (
-    <div className="bg-grey-5 text-grey-90 flex h-screen w-full items-center justify-center">
-      <SEO title="Home" />
-      <Spinner variant="secondary" />
-    </div>
+    <Layout>
+      <Navigate to="/admin" />
+    </Layout>
   )
 }
 

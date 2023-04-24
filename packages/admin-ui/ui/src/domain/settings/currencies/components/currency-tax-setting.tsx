@@ -1,8 +1,8 @@
 import { Currency } from "@medusajs/medusa"
-import { useQueryClient } from "@tanstack/react-query"
-import { adminStoreKeys, useAdminUpdateCurrency } from "medusa-react"
-import { useEffect } from "react"
+import { useAdminUpdateCurrency, adminStoreKeys } from "medusa-react"
+import React, { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useQueryClient } from "react-query"
 import Switch from "../../../../components/atoms/switch"
 import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon"
 import useNotification from "../../../../hooks/use-notification"
@@ -53,19 +53,19 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
 
   return (
     <form>
-      <div className="inter-base-regular flex items-center justify-between">
-        <div className="gap-x-base flex items-center">
-          <div className="bg-grey-10 rounded-rounded w-xlarge h-xlarge flex items-center justify-center">
+      <div className="flex items-center justify-between inter-base-regular">
+        <div className="flex items-center gap-x-base">
+          <div className="flex items-center justify-center bg-grey-10 rounded-rounded w-xlarge h-xlarge">
             <CoinsIcon size={20} className="text-grey-50" />
           </div>
-          <div className="gap-x-xsmall flex items-center">
+          <div className="flex items-center gap-x-xsmall">
             <p className="inter-base-semibold text-grey-90">
               {currency.code.toUpperCase()}
             </p>
             <p className="text-grey-50 inter-small-regular">{currency.name}</p>
           </div>
           {isDefault && (
-            <div className="bg-grey-10 rounded-rounded px-xsmall py-[2px]">
+            <div className="bg-grey-10 rounded-rounded py-[2px] px-xsmall">
               <p className="inter-small-semibold text-grey-50">Default</p>
             </div>
           )}

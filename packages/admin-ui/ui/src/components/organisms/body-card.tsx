@@ -1,16 +1,17 @@
 import clsx from "clsx"
-import React from "react"
+import React, { ReactNode } from "react"
 import { useScroll } from "../../hooks/use-scroll"
 import Button from "../fundamentals/button"
 import Actionables, { ActionType } from "../molecules/actionables"
 
 type BodyCardProps = {
-  title?: string | JSX.Element | React.ReactNode
-  subtitle?: string
+  title?: string | JSX.Element | ReactNode
+  subtitle?: ReactNode
   events?: {
     label: string
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
     type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"]
+    disabled?: boolean
   }[]
   actionables?: ActionType[]
   forceDropdown?: boolean
@@ -18,8 +19,6 @@ type BodyCardProps = {
   status?: React.ReactNode
   customHeader?: React.ReactNode
   compact?: boolean
-  footerMinHeight?: number
-  setBorders?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const BodyCard: React.FC<BodyCardProps> = ({
@@ -34,15 +33,13 @@ const BodyCard: React.FC<BodyCardProps> = ({
   className,
   children,
   compact = false,
-  setBorders = false,
-  footerMinHeight = 24,
   ...rest
 }) => {
   const { isScrolled, scrollListener } = useScroll({ threshold: 16 })
   return (
     <div
       className={clsx(
-        "rounded-rounded bg-grey-0 border-grey-20 flex h-full w-full flex-col overflow-hidden border",
+        "relative rounded-rounded border bg-grey-0 border-grey-20 flex flex-col h-full w-full",
         { "min-h-[350px]": !compact },
         className
       )}
@@ -50,72 +47,61 @@ const BodyCard: React.FC<BodyCardProps> = ({
     >
       <div className="relative">
         {isScrolled && (
-          <div className="rounded-t-rounded from-grey-0 h-xlarge absolute top-0 left-0 right-0 z-10 bg-gradient-to-b to-[rgba(255,255,255,0)]" />
+          <div className="absolute rounded-t-rounded top-0 left-0 right-0 bg-gradient-to-b from-grey-0 to-[rgba(255,255,255,0)] h-xlarge z-10" />
         )}
       </div>
+
       <div
-        className={clsx("flex grow flex-col", {
-          "border-grey-20 border-b border-solid": setBorders,
-        })}
+        className="pt-medium px-xlarge flex flex-col grow"
         onScroll={scrollListener}
       >
-        <div
-          className={clsx("px-xlarge py-large", {
-            "border-grey-20 border-b border-solid": setBorders,
-          })}
-        >
-          <div className="flex items-start justify-between">
-            <div>
-              {customHeader ? (
-                <div>{customHeader}</div>
-              ) : title ? (
-                <h1 className="inter-xlarge-semibold text-grey-90">{title}</h1>
-              ) : (
-                <div />
-              )}
+        <div className="flex items-center justify-between mt-6 flex-wrap gap-2">
+          {customHeader ? (
+            <div className="flex-auto">{customHeader}</div>
+          ) : title ? (
+            <h1 className="inter-xlarge-semibold text-grey-90">{title}</h1>
+          ) : (
+            <div />
+          )}
 
-              {subtitle && (
-                <h3 className="inter-small-regular text-grey-50 pt-1.5">
-                  {subtitle}
-                </h3>
-              )}
-            </div>
-
-            <div className="flex items-center space-x-2">
-              {status && status}
-              <Actionables
-                actions={actionables}
-                forceDropdown={forceDropdown}
-                customTrigger={customActionable}
-              />
-            </div>
+          <div className="flex items-center space-x-2">
+            {status && status}
+            <Actionables
+              actions={actionables}
+              forceDropdown={forceDropdown}
+              customTrigger={customActionable}
+            />
           </div>
         </div>
-
-        <div className="px-xlarge">
-          {children && (
-            <div
-              className={clsx("flex flex-col", {
-                grow: !compact,
-              })}
-            >
-              {children}
-            </div>
-          )}
-        </div>
+        {subtitle && (
+          <h3 className="inter-small-regular pt-1.5 text-grey-50">
+            {subtitle}
+          </h3>
+        )}
+        {children && (
+          <div
+            className={clsx("flex flex-col", {
+              "my-large grow": !compact,
+            })}
+          >
+            {children}
+          </div>
+        )}
       </div>
+
       {events && events.length > 0 ? (
-        <div className="pb-large pt-base px-xlarge border-grey-20 border-t">
-          <div className="flex flex-row-reverse items-center">
+        <div className="sticky -bottom-8 bg-white pb-large pt-base px-xlarge border-t border-grey-20 rounded-b">
+          <div className="flex items-center flex-row-reverse">
             {events.map((event, i: React.Key) => {
               return (
                 <Button
                   key={i}
                   onClick={event.onClick}
-                  className="first:ml-xsmall justify-center"
-                  variant={i === 0 ? "primary" : "secondary"}
+                  className="first:ml-xsmall min-w-[130px] justify-center"
+                  variant={i === 0 ? "primary" : "ghost"}
                   size={"small"}
                   type={event.type}
+                  disabled={event.disabled}
                 >
                   {event.label}
                 </Button>
@@ -124,7 +110,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
           </div>
         </div>
       ) : (
-        <div className={`min-h-[${footerMinHeight}px]`} />
+        <div className="min-h-[24px]" />
       )}
     </div>
   )

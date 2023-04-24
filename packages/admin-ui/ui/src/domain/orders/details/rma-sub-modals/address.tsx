@@ -83,7 +83,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               <div>
                 <span className="inter-base-semibold">General</span>
 
-                <div className="gap-x-base gap-y-base grid grid-cols-2">
+                <div className="grid grid-cols-2 gap-x-base gap-y-base">
                   <Input
                     {...register("first_name", {
                       required: true,
@@ -109,7 +109,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               </div>
               <div className="mt-8">
                 <span className="inter-base-semibold">Shipping Address</span>
-                <div className="gap-y-base my-4 grid">
+                <div className="grid gap-y-base my-4">
                   <Input
                     {...register("address_1", {
                       required: true,
@@ -124,7 +124,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
                     label="Address 2"
                   />
                 </div>
-                <div className="gap-x-base gap-y-base grid grid-cols-2">
+                <div className="grid grid-cols-2 gap-x-base gap-y-base">
                   <Input
                     {...register("province")}
                     placeholder="Province"
@@ -169,22 +169,16 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="gap-x-xsmall flex w-full justify-end">
+          <div className="flex items-center justify-end w-full gap-2">
             <Button
               variant="ghost"
               size="small"
-              className="w-[112px]"
               onClick={() => pop()}
               type="button"
             >
               Back
             </Button>
-            <Button
-              variant="primary"
-              className="w-[112px]"
-              size="small"
-              type="submit"
-            >
+            <Button variant="primary" size="small" type="submit">
               Add
             </Button>
           </div>

@@ -1,7 +1,8 @@
 import clsx from "clsx"
+import React from "react"
 import { useForm, useWatch } from "react-hook-form"
+import { useAnalytics } from "../../../context/analytics"
 import useNotification from "../../../hooks/use-notification"
-import { useAnalytics } from "../../../providers/analytics-provider"
 import {
   analytics,
   useAdminCreateAnalyticsConfig,
@@ -81,7 +82,7 @@ const AnalyticsPreferencesModal = () => {
     <FocusModal>
       <FocusModal.Main>
         <div className="flex flex-col items-center">
-          <div className="mt-5xlarge flex w-full max-w-[664px] flex-col">
+          <div className="mt-5xlarge flex flex-col max-w-[664px] w-full">
             <h1 className="inter-xlarge-semibold mb-large">
               Help us get better
             </h1>
@@ -101,7 +102,7 @@ const AnalyticsPreferencesModal = () => {
               </a>
               .
             </p>
-            <div className="mt-xlarge gap-y-xlarge flex flex-col">
+            <div className="mt-xlarge flex flex-col gap-y-xlarge">
               <InputField
                 label="Email"
                 placeholder="you@company.com"
@@ -119,7 +120,7 @@ const AnalyticsPreferencesModal = () => {
               />
               <AnalyticsConfigForm form={nestedForm(form, "config")} />
             </div>
-            <div className="mt-5xlarge flex items-center justify-end">
+            <div className="flex items-center justify-end mt-5xlarge">
               <Button
                 variant="primary"
                 size="small"

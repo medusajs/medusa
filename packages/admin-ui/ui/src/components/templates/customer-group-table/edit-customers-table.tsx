@@ -1,6 +1,6 @@
 import { Customer } from "@medusajs/medusa"
 import { useAdminCustomerGroups, useAdminCustomers } from "medusa-react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   HeaderGroup,
   Row,
@@ -51,7 +51,7 @@ function EditCustomersTableRow(props: EditCustomersTableRowProps) {
   return (
     <Table.Row
       color={"inherit"}
-      linkTo={`/a/customers/${props.row.original.id}`}
+      linkTo={`/admin/customers/${props.row.original.id}`}
       {...props.row.getRowProps()}
     >
       {props.row.cells.map((cell, index) => (
@@ -221,21 +221,11 @@ function EditCustomersTable(props: EditCustomersTableProps) {
         </Modal.Content>
 
         <Modal.Footer>
-          <div className="gap-x-xsmall flex w-full items-center justify-end">
-            <Button
-              variant="ghost"
-              size="small"
-              className="w-eventButton"
-              onClick={onClose}
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              variant="primary"
-              size="small"
-              className="w-eventButton"
-              onClick={handleSubmit}
-            >
+            <Button variant="primary" size="small" onClick={handleSubmit}>
               Save
             </Button>
           </div>

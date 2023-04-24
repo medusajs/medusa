@@ -1,22 +1,34 @@
 import clsx from "clsx"
-import React, { useImperativeHandle, useRef } from "react"
+import {
+  ComponentPropsWithRef,
+  CSSProperties,
+  forwardRef,
+  HTMLAttributes,
+  ReactNode,
+  useImperativeHandle,
+  useRef,
+} from "react"
+import { useFormContext } from "react-hook-form"
 import InputError from "../../atoms/input-error"
 import InputHeader from "../../fundamentals/input-header"
 import EmojiPicker from "../emoji-picker"
 
-type TextareaProps = React.ComponentPropsWithRef<"textarea"> & {
+type TextareaProps = ComponentPropsWithRef<"textarea"> & {
   errors?: { [x: string]: unknown }
-  label: string
+  label: ReactNode
   key?: string
+  optional?: boolean
   enableEmoji?: boolean
   withTooltip?: boolean
   tooltipText?: string
   tooltipProps?: any
-  children?: React.ReactNode
-  containerProps?: React.HTMLAttributes<HTMLDivElement>
+  children?: ReactNode
+  containerProps?: HTMLAttributes<HTMLDivElement>
+  resize?: boolean
+  inputClassName?: string
 }
 
-const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+const TextArea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       placeholder,
@@ -24,6 +36,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       name,
       key,
       required,
+      optional,
       withTooltip = false,
       tooltipText,
       tooltipProps = {},
@@ -33,11 +46,15 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       rows = 2,
       children,
       errors,
+      resize = false,
+      inputClassName,
       ...props
     }: TextareaProps,
     ref
   ) => {
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
+    const formContext = useFormContext()
+    const formErrors = formContext?.formState?.errors || errors
 
     useImperativeHandle<HTMLTextAreaElement | null, HTMLTextAreaElement | null>(
       ref,
@@ -69,29 +86,40 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       <div className={className} {...containerProps}>
         {label && (
           <InputHeader
-            {...{ label, required, withTooltip, tooltipText, tooltipProps }}
+            {...{
+              label,
+              required,
+              optional,
+              withTooltip,
+              tooltipText,
+              tooltipProps,
+            }}
             className="mb-xsmall"
           />
         )}
         <div
           className={clsx(
-            "focus-within:shadow-input focus-within:border-violet-60 px-small py-xsmall bg-grey-5 border-grey-20 rounded-rounded flex w-full flex-col border",
+            "w-full flex flex-col focus-within:shadow-input focus-within:border-violet-60 px-small py-xsmall bg-grey-5 border border-grey-20 rounded-rounded",
             {
-              "focus-within:shadow-cta focus-within:shadow-rose-60/10 border-rose-50 focus-within:border-rose-50":
+              "border-rose-50 focus-within:shadow-cta focus-within:shadow-rose-60/10 focus-within:border-rose-50":
                 errors && name && errors[name],
             }
           )}
         >
           <textarea
             className={clsx(
-              "relative resize-none overflow-hidden bg-inherit text-justify outline-none outline-0 focus:overflow-auto",
-              "remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full font-normal",
-              "line-clamp-[var(--lines)] focus:line-clamp-none"
+              "relative text-justify overflow-hidden focus:overflow-auto bg-inherit outline-none outline-0",
+              "w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40",
+              "line-clamp-[var(--lines)] focus:line-clamp-none",
+              {
+                "resize-none": !resize,
+              },
+              inputClassName
             )}
             style={
               {
                 "--lines": rows,
-              } as React.CSSProperties
+              } as CSSProperties
             }
             ref={inputRef}
             autoComplete="off"
@@ -105,7 +133,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
           {enableEmoji && <EmojiPicker onEmojiClick={handleAddEmoji} />}
         </div>
-        <InputError name={name} errors={errors} />
+        <InputError name={name} errors={formErrors} />
       </div>
     )
   }

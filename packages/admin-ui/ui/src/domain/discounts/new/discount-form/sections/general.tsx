@@ -21,7 +21,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
     string | undefined
   >(initialCurrency)
 
-  const { regions: opts, isLoading } = useAdminRegions()
+  const { regions: opts } = useAdminRegions()
   const { register, control, type } = useDiscountForm()
 
   const regions = useWatch({
@@ -51,15 +51,20 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
     return opts?.map((r) => ({ value: r.id, label: r.name })) || []
   }, [opts])
 
+  const [render, setRender] = useState(false)
+  useEffect(() => {
+    setTimeout(() => setRender(true), 100)
+  }, [])
+
   return (
     <div className="pt-5">
-      {!isLoading && (
+      {render && (
         <>
           <Controller
             name="regions"
             control={control}
             rules={{
-              required: "At least one region is required",
+              required: "Atleast one region is required",
               validate: (value) =>
                 Array.isArray(value) ? value.length > 0 : !!value,
             }}
@@ -80,7 +85,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               )
             }}
           />
-          <div className="gap-x-base gap-y-base my-base flex">
+          <div className="flex gap-x-base gap-y-base my-base">
             <InputField
               label="Code"
               className="flex-1"
@@ -139,7 +144,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             )}
           </div>
 
-          <div className="text-grey-50 inter-small-regular mb-6 flex flex-col">
+          <div className="text-grey-50 inter-small-regular flex flex-col mb-6">
             <span>
               The code your customers will enter during checkout. This will
               appear on your customer’s invoice.

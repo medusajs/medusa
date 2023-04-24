@@ -1,5 +1,5 @@
 import { AnalyticsConfig } from "@medusajs/medusa"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
@@ -64,9 +64,9 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
         <Modal.Content>
           <AnalyticsConfigForm form={nestedForm(form)} />
         </Modal.Content>
-        <Modal.Footer className="border-grey-20 pt-base border-t">
-          <div className="gap-x-xsmall flex w-full items-center justify-end">
-            <Button variant="secondary" size="small" onClick={onClose}>
+        <Modal.Footer className="border-t border-grey-20 pt-base">
+          <div className="flex items-center justify-end gap-2 w-full">
+            <Button variant="ghost" size="small">
               Cancel
             </Button>
             <Button

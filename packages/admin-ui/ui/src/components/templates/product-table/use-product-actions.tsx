@@ -1,5 +1,6 @@
 import { Product } from "@medusajs/medusa"
 import { useAdminDeleteProduct, useAdminUpdateProduct } from "medusa-react"
+import * as React from "react"
 import { useNavigate } from "react-router-dom"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
@@ -34,7 +35,8 @@ const useProductActions = (product: Product) => {
   const getActions = (): ActionType[] => [
     {
       label: "Edit",
-      onClick: () => navigate(`/a/products/${product.id}`),
+      onClick: () =>
+        navigate(`/vendor/${product.vendor_id}/products/${product.id}`),
       icon: <EditIcon size={20} />,
     },
     {

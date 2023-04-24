@@ -1,4 +1,5 @@
 import { AxiosError } from "axios"
+import { useNavigate } from "react-router-dom"
 import React, { ErrorInfo } from "react"
 import { analytics, getAnalyticsConfig } from "../../../services/analytics"
 import Button from "../../fundamentals/button"
@@ -51,12 +52,12 @@ class ErrorBoundary extends React.Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="px-large flex h-screen items-center justify-center">
+        <div className="h-screen flex items-center justify-center px-large">
           <div className="max-w-[600px]">
             <div>
               <div>
                 {this.state.status && (
-                  <p className="text-grey-60 inter-small-semibold opacity-75">
+                  <p className="text-grey-60 opacity-75 inter-small-semibold">
                     {this.state.status}
                   </p>
                 )}
@@ -68,7 +69,7 @@ class ErrorBoundary extends React.Component<Props, State> {
                 </p>
               </div>
 
-              <div className="mt-xlarge flex w-full  items-center">
+              <div className="w-full flex items-center  mt-xlarge">
                 <Button
                   size="small"
                   variant="primary"

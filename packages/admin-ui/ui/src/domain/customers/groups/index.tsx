@@ -1,22 +1,24 @@
-import { Route, Routes } from "react-router-dom"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import { useContext } from "react"
 import BodyCard from "../../../components/organisms/body-card"
-import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
-import useToggleState from "../../../hooks/use-toggle-state"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import CustomersPageTableHeader from "../header"
-import CustomerGroupModal from "./customer-group-modal"
 import Details from "./details"
+import CustomerGroupContext, {
+  CustomerGroupContextContainer,
+} from "./context/customer-group-context"
+import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
+import { Route, Routes } from "react-router-dom"
 
 /*
  * Customer groups index page
  */
 function Index() {
-  const { state, open, close } = useToggleState()
+  const { showModal } = useContext(CustomerGroupContext)
 
   const actions = [
     {
       label: "New group",
-      onClick: open,
+      onClick: showModal,
       icon: (
         <span className="text-grey-90">
           <PlusIcon size={20} />
@@ -26,18 +28,16 @@ function Index() {
   ]
 
   return (
-    <>
-      <div className="flex h-full grow flex-col">
+    <div className="flex flex-col grow h-full">
+      <div className="w-full flex flex-col grow">
         <BodyCard
           actionables={actions}
-          className="h-auto"
           customHeader={<CustomersPageTableHeader activeView="groups" />}
         >
           <CustomerGroupsTable />
         </BodyCard>
       </div>
-      <CustomerGroupModal open={state} onClose={close} />
-    </>
+    </div>
   )
 }
 
@@ -46,10 +46,12 @@ function Index() {
  */
 function CustomerGroups() {
   return (
-    <Routes>
-      <Route index element={<Index />} />
-      <Route path="/:id" element={<Details />} />
-    </Routes>
+    <CustomerGroupContextContainer>
+      <Routes>
+        <Route index element={<Index />} />
+        <Route path="/:id" element={<Details />} />
+      </Routes>
+    </CustomerGroupContextContainer>
   )
 }
 

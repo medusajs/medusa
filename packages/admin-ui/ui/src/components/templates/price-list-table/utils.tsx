@@ -1,3 +1,4 @@
+import React from "react"
 import StatusDot from "../../fundamentals/status-indicator"
 
 const isFuture = (date?: string) => {

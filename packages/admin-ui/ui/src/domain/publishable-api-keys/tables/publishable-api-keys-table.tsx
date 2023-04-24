@@ -27,14 +27,14 @@ const PAGE_SIZE = 12
 const COLUMNS: Column<PublishableApiKey>[] = [
   {
     accessor: "title",
-    Header: <div className="text-small font-semibold text-gray-500">Name</div>,
+    Header: <div className="text-gray-500 text-small font-semibold">Name</div>,
     Cell: ({ row: { original } }) => {
       return <span className="text-gray-900">{original.title}</span>
     },
   },
   {
     accessor: "id",
-    Header: <div className="text-small font-semibold text-gray-500">Token</div>,
+    Header: <div className="text-gray-500 text-small font-semibold">Token</div>,
     Cell: ({ row: { original } }) => {
       const [copied, setCopied] = useState(false)
 
@@ -49,7 +49,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
           onMouseLeave={debounce(() => setCopied(false), 1000)}
           content={
             copied ? (
-              <span className="flex flex-row items-center justify-between gap-1">
+              <span className="flex flex-row gap-1 justify-between items-center">
                 <CheckIcon size={16} className="text-green-700" /> done
               </span>
             ) : (
@@ -67,7 +67,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
   {
     accessor: "created_at",
     Header: (
-      <div className="text-small font-semibold text-gray-500">Created</div>
+      <div className="text-gray-500 text-small font-semibold">Created</div>
     ),
     Cell: ({ row: { original } }) => {
       return (
@@ -80,11 +80,11 @@ const COLUMNS: Column<PublishableApiKey>[] = [
   {
     accessor: "revoked_at",
     Header: (
-      <div className="text-small font-semibold text-gray-500">Status</div>
+      <div className="text-gray-500 text-small font-semibold">Status</div>
     ),
     Cell: ({ row: { original } }) => {
       return (
-        <span className="min-w-[50px] text-gray-900">
+        <span className="text-gray-900 min-w-[50px]">
           {original.revoked_at ? (
             <StatusIndicator title="Revoked" variant="danger" />
           ) : (
@@ -100,14 +100,13 @@ type PublishableKeyTableRowProps = {
   row: Row<PublishableApiKey>
   isRevoked: boolean
   showDetails: () => void
-  showChannelsModal: () => void
 }
 
 /**
  * Component rendering a single PK table row.
  */
 function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
-  const { row, isRevoked, showChannelsModal, showDetails } = props
+  const { row, isRevoked, showDetails } = props
   const pubKeyId = row.original.id
 
   const [showDelete, setShowDelete] = useState(false)
@@ -123,11 +122,6 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
     {
       label: "Edit API key details",
       onClick: showDetails,
-      icon: <EditIcon size={16} />,
-    },
-    {
-      label: "Edit sales channels",
-      onClick: showChannelsModal,
       icon: <EditIcon size={16} />,
     },
     {
@@ -186,7 +180,6 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
 
 type PublishableApiKeysTableProps = {
   showDetailsModal: (pubKey: PublishableApiKey) => void
-  showChannelsModal: (pubKey: PublishableApiKey) => void
 }
 
 /**
@@ -279,10 +272,8 @@ function PublishableApiKeysTable(props: PublishableApiKeysTableProps) {
             table.prepareRow(row)
             return (
               <PublishableKeyTableRow
-                key={row.id}
                 row={row}
                 showDetails={() => props.showDetailsModal(row.original)}
-                showChannelsModal={() => props.showChannelsModal(row.original)}
                 isRevoked={!!row.original.revoked_at}
               />
             )
@@ -292,7 +283,7 @@ function PublishableApiKeysTable(props: PublishableApiKeysTableProps) {
 
       {/* === PLACEHOLDER === */}
       {!keys?.length && !isLoading && (
-        <div className="flex h-[480px] w-[100%] items-center justify-center">
+        <div className="flex justify-center items-center h-[480px] w-[100%]">
           <span className="text-gray-400">
             No keys yet, use the above button to create your first publishable
             key

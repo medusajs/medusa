@@ -1,8 +1,8 @@
-import React from "react"
+import React, { ReactNode } from "react"
 
 type PageDescriptionProps = {
   title?: string
-  subtitle?: string
+  subtitle?: ReactNode
 }
 
 const PageDescription: React.FC<PageDescriptionProps> = ({

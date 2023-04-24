@@ -49,7 +49,7 @@ const Note: React.FC<NoteProps> = ({ event }) => {
         isFirst={event.first}
       >
         <div
-          className={clsx("px-base py-base rounded-2xl", {
+          className={clsx("rounded-2xl px-base py-base", {
             "bg-grey-5": !isMe,
             "bg-violet-5 text-violet-90": isMe,
           })}

@@ -1,17 +1,15 @@
+import clsx from "clsx"
+import React from "react"
+import { useNavigate } from "react-router-dom"
+import SortingIcon from "../../fundamentals/icons/sorting-icon"
 import Actionables, { ActionType } from "../../molecules/actionables"
 import FilteringOptions, { FilteringOptionProps } from "./filtering-option"
-
-import React from "react"
-import SortingIcon from "../../fundamentals/icons/sorting-icon"
 import TableSearch from "./table-search"
-import clsx from "clsx"
-import { useNavigate } from "react-router-dom"
 
 type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
   forceDropdown?: boolean
   actions?: ActionType[]
   linkTo?: string
-  clickable?: boolean
 }
 
 type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement> & {
@@ -29,7 +27,6 @@ export type TableProps = {
   filteringOptions?: FilteringOptionProps[] | React.ReactNode
   tableActions?: React.ReactNode
   enableSearch?: boolean
-  searchClassName?: string
   immediateSearchFocus?: boolean
   searchPlaceholder?: string
   searchValue?: string
@@ -57,7 +54,6 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
       children,
       tableActions,
       enableSearch,
-      searchClassName,
       immediateSearchFocus,
       searchPlaceholder,
       searchValue,
@@ -73,30 +69,31 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
     }
 
     return (
-      <div className={`flex flex-col ${containerClassName}`}>
-        <div className="mb-2 flex w-full justify-between">
-          {filteringOptions ? (
-            <div className="mb-2 flex self-end">
-              {Array.isArray(filteringOptions)
-                ? filteringOptions.map((fo) => <FilteringOptions {...fo} />)
-                : filteringOptions}
-            </div>
-          ) : (
-            <span aria-hidden />
-          )}
-          <div className="gap-x-xsmall flex items-center">
-            {tableActions && <div>{tableActions}</div>}
-            {enableSearch && (
-              <TableSearch
-                autoFocus={immediateSearchFocus}
-                placeholder={searchPlaceholder}
-                searchValue={searchValue}
-                onSearch={handleSearch!}
-                className={searchClassName}
-              />
+      <div className={`flex flex-col gap-2 ${containerClassName}`}>
+        {(filteringOptions || tableActions || enableSearch) && (
+          <div className="w-full flex justify-between">
+            {filteringOptions ? (
+              <div className="flex mb-2 self-end">
+                {Array.isArray(filteringOptions)
+                  ? filteringOptions.map((fo) => <FilteringOptions {...fo} />)
+                  : filteringOptions}
+              </div>
+            ) : (
+              <span aria-hidden />
             )}
+            <div className="flex items-center">
+              {tableActions && <div>{tableActions}</div>}
+              {enableSearch && (
+                <TableSearch
+                  autoFocus={immediateSearchFocus}
+                  placeholder={searchPlaceholder}
+                  searchValue={searchValue}
+                  onSearch={handleSearch!}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
         <div className="relative">
           <table
             ref={ref}
@@ -118,7 +115,7 @@ Table.Head = React.forwardRef<
   <thead
     ref={ref}
     className={clsx(
-      "inter-small-semibold text-grey-50 border-grey-20 whitespace-nowrap border-t border-b",
+      "whitespace-nowrap inter-small-semibold text-grey-50 border-t border-b border-grey-20",
       className
     )}
     {...props}
@@ -140,7 +137,7 @@ Table.HeadCell = React.forwardRef<
   HTMLTableCellElement,
   React.HTMLAttributes<HTMLTableCellElement>
 >(({ className, children, ...props }, ref) => (
-  <th ref={ref} className={clsx("h-[40px] text-left", className)} {...props}>
+  <th ref={ref} className={clsx("text-left h-[40px]", className)} {...props}>
     {children}
   </th>
 ))
@@ -161,9 +158,9 @@ Table.SortingHeadCell = React.forwardRef<
     ref
   ) => {
     return (
-      <th ref={ref} className={clsx("py-2.5 text-left", className)} {...props}>
+      <th ref={ref} className={clsx("text-left py-2.5", className)} {...props}>
         <div
-          className="flex cursor-pointer select-none items-center"
+          className="flex items-center cursor-pointer select-none"
           onClick={(e) => {
             e.preventDefault()
             if (!sortDirection) {
@@ -221,28 +218,15 @@ Table.Cell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
 )
 
 Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
-  (
-    {
-      className,
-      actions,
-      children,
-      linkTo,
-      forceDropdown,
-      clickable,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, actions, children, linkTo, forceDropdown, ...props }, ref) => {
     const navigate = useNavigate()
     return (
       <tr
         ref={ref}
         className={clsx(
-          "inter-small-regular border-grey-20 text-grey-90 border-t border-b",
+          "inter-small-regular border-t border-b border-grey-20 text-grey-90",
           className,
-          {
-            "hover:bg-grey-5 cursor-pointer": linkTo !== undefined || clickable,
-          }
+          { "cursor-pointer hover:bg-grey-5": linkTo !== undefined }
         )}
         {...props}
         {...(linkTo && {

@@ -75,7 +75,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
             <>
               <div className="inter-base-semibold mb-large">Type</div>
               <RadioGroup.Root
-                className="gap-base flex"
+                className="flex gap-base"
                 value={selectedType}
                 onValueChange={handleTypeChange}
               >
@@ -122,21 +122,11 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="gap-x-xsmall flex w-full justify-end">
-          <Button
-            variant="ghost"
-            size="small"
-            className="w-[112px]"
-            onClick={() => pop()}
-          >
+        <div className="flex items-center justify-end w-full gap-2">
+          <Button variant="ghost" size="small" onClick={() => pop()}>
             Back
           </Button>
-          <Button
-            variant="primary"
-            className="w-[112px]"
-            size="small"
-            onClick={handleSubmit}
-          >
+          <Button variant="primary" size="small" onClick={handleSubmit}>
             Add
           </Button>
         </div>

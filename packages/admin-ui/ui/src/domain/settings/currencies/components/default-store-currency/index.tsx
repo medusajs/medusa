@@ -1,4 +1,5 @@
 import { Store } from "@medusajs/medusa"
+import React from "react"
 import DefaultCurrencySelector from "./default-currency-selector"
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
 
 const DefaultStoreCurrency = ({ store }: Props) => {
   return (
-    <div className="gap-y-large flex flex-col">
+    <div className="flex flex-col gap-y-large">
       <div>
         <h3 className="inter-large-semibold mb-2xsmall">
           Default store currency

@@ -1,3 +1,4 @@
+import React from "react"
 import { DisplayTotal } from "./display-total"
 
 export const PaymentDetails = ({

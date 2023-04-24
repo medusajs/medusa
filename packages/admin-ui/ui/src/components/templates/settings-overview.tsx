@@ -1,20 +1,22 @@
-import React from "react"
+import React, { FC, PropsWithChildren, ReactNode } from "react"
 import PageDescription from "../atoms/page-description"
-import Spacer from "../atoms/spacer"
 
-const SettingsOverview: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return (
-    <div>
-      <PageDescription
-        title={"Settings"}
-        subtitle={"Manage the settings for your Medusa store"}
-      />
-      <div className="medium:grid-cols-2 gap-x-base gap-y-xsmall grid auto-cols-fr grid-cols-1">
-        {children}
-      </div>
-      <Spacer />
-    </div>
-  )
+export interface SettingsOverviewProps {
+  title: string
+  subtitle: ReactNode
 }
+
+const SettingsOverview: FC<PropsWithChildren<SettingsOverviewProps>> = ({
+  title,
+  subtitle,
+  children,
+}) => (
+  <div>
+    <PageDescription title={title} subtitle={subtitle} />
+    <div className="grid medium:grid-cols-2 auto-cols-fr grid-cols-1 gap-x-base gap-y-xsmall">
+      {children}
+    </div>
+  </div>
+)
 
 export default SettingsOverview

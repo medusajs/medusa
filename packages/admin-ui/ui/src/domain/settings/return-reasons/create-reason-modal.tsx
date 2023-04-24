@@ -1,5 +1,6 @@
 import { ReturnReason } from "@medusajs/medusa"
 import { useAdminCreateReturnReason } from "medusa-react"
+import React from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import Input from "../../../components/molecules/input"
@@ -68,7 +69,7 @@ const CreateReturnReasonModal = ({
         </Modal.Header>
         <form onSubmit={handleSubmit(onCreate)}>
           <Modal.Content>
-            <div className="gap-large mb-large grid grid-cols-2">
+            <div className="grid grid-cols-2 gap-large mb-large">
               <Input
                 {...register("value", {
                   required: "Value is required",
@@ -102,11 +103,10 @@ const CreateReturnReasonModal = ({
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
                 variant="ghost"
-                className="text-small mr-2 w-32 justify-center"
-                size="large"
+                size="small"
                 onClick={handleClose}
                 type="button"
               >
@@ -115,8 +115,7 @@ const CreateReturnReasonModal = ({
               <Button
                 loading={isLoading}
                 disabled={isLoading}
-                size="large"
-                className="text-small w-32 justify-center"
+                size="small"
                 variant="primary"
               >
                 Create

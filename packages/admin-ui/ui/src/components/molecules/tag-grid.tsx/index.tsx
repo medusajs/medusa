@@ -22,7 +22,7 @@ const TagGrid: React.FC<TagGridProps> = ({ tags, badgeVariant }) => {
   const remainder = tags.length - columns
 
   return (
-    <div className="gap-x-2xsmall flex w-1/2 items-center" ref={containerRef}>
+    <div className="flex items-center gap-x-2xsmall w-1/2" ref={containerRef}>
       {visibleTags?.map((tag, index) => {
         return (
           <Badge className="mr-2xsmall" key={index} variant={badgeVariant}>

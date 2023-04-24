@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import React from "react"
 import {
   ClearIndicatorProps,
   ControlProps,
@@ -23,13 +24,12 @@ const Control = <
   isDisabled,
   isFocused,
   menuIsOpen,
-  selectProps: { size, customStyles, name },
+  selectProps: { size, customStyles },
 }: ControlProps<Option, IsMulti, Group>) => {
   return (
     <div
       ref={innerRef}
       {...innerProps}
-      id={name}
       className={cx(
         {
           control: true,
@@ -38,7 +38,7 @@ const Control = <
           "control--menu-is-open": menuIsOpen,
         },
         clsx(
-          "rounded-rounded border-gray-20 bg-grey-5 focus-within:shadow-cta focus-within:border-violet-60 pl-small box-border flex overflow-hidden border p-0 transition-colors",
+          "flex p-0 overflow-hidden rounded-rounded border border-gray-20 bg-grey-5 focus-within:shadow-cta transition-colors focus-within:border-violet-60 box-border pl-small",
           {
             "h-xlarge": size === "sm",
             "h-10": size === "md" || !size,
@@ -50,7 +50,7 @@ const Control = <
     >
       <div
         className={clsx(
-          "flex flex-1 items-center",
+          "flex items-center flex-1",
           customStyles?.inner_control
         )}
       >

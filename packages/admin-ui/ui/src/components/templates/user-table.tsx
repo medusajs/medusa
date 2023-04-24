@@ -21,8 +21,8 @@ type UserListElement = {
 }
 
 type UserTableProps = {
-  users: any[]
-  invites: any[]
+  users: User[]
+  invites: Invite[]
   triggerRefetch: () => void
 }
 
@@ -66,6 +66,7 @@ const UserTable: React.FC<UserTableProps> = ({
     setDeleteUser(false)
     setSelectedUser(null)
     setSelectedInvite(null)
+    triggerRefetch()
   }
 
   const getUserTableRow = (user: User, index: number) => {
@@ -260,24 +261,24 @@ const UserTable: React.FC<UserTableProps> = ({
     },
   ]
 
-  const handleUserSearch = (term: string) => {
-    setShownElements(
-      elements.filter(
-        (e) =>
-          e.entity?.first_name?.includes(term) ||
-          e.entity?.last_name?.includes(term) ||
-          e.entity?.email?.includes(term) ||
-          e.entity?.user_email?.includes(term)
-      )
-    )
-  }
+  // const handleUserSearch = (term: string) => {
+  //   setShownElements(
+  //     elements.filter(
+  //       (e) =>
+  //         e.entity?.first_name?.includes(term) ||
+  //         e.entity?.last_name?.includes(term) ||
+  //         e.entity?.email?.includes(term) ||
+  //         e.entity?.user_email?.includes(term)
+  //     )
+  //   )
+  // }
 
   return (
-    <div className="h-full w-full overflow-y-auto">
+    <div className="w-full h-full overflow-y-auto">
       <Table
         filteringOptions={filteringOptions}
-        enableSearch
-        handleSearch={handleUserSearch}
+        enableSearch={false}
+        // handleSearch={handleUserSearch}
       >
         <Table.Head>
           <Table.HeadRow>

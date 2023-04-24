@@ -1,23 +1,57 @@
-import React, { useCallback, useState, type MouseEvent } from "react"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import { useQueryClient } from "react-query"
+import React, {
+  type MouseEvent,
+  useCallback,
+  useContext,
+  useState,
+} from "react"
+import { useNavigate } from "react-router-dom"
+import { AccountContext } from "../../../context/account"
+import { PollingContext } from "../../../context/polling"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { usePolling } from "../../../providers/polling-provider"
+import Avatar from "../../atoms/avatar"
 import Button from "../../fundamentals/button"
 import HelpCircleIcon from "../../fundamentals/icons/help-circle"
+import SignOutIcon from "../../fundamentals/icons/log-out-icon"
 import NotificationBell from "../../molecules/notification-bell"
-import SearchBar from "../../molecules/search-bar"
+// import SearchBar from "../../molecules/search-bar"
 import ActivityDrawer from "../activity-drawer"
 import MailDialog from "../help-dialog"
+import HappyIcon from "../../fundamentals/icons/happy-icon"
+import { useBasePath } from "../../../utils/routePathing"
+import { Bars3Icon } from "@heroicons/react/20/solid"
+import CrossIcon from "../../fundamentals/icons/cross-icon"
 
-const Topbar: React.FC = () => {
+export interface TopbarProps {
+  isSidebarOpen: boolean
+  toggleSidebar: (open: boolean) => void
+}
+
+const Topbar: React.FC<TopbarProps> = ({ isSidebarOpen, toggleSidebar }) => {
+  const navigate = useNavigate()
+
   const {
     state: activityDrawerState,
     toggle: toggleActivityDrawer,
     close: activityDrawerClose,
   } = useToggleState(false)
 
-  const { batchJobs } = usePolling()
+  const { first_name, last_name, email, handleLogout } =
+    useContext(AccountContext)
+
+  const basePath = useBasePath()
+  const { batchJobs } = useContext(PollingContext)
+
+  const queryClient = useQueryClient()
 
   const [showSupportform, setShowSupportForm] = useState(false)
+
+  const logOut = () => {
+    handleLogout()
+    queryClient.clear()
+    navigate("/login")
+  }
 
   const onNotificationBellClick = useCallback(
     (event: MouseEvent) => {
@@ -28,13 +62,28 @@ const Topbar: React.FC = () => {
   )
 
   return (
-    <div className="min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-grey-20 sticky top-0 z-40 flex w-full items-center justify-between border-b">
-      <SearchBar />
+    <div className="w-full min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-b border-grey-20 sticky top-0 flex items-center justify-between z-40">
+      <Button
+        size="small"
+        variant="ghost"
+        className="w-8 h-8 mr-3 small:hidden"
+        onClick={() => toggleSidebar(!isSidebarOpen)}
+      >
+        {isSidebarOpen ? (
+          <CrossIcon size={24} />
+        ) : (
+          <Bars3Icon width={24} height={24} />
+        )}
+      </Button>
+
+      {/* TODO: Fix search */}
+      {/* <SearchBar /> */}
+      <div className="flex-auto" />
       <div className="flex items-center">
         <Button
           size="small"
           variant="ghost"
-          className="mr-3 h-8 w-8"
+          className="w-8 h-8 mr-3"
           onClick={() => setShowSupportForm(!showSupportform)}
         >
           <HelpCircleIcon size={24} />
@@ -45,6 +94,44 @@ const Topbar: React.FC = () => {
           variant={"ghost"}
           hasNotifications={!!batchJobs?.length}
         />
+
+        <div className="ml-large w-large h-large">
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <div className="cursor-pointer w-full h-full">
+                <Avatar
+                  user={{ first_name, last_name, email }}
+                  color="bg-fuschia-40"
+                />
+              </div>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              sideOffset={5}
+              className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
+            >
+              <DropdownMenu.Item className="mb-1 last:mb-0">
+                <Button
+                  variant="ghost"
+                  size="small"
+                  className={"w-full justify-start"}
+                  onClick={() => navigate(`${basePath}/personal-information`)}
+                >
+                  <HappyIcon />
+                  Personal Info
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="small"
+                  className={"w-full justify-start text-rose-50"}
+                  onClick={() => logOut()}
+                >
+                  <SignOutIcon size={20} />
+                  Sign out
+                </Button>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        </div>
       </div>
       {showSupportform && (
         <MailDialog

@@ -1,7 +1,7 @@
-import { Region } from "@medusajs/medusa"
+import { Region, Vendor } from "@medusajs/medusa"
 import { useAdminCreateShippingOption } from "medusa-react"
+import React from "react"
 import { useForm } from "react-hook-form"
-import { getSubmittableMetadata } from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useNotification from "../../../../../hooks/use-notification"
@@ -9,25 +9,42 @@ import { getErrorMessage } from "../../../../../utils/error-messages"
 import ShippingOptionForm, {
   ShippingOptionFormType,
 } from "../../components/shipping-option-form"
-import { useShippingOptionFormData } from "../../components/shipping-option-form/use-shipping-option-form-data"
+import {
+  getRequirementsData,
+  useShippingOptionFormData,
+} from "../../components/shipping-option-form/use-shipping-option-form-data"
 
 type Props = {
   open: boolean
   onClose: () => void
   region: Region
+  vendor?: Vendor
 }
 
-const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
-  const form = useForm<ShippingOptionFormType>()
+const CreateShippingOptionModal = ({
+  open,
+  onClose,
+  region,
+  vendor,
+}: Props) => {
+  const form = useForm<ShippingOptionFormType>({
+    defaultValues: {
+      store_option: true,
+      price_type: { label: "Free Shipping", value: "free_shipping" },
+    },
+  })
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
   } = form
+
   const { mutate, isLoading } = useAdminCreateShippingOption()
-  const { getFulfillmentData, getRequirementsData } = useShippingOptionFormData(
-    region.id
-  )
+  const { getFulfillmentData } = useShippingOptionFormData({
+    regionId: region.id,
+    isReturn: false,
+    vendorId: vendor?.id,
+  })
   const notifcation = useNotification()
 
   const closeAndReset = () => {
@@ -37,7 +54,7 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
 
   const onSubmit = handleSubmit((data) => {
     const { provider_id, data: fData } = getFulfillmentData(
-      data.fulfillment_provider!.value
+      data.fulfillment_method!.value
     )
 
     mutate(
@@ -46,13 +63,14 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
         region_id: region.id,
         profile_id: data.shipping_profile?.value,
         name: data.name!,
+        transit_time: data.transit_time?.value,
         data: fData,
-        price_type: data.price_type!.value,
+        price_type:
+          data.price_type?.value === "calculated" ? "calculated" : "flat_rate",
         provider_id,
         admin_only: !data.store_option,
-        amount: data.amount!,
+        amount: data.price_type?.value === "flat_rate" ? data.amount! : 0,
         requirements: getRequirementsData(data),
-        metadata: getSubmittableMetadata(data.metadata),
       },
       {
         onSuccess: () => {
@@ -74,12 +92,12 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
-            <ShippingOptionForm form={form} region={region} />
+            <ShippingOptionForm form={form} region={region} vendor={vendor} />
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
+            <div className="flex items-center justify-end w-full gap-2">
               <Button
-                variant="secondary"
+                variant="ghost"
                 size="small"
                 type="button"
                 onClick={closeAndReset}

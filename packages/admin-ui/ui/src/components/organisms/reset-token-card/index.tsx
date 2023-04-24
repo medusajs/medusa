@@ -1,12 +1,7 @@
 import { useAdminSendResetPasswordToken } from "medusa-react"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import FormValidator from "../../../utils/form-validator"
-import InputError from "../../atoms/input-error"
-import Button from "../../fundamentals/button"
-import CheckCircleFillIcon from "../../fundamentals/icons/check-circle-fill-icon"
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
 import SigninInput from "../../molecules/input-signin"
 
 type ResetTokenCardProps = {
@@ -17,23 +12,26 @@ type FormValues = {
   email: string
 }
 
-const emailRegex = new RegExp(
-  "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-)
+const checkMail = /^\S+@\S+$/i
 
 const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
+  const [unrecognizedEmail, setUnrecognizedEmail] = useState(false)
+  const [invalidEmail, setInvalidEmail] = useState(false)
   const [mailSent, setSentMail] = useState(false)
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>()
+  const { register, handleSubmit } = useForm<FormValues>()
 
-  const { mutate, isLoading } = useAdminSendResetPasswordToken()
-  const notification = useNotification()
+  const sendEmail = useAdminSendResetPasswordToken()
 
-  const onSubmit = handleSubmit((values: FormValues) => {
-    mutate(
+  const onSubmit = (values: FormValues) => {
+    if (!checkMail.test(values.email)) {
+      setInvalidEmail(true)
+      return
+    }
+
+    setInvalidEmail(false)
+    setUnrecognizedEmail(false)
+
+    sendEmail.mutate(
       {
         email: values.email,
       },
@@ -41,65 +39,71 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
         onSuccess: () => {
           setSentMail(true)
         },
-        onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+        onError: () => {
+          setUnrecognizedEmail(true)
         },
       }
     )
-  })
+  }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center">
-        <h1 className="inter-xlarge-semibold text-grey-90 mb-xsmall text-[20px]">
+        <span className="inter-2xlarge-semibold mt-base text-grey-90">
           Reset your password
-        </h1>
-        <span className="inter-base-regular text-grey-50 mb-large text-center">
-          Enter your email address below, and we&apos;ll
+        </span>
+        <span className="inter-base-regular text-grey-50 mt-xsmall text-center">
+          Enter your email address below, and we'll send you
           <br />
-          send you instructions on how to reset
-          <br />
-          your password.
+          instructions on how to reset your password.
         </span>
         {!mailSent ? (
           <>
-            <div className="w-[280px]">
-              <SigninInput
-                placeholder="Email"
-                {...register("email", {
-                  required: FormValidator.required("Email"),
-                  pattern: {
-                    value: emailRegex,
-                    message: "This is not a valid email",
-                  },
-                })}
-              />
-              <InputError errors={errors} name="email" />
-            </div>
-            <Button
-              variant="secondary"
-              size="medium"
-              className="mt-large w-[280px]"
+            <SigninInput
+              placeholder="lebron@james.com..."
+              {...register("email", { required: true })}
+              className="mb-0 mt-xlarge"
+            />
+            {unrecognizedEmail && (
+              <div className="mt-xsmall w-[318px]">
+                <span className="inter-small-regular text-rose-50 text-left">
+                  We can't find a user with that email address
+                </span>
+              </div>
+            )}
+            {invalidEmail && (
+              <div className="mt-xsmall w-[318px]">
+                <span className="inter-small-regular text-rose-50 text-left">
+                  Not a valid email address
+                </span>
+              </div>
+            )}
+            <button
+              className="text-grey-0 w-[320px] h-[48px] border rounded-rounded mt-4 bg-violet-50 inter-base-regular py-3 px-4"
               type="submit"
-              loading={isLoading}
             >
               Send reset instructions
-            </Button>
+            </button>
           </>
         ) : (
-          <div className="text-grey-60 rounded-rounded bg-grey-5 border-grey-20 p-base gap-x-small flex w-[280px] items-center border">
+          <div className="text-violet-60 rounded-rounded bg-violet-10 p-base flex gap-x-small mt-large">
             <div>
-              <CheckCircleFillIcon className="text-blue-50" size={20} />
+              <CheckCircleIcon size={20} />
             </div>
-            <div className="gap-y-2xsmall flex flex-col">
-              <span className="inter-base-regular">
+            <div className="flex flex-col gap-y-2xsmall">
+              <span className="inter-small-semibold">
                 Succesfully sent you an email
+              </span>
+              <span className="inter-small-regular">
+                We've sent you an email which you can use to reset your
+                password. Check your spam folder if you haven't received it
+                after a few minutes.
               </span>
             </div>
           </div>
         )}
         <span
-          className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
+          className="inter-small-regular text-grey-50 my-8 cursor-pointer"
           onClick={goBack}
         >
           Go back to sign in

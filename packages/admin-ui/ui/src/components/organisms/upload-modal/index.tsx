@@ -1,21 +1,20 @@
-import { ReactNode, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import clsx from "clsx"
 
-import Button from "../../fundamentals/button"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import DownloadIcon from "../../fundamentals/icons/download-icon"
-import FileIcon from "../../fundamentals/icons/file-icon"
 import Modal from "../../molecules/modal"
+import Button from "../../fundamentals/button"
+import FileIcon from "../../fundamentals/icons/file-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
-import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
-import Tooltip from "../../atoms/tooltip"
+import DownloadIcon from "../../fundamentals/icons/download-icon"
+import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
+import WarningCircle from "../../fundamentals/icons/warning-circle"
+import CrossIcon from "../../fundamentals/icons/cross-icon"
+import { template } from "lodash"
 
 type FileSummaryProps = {
   name: string
   size: number
-  hasError?: boolean
-  errorMessage?: string
   action: ReactNode
   progress?: number
   status?: string
@@ -25,7 +24,7 @@ type FileSummaryProps = {
  * Render an upload file summary (& upload progress).
  */
 function FileSummary(props: FileSummaryProps) {
-  const { action, name, progress, size, status, hasError, errorMessage } = props
+  const { action, name, progress, size, status } = props
 
   const formattedSize =
     size / 1024 < 10
@@ -34,46 +33,32 @@ function FileSummary(props: FileSummaryProps) {
 
   return (
     <div className="relative">
-      <Tooltip
-        side="top"
-        maxWidth={320}
-        open={hasError ? undefined : false}
-        content={
-          hasError && errorMessage ? (
-            <span className="font-normal text-rose-500">{errorMessage}</span>
-          ) : null
-        }
-      >
-        <div
-          style={{ width: `${progress}%` }}
-          className="bg-grey-5 transition-width absolute h-full duration-150 ease-in-out"
-        />
-        <div className="border-1 relative mt-6 flex items-center rounded-xl border">
-          <div className="m-4">
-            <FileIcon size={30} fill={progress ? "#9CA3AF" : "#2DD4BF"} />
-          </div>
-
-          <div className="my-6 flex-1">
-            <div className="text-small text-grey-90 leading-5">{name}</div>
-            <div
-              className={clsx("text-xsmall text-grey-50 leading-4", {
-                "text-rose-500": hasError,
-              })}
-            >
-              {status || formattedSize}
-            </div>
-          </div>
-
-          <div className="m-6">{action}</div>
+      <div
+        style={{ width: `${progress}%` }}
+        className="absolute bg-grey-5 h-full transition-width duration-150 ease-in-out"
+      />
+      <div className="relative flex items-center rounded-xl border border-1 mt-6">
+        <div className="m-4">
+          <FileIcon size={30} fill={progress ? "#9CA3AF" : "#2DD4BF"} />
         </div>
-      </Tooltip>
+
+        <div className="flex-1 my-6">
+          <div className="text-small leading-5 text-grey-90">{name}</div>
+          <div className="text-xsmall leading-4 text-grey-50">
+            {status || formattedSize}
+          </div>
+        </div>
+
+        <div className="m-6">{action}</div>
+      </div>
     </div>
   )
 }
 
 type UploadSummaryProps = {
-  creations?: number
-  updates?: number
+  creations: number
+  updates: number
+  rejections?: number
   type: string
 }
 
@@ -81,18 +66,25 @@ type UploadSummaryProps = {
  * Render a batch update request summary.
  */
 function UploadSummary(props: UploadSummaryProps) {
-  const { creations, updates, type } = props
+  const { creations, updates, rejections, type } = props
   return (
     <div className="flex gap-6">
-      <div className="text-small text-grey-90 flex items-center">
+      <div className="flex items-center text-small text-grey-90">
         <CheckCircleIcon color="#9CA3AF" className="mr-2" />
-        <span className="font-semibold"> {creations || 0}&nbsp;</span> new{" "}
-        {type}
+        <span className="font-semibold"> {creations}&nbsp;</span> new {type}
       </div>
-      <div className="text-small text-grey-90 flex items-center">
-        <WarningCircleIcon fill="#9CA3AF" className="mr-2" />
-        <span className="font-semibold">{updates || 0}&nbsp;</span> updates
-      </div>
+      {!!updates && (
+        <div className="flex items-center text-small text-grey-90">
+          <WarningCircle fill="#9CA3AF" className="mr-2" />
+          <span className="font-semibold">{updates}&nbsp;</span> updates
+        </div>
+      )}
+      {!!rejections && (
+        <div className="flex items-center text-small text-grey-90">
+          <XCircleIcon color="#9CA3AF" className="mr-2" />
+          <span className="font-semibold">{rejections}&nbsp;</span> rejections
+        </div>
+      )}
     </div>
   )
 }
@@ -133,7 +125,7 @@ function DropArea(props: DropAreaProps) {
       onDragOver={onDragOver}
       onDrop={handleFileDrop}
       className={clsx(
-        "mt-3 flex flex-col items-center justify-center rounded-xl border border-dashed p-6",
+        "flex flex-col justify-center items-center border border-dashed rounded-xl mt-3 p-6",
         { "opacity-50": isDragOver }
       )}
     >
@@ -164,13 +156,11 @@ function DropArea(props: DropAreaProps) {
 type UploadModalProps = {
   type: string
   status?: string
-  hasError?: boolean
-  errorMessage?: string
-  fileTitle: string
+  fileTitle?: string
   description1Text: string
   description2Title: string
   description2Text: string
-  templateLink: string
+  templateLink?: string
   canImport?: boolean
   progress?: number
   onClose: () => void
@@ -195,9 +185,8 @@ function UploadModal(props: UploadModalProps) {
     onSubmit,
     onFileRemove,
     templateLink,
+    progress,
     summary,
-    hasError,
-    errorMessage,
     status,
     type,
   } = props
@@ -220,16 +209,12 @@ function UploadModal(props: UploadModalProps) {
       <Modal.Body>
         <Modal.Content>
           <div className="flex justify-between">
-            <span className="text-grey-90 inter-large-semibold py-4 text-2xl">
+            <span className="text-2xl text-grey-90 inter-large-semibold py-4">
               Import {fileTitle}
             </span>
             <button onClick={onClose} className="text-grey-50 cursor-pointer">
               <CrossIcon size={20} />
             </button>
-          </div>
-
-          <div className="text-grey-90 inter-large-semibold mb-1 text-base">
-            Import {fileTitle}
           </div>
 
           <p className="text-grey-50 mb-4 text-base">{description1Text}</p>
@@ -249,63 +234,57 @@ function UploadModal(props: UploadModalProps) {
               size={size!}
               name={name!}
               status={status}
-              hasError={hasError}
-              errorMessage={errorMessage}
               // progress={progress}
               // TODO: change this to actual progress once this we can track upload
               progress={100}
               action={
-                <a className="h-6 w-6 cursor-pointer" onClick={removeFile}>
+                <a className="w-6 h-6 cursor-pointer" onClick={removeFile}>
                   <TrashIcon stroke="#9CA3AF" />
                 </a>
               }
             />
           )}
 
-          <div className="text-grey-90 inter-large-semibold mt-8 text-base">
-            {description2Title}
-          </div>
+          {!!templateLink && (
+            <>
+              <div className="text-grey-90 text-base inter-large-semibold mt-8">
+                {description2Title}
+              </div>
 
-          <p className="text-grey-50 mb-2 text-base">{description2Text}</p>
+              <p className="text-grey-50 mb-2 text-base">{description2Text}</p>
 
-          <FileSummary
-            name="medusa-template.csv"
-            size={2967}
-            action={
-              <a
-                className="h-6 w-6 cursor-pointer"
-                href={templateLink}
-                download
-              >
-                <DownloadIcon stroke="#9CA3AF" />
-              </a>
-            }
-          />
+              <FileSummary
+                name="medusa-template.csv"
+                size={2967}
+                action={
+                  <a
+                    className="w-6 h-6 cursor-pointer"
+                    href={templateLink}
+                    download
+                  >
+                    <DownloadIcon stroke="#9CA3AF" />
+                  </a>
+                }
+              />
+            </>
+          )}
 
           <div className="h-2" />
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex h-8 w-full justify-end">
-            <div className="flex gap-2">
-              <Button
-                variant="secondary"
-                className="text-small mr-2 justify-center"
-                size="small"
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={onClose}>
+              Cancel
+            </Button>
 
-              <Button
-                size="small"
-                disabled={!canImport || hasError}
-                variant="primary"
-                className="text-small"
-                onClick={onSubmit}
-              >
-                Import List
-              </Button>
-            </div>
+            <Button
+              size="small"
+              disabled={!canImport}
+              variant="primary"
+              onClick={onSubmit}
+            >
+              Import List
+            </Button>
           </div>
         </Modal.Footer>
       </Modal.Body>

@@ -1,19 +1,20 @@
-import { useAdminAcceptInvite } from "medusa-react"
+import ConfettiGenerator from "confetti-js"
 import qs from "qs"
-import { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { decodeToken } from "react-jwt"
-import { useLocation, useNavigate } from "react-router-dom"
-import InputError from "../components/atoms/input-error"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import Button from "../components/fundamentals/button"
+import LongArrowRightIcon from "../components/fundamentals/icons/long-arrow-right-icon"
 import SigninInput from "../components/molecules/input-signin"
 import SEO from "../components/seo"
-import PublicLayout from "../components/templates/login-layout"
+import LoginLayout from "../components/templates/login-layout"
+import { useAdminAcceptInvite } from "../hooks/admin/invites"
+
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
-import FormValidator from "../utils/form-validator"
 
-type FormValues = {
+type formValues = {
   password: string
   repeat_password: string
   first_name: string
@@ -34,12 +35,33 @@ const InvitePage = () => {
     }
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<FormValues>({
+  const [passwordMismatch, setPasswordMismatch] = useState(false)
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const confettiSettings = {
+      target: "confetti-canvas",
+      start_from_edge: true,
+      size: 3,
+      clock: 25,
+      colors: [
+        [251, 146, 60],
+        [167, 139, 250],
+        [251, 146, 60],
+        [96, 165, 250],
+        [45, 212, 191],
+        [250, 204, 21],
+        [232, 121, 249],
+      ],
+      max: 26,
+    }
+    const confetti = new ConfettiGenerator(confettiSettings)
+    confetti.render()
+
+    return () => confetti.clear()
+  }, [])
+
+  const { register, handleSubmit, formState } = useForm<formValues>({
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -48,27 +70,19 @@ const InvitePage = () => {
     },
   })
 
-  const { mutate, isLoading } = useAdminAcceptInvite()
+  const accept = useAdminAcceptInvite()
   const navigate = useNavigate()
   const notification = useNotification()
 
-  const handleAcceptInvite = handleSubmit((data: FormValues) => {
-    if (data.password !== data.repeat_password) {
-      setError(
-        "repeat_password",
-        {
-          type: "manual",
-          message: "Passwords do not match",
-        },
-        {
-          shouldFocus: true,
-        }
-      )
+  const handleAcceptInvite = (data: formValues) => {
+    setPasswordMismatch(false)
 
+    if (data.password !== data.repeat_password) {
+      setPasswordMismatch(true)
       return
     }
 
-    mutate(
+    accept.mutate(
       {
         token: parsed.token as string,
         user: {
@@ -86,114 +100,127 @@ const InvitePage = () => {
         },
       }
     )
-  })
-
-  if (!token) {
-    return (
-      <PublicLayout>
-        <SEO title="Create Account" />
-        <div className="gap-y-xsmall flex flex-col items-center">
-          <h1 className="inter-xlarge-semibold mb- text-[20px]">
-            Invalid invite
-          </h1>
-          <p className="inter-base-regular text-grey-50 w-[280px] text-center">
-            The invite link you have used is invalid. Please contact your
-            administrator.
-          </p>
-          <p className="inter-small-regular text-grey-40 mt-xlarge">
-            Already have an account? <a href="/login">Log in</a>
-          </p>
-        </div>
-      </PublicLayout>
-    )
   }
 
+  useEffect(() => {
+    if (
+      formState.dirtyFields.password &&
+      formState.dirtyFields.repeat_password &&
+      formState.dirtyFields.first_name &&
+      formState.dirtyFields.last_name
+    ) {
+      setReady(true)
+    } else {
+      setReady(false)
+    }
+  }, [formState])
+
   return (
-    <PublicLayout>
-      <SEO title="Create Account" />
+    <>
       {signUp ? (
-        <form onSubmit={handleAcceptInvite}>
-          <div className="flex flex-col items-center">
-            <h1 className="inter-xlarge-semibold mb-large text-[20px]">
-              Create your Medusa account
-            </h1>
-            <div className="gap-y-small flex flex-col">
-              <div>
-                <SigninInput
-                  placeholder="First name"
-                  {...register("first_name", {
-                    required: FormValidator.required("First name"),
-                  })}
-                  autoComplete="given-name"
+        <LoginLayout>
+          <SEO title="Create Account" />
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="flex min-h-[600px] bg-grey-0 rounded-rounded justify-center">
+              <form
+                className="flex flex-col py-12 w-full px-[120px] items-center"
+                onSubmit={handleSubmit(handleAcceptInvite)}
+              >
+                <img
+                  src="/img/markethaus-logo.png"
+                  className="w-[100px] mb-8"
                 />
-                <InputError errors={errors} name="first_name" />
-              </div>
-              <div>
-                <SigninInput
-                  placeholder="Last name"
-                  {...register("last_name", {
-                    required: FormValidator.required("Last name"),
-                  })}
-                  autoComplete="family-name"
-                />
-                <InputError errors={errors} name="last_name" />
-              </div>
-              <div>
-                <SigninInput
-                  placeholder="Password"
-                  type={"password"}
-                  {...register("password", {
-                    required: FormValidator.required("Password"),
-                  })}
-                  autoComplete="new-password"
-                />
-              </div>
-              <div>
-                <SigninInput
-                  placeholder="Confirm password"
-                  type={"password"}
-                  {...register("repeat_password", {
-                    required: "You must confirm your password",
-                  })}
-                  autoComplete="new-password"
-                />
-                <InputError errors={errors} name="repeat_password" />
-              </div>
+                {!token ? (
+                  <div className="h-full flex flex-col gap-y-2 text-center items-center justify-center">
+                    <span className="inter-large-semibold text-grey-90">
+                      Something didn't work right
+                    </span>
+                    <span className="inter-base-regular mt-2 text-grey-50">
+                      Contact your administrator to try a new invite
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <span className="inter-2xlarge-semibold mt-4 text-grey-90">
+                      Welcome to the team!
+                    </span>
+                    <span className="inter-base-regular text-grey-50 mt-2 mb-large">
+                      Create your account below👇🏼
+                    </span>
+                    <SigninInput
+                      placeholder="First name"
+                      {...register("first_name", { required: true })}
+                      autoComplete="given-name"
+                    />
+                    <SigninInput
+                      placeholder="Last name"
+                      {...register("last_name", { required: true })}
+                      autoComplete="family-name"
+                    />
+                    <SigninInput
+                      placeholder="Password"
+                      type={"password"}
+                      {...register("password", { required: true })}
+                      autoComplete="new-password"
+                    />
+                    <SigninInput
+                      placeholder="Repeat password"
+                      type={"password"}
+                      {...register("repeat_password", { required: true })}
+                      autoComplete="new-password"
+                    />
+                    {passwordMismatch && (
+                      <span className="text-rose-50 w-full mt-2 inter-small-regular">
+                        The two passwords are not the same
+                      </span>
+                    )}
+                    <Button
+                      variant="primary"
+                      size="large"
+                      type="submit"
+                      className="w-full mt-base"
+                      loading={formState.isSubmitting}
+                      disabled={!ready}
+                    >
+                      Create account
+                    </Button>
+                    <Link
+                      to="/login"
+                      className="inter-small-regular text-grey-50 mt-large"
+                    >
+                      Already signed up? Log in
+                    </Link>
+                  </>
+                )}
+              </form>
             </div>
-            <Button
-              variant="secondary"
-              size="medium"
-              className="mt-large w-[280px]"
-              loading={isLoading}
-            >
-              Create account
-            </Button>
-            <p className="inter-small-regular text-grey-50 mt-xlarge">
-              Already signed up? <a href="/login">Log in</a>
-            </p>
           </div>
-        </form>
+        </LoginLayout>
       ) : (
-        <div className="flex flex-col items-center text-center">
-          <h1 className="inter-xlarge-semibold text-[20px]">
-            You have been invited to join the team
-          </h1>
-          <p className="inter-base-regular text-grey-50 mt-xsmall">
-            You can now join the team. Sign up below and get started
-            <br />
-            with your Medusa account right away.
-          </p>
-          <Button
-            variant="secondary"
-            size="medium"
-            className="mt-xlarge w-[280px]"
-            onClick={() => setSignUp(true)}
-          >
-            Sign up
-          </Button>
+        <div className="bg-grey-90 h-screen w-full overflow-hidden">
+          <div className="z-10 flex-grow flex flex-col items-center justify-center h-full absolute inset-0 max-w-[1080px] mx-auto">
+            <img src="/img/markethaus-logo.png" className="w-[100px] mb-8" />
+            <div className="flex flex-col items-center max-w-3xl text-center">
+              <h1 className="inter-3xlarge-semibold text-grey-0 mb-base">
+                You have been invited to join the team
+              </h1>
+            </div>
+            <div className="mt-4xlarge">
+              <Button
+                size="large"
+                variant="primary"
+                className="w-[280px]"
+                onClick={() => setSignUp(true)}
+              >
+                Sign up
+                <LongArrowRightIcon size={20} className="pt-1" />
+              </Button>
+            </div>
+          </div>
+          <canvas id="confetti-canvas" />
         </div>
       )}
-    </PublicLayout>
+    </>
   )
 }
 

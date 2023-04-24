@@ -11,12 +11,12 @@ const usePricesColumns = () => {
         Header: <div className="pl-4">Name</div>,
         accessor: "title",
         Cell: ({ row: { original } }) => (
-          <div className="flex items-center pl-4">
-            <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+          <div className="pl-4 flex items-center">
+            <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
               {original.thumbnail ? (
                 <img
                   src={original.thumbnail}
-                  className="rounded-soft h-full object-cover"
+                  className="h-full object-cover rounded-soft"
                 />
               ) : (
                 <ImagePlaceholder />

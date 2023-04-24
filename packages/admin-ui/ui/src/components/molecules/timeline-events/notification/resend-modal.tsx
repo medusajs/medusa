@@ -67,27 +67,19 @@ const ResendModal: React.FC<ResendModalProps> = ({
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-end">
-              <div className="flex">
-                <Button
-                  variant="ghost"
-                  className="text-small mr-2 w-32 justify-center"
-                  size="large"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size="large"
-                  className="text-small w-32 justify-center"
-                  variant="primary"
-                  type="submit"
-                  disabled={isLoading}
-                  loading={isLoading}
-                >
-                  Send
-                </Button>
-              </div>
+            <div className="flex items-center justify-end w-full gap-2">
+              <Button variant="ghost" size="small" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button
+                size="small"
+                variant="primary"
+                type="submit"
+                disabled={isLoading}
+                loading={isLoading}
+              >
+                Send
+              </Button>
             </div>
           </Modal.Footer>
         </Modal.Body>

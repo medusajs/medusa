@@ -1,3 +1,4 @@
+import React from "react"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
 import Input from "../../../components/molecules/input"
 import FormValidator from "../../../utils/form-validator"
@@ -38,7 +39,7 @@ export const EditTaxRateDetails = ({
           required: !lockName ? FormValidator.required("Name") : undefined,
         })}
         required={!lockName}
-        className="mb-base w-full min-w-[335px]"
+        className="mb-base min-w-[335px] w-full"
         errors={errors}
       />
       <Input
@@ -57,7 +58,7 @@ export const EditTaxRateDetails = ({
           valueAsNumber: true,
         })}
         required
-        className="mb-base w-full min-w-[335px]"
+        className="mb-base min-w-[335px] w-full"
         errors={errors}
       />
       <Input
@@ -67,7 +68,7 @@ export const EditTaxRateDetails = ({
           required: FormValidator.required("Tax Code"),
         })}
         required
-        className="mb-base w-full min-w-[335px]"
+        className="mb-base min-w-[335px] w-full"
         errors={errors}
       />
     </div>

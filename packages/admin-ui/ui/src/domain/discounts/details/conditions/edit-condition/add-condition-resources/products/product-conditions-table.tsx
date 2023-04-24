@@ -1,5 +1,5 @@
 import { useAdminProducts } from "medusa-react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Modal from "../../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
@@ -9,16 +9,19 @@ import {
   ProductsHeader,
   useProductColumns,
 } from "../../../../../new/discount-form/condition-tables/shared/products"
-import ExistingConditionTableActions from "../../condition-table-actions"
 import { useEditConditionContext } from "../../edit-condition-provider"
+import ExistingConditionTableActions from "../../condition-table-actions"
 
 const ProductConditionsTable = () => {
   const params = useQueryFilters(defaultQueryProps)
 
   const [selectedResources, setSelectedResources] = useState<string[]>([])
 
-  const { condition, removeConditionResources, isLoading } =
-    useEditConditionContext()
+  const {
+    condition,
+    removeConditionResources,
+    isLoading,
+  } = useEditConditionContext()
 
   const {
     isLoading: isLoadingProducts,
@@ -26,10 +29,7 @@ const ProductConditionsTable = () => {
     products,
     refetch,
   } = useAdminProducts(
-    {
-      discount_condition_id: condition.id,
-      ...params.queryObject,
-    },
+    { discount_condition_id: condition.id },
     {
       keepPreviousData: true,
     }

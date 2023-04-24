@@ -3,37 +3,35 @@ import { isEmpty } from "lodash"
 import { useAdminOrders } from "medusa-react"
 import qs from "qs"
 import React, { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
-import { useAnalytics } from "../../../providers/analytics-provider"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { useSelectedVendor } from "../../../context/vendor"
+import { useAnalytics } from "../../../context/analytics"
+import { FeatureFlagContext } from "../../../context/feature-flag"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import OrderFilters from "../order-filter-dropdown"
-import useOrderTableColums from "./use-order-column"
+import useOrderTableColumns from "./use-order-column"
 import { useOrderFilters } from "./use-order-filters"
 
 const DEFAULT_PAGE_SIZE = 15
 
-const defaultQueryProps = {
-  expand: "customer,shipping_address",
-  fields:
-    "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code",
-}
-
-type OrderTableProps = {
-  setContextFilters: (filters: Record<string, { filter: string[] }>) => void
-}
-
-const OrderTable = ({ setContextFilters }: OrderTableProps) => {
+const OrderTable: React.FC<{}> = () => {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { isVendorView, selectedVendor } = useSelectedVendor()
 
-  const { isFeatureEnabled } = useFeatureFlag()
-  const { trackNumberOfOrders } = useAnalytics()
+  const defaultQueryProps = {
+    expand: "shipping_address,children,vendor,children.vendor,customer",
+    fields:
+      "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code",
+  }
+
+  const { isFeatureEnabled } = React.useContext(FeatureFlagContext)
 
   let hiddenColumns = ["sales_channel"]
   if (isFeatureEnabled("sales_channels")) {
-    defaultQueryProps.expand = defaultQueryProps.expand + ",sales_channel"
+    defaultQueryProps.expand = "shipping_address,sales_channel"
     hiddenColumns = []
   }
 
@@ -59,25 +57,21 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
   const [query, setQuery] = useState(filtersOnLoad?.query)
   const [numPages, setNumPages] = useState(0)
 
-  const { orders, isLoading, count } = useAdminOrders(queryObject, {
-    keepPreviousData: true,
-    onSuccess: ({ count }) => {
-      trackNumberOfOrders({
-        count,
-      })
+  const { orders, isLoading, count } = useAdminOrders(
+    {
+      ...queryObject,
+      vendor_id: isVendorView ? selectedVendor?.id : "null",
     },
-  })
+    { keepPreviousData: true }
+  )
 
   useEffect(() => {
     const controlledPageCount = Math.ceil(count! / queryObject.limit)
     setNumPages(controlledPageCount)
   }, [orders])
 
-  useEffect(() => {
-    setContextFilters(filters as {})
-  }, [filters])
-
-  const [columns] = useOrderTableColums()
+  // pulling in the order table columns to set the display pattern
+  const [columns] = useOrderTableColumns(isVendorView)
 
   const {
     getTableProps,
@@ -140,7 +134,8 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
 
   const updateUrlFromFilter = (obj = {}) => {
     const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/orders`, "", `${`?${stringified}`}`)
+    navigate({ search: `?${stringified}` })
+    window.history.replaceState(`/admin/orders`, "", `${`?${stringified}`}`)
   }
 
   const refreshWithFilters = () => {
@@ -238,4 +233,4 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
   )
 }
 
-export default React.memo(OrderTable)
+export default OrderTable

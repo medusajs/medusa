@@ -1,16 +1,17 @@
 import { AdminPostRegionsReq } from "@medusajs/medusa"
 import { useAdminCreateRegion } from "medusa-react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import Accordion from "../../../../components/organisms/accordion"
+import { useFeatureFlag } from "../../../../context/feature-flag"
 import useNotification from "../../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
+import { useBasePath } from "../../../../utils/routePathing"
 import RegionDetailsForm, {
   RegionDetailsFormType,
 } from "../components/region-form/region-details-form"
@@ -28,11 +29,19 @@ type NewRegionFormType = {
 }
 
 const NewRegion = ({ onClose }: Props) => {
+  const basePath = useBasePath()
   const [sections, setSections] = useState(["details"])
   const form = useForm<NewRegionFormType>({
-    defaultValues: getDefaultValues(),
+    defaultValues: {
+      details: {
+        countries: [],
+      },
+      providers: {
+        payment_providers: undefined,
+        fulfillment_providers: undefined,
+      },
+    },
   })
-
   const {
     formState: { isDirty },
     handleSubmit,
@@ -45,7 +54,7 @@ const NewRegion = ({ onClose }: Props) => {
   const { isFeatureEnabled } = useFeatureFlag()
 
   const closeAndReset = () => {
-    reset(getDefaultValues())
+    reset()
     onClose()
   }
 
@@ -72,7 +81,8 @@ const NewRegion = ({ onClose }: Props) => {
       mutate(payload, {
         onSuccess: ({ region }) => {
           notification("Success", "Region created", "success")
-          navigate(`/a/settings/regions/${region.id}`)
+
+          navigate(`${basePath}/settings/regions/${region.id}`)
           closeAndReset()
         },
         onError: (error) => {
@@ -91,14 +101,15 @@ const NewRegion = ({ onClose }: Props) => {
     <form className="w-full" onSubmit={onSubmit} noValidate>
       <FocusModal>
         <FocusModal.Header>
-          <div className="medium:w-8/12 flex w-full justify-between px-8">
+          <div className="medium:w-8/12 w-full px-8 flex justify-between">
             <Button
               size="small"
-              variant="ghost"
+              variant="secondary"
               type="button"
+              className="w-8 h-8 p-0 justify-center"
               onClick={closeAndReset}
             >
-              <CrossIcon size={20} />
+              <CrossIcon className="w-5 h-5" />
             </Button>
             <div className="gap-x-small flex">
               <Button
@@ -113,8 +124,8 @@ const NewRegion = ({ onClose }: Props) => {
             </div>
           </div>
         </FocusModal.Header>
-        <FocusModal.Main className="no-scrollbar flex w-full justify-center">
-          <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
+        <FocusModal.Main className="w-full no-scrollbar flex justify-center">
+          <div className="medium:w-7/12 large:w-6/12 small:w-4/5 max-w-[700px] my-16">
             <Accordion
               value={sections}
               onValueChange={setSections}
@@ -126,7 +137,7 @@ const NewRegion = ({ onClose }: Props) => {
                 forceMountContent
                 required
               >
-                <p className="inter-base-regular mb-xlarge text-grey-50">
+                <p className="inter-base-regular text-grey-50 mb-xlarge">
                   Add the region details.
                 </p>
                 <RegionDetailsForm
@@ -140,7 +151,7 @@ const NewRegion = ({ onClose }: Props) => {
                 forceMountContent
                 required
               >
-                <p className="inter-base-regular mb-xlarge text-grey-50">
+                <p className="inter-base-regular text-grey-50 mb-xlarge">
                   Add which fulfillment and payment providers shoulb be
                   available in this region.
                 </p>
@@ -155,15 +166,3 @@ const NewRegion = ({ onClose }: Props) => {
 }
 
 export default NewRegion
-
-const getDefaultValues = () => {
-  return {
-    details: {
-      countries: [],
-    },
-    providers: {
-      payment_providers: undefined,
-      fulfillment_providers: undefined,
-    },
-  }
-}

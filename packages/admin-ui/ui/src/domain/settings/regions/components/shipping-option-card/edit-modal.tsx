@@ -1,19 +1,18 @@
 import { ShippingOption } from "@medusajs/medusa"
 import { useAdminUpdateShippingOption } from "medusa-react"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import {
-  getMetadataFormValues,
-  getSubmittableMetadata,
-} from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
+import { useSelectedVendor } from "../../../../../context/vendor"
+import { transitTimeOptions } from "../../../../../definitions/shared"
 import useNotification from "../../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../../utils/error-messages"
+import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper"
 import ShippingOptionForm, {
   ShippingOptionFormType,
 } from "../shipping-option-form"
-import { useShippingOptionFormData } from "../shipping-option-form/use-shipping-option-form-data"
+import { getRequirementsData } from "../shipping-option-form/use-shipping-option-form-data"
 
 type Props = {
   open: boolean
@@ -22,11 +21,11 @@ type Props = {
 }
 
 const EditModal = ({ open, onClose, option }: Props) => {
+  const { isVendorView, selectedVendor } = useSelectedVendor()
   const form = useForm<ShippingOptionFormType>({
     defaultValues: getDefaultValues(option),
   })
   const { mutate, isLoading } = useAdminUpdateShippingOption(option.id)
-  const { getRequirementsData } = useShippingOptionFormData(option.region_id)
   const notification = useNotification()
 
   const {
@@ -36,10 +35,8 @@ const EditModal = ({ open, onClose, option }: Props) => {
   } = form
 
   useEffect(() => {
-    if (open) {
-      reset(getDefaultValues(option))
-    }
-  }, [option, reset, open])
+    reset(getDefaultValues(option))
+  }, [option])
 
   const closeAndReset = () => {
     reset(getDefaultValues(option))
@@ -51,10 +48,10 @@ const EditModal = ({ open, onClose, option }: Props) => {
       {
         name: data.name!,
         // @ts-ignore
+        transit_time: data.transit_time?.value,
         requirements: getRequirementsData(data),
         admin_only: !data.store_option,
         amount: data.amount!,
-        metadata: getSubmittableMetadata(data.metadata),
       },
       {
         onSuccess: () => {
@@ -79,19 +76,21 @@ const EditModal = ({ open, onClose, option }: Props) => {
             <div>
               <p className="inter-base-semibold">Fulfillment Method</p>
               <p className="inter-base-regular text-grey-50">
-                {option.data.id as string} via {option.provider_id}
+                {option.data.name ?? option.data.id} via{" "}
+                {fulfillmentProvidersMapper(option.provider_id).label}
               </p>
             </div>
-            <div className="bg-grey-20 my-xlarge h-px w-full" />
+            <div className="w-full h-px bg-grey-20 my-xlarge" />
             <ShippingOptionForm
               form={form}
               region={option.region}
               isEdit={true}
+              vendor={isVendorView ? selectedVendor : undefined}
             />
           </Modal.Content>
           <Modal.Footer>
-            <div className="gap-x-xsmall flex w-full items-center justify-end">
-              <Button variant="secondary" size="small" onClick={closeAndReset}>
+            <div className="flex items-center justify-end w-full gap-2">
+              <Button variant="ghost" size="small" onClick={closeAndReset}>
                 Cancel
               </Button>
               <Button
@@ -114,6 +113,8 @@ const EditModal = ({ open, onClose, option }: Props) => {
 const getDefaultValues = (option: ShippingOption): ShippingOptionFormType => {
   const minSubtotal = option.requirements.find((r) => r.type === "min_subtotal")
   const maxSubtotal = option.requirements.find((r) => r.type === "max_subtotal")
+  const minWeight = option.requirements.find((r) => r.type === "min_weight")
+  const maxWeight = option.requirements.find((r) => r.type === "max_weight")
 
   return {
     store_option: option.admin_only ? false : true,
@@ -125,6 +126,9 @@ const getDefaultValues = (option: ShippingOption): ShippingOptionFormType => {
     },
     fulfillment_provider: null,
     shipping_profile: null,
+    transit_time: transitTimeOptions.find(
+      (o) => o.value === option.transit_time
+    ),
     requirements: {
       min_subtotal: minSubtotal
         ? {
@@ -138,9 +142,20 @@ const getDefaultValues = (option: ShippingOption): ShippingOptionFormType => {
             id: maxSubtotal.id,
           }
         : null,
+      min_weight: minWeight
+        ? {
+            amount: minWeight.amount,
+            id: minWeight.id,
+          }
+        : null,
+      max_weight: maxWeight
+        ? {
+            amount: maxWeight.amount,
+            id: maxWeight.id,
+          }
+        : null,
     },
     amount: option.amount,
-    metadata: getMetadataFormValues(option.metadata),
   }
 }
 

@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import React from "react"
 import {
   ClearIndicatorProps,
   components,
@@ -38,7 +39,7 @@ const MultiValueLabel = <
   return (
     <div
       {...innerProps}
-      className={clsx("bg-grey-5 inter-base-regular mx-0 p-0", {
+      className={clsx("bg-grey-5 mx-0 inter-base-regular p-0", {
         "after:content-[',']": !isLast,
       })}
     >
@@ -58,9 +59,9 @@ const Menu = <
   return (
     <components.Menu
       className={clsx("!rounded-rounded", {
-        "z-60 -mt-1":
+        "-mt-1 z-60":
           !props.selectProps.isSearchable && props.menuPlacement === "bottom",
-        "z-60 mb-3":
+        "mb-3 z-60":
           !props.selectProps.isSearchable && props.menuPlacement === "top",
       })}
       {...props}
@@ -94,7 +95,7 @@ const Placeholder = <
   props: PlaceholderProps<Option, IsMulti, Group>
 ) => {
   return props.selectProps.menuIsOpen ? null : (
-    <components.Placeholder {...props} className="!text-grey-40 !mx-0" />
+    <components.Placeholder {...props} className="!mx-0 !text-grey-40" />
   )
 }
 
@@ -141,7 +142,7 @@ const SelectContainer = <
   props: ContainerProps<Option, IsMulti, Group>
 ) => {
   return (
-    <div className="bg-grey-5 border-grey-20 rounded-rounded focus-within:shadow-cta focus-within:border-violet-60 px-small h-10 border">
+    <div className="bg-grey-5 h-10 border border-grey-20 rounded-rounded focus-within:shadow-cta focus-within:border-violet-60 px-small">
       <components.SelectContainer {...props} />
     </div>
   )
@@ -163,8 +164,8 @@ const Input = <
   }
 
   return (
-    <div className="space-between flex h-full w-full items-center">
-      <div className="flex w-full items-center">
+    <div className="w-full flex items-center h-full space-between">
+      <div className="w-full flex items-center">
         <span className="text-grey-40 mr-2">
           <SearchIcon size={16} />
         </span>
@@ -189,7 +190,7 @@ const ClearIndicator = <
   return (
     <div
       {...innerProps}
-      className="hover:bg-grey-10 text-grey-50 cursor-pointer rounded"
+      className="hover:bg-grey-10 text-grey-50 rounded cursor-pointer"
     >
       <XCircleIcon size={16} />
     </div>
@@ -200,7 +201,7 @@ const CheckboxAdornment = ({ isSelected }: { isSelected: boolean }) => {
   return (
     <div
       className={clsx(
-        `text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border`,
+        `w-5 h-5 flex shrink-0 justify-center text-grey-0 border-grey-30 border rounded-base`,
         {
           "bg-violet-60": isSelected,
         }
@@ -218,18 +219,18 @@ const RadioAdornment = ({ isSelected }: { isSelected: boolean }) => {
     <div
       className={clsx(
         "radio-outer-ring outline-0",
-        "rounded-circle h-[20px] w-[20px] shrink-0",
+        "shrink-0 w-[20px] h-[20px] rounded-circle",
         {
           "shadow-[0_0_0_1px] shadow-[#D1D5DB]": !isSelected,
-          "shadow-violet-60 shadow-[0_0_0_2px]": isSelected,
+          "shadow-[0_0_0_2px] shadow-violet-60": isSelected,
         }
       )}
     >
       {isSelected && (
         <div
           className={clsx(
-            "group relative flex h-full w-full items-center justify-center",
-            "after:bg-violet-60 after:rounded-circle after:absolute after:inset-0 after:m-auto after:block after:h-[12px] after:w-[12px]"
+            "group flex items-center justify-center w-full h-full relative",
+            "after:absolute after:inset-0 after:m-auto after:block after:w-[12px] after:h-[12px] after:bg-violet-60 after:rounded-circle"
           )}
         />
       )}
@@ -247,7 +248,7 @@ const NoOptionsMessage = <
 }: NoticeProps<Option, IsMulti, Group>) => {
   return (
     <div
-      className="text-grey-50 inter-small-semibold p-xsmall text-center"
+      className="text-grey-50 inter-small-semibold text-center p-xsmall"
       {...innerProps}
     >
       <p>{isLoading ? "Loading..." : "No options"}</p>
@@ -266,12 +267,12 @@ const Option = <
   return (
     <components.Option
       {...props}
-      className="bg-grey-0 active:bg-grey-0 my-1 py-0 px-2"
+      className="my-1 py-0 px-2 bg-grey-0 active:bg-grey-0"
     >
       <div
-        className={`item-renderer hover:bg-grey-10 h-full cursor-pointer rounded py-2 px-2`}
+        className={`item-renderer h-full hover:bg-grey-10 py-2 px-2 cursor-pointer rounded`}
       >
-        <div className="flex h-full items-center">
+        <div className="items-center h-full flex">
           {props.data?.value !== "all" && props.data?.label !== "Select All" ? (
             <>
               {props.isMulti ? (
@@ -279,7 +280,7 @@ const Option = <
               ) : (
                 <RadioAdornment isSelected={props.isSelected} />
               )}
-              <span className="text-grey-90 inter-base-regular ml-3">
+              <span className="ml-3 text-grey-90 inter-base-regular">
                 {props.data.label}
               </span>
             </>

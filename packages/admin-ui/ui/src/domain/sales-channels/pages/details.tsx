@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo } from "react"
 
 import { SalesChannel } from "@medusajs/medusa"
 import {
@@ -9,27 +9,27 @@ import {
   useAdminUpdateSalesChannel,
 } from "medusa-react"
 
-import { useNavigate, useParams } from "react-router-dom"
-import BackButton from "../../../components/atoms/back-button"
-import Fade from "../../../components/atoms/fade-wrapper"
-import Spacer from "../../../components/atoms/spacer"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import SearchIcon from "../../../components/fundamentals/icons/search-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
+import EditSalesChannel from "../form/edit-sales-channel"
+import AddSalesChannelModal from "../form/add-sales-channel"
 import Actionables, {
   ActionType,
 } from "../../../components/molecules/actionables"
-import StatusSelector from "../../../components/molecules/status-selector"
-import useImperativeDialog from "../../../hooks/use-imperative-dialog"
-import useToggleState from "../../../hooks/use-toggle-state"
-import AddSalesChannelModal from "../form/add-sales-channel"
-import EditSalesChannel from "../form/edit-sales-channel"
+import DeletePrompt from "../../../components/organisms/delete-prompt"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import EditIcon from "../../../components/fundamentals/icons/edit-icon"
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
+import SearchIcon from "../../../components/fundamentals/icons/search-icon"
 import {
   SalesChannelProductsSelectModal,
   SalesChannelProductsTable,
 } from "../tables/product"
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import StatusSelector from "../../../components/molecules/status-selector"
+import TwoSplitPane from "../../../components/templates/two-split-pane"
+import Fade from "../../../components/atoms/fade-wrapper"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
+import useToggleState from "../../../hooks/use-toggle-state"
+import { useNavigate, useParams } from "react-router-dom"
 
 type ListIndicatorProps = { isActive: boolean }
 
@@ -41,14 +41,14 @@ function ListIndicator(props: ListIndicatorProps) {
   return (
     <div
       className={clsx(
-        "rounded-circle flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center border bg-white",
+        "flex justify-center items-center flex-shrink-0 w-[18px] h-[18px] bg-white border rounded-circle",
         {
-          "border-violet-60 border-2": isActive,
+          "border-2 border-violet-60": isActive,
         }
       )}
     >
       {isActive && (
-        <div className="bg-violet-60 rounded-circle h-[10px] w-[10px]" />
+        <div className="w-[10px] h-[10px] bg-violet-60 rounded-circle" />
       )}
     </div>
   )
@@ -61,11 +61,11 @@ function DisabledLabel() {
   return (
     <div
       className="
-      bg-grey-10 text-grey-50
-      text-small
-      flex
-      h-[28px] w-[54px] items-center
-      justify-center rounded-xl font-semibold"
+      w-[54px] h-[28px]
+      rounded-xl
+      bg-grey-10
+      flex items-center justify-center
+      text-grey-50 text-small font-semibold"
     >
       Draft
     </div>
@@ -89,25 +89,28 @@ function SalesChannelTile(props: SalesChannelTileProps) {
     <div
       onClick={onClick}
       className={clsx(
-        "mb-2 flex h-[83px] cursor-pointer justify-between rounded-lg border p-4",
+        "mb-2 p-4 cursor-pointer rounded-lg border flex justify-between h-[83px]",
         {
-          "border-violet-60 border-2": isSelected,
+          "border-2 border-violet-60": isSelected,
         }
       )}
     >
       <div className="flex gap-2 overflow-hidden">
         <ListIndicator isActive={isSelected} />
-        <div className="block overflow-hidden truncate">
-          <h3 className="text-grey-90 mb-1 font-semibold leading-5">
+        <div className="overflow-hidden block truncate">
+          <h3 className="font-semibold text-grey-90 leading-5 mb-1">
             {salesChannel.name}
           </h3>
-          <span className="text-small text-grey-50 ">
+          <span
+            title={salesChannel.description}
+            className="text-small text-grey-50 "
+          >
             {salesChannel.description}
           </span>
         </div>
       </div>
       {isDisabled && (
-        <div className="flex flex-shrink-0 flex-col justify-center">
+        <div className="flex flex-col justify-center flex-shrink-0">
           <DisabledLabel />
         </div>
       )}
@@ -141,14 +144,14 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
   }
 
   return (
-    <div className="mb-6 h-[55px] overflow-hidden">
+    <div className="h-[55px] mb-6 overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="h-[55px]">
-          <div className="mb-1 flex items-center justify-between">
-            <h2 className="text-xlarge text-grey-90 font-semibold">
+          <div className="flex justify-between items-center mb-1">
+            <h2 className="font-semibold text-xlarge text-grey-90">
               Sales channels
             </h2>
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex justify-between items-center gap-4">
               <SearchIcon
                 size={15}
                 onClick={() => setShowFilter(true)}
@@ -161,19 +164,19 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
               />
             </div>
           </div>
-          <div className="text-grey-50 text-small mb-6 block max-w-[100%] overflow-hidden truncate">
+          <div className="text-grey-50 text-small mb-6 block overflow-hidden truncate max-w-[100%]">
             Control which products are available in which channels
           </div>
         </div>
 
-        <div className="text-grey-40 bg-grey-5 my-[5px] flex h-[40px] w-full items-center justify-around gap-2 rounded-xl border px-4">
+        <div className="h-[40px] my-[5px] w-full flex items-center justify-around gap-2 text-grey-40 bg-grey-5 px-4 rounded-xl border">
           <SearchIcon size={20} />
           <input
             ref={inputRef}
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
             placeholder="Search by title or description"
-            className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-inherit font-normal outline-none outline-0"
+            className="bg-inherit outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40"
             onBlur={() => setShowFilter(!!filterText)}
             autoComplete="off"
           />
@@ -207,7 +210,7 @@ function SalesChannelsList(props: SalesChannelsListProps) {
   } = props
 
   return (
-    <div className="bg-grey-0 border-grey-20  col-span-1 grow rounded-lg border px-8 py-6">
+    <div className="col-span-1 rounded-lg border bg-grey-0 border-grey-20 px-8 py-6 h-[968px]">
       <SalesChannelsHeader
         filterText={filterText}
         setFilterText={setFilterText}
@@ -255,21 +258,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
     salesChannel.id
   )
 
-  const confirmation = useImperativeDialog()
-
-  const onDelete = async () => {
-    const confirmed = await confirmation({
-      text: "Are you sure you want to delete this sales channel? The setup you made will be gone forever.",
-      heading: "Delete Channel",
-      extraConfirmation: true,
-      entityName: salesChannel.name,
-    })
-
-    if (confirmed) {
-      deleteSalesChannel()
-      resetDetails()
-    }
-  }
+  const [showDelete, setShowDelete] = useState(false)
 
   const actions = useMemo(() => {
     const _actions: ActionType[] = [
@@ -290,7 +279,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
         label: "Delete channel",
         icon: <TrashIcon size={20} />,
         variant: "danger",
-        onClick: onDelete,
+        onClick: () => setShowDelete(true),
       })
     }
 
@@ -298,11 +287,11 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
   }, [openUpdateModal])
 
   return (
-    <div className="flex items-center justify-between">
-      <h2 className="text-xlarge text-grey-90 mb-4 font-semibold">
+    <div className="flex justify-between items-center">
+      <h2 className="font-semibold text-xlarge text-grey-90 mb-4">
         {salesChannel.name}
       </h2>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex justify-between items-center gap-4">
         <StatusSelector
           onChange={() =>
             updateSalesChannel({ is_disabled: !salesChannel.is_disabled })
@@ -313,6 +302,20 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
         />
         <Actionables forceDropdown={true} actions={actions} />
       </div>
+
+      {showDelete && (
+        <DeletePrompt
+          handleClose={() => setShowDelete(false)}
+          onDelete={async () => {
+            deleteSalesChannel()
+            resetDetails()
+          }}
+          confirmText="Yes, delete"
+          successText="Sales channel deleted"
+          text={`Are you sure you want to delete "${salesChannel.name}" sales channel?`}
+          heading="Delete channel"
+        />
+      )}
     </div>
   )
 }
@@ -335,7 +338,7 @@ function SalesChannelDetails(props: SalesChannelDetailsProps) {
     useToggleState(false)
 
   return (
-    <div className="rounded-rounded bg-grey-0 border-grey-20 col-span-2 col-span-2 h-fit border px-8 py-6">
+    <div className="col-span-2 rounded-rounded border bg-grey-0 border-grey-20 px-8 py-6 h-[968px]">
       <SalesChannelDetailsHeader
         isDefault={isDefault}
         resetDetails={resetDetails}
@@ -446,13 +449,13 @@ function Details() {
 
   return (
     <div>
-      <BackButton
-        path="/a/settings"
-        label="Back to settings"
-        className="mb-xsmall"
+      <Breadcrumb
+        currentPage={"Sales channels"}
+        previousBreadcrumb={"Settings"}
+        previousRoute="/a/settings"
       />
 
-      <div className="gap-x-xsmall grid grid-cols-3">
+      <TwoSplitPane threeCols>
         <SalesChannelsList
           filterText={filterText}
           setFilterText={setFilterText}
@@ -474,8 +477,7 @@ function Details() {
             resetDetails={resetDetails}
           />
         )}
-      </div>
-      <Spacer />
+      </TwoSplitPane>
 
       <Fade isVisible={showCreateModal} isFullScreen={true}>
         <AddSalesChannelModal onClose={closeCreateModal} />

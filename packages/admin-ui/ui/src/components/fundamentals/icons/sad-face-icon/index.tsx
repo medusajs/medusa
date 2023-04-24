@@ -44,6 +44,7 @@ const SadFaceIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
+
   )
 }
 

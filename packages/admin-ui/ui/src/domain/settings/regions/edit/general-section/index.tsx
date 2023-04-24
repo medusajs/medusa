@@ -6,13 +6,16 @@ import Tooltip from "../../../../../components/atoms/tooltip"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
 import Section from "../../../../../components/organisms/section"
+import { useSelectedVendor } from "../../../../../context/vendor"
 import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
 import useNotification from "../../../../../hooks/use-notification"
+import { useStorePermissions } from "../../../../../hooks/use-store-permissions"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import { currencies } from "../../../../../utils/currencies"
 import { getErrorMessage } from "../../../../../utils/error-messages"
 import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper"
 import paymentProvidersMapper from "../../../../../utils/payment-providers-mapper"
+import { useBasePath } from "../../../../../utils/routePathing"
 import EditRegionModal from "./edit-region.modal"
 
 type Props = {
@@ -22,26 +25,24 @@ type Props = {
 const GeneralSection = ({ region }: Props) => {
   const { state, toggle, close } = useToggleState()
   const { mutate } = useAdminDeleteRegion(region.id)
+  const { isVendorView } = useSelectedVendor()
+  const basePath = useBasePath()
   const navigate = useNavigate()
   const notification = useNotification()
   const dialog = useImperativeDialog()
+  const { canEditRegions, canDeleteRegions } = useStorePermissions()
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: "Delete Region",
-      text: "Are you sure you want to delete this region?",
-      extraConfirmation: true,
-      entityName: region.name,
+      heading: "Delete Collection",
+      text: "Are you sure you want to delete this collection?",
     })
 
     if (shouldDelete) {
       mutate(undefined, {
         onSuccess: () => {
-          navigate("/a/settings/regions", {
-            replace: true,
-          })
           notification("Success", "Region has been deleted", "success")
-          navigate(`/a/settings/regions`, { replace: true })
+          navigate(`${basePath}/settings/regions`)
         },
         onError: (error) => {
           notification("Error", getErrorMessage(error), "error")
@@ -54,25 +55,33 @@ const GeneralSection = ({ region }: Props) => {
     <>
       <Section
         title={region.name}
-        actions={[
-          {
-            label: "Edit Region Details",
-            onClick: toggle,
-            icon: <EditIcon size={20} className="text-grey-50" />,
-          },
-          {
-            label: "Delete Region",
-            onClick: handleDelete,
-            icon: <TrashIcon size={20} />,
-            variant: "danger",
-          },
-        ]}
+        actions={
+          isVendorView
+            ? []
+            : [
+                canEditRegions
+                  ? {
+                      label: "Edit Region Details",
+                      onClick: toggle,
+                      icon: <EditIcon size={20} className="text-grey-50" />,
+                    }
+                  : null,
+                canDeleteRegions
+                  ? {
+                      label: "Delete Region",
+                      onClick: handleDelete,
+                      icon: <TrashIcon size={20} />,
+                      variant: "danger",
+                    }
+                  : null,
+              ].filter((a) => !!a)
+        }
       >
-        <div className="gap-y-xsmall mt-large flex flex-col">
+        <div className="flex flex-col gap-y-xsmall mt-large">
           <h2 className="inter-large-semibold">Details</h2>
-          <div className="gap-y-xsmall flex flex-col">
+          <div className="flex flex-col gap-y-xsmall">
             <RegionDetail title={"Currency"}>
-              <div className="gap-x-xsmall flex items-center">
+              <div className="flex items-center gap-x-xsmall">
                 <span className="inter-base-semibold text-grey-90">
                   {region.currency_code.toUpperCase()}
                 </span>
@@ -84,7 +93,7 @@ const GeneralSection = ({ region }: Props) => {
             <RegionDetail title={"Countries"}>
               <div>
                 {region.countries && region.countries.length ? (
-                  <div className="gap-x-xsmall flex items-center">
+                  <div className="flex items-center gap-x-xsmall">
                     <p>
                       {region.countries
                         .slice(0, 4)
@@ -116,7 +125,7 @@ const GeneralSection = ({ region }: Props) => {
             <RegionDetail title={"Payment providers"}>
               <div>
                 {region.payment_providers && region.payment_providers.length ? (
-                  <div className="gap-x-xsmall flex items-center">
+                  <div className="flex items-center gap-x-xsmall">
                     <p>
                       {region.payment_providers
                         .slice(0, 4)
@@ -151,8 +160,9 @@ const GeneralSection = ({ region }: Props) => {
             </RegionDetail>
             <RegionDetail title={"Fulfillment providers"}>
               <div>
-                {region.payment_providers && region.payment_providers.length ? (
-                  <div className="gap-x-xsmall flex items-center">
+                {region.fulfillment_providers &&
+                region.fulfillment_providers.length ? (
+                  <div className="flex items-center gap-x-xsmall">
                     <p>
                       {region.fulfillment_providers
                         .slice(0, 4)
@@ -200,7 +210,7 @@ type DetailProps = {
 
 const RegionDetail = ({ title, children }: DetailProps) => {
   return (
-    <div className="inter-base-regular text-grey-50 flex items-center justify-between">
+    <div className="flex items-center justify-between inter-base-regular text-grey-50">
       <p>{title}</p>
       {children}
     </div>

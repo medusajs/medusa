@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import React, { useContext, useMemo } from "react"
 import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
 import { DiscountConditionType } from "../../types"
 import AddCollectionConditionSelector from "./condition-tables/add-condition-tables/collections"

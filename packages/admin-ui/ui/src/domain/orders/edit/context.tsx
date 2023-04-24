@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useEffect } from "react"
+import React, { createContext, PropsWithChildren } from "react"
 import { useAdminOrderEdits } from "medusa-react"
 import { OrderEdit } from "@medusajs/medusa"
 
@@ -30,14 +30,8 @@ function OrderEditProvider(props: OrderEditProviderProps) {
   // TODO: sort by created_at
   const { order_edits, count } = useAdminOrderEdits({
     order_id: orderId,
-    // limit: count, // TODO
+    //limit: count, // TODO
   })
-
-  useEffect(() => {
-    if (!isModalVisible) {
-      activeId = undefined
-    }
-  }, [isModalVisible])
 
   const value = {
     isModalVisible,

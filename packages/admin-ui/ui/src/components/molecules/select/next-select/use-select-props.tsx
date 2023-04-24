@@ -26,6 +26,11 @@ export const useSelectProps = <
   const sortOptions = (values: Option[]) => {
     const tmp = values || []
 
+    if (!tmp.length) {
+      setStateOptions(options || [])
+      return
+    }
+
     const unselectedOptions = stateOptions.filter(
       (option) => !tmp.find((op) => isEqual(op, option))
     )
@@ -64,7 +69,7 @@ export const useSelectProps = <
 
   return {
     label,
-    components: Components,
+    components: { ...Components, ...components },
     styles: {
       menuPortal: (base) => ({ ...base, zIndex: 60 }),
       ...styles,

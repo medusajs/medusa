@@ -1,18 +1,15 @@
-import { useAdminVariants, useAdminVariantsInventory } from "medusa-react"
+import { useAdminVariants } from "medusa-react"
 import React, { useEffect, useMemo, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
-import { InventoryLevelDTO, ProductVariant } from "@medusajs/medusa"
+import { ProductVariant } from "@medusajs/medusa"
 import clsx from "clsx"
-import pluralize from "pluralize"
+
 import { useDebounce } from "../../../hooks/use-debounce"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import Table from "../../../components/molecules/table"
 import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import TableContainer from "../../../components/organisms/table-container"
-import Tooltip from "../../../components/atoms/tooltip"
-import useStockLocations from "../../../hooks/use-stock-locations"
-import Skeleton from "../../../components/atoms/skeleton"
 
 const PAGE_SIZE = 12
 
@@ -49,110 +46,70 @@ const VariantsTable: React.FC<Props> = (props) => {
     }
   }, [count])
 
-  const VariantInventoryCell = ({ row: { original } }) => {
-    const { getLocationNameById } = useStockLocations()
-
-    const { variant, isLoading } = useAdminVariantsInventory(original.id)
-
-    if (isLoading) {
-      return (
-        <div className="flex justify-end">
-          <Skeleton isLoading={true}>
-            <div className="h-[20px] w-[50px]" />
-          </Skeleton>
-        </div>
-      )
-    }
-
-    if (!isLoading && !variant?.inventory?.length) {
-      return <div className="text-right">{original.inventory_quantity}</div>
-    }
-
-    const { inventory } = variant
-
-    const total = inventory[0].location_levels.reduce(
-      (sum: number, location_level: InventoryLevelDTO) =>
-        (sum += location_level.stocked_quantity),
-      0
-    )
-
-    const LocationTooltip = (
-      <>
-        {inventory[0].location_levels.map(
-          (location_level: InventoryLevelDTO) => (
-            <div key={location_level.id} className="font-normal">
-              <span className="font-semibold">
-                {location_level.stocked_quantity}
-              </span>
-              {" in "}
-              {getLocationNameById(location_level.location_id)}
-            </div>
-          )
-        )}
-      </>
-    )
-
-    return (
-      <Tooltip content={LocationTooltip} side="top" className="translate-x-1/4">
-        <div className="text-right">
-          {total} in {inventory[0].location_levels.length}{" "}
-          {pluralize("location", inventory[0].location_levels.length)}
-        </div>
-      </Tooltip>
-    )
-  }
-
-  const ProductCell = ({ row: { original } }) => {
-    return (
-      <div className="flex items-center">
-        <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
-          {original.product.thumbnail ? (
-            <img
-              src={original.product.thumbnail}
-              className="rounded-soft h-full object-cover"
-            />
-          ) : (
-            <ImagePlaceholder />
-          )}
-        </div>
-        <div className="flex max-w-[200px] flex-col">
-          <Tooltip
-            content={
-              <span className="font-normal">{original.product.title}</span>
-            }
-            maxWidth={400}
-          >
-            <div className="truncate">
-              {original.sku ?? original.product.title}
-            </div>
-          </Tooltip>
-          <span className="text-grey-50">{original.title}</span>
-        </div>
-      </div>
-    )
-  }
-
   const columns = useMemo(() => {
     return [
       {
         Header: (
-          <div className="text-small font-semibold text-gray-500">Product</div>
+          <div className="text-gray-500 text-small font-semibold">Name</div>
         ),
-        accessor: "sku",
-        Cell: ProductCell,
+        accessor: "title",
+        Cell: ({ row: { original } }) => {
+          return (
+            <div className="flex items-center">
+              <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
+                {original.product.thumbnail ? (
+                  <img
+                    src={original.product.thumbnail}
+                    className="h-full object-cover rounded-soft"
+                  />
+                ) : (
+                  <ImagePlaceholder />
+                )}
+              </div>
+              <div className="flex flex-col">
+                <span>{original.product.title}</span>
+                {original.title}
+              </div>
+            </div>
+          )
+        },
       },
       {
         Header: (
-          <div className="text-small text-right font-semibold text-gray-500">
+          <div className="text-gray-500 text-small font-semibold">SKU</div>
+        ),
+        accessor: "sku",
+        Cell: ({ row: { original } }) => <div>{original.sku}</div>,
+      },
+      {
+        Header: (
+          <div className="text-gray-500 text-small font-semibold">Options</div>
+        ),
+        accessor: "options",
+        Cell: ({ row: { original } }) => {
+          const options = original.options?.map(({ value }) => value).join(", ")
+
+          return (
+            <div title={options} className="truncate max-w-[160px]">
+              <span>{options}</span>
+            </div>
+          )
+        },
+      },
+      {
+        Header: (
+          <div className="text-right text-gray-500 text-small font-semibold">
             In Stock
           </div>
         ),
         accessor: "inventory_quantity",
-        Cell: VariantInventoryCell,
+        Cell: ({ row: { original } }) => (
+          <div className="text-right">{original.inventory_quantity}</div>
+        ),
       },
       {
         Header: (
-          <div className="text-small text-right font-semibold text-gray-500">
+          <div className="text-right text-gray-500 text-small font-semibold">
             Price
           </div>
         ),
@@ -165,7 +122,7 @@ const VariantsTable: React.FC<Props> = (props) => {
           const showOriginal = original.calculated_price_type !== "default"
 
           return (
-            <div className="flex items-center justify-end gap-2">
+            <div className="flex justify-end items-center gap-2">
               <div className="flex flex-col items-end">
                 {showOriginal && (
                   <span className="text-gray-400 line-through">

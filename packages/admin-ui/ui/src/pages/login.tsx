@@ -1,50 +1,36 @@
-import { useAdminGetSession } from "medusa-react"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import clsx from "clsx"
+import React, { useState } from "react"
 import LoginCard from "../components/organisms/login-card"
 import ResetTokenCard from "../components/organisms/reset-token-card"
 import SEO from "../components/seo"
-import PublicLayout from "../components/templates/login-layout"
+import LoginLayout from "../components/templates/login-layout"
 
 const LoginPage = () => {
   const [resetPassword, setResetPassword] = useState(false)
 
-  const { user } = useAdminGetSession()
-
-  const navigate = useNavigate()
-
-  // Redirect to dashboard if user is logged in
-  useEffect(() => {
-    if (user) {
-      navigate("/")
-    }
-  }, [user, navigate])
-
-  useEffect(() => {
-    if (window.location.search.includes("reset-password")) {
-      setResetPassword(true)
-    }
-  }, [])
-
-  const showLogin = () => {
-    setResetPassword(false)
-    navigate("/login", { replace: true })
-  }
-
-  const showResetPassword = () => {
-    setResetPassword(true)
-  }
-
   return (
-    <PublicLayout>
+    <LoginLayout>
       <SEO title="Login" />
-
-      {resetPassword ? (
-        <ResetTokenCard goBack={showLogin} />
-      ) : (
-        <LoginCard toResetPassword={showResetPassword} />
-      )}
-    </PublicLayout>
+      <div className="flex h-full w-full items-center justify-center">
+        <div
+          className={clsx(
+            "flex min-h-[600px] w-[640px] bg-grey-0 rounded-rounded justify-center duration-300",
+            {
+              "min-h-[480px]": resetPassword,
+            }
+          )}
+        >
+          <div className="flex flex-col pt-12 w-full px-[120px] items-center">
+            <img src="/img/markethaus-logo.png" className="w-[100px] mb-8" />
+            {resetPassword ? (
+              <ResetTokenCard goBack={() => setResetPassword(false)} />
+            ) : (
+              <LoginCard toResetPassword={() => setResetPassword(true)} />
+            )}
+          </div>
+        </div>
+      </div>
+    </LoginLayout>
   )
 }
 

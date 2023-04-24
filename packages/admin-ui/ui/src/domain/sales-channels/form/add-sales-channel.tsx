@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { useAdminCreateSalesChannel } from "medusa-react"
 
 import Button from "../../../components/fundamentals/button"
@@ -24,7 +24,7 @@ function General(props: GeneralProps) {
   const { name, description, setName, setDescription } = props
 
   return (
-    <div className="gap-y-base my-base flex flex-col">
+    <div className="flex flex-col gap-y-base my-base">
       <div className="flex-1">
         <InputField
           label="Title"
@@ -54,7 +54,7 @@ function AddProducts() {
 
   return (
     <div>
-      <sapn className="text-gray-500">
+      <sapn className="text-grey-50">
         Select products that will be available via this channel. You can assign
         products to multiple channels.
       </sapn>
@@ -62,17 +62,17 @@ function AddProducts() {
         size="small"
         type="button"
         variant="secondary"
-        className="mt-6 h-[40px] w-full"
+        className="w-full h-[40px] mt-6"
         onClick={() => setShowModal(true)}
       >
         <PlusIcon size={20} />
         Add Products
       </Button>
-      {/* {showModal && (*/}
+      {/*{showModal && (*/}
       {/*  <SalesChannelAvaliableProductsModal*/}
       {/*    handleClose={() => setShowModal(false)}*/}
       {/*  />*/}
-      {/* )}*/}
+      {/*)}*/}
     </div>
   )
 }
@@ -135,22 +135,21 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
   return (
     <FocusModal>
       <FocusModal.Header>
-        <div className="medium:w-8/12 flex w-full justify-between px-8">
+        <div className="medium:w-8/12 w-full px-8 flex justify-between">
           <Button
             size="small"
-            variant="ghost"
+            variant="secondary"
             onClick={onClose}
-            className="rounded-rounded h-8 w-8 border"
+            className="w-8 h-8 p-0 justify-center"
           >
-            <CrossIcon size={20} />
+            <CrossIcon className="w-5 h-5" />
           </Button>
-          <div className="gap-x-small flex">
+          <div className="gap-3 flex">
             <Button
               size="small"
               variant="secondary"
               onClick={() => saveAsDraft()}
               disabled={!name}
-              className="rounded-rounded"
             >
               Save as draft
             </Button>
@@ -160,7 +159,6 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
               variant="primary"
               onClick={() => save()}
               disabled={!name}
-              className="rounded-rounded"
             >
               Publish channel
             </Button>
@@ -168,11 +166,11 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
         </div>
       </FocusModal.Header>
       <FocusModal.Main>
-        <div className="mb-[25%] flex justify-center">
+        <div className="flex justify-center mb-[25%]">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 w-full pt-16">
             <h1 className="inter-xlarge-semibold">Create new sales channel</h1>
             <Accordion
-              className="text-grey-90 pt-7"
+              className="pt-7 text-grey-90"
               defaultValue={["general"]}
               type="multiple"
             >
@@ -188,10 +186,10 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
                   setDescription={setDescription}
                 />
               </Accordion.Item>
-              {/* TODO: add a modal for initially selecting products*/}
-              {/* <Accordion.Item title="Products" value="products">*/}
+              {/*TODO: add a modal for initially selecting products*/}
+              {/*<Accordion.Item title="Products" value="products">*/}
               {/*  <AddProducts />*/}
-              {/* </Accordion.Item>*/}
+              {/*</Accordion.Item>*/}
             </Accordion>
           </div>
         </div>

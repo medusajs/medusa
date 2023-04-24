@@ -3,14 +3,16 @@ import medusaRequest from "./request"
 const removeNullish = (obj) =>
   Object.entries(obj).reduce((a, [k, v]) => (v ? ((a[k] = v), a) : a), {})
 
-const buildQueryFromObject = (search, prefix = "") =>
-  Object.entries(search)
+export const buildQueryFromObject = (search, prefix = "", isArray = false) => {
+  return Object.entries(search)
+    .filter(([key, value]) => value)
     .map(([key, value]) =>
       typeof value === "object"
-        ? buildQueryFromObject(value, key)
-        : `${prefix ? `${prefix}[${key}]` : `${key}`}=${value}`
+        ? buildQueryFromObject(value, key, Array.isArray(value))
+        : `${prefix ? `${prefix}[${isArray ? "" : key}]` : `${key}`}=${value}`
     )
     .join("&")
+}
 
 export default {
   returnReasons: {
@@ -111,6 +113,10 @@ export default {
     },
   },
   store: {
+    list() {
+      const path = `/admin/stores`
+      return medusaRequest("GET", path)
+    },
     retrieve() {
       const path = `/admin/store`
       return medusaRequest("GET", path)
@@ -220,9 +226,7 @@ export default {
     },
 
     list(search = {}) {
-      const params = Object.keys(search)
-        .map((k) => `${k}=${search[k]}`)
-        .join("&")
+      const params = buildQueryFromObject(search)
       const path = `/admin/products${params && `?${params}`}`
       return medusaRequest("GET", path)
     },
@@ -234,6 +238,11 @@ export default {
 
     listTagsByUsage() {
       const path = `/admin/products/tag-usage`
+      return medusaRequest("GET", path)
+    },
+
+    listTaxCategories() {
+      const path = `/admin/product-tax-categories?limit=1000`
       return medusaRequest("GET", path)
     },
 

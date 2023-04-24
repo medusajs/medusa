@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
 import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
@@ -61,8 +61,8 @@ const SelectShippingMethod = () => {
 
       {region ? (
         !shippingOptions?.length ? (
-          <div className="inter-small-regular bg-orange-5 rounded-rounded mt-6 flex p-4 text-orange-50">
-            <div className="mr-3 h-full">
+          <div className="inter-small-regular mt-6 p-4 text-orange-50 bg-orange-5 rounded-rounded flex">
+            <div className="h-full mr-3">
               <AlertIcon size={20} />
             </div>
             <div className="flex flex-col">
@@ -98,11 +98,11 @@ const SelectShippingMethod = () => {
             />
             <div className="mt-4">
               {!showCustomPrice && (
-                <div className="flex w-full justify-end">
+                <div className="w-full flex justify-end">
                   <Button
                     variant="ghost"
                     size="small"
-                    className="border-grey-20 w-[125px] border"
+                    className="w-[125px] border border-grey-20"
                     disabled={!selectedShippingOption}
                     onClick={() => setShowCustomPrice(true)}
                   >
@@ -137,7 +137,7 @@ const SelectShippingMethod = () => {
                     variant="ghost"
                     size="small"
                     onClick={removeCustomPrice}
-                    className="text-grey-40 ml-8 h-8 w-8"
+                    className="ml-8 text-grey-40 w-8 h-8"
                   >
                     <TrashIcon size={20} />
                   </Button>
@@ -147,7 +147,7 @@ const SelectShippingMethod = () => {
           </div>
         )
       ) : (
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex-1 flex justify-center items-center">
           <Spinner />
         </div>
       )}

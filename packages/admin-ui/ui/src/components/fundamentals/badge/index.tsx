@@ -1,7 +1,7 @@
+import React, { FC, HTMLAttributes } from "react"
 import clsx from "clsx"
-import React from "react"
 
-type BadgeProps = {
+export interface BadgeProps extends HTMLAttributes<HTMLDivElement> {
   variant:
     | "primary"
     | "danger"
@@ -10,17 +10,18 @@ type BadgeProps = {
     | "ghost"
     | "default"
     | "disabled"
-    | "new-feature"
-} & React.HTMLAttributes<HTMLDivElement>
+  size?: "small" | "medium" | "large"
+}
 
-const Badge: React.FC<BadgeProps> = ({
+const Badge: FC<BadgeProps> = ({
   children,
   variant,
+  size,
   onClick,
   className,
   ...props
 }) => {
-  const variantClassname = clsx({
+  const variantClassName = clsx({
     ["badge-primary"]: variant === "primary",
     ["badge-danger"]: variant === "danger",
     ["badge-success"]: variant === "success",
@@ -28,13 +29,22 @@ const Badge: React.FC<BadgeProps> = ({
     ["badge-ghost"]: variant === "ghost",
     ["badge-default"]: variant === "default",
     ["badge-disabled"]: variant === "disabled",
-    ["bg-blue-10 border-blue-30 border font-normal text-blue-50"]:
-      variant === "new-feature",
+  })
+
+  const sizeClassName = clsx({
+    ["badge-large"]: size === "large",
+    ["badge-medium"]: size === "medium",
+    ["badge-small"]: size === "small",
   })
 
   return (
     <div
-      className={clsx("badge", variantClassname, className)}
+      className={clsx(
+        "badge inline-block",
+        variantClassName,
+        sizeClassName,
+        className
+      )}
       onClick={onClick}
       {...props}
     >

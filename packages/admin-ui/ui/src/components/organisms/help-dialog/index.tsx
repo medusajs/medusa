@@ -14,11 +14,11 @@ type MailDialogProps = {
 const MailDialog = ({ open, onClose }: MailDialogProps) => {
   const [subject, setSubject] = useState("")
   const [body, setBody] = useState("")
-  const [link, setLink] = useState("mailto:support@medusajs.com")
+  const [link, setLink] = useState("mailto:support@market.haus")
 
   React.useEffect(() => {
     setLink(
-      `mailto:support@medusajs.com?subject=${encodeURI(
+      `mailto:support@market.haus?subject=${encodeURI(
         subject
       )}&body=${encodeURI(body)}`
     )
@@ -26,8 +26,8 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
 
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
-      <Dialog.Overlay className="fixed top-0 left-0 right-0 bottom-0 z-50 grid place-items-end overflow-y-auto">
-        <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col justify-between p-8">
+      <Dialog.Overlay className="fixed z-50 grid top-0 left-0 right-0 bottom-0 place-items-end overflow-y-auto">
+        <Dialog.Content className="bg-grey-0 w-[400px] shadow-dropdown rounded-rounded p-8 top-[64px] bottom-2 right-3 fixed flex flex-col justify-between">
           <div>
             <Dialog.Title className="inter-xlarge-semibold mb-1">
               How can we help?
@@ -53,21 +53,19 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
               enableEmoji
             />
           </div>
-          <div className="gap-y-base flex flex-col items-center">
+          <div className="flex flex-col items-center gap-y-base">
             <a
-              href="https://discord.gg/medusajs"
+              href="https://discord.com/invite/4VmwtC2Tev"
               target="_blank"
               rel="noopener noreferrer"
-              className="group w-full cursor-pointer"
+              className="group cursor-pointer w-full"
             >
-              <div className="rounded-rounded group-hover:bg-grey-5 py-small flex w-full flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center rounded-rounded group-hover:bg-grey-5 w-full py-small">
                 <span className="text-grey-40 mb-3">
                   <DiscordIcon size={24} />
                 </span>
                 <p className="text-grey-40 inter-small-regular text-center leading-6">
-                  Feel free to join our community of
-                  <br />
-                  merchants and e-commerce developers
+                  Join MarketHaus us on Discord
                 </p>
               </div>
             </a>

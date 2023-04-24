@@ -1,5 +1,7 @@
 import clsx from "clsx"
-import React from "react"
+import React, { useEffect, useRef } from "react"
+import Button from "../../fundamentals/button"
+import CrossIcon from "../../fundamentals/icons/cross-icon"
 import SearchIcon from "../../fundamentals/icons/search-icon"
 
 type TableSearchProps = {
@@ -13,14 +15,24 @@ const TableSearch: React.FC<TableSearchProps> = ({
   autoFocus,
   onSearch,
   placeholder = "Search",
-  searchValue,
+  searchValue = "",
   className,
   ...props
 }) => {
+  const ref = useRef(null)
+  const inputRef: React.RefObject<HTMLInputElement> = useRef(null)
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.size =
+        inputRef?.current?.placeholder?.replace(/\s+/g, "").length || 20
+    }
+  }, [])
+
   return (
     <div
       className={clsx(
-        "inter-small-regular transition-color text-grey-50 rounded-rounded border-grey-20 min-w-content focus-within:shadow-input focus-within:border-violet-60 bg-grey-5 mt-1 mb-1 flex w-60 items-center border py-1.5 pl-1",
+        "inter-small-regular mt-1 transition-color transition-width duration-150 ease-in-out flex text-grey-50 flex items-center mb-1 pl-1 py-1.5 rounded-rounded border border-grey-0 min-w-content focus-within:mr-1 focus-within:w-60 focus-within:shadow-input focus-within:border-violet-60 focus-within:bg-grey-5 [&_.close]:focus-within:!inline-block",
         className
       )}
       {...props}
@@ -28,18 +40,35 @@ const TableSearch: React.FC<TableSearchProps> = ({
       <span className="px-2.5 py-0.5">
         <SearchIcon size={16} />
       </span>
+      <span ref={ref} className="hidden">
+        {placeholder}
+      </span>
       <input
         autoFocus={autoFocus}
         type="text"
+        ref={inputRef}
         value={searchValue}
         className={clsx(
-          "inter-small-regular focus:text-grey-90 caret-violet-60 placeholder:inter-small-regular placeholder-grey-40 w-full bg-transparent focus:border-none focus:outline-none"
+          "focus:outline-none focus:border-none inter-small-regular w-full focus:w-50 focus:bg-grey-5 focus:text-grey-90 caret-violet-60"
         )}
         placeholder={placeholder}
         onChange={(e) => {
           onSearch(e.target.value)
         }}
       />
+      {searchValue !== "" && (
+        <Button
+          onClick={() => {
+            onSearch("")
+            inputRef.current?.focus()
+          }}
+          variant="ghost"
+          size="small"
+          className="close px-2.5 py-0.5 hidden"
+        >
+          <CrossIcon size={16} />
+        </Button>
+      )}
     </div>
   )
 }

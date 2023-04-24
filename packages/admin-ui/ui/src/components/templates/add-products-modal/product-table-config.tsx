@@ -1,5 +1,6 @@
 import { Product } from "@medusajs/medusa"
 import clsx from "clsx"
+import * as React from "react"
 import { Column, HeaderGroup, Row } from "react-table"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import Table from "../../molecules/table"
@@ -10,12 +11,12 @@ export const columns: Column<Product>[] = [
     Header: <div className="pl-4">Product Details</div>,
     accessor: "title",
     Cell: ({ row: { original } }) => (
-      <div className="flex w-[400px] items-center pl-4">
-        <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+      <div className="pl-4 flex items-center w-[400px]">
+        <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
           {original.thumbnail ? (
             <img
               src={original.thumbnail}
-              className="rounded-soft h-full object-cover"
+              className="h-full object-cover rounded-soft"
             />
           ) : (
             <ImagePlaceholder />
@@ -36,16 +37,16 @@ export const columns: Column<Product>[] = [
     Header: <div>Status</div>,
     accessor: "status",
     Cell: ({ cell: { value } }) => (
-      <Table.Cell className="pr-base w-[10%]">
+      <Table.Cell className="w-[10%] pr-base">
         <div className="flex items-center">{decideStatus(value)}</div>
       </Table.Cell>
     ),
   },
   {
-    Header: <div className="flex items-center justify-end pr-4">Variants</div>,
+    Header: <div className="flex justify-end items-center pr-4">Variants</div>,
     accessor: "variants",
     Cell: ({ row: { original } }) => (
-      <Table.Cell className="flex items-center justify-end pr-4">
+      <Table.Cell className="flex justify-end items-center pr-4">
         {original.variants.length}
       </Table.Cell>
     ),

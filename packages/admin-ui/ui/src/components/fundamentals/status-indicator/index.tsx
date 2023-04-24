@@ -14,7 +14,7 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
 }) => {
   const dotClass = clsx({
     "bg-teal-50": variant === "success",
-    "bg-rose-50": variant === "danger",
+    "bg-rose-40": variant === "danger",
     "bg-yellow-50": variant === "warning",
     "bg-violet-60": variant === "primary",
     "bg-emerald-40": variant === "active",
@@ -22,13 +22,15 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   })
   return (
     <div
-      className={clsx("inter-small-regular flex items-center", className, {
-        "hover:bg-grey-5 cursor-pointer": !!props.onClick,
-      })}
+      className={clsx("flex items-center inter-small-regular", className)}
       {...props}
     >
-      <div className={clsx("h-1.5 w-1.5 self-center rounded-full", dotClass)} />
-      {title && <span className="ml-2">{title}</span>}
+      <div className={clsx("w-1.5 h-1.5 self-center rounded-full", dotClass)} />
+      {title && (
+        <span className="ml-2">
+          {title.charAt(0).toUpperCase() + title.slice(1)}
+        </span>
+      )}
     </div>
   )
 }

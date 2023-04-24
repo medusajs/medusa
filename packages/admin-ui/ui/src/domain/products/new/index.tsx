@@ -1,48 +1,38 @@
-import { AdminPostProductsReq, ProductVariant } from "@medusajs/medusa"
-import { useAdminCreateProduct, useMedusa } from "medusa-react"
+import { AdminPostProductsReq } from "@medusajs/medusa"
+import { useAdminCreateProduct } from "medusa-react"
+import React, { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
-import CustomsForm, {
-  CustomsFormType,
-} from "../../../components/forms/product/customs-form"
-import DimensionsForm, {
-  DimensionsFormType,
-} from "../../../components/forms/product/dimensions-form"
-import DiscountableForm, {
-  DiscountableFormType,
-} from "../../../components/forms/product/discountable-form"
-import GeneralForm, {
-  GeneralFormType,
-} from "../../../components/forms/product/general-form"
-import MediaForm, {
-  MediaFormType,
-} from "../../../components/forms/product/media-form"
-import OrganizeForm, {
-  OrganizeFormType,
-} from "../../../components/forms/product/organize-form"
-import ThumbnailForm, {
-  ThumbnailFormType,
-} from "../../../components/forms/product/thumbnail-form"
-import { FormImage, ProductStatus } from "../../../types/shared"
-import AddSalesChannelsForm, {
-  AddSalesChannelsFormType,
-} from "./add-sales-channels"
-import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
-
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { PricesFormType } from "../../../components/forms/general/prices-form"
+import { useNavigate, useParams } from "react-router-dom"
 import Button from "../../../components/fundamentals/button"
 import FeatureToggle from "../../../components/fundamentals/feature-toggle"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../components/molecules/modal/focus-modal"
 import Accordion from "../../../components/organisms/accordion"
+import { useFeatureFlag } from "../../../context/feature-flag"
 import useNotification from "../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { FormImage, ProductStatus } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { prepareImages } from "../../../utils/images"
 import { nestedForm } from "../../../utils/nested-form"
+import { useBasePath } from "../../../utils/routePathing"
+import CustomsForm, { CustomsFormType } from "../components/customs-form"
+import DimensionsForm, {
+  DimensionsFormType,
+} from "../components/dimensions-form"
+import DiscountableForm, {
+  DiscountableFormType,
+} from "../components/discountable-form"
+import GeneralForm, { GeneralFormType } from "../components/general-form"
+import MediaForm, { MediaFormType } from "../components/media-form"
+import OrganizeForm, { OrganizeFormType } from "../components/organize-form"
+import { PricesFormType } from "../components/prices-form"
+import ThumbnailForm, { ThumbnailFormType } from "../components/thumbnail-form"
+import AddSalesChannelsForm, {
+  AddSalesChannelsFormType,
+} from "./add-sales-channels"
+import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
 
-type NewProductForm = {
+export type NewProductForm = {
   general: GeneralFormType
   discounted: DiscountableFormType
   organize: OrganizeFormType
@@ -59,6 +49,10 @@ type Props = {
 }
 
 const NewProduct = ({ onClose }: Props) => {
+  const params = useParams()
+  const basePath = useBasePath()
+  const vendorId = params["vendor_id"]
+
   const form = useForm<NewProductForm>({
     defaultValues: createBlank(),
   })
@@ -95,23 +89,23 @@ const NewProduct = ({ onClose }: Props) => {
 
   const onSubmit = (publish = true) =>
     handleSubmit(async (data) => {
-      const optionsToStockLocationsMap = new Map(
-        data.variants.entries.map((variant) => {
-          return [
-            variant.options
-              .map(({ option }) => option?.value || "")
-              .sort()
-              .join(","),
-            variant.stock.stock_location,
-          ]
-        })
-      )
+      if (!vendorId) {
+        notification(
+          "Error",
+          "An error occurred when trying to create your product, please refresh and try again.",
+          "error"
+        )
+        return
+      }
 
       const payload = createPayload(
         data,
         publish,
-        isFeatureEnabled("sales_channels")
+        isFeatureEnabled("sales_channels"),
+        vendorId
       )
+
+      payload.vendor_id = vendorId
 
       if (data.media?.images?.length) {
         let preppedImages: FormImage[] = []
@@ -165,13 +159,8 @@ const NewProduct = ({ onClose }: Props) => {
 
       mutate(payload, {
         onSuccess: ({ product }) => {
-          createStockLocationsForVariants(
-            product.variants,
-            optionsToStockLocationsMap
-          ).then(() => {
-            closeAndReset()
-            navigate(`/a/products/${product.id}`)
-          })
+          closeAndReset()
+          navigate(`${basePath}/products/${product.id}`)
         },
         onError: (err) => {
           notification("Error", getErrorMessage(err), "error")
@@ -179,86 +168,35 @@ const NewProduct = ({ onClose }: Props) => {
       })
     })
 
-  const { client } = useMedusa()
-
-  const createStockLocationsForVariants = async (
-    variants: ProductVariant[],
-    stockLocationsMap: Map<
-      string,
-      { stocked_quantity: number; location_id: string }[] | undefined
-    >
-  ) => {
-    await Promise.all(
-      variants
-        .map(async (variant) => {
-          const optionsKey = variant.options
-            .map((option) => option?.value || "")
-            .sort()
-            .join(",")
-
-          const stock_locations = stockLocationsMap.get(optionsKey)
-          if (!stock_locations?.length) {
-            return
-          }
-
-          const inventory = await client.admin.variants.getInventory(variant.id)
-
-          return await Promise.all(
-            inventory.variant.inventory
-              .map(async (item) => {
-                return Promise.all(
-                  stock_locations.map(async (stock_location) => {
-                    client.admin.inventoryItems.createLocationLevel(item.id!, {
-                      location_id: stock_location.location_id,
-                      stocked_quantity: stock_location.stocked_quantity,
-                    })
-                  })
-                )
-              })
-              .flat()
-          )
-        })
-        .flat()
-    )
-  }
-
   return (
     <form className="w-full">
       <FocusModal>
         <FocusModal.Header>
-          <div className="medium:w-8/12 flex w-full justify-between px-8">
+          <div className="medium:w-8/12 w-full px-8 flex justify-between">
             <Button
               size="small"
-              variant="ghost"
+              variant="secondary"
               type="button"
               onClick={closeAndReset}
+              className="w-8 h-8 p-0 justify-center"
             >
-              <CrossIcon size={20} />
+              <CrossIcon className="w-5 h-5" />
             </Button>
             <div className="gap-x-small flex">
-              <Button
-                size="small"
-                variant="secondary"
-                type="button"
-                disabled={!isDirty}
-                onClick={onSubmit(false)}
-              >
-                Save as draft
-              </Button>
               <Button
                 size="small"
                 variant="primary"
                 type="button"
                 disabled={!isDirty}
-                onClick={onSubmit(true)}
+                onClick={onSubmit(false)}
               >
-                Publish product
+                Save & Continue
               </Button>
             </div>
           </div>
         </FocusModal.Header>
-        <FocusModal.Main className="no-scrollbar flex w-full justify-center py-16">
-          <div className="small:w-4/5 medium:w-7/12 large:w-6/12 max-w-[700px]">
+        <FocusModal.Main className="w-full no-scrollbar flex justify-center">
+          <div className="medium:w-7/12 large:w-6/12 small:w-4/5 max-w-[700px] my-16">
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
@@ -268,23 +206,14 @@ const NewProduct = ({ onClose }: Props) => {
                 <p className="inter-base-regular text-grey-50">
                   To start selling, all you need is a name and a price.
                 </p>
-                <div className="mt-xlarge gap-y-xlarge flex flex-col">
-                  <GeneralForm
-                    form={nestedForm(form, "general")}
-                    requireHandle={false}
-                  />
+                <div className="mt-xlarge flex flex-col gap-y-xlarge">
+                  <GeneralForm form={nestedForm(form, "general")} />
                   <DiscountableForm form={nestedForm(form, "discounted")} />
                 </div>
               </Accordion.Item>
               <Accordion.Item title="Organize" value="organize">
-                <p className="inter-base-regular text-grey-50">
-                  To start selling, all you need is a name and a price.
-                </p>
-                <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
+                <div className="mt-xlarge flex flex-col gap-y-xlarge pb-xsmall">
                   <div>
-                    <h3 className="inter-base-semibold mb-base">
-                      Organize Product
-                    </h3>
                     <OrganizeForm form={nestedForm(form, "organize")} />
                     <FeatureToggle featureFlag="sales_channels">
                       <div className="mt-xlarge">
@@ -297,7 +226,7 @@ const NewProduct = ({ onClose }: Props) => {
                 </div>
               </Accordion.Item>
               <Accordion.Item title="Variants" value="variants">
-                <p className="inter-base-regular text-grey-50">
+                <p className="text-grey-50 inter-base-regular">
                   Add variations of this product.
                   <br />
                   Offer your customers different options for color, format,
@@ -305,6 +234,7 @@ const NewProduct = ({ onClose }: Props) => {
                 </p>
                 <div className="mt-large">
                   <AddVariantsForm
+                    parentForm={form}
                     form={nestedForm(form, "variants")}
                     productCustoms={watchedCustoms}
                     productDimensions={watchedDimensions}
@@ -325,14 +255,14 @@ const NewProduct = ({ onClose }: Props) => {
                 </div>
               </Accordion.Item>
               <Accordion.Item title="Thumbnail" value="thumbnail">
-                <p className="inter-base-regular mb-large text-grey-50">
+                <p className="inter-base-regular text-grey-50 mb-large">
                   Used to represent your product during checkout, social sharing
                   and more.
                 </p>
                 <ThumbnailForm form={nestedForm(form, "thumbnail")} />
               </Accordion.Item>
               <Accordion.Item title="Media" value="media">
-                <p className="inter-base-regular mb-large text-grey-50">
+                <p className="inter-base-regular text-grey-50 mb-large">
                   Add images to your product.
                 </p>
                 <MediaForm form={nestedForm(form, "media")} />
@@ -348,16 +278,22 @@ const NewProduct = ({ onClose }: Props) => {
 const createPayload = (
   data: NewProductForm,
   publish = true,
-  salesChannelsEnabled = false
+  salesChannelsEnabled = false,
+  vendor_id: string
 ): AdminPostProductsReq => {
   const payload: AdminPostProductsReq = {
+    vendor_id,
     title: data.general.title,
     subtitle: data.general.subtitle || undefined,
     material: data.general.material || undefined,
     handle: data.general.handle,
     discountable: data.discounted.value,
+    profile_id: data.general.shipping_profile?.value,
+    customer_response_prompt: data.general.customer_response_prompt || null,
     is_giftcard: false,
     collection_id: data.organize.collection?.value,
+    default_price: data.general.prices,
+    tax_category_id: data.general.tax_category_id,
     description: data.general.description || undefined,
     height: data.dimensions.height || undefined,
     length: data.dimensions.length || undefined,
@@ -376,9 +312,6 @@ const createPayload = (
           value: t,
         }))
       : undefined,
-    categories: data.organize.categories?.length
-      ? data.organize.categories.map((id) => ({ id }))
-      : undefined,
     origin_country: data.customs.origin_country?.value || undefined,
     options: data.variants.options.map((o) => ({
       title: o.title,
@@ -387,7 +320,7 @@ const createPayload = (
       title: v.general.title!,
       material: v.general.material || undefined,
       inventory_quantity: v.stock.inventory_quantity || 0,
-      prices: getVariantPrices(v.prices),
+      prices: getVariantPrices(v.prices || data.general.prices),
       allow_backorder: v.stock.allow_backorder,
       sku: v.stock.sku || undefined,
       barcode: v.stock.barcode || undefined,
@@ -396,13 +329,15 @@ const createPayload = (
       })),
       ean: v.stock.ean || undefined,
       upc: v.stock.upc || undefined,
-      height: v.dimensions.height || undefined,
-      length: v.dimensions.length || undefined,
-      weight: v.dimensions.weight || undefined,
-      width: v.dimensions.width || undefined,
-      hs_code: v.customs.hs_code || undefined,
-      mid_code: v.customs.mid_code || undefined,
-      origin_country: v.customs.origin_country?.value || undefined,
+      height: v.dimensions.height || data.dimensions.height || undefined,
+      length: v.dimensions.length || data.dimensions.length || undefined,
+      weight: v.dimensions.weight || data.dimensions.weight || undefined,
+      width: v.dimensions.width || data.dimensions.width || undefined,
+      hs_code: v.customs.hs_code || data.customs.hs_code || undefined,
+      mid_code:
+        v.customs.mid_code || undefined || data.customs.mid_code || undefined,
+      origin_country:
+        v.customs.origin_country?.value || data.customs.origin_country?.value,
       manage_inventory: v.stock.manage_inventory,
     })),
     // @ts-ignore
@@ -415,6 +350,30 @@ const createPayload = (
     }))
   }
 
+  if (!payload.variants || payload.variants.length === 0) {
+    payload.variants = [
+      {
+        title: data.general.title!,
+        material: data.general.material || undefined,
+        inventory_quantity: 0,
+        prices: getVariantPrices({ prices: data.general.prices }),
+        allow_backorder: false,
+        sku: undefined,
+        barcode: undefined,
+        options: undefined,
+        ean: undefined,
+        upc: undefined,
+        height: data.dimensions.height || undefined,
+        length: data.dimensions.length || undefined,
+        weight: data.dimensions.weight || undefined,
+        width: data.dimensions.width || undefined,
+        hs_code: data.customs.hs_code || undefined,
+        mid_code: data.customs.mid_code || undefined,
+        origin_country: data.customs.origin_country?.value || undefined,
+        manage_inventory: true,
+      },
+    ]
+  }
   return payload
 }
 
@@ -425,6 +384,9 @@ const createBlank = (): NewProductForm => {
       material: null,
       subtitle: null,
       description: null,
+      prices: [],
+      customer_response_prompt: null,
+      shipping_profile: null,
       handle: "",
     },
     customs: {
@@ -445,7 +407,6 @@ const createBlank = (): NewProductForm => {
       images: [],
     },
     organize: {
-      categories: null,
       collection: null,
       tags: null,
       type: null,

@@ -29,18 +29,13 @@ const ExportModal: React.FC<ExportModalProps> = ({
             feature in many ways are controlled by how you filter the list
             overview.
           </div> */}
-          <div className="inter-small-regular text-grey-50 mb-4 flex">
+          <div className="flex mb-4 inter-small-regular text-grey-50">
             Initialize an export of your data
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full justify-end">
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={handleClose}
-              className="mr-2"
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="small" onClick={handleClose}>
               Cancel
             </Button>
             <Button

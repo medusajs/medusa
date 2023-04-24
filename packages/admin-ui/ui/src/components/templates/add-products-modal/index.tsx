@@ -65,7 +65,7 @@ const AddProductsModal = ({
           <h2 className="inter-xlarge-semibold">Add Products</h2>
         </Modal.Header>
         <Modal.Content>
-          <div className="flex h-full min-h-[300px] w-full flex-col justify-between ">
+          <div className="w-full flex flex-col justify-between min-h-[300px] h-full ">
             <SelectableTable
               columns={columns}
               data={products || []}
@@ -85,19 +85,11 @@ const AddProductsModal = ({
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex w-full justify-end gap-2">
-            <Button
-              variant="ghost"
-              className="rounded-rounded h-8 w-[128px]"
-              onClick={close}
-            >
+          <div className="flex items-center justify-end w-full gap-2">
+            <Button variant="ghost" size="medium" onClick={close}>
               Cancel
             </Button>
-            <Button
-              variant="primary"
-              className="rounded-rounded h-8 w-[128px]"
-              onClick={handleSave}
-            >
+            <Button variant="primary" size="medium" onClick={handleSave}>
               Save
             </Button>
           </div>

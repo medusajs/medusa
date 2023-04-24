@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
 import { Column, HeaderGroup, Row } from "react-table"
+import { Image } from "../../../../../../components/atoms/image"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder"
 import StatusIndicator from "../../../../../../components/fundamentals/status-indicator"
@@ -58,7 +59,7 @@ export const useProductColumns = () => {
     return [
       {
         Header: () => (
-          <div className="flex min-w-[443px] items-center gap-1">
+          <div className="flex items-center gap-1 min-w-[443px]">
             Title <SortingIcon size={16} />
           </div>
         ),
@@ -66,11 +67,12 @@ export const useProductColumns = () => {
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+              <div className="h-[40px] w-[40px] my-1.5 flex items-center mr-4">
                 {original.thumbnail ? (
-                  <img
+                  <Image
                     src={original.thumbnail}
-                    className="rounded-soft h-full object-cover"
+                    proxyOptions={{ context: "tiny_square" }}
+                    className="h-full object-cover rounded-soft"
                   />
                 ) : (
                   <ImagePlaceholder />
@@ -101,7 +103,7 @@ export const useProductColumns = () => {
       },
       {
         Header: () => (
-          <div className="flex items-center justify-end gap-1">
+          <div className="flex justify-end items-center gap-1">
             Variants <SortingIcon size={16} />
           </div>
         ),

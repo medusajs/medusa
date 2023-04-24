@@ -1,7 +1,8 @@
-import { Product, ProductVariant, Region } from "@medusajs/medusa"
+import { ProductVariant } from "@medusajs/medusa"
 import clsx from "clsx"
 import React, { useContext, useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
+
 import Button from "../../../../components/fundamentals/button"
 import MinusIcon from "../../../../components/fundamentals/icons/minus-icon"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
@@ -20,46 +21,35 @@ import {
 import RMASelectProductSubModal from "../../details/rma-sub-modals/products"
 import { useNewOrderForm } from "../form"
 import CustomItemSubModal from "./custom-item-sub-modal"
-import { useMedusa } from "medusa-react"
 
 const Items = () => {
-  const { enableNextPage, disableNextPage, nextStepEnabled } =
-    React.useContext(SteppedContext)
+  const { enableNextPage, disableNextPage, nextStepEnabled } = React.useContext(
+    SteppedContext
+  )
 
   const {
     context: { region, items },
-    form: { control, register, setValue },
+    form: { control, register, setValue, getValues },
   } = useNewOrderForm()
-
-  const { client } = useMedusa()
-
-  const { fields, append, remove, update } = items
+  const { fields, append, remove } = items
 
   const [editQuantity, setEditQuantity] = useState(-1)
   const [editPrice, setEditPrice] = useState(-1)
 
   const layeredContext = useContext(LayeredModalContext)
 
-  const addItem = async (variants: ProductVariant[]) => {
+  const addItem = (variants: ProductVariant[]) => {
     const ids = fields.map((field) => field.variant_id)
-
     const itemsToAdd = variants.filter((v) => !ids.includes(v.id))
 
-    const variantIds = itemsToAdd.map((v) => v.id)
-
-    const { variants: newVariants } = await client.admin.variants.list({
-      id: variantIds,
-      region_id: region?.id,
-    })
-
     append(
-      newVariants.map((item) => ({
+      itemsToAdd.map((item) => ({
         quantity: 1,
         variant_id: item.id,
-        title: item.title as string,
-        unit_price: extractUnitPrice(item, region as Region, false),
-        product_title: (item.product as Product)?.title,
-        thumbnail: (item.product as Product)?.thumbnail,
+        title: item.title,
+        unit_price: extractUnitPrice(item, region, false),
+        product_title: item.product.title,
+        thumbnail: item.product.thumbnail,
       }))
     )
 
@@ -69,11 +59,11 @@ const Items = () => {
   }
 
   const handleEditQuantity = (index: number, value: number) => {
-    const field = fields[index]
-    field.quantity = field.quantity + value
+    const oldQuantity = getValues(`items.${index}.quantity`)
+    const newQuantity = +oldQuantity + value
 
-    if (field.quantity > 0) {
-      update(index, field)
+    if (newQuantity > 0) {
+      setValue(`items.${index}.quantity`, newQuantity)
     }
   }
 
@@ -115,14 +105,14 @@ const Items = () => {
   }, [])
 
   return (
-    <div className="flex min-h-[705px] flex-col pt-4">
+    <div className="flex flex-col min-h-[705px] pt-4">
       <span className="inter-base-semibold mb-4">Items for the order</span>
       {fields.length > 0 && region && (
         <Table>
           <Table.Head>
-            <Table.HeadRow className="text-grey-50 inter-small-semibold border-t">
+            <Table.HeadRow className="text-grey-50 border-t inter-small-semibold">
               <Table.HeadCell>Details</Table.HeadCell>
-              <Table.HeadCell className="pr-8 text-right">
+              <Table.HeadCell className="text-right pr-8">
                 Quantity
               </Table.HeadCell>
               <Table.HeadCell className="text-right">
@@ -139,18 +129,18 @@ const Items = () => {
                   className={clsx("border-b-grey-0 hover:bg-grey-0")}
                 >
                   <Table.Cell>
-                    <div className="flex min-w-[240px] items-center py-2">
-                      <div className="h-[40px] w-[30px] ">
+                    <div className="min-w-[240px] flex items-center py-2">
+                      <div className="w-[30px] h-[40px] ">
                         {item.thumbnail ? (
                           <img
-                            className="h-full w-full rounded object-cover"
+                            className="h-full w-full object-cover rounded"
                             src={item.thumbnail}
                           />
                         ) : (
                           <ImagePlaceholder />
                         )}
                       </div>
-                      <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
+                      <div className="inter-small-regular text-grey-50 flex flex-col ml-4">
                         {item.product_title && (
                           <span className="text-grey-90">
                             {item.product_title}
@@ -160,7 +150,7 @@ const Items = () => {
                       </div>
                     </div>
                   </Table.Cell>
-                  <Table.Cell className="w-32 pr-8 text-right">
+                  <Table.Cell className="text-right w-32 pr-8">
                     {editQuantity === index ? (
                       <InputField
                         type="number"
@@ -170,16 +160,16 @@ const Items = () => {
                         onBlur={() => setEditQuantity(-1)}
                       />
                     ) : (
-                      <div className="text-grey-50 flex w-full justify-end text-right ">
+                      <div className="flex w-full text-right justify-end text-grey-50 ">
                         <span
                           onClick={() => handleEditQuantity(index, -1)}
-                          className="hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                          className="w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 mr-2"
                         >
                           <MinusIcon size={16} />
                         </span>
                         <button
                           type="button"
-                          className="hover:bg-grey-20 cursor-pointer rounded px-1"
+                          className="px-1 hover:bg-grey-20 rounded cursor-pointer"
                           onClick={() => setEditQuantity(index)}
                         >
                           <input
@@ -187,14 +177,14 @@ const Items = () => {
                             {...register(`items.${index}.quantity`, {
                               valueAsNumber: true,
                             })}
-                            className="text-grey-90 w-full bg-transparent text-center"
+                            className="bg-transparent w-full text-center text-grey-90"
                             disabled
                           />
                         </button>
                         <span
                           onClick={() => handleEditQuantity(index, 1)}
                           className={clsx(
-                            "hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                            "w-5 h-5 flex items-center justify-center rounded cursor-pointer hover:bg-grey-20 ml-2"
                           )}
                         >
                           <PlusIcon size={16} />
@@ -246,7 +236,7 @@ const Items = () => {
                       />
                     )}
                   </Table.Cell>
-                  <Table.Cell className="text-grey-40 pr-1 text-right">
+                  <Table.Cell className="text-right text-grey-40 pr-1">
                     {region!.currency_code.toUpperCase()}
                   </Table.Cell>
                   <Table.Cell>
@@ -264,11 +254,11 @@ const Items = () => {
           </Table.Body>
         </Table>
       )}
-      <div className="gap-x-xsmall mt-3 flex w-full justify-end">
+      <div className="flex w-full justify-end mt-3 gap-x-xsmall">
         <Button
           variant="ghost"
           size="small"
-          className="border-grey-20 border"
+          className="border border-grey-20"
           onClick={() => {
             layeredContext.push(
               CreateCustomProductScreen(
@@ -285,7 +275,7 @@ const Items = () => {
         <Button
           variant="ghost"
           size="small"
-          className="border-grey-20 border"
+          className="border border-grey-20"
           onClick={() => {
             layeredContext.push(
               SelectProductsScreen(

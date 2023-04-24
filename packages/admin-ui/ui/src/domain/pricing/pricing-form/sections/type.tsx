@@ -1,3 +1,4 @@
+import React from "react"
 import { Controller } from "react-hook-form"
 import Accordion from "../../../../components/organisms/accordion"
 import RadioGroup from "../../../../components/organisms/radio-group"
@@ -25,7 +26,7 @@ const Type = () => {
             <RadioGroup.Root
               value={value ?? undefined}
               onValueChange={onChange}
-              className="gap-base group-radix-state-open:mt-5 accordion-margin-transition flex items-center"
+              className="flex items-center gap-base group-radix-state-open:mt-5 accordion-margin-transition"
             >
               <RadioGroup.Item
                 value={PriceListType.SALE}

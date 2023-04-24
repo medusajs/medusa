@@ -1,6 +1,7 @@
 import { ShippingOption } from "@medusajs/medusa"
 import clsx from "clsx"
 import { useAdminDeleteShippingOption } from "medusa-react"
+import React from "react"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import FastDeliveryIcon from "../../../../../components/fundamentals/icons/fast-delivery-icon"
 import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
@@ -10,6 +11,7 @@ import useToggleState from "../../../../../hooks/use-toggle-state"
 import { getErrorMessage } from "../../../../../utils/error-messages"
 import { stringDisplayPrice } from "../../../../../utils/prices"
 import EditModal from "./edit-modal"
+import { ShippingOptionRequirements } from "./shipping-option-requirements"
 
 type Props = {
   option: ShippingOption
@@ -39,9 +41,9 @@ const ShippingOptionCard = ({ option }: Props) => {
 
   return (
     <>
-      <div className="bg-grey-0 rounded-rounded border-grey-20 p-base flex items-center justify-between border">
-        <div className="gap-x-base flex items-center">
-          <div className="bg-grey-10 rounded-rounded flex h-10 w-10 items-center justify-center p-2.5">
+      <div className="bg-grey-0 rounded-rounded border border-grey-20 p-base flex items-center justify-between">
+        <div className="flex items-center gap-x-base">
+          <div className="bg-grey-10 p-2.5 rounded-rounded flex items-center justify-center h-10 w-10">
             <FastDeliveryIcon size={20} className="text-grey-50" />
           </div>
           <div>
@@ -49,34 +51,21 @@ const ShippingOptionCard = ({ option }: Props) => {
             <div>
               <p className="inter-small-regular text-grey-50">
                 {option.price_type === ShippingOptionPriceType.FLAT_RATE
-                  ? "Flat Rate"
-                  : "Calcualted"}
-                :{" "}
-                {stringDisplayPrice({
-                  amount: option.amount,
-                  currencyCode: option.region.currency_code,
-                })}{" "}
-                - Min. subtotal:{" "}
-                {stringDisplayPrice({
-                  amount: option.requirements?.find(
-                    (r) => r.type === "min_subtotal"
-                  )?.amount,
-                  currencyCode: option.region.currency_code,
-                })}{" "}
-                - Max. subtotal:{" "}
-                {stringDisplayPrice({
-                  amount: option.requirements?.find(
-                    (r) => r.type === "max_subtotal"
-                  )?.amount,
-                  currencyCode: option.region.currency_code,
-                })}
+                  ? !option.amount
+                    ? "Free"
+                    : `${stringDisplayPrice({
+                        amount: option.amount,
+                        currencyCode: option.region.currency_code,
+                      })}`
+                  : "Calculated"}{" "}
+                <ShippingOptionRequirements option={option} />
               </p>
             </div>
           </div>
         </div>
-        <div className="gap-x-base flex items-center">
+        <div className="flex items-center gap-x-base">
           <div
-            className={clsx("px-xsmall rounded-rounded py-0.5", {
+            className={clsx("py-0.5 px-xsmall rounded-rounded", {
               "bg-grey-10 text-grey-50": option.admin_only,
               "bg-emerald-10 text-emerald-50": !option.admin_only,
             })}

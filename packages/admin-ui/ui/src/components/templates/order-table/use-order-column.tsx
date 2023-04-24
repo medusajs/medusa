@@ -1,36 +1,33 @@
+import {
+  FulfillmentStatus,
+  OrderStatus,
+  PaymentStatus,
+} from "../../molecules/order-status"
 import moment from "moment"
-import { useMemo } from "react"
-import ReactCountryFlag from "react-country-flag"
-import { getColor } from "../../../utils/color"
-import { isoAlpha2Countries } from "../../../utils/countries"
+import React, { useMemo } from "react"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import Tooltip from "../../atoms/tooltip"
-import StatusDot from "../../fundamentals/status-indicator"
+import Table from "../../molecules/table"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
+import { getColor } from "../../../utils/color"
+import { isoAlpha2Countries } from "../../../utils/countries"
+import ReactCountryFlag from "react-country-flag"
 
-const useOrderTableColums = () => {
-  const decideStatus = (status) => {
-    switch (status) {
-      case "captured":
-        return <StatusDot variant="success" title={"Paid"} />
-      case "awaiting":
-        return <StatusDot variant="default" title={"Awaiting"} />
-      case "requires_action":
-        return <StatusDot variant="danger" title={"Requires action"} />
-      case "canceled":
-        return <StatusDot variant="warning" title={"Canceled"} />
-      default:
-        return <StatusDot variant="primary" title={"N/A"} />
-    }
-  }
-
+const useOrderTableColumns = (isVendorView: boolean) => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">Order</div>,
+        Header: <div className="pl-2">ID</div>,
         accessor: "display_id",
-        Cell: ({ cell: { value } }) => (
-          <p className="text-grey-90 group-hover:text-violet-60 min-w-[100px] pl-2">{`#${value}`}</p>
+        Cell: ({ row, cell: { value }, index }) => (
+          <Table.Cell
+            key={index}
+            className="text-grey-90 group-hover:text-violet-60 min-w-[50px] pl-2"
+          >{`#${
+            row.original?.children?.length > 1
+              ? value
+              : row.original?.children[0]?.display_id ?? value
+          }`}</Table.Cell>
         ),
       },
       {
@@ -64,25 +61,46 @@ const useOrderTableColums = () => {
         ),
       },
       {
-        Header: "Fulfillment",
+        Header: <Table.HeadCell className="pl-1.5">Status</Table.HeadCell>,
+        accessor: "status",
+        Cell: ({ cell: { value }, index }) => (
+          <Table.Cell key={index} className="min-w-[120px] pl-2">
+            {<OrderStatus className="h-10" orderStatus={value} />}
+          </Table.Cell>
+        ),
+      },
+      {
+        Header: <Table.HeadCell className="pl-1.5">Fulfillment</Table.HeadCell>,
         accessor: "fulfillment_status",
-        Cell: ({ cell: { value } }) => value,
+        Cell: ({ cell: { value }, index }) => (
+          <FulfillmentStatus className="h-10" fulfillmentStatus={value} />
+        ),
       },
       {
-        Header: "Payment status",
+        Header: <Table.HeadCell className="pl-1.5">Payment</Table.HeadCell>,
         accessor: "payment_status",
-        Cell: ({ cell: { value } }) => decideStatus(value),
+        Cell: ({ cell: { value }, index }) => (
+          <PaymentStatus className="h-10" paymentStatus={value} />
+        ),
       },
+
       {
-        Header: "Sales Channel",
-        accessor: "sales_channel",
-        Cell: ({ cell: { value } }) => value?.name ?? "N/A",
+        Header: "Vendors",
+        accessor: "vendor",
+        Cell: ({ row, cell: { value }, index }) => (
+          <>
+            {value?.name ??
+              (row.original?.children?.length > 1
+                ? "Multiple"
+                : row.original?.children[0]?.vendor?.name)}
+          </>
+        ),
       },
       {
         Header: () => <div className="text-right">Total</div>,
         accessor: "total",
-        Cell: ({ row, cell: { value } }) => (
-          <div className="text-right">
+        Cell: ({ row, cell: { value }, index }) => (
+          <div className="min-w-[80px] text-right">
             {formatAmountWithSymbol({
               amount: value,
               currency: row.original.currency_code,
@@ -93,17 +111,10 @@ const useOrderTableColums = () => {
       },
       {
         Header: "",
-        accessor: "currency_code",
-        Cell: ({ cell: { value } }) => (
-          <div className="text-grey-40 text-right">{value.toUpperCase()}</div>
-        ),
-      },
-      {
-        Header: "",
         accessor: "country_code",
         Cell: ({ row }) => (
           <div className="pr-2">
-            <div className="rounded-rounded flex w-full justify-end">
+            <div className="flex rounded-rounded w-full justify-end">
               <Tooltip
                 content={
                   isoAlpha2Countries[
@@ -126,7 +137,12 @@ const useOrderTableColums = () => {
     []
   )
 
+  if (isVendorView) {
+    const vendorColumnIndex = columns.findIndex((c) => c.Header === "Vendors")
+    columns.splice(vendorColumnIndex, 1)
+  }
+
   return [columns]
 }
 
-export default useOrderTableColums
+export default useOrderTableColumns

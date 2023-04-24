@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import React from "react"
 import { GroupBase, InputProps } from "react-select"
 import SelectPrimitives from "./select-primitives"
 

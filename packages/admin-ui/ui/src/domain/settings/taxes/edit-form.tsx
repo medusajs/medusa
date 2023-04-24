@@ -1,6 +1,6 @@
 import { AdminPostTaxRatesTaxRateReq, TaxRate } from "@medusajs/medusa"
 import { useAdminUpdateRegion, useAdminUpdateTaxRate } from "medusa-react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -124,7 +124,7 @@ const EditTaxRate = ({
           {(product_types.length > 0 ||
             products.length > 0 ||
             shipping_options.length > 0) && (
-            <div className="gap-base flex flex-col">
+            <div className="flex flex-col gap-base">
               {products.length > 0 && (
                 <TaxRuleItem
                   onDelete={() =>
@@ -224,7 +224,7 @@ const EditTaxRate = ({
                   )
                 )
               }}
-              className="mt-base w-full"
+              className="w-full mt-base"
               size="medium"
               variant="secondary"
             >
@@ -234,13 +234,12 @@ const EditTaxRate = ({
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full items-center justify-end">
+        <div className="flex items-center justify-end w-full gap-2">
           <Button
             type="button"
             onClick={onDismiss}
             variant="ghost"
             size="small"
-            className="w-eventButton justify-center"
           >
             Cancel
           </Button>
@@ -248,7 +247,6 @@ const EditTaxRate = ({
             type="submit"
             variant="primary"
             size="small"
-            className="w-eventButton justify-center"
             loading={isLoading}
             disabled={isLoading}
           >
@@ -325,13 +323,12 @@ export const SimpleEditForm = ({ onDismiss, taxRate }: SimpleEditFormProps) => {
         <EditTaxRateDetails form={nestedForm(form, "details")} lockName />
       </Modal.Content>
       <Modal.Footer>
-        <div className="flex w-full items-center justify-end">
+        <div className="flex items-center justify-end w-full gap-2">
           <Button
             type="button"
             onClick={onDismiss}
             variant="ghost"
             size="small"
-            className="w-eventButton justify-center"
           >
             Cancel
           </Button>
@@ -339,7 +336,6 @@ export const SimpleEditForm = ({ onDismiss, taxRate }: SimpleEditFormProps) => {
             type="submit"
             variant="primary"
             size="small"
-            className="w-eventButton justify-center"
             loading={isLoading}
           >
             Save

@@ -1,12 +1,12 @@
-import { MoneyAmount, Product, ProductVariant } from "@medusajs/medusa"
+import { Product, ProductVariant } from "@medusajs/medusa"
 import { useAdminStore } from "medusa-react"
 import * as React from "react"
-import LoadingContainer from "../../../../components/atoms/loading-container"
 import Button from "../../../../components/fundamentals/button"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
 import SearchIcon from "../../../../components/fundamentals/icons/search-icon"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
+import LoadingContainer from "../../../../components/loading-container"
 import { ActionType } from "../../../../components/molecules/actionables"
 import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
@@ -55,7 +55,7 @@ const ProductPrices = ({
   const defaultPrices = store?.currencies.map((curr) => ({
     currency_code: curr.code,
     amount: 0,
-  })) as MoneyAmount[]
+  }))
 
   const getVariantActions = (variant) => {
     return [
@@ -125,7 +125,7 @@ const ProductPrices = ({
         <Button
           variant="secondary"
           size="medium"
-          className="rounded-rounded w-full"
+          className="w-full"
           onClick={() => setShowAdd(true)}
         >
           <PlusIcon />

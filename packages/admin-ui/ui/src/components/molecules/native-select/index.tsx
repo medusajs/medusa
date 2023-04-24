@@ -23,7 +23,7 @@ const NativeSelect: NativeSelectType = ({
   return (
     <RadixSelect.Root {...props}>
       <RadixSelect.SelectTrigger
-        className="inter-base-semibold flex items-center gap-3 px-2"
+        className="flex items-center inter-base-semibold gap-3 px-2"
         {...triggerProps}
       >
         <RadixSelect.Value />
@@ -31,15 +31,12 @@ const NativeSelect: NativeSelectType = ({
           <ChevronDownIcon size={ICON_SIZE} />
         </RadixSelect.Icon>
       </RadixSelect.SelectTrigger>
-      <RadixSelect.Content
-        position="popper"
-        className="rounded-rounded scrollbar-hide border-grey-20 bg-grey-0 shadow-dropdown z-[9999] flex max-h-[305px] w-full overflow-y-auto border px-2 py-2"
-      >
-        <RadixSelect.ScrollUpButton className="to-grey-0 flex h-[25px] items-center justify-center bg-gradient-to-b from-transparent">
+      <RadixSelect.Content className="rounded-rounded scrollbar-hide border px-2 py-2 border-grey-20 bg-grey-0 w-full flex shadow-dropdown">
+        <RadixSelect.ScrollUpButton className="h-[25px] flex items-center justify-center bg-gradient-to-b from-transparent to-grey-0">
           <ChevronUpIcon size={ICON_SIZE} />
         </RadixSelect.ScrollUpButton>
         <RadixSelect.Viewport className="p-2">{children}</RadixSelect.Viewport>
-        <RadixSelect.ScrollDownButton className="to-grey-0 flex h-[25px] items-center justify-center bg-gradient-to-b from-transparent">
+        <RadixSelect.ScrollDownButton className="h-[25px] flex items-center justify-center bg-gradient-to-b from-transparent to-grey-0">
           <ChevronDownIcon size={ICON_SIZE} />
         </RadixSelect.ScrollDownButton>
       </RadixSelect.Content>
@@ -52,7 +49,7 @@ type ItemProps = RadixSelect.SelectItemProps
 const Item: React.FC<ItemProps> = ({ children, ...props }) => (
   <RadixSelect.Item
     className={clsx(
-      "inter-base-regular hover:bg-grey-10 relative flex items-center justify-start rounded py-1.5 px-9"
+      "flex relative justify-start py-1.5 px-9 items-center inter-base-regular rounded hover:bg-grey-10"
     )}
     {...props}
   >

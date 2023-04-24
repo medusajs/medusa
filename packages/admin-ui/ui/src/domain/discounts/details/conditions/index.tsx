@@ -17,61 +17,62 @@ const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
 }) => {
   const [show, setShow] = useState(false)
 
-  const { conditions, selectedCondition, deSelectCondition } =
-    useDiscountConditions(discount)
+  const {
+    conditions,
+    selectedCondition,
+    deSelectCondition,
+  } = useDiscountConditions(discount)
 
   return (
     <ConditionsProvider discount={discount}>
-      <div>
-        <BodyCard
-          title="Conditions"
-          className="min-h-[200px]"
-          forceDropdown
-          actionables={[
-            {
-              label: "Add condition",
-              icon: <PlusIcon size={16} />,
-              onClick: () => setShow(true),
-            },
-          ]}
-        >
-          {conditions.length ? (
-            <div
-              style={{
-                gridTemplateRows: `repeat(${Math.ceil(
-                  conditions?.length / 2
-                )}, minmax(0, 1fr))`,
-              }}
-              className="gap-y-base gap-x-xlarge grid grid-flow-col grid-cols-2"
-            >
-              {conditions.map((condition, i) => (
-                <NumberedItem
-                  key={i}
-                  title={condition.title}
-                  index={i + 1}
-                  description={condition.description}
-                  actions={condition.actions}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="gap-y-small flex flex-1 flex-col items-center justify-center">
-              <span className="inter-base-regular text-grey-50">
-                This discount has no conditions
-              </span>
-            </div>
-          )}
-        </BodyCard>
-        <AddCondition show={show} onClose={() => setShow(false)} />
-        {selectedCondition && (
-          <EditConditionsModal
-            open={!!selectedCondition}
-            condition={selectedCondition}
-            discount={discount}
-            onClose={() => deSelectCondition()}
-          />
+      <BodyCard
+        title="Conditions"
+        className="min-h-[200px]"
+        forceDropdown
+        actionables={[
+          {
+            label: "Add condition",
+            icon: <PlusIcon size={16} />,
+            onClick: () => setShow(true),
+          },
+        ]}
+      >
+        {conditions.length ? (
+          <div
+            style={{
+              gridTemplateRows: `repeat(${Math.ceil(
+                conditions?.length / 2
+              )}, minmax(0, 1fr))`,
+            }}
+            className="grid grid-cols-2 grid-flow-col gap-y-base gap-x-xlarge"
+          >
+            {conditions.map((condition, i) => (
+              <NumberedItem
+                key={i}
+                title={condition.title}
+                index={i + 1}
+                description={condition.description}
+                actions={condition.actions}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center flex-1 gap-y-small">
+            <span className="inter-base-regular text-grey-50">
+              This discount has no conditions
+            </span>
+          </div>
         )}
-      </div>
+      </BodyCard>
+      <AddCondition show={show} onClose={() => setShow(false)} />
+      {selectedCondition && (
+        <EditConditionsModal
+          open={!!selectedCondition}
+          condition={selectedCondition}
+          discount={discount}
+          onClose={() => deSelectCondition()}
+        />
+      )}
     </ConditionsProvider>
   )
 }

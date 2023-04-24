@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   ActionMeta,
   CX,
@@ -15,7 +15,7 @@ import {
 import Button from "../../../../fundamentals/button"
 import CheckIcon from "../../../../fundamentals/icons/check-icon"
 import ListArrowIcon from "../../../../fundamentals/icons/list-arrow-icon"
-import { hasPrefix, hasSuffix, optionIsDisabled } from "../utils"
+import { hasPrefix, optionIsDisabled } from "../utils"
 import SelectPrimitives from "./select-primitives"
 
 const Menu = <
@@ -53,7 +53,7 @@ const Menu = <
       className={cx(
         { menu: true },
         clsx(
-          "border-border bg-grey-0 rounded-rounded border-grey-20 shadow-dropdown mb-base absolute z-[60] w-full overflow-hidden border",
+          "absolute w-full overflow-hidden border-border z-[60] bg-grey-0 rounded-rounded border border-grey-20 shadow-dropdown mb-base",
           {
             "top-[calc(100%+8px)]": placement === "bottom",
             "bottom-full": placement === "top",
@@ -104,7 +104,7 @@ const SelectAllOption = <
     }
 
     return false
-  }, [options, value])
+  }, [value])
 
   const onClick = useCallback(() => {
     if (isAllSelected) {
@@ -120,7 +120,7 @@ const SelectAllOption = <
         option: selectableOptions as unknown as Option,
       })
     }
-  }, [isAllSelected, onChange, options])
+  }, [isAllSelected, options])
 
   useEffect(() => {
     setIsFocused(
@@ -178,7 +178,7 @@ export const MenuList = <
           "menu-list": true,
           "menu-list--is-multi": isMulti,
         },
-        clsx("py-xsmall no-scrollbar flex flex-col overflow-y-auto", className)
+        clsx("overflow-y-auto flex flex-col py-xsmall no-scrollbar", className)
       )}
     >
       {isMulti && selectAll && (
@@ -208,14 +208,14 @@ export const LoadingMessage = <
     return (
       <div
         className={clsx(
-          "px-base hover:bg-grey-5 flex w-full items-center transition-colors",
+          "w-full flex items-center px-base transition-colors hover:bg-grey-5",
           {
             "h-xlarge": size === "sm",
             "h-10": size === "md" || !size,
           }
         )}
       >
-        <div className="bg-grey-10 h-xsmall rounded-rounded w-1/4 animate-pulse" />
+        <div className="bg-grey-10 animate-pulse w-1/4 h-xsmall rounded-rounded" />
       </div>
     )
   }
@@ -243,7 +243,7 @@ export const Option = <
   IsMulti extends boolean,
   Group extends GroupBase<Option>
 >(
-  props: OptionProps<Option, IsMulti, Group>
+  props: OptionProps<Option, IsMulti, Group> & { checkIconClassName?: string }
 ) => {
   const {
     isSelected,
@@ -254,11 +254,11 @@ export const Option = <
     className,
     innerProps,
     innerRef,
-    selectProps: { hideSelectedOptions, isMulti, size, truncateOption },
+    checkIconClassName,
+    selectProps: { hideSelectedOptions, isMulti },
   } = props
 
   const prefix = hasPrefix(props.data) ? props.data.prefix : null
-  const suffix = hasSuffix(props.data) ? props.data.suffix : null
 
   return (
     <div
@@ -271,15 +271,11 @@ export const Option = <
           "option--is-focused": isFocused,
         },
         clsx(
-          "py-xsmall px-base hover:bg-grey-5 flex items-center justify-between transition-colors",
+          "flex items-center justify-between gap-2 py-xsmall px-base transition-colors hover:bg-grey-5",
           {
-            "text-grey-30 cursor-not-allowed select-none": isDisabled,
+            "text-grey-30 select-none cursor-not-allowed": isDisabled,
             "bg-grey-10": isFocused && !isDisabled,
             hidden: hideSelectedOptions && isSelected,
-          },
-          {
-            "h-xlarge": size === "sm",
-            "h-10": size === "md" || !size,
           },
           className
         )
@@ -290,32 +286,25 @@ export const Option = <
       tabIndex={isDisabled ? -1 : 0}
       {...innerProps}
     >
-      <div className="gap-x-small flex flex-1 items-center">
+      <div className="flex items-center gap-x-small">
         {isMulti && (
           <CheckboxAdornment isSelected={isSelected} isDisabled={isDisabled} />
         )}
-        <div
-          className={clsx(
-            "gap-x-xsmall inter-base-regular flex flex-1 items-center justify-between",
-            {
-              truncate: !!truncateOption,
-            }
-          )}
-        >
+        <div className="flex items-center gap-x-xsmall inter-base-regular">
           {prefix && <span className="inter-base-semibold">{prefix}</span>}
-          <span className="w-full">{children}</span>
-
-          {suffix && (
-            <span className="inter-base-regular text-grey-50 justify-self-end">
-              {suffix}
-            </span>
-          )}
+          {children}
         </div>
       </div>
       {!isMulti && (
-        <div className="ml-xsmall w-5">
-          {isSelected && <CheckIcon size={16} />}
-        </div>
+        <span
+          className={clsx(
+            "h-4 w-4 flex-shrink-0 ml-1 -mr-1",
+            { "opacity-0": !isSelected, "opacity-100": isSelected },
+            checkIconClassName
+          )}
+        >
+          <CheckIcon className="h-full w-full" />
+        </span>
       )}
     </div>
   )
@@ -328,7 +317,7 @@ const CheckboxAdornment = ({
   return (
     <div
       className={clsx(
-        `w-base h-base text-grey-0 border-grey-30 rounded-base flex justify-center border transition-colors`,
+        `w-base h-base flex justify-center text-grey-0 border-grey-30 border rounded-base transition-colors`,
         {
           "bg-violet-60 border-violet-60": isSelected,
           "bg-grey-5": isDisabled,

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import React, { MutableRefObject, ReactNode } from "react"
 import StatusIndicator from "../../fundamentals/status-indicator"
 import Tooltip from "../../atoms/tooltip"
 import clsx from "clsx"
@@ -43,10 +43,10 @@ export const ActivityCard: React.FC<ActivityCardProps> = (
   }
 
   return (
-    <div key={key} className="border-grey-20 mx-8 border-b last:border-b-0">
-      <div className="hover:bg-grey-5 -mx-8 flex px-8 py-6">
-        <div className="relative h-full w-full">
-          <div className="inter-small-semibold text-grey-90 flex justify-between">
+    <div key={key} className="mx-8 border-b last:border-b-0 border-grey-20">
+      <div className="flex hover:bg-grey-5 -mx-8 px-8 py-6">
+        <div className="relative w-full h-full">
+          <div className="flex justify-between inter-small-semibold text-grey-90">
             <div className="flex">
               {!!icon && icon}
               <span>{title}</span>

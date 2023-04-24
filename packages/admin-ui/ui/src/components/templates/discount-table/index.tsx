@@ -3,7 +3,7 @@ import { useAdminDiscounts } from "medusa-react"
 import qs from "qs"
 import React, { useEffect, useState } from "react"
 import { usePagination, useTable } from "react-table"
-import { useAnalytics } from "../../../providers/analytics-provider"
+import { useAnalytics } from "../../../context/analytics"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import DiscountFilters from "../discount-filter-dropdown"
@@ -126,7 +126,7 @@ const DiscountTable: React.FC = () => {
 
   const updateUrlFromFilter = (obj = {}) => {
     const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/discounts`, "", `${`?${stringified}`}`)
+    window.history.replaceState(`/admin/discounts`, "", `${`?${stringified}`}`)
   }
 
   const refreshWithFilters = () => {

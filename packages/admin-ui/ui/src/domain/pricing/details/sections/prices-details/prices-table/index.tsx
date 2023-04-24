@@ -3,6 +3,7 @@ import {
   useAdminDeletePriceListProductPrices,
   useAdminPriceListProducts,
 } from "medusa-react"
+import * as React from "react"
 import { HeaderGroup, Row } from "react-table"
 import CancelIcon from "../../../../../../components/fundamentals/icons/cancel-icon"
 import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon"
@@ -26,15 +27,14 @@ type PricesTableProps = {
 
 const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
   const params = useQueryFilters(defaultQueryProps)
-  const {
-    products,
-    isLoading,
-    count = 0,
-  } = useAdminPriceListProducts(id, params.queryObject)
+  const { products, isLoading, count = 0 } = useAdminPriceListProducts(
+    id,
+    params.queryObject
+  )
   const columns = usePricesColumns()
 
   return (
-    <div className="flex h-full w-full flex-col justify-between overflow-y-auto">
+    <div className="w-full overflow-y-auto flex flex-col justify-between h-full">
       <SelectableTable
         columns={columns}
         data={products || []}

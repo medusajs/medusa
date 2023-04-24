@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-const useOutsideClick = (callback: () => void, ref: any, capture = false) => {
+const useOutsideClick = (callback: () => void, ref: any) => {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!ref.current.contains(e.target)) {
@@ -8,12 +8,12 @@ const useOutsideClick = (callback: () => void, ref: any, capture = false) => {
       }
     }
 
-    document.addEventListener("click", handleClickOutside, capture)
+    document.addEventListener("click", handleClickOutside)
 
     return () => {
-      document.removeEventListener("click", handleClickOutside, capture)
+      document.removeEventListener("click", handleClickOutside)
     }
-  }, [callback, ref, capture])
+  }, [ref])
 }
 
 export default useOutsideClick

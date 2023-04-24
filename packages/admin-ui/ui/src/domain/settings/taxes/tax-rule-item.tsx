@@ -1,3 +1,5 @@
+import React from "react"
+
 import Actionables from "../../../components/molecules/actionables"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
@@ -5,10 +7,10 @@ import Badge from "../../../components/fundamentals/badge"
 
 export const TaxRuleItem = ({ onEdit, onDelete, index, name, description }) => {
   return (
-    <div className="p-base rounded-rounded gap-base flex items-center border">
+    <div className="p-base border rounded-rounded flex gap-base items-center">
       <div>
         <Badge
-          className="inter-base-semibold flex h-[40px] w-[40px] items-center justify-center"
+          className="inter-base-semibold flex justify-center items-center w-[40px] h-[40px]"
           variant="default"
         >
           §{index}
@@ -39,3 +41,4 @@ export const TaxRuleItem = ({ onEdit, onDelete, index, name, description }) => {
     </div>
   )
 }
+

@@ -1,3 +1,4 @@
+import React from "react"
 import { Controller } from "react-hook-form"
 import Switch from "../../../../components/atoms/switch"
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
@@ -16,7 +17,7 @@ const General = () => {
       tooltip="General information for the price list."
       value="general"
     >
-      <div className="gap-y-small group-radix-state-open:mt-5 accordion-margin-transition flex flex-col">
+      <div className="flex flex-col gap-y-small group-radix-state-open:mt-5 accordion-margin-transition">
         <InputField
           label="Name"
           required

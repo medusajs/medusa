@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import React from "react"
 import { GroupBase, SingleValueProps } from "react-select"
 import { hasPrefix } from "../utils"
 
@@ -25,12 +26,12 @@ const SingleValue = <
           "single-value--is-disabled": isDisabled,
         },
         clsx(
-          "absolute top-1/2 -translate-y-1/2 overflow-hidden overflow-ellipsis whitespace-nowrap",
+          "overflow-hidden absolute top-1/2 -translate-y-1/2 whitespace-nowrap overflow-ellipsis",
           className
         )
       )}
     >
-      <div className="gap-x-xsmall inter-base-regular flex items-center">
+      <div className="flex items-center gap-x-xsmall inter-base-regular">
         {prefix && <span className="inter-base-semibold">{prefix}</span>}
         {children}
       </div>
