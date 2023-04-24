@@ -697,15 +697,15 @@ class ProductVariantInventoryService extends TransactionBaseService {
       }
     )
 
-    const inventoryLocationMap: Record<string, InventoryLevelDTO[]> =
+    const inventoryLocationMap: Map<string, InventoryLevelDTO[]> =
       locationLevels.reduce((acc, curr) => {
-        if (!acc[curr.inventory_item_id]) {
-          acc[curr.inventory_item_id] = []
+        if (!acc.has(curr.inventory_item_id)) {
+          acc.set(curr.inventory_item_id, [])
         }
-        acc[curr.inventory_item_id].push(curr)
+        acc.get(curr.inventory_item_id).push(curr)
 
         return acc
-      }, {})
+      }, new Map())
 
     return await Promise.all(
       variants.map(async (variant) => {
@@ -735,7 +735,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         }
 
         const locations =
-          inventoryLocationMap[variantInventory[0].inventory_item_id] ?? []
+          inventoryLocationMap.get(variantInventory[0].inventory_item_id) ?? []
 
         variant.inventory_quantity = locations.reduce(
           (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
