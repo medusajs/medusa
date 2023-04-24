@@ -2,7 +2,10 @@
   "name": "medusa-file-s3",
   "version": "1.1.12",
   "description": "AWS s3 file connector for Medusa",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
@@ -11,32 +14,23 @@
   "author": "Sebastian Mateos Nicolajsen",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/node": "^7.7.4",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-transform-instanceof": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.5",
-    "@babel/register": "^7.7.4",
-    "@babel/runtime": "^7.9.6",
-    "client-sessions": "^0.8.0",
+    "@medusajs/medusa": "1.8.0-rc.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-interfaces": "^1.3.7",
-    "medusa-test-utils": "^1.1.40"
+    "medusa-test-utils": "^1.1.40",
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",
-    "build": "babel src --out-dir . --ignore '**/__tests__','**/__mocks__'",
-    "watch": "babel -w src --out-dir . --ignore '**/__tests__','**/__mocks__'"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "peerDependencies": {
     "medusa-interfaces": "1.3.7"
   },
   "dependencies": {
-    "@babel/plugin-transform-classes": "^7.15.4",
     "aws-sdk": "^2.983.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",

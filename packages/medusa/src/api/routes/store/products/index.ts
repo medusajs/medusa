@@ -1,10 +1,14 @@
-import { Router } from "express"
 import "reflect-metadata"
 
-import { Product } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
-import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformStoreQuery } from "../../../middlewares"
+
+import { FlagRouter } from "../../../../utils/flag-router"
+import { PaginatedResponse } from "../../../../types/common"
+import { PricedProduct } from "../../../../types/pricing"
+import { Product } from "../../../.."
+import { Router } from "express"
+import { StoreGetProductsParams } from "./list-products"
+import { StoreGetProductsProductParams } from "./get-product"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
@@ -125,6 +129,8 @@ export * from "./search"
  *     - variants
  *     - variants.options
  *     - variants.prices
+ *   totals:
+ *     - variants.purchasable
  * required:
  *   - product
  * properties:
@@ -132,7 +138,7 @@ export * from "./search"
  *     $ref: "#/components/schemas/PricedProduct"
  */
 export type StoreProductsRes = {
-  product: Product
+  product: PricedProduct
 }
 
 /**
@@ -166,6 +172,8 @@ export type StorePostSearchRes = {
  *     - variants
  *     - variants.options
  *     - variants.prices
+ *   totals:
+ *     - variants.purchasable
  * required:
  *   - products
  *   - count
@@ -187,5 +195,5 @@ export type StorePostSearchRes = {
  *     description: The number of items per page
  */
 export type StoreProductsListRes = PaginatedResponse & {
-  products: Product[]
+  products: PricedProduct[]
 }

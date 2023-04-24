@@ -57,6 +57,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     delete data.ean
     delete data.barcode
     delete data.upc
+    delete data.allow_backorder
 
     return removeNullish({
       ...updateDimensions,
@@ -78,7 +79,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
 
     let inventoryItemId: string | undefined = itemId
 
-    const { ean, barcode, upc } = data
+    const { ean, barcode, upc, allow_backorder } = data
     const upsertPayload = createUpdateInventoryItemPayload(data)
     let shouldInvalidateCache = false
 
@@ -170,6 +171,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         ean,
         barcode,
         upc,
+        allow_backorder,
       }),
       () => {
         refetch()

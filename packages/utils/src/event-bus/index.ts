@@ -23,24 +23,15 @@ export abstract class AbstractEventBusModuleService
   ): Promise<void>
   abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
-  public subscribe(
-    eventName: string | symbol,
-    subscriber: EventBusTypes.Subscriber,
-    context?: EventBusTypes.SubscriberContext
-  ): this {
-    if (typeof subscriber !== `function`) {
-      throw new Error("Subscriber must be a function")
-    }
-    /**
-     * If context is provided, we use the subscriberId from it
-     * otherwise we generate a random using a ulid
-     */
-
-    const randId = ulid()
-    const event = eventName.toString()
-
-    const subscriberId = context?.subscriberId ?? `${event}-${randId}`
-
+  protected storeSubscribers({
+    event,
+    subscriberId,
+    subscriber,
+  }: {
+    event: string | symbol
+    subscriberId: string
+    subscriber: EventBusTypes.Subscriber
+  }) {
     const newSubscriberDescriptor = { subscriber, id: subscriberId }
 
     const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
@@ -57,6 +48,33 @@ export abstract class AbstractEventBusModuleService
       ...existingSubscribers,
       newSubscriberDescriptor,
     ])
+  }
+
+  public retrieveSubscribers(event: string | symbol) {
+    return this.eventToSubscribersMap_.get(event)
+  }
+
+  public subscribe(
+    eventName: string | symbol,
+    subscriber: EventBusTypes.Subscriber,
+    context?: EventBusTypes.SubscriberContext
+  ): this {
+    if (typeof subscriber !== `function`) {
+      throw new Error("Subscriber must be a function")
+    }
+    /**
+     * If context is provided, we use the subscriberId from it
+     * otherwise we generate a random using a ulid
+     */
+
+    const randId = ulid()
+    const event = eventName.toString()
+
+    this.storeSubscribers({
+      event,
+      subscriberId: context?.subscriberId ?? `${event}-${randId}`,
+      subscriber,
+    })
 
     return this
   }
@@ -70,7 +88,7 @@ export abstract class AbstractEventBusModuleService
       throw new Error("Subscriber must be a function")
     }
 
-    const existingSubscribers = this.eventToSubscribersMap_.get(eventName)
+    const existingSubscribers = this.retrieveSubscribers(eventName)
 
     if (existingSubscribers?.length) {
       const subIndex = existingSubscribers?.findIndex(

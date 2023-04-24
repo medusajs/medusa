@@ -653,12 +653,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/carts-and-checkout/cart",
           label: "Cart",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
@@ -685,7 +682,7 @@ module.exports = {
         {
           type: "doc",
           id: "modules/carts-and-checkout/backend/add-payment-provider",
-          label: "Backend: Create Payment Provider",
+          label: "Backend: Create Payment Processor",
         },
         {
           type: "doc",
@@ -720,28 +717,19 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/orders",
           label: "Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/swaps",
           label: "Swaps",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/returns",
           label: "Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
@@ -775,12 +763,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/backend/send-order-confirmation",
           label: "Backend: Send Confirmation Email",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
