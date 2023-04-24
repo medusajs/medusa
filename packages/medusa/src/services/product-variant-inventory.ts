@@ -673,16 +673,16 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    if (!inventoryLocationMap.size) {
-      const locationIds: string[] = []
-      if (salesChannelId) {
-        const locations =
-          await this.salesChannelLocationService_.listLocationIds(
-            salesChannelId
-          )
-        locationIds.push(...locations)
-      }
+    const locationIds: string[] = []
 
+    if (salesChannelId && !inventoryLocationMap.size) {
+      const locations = await this.salesChannelLocationService_.listLocationIds(
+        salesChannelId
+      )
+      locationIds.push(...locations)
+    }
+
+    if (!inventoryLocationMap.size && locationIds.length) {
       const [locationLevels] = await this.inventoryService_.listInventoryLevels(
         {
           location_id: locationIds,
