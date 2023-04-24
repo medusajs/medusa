@@ -653,7 +653,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
     salesChannelId: string | string[] | undefined,
-    variantInventoryMap: Map<string, ProductVariantInventoryItem[]> = new Map()
+    variantInventoryMap: Map<string, ProductVariantInventoryItem[]> = new Map(),
+    inventoryLocationMap: Map<string, InventoryLevelDTO[]> = new Map()
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
@@ -672,33 +673,34 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    const locationIds: string[] = []
-    if (salesChannelId) {
-      const locations = await this.salesChannelLocationService_.listLocationIds(
-        salesChannelId
-      )
-      locationIds.push(...locations)
-    }
-
-    const [locationLevels] = await this.inventoryService_.listInventoryLevels(
-      {
-        location_id: locationIds,
-        inventory_item_id: [
-          ...new Set(
-            Array.from(variantInventoryMap.values())
-              .flat()
-              .map((i) => i.inventory_item_id)
-          ),
-        ],
-      },
-      {},
-      {
-        transactionManager: this.activeManager_,
+    if (!inventoryLocationMap.size) {
+      const locationIds: string[] = []
+      if (salesChannelId) {
+        const locations =
+          await this.salesChannelLocationService_.listLocationIds(
+            salesChannelId
+          )
+        locationIds.push(...locations)
       }
-    )
 
-    const inventoryLocationMap: Map<string, InventoryLevelDTO[]> =
-      locationLevels.reduce((acc, curr) => {
+      const [locationLevels] = await this.inventoryService_.listInventoryLevels(
+        {
+          location_id: locationIds,
+          inventory_item_id: [
+            ...new Set(
+              Array.from(variantInventoryMap.values())
+                .flat()
+                .map((i) => i.inventory_item_id)
+            ),
+          ],
+        },
+        {},
+        {
+          transactionManager: this.activeManager_,
+        }
+      )
+
+      inventoryLocationMap = locationLevels.reduce((acc, curr) => {
         if (!acc.has(curr.inventory_item_id)) {
           acc.set(curr.inventory_item_id, [])
         }
@@ -706,6 +708,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
         return acc
       }, new Map())
+    }
 
     return await Promise.all(
       variants.map(async (variant) => {
