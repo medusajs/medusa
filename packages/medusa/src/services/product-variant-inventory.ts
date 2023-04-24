@@ -28,6 +28,11 @@ type InjectedDependencies = {
   eventBusService: IEventBusService
 }
 
+type AvailabilityContext = {
+  variantInventoryMap: Map<string, ProductVariantInventoryItem[]>
+  inventoryLocationMap: Map<string, InventoryLevelDTO[]>
+}
+
 class ProductVariantInventoryService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -653,62 +658,21 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
     salesChannelId: string | string[] | undefined,
-    variantInventoryMap: Map<string, ProductVariantInventoryItem[]> = new Map(),
-    inventoryLocationMap: Map<string, InventoryLevelDTO[]> = new Map()
+    availabilityContext: AvailabilityContext = {
+      variantInventoryMap: new Map(),
+      inventoryLocationMap: new Map(),
+    }
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
     }
 
-    if (!variantInventoryMap.size) {
-      const variantInventories = await this.listByVariant(
-        variants.map((v) => v.id)
+    const { variantInventoryMap, inventoryLocationMap } =
+      await this.getAvailabilityContext(
+        variants.map((v) => v.id),
+        salesChannelId,
+        availabilityContext
       )
-
-      variantInventories.forEach((inventory) => {
-        const variantId = inventory.variant_id
-        const currentInventories = variantInventoryMap.get(variantId) || []
-        currentInventories.push(inventory)
-        variantInventoryMap.set(variantId, currentInventories)
-      })
-    }
-
-    const locationIds: string[] = []
-
-    if (salesChannelId && !inventoryLocationMap.size) {
-      const locations = await this.salesChannelLocationService_.listLocationIds(
-        salesChannelId
-      )
-      locationIds.push(...locations)
-    }
-
-    if (!inventoryLocationMap.size && locationIds.length) {
-      const [locationLevels] = await this.inventoryService_.listInventoryLevels(
-        {
-          location_id: locationIds,
-          inventory_item_id: [
-            ...new Set(
-              Array.from(variantInventoryMap.values())
-                .flat()
-                .map((i) => i.inventory_item_id)
-            ),
-          ],
-        },
-        {},
-        {
-          transactionManager: this.activeManager_,
-        }
-      )
-
-      inventoryLocationMap = locationLevels.reduce((acc, curr) => {
-        if (!acc.has(curr.inventory_item_id)) {
-          acc.set(curr.inventory_item_id, [])
-        }
-        acc.get(curr.inventory_item_id).push(curr)
-
-        return acc
-      }, new Map())
-    }
 
     return await Promise.all(
       variants.map(async (variant) => {
@@ -753,10 +717,85 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
   }
 
+  private async getAvailabilityContext(
+    variants: string[],
+    salesChannelId: string | string[] | undefined,
+    existingContext: AvailabilityContext = {
+      variantInventoryMap: new Map(),
+      inventoryLocationMap: new Map(),
+    }
+  ): Promise<AvailabilityContext> {
+    const variantInventoryMap = existingContext.variantInventoryMap ?? new Map()
+    const inventoryLocationMap =
+      existingContext.inventoryLocationMap ?? new Map()
+
+    if (!existingContext.variantInventoryMap.size) {
+      const variantInventories = await this.listByVariant(variants)
+
+      variantInventories.forEach((inventory) => {
+        const variantId = inventory.variant_id
+        const currentInventories = variantInventoryMap.get(variantId) || []
+        currentInventories.push(inventory)
+        variantInventoryMap.set(variantId, currentInventories)
+      })
+    }
+
+    const locationIds: string[] = []
+
+    if (salesChannelId && !existingContext.inventoryLocationMap.size) {
+      const locations = await this.salesChannelLocationService_.listLocationIds(
+        salesChannelId
+      )
+      locationIds.push(...locations)
+    }
+
+    if (!existingContext.inventoryLocationMap.size && locationIds.length) {
+      const [locationLevels] = await this.inventoryService_.listInventoryLevels(
+        {
+          location_id: locationIds,
+          inventory_item_id: [
+            ...new Set(
+              Array.from(variantInventoryMap.values())
+                .flat()
+                .map((i) => i.inventory_item_id)
+            ),
+          ],
+        },
+        {},
+        {
+          transactionManager: this.activeManager_,
+        }
+      )
+
+      locationLevels.reduce((acc, curr) => {
+        if (!acc.has(curr.inventory_item_id)) {
+          acc.set(curr.inventory_item_id, [])
+        }
+        acc.get(curr.inventory_item_id)!.push(curr)
+
+        return acc
+      }, inventoryLocationMap)
+    }
+
+    return {
+      variantInventoryMap,
+      inventoryLocationMap,
+    }
+  }
+
   async setProductAvailability(
     products: (Product | PricedProduct)[],
     salesChannelId: string | string[] | undefined
   ): Promise<(Product | PricedProduct)[]> {
+    const variantIds: string[] = products
+      .flatMap((p) => p.variants.map((v: { id?: string }) => v.id) ?? [])
+      .filter((v): v is string => !!v)
+
+    const availabilityContext = await this.getAvailabilityContext(
+      variantIds,
+      salesChannelId
+    )
+
     return await Promise.all(
       products.map(async (product) => {
         if (!product.variants || product.variants.length === 0) {
@@ -765,7 +804,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
         product.variants = await this.setVariantAvailability(
           product.variants,
-          salesChannelId
+          salesChannelId,
+          availabilityContext
         )
 
         return product
