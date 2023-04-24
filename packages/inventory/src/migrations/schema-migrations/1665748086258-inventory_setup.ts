@@ -26,7 +26,6 @@ export class inventorySetup1665748086258 implements MigrationInterface {
 
       CREATE UNIQUE INDEX "IDX_inventory_item_sku" ON "inventory_item" ("sku") WHERE deleted_at IS NULL;
 
-
       CREATE TABLE "reservation_item" (
         "id" character varying NOT NULL,
         "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

@@ -722,20 +722,14 @@ module.exports = {
           label: "Orders",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/swaps",
           label: "Swaps",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/returns",
           label: "Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
@@ -769,12 +763,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/backend/send-order-confirmation",
           label: "Backend: Send Confirmation Email",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
