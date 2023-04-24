@@ -1089,4 +1089,13 @@ export const currencies: Record<string, Currency> = {
     code: "ZWL",
     name_plural: "Zimbabwean Dollar",
   },
+  IRT: {
+    symbol: "IRT",
+    name: "Iranian Toman",
+    symbol_native: "تومان",
+    decimal_digits: 3,
+    rounding: 0,
+    code: "IRT",
+    name_plural: "Iranian Toman",
+  },
 }
