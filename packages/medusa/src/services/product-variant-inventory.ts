@@ -5,6 +5,7 @@ import {
   IInventoryService,
   IStockLocationService,
   InventoryItemDTO,
+  InventoryLevelDTO,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
@@ -671,6 +672,41 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
+    const locationIds: string[] = []
+    if (salesChannelId) {
+      const locations = await this.salesChannelLocationService_.listLocationIds(
+        salesChannelId
+      )
+      locationIds.push(...locations)
+    }
+
+    const [locationLevels] = await this.inventoryService_.listInventoryLevels(
+      {
+        location_id: locationIds,
+        inventory_item_id: [
+          ...new Set(
+            Array.from(variantInventoryMap.values())
+              .flat()
+              .map((i) => i.inventory_item_id)
+          ),
+        ],
+      },
+      {},
+      {
+        transactionManager: this.activeManager_,
+      }
+    )
+
+    const inventoryLocationMap: Record<string, InventoryLevelDTO[]> =
+      locationLevels.reduce((acc, curr) => {
+        if (!acc[curr.inventory_item_id]) {
+          acc[curr.inventory_item_id] = []
+        }
+        acc[curr.inventory_item_id].push(curr)
+
+        return acc
+      }, {})
+
     return await Promise.all(
       variants.map(async (variant) => {
         if (!variant.id) {
@@ -698,15 +734,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
           return variant
         }
 
-        const locationIds =
-          await this.salesChannelLocationService_.listLocationIds(
-            salesChannelId
-          )
-
-        const [locations] = await this.inventoryService_.listInventoryLevels({
-          location_id: locationIds,
-          inventory_item_id: variantInventory[0].inventory_item_id,
-        })
+        const locations =
+          inventoryLocationMap[variantInventory[0].inventory_item_id] ?? []
 
         variant.inventory_quantity = locations.reduce(
           (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
