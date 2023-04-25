@@ -63,7 +63,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     q?: string
   ): Promise<[Product[], number]> {
     const options_ = { ...options }
-    options_.relationLoadStrategy = "query"
+    // options_.relationLoadStrategy = "query"
 
     const queryBuilder = await this.prepareQueryBuilder_(options_, q)
     return await queryBuilder.getManyAndCount()
@@ -96,9 +96,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const isDepth1 = !orderFieldsCollectionPointSeparated.some(
       (field) => field.indexOf(".") !== -1
     )
-    options_.relationLoadStrategy = isDepth1
-      ? options_.relationLoadStrategy
-      : "join"
+    // options_.relationLoadStrategy = isDepth1
+    //   ? options_.relationLoadStrategy
+    //   : "join"
 
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
