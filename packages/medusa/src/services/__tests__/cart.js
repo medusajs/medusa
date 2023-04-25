@@ -65,8 +65,7 @@ describe("CartService", () => {
   describe("retrieve", () => {
     let result
     const cartRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({ id: IdMap.getId("emptyCart") }),
+      findOne: () => Promise.resolve({ id: IdMap.getId("emptyCart") }),
     })
     beforeAll(async () => {
       jest.clearAllMocks()
@@ -83,13 +82,11 @@ describe("CartService", () => {
 
     it("calls cart model functions", () => {
       expect(cartRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(cartRepository.findOne).toHaveBeenCalledWith(
-        {
-          where: { id: IdMap.getId("emptyCart") },
-          select: undefined,
-          relations: undefined,
-        }
-      )
+      expect(cartRepository.findOne).toHaveBeenCalledWith({
+        where: { id: IdMap.getId("emptyCart") },
+        select: undefined,
+        relations: undefined,
+      })
     })
   })
 
@@ -852,25 +849,24 @@ describe("CartService", () => {
             billing_address: true,
             customer: true,
             discounts: {
-              regions: true,
-              rule: true
+              rule: true,
             },
             gift_cards: true,
             items: {
               variant: {
-                product: true
-              }
+                product: true,
+              },
             },
             payment_sessions: true,
             region: { countries: true },
             shipping_address: true,
-            shipping_methods: true
+            shipping_methods: true,
           },
           select: undefined,
           where: {
-            id: "withpays"
-          }
-        }),
+            id: "withpays",
+          },
+        })
       )
     })
   })
@@ -1271,6 +1267,25 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const discountService = {
+      list: jest.fn().mockReturnValue(
+        Promise.resolve([
+          {
+            id: IdMap.getId("stays"),
+            regions: [{ id: IdMap.getId("region-us") }],
+          },
+          {
+            id: IdMap.getId("removes"),
+            regions: [],
+          },
+        ])
+      ),
+      withTransaction: function () {
+        return this
+      },
+    }
+
     const cartRepository = MockRepository({
       findOne: () =>
         Promise.resolve({
@@ -1325,6 +1340,7 @@ describe("CartService", () => {
       manager: MockManager,
       paymentProviderService,
       addressRepository,
+      discountService,
       totalsService,
       cartRepository,
       newTotalsService: newTotalsServiceMock,
@@ -1377,9 +1393,11 @@ describe("CartService", () => {
           shipping_address: {
             country_code: "us",
           },
-          items: [{
-            id: IdMap.getId("testitem")
-          }],
+          items: [
+            {
+              id: IdMap.getId("testitem"),
+            },
+          ],
           payment_session: null,
           payment_sessions: [],
           gift_cards: [],
