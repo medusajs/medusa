@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-paypal",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Paypal Payment provider for Medusa Commerce",
   "main": "dist/index.js",
   "repository": {
@@ -20,14 +20,14 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.8.1",
+    "@medusajs/medusa": "1.8.2",
     "@types/stripe": "^8.0.417",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "typescript": "^4.4.4"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.8.1"
+    "@medusajs/medusa": "1.8.2"
   },
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",

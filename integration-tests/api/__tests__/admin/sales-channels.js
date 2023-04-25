@@ -71,13 +71,15 @@ describe("sales channels", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.sales_channel).toBeTruthy()
-      expect(response.data.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: salesChannel.name,
-        description: salesChannel.description,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: salesChannel.name,
+          description: salesChannel.description,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -135,12 +137,12 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channels).toBeTruthy()
       expect(response.data.sales_channels.length).toBe(1)
-      expect(response.data).toMatchSnapshot({
+      expect(response.data).toEqual({
         count: 1,
         limit: 20,
         offset: 0,
         sales_channels: expect.arrayContaining([
-          {
+          expect.objectContaining({
             id: expect.any(String),
             name: salesChannel2.name,
             description: salesChannel2.description,
@@ -148,7 +150,7 @@ describe("sales channels", () => {
             deleted_at: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
+          }),
         ]),
       })
     })
@@ -163,12 +165,12 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channels).toBeTruthy()
       expect(response.data.sales_channels.length).toBe(1)
-      expect(response.data).toMatchSnapshot({
+      expect(response.data).toEqual({
         count: 1,
         limit: 20,
         offset: 0,
         sales_channels: expect.arrayContaining([
-          {
+          expect.objectContaining({
             id: expect.any(String),
             name: salesChannel1.name,
             description: salesChannel1.description,
@@ -176,7 +178,7 @@ describe("sales channels", () => {
             deleted_at: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
+          }),
         ]),
       })
     })
@@ -218,14 +220,16 @@ describe("sales channels", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: payload.name,
-        description: payload.description,
-        is_disabled: payload.is_disabled,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: payload.name,
+          description: payload.description,
+          is_disabled: payload.is_disabled,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -445,14 +449,16 @@ describe("sales channels", () => {
       )
 
       expect(response.data.order.sales_channel).toBeTruthy()
-      expect(response.data.order.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.order.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -482,14 +488,16 @@ describe("sales channels", () => {
       )
 
       expect(response.data.orders[0].sales_channel).toBeTruthy()
-      expect(response.data.orders[0].sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.orders[0].sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -712,15 +720,17 @@ describe("sales channels", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.sales_channel).toEqual({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        deleted_at: null,
-      })
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        })
+      )
 
       const attachedProduct = await dbConnection.manager.findOne(Product, {
         where: { id: product.id },

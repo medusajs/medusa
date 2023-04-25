@@ -2,7 +2,10 @@
   "name": "medusa-file-minio",
   "version": "1.1.6",
   "description": "MinIO server file connector for Medusa",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
@@ -11,32 +14,22 @@
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/node": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/plugin-transform-instanceof": "^7.16.0",
-    "@babel/plugin-transform-runtime": "^7.16.4",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/register": "^7.16.0",
-    "@babel/runtime": "^7.16.3",
-    "client-sessions": "^0.8.0",
+    "@medusajs/medusa": "1.8.0-rc.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.7"
+    "typescript": "^4.9.5"
   },
   "scripts": {
-    "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
-    "test": "jest --passWithNoTests src"
+    "test": "jest --passWithNoTests src",
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "peerDependencies": {
     "medusa-interfaces": "1.3.7"
   },
   "dependencies": {
-    "@babel/plugin-transform-classes": "^7.16.0",
-    "aws-sdk": "^2.1043.0",
+    "aws-sdk": "^2.983.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "medusa-core-utils": "^1.2.0",

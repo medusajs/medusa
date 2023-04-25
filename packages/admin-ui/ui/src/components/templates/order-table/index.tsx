@@ -33,7 +33,9 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
 
   let hiddenColumns = ["sales_channel"]
   if (isFeatureEnabled("sales_channels")) {
-    defaultQueryProps.expand = defaultQueryProps.expand + ",sales_channel"
+    if (!defaultQueryProps.expand.includes("sales_channel")) {
+      defaultQueryProps.expand = defaultQueryProps.expand + ",sales_channel"
+    }
     hiddenColumns = []
   }
 

@@ -64,13 +64,19 @@ const plugins = [
 ]
 ```
 
+The Stripe plugin uses two configuration options. The `api_key` is essential to both your development and production environments. As for the `webhook_secret`, it’s essential for your production environment. So, if you’re only using Stripe for development you can skip adding the value for this option at the moment.
+
 :::note
 
-You might find that this code is already available but commented out. You can proceed with removing the comments instead of adding the code again, but make sure to replace `STRIPE_API_KEY` and `STRIPE_WEBHOOK_SECRET` with `process.env.STRIPE_API_KEY` and `process.env.STRIPE_WEBHOOK_SECRET` respectively.
+You can learn more about the events that the plugin monitors in [this section](#handled-webhook-events).
 
 :::
 
-The Stripe plugin uses two configuration options. The `api_key` is essential to both your development and production environments. As for the `webhook_secret`, it’s essential for your production environment. So, if you’re only using Stripe for development you can skip adding the value for this option at the moment.
+Other optional options include:
+
+- `payment_description`: a string that is used as the default description of a payment if none is provided.
+- `capture`: a boolean value that indicates whether payment should be captured manually or automatically. By default, it will be `false`, leading admins to capture the payment manually.
+- `automatic_payment_methods`: enables Stripe's automatic payment methods. This is useful if you're integrating services like Apple pay or Google pay.
 
 ### Retrieve Stripe's Keys
 
@@ -360,6 +366,16 @@ After the customer places an order, you’ll be able to see the order on the adm
 Clicking this button allows you to capture the payment for an order. You can also refund payments if an order has captured payments.
 
 Refunding or Capturing payments is reflected in your Stripe’s dashboard as well. This gives you access to all of Stripe’s analytical capabilities.
+
+---
+
+## Handled Webhook Events
+
+This plugin handles the following Stripe webhook events:
+
+- `payment_intent.succeeded`: If the payment is associated with a payment collection, the plugin will capture the payments within it. Otherwise, it checks first if an order is created and, if not, completes the cart which creates the order. It will also capture the payment of the order associated with the cart if it's not captured already.
+- `payment_intent.amount_capturable_updated`: If no order is created for the cart associated with the payment, the cart is completed which creates the order.
+- `payment_intent.payment_failed`: prints the error message received from Stripe into the logs.
 
 ---
 
