@@ -743,9 +743,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const locationIds: string[] = []
 
     if (salesChannelId && !existingContext.inventoryLocationMap.size) {
-      const locations = await this.salesChannelLocationService_.listLocationIds(
-        salesChannelId
-      )
+      const locations = await this.salesChannelLocationService_
+        .withTransaction(this.activeManager_)
+        .listLocationIds(salesChannelId)
       locationIds.push(...locations)
     }
 
