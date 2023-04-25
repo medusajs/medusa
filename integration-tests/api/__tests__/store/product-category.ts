@@ -178,13 +178,13 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories`,
+        `/store/product-categories?limit=10`,
       )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(4)
       expect(response.data.offset).toEqual(0)
-      expect(response.data.limit).toEqual(100)
+      expect(response.data.limit).toEqual(10)
 
       expect(response.data.product_categories).toEqual(
         [
@@ -239,7 +239,7 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories?parent_category_id=null&include_descendants_tree=true`,
+        `/store/product-categories?parent_category_id=null&include_descendants_tree=true&limit=10`,
       )
 
       expect(response.status).toEqual(200)
@@ -280,7 +280,7 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const error = await api.get(
-        `/store/product-categories?is_internal=true`,
+        `/store/product-categories?is_internal=true&limit=10`,
       ).catch(e => e)
 
       expect(error.response.status).toEqual(400)
@@ -292,7 +292,7 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories?q=category-parent`,
+        `/store/product-categories?q=category-parent&limit=10`,
       )
 
       expect(response.status).toEqual(200)
@@ -304,7 +304,7 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories?handle=${productCategory.handle}`,
+        `/store/product-categories?handle=${productCategory.handle}&limit=10`,
       )
 
       expect(response.status).toEqual(200)
@@ -316,7 +316,7 @@ describe("/store/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/store/product-categories?parent_category_id=${productCategory.id}`,
+        `/store/product-categories?parent_category_id=${productCategory.id}&limit=10`,
       )
 
       expect(response.status).toEqual(200)
