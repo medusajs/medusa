@@ -1,10 +1,10 @@
+import { AwilixContainer } from "awilix"
 import {
   DataSource,
   DataSourceOptions,
   Repository,
   TreeRepository,
 } from "typeorm"
-import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
 
@@ -49,6 +49,7 @@ export default async ({
     schema: configModule.projectConfig.database_schema,
     entities,
     migrations: customOptions?.migrations,
+    relationLoadStrategy: "query",
     logging:
       customOptions?.logging ??
       (configModule.projectConfig.database_logging || false),
