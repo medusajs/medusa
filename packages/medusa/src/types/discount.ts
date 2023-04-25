@@ -16,6 +16,7 @@ import {
   Region,
 } from "../models"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
+import { IsType } from "../utils/validators/is-type"
 import { ExactlyOne } from "./validators/exactly-one"
 
 export type QuerySelector = {
@@ -26,6 +27,10 @@ export class FilterableDiscountProps {
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
 
   @IsBoolean()
   @IsOptional()
