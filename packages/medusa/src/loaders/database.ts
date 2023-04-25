@@ -49,7 +49,6 @@ export default async ({
     schema: configModule.projectConfig.database_schema,
     entities,
     migrations: customOptions?.migrations,
-    relationLoadStrategy: "query",
     logging:
       customOptions?.logging ??
       (configModule.projectConfig.database_logging || false),
