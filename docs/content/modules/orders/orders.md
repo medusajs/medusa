@@ -288,7 +288,7 @@ You can access the order’s swaps by expanding the `swap` relation and accessin
 
 ### DraftOrder
 
-An order can be associated with a draft order. This would be the draft order that the order was created from.
+An order can be associated with a [draft order](./draft-orders.md). This would be the draft order that the order was created from.
 
 The draft order’s ID is stored in the `draft_order_id` attribute. You can also access the draft order by expanding the `draft_order` relation and accessing `order.draft_order`.
 

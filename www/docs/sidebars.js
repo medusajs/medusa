@@ -737,12 +737,9 @@ module.exports = {
           label: "Claims",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/draft-orders",
           label: "Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
