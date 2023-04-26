@@ -23,7 +23,7 @@ class BrightpearlService extends BaseService {
       inventoryService,
       lineItemService,
       eventBusService,
-      productVariantInventoryService,
+      inventoryLocationStrategy,
       salesChannelLocationService,
       logger,
     },
@@ -34,7 +34,7 @@ class BrightpearlService extends BaseService {
     this.manager_ = manager
     this.options = options
     this.productVariantService_ = productVariantService
-    this.productVariantInventoryService_ = productVariantInventoryService
+    this.inventoryLocationStrategy_ = inventoryLocationStrategy
     this.regionService_ = regionService
     this.orderService_ = orderService
     this.totalsService_ = totalsService
@@ -1781,9 +1781,7 @@ class BrightpearlService extends BaseService {
         fulfillments.filter((f) => !existingFulfillmentMap.get(f.id)),
         {
           inventoryService:
-            this.productVariantInventoryService_.withTransaction(
-              transactionManager
-            ),
+            this.inventoryLocationStrategy_.withTransaction(transactionManager),
           locationId: fulfillmentLocation.id,
         }
       )
