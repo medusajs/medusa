@@ -264,13 +264,13 @@ You can access the order’s shipping method by expanding the `shipping_methods`
 
 ### Returns
 
-An order can be associated with more than one return. For example, a customer may request to return items separately or gradually. A return is represented by the `Return` entity.
+An order can be associated with more than one [return](./returns.md). For example, a customer may request to return items separately or gradually. A return is represented by the `Return` entity.
 
 You can access the order’s returns by expanding the `returns` relation and accessing `order.returns`.
 
 ### ClaimOrder
 
-An order can be associated with more than one claim. A claim is represented by the `ClaimOrder` entity.
+An order can be associated with more than one [claim](./claims.md). A claim is represented by the `ClaimOrder` entity.
 
 You can access the order’s claims by expanding the `claims` relation and accessing `order.claims`.
 
@@ -282,7 +282,7 @@ You can access the order’s refunds by expanding the `refunds` relation and acc
 
 ### Swap
 
-An order can be associated with more than one swap. A swap is represented by the `Swap` entity.
+An order can be associated with more than one [swap](./swaps.md). A swap is represented by the `Swap` entity.
 
 You can access the order’s swaps by expanding the `swap` relation and accessing `order.swap`.
 
