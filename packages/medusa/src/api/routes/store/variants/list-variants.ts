@@ -1,7 +1,6 @@
 import {
   CartService,
   PricingService,
-  ProductVariantInventoryService,
   ProductVariantService,
   RegionService,
 } from "../../../../services"

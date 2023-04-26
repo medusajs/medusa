@@ -1,8 +1,4 @@
-import {
-  FulfillmentService,
-  OrderService,
-  ProductVariantInventoryService,
-} from "../../../../services"
+import { FulfillmentService, OrderService } from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"

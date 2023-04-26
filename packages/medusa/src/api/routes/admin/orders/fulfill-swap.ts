@@ -1,9 +1,5 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
-import {
-  OrderService,
-  ProductVariantInventoryService,
-  SwapService,
-} from "../../../../services"
+import { OrderService, SwapService } from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"

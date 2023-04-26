@@ -1,8 +1,4 @@
-import {
-  CartService,
-  ProductService,
-  ProductVariantInventoryService,
-} from "../../../../services"
+import { CartService, ProductService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,

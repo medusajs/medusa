@@ -2,7 +2,6 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import {
   PricingService,
   ProductService,
-  ProductVariantInventoryService,
   SalesChannelService,
 } from "../../../../services"
 

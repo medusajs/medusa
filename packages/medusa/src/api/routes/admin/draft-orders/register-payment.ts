@@ -3,7 +3,6 @@ import {
   DraftOrderService,
   OrderService,
   PaymentProviderService,
-  ProductVariantInventoryService,
 } from "../../../../services"
 import {
   defaultAdminOrdersFields as defaultOrderFields,
@@ -79,8 +78,6 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const inventoryService: OrderService = req.scope.resolve("inventoryService")
   const cartService: CartService = req.scope.resolve("cartService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
 
   const inventoryLocationStrategy: IInventoryLocationStrategy =
     req.scope.resolve("inventoryLocationStrategy")

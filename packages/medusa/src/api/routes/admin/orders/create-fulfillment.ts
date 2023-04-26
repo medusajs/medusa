@@ -9,15 +9,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import {
-  OrderService,
-  ProductVariantInventoryService,
-} from "../../../../services"
 import { Transform, Type } from "class-transformer"
 
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
+import { OrderService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 

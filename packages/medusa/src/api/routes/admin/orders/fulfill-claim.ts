@@ -1,8 +1,4 @@
-import {
-  ClaimService,
-  OrderService,
-  ProductVariantInventoryService,
-} from "../../../../services"
+import { ClaimService, OrderService } from "../../../../services"
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 
 import { EntityManager } from "typeorm"

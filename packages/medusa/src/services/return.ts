@@ -5,7 +5,6 @@ import {
   FulfillmentProviderService,
   LineItemService,
   OrderService,
-  ProductVariantInventoryService,
   ReturnReasonService,
   ShippingOptionService,
   TaxProviderService,

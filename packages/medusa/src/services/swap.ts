@@ -22,7 +22,6 @@ import {
   LineItemService,
   OrderService,
   PaymentProviderService,
-  ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
   TotalsService,

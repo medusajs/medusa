@@ -1,10 +1,6 @@
-import {
-  LineItemService,
-  ProductVariantInventoryService,
-} from "../../../../services"
-
 import { EntityManager } from "typeorm"
 import { IInventoryLocationStrategy } from "../../../../interfaces/inventory-location"
+import { LineItemService } from "../../../../services"
 import { MedusaError } from "medusa-core-utils"
 
 /**

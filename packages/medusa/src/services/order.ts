@@ -26,7 +26,6 @@ import {
   LineItemService,
   NewTotalsService,
   PaymentProviderService,
-  ProductVariantInventoryService,
   RegionService,
   ShippingOptionService,
   ShippingProfileService,
