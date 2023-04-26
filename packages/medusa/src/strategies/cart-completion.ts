@@ -266,7 +266,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           if (reservations) {
             return reservations.map(async (reservation) => {
               return await this.inventoryService_.deleteReservationItem(
-                reservation.id
+                reservation.id,
+                {
+                  transactionManager: this.activeManager_,
+                }
               )
             })
           }

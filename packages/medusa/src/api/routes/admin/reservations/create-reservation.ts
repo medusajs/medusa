@@ -2,6 +2,7 @@ import { IInventoryService } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/reservations
@@ -72,6 +73,7 @@ export default async (req, res) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
   if (isDefined(validatedBody.line_item_id)) {
     await validateUpdateReservationQuantity(
@@ -79,13 +81,17 @@ export default async (req, res) => {
       validatedBody.quantity,
       {
         lineItemService: req.scope.resolve("lineItemService"),
-        inventoryService: req.scope.resolve("inventoryService"),
+        inventoryService,
+        manager,
       }
     )
   }
 
   const reservation = await inventoryService.createReservationItem(
-    validatedBody
+    validatedBody,
+    {
+      transactionManager: manager,
+    }
   )
 
   res.status(200).json({ reservation })

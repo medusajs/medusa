@@ -84,7 +84,10 @@ export default async (req: Request, res: Response) => {
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,
-    req.retrieveConfig
+    req.retrieveConfig,
+    {
+      transactionManager: manager,
+    }
   )
 
   res.status(200).json({ inventory_item: inventoryItem })

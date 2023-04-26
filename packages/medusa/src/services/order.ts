@@ -1,4 +1,3 @@
-import { IInventoryService } from "@medusajs/types"
 import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
 import {
   EntityManager,
@@ -128,7 +127,6 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
-  protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
@@ -667,7 +665,7 @@ class OrderService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       const shippingMethods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
 
@@ -775,7 +773,7 @@ class OrderService extends TransactionBaseService {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
-            (method.tax_lines as any) = undefined
+            ;(method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
               order_id: order.id,
             })

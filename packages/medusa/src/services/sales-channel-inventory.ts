@@ -44,7 +44,10 @@ class SalesChannelInventoryService extends TransactionBaseService {
 
     return await this.inventoryService_.retrieveAvailableQuantity(
       inventoryItemId,
-      locationIds
+      locationIds,
+      {
+        transactionManager: this.activeManager_,
+      }
     )
   }
 }

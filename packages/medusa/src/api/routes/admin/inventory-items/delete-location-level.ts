@@ -62,9 +62,13 @@ export default async (req: Request, res: Response) => {
     req.scope.resolve("inventoryService")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const reservedQuantity = await inventoryService.retrieveReservedQuantity(id, [
-    location_id,
-  ])
+  const reservedQuantity = await inventoryService.retrieveReservedQuantity(
+    id,
+    [location_id],
+    {
+      transactionManager: manager,
+    }
+  )
 
   if (reservedQuantity > 0) {
     throw new MedusaError(
@@ -73,11 +77,16 @@ export default async (req: Request, res: Response) => {
     )
   }
 
-  await inventoryService.deleteInventoryLevel(id, location_id)
+  await inventoryService.deleteInventoryLevel(id, location_id, {
+    transactionManager: manager,
+  })
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,
-    req.retrieveConfig
+    req.retrieveConfig,
+    {
+      transactionManager: manager,
+    }
   )
 
   res.status(200).json({ inventory_item: inventoryItem })

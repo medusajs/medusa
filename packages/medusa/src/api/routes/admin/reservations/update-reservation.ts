@@ -86,6 +86,7 @@ export default async (req, res) => {
       {
         lineItemService,
         inventoryService,
+        manager,
       }
     )
   }

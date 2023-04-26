@@ -2,6 +2,7 @@ import { IInventoryService, IStockLocationService } from "@medusajs/types"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels
@@ -79,6 +80,8 @@ export default async (req: Request, res: Response) => {
   const stockLocationService: IStockLocationService | undefined =
     req.scope.resolve("stockLocationService")
 
+  const manager: EntityManager = req.scope.resolve("manager")
+
   const validatedBody =
     req.validatedBody as AdminPostInventoryItemsItemLocationLevelsReq
 
@@ -88,16 +91,24 @@ export default async (req: Request, res: Response) => {
     await stockLocationService.retrieve(location_id)
   }
 
-  await inventoryService.createInventoryLevel({
-    inventory_item_id: id,
-    location_id,
-    stocked_quantity: validatedBody.stocked_quantity,
-    incoming_quantity: validatedBody.incoming_quantity,
-  })
+  await inventoryService.createInventoryLevel(
+    {
+      inventory_item_id: id,
+      location_id,
+      stocked_quantity: validatedBody.stocked_quantity,
+      incoming_quantity: validatedBody.incoming_quantity,
+    },
+    {
+      transactionManager: manager,
+    }
+  )
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,
-    req.retrieveConfig
+    req.retrieveConfig,
+    {
+      transactionManager: manager,
+    }
   )
 
   res.status(200).json({ inventory_item: inventoryItem })

@@ -55,9 +55,12 @@ export default async (req, res) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
-  const [reservations, count] = await inventoryService.listReservationItems({
-    id,
-  })
+  const [reservations, count] = await inventoryService.listReservationItems(
+    {
+      id,
+    },
+    { take: 1 }
+  )
 
   if (!count) {
     throw new MedusaError(

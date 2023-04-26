@@ -771,7 +771,10 @@ export default class OrderEditService extends TransactionBaseService {
           lineItems.map(
             async (lineItem) =>
               await this.inventoryService_!.deleteReservationItemsByLineItem(
-                lineItem.id
+                lineItem.id,
+                {
+                  transactionManager: manager,
+                }
               )
           )
         )
