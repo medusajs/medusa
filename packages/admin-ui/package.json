@@ -80,8 +80,8 @@
     "vite": "^4.1.4"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.8.2",
-    "@medusajs/types": "1.8.2",
+    "@medusajs/medusa": "*",
+    "@medusajs/types": "*",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

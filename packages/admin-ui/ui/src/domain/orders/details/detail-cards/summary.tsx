@@ -3,23 +3,23 @@ import {
   Order,
   VariantInventory,
 } from "@medusajs/medusa"
-import { DisplayTotal, PaymentDetails } from "../templates"
 import React, { useContext, useMemo } from "react"
+import { DisplayTotal, PaymentDetails } from "../templates"
 
-import { ActionType } from "../../../../components/molecules/actionables"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
-import Badge from "../../../../components/fundamentals/badge"
-import BodyCard from "../../../../components/organisms/body-card"
-import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
-import { OrderEditContext } from "../../edit/context"
-import OrderLine from "../order-line"
-import { ReservationItemDTO } from "@medusajs/types"
 import { Response } from "@medusajs/medusa-js"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
+import { ReservationItemDTO } from "@medusajs/types"
 import { sum } from "lodash"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { useMedusa } from "medusa-react"
+import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
+import Badge from "../../../../components/fundamentals/badge"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
+import { ActionType } from "../../../../components/molecules/actionables"
+import BodyCard from "../../../../components/organisms/body-card"
 import useToggleState from "../../../../hooks/use-toggle-state"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { OrderEditContext } from "../../edit/context"
+import AllocateItemsModal from "../allocations/allocate-items-modal"
+import OrderLine from "../order-line"
 
 type SummaryCardProps = {
   order: Order
@@ -166,7 +166,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
 
   return (
     <BodyCard
-      className={"mb-4 h-auto min-h-0 w-full"}
+      className={"h-auto min-h-0 w-full"}
       title="Summary"
       status={
         isFeatureEnabled("inventoryService") &&

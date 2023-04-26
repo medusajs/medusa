@@ -1,21 +1,13 @@
+import fse from "fs-extra"
 import path from "path"
-import { LoadedExtension } from "../../types/extensions"
-import { listDirectories } from "./list-directories"
-
 export const getLocalExtensions = async () => {
-  const root = path.resolve(process.cwd(), "dist", "extensions")
+  const entry = path.resolve(process.cwd(), "dist", "admin", "index.js")
 
-  const extensionNames = await listDirectories(root)
+  const hasLocalEntry = await fse.pathExists(entry)
 
-  const extensions: LoadedExtension[] = []
-
-  for (const extensionName of extensionNames) {
-    extensions.push({
-      name: `extension`,
-      path: path.resolve(root, extensionName),
-      entrypoint: "index.js",
-    })
+  if (!hasLocalEntry) {
+    return null
   }
 
-  return extensions
+  return entry
 }

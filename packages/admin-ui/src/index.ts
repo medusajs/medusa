@@ -14,10 +14,10 @@ async function build(options?: AdminBuildConfig) {
   const uiPath = resolve(__dirname, "..", "ui")
   const tmpExtensionsPath = resolve(uiPath, "src", "extensions.ts")
 
-  const extensions = await getLocalExtensions()
+  const localExtensions = await getLocalExtensions()
 
   const extensionsEntrypoint = await generateExtensionsEntrypoint(
-    extensions,
+    localExtensions,
     tmpExtensionsPath
   )
 

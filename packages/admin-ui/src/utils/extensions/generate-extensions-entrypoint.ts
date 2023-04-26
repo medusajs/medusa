@@ -1,27 +1,21 @@
-import { LoadedExtension } from "../../types/extensions"
-
 import path from "path"
 
 export async function generateExtensionsEntrypoint(
-  extensions: LoadedExtension[],
+  extensions: string,
   dest: string
 ) {
-  const imports = extensions
-    .map((extension, i) => {
-      const relativePath = path.relative(path.dirname(dest), extension.path)
+  try {
+    if (!extensions) {
+      throw new Error("No extensions found")
+    }
 
-      return `import ${extension.name}${i} from './${relativePath}';`
-    })
-    .join("\n")
+    const relativePath = path.relative(path.dirname(dest), extensions)
 
-  const exports = `const plugins = {${extensions
-    .map((extension, i) => {
-      return `Component${i}: ${extension.name}${i},`
-    })
-    .join("\n")}
-    }`
+    const imports = `import extension from "${relativePath}"`
 
-  const content = `
+    const exports = `export const plugins = [extension]`
+
+    const content = `
     ${imports}
 
     ${exports}
@@ -29,5 +23,9 @@ export async function generateExtensionsEntrypoint(
     export default plugins
   `
 
-  return content
+    return content
+  } catch (e) {
+    console.log("Failed to generate extensions entrypoint")
+    throw new Error(e)
+  }
 }

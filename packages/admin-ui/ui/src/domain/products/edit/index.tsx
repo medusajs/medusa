@@ -1,24 +1,24 @@
 import { useAdminProduct } from "medusa-react"
-import React from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
+import WidgetContainer from "../../../components/molecules/widget-container"
 import ProductAttributesSection from "../../../components/organisms/product-attributes-section"
 import ProductGeneralSection from "../../../components/organisms/product-general-section"
 import ProductMediaSection from "../../../components/organisms/product-media-section"
 import ProductRawSection from "../../../components/organisms/product-raw-section"
 import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
 import ProductVariantsSection from "../../../components/organisms/product-variants-section"
-import { useInjectionContext } from "../../../providers/injection-provider"
+import { useInjectionZones } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 
 const Edit = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { product, status, error } = useAdminProduct(id || "")
+  const { getWidgets } = useInjectionZones()
 
-  const { getComponents } = useInjectionContext()
+  const { product, status, error } = useAdminProduct(id || "")
 
   if (error) {
     const errorStatus = getErrorStatus(error)
@@ -56,18 +56,17 @@ const Edit = () => {
           <ProductGeneralSection product={product} />
           <ProductVariantsSection product={product} />
           <ProductAttributesSection product={product} />
+          {getWidgets("product.details").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                injectionZone={"product.details"}
+                widget={w}
+                entity={product}
+              />
+            )
+          })}
           <ProductRawSection product={product} />
-          <div>
-            {getComponents("product", "details").map(({ name, Component }) => {
-              return (
-                <div key={name} className="mt-large">
-                  {React.createElement(Component, {
-                    product,
-                  })}
-                </div>
-              )
-            })}
-          </div>
         </div>
         <div className="gap-y-xsmall col-span-4 flex flex-col">
           <ProductThumbnailSection product={product} />

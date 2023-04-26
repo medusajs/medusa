@@ -44,6 +44,7 @@ import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import { ActionType } from "../../../components/molecules/actionables"
 import JSONView from "../../../components/molecules/json-view"
+import WidgetContainer from "../../../components/molecules/widget-container"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
 import Timeline from "../../../components/organisms/timeline"
@@ -54,7 +55,7 @@ import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { useInjectionContext } from "../../../providers/injection-provider"
+import { useInjectionZones } from "../../../providers/injection-zone-provider"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
@@ -197,7 +198,7 @@ const OrderDetails = () => {
   useHotkeys("esc", () => navigate("/a/orders"))
   useHotkeys("command+i", handleCopy)
 
-  const { getComponents } = useInjectionContext()
+  const { getWidgets } = useInjectionZones()
 
   const handleDeleteOrder = async () => {
     const shouldDelete = await dialog({
@@ -300,9 +301,9 @@ const OrderDetails = () => {
         ) : (
           <>
             <div className="flex space-x-4">
-              <div className="flex h-full w-7/12 flex-col">
+              <div className="gap-y-base flex h-full w-7/12 flex-col">
                 <BodyCard
-                  className={"mb-4 min-h-[200px] w-full"}
+                  className={"min-h-[200px] w-full"}
                   customHeader={
                     <Tooltip side="top" content={"Copy ID"}>
                       <button
@@ -362,7 +363,7 @@ const OrderDetails = () => {
                 <SummaryCard order={order} reservations={reservations || []} />
 
                 <BodyCard
-                  className={"mb-4 h-auto min-h-0 w-full"}
+                  className={"h-auto min-h-0 w-full"}
                   title="Payment"
                   status={
                     <PaymentStatusComponent status={order.payment_status} />
@@ -431,7 +432,7 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
                 <BodyCard
-                  className={"mb-4 h-auto min-h-0 w-full"}
+                  className={"h-auto min-h-0 w-full"}
                   title="Fulfillment"
                   status={
                     <FulfillmentStatusComponent
@@ -478,7 +479,7 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
                 <BodyCard
-                  className={"mb-4 h-auto min-h-0 w-full"}
+                  className={"h-auto min-h-0 w-full"}
                   title="Customer"
                   actionables={customerActionables}
                 >
@@ -528,22 +529,19 @@ const OrderDetails = () => {
                     </div>
                   </div>
                 </BodyCard>
-                <div className="mt-large">
-                  <RawJSON data={order} title="Raw order" />
-                </div>
                 <div>
-                  {getComponents("order", "details").map(
-                    ({ name, Component }) => {
-                      return (
-                        <div key={name} className="mt-large">
-                          {React.createElement(Component, {
-                            order,
-                          })}
-                        </div>
-                      )
-                    }
-                  )}
+                  {getWidgets("order.details").map((widget, i) => {
+                    return (
+                      <WidgetContainer
+                        key={i}
+                        injectionZone={"order.details"}
+                        widget={widget}
+                        entity={order}
+                      />
+                    )
+                  })}
                 </div>
+                <RawJSON data={order} title="Raw order" />
               </div>
               <Timeline orderId={order.id} />
             </div>

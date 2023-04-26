@@ -1,0 +1,26 @@
+{
+  "name": "@medusajs/admin-sdk",
+  "description": "SDK for building admin extensions for Medusa",
+  "bin": {
+    "extension": "./bin/index.js"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-terser": "^0.4.1",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "fs-extra": "^11.1.1",
+    "rollup": "^3.20.7",
+    "tslib": "^2.5.0"
+  },
+  "packageManager": "yarn@3.2.1",
+  "devDependencies": {
+    "@medusajs/types": "*",
+    "@types/fs-extra": "^11.0.1",
+    "typescript": "^5.0.4"
+  }
+}
