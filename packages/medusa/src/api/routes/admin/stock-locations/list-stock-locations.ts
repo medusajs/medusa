@@ -8,6 +8,7 @@ import {
 import { extendedFindParamsMixin } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { joinSalesChannels } from "./utils/join-sales-channels"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [get] /admin/stock-locations
@@ -144,6 +145,8 @@ export default async (req: Request, res: Response) => {
     "salesChannelService"
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
+
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
@@ -172,7 +175,8 @@ export default async (req: Request, res: Response) => {
 
   let [locations, count] = await stockLocationService.listAndCount(
     filterableFields,
-    listConfig
+    listConfig,
+    { transactionManager: manager }
   )
 
   if (includeSalesChannels) {

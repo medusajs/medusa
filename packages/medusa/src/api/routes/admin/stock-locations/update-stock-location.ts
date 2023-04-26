@@ -3,6 +3,7 @@ import { Type } from "class-transformer"
 import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/stock-locations/{id}
@@ -75,12 +76,17 @@ export default async (req: Request, res: Response) => {
     "stockLocationService"
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
+
   await locationService.update(
     id,
-    req.validatedBody as AdminPostStockLocationsLocationReq
+    req.validatedBody as AdminPostStockLocationsLocationReq,
+    { transactionManager: manager }
   )
 
-  const stockLocation = await locationService.retrieve(id, req.retrieveConfig)
+  const stockLocation = await locationService.retrieve(id, req.retrieveConfig, {
+    transactionManager: manager,
+  })
 
   res.status(200).json({ stock_location: stockLocation })
 }

@@ -5,7 +5,6 @@ import { TransactionBaseService } from "../interfaces"
 import { SalesChannelLocation } from "../models/sales-channel-location"
 import SalesChannelService from "./sales-channel"
 
-
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
   salesChannelService: SalesChannelService
@@ -80,7 +79,13 @@ class SalesChannelLocationService extends TransactionBaseService {
 
     if (this.stockLocationService_) {
       // trhows error if not found
-      await this.stockLocationService_.retrieve(locationId)
+      await this.stockLocationService_.retrieve(
+        locationId,
+        {},
+        {
+          transactionManager: this.activeManager_,
+        }
+      )
     }
 
     const salesChannelLocation = this.activeManager_.create(
@@ -130,7 +135,13 @@ class SalesChannelLocationService extends TransactionBaseService {
    */
   async listSalesChannelIds(locationId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
-    const location = await this.stockLocationService_.retrieve(locationId)
+    const location = await this.stockLocationService_.retrieve(
+      locationId,
+      {},
+      {
+        transactionManager: this.activeManager_,
+      }
+    )
 
     const salesChannelLocations = await manager.find(SalesChannelLocation, {
       where: { location_id: location.id },

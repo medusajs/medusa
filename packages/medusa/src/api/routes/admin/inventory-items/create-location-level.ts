@@ -88,7 +88,11 @@ export default async (req: Request, res: Response) => {
   const location_id = validatedBody.location_id
   if (stockLocationService) {
     // will throw an error if not found
-    await stockLocationService.retrieve(location_id)
+    await stockLocationService.retrieve(
+      location_id,
+      {},
+      { transactionManager: manager }
+    )
   }
 
   await inventoryService.createInventoryLevel(

@@ -6,6 +6,7 @@ import {
 } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { joinSalesChannels } from "./utils/join-sales-channels"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [get] /admin/stock-locations/{id}
@@ -62,6 +63,8 @@ export default async (req: Request, res: Response) => {
     "salesChannelService"
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
+
   const { retrieveConfig } = req
 
   const includeSalesChannels =
@@ -73,7 +76,9 @@ export default async (req: Request, res: Response) => {
     )
   }
 
-  let stockLocation = await locationService.retrieve(id, retrieveConfig)
+  let stockLocation = await locationService.retrieve(id, retrieveConfig, {
+    transactionManager: manager,
+  })
 
   if (includeSalesChannels) {
     const [location] = await joinSalesChannels(

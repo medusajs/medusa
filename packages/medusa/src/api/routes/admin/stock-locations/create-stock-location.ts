@@ -10,6 +10,7 @@ import { Transform, Type } from "class-transformer"
 
 import { FindParams } from "../../../../types/common"
 import { IStockLocationService } from "@medusajs/types"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/stock-locations
@@ -78,14 +79,17 @@ export default async (req: Request, res: Response) => {
   const locationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const createdStockLocation = await locationService.create(
-    req.validatedBody as AdminPostStockLocationsReq
+    req.validatedBody as AdminPostStockLocationsReq,
+    { transactionManager: manager }
   )
 
   const stockLocation = await locationService.retrieve(
     createdStockLocation.id,
-    req.retrieveConfig
+    req.retrieveConfig,
+    { transactionManager: manager }
   )
 
   res.status(200).json({ stock_location: stockLocation })
