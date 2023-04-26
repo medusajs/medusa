@@ -48,7 +48,8 @@ export interface IInventoryLocationStrategy extends TransactionBaseService {
 
   setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
-    salesChannelId: string | string[] | undefined
+    salesChannelId: string | string[] | undefined,
+    variantInventoryMap?: Map<string, ProductVariantInventoryItem[]>
   ): Promise<ProductVariant[] | PricedVariant[]>
 
   setProductAvailability(
@@ -142,7 +143,8 @@ export abstract class AbstractInventoryLocationStrategy
 
   abstract setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
-    salesChannelId: string | string[] | undefined
+    salesChannelId: string | string[] | undefined,
+    variantInventoryMap?: Map<string, ProductVariantInventoryItem[]>
   ): Promise<ProductVariant[] | PricedVariant[]>
 
   abstract setProductAvailability(

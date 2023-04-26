@@ -57,6 +57,7 @@ describe("/store/carts", () => {
     let invItemId
     let variantId
     let prodVarInventoryService
+    let inventoryLocationStrategy
     let inventoryService
     let lineItemService
     let stockLocationService
@@ -71,6 +72,9 @@ describe("/store/carts", () => {
         "productVariantInventoryService"
       )
       lineItemService = appContainer.resolve("lineItemService")
+      inventoryLocationStrategy = appContainer.resolve(
+        "inventoryLocationStrategy"
+      )
       inventoryService = appContainer.resolve("inventoryService")
       stockLocationService = appContainer.resolve("stockLocationService")
       salesChannelLocationService = appContainer.resolve(
@@ -488,7 +492,7 @@ describe("/store/carts", () => {
       it("Adjusts reservation on successful fulfillment with reservation", async () => {
         const api = useApi()
 
-        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 1, {
           locationId: locationId,
           lineItemId: order.items[0].id,
         })
@@ -549,12 +553,12 @@ describe("/store/carts", () => {
           { stocked_quantity: 2 }
         )
 
-        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 1, {
           locationId: locationId,
           lineItemId: order.items[0].id,
         })
 
-        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 1, {
           locationId: locationId,
           lineItemId: order.items[0].id,
         })
@@ -611,7 +615,7 @@ describe("/store/carts", () => {
           stocked_quantity: 2,
         })
 
-        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 1, {
           locationId: locationId,
           lineItemId: order.items[0].id,
         })
@@ -670,7 +674,7 @@ describe("/store/carts", () => {
           { stocked_quantity: 3 }
         )
 
-        await prodVarInventoryService.reserveQuantity(variantId, 3, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 3, {
           locationId: locationId,
           lineItemId: order.items[0].id,
         })
@@ -744,12 +748,12 @@ describe("/store/carts", () => {
           { stocked_quantity: 3 }
         )
 
-        await prodVarInventoryService.reserveQuantity(variantId, 1, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 1, {
           locationId: locationId,
           lineItemId: order.items[0].id,
         })
 
-        await prodVarInventoryService.reserveQuantity(variantId, 2, {
+        await inventoryLocationStrategy.reserveQuantity(variantId, 2, {
           locationId: sl.id,
           lineItemId: order.items[0].id,
         })

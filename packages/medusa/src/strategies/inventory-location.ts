@@ -428,10 +428,25 @@ class InventoryLocationStrategy extends AbstractInventoryLocationStrategy {
   }
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
-    salesChannelId: string | string[] | undefined
+    salesChannelId: string | string[] | undefined,
+    variantInventoryMap: Map<string, ProductVariantInventoryItem[]> = new Map()
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
+    }
+
+    if (!variantInventoryMap.size) {
+      const variantInventories =
+        await this.productVariantInventoryService_.listByVariant(
+          variants.map((v) => v.id)
+        )
+
+      variantInventories.forEach((inventory) => {
+        const variantId = inventory.variant_id
+        const currentInventories = variantInventoryMap.get(variantId) || []
+        currentInventories.push(inventory)
+        variantInventoryMap.set(variantId, currentInventories)
+      })
     }
 
     return await Promise.all(
@@ -440,17 +455,24 @@ class InventoryLocationStrategy extends AbstractInventoryLocationStrategy {
           return variant
         }
 
-        if (!salesChannelId) {
-          delete variant.inventory_quantity
+        variant.purchasable = variant.allow_backorder
+
+        if (!variant.manage_inventory) {
+          variant.purchasable = true
           return variant
         }
 
-        // first get all inventory items required for a variant
-        const variantInventory =
-          await this.productVariantInventoryService_.listByVariant(variant.id)
+        const variantInventory = variantInventoryMap.get(variant.id) || []
 
         if (!variantInventory.length) {
-          variant.inventory_quantity = 0
+          delete variant.inventory_quantity
+          variant.purchasable = true
+          return variant
+        }
+
+        if (!salesChannelId) {
+          delete variant.inventory_quantity
+          variant.purchasable = false
           return variant
         }
 
@@ -465,14 +487,18 @@ class InventoryLocationStrategy extends AbstractInventoryLocationStrategy {
         })
 
         variant.inventory_quantity = locations.reduce(
-          (acc, next) => acc + (next.stocked_quantity || 0),
+          (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
           0
         )
+
+        variant.purchasable =
+          variant.inventory_quantity > 0 || variant.allow_backorder
 
         return variant
       })
     )
   }
+
   async setProductAvailability(
     products: (Product | PricedProduct)[],
     salesChannelId: string | string[] | undefined
