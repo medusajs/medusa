@@ -2,7 +2,7 @@ import { BeforeInsert, Column, OneToMany } from "typeorm"
 
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
 
 @FeatureFlagEntity("sales_channels")
@@ -15,6 +15,9 @@ export class SalesChannel extends SoftDeletableEntity {
 
   @Column({ default: false })
   is_disabled: boolean
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
 
   @OneToMany(
     () => SalesChannelLocation,

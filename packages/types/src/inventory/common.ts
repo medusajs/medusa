@@ -217,6 +217,7 @@ export type CreateReservationItemInput = {
   location_id: string
   quantity: number
   metadata?: Record<string, unknown> | null
+  external_id?: string
 }
 
 export type FilterableInventoryLevelProps = {

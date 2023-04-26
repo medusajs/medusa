@@ -1,7 +1,7 @@
 ---
-"@medusajs/event-bus-local": patch
+"@medusajs/event-bus-local": minor
 "@medusajs/inventory": patch
-"@medusajs/medusa": patch
+"@medusajs/medusa": minor
 "@medusajs/stock-location": patch
 "@medusajs/types": patch
 "@medusajs/utils": patch
