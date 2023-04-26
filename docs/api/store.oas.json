@@ -6489,7 +6489,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -6932,7 +6932,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           }
@@ -8042,7 +8042,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -8260,7 +8260,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -8535,7 +8535,7 @@
             "description": "The unique randomly generated key used to determine the state of a process.",
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -9881,7 +9881,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -10360,7 +10360,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -10604,7 +10604,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -11773,6 +11773,10 @@
             "example": {
               "car": "white"
             }
+          },
+          "purchasable": {
+            "description": "Only used with the inventory modules.\nA boolean value indicating whether the Product Variant is purchasable.\nA variant is purchasable if:\n  - inventory is not managed\n  - it has no inventory items\n  - it is in stock\n  - it is backorderable.\n",
+            "type": "boolean"
           }
         }
       },
@@ -11977,7 +11981,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -12296,7 +12300,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -14753,6 +14757,9 @@
             "variants",
             "variants.options",
             "variants.prices"
+          ],
+          "totals": [
+            "variants.purchasable"
           ]
         },
         "required": [
@@ -14796,6 +14803,9 @@
             "variants",
             "variants.options",
             "variants.prices"
+          ],
+          "totals": [
+            "variants.purchasable"
           ]
         },
         "required": [
@@ -14973,6 +14983,9 @@
             "prices",
             "options",
             "product"
+          ],
+          "totals": [
+            "purchasable"
           ]
         },
         "required": [
@@ -14995,6 +15008,9 @@
             "prices",
             "options",
             "product"
+          ],
+          "totals": [
+            "purchasable"
           ]
         },
         "required": [
@@ -15160,7 +15176,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -15416,7 +15432,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key",
+              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
               "description": "Learn more how to use the idempotency key."
             }
           },
