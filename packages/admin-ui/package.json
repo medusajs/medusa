@@ -2,7 +2,7 @@
   "name": "@medusajs/admin-ui",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa.git",
@@ -49,7 +49,7 @@
     "copy-to-clipboard": "^3.3.1",
     "emoji-picker-react": "^4.4.3",
     "framer-motion": "^9.1.6",
-    "medusa-react": "5.0.2",
+    "medusa-react": "6.0.0",
     "moment": "^2.29.4",
     "pluralize": "^8.0.0",
     "postcss": "^8.4.21",
@@ -79,8 +79,8 @@
     "vite": "^4.1.4"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.8.2",
-    "@medusajs/types": "1.8.2",
+    "@medusajs/medusa": "1.9.0",
+    "@medusajs/types": "1.8.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
