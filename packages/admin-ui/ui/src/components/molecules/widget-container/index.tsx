@@ -8,6 +8,7 @@ import {
   ProductCollection,
 } from "@medusajs/medusa"
 import { InjectionZone, LoadedWidget } from "@medusajs/types"
+import React from "react"
 import ExtensionErrorBoundary from "../extension-error-boundary"
 
 type EntityMap = {
@@ -20,10 +21,22 @@ type EntityMap = {
   "price_list.details": PriceList
 }
 
+type PropKeyMap = {
+  "product.details": "product"
+  "product_category.details": "productCategory"
+  "product_collection.details": "productCollection"
+  "order.details": "order"
+  "customer.details": "customer"
+  "customer_group.details": "customerGroup"
+  "price_list.details": "priceList"
+}
+
 type WidgetContainerProps<T extends keyof EntityMap> = {
   injectionZone: T
   widget: LoadedWidget
   entity: EntityMap[T]
+} & {
+  [K in PropKeyMap[T]]?: EntityMap[T]
 }
 
 const WidgetContainer = <T extends InjectionZone>({
@@ -33,6 +46,11 @@ const WidgetContainer = <T extends InjectionZone>({
 }: WidgetContainerProps<T>) => {
   const { name, origin, Component } = widget
 
+  const propKey = injectionZone.split(".")[0] as keyof PropKeyMap
+  const props = {
+    [propKey]: entity,
+  }
+
   return (
     <ExtensionErrorBoundary
       info={{
@@ -40,7 +58,7 @@ const WidgetContainer = <T extends InjectionZone>({
         origin,
       }}
     >
-      <Component />
+      {React.createElement(Component, props)}
     </ExtensionErrorBoundary>
   )
 }
