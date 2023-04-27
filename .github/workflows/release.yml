@@ -40,9 +40,11 @@ jobs:
           medusa-dev --set-path-to-repo `pwd`
           mkdir -p output_medusa
           cd output_medusa
-          echo "Cleaning Output Directory"
+          echo "-----------Cleaning Output Directory------------"
           rm -rf ./*
           cp ../sample_package.json package.json
+          echo "-----------Setup Yarn Version------------"
+          yarn set version 1.22.19
           medusa-dev
           cd ..
 
