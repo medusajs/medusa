@@ -453,7 +453,7 @@ The request returns the order as an object. In that object, you can access an ar
 
 ## View a Swap’s Return
 
-You can retrieve a swap either using the Get Order endpoint as explained here, or using the [List Swaps](/api/admin#tag/Swaps/operation/GetSwaps) or [Get Swap endpoint](/api/admin#tag/Swaps/operation/GetSwapsSwap).
+You can retrieve a swap either using the Get Order endpoint as explained [here](./manage-swaps.mdx#view-orders-swaps), or using the [List Swaps](/api/admin#tag/Swaps/operation/GetSwaps) or [Get Swap endpoint](/api/admin#tag/Swaps/operation/GetSwapsSwap).
 
 In a swap object, the swap’s return is available under the `return_order` property.
 
@@ -461,7 +461,7 @@ In a swap object, the swap’s return is available under the `return_order` prop
 
 ## View a Claim’s Return
 
-You can retrieve a claim using the Get Order endpoint and accessing the `claims` property of the order object, which is an array of claim objects. In a claim object, the claim’s return is available under the `return_order` property.
+You can retrieve a claim using the Get Order endpoint as explained [here](./manage-claims#view-orders-claims). In a claim object, the claim’s return is available under the `return_order` property.
 
 ---
 
@@ -639,13 +639,14 @@ This endpoint requires the return ID to be passed as a path parameter.
 
 The request returns one of the following object types:
 
-- If a return belongs to a swap, a swap object is returned.
-- If a return belongs to a claim, a claim object is returned.
-- Otherwise, an order object is returned.
+- If a return belongs to a swap, a swap object is returned. You can access the returns in the `return_order` property of the swap object.
+- If a return belongs to a claim, a claim object is returned. You can access the returns in the `return_order` property of the claim object.
+- Otherwise, an order object is returned. You can access the returns in the `returns` property of the order object.
 
 ---
 
 ## See Also
 
 - [How to manage orders using the REST APIs](./manage-orders.mdx)
-- [How to manage swaps using the REST APIs](./manage-returns.mdx)
+- [How to manage swaps using the REST APIs](./manage-swaps.mdx)
+- [How to manage claims using the REST APIs](./manage-claims.mdx)

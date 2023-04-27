@@ -784,25 +784,14 @@ module.exports = {
           label: "Admin: Manage Returns",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-claims",
           label: "Admin: Manage Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
           href: "#",
           label: "Admin: Manage Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Return Reasons",
           customProps: {
             sidebar_is_soon: true,
           },
