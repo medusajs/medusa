@@ -149,5 +149,6 @@ You can access the claim’s fulfillment by expanding the `fulfillments` relatio
 
 ## See Also
 
+- [How to manage claims using REST APIs](./admin/manage-claims.mdx)
 - [Orders architecture overview](./orders.md)
 - [Returns architecture overview](./claims.md)
