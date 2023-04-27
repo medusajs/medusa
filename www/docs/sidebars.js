@@ -774,12 +774,9 @@ module.exports = {
           label: "Admin: Edit an Order",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-swaps",
           label: "Admin: Manage Swaps",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
