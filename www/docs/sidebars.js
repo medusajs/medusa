@@ -799,14 +799,6 @@ module.exports = {
         {
           type: "link",
           href: "#",
-          label: "Admin: Manage Return Reasons",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
           label: "Storefront: Manage Customer Orders",
           customProps: {
             sidebar_is_soon: true,
