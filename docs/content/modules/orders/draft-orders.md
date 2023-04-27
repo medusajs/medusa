@@ -70,4 +70,5 @@ You can access the ID of the order using the `order_id` attribute. You can also 
 
 ## See Also
 
+- [How to manage draft orders using REST APIs](./admin/manage-draft-orders.mdx)
 - [Order Architecture Overview](./orders.md)
