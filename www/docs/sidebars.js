@@ -742,8 +742,8 @@ module.exports = {
           label: "Draft Orders",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/fulfillments",
           label: "Fulfillment",
           customProps: {
             sidebar_is_soon: true,

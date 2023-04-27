@@ -68,7 +68,7 @@ The Medusa backend also provides payment admin APIs that you can use to retrieve
 
 ## Fulfillments in Orders
 
-After an order is placed, you can create fulfillments for the items in the order. You can fulfill all items or some items. A fulfillment is represented by the `Fulfillment` entity, and it’s associated with the order through the `order_id` attribute of the fulfillment.
+After an order is placed, you can create [fulfillments](./fulfillments.md) for the items in the order. You can fulfill all items or some items. A fulfillment is represented by the `Fulfillment` entity, and it’s associated with the order through the `order_id` attribute of the fulfillment.
 
 Creating fulfillments changes the `fulfillment_status` of the order. If all items were fulfilled, the status changes to `fulfilled`. If only some items are fulfilled, the status changes to `partially_fulfilled`.
 
