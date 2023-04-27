@@ -4,6 +4,7 @@ FROM ubuntu:latest
 ARG USERNAME
 ARG PAT
 
+SHELL ["/bin/bash", "-c"]
 # Install git
 RUN apt-get update && \
     apt-get install -y git gcc g++ make gnupg2 curl
