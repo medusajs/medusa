@@ -4,13 +4,13 @@ FROM ubuntu:latest
 ARG USERNAME
 ARG PAT
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
-
 # Install git
 RUN apt-get update && \
-    apt-get install -y git nodejs npm gcc g++ make gnupg2
+    apt-get install -y git gcc g++ make gnupg2 curl
 
 # Install nvm and enable
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash && \
     source ~/.bashrc
 
