@@ -36,10 +36,12 @@ jobs:
 
       - name: Extract packages
         run: |
-          yarn global add medusa-dev-cli
+          yarn add medusa-dev-cli --global
           medusa-dev --set-path-to-repo `pwd`
-          mkdir output_medusa
+          mkdir -p output_medusa
           cd output_medusa
+          echo "Cleaning Output Directory"
+          rm -rf ./*
           medusa-dev
           cd ..
 
