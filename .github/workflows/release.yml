@@ -15,41 +15,55 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      # - name: Setup Node.js 16
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16
         
-      - name: Creating .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Creating .npmrc
+      #   run: |
+      #     cat << EOF > "$HOME/.npmrc"
+      #       //registry.npmjs.org/:_authToken=$NPM_TOKEN
+      #     EOF
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Install Dependencies
-        run: yarn
+      # - name: Install Dependencies
+      #   run: yarn
 
-      - name: Build packages
-        run: yarn build
+      # - name: Build packages
+      #   run: yarn build
 
-      - name: Extract packages
-        run: |
-          npm i medusa-dev-cli -g
-          medusa-dev --set-path-to-repo `pwd`
-          mkdir -p output_medusa
-          cd output_medusa
-          echo "-----------Cleaning Output Directory------------"
-          rm -rf ./*
-          cp ../sample_package.json package.json
-          echo "-----------Setup Yarn Version------------"
-          yarn set version 1.22.19
-          timeout 10m medusa-dev || exit 0
-          cd ..
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+      # - name: Extract packages
+      #   run: |
+      #     npm i medusa-dev-cli -g
+      #     medusa-dev --set-path-to-repo `pwd`
+      #     mkdir -p output_medusa
+      #     cd output_medusa
+      #     echo "-----------Cleaning Output Directory------------"
+      #     rm -rf ./*
+      #     cp ../sample_package.json package.json
+      #     echo "-----------Setup Yarn Version------------"
+      #     yarn set version 1.22.19
+      #     timeout 10m medusa-dev || exit 0
+      #     cd ..
+            
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
         with:
-          name: medusa-artifact
-          path: output_medusa/
+          registry: https://index.docker.io/v1/
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+      
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            yakshup/medusa_1.9_custom:latest
+            yakshup/medusa_1.9_custom:${{ github.sha }}
+          args:
+            USERNAME: ${{ secrets.GIT_USERNAME }}
+            PAT: ${{ secrets.GIT_PAT }}
