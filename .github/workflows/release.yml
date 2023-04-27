@@ -34,8 +34,17 @@ jobs:
       - name: Build packages
         run: yarn build
 
+      - name: Extract packages
+        run: |
+          yarn global add medusa-dev-cli
+          medusa-dev --set-path-to-repo `pwd`
+          mkdir output_medusa
+          cd output_medusa
+          medusa-dev
+          cd ..
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: medusa-artifact
-          path: .
+          path: output_medusa/
