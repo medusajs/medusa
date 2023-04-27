@@ -34,13 +34,8 @@ jobs:
       - name: Build packages
         run: yarn build
 
-      - name: Create Release Pull Request
-        uses: changesets/action@v1
-        with: 
-          version: yarn version
-          publish: yarn release
-          commit: "chore: Release"
-          title: "chore: Release"
-          createGithubReleases: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: medusa-artifact
+          path: .
