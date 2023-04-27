@@ -133,6 +133,7 @@ You can access the shipping method by expanding the `shipping_method` relation a
 
 ## See Also
 
+- [How to manage returns](./admin/manage-returns.mdx)
 - [Orders architecture overview](./orders.md)
 - [Swaps architecture overview](./swaps.md)
 - [Claims architecture overview](./claims.md)
