@@ -45,7 +45,7 @@ jobs:
           cp ../sample_package.json package.json
           echo "-----------Setup Yarn Version------------"
           yarn set version 1.22.19
-          timeout --preserve-status 10m medusa-dev
+          timeout 10m medusa-dev || exit 0
           cd ..
 
       - name: Upload artifact
