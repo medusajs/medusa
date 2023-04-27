@@ -1,7 +1,8 @@
+import dedent from "dedent"
 import path from "path"
 
 export async function generateExtensionsEntrypoint(
-  extensions: string,
+  extensions: string[] | null,
   dest: string
 ) {
   try {
@@ -9,18 +10,29 @@ export async function generateExtensionsEntrypoint(
       throw new Error("No extensions found")
     }
 
-    const relativePath = path.relative(path.dirname(dest), extensions)
+    const relativePaths = extensions.map((e) => {
+      return path.relative(path.dirname(dest), e)
+    })
 
-    const imports = `import extension from "${relativePath}"`
+    const imports = relativePaths
+      .map((p, i) => {
+        return `import ext${i} from "${p}"`
+      })
+      .join("\n")
 
-    const exports = `export const plugins = [extension]`
+    const exports = `export const extensions = [${relativePaths
+      .map((_, i) => {
+        return `ext${i}`
+      })
+      .join(", ")}]`
 
-    const content = `
+    const content = dedent`
     ${imports}
 
     ${exports}
 
-    export default plugins
+    export default extensions
+    
   `
 
     return content

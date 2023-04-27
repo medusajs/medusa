@@ -5997,10 +5997,8 @@ __metadata:
     "@rollup/plugin-node-resolve": ^15.0.2
     "@rollup/plugin-terser": ^0.4.1
     "@rollup/plugin-typescript": ^11.1.0
-    "@tanstack/react-query": ^4.29.5
     "@types/fs-extra": ^11.0.1
     fs-extra: ^11.1.1
-    medusa-react: "workspace:^"
     rollup: ^3.20.7
     tslib: ^2.5.0
     typescript: ^5.0.4
@@ -6071,6 +6069,7 @@ __metadata:
     react-table: ^7.7.0
     tailwindcss: 3.2.2
     tailwindcss-radix: ^2.7.0
+    ts-dedent: ^2.2.0
     type-fest: ^3.6.0
     typescript: ^4.9.3
     vite: ^4.1.4
@@ -11054,13 +11053,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.29.5":
-  version: 4.29.5
-  resolution: "@tanstack/query-core@npm:4.29.5"
-  checksum: 16291bd417f3adfcf3506ba6ba5d7e11b08b38c721fcc3893c9cc0557c66425f6023d2815e8b4803a089a2c2f027d42ab3474da1ce79f69d45738e1769b565fd
-  languageName: node
-  linkType: hard
-
 "@tanstack/react-query@npm:4.22.0, @tanstack/react-query@npm:^4.22.0":
   version: 4.22.0
   resolution: "@tanstack/react-query@npm:4.22.0"
@@ -11077,25 +11069,6 @@ __metadata:
     react-native:
       optional: true
   checksum: aacb071935c20ec695adfce7594649b6a7683640b82b232727f1b000bb871b6e99bb98bf47b9617eb76829d6b5822a6c98d3cefb1ede90a69cc52c2c79488d14
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:^4.29.5":
-  version: 4.29.5
-  resolution: "@tanstack/react-query@npm:4.29.5"
-  dependencies:
-    "@tanstack/query-core": 4.29.5
-    use-sync-external-store: ^1.2.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-native: "*"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: b6f08d352cd021fbe8fd600849cd761b36b2a5a38eb2d75dd146894c94b12ca165b25254607aac29a9eae1c9e33280005cbe850c25ea9107eb567661b518428a
   languageName: node
   linkType: hard
 
@@ -30213,7 +30186,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@5.0.2, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
+"medusa-react@5.0.2, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
