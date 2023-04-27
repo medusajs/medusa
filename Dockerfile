@@ -4,20 +4,24 @@ FROM ubuntu:latest
 ARG USERNAME
 ARG PAT
 
-SHELL ["/bin/bash", "-c"]
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # Install git
 RUN apt-get update && \
-    apt-get install -y git gcc g++ make gnupg2 curl
+    apt-get install -y git gcc g++ make gnupg2 curl && \
+    apt-get -y autoclean
 
 # Install nvm and enable
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION 16.14.2
+# https://github.com/creationix/nvm#install-script
+RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-RUN source ~/.bashrc
-SHELL ["/bin/bash", "-c"]
-# Install node16 with nvm
-RUN ["/bin/bash", "-c", "nvm install v16 && nvm use 16.14.2"]
-SHELL ["/bin/bash", "-c"]
+# install node and npm
+RUN source $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
 # Install Yarn
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
