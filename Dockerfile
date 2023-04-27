@@ -27,9 +27,9 @@ RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt update && apt install -y yarn
 RUN yarn set version 1.22
-RUN echo "$PAT"
+RUN echo "Yakshup:$USERNAME:$PAT"
 # Clone Repo
-RUN git clone https://$USERNAME:$PAT@github.com/$USERNAME/medusa-core-1.9.git /app && cd /app
+RUN git clone https://$USERNAME:$PAT@github.com/yakshup/medusa-core-1.9.git /app && cd /app
 
 # Setup Workdir
 WORKDIR /app
