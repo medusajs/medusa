@@ -171,4 +171,5 @@ You can access the swap’s shipping address ID using the `shipping_address_id` 
 
 ## See Also
 
+- [How to manage swaps](./admin/manage-swaps.mdx)
 - [Order Architecture Overview](./orders.md)

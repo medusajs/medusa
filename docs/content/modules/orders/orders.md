@@ -296,6 +296,7 @@ The draft order’s ID is stored in the `draft_order_id` attribute. You can also
 
 ## See Also
 
+- [How to manage orders](./admin/manage-orders.mdx)
 - [How to edit an order](./admin/edit-order.mdx)
 - [How to handle order edits on the storefront](./storefront/handle-order-edits.mdx)
 - [How to Implement Claim Order Flow in the storefront](./storefront/implement-claim-order.mdx)
