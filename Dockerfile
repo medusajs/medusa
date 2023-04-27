@@ -14,10 +14,10 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 RUN source ~/.bashrc
-
+SHELL ["/bin/bash", "-c"]
 # Install node16 with nvm
-RUN nvm install v16 && nvm use 16.14.2
-
+RUN ["/bin/bash", "-c", "nvm install v16 && nvm use 16.14.2"]
+SHELL ["/bin/bash", "-c"]
 # Install Yarn
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
