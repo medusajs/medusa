@@ -12,7 +12,7 @@ RUN apt-get update && \
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash && \
-    source ~/.bashrc
+    . ~/.bashrc
 
 # Install node16 with nvm
 RUN nvm install v16 && nvm use 16.14.2
