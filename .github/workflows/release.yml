@@ -36,7 +36,7 @@ jobs:
 
       - name: Extract packages
         run: |
-          yarn add medusa-dev-cli --global
+          yarn dlx medusa-dev-cli --global
           medusa-dev --set-path-to-repo `pwd`
           mkdir -p output_medusa
           cd output_medusa
