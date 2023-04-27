@@ -5,7 +5,7 @@ on:
     branches:
       - develop
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency: ${{ github.workflow }}-${{ github.ref.replace('/', '_')  }}
 
 jobs:
   release:
