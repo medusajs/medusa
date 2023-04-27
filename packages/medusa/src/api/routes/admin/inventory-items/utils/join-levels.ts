@@ -5,6 +5,7 @@ import {
   InventoryLevelDTO,
 } from "@medusajs/types"
 import { LevelWithAvailability, ResponseInventoryItem } from "../../variants"
+import { EntityManager } from "typeorm"
 
 export const buildLevelsByInventoryItemId = (
   inventoryLevels: InventoryLevelDTO[],
@@ -24,7 +25,8 @@ export const buildLevelsByInventoryItemId = (
 export const getLevelsByInventoryItemId = async (
   items: InventoryItemDTO[],
   locationIds: string[],
-  inventoryService: IInventoryService
+  inventoryService: IInventoryService,
+  manager: EntityManager | undefined = undefined
 ): Promise<Record<string, LevelWithAvailability[]>> => {
   const selector: FilterableInventoryLevelProps = {
     inventory_item_id: items.map((inventoryItem) => inventoryItem.id),
@@ -33,13 +35,20 @@ export const getLevelsByInventoryItemId = async (
     selector.location_id = locationIds
   }
 
-  const [levels] = await inventoryService.listInventoryLevels(selector, {})
+  const context = manager ? { transactionManager: manager } : {}
+
+  const [levels] = await inventoryService.listInventoryLevels(
+    selector,
+    {},
+    context
+  )
 
   const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
     levels.map(async (level) => {
       const availability = await inventoryService.retrieveAvailableQuantity(
         level.inventory_item_id,
-        [level.location_id]
+        [level.location_id],
+        context
       )
       return {
         ...level,
@@ -54,12 +63,14 @@ export const getLevelsByInventoryItemId = async (
 export const joinLevels = async (
   inventoryItems: InventoryItemDTO[],
   locationIds: string[],
-  inventoryService: IInventoryService
+  inventoryService: IInventoryService,
+  manager: EntityManager | undefined = undefined
 ): Promise<ResponseInventoryItem[]> => {
   const levelsByItemId = await getLevelsByInventoryItemId(
     inventoryItems,
     locationIds,
-    inventoryService
+    inventoryService,
+    manager
   )
 
   return inventoryItems.map((inventoryItem) => ({
