@@ -1,0 +1,22 @@
+{
+    "name": "my-node-app",
+    "version": "1.0.0",
+    "description": "A simple Node.js app",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "node",
+      "javascript"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.17.1",
+      "body-parser": "^1.19.0",
+      "cors": "^2.8.5",
+      "mongoose": "^5.13.5"
+    }
+  }

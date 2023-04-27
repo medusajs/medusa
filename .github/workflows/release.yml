@@ -42,6 +42,7 @@ jobs:
           cd output_medusa
           echo "Cleaning Output Directory"
           rm -rf ./*
+          cp ../sample_package.json package.json
           medusa-dev
           cd ..
 
