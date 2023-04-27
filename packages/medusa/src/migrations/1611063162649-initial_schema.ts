@@ -193,6 +193,10 @@ export class initialSchema1611063162649 implements MigrationInterface {
         "user_id" character varying NOT NULL, "store_id" character varying NOT NULL,
         "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
         )`);
+        await queryRunner.query(`CREATE TABLE user_store_products ("id" character varying NOT NULL, 
+        "user_id" character varying NOT NULL, "store_id" character varying NOT NULL, "product_id" character varying NOT NULL,
+        "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+        )`);
         
     }
 

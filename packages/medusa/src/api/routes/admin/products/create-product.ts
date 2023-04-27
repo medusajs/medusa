@@ -42,6 +42,10 @@ import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
+import UserStoreProductRepository from "../../../../repositories/user-store-product"
+import { dataSource } from "../../../../loaders/database"
+import { forEach } from "lodash"
+import crypto from 'crypto';
 
 /**
  * @oas [post] /admin/products
@@ -165,6 +169,30 @@ export default async (req, res) => {
     const newProduct = await productService
       .withTransaction(manager)
       .create({ ...validated, profile_id: shippingProfile.id })
+      
+      
+    console.log('validated....', validated);
+    let uid = crypto.randomUUID()
+    forEach(validated.stores, async (store) => {
+      try{
+        console.log('--------------------------------------------------------newProduct.id,req.user,store--------------------------------------------------------',newProduct.id,req.user, req.user.userId,store);
+        let saved = await productService.saveUserStoreProduct(uid,newProduct.id,req.user.userId,store)
+        console.log('--------------------------------------------------------newProduct.saved req--------------------------------------------------------',saved);
+      }
+      catch (err) {
+        console.log('--------------------------------------------------------Error--------------------------------------------------------', err);
+        throw new Error(err)
+      }
+      
+    })
+    
+    
+    
+    
+    
+    if(validated.stores?.length){
+      
+    }
 
     if (variants) {
       for (const [index, variant] of variants.entries()) {
@@ -555,6 +583,12 @@ export class AdminPostProductsReq {
   @IsString()
   @IsOptional()
   subtitle?: string
+  
+  
+  @IsArray()
+  @IsOptional()
+  stores?: string
+  
 
   @IsString()
   @IsOptional()

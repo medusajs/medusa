@@ -89,11 +89,11 @@ class UserService extends TransactionBaseService {
         `"userId" must be defined`
       )
     }
-    console.log('----------------------------------------------------------------a config', config)
+    //console.log('----------------------------------------------------------------a config', config)
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
     //const userRepo = this.activeManager_.getCustomRepository(this.userRepository_);
     const query = buildQuery({ id: userId }, config)
-    console.log('----------------------------------------------------------------a query', query)
+    //console.log('----------------------------------------------------------------a query', query)
     const user = await userRepo.findOne(query)
     // const user = await userRepo.createQueryBuilder('users')
     //     .leftJoinAndSelect('users.departments','stores')
@@ -115,7 +115,7 @@ class UserService extends TransactionBaseService {
         `User with id: ${userId} was not found`
       )
     }
-    console.log('----------------------------------------------------------------a user', user)
+    //console.log('----------------------------------------------------------------a user', user)
     return user as UserWithDepartments
   }
 
@@ -158,10 +158,10 @@ class UserService extends TransactionBaseService {
         where: { user_id:user_id },
         relations:{ stores: true}
       })
-      console.log('----------------------------------------------------------------a departments', departments, departments.stores)
+      //console.log('----------------------------------------------------------------a departments', departments, departments.stores)
     }
     catch(err){
-      console.log('----------------------------------------------------------------a err', err)
+      //console.log('----------------------------------------------------------------a err', err)
     }
     
     //    if (!user_id) {

@@ -31,10 +31,14 @@ import {
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
-
+import UserStoreProductRepository from '../repositories/user-store-product';
+import { getRepository } from 'typeorm';
+import { UserStoreProduct } from "../models/user-store-product"
+import { dataSource } from "../loaders/database"
 type InjectedDependencies = {
   manager: EntityManager
   productOptionRepository: typeof ProductOptionRepository
+  userStoreProductRepository: typeof UserStoreProductRepository
   productRepository: typeof ProductRepository
   productVariantRepository: typeof ProductVariantRepository
   productTypeRepository: typeof ProductTypeRepository
@@ -46,9 +50,10 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
 }
-
+import * as crypto from "crypto";
 class ProductService extends TransactionBaseService {
   protected readonly productOptionRepository_: typeof ProductOptionRepository
+  protected readonly userStoreProductRepository_: typeof UserStoreProductRepository
   protected readonly productRepository_: typeof ProductRepository
   protected readonly productVariantRepository_: typeof ProductVariantRepository
   protected readonly productTypeRepository_: typeof ProductTypeRepository
@@ -70,6 +75,7 @@ class ProductService extends TransactionBaseService {
 
   constructor({
     productOptionRepository,
+    userStoreProductRepository,
     productRepository,
     productVariantRepository,
     eventBusService,
@@ -85,6 +91,7 @@ class ProductService extends TransactionBaseService {
     super(arguments[0])
 
     this.productOptionRepository_ = productOptionRepository
+    this.userStoreProductRepository_ = userStoreProductRepository
     this.productRepository_ = productRepository
     this.productVariantRepository_ = productVariantRepository
     this.eventBus_ = eventBusService
@@ -146,7 +153,7 @@ class ProductService extends TransactionBaseService {
     const query = buildQuery(productSelector, config) as ExtendedFindConfig<
       Product & ProductFilterOptions
     >
-
+    console.log('-------------query, q--------------------------------',query, q)
     return await productRepo.findAndCount(query, q)
   }
 
@@ -456,6 +463,33 @@ class ProductService extends TransactionBaseService {
         })
       return result
     })
+  }
+  
+  
+  async saveUserStoreProduct(
+    id: string,
+    productId: string,
+    userId: string,
+    storeId: string
+  ){
+  
+    let uid = crypto.randomUUID()
+  console.log('----------------------------------------------------------------New  uid:', uid);
+  const userStoreProductRepo = dataSource.getRepository(UserStoreProduct);
+  const createdProduct =  userStoreProductRepo.save({id:uid,product_id:productId, user_id:userId, store_id:storeId}).then(createdUser => {
+      console.log('----------------------------------------------------------------New userStoreProductRepo created:', createdProduct);
+    })
+    .catch(error => {
+      console.error('----------------------------------------------------------------Error creating user:', error);
+    });
+  // const user = userRepository.create({
+  //   name: 'John Doe',
+  //   age: 30,
+  //   email: 'john.doe@example.com'
+  // });
+  return true;
+  
+
   }
 
   /**

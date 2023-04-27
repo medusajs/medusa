@@ -267,6 +267,29 @@ export default async (req, res) => {
     }
   )
 
+  console.log('--------------------------------------------------------rawProducts, count',rawProducts, count)
+  let products: (Product | PricedProduct)[] = rawProducts
+
+  const includesPricing = ["variants", "variants.prices"].every((relation) =>
+    relations?.includes(relation)
+  )
+  if (includesPricing) {
+    products = await pricingService.setProductPrices(rawProducts)
+  }
+
+  if (inventoryService) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    products = await productVariantInventoryService.setProductAvailability(
+      products,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )
+  }
+  console.log('--------------------------------------------------------products, count',products, count, take, skip)
+
   res.json({
     products,
     count,
