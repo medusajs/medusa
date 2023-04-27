@@ -1,5 +1,26 @@
 # @medusajs/cache-inmemory
 
+## 1.8.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.8.3
+
+## 1.8.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.8.2
+
+## 1.8.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes

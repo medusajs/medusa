@@ -40,7 +40,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Generated Docs Announcement Bar (automated)'
-          base: 'master'
+          base: 'develop'
           title: 'chore(docs): Generated Docs Announcement Bar (automated)'
           labels: 'type: chore'
           add-paths: www/docs/**

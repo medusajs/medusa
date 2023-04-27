@@ -1,7 +1,7 @@
 get:
   operationId: GetInventoryItemsInventoryItemLocationLevels
-  summary: List stock levels of a given location.
-  description: Lists stock levels of a given location.
+  summary: List Inventory Levels
+  description: Lists inventory levels of an inventory item.
   x-authenticated: true
   parameters:
     - in: path
@@ -10,18 +10,6 @@ get:
       description: The ID of the Inventory Item.
       schema:
         type: string
-    - in: query
-      name: offset
-      description: How many stock locations levels to skip in the result.
-      schema:
-        type: integer
-        default: 0
-    - in: query
-      name: limit
-      description: Limit the number of stock locations levels returned.
-      schema:
-        type: integer
-        default: 20
     - in: query
       name: expand
       description: Comma separated list of relations to include in the results.
@@ -72,8 +60,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostInventoryItemsInventoryItemLocationLevels
-  summary: Create an Inventory Location Level for a given Inventory Item.
-  description: Creates an Inventory Location Level for a given Inventory Item.
+  summary: Create an Inventory Level
+  description: Creates an Inventory Level for a given Inventory Item.
   x-authenticated: true
   parameters:
     - in: path

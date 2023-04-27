@@ -1,7 +1,8 @@
 import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
-import { EmitData, Subscriber } from "@medusajs/types"
+import { EmitData, EventBusTypes, Subscriber } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
+import { ulid } from "ulid"
 
 type InjectedDependencies = {
   logger: Logger
@@ -65,6 +66,8 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
+    const randId = ulid()
+    this.storeSubscribers({ event, subscriberId: randId, subscriber })
     this.eventEmitter_.on(event, async (...args) => {
       try {
         // @ts-ignore
@@ -78,7 +81,23 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     return this
   }
 
-  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
+  unsubscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: EventBusTypes.SubscriberContext
+  ): this {
+    const existingSubscribers = this.retrieveSubscribers(event)
+
+    if (existingSubscribers?.length) {
+      const subIndex = existingSubscribers?.findIndex(
+        (sub) => sub.id === context?.subscriberId
+      )
+
+      if (subIndex !== -1) {
+        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
+      }
+    }
+
     this.eventEmitter_.off(event, subscriber)
     return this
   }

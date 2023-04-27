@@ -1,5 +1,21 @@
 # @medusajs/utils
 
+## 1.8.2
+
+### Patch Changes
+
+- [#3835](https://github.com/medusajs/medusa/pull/3835) [`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Bulk create variant and pass transaction to the inventory service context methods
+
+- [#3905](https://github.com/medusajs/medusa/pull/3905) [`491566df6`](https://github.com/medusajs/medusa/commit/491566df6b7ced35f655f810961422945e10ecd0) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa,utils): Searching indexing product subscriber
+
+## 1.8.1
+
+### Patch Changes
+
+- [#3778](https://github.com/medusajs/medusa/pull/3778) [`654a54622`](https://github.com/medusajs/medusa/commit/654a54622303139e7180538bd686630ad9a46cfd) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump Typeorm
+
+- [#3738](https://github.com/medusajs/medusa/pull/3738) [`abdb74d99`](https://github.com/medusajs/medusa/commit/abdb74d997f49f994bff49787a396179982843b0) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa, utils): rename buildLegacyFieldsListFrom to objectToStringPath
+
 ## 1.8.0
 
 ### Patch Changes

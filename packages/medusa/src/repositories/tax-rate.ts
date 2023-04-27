@@ -16,7 +16,7 @@ import {
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
 import { isDefined } from "medusa-core-utils"
-import { buildLegacyFieldsListFrom } from "../utils"
+import { objectToStringPath } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
 
 const resolveableFields = [
@@ -33,7 +33,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
     const resolverFields: string[] = []
     if (isDefined(findOptions.select)) {
       const selectableCols: (keyof TaxRate)[] = []
-      const legacySelect = buildLegacyFieldsListFrom(
+      const legacySelect = objectToStringPath(
         findOptions.select as FindOptionsSelect<TaxRate>
       )
       for (const k of legacySelect) {

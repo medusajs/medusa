@@ -179,14 +179,14 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories`,
+        `/admin/product-categories?limit=7`,
         adminHeaders
       )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(7)
       expect(response.data.offset).toEqual(0)
-      expect(response.data.limit).toEqual(100)
+      expect(response.data.limit).toEqual(7)
 
       expect(response.data.product_categories).toEqual(
         [
@@ -296,7 +296,20 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?is_internal=true`,
+        `/admin/product-categories?is_internal=true&limit=7`,
+        adminHeaders,
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories[0].id).toEqual(productCategory.id)
+    })
+
+    it("filters based on handle attribute of the data model", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?handle=${productCategory.handle}&limit=2`,
         adminHeaders,
       )
 
@@ -309,7 +322,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?q=men`,
+        `/admin/product-categories?q=men&limit=1`,
         adminHeaders,
       )
 
@@ -322,7 +335,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
+        `/admin/product-categories?parent_category_id=${productCategoryParent.id}&limit=7`,
         adminHeaders,
       )
 
@@ -344,7 +357,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true`,
+        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true&limit=7`,
         adminHeaders
       )
 
@@ -437,6 +450,27 @@ describe("/admin/product-categories", () => {
       )
     })
 
+    it("throws an error when description is not a string", async () => {
+      const api = useApi()
+      const payload = {
+        name: "test",
+        handle: "test",
+        description: null
+      }
+
+      const error = await api.post(
+        `/admin/product-categories`,
+        payload,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("invalid_data")
+      expect(error.response.data.message).toEqual(
+        "description must be a string"
+      )
+    })
+
     it("successfully creates a product category", async () => {
       const api = useApi()
       const payload = {
@@ -444,6 +478,7 @@ describe("/admin/product-categories", () => {
         handle: "test",
         is_internal: true,
         parent_category_id: productCategory.id,
+        description: "test"
       }
 
       const response = await api.post(
@@ -457,6 +492,7 @@ describe("/admin/product-categories", () => {
         expect.objectContaining({
           product_category: expect.objectContaining({
             name: payload.name,
+            description: payload.description,
             handle: payload.handle,
             is_internal: payload.is_internal,
             is_active: false,

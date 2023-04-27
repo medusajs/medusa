@@ -1,6 +1,7 @@
 import { EntityManager, In } from "typeorm"
 import {
   ICacheService,
+  IEventBusService,
   IInventoryService,
   IStockLocationService,
   InventoryItemDTO,
@@ -23,14 +24,19 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
+  eventBusService: IEventBusService
 }
 
 class ProductVariantInventoryService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly salesChannelInventoryService_: SalesChannelInventoryService
   protected readonly productVariantService_: ProductVariantService
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
+  protected readonly eventBusService_: IEventBusService
   protected readonly cacheService_: ICacheService
 
   constructor({
@@ -39,6 +45,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     salesChannelInventoryService,
     productVariantService,
     inventoryService,
+    eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -48,6 +55,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
+    this.eventBusService_ = eventBusService
   }
 
   /**
@@ -106,6 +114,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         { select: ["id"] }
       )
       locationIds = stockLocations.map((l) => l.id)
+    }
+
+    if (locationIds.length === 0) {
+      return false
     }
 
     const hasInventory = await Promise.all(
@@ -346,7 +358,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     const toReserve = {
-      type: "order",
       line_item_id: context.lineItemId,
     }
 
@@ -385,7 +396,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0].location_id
     }
 
-    return await Promise.all(
+    const reservationItems = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.createReservationItem({
@@ -396,6 +407,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
         })
       })
     )
+
+    return reservationItems
   }
 
   /**
@@ -638,10 +651,24 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
-    salesChannelId: string | string[] | undefined
+    salesChannelId: string | string[] | undefined,
+    variantInventoryMap: Map<string, ProductVariantInventoryItem[]> = new Map()
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
+    }
+
+    if (!variantInventoryMap.size) {
+      const variantInventories = await this.listByVariant(
+        variants.map((v) => v.id)
+      )
+
+      variantInventories.forEach((inventory) => {
+        const variantId = inventory.variant_id
+        const currentInventories = variantInventoryMap.get(variantId) || []
+        currentInventories.push(inventory)
+        variantInventoryMap.set(variantId, currentInventories)
+      })
     }
 
     return await Promise.all(
@@ -650,16 +677,24 @@ class ProductVariantInventoryService extends TransactionBaseService {
           return variant
         }
 
-        if (!salesChannelId) {
-          delete variant.inventory_quantity
+        variant.purchasable = variant.allow_backorder
+
+        if (!variant.manage_inventory) {
+          variant.purchasable = true
           return variant
         }
 
-        // first get all inventory items required for a variant
-        const variantInventory = await this.listByVariant(variant.id)
+        const variantInventory = variantInventoryMap.get(variant.id) || []
 
         if (!variantInventory.length) {
-          variant.inventory_quantity = 0
+          delete variant.inventory_quantity
+          variant.purchasable = true
+          return variant
+        }
+
+        if (!salesChannelId) {
+          delete variant.inventory_quantity
+          variant.purchasable = false
           return variant
         }
 
@@ -674,9 +709,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
         })
 
         variant.inventory_quantity = locations.reduce(
-          (acc, next) => acc + (next.stocked_quantity || 0),
+          (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
           0
         )
+
+        variant.purchasable =
+          variant.inventory_quantity > 0 || variant.allow_backorder
 
         return variant
       })

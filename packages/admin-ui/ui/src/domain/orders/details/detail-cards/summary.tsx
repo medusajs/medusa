@@ -261,7 +261,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
       {allocationModalIsOpen && (
         <AllocateItemsModal
           reservationItemsMap={reservationItemsMap}
-          order={order}
+          items={order.items}
           close={closeAllocationModal}
         />
       )}

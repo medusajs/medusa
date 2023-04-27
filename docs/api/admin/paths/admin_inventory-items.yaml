@@ -1,7 +1,9 @@
 get:
   operationId: GetInventoryItems
-  summary: List inventory items.
-  description: Lists inventory items.
+  summary: List Inventory Items
+  description: >-
+    Lists inventory items with the ability to apply filters or search queries on
+    them.
   x-authenticated: true
   parameters:
     - in: query
@@ -134,7 +136,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostInventoryItems
-  summary: Create an Inventory Item.
+  summary: Create an Inventory Item
   description: Creates an Inventory Item.
   x-authenticated: true
   parameters:

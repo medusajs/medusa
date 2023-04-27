@@ -1,5 +1,36 @@
 # @medusajs/inventory
 
+## 1.8.3
+
+### Patch Changes
+
+- [#3863](https://github.com/medusajs/medusa/pull/3863) [`cd2d4f645`](https://github.com/medusajs/medusa/commit/cd2d4f6455e7db2f9aa4f7aec72baa25fad786ff) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(inventory): Add missing context arguments
+
+- [#3835](https://github.com/medusajs/medusa/pull/3835) [`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Bulk create variant and pass transaction to the inventory service context methods
+
+- [#3192](https://github.com/medusajs/medusa/pull/3192) [`4a8562743`](https://github.com/medusajs/medusa/commit/4a8562743569f5bbb7bd0894b025a74725726529) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa-plugin-brightpearl, inventory, medusa): Multiwarehouse integration for brightpearl
+
+- Updated dependencies [[`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100), [`491566df6`](https://github.com/medusajs/medusa/commit/491566df6b7ced35f655f810961422945e10ecd0)]:
+  - @medusajs/utils@1.8.2
+  - @medusajs/modules-sdk@1.8.3
+
+## 1.8.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@1.8.2
+
+## 1.8.1
+
+### Patch Changes
+
+- [#3778](https://github.com/medusajs/medusa/pull/3778) [`654a54622`](https://github.com/medusajs/medusa/commit/654a54622303139e7180538bd686630ad9a46cfd) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump Typeorm
+
+- Updated dependencies [[`654a54622`](https://github.com/medusajs/medusa/commit/654a54622303139e7180538bd686630ad9a46cfd), [`abdb74d99`](https://github.com/medusajs/medusa/commit/abdb74d997f49f994bff49787a396179982843b0)]:
+  - @medusajs/utils@1.8.1
+  - @medusajs/modules-sdk@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes

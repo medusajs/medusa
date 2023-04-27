@@ -2,7 +2,6 @@ import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
-import { ProductVariant } from "../../../../../models"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
@@ -74,19 +73,17 @@ export const createInventoryItemTransaction = async (
 
   const productVariantServiceTx = productVariantService.withTransaction(manager)
 
-  const variant = await productVariantServiceTx.retrieve(variantId)
-
   async function createInventoryItem(input: CreateInventoryItemInput) {
     return await inventoryService!.createInventoryItem({
-      sku: variant.sku,
-      origin_country: variant.origin_country,
-      hs_code: variant.hs_code,
-      mid_code: variant.mid_code,
-      material: variant.material,
-      weight: variant.weight,
-      length: variant.length,
-      height: variant.height,
-      width: variant.width,
+      sku: input.sku,
+      origin_country: input.origin_country,
+      hs_code: input.hs_code,
+      mid_code: input.mid_code,
+      material: input.material,
+      weight: input.weight,
+      length: input.length,
+      height: input.height,
+      width: input.width,
     })
   }
 
@@ -96,10 +93,9 @@ export const createInventoryItemTransaction = async (
     }
   }
 
-  async function attachInventoryItem(
-    variant: ProductVariant,
-    inventoryItem: InventoryItemDTO
-  ) {
+  async function attachInventoryItem(inventoryItem: InventoryItemDTO) {
+    const variant = await productVariantServiceTx.retrieve(variantId)
+
     if (!variant.manage_inventory) {
       return
     }
@@ -136,7 +132,7 @@ export const createInventoryItemTransaction = async (
         ) => {
           const { [actions.createInventoryItem]: inventoryItem } = invoke
 
-          return await attachInventoryItem(variant, inventoryItem)
+          return await attachInventoryItem(inventoryItem)
         },
       },
     }

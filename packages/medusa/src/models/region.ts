@@ -10,17 +10,17 @@ import {
   OneToMany,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Country } from "./country"
 import { Currency } from "./currency"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { PaymentProvider } from "./payment-provider"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { TaxProvider } from "./tax-provider"
 import { TaxRate } from "./tax-rate"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class Region extends SoftDeletableEntity {
@@ -61,7 +61,6 @@ export class Region extends SoftDeletableEntity {
   tax_provider: TaxProvider
 
   @ManyToMany(() => PaymentProvider, {
-    eager: true,
     cascade: ["insert", "update"],
   })
   @JoinTable({
@@ -78,7 +77,6 @@ export class Region extends SoftDeletableEntity {
   payment_providers: PaymentProvider[]
 
   @ManyToMany(() => FulfillmentProvider, {
-    eager: true,
     cascade: ["insert", "update"],
   })
   @JoinTable({

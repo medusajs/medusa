@@ -1,9 +1,9 @@
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -26,8 +26,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -46,9 +46,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -1064,7 +1064,6 @@ class CartService extends TransactionBaseService {
           "region.countries",
           "discounts",
           "discounts.rule",
-          "discounts.regions",
         ]
 
         if (
@@ -1443,7 +1442,9 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const discounts = await this.discountService_
           .withTransaction(transactionManager)
-          .listByCodes(discountCodes, { relations: ["rule", "regions"] })
+          .listByCodes(discountCodes, {
+            relations: ["rule", "rule.conditions", "regions"],
+          })
 
         await this.discountService_
           .withTransaction(transactionManager)
@@ -2380,7 +2381,16 @@ class CartService extends TransactionBaseService {
     }
 
     if (cart.discounts && cart.discounts.length) {
-      cart.discounts = cart.discounts.filter((discount) => {
+      const discounts = await this.discountService_
+        .withTransaction(this.activeManager_)
+        .list(
+          {
+            id: [...cart.discounts.map(({ id }) => id)],
+          },
+          { relations: ["rule", "regions"] }
+        )
+
+      cart.discounts = discounts.filter((discount) => {
         return discount.regions.find(({ id }) => id === regionId)
       })
     }
