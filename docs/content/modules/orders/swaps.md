@@ -87,7 +87,7 @@ A swap’s payment can be accessed by expanding the `payment` relation and acces
 
 ## Handling Swap Fulfillment
 
-After the swap has been created and completed by the customer, the merchant should handle the fulfillment of the new items.
+After the swap has been created and completed by the customer, the merchant should handle the [fulfillment](./fulfillments.md) of the new items.
 
 Although you have freedom in how you implement the process, the recommended process provided in the Medusa backend is as follows:
 
