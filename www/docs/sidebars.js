@@ -732,20 +732,14 @@ module.exports = {
           label: "Returns",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/claims",
           label: "Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/draft-orders",
           label: "Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",

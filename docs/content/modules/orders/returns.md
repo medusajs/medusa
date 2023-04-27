@@ -37,8 +37,8 @@ There are other important attributes discussed in later sections. Check out the 
 Returns can be created in three ways:
 
 1. Created directly, typically by a client or customer.
-2. Created automatically and linked to a swap when a swap is created. You can learn more about the overall swap process in the Swaps documentation. The Mark Return as Received section applies for swaps as well.
-3. Created automatically and linked to a claim when a claim is created. The Mark Return as Received section applies for claims as well.
+2. Created automatically and linked to a swap when a swap is created. You can learn more about the overall swap process in the [Swaps documentation](./swaps.md). The Mark Return as Received section applies for swaps as well.
+3. Created automatically and linked to a claim when a claim is created. You can learn more about the overall claim process in the [Claims documentation] The Mark Return as Received section applies for claims as well.
 
 ### Idempotency Key
 
@@ -119,7 +119,7 @@ You can access the swap’s ID using the `swap_id` property. You can also access
 
 ### ClaimOrder
 
-The return can be associated with a claim. A claim is represented by the `ClaimOrder` entity.
+The return can be associated with a [claim](./claims.md). A claim is represented by the `ClaimOrder` entity.
 
 You can access the claim’s ID using the `claim_order_id` property. You can also access the claim by expanding the `claim_order` relation and accessing `return.claim_order`.
 
@@ -135,3 +135,4 @@ You can access the shipping method by expanding the `shipping_method` relation a
 
 - [Orders architecture overview](./orders.md)
 - [Swaps architecture overview](./swaps.md)
+- [Claims architecture overview](./claims.md)

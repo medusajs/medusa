@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.0
+
+### Minor Changes
+
+- [#3740](https://github.com/medusajs/medusa/pull/3740) [`8b6464180`](https://github.com/medusajs/medusa/commit/8b6464180a82bcc41197f2a97e58b9555a7072cd) Thanks [@dwene](https://github.com/dwene)! - Migrate medusa-file-minio and medusa-file-s3 to typescript.
+
 ## 1.1.6
 
 ### Patch Changes
