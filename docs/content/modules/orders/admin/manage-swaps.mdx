@@ -472,7 +472,7 @@ You can cancel a swap by sending a request to the [Cancel Swap endpoint](/api/ad
 ```ts
 medusa.admin.orders.cancelSwap(orderId, swapId)
 .then(({ order }) => {
-  console.log(order.swaps[0])
+  console.log(order.swaps)
 })
 ```
 
