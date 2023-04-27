@@ -9,7 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Version packages PR
+    name: Build Code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -36,7 +36,7 @@ jobs:
 
       - name: Extract packages
         run: |
-          yarn dlx medusa-dev-cli --global
+          npm i medusa-dev-cli -g
           medusa-dev --set-path-to-repo `pwd`
           mkdir -p output_medusa
           cd output_medusa
