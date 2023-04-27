@@ -60,8 +60,8 @@ You can list draft orders by sending a request to the [List Draft Orders endpoin
 ```ts
 medusa.admin.draftOrders.list()
 .then(({ draft_orders, limit, offset, count }) => {
-  console.log(draft_orders.length);
-});
+  console.log(draft_orders.length)
+})
 ```
 
 </TabItem>
@@ -76,7 +76,9 @@ const DraftOrders = () => {
   return (
     <div>
       {isLoading && <span>Loading...</span>}
-      {draft_orders && !draft_orders.length && <span>No Draft Orders</span>}
+      {draft_orders && !draft_orders.length && (
+        <span>No Draft Orders</span>
+      )}
       {draft_orders && draft_orders.length > 0 && (
         <ul>
           {draft_orders.map((order) => (
@@ -100,8 +102,8 @@ fetch(`<BACKEND_URL>/admin/draft-orders`, {
 })
 .then((response) => response.json())
 .then(({ draft_orders, limit, offset, count }) => {
-  console.log(draft_orders.length);
-});
+  console.log(draft_orders.length)
+})
 ```
 
 </TabItem>
@@ -136,26 +138,26 @@ medusa.admin.draftOrders.create({
     {
       // defined product
       quantity: 1,
-      variant_id
+      variant_id,
     },
     {
       // custom product
       quantity: 1,
       unit_price: 1000,
-      title: 'Custom Product'
-    }
+      title: "Custom Product",
+    },
   ],
   shipping_methods: [
     {
       option_id,
       // for custom shipping price
-      price
-    }
+      price,
+    },
   ],
 })
 .then(({ draft_order }) => {
-  console.log(draft_order.id);
-});
+  console.log(draft_order.id)
+})
 ```
 
 </TabItem>
@@ -176,21 +178,21 @@ const CreateDraftOrder = () => {
         {
           // defined product
           quantity: 1,
-          variant_id
+          variant_id,
         },
         {
           // custom product
           quantity: 1,
           unit_price: 1000,
-          title: 'Custom Product'
-        }
+          title: "Custom Product",
+        },
       ],
       shipping_methods: [
         {
           option_id,
           // for custom shipping price
-          price
-        }
+          price,
+        },
       ],
     })
   }
@@ -218,28 +220,28 @@ fetch(`<BACKEND_URL>/admin/draft-orders`, {
       {
         // defined product
         quantity: 1,
-        variant_id
+        variant_id,
       },
       {
         // custom product
         quantity: 1,
         unit_price: 1000,
-        title: 'Custom Product'
-      }
+        title: "Custom Product",
+      },
     ],
     shipping_methods: [
       {
         option_id,
         // for custom shipping price
-        price
-      }
+        price,
+      },
     ],
   }),
 })
 .then((response) => response.json())
 .then(({ draft_order }) => {
-  console.log(draft_order.id);
-});
+  console.log(draft_order.id)
+})
 ```
 
 </TabItem>
@@ -304,8 +306,8 @@ You can retrieve a draft order by sending a request to the [Get Draft Order endp
 ```ts
 medusa.admin.draftOrders.retrieve(draftOrderId)
 .then(({ draft_order }) => {
-  console.log(draft_order.id);
-});
+  console.log(draft_order.id)
+})
 ```
 
 </TabItem>
@@ -341,8 +343,8 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
 })
 .then((response) => response.json())
 .then(({ draft_order }) => {
-  console.log(draft_order.id);
-});
+  console.log(draft_order.id)
+})
 ```
 
 </TabItem>
@@ -371,11 +373,11 @@ You can update a draft order by sending a request to the [Update Draft Order end
 
 ```ts
 medusa.admin.draftOrders.update(draftOrderId, {
-  email: "user@example.com"
+  email: "user@example.com",
 })
 .then(({ draft_order }) => {
-  console.log(draft_order.id);
-});
+  console.log(draft_order.id)
+})
 ```
 
 </TabItem>
@@ -385,12 +387,14 @@ medusa.admin.draftOrders.update(draftOrderId, {
 import { useAdminUpdateDraftOrder } from "medusa-react"
 
 const UpdateDraftOrder = () => {
-  const updateDraftOrder = useAdminUpdateDraftOrder(draftOrderId)
+  const updateDraftOrder = useAdminUpdateDraftOrder(
+    draftOrderId
+  )
   // ...
 
   const handleUpdate = () => {
     updateDraftOrder.mutate({
-      email: "user@example.com"
+      email: "user@example.com",
     })
   }
 
@@ -411,13 +415,13 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    email: "user@example.com"
+    email: "user@example.com",
   }),
 })
 .then((response) => response.json())
 .then(({ draft_order }) => {
-  console.log(draft_order.id);
-});
+  console.log(draft_order.id)
+})
 ```
 
 </TabItem>
@@ -454,11 +458,11 @@ You can add line items to a draft order by sending a request to the [Create Line
 
 ```ts
 medusa.admin.draftOrders.addLineItem(draftOrderId, {
-  quantity: 1
+  quantity: 1,
 })
 .then(({ draft_order }) => {
-  console.log(draft_order.cart.items);
-});
+  console.log(draft_order.cart.items)
+})
 ```
 
 </TabItem>
@@ -468,12 +472,14 @@ medusa.admin.draftOrders.addLineItem(draftOrderId, {
 import { useAdminDraftOrderAddLineItem } from "medusa-react"
 
 const AddLineItem = () => {
-  const addLineItem = useAdminDraftOrderAddLineItem(draftOrderId)
+  const addLineItem = useAdminDraftOrderAddLineItem(
+    draftOrderId
+  )
   // ...
 
   const handleAdd = () => {
     addLineItem.mutate({
-      quantity: 1
+      quantity: 1,
     })
   }
 
@@ -486,6 +492,8 @@ export default AddLineItem
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items`, {
     credentials: "include",
@@ -494,13 +502,13 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items`, {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      quantity: 1
+      quantity: 1,
     }),
   })
   .then((response) => response.json())
   .then(({ draft_order }) => {
-    console.log(draft_order.cart.items);
-  });
+    console.log(draft_order.cart.items)
+  })
 ```
 
 </TabItem>
@@ -540,11 +548,11 @@ You can update a line item by sending a request to the [Update Line Item endpoin
 
 ```ts
 medusa.admin.draftOrders.updateLineItem(draftOrderId, itemId, {
-  quantity: 1
+  quantity: 1,
 })
 .then(({ draft_order }) => {
-  console.log(draft_order.cart.items);
-});
+  console.log(draft_order.cart.items)
+})
 ```
 
 </TabItem>
@@ -554,13 +562,15 @@ medusa.admin.draftOrders.updateLineItem(draftOrderId, itemId, {
 import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
 
 const UpdateLineItem = () => {
-  const updateLineItem = useAdminDraftOrderUpdateLineItem(draftOrderId)
+  const updateLineItem = useAdminDraftOrderUpdateLineItem(
+    draftOrderId
+  )
   // ...
 
   const handleUpdate = () => {
     updateLineItem.mutate({
       item_id,
-      quantity: 1
+      quantity: 1,
     })
   }
 
@@ -573,6 +583,8 @@ export default UpdateLineItem
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
   credentials: "include",
@@ -581,13 +593,13 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    quantity: 1
+    quantity: 1,
   }),
 })
 .then((response) => response.json())
 .then(({ draft_order }) => {
-  console.log(draft_order.cart.items);
-});
+  console.log(draft_order.cart.items)
+})
 ```
 
 </TabItem>
@@ -621,8 +633,8 @@ You can delete a line item by sending a request to the [Delete Line Item endpoin
 ```ts
 medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
 .then(({ draft_order }) => {
-  console.log(draft_order.cart.items);
-});
+  console.log(draft_order.cart.items)
+})
 ```
 
 </TabItem>
@@ -632,7 +644,9 @@ medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
 import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
 
 const DeleteLineItem = () => {
-  const deleteLineItem = useAdminDraftOrderRemoveLineItem(draftOrderId)
+  const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+    draftOrderId
+  )
   // ...
 
   const handleDelete = () => {
@@ -648,6 +662,8 @@ export default DeleteLineItem
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```ts
 fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
   credentials: "include",
@@ -655,8 +671,8 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
 })
 .then((response) => response.json())
 .then(({ draft_order }) => {
-  console.log(draft_order.cart.items);
-});
+  console.log(draft_order.cart.items)
+})
 ```
 
 </TabItem>
@@ -688,8 +704,8 @@ You can register the draft order payment by sending a request to the [Register D
 ```ts
 medusa.admin.draftOrders.markPaid(draftOrderId)
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -699,7 +715,9 @@ medusa.admin.draftOrders.markPaid(draftOrderId)
 import { useAdminDraftOrderRegisterPayment } from "medusa-react"
 
 const RegisterPayment = () => {
-  const registerPayment = useAdminDraftOrderRegisterPayment(draftOrderId)
+  const registerPayment = useAdminDraftOrderRegisterPayment(
+    draftOrderId
+  )
   // ...
 
   const handlePayment = () => {
@@ -722,8 +740,8 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/pay`, {
 })
 .then((response) => response.json())
 .then(({ order }) => {
-  console.log(order.id);
-});
+  console.log(order.id)
+})
 ```
 
 </TabItem>
@@ -753,8 +771,8 @@ You can delete a draft order by sending a request to the [Delete Draft Order end
 ```ts
 medusa.admin.draftOrders.delete(draftOrderId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -764,7 +782,9 @@ medusa.admin.draftOrders.delete(draftOrderId)
 import { useAdminDeleteDraftOrder } from "medusa-react"
 
 const DeleteDraftOrder = () => {
-  const deleteDraftOrder = useAdminDeleteDraftOrder(draftOrderId)
+  const deleteDraftOrder = useAdminDeleteDraftOrder(
+    draftOrderId
+  )
   // ...
 
   const handleDelete = () => {
@@ -787,8 +807,8 @@ fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
