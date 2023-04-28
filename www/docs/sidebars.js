@@ -732,28 +732,19 @@ module.exports = {
           label: "Returns",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/claims",
           label: "Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/draft-orders",
           label: "Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/fulfillments",
           label: "Fulfillment",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
@@ -783,41 +774,24 @@ module.exports = {
           label: "Admin: Edit an Order",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-swaps",
           label: "Admin: Manage Swaps",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-returns",
           label: "Admin: Manage Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-claims",
           label: "Admin: Manage Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
           href: "#",
           label: "Admin: Manage Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Return Reasons",
           customProps: {
             sidebar_is_soon: true,
           },

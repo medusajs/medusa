@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:52](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L52)
+[medusa/src/services/shipping-option.ts:52](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L52)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:50](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L50)
+[medusa/src/services/shipping-option.ts:50](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L50)
 
 ___
 
@@ -92,7 +92,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:49](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L49)
+[medusa/src/services/shipping-option.ts:49](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L49)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:48](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L48)
+[medusa/src/services/shipping-option.ts:48](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L48)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:44](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L44)
+[medusa/src/services/shipping-option.ts:44](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L44)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:45](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L45)
+[medusa/src/services/shipping-option.ts:45](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L45)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:47](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L47)
+[medusa/src/services/shipping-option.ts:47](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L47)
 
 ___
 
@@ -156,7 +156,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -174,7 +174,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -200,7 +200,7 @@ the result of update
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:693](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L693)
+[medusa/src/services/shipping-option.ts:693](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L693)
 
 ___
 
@@ -239,7 +239,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -265,7 +265,7 @@ the result of the create operation
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:431](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L431)
+[medusa/src/services/shipping-option.ts:431](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L431)
 
 ___
 
@@ -291,7 +291,7 @@ the resulting shipping method.
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:258](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L258)
+[medusa/src/services/shipping-option.ts:258](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L258)
 
 ___
 
@@ -315,7 +315,7 @@ the result of the delete operation.
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:671](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L671)
+[medusa/src/services/shipping-option.ts:671](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L671)
 
 ___
 
@@ -339,7 +339,7 @@ removed shipping methods
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:238](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L238)
+[medusa/src/services/shipping-option.ts:238](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L238)
 
 ___
 
@@ -367,7 +367,7 @@ the price of the shipping option.
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:771](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L771)
+[medusa/src/services/shipping-option.ts:771](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L771)
 
 ___
 
@@ -390,7 +390,7 @@ the result of the find operation
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:145](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L145)
+[medusa/src/services/shipping-option.ts:145](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L145)
 
 ___
 
@@ -413,7 +413,7 @@ the result of the find operation
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:160](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L160)
+[medusa/src/services/shipping-option.ts:160](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L160)
 
 ___
 
@@ -437,7 +437,7 @@ the result of update
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:722](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L722)
+[medusa/src/services/shipping-option.ts:722](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L722)
 
 ___
 
@@ -463,7 +463,7 @@ the profile document.
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:177](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L177)
+[medusa/src/services/shipping-option.ts:177](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L177)
 
 ___
 
@@ -487,7 +487,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -514,7 +514,7 @@ resolves to the update result.
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:559](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L559)
+[medusa/src/services/shipping-option.ts:559](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L559)
 
 ___
 
@@ -540,7 +540,7 @@ the resulting shipping method
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:211](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L211)
+[medusa/src/services/shipping-option.ts:211](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L211)
 
 ___
 
@@ -563,7 +563,7 @@ updated shipping options
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:747](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L747)
+[medusa/src/services/shipping-option.ts:747](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L747)
 
 ___
 
@@ -584,7 +584,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:388](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L388)
+[medusa/src/services/shipping-option.ts:388](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L388)
 
 ___
 
@@ -611,7 +611,7 @@ the validated shipping option
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:346](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L346)
+[medusa/src/services/shipping-option.ts:346](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L346)
 
 ___
 
@@ -636,7 +636,7 @@ the validated price
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:519](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L519)
+[medusa/src/services/shipping-option.ts:519](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L519)
 
 ___
 
@@ -661,7 +661,7 @@ a validated shipping requirement
 
 #### Defined in
 
-[medusa/src/services/shipping-option.ts:77](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/shipping-option.ts#L77)
+[medusa/src/services/shipping-option.ts:77](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/shipping-option.ts#L77)
 
 ___
 
@@ -685,4 +685,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
