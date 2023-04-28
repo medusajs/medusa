@@ -1,12 +1,7 @@
-import clsx from "clsx"
-import { useAdminCreateNote, useAdminOrder } from "medusa-react"
-import React, { useState } from "react"
-
-import RegisterClaimMenu from "../../../domain/orders/details/claim/register-claim-menu"
-import ReturnMenu from "../../../domain/orders/details/returns"
-import SwapMenu from "../../../domain/orders/details/swap/create"
-import useOrdersExpandParam from "../../../domain/orders/details/utils/use-admin-expand-paramter"
+import Actionables, { ActionType } from "../../molecules/actionables"
 import {
+  AllocationCreatedEvent,
+  AwaitsAllocationEvent,
   ClaimEvent,
   ExchangeEvent,
   ItemsFulfilledEvent,
@@ -23,32 +18,41 @@ import {
   TimelineEvent,
   useBuildTimeline,
 } from "../../../hooks/use-build-timeline"
-import useNotification from "../../../hooks/use-notification"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { getErrorMessage } from "../../../utils/error-messages"
-import Spinner from "../../atoms/spinner"
+import React, { useState } from "react"
+import { useAdminCreateNote, useAdminOrder } from "medusa-react"
+
 import AlertIcon from "../../fundamentals/icons/alert-icon"
+import AllocationCreated from "../../molecules/timeline-events/allocations/allocation-created"
+import AwaitsAllocation from "../../molecules/timeline-events/allocations/awaits-allocation"
 import BackIcon from "../../fundamentals/icons/back-icon"
-import RefreshIcon from "../../fundamentals/icons/refresh-icon"
-import Actionables, { ActionType } from "../../molecules/actionables"
-import NoteInput from "../../molecules/note-input"
 import Claim from "../../molecules/timeline-events/claim-event"
-import Exchange from "../../molecules/timeline-events/exchange"
-import ItemsFulfilled from "../../molecules/timeline-events/items-fulfilled"
-import ItemsShipped from "../../molecules/timeline-events/items-shipped"
-import Note from "../../molecules/timeline-events/note"
-import Notification from "../../molecules/timeline-events/notification"
-import OrderCanceled from "../../molecules/timeline-events/order-canceled"
 import EditCanceled from "../../molecules/timeline-events/order-edit/canceled"
 import EditConfirmed from "../../molecules/timeline-events/order-edit/confirmed"
 import EditCreated from "../../molecules/timeline-events/order-edit/created"
 import EditDeclined from "../../molecules/timeline-events/order-edit/declined"
-import PaymentRequired from "../../molecules/timeline-events/order-edit/payment-required"
-import RefundRequired from "../../molecules/timeline-events/order-edit/refund-required"
 import EditRequested from "../../molecules/timeline-events/order-edit/requested"
+import Exchange from "../../molecules/timeline-events/exchange"
+import ItemsFulfilled from "../../molecules/timeline-events/items-fulfilled"
+import ItemsShipped from "../../molecules/timeline-events/items-shipped"
+import Note from "../../molecules/timeline-events/note"
+import NoteInput from "../../molecules/note-input"
+import Notification from "../../molecules/timeline-events/notification"
+import OrderCanceled from "../../molecules/timeline-events/order-canceled"
 import OrderPlaced from "../../molecules/timeline-events/order-placed"
+import PaymentRequired from "../../molecules/timeline-events/order-edit/payment-required"
+import RefreshIcon from "../../fundamentals/icons/refresh-icon"
 import Refund from "../../molecules/timeline-events/refund"
+import RefundRequired from "../../molecules/timeline-events/order-edit/refund-required"
+import RegisterClaimMenu from "../../../domain/orders/details/claim/register-claim-menu"
 import Return from "../../molecules/timeline-events/return"
+import ReturnMenu from "../../../domain/orders/details/returns"
+import Spinner from "../../atoms/spinner"
+import SwapMenu from "../../../domain/orders/details/swap/create"
+import clsx from "clsx"
+import { getErrorMessage } from "../../../utils/error-messages"
+import useNotification from "../../../hooks/use-notification"
+import useOrdersExpandParam from "../../../domain/orders/details/utils/use-admin-expand-paramter"
+import useToggleState from "../../../hooks/use-toggle-state"
 
 type TimelineProps = {
   orderId: string
@@ -188,6 +192,10 @@ function switchOnType(event: TimelineEvent, refetch: () => void) {
       return <Notification event={event as NotificationEvent} />
     case "refund":
       return <Refund event={event as RefundEvent} />
+    case "allocation-created":
+      return <AllocationCreated event={event as AllocationCreatedEvent} />
+    case "awaits-allocation":
+      return <AwaitsAllocation event={event as AwaitsAllocationEvent} />
     case "edit-created":
       return <EditCreated event={event as OrderEditEvent} />
     case "edit-canceled":

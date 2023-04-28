@@ -11,10 +11,15 @@ import {
   useAdminNotifications,
   useAdminOrder,
   useAdminOrderEdits,
+  useAdminReservations,
+  useAdminStockLocations,
 } from "medusa-react"
-import { useMemo } from "react"
-import useOrdersExpandParam from "../domain/orders/details/utils/use-admin-expand-paramter"
+import { useEffect, useMemo } from "react"
+
+import { StockLocationDTO } from "@medusajs/types"
+import moment from "moment"
 import { useFeatureFlag } from "../providers/feature-flag-provider"
+import useOrdersExpandParam from "../domain/orders/details/utils/use-admin-expand-paramter"
 import useStockLocations from "./use-stock-locations"
 
 export interface TimelineEvent {
@@ -44,6 +49,8 @@ export interface TimelineEvent {
     | "edit-confirmed"
     | "payment-required"
     | "refund-required"
+    | "allocation-created"
+    | "awaits-allocation"
 }
 
 export interface RefundRequiredEvent extends TimelineEvent {
@@ -89,6 +96,15 @@ interface ReturnItem extends OrderItem {
 
 interface FulfillmentEvent extends TimelineEvent {
   sourceType: "claim" | "exchange" | undefined
+}
+
+export interface AwaitsAllocationEvent extends TimelineEvent {
+  quantity: number
+}
+
+export interface AllocationCreatedEvent extends TimelineEvent {
+  quantity: number
+  locationName: string
 }
 
 export interface ItemsFulfilledEvent extends FulfillmentEvent {
@@ -170,6 +186,50 @@ export const useBuildTimeline = (orderId: string) => {
 
   const { isFeatureEnabled } = useFeatureFlag()
 
+  const inventoryEnabled = useMemo(() => {
+    return isFeatureEnabled("inventoryService")
+  }, [isFeatureEnabled])
+
+  const locationsEnabled = useMemo(() => {
+    return isFeatureEnabled("stockLocationService")
+  }, [isFeatureEnabled])
+
+  const { reservations, refetch: refetchReservations } = useAdminReservations(
+    {
+      line_item_id: order?.items.map((i) => i.id) || [],
+    },
+    {
+      enabled: inventoryEnabled,
+    }
+  )
+
+  const { stock_locations, refetch: refetchLocations } = useAdminStockLocations(
+    {
+      id: reservations?.map((r) => r.location_id) || [],
+    },
+    {
+      enabled: inventoryEnabled,
+    }
+  )
+
+  const locationsMap: Map<string, StockLocationDTO> = useMemo(() => {
+    return new Map(
+      stock_locations?.map((l: StockLocationDTO) => [l.id, l]) ?? []
+    )
+  }, [stock_locations])
+
+  useEffect(() => {
+    if (inventoryEnabled) {
+      refetchReservations()
+    }
+  }, [inventoryEnabled, refetchReservations, order?.items])
+
+  useEffect(() => {
+    if (locationsEnabled) {
+      refetchLocations()
+    }
+  }, [locationsEnabled, refetchLocations, reservations])
+
   const { notes } = useAdminNotes({
     resource_id: orderId,
     limit: 100,
@@ -221,7 +281,7 @@ export const useBuildTimeline = (orderId: string) => {
       for (const edit of edits || []) {
         events.push({
           id: edit.id,
-          time: edit.created_at,
+          time: new Date(edit.created_at),
           orderId: order.id,
           type: "edit-created",
           edit: edit,
@@ -230,7 +290,7 @@ export const useBuildTimeline = (orderId: string) => {
         if (edit.requested_at) {
           events.push({
             id: edit.id,
-            time: edit.requested_at,
+            time: new Date(edit.requested_at),
             orderId: order.id,
             type: "edit-requested",
             email: order.email,
@@ -242,7 +302,7 @@ export const useBuildTimeline = (orderId: string) => {
         if (edit.declined_at) {
           events.push({
             id: edit.id,
-            time: edit.declined_at,
+            time: new Date(edit.declined_at),
             orderId: order.id,
             type: "edit-declined",
             edit: edit,
@@ -253,7 +313,7 @@ export const useBuildTimeline = (orderId: string) => {
         if (edit.canceled_at) {
           events.push({
             id: edit.id,
-            time: edit.canceled_at,
+            time: new Date(edit.canceled_at),
             orderId: order.id,
             type: "edit-canceled",
             edit: edit,
@@ -264,7 +324,7 @@ export const useBuildTimeline = (orderId: string) => {
         if (edit.confirmed_at) {
           events.push({
             id: edit.id,
-            time: edit.confirmed_at,
+            time: new Date(edit.confirmed_at),
             orderId: order.id,
             type: "edit-confirmed",
             edit: edit,
@@ -275,7 +335,7 @@ export const useBuildTimeline = (orderId: string) => {
 
     events.push({
       id: `${order.id}-placed`,
-      time: order.created_at,
+      time: new Date(order.created_at),
       amount: order.total,
       currency_code: order.currency_code,
       tax: order.tax_rate,
@@ -283,10 +343,75 @@ export const useBuildTimeline = (orderId: string) => {
       orderId: order.id,
     } as OrderPlacedEvent)
 
+    if (inventoryEnabled && !!reservations?.length) {
+      let totalItems = (order?.items ?? []).reduce(
+        (acc, i) => acc + i.quantity,
+        0
+      )
+
+      events.push({
+        id: `${order.id}-awaits-allocation`,
+        time: moment(order.created_at).add(1, "ms").toDate(),
+        type: "awaits-allocation",
+        orderId: order.id,
+        quantity: totalItems,
+      } as AwaitsAllocationEvent)
+
+      const res: TimelineEvent[] = []
+
+      const reservationsCopy = [...(reservations ?? [])]
+
+      reservationsCopy.sort((a, b) => {
+        if (a.created_at < b.created_at) {
+          return -1
+        }
+
+        if (a.created_at > b.created_at) {
+          return 1
+        }
+
+        return 0
+      })
+
+      while (totalItems > 0) {
+        const reservation = reservationsCopy.shift()
+        if (!reservation) {
+          break
+        }
+        const locationName = locationsMap.get(reservation.location_id)
+        if (!locationName) {
+          continue
+        }
+
+        res.push({
+          id: `${reservation.id}`,
+          time: new Date(reservation.created_at),
+          type: "allocation-created",
+          orderId: order.id,
+          quantity: reservation.quantity,
+          locationName: locationName.name,
+        } as AllocationCreatedEvent)
+        totalItems -= reservation.quantity
+
+        console.log(totalItems)
+
+        if (totalItems) {
+          res.push({
+            id: `${reservation.id}-awaits-allocation`,
+            time: moment(reservation.created_at).add(1, "ms").toDate(),
+            type: "awaits-allocation",
+            orderId: order.id,
+            quantity: totalItems,
+          } as AwaitsAllocationEvent)
+        }
+      }
+      events.push(...res)
+    }
+
     if (order.status === "canceled") {
       events.push({
         id: `${order.id}-canceled`,
-        time: order.updated_at,
+        time: new Date(order.updated_at),
         type: "canceled",
         orderId: order.id,
       } as TimelineEvent)
@@ -296,7 +421,7 @@ export const useBuildTimeline = (orderId: string) => {
       for (const note of notes) {
         events.push({
           id: note.id,
-          time: note.created_at,
+          time: new Date(note.created_at),
           type: "note",
           authorId: note.author_id,
           value: note.value,
@@ -312,7 +437,7 @@ export const useBuildTimeline = (orderId: string) => {
         id: event.id,
         note: event.note,
         reason: event.reason,
-        time: event.created_at,
+        time: new Date(event.created_at),
         type: "refund",
         refund: event,
       } as RefundEvent)
@@ -321,7 +446,7 @@ export const useBuildTimeline = (orderId: string) => {
     for (const event of order.fulfillments) {
       events.push({
         id: event.id,
-        time: event.created_at,
+        time: new Date(event.created_at),
         type: "fulfilled",
         items: event.items.map((item) =>
           getFulfilmentItem(allItems, edits, item)
@@ -355,7 +480,7 @@ export const useBuildTimeline = (orderId: string) => {
           .filter((i) => !!i),
         status: event.status,
         currentStatus: event.status,
-        time: event.updated_at,
+        time: new Date(event.updated_at),
         type: "return",
         noNotification: event.no_notification,
         orderId: order.id,
@@ -372,7 +497,7 @@ export const useBuildTimeline = (orderId: string) => {
             // Can be undefined while `edits` is loading
             .filter((i) => !!i),
           status: "requested",
-          time: event.created_at,
+          time: new Date(event.created_at),
           type: "return",
           raw: event as unknown as Return,
           currentStatus: event.status,
@@ -386,7 +511,9 @@ export const useBuildTimeline = (orderId: string) => {
     for (const event of order.swaps) {
       events.push({
         id: event.id,
-        time: event.canceled_at ? event.canceled_at : event.created_at,
+        time: new Date(
+          event.canceled_at ? event.canceled_at : event.created_at
+        ),
         noNotification: event.no_notification === true,
         fulfillmentStatus: event.fulfillment_status,
         returnId: event.return_order.id,
@@ -410,7 +537,7 @@ export const useBuildTimeline = (orderId: string) => {
       ) {
         events.push({
           id: event.id,
-          time: event.fulfillments[0].created_at,
+          time: new Date(event.fulfillments[0].created_at),
           type: "fulfilled",
           items: event.additional_items.map((i) => getSwapItem(i)),
           noNotification: event.no_notification,
@@ -421,7 +548,7 @@ export const useBuildTimeline = (orderId: string) => {
         if (event.fulfillments[0].shipped_at) {
           events.push({
             id: event.id,
-            time: event.fulfillments[0].shipped_at,
+            time: new Date(event.fulfillments[0].shipped_at),
             type: "shipped",
             items: event.additional_items.map((i) => getSwapItem(i)),
             noNotification: event.no_notification,
@@ -451,7 +578,9 @@ export const useBuildTimeline = (orderId: string) => {
           refundAmount: claim.refund_amount,
           currencyCode: order.currency_code,
           claimItems: claim.claim_items.map((i) => getClaimItem(i)),
-          time: claim.canceled_at ? claim.canceled_at : claim.created_at,
+          time: new Date(
+            claim.canceled_at ? claim.canceled_at : claim.created_at
+          ),
           noNotification: claim.no_notification,
           claimType: claim.type,
           canceledAt: claim.canceled_at,
@@ -466,7 +595,7 @@ export const useBuildTimeline = (orderId: string) => {
         ) {
           events.push({
             id: claim.id,
-            time: claim.fulfillments[0].created_at,
+            time: new Date(claim.fulfillments[0].created_at),
             type: "fulfilled",
             items: claim.additional_items.map((i) => getSwapItem(i)),
             noNotification: claim.no_notification,
@@ -477,7 +606,7 @@ export const useBuildTimeline = (orderId: string) => {
           if (claim.fulfillments[0].shipped_at) {
             events.push({
               id: claim.id,
-              time: claim.fulfillments[0].shipped_at,
+              time: new Date(claim.fulfillments[0].shipped_at),
               type: "shipped",
               items: claim.additional_items.map((i) => getSwapItem(i)),
               noNotification: claim.no_notification,
@@ -503,7 +632,7 @@ export const useBuildTimeline = (orderId: string) => {
             refundAmount: claim.refund_amount,
             currencyCode: order.currency_code,
             claimItems: claim.claim_items.map((i) => getClaimItem(i)),
-            time: claim.created_at,
+            time: new Date(claim.created_at),
             noNotification: claim.no_notification,
             claimType: claim.type,
             isCanceled: true,
@@ -517,7 +646,7 @@ export const useBuildTimeline = (orderId: string) => {
       for (const notification of notifications) {
         events.push({
           id: notification.id,
-          time: notification.created_at,
+          time: new Date(notification.created_at),
           to: notification.to,
           type: "notification",
           title: notification.event_name,
