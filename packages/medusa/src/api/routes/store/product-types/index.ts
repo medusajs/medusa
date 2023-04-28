@@ -29,6 +29,7 @@ export const allowedStoreProductTypeFields = [
   "value",
   "created_at",
   "updated_at",
+  "metadata",
 ]
 
 export const defaultStoreProductTypeFields = [
@@ -36,6 +37,7 @@ export const defaultStoreProductTypeFields = [
   "value",
   "created_at",
   "updated_at",
+  "metadata",
 ]
 export const defaultStoreProductTypeRelations = []
 
