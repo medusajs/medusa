@@ -55,6 +55,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
         admin_only: !data.store_option,
         amount: data.amount!,
         metadata: getSubmittableMetadata(data.metadata),
+        includes_tax: option.region.includes_tax,
       },
       {
         onSuccess: () => {
