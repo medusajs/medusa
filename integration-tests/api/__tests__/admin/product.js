@@ -1431,6 +1431,7 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      console.log(response.status, response.data.product)
 
       expect(response.data.product).toEqual(
         expect.objectContaining({
