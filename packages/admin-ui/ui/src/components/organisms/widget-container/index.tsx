@@ -9,7 +9,8 @@ import {
 } from "@medusajs/medusa"
 import { InjectionZone, LoadedWidget } from "@medusajs/types"
 import React from "react"
-import ExtensionErrorBoundary from "../extension-error-boundary"
+import ExtensionErrorBoundary from "../../molecules/extension-error-boundary"
+import { useWidgetContainerProps } from "./use-widget-container-props"
 
 type EntityMap = {
   "product.details": Product
@@ -46,13 +47,17 @@ const WidgetContainer = <T extends InjectionZone>({
 }: WidgetContainerProps<T>) => {
   const { name, origin, Component } = widget
 
+  const baseProps = useWidgetContainerProps()
+
   const propKey = injectionZone.split(".")[0] as keyof PropKeyMap
   const props = {
     [propKey]: entity,
+    ...baseProps,
   }
 
   return (
     <ExtensionErrorBoundary
+      type="widget"
       info={{
         name,
         origin,
