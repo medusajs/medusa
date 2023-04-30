@@ -6249,7 +6249,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ../../typeorm-0.3.15.tgz
+    typeorm: ^0.3.14
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6260,7 +6260,7 @@ __metadata:
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    typeorm: ../../typeorm-0.3.15.tgz
+    typeorm: ^0.3.14
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
@@ -6278,7 +6278,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ../../typeorm-0.3.15.tgz
+    typeorm: ^0.3.14
     typescript: ^4.4.4
     ulid: ^2.3.0
   languageName: unknown
@@ -23727,7 +23727,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: ../../typeorm-0.3.15.tgz
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -23748,7 +23748,7 @@ __metadata:
     medusa-fulfillment-webshipper: 1.3.9
     medusa-interfaces: 1.3.7
     medusa-plugin-sendgrid: 1.3.9
-    typeorm: ../../typeorm-0.3.15.tgz
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -23764,7 +23764,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: ../../typeorm-0.3.15.tgz
+    typeorm: ^0.3.14
   languageName: unknown
   linkType: soft
 
@@ -39893,480 +39893,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@file:../../typeorm-0.3.15.tgz::locator=%40medusajs%2Fstock-location%40workspace%3Apackages%2Fstock-location":
-  version: 0.3.15
-  resolution: "typeorm@file:../../typeorm-0.3.15.tgz::locator=%40medusajs%2Fstock-location%40workspace%3Apackages%2Fstock-location"
-  dependencies:
-    "@sqltools/formatter": ^1.2.5
-    app-root-path: ^3.1.0
-    buffer: ^6.0.3
-    chalk: ^4.1.2
-    cli-highlight: ^2.1.11
-    debug: ^4.3.4
-    dotenv: ^16.0.3
-    glob: ^8.1.0
-    mkdirp: ^2.1.3
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.5.0
-    uuid: ^9.0.0
-    yargs: ^17.6.2
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^5.2.0
-    mssql: ^9.1.1
-    mysql2: ^2.2.5 || ^3.0.1
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: ./cli.js
-    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: ./cli-ts-node-esm.js
-  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
-  languageName: node
-  linkType: hard
-
-"typeorm@file:../../typeorm-0.3.15.tgz::locator=%40medusajs%2Ftypes%40workspace%3Apackages%2Ftypes":
-  version: 0.3.15
-  resolution: "typeorm@file:../../typeorm-0.3.15.tgz::locator=%40medusajs%2Ftypes%40workspace%3Apackages%2Ftypes"
-  dependencies:
-    "@sqltools/formatter": ^1.2.5
-    app-root-path: ^3.1.0
-    buffer: ^6.0.3
-    chalk: ^4.1.2
-    cli-highlight: ^2.1.11
-    debug: ^4.3.4
-    dotenv: ^16.0.3
-    glob: ^8.1.0
-    mkdirp: ^2.1.3
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.5.0
-    uuid: ^9.0.0
-    yargs: ^17.6.2
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^5.2.0
-    mssql: ^9.1.1
-    mysql2: ^2.2.5 || ^3.0.1
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: ./cli.js
-    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: ./cli-ts-node-esm.js
-  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
-  languageName: node
-  linkType: hard
-
-"typeorm@file:../../typeorm-0.3.15.tgz::locator=%40medusajs%2Futils%40workspace%3Apackages%2Futils":
-  version: 0.3.15
-  resolution: "typeorm@file:../../typeorm-0.3.15.tgz::locator=%40medusajs%2Futils%40workspace%3Apackages%2Futils"
-  dependencies:
-    "@sqltools/formatter": ^1.2.5
-    app-root-path: ^3.1.0
-    buffer: ^6.0.3
-    chalk: ^4.1.2
-    cli-highlight: ^2.1.11
-    debug: ^4.3.4
-    dotenv: ^16.0.3
-    glob: ^8.1.0
-    mkdirp: ^2.1.3
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.5.0
-    uuid: ^9.0.0
-    yargs: ^17.6.2
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^5.2.0
-    mssql: ^9.1.1
-    mysql2: ^2.2.5 || ^3.0.1
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: ./cli.js
-    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: ./cli-ts-node-esm.js
-  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
-  languageName: node
-  linkType: hard
-
-"typeorm@file:../../typeorm-0.3.15.tgz::locator=integration-tests-api%40workspace%3Aintegration-tests%2Fapi":
-  version: 0.3.15
-  resolution: "typeorm@file:../../typeorm-0.3.15.tgz::locator=integration-tests-api%40workspace%3Aintegration-tests%2Fapi"
-  dependencies:
-    "@sqltools/formatter": ^1.2.5
-    app-root-path: ^3.1.0
-    buffer: ^6.0.3
-    chalk: ^4.1.2
-    cli-highlight: ^2.1.11
-    debug: ^4.3.4
-    dotenv: ^16.0.3
-    glob: ^8.1.0
-    mkdirp: ^2.1.3
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.5.0
-    uuid: ^9.0.0
-    yargs: ^17.6.2
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^5.2.0
-    mssql: ^9.1.1
-    mysql2: ^2.2.5 || ^3.0.1
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: ./cli.js
-    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: ./cli-ts-node-esm.js
-  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
-  languageName: node
-  linkType: hard
-
-"typeorm@file:../../typeorm-0.3.15.tgz::locator=integration-tests-plugins%40workspace%3Aintegration-tests%2Fplugins":
-  version: 0.3.15
-  resolution: "typeorm@file:../../typeorm-0.3.15.tgz::locator=integration-tests-plugins%40workspace%3Aintegration-tests%2Fplugins"
-  dependencies:
-    "@sqltools/formatter": ^1.2.5
-    app-root-path: ^3.1.0
-    buffer: ^6.0.3
-    chalk: ^4.1.2
-    cli-highlight: ^2.1.11
-    debug: ^4.3.4
-    dotenv: ^16.0.3
-    glob: ^8.1.0
-    mkdirp: ^2.1.3
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.5.0
-    uuid: ^9.0.0
-    yargs: ^17.6.2
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^5.2.0
-    mssql: ^9.1.1
-    mysql2: ^2.2.5 || ^3.0.1
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: ./cli.js
-    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: ./cli-ts-node-esm.js
-  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
-  languageName: node
-  linkType: hard
-
-"typeorm@file:../../typeorm-0.3.15.tgz::locator=integration-tests-repositories%40workspace%3Aintegration-tests%2Frepositories":
-  version: 0.3.15
-  resolution: "typeorm@file:../../typeorm-0.3.15.tgz::locator=integration-tests-repositories%40workspace%3Aintegration-tests%2Frepositories"
-  dependencies:
-    "@sqltools/formatter": ^1.2.5
-    app-root-path: ^3.1.0
-    buffer: ^6.0.3
-    chalk: ^4.1.2
-    cli-highlight: ^2.1.11
-    debug: ^4.3.4
-    dotenv: ^16.0.3
-    glob: ^8.1.0
-    mkdirp: ^2.1.3
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.5.0
-    uuid: ^9.0.0
-    yargs: ^17.6.2
-  peerDependencies:
-    "@google-cloud/spanner": ^5.18.0
-    "@sap/hana-client": ^2.12.25
-    better-sqlite3: ^7.1.2 || ^8.0.0
-    hdb-pool: ^0.1.6
-    ioredis: ^5.0.4
-    mongodb: ^5.2.0
-    mssql: ^9.1.1
-    mysql2: ^2.2.5 || ^3.0.1
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1 || ^4.0.0
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.3
-    ts-node: ^10.7.0
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@google-cloud/spanner":
-      optional: true
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    ts-node:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: ./cli.js
-    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: ./cli-ts-node-esm.js
-  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
-  languageName: node
-  linkType: hard
-
 "typeorm@file:./typeorm-0.3.15.tgz::locator=root%40workspace%3A.":
   version: 0.3.15
   resolution: "typeorm@file:./typeorm-0.3.15.tgz::locator=root%40workspace%3A."
@@ -40443,6 +39969,85 @@ __metadata:
     typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
     typeorm-ts-node-esm: ./cli-ts-node-esm.js
   checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
+  languageName: node
+  linkType: hard
+
+"typeorm@npm:^0.3.14":
+  version: 0.3.15
+  resolution: "typeorm@npm:0.3.15"
+  dependencies:
+    "@sqltools/formatter": ^1.2.5
+    app-root-path: ^3.1.0
+    buffer: ^6.0.3
+    chalk: ^4.1.2
+    cli-highlight: ^2.1.11
+    debug: ^4.3.4
+    dotenv: ^16.0.3
+    glob: ^8.1.0
+    mkdirp: ^2.1.3
+    reflect-metadata: ^0.1.13
+    sha.js: ^2.4.11
+    tslib: ^2.5.0
+    uuid: ^9.0.0
+    yargs: ^17.6.2
+  peerDependencies:
+    "@google-cloud/spanner": ^5.18.0
+    "@sap/hana-client": ^2.12.25
+    better-sqlite3: ^7.1.2 || ^8.0.0
+    hdb-pool: ^0.1.6
+    ioredis: ^5.0.4
+    mongodb: ^5.2.0
+    mssql: ^9.1.1
+    mysql2: ^2.2.5 || ^3.0.1
+    oracledb: ^5.1.0
+    pg: ^8.5.1
+    pg-native: ^3.0.0
+    pg-query-stream: ^4.0.0
+    redis: ^3.1.1 || ^4.0.0
+    sql.js: ^1.4.0
+    sqlite3: ^5.0.3
+    ts-node: ^10.7.0
+    typeorm-aurora-data-api-driver: ^2.0.0
+  peerDependenciesMeta:
+    "@google-cloud/spanner":
+      optional: true
+    "@sap/hana-client":
+      optional: true
+    better-sqlite3:
+      optional: true
+    hdb-pool:
+      optional: true
+    ioredis:
+      optional: true
+    mongodb:
+      optional: true
+    mssql:
+      optional: true
+    mysql2:
+      optional: true
+    oracledb:
+      optional: true
+    pg:
+      optional: true
+    pg-native:
+      optional: true
+    pg-query-stream:
+      optional: true
+    redis:
+      optional: true
+    sql.js:
+      optional: true
+    sqlite3:
+      optional: true
+    ts-node:
+      optional: true
+    typeorm-aurora-data-api-driver:
+      optional: true
+  bin:
+    typeorm: cli.js
+    typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
+    typeorm-ts-node-esm: cli-ts-node-esm.js
+  checksum: 0a6a2095bc05dbb58374fc51d74038540ac7e01d7e466756b76d9def6bac88478b604bcb340a2798aaf2e4630968c56ab51c9a2337c902a3408c89e70afdb172
   languageName: node
   linkType: hard
 
