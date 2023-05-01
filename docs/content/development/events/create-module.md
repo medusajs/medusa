@@ -192,6 +192,37 @@ class CustomEventBus extends AbstractEventBusModuleService {
 }
 ```
 
+### (optional) retrieveSubscribers
+
+This method is also implemented in the `AbstractEventBusModuleService` class. This section explains how you can override it to implement your custom logic, if necessary.
+
+The `retrieveSubscribers` method is used to retrieve the subscribers to a specific event. If there are no subscribers to an event, the event is not stored in the database or processed by the event bus module.
+
+The `retrieveSubscribers` method accepts one parameter, which is the name of the event. It should return an array of objects of the following type:
+
+```ts
+type SubscriberDescriptor = {
+  id: string
+  subscriber: Subscriber
+}
+```
+
+Where:
+
+- `id` is a string that is the ID of a subscriber.
+- `subscriber` is a subscriber class.
+
+For example, here's how the `retrieveSubscribers` is implemented in the `AbstractEventBusModuleService`:
+
+```ts title=services/event-bus-custom.ts
+class CustomEventBus extends AbstractEventBusModuleService {
+  // ...
+  retrieveSubscribers(event: string | symbol) {
+    return this.eventToSubscribersMap_.get(event)
+  }
+}
+```
+
 ---
 
 ## Step 3: Export the Service
