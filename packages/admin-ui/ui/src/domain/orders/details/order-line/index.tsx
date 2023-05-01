@@ -10,9 +10,15 @@ type OrderLineProps = {
   item: LineItem
   currencyCode: string
   reservations?: ReservationItemDTO[]
+  isAllocatable?: boolean
 }
 
-const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
+const OrderLine = ({
+  item,
+  currencyCode,
+  reservations,
+  isAllocatable = true,
+}: OrderLineProps) => {
   const { isFeatureEnabled } = useFeatureFlag()
   return (
     <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
@@ -50,7 +56,7 @@ const OrderLine = ({ item, currencyCode, reservations }: OrderLineProps) => {
           <div className="inter-small-regular text-grey-50">
             x {item.quantity}
           </div>
-          {isFeatureEnabled("inventoryService") && (
+          {isFeatureEnabled("inventoryService") && isAllocatable && (
             <ReservationIndicator reservations={reservations} lineItem={item} />
           )}
           <div className="inter-small-regular text-grey-90 min-w-[55px] text-right">
