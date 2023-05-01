@@ -36326,7 +36326,7 @@ __metadata:
     typedoc-plugin-markdown: ^3.13.4
     typedoc-plugin-merge-modules: ^4.0.1
     typedoc-plugin-reference-excluder: ^1.0.0
-    typeorm: 0.3.14
+    typeorm: ./typeorm-0.3.15.tgz
   languageName: unknown
   linkType: soft
 
@@ -39894,9 +39894,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:0.3.14":
-  version: 0.3.14
-  resolution: "typeorm@npm:0.3.14"
+"typeorm@file:./typeorm-0.3.15.tgz::locator=root%40workspace%3A.":
+  version: 0.3.15
+  resolution: "typeorm@file:./typeorm-0.3.15.tgz::locator=root%40workspace%3A."
   dependencies:
     "@sqltools/formatter": ^1.2.5
     app-root-path: ^3.1.0
@@ -39918,7 +39918,7 @@ __metadata:
     better-sqlite3: ^7.1.2 || ^8.0.0
     hdb-pool: ^0.1.6
     ioredis: ^5.0.4
-    mongodb: ^3.6.0
+    mongodb: ^5.2.0
     mssql: ^9.1.1
     mysql2: ^2.2.5 || ^3.0.1
     oracledb: ^5.1.0
@@ -39966,10 +39966,10 @@ __metadata:
     typeorm-aurora-data-api-driver:
       optional: true
   bin:
-    typeorm: cli.js
-    typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
-    typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: 26190e9c8f0cd1f030df76f94d8fd8ae40f6ddab5cd037b424c1bbedf0353a441000d10d0ecebc663cc853afab33a2fc538f0a6287330e4338aa59d1258888ce
+    typeorm: ./cli.js
+    typeorm-ts-node-commonjs: ./cli-ts-node-commonjs.js
+    typeorm-ts-node-esm: ./cli-ts-node-esm.js
+  checksum: 3d04f8911ad5b467b7f1597ced06a04b63428568eb80e5a9f5252936ee4a957b8597dba9d24d545205077fbf3ada4d5c18a9ec6d2dd767dd6f2551f71d49a277
   languageName: node
   linkType: hard
 
