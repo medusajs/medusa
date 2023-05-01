@@ -141,6 +141,7 @@ export default class ReservationItemService {
       quantity: data.quantity,
       metadata: data.metadata,
       external_id: data.external_id,
+      description: data.description,
     })
 
     const [newReservationItem] = await Promise.all([

@@ -20,6 +20,10 @@ export interface ReservationItemDTO {
    */
   inventory_item_id: string
   /**
+   * Description of the reservation item
+   */
+  description?: string
+  /**
    * The id of the reservation item
    */
   quantity: number
