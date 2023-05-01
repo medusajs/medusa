@@ -1,6 +1,7 @@
+import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+
 import { IInventoryService } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
-import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
@@ -127,6 +128,10 @@ export class AdminPostReservationsReq {
 
   @IsNumber()
   quantity: number
+
+  @IsString()
+  @IsOptional()
+  description?: string
 
   @IsObject()
   @IsOptional()
