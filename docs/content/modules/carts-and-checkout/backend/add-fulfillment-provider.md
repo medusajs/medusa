@@ -80,7 +80,7 @@ For example:
 class MyFulfillmentService extends FulfillmentService {
   // ...
   constructor(container, options) {
-    super(container)
+    super()
     // you can access options here
   }
 }
