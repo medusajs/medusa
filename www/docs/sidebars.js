@@ -800,13 +800,13 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/orders/storefront/create-swap",
-          label: "Storefront: Create a Swap",
+          id: "modules/orders/storefront/create-return",
+          label: "Storefront: Create a Return",
         },
         {
           type: "doc",
-          id: "modules/orders/storefront/create-return",
-          label: "Storefront: Create a Return",
+          id: "modules/orders/storefront/create-swap",
+          label: "Storefront: Create a Swap",
         },
         {
           type: "doc",
