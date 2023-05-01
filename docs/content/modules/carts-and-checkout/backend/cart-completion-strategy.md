@@ -25,7 +25,7 @@ import {
   CartCompletionResponse,
   IdempotencyKey } from "@medusajs/medusa"
 import { 
-  RequestContext
+  RequestContext,
 } from "@medusajs/medusa/dist/types/request"
 
 class CartCompletionStrategy 
@@ -49,6 +49,8 @@ The class includes the `complete` method defined as abstract in `AbstractCartCom
 ### Using a Constructor
 
 You can use a constructor to access services and resources registered in the dependency container using dependency injection. For example:
+
+<!-- eslint-disable prefer-rest-params -->
 
 ```ts title=src/strategies/cart-completion.ts
 // ...
