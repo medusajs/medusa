@@ -393,8 +393,6 @@ export const useBuildTimeline = (orderId: string) => {
         } as AllocationCreatedEvent)
         totalItems -= reservation.quantity
 
-        console.log(totalItems)
-
         if (totalItems) {
           res.push({
             id: `${reservation.id}-awaits-allocation`,
