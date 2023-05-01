@@ -25,7 +25,7 @@ Admins can specify the tax provider for a specific region.
 
 Customers can view calculated taxes during their checkout process.
 
-<DocCardList colSize={6} items={[
+<DocCardList colSize={4} items={[
   {
     type: 'link',
     href: '#',
@@ -33,6 +33,16 @@ Customers can view calculated taxes during their checkout process.
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to create a tax provider.',
+      isSoon: true
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Backend: Tax Calculation Strategy',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to override the tax calculation strategy.',
       isSoon: true
     }
   },
@@ -75,7 +85,7 @@ Admins can create additional tax rates aside from the default tax rate. They can
 
 Customers can review order edit requests and authorize additional payments if necessary.
 
-<DocCardList colSize={6} items={[
+<DocCardList colSize={4} items={[
   {
     type: 'link',
     href: '#',
@@ -83,16 +93,6 @@ Customers can review order edit requests and authorize additional payments if ne
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage tax rates using Admin APIs.',
-      isSoon: true
-    }
-  },
-  {
-    type: 'link',
-    href: '#',
-    label: 'Admin: Manage Tax Overrides',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn how to manage tax overrides using Admin APIs.',
       isSoon: true
     }
   },
@@ -150,12 +150,11 @@ Learn how tax-related entities and concepts are built, their relation to other m
 <DocCardList colSize={6} items={[
   {
     type: 'link',
-    href: '#',
+    href: '/modules/taxes',
     label: 'Architecture: Tax',
     customProps: {
       icon: Icons['circle-stack-solid'],
       description: 'Learn about the Tax Architecture.',
-      isSoon: true,
     }
   },
   {
