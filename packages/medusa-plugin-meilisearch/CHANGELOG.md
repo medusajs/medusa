@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.2
+
+### Patch Changes
+
+- [#3898](https://github.com/medusajs/medusa/pull/3898) [`aec7ae219`](https://github.com/medusajs/medusa/commit/aec7ae219de9e84a43e4945cb62b04d96672d6d2) Thanks [@pevey](https://github.com/pevey)! - Update meilisearch library dependency
+
+- Updated dependencies [[`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100), [`491566df6`](https://github.com/medusajs/medusa/commit/491566df6b7ced35f655f810961422945e10ecd0)]:
+  - @medusajs/utils@1.8.2
+
 ## 2.0.1
 
 ### Patch Changes

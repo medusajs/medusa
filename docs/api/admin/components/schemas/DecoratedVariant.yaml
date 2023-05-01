@@ -1,9 +1,0 @@
-title: Decorated Product Variant
-type: object
-allOf:
-  - $ref: ./PricedVariant.yaml
-  - type: object
-    properties:
-      purchasable:
-        type: boolean
-        description: Boolean indicating if variant is purchasable.
