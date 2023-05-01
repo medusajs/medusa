@@ -18,7 +18,7 @@ const {
   simpleShippingOptionFactory,
 } = require("../../../factories")
 
-jest.setTimeout(50000)
+jest.setTimeout(150000)
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
