@@ -1,1 +1,1 @@
-export { customize } from "./customize"
+export { extend } from "./extend"

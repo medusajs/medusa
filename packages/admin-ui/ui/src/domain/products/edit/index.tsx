@@ -2,13 +2,13 @@ import { useAdminProduct } from "medusa-react"
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
-import WidgetContainer from "../../../components/molecules/widget-container"
 import ProductAttributesSection from "../../../components/organisms/product-attributes-section"
 import ProductGeneralSection from "../../../components/organisms/product-general-section"
 import ProductMediaSection from "../../../components/organisms/product-media-section"
 import ProductRawSection from "../../../components/organisms/product-raw-section"
 import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
 import ProductVariantsSection from "../../../components/organisms/product-variants-section"
+import WidgetContainer from "../../../components/organisms/widget-container"
 import { useInjectionZones } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 
@@ -63,6 +63,7 @@ const Edit = () => {
                 injectionZone={"product.details"}
                 widget={w}
                 entity={product}
+                product={product}
               />
             )
           })}

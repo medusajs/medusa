@@ -1,6 +1,6 @@
-import type { Customization, CustomizationConfig } from "@medusajs/types"
+import type { Extension, ExtensionConfig } from "@medusajs/types"
 
-export function customize(config: CustomizationConfig): Customization {
+export function extend(config: ExtensionConfig): Extension {
   const { identifier, widgets } = config
 
   return {

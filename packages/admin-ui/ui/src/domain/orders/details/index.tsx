@@ -31,6 +31,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import Avatar from "../../../components/atoms/avatar"
 import BackButton from "../../../components/atoms/back-button"
+import Spacer from "../../../components/atoms/spacer"
 import Spinner from "../../../components/atoms/spinner"
 import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
@@ -44,10 +45,10 @@ import RefreshIcon from "../../../components/fundamentals/icons/refresh-icon"
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
 import { ActionType } from "../../../components/molecules/actionables"
 import JSONView from "../../../components/molecules/json-view"
-import WidgetContainer from "../../../components/molecules/widget-container"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
 import Timeline from "../../../components/organisms/timeline"
+import WidgetContainer from "../../../components/organisms/widget-container"
 import { AddressType } from "../../../components/templates/address-form"
 import TransferOrdersModal from "../../../components/templates/transfer-orders-modal"
 import useClipboard from "../../../hooks/use-clipboard"
@@ -542,6 +543,7 @@ const OrderDetails = () => {
                   })}
                 </div>
                 <RawJSON data={order} title="Raw order" />
+                <Spacer />
               </div>
               <Timeline orderId={order.id} />
             </div>
