@@ -18,6 +18,9 @@ export class ReservationItem extends SoftDeletableEntity {
   @Column()
   quantity: number
 
+  @Column({ type: "text", nullable: true })
+  external_id: string | null
+
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 

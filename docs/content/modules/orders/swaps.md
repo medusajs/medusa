@@ -87,7 +87,7 @@ A swap’s payment can be accessed by expanding the `payment` relation and acces
 
 ## Handling Swap Fulfillment
 
-After the swap has been created and completed by the customer, the merchant should handle the fulfillment of the new items.
+After the swap has been created and completed by the customer, the merchant should handle the [fulfillment](./fulfillments.md) of the new items.
 
 Although you have freedom in how you implement the process, the recommended process provided in the Medusa backend is as follows:
 
@@ -101,6 +101,12 @@ A swap’s fulfillments can be accessed by expanding the `fulfillments` relation
 
 ---
 
+## Handling a Swap's Return
+
+A swap's return can be marked as received, which would adjust the inventory and change the status of the return. This process is explained within the [Returns documentation](./returns.md#mark-return-as-received-process).
+
+---
+
 ## Canceling a Swap
 
 A swap can be canceled by the merchant if necessary. It can be done either through the `SwapService`'s [cancel method](../../references/services/classes/SwapService.md#cancel) or the [Cancel Swap endpoint](/api/admin#tag/Orders/operation/PostOrdersSwapCancel).
@@ -109,7 +115,7 @@ A swap can’t be canceled if:
 
 - The payment has been refunded (the `payment_status` is either `difference_refunded`, `partially_refunded`, or `refunded`).
 - Its fulfillment isn’t canceled. You’ll have to cancel the swap’s fulfillment as explained in the [Handling Swap Fulfillment section](#handling-swap-fulfillment).
-- Its return isn’t canceled. You’ll have to cancel the return associated with the swap first before canceling the swap.
+- Its return isn’t canceled. You’ll have to [cancel the return](./returns.md#cancel-a-return) associated with the swap first before canceling the swap.
 
 ---
 
@@ -149,7 +155,7 @@ You can access the swap’s new items by expanding the `additional_items` relati
 
 ### Return
 
-The swap is associated with a return that is created when the swap is created. A return is represented by the `Return` entity.
+The swap is associated with a [return](./returns.md) that is created when the swap is created. A return is represented by the `Return` entity.
 
 You can access the swap’s return by expanding the `return_order` relation and accessing `swap.return_order`.
 
@@ -165,4 +171,5 @@ You can access the swap’s shipping address ID using the `shipping_address_id` 
 
 ## See Also
 
+- [How to manage swaps](./admin/manage-swaps.mdx)
 - [Order Architecture Overview](./orders.md)

@@ -12,6 +12,12 @@ In this document, you'll learn how to use Publishable API Keys in client request
 
 :::
 
+## Default Behaviour In Product Store Endpoints
+
+If you don't pass a publishable API Key for the store endpoints `/store/products` and `/store/products/{product_id}`, the default sales channel of the store is assigned to the request.
+
+---
+
 ## Using Medusa JS Client
 
 When using [Medusa’s JS Client](../../../js-client/overview.md), you can pass it to the client only once when you create the instance of the client:
@@ -37,6 +43,8 @@ const medusa = new Medusa({
 medusa.setPublishableKey(publishableApiKey)
 ```
 
+---
+
 ## Using Medusa React
 
 You can pass the publishable API key to the `MedusaProvider` component:
@@ -57,6 +65,8 @@ const App = () => {
 ```
 
 Then, the API key will be passed in the header parameter `x-publishable-api-key` of every request.
+
+---
 
 ## Using Other Methods
 

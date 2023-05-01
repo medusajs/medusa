@@ -727,36 +727,24 @@ module.exports = {
           label: "Swaps",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/returns",
           label: "Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/claims",
           label: "Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/draft-orders",
           label: "Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/fulfillments",
           label: "Fulfillment",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
@@ -766,12 +754,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/backend/send-order-confirmation",
           label: "Backend: Send Confirmation Email",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
@@ -779,12 +764,9 @@ module.exports = {
           label: "Backend: Send Order Claim Email",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-orders",
           label: "Admin: Manage Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
@@ -792,44 +774,24 @@ module.exports = {
           label: "Admin: Edit an Order",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-swaps",
           label: "Admin: Manage Swaps",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-returns",
           label: "Admin: Manage Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-claims",
           label: "Admin: Manage Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-draft-orders",
           label: "Admin: Manage Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Return Reasons",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
