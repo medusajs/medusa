@@ -65,7 +65,7 @@ The following flow is implemented within the Create Claim endpoint:
 
 ## Fulfill a Claim
 
-If a claim’s type is `replace`, an admin can create a fulfillment for the additional items that should be sent to the customer.
+If a claim’s type is `replace`, an admin can create a [fulfillment](./fulfillments.md) for the additional items that should be sent to the customer.
 
 A fulfillment can be created either using the [Create Claim Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderClaimsClaimFulfillments) or the `ClaimService`'s [createFulfillment method](../../references/services/classes/ClaimService.md#createfulfillment).
 
@@ -149,5 +149,6 @@ You can access the claim’s fulfillment by expanding the `fulfillments` relatio
 
 ## See Also
 
+- [How to manage claims using REST APIs](./admin/manage-claims.mdx)
 - [Orders architecture overview](./orders.md)
 - [Returns architecture overview](./claims.md)
