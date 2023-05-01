@@ -5988,13 +5988,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/admin-sdk@workspace:packages/admin-sdk":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/admin-sdk@workspace:packages/admin-sdk"
+  dependencies:
+    "@medusajs/medusa": "*"
+    "@medusajs/types": "*"
+    "@rollup/plugin-commonjs": ^24.1.0
+    "@rollup/plugin-node-resolve": ^15.0.2
+    "@rollup/plugin-terser": ^0.4.1
+    "@rollup/plugin-typescript": ^11.1.0
+    "@types/fs-extra": ^11.0.1
+    fs-extra: ^11.1.1
+    rollup: ^3.20.7
+    tslib: ^2.5.0
+    typescript: ^5.0.4
+  bin:
+    extension: ./bin/index.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/admin-ui@1.8.3, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
     "@hookform/error-message": ^2.0.1
-    "@medusajs/medusa": 1.9.0
-    "@medusajs/types": 1.8.3
+    "@medusajs/medusa": "*"
+    "@medusajs/types": "*"
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
     "@radix-ui/react-collapsible": ^1.0.1
@@ -6259,7 +6279,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@1.9.0, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@1.9.0, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6427,7 +6447,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@1.8.3, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@1.8.3, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
