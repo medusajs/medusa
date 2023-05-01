@@ -164,6 +164,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
     return actionables
   }, [showModal, isFeatureEnabled, showAllocationModal, allItemsReserved])
 
+  const isAllocatable = !["canceled", "archived"].includes(order.status)
+
   return (
     <BodyCard
       className={"mb-4 h-auto min-h-0 w-full"}
@@ -172,9 +174,17 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
         isFeatureEnabled("inventoryService") &&
         Array.isArray(reservations) && (
           <StatusIndicator
-            onClick={allItemsReserved ? undefined : showAllocationModal}
-            variant={allItemsReserved ? "success" : "danger"}
-            title={allItemsReserved ? "Allocated" : "Awaits allocation"}
+            onClick={
+              allItemsReserved || !isAllocatable
+                ? undefined
+                : showAllocationModal
+            }
+            variant={allItemsReserved || !isAllocatable ? "success" : "danger"}
+            title={
+              allItemsReserved || !isAllocatable
+                ? "Allocated"
+                : "Awaits allocation"
+            }
             className="rounded-rounded border px-3 py-1.5"
           />
         )
@@ -188,6 +198,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             item={item}
             currencyCode={order.currency_code}
             reservations={reservationItemsMap[item.id]}
+            isAllocatable={isAllocatable}
           />
         ))}
         <DisplayTotal

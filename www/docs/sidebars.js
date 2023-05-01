@@ -789,36 +789,24 @@ module.exports = {
           label: "Admin: Manage Claims",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-draft-orders",
           label: "Admin: Manage Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
-          label: "Storefront: Manage Customer Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+          type: "doc",
+          id: "modules/orders/storefront/retrieve-order-details",
+          label: "Storefront: Retrieve Order Details",
         },
         {
-          type: "link",
-          href: "#",
-          label: "Storefront: Create a Swap",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/storefront/create-return",
           label: "Storefront: Create a Return",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+        },
+        {
+          type: "doc",
+          id: "modules/orders/storefront/create-swap",
+          label: "Storefront: Create a Swap",
         },
         {
           type: "doc",
