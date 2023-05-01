@@ -20,16 +20,23 @@ This guide only explains how to override the cart completion strategy. It’s hi
 Create a TypeScript or JavaScript file in `src/strategies` of your Medusa backend project with a class that extends the `AbstractCartCompletionStrategy` class:
 
 ```ts title=src/strategies/cart-completion.ts
-import { AbstractCartCompletionStrategy, CartCompletionResponse, IdempotencyKey } from "@medusajs/medusa";
-import { RequestContext } from "@medusajs/medusa/dist/types/request";
+import { 
+  AbstractCartCompletionStrategy,
+  CartCompletionResponse,
+  IdempotencyKey } from "@medusajs/medusa"
+import { 
+  RequestContext
+} from "@medusajs/medusa/dist/types/request"
 
-class CartCompletionStrategy extends AbstractCartCompletionStrategy {
+class CartCompletionStrategy 
+  extends AbstractCartCompletionStrategy {
+
   complete(
     cartId: string, 
     idempotencyKey: IdempotencyKey, 
     context: RequestContext
   ): Promise<CartCompletionResponse> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
 
 }
@@ -44,22 +51,27 @@ The class includes the `complete` method defined as abstract in `AbstractCartCom
 You can use a constructor to access services and resources registered in the dependency container using dependency injection. For example:
 
 ```ts title=src/strategies/cart-completion.ts
-//...
-import { IdempotencyKeyService } from "@medusajs/medusa";
+// ...
+import { IdempotencyKeyService } from "@medusajs/medusa"
 
 type InjectedDependencies = {
   idempotencyKeyService: IdempotencyKeyService
 }
 
-class CartCompletionStrategy extends AbstractCartCompletionStrategy {
-  protected readonly idempotencyKeyService_: IdempotencyKeyService
+class CartCompletionStrategy 
+  extends AbstractCartCompletionStrategy {
 
-  constructor({ idempotencyKeyService }: InjectedDependencies) {
+  protected readonly idempotencyKeyService_: 
+    IdempotencyKeyService
+
+  constructor(
+    { idempotencyKeyService }: InjectedDependencies
+  ) {
     super(arguments[0])
     this.idempotencyKeyService_ = idempotencyKeyService
   }
     
-  //...
+  // ...
 }
 
 export default CartCompletionStrategy
