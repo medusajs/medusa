@@ -1,7 +1,7 @@
 import { Application } from "./application"
 import { WidgetsConfig } from "./widget"
 
-export type CustomizationConfig = {
+export type ExtensionConfig = {
   /**
    * A unique identifier for the customization configuration, used to differentiate it from other customization sources.
    * It is recommended to use the name of the package where the customization configuration is defined, for example, `my-medusa-plugin`.
@@ -14,6 +14,6 @@ export type CustomizationConfig = {
   widgets?: WidgetsConfig
 }
 
-export type Customization = {
+export type Extension = {
   setup(app: Application): void
 }

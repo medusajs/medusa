@@ -1,4 +1,5 @@
 import { IBaseExtension, IBaseLoadedExtension } from "./common"
+import { FeatureFlagHelpers, Navigate, Notify } from "./helpers"
 
 export interface Widget extends IBaseExtension {}
 
@@ -22,3 +23,9 @@ export type WidgetsConfig = {
 }
 
 export interface LoadedWidget extends Widget, IBaseLoadedExtension {}
+
+export interface WidgetProps {
+  notify: Notify
+  navigate: Navigate
+  featureFlags: FeatureFlagHelpers
+}

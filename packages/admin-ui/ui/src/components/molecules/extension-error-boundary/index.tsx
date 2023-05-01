@@ -4,7 +4,7 @@ import RefreshIcon from "../../fundamentals/icons/refresh-icon"
 import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
 
-type WidgetInfo = {
+type ExtensionInfo = {
   name: string
   origin: string
 }
@@ -12,7 +12,7 @@ type WidgetInfo = {
 type Props = {
   type: "widget" | "page"
   children: React.ReactNode
-  info: WidgetInfo
+  info: ExtensionInfo
 }
 
 type State = {
@@ -87,7 +87,7 @@ const FallbackWidget = ({
   reset,
   hide,
 }: {
-  info: WidgetInfo
+  info: ExtensionInfo
   reset: () => void
   hide: () => void
 }) => {
@@ -144,7 +144,7 @@ const FallbackWidget = ({
   )
 }
 
-const FallbackPage = ({ info }: { info: WidgetInfo }) => {
+const FallbackPage = ({ info }: { info: ExtensionInfo }) => {
   return <div>Not implemented</div>
 }
 

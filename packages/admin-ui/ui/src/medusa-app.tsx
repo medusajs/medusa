@@ -1,7 +1,7 @@
 import {
   Application,
-  Customization,
   DomainKey,
+  Extension,
   HookPointKey,
   InjectionZone,
   InjectionZones,
@@ -13,16 +13,16 @@ import { InjectionZoneProvider } from "./providers/injection-zone-provider"
 import { Providers } from "./providers/providers"
 
 type MedusaAppConfig = {
-  customizations?: Customization[]
+  extensions?: Extension[]
 }
 
 class MedusaApp implements Application {
   private injectionZones: InjectionZones
-  private customizations: Customization[]
+  private customizations: Extension[]
 
   constructor(config: MedusaAppConfig) {
     this.injectionZones = new Map()
-    this.customizations = config.customizations || []
+    this.customizations = config.extensions || []
   }
 
   registerWidgets(identifier: string, config: WidgetsConfig): void {

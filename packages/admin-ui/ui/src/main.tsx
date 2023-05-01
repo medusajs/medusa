@@ -1,20 +1,20 @@
-import { Customization } from "@medusajs/types"
+import { Extension } from "@medusajs/types"
 import ReactDOM from "react-dom/client"
 import "./assets/styles/global.css"
 import MedusaApp from "./medusa-app"
 
 async function run() {
-  let ext: Customization[] = []
+  let exts: Extension[] = []
 
   try {
     // @ts-ignore - this file is generated at build time
     const { default: extensions } = await import("./extensions")
-    ext = extensions
+    exts = extensions
   } catch (_) {
     // noop - no extensions
   }
 
-  const app = new MedusaApp({ customizations: ext })
+  const app = new MedusaApp({ extensions: exts })
 
   app.initialize()
 

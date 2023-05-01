@@ -20,6 +20,7 @@
   "packageManager": "yarn@3.2.1",
   "devDependencies": {
     "@medusajs/types": "*",
+    "@medusajs/medusa": "*",
     "@types/fs-extra": "^11.0.1",
     "typescript": "^5.0.4"
   }
