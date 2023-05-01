@@ -64,11 +64,11 @@ You can optionally allow customers to choose a return shipping option that theyâ
 
 ```ts
 medusa.shippingOptions.list({
-  is_return: "true"
+  is_return: "true",
 })
 .then(({ shipping_options }) => {
-  console.log(shipping_options.length);
-});
+  console.log(shipping_options.length)
+})
 ```
 
 </TabItem>
@@ -82,16 +82,19 @@ const ReturnShippingOptions = () => {
     shipping_options, 
     isLoading, 
   } = useShippingOptions({
-    is_return: "true"
+    is_return: "true",
   })
  
   return (
     <div>
       {isLoading && <span>Loading...</span>}
-      {shipping_options?.length && shipping_options?.length > 0 && (
+      {shipping_options?.length && 
+        shipping_options?.length > 0 && (
         <ul>
           {shipping_options?.map((shipping_option) => (
-            <li key={shipping_option.id}>{shipping_option.id}</li>
+            <li key={shipping_option.id}>
+              {shipping_option.id}
+            </li>
           ))}
         </ul>
       )}
@@ -111,8 +114,8 @@ fetch(`<BACKEND_URL>/store/shipping-options?is_return=true`, {
 })
 .then((response) => response.json())
 .then(({ shipping_options }) => {
-  console.log(shipping_options.length);
-});
+  console.log(shipping_options.length)
+})
 ```
 
 </TabItem>
@@ -137,16 +140,16 @@ medusa.returns.create({
   items: [
     {
       item_id,
-      quantity: 1
-    }
+      quantity: 1,
+    },
   ],
   return_shipping: {
-    option_id
-  }
+    option_id,
+  },
 })
 .then((data) => {
-  console.log(data.return.id);
-});
+  console.log(data.return.id)
+})
 ```
 
 </TabItem>
@@ -165,12 +168,12 @@ const CreateReturn = () => {
       items: [
         {
           item_id,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       return_shipping: {
-        option_id
-      }
+        option_id,
+      },
     })
   }
 
@@ -195,18 +198,18 @@ fetch(`<BACKEND_URL>/store/returns`, {
     items: [
       {
         item_id,
-        quantity: 1
-      }
+        quantity: 1,
+      },
     ],
     return_shipping: {
-      option_id
-    }
+      option_id,
+    },
   }),
 })
 .then((response) => response.json())
 .then((data) => {
-  console.log(data.return.id);
-});
+  console.log(data.return.id)
+})
 ```
 
 </TabItem>

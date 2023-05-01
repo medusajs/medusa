@@ -71,20 +71,20 @@ medusa.swaps.create({
   return_items: [
     {
       item_id,
-      quantity: 1
-    }
+      quantity: 1,
+    },
   ],
   additional_items: [
     {
       variant_id,
-      quantity: 1
-    }
+      quantity: 1,
+    },
   ],
-  return_shipping_option
+  return_shipping_option,
 })
 .then(({ swap }) => {
-  console.log(swap.id);
-});
+  console.log(swap.id)
+})
 ```
 
 </TabItem>
@@ -103,16 +103,16 @@ const CreateSwap = () => {
       return_items: [
         {
           item_id,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       additional_items: [
         {
           variant_id,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
-      return_shipping_option
+      return_shipping_option,
     })
   }
 
@@ -137,22 +137,22 @@ fetch(`<BACKEND_URL>/store/swaps`, {
     return_items: [
       {
         item_id,
-        quantity: 1
-      }
+        quantity: 1,
+      },
     ],
     additional_items: [
       {
         variant_id,
-        quantity: 1
-      }
+        quantity: 1,
+      },
     ],
-    return_shipping_option
+    return_shipping_option,
   }),
 })
 .then((response) => response.json())
 .then(({ swap }) => {
-  console.log(swap.id);
-});
+  console.log(swap.id)
+})
 ```
 
 </TabItem>
@@ -196,8 +196,8 @@ During your checkout flow, you might need to retrieve the swap using the cart’
 ```ts
 medusa.swaps.retrieveByCartId(cartId)
 .then(({ swap }) => {
-  console.log(swap.id);
-});
+  console.log(swap.id)
+})
 ```
 
 </TabItem>
@@ -233,8 +233,8 @@ fetch(`<BACKEND_URL>/store/swaps/${cartId}`, {
 })
 .then((response) => response.json())
 .then(({ swap }) => {
-  console.log(swap.id);
-});
+  console.log(swap.id)
+})
 ```
 
 </TabItem>
