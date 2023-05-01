@@ -686,6 +686,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/carts-and-checkout/backend/cart-completion-strategy",
+          label: "Backend: Override Cart Completion",
+        },
+        {
+          type: "doc",
           id: "modules/carts-and-checkout/storefront/implement-cart",
           label: "Storefront: Implement Cart",
         },
