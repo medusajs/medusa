@@ -216,7 +216,6 @@
  */
 
 import {
-  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -226,7 +225,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
+  OneToOne
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import {
@@ -390,13 +389,6 @@ export class Cart extends SoftDeletableEntity {
   refundable_amount?: number
   gift_card_total?: number
   gift_card_tax_total?: number
-
-  @AfterLoad()
-  private afterLoad(): void {
-    if (this.payment_sessions) {
-      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
-    }
-  }
 
   @BeforeInsert()
   private beforeInsert(): void {
