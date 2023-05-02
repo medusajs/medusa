@@ -23,6 +23,7 @@ export const getCustomViteDevConfig = ({
         ),
         "react-dom": resolve(require.resolve("react-dom")),
         react: resolve(require.resolve("react")),
+        "react/jsx-runtime": "react/jsx-runtime.js",
       },
     },
     server: {
