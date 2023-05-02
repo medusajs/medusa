@@ -114,7 +114,7 @@ The third parameter is a context object that can be helpful for the tax calculat
 
 - `shipping_address`: an optional address object used for shipping.
 - `customer`: an optional customer object.
-- `region`: an optional region object, being the region that the cart belongs to.
+- `region`: an optional region object.
 - `is_return`: a boolean value that determines whether the taxes are being calculated for a return flow.
 - `shipping_methods`: an array of shipping methods being used in the current context.
 - `allocation_map`: an object that indicates the gift cards and discounts applied on line items. Each object key or property is an ID of a line item, and the value is an object having the following properties:
