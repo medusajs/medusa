@@ -1,9 +1,11 @@
+import { ExtendedFindConfig, FindConfig } from "../types/common"
 import {
   FindManyOptions,
   FindOperator,
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
+  ILike,
   In,
   IsNull,
   LessThan,
@@ -11,8 +13,8 @@ import {
   MoreThan,
   MoreThanOrEqual,
 } from "typeorm"
+
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
-import { ExtendedFindConfig, FindConfig } from "../types/common"
 import { isObject } from "./is-object"
 
 /**
@@ -34,11 +36,11 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    ;(query as FindManyOptions<TEntity>).skip = config.skip
+    (query as FindManyOptions<TEntity>).skip = config.skip
   }
 
   if ("take" in config) {
-    ;(query as FindManyOptions<TEntity>).take = config.take
+    (query as FindManyOptions<TEntity>).take = config.take
   }
 
   if (config.relations) {

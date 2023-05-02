@@ -1,6 +1,7 @@
 import {
   NumericalComparisonOperator,
   StringComparisonOperator,
+  StringSearchOperator,
 } from "../common"
 
 /**
@@ -201,6 +202,7 @@ export type FilterableReservationItemProps = {
   inventory_item_id?: string | string[]
   location_id?: string | string[]
   description?: string
+  q?: string | StringSearchOperator
   quantity?: number | NumericalComparisonOperator
 }
 

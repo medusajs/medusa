@@ -6,6 +6,7 @@ import {
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
+
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
@@ -145,6 +146,13 @@ export interface NumericalComparisonOperator {
   gt?: number
   gte?: number
   lte?: number
+}
+
+export interface StringSearchOperator {
+  contains?: string
+  equals?: string
+  startsWith?: string
+  endsWith?: string
 }
 
 export interface AddressPayload {

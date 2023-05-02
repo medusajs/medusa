@@ -4,6 +4,7 @@ import {
   FindConfig,
   IEventBusService,
   SharedContext,
+  StringSearchOperator,
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
@@ -13,7 +14,12 @@ import {
   buildQuery,
   isDefined,
 } from "@medusajs/utils"
-import { EntityManager, FindManyOptions } from "typeorm"
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+} from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
 
@@ -59,7 +65,21 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
+    let q: string | StringSearchOperator | undefined
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config) as FindManyOptions
+
+    if (q) {
+      query.where = {
+        ...query.where,
+        ...this.prepareSearchQuery(q),
+      }
+    }
+
     return await itemRepository.find(query)
   }
 
@@ -78,7 +98,21 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
+    let q: string | StringSearchOperator | undefined
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config) as FindManyOptions
+
+    if (q) {
+      query.where = {
+        ...query.where,
+        ...this.prepareSearchQuery(q),
+      }
+    }
+
     return await itemRepository.findAndCount(query)
   }
 
@@ -319,5 +353,36 @@ export default class ReservationItemService {
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       id: reservationItemId,
     })
+  }
+
+  private prepareSearchQuery(
+    q: string | StringSearchOperator
+  ): FindOptionsWhere<ReservationItem> {
+    const searchQuery = {}
+
+    if (typeof q === "object") {
+      Object.entries(q).forEach(([objectKey, objectValue]) => {
+        switch (objectKey) {
+          case "equals":
+            searchQuery["description"] = objectValue
+            break
+          case "startsWith":
+            searchQuery["description"] = ILike(`${objectValue}%`)
+            break
+          case "endsWith":
+            searchQuery["description"] = ILike(`%${objectValue}`)
+            break
+          case "contains":
+            searchQuery["description"] = ILike(`%${objectValue}%`)
+            break
+          default:
+            break
+        }
+      })
+    } else {
+      searchQuery["description"] = ILike(`%${q}%`)
+    }
+
+    return searchQuery
   }
 }

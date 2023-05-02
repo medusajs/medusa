@@ -1,11 +1,15 @@
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+  StringSearchOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import {
-  extendedFindParamsMixin,
-  NumericalComparisonOperator,
-} from "../../../../types/common"
+
+import { IInventoryService } from "@medusajs/types"
+import { IsType } from "../../../../utils/validators/is-type"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /admin/reservations
@@ -144,4 +148,13 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   @ValidateNested()
   @Type(() => NumericalComparisonOperator)
   quantity?: NumericalComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @IsType([StringSearchOperator, String])
+  q?: string | StringSearchOperator
 }
