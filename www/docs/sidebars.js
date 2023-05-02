@@ -686,6 +686,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/carts-and-checkout/backend/cart-completion-strategy",
+          label: "Backend: Override Cart Completion",
+        },
+        {
+          type: "doc",
           id: "modules/carts-and-checkout/storefront/implement-cart",
           label: "Storefront: Implement Cart",
         },
@@ -732,28 +737,19 @@ module.exports = {
           label: "Returns",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/claims",
           label: "Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/draft-orders",
           label: "Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/fulfillments",
           label: "Fulfillment",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
@@ -783,68 +779,39 @@ module.exports = {
           label: "Admin: Edit an Order",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-swaps",
           label: "Admin: Manage Swaps",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-returns",
           label: "Admin: Manage Returns",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-claims",
           label: "Admin: Manage Claims",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/admin/manage-draft-orders",
           label: "Admin: Manage Draft Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Return Reasons",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+          type: "doc",
+          id: "modules/orders/storefront/retrieve-order-details",
+          label: "Storefront: Retrieve Order Details",
         },
         {
-          type: "link",
-          href: "#",
-          label: "Storefront: Manage Customer Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Storefront: Create a Swap",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/storefront/create-return",
           label: "Storefront: Create a Return",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+        },
+        {
+          type: "doc",
+          id: "modules/orders/storefront/create-swap",
+          label: "Storefront: Create a Swap",
         },
         {
           type: "doc",
