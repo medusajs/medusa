@@ -234,6 +234,8 @@ import {
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { Customer } from "./customer"
 import { Discount } from "./discount"
@@ -244,8 +246,6 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum CartType {
   DEFAULT = "default",
