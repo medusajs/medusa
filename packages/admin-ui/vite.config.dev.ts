@@ -23,4 +23,8 @@ export default defineConfig({
   build: {
     outDir: "preview",
   },
+  optimizeDeps: {
+    include: ["react-dom"],
+    force: true,
+  },
 })
