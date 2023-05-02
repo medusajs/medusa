@@ -205,7 +205,7 @@ Run your backend to test it out:
 npm run start
 ```
 
-Before you can test out your tax provider, you must enable it in a region. You can do that either using the [Medusa Admin dashboard](../../../user-guide/taxes/manage.md#change-tax-provider) or using the [Update Region admin endpoint](https://docs.medusajs.com/api/admin#tag/Regions/operation/PostRegionsRegion).
+Before you can test out your tax provider, you must enable it in a region. You can do that either using the [Medusa Admin dashboard](../../../user-guide/taxes/manage.md#change-tax-provider) or using the [Update Region admin endpoint](../admin/manage-tax-settings.mdx#change-tax-provider-of-a-region).
 
 Then, you can test out the tax provider by simulating a checkout process in that region. You should see the line item tax lines in the cart’s `items`, as each item object has a `tax_lines` array which are the tax lines that you return in the `getTaxLines` method for line items.
 
