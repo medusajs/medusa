@@ -26,6 +26,7 @@ export default (app) => {
 export const defaultAdminProductTypeFields = [
   "id",
   "value",
+  "metadata",
   "created_at",
   "updated_at",
 ]
