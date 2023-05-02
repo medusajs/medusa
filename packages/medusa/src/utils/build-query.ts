@@ -5,7 +5,6 @@ import {
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
-  ILike,
   In,
   IsNull,
   LessThan,
@@ -36,11 +35,11 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    (query as FindManyOptions<TEntity>).skip = config.skip
+    ;(query as FindManyOptions<TEntity>).skip = config.skip
   }
 
   if ("take" in config) {
-    (query as FindManyOptions<TEntity>).take = config.take
+    ;(query as FindManyOptions<TEntity>).take = config.take
   }
 
   if (config.relations) {
