@@ -60,8 +60,8 @@ You can list all tax providers of a store using the [List Tax Providers endpoint
 ```ts
 medusa.admin.store.listTaxProviders()
 .then(({ tax_providers }) => {
-  console.log(tax_providers.length);
-});
+  console.log(tax_providers.length)
+})
 ```
 
 </TabItem>
@@ -71,12 +71,17 @@ medusa.admin.store.listTaxProviders()
 import { useAdminStoreTaxProviders } from "medusa-react"
 
 const TaxProviders = () => {
-  const { tax_providers, isLoading } = useAdminStoreTaxProviders()
+  const { 
+    tax_providers,
+    isLoading,
+  } = useAdminStoreTaxProviders()
 
   return (
     <div>
       {isLoading && <span>Loading...</span>}
-      {tax_providers && !tax_providers.length && <span>No Tax Providers</span>}
+      {tax_providers && !tax_providers.length && (
+        <span>No Tax Providers</span>
+      )}
       {tax_providers && tax_providers.length > 0 && (
         <ul>
           {tax_providers.map((tax_provider) => (
@@ -100,8 +105,8 @@ fetch(`<BACKEND_URL>/admin/store/tax-providers`, {
 })
 .then((response) => response.json())
 .then(({ tax_providers }) => {
-  console.log(tax_providers.length);
-});
+  console.log(tax_providers.length)
+})
 ```
 
 </TabItem>
@@ -130,11 +135,11 @@ You can change the tax provider of a region using the [Update Region endpoint](/
 
 ```ts
 medusa.admin.regions.update(regionId, {
-  tax_provider_id
+  tax_provider_id,
 })
 .then(({ region }) => {
-  console.log(region.id);
-});
+  console.log(region.id)
+})
 ```
 
 </TabItem>
@@ -149,7 +154,7 @@ const UpdateRegion = () => {
 
   const handleUpdate = () => {
     updateRegion.mutate({
-      tax_provider_id
+      tax_provider_id,
     })
   }
 
@@ -170,7 +175,7 @@ fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    tax_provider_id
+    tax_provider_id,
   }),
 })
 .then((response) => response.json())
@@ -215,11 +220,11 @@ medusa.admin.regions.update(regionId, {
   automatic_taxes,
   gift_cards_taxable,
   tax_code,
-  tax_rate
+  tax_rate,
 })
 .then(({ region }) => {
-  console.log(region.id);
-});
+  console.log(region.id)
+})
 ```
 
 </TabItem>
@@ -238,7 +243,7 @@ const UpdateRegion = () => {
       automatic_taxes,
       gift_cards_taxable,
       tax_code,
-      tax_rate
+      tax_rate,
     })
   }
 
@@ -263,7 +268,7 @@ fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
     automatic_taxes,
     gift_cards_taxable,
     tax_code,
-    tax_rate
+    tax_rate,
   }),
 })
 .then((response) => response.json())
