@@ -73,6 +73,7 @@ class DatabaseFactory {
       name: "templateDataSource",
       url: `${DB_URL}/${this.templateDbName}`,
       migrations: enabledMigrations.concat(moduleMigrations),
+      relationLoadStrategy: "query",
     })
 
     await templateDbDataSource.initialize()
@@ -94,6 +95,7 @@ class DatabaseFactory {
       type: "postgres",
       name: this.masterDataSourceName,
       url: `${DB_URL}`,
+      relationLoadStrategy: "query",
     })
     await dataSource.initialize()
 

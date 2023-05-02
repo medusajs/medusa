@@ -41,6 +41,7 @@ export default async (
     schema: dbData.schema,
     entities,
     logging: dbData.logging,
+    relationLoadStrategy: "query",
   } as DataSourceOptions)
 
   await dataSource.initialize()

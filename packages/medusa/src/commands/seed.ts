@@ -75,6 +75,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       extra: configModule.projectConfig.database_extra || {},
       migrations: coreMigrations.concat(moduleMigrations),
       logging: true,
+      relationLoadStrategy: "query",
     } as DataSourceOptions
 
     const connection = new DataSource(connectionOptions)

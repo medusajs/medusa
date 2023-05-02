@@ -99,6 +99,7 @@ module.exports = {
         synchronize: true,
         entities,
         extra: database_extra ?? {},
+        relationLoadStrategy: "query",
       })
 
       const dbDataSource = await dataSource.initialize()
@@ -145,6 +146,7 @@ module.exports = {
         migrations: enabledMigrations.concat(moduleMigrations),
         extra: database_extra ?? {},
         name: "integration-tests",
+        relationLoadStrategy: "query",
       })
 
       await dbDataSource.initialize()
