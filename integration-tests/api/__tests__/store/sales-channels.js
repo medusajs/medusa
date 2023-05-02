@@ -281,14 +281,16 @@ describe("sales channels", () => {
       const response = await api.get(`/store/carts/${cart.id}`, adminReqConfig)
 
       expect(response.data.cart.sales_channel).toBeTruthy()
-      expect(response.data.cart.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.cart.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 

@@ -129,7 +129,7 @@
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
  *       description: Learn more how to use the idempotency key.
  *   context:
  *     description: "The context of the cart which can include info like IP or user agent."

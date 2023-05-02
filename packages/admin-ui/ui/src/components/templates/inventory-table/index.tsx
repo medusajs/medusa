@@ -12,6 +12,7 @@ import {
   useAdminUpdateLocationLevel,
   useAdminVariant,
 } from "medusa-react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import Button from "../../fundamentals/button"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
@@ -27,7 +28,6 @@ import { isEmpty } from "lodash"
 import qs from "qs"
 import { useInventoryFilters } from "./use-inventory-filters"
 import useInventoryTableColumn from "./use-inventory-column"
-import { useLocation, useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 
@@ -306,9 +306,7 @@ const InventoryRow = ({
   } = useToggleState()
 
   const getRowActionables = () => {
-    const productId = inventory.variants?.length
-      ? inventory.variants[0].product_id
-      : null
+    const productId = inventory.variants?.[0]?.product_id
 
     const actions = [
       {

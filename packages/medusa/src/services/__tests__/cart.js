@@ -849,7 +849,6 @@ describe("CartService", () => {
             billing_address: true,
             customer: true,
             discounts: {
-              regions: true,
               rule: true,
             },
             gift_cards: true,
@@ -1268,6 +1267,25 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const discountService = {
+      list: jest.fn().mockReturnValue(
+        Promise.resolve([
+          {
+            id: IdMap.getId("stays"),
+            regions: [{ id: IdMap.getId("region-us") }],
+          },
+          {
+            id: IdMap.getId("removes"),
+            regions: [],
+          },
+        ])
+      ),
+      withTransaction: function () {
+        return this
+      },
+    }
+
     const cartRepository = MockRepository({
       findOne: () =>
         Promise.resolve({
@@ -1322,6 +1340,7 @@ describe("CartService", () => {
       manager: MockManager,
       paymentProviderService,
       addressRepository,
+      discountService,
       totalsService,
       cartRepository,
       newTotalsService: newTotalsServiceMock,
