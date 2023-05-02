@@ -950,12 +950,9 @@ module.exports = {
           label: "Admin: Manage Taxes",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/admin/manage-tax-rates",
           label: "Admin: Manage Tax Rates",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
