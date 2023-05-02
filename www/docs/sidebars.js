@@ -945,25 +945,14 @@ module.exports = {
           label: "Backend: Override Tax Calculation",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/admin/manage-tax-settings",
           label: "Admin: Manage Taxes",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
           href: "#",
           label: "Admin: Manage Tax Rates",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Tax Overrides",
           customProps: {
             sidebar_is_soon: true,
           },
