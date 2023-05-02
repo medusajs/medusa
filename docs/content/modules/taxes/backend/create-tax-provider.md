@@ -65,7 +65,7 @@ class MyTaxService extends AbstractTaxService {
     this.lineItemService_ = lineItemService
   }
   
-	// ...
+  // ...
 }
 
 export default MyTaxService
