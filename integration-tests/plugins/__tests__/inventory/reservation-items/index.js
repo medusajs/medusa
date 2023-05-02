@@ -452,6 +452,32 @@ describe("Inventory Items endpoints", () => {
           expect(reservationsRes.data.reservations.length).toBe(0)
           expect(reservationsQueryRes.data.reservations.length).toBe(0)
         })
+
+        it("fails when multiple filters are passed", async () => {
+          const api = useApi()
+
+          const errorRes = await api
+            .get(
+              `/admin/reservations?q[endsWith]=test&q[startsWith]=test`,
+              adminHeaders
+            )
+            .catch((err) => err)
+
+          expect(JSON.parse(errorRes.response.data.message)).toEqual({
+            message: "q must be one of: StringSearchOperator,String",
+            details: {
+              String: [
+                "String validation failed: [object Object] is not a string",
+              ],
+              StringSearchOperator: [
+                "Only one of startsWith",
+                " endsWith is allowed",
+                " Only one of endsWith",
+                " startsWith is allowed",
+              ],
+            },
+          })
+        })
       })
     })
   })
