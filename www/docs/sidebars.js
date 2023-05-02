@@ -935,12 +935,14 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/backend/create-tax-provider",
           label: "Backend: Create Tax Provider",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+        },
+        {
+          type: "doc",
+          id: "modules/taxes/backend/tax-calculation-strategy",
+          label: "Backend: Override Tax Calculation",
         },
         {
           type: "link",
