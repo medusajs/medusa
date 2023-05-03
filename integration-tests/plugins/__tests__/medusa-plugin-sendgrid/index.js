@@ -6,7 +6,7 @@ const { setPort, useApi } = require("../../../helpers/use-api")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 
-jest.setTimeout(50000)
+jest.setTimeout(10000)
 
 const {
   simpleOrderFactory,
