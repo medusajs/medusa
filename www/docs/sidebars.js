@@ -1704,20 +1704,9 @@ module.exports = {
               },
             },
             {
-              type: "link",
-              href: "#",
-              label: "Create a Strategy",
-              customProps: {
-                sidebar_is_soon: true,
-              },
-            },
-            {
-              type: "link",
-              href: "#",
+              type: "doc",
+              id: "development/strategies/override-strategy",
               label: "Override a Strategy",
-              customProps: {
-                sidebar_is_soon: true,
-              },
             },
           ],
         },
