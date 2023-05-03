@@ -1,12 +1,20 @@
-import { humanizeAmount } from "medusa-core-utils"
 import { FulfillmentService } from "medusa-interfaces"
 import Webshipper from "../utils/webshipper"
+import { humanizeAmount } from "medusa-core-utils"
 
 class WebshipperFulfillmentService extends FulfillmentService {
   static identifier = "webshipper"
 
   constructor(
-    { logger, totalsService, claimService, swapService, orderService },
+    {
+      logger,
+      totalsService,
+      claimService,
+      swapService,
+      orderService,
+      featureFlagRouter,
+      productVariantInventoryService,
+    },
     options
   ) {
     super()
@@ -37,6 +45,12 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     /** @private @const {SwapService} */
     this.claimService_ = claimService
+
+    /** @private @const {ProductVariantInventoryService} */
+    this.productVariantInventoryService_ = productVariantInventoryService
+
+    /** @private @const {FeatureFlagRouter} */
+    this.featureFlagRouter_ = featureFlagRouter
 
     /** @private @const {AxiosClient} */
     this.client_ = new Webshipper({
@@ -613,11 +627,25 @@ class WebshipperFulfillmentService extends FulfillmentService {
       vat_percent: totals.tax_lines.reduce((acc, next) => acc + next.rate, 0),
     }
 
-    const coo =
+    let coo =
       item?.variant?.origin_country || item?.variant?.product?.origin_country
-    const sku = item?.variant?.sku
-    const tarifNumber =
-      item?.variant?.hs_code || item?.variant?.product?.hs_code
+    let sku = item?.variant?.sku
+    let tarifNumber = item?.variant?.hs_code || item?.variant?.product?.hs_code
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled("inventoryService") &&
+      item?.variant
+    ) {
+      const [inventoryItem] =
+        await this.productVariantInventoryService_.listInventoryItemsByVariant(
+          item?.variant?.id
+        )
+      if (inventoryItem) {
+        sku = inventoryItem.sku
+        tarifNumber = inventoryItem.hs_code
+        coo = inventoryItem.origin_country
+      }
+    }
 
     if (coo) {
       webShipperItem.country_of_origin = coo
