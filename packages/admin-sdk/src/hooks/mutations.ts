@@ -46,7 +46,7 @@ interface CustomMutationOptions<TData, TError extends Error, TRes>
   domain?: DomainKey
 }
 
-export const buildOptions = <
+const buildOptions = <
   TData,
   TError,
   TVariables,
@@ -131,14 +131,4 @@ export function useCustomDeleteMutation<TRes>(
       rest as unknown as Options<Response<TRes>, Error, void>
     )
   )
-}
-
-const Test = () => {
-  const { mutate } = useCustomDeleteMutation("id", {
-    endpoint: "endpoint",
-  })
-
-  mutate(undefined, {
-    onSuccess: (res) => {},
-  })
 }
