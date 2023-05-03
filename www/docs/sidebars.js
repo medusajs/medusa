@@ -1195,12 +1195,9 @@ module.exports = {
           label: "Admin: Manage Profile",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/users/admin/manage-users",
           label: "Admin: Manage Users",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
