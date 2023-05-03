@@ -3,6 +3,7 @@ description: "Users are admins that can manage the ecommerce store’s data and 
 ---
 
 import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 
 # Users
@@ -110,25 +111,12 @@ Admins can invite users to join their team. Invites can be resent, accepted, or 
 
 Learn how user-related entities and concepts are built, their relation to other modules, and more.
 
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '#',
-    label: 'Architecture: User',
-    customProps: {
-      icon: Icons['circle-stack-solid'],
-      description: 'Learn about the User Architecture.',
-      isSoon: true,
-    }
-  },
-  {
-    type: 'link',
-    href: '#',
-    label: 'Architecture: Invites',
-    customProps: {
-      icon: Icons['circle-stack-solid'],
-      description: 'Learn about the Invite Architecture.',
-      isSoon: true,
-    }
-  },
-]} />
+<DocCard item={{
+  type: 'link',
+  href: '/modules/users',
+  label: 'Architecture: User',
+  customProps: {
+    icon: Icons['circle-stack-solid'],
+    description: 'Learn about the User Architecture.',
+  }
+}} />

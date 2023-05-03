@@ -1173,20 +1173,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/users/users",
           label: "Users",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Invites",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
