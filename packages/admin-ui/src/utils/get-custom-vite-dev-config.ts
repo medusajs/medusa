@@ -33,6 +33,7 @@ export const getCustomViteDevConfig = ({
       },
     },
     optimizeDeps: {
+      include: ["react-dom"],
       force: true,
     },
   }
