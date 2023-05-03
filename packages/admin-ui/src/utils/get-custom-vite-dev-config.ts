@@ -16,18 +16,11 @@ export const getCustomViteDevConfig = ({
       __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
     },
     root: uiPath,
-    resolve: {
-      alias: {
-        "@tanstack/react-query": resolve(
-          require.resolve("@tanstack/react-query")
-        ),
-        "react-dom": resolve(require.resolve("react-dom")),
-        react: resolve(require.resolve("react")),
-        "react/jsx-runtime": "react/jsx-runtime.js",
-      },
-    },
     server: {
       port,
+    },
+    optimizeDeps: {
+      include: ["react-dom"],
     },
   }
 }

@@ -11,8 +11,7 @@
     "esModuleInterop": true,
     "outDir": "dist",
     "rootDir": "src",
-    "skipLibCheck": true,
-    "jsx": "react-jsx"
+    "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": ["**/node_modules", "ui"]

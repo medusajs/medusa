@@ -24,7 +24,6 @@ export default defineConfig({
     outDir: "preview",
   },
   optimizeDeps: {
-    include: ["react-dom", "react/jsx-runtime"],
-    force: true,
+    include: ["react-dom"],
   },
 })
