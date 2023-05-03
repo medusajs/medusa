@@ -70,7 +70,7 @@
     "react-json-tree": "^0.17.0",
     "react-jwt": "^1.1.4",
     "react-nestable": "^2.0.0",
-    "react-router-dom": "^6.8.0",
+    "react-router-dom": "6.8.0",
     "react-select": "^5.5.4",
     "react-table": "^7.7.0",
     "tailwindcss": "3.2.2",
