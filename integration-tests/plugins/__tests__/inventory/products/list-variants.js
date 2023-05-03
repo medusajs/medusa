@@ -91,6 +91,7 @@ describe("List Variants", () => {
         stocked_quantity: 10,
       })
     })
+
     it("Decorates inventory quantities when listing variants", async () => {
       const api = useApi()
 
