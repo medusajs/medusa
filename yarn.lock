@@ -5883,10 +5883,10 @@ __metadata:
     react-dnd: ^16.0.1
     react-dnd-html5-backend: ^16.0.1
     react-dom: ^18.2.0
-    react-helmet: ^6.0.0
+    react-helmet-async: ^1.3.0
     react-highlight-words: ^0.18.0
     react-hook-form: 7.38.0
-    react-hot-toast: ^2.4.0
+    react-hot-toast: 2.4.0
     react-hotkeys-hook: ^3.4.7
     react-json-tree: ^0.17.0
     react-jwt: ^1.1.4
@@ -7969,10 +7969,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@remix-run/router@npm:1.3.1"
-  checksum: 9140a87b04429dbc5f02eb0a4550d7b284516c3daa8ffa71e4f21c87c15846a8dc5c7253f70955b497c721e91344877cf74c0037eeac6ff8bdd3e08c32a44f86
+"@remix-run/router@npm:1.6.0":
+  version: 1.6.0
+  resolution: "@remix-run/router@npm:1.6.0"
+  checksum: 109f72bc7550bde225f2a5070b210f66b23ac83154ba155b8cc3ecb05c2770548cedb4746f8d4f70dfdce18ec3a0967bac862dbe2cf19cffea18e9b0a1574219
   languageName: node
   linkType: hard
 
@@ -34642,24 +34642,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-fast-compare@npm:^3.0.1, react-fast-compare@npm:^3.1.1":
+"react-fast-compare@npm:^3.0.1":
   version: 3.2.0
   resolution: "react-fast-compare@npm:3.2.0"
   checksum: 2a7d75ce9fb5da1e3c01f74a5cd592f3369a8cc8d44e93654bf147ab221f430238e8be70677e896f2bfcb96a1cb7a47a8d05d84633de764a9d57d27005a4bb9e
   languageName: node
   linkType: hard
 
-"react-helmet@npm:^6.0.0":
-  version: 6.1.0
-  resolution: "react-helmet@npm:6.1.0"
+"react-fast-compare@npm:^3.2.0":
+  version: 3.2.1
+  resolution: "react-fast-compare@npm:3.2.1"
+  checksum: 81e805b9cde58a49e37ecb7361a4c97a24e869182761ceda9428c9f4de4b26e461a33c155bfe8fad67c8ae26c6355750671ff6335df80c5d3fe9c537ff2d6ffb
+  languageName: node
+  linkType: hard
+
+"react-helmet-async@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "react-helmet-async@npm:1.3.0"
   dependencies:
-    object-assign: ^4.1.1
+    "@babel/runtime": ^7.12.5
+    invariant: ^2.2.4
     prop-types: ^15.7.2
-    react-fast-compare: ^3.1.1
-    react-side-effect: ^2.1.0
+    react-fast-compare: ^3.2.0
+    shallowequal: ^1.1.0
   peerDependencies:
-    react: ">=16.3.0"
-  checksum: 1d2831d9c3b4f5c91f020076aeb6502437a4788077d0c438421e466eb9633d5dc2aacedf7b779a970b807d61cf87793c5ff76ee3190a185d71c90b5cfb367e96
+    react: ^16.6.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0
+  checksum: 8f3e6d26beff61d2ed18f7b41561df3e4d83a7582914c7196aa65158c7f3cce939276547d7a0b8987952d9d44131406df74efba02d1f8fa8a3940b49e6ced70b
   languageName: node
   linkType: hard
 
@@ -34685,7 +34694,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hot-toast@npm:^2.4.0":
+"react-hot-toast@npm:2.4.0":
   version: 2.4.0
   resolution: "react-hot-toast@npm:2.4.0"
   dependencies:
@@ -34890,26 +34899,26 @@ __metadata:
   linkType: hard
 
 "react-router-dom@npm:^6.8.0":
-  version: 6.8.0
-  resolution: "react-router-dom@npm:6.8.0"
+  version: 6.11.0
+  resolution: "react-router-dom@npm:6.11.0"
   dependencies:
-    "@remix-run/router": 1.3.1
-    react-router: 6.8.0
+    "@remix-run/router": 1.6.0
+    react-router: 6.11.0
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 95dd9cc65606934134b14908c80bd4267f6bdd8ad44c9fc5b941d70a37e8d35d852649f3d5789fefa33ab74f99448a71d54f498b8055e860dfd3c328aea73624
+  checksum: b5894d7d16ed57ac8ccea3ee3154972dc2c3a34708c7c2b337239e402645eca21ac9bb046f1a3b7f09db36cf4b8c2d3b02d846ac5b7753222578a41798fd6510
   languageName: node
   linkType: hard
 
-"react-router@npm:6.8.0":
-  version: 6.8.0
-  resolution: "react-router@npm:6.8.0"
+"react-router@npm:6.11.0":
+  version: 6.11.0
+  resolution: "react-router@npm:6.11.0"
   dependencies:
-    "@remix-run/router": 1.3.1
+    "@remix-run/router": 1.6.0
   peerDependencies:
     react: ">=16.8"
-  checksum: bdf0fc1938a8cfa12455db0f6dc5ede884101f267b3bf538df778455515c84ec261a6611e7b815170b8a01a57f6cc03fa6eaf054b34102c201305f965031fa3e
+  checksum: c1bca326d78a8aa9a0de56d9298ca4f639d03c1047239b02c35744b41e37ae5dae6c38b4337ebd8546485c300c18b8605778c26d2239294ba0b60f9d488c7888
   languageName: node
   linkType: hard
 
@@ -34930,15 +34939,6 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 5ab64144930245cabedd08a399deaa35a19281163b0d4637811ae1cffd3b9ba45090d640c4f3ab95864229d07509fbdee69e960d074ad22dbacb223d21876443
-  languageName: node
-  linkType: hard
-
-"react-side-effect@npm:^2.1.0":
-  version: 2.1.2
-  resolution: "react-side-effect@npm:2.1.2"
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.0 || ^18.0.0
-  checksum: 5d934cae438f701ce646f566750ae6a445e99185ce1a026108f9db728147f7962a22ecf8db79ff26089953a3799b3607766904f4f10194ce42bcd5a1aa0215e8
   languageName: node
   linkType: hard
 
