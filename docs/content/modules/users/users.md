@@ -66,3 +66,9 @@ The invitation process typically follows these steps in the Medusa backend:
 3. When the new user accepts the invite, the invitation is validated first to ensure it’s not expired. If it’s not expired, a new user is created using the `UserService`'s [create method](../../references/services/classes/UserService.md#create).
 
 If an invitation is expired, an existing user can resend the invite either using the Resend Invite endpoint or using the `InviteService`'s resend method. This would generate a new token and reset the expiry date.
+
+---
+
+## See Also
+
+- [How to send an invitation email](./backend/send-invite.md)
