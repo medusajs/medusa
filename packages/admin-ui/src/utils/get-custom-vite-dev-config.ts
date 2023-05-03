@@ -10,7 +10,11 @@ export const getCustomViteDevConfig = ({
   const uiPath = resolve(__dirname, "..", "..", "ui")
 
   return {
-    plugins: [react()],
+    plugins: [
+      react({
+        jsxRuntime: "classic",
+      }),
+    ],
     define: {
       __BASE__: JSON.stringify("/"),
       __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
@@ -29,7 +33,6 @@ export const getCustomViteDevConfig = ({
       },
     },
     optimizeDeps: {
-      include: ["react/jsx-runtime"],
       force: true,
     },
   }
