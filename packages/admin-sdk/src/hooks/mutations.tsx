@@ -7,12 +7,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 import {
-  adminCustomerGroupKeys,
+  adminCollectionKeys,
   adminCustomerKeys,
-  adminDiscountKeys,
-  adminGiftCardKeys,
   adminOrderKeys,
-  adminPriceListKeys,
   adminProductKeys,
   useMedusa,
 } from "medusa-react"
@@ -21,10 +18,7 @@ const domainKeys = {
   product: adminProductKeys.all,
   order: adminOrderKeys.all,
   customer: adminCustomerKeys.all,
-  customer_group: adminCustomerGroupKeys.all,
-  price_list: adminPriceListKeys.all,
-  discount: adminDiscountKeys.all,
-  gift_card: [adminProductKeys.all, adminGiftCardKeys.all].flat(),
+  product_collection: adminCollectionKeys.all,
 }
 
 type DomainKey = keyof typeof domainKeys
@@ -34,17 +28,22 @@ interface Options<
   TError = unknown,
   TVariables = void,
   TContext = unknown
-> extends Omit<UseMutationOptions, "mutationFn"> {}
+> extends Omit<
+    UseMutationOptions<TData, TError, TVariables, TContext>,
+    "mutationFn"
+  > {}
 
-interface CustomMutationOptions<TData = any, TRes = any>
-  extends Options<Response<TRes>, Error, TData> {
+interface CustomMutationOptions<TData, TError extends Error, TRes>
+  extends Options<Response<TRes>, TError, TData> {
+  /**
+   * The endpoint to call
+   */
   endpoint: string
+  /**
+   * The domain key to invalidate on success
+   * @default undefined
+   */
   domain?: DomainKey
-}
-
-interface CustomDeleteMutationOptions<TRes = any>
-  extends UseMutationOptions<Response<TRes>, Error, undefined> {
-  identifier: string
 }
 
 export const buildOptions = <
@@ -75,20 +74,71 @@ export const buildOptions = <
 }
 
 export function useCustomCreateMutation<
-  TData extends Record<string, unknown> = any,
-  TRes extends Record<string, unknown> = any
->(options: CustomMutationOptions<TData, TRes>) {
+  TReq extends Record<string, unknown>,
+  TRes
+>(options: CustomMutationOptions<Response<TRes>, Error, TReq>) {
   const { endpoint, domain, ...rest } = options
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
     (payload) => client.admin.custom.post(endpoint, payload),
-    buildOptions(queryClient, domain ? domainKeys[domain] : undefined, rest)
+    buildOptions(
+      queryClient,
+      domain ? domainKeys[domain] : undefined,
+      rest as unknown as Options<Response<TRes>, Error, TReq>
+    )
   )
 }
 
-export function useCustomDeleteMutation(options: CustomDeleteMutationOptions) {
+export function useCustomUpdateMutation<
+  TReq extends Record<string, unknown>,
+  TRes
+>(
+  identifier: string,
+  options: CustomMutationOptions<Response<TRes>, Error, TReq>
+) {
+  const { endpoint, domain, ...rest } = options
   const { client } = useMedusa()
   const queryClient = useQueryClient()
+
+  const formattedEndpoint = endpoint.endsWith("/") ? endpoint : `${endpoint}/`
+  const updateEndpoint = `${formattedEndpoint}${identifier}`
+
+  return useMutation(
+    (payload) => client.admin.custom.post(updateEndpoint, payload),
+    buildOptions(
+      queryClient,
+      domain ? domainKeys[domain] : undefined,
+      rest as unknown as Options<Response<TRes>, Error, TReq>
+    )
+  )
+}
+
+export function useCustomDeleteMutation<TRes>(
+  identifier: string,
+  options: CustomMutationOptions<Response<TRes>, Error, void>
+) {
+  const { endpoint, domain, ...rest } = options
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.custom.delete(endpoint, identifier),
+    buildOptions(
+      queryClient,
+      domain ? domainKeys[domain] : undefined,
+      rest as unknown as Options<Response<TRes>, Error, void>
+    )
+  )
+}
+
+const Test = () => {
+  const { mutate } = useCustomDeleteMutation("id", {
+    endpoint: "endpoint",
+  })
+
+  mutate(undefined, {
+    onSuccess: (res) => {},
+  })
 }

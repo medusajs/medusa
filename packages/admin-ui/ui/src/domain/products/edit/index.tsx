@@ -63,7 +63,6 @@ const Edit = () => {
                 injectionZone={"product.details"}
                 widget={w}
                 entity={product}
-                product={product}
               />
             )
           })}

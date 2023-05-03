@@ -3,14 +3,7 @@ import { FeatureFlagHelpers, Navigate, Notify } from "./helpers"
 
 export interface Widget extends IBaseExtension {}
 
-export type DomainKey =
-  | "product"
-  | "product_category"
-  | "product_collection"
-  | "order"
-  | "customer"
-  | "customer_group"
-  | "price_list"
+export type DomainKey = "product" | "product_collection" | "order" | "customer"
 
 export type HookPointKey = "details"
 

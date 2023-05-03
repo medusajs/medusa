@@ -58,11 +58,11 @@ class AdminCustomResource extends BaseResource {
    * @param identifier the id or identifier of choice of the entity to delete
    * @param customHeaders
    */
-  delete(
+  delete<Response = any>(
     path: string,
-    identifier: any,
+    identifier: string,
     customHeaders: Record<string, any> = {}
-  ) {
+  ): ResponsePromise<Response> {
     const formattedPath = `${createAdminPath(path)}/${identifier}`
 
     return this.client.request(
