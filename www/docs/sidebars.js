@@ -1175,7 +1175,7 @@ module.exports = {
         {
           type: "doc",
           id: "modules/users/users",
-          label: "Users",
+          label: "Users and Invites",
         },
         {
           type: "html",
@@ -1190,12 +1190,9 @@ module.exports = {
           label: "Backend: Send Invite",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/users/admin/manage-profile",
           label: "Admin: Manage Profile",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
