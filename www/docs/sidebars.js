@@ -1185,12 +1185,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/users/backend/send-invite",
           label: "Backend: Send Invite",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "link",
