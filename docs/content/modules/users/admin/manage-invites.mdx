@@ -62,8 +62,8 @@ You can list invites by sending a request to the [List Invite endpoint](/api/adm
 ```ts
 medusa.admin.invites.list()
 .then(({ invites }) => {
-  console.log(invites.length);
-});
+  console.log(invites.length)
+})
 ```
 
 </TabItem>
@@ -102,8 +102,8 @@ fetch(`<BACKEND_URL>/admin/invites`, {
 })
 .then((response) => response.json())
 .then(({ invites }) => {
-  console.log(invites.length);
-});
+  console.log(invites.length)
+})
 ```
 
 </TabItem>
@@ -133,7 +133,7 @@ You can create an invite by sending a request to the [Create Invite endpoint](/a
 ```ts
 medusa.admin.invites.create({
   user: "user@example.com",
-  role: "admin"
+  role: "admin",
 })
 .then(() => {
   // successful
@@ -153,7 +153,7 @@ const CreateInvite = () => {
   const handleCreate = () => {
     createInvite.mutate({
       user: "user@example.com",
-      role: "admin"
+      role: "admin",
     })
   }
 
@@ -175,7 +175,7 @@ fetch(`<BACKEND_URL>/admin/invites`, {
   },
   body: JSON.stringify({
     user: "user@example.com",
-    role: "admin"
+    role: "admin",
   }),
 })
 .then((response) => response.json())
@@ -222,10 +222,10 @@ You can accept an invite by sending a request to the [Accept Invite endpoint](/a
 medusa.admin.invites.accept({
   token,
   user: {
-    first_name: 'Brigitte',
-    last_name: 'Collier',
-    password: 'supersecret'
-  }
+    first_name: "Brigitte",
+    last_name: "Collier",
+    password: "supersecret",
+  },
 })
 .then(() => {
   // successful
@@ -246,10 +246,10 @@ const AcceptInvite = () => {
     acceptInvite.mutate({
       token,
       user: {
-        first_name: 'Brigitte',
-        last_name: 'Collier',
-        password: 'supersecret'
-      }
+        first_name: "Brigitte",
+        last_name: "Collier",
+        password: "supersecret",
+      },
     })
   }
 
@@ -272,10 +272,10 @@ fetch(`<BACKEND_URL>/admin/invites/accept`, {
   body: JSON.stringify({
     token,
     user: {
-      first_name: 'Brigitte',
-      last_name: 'Collier',
-      password: 'supersecret'
-    }
+      first_name: "Brigitte",
+      last_name: "Collier",
+      password: "supersecret",
+    },
   }),
 })
 .then((response) => response.json())
@@ -390,8 +390,8 @@ You can delete an invite by sending a request to the [Delete Invite endpoint](/a
 ```ts
 medusa.admin.invites.delete(inviteId)
   .then(({ id, object, deleted }) => {
-    console.log(id);
-  });
+    console.log(id)
+  })
 ```
 
 </TabItem>
@@ -424,8 +424,8 @@ fetch(`<BACKEND_URL>/admin/invites/${inviteId}`, {
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
