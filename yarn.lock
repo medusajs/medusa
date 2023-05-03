@@ -6010,7 +6010,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6169,7 +6169,7 @@ __metadata:
   peerDependencies:
     "@medusajs/types": 1.8.3
     medusa-interfaces: 1.3.7
-    typeorm: ^0.3.11
+    typeorm: "*"
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -6249,7 +6249,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6260,7 +6260,7 @@ __metadata:
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
@@ -6278,7 +6278,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
     typescript: ^4.4.4
     ulid: ^2.3.0
   languageName: unknown
@@ -23727,7 +23727,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
   languageName: unknown
   linkType: soft
 
@@ -23748,7 +23748,7 @@ __metadata:
     medusa-fulfillment-webshipper: 1.3.9
     medusa-interfaces: 1.3.7
     medusa-plugin-sendgrid: 1.3.9
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
   languageName: unknown
   linkType: soft
 
@@ -23764,7 +23764,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
   languageName: unknown
   linkType: soft
 
@@ -36246,7 +36246,7 @@ __metadata:
     typedoc-plugin-markdown: ^3.13.4
     typedoc-plugin-merge-modules: ^4.0.1
     typedoc-plugin-reference-excluder: ^1.0.0
-    typeorm: ^0.3.14
+    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
   languageName: unknown
   linkType: soft
 
@@ -39814,9 +39814,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.14":
-  version: 0.3.14
-  resolution: "typeorm@npm:0.3.14"
+"typeorm@npm:@medusajs/typeorm@0.3.16-next.0":
+  version: 0.3.16-next.0
+  resolution: "@medusajs/typeorm@npm:0.3.16-next.0"
   dependencies:
     "@sqltools/formatter": ^1.2.5
     app-root-path: ^3.1.0
@@ -39838,7 +39838,7 @@ __metadata:
     better-sqlite3: ^7.1.2 || ^8.0.0
     hdb-pool: ^0.1.6
     ioredis: ^5.0.4
-    mongodb: ^3.6.0
+    mongodb: ^5.2.0
     mssql: ^9.1.1
     mysql2: ^2.2.5 || ^3.0.1
     oracledb: ^5.1.0
@@ -39889,7 +39889,7 @@ __metadata:
     typeorm: cli.js
     typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
     typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: 26190e9c8f0cd1f030df76f94d8fd8ae40f6ddab5cd037b424c1bbedf0353a441000d10d0ecebc663cc853afab33a2fc538f0a6287330e4338aa59d1258888ce
+  checksum: b81794a0bc5ca3195f6a57ad313bd85b2b8f6a0a8dcb00ac42c3594f908b89fcd51f9b10ea62c836504d7196e6330a4b67602b90ea6485bc956ed4dace665737
   languageName: node
   linkType: hard
 

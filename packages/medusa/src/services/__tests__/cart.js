@@ -83,6 +83,7 @@ describe("CartService", () => {
     it("calls cart model functions", () => {
       expect(cartRepository.findOne).toHaveBeenCalledTimes(1)
       expect(cartRepository.findOne).toHaveBeenCalledWith({
+        relationLoadStrategy: "query",
         where: { id: IdMap.getId("emptyCart") },
         select: undefined,
         relations: undefined,
