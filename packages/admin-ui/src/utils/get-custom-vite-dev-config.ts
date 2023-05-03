@@ -20,7 +20,7 @@ export const getCustomViteDevConfig = ({
       port,
     },
     optimizeDeps: {
-      include: ["react-dom"],
+      include: ["react-dom", "axios"],
     },
   }
 }
