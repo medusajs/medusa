@@ -29,6 +29,7 @@ export const getCustomViteDevConfig = ({
       },
     },
     optimizeDeps: {
+      include: ["react/jsx-runtime"],
       force: true,
     },
   }
