@@ -1192,7 +1192,7 @@ module.exports = {
         {
           type: "doc",
           id: "modules/users/admin/manage-profile",
-          label: "Admin: Manage Profile",
+          label: "Admin: Implement Profiles",
         },
         {
           type: "doc",
@@ -1200,12 +1200,9 @@ module.exports = {
           label: "Admin: Manage Users",
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/users/admin/manage-invites",
           label: "Admin: Manage Invites",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
       ],
     },
