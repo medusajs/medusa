@@ -23,6 +23,11 @@ export const getCustomViteDevConfig = ({
     server: {
       port,
     },
+    build: {
+      commonjsOptions: {
+        include: [/node_modules/],
+      },
+    },
     resolve: {
       alias: {
         "@tanstack/react-query": resolve(
