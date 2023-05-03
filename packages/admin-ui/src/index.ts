@@ -5,23 +5,12 @@ import vite from "vite"
 import { AdminBuildConfig } from "./types"
 import { AdminDevConfig } from "./types/dev"
 import { getCustomViteConfig, getCustomViteDevConfig } from "./utils"
-import { generateExtensionsEntrypoint } from "./utils/extensions/generate-extensions-entrypoint"
-import { getExtensions } from "./utils/extensions/get-extensions"
+import { injectExtensions } from "./utils/extensions/inject-extensions"
 
 async function build(options?: AdminBuildConfig) {
   const config = getCustomViteConfig(options)
 
-  const uiPath = resolve(__dirname, "..", "ui")
-  const tmpExtensionsPath = resolve(uiPath, "src", "extensions.ts")
-
-  const extensions = await getExtensions()
-
-  const extensionsEntrypoint = await generateExtensionsEntrypoint(
-    extensions,
-    tmpExtensionsPath
-  )
-
-  await fse.writeFile(tmpExtensionsPath, extensionsEntrypoint)
+  await injectExtensions()
 
   await vite.build(config).catch((_err) => {
     process.exit(1)
@@ -45,6 +34,8 @@ async function dev(options: AdminDevConfig) {
   // Resolve localhost for Node v16 and older.
   // @see https://vitejs.dev/config/server-options.html#server-host.
   dns.setDefaultResultOrder("verbatim")
+
+  await injectExtensions()
 
   const server = await vite.createServer(getCustomViteDevConfig(options))
   await server.listen()

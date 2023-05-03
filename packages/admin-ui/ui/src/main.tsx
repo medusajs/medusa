@@ -8,7 +8,7 @@ async function run() {
 
   try {
     // @ts-ignore - this file is generated at build time
-    const { default: extensions } = await import("./extensions")
+    const { default: extensions }: Extension[] = await import("./extensions")
     exts = extensions
   } catch (_) {
     // noop - no extensions

@@ -5993,16 +5993,22 @@ __metadata:
   resolution: "@medusajs/admin-sdk@workspace:packages/admin-sdk"
   dependencies:
     "@medusajs/medusa": "*"
+    "@medusajs/medusa-js": "*"
     "@medusajs/types": "*"
     "@rollup/plugin-commonjs": ^24.1.0
     "@rollup/plugin-node-resolve": ^15.0.2
     "@rollup/plugin-terser": ^0.4.1
     "@rollup/plugin-typescript": ^11.1.0
+    "@tanstack/react-query": ^4.22.0
     "@types/fs-extra": ^11.0.1
     fs-extra: ^11.1.1
+    medusa-react: "*"
     rollup: ^3.20.7
     tslib: ^2.5.0
     typescript: ^5.0.4
+  peerDependencies:
+    "@tanstack/react-query": ^4.22.0
+    medusa-react: "*"
   bin:
     extension: ./bin/index.js
   languageName: unknown
@@ -6234,7 +6240,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@3.0.0, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@*, @medusajs/medusa-js@3.0.0, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
@@ -30176,7 +30182,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@6.0.0, medusa-react@workspace:packages/medusa-react":
+"medusa-react@*, medusa-react@6.0.0, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
