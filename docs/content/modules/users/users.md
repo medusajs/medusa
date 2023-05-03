@@ -72,3 +72,4 @@ If an invitation is expired, an existing user can resend the invite either using
 ## See Also
 
 - [How to send an invitation email](./backend/send-invite.md)
+- [How to manage a user's profile](./admin/manage-profile.mdx)
