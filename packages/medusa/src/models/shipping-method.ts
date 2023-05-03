@@ -11,17 +11,17 @@ import {
   PrimaryColumn,
 } from "typeorm"
 
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
 import { ShippingOption } from "./shipping-option"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
@@ -56,7 +56,7 @@ export class ShippingMethod {
   @Column({ nullable: true })
   cart_id: string
 
-  @ManyToOne(() => Cart)
+  @ManyToOne(() => Cart, (cart) => cart.shipping_methods)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 

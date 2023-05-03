@@ -56,7 +56,7 @@ jobs:
 
       - name: Create Medusa project
         run: |
-          medusa new cli-test
+          medusa new cli-test 'https://github.com/medusajs/medusa-starter-default/tree/ci-test'
         working-directory: ..
 
       - name: run medusa dev

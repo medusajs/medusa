@@ -935,36 +935,24 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/backend/create-tax-provider",
           label: "Backend: Create Tax Provider",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/backend/tax-calculation-strategy",
+          label: "Backend: Override Tax Calculation",
+        },
+        {
+          type: "doc",
+          id: "modules/taxes/admin/manage-tax-settings",
           label: "Admin: Manage Taxes",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/admin/manage-tax-rates",
           label: "Admin: Manage Tax Rates",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Tax Overrides",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
@@ -1185,20 +1173,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/users/users",
           label: "Users",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Invites",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "html",
