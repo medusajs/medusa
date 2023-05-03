@@ -487,7 +487,7 @@ class PricingService extends TransactionBaseService {
     }[]
 
     if ("id" in variantsData) {
-      data = variantsData.map((v) => ({
+      data = (variantsData as ProductVariant[]).map((v) => ({
         variant: v,
         quantity: pricingContext.price_selection.quantity,
       }))
