@@ -1,10 +1,11 @@
+import { BaseService } from "medusa-interfaces"
+import { MedusaError } from "medusa-core-utils"
 import axios from "axios"
+import { createVariantsTransaction } from "@medusajs/medusa"
 import isEmpty from "lodash/isEmpty"
 import omit from "lodash/omit"
-import random from "lodash/random"
-import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { parsePrice } from "../utils/parse-price"
+import random from "lodash/random"
 
 class ShopifyProductService extends BaseService {
   constructor(
@@ -15,6 +16,8 @@ class ShopifyProductService extends BaseService {
       shippingProfileService,
       shopifyClientService,
       shopifyCacheService,
+      inventoryService,
+      productVariantInventoryService,
     },
     options
   ) {
@@ -34,6 +37,12 @@ class ShopifyProductService extends BaseService {
     this.shopify_ = shopifyClientService
     /** @private @const {ICacheService} */
     this.cacheService_ = shopifyCacheService
+
+    /** @private @const {IInventoryService} */
+    this.inventoryService_ = inventoryService
+
+    /** @private @const {ProductVariantInventoryService} */
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   withTransaction(transactionManager) {
@@ -103,12 +112,23 @@ class ShopifyProductService extends BaseService {
           this.addVariantOptions_(v, product.options)
         )
 
-        for (let variant of variants) {
-          variant = await this.ensureVariantUnique_(variant)
-          await this.productVariantService_
-            .withTransaction(manager)
-            .create(product.id, variant)
-        }
+        const uniqueVariants = await Promise.all(
+          variants.map(async (variant) => {
+            return await this.ensureVariantUnique_(variant)
+          })
+        )
+
+        createVariantsTransaction(
+          {
+            manager,
+            productVariantService: this.productVariantService_,
+            inventoryService: this.inventoryService_,
+            productVariantInventoryService:
+              this.productVariantInventoryService_,
+          },
+          product.id,
+          uniqueVariants
+        )
       }
 
       await this.cacheService_.addIgnore(data.id, "product.created")
@@ -320,6 +340,19 @@ class ShopifyProductService extends BaseService {
   async updateVariants_(product, updateVariants) {
     return this.atomicPhase_(async (manager) => {
       const { id, variants, options } = product
+
+      const createVariants = []
+      const inventoryItemMap = new Map()
+      if (this.inventoryService_) {
+        const items = await this.productVariantInventoryService_
+          .withTransaction(manager)
+          .listByVariant(variants.map((v) => v.id))
+
+        for (const item of items) {
+          inventoryItemMap.set(item.variant_id, item.inventory_item_id)
+        }
+      }
+
       for (let variant of updateVariants) {
         const ignore =
           (await this.cacheService_.shouldIgnore(
@@ -344,11 +377,40 @@ class ShopifyProductService extends BaseService {
           await this.productVariantService_
             .withTransaction(manager)
             .update(match.id, variant)
+
+          if (this.inventoryService_ && inventoryItemMap.has(match.id)) {
+            await this.inventoryService_.updateInventoryItem(
+              inventoryItemMap.get(match.id),
+              {
+                sku: variant.sku,
+                origin_country: variant.origin_country,
+                mid_code: variant.mid_code,
+                material: variant.material,
+                weight: variant.weight,
+                length: variant.length,
+                height: variant.height,
+                width: variant.width,
+                metadata: variant.metadata,
+                hs_code: variant.hs_code,
+              }
+            )
+          }
         } else {
-          await this.productVariantService_
-            .withTransaction(manager)
-            .create(id, variant)
+          createVariants.push(variant)
         }
+      }
+      if (createVariants.length > 0) {
+        createVariantsTransaction(
+          {
+            manager,
+            productVariantService: this.productVariantService_,
+            inventoryService: this.inventoryService_,
+            productVariantInventoryService:
+              this.productVariantInventoryService_,
+          },
+          id,
+          createVariants
+        )
       }
     })
   }

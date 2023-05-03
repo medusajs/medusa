@@ -1,9 +1,10 @@
+import { compressionOptions, shouldCompressResponse } from "../utils/api"
+
 import { Router } from "express"
-import errorHandler from "./middlewares/error-handler"
-import compression from "compression"
 import admin from "./routes/admin"
+import compression from "compression"
+import errorHandler from "./middlewares/error-handler"
 import store from "./routes/store"
-import { shouldCompressResponse, compressionOptions } from "../utils/api"
 
 // guaranteed to get dependencies
 export default (container, config) => {
@@ -51,6 +52,7 @@ export * from "./routes/admin/product-categories"
 export * from "./routes/admin/product-tags"
 export * from "./routes/admin/product-types"
 export * from "./routes/admin/products"
+export * from "./routes/admin/products/transaction"
 export * from "./routes/admin/publishable-api-keys"
 export * from "./routes/admin/regions"
 export * from "./routes/admin/return-reasons"
