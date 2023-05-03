@@ -10,11 +10,11 @@ import {
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Product } from "./product"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { ShippingOption } from "./shipping-option"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class TaxRate extends BaseEntity {
@@ -30,7 +30,7 @@ export class TaxRate extends BaseEntity {
   @Column()
   region_id: string
 
-  @ManyToOne(() => Region)
+  @ManyToOne(() => Region, (region) => region.tax_rates)
   @JoinColumn({ name: "region_id" })
   region: Region
 
