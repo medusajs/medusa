@@ -1,11 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class productDomainImprovedIndexes1679950645254 implements MigrationInterface {
+export class productDomainImprovedIndexes1679950645254
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     // If you want to reset it to 'on' run 'set enable_nestloop to on;'
     // Improve large IN queries, since we have separate queries everytime it is better to turn it off
     await queryRunner.query(`
-      set enable_nestloop to off;
+      /* You can turn of this settings if you are in a context with lots of variants) set enable_nestloop to off; */
       
       DROP INDEX IF EXISTS "IDX_17a06d728e4cfbc5bd2ddb70af";
       CREATE INDEX IF NOT EXISTS idx_money_amount_variant_id ON money_amount (variant_id);

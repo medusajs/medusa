@@ -60,6 +60,7 @@ export type PriceSelectionContext = {
   cart_id?: string
   customer_id?: string
   region_id?: string
+  quantity?: number
   currency_code?: string
   include_discount_prices?: boolean
   tax_rates?: TaxServiceRate[]

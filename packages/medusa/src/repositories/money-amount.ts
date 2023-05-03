@@ -226,7 +226,36 @@ export const MoneyAmountRepository = dataSource
       return await qb.getManyAndCount()
     },
 
+    /**
+     * @deprecated in favor of {@link findManyForVariantsInRegion}
+     * @param variant_id
+     * @param region_id
+     * @param currency_code
+     * @param customer_id
+     * @param include_discount_prices
+     * @param include_tax_inclusive_pricing
+     */
     async findManyForVariantInRegion(
+      variant_id: string,
+      region_id?: string,
+      currency_code?: string,
+      customer_id?: string,
+      include_discount_prices?: boolean,
+      include_tax_inclusive_pricing = false
+    ): Promise<[MoneyAmount[], number]> {
+      const result = await this.findManyForVariantsInRegion(
+        variant_id,
+        region_id,
+        currency_code,
+        customer_id,
+        include_discount_prices,
+        include_tax_inclusive_pricing
+      )
+
+      return [result[0][variant_id], result[1]]
+    },
+
+    async findManyForVariantsInRegion(
       variant_ids: string | string[],
       region_id?: string,
       currency_code?: string,

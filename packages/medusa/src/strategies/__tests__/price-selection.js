@@ -7,7 +7,7 @@ const executeTest =
   (flagValue) =>
   async (title, { variant_id, context, validate, validateException }) => {
     const mockMoneyAmountRepository = {
-      findManyForVariantInRegion: jest
+      findManyForVariantsInRegion: jest
         .fn()
         .mockImplementation(
           async (
@@ -293,7 +293,7 @@ const toTest = [
           featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
         ) {
           expect(
-            mockMoneyAmountRepository.findManyForVariantInRegion
+            mockMoneyAmountRepository.findManyForVariantsInRegion
           ).toHaveBeenCalledWith(
             [variantId],
             "test-region",
@@ -304,7 +304,7 @@ const toTest = [
           )
         } else {
           expect(
-            mockMoneyAmountRepository.findManyForVariantInRegion
+            mockMoneyAmountRepository.findManyForVariantsInRegion
           ).toHaveBeenCalledWith(
             [variantId],
             "test-region",
@@ -334,7 +334,7 @@ const toTest = [
     },
   ],
   [
-    "findManyForVariantInRegion is invoked with the correct customer",
+    "findManyForVariantsInRegion is invoked with the correct customer",
     {
       variant_id: "test-variant",
       context: {
@@ -347,7 +347,7 @@ const toTest = [
           featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
         ) {
           expect(
-            mockMoneyAmountRepository.findManyForVariantInRegion
+            mockMoneyAmountRepository.findManyForVariantsInRegion
           ).toHaveBeenCalledWith(
             ["test-variant"],
             "test-region",
@@ -358,7 +358,7 @@ const toTest = [
           )
         } else {
           expect(
-            mockMoneyAmountRepository.findManyForVariantInRegion
+            mockMoneyAmountRepository.findManyForVariantsInRegion
           ).toHaveBeenCalledWith(
             ["test-variant"],
             "test-region",
@@ -610,7 +610,7 @@ const taxInclusiveTesting = [
         const variantId = "test-basic-variant-tax-inclusive"
 
         expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
+          mockMoneyAmountRepository.findManyForVariantsInRegion
         ).toHaveBeenCalledWith(
           [variantId],
           "test-region",
@@ -659,7 +659,7 @@ const taxInclusiveTesting = [
         const variantId = "test-basic-variant-tax-inclusive-currency"
 
         expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
+          mockMoneyAmountRepository.findManyForVariantsInRegion
         ).toHaveBeenCalledWith(
           [variantId],
           "test-region",
@@ -708,7 +708,7 @@ const taxInclusiveTesting = [
         const variantId = "test-basic-variant-tax-inclusive-region"
 
         expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
+          mockMoneyAmountRepository.findManyForVariantsInRegion
         ).toHaveBeenCalledWith(
           [variantId],
           "test-region",
@@ -756,7 +756,7 @@ const taxInclusiveTesting = [
         const variantId = "test-basic-variant-mixed"
 
         expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
+          mockMoneyAmountRepository.findManyForVariantsInRegion
         ).toHaveBeenCalledWith(
           [variantId],
           "test-region",
@@ -821,7 +821,7 @@ const taxInclusiveTesting = [
         const variantId = "test-basic-variant-mixed"
 
         expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
+          mockMoneyAmountRepository.findManyForVariantsInRegion
         ).toHaveBeenCalledWith(
           [variantId],
           "test-region",

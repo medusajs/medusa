@@ -1,9 +1,9 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -26,8 +26,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -46,9 +46,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -2266,13 +2266,9 @@ class CartService extends TransactionBaseService {
             availablePrice !== undefined &&
             availablePrice.calculatedPrice !== null
           ) {
-            await lineItemServiceTx.update(item.id, {
+            return await lineItemServiceTx.update(item.id, {
               has_shipping: false,
               unit_price: availablePrice.calculatedPrice,
-            })
-
-            return await lineItemServiceTx.retrieve(item.id, {
-              relations: ["variant", "variant.product"],
             })
           }
 
@@ -2282,6 +2278,13 @@ class CartService extends TransactionBaseService {
     )
       .flat()
       .filter((item): item is LineItem => !!item)
+
+    cart.items = await lineItemServiceTx.list(
+      { id: cart.items.map((i) => i.id) },
+      {
+        relations: ["variant", "variant.product"],
+      }
+    )
   }
 
   /**

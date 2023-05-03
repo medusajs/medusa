@@ -209,17 +209,14 @@ class PricingService extends TransactionBaseService {
 
   /**
    * Gets the prices for a product variant.
-   * @param data
+   * @param variant
    * @param context - the price selection context to use
    * @return The product variant prices
    */
   async getProductVariantPricing(
-    data: {
-      variant: Pick<ProductVariant, "id" | "product_id">
-      quantity?: number
-    }[],
+    variant: Pick<ProductVariant, "id" | "product_id">,
     context: PriceSelectionContext | PricingContext
-  ): Promise<Map<string, ProductVariantPricing>> {
+  ): Promise<ProductVariantPricing> {
     let pricingContext: PricingContext
     if ("automatic_taxes" in context) {
       pricingContext = context
@@ -234,7 +231,7 @@ class PricingService extends TransactionBaseService {
       pricingContext.price_selection.region_id
     ) {
       // Here we assume that the variants belongs to the same product since the context is shared
-      const productId = data[0].variant.product_id
+      const productId = variant.product_id
       productRates = await this.taxProviderService.getRegionRatesForProduct(
         productId,
         {
@@ -245,13 +242,17 @@ class PricingService extends TransactionBaseService {
       pricingContext.price_selection.tax_rates = productRates.get(productId)
     }
 
-    return await this.getProductVariantPricing_(
-      data.map((v) => ({
-        variantId: v.variant.id,
-        quantity: v.quantity,
-      })),
-      pricingContext
-    )
+    return (
+      await this.getProductVariantPricing_(
+        [
+          {
+            variantId: variant.id,
+            quantity: pricingContext.price_selection.quantity,
+          },
+        ],
+        pricingContext
+      )
+    ).get(variant.id)!
   }
 
   /**
@@ -446,6 +447,16 @@ class PricingService extends TransactionBaseService {
   }
 
   /**
+   * @deprecated
+   * @param variants
+   * @param context
+   */
+  async setVariantPrices(
+    variants: ProductVariant[],
+    context?: PriceSelectionContext
+  ): Promise<PricedVariant[]>
+
+  /**
    * Set additional prices on a list of product variants.
    * @param variantsData
    * @param context - the price selection context to use
@@ -453,20 +464,45 @@ class PricingService extends TransactionBaseService {
    */
   async setVariantPrices(
     variantsData: { variant: ProductVariant; quantity?: number }[],
+    context?: PriceSelectionContext
+  ): Promise<PricedVariant[]>
+
+  /**
+   * Set additional prices on a list of product variants.
+   * @param variantsData
+   * @param context - the price selection context to use
+   * @return A list of products with variants decorated with prices
+   */
+  async setVariantPrices(
+    variantsData:
+      | ProductVariant[]
+      | { variant: ProductVariant; quantity?: number }[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
 
-    const variantsPricingMap = await this.getProductVariantPricing(
-      variantsData.map((v) => ({
-        variant: v.variant,
+    let data = variantsData as {
+      variant: ProductVariant
+      quantity?: number
+    }[]
+
+    if ("id" in variantsData) {
+      data = variantsData.map((v) => ({
+        variant: v,
+        quantity: pricingContext.price_selection.quantity,
+      }))
+    }
+
+    const variantsPricingMap = await this.getProductVariantsPricing(
+      data.map((v) => ({
+        variantId: v.variant.id,
         quantity: v.quantity,
       })),
       pricingContext
     )
 
-    return variantsData.map(({ variant }) => {
-      const variantPricing = variantsPricingMap.get(variant.id)!
+    return data.map(({ variant }) => {
+      const variantPricing = variantsPricingMap[variant.id]
       console.log("variantPricing", variantPricing)
       Object.assign(variant, variantPricing)
       return variant as unknown as PricedVariant

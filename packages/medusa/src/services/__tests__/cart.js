@@ -1360,7 +1360,7 @@ describe("CartService", () => {
       jest.clearAllMocks()
     })
 
-    it.only("successfully set new region", async () => {
+    it("successfully set new region", async () => {
       await cartService.update(IdMap.getId("fr-cart"), {
         region_id: IdMap.getId("region-us"),
       })
