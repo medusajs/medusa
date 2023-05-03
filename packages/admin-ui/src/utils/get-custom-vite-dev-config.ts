@@ -19,8 +19,17 @@ export const getCustomViteDevConfig = ({
     server: {
       port,
     },
+    resolve: {
+      alias: {
+        "@tanstack/react-query": resolve(
+          require.resolve("@tanstack/react-query")
+        ),
+        "react-dom": resolve(require.resolve("react-dom")),
+        react: resolve(require.resolve("react")),
+      },
+    },
     optimizeDeps: {
-      include: ["react-dom", "axios"],
+      force: true,
     },
   }
 }

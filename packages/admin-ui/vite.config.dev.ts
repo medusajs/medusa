@@ -24,6 +24,6 @@ export default defineConfig({
     outDir: "preview",
   },
   optimizeDeps: {
-    include: ["react-dom", "axios"],
+    force: true,
   },
 })
