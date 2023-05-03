@@ -1232,7 +1232,7 @@ describe("CartService", () => {
 
   describe("setRegion", () => {
     const lineItemService = {
-      update: jest.fn((r) => r),
+      update: jest.fn((id) => ({ id })),
       delete: jest.fn(),
       retrieve: jest.fn().mockImplementation((lineItemId) => {
         if (lineItemId === IdMap.getId("existing")) {
@@ -1242,6 +1242,11 @@ describe("CartService", () => {
         }
         return Promise.resolve({
           id: lineItemId,
+        })
+      }),
+      list: jest.fn().mockImplementation(async (selector) => {
+        return selector.id.map((id) => {
+          return { id }
         })
       }),
       withTransaction: function () {
