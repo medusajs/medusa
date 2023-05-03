@@ -1,6 +1,8 @@
 {
   "name": "@medusajs/admin-sdk",
+  "version": "0.0.1",
   "description": "SDK for building admin extensions for Medusa",
+  "author": "Kasper Kristensen <kasper@medusajs.com>",
   "bin": {
     "extension": "./bin/index.js"
   },
@@ -17,11 +19,18 @@
     "rollup": "^3.20.7",
     "tslib": "^2.5.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "peerDependencies": {
+    "@tanstack/react-query": "^4.22.0",
+    "medusa-react": "*"
+  },
   "devDependencies": {
     "@medusajs/medusa": "*",
+    "@medusajs/medusa-js": "*",
     "@medusajs/types": "*",
+    "@tanstack/react-query": "^4.22.0",
     "@types/fs-extra": "^11.0.1",
+    "medusa-react": "*",
     "typescript": "^5.0.4"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
