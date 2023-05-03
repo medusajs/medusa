@@ -1,5 +1,5 @@
 ---
-description: "Users are admins that can manage the ecommerce store’s data and operations. Learn about the available features and guides."
+description: "Learn how to send an invitation email to an invited user. This guide uses SendGrid as an example."
 addHowToData: true
 ---
 
