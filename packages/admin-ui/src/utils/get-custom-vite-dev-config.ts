@@ -37,7 +37,7 @@ export const getCustomViteDevConfig = ({
       },
     },
     optimizeDeps: {
-      include: ["react-dom"],
+      include: ["react-dom", "invariant"],
       force: true,
     },
   }
