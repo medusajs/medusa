@@ -162,7 +162,7 @@ class InviteSubscriber {
 
   constructor({ 
     eventBusService,
-    sendgridService 
+    sendgridService, 
   }: InjectedDependencies) {
     this.sendGridService = sendgridService
     eventBusService.subscribe(
@@ -178,7 +178,7 @@ class InviteSubscriber {
       to: data.user_email,
       data: {
         // any data necessary for your template...
-        token: data.token
+        token: data.token,
       },
     })
   }
