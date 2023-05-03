@@ -686,6 +686,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/carts-and-checkout/backend/cart-completion-strategy",
+          label: "Backend: Override Cart Completion",
+        },
+        {
+          type: "doc",
           id: "modules/carts-and-checkout/storefront/implement-cart",
           label: "Storefront: Implement Cart",
         },
@@ -794,28 +799,19 @@ module.exports = {
           label: "Admin: Manage Draft Orders",
         },
         {
-          type: "link",
-          href: "#",
-          label: "Storefront: Manage Customer Orders",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+          type: "doc",
+          id: "modules/orders/storefront/retrieve-order-details",
+          label: "Storefront: Retrieve Order Details",
         },
         {
-          type: "link",
-          href: "#",
-          label: "Storefront: Create a Swap",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/orders/storefront/create-return",
           label: "Storefront: Create a Return",
-          customProps: {
-            sidebar_is_soon: true,
-          },
+        },
+        {
+          type: "doc",
+          id: "modules/orders/storefront/create-swap",
+          label: "Storefront: Create a Swap",
         },
         {
           type: "doc",
@@ -939,36 +935,24 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/backend/create-tax-provider",
           label: "Backend: Create Tax Provider",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/backend/tax-calculation-strategy",
+          label: "Backend: Override Tax Calculation",
+        },
+        {
+          type: "doc",
+          id: "modules/taxes/admin/manage-tax-settings",
           label: "Admin: Manage Taxes",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/admin/manage-tax-rates",
           label: "Admin: Manage Tax Rates",
-          customProps: {
-            sidebar_is_soon: true,
-          },
-        },
-        {
-          type: "link",
-          href: "#",
-          label: "Admin: Manage Tax Overrides",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
