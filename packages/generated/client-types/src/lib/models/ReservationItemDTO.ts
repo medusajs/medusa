@@ -24,6 +24,10 @@ export interface ReservationItemDTO {
    */
   description?: string
   /**
+   * UserId of user who created the reservation item
+   */
+  created_by?: string
+  /**
    * The id of the reservation item
    */
   quantity: number

@@ -109,6 +109,9 @@ export type InventoryItemDTO = {
  *   description:
  *     description: "Description of the reservation item"
  *     type: string
+ *   created_by:
+ *     description: "UserId of user who created the reservation item"
+ *     type: string
  *   quantity:
  *     description: "The id of the reservation item"
  *     type: number
@@ -136,6 +139,7 @@ export type ReservationItemDTO = {
   quantity: number
   line_item_id?: string | null
   description?: string | null
+  created_by?: string | null
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
@@ -201,6 +205,7 @@ export type FilterableReservationItemProps = {
   inventory_item_id?: string | string[]
   location_id?: string | string[]
   description?: string
+  created_by?: string | string[]
   quantity?: number | NumericalComparisonOperator
 }
 
@@ -237,6 +242,7 @@ export type CreateReservationItemInput = {
   location_id: string
   quantity: number
   description?: string
+  created_by?: string 
   external_id?: string
   metadata?: Record<string, unknown> | null
 }
