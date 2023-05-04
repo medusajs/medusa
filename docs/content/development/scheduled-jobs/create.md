@@ -25,7 +25,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ## 1. Create a File
 
-Each scheduled job should reside in a TypeScript or JavaScript file under the `src/loaders` directory.
+Each scheduled job should reside in a [loader](../loaders/overview.mdx), which is a TypeScript or JavaScript file located under the `src/loaders` directory.
 
 Start by creating the `src/loaders` directory. Then, inside that directory, create the JavaScript or TypeScript file that you’ll add the scheduled job in. You can use any name for the file.
 
