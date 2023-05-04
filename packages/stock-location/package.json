@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/stock-location",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "description": "Stock Location Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -17,15 +17,15 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "1.8.3",
+    "@medusajs/types": "1.8.4",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "1.8.3",
-    "@medusajs/utils": "1.8.2",
+    "@medusajs/modules-sdk": "1.8.4",
+    "@medusajs/utils": "1.8.3",
     "awilix": "^8.0.0",
     "typeorm": "npm:@medusajs/typeorm@0.3.16-next.0"
   },
