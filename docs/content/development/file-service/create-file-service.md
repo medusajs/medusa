@@ -51,39 +51,39 @@ import {
   FileServiceGetUploadStreamResult, 
   FileServiceUploadResult, 
   GetUploadedFileType, 
-  UploadStreamDescriptorType 
-} from "@medusajs/medusa";
+  UploadStreamDescriptorType, 
+} from "@medusajs/medusa"
 
 class LocalFileService extends AbstractFileService {
   async upload(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async uploadProtected(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async delete(
     fileData: DeleteFileType
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async getDownloadStream(
     fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async getPresignedDownloadUrl(
     fileData: GetUploadedFileType
   ): Promise<string> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
 }
 
@@ -99,35 +99,37 @@ You can use a constructor to access services and resources registered in the dep
 For example, the local service’s constructor could be useful to prepare the local upload directory:
 
 ```ts title=src/services/local-file.ts
-//...
-import * as fs from 'fs';
+// ...
+import * as fs from "fs"
 
 class LocalFileService extends AbstractFileService {
   // can also be replaced by an environment variable
   // or a plugin option
-  protected serverUrl = "http://localhost:9000";
-  protected publicPath = "uploads";
+  protected serverUrl = "http://localhost:9000"
+  protected publicPath = "uploads"
   protected protectedPath = "protected-uploads"
 
-  constructor (container) {
+  constructor(container) {
     super(container)
 
-    //for public uploads
+    // for public uploads
     if (!fs.existsSync(this.publicPath)) {
       fs.mkdirSync(this.publicPath)
     }
 
-    //for protected uploads
+    // for protected uploads
     if (!fs.existsSync(this.protectedPath)) {
       fs.mkdirSync(this.protectedPath)
     }
   }
 
-  //...
+  // ...
 }
 ```
 
 Another example showcasing how to access resources using dependency injection:
+
+<!-- eslint-disable prefer-rest-params -->
 
 ```ts title=src/services/local-file.ts
 type InjectedDependencies = {
@@ -135,15 +137,15 @@ type InjectedDependencies = {
 }
 
 class LocalFileService extends AbstractFileService {
-  //...
+  // ...
   protected logger_: Logger
 
-  constructor ({ logger }: InjectedDependencies) {
-    super(arguments[0])
+  constructor({ logger }: InjectedDependencies) {
+    super(...arguments)
     this.logger_ = logger
-    //...
+    // ...
   }
-  //...
+  // ...
 }
 ```
 
@@ -151,10 +153,10 @@ You can access the plugin options in the second parameter passed to the construc
 
 ```ts title=src/services/local-file.ts
 class LocalFileService extends AbstractFileService {
-  protected serverUrl = "http://localhost:9000";
-  //...
+  protected serverUrl = "http://localhost:9000"
+  // ...
 
-  constructor (
+  constructor(
     container,
     pluginOptions
   ) {
@@ -163,9 +165,9 @@ class LocalFileService extends AbstractFileService {
     if (pluginOptions?.serverUrl) {
       this.serverUrl = pluginOptions?.serverUrl
     }
-    //...
+    // ...
   }
-  //...
+  // ...
 }
 ```
 
@@ -199,14 +201,15 @@ class LocalFileService extends AbstractFileService {
   async upload(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult> {
-    const filePath = `${this.publicPath}/${fileData.originalname}`
+    const filePath = 
+      `${this.publicPath}/${fileData.originalname}`
     fs.copyFileSync(fileData.path, filePath)
     return {
-      url: `${this.serverUrl}/${filePath}`
+      url: `${this.serverUrl}/${filePath}`,
     }
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -242,14 +245,15 @@ class LocalFileService extends AbstractFileService {
   async uploadProtected(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult> {
-    const filePath = `${this.protectedPath}/${fileData.originalname}`
+    const filePath = 
+      `${this.protectedPath}/${fileData.originalname}`
     fs.copyFileSync(fileData.path, filePath)
     return {
-      url: `${this.serverUrl}/${filePath}`
+      url: `${this.serverUrl}/${filePath}`,
     }
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -271,7 +275,7 @@ class LocalFileService extends AbstractFileService {
     fs.rmSync(fileData.fileKey)
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -300,20 +304,20 @@ class LocalFileService extends AbstractFileService {
   async getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult> {
-    const filePath = `${fileData.acl !== 'private' ? 
+    const filePath = `${fileData.acl !== "private" ? 
       this.publicPath : this.protectedPath
-    }/${fileData.name}.${fileData.ext}`;
+    }/${fileData.name}.${fileData.ext}`
     const writeStream = fs.createWriteStream(filePath)
 
     return {
       writeStream,
       promise: Promise.resolve(),
       url: `${this.serverUrl}/${filePath}`,
-      fileKey: filePath
+      fileKey: filePath,
     }
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -333,15 +337,15 @@ class LocalFileService extends AbstractFileService {
   async getDownloadStream(
     fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream> {
-    const filePath = `${fileData.acl !== 'private' ? 
+    const filePath = `${fileData.acl !== "private" ? 
       this.publicPath : this.protectedPath
-    }/${fileData.name}.${fileData.ext}`;
+    }/${fileData.name}.${fileData.ext}`
     const readStream = fs.createReadStream(filePath)
 
     return readStream
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -366,7 +370,7 @@ class LocalFileService extends AbstractFileService {
     return `${this.serverUrl}/${fileData.fileKey}`
   }
 
-  //...
+  // ...
 }
 ```
 
