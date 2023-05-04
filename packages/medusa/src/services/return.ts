@@ -513,7 +513,7 @@ class ReturnService extends TransactionBaseService {
         {
           id: returnOrder.items.map(({ item_id }) => item_id),
         },
-        { relations: ["tax_lines"] }
+        { relations: ["tax_lines", "variant", "variant.product"] }
       )
 
       returnData.items = returnOrder.items.map((item) => {

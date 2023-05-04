@@ -527,6 +527,8 @@ export default class ClaimService extends TransactionBaseService {
           relations: [
             "additional_items",
             "additional_items.tax_lines",
+            "additional_items.variant",
+            "additional_items.variant.product",
             "shipping_methods",
             "shipping_methods.tax_lines",
             "shipping_address",

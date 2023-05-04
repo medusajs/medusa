@@ -3,7 +3,7 @@ description: 'Learn how to send a confirmation email to the customer after they 
 addHowToData: true
 ---
 
-# How to Send Confirmation Email
+# How to Send Sign Up Confirmation Email
 
 In this document, you’ll learn how to send a confirmation email to the customer after they sign up.
 
@@ -17,13 +17,9 @@ This guide will explain how to create the subscriber and how to use SendGrid to 
 
 ## Prerequisites
 
-### Medusa Backend
-
-It’s assumed you already have the Medusa backend installed. If not, you can either use the [create-medusa-app command](../../../create-medusa-app.mdx) to install different Medusa tools, including the backend, or [install the backend only](../../../development/backend/install.mdx).
-
 ### Event Bus Module
 
-The triggered events are relayed to the listening subscribers using an event bus module. So, it’s required to have an event bus module installed and configured on your Medusa backend.
+The event bus module trigger the event to the listening subscribers. So, it’s required to have an event bus module installed and configured on your Medusa backend.
 
 The [Local Event Bus module](../../../development/events/modules/local.md) works in a development environment. For production, it’s recommended to use the [Redis Event Bus module](../../../development/events/modules/redis.md).
 
@@ -139,7 +135,7 @@ When using this method, you’ll have to handle the logic of sending the confirm
 
 ## Step 3: Handle the Event
 
-The `handleCustomerConfirmation` event receives a `data` object as a parameter. This object is the entire customer object. So, you can find in it fields like `first_name`, `last_name`, `email`, and more.
+The `handleCustomerConfirmation` method receives a `data` object as a parameter which is a payload emitted when the event was triggered. This object is the entire customer object. So, you can find in it fields like `first_name`, `last_name`, `email`, and more.
 
 In this method, you should typically send an email to the customer. You can place any content in the email, such as welcoming them to your store or thanking them for registering.
 

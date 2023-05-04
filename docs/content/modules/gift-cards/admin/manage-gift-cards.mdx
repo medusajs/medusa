@@ -24,7 +24,7 @@ Using the gift cards’ admin APIs, you can manage gift cards including listing,
 
 You want to add or use the following admin functionalities:
 
-- Manage the gift card product including retrieving, adding, updating, and deleting it.
+- Manage gift card products including retrieving, adding, updating, and deleting them.
 - Managing custom gift cards including retrieving, adding, updating and deleting them.
 
 ---
@@ -57,13 +57,13 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## Manage Gift Card Product
 
-This section covers managing the gift card product. There can only be one gift card product in a store. The gift card can have unlimited denominations.
+This section covers managing the gift card products. Each gift card can have unlimited denominations.
 
 As gift cards are, before purchase, essentially products, you’ll be using product endpoints to manage them.
 
 ### Retrieve Gift Card Product
 
-You can retrieve the gift card product by sending a request to the [List Products](/api/admin/#tag/Product/operation/GetProducts) endpoint, but filtering by the `is_giftcard` flag:
+You can retrieve the gift card products by sending a request to the [List Products](/api/admin/#tag/Product/operation/GetProducts) endpoint, but filtering the products with the `is_giftcard` flag:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -74,10 +74,9 @@ medusa.admin.products.list({
 })
 .then(({ products, limit, offset, count }) => {
   if (products.length) {
-    // gift card product exists
-    const giftcard = products[0]
+    // gift card products exist
   } else {
-    // no gift card product is created
+    // no gift card products are created
   }
 })
 ```
@@ -129,10 +128,9 @@ fetch(`<BACKEND_URL>/admin/products?is_giftcard=true`, {
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   if (products.length) {
-    // gift card product exists
-    const giftcard = products[0]
+    // gift card products exist
   } else {
-    // no gift card product is created
+    // no gift card products are created
   }
 })
 ```
@@ -148,13 +146,13 @@ curl -L -X GET '<BACKEND_URL>/admin/products?is_giftcard=true' \
 </TabItem>
 </Tabs>
 
-The List Products endpoint accepts a variety of query parameters that can be used to filter the products. One of them is `is_giftcard`. When set to `true`, it will only retrieve the gift card product.
+The List Products endpoint accepts a variety of query parameters that can be used to filter the products. One of them is `is_giftcard`. When set to `true`, it will only retrieve the gift card products.
 
 The request returns the `products` array in the response which holds the gift card in it, if it’s available. It also returns [pagination fields](/api/admin/#section/Pagination).
 
 ### Create Gift Card Product
 
-You can create only one gift card product in a store. To create a gift card product, send a request to the [Create a Product](/api/admin/#tag/Product/operation/PostProducts) endpoint:
+You can create a gift card product by sending a request to the [Create a Product](/api/admin/#tag/Product/operation/PostProducts) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -345,6 +343,12 @@ You can pass other body parameters to change the handle, add images, and more. C
 
 This request returns the created gift card product in the response.
 
+:::tip
+
+Although you can create an unlimited number of gift cards, the admin dashboard's UI only shows one gift card.
+
+:::
+
 ### Update Gift Card Product
 
 After creating a gift card, merchants can update it or its denomination.
@@ -428,7 +432,7 @@ This request returns the updated gift card product in the response.
 
 ### Delete Gift Card Product
 
-You can delete the gift card product by sending a request to the [Delete a Product](/api/admin/#tag/Product/operation/DeleteProductsProduct) endpoint:
+You can delete a gift card product by sending a request to the [Delete a Product](/api/admin/#tag/Product/operation/DeleteProductsProduct) endpoint:
 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -567,7 +571,7 @@ curl -L -X GET '<BACKEND_URL>/admin/gift-cards' \
 </TabItem>
 </Tabs>
 
-This request does not require any parameters. It accepts parameters related to pagination, which you can check out in the [API reference](/api/admin/#tag/Gift-Card/operation/GetGiftCards).
+This request doesn't require any parameters. It accepts parameters related to pagination, which you can check out in the [API reference](/api/admin/#tag/Gift-Card/operation/GetGiftCards).
 
 This request returns an array of `gift_cards` and [pagination fields](/api/admin/#section/Pagination) in the response.
 

@@ -191,6 +191,10 @@ If you generated a random domain, you can find it by clicking on the GitHub repo
 
 :::
 
+### Health Route
+
+You can access `/health` to get health status of your deployed backend.
+
 ### Testing the Admin
 
 :::note
