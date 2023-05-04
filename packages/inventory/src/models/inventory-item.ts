@@ -1,5 +1,5 @@
-import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
+import { SoftDeletableEntity, generateEntityId } from "@medusajs/utils"
 
 @Entity()
 export class InventoryItem extends SoftDeletableEntity {
@@ -33,6 +33,15 @@ export class InventoryItem extends SoftDeletableEntity {
 
   @Column({ default: true })
   requires_shipping: boolean
+
+  @Column({ type: "text", nullable: true })
+  description: string | null
+
+  @Column({ type: "text", nullable: true })
+  title: string | null
+
+  @Column({ type: "text", nullable: true })
+  thumbnail: string | null
 
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

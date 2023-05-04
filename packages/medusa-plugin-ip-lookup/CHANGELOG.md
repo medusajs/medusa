@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.7
+
+### Patch Changes
+
+- [#3884](https://github.com/medusajs/medusa/pull/3884) [`440f900af`](https://github.com/medusajs/medusa/commit/440f900af03dd0af29c9b16f01576d3eff45cd04) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-ip-lookup): Remove outdated Typeorm usage
+
 ## 1.2.6
 
 ### Patch Changes

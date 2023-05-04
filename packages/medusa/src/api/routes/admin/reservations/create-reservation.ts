@@ -1,6 +1,7 @@
+import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+
 import { IInventoryService } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
-import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
@@ -73,6 +74,8 @@ export default async (req, res) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const userId: string = req.user.id || req.user.userId
+
   if (isDefined(validatedBody.line_item_id)) {
     await validateUpdateReservationQuantity(
       validatedBody.line_item_id,
@@ -84,9 +87,10 @@ export default async (req, res) => {
     )
   }
 
-  const reservation = await inventoryService.createReservationItem(
-    validatedBody
-  )
+  const reservation = await inventoryService.createReservationItem({
+    ...validatedBody,
+    created_by: userId,
+  })
 
   res.status(200).json({ reservation })
 }
@@ -127,6 +131,10 @@ export class AdminPostReservationsReq {
 
   @IsNumber()
   quantity: number
+
+  @IsString()
+  @IsOptional()
+  description?: string
 
   @IsObject()
   @IsOptional()

@@ -41,7 +41,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
 import {
-  createVariantTransaction,
+  createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
 
@@ -224,29 +224,25 @@ export default async (req, res) => {
     }
 
     if (variantsToCreate.length) {
-      await Promise.all(
-        variantsToCreate.map(async (data) => {
-          try {
-            const varTransaction = await createVariantTransaction(
+      try {
+        const varTransaction = await createVariantsTransaction(
+          transactionDependencies,
+          product.id,
+          variantsToCreate as CreateProductVariantInput[]
+        )
+        allVariantTransactions.push(varTransaction)
+      } catch (e) {
+        await Promise.all(
+          allVariantTransactions.map(async (transaction) => {
+            await revertVariantTransaction(
               transactionDependencies,
-              product.id,
-              data as CreateProductVariantInput
-            )
-            allVariantTransactions.push(varTransaction)
-          } catch (e) {
-            await Promise.all(
-              allVariantTransactions.map(async (transaction) => {
-                await revertVariantTransaction(
-                  transactionDependencies,
-                  transaction
-                ).catch(() => logger.warn("Transaction couldn't be reverted."))
-              })
-            )
+              transaction
+            ).catch(() => logger.warn("Transaction couldn't be reverted."))
+          })
+        )
 
-            throw e
-          }
-        })
-      )
+        throw e
+      }
     }
   })
 

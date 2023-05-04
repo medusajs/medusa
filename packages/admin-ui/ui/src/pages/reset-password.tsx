@@ -83,7 +83,7 @@ const ResetPasswordPage = () => {
     <PublicLayout>
       <SEO title="Reset Password" />
       <div className="flex flex-col items-center justify-center">
-        {!token ? (
+        {token ? (
           <form onSubmit={onSubmit}>
             <div className="gap-y-large flex flex-col items-center">
               <h1 className="inter-xlarge-semibold">Reset your password</h1>

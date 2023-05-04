@@ -24,7 +24,7 @@ export default class EventBusService
   protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
   // eslint-disable-next-line max-len
-  protected readonly eventBusModuleService_: EventBusUtils.AbstractEventBusModuleService
+  protected readonly eventBusModuleService_: EventBusTypes.IEventBusModuleService
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
@@ -137,7 +137,7 @@ export default class EventBusService
   ): Promise<TResult | void> {
     const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
-    const events = isBulkEmit
+    const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventNameOrData.map((event) => ({
           eventName: event.eventName,
           data: event.data,
@@ -164,6 +164,7 @@ export default class EventBusService
      * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
+
     const stagedJobs = await this.stagedJobService_
       .withTransaction(manager)
       .create(events)
