@@ -47,6 +47,7 @@ export const getCustomViteDevConfig = ({
         "qs",
       ],
       force: true,
+      disabled: "dev",
     },
   }
 }
