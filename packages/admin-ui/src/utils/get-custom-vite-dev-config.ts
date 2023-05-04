@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react"
 import { resolve } from "path"
 import { InlineConfig } from "vite"
 import { AdminDevConfig } from "../types/dev"
+import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs"
 
 export const getCustomViteDevConfig = ({
   backend = "http://localhost:9000",
@@ -37,6 +38,19 @@ export const getCustomViteDevConfig = ({
       },
     },
     optimizeDeps: {
+      esbuildOptions: {
+        plugins: [
+          esbuildCommonjs([
+            "react-dom",
+            "invariant",
+            "react-fast-compare",
+            "shallowequal",
+            "prop-types",
+            "axios",
+            "qs",
+          ]),
+        ],
+      },
       include: [
         "react-dom",
         "invariant",
@@ -47,7 +61,6 @@ export const getCustomViteDevConfig = ({
         "qs",
       ],
       force: true,
-      disabled: "dev",
     },
   }
 }
