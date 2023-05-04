@@ -1650,12 +1650,9 @@ module.exports = {
               },
             },
             {
-              type: "link",
-              href: "#",
+              type: "doc",
+              id: "development/file-service/create-file-service",
               label: "Create a File Service",
-              customProps: {
-                sidebar_is_soon: true,
-              },
             },
           ],
         },

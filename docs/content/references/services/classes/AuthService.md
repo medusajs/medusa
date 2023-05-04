@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L22)
+[medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L22)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L20)
+[medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L20)
 
 ___
 
@@ -92,7 +92,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -106,7 +106,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L19)
+[medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L19)
 
 ## Accessors
 
@@ -134,7 +134,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -173,7 +173,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -201,7 +201,7 @@ success: whether authentication succeeded
 
 #### Defined in
 
-[medusa/src/services/auth.ts:95](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L95)
+[medusa/src/services/auth.ts:95](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L95)
 
 ___
 
@@ -227,7 +227,7 @@ success: whether authentication succeeded
 
 #### Defined in
 
-[medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L52)
+[medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L52)
 
 ___
 
@@ -255,7 +255,7 @@ success: whether authentication succeeded
 
 #### Defined in
 
-[medusa/src/services/auth.ts:144](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L144)
+[medusa/src/services/auth.ts:144](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L144)
 
 ___
 
@@ -280,7 +280,7 @@ the result of the comparison
 
 #### Defined in
 
-[medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/services/auth.ts#L36)
+[medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/auth.ts#L36)
 
 ___
 
@@ -304,7 +304,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -328,4 +328,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/b41b6303c/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
