@@ -22,7 +22,7 @@ export default function AnnouncementBar(): JSX.Element | null {
     >
       <Bordered>
         <div className={styles.announcementBarIconWrapper}>
-          <IconBell />
+          <IconBell iconColorClassName="tw-fill-medusa-icon-on-color dark:tw-fill-medusa-icon-on-color-dark" />
         </div>
       </Bordered>
       <AnnouncementBarContent className={styles.announcementBarContent} />
