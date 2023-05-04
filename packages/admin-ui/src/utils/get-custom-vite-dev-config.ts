@@ -24,11 +24,6 @@ export const getCustomViteDevConfig = ({
     server: {
       port,
     },
-    build: {
-      commonjsOptions: {
-        include: [/node_modules/],
-      },
-    },
     resolve: {
       alias: {
         "@tanstack/react-query": resolve(
@@ -52,17 +47,6 @@ export const getCustomViteDevConfig = ({
           ]),
         ],
       },
-      include: [
-        "react-dom",
-        "invariant",
-        "react-fast-compare",
-        "shallowequal",
-        "prop-types",
-        "axios",
-        "qs",
-        "react",
-      ],
-      force: true,
     },
   }
 }

@@ -24,31 +24,4 @@ export default defineConfig({
   build: {
     outDir: "preview",
   },
-  optimizeDeps: {
-    esbuildOptions: {
-      plugins: [
-        esbuildCommonjs([
-          "react-dom",
-          "invariant",
-          "react-fast-compare",
-          "shallowequal",
-          "prop-types",
-          "axios",
-          "qs",
-          "react",
-        ]),
-      ],
-    },
-    include: [
-      "react-dom",
-      "invariant",
-      "react-fast-compare",
-      "shallowequal",
-      "prop-types",
-      "axios",
-      "qs",
-      "react",
-    ],
-    force: true,
-  },
 })
