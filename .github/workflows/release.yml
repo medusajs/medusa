@@ -36,11 +36,11 @@ jobs:
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
-        with: 
-          version: yarn version
-          publish: yarn release
-          commit: "chore: Release"
-          title: "chore: Release"
-          createGithubReleases: false
+#         with: 
+#           version: yarn version
+#           publish: yarn release
+#           commit: "chore: Release"
+#           title: "chore: Release"
+#           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

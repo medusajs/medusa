@@ -5,6 +5,8 @@ x-expanded-relations:
     - options
     - prices
     - product
+  totals:
+    - purchasable
 required:
   - variants
   - count

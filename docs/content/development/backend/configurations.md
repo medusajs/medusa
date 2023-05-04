@@ -424,6 +424,45 @@ In the default Medusa starter, the in-memory cache module is used. This module i
 
 ---
 
+## HTTP Compression
+
+This configuration enables HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative. 
+
+To enable HTTP compression, add the `http_compression` option in the `projectConfig` property in `medusa-config.js`:
+
+```js title=medusa-config.js
+module.exports = {
+  projectConfig: {
+    // ...other configurations
+    http_compression: {
+      enabled: true,
+      // optional settings
+      level: 6,
+      memLevel: 8,
+      threshold: 1024,
+    },
+  },
+}
+```
+
+Where:
+
+- `enabled`: A boolean flag that indicates where HTTP compression is enabled. It is disabled by default.
+- `level`: A `number` value that indicates the level of zlib compression to apply to responses. A higher level will result in better compression, but will take longer to complete. A lower level will result in less compression, but will be much faster. Default value is 6.
+- `memLevel`: A `number` value that specifies how much memory should be allocated for the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). The default value is 8.
+- `threshold`: A `number` or a `string` value in bytes that specifies the minimum response body size that compression is applied on. This is the number of bytes or any string accepted by the bytes module. The default value is `1024`.
+
+To disable compression for specific endpoints, you can pass in the request header `"x-no-compression": true`.
+
+
+:::tip
+
+The Medusa core package uses the [compression package provided by Express](https://github.com/expressjs/compression) to perform the HTTP compression.
+
+:::
+
+---
+
 ## See Also
 
 - [Medusa architecture overview](../fundamentals/architecture-overview.md)

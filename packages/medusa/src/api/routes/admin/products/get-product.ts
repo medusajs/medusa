@@ -59,7 +59,16 @@ export default async (req, res) => {
 
   const rawProduct = await productService.retrieve(id, req.retrieveConfig)
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
+    req.retrieveConfig.relations?.includes(relation)
+  )
+
+  const product = rawProduct
+
+  if (!shouldSetPricing) {
+    await pricingService.setProductPrices([product])
+  }
 
   res.json({ product })
 }

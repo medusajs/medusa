@@ -14,7 +14,9 @@ export interface AdminProductsListRes {
         "collection" | "images" | "options" | "tags" | "type" | "variants"
       >,
       {
-        variants: Array<SetRelation<ProductVariant, "options" | "prices">>
+        variants: Array<
+          SetRelation<ProductVariant, "options" | "prices" | "purchasable">
+        >
       }
     >
   >
