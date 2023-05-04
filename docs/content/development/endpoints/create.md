@@ -105,7 +105,7 @@ import {
 import { 
   ConfigModule, 
 } from "@medusajs/medusa/dist/types/global"
-import cors from "cors"
+import * as cors from "cors"
 ```
 
 Next, in the exported function, retrieve the CORS configurations of your backend using the utility functions you imported:
