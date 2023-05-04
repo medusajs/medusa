@@ -37,7 +37,13 @@ export const getCustomViteDevConfig = ({
       },
     },
     optimizeDeps: {
-      include: ["react-dom", "invariant", "react-fast-compare", "shallowequal"],
+      include: [
+        "react-dom",
+        "invariant",
+        "react-fast-compare",
+        "shallowequal",
+        "prop-types",
+      ],
       force: true,
     },
   }
