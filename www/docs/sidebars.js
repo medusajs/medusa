@@ -1400,34 +1400,6 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Modules",
-          items: [
-            {
-              type: "doc",
-              id: "development/modules/overview",
-              label: "Overview",
-            },
-            {
-              type: "html",
-              value: "How-to",
-              customProps: {
-                sidebar_is_group_divider: true,
-              },
-            },
-            {
-              type: "doc",
-              id: "development/modules/create",
-              label: "Create a Module",
-            },
-            {
-              type: "doc",
-              id: "development/modules/publish",
-              label: "Publish a Module",
-            },
-          ],
-        },
-        {
-          type: "category",
           label: "Events",
           items: [
             {
@@ -1483,6 +1455,29 @@ module.exports = {
         },
         {
           type: "category",
+          label: "Loaders",
+          items: [
+            {
+              type: "doc",
+              id: "development/loaders/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/loaders/create",
+              label: "Create a Loader",
+            },
+          ],
+        },
+        {
+          type: "category",
           label: "Scheduled Jobs",
           items: [
             {
@@ -1501,6 +1496,34 @@ module.exports = {
               type: "doc",
               id: "development/scheduled-jobs/create",
               label: "Create a Scheduled Job",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Modules",
+          items: [
+            {
+              type: "doc",
+              id: "development/modules/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/modules/create",
+              label: "Create a Module",
+            },
+            {
+              type: "doc",
+              id: "development/modules/publish",
+              label: "Publish a Module",
             },
           ],
         },
@@ -1529,34 +1552,6 @@ module.exports = {
               type: "doc",
               id: "development/plugins/publish",
               label: "Publish a Plugin",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Publishable API Keys",
-          items: [
-            {
-              type: "doc",
-              id: "development/publishable-api-keys/index",
-              label: "Overview",
-            },
-            {
-              type: "html",
-              value: "How-to",
-              customProps: {
-                sidebar_is_group_divider: true,
-              },
-            },
-            {
-              type: "doc",
-              id: "development/publishable-api-keys/admin/manage-publishable-api-keys",
-              label: "Admin: Manage Publishable API Keys",
-            },
-            {
-              type: "doc",
-              id: "development/publishable-api-keys/storefront/use-in-requests",
-              label: "Storefront: Use in Requests",
             },
           ],
         },
@@ -1607,6 +1602,34 @@ module.exports = {
               type: "doc",
               id: "development/cache/create",
               label: "Create a Cache Module",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Publishable API Keys",
+          items: [
+            {
+              type: "doc",
+              id: "development/publishable-api-keys/index",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/publishable-api-keys/admin/manage-publishable-api-keys",
+              label: "Admin: Manage Publishable API Keys",
+            },
+            {
+              type: "doc",
+              id: "development/publishable-api-keys/storefront/use-in-requests",
+              label: "Storefront: Use in Requests",
             },
           ],
         },
