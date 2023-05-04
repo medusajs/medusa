@@ -1,5 +1,20 @@
 # @medusajs/admin-ui
 
+## 1.8.4
+
+### Patch Changes
+
+- [#3955](https://github.com/medusajs/medusa/pull/3955) [`4c5c4fd9b`](https://github.com/medusajs/medusa/commit/4c5c4fd9b3941ee27e6c8166377fd8e8f1b7ad51) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(admin-ui): add metadata controls for stock locations
+
+- [#3950](https://github.com/medusajs/medusa/pull/3950) [`0c30d05cf`](https://github.com/medusajs/medusa/commit/0c30d05cf3805515086dc589a0332b59b6df045f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): allocation status for cancelled and archived orders
+
+- [#3999](https://github.com/medusajs/medusa/pull/3999) [`a7adb8fbf`](https://github.com/medusajs/medusa/commit/a7adb8fbf4f6a0708e590848ec6c315ff7eb05cf) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Pins version of `react-router-dom` as upgrade to 6.11.0 broke navigation in nested routes
+
+- [#3989](https://github.com/medusajs/medusa/pull/3989) [`596566a51`](https://github.com/medusajs/medusa/commit/596566a51061ba868ffd2306658f01030e52316f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): fixes an issue where navigating to tax settings would append the basename multiple times. Removes `react-helmet` for `react-helmet-async` to get rid off error caused by unsafe sideeffects"
+
+- Updated dependencies []:
+  - medusa-react@7.0.0
+
 ## 1.8.3
 
 ### Patch Changes
