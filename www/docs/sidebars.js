@@ -1658,6 +1658,29 @@ module.exports = {
         },
         {
           type: "category",
+          label: "Search Service",
+          items: [
+            {
+              type: "doc",
+              id: "development/search/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/search/create",
+              label: "Create a Search Service",
+            },
+          ],
+        },
+        {
+          type: "category",
           label: "Batch Jobs",
           items: [
             {
