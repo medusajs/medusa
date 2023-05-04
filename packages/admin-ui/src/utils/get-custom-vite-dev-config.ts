@@ -44,6 +44,7 @@ export const getCustomViteDevConfig = ({
         "shallowequal",
         "prop-types",
         "axios",
+        "qs",
       ],
       force: true,
     },
