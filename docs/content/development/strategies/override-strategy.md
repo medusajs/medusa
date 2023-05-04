@@ -1,5 +1,5 @@
 ---
-description: "Learn what a Strategy is in Medusa. A strategy is an isolated piece of business logic that can be overridden and customized."
+description: "Learn how to override a strategy in a Medusa backend or plugin."
 addHowToData: true
 ---
 
