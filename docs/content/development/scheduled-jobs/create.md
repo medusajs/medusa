@@ -25,7 +25,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ## 1. Create a File
 
-Each scheduled job should reside in a loader, which is a TypeScript or JavaScript file located under the `src/loaders` directory.
+Each scheduled job should reside in a [loader](../loaders/overview.mdx), which is a TypeScript or JavaScript file located under the `src/loaders` directory.
 
 Start by creating the `src/loaders` directory. Then, inside that directory, create the JavaScript or TypeScript file that you’ll add the scheduled job in. You can use any name for the file.
 
@@ -38,7 +38,7 @@ For the example in this tutorial, you can create the file `src/loaders/publish.t
 To create a scheduled job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
 ```ts title=src/loaders/publish.ts
-import { AwilixContainer } from 'awilix';
+import { AwilixContainer } from "awilix"
 
 const publishJob = async (
   container: AwilixContainer,
@@ -105,7 +105,7 @@ jobSchedulerService.create(
     // ...
   },
   {
-    keepExisting: true
+    keepExisting: true,
   }
 )
 ```
