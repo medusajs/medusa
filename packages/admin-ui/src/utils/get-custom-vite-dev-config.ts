@@ -43,6 +43,7 @@ export const getCustomViteDevConfig = ({
         "react-fast-compare",
         "shallowequal",
         "prop-types",
+        "axios",
       ],
       force: true,
     },
