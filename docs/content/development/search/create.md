@@ -135,7 +135,7 @@ class MySearchService extends AbstractSearchService {
   protected readonly pluginOptions: Record<string, any>
 
   constructor({
-    productService
+    productService,
   }: InjectedDependencies, pluginOptions) {
     // @ts-expect-error prefer-rest-params
     super(...arguments)
