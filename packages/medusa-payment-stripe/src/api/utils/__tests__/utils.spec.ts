@@ -70,7 +70,7 @@ describe("Utils", () => {
   describe("handlePaymentHook", () => {
     describe("on event type payment_intent.succeeded", () => {
       describe("in a payment context", () => {
-        it("should complete the cart on non existing order", async () => {
+        it.only("should complete the cart on non existing order", async () => {
           const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
@@ -244,7 +244,7 @@ describe("Utils", () => {
     })
 
     describe("on event type payment_intent.amount_capturable_updated", () => {
-      it("should complete the cart on non existing order", async () => {
+      it.only("should complete the cart on non existing order", async () => {
         const event = {
           id: "event",
           type: "payment_intent.amount_capturable_updated",
