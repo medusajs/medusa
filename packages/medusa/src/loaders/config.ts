@@ -59,9 +59,7 @@ export default (rootDirectory: string): ConfigModule => {
   }
 
   if (!configModule?.projectConfig?.database_type) {
-    console.log(
-      `[medusa-config] ⚠️ database_type not found. fallback to default sqlite.`
-    )
+    console.log(`[medusa-config] ⚠️ database_type not found.`)
   }
 
   return {

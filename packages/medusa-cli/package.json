@@ -58,7 +58,6 @@
     "regenerator-runtime": "^0.13.11",
     "resolve-cwd": "^3.0.0",
     "semver": "^7.3.8",
-    "sqlite3": "^5.0.2",
     "stack-trace": "^0.0.10",
     "ulid": "^2.3.0",
     "url": "^0.11.0",

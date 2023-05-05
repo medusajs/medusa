@@ -58,33 +58,30 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
-  const dbType = configModule.projectConfig.database_type
-  if (migrate && dbType !== "sqlite") {
-    const { coreMigrations } = getMigrations(directory, featureFlagRouter)
+  const { coreMigrations } = getMigrations(directory, featureFlagRouter)
 
-    const { migrations: moduleMigrations } = getModuleSharedResources(
-      configModule,
-      featureFlagRouter
-    )
+  const { migrations: moduleMigrations } = getModuleSharedResources(
+    configModule,
+    featureFlagRouter
+  )
 
-    const connectionOptions = {
-      type: configModule.projectConfig.database_type,
-      database: configModule.projectConfig.database_database,
-      schema: configModule.projectConfig.database_schema,
-      url: configModule.projectConfig.database_url,
-      extra: configModule.projectConfig.database_extra || {},
-      migrations: coreMigrations.concat(moduleMigrations),
-      logging: true,
-    } as DataSourceOptions
+  const connectionOptions = {
+    type: configModule.projectConfig.database_type,
+    database: configModule.projectConfig.database_database,
+    schema: configModule.projectConfig.database_schema,
+    url: configModule.projectConfig.database_url,
+    extra: configModule.projectConfig.database_extra || {},
+    migrations: coreMigrations.concat(moduleMigrations),
+    logging: true,
+  } as DataSourceOptions
 
-    const connection = new DataSource(connectionOptions)
+  const connection = new DataSource(connectionOptions)
 
-    await connection.initialize()
-    await connection.runMigrations()
-    await connection.destroy()
+  await connection.initialize()
+  await connection.runMigrations()
+  await connection.destroy()
 
-    Logger.info("Migrations completed.")
-  }
+  Logger.info("Migrations completed.")
 
   const app = express()
   const { container } = await loaders({
@@ -233,10 +230,8 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       }
     }
 
-    if (dbType !== "sqlite") {
-      for (const c of categories) {
-        await createProductCategory(c, null)
-      }
+    for (const c of categories) {
+      await createProductCategory(c, null)
     }
   })
 

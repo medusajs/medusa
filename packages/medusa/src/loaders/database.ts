@@ -39,8 +39,6 @@ export default async ({
 }: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
-  const isSqlite = configModule.projectConfig.database_type === "sqlite"
-
   dataSource = new DataSource({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
@@ -55,12 +53,6 @@ export default async ({
   } as DataSourceOptions)
 
   await dataSource.initialize()
-
-  if (isSqlite) {
-    await dataSource.query(`PRAGMA foreign_keys = OFF`)
-    await dataSource.synchronize()
-    await dataSource.query(`PRAGMA foreign_keys = ON`)
-  }
 
   return dataSource
 }
