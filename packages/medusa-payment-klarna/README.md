@@ -37,6 +37,7 @@ Receive payments on your Medusa commerce application using Klarna.
   KLARNA_TERMS_URL=<YOUR_KLARNA_TERMS_URL>
   KLARNA_CHECKOUT_URL=<YOUR_KLARNA_CHECKOUT_URL>
   KLARNA_CONFIRMATION_URL=<YOUR_KLARNA_CONFIRMATION_URL>
+  KLARNA_LOCALE=<YOUR_KLARNA_LOCALE>
   ```
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
@@ -51,6 +52,7 @@ Receive payments on your Medusa commerce application using Klarna.
         url: process.env.KLARNA_URL,
         user: process.env.KLARNA_USER,
         password: process.env.KLARNA_PASSWORD,
+        locale: process.env.KLARNA_LOCALE,
         merchant_urls: {
           terms: process.env.KLARNA_TERMS_URL,
           checkout: process.env.KLARNA_CHECKOUT_URL,

@@ -16,6 +16,7 @@ describe("KlarnaProviderService", () => {
         url: "medusajs/tests",
         user: "lebronjames",
         password: "123456789",
+        locale: "en-US",
         merchant_urls: {
           terms: "terms",
           checkout: "checkout",
@@ -53,7 +54,7 @@ describe("KlarnaProviderService", () => {
         total: carts.frCart.total,
         resource_id: "resource_id",
         currency_code: carts.frCart.region.currency_code,
-        amount: carts.frCart.total
+        amount: carts.frCart.total,
       })
 
       expect(result).toEqual({
@@ -142,6 +143,7 @@ describe("KlarnaProviderService", () => {
         url: "medusajs/tests",
         user: "lebronjames",
         password: "123456789",
+        locale: "en-US",
         merchant_urls: {
           terms: "terms",
           checkout: "checkout",
@@ -172,7 +174,7 @@ describe("KlarnaProviderService", () => {
         order_id: "123456789",
       })
     })
-    
+
     it("returns updated Klarna order using new API", async () => {
       result = await klarnaProviderService.updatePayment(
         {
@@ -188,7 +190,7 @@ describe("KlarnaProviderService", () => {
           total: carts.frCart.total,
           resource_id: "resource_id",
           currency_code: carts.frCart.region.currency_code,
-          amount: carts.frCart.total
+          amount: carts.frCart.total,
         }
       )
 
