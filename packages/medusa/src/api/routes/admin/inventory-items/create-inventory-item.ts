@@ -1,14 +1,15 @@
-import { IInventoryService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
+
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/inventory-items
@@ -220,6 +221,18 @@ export class AdminPostInventoryItemsReq {
   @IsString()
   @IsOptional()
   material?: string
+
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 
   @IsObject()
   @IsOptional()

@@ -135,6 +135,9 @@ export default class InventoryItemService {
       height: data.height,
       width: data.width,
       requires_shipping: data.requires_shipping,
+      description: data.description,
+      thumbnail: data.thumbnail,
+      title: data.title,
     })
 
     const result = await itemRepository.save(inventoryItem)

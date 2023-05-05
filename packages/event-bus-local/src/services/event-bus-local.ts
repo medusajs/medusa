@@ -86,7 +86,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     subscriber: Subscriber,
     context?: EventBusTypes.SubscriberContext
   ): this {
-    const existingSubscribers = this.retrieveSubscribers(event)
+    const existingSubscribers = this.eventToSubscribersMap_.get(event)
 
     if (existingSubscribers?.length) {
       const subIndex = existingSubscribers?.findIndex(
