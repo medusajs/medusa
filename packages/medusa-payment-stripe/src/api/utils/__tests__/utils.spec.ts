@@ -70,7 +70,7 @@ describe("Utils", () => {
   describe("handlePaymentHook", () => {
     describe("on event type payment_intent.succeeded", () => {
       describe("in a payment context", () => {
-        it.only("should complete the cart on non existing order", async () => {
+        it("should complete the cart on non existing order", async () => {
           const event = { id: "event", type: "payment_intent.succeeded" }
           const paymentIntent = {
             id: paymentIntentId,
