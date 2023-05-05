@@ -244,7 +244,7 @@ describe("Utils", () => {
     })
 
     describe("on event type payment_intent.amount_capturable_updated", () => {
-      it.only("should complete the cart on non existing order", async () => {
+      it("should complete the cart on non existing order", async () => {
         const event = {
           id: "event",
           type: "payment_intent.amount_capturable_updated",
