@@ -1,11 +1,3 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
-import { EntityManager } from "typeorm"
-import { ulid } from "ulid"
-import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../../services"
 import {
   DistributedTransaction,
   TransactionHandlerType,
@@ -14,6 +6,15 @@ import {
   TransactionState,
   TransactionStepsDefinition,
 } from "../../../../../utils/transaction"
+import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import {
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../../services"
+
+import { EntityManager } from "typeorm"
+import { MedusaError } from "@medusajs/utils"
+import { ulid } from "ulid"
 
 enum actions {
   createInventoryItem = "createInventoryItem",
@@ -53,6 +54,9 @@ type CreateInventoryItemInput = {
   origin_country?: string
   mid_code?: string
   material?: string
+  title?: string
+  description?: string
+  thumbnail?: string
   metadata?: Record<string, unknown>
 }
 
@@ -84,6 +88,9 @@ export const createInventoryItemTransaction = async (
       length: input.length,
       height: input.height,
       width: input.width,
+      title: input.title,
+      description: input.description,
+      thumbnail: input.thumbnail,
     })
   }
 
