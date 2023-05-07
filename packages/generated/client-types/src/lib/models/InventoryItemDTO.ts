@@ -21,6 +21,18 @@ export interface InventoryItemDTO {
    */
   mid_code?: string
   /**
+   * Title of the inventory item
+   */
+  title?: string
+  /**
+   * Description of the inventory item
+   */
+  description?: string
+  /**
+   * Thumbnail for the inventory item
+   */
+  thumbnail?: string
+  /**
    * The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
    */
   material?: string

@@ -9,13 +9,13 @@ import {
 } from "class-validator"
 import { defaultStoreSwapFields, defaultStoreSwapRelations } from "."
 
-import { Type } from "class-transformer"
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { MedusaError } from "medusa-core-utils"
 import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import SwapService from "../../../../services/swap"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**

@@ -50,10 +50,6 @@ export abstract class AbstractEventBusModuleService
     ])
   }
 
-  public retrieveSubscribers(event: string | symbol) {
-    return this.eventToSubscribersMap_.get(event)
-  }
-
   public subscribe(
     eventName: string | symbol,
     subscriber: EventBusTypes.Subscriber,
@@ -88,7 +84,7 @@ export abstract class AbstractEventBusModuleService
       throw new Error("Subscriber must be a function")
     }
 
-    const existingSubscribers = this.retrieveSubscribers(eventName)
+    const existingSubscribers = this.eventToSubscribersMap_.get(eventName)
 
     if (existingSubscribers?.length) {
       const subIndex = existingSubscribers?.findIndex(

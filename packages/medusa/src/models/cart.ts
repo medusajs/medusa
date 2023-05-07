@@ -216,7 +216,6 @@
  */
 
 import {
-  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -226,7 +225,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
+  OneToOne
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import {
@@ -234,6 +233,8 @@ import {
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { Customer } from "./customer"
 import { Discount } from "./discount"
@@ -244,8 +245,6 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum CartType {
   DEFAULT = "default",
@@ -390,13 +389,6 @@ export class Cart extends SoftDeletableEntity {
   refundable_amount?: number
   gift_card_total?: number
   gift_card_tax_total?: number
-
-  @AfterLoad()
-  private afterLoad(): void {
-    if (this.payment_sessions) {
-      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
-    }
-  }
 
   @BeforeInsert()
   private beforeInsert(): void {
