@@ -4,6 +4,12 @@ export function resolveDbType(pgSqlType: ColumnType): ColumnType {
   return pgSqlType
 }
 
+export function resolveDbGenerationStrategy(
+  pgSqlType: "increment" | "uuid" | "rowid"
+): "increment" | "uuid" | "rowid" {
+  return pgSqlType
+}
+
 export function DbAwareColumn(columnOptions: ColumnOptions): PropertyDecorator {
   const pre = columnOptions.type
   if (columnOptions.type) {
