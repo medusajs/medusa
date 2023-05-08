@@ -362,13 +362,7 @@ You must pass one of the [pricing parameters](#product-pricing-parameters) to th
 
 :::
 
-By default, prices in Medusa are stored as the price entered by the admin multiplied by a 100.
-
-:::note
-
-This is the behaviour if you're using the admin dashboard to create products. If you're using a different logic to create products and store prices, you can skip the instructions in this section.
-
-:::
+Prices in Medusa are stored as the currency's smallest unit. So, for currencies that are not zero-decimal, the amount is stored multiplied by a `100`. You can learn more about this in the [Product conceptual guide](../products.md#storing-the-product-variants-price).
 
 So, to show the correct price, you would need to convert it to its actual price with a method like this:
 
