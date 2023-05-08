@@ -27,7 +27,7 @@
   "dependencies": {
     "awilix": "^8.0.0",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
+    "class-validator": "^0.14.0",
     "typeorm": "npm:@medusajs/typeorm@0.3.16-next.0",
     "ulid": "^2.3.0"
   },
