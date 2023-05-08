@@ -1,8 +1,8 @@
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 
-import migrations from "./migrations"
-import { revertMigration, runMigrations } from "./migrations/run-migration"
+// import migrations from "./migrations"
+// import { revertMigration, runMigrations } from "./migrations/run-migration"
 import * as ProductModels from "./model"
 import ProductService from "./services/product"
 
@@ -14,14 +14,14 @@ const models = Object.values(ProductModels)
 
 const moduleDefinition: ModuleExports = {
   service,
-  migrations,
   loaders,
   models,
-  runMigrations,
-  revertMigration,
+  // migrations,
+  // runMigrations,
+  // revertMigration,
 }
 
 export default moduleDefinition
 export * from "./initialize"
-export { revertMigration, runMigrations } from "./migrations/run-migration"
+// export { revertMigration, runMigrations } from "./migrations/run-migration"
 export * from "./types"
