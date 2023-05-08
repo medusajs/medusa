@@ -915,12 +915,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/taxes",
           label: "Taxes",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
