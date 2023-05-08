@@ -9,6 +9,7 @@ export enum Modules {
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
   CACHE = "cacheService",
+  PRODUCT = "productService",
 }
 
 export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
