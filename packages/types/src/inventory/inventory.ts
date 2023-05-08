@@ -52,9 +52,9 @@ export interface IInventoryService {
   ): Promise<ReservationItemDTO>
 
   createReservationItem(
-    input: CreateReservationItemInput,
+    input: CreateReservationItemInput | CreateReservationItemInput[],
     context?: SharedContext
-  ): Promise<ReservationItemDTO>
+  ): Promise<ReservationItemDTO[]>
 
   // TODO make it bulk
   createInventoryItem(
@@ -63,9 +63,9 @@ export interface IInventoryService {
   ): Promise<InventoryItemDTO>
 
   createInventoryLevel(
-    data: CreateInventoryLevelInput,
+    data: CreateInventoryLevelInput | CreateInventoryLevelInput[],
     context?: SharedContext
-  ): Promise<InventoryLevelDTO>
+  ): Promise<InventoryLevelDTO[]>
 
   updateInventoryLevel(
     inventoryItemId: string,
@@ -98,12 +98,12 @@ export interface IInventoryService {
 
   // TODO make it bulk
   deleteInventoryItem(
-    inventoryItemId: string,
+    inventoryItemId: string | string[],
     context?: SharedContext
   ): Promise<void>
 
   deleteInventoryItemLevelByLocationId(
-    locationId: string,
+    locationId: string | string[],
     context?: SharedContext
   ): Promise<void>
 

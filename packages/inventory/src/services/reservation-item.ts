@@ -131,9 +131,11 @@ export default class ReservationItemService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateReservationItemInput,
+    data: CreateReservationItemInput | CreateReservationItemInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<ReservationItem> {
+  ): Promise<ReservationItem[]> {
+    const toCreate = Array.isArray(data) ? data : [data]
+
     const manager = context.transactionManager!
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
@@ -148,21 +150,23 @@ export default class ReservationItemService {
       created_by: data.created_by,
     })
 
-    const [newReservationItem] = await Promise.all([
-      reservationItemRepository.save(reservationItem),
-      this.inventoryLevelService_.adjustReservedQuantity(
-        data.inventory_item_id,
-        data.location_id,
-        data.quantity,
-        context
+    const [newReservationItems] = await Promise.all([
+      reservationItemRepository.save(reservationItems),
+      ...toCreate.map(async (data) =>
+        this.inventoryLevelService_.adjustReservedQuantity(
+          data.inventory_item_id,
+          data.location_id,
+          data.quantity,
+          context
+        )
       ),
     ])
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
-      id: newReservationItem.id,
+      ids: newReservationItems.map((i) => i.id),
     })
 
-    return newReservationItem
+    return newReservationItems
   }
 
   /**

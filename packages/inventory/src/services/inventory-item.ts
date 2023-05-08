@@ -12,7 +12,7 @@ import {
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
+import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 import { buildQuery } from "../utils/build-query"
@@ -195,13 +195,17 @@ export default class InventoryItemService {
    */
   @InjectEntityManager()
   async delete(
-    inventoryItemId: string,
+    inventoryItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
 
-    await itemRepository.softRemove({ id: inventoryItemId })
+    const ids = Array.isArray(inventoryItemId)
+      ? inventoryItemId
+      : [inventoryItemId]
+
+    await itemRepository.softDelete({ id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryItemService.Events.DELETED, {
       id: inventoryItemId,

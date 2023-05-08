@@ -120,24 +120,29 @@ export default class InventoryLevelService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryLevelInput,
+    data: CreateInventoryLevelInput | CreateInventoryLevelInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevel> {
+  ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager!
+
+    const createData = Array.isArray(data) ? data : [data]
+    const toCreate = createData.map((d) => {
+      return {
+        location_id: d.location_id,
+        inventory_item_id: d.inventory_item_id,
+        stocked_quantity: d.stocked_quantity,
+        reserved_quantity: d.reserved_quantity,
+        incoming_quantity: d.incoming_quantity,
+      }
+    })
 
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const inventoryLevel = levelRepository.create({
-      location_id: data.location_id,
-      inventory_item_id: data.inventory_item_id,
-      stocked_quantity: data.stocked_quantity,
-      reserved_quantity: data.reserved_quantity,
-      incoming_quantity: data.incoming_quantity,
-    })
+    const inventoryLevels = levelRepository.create(toCreate)
 
-    const saved = await levelRepository.save(inventoryLevel)
+    const saved = await levelRepository.save(inventoryLevels)
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.CREATED, {
-      id: saved.id,
+      ids: saved.map((i) => i.id),
     })
 
     return saved
@@ -265,13 +270,15 @@ export default class InventoryLevelService {
    */
   @InjectEntityManager()
   async deleteByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ location_id: locationId })
+    const ids = Array.isArray(locationId) ? locationId : [locationId]
+
+    await levelRepository.delete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
       location_id: locationId,

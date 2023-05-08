@@ -195,32 +195,46 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async createReservationItem(
-    input: CreateReservationItemInput,
+    input: CreateReservationItemInput | CreateReservationItemInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<ReservationItemDTO> {
+  ): Promise<ReservationItemDTO[]> {
+    const inputs = Array.isArray(input) ? input : [input]
     // Verify that the item is stocked at the location
-    const [inventoryLevel] = await this.inventoryLevelService_.list(
+    const inventoryLevels = await this.inventoryLevelService_.list(
       {
-        inventory_item_id: input.inventory_item_id,
-        location_id: input.location_id,
+        inventory_item_id: inputs.map((i) => i.inventory_item_id),
+        location_id: inputs.map((i) => i.location_id),
       },
       { take: 1 },
       context
     )
 
-    if (!inventoryLevel) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Item ${input.inventory_item_id} is not stocked at location ${input.location_id}`
-      )
-    }
+    const inventoryLevelMap: Map<
+      string,
+      Map<string, InventoryLevelDTO>
+    > = inventoryLevels.reduce((acc, curr) => {
+      if (acc.has(curr.inventory_item_id)) {
+        acc.get(curr.inventory_item_id).set(curr.location_id, curr)
+      } else {
+        acc.set(curr.inventory_item_id, new Map([[curr.location_id, curr]]))
+      }
+      return acc
+    }, new Map())
 
-    const reservationItem = await this.reservationItemService_.create(
-      input,
-      context
+    const missing = inputs.filter(
+      (i) => !inventoryLevelMap.get(i.inventory_item_id)?.get(i.location_id)
     )
 
-    return { ...reservationItem }
+    if (missing.length) {
+      const error = missing
+        .map((missing) => {
+          return `Item ${missing.inventory_item_id} is not stocked at location ${missing.location_id}`
+        })
+        .join(", ")
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, error)
+    }
+
+    return await this.reservationItemService_.create(inputs, context)
   }
 
   /**
@@ -255,9 +269,9 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async createInventoryLevel(
-    input: CreateInventoryLevelInput,
+    input: CreateInventoryLevelInput | CreateInventoryLevelInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevelDTO> {
+  ): Promise<InventoryLevelDTO[]> {
     return await this.inventoryLevelService_.create(input, context)
   }
 
@@ -295,7 +309,7 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteInventoryItem(
-    inventoryItemId: string,
+    inventoryItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     await this.inventoryLevelService_.deleteByInventoryItemId(
@@ -311,7 +325,7 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteInventoryItemLevelByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.inventoryLevelService_.deleteByLocationId(

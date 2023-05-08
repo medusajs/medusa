@@ -8,7 +8,10 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
+const {
+  simpleProductFactory,
+  simpleOrderFactory,
+} = require("../../../factories")
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
 describe("Inventory Items endpoints", () => {
@@ -726,6 +729,209 @@ describe("Inventory Items endpoints", () => {
           secondVariantId
         )
       ).toHaveLength(1)
+    })
+
+    describe("inventory service", () => {
+      let inventoryService
+      let productInventoryService
+
+      beforeAll(() => {
+        inventoryService = appContainer.resolve("inventoryService")
+        productInventoryService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+      })
+
+      it("bulk removes inventoryItems", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const ids = items.map((item) => item.id)
+
+        expect(ids).not.toBeFalsy()
+
+        await inventoryService.deleteInventoryItem(ids)
+
+        const [emptyItems] = await inventoryService.listInventoryItems()
+        expect(emptyItems).toHaveLength(0)
+      })
+
+      it("bulk creates inventoryLevels", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        const [levels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(2)
+        expect(levels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: locationId,
+            }),
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: location2Id,
+            }),
+          ])
+        )
+      })
+
+      it("bulk deletes inventoryLevels by location id", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        await inventoryService.deleteInventoryItemLevelByLocationId([
+          locationId,
+          location2Id,
+        ])
+
+        const [levels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(0)
+      })
+
+      it("bulk deletes inventoryLevels by location id", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        await inventoryService.deleteInventoryItemLevelByLocationId([
+          locationId,
+          location2Id,
+        ])
+
+        const [levels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(0)
+      })
+
+      it("fails to create reservations for invalid configuration", async () => {
+        const order = await simpleOrderFactory(dbConnection, {
+          line_items: [
+            { id: "line-item-1", quantity: 1 },
+            { id: "line-item-2", quantity: 1 },
+          ],
+        })
+
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        const error = await inventoryService
+          .createReservationItem([
+            {
+              inventory_item_id: itemId,
+              location_id: locationId,
+              line_item_id: "line-item-1",
+              quantity: 1,
+            },
+            {
+              inventory_item_id: itemId,
+              location_id: locationId,
+              line_item_id: "line-item-2",
+              quantity: 1,
+            },
+          ])
+          .catch((err) => err)
+
+        expect(error.message).toEqual(
+          `Item ${itemId} is not stocked at location ${locationId}, Item ${itemId} is not stocked at location ${locationId}`
+        )
+      })
+
+      it("bulk deletes reservations by line item ids", async () => {
+        const order = await simpleOrderFactory(dbConnection, {
+          line_items: [
+            { id: "line-item-1", quantity: 1 },
+            { id: "line-item-2", quantity: 1 },
+          ],
+        })
+
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: locationId,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createReservationItem([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            line_item_id: "line-item-1",
+            quantity: 1,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            line_item_id: "line-item-2",
+            quantity: 1,
+          },
+        ])
+
+        const [reservations] = await inventoryService.listReservationItems({
+          inventory_item_id: itemId,
+        })
+        expect(reservations).toHaveLength(2)
+
+        await inventoryService.deleteReservationItemsByLineItem([
+          "line-item-1",
+          "line-item-2",
+        ])
+
+        const [deletedReservations] =
+          await inventoryService.listReservationItems({
+            inventory_item_id: itemId,
+          })
+        expect(deletedReservations).toHaveLength(0)
+      })
     })
   })
 })
