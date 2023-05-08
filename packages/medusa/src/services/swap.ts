@@ -1,9 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
-
 import {
   Cart,
   CartType,
@@ -19,10 +13,6 @@ import {
   SwapFulfillmentStatus,
   SwapPaymentStatus,
 } from "../models"
-import { SwapRepository } from "../repositories/swap"
-import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { CreateShipmentConfig } from "../types/fulfillment"
-import { OrdersReturnItem } from "../types/orders"
 import {
   CartService,
   CustomShippingOptionService,
@@ -37,6 +27,15 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
+import { EntityManager, In } from "typeorm"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, setMetadata, validateId } from "../utils"
+
+import { CreateShipmentConfig } from "../types/fulfillment"
+import { OrdersReturnItem } from "../types/orders"
+import { SwapRepository } from "../repositories/swap"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedProps = {
   manager: EntityManager
@@ -557,7 +556,8 @@ class SwapService extends TransactionBaseService {
    */
   async createCart(
     swapId: string,
-    customShippingOptions: { option_id: string; price: number }[] = []
+    customShippingOptions: { option_id: string; price: number }[] = [],
+    context: { sales_channel_id?: string } = {}
   ): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
       const swapRepo = manager.withRepository(this.swapRepository_)
@@ -611,6 +611,8 @@ class SwapService extends TransactionBaseService {
         shipping_address_id: order.shipping_address_id,
         region_id: order.region_id,
         customer_id: order.customer_id,
+        sales_channel_id:
+          context.sales_channel_id ?? order.sales_channel_id ?? undefined,
         type: CartType.SWAP,
         metadata: {
           swap_id: swap.id,
@@ -792,7 +794,7 @@ class SwapService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       swap.shipping_methods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
       swap.confirmed_at = new Date()
