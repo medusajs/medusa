@@ -82,7 +82,7 @@ properties:
     type: string
     externalDocs:
       url: >-
-        https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+        https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
       description: Learn more how to use the idempotency key.
   amount:
     description: The amount that the Payment Session has been authorized for.

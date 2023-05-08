@@ -139,7 +139,7 @@ All property types such as `ModuleLoaderFunction` can be loaded from the `@medus
 Where:
 
 - `service`: This is the only required property to be exported. It should be the main service your module exposes, and it must implement all the declared methods on the module interface. For example, if it's a cache module, it must implement  the `ICacheService` interface exported from `@medusajs/types`.
-- `loaders`: (optional) an array of functions used to perform an action while loading the module. For example, you can log a message that the module has been loaded, or if your module's scope is [isolated](#module-scope) you can use the loader to establish a database connection.
+- `loaders`: (optional) an array of [loader](../loaders/overview.mdx) functions used to perform an action while loading the module. For example, you can log a message that the module has been loaded, or if your module's scope is [isolated](#module-scope) you can use the loader to establish a database connection.
 - `migrations`: (optional) an array of objects containing database migrations that should run when the `migration` command is used with Medusa's CLI.
 - `models`: (optional) an array of entities that your module creates.
 - `runMigrations`: (optional) a function that can be used to define migrations to run when the `migration run` command is used with Medusa's CLI. The migrations will only run if they haven't already. This will only be executed if the module's scope is [isolated](#module-scope).

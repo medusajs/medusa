@@ -68,7 +68,7 @@ The Medusa backend also provides payment admin APIs that you can use to retrieve
 
 ## Fulfillments in Orders
 
-After an order is placed, you can create fulfillments for the items in the order. You can fulfill all items or some items. A fulfillment is represented by the `Fulfillment` entity, and it’s associated with the order through the `order_id` attribute of the fulfillment.
+After an order is placed, you can create [fulfillments](./fulfillments.md) for the items in the order. You can fulfill all items or some items. A fulfillment is represented by the `Fulfillment` entity, and it’s associated with the order through the `order_id` attribute of the fulfillment.
 
 Creating fulfillments changes the `fulfillment_status` of the order. If all items were fulfilled, the status changes to `fulfilled`. If only some items are fulfilled, the status changes to `partially_fulfilled`.
 
@@ -264,13 +264,13 @@ You can access the order’s shipping method by expanding the `shipping_methods`
 
 ### Returns
 
-An order can be associated with more than one return. For example, a customer may request to return items separately or gradually. A return is represented by the `Return` entity.
+An order can be associated with more than one [return](./returns.md). For example, a customer may request to return items separately or gradually. A return is represented by the `Return` entity.
 
 You can access the order’s returns by expanding the `returns` relation and accessing `order.returns`.
 
 ### ClaimOrder
 
-An order can be associated with more than one claim. A claim is represented by the `ClaimOrder` entity.
+An order can be associated with more than one [claim](./claims.md). A claim is represented by the `ClaimOrder` entity.
 
 You can access the order’s claims by expanding the `claims` relation and accessing `order.claims`.
 
@@ -282,13 +282,13 @@ You can access the order’s refunds by expanding the `refunds` relation and acc
 
 ### Swap
 
-An order can be associated with more than one swap. A swap is represented by the `Swap` entity.
+An order can be associated with more than one [swap](./swaps.md). A swap is represented by the `Swap` entity.
 
 You can access the order’s swaps by expanding the `swap` relation and accessing `order.swap`.
 
 ### DraftOrder
 
-An order can be associated with a draft order. This would be the draft order that the order was created from.
+An order can be associated with a [draft order](./draft-orders.md). This would be the draft order that the order was created from.
 
 The draft order’s ID is stored in the `draft_order_id` attribute. You can also access the draft order by expanding the `draft_order` relation and accessing `order.draft_order`.
 
@@ -296,6 +296,7 @@ The draft order’s ID is stored in the `draft_order_id` attribute. You can also
 
 ## See Also
 
+- [How to manage orders](./admin/manage-orders.mdx)
 - [How to edit an order](./admin/edit-order.mdx)
 - [How to handle order edits on the storefront](./storefront/handle-order-edits.mdx)
 - [How to Implement Claim Order Flow in the storefront](./storefront/implement-claim-order.mdx)
