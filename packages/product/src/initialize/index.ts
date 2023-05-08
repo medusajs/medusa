@@ -4,7 +4,8 @@ import {
   MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
-import { IEventBusService, IInventoryService } from "@medusajs/types"
+import { IEventBusService, IProductService } from "@medusajs/types"
+
 import { ProductServiceInitializeOptions } from "../types"
 
 export const initialize = async (
@@ -12,7 +13,7 @@ export const initialize = async (
   injectedDependencies?: {
     eventBusService: IEventBusService
   }
-): Promise<IInventoryService> => {
+): Promise<IProductService> => {
   const serviceKey = Modules.INVENTORY
   const loaded = await MedusaModule.bootstrap(
     serviceKey,
@@ -21,5 +22,5 @@ export const initialize = async (
     injectedDependencies
   )
 
-  return loaded[serviceKey] as IInventoryService
+  return loaded[serviceKey] as IProductService
 }
