@@ -35,7 +35,7 @@ export default async (
     )
   }
 
-  const entities = Object.values(ProductModels) as EntitySchema[]
+  const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await MikroORM.init<PostgreSqlDriver>({
     entitiesTs: entities,
