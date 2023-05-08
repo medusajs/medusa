@@ -359,7 +359,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.admin.auth.createSession({\n  email: 'user@example.com',\n  password: 'supersecret'\n}).then((({ user }) => {\n  console.log(user.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.admin.auth.createSession({\n  email: 'user@example.com',\n  password: 'supersecret'\n})\n.then(({ user }) => {\n  console.log(user.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -9831,7 +9831,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.fulfillClaim(order_id, claim_id)\n.then(({ order }) => {\n  console.log(order.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.fulfillClaim(order_id, claim_id, {\n})\n.then(({ order }) => {\n  console.log(order.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -11231,7 +11231,7 @@
           {
             "lang": "JavaScript",
             "label": "JS Client",
-            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.fulfillSwap(order_id, swap_id)\n.then(({ order }) => {\n  console.log(order.id);\n});\n"
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.fulfillSwap(order_id, swap_id, {\n\n})\n.then(({ order }) => {\n  console.log(order.id);\n});\n"
           },
           {
             "lang": "Shell",
@@ -13547,7 +13547,7 @@
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/admin/product-categories' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"name\": \"Skinny Jeans\",\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/admin/product-categories' \\\n--header 'Authorization: Bearer {api_token}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"name\": \"Skinny Jeans\"\n}'\n"
           }
         ],
         "security": [

@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-meilisearch",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Meilisearch search plugin for Medusa",
   "repository": {
     "type": "git",
@@ -19,14 +19,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/utils": "1.8.2",
+    "@medusajs/utils": "1.8.3",
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
     "meilisearch": "^0.32.3"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.9.0",
-    "@medusajs/types": "1.8.3",
+    "@medusajs/medusa": "1.10.0",
+    "@medusajs/types": "1.8.4",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "typescript": "^4.9.5"
