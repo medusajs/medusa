@@ -56,6 +56,8 @@ Tax providers are used to return the tax line items for a set of line items and 
 
 Each region can use a different tax provider. By default, regions use the `system` tax provider.
 
+For example, the tax provider allows you to use the shipping address of the cart to create tax lines.
+
 ---
 
 ## Tax Lines
