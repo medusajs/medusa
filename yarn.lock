@@ -6274,7 +6274,7 @@ __metadata:
     "@types/express": ^4.17.17
     awilix: ^8.0.0
     class-transformer: ^0.5.1
-    class-validator: ^0.13.2
+    class-validator: ^0.14.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
@@ -16028,16 +16028,6 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: d44f4afc7a3e48dba4c2d3fada5f781a1adeeff371b875c3b578bc33815c6c29d5d06483c2abfd43a32d35b104b27b67bfa39c2e8a422fa858068bd756cfbd42
-  languageName: node
-  linkType: hard
-
-"class-validator@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "class-validator@npm:0.13.2"
-  dependencies:
-    libphonenumber-js: ^1.9.43
-    validator: ^13.7.0
-  checksum: e7a1a318967229582b25da9c3b81e316627b014640968824b00bf001f4d79101017b91c59cb3f2c8c0922c4446b5a1114c27ba91aae1c1f109e0ad4d504dfcd5
   languageName: node
   linkType: hard
 
@@ -27946,13 +27936,6 @@ __metadata:
   version: 1.10.26
   resolution: "libphonenumber-js@npm:1.10.26"
   checksum: 4a534112c2a182e95e96c13e4f969ebc2969421a6a06be65f20ff6de4625ae8f9ec0dba115c4d7485bc547f091b7acb8985332e1b4b6dc02390485ac33f4c8ea
-  languageName: node
-  linkType: hard
-
-"libphonenumber-js@npm:^1.9.43":
-  version: 1.10.8
-  resolution: "libphonenumber-js@npm:1.10.8"
-  checksum: 55c7805b41c9066f1ee0754eef448f4575f04286eedaefa1e0b0d878b199fb7bd1fbadc3a5ec61c5bbf2db54641264413273767d8cec1c9faeaa297a1da9a502
   languageName: node
   linkType: hard
 
