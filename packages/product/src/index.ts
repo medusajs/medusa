@@ -28,7 +28,9 @@ export * from "./initialize"
 // export { revertMigration, runMigrations } from "./migrations/run-migration"
 export * from "./types"
 
-// =============================
+// =======================================================================================
+
+//  yarn build && node dist/index.js
 
 async function RUN_TEST() {
   const config: Options = {
@@ -41,7 +43,9 @@ async function RUN_TEST() {
 
   const manager = orm.em.fork() as EntityManager
 
-  const product = await manager.findOne(ProductModels.Product, {})
+  const product = await manager.findOne(ProductModels.Product, {
+    handle: "test",
+  })
 
   console.log({ product })
 
