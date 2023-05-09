@@ -208,7 +208,7 @@ class AuthService extends TransactionBaseService {
       try {
         const user: User = await this.userService_
           .withTransaction(transactionManager)
-          .retrieve(token.userId)
+          .retrieve(token.user_id)
 
         return {
           success: true,
@@ -251,7 +251,7 @@ class AuthService extends TransactionBaseService {
       try {
         const customer: Customer = await this.customerService_
           .withTransaction(transactionManager)
-          .retrieve(token.customerId)
+          .retrieve(token.customer_id)
 
         return {
           success: true,
