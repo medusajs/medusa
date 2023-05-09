@@ -49,6 +49,9 @@ export default async (
     type: "postgresql",
   })
 
+  orm.schema.ensureDatabase()
+  orm.getMigrator().up()
+
   container.register({
     manager: asValue(orm.em),
   })

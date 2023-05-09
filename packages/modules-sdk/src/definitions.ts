@@ -73,8 +73,7 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     canOverride: true,
     dependencies: [],
     defaultModuleDeclaration: {
-      scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
+      scope: MODULE_SCOPE.EXTERNAL,
     },
   },
 }

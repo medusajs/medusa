@@ -39,7 +39,7 @@ export type InternalModuleDeclaration = {
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
-  server: {
+  server?: {
     type: "http"
     url: string
     keepAlive: boolean
