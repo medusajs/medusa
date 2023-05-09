@@ -1,15 +1,18 @@
 import { moduleOptions } from "./config"
 import * as ProductModels from "../../src/models"
-import { Options, SqlEntityManager, MikroORM } from "@mikro-orm/postgresql"
+import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
+
+console.log(Object.values(ProductModels))
 
 const ORMConfig: Options = {
   type: "postgresql",
   dbName: moduleOptions.database.clientUrl,
   entities: Object.values(ProductModels),
+  schema: moduleOptions.database.schema,
   debug: false,
   migrations: {
-    silent: true
-  }
+    silent: true,
+  },
 }
 
 interface TestDatabase {
@@ -53,7 +56,7 @@ export const TestDatabase: TestDatabase = {
     this.manager = this.orm.em.fork()
 
     // Ensures that the database is created
-    await this.orm.schema.dropDatabase(moduleOptions.database.clientUrl)
+    /*await this.orm.schema.dropDatabase(moduleOptions.database.clientUrl)*/
     await this.orm.schema.ensureDatabase()
     // Runs all the migration files
     await this.orm.getMigrator().up()
@@ -64,7 +67,7 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    await this.orm.schema.dropDatabase(moduleOptions.database.clientUrl)
+    /*await this.orm.schema.dropDatabase(moduleOptions.database.clientUrl)*/
     await this.orm.close()
 
     this.orm = null

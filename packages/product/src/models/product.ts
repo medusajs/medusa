@@ -93,7 +93,7 @@ class Product {
   type = new Collection<ProductType>(this)
 
   @ManyToMany(() => ProductTag, undefined, {
-    pivotTable: "product_tag",
+    pivotTable: "product_tags",
   })
   tags = new Collection<ProductTag>(this)
 

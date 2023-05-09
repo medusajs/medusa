@@ -30,7 +30,7 @@ describe("ProductVariant Service", () => {
     })
 
     // TODO
-    it("by default, all model columns are returned", async () => {
+    it.only("by default, all model columns are returned", async () => {
       const results = await service.list()
 
       expect(results).toEqual([])
