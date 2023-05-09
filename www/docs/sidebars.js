@@ -360,11 +360,6 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "troubleshooting/transaction-error-in-checkout",
-              label: "Error 409 in checkout",
-            },
-            {
-              type: "doc",
               id: "troubleshooting/missing-payment-providers",
               label: "Payment provider missing",
             },
