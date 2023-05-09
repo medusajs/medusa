@@ -106,13 +106,18 @@ export default async ({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: jwt_secret,
       },
-      async (jwtPayload, done) => {
-        const auth = await authService.authenticateUserWithBearerToken(jwtPayload)
-        if (auth.success) {
-          done(null, auth.user)
-        } else {
+      (token, done) => {
+        if (token.domain !== "admin") {
           done(null, false)
+          return
         }
+    
+        if (!token.user_id) {
+          done(null, false)
+          return
+        }
+
+        done(null, { userId: token.user_id })
       }
     )
   )
@@ -125,13 +130,18 @@ export default async ({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: jwt_secret,
       },
-      async (jwtPayload, done) => {
-        const auth = await authService.authenticateCustomerWithBearerToken(jwtPayload)
-        if (auth.success) {
-          done(null, { customer_id: auth.customer?.id })
-        } else {
-          done(auth.error)
+      (token, done) => {
+        if (token.domain !== "store") {
+          done(null, false)
+          return
         }
+    
+        if (!token.customer_id) {
+          done(null, false)
+          return
+        }
+
+        done(null, { customer_id: token.customer_id })
       }
     )
   )
