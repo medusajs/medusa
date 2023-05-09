@@ -1,6 +1,5 @@
 import { Express } from "express"
 import passport from "passport"
-import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
 import { Strategy as CustomStrategy } from "passport-custom"
@@ -56,7 +55,7 @@ export default async ({
           return done(null, { user_id: req.session.user_id })
         }
 
-        return done("Invalid Session")
+        return done(null, false)
       }
     )
   )
@@ -66,24 +65,33 @@ export default async ({
     new CustomStrategy(
       async (req, done) => {
         // @ts-ignore
-        if(req.session?.user_id) {
+        if(req.session?.customer_id) {
           // @ts-ignore
           return done(null, { customer_id: req.session.customer_id })
         }
 
-        return done("Invalid Session")
+        return done(null, false)
       }
     )
   )
 
   // Alternatively use bearer token to authenticate to the admin api
   passport.use(
-    new BearerStrategy(async (token, done) => {
+    "admin-api-token",
+    new CustomStrategy(async (req, done) => {
+      const header = req.headers.authorization
+
+      if (!header || !header.toLowerCase().startsWith("token ")) {
+        return done(null, false)
+      }
+
+      const token = header.substring(6)
+
       const auth = await authService.authenticateAPIToken(token)
       if (auth.success) {
         done(null, auth.user)
       } else {
-        done(auth.error)
+        done(null, false)
       }
     })
   )
@@ -102,7 +110,7 @@ export default async ({
         if (auth.success) {
           done(null, auth.user)
         } else {
-          done(auth.error)
+          done(null, false)
         }
       }
     )

@@ -51,20 +51,6 @@ class AuthService extends TransactionBaseService {
    */
   async authenticateAPIToken(token: string): Promise<AuthenticateResult> {
     return await this.atomicPhase_(async (transactionManager) => {
-      if (process.env.NODE_ENV?.startsWith("dev")) {
-        try {
-          const user: User = await this.userService_
-            .withTransaction(transactionManager)
-            .retrieve(token)
-          return {
-            success: true,
-            user,
-          }
-        } catch (error) {
-          // ignore
-        }
-      }
-
       try {
         const user: User = await this.userService_
           .withTransaction(transactionManager)
