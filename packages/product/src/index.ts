@@ -13,7 +13,7 @@ import { MikroORM, Options } from "@mikro-orm/postgresql"
 import { EntityManager } from "@mikro-orm/core"
 
 const service = ProductService
-const loaders = [loadContainer, loadConnection]
+const loaders = [loadContainer, loadConnection] as any
 const models = Object.values(ProductModels)
 
 const moduleDefinition: ModuleExports = {
