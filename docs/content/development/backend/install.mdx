@@ -50,7 +50,7 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 ### 2. Create a new Medusa project
 
    ```bash noReport
-   medusa new my-medusa-store --seed
+   medusa new my-medusa-store
    ```
 
 ### 3. Start your Medusa backend
@@ -66,6 +66,14 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    positiveQuestion="Is there anything that should improved?"
    negativeQuestion="Please describe the issue you faced."
 />
+
+### Seed Data 
+
+For better testing, you can add demo data to your Medusa backend by running the seed command in your Medusa backend directory:
+
+```bash
+medusa seed --seed-file=data/seed.json
+```
 
 ### Test the Backend
 
