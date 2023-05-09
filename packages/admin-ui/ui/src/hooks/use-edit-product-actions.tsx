@@ -13,10 +13,10 @@ import {
   useAdminUpdateVariant,
 } from "medusa-react"
 
-import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "../utils/error-messages"
 import { removeNullish } from "../utils/remove-nullish"
 import useImperativeDialog from "./use-imperative-dialog"
+import { useNavigate } from "react-router-dom"
 import useNotification from "./use-notification"
 
 const useEditProductActions = (productId: string) => {
@@ -76,6 +76,7 @@ const useEditProductActions = (productId: string) => {
         variant_id: id,
         ...removeNullish(payload),
         manage_inventory: payload.manage_inventory,
+        allow_backorder: payload.allow_backorder,
       },
       {
         onSuccess: () => {

@@ -167,15 +167,19 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     // @ts-ignore
     onUpdateVariant(
       variant.id,
-      removeNullish({
-        ...dimensions,
-        ...customs,
-        ...stock,
-        ean,
-        barcode,
-        upc,
-        allow_backorder,
-      }),
+      {
+        ...removeNullish({
+          ...dimensions,
+          ...customs,
+          ...stock,
+          ean,
+          barcode,
+          upc,
+        }),
+        ...(typeof allow_backorder !== "undefined" && {
+          allow_backorder: allow_backorder,
+        }),
+      },
       () => {
         refetch()
         if (shouldInvalidateCache) {
@@ -287,7 +291,7 @@ export const getEditVariantDefaultValues = (
       upc: variant?.upc || null,
       inventory_quantity: null,
       manage_inventory: false,
-      allow_backorder: false,
+      allow_backorder: variant?.allow_backorder || false,
       location_levels: null,
       dimensions: {
         height: null,
@@ -325,7 +329,7 @@ export const getEditVariantDefaultValues = (
     upc: variant?.upc || null,
     inventory_quantity: inventoryItem.inventory_quantity,
     manage_inventory: !!inventoryItem,
-    allow_backorder: inventoryItem.allow_backorder,
+    allow_backorder: variant?.allow_backorder || false,
     location_levels: inventoryItem.location_levels,
     dimensions: {
       height: inventoryItem.height,
