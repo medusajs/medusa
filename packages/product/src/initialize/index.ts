@@ -11,7 +11,7 @@ import { ProductServiceInitializeOptions } from "../types"
 export const initialize = async (
   options: ProductServiceInitializeOptions | ExternalModuleDeclaration,
   injectedDependencies?: {
-    eventBusService: IEventBusService
+    eventBusService?: IEventBusService
   }
 ): Promise<IProductService> => {
   const serviceKey = Modules.PRODUCT

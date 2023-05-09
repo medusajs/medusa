@@ -26,52 +26,64 @@ export enum ProductStatus {
 
 @Entity()
 class Product {
-  @PrimaryKey()
+  @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property()
+  @Property({ columnType: "text" })
   title: string
-  @Property()
-  @Unique()
-  handle!: string
-  @Property({ nullable: true })
-  subtitle?: string
-  @Property({ nullable: true })
-  description?: string
 
-  @Property()
-  is_giftcard: boolean = false
+  @Property({ columnType: "text", nullable: true })
+  @Unique({
+    name: "IDX_product_handle_unique",
+    properties: ["handle"],
+    options: {},
+  })
+  handle?: string | null
+
+  @Property({ columnType: "text", nullable: true })
+  subtitle?: string | null
+
+  @Property({ columnType: "text", nullable: true })
+  description?: string | null
+
+  @Property({ columnType: "boolean", default: false })
+  is_giftcard!: boolean
 
   @Enum(() => ProductStatus)
   status!: ProductStatus
 
   // images: Image[]
 
-  @Property({ nullable: true })
-  thumbnail?: string
+  @Property({ columnType: "text", nullable: true })
+  thumbnail?: string | null
 
   // options: ProductOption[]
   // variants: ProductVariant[]
   // categories: ProductCategory[]
 
-  @Property({ nullable: true })
-  weight?: number
-  @Property({ nullable: true })
-  length?: number
-  @Property({ nullable: true })
-  height?: number
-  @Property({ nullable: true })
-  width?: number
+  @Property({ columnType: "text", nullable: true })
+  weight?: number | null
 
-  @Property({ nullable: true })
-  origin_country?: string
-  @Property({ nullable: true })
-  hs_code?: string
-  @Property({ nullable: true })
-  mid_code?: string
+  @Property({ columnType: "text", nullable: true })
+  length?: number | null
 
-  @Property({ nullable: true })
-  material?: string
+  @Property({ columnType: "text", nullable: true })
+  height?: number | null
+
+  @Property({ columnType: "text", nullable: true })
+  width?: number | null
+
+  @Property({ columnType: "text", nullable: true })
+  origin_country?: string | null
+
+  @Property({ columnType: "text", nullable: true })
+  hs_code?: string | null
+
+  @Property({ columnType: "text", nullable: true })
+  mid_code?: string | null
+
+  @Property({ columnType: "text", nullable: true })
+  material?: string | null
 
   @ManyToOne(() => ProductCollection, { nullable: true })
   collection = new Collection<ProductCollection>(this)
@@ -84,23 +96,29 @@ class Product {
   })
   tags = new Collection<ProductTag>(this)
 
-  @Property()
-  discountable: boolean = true
+  @Property({ columnType: "boolean", default: true })
+  discountable: boolean
 
-  @Property({ nullable: true })
-  external_id?: string
+  @Property({ columnType: "text", nullable: true })
+  external_id?: string | null
 
-  @Property({ columnType: "datetime" })
-  createdAt: Date = new Date()
+  @Property({ onCreate: () => new Date(), columnType: "datetime" })
+  created_at: Date = new Date()
 
   @Property({ onUpdate: () => new Date(), columnType: "datetime" })
-  updatedAt: Date = new Date()
+  updated_at: Date = new Date()
 
-  @Property({ type: "json", nullable: true })
-  metadata?: {}
+  /**
+   * Soft deleted will be an update of the record which set the deleted_at to new Date()
+   */
+  @Property({ columnType: "datetime", nullable: true })
+  deleted_at: Date = new Date()
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata?: Record<string, unknown> | null
 
   @BeforeCreate()
-  onCreate() {
+  beforeCreate() {
     this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)

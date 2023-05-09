@@ -12,11 +12,10 @@ import { EntitySchema } from "@mikro-orm/core"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 
 import * as ProductModels from "../model"
-import { Product } from "../model"
 import { ProductServiceInitializeOptions } from "../types"
 
 export default async (
-  { options, container }: LoaderOptions,
+  { options, container }: LoaderOptions<ProductServiceInitializeOptions>,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
   if (
@@ -26,8 +25,7 @@ export default async (
     return
   }
 
-  const dbData =
-    options?.database as ProductServiceInitializeOptions["database"]
+  const dbData = options?.database
 
   if (!dbData) {
     throw new MedusaError(

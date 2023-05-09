@@ -6246,6 +6246,7 @@ __metadata:
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": 1.8.2
     "@mikro-orm/core": ^5.7.4
+    "@mikro-orm/migrations": ^5.7.4
     "@mikro-orm/postgresql": ^5.7.4
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -6391,6 +6392,20 @@ __metadata:
     sqlite3:
       optional: true
   checksum: 6d1be0753cf42807fa40965d323fb2da50db0b06c83418dcd917f31faf1a07e72e06d8abc637b31baab890c460ed10b7ab6013fe316dc141060fb9dd6c9833e2
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/migrations@npm:^5.7.4":
+  version: 5.7.4
+  resolution: "@mikro-orm/migrations@npm:5.7.4"
+  dependencies:
+    "@mikro-orm/knex": ~5.7.4
+    fs-extra: 11.1.1
+    knex: 2.4.2
+    umzug: 3.2.1
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+  checksum: d87c031760209a4f2bda67a0d884d18714e6ada88eba906dd2f11936530745bcc82912765cad458fa58499934c2c14845aa6eeaf6afdeebd43910a2876162325
   languageName: node
   linkType: hard
 
@@ -8256,6 +8271,18 @@ __metadata:
     rollup:
       optional: true
   checksum: b06f73c15bb59418aa6fbfead5675bab2d6922e15663525ffc2eb8429530bc5add516600adb251cfbf9b60f3d12fb821cde155cb5103415154a476bd0f163432
+  languageName: node
+  linkType: hard
+
+"@rushstack/ts-command-line@npm:^4.12.2":
+  version: 4.13.2
+  resolution: "@rushstack/ts-command-line@npm:4.13.2"
+  dependencies:
+    "@types/argparse": 1.0.38
+    argparse: ~1.0.9
+    colors: ~1.2.1
+    string-argv: ~0.3.1
+  checksum: 77b2dd4eb0240695e324a4f31f83e20e5cb30666f355ef2be19f2562249e9364daa57c55c1a2abff9fc4e96033805b3f72af70c4ade92abadf3b1f0d69b35fb1
   languageName: node
   linkType: hard
 
@@ -11095,6 +11122,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/argparse@npm:1.0.38":
+  version: 1.0.38
+  resolution: "@types/argparse@npm:1.0.38"
+  checksum: 4fc892da5df16923f48180da2d1f4562fa8b0507cf636b24780444fa0a1d7321d4dc0c0ecbee6152968823f5a2ae0d321b4f8c705a489bf1ae1245bdeb0868fd
+  languageName: node
+  linkType: hard
+
 "@types/aria-query@npm:^5.0.1":
   version: 5.0.1
   resolution: "@types/aria-query@npm:5.0.1"
@@ -13611,7 +13645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"argparse@npm:^1.0.7":
+"argparse@npm:^1.0.7, argparse@npm:~1.0.9":
   version: 1.0.10
   resolution: "argparse@npm:1.0.10"
   dependencies:
@@ -16571,6 +16605,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"colors@npm:~1.2.1":
+  version: 1.2.5
+  resolution: "colors@npm:1.2.5"
+  checksum: f4acebf2d2da9b4f8afb770361d14c01034bcb43add4cae493e7d186dcd7e0c5e2b440520fbfdf636e872606a0eb86b1f69fcf2f087df2876a4e222612539ee0
+  languageName: node
+  linkType: hard
+
 "colorspace@npm:1.1.x":
   version: 1.1.4
   resolution: "colorspace@npm:1.1.4"
@@ -18703,6 +18744,13 @@ __metadata:
     minimalistic-assert: ^1.0.1
     minimalistic-crypto-utils: ^1.0.1
   checksum: 5f361270292c3b27cf0843e84526d11dec31652f03c2763c6c2b8178548175ff5eba95341dd62baff92b2265d1af076526915d8af6cc9cb7559c44a62f8ca6e2
+  languageName: node
+  linkType: hard
+
+"emittery@npm:^0.12.1":
+  version: 0.12.1
+  resolution: "emittery@npm:0.12.1"
+  checksum: 7a8395bdcebd6bd42054469c93f453308f93d67a81f8fe08f7047c824b4623794f03aefd0a23e73d967bb3b9f722ba7eff216c808bb80caaa7d13c42227e06c8
   languageName: node
   linkType: hard
 
@@ -21545,6 +21593,16 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^2.0.0
   checksum: 9b808bd884beff5cb940773018179a6b94a966381d005479f00adda6b44e5e3d4abf765135773d849cc27efe68c349e4a7b86acd7d3306d5932c14f3a4b17a92
+  languageName: node
+  linkType: hard
+
+"fs-jetpack@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "fs-jetpack@npm:4.3.1"
+  dependencies:
+    minimatch: ^3.0.2
+    rimraf: ^2.6.3
+  checksum: 5d27e829233de005505417bae2f55412ae65ff63a57b68ac6d3cd8dde29ed9f0797c2a83356d20237bf74f516db8e40636c5fc238b49b4414b3d9339e60f7914
   languageName: node
   linkType: hard
 
@@ -33228,6 +33286,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pony-cause@npm:^2.1.2":
+  version: 2.1.9
+  resolution: "pony-cause@npm:2.1.9"
+  checksum: ce89806047e1c7f7bb6bb2ea2302b0674a2b1a357a3f5cb657ca48f5a5fb13138a9afd7dd52c83e4e097cb16e523c457d06b53d4b8625772970cdc1f553d8964
+  languageName: node
+  linkType: hard
+
 "pop-iterate@npm:^1.0.1":
   version: 1.0.1
   resolution: "pop-iterate@npm:1.0.1"
@@ -38013,6 +38078,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string-argv@npm:~0.3.1":
+  version: 0.3.2
+  resolution: "string-argv@npm:0.3.2"
+  checksum: 75c02a83759ad1722e040b86823909d9a2fc75d15dd71ec4b537c3560746e33b5f5a07f7332d1e3f88319909f82190843aa2f0a0d8c8d591ec08e93d5b8dec82
+  languageName: node
+  linkType: hard
+
 "string-env-interpolation@npm:1.0.1":
   version: 1.0.1
   resolution: "string-env-interpolation@npm:1.0.1"
@@ -39971,6 +40043,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"type-fest@npm:^2.18.0":
+  version: 2.19.0
+  resolution: "type-fest@npm:2.19.0"
+  checksum: a5a7ecf2e654251613218c215c7493574594951c08e52ab9881c9df6a6da0aeca7528c213c622bc374b4e0cb5c443aa3ab758da4e3c959783ce884c3194e12cb
+  languageName: node
+  linkType: hard
+
 "type-fest@npm:^3.6.0":
   version: 3.6.0
   resolution: "type-fest@npm:3.6.0"
@@ -40242,6 +40321,20 @@ __metadata:
   bin:
     ulid: ./bin/cli.js
   checksum: 070d237502781085e59cf3d8ece752ff96cd3a0990cf1c1be57273f4550597daeb72e9a7db8e5a320de31102509bb3321d280b54bfc44e98025e4628a9629773
+  languageName: node
+  linkType: hard
+
+"umzug@npm:3.2.1":
+  version: 3.2.1
+  resolution: "umzug@npm:3.2.1"
+  dependencies:
+    "@rushstack/ts-command-line": ^4.12.2
+    emittery: ^0.12.1
+    fs-jetpack: ^4.3.1
+    glob: ^8.0.3
+    pony-cause: ^2.1.2
+    type-fest: ^2.18.0
+  checksum: ff5d417c5f0211e8c3c2529c347313ecef5db3ff4b219c71098e09884674387ac14870749ecf42ac26aabcf7559207b855fb0016eb8c50f7cd979f816d4b1545
   languageName: node
   linkType: hard
 
