@@ -87,11 +87,11 @@ export default async (req, res) => {
 
     if (result.success && result.customer) {
         // Create jwt token to send back
-        const token = jwt.sign({ cutomerId: result.customer.id, domain: "store" }, jwt_secret, {
+        const token = jwt.sign({ cutomer_id: result.customer.id, domain: "store" }, jwt_secret, {
             expiresIn: "30d",
         })
 
-        res.json({ accessToken: token })
+        res.json({ access_token: token })
     } else {
         res.sendStatus(401)
     }

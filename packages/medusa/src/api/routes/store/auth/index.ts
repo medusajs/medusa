@@ -50,7 +50,7 @@ export type StoreAuthRes = {
  *     type: string
  */
 export type StoreBearerAuthRes = {
-  accessToken: string
+  access_token: string
 }
 
 /**

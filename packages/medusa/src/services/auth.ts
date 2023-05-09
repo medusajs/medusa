@@ -197,7 +197,7 @@ class AuthService extends TransactionBaseService {
       }
     }
 
-    if (!token.userId) {
+    if (!token.user_id) {
       return {
         success: false,
         error: "Invalid User",
@@ -240,7 +240,7 @@ class AuthService extends TransactionBaseService {
       }
     }
 
-    if (!token.customerId) {
+    if (!token.customer_id) {
       return {
         success: false,
         error: "Invalid Customer",

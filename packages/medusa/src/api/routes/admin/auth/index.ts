@@ -48,7 +48,7 @@ export type AdminAuthRes = {
  *     type: string
  */
 export type AdminBearerAuthRes = {
-  accessToken: string
+  access_token: string
 }
 
 export * from "./create-session"
