@@ -53,7 +53,7 @@ jobs:
 
       - name: Generate Discord Notification
         id: notification
-        run: message=$(node ./scripts/discord-notis.js '${{ github.event.release.tag_name}}' '${{ github.event.release.html_url }}') && echo ::set-output name=message::${message//$'\n'/'%0A'}
+        run: message=$(node ./scripts/generate-discord-message.js '${{ github.event.release.tag_name}}' '${{ github.event.release.html_url }}') && echo ::set-output name=message::${message//$'\n'/'%0A'}
 
       - name: Discord Notification
         id: discord-notification
