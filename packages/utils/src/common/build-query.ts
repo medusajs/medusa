@@ -1,5 +1,5 @@
-import { ExtendedFindConfig, FindConfig } from "@medusajs/types"
 import {
+  And,
   FindManyOptions,
   FindOperator,
   FindOptionsRelations,
@@ -14,6 +14,7 @@ import {
 } from "typeorm"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { isObject } from "./is-object"
+import { ExtendedFindConfig, FindConfig } from "@medusajs/types"
 
 /**
  * Used to build TypeORM queries.
@@ -105,28 +106,35 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 
     if (typeof value === "object") {
       Object.entries(value).forEach(([objectKey, objectValue]) => {
+        where[key] = where[key] || []
         switch (objectKey) {
           case "lt":
-            where[key] = LessThan(objectValue)
+            where[key].push(LessThan(objectValue))
             break
           case "gt":
-            where[key] = MoreThan(objectValue)
+            where[key].push(MoreThan(objectValue))
             break
           case "lte":
-            where[key] = LessThanOrEqual(objectValue)
+            where[key].push(LessThanOrEqual(objectValue))
             break
           case "gte":
-            where[key] = MoreThanOrEqual(objectValue)
+            where[key].push(MoreThanOrEqual(objectValue))
             break
           default:
             if (objectValue != undefined && typeof objectValue === "object") {
-              where[key] = buildWhere<any, TEntity>(objectValue)
+              where[key].push(buildWhere<any, TEntity>(objectValue))
               return
             }
-            where[key] = value
+            where[key].push(value)
         }
         return
       })
+
+      if (where[key].length === 1) {
+        where[key] = where[key][0]
+      } else {
+        where[key] = And(...where[key])
+      }
 
       continue
     }
@@ -138,8 +146,8 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 }
 
 /**
- * Converts a typeorms structure of find options to an
- * array of string paths
+ * Revert new object structure of find options to the legacy structure of previous version
+ * @deprecated in favor of import { objectToStringPath } from "@medusajs/utils"
  * @example
  * input: {
  *   test: {
@@ -154,7 +162,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
  * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
  * @param input
  */
-export function objectToStringPath<TEntity>(
+export function buildLegacyFieldsListFrom<TEntity>(
   input:
     | FindOptionsWhere<TEntity>
     | FindOptionsSelect<TEntity>
@@ -169,7 +177,7 @@ export function objectToStringPath<TEntity>(
 
   for (const key of Object.keys(input)) {
     if (input[key] != undefined && typeof input[key] === "object") {
-      const deepRes = objectToStringPath(input[key])
+      const deepRes = buildLegacyFieldsListFrom(input[key])
 
       const items = deepRes.reduce((acc, val) => {
         acc.push(`${key}.${val}`)
