@@ -1,3 +1,5 @@
+import "module-alias/register"
+
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,

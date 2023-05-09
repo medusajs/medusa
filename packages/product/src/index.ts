@@ -1,4 +1,4 @@
-// TODO: Implement migrations handling with MikroORM
+import "module-alias/register"
 
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"

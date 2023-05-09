@@ -6278,6 +6278,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     medusa-test-utils: ^1.1.40
+    module-alias: ^2.2.2
     rimraf: ^5.0.0
     ts-jest: ^25.5.1
     ts-node: ^10.9.1
@@ -30957,6 +30958,13 @@ __metadata:
   version: 6.8.0
   resolution: "mobx@npm:6.8.0"
   checksum: 8d2dfd87085f843ca4595c0ff11344f4db14e87f097d3370c7462a992f6c98da18078dbfdb7d36edda42021f842cf5bf6e20c2eba2cc86cff4d9a39f1ccabc2d
+  languageName: node
+  linkType: hard
+
+"module-alias@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "module-alias@npm:2.2.2"
+  checksum: b9d03e5c8eed5cdad6ad4744bd8ce0f24360250b8706ae20f1e5671d88321799802ff0fd90611c666b85e7c1771540498dd3af0eecd669578eb356466e7f4012
   languageName: node
   linkType: hard
 
