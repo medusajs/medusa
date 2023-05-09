@@ -52,7 +52,7 @@ export default async ({
         // @ts-ignore
         if(req.session?.user_id) {
           // @ts-ignore
-          return done(null, { user_id: req.session.user_id })
+          return done(null, { userId: req.session.user_id })
         }
 
         return done(null, false)
@@ -79,13 +79,14 @@ export default async ({
   passport.use(
     "admin-api-token",
     new CustomStrategy(async (req, done) => {
+      // extract the token from the header
       const header = req.headers.authorization
 
       if (!header || !header.toLowerCase().startsWith("token ")) {
         return done(null, false)
       }
 
-      const token = header.substring(6)
+      const token = header.substring(6).trim()
 
       const auth = await authService.authenticateAPIToken(token)
       if (auth.success) {
@@ -127,7 +128,7 @@ export default async ({
       async (jwtPayload, done) => {
         const auth = await authService.authenticateCustomerWithBearerToken(jwtPayload)
         if (auth.success) {
-          done(null, auth.customer)
+          done(null, { customer_id: auth.customer?.id })
         } else {
           done(auth.error)
         }
