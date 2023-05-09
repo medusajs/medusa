@@ -9,16 +9,6 @@ img.card-icon {
   height: var(--ifm-card-icon-size);
 }
 
-.cards-grid {
-  display: grid;
-  column-gap: var(--ifm-base-spacing);
-  grid-auto-rows: 1fr;
-}
-
-.cards-grid.grid-6 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
 .card-highlighted {
   --bordered-inside-padding: 6px;
 
@@ -67,18 +57,6 @@ html[data-theme="dark"] .card-highlighted::after {
   color: var(--medusa-text-disabled);
 }
 
-@media screen and (min-width: 992px) {
-  .cards-grid.grid-4 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media screen and (max-width: 991px) and (min-width: 768px) {
-  .cards-grid.grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media screen and (min-width: 768px) {
   .card-highlighted [class*=cardDescription] {
     width: 50%;
@@ -97,15 +75,5 @@ html[data-theme="dark"] .card-highlighted::after {
     background-repeat: no-repeat;
     background-size: cover;
     background-image: var(--ifm-card-highlighted-bg-image);
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .cards-grid.grid-4 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-  .cards-grid.grid-6 {
-    grid-template-columns: repeat(1, 1fr);
   }
 }

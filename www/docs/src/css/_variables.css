@@ -13,6 +13,7 @@
   --ifm-leading: 24px;
   --ifm-logo-width: 83px;
   --ifm-logo-height: 20px;
+  --ifm-list-left-padding: theme(spacing.1);
   
   /* Colors */
   --ifm-color-primary: var(--medusa-text-base);

@@ -13,14 +13,6 @@ code {
   background-color: var(--ifm-code-background-pressed);
 }
 
-.inline-code-copy {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  display: inline;
-  color: var(--ifm-code-color)
-}
-
 .prism-code {
   background-color: none;
   word-break: break-word;

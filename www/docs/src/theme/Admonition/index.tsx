@@ -4,8 +4,6 @@ import { ThemeClassNames } from "@docusaurus/theme-common"
 import Translate from "@docusaurus/Translate"
 import type { Props } from "@theme/Admonition"
 
-import styles from "./styles.module.css"
-
 function NoteIcon() {
   return (
     <svg
@@ -14,6 +12,7 @@ function NoteIcon() {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="tw-inline-block tw-mr-[2px]"
     >
       <path
         fillRule="evenodd"
@@ -33,6 +32,7 @@ function TipIcon() {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="tw-inline-block tw-mr-[2px]"
     >
       <path
         d="M10.0002 1.81238C8.6789 1.81208 7.39444 2.24761 6.34586 3.05146C5.29727 3.85532 4.54312 4.9826 4.20028 6.2586C3.85744 7.5346 3.94507 8.88806 4.44958 10.1092C4.95409 11.3303 5.84731 12.351 6.99079 13.0129C7.49005 13.3026 7.80226 13.7465 7.81609 14.1941C7.81991 14.314 7.86311 14.4293 7.93901 14.5221C8.01492 14.615 8.1193 14.6803 8.23602 14.7079C8.4922 14.7683 8.75274 14.8156 9.01766 14.8498C9.25273 14.8797 9.45432 14.6912 9.45432 14.4539V11.0617C9.22435 11.0364 8.99647 10.9948 8.77239 10.9373C8.70296 10.9194 8.63773 10.888 8.58042 10.8449C8.52311 10.8019 8.47485 10.7479 8.43839 10.6862C8.40193 10.6244 8.37798 10.5561 8.36792 10.4851C8.35786 10.4142 8.36189 10.3419 8.37976 10.2724C8.39763 10.203 8.429 10.1378 8.47209 10.0805C8.51517 10.0232 8.56912 9.9749 8.63085 9.93844C8.69259 9.90198 8.7609 9.87804 8.83189 9.86798C8.90288 9.85792 8.97515 9.86194 9.04458 9.87981C9.67139 10.0414 10.3289 10.0414 10.9557 9.87981C11.0259 9.8596 11.0993 9.85366 11.1718 9.86235C11.2443 9.87103 11.3143 9.89416 11.3776 9.93037C11.441 9.96658 11.4965 10.0151 11.5408 10.0731C11.585 10.1312 11.6172 10.1975 11.6354 10.2682C11.6536 10.3388 11.6575 10.4124 11.6468 10.4846C11.636 10.5568 11.6109 10.6261 11.5729 10.6885C11.5349 10.7508 11.4848 10.8048 11.4255 10.8474C11.3663 10.8901 11.2991 10.9204 11.2279 10.9365C11.0039 10.9944 10.776 11.0362 10.546 11.0617V14.4532C10.546 14.6912 10.7476 14.8797 10.9827 14.8498C11.2476 14.8156 11.5081 14.7683 11.7643 14.7079C11.881 14.6803 11.9854 14.615 12.0613 14.5221C12.1372 14.4293 12.1804 14.314 12.1842 14.1941C12.1988 13.7465 12.5103 13.3026 13.0095 13.0129C14.153 12.351 15.0462 11.3303 15.5507 10.1092C16.0552 8.88806 16.1429 7.5346 15.8 6.2586C15.4572 4.9826 14.703 3.85532 13.6545 3.05146C12.6059 2.24761 11.3214 1.81208 10.0002 1.81238Z"
@@ -56,6 +56,7 @@ function DangerIcon() {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="tw-inline-block tw-mr-[2px]"
     >
       <path
         fillRule="evenodd"
@@ -206,16 +207,27 @@ export default function Admonition(props: Props): JSX.Element {
   return (
     <div
       className={clsx(
-        ThemeClassNames.common.admonition,
-        ThemeClassNames.common.admonitionType(props.type),
-        "alert",
-        `alert--${typeConfig.infimaClassName}`,
-        styles.admonition
+        "tw-p-1 tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded",
+        "tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark tw-shadow-none",
+        "[&>a]:tw-no-underline [&>a]:tw-text-medusa-text-base dark:[&>a]:tw-text-medusa-text-base-dark hover:[&>a]:tw-text-medusa-text-subtle dark:hover:[&>a]:tw-text-medusa-text-subtle-dark",
+        "tw-mb-2"
       )}
     >
-      <div className={clsx(styles.admonitionContentContainer)}>
-        <span className={styles.admonitionIcon}>{icon}</span>
-        <div className={styles.admonitionContent}>{children}</div>
+      <div className={clsx("tw-flex")}>
+        <span
+          className={clsx("tw-inline-block tw-h-[24px] tw-w-[24px] tw-mr-1")}
+        >
+          {icon}
+        </span>
+        <div
+          className={clsx(
+            "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
+            "tw-text-body-regular tw-flex-1 [&>*:last-child]:tw-mb-0",
+            "[&>p>code]:tw-px-0.5 [&>p>code]:tw-text-[14px]"
+          )}
+        >
+          {children}
+        </div>
       </div>
     </div>
   )

@@ -6,8 +6,7 @@ const MDXInlineCode: React.FC<Props> = (props) => {
   return (
     <CopyButton
       text={props.children as string}
-      buttonClassName="inline-code-copy"
-      tooltipClassName="inline-tooltip"
+      buttonClassName="tw-bg-transparent tw-border-0 tw-p-0 tw-inline tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark"
     >
       <code {...props} />
     </CopyButton>

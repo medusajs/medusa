@@ -1,0 +1,37 @@
+/** This CSS file includes tailwind styling definitions for classes defined by docusaurus **/
+.cards-grid {
+  @apply tw-grid tw-gap-x-1 tw-auto-rows-fr;
+}
+
+.cards-grid.grid-6 {
+  @apply md:tw-grid-cols-2 tw-grid-cols-1;
+}
+
+.cards-grid.grid-4 {
+  @apply lg:tw-grid-cols-3 md:tw-grid-cols-2 tw-grid-cols-1;
+}
+
+h1 + .cards-grid,
+h1 + .card-wrapper,
+h2 + .cards-grid,
+h2 + .card-wrapper,
+h3 + .cards-grid,
+h3 + .card-wrapper {
+  @apply tw-mt-1.5;
+}
+
+.markdown p + img,
+.markdown .alert,
+.markdown .code-wrapper {
+  @apply tw-mb-2;
+}
+
+.markdown h2,
+.markdown h3,
+.markdown p + .code-wrapper,
+.markdown p + .tabs-wrapper,
+.markdown p + .alert,
+.markdown p + section,
+video {
+  @apply tw-mt-2;
+}

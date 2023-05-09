@@ -453,6 +453,7 @@ module.exports = {
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
       },
       screens: {
+        lg: "992px",
         xl: "1419px",
       },
       transitionTimingFunction: {

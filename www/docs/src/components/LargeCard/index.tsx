@@ -29,7 +29,7 @@ const LargeCard: React.FC<LargeCardProps> = ({
     <article
       className={clsx(
         "tw-group tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark",
-        "tw-border-1 tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded",
+        "tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded",
         "tw-pt-6 tw-pb-1 tw-px-1 tw-mb-2",
         "tw-flex tw-flex-col tw-justify-between tw-relative",
         "before:tw-content-[''] before:tw-absolute before:tw-left-0 before:tw-w-full before:tw-rounded before:tw-z-[1] before:tw-h-[128px] before:tw-top-0",
@@ -72,8 +72,7 @@ const LargeCard: React.FC<LargeCardProps> = ({
         <div
           className={clsx(
             "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
-            "tw-transition-all tw-duration-200 tw-ease-ease",
-            "tw-pl-1"
+            "tw-transition-all tw-duration-200 tw-ease-ease"
           )}
         >
           {children}

@@ -62,35 +62,10 @@ p {
   font-weight: var(--ifm-link-weight);
 }
 
-.markdown p + img,
-.markdown .alert,
-.markdown .code-wrapper {
-  margin-bottom: var(--ifm-base-margin-vertical);
-}
-
-.markdown h2,
-.markdown h3,
-.markdown p + .code-wrapper,
-.markdown p + .tabs-wrapper,
-.markdown p + .alert,
-.markdown p + section,
-video {
-  margin-top: var(--ifm-base-margin-vertical);
-}
-
 .markdown p + .card-wrapper {
   margin-top: 24px;
 }
 
 .markdown {
   margin-bottom: 0;
-}
-
-h1 + .cards-grid,
-h1 + .card-wrapper,
-h2 + .cards-grid,
-h2 + .card-wrapper,
-h3 + .cards-grid,
-h3 + .card-wrapper {
-  margin-top: calc(var(--ifm-hr-margin-vertical) - 8px);
 }
