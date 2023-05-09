@@ -1,7 +1,7 @@
 import { Express } from "express"
 import passport from "passport"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
-import { Strategy as JWTStrategy } from "passport-jwt"
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
 import { AuthService } from "../services"
 import { ConfigModule, MedusaContainer } from "../types/global"
@@ -49,6 +49,7 @@ export default async ({
     "admin-jwt",
     new JWTStrategy(
       {
+        //@ts-ignore
         jwtFromRequest: (req) => req.session.jwt,
         secretOrKey: jwt_secret,
       },
@@ -62,6 +63,7 @@ export default async ({
     "store-jwt",
     new JWTStrategy(
       {
+        //@ts-ignore
         jwtFromRequest: (req) => req.session.jwt_store,
         secretOrKey: jwt_secret,
       },
@@ -82,6 +84,46 @@ export default async ({
       }
     })
   )
+
+  //#region bearer auth
+  // Admin bearer JWT token authentication strategy, best suited for web SPAs or mobile apps
+  passport.use(
+    "admin-bearer",
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: jwt_secret,
+      },
+      async (jwtPayload, done) => {
+        const auth = await authService.authenticateUserWithBearerToken(jwtPayload)
+        if (auth.success) {
+          done(null, auth.user)
+        } else {
+          done(auth.error)
+        }
+      }
+    )
+  )
+
+  // Store bearer JWT token authentication strategy, best suitet for web SPAs or mobile apps
+  passport.use(
+    "store-bearer",
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: jwt_secret,
+      },
+      async (jwtPayload, done) => {
+        const auth = await authService.authenticateCustomerWithBearerToken(jwtPayload)
+        if (auth.success) {
+          done(null, auth.customer)
+        } else {
+          done(auth.error)
+        }
+      }
+    )
+  )
+  //#endregion
 
   app.use(passport.initialize())
   app.use(passport.session())

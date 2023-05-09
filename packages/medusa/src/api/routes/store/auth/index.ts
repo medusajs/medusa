@@ -15,6 +15,7 @@ export default (app) => {
   route.get("/:email", middlewares.wrap(require("./exists").default))
   route.delete("/", middlewares.wrap(require("./delete-session").default))
   route.post("/", middlewares.wrap(require("./create-session").default))
+  route.post("/token", middlewares.wrap(require("./get-token").default))
 
   return app
 }
@@ -38,6 +39,18 @@ export const defaultRelations = ["orders", "orders.items", "shipping_addresses"]
  */
 export type StoreAuthRes = {
   customer: Customer
+}
+
+/**
+ * @schema StoreBearerAuthRes
+ * type: object
+ * properties:
+ *   accessToken:
+ *     description: Access token for subsequent authorization.
+ *     type: string
+ */
+export type StoreBearerAuthRes = {
+  accessToken: string
 }
 
 /**

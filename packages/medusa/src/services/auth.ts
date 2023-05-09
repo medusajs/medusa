@@ -138,7 +138,7 @@ class AuthService extends TransactionBaseService {
    * @param {string} password - the password of the user
    * @return {{ success: (bool), customer: (object | undefined) }}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    customer: the customer document if authentication succeded
    *    error: a string with the error message
    */
   async authenticateCustomer(
@@ -176,6 +176,92 @@ class AuthService extends TransactionBaseService {
       return {
         success: false,
         error: "Invalid email or password",
+      }
+    })
+  }
+
+  /**
+   * Authenticates a given user based on a provided JWT token.
+   * User is retrieved from the database based on the userId token claim.
+   * @param {any} token - JWT token to authenticate
+   * @return {AuthenticateResult}
+   *    success: whether authentication succeeded
+   *    user: the user document if authentication succeded
+   *    error: a string with the error message
+   */
+  async authenticateUserWithBearerToken(token: any): Promise<AuthenticateResult> {
+    if (token.domain !== "admin") {
+      return {
+        success: false,
+        error: "Invalid Domain",
+      }
+    }
+
+    if (!token.userId) {
+      return {
+        success: false,
+        error: "Invalid User",
+      }
+    }
+
+    return await this.atomicPhase_(async (transactionManager) => {
+      try {
+        const user: User = await this.userService_
+          .withTransaction(transactionManager)
+          .retrieve(token.userId)
+
+        return {
+          success: true,
+          user,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          error: "Invalid User",
+        }
+      }
+    })
+  }
+
+  /**
+   * Authenticates a customer based on a provided JWT token.
+   * Customer is retrieved from the database based on the customerId token claim.
+   * @param {any} token - JWT token to authenticate
+   * @return {AuthenticateResult}
+   *    success: whether authentication succeeded
+   *    customer: the customer document if authentication succeded
+   *    error: a string with the error message
+   */
+  async authenticateCustomerWithBearerToken(token: any): Promise<AuthenticateResult> {
+    if (token.domain !== "store") {
+      return {
+        success: false,
+        error: "Invalid Domain",
+      }
+    }
+
+    if (!token.customerId) {
+      return {
+        success: false,
+        error: "Invalid Customer",
+      }
+    }
+
+    return await this.atomicPhase_(async (transactionManager) => {
+      try {
+        const customer: Customer = await this.customerService_
+          .withTransaction(transactionManager)
+          .retrieve(token.customerId)
+
+        return {
+          success: true,
+          customer,
+        }
+      } catch (error) {
+        return {
+          success: false,
+          error: "Invalid Customer",
+        }
       }
     })
   }
