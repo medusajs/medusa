@@ -90,7 +90,7 @@ The cart completion strategy is required to implement a single method: the `comp
 The method accepts three parameters:
 
 - `cartId`: the first parameter of the method, which is a string indicating the ID of the cart to complete.
-- `idempotencyKey`: the second parameter of the method, which is an instance of the `IdempotencyKey` entity. The idempotency key is retrieved based on the idempotency key passed in the header of the request, and it’s used to determine the current point reached in the checkout flow to avoid inconsistencies on interruptions. You can learn more about the idempotency key [here](../cart.md#idempotency-key).
+- `idempotencyKey`: the second parameter of the method, which is an instance of the `IdempotencyKey` entity. The idempotency key is retrieved based on the idempotency key passed in the header of the request, and it’s used to determine the current point reached in the checkout flow to avoid inconsistencies on interruptions. You can learn more about the idempotency key [here](../cart.md#idempotency-key). You can also learn how to use it within your strategy by following [this guide](../../../development/idempotency-key/use-service.md)
 - `context`: the third parameter of the method, which is an object that holds a single property `ip`. `ip` is a string indicating the IP of the customer.
 
 The completion strategy is expected to return an object with the following properties:
