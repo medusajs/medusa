@@ -79,6 +79,7 @@
     "node-schedule": "^2.1.1",
     "papaparse": "^5.3.2",
     "passport": "^0.6.0",
+    "passport-custom": "^1.1.1",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

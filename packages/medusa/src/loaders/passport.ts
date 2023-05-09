@@ -3,6 +3,7 @@ import passport from "passport"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
+import { Strategy as CustomStrategy } from "passport-custom"
 import { AuthService } from "../services"
 import { ConfigModule, MedusaContainer } from "../types/global"
 
@@ -46,29 +47,31 @@ export default async ({
   // calls will be authenticated based on the JWT
   const { jwt_secret } = configModule.projectConfig
   passport.use(
-    "admin-jwt",
-    new JWTStrategy(
-      {
-        //@ts-ignore
-        jwtFromRequest: (req) => req.session.jwt,
-        secretOrKey: jwt_secret,
-      },
-      async (jwtPayload, done) => {
-        return done(null, jwtPayload)
+    "admin-session",
+    new CustomStrategy(
+      async (req, done) => {
+        // @ts-ignore
+        if(req.session?.user_id) {
+          // @ts-ignore
+          return done(null, { user_id: req.session.user_id })
+        }
+
+        return done("Invalid Session")
       }
     )
   )
 
   passport.use(
-    "store-jwt",
-    new JWTStrategy(
-      {
-        //@ts-ignore
-        jwtFromRequest: (req) => req.session.jwt_store,
-        secretOrKey: jwt_secret,
-      },
-      async (jwtPayload, done) => {
-        return done(null, jwtPayload)
+    "store-session",
+    new CustomStrategy(
+      async (req, done) => {
+        // @ts-ignore
+        if(req.session?.user_id) {
+          // @ts-ignore
+          return done(null, { customer_id: req.session.customer_id })
+        }
+
+        return done("Invalid Session")
       }
     )
   )

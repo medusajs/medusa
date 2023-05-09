@@ -68,15 +68,6 @@ import { validator } from "../../../../utils/validator"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const {
-    projectConfig: { jwt_secret },
-  } = req.scope.resolve("configModule")
-  if (!jwt_secret) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      "Please configure jwt_secret in your environment"
-    )
-  }
   const validated = await validator(AdminPostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
@@ -88,10 +79,8 @@ export default async (req, res) => {
   })
 
   if (result.success && result.user) {
-    // Add JWT to cookie
-    req.session.jwt = jwt.sign({ userId: result.user.id }, jwt_secret, {
-      expiresIn: "24h",
-    })
+    // Set user id on session, this is stored on the server.
+    req.session.user_id = result.user.id
 
     const cleanRes = _.omit(result.user, ["password_hash"])
 
