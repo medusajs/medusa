@@ -3,8 +3,6 @@ import * as ProductModels from "@models"
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
-console.log(Object.values(ProductModels))
-
 const ORMConfig: Options = {
   type: "postgresql",
   dbName: moduleOptions.database.clientUrl,
@@ -20,7 +18,7 @@ const ORMConfig: Options = {
     transactional: true,
     allOrNothing: true,
     safe: false,
-    generator: TSMigrationGenerator,
+    generator: TSMigrationGenerator
   },
 }
 
@@ -62,8 +60,11 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    this.manager = this.orm.em.fork()
+    this.manager = await this.orm.em.fork()
 
+    // ensure the database exists
+    // drop the schema if exists
+    // create the schema from scratch
     await this.orm.schema.refreshDatabase()
   },
 
@@ -72,7 +73,7 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    await this.orm.close(true)
+    await this.orm.close()
 
     this.orm = null
     this.manager = null

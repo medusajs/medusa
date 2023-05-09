@@ -19,8 +19,8 @@
     "downlevelIteration": true, // to use ES5 specific tooling
     "baseUrl": ".",
     "paths": {
-        "@models": ["./src/models"],
-        "@services": ["./src/services"]
+      "@models": ["./src/models"],
+      "@services": ["./src/services"]
     }
   },
   "include": ["src"],
