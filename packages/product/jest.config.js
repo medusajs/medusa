@@ -1,4 +1,8 @@
 module.exports = {
+  moduleNameMapper: {
+    "^@models": "<rootDir>/src/models",
+    "^@services": "<rootDir>/src/services",
+  },
   globals: {
     "ts-jest": {
       tsConfig: "tsconfig.spec.json",

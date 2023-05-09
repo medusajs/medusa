@@ -18,7 +18,8 @@
     "skipLibCheck": true,
     "downlevelIteration": true, // to use ES5 specific tooling
     "paths": {
-        "@models": ["./src/models"]
+        "@models": ["src/models"],
+        "@services": ["src/services"]
     }
   },
   "include": ["src"],

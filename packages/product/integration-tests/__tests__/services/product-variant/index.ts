@@ -1,6 +1,6 @@
 import { TestDatabase } from "../../../utils"
-import { ProductVariantService } from  "../../../../src/services"
-import { ProductVariant } from  "../../../../src/models"
+import { ProductVariantService } from "@services"
+import { ProductVariant } from "@models"
 
 describe("ProductVariant Service", () => {
   let service
@@ -21,10 +21,10 @@ describe("ProductVariant Service", () => {
 
       // TODO: cleanup database on every cycle
       const variantOne = manager.create(ProductVariant, {
-        ...(new ProductVariant()),
+        ...new ProductVariant(),
         title: "testing",
         inventory_quantity: 10,
-      });
+      })
 
       manager.persistAndFlush([variantOne])
     })
