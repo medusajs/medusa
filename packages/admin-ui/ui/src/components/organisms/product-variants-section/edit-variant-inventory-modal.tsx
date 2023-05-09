@@ -176,9 +176,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
           barcode,
           upc,
         }),
-        ...(typeof allow_backorder !== "undefined" && {
-          allow_backorder: allow_backorder,
-        }),
+        allow_backorder: allow_backorder,
       },
       () => {
         refetch()
