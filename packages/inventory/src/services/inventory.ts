@@ -184,26 +184,14 @@ export default class InventoryService implements IInventoryService {
     )
   }
 
-  /**
-   * Creates a reservation item
-   * @param input - the input object
-   * @param context
-   * @return The created reservation item
-   */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
-  async createReservationItem(
-    input: CreateReservationItemInput | CreateReservationItemInput[],
-    @MedusaContext() context: SharedContext = {}
-  ): Promise<ReservationItemDTO[]> {
-    const inputs = Array.isArray(input) ? input : [input]
-    // Verify that the item is stocked at the location
+  private async ensureInventoryLevels(
+    entities: { location_id: string; inventory_item_id: string }[],
+    context: SharedContext = {}
+  ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.inventoryLevelService_.list(
       {
-        inventory_item_id: inputs.map((i) => i.inventory_item_id),
-        location_id: inputs.map((i) => i.location_id),
+        inventory_item_id: entities.map((e) => e.inventory_item_id),
+        location_id: entities.map((e) => e.location_id),
       },
       {},
       context
@@ -221,7 +209,7 @@ export default class InventoryService implements IInventoryService {
       return acc
     }, new Map())
 
-    const missing = inputs.filter(
+    const missing = entities.filter(
       (i) => !inventoryLevelMap.get(i.inventory_item_id)?.get(i.location_id)
     )
 
@@ -233,6 +221,26 @@ export default class InventoryService implements IInventoryService {
         .join(", ")
       throw new MedusaError(MedusaError.Types.NOT_FOUND, error)
     }
+
+    return inventoryLevels
+  }
+
+  /**
+   * Creates a reservation item
+   * @param input - the input object
+   * @return The created reservation item
+   */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async createReservationItem(
+    input: CreateReservationItemInput | CreateReservationItemInput[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<ReservationItemDTO[]> {
+    const inputs = Array.isArray(input) ? input : [input]
+
+    await this.ensureInventoryLevels(inputs, context)
 
     return await this.reservationItemService_.create(inputs, context)
   }
@@ -374,6 +382,44 @@ export default class InventoryService implements IInventoryService {
     }
 
     return await this.inventoryLevelService_.delete(inventoryLevel.id, context)
+  }
+
+  /**
+   * Updates multiple inventory levels
+   * @param inventoryItemId - the id of the inventory item associated with the level
+   * @param locationId - the id of the location associated with the level
+   * @param input - the input object
+   * @return The updated inventory level
+   */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async updateInventoryLevels(
+    updates: ({
+      inventoryItemId: string
+      locationId: string
+    } & UpdateInventoryLevelInput)[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<InventoryLevelDTO[]> {
+    const [inventoryLevel] = await this.inventoryLevelService_.list(
+      { inventory_item_id: inventoryItemId, location_id: locationId },
+      { take: 1 },
+      context
+    )
+
+    if (!inventoryLevel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
+      )
+    }
+
+    return await this.inventoryLevelService_.update(
+      inventoryLevel.id,
+      input,
+      context
+    )
   }
 
   /**
