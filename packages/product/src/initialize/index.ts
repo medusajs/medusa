@@ -14,7 +14,8 @@ export const initialize = async (
     eventBusService: IEventBusService
   }
 ): Promise<IProductService> => {
-  const serviceKey = Modules.INVENTORY
+  const serviceKey = Modules.PRODUCT
+
   const loaded = await MedusaModule.bootstrap(
     serviceKey,
     "@medusajs/product",

@@ -1,3 +1,5 @@
+// TODO: Implement migrations handling with MikroORM
+
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 
@@ -16,9 +18,9 @@ const models = Object.values(ProductModels)
 
 const moduleDefinition: ModuleExports = {
   service,
+  // migrations,
   loaders,
   models,
-  // migrations,
   // runMigrations,
   // revertMigration,
 }
@@ -27,8 +29,6 @@ export default moduleDefinition
 export * from "./initialize"
 // export { revertMigration, runMigrations } from "./migrations/run-migration"
 export * from "./types"
-
-// =======================================================================================
 
 //  yarn build && node dist/index.js
 

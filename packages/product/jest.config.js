@@ -9,5 +9,5 @@ module.exports = {
     "^.+\\.[jt]s?$": "ts-jest",
   },
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
+  moduleFileExtensions: [`js`, `ts`],
 }

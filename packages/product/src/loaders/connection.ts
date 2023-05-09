@@ -12,6 +12,7 @@ import { EntitySchema } from "@mikro-orm/core"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 
 import * as ProductModels from "../model"
+import { Product } from "../model"
 import { ProductServiceInitializeOptions } from "../types"
 
 export default async (
@@ -39,6 +40,7 @@ export default async (
 
   const orm = await MikroORM.init<PostgreSqlDriver>({
     entitiesTs: entities,
+    entities: entities,
     dbName: dbData.name,
     type: "postgresql",
   })
