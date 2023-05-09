@@ -26,7 +26,7 @@ describe("ProductVariant Service", () => {
         inventory_quantity: 10,
       })
 
-      manager.persistAndFlush([variantOne])
+      await manager.persistAndFlush([variantOne])
     })
 
     // TODO

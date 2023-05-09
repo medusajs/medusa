@@ -1,6 +1,7 @@
 import { moduleOptions } from "./config"
-import * as ProductModels from "../../src/models"
+import * as ProductModels from "@models"
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
 console.log(Object.values(ProductModels))
 
@@ -11,7 +12,15 @@ const ORMConfig: Options = {
   schema: moduleOptions.database.schema,
   debug: false,
   migrations: {
+    path: "../../src/migrations",
+    pathTs: "../../src/migrations",
+    glob: "!(*.d).{js,ts}",
     silent: true,
+    dropTables: true,
+    transactional: true,
+    allOrNothing: true,
+    safe: false,
+    generator: TSMigrationGenerator,
   },
 }
 
@@ -55,11 +64,7 @@ export const TestDatabase: TestDatabase = {
 
     this.manager = this.orm.em.fork()
 
-    // Ensures that the database is created
-    /*await this.orm.schema.dropDatabase(moduleOptions.database.clientUrl)*/
-    await this.orm.schema.ensureDatabase()
-    // Runs all the migration files
-    await this.orm.getMigrator().up()
+    await this.orm.schema.refreshDatabase()
   },
 
   async clearDatabase() {
@@ -67,8 +72,7 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    /*await this.orm.schema.dropDatabase(moduleOptions.database.clientUrl)*/
-    await this.orm.close()
+    await this.orm.close(true)
 
     this.orm = null
     this.manager = null
