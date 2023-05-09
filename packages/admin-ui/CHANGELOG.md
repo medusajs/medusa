@@ -1,5 +1,18 @@
 # @medusajs/admin-ui
 
+## 1.8.5
+
+### Patch Changes
+
+- [#4049](https://github.com/medusajs/medusa/pull/4049) [`aa74ebb18`](https://github.com/medusajs/medusa/commit/aa74ebb181617f7373e61f3e18cf0f614912985a) Thanks [@riqwan](https://github.com/riqwan)! - fix(admin-ui): ensure that sales channel names are always an array
+
+- [#4041](https://github.com/medusajs/medusa/pull/4041) [`353fc94e4`](https://github.com/medusajs/medusa/commit/353fc94e4f4da45262214446281e8951f23709e7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): toggle manage inventory
+
+- [#4050](https://github.com/medusajs/medusa/pull/4050) [`282953759`](https://github.com/medusajs/medusa/commit/282953759280eeed27615df0342ab00e43b79793) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Make download path respect **BASE** in UploadModal.
+
+- Updated dependencies []:
+  - medusa-react@7.0.1
+
 ## 1.8.4
 
 ### Patch Changes
