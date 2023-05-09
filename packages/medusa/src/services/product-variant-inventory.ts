@@ -426,7 +426,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     )
 
-    return reservationItems
+    return reservationItems.flat()
   }
 
   /**

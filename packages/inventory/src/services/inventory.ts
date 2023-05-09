@@ -205,7 +205,7 @@ export default class InventoryService implements IInventoryService {
         inventory_item_id: inputs.map((i) => i.inventory_item_id),
         location_id: inputs.map((i) => i.location_id),
       },
-      { take: 1 },
+      {},
       context
     )
 
@@ -339,7 +339,7 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteReservationItemByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.reservationItemService_.deleteByLocationId(

@@ -285,16 +285,18 @@ export default class ReservationItemService {
    */
   @InjectEntityManager()
   async deleteByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
+    const locationIds = Array.isArray(locationId) ? locationId : [locationId]
+
     await itemRepository
       .createQueryBuilder("reservation_item")
       .softDelete()
-      .where("location_id = :locationId", { locationId })
+      .where("location_id IN(:...locationIds)", { locationIds })
       .andWhere("deleted_at IS NULL")
       .execute()
 

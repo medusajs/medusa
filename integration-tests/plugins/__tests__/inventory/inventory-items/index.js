@@ -932,6 +932,62 @@ describe("Inventory Items endpoints", () => {
           })
         expect(deletedReservations).toHaveLength(0)
       })
+
+      it("bulk deletes reservations by location id", async () => {
+        const order = await simpleOrderFactory(dbConnection, {
+          line_items: [
+            { id: "line-item-1", quantity: 1 },
+            { id: "line-item-2", quantity: 1 },
+          ],
+        })
+
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: locationId,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: location2Id,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createReservationItem([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            line_item_id: "line-item-1",
+            quantity: 1,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            line_item_id: "line-item-2",
+            quantity: 1,
+          },
+        ])
+
+        const [reservations] = await inventoryService.listReservationItems({
+          inventory_item_id: itemId,
+        })
+        expect(reservations).toHaveLength(2)
+
+        await inventoryService.deleteReservationItemByLocationId([
+          location2Id,
+          locationId,
+        ])
+
+        const [deletedReservations] =
+          await inventoryService.listReservationItems({
+            inventory_item_id: itemId,
+          })
+        expect(deletedReservations).toHaveLength(0)
+      })
     })
   })
 })
