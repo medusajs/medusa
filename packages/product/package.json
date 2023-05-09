@@ -23,13 +23,18 @@
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",
     "ts-jest": "^25.5.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.4.4"
   },
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
+    "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
+    "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:up",
+    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
   },
   "dependencies": {
     "@medusajs/modules-sdk": "1.8.3",

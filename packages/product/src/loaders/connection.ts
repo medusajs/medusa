@@ -11,7 +11,7 @@ import { MedusaError } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 
-import * as ProductModels from "../model"
+import * as ProductModels from "../models"
 import { ProductServiceInitializeOptions } from "../types"
 
 export default async (
@@ -39,7 +39,13 @@ export default async (
   const orm = await MikroORM.init<PostgreSqlDriver>({
     entitiesTs: entities,
     entities: entities,
-    dbName: dbData.name,
+    debug: process.env.NODE_ENV === "development",
+    baseDir: process.cwd(),
+    schema: options.database.schema,
+    driverOptions: options.database.driverOptions ?? {
+      connection: { ssl: true },
+    },
+    tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
   })
 

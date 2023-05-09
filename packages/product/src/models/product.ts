@@ -24,7 +24,7 @@ export enum ProductStatus {
   REJECTED = "rejected",
 }
 
-@Entity()
+@Entity({ tableName: "product" })
 class Product {
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -103,17 +103,21 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   external_id?: string | null
 
-  @Property({ onCreate: () => new Date(), columnType: "datetime" })
-  created_at: Date = new Date()
+  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
+  created_at: Date
 
-  @Property({ onUpdate: () => new Date(), columnType: "datetime" })
-  updated_at: Date = new Date()
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+  })
+  updated_at: Date
 
   /**
    * Soft deleted will be an update of the record which set the deleted_at to new Date()
    */
-  @Property({ columnType: "datetime", nullable: true })
-  deleted_at: Date = new Date()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

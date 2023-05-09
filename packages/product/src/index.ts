@@ -5,7 +5,7 @@ import loadContainer from "./loaders/container"
 
 // import migrations from "./migrations"
 // import { revertMigration, runMigrations } from "./migrations/run-migration"
-import * as ProductModels from "./model"
+import * as ProductModels from "./models"
 import ProductService from "./services/product"
 
 import { ModuleExports } from "@medusajs/modules-sdk"

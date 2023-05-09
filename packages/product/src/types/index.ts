@@ -1,5 +1,7 @@
 export type ProductServiceInitializeOptions = {
   database: {
-    name: string
+    clientUrl: string
+    schema?: string
+    driverOptions?: Record<string, unknown>
   }
 }
