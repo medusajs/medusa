@@ -4,11 +4,11 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToMany,
   ManyToOne,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
@@ -32,11 +32,12 @@ class Product {
   @Property({ columnType: "text" })
   title: string
 
-  @Property({ columnType: "text", nullable: true })
-  @Unique({
+  @Property({ columnType: "text" })
+  @Index({
     name: "IDX_product_handle_unique",
     properties: ["handle"],
-    options: {},
+    expression:
+      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_handle_unique ON product (handle) WHERE deleted_at IS NULL",
   })
   handle?: string | null
 
