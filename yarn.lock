@@ -6282,6 +6282,7 @@ __metadata:
     rimraf: ^5.0.0
     ts-jest: ^25.5.1
     ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -16786,7 +16787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^9.1.0, commander@npm:^9.4.1":
+"commander@npm:^9.0.0, commander@npm:^9.1.0, commander@npm:^9.4.1":
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: 5f7784fbda2aaec39e89eb46f06a999e00224b3763dc65976e05929ec486e174fe9aac2655f03ba6a5e83875bd173be5283dc19309b7c65954701c02025b3c1d
@@ -31224,6 +31225,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mylas@npm:^2.1.9":
+  version: 2.1.13
+  resolution: "mylas@npm:2.1.13"
+  checksum: 093dfaf88f444d9da956c68a61ddcfe05ab9411c0024b0c7f4d721639ba7d311ea8f9c052ce617344e67d40982f67614cd634b525b923048bf9a191234968c9c
+  languageName: node
+  linkType: hard
+
 "mz@npm:^2.4.0, mz@npm:^2.7.0":
   version: 2.7.0
   resolution: "mz@npm:2.7.0"
@@ -33426,6 +33434,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"plimit-lit@npm:^1.2.6":
+  version: 1.5.0
+  resolution: "plimit-lit@npm:1.5.0"
+  dependencies:
+    queue-lit: ^1.5.0
+  checksum: fe2d31ecab11185e24c874e6b2b741e19515dcb943e571a703a9a1621813b94299a486718ea8efa68fd70f239294fa909669eeb8685ff74e29bf1a6d2b6bff12
+  languageName: node
+  linkType: hard
+
 "pluralize@npm:^8.0.0":
   version: 8.0.0
   resolution: "pluralize@npm:8.0.0"
@@ -34732,6 +34749,13 @@ __metadata:
   version: 2.2.0
   resolution: "querystringify@npm:2.2.0"
   checksum: 3258bc3dbdf322ff2663619afe5947c7926a6ef5fb78ad7d384602974c467fadfc8272af44f5eb8cddd0d011aae8fabf3a929a8eee4b86edcc0a21e6bd10f9aa
+  languageName: node
+  linkType: hard
+
+"queue-lit@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "queue-lit@npm:1.5.0"
+  checksum: e6b8ba9cdfca2c775e3f93bbd13870e77c9214f8590fa1ca203f3a2b8357d8d1eb44cdf707eca7fbfd60cef0faa74352778bf57b710b27869713b18acdc0d281
   languageName: node
   linkType: hard
 
@@ -39894,6 +39918,22 @@ __metadata:
     typescript:
       optional: true
   checksum: ff32b4f810f9d99f676d70fe2c0e327cb6c812214bd4fc7135870b039f9e85a85b2c20f8fe030d9bd36e9598a12faa391f10aecb95df624b92f1af6bd47dc397
+  languageName: node
+  linkType: hard
+
+"tsc-alias@npm:^1.8.6":
+  version: 1.8.6
+  resolution: "tsc-alias@npm:1.8.6"
+  dependencies:
+    chokidar: ^3.5.3
+    commander: ^9.0.0
+    globby: ^11.0.4
+    mylas: ^2.1.9
+    normalize-path: ^3.0.0
+    plimit-lit: ^1.2.6
+  bin:
+    tsc-alias: dist/bin/index.js
+  checksum: 0af7162780e7c5d017697b31f59c3f71f3be2b2e313048b0a9fc5fec96e7ba98286b33c9a8275aaf285631559ff18eeffd36422ef863802de784d25e09f1a989
   languageName: node
   linkType: hard
 

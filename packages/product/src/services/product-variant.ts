@@ -1,4 +1,4 @@
-import { ProductVariant } from "../models"
+import { ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 type InjectedDependencies = {
@@ -14,7 +14,7 @@ export default class ProductVariantService {
 
   async list(
     selector: Record<any, any> = {},
-    config: Record<any, any> = {},
+    config: Record<any, any> = {}
   ): Promise<ProductVariant[]> {
     const productVariants = await this.manager.find(ProductVariant, {})
 
