@@ -1,9 +1,9 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
+  MODULE_SCOPE,
   ModuleDefinition,
   ModuleResolution,
-  MODULE_SCOPE,
 } from "@medusajs/types"
 import resolveCwd from "resolve-cwd"
 import MODULE_DEFINITIONS from "../definitions"
@@ -49,7 +49,7 @@ export const registerMedusaModule = (
     }
 
     if (moduleDeclaration.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)a
+      // TODO: getExternalModuleResolution(...)
       throw new Error("External Modules are not supported yet.")
     }
 
