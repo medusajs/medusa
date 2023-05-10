@@ -2,6 +2,7 @@ module.exports = {
   moduleNameMapper: {
     "^@models": "<rootDir>/src/models",
     "^@services": "<rootDir>/src/services",
+    "^@repositories": "<rootDir>/src/repositories",
   },
   globals: {
     "ts-jest": {

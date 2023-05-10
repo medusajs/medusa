@@ -5,3 +5,5 @@ export type ProductServiceInitializeOptions = {
     driverOptions?: Record<string, unknown>
   }
 }
+
+export { RepositoryService, GenericFindOptions } from "./dal/repository-service"

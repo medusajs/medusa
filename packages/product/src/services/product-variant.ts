@@ -1,23 +1,21 @@
 import { ProductVariant } from "@models"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { RepositoryService } from "../types/dal/repository-service"
 
 type InjectedDependencies = {
-  manager: SqlEntityManager
+  productRepository: RepositoryService<ProductVariant>
 }
 
 export default class ProductVariantService {
-  protected readonly manager: SqlEntityManager
+  protected readonly productRepository_: RepositoryService<ProductVariant>
 
-  constructor({ manager }: InjectedDependencies) {
-    this.manager = manager
+  constructor({ productRepository }: InjectedDependencies) {
+    this.productRepository_ = productRepository
   }
 
   async list(
     selector: Record<any, any> = {},
     config: Record<any, any> = {}
   ): Promise<ProductVariant[]> {
-    const productVariants = await this.manager.find(ProductVariant, {})
-
-    return productVariants
+    return await this.productRepository_.find()
   }
 }
