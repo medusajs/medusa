@@ -1,5 +1,99 @@
 # Change Log
 
+## 1.10.1
+
+### Patch Changes
+
+- [#4018](https://github.com/medusajs/medusa/pull/4018) [`3d6bcaaf6`](https://github.com/medusajs/medusa/commit/3d6bcaaf65b3a43dfb251460d73e448870b5105f) Thanks [@patpich](https://github.com/patpich)! - fix(medusa): ShippingOptionService.list method param type
+
+- [#3971](https://github.com/medusajs/medusa/pull/3971) [`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(client-types, inventory, medusa, types): add `title`, `thumbnail` and `description to inventory item and `description` to reservation item.
+
+- [#4023](https://github.com/medusajs/medusa/pull/4023) [`bd53adb23`](https://github.com/medusajs/medusa/commit/bd53adb238a64640533698fbccb98a39a0346590) Thanks [@dwene](https://github.com/dwene)! - fix(variant-update): hasChanges function incorrectly calculates if there are changes
+
+- [#4032](https://github.com/medusajs/medusa/pull/4032) [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b) Thanks [@pevey](https://github.com/pevey)! - update class-validator to 0.14.0 in utils package
+
+- [#3967](https://github.com/medusajs/medusa/pull/3967) [`0c58ead6d`](https://github.com/medusajs/medusa/commit/0c58ead6d869f5605cbd2b8aca129984b7493bcf) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa): validate `customer_id` when completing a cart
+
+- [#4025](https://github.com/medusajs/medusa/pull/4025) [`cff54d732`](https://github.com/medusajs/medusa/commit/cff54d73253a4c2d16a174a28f0f5d31c94bcebd) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): Catch on idempotency key retrieve if not found
+
+- [#3842](https://github.com/medusajs/medusa/pull/3842) [`a8e73942e`](https://github.com/medusajs/medusa/commit/a8e73942e69662ca673ccc4300e270ff6ab523d1) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa): handle product categories in import/export strategies
+
+- [#4008](https://github.com/medusajs/medusa/pull/4008) [`ff37cd190`](https://github.com/medusajs/medusa/commit/ff37cd190fa455f4ba4f76cfb4d641b1611cc32e) Thanks [@patpich](https://github.com/patpich)! - fix(search): add missing default product relations
+
+- Updated dependencies [[`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab), [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b)]:
+  - @medusajs/types@1.8.5
+  - @medusajs/utils@1.8.4
+  - @medusajs/modules-sdk@1.8.5
+  - @medusajs/medusa-cli@1.3.13
+
+## 1.10.0
+
+### Minor Changes
+
+- [`8b93bae8f`](https://github.com/medusajs/medusa/commit/8b93bae8f8ad1f6eb43931a7ba03bfa691475eca) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa): Minor bump
+
+### Patch Changes
+
+- [#4002](https://github.com/medusajs/medusa/pull/4002) [`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, event-bus-redis, event-bus-local): Revert retrieveSubscribers as the wildcard prevent us from filtering
+
+- [#3098](https://github.com/medusajs/medusa/pull/3098) [`538c9874b`](https://github.com/medusajs/medusa/commit/538c9874ba18c1352284089a789d4a90652bc795) Thanks [@rajshrimohanks](https://github.com/rajshrimohanks)! - fix(medusa): Fix broken migration in the case of fresh installations
+
+- [#3981](https://github.com/medusajs/medusa/pull/3981) [`d539c6fee`](https://github.com/medusajs/medusa/commit/d539c6feeba8ee431f9a655b6cd4e9102cba2b25) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump Typeorm to Medusa fork
+
+- [#3984](https://github.com/medusajs/medusa/pull/3984) [`b7a782639`](https://github.com/medusajs/medusa/commit/b7a7826394ecd621ca80e6d4ce445ea1c26804ac) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Use query relation load strategy on Carts
+
+- [#3921](https://github.com/medusajs/medusa/pull/3921) [`983872319`](https://github.com/medusajs/medusa/commit/98387231927e9872f54c9e72597576f3273de506) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): update query performance for getting product and variant avaiability
+
+- [#4010](https://github.com/medusajs/medusa/pull/4010) [`284f1eed9`](https://github.com/medusajs/medusa/commit/284f1eed9a9fc7272df3fccdb162ea93750999de) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Only set product availability if variants are requested
+
+- [#3926](https://github.com/medusajs/medusa/pull/3926) [`4e8045a0a`](https://github.com/medusajs/medusa/commit/4e8045a0ac44b1541ee3cd846079f55d3e0dc957) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa): products retrieve uses query strategy for performance
+
+- [#3998](https://github.com/medusajs/medusa/pull/3998) [`d2443d83e`](https://github.com/medusajs/medusa/commit/d2443d83e60fee3c3f28b762d66378c3f07f1b5f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(medusa): Add sales_channel_id to create-swap
+
+- Updated dependencies [[`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152), [`d539c6fee`](https://github.com/medusajs/medusa/commit/d539c6feeba8ee431f9a655b6cd4e9102cba2b25)]:
+  - @medusajs/types@1.8.4
+  - @medusajs/utils@1.8.3
+  - @medusajs/modules-sdk@1.8.4
+  - @medusajs/medusa-cli@1.3.12
+
+## 1.9.0
+
+### Minor Changes
+
+- [#3835](https://github.com/medusajs/medusa/pull/3835) [`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Bulk create variant and pass transaction to the inventory service context methods
+
+### Patch Changes
+
+- [#3884](https://github.com/medusajs/medusa/pull/3884) [`440f900af`](https://github.com/medusajs/medusa/commit/440f900af03dd0af29c9b16f01576d3eff45cd04) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-ip-lookup): Remove outdated Typeorm usage
+
+- [#3870](https://github.com/medusajs/medusa/pull/3870) [`366b12fce`](https://github.com/medusajs/medusa/commit/366b12fcea679551c55baaeeaaf41bbddf04b972) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Add missing relations when creating return
+
+- [#3879](https://github.com/medusajs/medusa/pull/3879) [`7e213f210`](https://github.com/medusajs/medusa/commit/7e213f2106ed76449fbdfa6eda5594b59522443a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa,medusa-fulfillment-webshipper): Add missing variant + product relation on items
+
+- [#3845](https://github.com/medusajs/medusa/pull/3845) [`d2826872f`](https://github.com/medusajs/medusa/commit/d2826872fe487a027b677aeb43704f761a6b4e80) Thanks [@pevey](https://github.com/pevey)! - Bump package versions to address security vulnerabilities
+
+- [#3881](https://github.com/medusajs/medusa/pull/3881) [`0d0e9bf20`](https://github.com/medusajs/medusa/commit/0d0e9bf2069718ac54684efbe4d449942bb2ef32) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Fix(medusa): inventory quantity calculations
+
+- [#3811](https://github.com/medusajs/medusa/pull/3811) [`2be144ff0`](https://github.com/medusajs/medusa/commit/2be144ff05e852a3541a9a972942cfc15ef3bd38) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): add purchasable property
+
+- [#3914](https://github.com/medusajs/medusa/pull/3914) [`935abeae6`](https://github.com/medusajs/medusa/commit/935abeae68012a93d820789c743941c3c1a1b802) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa): fix category list api bug where limit skews results
+
+- [#3694](https://github.com/medusajs/medusa/pull/3694) [`3a77e8a88`](https://github.com/medusajs/medusa/commit/3a77e8a88fd327aca579bcd09d767d9315a04d7f) Thanks [@StephixOne](https://github.com/StephixOne)! - feat(medusa): Middleware to add default SC on store products query if no SC provided
+
+- [#3905](https://github.com/medusajs/medusa/pull/3905) [`491566df6`](https://github.com/medusajs/medusa/commit/491566df6b7ced35f655f810961422945e10ecd0) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa,utils): Searching indexing product subscriber
+
+- [#3883](https://github.com/medusajs/medusa/pull/3883) [`966ddd2f1`](https://github.com/medusajs/medusa/commit/966ddd2f1648d5d3c1c68094f488f307e3186d92) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(inventory): Minor fixes to upserting inventory items
+
+- [#3909](https://github.com/medusajs/medusa/pull/3909) [`3b3236cc0`](https://github.com/medusajs/medusa/commit/3b3236cc01fc8b7448c1bdbad066a19c2c3de2c3) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Remove discounts.regions relation from cart retrieval
+
+- [#3192](https://github.com/medusajs/medusa/pull/3192) [`4a8562743`](https://github.com/medusajs/medusa/commit/4a8562743569f5bbb7bd0894b025a74725726529) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa-plugin-brightpearl, inventory, medusa): Multiwarehouse integration for brightpearl
+
+- Updated dependencies [[`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100), [`491566df6`](https://github.com/medusajs/medusa/commit/491566df6b7ced35f655f810961422945e10ecd0)]:
+  - @medusajs/types@1.8.3
+  - @medusajs/utils@1.8.2
+  - @medusajs/modules-sdk@1.8.3
+  - @medusajs/medusa-cli@1.3.11
+
 ## 1.8.2
 
 ### Patch Changes

@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:36](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L36)
+[medusa/src/services/product-variant-inventory.ts:48](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L48)
 
 ## Properties
 
@@ -76,7 +76,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:34](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L34)
+[medusa/src/services/product-variant-inventory.ts:46](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L46)
+
+___
+
+### eventBusService\_
+
+• `Protected` `Readonly` **eventBusService\_**: `IEventBusService`
+
+#### Defined in
+
+[medusa/src/services/product-variant-inventory.ts:45](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L45)
 
 ___
 
@@ -86,7 +96,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:33](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L33)
+[medusa/src/services/product-variant-inventory.ts:44](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L44)
 
 ___
 
@@ -94,13 +104,13 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Inherited from
+#### Overrides
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-utils/dist/common/transaction-base-service.d.ts:7
+[medusa/src/services/product-variant-inventory.ts:37](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L37)
 
 ___
 
@@ -110,7 +120,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:31](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L31)
+[medusa/src/services/product-variant-inventory.ts:42](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L42)
 
 ___
 
@@ -120,7 +130,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:30](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L30)
+[medusa/src/services/product-variant-inventory.ts:41](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L41)
 
 ___
 
@@ -130,7 +140,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:29](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L29)
+[medusa/src/services/product-variant-inventory.ts:40](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L40)
 
 ___
 
@@ -140,7 +150,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:32](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L32)
+[medusa/src/services/product-variant-inventory.ts:43](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L43)
 
 ___
 
@@ -148,13 +158,13 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Inherited from
+#### Overrides
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-utils/dist/common/transaction-base-service.d.ts:8
+[medusa/src/services/product-variant-inventory.ts:38](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L38)
 
 ## Accessors
 
@@ -196,7 +206,7 @@ Adjusts inventory of a variant on a location
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:598](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L598)
+[medusa/src/services/product-variant-inventory.ts:617](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L617)
 
 ___
 
@@ -221,7 +231,7 @@ Adjusts the quantity of reservations for a line item by a given amount.
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:408](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L408)
+[medusa/src/services/product-variant-inventory.ts:427](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L427)
 
 ___
 
@@ -286,7 +296,7 @@ the variant inventory item
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:237](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L237)
+[medusa/src/services/product-variant-inventory.ts:255](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L255)
 
 ___
 
@@ -313,7 +323,7 @@ boolean indicating if inventory is available
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:60](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L60)
+[medusa/src/services/product-variant-inventory.ts:74](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L74)
 
 ___
 
@@ -337,7 +347,7 @@ delete a reservation of variant quantity
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:566](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L566)
+[medusa/src/services/product-variant-inventory.ts:585](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L585)
 
 ___
 
@@ -360,7 +370,29 @@ Remove a variant from an inventory item
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:299](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L299)
+[medusa/src/services/product-variant-inventory.ts:317](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L317)
+
+___
+
+### getAvailabilityContext
+
+▸ `Private` **getAvailabilityContext**(`variants`, `salesChannelId`, `existingContext?`): `Promise`<`Required`<`AvailabilityContext`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `variants` | `string`[] |
+| `salesChannelId` | `undefined` \| `string` \| `string`[] |
+| `existingContext` | `AvailabilityContext` |
+
+#### Returns
+
+`Promise`<`Required`<`AvailabilityContext`\>\>
+
+#### Defined in
+
+[medusa/src/services/product-variant-inventory.ts:717](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L717)
 
 ___
 
@@ -388,7 +420,7 @@ The available quantity of the variant from the inventoryItems
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:716](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L716)
+[medusa/src/services/product-variant-inventory.ts:824](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L824)
 
 ___
 
@@ -412,7 +444,7 @@ list of inventory items
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:159](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L159)
+[medusa/src/services/product-variant-inventory.ts:177](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L177)
 
 ___
 
@@ -436,7 +468,7 @@ variant inventory items for the variant id
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:176](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L176)
+[medusa/src/services/product-variant-inventory.ts:194](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L194)
 
 ___
 
@@ -460,7 +492,7 @@ lidt of inventory items for the variant
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:215](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L215)
+[medusa/src/services/product-variant-inventory.ts:233](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L233)
 
 ___
 
@@ -484,7 +516,7 @@ a list of product variants that are associated with the item id
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:197](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L197)
+[medusa/src/services/product-variant-inventory.ts:215](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L215)
 
 ___
 
@@ -508,7 +540,7 @@ Reserves a quantity of a variant
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:329](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L329)
+[medusa/src/services/product-variant-inventory.ts:347](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L347)
 
 ___
 
@@ -533,7 +565,7 @@ A promise that resolves with the product variant inventory item.
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:132](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L132)
+[medusa/src/services/product-variant-inventory.ts:150](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L150)
 
 ___
 
@@ -554,13 +586,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:686](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L686)
+[medusa/src/services/product-variant-inventory.ts:784](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L784)
 
 ___
 
 ### setVariantAvailability
 
-▸ **setVariantAvailability**(`variants`, `salesChannelId`): `Promise`<`ProductVariant`[] \| `PricedVariant`[]\>
+▸ **setVariantAvailability**(`variants`, `salesChannelId`, `availabilityContext?`): `Promise`<`ProductVariant`[] \| `PricedVariant`[]\>
 
 #### Parameters
 
@@ -568,6 +600,7 @@ ___
 | :------ | :------ |
 | `variants` | `ProductVariant`[] \| `PricedVariant`[] |
 | `salesChannelId` | `undefined` \| `string` \| `string`[] |
+| `availabilityContext` | `AvailabilityContext` |
 
 #### Returns
 
@@ -575,7 +608,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:639](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L639)
+[medusa/src/services/product-variant-inventory.ts:658](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L658)
 
 ___
 
@@ -624,7 +657,7 @@ nothing if successful, throws error if not
 
 #### Defined in
 
-[medusa/src/services/product-variant-inventory.ts:509](https://github.com/medusajs/medusa/blob/0f51e3a40/packages/medusa/src/services/product-variant-inventory.ts#L509)
+[medusa/src/services/product-variant-inventory.ts:528](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/product-variant-inventory.ts#L528)
 
 ___
 

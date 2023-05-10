@@ -231,6 +231,7 @@ class CartService extends TransactionBaseService {
     const cartRepo = this.activeManager_.withRepository(this.cartRepository_)
 
     const query = buildQuery({ id: cartId }, options)
+    query.relationLoadStrategy = "query"
 
     if ((options.select || []).length === 0) {
       query.select = undefined
