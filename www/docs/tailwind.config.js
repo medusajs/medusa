@@ -598,6 +598,7 @@ module.exports = {
         "linear-gradient(transparent, url('/img/squares-bg.svg'))",
       "large-card-fade-hover": "linear-gradient(transparent, #1C1C1F)",
       "large-card-fade-hover-dark": "linear-gradient(transparent, #232326)",
+      "announcement-bg": "url('/img/announcement-bg.svg')",
     },
   },
   plugins: [],

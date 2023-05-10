@@ -29,15 +29,6 @@ code {
   position: relative;
 }
 
-.code-header {
-  padding: 12px var(--ifm-base-spacing);
-  background-color: var(--medusa-code-tabs-bg);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: var(--ifm-code-border-radius) var(--ifm-code-border-radius) 0px 0px;
-}
-
 .code-tabs .tabs::-webkit-scrollbar {
   display: none;
 }
@@ -77,7 +68,6 @@ code {
   color: var(--ifm-code-tabs-active-color);
 }
 
-.theme-code-block:not(.no-header-block),
 .code-tabs .theme-code-block {
   border-radius: 0 0 var(--ifm-code-border-radius) var(--ifm-code-border-radius) !important;
 }
@@ -117,25 +107,6 @@ a.code-action {
 
 .copy-action {
   cursor: pointer;
-}
-
-.code-header,
-.theme-code-block {
-  border: 1px solid var(--ifm-code-block-border-color);
-}
-
-.code-header {
-  border-bottom: none;
-}
-
-.theme-code-block.no-header-block code:not(.thin-code),
-.theme-code-block:not(.no-header-block) code {
-  padding: var(--ifm-pre-padding);
-}
-
-.theme-code-block.no-header-block .thin-code {
-  padding: calc(var(--ifm-pre-padding) / 2);
-  padding-left: var(--ifm-pre-padding);
 }
 
 [class*=codeLineNumber] {

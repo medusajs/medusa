@@ -3,6 +3,7 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import ElementContent from "@theme/CodeBlock/Content/Element"
 import StringContent from "@theme/CodeBlock/Content/String"
 import type { Props } from "@theme/CodeBlock"
+import clsx from "clsx"
 
 /**
  * Best attempt to make the children a plain string so it is copyable. If there
@@ -44,7 +45,12 @@ export default function CodeBlock({
         noReport={noReport}
         noCopy={noCopy}
         {...props}
-        className={`${props.className} ${title ? "" : "no-header-block"}`}
+        className={clsx(
+          !title && "tw-rounded",
+          title && "!tw-rounded-t-none !tw-rounded-b !tw-border-t-0",
+          props.className
+        )}
+        showLineNumbers={true}
       >
         {children as string}
       </CodeBlockComp>
