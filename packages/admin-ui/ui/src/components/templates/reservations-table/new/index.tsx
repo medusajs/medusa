@@ -1,14 +1,20 @@
-import Button from "../../../fundamentals/button"
-import CrossIcon from "../../../fundamentals/icons/cross-icon"
-import FocusModal from "../../../molecules/modal/focus-modal"
-import { useForm } from "react-hook-form"
+import MetadataForm, {
+  MetadataFormType,
+  getSubmittableMetadata,
+} from "../../../forms/general/metadata-form"
 import ReservationForm, {
   GeneralFormType,
 } from "../components/reservation-form"
-import { MetadataFormType } from "../../../forms/general/metadata-form"
+
+import { AdminPostReservationsReq } from "@medusajs/medusa"
+import Button from "../../../fundamentals/button"
+import CrossIcon from "../../../fundamentals/icons/cross-icon"
+import FocusModal from "../../../molecules/modal/focus-modal"
+import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
 import { useAdminCreateReservation } from "medusa-react"
-import { AdminPostReservationsReq } from "@medusajs/medusa"
+import { useForm } from "react-hook-form"
+import useNotification from "../../../../hooks/use-notification"
 
 type NewReservationFormType = {
   general: GeneralFormType
@@ -23,18 +29,29 @@ const NewReservation = ({ onClose }: { onClose: () => void }) => {
         location: undefined,
         item: undefined,
         description: undefined,
+        quantity: 0,
       },
     },
     reValidateMode: "onBlur",
     mode: "onBlur",
   })
 
-  const { handleSubmit, formState } = form
+  const { handleSubmit } = form
+
+  const notification = useNotification()
 
   const onSubmit = async (data) => {
     const payload = await createPayload(data)
-    console.log({ payload })
-    // const {reservation} = await createReservation(payload)
+
+    createReservation(payload, {
+      onSuccess: () => {
+        notification("Success", "Successfully created reservation", "success")
+        onClose()
+      },
+      onError: (err) => {
+        notification("Error", getErrorMessage(err), "error")
+      },
+    })
   }
 
   return (
@@ -51,7 +68,7 @@ const NewReservation = ({ onClose }: { onClose: () => void }) => {
               <CrossIcon size={20} />
             </Button>
             <div className="gap-x-small flex">
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={onClose}>
                 Cancel
               </Button>
               <Button
@@ -73,6 +90,10 @@ const NewReservation = ({ onClose }: { onClose: () => void }) => {
             <div className="mt-xlarge gap-y-xlarge flex w-full pb-0.5">
               <ReservationForm form={nestedForm(form, "general")} />
             </div>
+            <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
+              <p className="inter-base-semibold mb-2">Metadata</p>
+              <MetadataForm form={nestedForm(form, "metadata")} />
+            </div>
           </div>
         </FocusModal.Main>
       </FocusModal>
@@ -80,11 +101,15 @@ const NewReservation = ({ onClose }: { onClose: () => void }) => {
   )
 }
 
-const createPayload = (data): AdminPostReservationsReq => {
+const createPayload = (
+  data: NewReservationFormType
+): AdminPostReservationsReq => {
   return {
-    location_id: "1234",
-    inventory_item_id: "asdf",
-    quantity: 1,
+    location_id: data.general.location,
+    inventory_item_id: data.general.item.id!,
+    quantity: data.general.quantity,
+    description: data.general.description,
+    metadata: getSubmittableMetadata(data.metadata),
   }
 }
 

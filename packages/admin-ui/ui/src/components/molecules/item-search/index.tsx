@@ -1,23 +1,31 @@
-import { useState } from "react"
-import { NextSelect } from "../select/next-select"
-import { useAdminProducts } from "medusa-react"
-import { useDebounce } from "../../../hooks/use-debounce"
-import { OptionProps, ControlProps, SingleValue } from "react-select"
-import { AdminGetProductsParams, Product } from "@medusajs/medusa"
-import SearchIcon from "../../fundamentals/icons/search-icon"
+import { AdminGetInventoryItemsParams, ProductVariant } from "@medusajs/medusa"
+import { ControlProps, OptionProps, SingleValue } from "react-select"
+import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
+
 import Control from "../select/next-select/components/control"
-import { PricedProduct } from "@medusajs/medusa/dist/types/pricing" // TODO: Fix this
+import { NextSelect } from "../select/next-select"
+import React from "react"
+// TODO: Fix this
+import SearchIcon from "../../fundamentals/icons/search-icon"
+import { useAdminInventoryItems } from "medusa-react"
+import { useDebounce } from "../../../hooks/use-debounce"
+import { useState } from "react"
 
 type Props = {
-  onItemSelect: (item: Product | PricedProduct) => void
+  onItemSelect: (item: itemType) => void
   clearOnSelect?: boolean
-  filters?: AdminGetProductsParams
+  filters?: AdminGetInventoryItemsParams
+}
+
+type itemType = Partial<InventoryItemDTO> & {
+  location_levels?: InventoryLevelDTO[] | undefined
+  variants?: ProductVariant[] | undefined
 }
 
 type ItemOption = {
   label: string | undefined
   value: string | undefined
-  product: Product | PricedProduct
+  inventoryItem: itemType
 }
 
 const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
@@ -27,8 +35,7 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
 
   const queryEnabled = !!debouncedItemSearchTerm?.length
 
-  // TODO: change to inventory items
-  const { isLoading, products } = useAdminProducts(
+  const { isLoading, inventory_items } = useAdminInventoryItems(
     {
       q: debouncedItemSearchTerm,
       ...filters,
@@ -38,9 +45,15 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
 
   const onChange = (item: SingleValue<ItemOption>) => {
     if (item) {
-      onItemSelect(item.product)
+      onItemSelect(item.inventoryItem)
     }
   }
+
+  const options = inventory_items?.map((inventoryItem) => ({
+    label: inventoryItem.title || undefined,
+    value: inventoryItem.id,
+    inventoryItem,
+  })) as ItemOption[]
 
   return (
     <div>
@@ -48,17 +61,13 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
         isMulti={false}
         components={{ Option: ProductOption, Control: SearchControl }}
         onInputChange={setItemSearchTerm}
-        options={products?.map((product) => ({
-          label: product.title,
-          value: product.id,
-          product,
-        }))}
+        options={options}
         placeholder="Choose an item"
         isSearchable={true}
         noOptionsMessage={() => "No items found"}
-        openMenuOnClick={!!products?.length}
+        openMenuOnClick={!!inventory_items?.length}
         onChange={onChange}
-        {...(clearOnSelect ? { value: null } : {})}
+        value={null}
         isLoading={queryEnabled && isLoading}
       />
     </div>
@@ -70,9 +79,19 @@ const ProductOption = ({
   isDisabled,
   data,
 }: OptionProps<ItemOption>) => {
-  if (isDisabled) {
-    return null
-  }
+  const { available, inStock } = React.useMemo(() => {
+    return (data.inventoryItem.location_levels || []).reduce(
+      (acc, curr) => {
+        return {
+          available:
+            acc.available + (curr.stocked_quantity - curr.reserved_quantity),
+          inStock: acc.inStock + curr.stocked_quantity,
+        }
+      },
+      { available: 0, inStock: 0 }
+    )
+  }, [data.inventoryItem.location_levels])
+
   return (
     <div
       {...innerProps}
@@ -80,11 +99,11 @@ const ProductOption = ({
     >
       <div>
         <p>{data.label}</p>
-        <p className="text-grey-50">SKU</p>
+        <p className="text-grey-50">{data.inventoryItem.sku}</p>
       </div>
       <div className="text-right">
-        <p className="text-grey-50">72 stock</p>
-        <p className="text-grey-50">x available</p>
+        <p className="text-grey-50">{`${inStock} stock`}</p>
+        <p className="text-grey-50">{`${available} available`}</p>
       </div>
     </div>
   )
