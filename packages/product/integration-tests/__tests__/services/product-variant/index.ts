@@ -7,7 +7,6 @@ describe("ProductVariant Service", () => {
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-
     service = new ProductVariantService({ manager: TestDatabase.getManager() })
   })
 

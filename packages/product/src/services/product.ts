@@ -1,6 +1,6 @@
 import { ProductVariantService } from "@services"
 
-class Product {
+export default class ProductService {
   protected readonly productVariantService: ProductVariantService
   constructor({ productVariantService }) {
     this.productVariantService = productVariantService
@@ -10,5 +10,3 @@ class Product {
     return await this.productVariantService.list()
   }
 }
-
-export default Product

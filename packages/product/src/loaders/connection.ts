@@ -41,16 +41,14 @@ export default async (
     entities: entities,
     debug: process.env.NODE_ENV === "development",
     baseDir: process.cwd(),
-    schema: options.database.schema,
-    driverOptions: options.database.driverOptions ?? {
+    clientUrl: dbData.clientUrl,
+    schema: dbData.schema,
+    driverOptions: dbData.driverOptions ?? {
       connection: { ssl: true },
     },
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
   })
-
-  orm.schema.ensureDatabase()
-  orm.getMigrator().up()
 
   container.register({
     manager: asValue(orm.em),
