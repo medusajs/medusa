@@ -389,7 +389,6 @@ describe("Inventory Items endpoints", () => {
         adminHeaders
       )
 
-      console.log(result.data)
       expect(result.status).toEqual(200)
       expect(result.data.inventory_item.location_levels).toHaveLength(1)
       expect(result.data.inventory_item.location_levels[0]).toEqual(
