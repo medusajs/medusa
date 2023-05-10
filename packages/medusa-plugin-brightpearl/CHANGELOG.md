@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.8
+
+### Patch Changes
+
+- [#3192](https://github.com/medusajs/medusa/pull/3192) [`4a8562743`](https://github.com/medusajs/medusa/commit/4a8562743569f5bbb7bd0894b025a74725726529) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa-plugin-brightpearl, inventory, medusa): Multiwarehouse integration for brightpearl
+
 ## 1.3.7
 
 ### Patch Changes

@@ -72,7 +72,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
   async findOne(
     options: ExtendedFindConfig<Product & ProductFilterOptions>
   ): Promise<Product | null> {
-    const queryBuilder = await this.prepareQueryBuilder_(options)
+    const options_ = { ...options }
+    options_.relationLoadStrategy = "query"
+
+    const queryBuilder = await this.prepareQueryBuilder_(options_)
     return await queryBuilder.getOne()
   },
 

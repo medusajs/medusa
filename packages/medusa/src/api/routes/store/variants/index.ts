@@ -1,9 +1,9 @@
 import { Router } from "express"
-import { PricedVariant } from "../../../../types/pricing"
-import middlewares from "../../../middlewares"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import middlewares from "../../../middlewares"
 import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
+import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { PricedVariant } from "../../../../types/pricing"
 
 const route = Router()
 
@@ -29,6 +29,8 @@ export const defaultStoreVariantRelations = ["prices", "options", "product"]
  *     - prices
  *     - options
  *     - product
+ *   totals:
+ *     - purchasable
  * required:
  *   - variant
  * properties:
@@ -48,6 +50,8 @@ export type StoreVariantsRes = {
  *     - prices
  *     - options
  *     - product
+ *   totals:
+ *     - purchasable
  * required:
  *   - variants
  * properties:

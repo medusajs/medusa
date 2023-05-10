@@ -145,6 +145,7 @@ export default async (req, res) => {
                       "swaps",
                       "swaps.additional_items",
                       "swaps.additional_items.variant",
+                      "swaps.additional_items.variant.product",
                       "swaps.additional_items.tax_lines",
                     ],
                   })

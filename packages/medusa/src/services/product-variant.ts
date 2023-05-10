@@ -162,20 +162,26 @@ class ProductVariantService extends TransactionBaseService {
    * Creates an unpublished product variant. Will validate against parent product
    * to ensure that the variant can in fact be created.
    * @param productOrProductId - the product the variant will be added to
-   * @param variant - the variant to create
+   * @param variants
    * @return resolves to the creation result.
    */
-  async create(
+  async create<
+    TVariants extends CreateProductVariantInput | CreateProductVariantInput[],
+    TOutput = TVariants extends CreateProductVariantInput[]
+      ? CreateProductVariantInput[]
+      : CreateProductVariantInput
+  >(
     productOrProductId: string | Product,
-    variant: CreateProductVariantInput
-  ): Promise<ProductVariant> {
+    variants: CreateProductVariantInput | CreateProductVariantInput[]
+  ): Promise<TOutput> {
+    const isVariantsArray = Array.isArray(variants)
+    const variants_ = isVariantsArray ? variants : [variants]
+
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const productRepo = manager.withRepository(this.productRepository_)
       const variantRepo = manager.withRepository(this.productVariantRepository_)
 
-      const { prices, ...rest } = variant
-
-      let product = productOrProductId
+      let product = productOrProductId as Product
 
       if (isString(product)) {
         product = (await productRepo.findOne({
@@ -195,69 +201,60 @@ class ProductVariantService extends TransactionBaseService {
         )
       }
 
-      if (product.options.length !== variant.options.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
-        )
-      }
+      this.validateVariantsToCreate_(product, variants_)
 
-      product.options.forEach((option) => {
-        if (!variant.options.find((vo) => option.id === vo.option_id)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Variant options do not contain value for ${option.title}`
-          )
-        }
-      })
+      let computedRank = product.variants.length
+      const variantPricesToUpdate: {
+        id: string
+        prices: ProductVariantPrice[]
+      }[] = []
 
-      const variantExists = product.variants.find((v) => {
-        return v.options.every((option) => {
-          const variantOption = variant.options.find(
-            (o) => option.option_id === o.option_id
-          )
+      const results = await Promise.all(
+        variants_.map(async (variant) => {
+          const { prices, ...rest } = variant
 
-          return option.value === variantOption?.value
+          if (!rest.variant_rank) {
+            rest.variant_rank = computedRank
+          }
+          ++computedRank
+
+          const toCreate = {
+            ...rest,
+            product_id: product.id,
+          }
+
+          const productVariant = variantRepo.create(toCreate)
+
+          const result = await variantRepo.save(productVariant)
+
+          if (prices?.length) {
+            variantPricesToUpdate.push({ id: result.id, prices })
+          }
+
+          return result
         })
-      })
+      )
 
-      if (variantExists) {
-        throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          `Variant with title ${variantExists.title} with provided options already exists`
+      if (variantPricesToUpdate.length) {
+        await this.updateVariantPrices(
+          variantPricesToUpdate.map((v) => ({
+            variantId: v.id,
+            prices: v.prices,
+          }))
         )
       }
 
-      if (!rest.variant_rank) {
-        rest.variant_rank = product.variants.length
-      }
-
-      const toCreate = {
-        ...rest,
-        product_id: product.id,
-      }
-
-      const productVariant = variantRepo.create(toCreate)
-
-      const result = await variantRepo.save(productVariant)
-
-      if (prices) {
-        await this.updateVariantPrices([
-          {
-            variantId: result.id,
-            prices,
-          },
-        ])
-      }
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.CREATED, {
+      const eventsToEmit = results.map((result) => ({
+        eventName: ProductVariantService.Events.CREATED,
+        data: {
           id: result.id,
           product_id: result.product_id,
-        })
+        },
+      }))
 
-      return result
+      await this.eventBus_.withTransaction(manager).emit(eventsToEmit)
+
+      return (isVariantsArray ? results : results[0]) as unknown as TOutput
     })
   }
 
@@ -1103,6 +1100,46 @@ class ProductVariantService extends TransactionBaseService {
     }
 
     return qb
+  }
+
+  protected validateVariantsToCreate_(
+    product: Product,
+    variants: CreateProductVariantInput[]
+  ): void {
+    for (const variant of variants) {
+      if (product.options.length !== variant.options.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
+        )
+      }
+
+      product.options.forEach((option) => {
+        if (!variant.options.find((vo) => option.id === vo.option_id)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant options do not contain value for ${option.title}`
+          )
+        }
+      })
+
+      const variantExists = product.variants.find((v) => {
+        return v.options.every((option) => {
+          const variantOption = variant.options.find(
+            (o) => option.option_id === o.option_id
+          )
+
+          return option.value === variantOption?.value
+        })
+      })
+
+      if (variantExists) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          `Variant with title ${variantExists.title} with provided options already exists`
+        )
+      }
+    }
   }
 }
 
