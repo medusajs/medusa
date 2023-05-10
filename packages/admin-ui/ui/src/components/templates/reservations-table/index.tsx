@@ -7,13 +7,14 @@ import {
 import React, { useEffect, useMemo, useState } from "react"
 import {
   useAdminInventoryItems,
-  useAdminReservations,
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import Button from "../../fundamentals/button"
+import Fade from "../../atoms/fade-wrapper"
+import NewReservation from "./new"
 import { NextSelect } from "../../molecules/select/next-select"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
@@ -22,8 +23,6 @@ import qs from "qs"
 import { useInventoryFilters } from "./use-inventory-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
 import useToggleState from "../../../hooks/use-toggle-state"
-import Fade from "../../atoms/fade-wrapper"
-import NewReservation from "./new"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -112,9 +111,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   const [query, setQuery] = useState(queryObject.query)
   const [numPages, setNumPages] = useState(0)
 
-  const { reservations } = useAdminReservations()
-
-  console.log({ reservations })
+  // const { reservations } = useAdminReservations()
 
   const { inventory_items, isLoading, count } = useAdminInventoryItems(
     {
