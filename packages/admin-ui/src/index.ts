@@ -1,10 +1,11 @@
+import { execSync } from "child_process"
 import dns from "dns"
 import fse from "fs-extra"
 import { resolve } from "path"
 import vite from "vite"
 import { AdminBuildConfig } from "./types"
 import { AdminDevConfig } from "./types/dev"
-import { getCustomViteConfig, getCustomViteDevConfig } from "./utils"
+import { getCustomViteConfig } from "./utils"
 import { injectExtensions } from "./utils/extensions/inject-extensions"
 
 async function build(options?: AdminBuildConfig) {
@@ -37,10 +38,16 @@ async function dev(options: AdminDevConfig) {
 
   await injectExtensions()
 
-  const server = await vite.createServer(getCustomViteDevConfig(options))
-  await server.listen()
+  // Resolve Vite binary.
+  const viteBin = resolve(process.cwd(), "node_modules", ".bin", "vite")
+  const uiPath = resolve(__dirname, "..", "ui")
 
-  server.printUrls()
+  execSync(`${viteBin} dev --config ${uiPath}/vite.config.ts`)
+
+  // const server = await vite.createServer(getCustomViteDevConfig(options))
+  // await server.listen()
+
+  // server.printUrls()
 }
 
 export { build, dev, watch, clean }
