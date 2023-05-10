@@ -34,9 +34,9 @@
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",
     "rimraf": "^5.0.0",
-    "tsc-alias": "^1.8.6",
     "ts-jest": "^25.5.1",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.6",
     "typescript": "^4.4.4"
   },
   "dependencies": {

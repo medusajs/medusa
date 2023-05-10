@@ -51,6 +51,6 @@ export default async (
   })
 
   container.register({
-    manager: asValue(orm.em),
+    manager: asValue(orm.em.fork()),
   })
 }
