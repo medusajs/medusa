@@ -227,12 +227,10 @@ async function completeCartIfNecessary({
 
     const idempotencyKeyServiceTx =
       idempotencyKeyService.withTransaction(transactionManager)
-    let idempotencyKey = await idempotencyKeyServiceTx
-      .retrieve({
-        request_path: "/stripe/hooks",
-        idempotency_key: eventId,
-      })
-      .catch(() => undefined)
+    let idempotencyKey = await idempotencyKeyServiceTx.retrieve({
+      request_path: "/stripe/hooks",
+      idempotency_key: eventId,
+    })
 
     if (!idempotencyKey) {
       idempotencyKey = await idempotencyKeyService
