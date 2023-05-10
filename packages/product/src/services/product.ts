@@ -1,19 +1,21 @@
 import { ProductVariantService } from "@services"
 import { Product } from "@models"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { RepositoryService } from "../types"
 
 type InjectedDependencies = {
-  manager: SqlEntityManager
+  productRepository: RepositoryService<Product>
   productVariantService: ProductVariantService
 }
 
 export default class ProductService {
-  protected readonly manager: SqlEntityManager
-
+  protected readonly productRepository_: RepositoryService<Product>
   protected readonly productVariantService: ProductVariantService
 
-  constructor({ manager, productVariantService }: InjectedDependencies) {
-    this.manager = manager
+  constructor({
+    productRepository,
+    productVariantService,
+  }: InjectedDependencies) {
+    this.productRepository_ = productRepository
     this.productVariantService = productVariantService
   }
 
@@ -21,7 +23,7 @@ export default class ProductService {
     selector: Record<any, any> = {},
     config: Record<any, any> = {}
   ): Promise<Product[]> {
-    return await this.manager.find(Product, {})
+    return await this.productRepository_.find()
   }
 
   async listVariants() {

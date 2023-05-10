@@ -1,21 +1,21 @@
 import { ProductVariant } from "@models"
-import { RepositoryService } from "../types/dal/repository-service"
+import { RepositoryService } from "../types"
 
 type InjectedDependencies = {
-  productRepository: RepositoryService<ProductVariant>
+  productVariantRepository: RepositoryService<ProductVariant>
 }
 
 export default class ProductVariantService {
-  protected readonly productRepository_: RepositoryService<ProductVariant>
+  protected readonly productVariantRepository_: RepositoryService<ProductVariant>
 
-  constructor({ productRepository }: InjectedDependencies) {
-    this.productRepository_ = productRepository
+  constructor({ productVariantRepository }: InjectedDependencies) {
+    this.productVariantRepository_ = productVariantRepository
   }
 
   async list(
     selector: Record<any, any> = {},
     config: Record<any, any> = {}
   ): Promise<ProductVariant[]> {
-    return await this.productRepository_.find()
+    return await this.productVariantRepository_.find()
   }
 }
