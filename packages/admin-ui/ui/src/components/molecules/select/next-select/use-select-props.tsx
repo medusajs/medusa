@@ -64,7 +64,7 @@ export const useSelectProps = <
 
   return {
     label,
-    components: Components,
+    components: { ...Components, ...components },
     styles: {
       menuPortal: (base) => ({ ...base, zIndex: 60 }),
       ...styles,
