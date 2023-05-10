@@ -27,9 +27,12 @@ const ReservationForm = ({ form }: Props) => {
 
   const selectedItem = watch(path("item"))
 
-  const {inventory_level} = useAdminInventoryItemLocationLevels(selectedItem.id, {
-    
-  })
+  const { inventory_level } = useAdminInventoryItemLocationLevels(
+    selectedItem.id,
+    {}
+  )
+
+  // })
   console.log(selectedItem)
 
   return (
@@ -58,15 +61,15 @@ const ReservationForm = ({ form }: Props) => {
         {selectedItem && (
           <div
             className={`
-         bg-grey-5 text-grey-50 border-grey-20 
-         mt-8
-         grid border-collapse grid-cols-2 grid-rows-3 
-         [&>*]:border-r [&>*]:border-b [&>*]:py-2 
-         [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:pl-4 
-         [&>*:nth-child(even)]:pr-4 [&>*:nth-child(even)]:text-right 
-         [&>*:nth-child(-n+2)]:border-t`}
+            bg-grey-5 text-grey-50 border-grey-20 
+            mt-8
+            grid border-collapse grid-cols-2 grid-rows-3 
+            [&>*]:border-r [&>*]:border-b [&>*]:py-2 
+            [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:pl-4 
+            [&>*:nth-child(even)]:pr-4 [&>*:nth-child(even)]:text-right 
+            [&>*:nth-child(-n+2)]:border-t`}
           >
-            <div className="rounded-tl-rounded">In stock</div>
+            {/* <div className="rounded-tl-rounded">In stock</div>
             <div className="rounded-tr-rounded">{selectedItem. ?? "N/A"}</div>
             <div className="">Available</div>
             <div className="">{availableQuantity ?? "N/A"}</div>
@@ -82,7 +85,7 @@ const ReservationForm = ({ form }: Props) => {
                 max={maxReservation}
               />
               <span className="text-grey-50 nowrap whitespace-nowrap pl-2">{` / ${maxReservation} requested`}</span>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
