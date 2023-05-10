@@ -2,7 +2,6 @@
 import react from "@vitejs/plugin-react"
 import dns from "dns"
 import { defineConfig } from "vite"
-import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs"
 
 // Resolve localhost for Node v16 and older.
 // @see https://vitejs.dev/config/server-options.html#server-host.

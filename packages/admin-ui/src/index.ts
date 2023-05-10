@@ -1,10 +1,10 @@
-import dns from "dns"
+import { execSync } from "child_process"
 import fse from "fs-extra"
 import { resolve } from "path"
 import vite from "vite"
 import { AdminBuildConfig } from "./types"
 import { AdminDevConfig } from "./types/dev"
-import { getCustomViteConfig, getCustomViteDevConfig } from "./utils"
+import { getCustomViteConfig } from "./utils"
 
 async function build(options?: AdminBuildConfig) {
   const config = getCustomViteConfig(options)
@@ -28,14 +28,19 @@ async function clean() {
 }
 
 async function dev(options: AdminDevConfig) {
-  // Resolve localhost for Node v16 and older.
-  // @see https://vitejs.dev/config/server-options.html#server-host.
-  dns.setDefaultResultOrder("verbatim")
+  // // Resolve localhost for Node v16 and older.
+  // // @see https://vitejs.dev/config/server-options.html#server-host.
+  // dns.setDefaultResultOrder("verbatim")
+  // const server = await vite.createServer(getCustomViteDevConfig(options))
+  // await server.listen()
+  // server.printUrls()
 
-  const server = await vite.createServer(getCustomViteDevConfig(options))
-  await server.listen()
+  const configPath = resolve(__dirname, "..", "vite.config.dev.ts")
+  const viteBin = resolve(process.cwd(), "node_modules", ".bin", "vite")
 
-  server.printUrls()
+  const command = `${viteBin} --config ${configPath}`
+
+  execSync(command)
 }
 
 export { build, dev, watch, clean }
