@@ -988,6 +988,62 @@ describe("Inventory Items endpoints", () => {
           })
         expect(deletedReservations).toHaveLength(0)
       })
+
+      it("bulk updates inventory levels", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: locationId,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: location2Id,
+          stocked_quantity: 10,
+        })
+
+        const levels = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(2)
+
+        await inventoryService.updateInventoryLevels([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 20,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 25,
+          },
+        ])
+
+        const [updatedLevels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+
+        expect(updatedLevels).toHaveLength(2)
+        expect(updatedLevels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: locationId,
+              stocked_quantity: 20,
+            }),
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: location2Id,
+              stocked_quantity: 25,
+            }),
+          ])
+        )
+      })
     })
   })
 })

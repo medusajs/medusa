@@ -222,7 +222,9 @@ export default class InventoryService implements IInventoryService {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, error)
     }
 
-    return inventoryLevels
+    return inventoryLevels.map(
+      (i) => inventoryLevelMap.get(i.inventory_item_id)!.get(i.location_id)!
+    )
   }
 
   /**
@@ -397,28 +399,30 @@ export default class InventoryService implements IInventoryService {
   )
   async updateInventoryLevels(
     updates: ({
-      inventoryItemId: string
-      locationId: string
+      inventory_item_id: string
+      location_id: string
     } & UpdateInventoryLevelInput)[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO[]> {
-    const [inventoryLevel] = await this.inventoryLevelService_.list(
-      { inventory_item_id: inventoryItemId, location_id: locationId },
-      { take: 1 },
-      context
-    )
+    const inventoryLevels = await this.ensureInventoryLevels(updates)
 
-    if (!inventoryLevel) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
-      )
-    }
+    const levelMap = inventoryLevels.reduce((acc, curr) => {
+      if (acc.has(curr.inventory_item_id)) {
+        acc.get(curr.inventory_item_id).set(curr.location_id, curr.id)
+      } else {
+        acc.set(curr.inventory_item_id, new Map([[curr.location_id, curr.id]]))
+      }
+      return acc
+    }, new Map())
 
-    return await this.inventoryLevelService_.update(
-      inventoryLevel.id,
-      input,
-      context
+    return await Promise.all(
+      updates.map(async (update) => {
+        const levelId = levelMap
+          .get(update.inventory_item_id)
+          .get(update.location_id)
+
+        return this.inventoryLevelService_.update(levelId, update, context)
+      })
     )
   }
 
