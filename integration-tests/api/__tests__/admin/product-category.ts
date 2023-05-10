@@ -179,14 +179,14 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories`,
+        `/admin/product-categories?limit=7`,
         adminHeaders
       )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(7)
       expect(response.data.offset).toEqual(0)
-      expect(response.data.limit).toEqual(100)
+      expect(response.data.limit).toEqual(7)
 
       expect(response.data.product_categories).toEqual(
         [
@@ -296,7 +296,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?is_internal=true`,
+        `/admin/product-categories?is_internal=true&limit=7`,
         adminHeaders,
       )
 
@@ -309,7 +309,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?handle=${productCategory.handle}`,
+        `/admin/product-categories?handle=${productCategory.handle}&limit=2`,
         adminHeaders,
       )
 
@@ -322,7 +322,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?q=men`,
+        `/admin/product-categories?q=men&limit=1`,
         adminHeaders,
       )
 
@@ -335,7 +335,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
+        `/admin/product-categories?parent_category_id=${productCategoryParent.id}&limit=7`,
         adminHeaders,
       )
 
@@ -357,7 +357,7 @@ describe("/admin/product-categories", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true`,
+        `/admin/product-categories?parent_category_id=null&include_descendants_tree=true&limit=7`,
         adminHeaders
       )
 

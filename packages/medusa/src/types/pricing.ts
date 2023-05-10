@@ -1,5 +1,6 @@
-import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
+
+import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 import { TaxServiceRate } from "./tax-service"
 
 export type ProductVariantPricing = {
