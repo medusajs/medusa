@@ -13,7 +13,7 @@ const {
   ShippingProfileType,
 } = require("@medusajs/medusa")
 
-module.exports = async (dataSource, data = {}) => {
+module.exports = async (dataSource, defaultSalesChannel) => {
   const manager = dataSource.manager
 
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
@@ -138,6 +138,7 @@ module.exports = async (dataSource, data = {}) => {
       { id: "tag1", value: "123" },
       { tag: "tag2", value: "456" },
     ],
+    sales_channels: defaultSalesChannel ? [defaultSalesChannel] : [],
   })
 
   p.images = [image]
@@ -270,6 +271,7 @@ module.exports = async (dataSource, data = {}) => {
       { id: "tag1", value: "123" },
       { tag: "tag2", value: "456" },
     ],
+    sales_channels: defaultSalesChannel ? [defaultSalesChannel] : [],
   })
 
   await manager.save(p1)
@@ -326,6 +328,7 @@ module.exports = async (dataSource, data = {}) => {
     collection_id: "test-collection1",
     status: "published",
     tags: [{ id: "tag3", value: "123" }],
+    sales_channels: defaultSalesChannel ? [defaultSalesChannel] : [],
   })
 
   await manager.save(product1)
@@ -340,6 +343,7 @@ module.exports = async (dataSource, data = {}) => {
     collection_id: "test-collection2",
     status: "published",
     tags: [{ id: "tag4", value: "1234" }],
+    sales_channels: defaultSalesChannel ? [defaultSalesChannel] : [],
   })
 
   await manager.save(product2)
@@ -354,6 +358,7 @@ module.exports = async (dataSource, data = {}) => {
     collection_id: "test-collection1",
     status: "draft",
     tags: [{ id: "tag4", value: "1234" }],
+    sales_channels: defaultSalesChannel ? [defaultSalesChannel] : [],
   })
 
   await manager.save(product3)
@@ -367,6 +372,7 @@ module.exports = async (dataSource, data = {}) => {
     description: "test-product-description",
     type: { id: "test-type", value: "test-type" },
     status: "published",
+    sales_channels: defaultSalesChannel ? [defaultSalesChannel] : [],
   })
 
   await manager.save(gift_card)

@@ -137,7 +137,7 @@ export default class EventBusService
   ): Promise<TResult | void> {
     const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
-    let events: EventBusTypes.EmitData[] = isBulkEmit
+    const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventNameOrData.map((event) => ({
           eventName: event.eventName,
           data: event.data,
@@ -151,32 +151,23 @@ export default class EventBusService
           },
         ]
 
-    events = events.filter(
-      (event) =>
-        this.eventBusModuleService_?.retrieveSubscribers(event.eventName)
-          ?.length ?? false
-    )
+    /**
+     * We store events in the database when in an ongoing transaction.
+     *
+     * If we are in a long-running transaction, the ACID properties of a
+     * transaction ensure, that events are kept invisible to the enqueuer
+     * until the transaction has committed.
+     *
+     * This patterns also gives us at-least-once delivery of events, as events
+     * are only removed from the database, if they are successfully delivered.
+     *
+     * In case of a failing transaction, jobs stored in the database are removed
+     * as part of the rollback.
+     */
 
-    let stagedJobs: StagedJob[] = []
-    if (events.length) {
-      /**
-       * We store events in the database when in an ongoing transaction.
-       *
-       * If we are in a long-running transaction, the ACID properties of a
-       * transaction ensure, that events are kept invisible to the enqueuer
-       * until the transaction has committed.
-       *
-       * This patterns also gives us at-least-once delivery of events, as events
-       * are only removed from the database, if they are successfully delivered.
-       *
-       * In case of a failing transaction, jobs stored in the database are removed
-       * as part of the rollback.
-       */
-
-      stagedJobs = await this.stagedJobService_
-        .withTransaction(manager)
-        .create(events)
-    }
+    const stagedJobs = await this.stagedJobService_
+      .withTransaction(manager)
+      .create(events)
 
     return (!isBulkEmit ? stagedJobs[0] : stagedJobs) as unknown as TResult
   }
