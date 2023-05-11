@@ -12,7 +12,7 @@ const useReservationsTableColumns = () => {
       {
         Header: "Order ID",
         accessor: "order_id",
-        Cell: ({ cell: { value } }) => value,
+        Cell: ({ cell: { value } }) => value ?? "-",
       },
       {
         Header: "Description",
@@ -28,6 +28,13 @@ const useReservationsTableColumns = () => {
         Header: "Created",
         accessor: "created_at",
         Cell: ({ cell: { value } }) => moment(value).format("MMM Do YYYY"),
+      },
+      {
+        Header: () => <div className="pr-2 text-right">Quantity</div>,
+        accessor: "quantity",
+        Cell: ({ cell: { value } }) => (
+          <div className="w-full pr-2 text-right">{value}</div>
+        ),
       },
     ],
     []

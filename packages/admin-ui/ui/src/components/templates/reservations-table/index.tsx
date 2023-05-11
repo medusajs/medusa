@@ -1,17 +1,11 @@
 import { Cell, Row, TableRowProps, usePagination, useTable } from "react-table"
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-  ProductVariant,
-} from "@medusajs/medusa"
 import React, { useEffect, useMemo, useState } from "react"
 import {
-  useAdminInventoryItems,
   useAdminReservations,
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 import Button from "../../fundamentals/button"
 import Fade from "../../atoms/fade-wrapper"
@@ -21,9 +15,15 @@ import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
 import { isEmpty } from "lodash"
 import qs from "qs"
-import { useLocationFilters } from "./use-inventory-filters"
+import { useReservationFilters } from "./use-reservation-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { ReservationItemDTO } from "@medusajs/types"
+import EditAllocationDrawer from "../../../domain/orders/details/allocations/edit-allocation-modal"
+import EditIcon from "../../fundamentals/icons/edit-icon"
+import DeletePrompt from "../../organisms/delete-prompt"
+import { useAdminDeleteReservation } from "medusa-react"
+import TrashIcon from "../../fundamentals/icons/trash-icon"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -84,9 +84,6 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
 
   const location = useLocation()
 
-  const { stock_locations, isLoading: locationsLoading } =
-    useAdminStockLocations()
-
   const defaultQuery = useMemo(() => {
     if (store) {
       return {
@@ -104,7 +101,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
-  } = useLocationFilters(location.search, defaultQuery)
+  } = useReservationFilters(location.search, defaultQuery)
 
   const offs = parseInt(queryObject.offset) || 0
   const limit = parseInt(queryObject.limit)
@@ -112,9 +109,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   const [query, setQuery] = useState(queryObject.query)
   const [numPages, setNumPages] = useState(0)
 
-  const { reservations } = useAdminReservations()
-
-  const { inventory_items, isLoading, count } = useAdminInventoryItems(
+  const { reservations, isLoading, count } = useAdminReservations(
     {
       ...queryObject,
     },
@@ -126,7 +121,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   useEffect(() => {
     const controlledPageCount = Math.ceil(count! / queryObject.limit)
     setNumPages(controlledPageCount)
-  }, [inventory_items])
+  }, [reservations])
 
   const updateUrlFromFilter = (obj = {}) => {
     const stringified = qs.stringify(obj)
@@ -166,7 +161,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   } = useTable(
     {
       columns,
-      data: inventory_items || [],
+      data: reservations || [],
       manualPagination: true,
       initialState: {
         pageIndex: Math.floor(offs / limit),
@@ -217,7 +212,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
           count: count || 0,
           offset: offs,
           pageSize: offs + rows.length,
-          title: "Inventory Items",
+          title: "Reservations",
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -282,7 +277,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
             {rows.map((row) => {
               prepareRow(row)
               const { key, ...rest } = row.getRowProps()
-              return <InventoryRow row={row} key={key} {...rest} />
+              return <ReservationRow row={row} key={key} {...rest} />
             })}
           </Table.Body>
         </Table>
@@ -294,68 +289,71 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   )
 }
 
-const InventoryRow = ({
+const ReservationRow = ({
   row,
   ...rest
 }: {
-  row: Row<
-    Partial<InventoryItemDTO> & {
-      location_levels?: InventoryLevelDTO[] | undefined
-      variants?: ProductVariant[] | undefined
-    }
-  >
+  row: Row<ReservationItemDTO>
 } & TableRowProps) => {
   const inventory = row.original
 
-  const navigate = useNavigate()
+  const { mutate: deleteReservation } = useAdminDeleteReservation(inventory.id)
 
-  const {
-    state: isShowingAdjustAvailabilityModal,
-    open: showAdjustAvailabilityModal,
-    close: closeAdjustAvailabilityModal,
-  } = useToggleState()
+  const [showEditReservation, setShowEditReservation] =
+    useState<ReservationItemDTO | null>(null)
+  const [showDeleteReservation, setShowDeleteReservation] = useState(false)
 
   const getRowActionables = () => {
-    const productId = inventory.variants?.[0]?.product_id
-
     const actions = [
       {
         label: "Edit",
-        onClick: showAdjustAvailabilityModal,
+        onClick: () => setShowEditReservation(row.original),
+        icon: <EditIcon size={20} />,
+      },
+      {
+        label: "Delete",
+        variant: "danger",
+        icon: <TrashIcon size={20} />,
+        onClick: () => setShowDeleteReservation(true),
       },
     ]
-
-    if (productId) {
-      return [
-        {
-          label: "View Product",
-          onClick: () => navigate(`/a/products/${productId}`),
-        },
-        ...actions,
-      ]
-    }
 
     return actions
   }
 
   return (
-    <Table.Row
-      color={"inherit"}
-      onClick={showAdjustAvailabilityModal}
-      clickable
-      forceDropdown
-      actions={getRowActionables()}
-      {...rest}
-    >
-      {row.cells.map((cell: Cell, index: number) => {
-        const { key, ...rest } = cell.getCellProps()
-        return (
-          <Table.Cell {...rest} key={key}>
-            {cell.render("Cell", { index })}
-          </Table.Cell>
-        )
-      })}
-    </Table.Row>
+    <>
+      <Table.Row
+        color={"inherit"}
+        forceDropdown
+        actions={getRowActionables()}
+        {...rest}
+      >
+        {row.cells.map((cell: Cell, index: number) => {
+          const { key, ...rest } = cell.getCellProps()
+          return (
+            <Table.Cell {...rest} key={key}>
+              {cell.render("Cell", { index })}
+            </Table.Cell>
+          )
+        })}
+      </Table.Row>
+      {showEditReservation && (
+        <EditAllocationDrawer
+          close={() => setShowEditReservation(null)}
+          reservation={row.original}
+        />
+      )}
+      {showDeleteReservation && (
+        <DeletePrompt
+          text={"Are you sure you want to remove this reservation?"}
+          heading={"Remove reservation"}
+          successText={"Reservation has been removed"}
+          onDelete={deleteReservation}
+          handleClose={() => setShowDeleteReservation(false)}
+        />
+      )}
+    </>
   )
 }
 

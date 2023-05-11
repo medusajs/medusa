@@ -40,12 +40,12 @@ const EditAllocationDrawer = ({
   close,
   reservation,
   item,
-  totalReservedQuantity,
+  totalReservedQuantity = 0,
 }: {
   close: () => void
   reservation: ReservationItemDTO
   item?: LineItem
-  totalReservedQuantity: number
+  totalReservedQuantity?: number
 }) => {
   const form = useForm<EditAllocationLineItemForm>({
     defaultValues: {
@@ -193,6 +193,11 @@ const EditAllocationDrawer = ({
     )
   }, [availableQuantity, item, reservation?.quantity, totalReservedQuantity])
 
+  const closeModal = (e) => {
+    e.preventDefault()
+    close()
+  }
+
   return (
     <SideModal isVisible close={close}>
       <form
@@ -202,7 +207,12 @@ const EditAllocationDrawer = ({
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
             <h1 className="inter-large-semibold ">Edit allocation</h1>
-            <Button variant="ghost" className="p-1.5" onClick={close}>
+            <Button
+              variant="ghost"
+              className="p-1.5"
+              type="button"
+              onClick={closeModal}
+            >
               <CrossIcon />
             </Button>
           </div>

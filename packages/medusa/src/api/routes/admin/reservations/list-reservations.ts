@@ -6,6 +6,7 @@ import {
   extendedFindParamsMixin,
   NumericalComparisonOperator,
 } from "../../../../types/common"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /admin/reservations
@@ -111,9 +112,39 @@ export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const { filterableFields, listConfig } = req
+
+  const preds: ((string) => boolean)[] = []
+
+  // join item
+  const includeItems = !!listConfig.relations?.includes("line_item")
+
+  if (includeItems) {
+    listConfig.relations = listConfig.relations?.filter(
+      (r) => r !== "line_item"
+    )
+  }
+
+  const includeInventoryItems =
+    !!listConfig.relations?.includes("inventory_item")
+
+  if (includeInventoryItems) {
+    listConfig.relations = listConfig.relations?.filter(
+      (r) => r !== "inventory_item"
+    )
+  }
+
+  // if (preds.length) {
+  //   listConfig.relations = listConfig.relations?.filter((r) =>
+  //     preds.every((p) => p(r))
+  //   )
+  // }
+
+  // join inventory item
+
   const [reservations, count] = await inventoryService.listReservationItems(
-    req.filterableFields,
-    req.listConfig
+    filterableFields,
+    listConfig
   )
 
   const { limit, offset } = req.validatedQuery
@@ -125,10 +156,9 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
-  @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  location_id?: string[]
+  @IsType([String, [String]])
+  location_id?: string | string[]
 
   @IsArray()
   @IsString({ each: true })
