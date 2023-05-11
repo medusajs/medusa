@@ -111,9 +111,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     let locationIds: string[] = []
     if (context.salesChannelId) {
-      locationIds = await this.salesChannelLocationService_.listLocationIds(
-        context.salesChannelId
-      )
+      locationIds = await this.salesChannelLocationService_
+        .withTransaction(this.activeManager_)
+        .listLocationIds(context.salesChannelId)
     } else {
       const stockLocations = await this.stockLocationService_.list(
         {},

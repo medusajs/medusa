@@ -1,5 +1,6 @@
 import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [get] /admin/reservations/{id}
@@ -54,12 +55,16 @@ export default async (req, res) => {
   const { id } = req.params
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const [reservations, count] = await inventoryService.listReservationItems(
     {
       id,
     },
-    { take: 1 }
+    { take: 1 },
+    {
+      transactionManager: manager,
+    }
   )
 
   if (!count) {

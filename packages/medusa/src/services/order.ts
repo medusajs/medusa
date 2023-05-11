@@ -62,6 +62,7 @@ import {
 } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
+import { IInventoryService } from "@medusajs/types"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 

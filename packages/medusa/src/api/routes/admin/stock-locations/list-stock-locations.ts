@@ -183,7 +183,8 @@ export default async (req: Request, res: Response) => {
     locations = await joinSalesChannels(
       locations,
       channelLocationService,
-      salesChannelService
+      salesChannelService,
+      manager
     )
   }
 

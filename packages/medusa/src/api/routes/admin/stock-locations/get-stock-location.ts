@@ -84,7 +84,8 @@ export default async (req: Request, res: Response) => {
     const [location] = await joinSalesChannels(
       [stockLocation],
       channelLocationService,
-      salesChannelService
+      salesChannelService,
+      manager
     )
     stockLocation = location
   }
