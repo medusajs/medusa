@@ -130,7 +130,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
         return
       })
 
-      if (!Array.isArray([key])) {
+      if (!Array.isArray(where[key])) {
         continue
       }
 
