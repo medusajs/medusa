@@ -74,7 +74,7 @@ describe("Product Service", () => {
       products = await createProductAndTags(testManager, productsData)
     })
 
-    it("including relations", async () => {
+    it("filter by id and including relations", async () => {
       const productsResult = await service.list(
         {
           id: products[0].id,
@@ -85,7 +85,7 @@ describe("Product Service", () => {
       )
 
       productsResult.forEach((product, index) => {
-        const tags = products[index].tags.getItems()
+        const tags = product.tags.toArray()
 
         expect(product).toEqual(
           expect.objectContaining({
@@ -101,6 +101,25 @@ describe("Product Service", () => {
             })
           )
         })
+      })
+    })
+
+    it("filter by id and without relations", async () => {
+      const productsResult = await service.list({
+        id: products[0].id,
+      })
+
+      productsResult.forEach((product, index) => {
+        const tags = product.tags.getItems(false)
+
+        expect(product).toEqual(
+          expect.objectContaining({
+            id: productsData[index].id,
+            title: productsData[index].title,
+          })
+        )
+
+        expect(tags.length).toBe(0)
       })
     })
   })

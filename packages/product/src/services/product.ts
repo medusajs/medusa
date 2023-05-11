@@ -42,10 +42,10 @@ export default class ProductService {
 
     if (filters.tags?.length) {
       where["tags"] = { value: { $in: filters.tags } }
-      findOptions.populate = [
+      /*findOptions.populate = [
         ...(findOptions.populate as readonly string[]),
         "tags",
-      ] as const
+      ] as const*/
     }
     /**
      * End of manipulation
