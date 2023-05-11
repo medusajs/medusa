@@ -1,5 +1,35 @@
 # @medusajs/admin
 
+## 4.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`aa74ebb18`](https://github.com/medusajs/medusa/commit/aa74ebb181617f7373e61f3e18cf0f614912985a), [`353fc94e4`](https://github.com/medusajs/medusa/commit/353fc94e4f4da45262214446281e8951f23709e7), [`282953759`](https://github.com/medusajs/medusa/commit/282953759280eeed27615df0342ab00e43b79793), [`3d6bcaaf6`](https://github.com/medusajs/medusa/commit/3d6bcaaf65b3a43dfb251460d73e448870b5105f), [`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab), [`bd53adb23`](https://github.com/medusajs/medusa/commit/bd53adb238a64640533698fbccb98a39a0346590), [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b), [`0c58ead6d`](https://github.com/medusajs/medusa/commit/0c58ead6d869f5605cbd2b8aca129984b7493bcf), [`cff54d732`](https://github.com/medusajs/medusa/commit/cff54d73253a4c2d16a174a28f0f5d31c94bcebd), [`a8e73942e`](https://github.com/medusajs/medusa/commit/a8e73942e69662ca673ccc4300e270ff6ab523d1), [`ff37cd190`](https://github.com/medusajs/medusa/commit/ff37cd190fa455f4ba4f76cfb4d641b1611cc32e)]:
+  - @medusajs/admin-ui@1.8.5
+  - @medusajs/medusa@1.10.1
+
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152), [`4c5c4fd9b`](https://github.com/medusajs/medusa/commit/4c5c4fd9b3941ee27e6c8166377fd8e8f1b7ad51), [`538c9874b`](https://github.com/medusajs/medusa/commit/538c9874ba18c1352284089a789d4a90652bc795), [`d539c6fee`](https://github.com/medusajs/medusa/commit/d539c6feeba8ee431f9a655b6cd4e9102cba2b25), [`b7a782639`](https://github.com/medusajs/medusa/commit/b7a7826394ecd621ca80e6d4ce445ea1c26804ac), [`983872319`](https://github.com/medusajs/medusa/commit/98387231927e9872f54c9e72597576f3273de506), [`284f1eed9`](https://github.com/medusajs/medusa/commit/284f1eed9a9fc7272df3fccdb162ea93750999de), [`0c30d05cf`](https://github.com/medusajs/medusa/commit/0c30d05cf3805515086dc589a0332b59b6df045f), [`4e8045a0a`](https://github.com/medusajs/medusa/commit/4e8045a0ac44b1541ee3cd846079f55d3e0dc957), [`d2443d83e`](https://github.com/medusajs/medusa/commit/d2443d83e60fee3c3f28b762d66378c3f07f1b5f), [`a7adb8fbf`](https://github.com/medusajs/medusa/commit/a7adb8fbf4f6a0708e590848ec6c315ff7eb05cf), [`596566a51`](https://github.com/medusajs/medusa/commit/596566a51061ba868ffd2306658f01030e52316f), [`8b93bae8f`](https://github.com/medusajs/medusa/commit/8b93bae8f8ad1f6eb43931a7ba03bfa691475eca)]:
+  - @medusajs/medusa@1.10.0
+  - @medusajs/admin-ui@1.8.4
+
+## 3.0.0
+
+### Patch Changes
+
+- [#3886](https://github.com/medusajs/medusa/pull/3886) [`5fdccf5e3`](https://github.com/medusajs/medusa/commit/5fdccf5e3256b5e515c3d9a8ba9eaf60b2ce7ad3) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Check for undefined categories
+
+- [#3897](https://github.com/medusajs/medusa/pull/3897) [`0be681657`](https://github.com/medusajs/medusa/commit/0be6816578f5cac6f22ddea267fc4c066727b0ae) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(admin-ui): Add Sales Channel filter
+
+- [#3883](https://github.com/medusajs/medusa/pull/3883) [`966ddd2f1`](https://github.com/medusajs/medusa/commit/966ddd2f1648d5d3c1c68094f488f307e3186d92) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(inventory): Minor fixes to upserting inventory items
+
+- Updated dependencies [[`440f900af`](https://github.com/medusajs/medusa/commit/440f900af03dd0af29c9b16f01576d3eff45cd04), [`366b12fce`](https://github.com/medusajs/medusa/commit/366b12fcea679551c55baaeeaaf41bbddf04b972), [`ba45a316a`](https://github.com/medusajs/medusa/commit/ba45a316a7638cc003599900d0088e5a5aeb51c8), [`7e213f210`](https://github.com/medusajs/medusa/commit/7e213f2106ed76449fbdfa6eda5594b59522443a), [`d2826872f`](https://github.com/medusajs/medusa/commit/d2826872fe487a027b677aeb43704f761a6b4e80), [`88a224e42`](https://github.com/medusajs/medusa/commit/88a224e42a490fd7fae29677c463740b89ad9b27), [`0d0e9bf20`](https://github.com/medusajs/medusa/commit/0d0e9bf2069718ac54684efbe4d449942bb2ef32), [`2be144ff0`](https://github.com/medusajs/medusa/commit/2be144ff05e852a3541a9a972942cfc15ef3bd38), [`935abeae6`](https://github.com/medusajs/medusa/commit/935abeae68012a93d820789c743941c3c1a1b802), [`d302db239`](https://github.com/medusajs/medusa/commit/d302db23975227527e5632110d67c2ac299317b3), [`3a77e8a88`](https://github.com/medusajs/medusa/commit/3a77e8a88fd327aca579bcd09d767d9315a04d7f), [`5fdccf5e3`](https://github.com/medusajs/medusa/commit/5fdccf5e3256b5e515c3d9a8ba9eaf60b2ce7ad3), [`0be681657`](https://github.com/medusajs/medusa/commit/0be6816578f5cac6f22ddea267fc4c066727b0ae), [`af710f1b4`](https://github.com/medusajs/medusa/commit/af710f1b48a4545a5064029a557013af34c4c100), [`491566df6`](https://github.com/medusajs/medusa/commit/491566df6b7ced35f655f810961422945e10ecd0), [`966ddd2f1`](https://github.com/medusajs/medusa/commit/966ddd2f1648d5d3c1c68094f488f307e3186d92), [`3b3236cc0`](https://github.com/medusajs/medusa/commit/3b3236cc01fc8b7448c1bdbad066a19c2c3de2c3), [`4a8562743`](https://github.com/medusajs/medusa/commit/4a8562743569f5bbb7bd0894b025a74725726529)]:
+  - @medusajs/medusa@1.9.0
+  - @medusajs/admin-ui@1.8.3
+
 ## 2.0.2
 
 ### Patch Changes

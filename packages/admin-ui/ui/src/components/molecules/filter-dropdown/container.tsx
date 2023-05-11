@@ -74,7 +74,7 @@ const FilterDropdownContainer = ({
             Apply
           </Button>
         </div>
-        {React.Children.map(children, (child) => {
+        {React.Children.toArray(children).filter(Boolean).map((child) => {
           return (
             <div className="border-grey-20 border-b py-2 px-4 last:border-0 last:pb-0">
               {child}

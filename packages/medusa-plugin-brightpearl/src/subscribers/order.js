@@ -45,6 +45,24 @@ class OrderSubscriber {
       this.registerSwapPayment
     )
     eventBusService.subscribe("swap.received", this.registerSwap)
+
+    eventBusService.subscribe(
+      "reservation-item.created",
+      this.registerMedusaReservation
+    )
+
+    eventBusService.subscribe(
+      "reservation-items.bulk-created",
+      this.registerMedusaBulkReservation
+    )
+  }
+
+  registerMedusaReservation = (data) => {
+    return this.brightpearlService_.createReservation(data)
+  }
+
+  registerMedusaBulkReservation = (data) => {
+    return this.brightpearlService_.bulkCreateReservation(data)
   }
 
   sendToBrightpearl = (data) => {

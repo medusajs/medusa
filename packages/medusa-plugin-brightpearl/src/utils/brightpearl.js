@@ -140,6 +140,12 @@ class BrightpearlClient {
           data,
         })
       },
+      delete: (id) => {
+        return this.client_.request({
+          url: `/integration-service/webhook/${id}`,
+          method: "DELETE",
+        })
+      },
     }
   }
 
@@ -197,6 +203,15 @@ class BrightpearlClient {
           method: "POST",
           data,
         })
+      },
+      updateReservation: (orderId, data) => {
+        return this.client_
+          .request({
+            url: `/warehouse-service/order/${orderId}/reservation`,
+            method: "PUT",
+            data,
+          })
+          .then(({ data }) => data.response)
       },
       createReservation: (order, warehouse) => {
         const id = order.id
