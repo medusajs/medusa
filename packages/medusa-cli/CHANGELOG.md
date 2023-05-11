@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.3.13
+
+### Patch Changes
+
+- Updated dependencies [[`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b)]:
+  - @medusajs/utils@1.8.4
+
 ## 1.3.12
 
 ### Patch Changes

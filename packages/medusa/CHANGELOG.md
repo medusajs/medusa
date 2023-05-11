@@ -1,5 +1,31 @@
 # Change Log
 
+## 1.10.1
+
+### Patch Changes
+
+- [#4018](https://github.com/medusajs/medusa/pull/4018) [`3d6bcaaf6`](https://github.com/medusajs/medusa/commit/3d6bcaaf65b3a43dfb251460d73e448870b5105f) Thanks [@patpich](https://github.com/patpich)! - fix(medusa): ShippingOptionService.list method param type
+
+- [#3971](https://github.com/medusajs/medusa/pull/3971) [`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(client-types, inventory, medusa, types): add `title`, `thumbnail` and `description to inventory item and `description` to reservation item.
+
+- [#4023](https://github.com/medusajs/medusa/pull/4023) [`bd53adb23`](https://github.com/medusajs/medusa/commit/bd53adb238a64640533698fbccb98a39a0346590) Thanks [@dwene](https://github.com/dwene)! - fix(variant-update): hasChanges function incorrectly calculates if there are changes
+
+- [#4032](https://github.com/medusajs/medusa/pull/4032) [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b) Thanks [@pevey](https://github.com/pevey)! - update class-validator to 0.14.0 in utils package
+
+- [#3967](https://github.com/medusajs/medusa/pull/3967) [`0c58ead6d`](https://github.com/medusajs/medusa/commit/0c58ead6d869f5605cbd2b8aca129984b7493bcf) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa): validate `customer_id` when completing a cart
+
+- [#4025](https://github.com/medusajs/medusa/pull/4025) [`cff54d732`](https://github.com/medusajs/medusa/commit/cff54d73253a4c2d16a174a28f0f5d31c94bcebd) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): Catch on idempotency key retrieve if not found
+
+- [#3842](https://github.com/medusajs/medusa/pull/3842) [`a8e73942e`](https://github.com/medusajs/medusa/commit/a8e73942e69662ca673ccc4300e270ff6ab523d1) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa): handle product categories in import/export strategies
+
+- [#4008](https://github.com/medusajs/medusa/pull/4008) [`ff37cd190`](https://github.com/medusajs/medusa/commit/ff37cd190fa455f4ba4f76cfb4d641b1611cc32e) Thanks [@patpich](https://github.com/patpich)! - fix(search): add missing default product relations
+
+- Updated dependencies [[`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab), [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b)]:
+  - @medusajs/types@1.8.5
+  - @medusajs/utils@1.8.4
+  - @medusajs/modules-sdk@1.8.5
+  - @medusajs/medusa-cli@1.3.13
+
 ## 1.10.0
 
 ### Minor Changes
