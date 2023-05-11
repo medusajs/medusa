@@ -1,14 +1,15 @@
-import { ReservationItemDTO } from "@medusajs/types"
-import { Router } from "express"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { AdminPostReservationsReq } from "./create-reservation"
+
 import { AdminGetReservationsParams } from "./list-reservations"
+import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminPostReservationsReservationReq } from "./update-reservation"
+import { ReservationItemDTO } from "@medusajs/types"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -102,6 +103,7 @@ export const defaultReservationFields = [
   "inventory_item_id",
   "quantity",
   "line_item_id",
+  "description",
   "metadata",
   "created_at",
   "updated_at",
