@@ -183,5 +183,5 @@ export interface OptionsQuery<T, P extends string = never> {
 
 export type FindOptions<T> = {
   where?: FilterQuery<T>
-  findOptions?: OptionsQuery<T, any>
+  options?: OptionsQuery<T, any>
 }
