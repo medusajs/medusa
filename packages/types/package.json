@@ -19,7 +19,7 @@
   "devDependencies": {
     "awilix": "^8.0.0",
     "cross-env": "^5.2.1",
-    "typeorm": "npm:@medusajs/typeorm@0.3.16-next.0",
+    "typeorm": "^0.3.16",
     "typescript": "^4.4.4",
     "winston": "^3.8.2"
   },
