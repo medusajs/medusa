@@ -31,8 +31,6 @@ export class ProductVariantRepository
       cache: 1000,
     })
 
-    console.log("findOptions - ", findOptions)
-
     return await this.manager_.find(
       ProductVariant,
       where,
