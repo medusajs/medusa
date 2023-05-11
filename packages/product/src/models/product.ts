@@ -9,6 +9,7 @@ import {
   ManyToOne,
   PrimaryKey,
   Property,
+  OptionalProps,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
@@ -23,8 +24,13 @@ export enum ProductStatus {
   REJECTED = "rejected",
 }
 
+type OptionalRelations = 'collection' | 'type'
+type OptionalFields = 'is_giftcard' | 'discountable' | 'created_at' | 'updated_at' | 'deleted_at'
+
 @Entity({ tableName: "product" })
 class Product {
+  [OptionalProps]?: OptionalRelations | OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -95,7 +101,7 @@ class Product {
     owner: true,
     pivotTable: "product_tags",
   })
-  tags?: Collection<ProductTag>
+  tags = new Collection<ProductTag>(this)
 
   @Property({ columnType: "boolean", default: true })
   discountable: boolean

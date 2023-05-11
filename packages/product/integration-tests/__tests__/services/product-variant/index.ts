@@ -1,9 +1,10 @@
 import { TestDatabase } from "../../../utils"
 import { ProductVariantService } from "@services"
 import { ProductVariantRepository } from "@repositories"
-import { ProductVariant, Product } from "@models"
+import { ProductVariant, Product, ProductTag } from "@models"
 import { ProductStatus } from "../../../../src/models/product"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { Collection } from "@mikro-orm/core"
 
 describe("ProductVariant Service", () => {
   let service: ProductVariantService
@@ -33,14 +34,12 @@ describe("ProductVariant Service", () => {
       testManager = await TestDatabase.forkManager()
 
       productOne = testManager.create(Product, {
-        ...new Product(),
         id: "product-1",
-        title: "product-1",
+        title: "product 1",
         status: ProductStatus.PUBLISHED,
       })
 
       variantOne = testManager.create(ProductVariant, {
-        ...new ProductVariant(),
         id: "test-1",
         title: "variant 1",
         inventory_quantity: 10,
@@ -48,14 +47,13 @@ describe("ProductVariant Service", () => {
       })
 
       variantTwo = testManager.create(ProductVariant, {
-        ...new ProductVariant(),
         id: "test-2",
         title: "variant",
         inventory_quantity: 10,
         product: productOne
       })
 
-      await testManager.persistAndFlush([variantOne])
+      await testManager.persistAndFlush([variantOne, variantTwo])
     })
 
     it("selecting by properties, scopes out the results", async () => {
@@ -76,7 +74,7 @@ describe("ProductVariant Service", () => {
 
     it("passing a limit, scopes the result to the limit", async () => {
       const results = await service.list({
-        findOptions: {
+        options: {
           limit: 1,
         },
       })
@@ -88,13 +86,14 @@ describe("ProductVariant Service", () => {
       ])
     })
 
-    it("passing populate, scopes the results of the response", async () => {
+    it.only("passing populate, scopes the results of the response", async () => {
       const results = await service.list({
         where: {
           id: "test-1",
         },
-        findOptions: {
-          fields: ["id", "title"],
+        options: {
+          fields: ["id", "title", "product.title"],
+          populate: ["product"]
         },
       })
 
@@ -102,6 +101,22 @@ describe("ProductVariant Service", () => {
         {
           id: "test-1",
           title: "variant 1",
+          product: {
+            id: "product-1",
+            title: "product 1",
+            tags: expect.any(Collection<ProductTag>)
+          }
+        },
+      ])
+
+      expect(JSON.parse(JSON.stringify(results))).toEqual([
+        {
+          id: "test-1",
+          title: "variant 1",
+          product: {
+            id: "product-1",
+            title: "product 1",
+          }
         },
       ])
     })
