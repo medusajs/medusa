@@ -1,5 +1,23 @@
 # @medusajs/event-bus-local
 
+## 1.9.2
+
+### Patch Changes
+
+- Updated dependencies [[`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b)]:
+  - @medusajs/utils@1.8.4
+  - @medusajs/modules-sdk@1.8.5
+
+## 1.9.1
+
+### Patch Changes
+
+- [#4002](https://github.com/medusajs/medusa/pull/4002) [`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, event-bus-redis, event-bus-local): Revert retrieveSubscribers as the wildcard prevent us from filtering
+
+- Updated dependencies [[`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152), [`d539c6fee`](https://github.com/medusajs/medusa/commit/d539c6feeba8ee431f9a655b6cd4e9102cba2b25)]:
+  - @medusajs/utils@1.8.3
+  - @medusajs/modules-sdk@1.8.4
+
 ## 1.9.0
 
 ### Minor Changes

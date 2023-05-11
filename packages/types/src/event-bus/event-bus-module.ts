@@ -1,15 +1,6 @@
-import {
-  EmitData,
-  Subscriber,
-  SubscriberContext,
-  SubscriberDescriptor,
-} from "./common"
+import { EmitData, Subscriber, SubscriberContext } from "./common"
 
 export interface IEventBusModuleService {
-  retrieveSubscribers(
-    event: string | symbol
-  ): SubscriberDescriptor[] | undefined
-
   emit<T>(
     eventName: string,
     data: T,

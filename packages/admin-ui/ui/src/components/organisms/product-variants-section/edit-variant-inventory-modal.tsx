@@ -14,13 +14,13 @@ import {
 import Button from "../../fundamentals/button"
 import { InventoryLevelDTO } from "@medusajs/types"
 import Modal from "../../molecules/modal"
+import { Option } from "../../../types/shared"
+import { countries } from "../../../utils/countries"
 import { queryClient } from "../../../constants/query-client"
 import { removeNullish } from "../../../utils/remove-nullish"
 import { useContext } from "react"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useForm } from "react-hook-form"
-import { countries } from "../../../utils/countries"
-import { Option } from "../../../types/shared"
 
 type Props = {
   onClose: () => void
@@ -120,6 +120,9 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         await client.admin.inventoryItems.update(itemId!, upsertPayload)
       }
     } else if (manageInventory) {
+      await client.admin.products.updateVariant(product.id, variant.id, {
+        manage_inventory: true,
+      })
       // does not have an inventory item but wants to manage inventory
       const { inventory_item } = await client.admin.inventoryItems.create({
         variant_id: variant.id,

@@ -11,7 +11,9 @@ export class itemDescriptionsAndThumbnail1682927363119
           ADD "thumbnail" character varying;
       `)
     await queryRunner.query(`
-        ALTER TABLE "reservation_item" ADD "description" character varying
+        ALTER TABLE "reservation_item"           
+          ADD "description" character varying,
+          ADD "created_by" character varying;
       `)
   }
 
@@ -23,7 +25,9 @@ export class itemDescriptionsAndThumbnail1682927363119
           DROP COLUMN "thumbnail";
       `)
     await queryRunner.query(`
-        ALTER TABLE "reservation_item" DROP COLUMN "description";
+        ALTER TABLE "reservation_item" 
+          DROP COLUMN "description", 
+          DROP COLUMN "created_by";
       `)
   }
 }
