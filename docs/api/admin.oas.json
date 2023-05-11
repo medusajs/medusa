@@ -32392,7 +32392,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -32835,7 +32835,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           }
@@ -33945,7 +33945,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -34163,7 +34163,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -34438,7 +34438,7 @@
             "description": "The unique randomly generated key used to determine the state of a process.",
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -34563,6 +34563,18 @@
           },
           "mid_code": {
             "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Title of the inventory item",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description of the inventory item",
+            "type": "string"
+          },
+          "thumbnail": {
+            "description": "Thumbnail for the inventory item",
             "type": "string"
           },
           "material": {
@@ -35784,7 +35796,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -36263,7 +36275,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -36507,7 +36519,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -37884,7 +37896,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -38065,6 +38077,14 @@
             "description": "The id of the inventory item the reservation relates to",
             "type": "string"
           },
+          "description": {
+            "description": "Description of the reservation item",
+            "type": "string"
+          },
+          "created_by": {
+            "description": "UserId of user who created the reservation item",
+            "type": "string"
+          },
           "quantity": {
             "description": "The id of the reservation item",
             "type": "number"
@@ -38221,7 +38241,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -39519,7 +39539,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -39775,7 +39795,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
