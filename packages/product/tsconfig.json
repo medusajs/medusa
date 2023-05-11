@@ -24,7 +24,7 @@
       "@repositories": ["./src/repositories"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "integration-tests"],
   "exclude": [
     "dist",
     "./src/**/__tests__",

@@ -16,6 +16,6 @@ export default class ProductVariantService {
     selector: Record<any, any> = {},
     config: Record<any, any> = {}
   ): Promise<ProductVariant[]> {
-    return await this.productVariantRepository_.find()
+    return await this.productVariantRepository_.find(selector)
   }
 }

@@ -1,13 +1,17 @@
 import { TestDatabase } from "../../../utils"
 import { ProductVariantService } from "@services"
+import { ProductVariantRepository } from "@repositories"
 import { ProductVariant } from "@models"
 
 describe("ProductVariant Service", () => {
   let service
+  let variantOne
+  let variantTwo
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    service = new ProductVariantService({ manager: TestDatabase.getManager() })
+    const productVariantRepository = new ProductVariantRepository({ manager: TestDatabase.getManager() })
+    service = new ProductVariantService({ productVariantRepository })
   })
 
   afterEach(async () => {
@@ -18,10 +22,15 @@ describe("ProductVariant Service", () => {
     beforeEach(async () => {
       const manager = TestDatabase.getManager()
 
-      // TODO: cleanup database on every cycle
-      const variantOne = manager.create(ProductVariant, {
+      variantOne = manager.create(ProductVariant, {
         ...new ProductVariant(),
-        title: "testing",
+        title: "variant 1",
+        inventory_quantity: 10,
+      })
+
+      variantTwo = manager.create(ProductVariant, {
+        ...new ProductVariant(),
+        title: "variant",
         inventory_quantity: 10,
       })
 
@@ -29,24 +38,52 @@ describe("ProductVariant Service", () => {
     })
 
     // TODO
-    it("by default, all model columns are returned", async () => {
-      const results = await service.list()
+    it("selecting by properties, scopes out the results", async () => {
+      const results = await service.list({
+        where: {
+          id: variantOne.id
+        }
+      })
 
-      expect(results).toEqual([])
+      expect(results).toEqual([
+        expect.objectContaining({
+          id: variantOne.id,
+          title: "variant 1",
+          // TODO: why is this a string?
+          inventory_quantity: "10",
+        })
+      ])
     })
 
     // TODO
-    it("passing in selectors, will only query selected columns", async () => {
-      const results = await service.list()
+    it("passing a limit, scopes the result to the limit", async () => {
+      const results = await service.list({
+        findOptions: {
+          limit: 1
+        }
+      })
 
-      expect(results).toEqual([])
+      expect(results).toEqual([
+        expect.objectContaining({
+          id: variantOne.id,
+        })
+      ])
     })
 
     // TODO
-    it("passing in relations, will query selected relations", async () => {
-      const results = await service.list()
+    it("passing populate, scopes the results of the response", async () => {
+      const results = await service.list({
+        findOptions: {
+          populate: ['id'],
+          limit: 1,
+        }
+      })
 
-      expect(results).toEqual([])
+      expect(results).toEqual([
+        {
+          id: variantOne.id,
+        }
+      ])
     })
   })
 })
