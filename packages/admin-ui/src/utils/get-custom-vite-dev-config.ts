@@ -9,6 +9,7 @@ export const getCustomViteDevConfig = ({
   port = 7001,
 }: AdminDevConfig): InlineConfig => {
   const uiPath = resolve(__dirname, "..", "..", "ui")
+  const resolvedPath = require.resolve("@medusajs/admin-ui/ui")
 
   return {
     plugins: [
@@ -20,7 +21,7 @@ export const getCustomViteDevConfig = ({
       __BASE__: JSON.stringify("/"),
       __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
     },
-    root: uiPath,
+    root: resolvedPath,
     server: {
       port,
     },
