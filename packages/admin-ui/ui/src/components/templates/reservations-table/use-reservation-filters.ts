@@ -3,33 +3,33 @@ import qs from "qs"
 import { useMemo, useReducer, useState } from "react"
 import { relativeDateFormatToTimestamp } from "../../../utils/time"
 
-type InventoryDateFilter = null | {
+type ReservationDateFilter = null | {
   gt?: string
   lt?: string
 }
 
-type InventoryFilterAction =
+type reservationFilterAction =
   | { type: "setQuery"; payload: string | null }
-  | { type: "setFilters"; payload: InventoryFilterState }
-  | { type: "reset"; payload: InventoryFilterState }
+  | { type: "setFilters"; payload: ReservationFilterState }
+  | { type: "reset"; payload: ReservationFilterState }
   | { type: "setOffset"; payload: number }
-  | { type: "setDefaults"; payload: InventoryDefaultFilters | null }
+  | { type: "setDefaults"; payload: ReservationDefaultFilters | null }
   | { type: "setLocation"; payload: string }
   | { type: "setLimit"; payload: number }
 
-interface InventoryFilterState {
+interface ReservationFilterState {
   query?: string | null
   limit: number
   offset: number
   location: string
-  additionalFilters: InventoryDefaultFilters | null
+  additionalFilters: ReservationDefaultFilters | null
 }
 
 const allowedFilters = ["q", "offset", "limit", "location_id"]
 
 const DefaultTabs = {}
 
-const formatDateFilter = (filter: InventoryDateFilter) => {
+const formatDateFilter = (filter: ReservationDateFilter) => {
   if (filter === null) {
     return filter
   }
@@ -47,9 +47,9 @@ const formatDateFilter = (filter: InventoryDateFilter) => {
 }
 
 const reducer = (
-  state: InventoryFilterState,
-  action: InventoryFilterAction
-): InventoryFilterState => {
+  state: ReservationFilterState,
+  action: reservationFilterAction
+): ReservationFilterState => {
   switch (action.type) {
     case "setFilters": {
       return {
@@ -90,7 +90,7 @@ const reducer = (
   }
 }
 
-type InventoryDefaultFilters = {
+type ReservationDefaultFilters = {
   expand?: string
   fields?: string
   location_id?: string
@@ -108,9 +108,9 @@ const eqSet = (as: Set<string>, bs: Set<string>) => {
   return true
 }
 
-export const useInventoryFilters = (
+export const useReservationFilters = (
   existing?: string,
-  defaultFilters: InventoryDefaultFilters | null = null
+  defaultFilters: ReservationDefaultFilters | null = null
 ) => {
   if (existing && existing[0] === "?") {
     existing = existing.substring(1)
@@ -122,7 +122,7 @@ export const useInventoryFilters = (
   )
 
   const initialTabs = useMemo(() => {
-    const storageString = localStorage.getItem("inventory::filters")
+    const storageString = localStorage.getItem("reservation::filters")
     if (storageString) {
       const savedTabs = JSON.parse(storageString)
 
@@ -144,7 +144,7 @@ export const useInventoryFilters = (
   const [state, dispatch] = useReducer(reducer, initial)
   const [tabs, setTabs] = useState(initialTabs)
 
-  const setDefaultFilters = (filters: InventoryDefaultFilters | null) => {
+  const setDefaultFilters = (filters: ReservationDefaultFilters | null) => {
     dispatch({ type: "setDefaults", payload: filters })
   }
 
@@ -179,7 +179,7 @@ export const useInventoryFilters = (
     })
   }
 
-  const setFilters = (filters: InventoryFilterState) => {
+  const setFilters = (filters: ReservationFilterState) => {
     dispatch({ type: "setFilters", payload: filters })
   }
 
@@ -199,7 +199,7 @@ export const useInventoryFilters = (
       } else if (value.open) {
         if (key === "date") {
           toQuery[stateFilterMap[key]] = formatDateFilter(
-            value.filter as InventoryDateFilter
+            value.filter as ReservationDateFilter
           )
         } else {
           toQuery[stateFilterMap[key]] = value.filter
@@ -217,7 +217,7 @@ export const useInventoryFilters = (
     return qs.stringify(obj, { skipNulls: true })
   }
 
-  const getRepresentationObject = (fromObject?: InventoryFilterState) => {
+  const getRepresentationObject = (fromObject?: ReservationFilterState) => {
     const objToUse = fromObject ?? state
 
     const toQuery: any = {}
@@ -319,7 +319,7 @@ export const useInventoryFilters = (
     }
   }
 
-  const saveTab = (tabName: string, filters: InventoryFilterState) => {
+  const saveTab = (tabName: string, filters: ReservationFilterState) => {
     const repObj = getRepresentationObject({ ...filters })
     const clean = omit(repObj, ["limit", "offset"])
     const repString = qs.stringify(clean, { skipNulls: true })
@@ -417,9 +417,9 @@ const stateFilterMap = {
 
 const parseQueryString = (
   queryString?: string,
-  additionals: InventoryDefaultFilters | null = null
-): InventoryFilterState => {
-  const defaultVal: InventoryFilterState = {
+  additionals: ReservationDefaultFilters | null = null
+): ReservationFilterState => {
+  const defaultVal: ReservationFilterState = {
     location: additionals?.location_id ?? "",
     offset: 0,
     limit: 15,

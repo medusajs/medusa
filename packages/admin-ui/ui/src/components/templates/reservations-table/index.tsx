@@ -7,6 +7,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react"
 import {
   useAdminInventoryItems,
+  useAdminReservations,
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
@@ -20,7 +21,7 @@ import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
 import { isEmpty } from "lodash"
 import qs from "qs"
-import { useInventoryFilters } from "./use-inventory-filters"
+import { useLocationFilters } from "./use-inventory-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
 import useToggleState from "../../../hooks/use-toggle-state"
 
@@ -103,7 +104,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
-  } = useInventoryFilters(location.search, defaultQuery)
+  } = useLocationFilters(location.search, defaultQuery)
 
   const offs = parseInt(queryObject.offset) || 0
   const limit = parseInt(queryObject.limit)
@@ -111,7 +112,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   const [query, setQuery] = useState(queryObject.query)
   const [numPages, setNumPages] = useState(0)
 
-  // const { reservations } = useAdminReservations()
+  const { reservations } = useAdminReservations()
 
   const { inventory_items, isLoading, count } = useAdminInventoryItems(
     {

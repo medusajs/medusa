@@ -1,3 +1,4 @@
+import moment from "moment"
 import { useMemo } from "react"
 
 const useReservationsTableColumns = () => {
@@ -26,7 +27,7 @@ const useReservationsTableColumns = () => {
       {
         Header: "Created",
         accessor: "created_at",
-        Cell: ({ cell: { value } }) => value,
+        Cell: ({ cell: { value } }) => moment(value).format("MMM Do YYYY"),
       },
     ],
     []
