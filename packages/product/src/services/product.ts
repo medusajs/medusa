@@ -27,7 +27,7 @@ export default class ProductService {
 
   async list(
     filters: ProductListFilter = {},
-    config: { relations: string[] }
+    config: { relations?: string[] } = {}
   ): Promise<Product[]> {
     /**
      * Move the below manipulation in a new build query utils.

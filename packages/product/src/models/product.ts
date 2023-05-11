@@ -6,15 +6,11 @@ import {
   Enum,
   Index,
   ManyToMany,
-  ManyToOne,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-
-import ProductCollection from "./product-collection"
-import ProductType from "./product-type"
 import ProductTag from "./product-tag"
 
 export enum ProductStatus {
@@ -86,11 +82,11 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
-  @ManyToOne(() => ProductCollection, { nullable: true })
+  /*@ManyToOne(() => ProductCollection, { nullable: true })
   collection = new Collection<ProductCollection>(this)
 
   @ManyToOne(() => ProductType, { nullable: true })
-  type = new Collection<ProductType>(this)
+  type = new Collection<ProductType>(this)*/
 
   @ManyToMany(() => ProductTag, undefined, {
     pivotTable: "product_tags",
