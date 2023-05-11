@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/sales-channel-inventory.ts:18](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/sales-channel-inventory.ts#L18)
+[medusa/src/services/sales-channel-inventory.ts:18](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/sales-channel-inventory.ts#L18)
 
 ## Properties
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/sales-channel-inventory.ts:15](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/sales-channel-inventory.ts#L15)
+[medusa/src/services/sales-channel-inventory.ts:15](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/sales-channel-inventory.ts#L15)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/sales-channel-inventory.ts:16](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/sales-channel-inventory.ts#L16)
+[medusa/src/services/sales-channel-inventory.ts:16](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/sales-channel-inventory.ts#L16)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/sales-channel-inventory.ts:14](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/sales-channel-inventory.ts#L14)
+[medusa/src/services/sales-channel-inventory.ts:14](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/sales-channel-inventory.ts#L14)
 
 ___
 
@@ -206,7 +206,7 @@ available quantity of item across all sales channel locations
 
 #### Defined in
 
-[medusa/src/services/sales-channel-inventory.ts:37](https://github.com/medusajs/medusa/blob/731f05d3e/packages/medusa/src/services/sales-channel-inventory.ts#L37)
+[medusa/src/services/sales-channel-inventory.ts:37](https://github.com/medusajs/medusa/blob/27ff5a7f5/packages/medusa/src/services/sales-channel-inventory.ts#L37)
 
 ___
 
