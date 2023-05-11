@@ -86,7 +86,7 @@ describe("ProductVariant Service", () => {
       ])
     })
 
-    it.only("passing populate, scopes the results of the response", async () => {
+    it("passing populate, scopes the results of the response", async () => {
       const results = await service.list({
         where: {
           id: "test-1",
