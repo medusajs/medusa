@@ -66,7 +66,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   )
 
   const connectionOptions = {
-    type: configModule.projectConfig.database_type,
+    type: "postgres",
     database: configModule.projectConfig.database_database,
     schema: configModule.projectConfig.database_schema,
     url: configModule.projectConfig.database_url,

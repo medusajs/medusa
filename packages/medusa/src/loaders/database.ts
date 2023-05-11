@@ -40,7 +40,7 @@ export default async ({
   const entities = container.resolve("db_entities")
 
   dataSource = new DataSource({
-    type: configModule.projectConfig.database_type ?? "postgres",
+    type: "postgres",
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},

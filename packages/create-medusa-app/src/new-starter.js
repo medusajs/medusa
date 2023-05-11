@@ -363,14 +363,9 @@ export const newStarter = async (args) => {
   }
 
   const medusaConfig = getMedusaConfig(rootPath)
-  if (medusaConfig) {
-    let isPostgres = false
-    if (medusaConfig.projectConfig) {
-      const databaseType = medusaConfig.projectConfig.database_type
-      isPostgres = databaseType === "postgres"
-    }
 
-    if (!isPostgres && seed) {
+  if (medusaConfig) {
+    if (seed) {
       await attemptSeed(rootPath)
     }
   }

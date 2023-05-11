@@ -58,10 +58,6 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  if (!configModule?.projectConfig?.database_type) {
-    console.log(`[medusa-config] ⚠️ database_type not found.`)
-  }
-
   return {
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
