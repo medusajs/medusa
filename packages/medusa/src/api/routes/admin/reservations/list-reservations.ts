@@ -1,4 +1,8 @@
-import { IInventoryService } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  ReservationItemDTO,
+} from "@medusajs/types"
 import { Type } from "class-transformer"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
@@ -7,6 +11,11 @@ import {
   NumericalComparisonOperator,
 } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
+import { joinInventoryItems } from "./utils/join-inventory-items"
+import { EntityManager } from "typeorm"
+import { joinLineItems } from "./utils/join-line-items"
+import { LineItemService } from "../../../../services"
+import { LineItem } from "../../../../models"
 
 /**
  * @oas [get] /admin/reservations
@@ -114,42 +123,62 @@ export default async (req: Request, res: Response) => {
 
   const { filterableFields, listConfig } = req
 
-  const preds: ((string) => boolean)[] = []
+  const relationsPredicates: ((string) => boolean)[] = []
 
   // join item
   const includeItems = !!listConfig.relations?.includes("line_item")
 
   if (includeItems) {
-    listConfig.relations = listConfig.relations?.filter(
-      (r) => r !== "line_item"
-    )
+    relationsPredicates.push((r) => r !== "line_item")
   }
 
   const includeInventoryItems =
     !!listConfig.relations?.includes("inventory_item")
 
   if (includeInventoryItems) {
-    listConfig.relations = listConfig.relations?.filter(
-      (r) => r !== "inventory_item"
-    )
+    relationsPredicates.push((r) => r !== "inventory_item")
   }
 
-  // if (preds.length) {
-  //   listConfig.relations = listConfig.relations?.filter((r) =>
-  //     preds.every((p) => p(r))
-  //   )
-  // }
-
-  // join inventory item
+  if (relationsPredicates.length) {
+    listConfig.relations = listConfig.relations?.filter((r) =>
+      relationsPredicates.every((p) => p(r))
+    )
+  }
 
   const [reservations, count] = await inventoryService.listReservationItems(
     filterableFields,
     listConfig
   )
 
+  const promises: Promise<any>[] = []
+
+  if (includeInventoryItems) {
+    const manager: EntityManager = req.scope.resolve("manager")
+    promises.push(
+      joinInventoryItems(reservations, {
+        inventoryService,
+        manager,
+      })
+    )
+  }
+
+  if (includeItems) {
+    const lineItemService: LineItemService =
+      req.scope.resolve("lineItemService")
+
+    promises.push(joinLineItems(reservations, lineItemService))
+  }
+
+  await Promise.all(promises)
+
   const { limit, offset } = req.validatedQuery
 
   res.json({ reservations, count, limit, offset })
+}
+
+export type ExtendedReservationItem = ReservationItemDTO & {
+  line_item?: LineItem
+  inventory_item?: InventoryItemDTO
 }
 
 export class AdminGetReservationsParams extends extendedFindParamsMixin({
