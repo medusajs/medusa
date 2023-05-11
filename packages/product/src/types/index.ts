@@ -6,4 +6,4 @@ export type ProductServiceInitializeOptions = {
   }
 }
 
-export { RepositoryService, GenericFindOptions } from "./dal/repository-service"
+export { RepositoryService, FindOptions } from "./dal/repository-service"

@@ -108,7 +108,7 @@ type ExpandObject<T> = T extends object
   : never
 
 type ObjectQuery<T> = ExpandObject<T> & OperatorMap<T>
-type FilterQuery<T> =
+export type FilterQuery<T> =
   | ObjectQuery<T>
   | NonNullable<ExpandScalar<Primary<T>>>
   | NonNullable<EntityProps<T> & OperatorMap<T>>
@@ -171,7 +171,7 @@ type Order<T> = {
     | Order<T[key] extends Array<any> ? T[key][0] : T[key]>
 }
 
-interface FindOptions<T, P extends string = never> {
+export interface OptionsQuery<T, P extends string = never> {
   populate?: readonly AutoPath<T, P>[] | boolean
   orderBy?: Order<T> | Order<T>[]
   limit?: number
@@ -181,7 +181,7 @@ interface FindOptions<T, P extends string = never> {
   filters?: Dictionary<boolean | Dictionary> | string[] | boolean
 }
 
-export type GenericFindOptions<T> = {
+export type FindOptions<T> = {
   where?: FilterQuery<T>
-  findOptions?: FindOptions<T>
+  findOptions?: OptionsQuery<T, any>
 }

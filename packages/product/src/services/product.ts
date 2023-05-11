@@ -1,6 +1,8 @@
-import { ProductVariantService, ProductTagService } from "@services"
+import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
 import { RepositoryService } from "../types"
+import { ProductListFilter } from "../types/product"
+import { FilterQuery, OptionsQuery } from "../types/dal/helpers"
 
 type InjectedDependencies = {
   productRepository: RepositoryService<Product>
@@ -24,10 +26,34 @@ export default class ProductService {
   }
 
   async list(
-    selector: Record<any, any> = {},
-    config: Record<any, any> = {}
+    filters: ProductListFilter = {},
+    config: { relations: string[] }
   ): Promise<Product[]> {
-    return await this.productRepository_.find()
+    /**
+     * Move the below manipulation in a new build query utils.
+     * Needs more vision of what will be the end input shape of all api method
+     */
+    const where: FilterQuery<Product> = {}
+    const findOptions: OptionsQuery<Product, any> & {
+      populate: OptionsQuery<Product, any>["populate"]
+    } = {
+      populate: config.relations ?? ([] as const),
+    }
+
+    if (filters.tags) {
+      where["tags"] = { value: { $in: filters.tags } }
+      findOptions.populate = [
+        ...(findOptions.populate as readonly string[]),
+        "tags",
+      ] as const
+    }
+    /**
+     * End of manipulation
+     */
+
+    return await this.productRepository_.find({
+      where,
+    })
   }
 
   async listVariants() {

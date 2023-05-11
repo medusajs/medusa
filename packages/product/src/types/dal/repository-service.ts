@@ -1,6 +1,6 @@
-import { GenericFindOptions } from "./helpers"
+import { FindOptions } from "./helpers"
 
-export { GenericFindOptions } from "./helpers"
+export { FindOptions, OptionsQuery, FilterQuery } from "./helpers"
 
 /**
  * Data access layer (DAL) interface to implements for any repository service.
@@ -8,6 +8,6 @@ export { GenericFindOptions } from "./helpers"
  * ORM directly and allows to switch to another ORM without changing the business logic.
  */
 export interface RepositoryService<T> {
-  find(options?: GenericFindOptions<T>): Promise<T[]>
-  findAndCount(options?: GenericFindOptions<T>): Promise<[T[], number]>
+  find(options?: FindOptions<T>): Promise<T[]>
+  findAndCount(options?: FindOptions<T>): Promise<[T[], number]>
 }

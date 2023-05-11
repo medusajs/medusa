@@ -1,7 +1,8 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductVariant } from "@models"
-import { FindOptions } from "@mikro-orm/core"
-import { GenericFindOptions, RepositoryService } from "../types"
+import { FindOptions as MikroFindOptions, LoadStrategy } from "@mikro-orm/core"
+import { FindOptions, RepositoryService } from "../types"
+import { deduplicateIfNecessary } from "../utils"
 
 export class ProductVariantRepository
   implements RepositoryService<ProductVariant>
@@ -12,28 +13,54 @@ export class ProductVariantRepository
   }
 
   async find(
-    options: GenericFindOptions<ProductVariant> = {},
+    options: FindOptions<ProductVariant> = {},
     context: { transaction?: any } = {}
   ): Promise<ProductVariant[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
-    const { where = {}, findOptions } = { ...options }
+    const { where = {}, findOptions = {} } = { ...options }
 
-    return await this.manager_.find(ProductVariant, where, {
-      ...(findOptions as FindOptions<ProductVariant>),
-      ctx: context.transaction,
+    findOptions.limit ??= 15
+    findOptions.populate = deduplicateIfNecessary(findOptions.populate)
+
+    if (context.transaction) {
+      Object.assign(findOptions, { ctx: context.transaction })
+    }
+
+    Object.assign(findOptions, {
+      strategy: LoadStrategy.SELECT_IN,
+      cache: 1000,
     })
+
+    return await this.manager_.find(
+      ProductVariant,
+      where,
+      findOptions as MikroFindOptions<ProductVariant>
+    )
   }
 
   async findAndCount(
-    options: GenericFindOptions<ProductVariant> = {},
+    options: FindOptions<ProductVariant> = {},
     context: { transaction?: any } = {}
   ): Promise<[ProductVariant[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
-    const { where = {}, findOptions } = { ...options }
+    const { where = {}, findOptions = {} } = { ...options }
 
-    return await this.manager_.findAndCount(ProductVariant, where, {
-      ...(findOptions as FindOptions<ProductVariant>),
-      ctx: context.transaction,
+    findOptions.limit ??= 15
+    findOptions.populate = deduplicateIfNecessary(findOptions.populate)
+
+    if (context.transaction) {
+      Object.assign(findOptions, { ctx: context.transaction })
+    }
+
+    Object.assign(findOptions, {
+      strategy: LoadStrategy.SELECT_IN,
+      cache: 1000,
     })
+
+    return await this.manager_.findAndCount(
+      ProductVariant,
+      where,
+      findOptions as MikroFindOptions<ProductVariant>
+    )
   }
 }
