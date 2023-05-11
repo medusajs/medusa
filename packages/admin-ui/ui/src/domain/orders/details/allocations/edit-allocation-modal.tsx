@@ -28,6 +28,7 @@ import Thumbnail from "../../../../components/atoms/thumbnail"
 import { getFulfillableQuantity } from "../create-fulfillment/item-table"
 import { nestedForm } from "../../../../utils/nested-form"
 import useNotification from "../../../../hooks/use-notification"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 type EditAllocationLineItemForm = {
   location: { label: string; value: string }
@@ -51,9 +52,13 @@ const EditAllocationDrawer = ({
       item: {
         description: reservation.description,
       },
-      metadata: getMetadataFormValues(reservation?.metadata || {}),
+      metadata: getMetadataFormValues(reservation?.metadata),
     },
   })
+
+  const { state: hasMetadata, toggle: toggleHasMetadata } = useToggleState(
+    !!reservation.metadata
+  )
 
   const { control, setValue, handleSubmit, register } = form
 
@@ -135,7 +140,7 @@ const EditAllocationDrawer = ({
         quantity: data.item.quantity,
         location_id: data.location.value,
         description: data.item.description,
-        metadata: getSubmittableMetadata(data.metadata),
+        metadata: hasMetadata ? getSubmittableMetadata(data.metadata) : null,
       },
       {
         onSuccess: () => {
@@ -172,7 +177,7 @@ const EditAllocationDrawer = ({
 
   const maxReservation = useMemo(() => {
     if (!item) {
-      return undefined
+      return typeof availableQuantity === "number" ? availableQuantity : 0
     }
 
     const lineItemReservationCapacity =
@@ -285,8 +290,21 @@ const EditAllocationDrawer = ({
                   />
                 </div>
                 <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
-                  <p className="inter-base-semibold mb-2">Metadata</p>
-                  <MetadataForm form={nestedForm(form, "metadata")} />
+                  <div className="mb-2 flex justify-between">
+                    <p className="inter-base-semibold ">Metadata</p>
+                    <Button
+                      size="small"
+                      variant="ghost"
+                      type="button"
+                      className="border"
+                      onClick={toggleHasMetadata}
+                    >
+                      {hasMetadata ? "Remove metadata" : "Add metadata"}
+                    </Button>
+                  </div>
+                  {hasMetadata && (
+                    <MetadataForm form={nestedForm(form, "metadata")} />
+                  )}
                 </div>
               </div>
 
