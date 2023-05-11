@@ -1,4 +1,3 @@
-import { ExtendedFindConfig, FindConfig } from "../types/common"
 import {
   FindManyOptions,
   FindOperator,
@@ -12,8 +11,8 @@ import {
   MoreThan,
   MoreThanOrEqual,
 } from "typeorm"
-
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { ExtendedFindConfig, FindConfig } from "../types/common"
 import { isObject } from "./is-object"
 
 /**
