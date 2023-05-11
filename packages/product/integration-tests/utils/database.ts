@@ -8,12 +8,12 @@ const ORMConfig: Options = {
   dbName: moduleOptions.database.clientUrl,
   entities: Object.values(ProductModels),
   schema: moduleOptions.database.schema,
-  debug: false,
+  debug: true,
   migrations: {
     path: "../../src/migrations",
     pathTs: "../../src/migrations",
     glob: "!(*.d).{js,ts}",
-    silent: true,
+    silent: false,
     dropTables: true,
     transactional: true,
     allOrNothing: true,
@@ -29,6 +29,7 @@ interface TestDatabase {
   setupDatabase(): Promise<void>
   clearDatabase(): Promise<void>
   getManager(): SqlEntityManager
+  forkManager(): SqlEntityManager
   getORM(): MikroORM
 }
 
@@ -42,6 +43,14 @@ export const TestDatabase: TestDatabase = {
     }
 
     return this.manager
+  },
+
+  forkManager() {
+    if (this.manager === null) {
+      throw "manager entity not available"
+    }
+
+    return this.manager.fork()
   },
 
   getORM() {
@@ -60,7 +69,7 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    this.manager = await this.orm.em.fork()
+    this.manager = await this.orm.em
 
     // ensure the database exists
     // drop the schema if exists

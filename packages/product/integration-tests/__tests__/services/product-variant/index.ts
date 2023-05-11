@@ -5,12 +5,16 @@ import { ProductVariant } from "@models"
 
 describe("ProductVariant Service", () => {
   let service
+  let testManager
+  let repositoryManager
   let variantOne
   let variantTwo
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    const productVariantRepository = new ProductVariantRepository({ manager: TestDatabase.getManager() })
+    repositoryManager = TestDatabase.forkManager()
+    const productVariantRepository = new ProductVariantRepository({ manager: repositoryManager })
+
     service = new ProductVariantService({ productVariantRepository })
   })
 
@@ -20,21 +24,21 @@ describe("ProductVariant Service", () => {
 
   describe("list", () => {
     beforeEach(async () => {
-      const manager = TestDatabase.getManager()
+      testManager = TestDatabase.forkManager()
 
-      variantOne = manager.create(ProductVariant, {
-        ...new ProductVariant(),
+      variantOne = testManager.create(ProductVariant, {
+        id: 'test-1',
         title: "variant 1",
         inventory_quantity: 10,
       })
 
-      variantTwo = manager.create(ProductVariant, {
-        ...new ProductVariant(),
+      variantTwo = testManager.create(ProductVariant, {
+        id: 'test-2',
         title: "variant",
         inventory_quantity: 10,
       })
 
-      await manager.persistAndFlush([variantOne])
+      await testManager.persistAndFlush([variantOne])
     })
 
     // TODO
@@ -59,7 +63,7 @@ describe("ProductVariant Service", () => {
     it("passing a limit, scopes the result to the limit", async () => {
       const results = await service.list({
         findOptions: {
-          limit: 1
+          limit: 1,
         }
       })
 
@@ -71,14 +75,18 @@ describe("ProductVariant Service", () => {
     })
 
     // TODO
-    it("passing populate, scopes the results of the response", async () => {
+    it.only("passing populate, scopes the results of the response", async () => {
       const results = await service.list({
+        where: {
+          id: "test-1"
+        },
         findOptions: {
-          populate: ['id'],
-          limit: 1,
+          fields: ["id", "title"],
+          populate: [],
+          limit: 1
         }
       })
-
+console.log("results - ", results)
       expect(results).toEqual([
         {
           id: variantOne.id,

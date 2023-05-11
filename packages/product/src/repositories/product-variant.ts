@@ -26,16 +26,21 @@ export class ProductVariantRepository
       Object.assign(findOptions, { ctx: context.transaction })
     }
 
-    Object.assign(findOptions, {
-      strategy: LoadStrategy.SELECT_IN,
-      cache: 1000,
-    })
+    // Object.assign(findOptions, {
+    //   strategy: LoadStrategy.SELECT_IN,
+    //   cache: 1000,
+    // })
 
-    return await this.manager_.find(
+console.log("findOptions - ", findOptions)
+    const result = await this.manager_.find(
       ProductVariant,
       where,
       findOptions as MikroFindOptions<ProductVariant>
     )
+
+    console.log("result - ", result)
+
+    return result
   }
 
   async findAndCount(
