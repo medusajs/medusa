@@ -319,7 +319,7 @@ const InventoryRow = ({
 
     const actions = [
       {
-        label: "Adjust Availability",
+        label: "Edit",
         onClick: showAdjustAvailabilityModal,
       },
     ]
