@@ -1,6 +1,8 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTag } from "@models"
 import { FindOptions as MikroOptions, LoadStrategy } from "@mikro-orm/core"
+
+import { ProductTag } from "@models"
+
 import { FindOptions, RepositoryService } from "../types"
 import { deduplicateIfNecessary } from "../utils"
 

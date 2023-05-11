@@ -1,4 +1,8 @@
 import { ProductTag } from "@models"
+import { FilterQuery } from "@mikro-orm/core"
+
+import { ProductTagListFilter } from "../types/product"
+import { OptionsQuery } from "../types/dal/helpers"
 import { RepositoryService } from "../types"
 
 type InjectedDependencies = {
@@ -13,9 +17,29 @@ export default class ProductTagService {
   }
 
   async list(
-    selector: Record<any, any> = {},
-    config: Record<any, any> = {}
+    filters: ProductTagListFilter = {},
+    config: { relations?: string[] } = {}
   ): Promise<ProductTag[]> {
-    return await this.productTagRepository_.find()
+    const where: FilterQuery<ProductTag> = {}
+
+    const findOptions: OptionsQuery<ProductTag, any> & {
+      populate: OptionsQuery<ProductTag, any>["populate"]
+    } = {
+      populate: config.relations ?? ([] as const),
+    }
+
+    if (filters.value) {
+      where["value"] = { $ilike: filters.value }
+    }
+
+    // TODO: remove
+    if (filters.id) {
+      where["id"] = filters.id
+    }
+
+    return await this.productTagRepository_.find({
+      where,
+      options: findOptions,
+    })
   }
 }
