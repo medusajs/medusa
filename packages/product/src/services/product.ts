@@ -1,6 +1,6 @@
 import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
-import { RepositoryService } from "../types"
+import { FindOptions, RepositoryService } from "../types"
 import { ProductListFilter } from "../types/product"
 import { FilterQuery, OptionsQuery } from "../types/dal/helpers"
 
@@ -40,7 +40,7 @@ export default class ProductService {
       populate: config.relations ?? ([] as const),
     }
 
-    if (filters.tags) {
+    if (filters.tags?.length) {
       where["tags"] = { value: { $in: filters.tags } }
       findOptions.populate = [
         ...(findOptions.populate as readonly string[]),
@@ -53,7 +53,8 @@ export default class ProductService {
 
     return await this.productRepository_.find({
       where,
-    })
+      options: findOptions,
+    } as FindOptions<Product>)
   }
 
   async listVariants() {
