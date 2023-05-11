@@ -130,17 +130,11 @@ Additionally, `Payment` has the `captured_at` date-time attribute which is fille
 
 ## Idempotency Key
 
-An Idempotency Key is a unique key associated with a cart. It is generated at the last step of checkout before authorization of the payment is attempted.
+An Idempotency Key is a unique key associated with a cart. It is generated at the last step of checkout before authorization of the payment is attempted and used in the request and response header.
 
-That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
+If the request is interrupted for any reason or the payment fails, the client can retry completing the check out using the Idempotency Key, and the flow will continue from the last stored step. This prevents any payment issues from occurring with the customers and allows for secure retries of failed payments or interrupted connections.
 
-If an error occurs or the purchase is interrupted at any step, the client can retry the payment by adding the Idempotency Key of the cart as the `Idempotency-Key` header field in their subsequent requests. 
-
-The backend wraps each essential part of the checkout completion in its own step and stores the current step of checkout with its associated Idempotency Key. 
-
-If then the request is interrupted for any reason or the payment fails, the client can retry completing the check out using the Idempotency Key, and the flow will continue from the last stored step.
-
-This prevents any payment issues from occurring with the customers and allows for secure retries of failed payments or interrupted connections.
+You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
 ---
 

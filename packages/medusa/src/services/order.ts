@@ -635,6 +635,13 @@ class OrderService extends TransactionBaseService {
         )
       }
 
+      if (!cart.customer_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot create an order from the cart without a customer"
+        )
+      }
+
       const { payment, region, total } = cart
 
       // Would be the case if a discount code is applied that covers the item

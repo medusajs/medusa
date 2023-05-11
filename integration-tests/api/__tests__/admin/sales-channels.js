@@ -432,6 +432,14 @@ describe("sales channels", () => {
           name: "test name",
           description: "test description",
         },
+        payment_status: "captured",
+        fulfillment_status: "fulfilled",
+        line_items: [
+          {
+            id: "line-item",
+            quantity: 2,
+          },
+        ],
       })
     })
 
@@ -459,6 +467,71 @@ describe("sales channels", () => {
           updated_at: expect.any(String),
         })
       )
+    })
+
+    it("creates swap with order sales channel", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "test-variant", inventory_quantity: 100 }],
+      })
+
+      const swap = await api.post(
+        `/admin/orders/${order.id}/swaps`,
+        {
+          return_items: [
+            {
+              item_id: "line-item",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        },
+        adminReqConfig
+      )
+
+      expect(swap.status).toEqual(200)
+
+      const cartId = swap.data.order.swaps[0].cart_id
+
+      const swapCart = await api.get(`/store/carts/${cartId}`)
+
+      expect(swapCart.data.cart.sales_channel_id).toEqual(
+        order.sales_channel_id
+      )
+    })
+
+    it("creates swap with provided sales channel", async () => {
+      const api = useApi()
+
+      const sc = await simpleSalesChannelFactory(dbConnection, {})
+
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "test-variant", inventory_quantity: 100 }],
+      })
+
+      const swap = await api.post(
+        `/admin/orders/${order.id}/swaps`,
+        {
+          return_items: [
+            {
+              item_id: "line-item",
+              quantity: 1,
+            },
+          ],
+          sales_channel_id: sc.id,
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        },
+        adminReqConfig
+      )
+
+      expect(swap.status).toEqual(200)
+
+      const cartId = swap.data.order.swaps[0].cart_id
+
+      const swapCart = await api.get(`/store/carts/${cartId}`)
+
+      expect(swapCart.data.cart.sales_channel_id).toEqual(sc.id)
     })
   })
 
