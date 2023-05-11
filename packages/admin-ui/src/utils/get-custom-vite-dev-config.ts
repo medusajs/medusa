@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react"
 import { resolve } from "path"
 import { InlineConfig } from "vite"
 import { AdminDevConfig } from "../types/dev"
-import { esbuildCommonjs } from "@originjs/vite-plugin-commonjs"
+import commonjs from "vite-plugin-commonjs"
 
 export const getCustomViteDevConfig = ({
   backend = "http://localhost:9000",
@@ -16,6 +16,13 @@ export const getCustomViteDevConfig = ({
       react({
         jsxRuntime: "classic",
       }),
+      commonjs({
+        filter(id) {
+          if (id.includes("node_modules/xxx")) {
+            return true
+          }
+        },
+      }),
     ],
     define: {
       __BASE__: JSON.stringify("/"),
@@ -25,21 +32,21 @@ export const getCustomViteDevConfig = ({
     server: {
       port,
     },
-    optimizeDeps: {
-      esbuildOptions: {
-        plugins: [
-          esbuildCommonjs([
-            "react-dom",
-            "invariant",
-            "react-fast-compare",
-            "shallowequal",
-            "prop-types",
-            "axios",
-            "qs",
-            "react",
-          ]),
-        ],
-      },
-    },
+    // optimizeDeps: {
+    //   esbuildOptions: {
+    //     plugins: [
+    //       esbuildCommonjs([
+    //         "react-dom",
+    //         "invariant",
+    //         "react-fast-compare",
+    //         "shallowequal",
+    //         "prop-types",
+    //         "axios",
+    //         "qs",
+    //         "react",
+    //       ]),
+    //     ],
+    //   },
+    // },
   }
 }

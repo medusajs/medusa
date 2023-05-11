@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@radix-ui/react-accordion": "^1.0.1",
     "@radix-ui/react-avatar": "^1.0.1",
     "@radix-ui/react-collapsible": "^1.0.1",
@@ -91,6 +90,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-table": "^7.7.9",
     "typescript": "^4.9.3",
+    "vite-plugin-commonjs": "^0.7.0",
     "vitest": "^0.28.5"
   },
   "packageManager": "yarn@3.2.1"
