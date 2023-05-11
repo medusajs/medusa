@@ -4,8 +4,10 @@ import {
   Index,
   PrimaryKey,
   Property,
+  ManyToOne,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
+import { Product } from "@models"
 
 @Entity({ tableName: "product_variant" })
 class ProductVariant {
@@ -51,6 +53,9 @@ class ProductVariant {
   })
   upc?: string | null
 
+  // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
+  // precision if you cast numeric to JS number, as JS number is a float.
+  // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
   @Property({ columnType: "numeric" })
   inventory_quantity: number
 
@@ -106,9 +111,8 @@ class ProductVariant {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 
-  // TODO: Bring relations back slowly one by one
-  // @ManyToOne(() => Product, { onDelete: "cascade" })
-  // product!: Product
+  @ManyToOne(() => Product, { onDelete: "cascade" })
+  product!: Product
 
   // @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
   //   cascade: [ "persist", "remove" ],

@@ -1,7 +1,8 @@
 import { TestDatabase } from "../../../utils"
 import { ProductVariantService } from "@services"
 import { ProductVariantRepository } from "@repositories"
-import { ProductVariant } from "@models"
+import { ProductVariant, Product } from "@models"
+import { ProductStatus } from "../../../../src/models/product"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 describe("ProductVariant Service", () => {
@@ -10,6 +11,7 @@ describe("ProductVariant Service", () => {
   let repositoryManager: SqlEntityManager
   let variantOne: ProductVariant
   let variantTwo: ProductVariant
+  let productOne: Product
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
@@ -30,11 +32,19 @@ describe("ProductVariant Service", () => {
     beforeEach(async () => {
       testManager = await TestDatabase.forkManager()
 
+      productOne = testManager.create(Product, {
+        ...new Product(),
+        id: "product-1",
+        title: "product-1",
+        status: ProductStatus.PUBLISHED,
+      })
+
       variantOne = testManager.create(ProductVariant, {
         ...new ProductVariant(),
         id: "test-1",
         title: "variant 1",
         inventory_quantity: 10,
+        product: productOne
       })
 
       variantTwo = testManager.create(ProductVariant, {
@@ -42,12 +52,12 @@ describe("ProductVariant Service", () => {
         id: "test-2",
         title: "variant",
         inventory_quantity: 10,
+        product: productOne
       })
 
       await testManager.persistAndFlush([variantOne])
     })
 
-    // TODO
     it("selecting by properties, scopes out the results", async () => {
       const results = await service.list({
         where: {
@@ -59,7 +69,6 @@ describe("ProductVariant Service", () => {
         expect.objectContaining({
           id: variantOne.id,
           title: "variant 1",
-          // TODO: why is this a string?
           inventory_quantity: "10",
         }),
       ])
