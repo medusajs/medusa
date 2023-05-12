@@ -7,6 +7,8 @@ export async function injectExtensions() {
   const uiPath = resolve(__dirname, "..", "..", "..", "ui")
   const tmpExtensionsPath = resolve(uiPath, "src", "extensions.ts")
 
+  console.log("Injecting extensions at ", tmpExtensionsPath)
+
   const extensions = await getExtensions()
 
   const extensionsEntrypoint = await generateExtensionsEntrypoint(

@@ -7,9 +7,7 @@ interface Options<
   Error,
   TData = TQueryFn,
   TQueryKey extends QueryKey = QueryKey
-> extends UseQueryOptions<TQueryFn, Error, TData, TQueryKey> {
-  endpoint: string
-}
+> extends UseQueryOptions<TQueryFn, Error, TData, TQueryKey> {}
 
 type UseQueryOptionsWrapper<
   // Return type of queryFn
@@ -24,16 +22,16 @@ export function useCustomListQuery<
   TQuery extends Record<string, unknown>,
   TRes extends Record<string, unknown>
 >(
+  endpoint: string,
   query?: TQuery,
   options?: UseQueryOptionsWrapper<Response<TRes>, Error, QueryKey>
 ) {
-  const { endpoint, ...opts } = options
   const { client } = useMedusa()
 
   const { data, ...rest } = useQuery(
     [endpoint, query],
     () => client.admin.custom.get<TQuery, TRes>(endpoint, query),
-    opts
+    options as any
   )
 
   return { ...data, ...rest } as const
@@ -43,11 +41,11 @@ export function useCustomGetQuery<
   TQuery extends Record<string, unknown>,
   TRes extends Record<string, unknown>
 >(
+  endpoint: string,
   identifier: string,
   query?: TQuery,
   options?: UseQueryOptionsWrapper<Response<TRes>, Error, QueryKey>
 ) {
-  const { endpoint, ...opts } = options
   const { client } = useMedusa()
 
   const formattedEndpoint = endpoint.endsWith("/") ? endpoint : `${endpoint}/`
@@ -56,7 +54,7 @@ export function useCustomGetQuery<
   const { data, ...rest } = useQuery(
     [identifier, query],
     () => client.admin.custom.get<TQuery, TRes>(queryEndpoint, query),
-    opts
+    options as any
   )
 
   return { ...data, ...rest } as const

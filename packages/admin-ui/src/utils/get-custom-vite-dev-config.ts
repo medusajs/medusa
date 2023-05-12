@@ -17,6 +17,13 @@ export const getCustomViteDevConfig = ({
     plugins: [react()],
     root: uiPath,
     mode: "development",
+    resolve: {
+      alias: {
+        "@tanstack/react-query": resolve(
+          require.resolve("@tanstack/react-query")
+        ),
+      },
+    },
     server: {
       port,
     },
