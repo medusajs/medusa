@@ -6156,6 +6156,7 @@ __metadata:
     "@rollup/plugin-terser": ^0.4.1
     "@rollup/plugin-typescript": ^11.1.0
     "@types/fs-extra": ^11.0.1
+    commander: ^10.0.1
     esbuild: ^0.17.18
     fs-extra: ^11.1.1
     picocolors: ^1.0.0
@@ -17022,6 +17023,13 @@ __metadata:
   version: 10.0.0
   resolution: "commander@npm:10.0.0"
   checksum: f1824812019664598ba7409c489cb5c15d33f65b43b08952a84e87e0023144c08d101e2f43af968cf2d464c0d667b50a2a9780f4a6c52915324f54fe9b451a31
+  languageName: node
+  linkType: hard
+
+"commander@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "commander@npm:10.0.1"
+  checksum: 53f33d8927758a911094adadda4b2cbac111a5b377d8706700587650fd8f45b0bbe336de4b5c3fe47fd61f420a3d9bd452b6e0e6e5600a7e74d7bf0174f6efe3
   languageName: node
   linkType: hard
 
