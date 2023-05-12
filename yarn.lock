@@ -6142,27 +6142,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-composables@*, @medusajs/admin-composables@workspace:packages/admin-composables":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/admin-composables@workspace:packages/admin-composables"
-  dependencies:
-    "@tanstack/react-query": ^4.22.0
-    cross-env: ^7.0.3
-    medusa-react: "*"
-    tsup: ^6.5.0
-  peerDependencies:
-    "@tanstack/react-query": ^4.22.0
-    medusa-react: "*"
-  languageName: unknown
-  linkType: soft
-
 "@medusajs/admin-sdk@workspace:packages/admin-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin-sdk"
   dependencies:
-    "@medusajs/admin-composables": "*"
     "@medusajs/medusa": "*"
-    "@medusajs/medusa-js": "*"
     "@medusajs/types": "*"
     "@rollup/plugin-alias": ^5.0.0
     "@rollup/plugin-commonjs": ^24.1.0
@@ -6171,18 +6155,14 @@ __metadata:
     "@rollup/plugin-replace": ^5.0.2
     "@rollup/plugin-terser": ^0.4.1
     "@rollup/plugin-typescript": ^11.1.0
-    "@tanstack/react-query": ^4.22.0
     "@types/fs-extra": ^11.0.1
     esbuild: ^0.17.18
     fs-extra: ^11.1.1
-    medusa-react: "*"
+    picocolors: ^1.0.0
     rollup: ^3.20.7
     rollup-plugin-esbuild: ^5.0.0
     tslib: ^2.5.0
     typescript: ^5.0.4
-  peerDependencies:
-    "@tanstack/react-query": ^4.22.0
-    medusa-react: "*"
   bin:
     extension: ./bin/index.js
   languageName: unknown
@@ -6414,7 +6394,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@*, @medusajs/medusa-js@3.0.0, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@3.0.0, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
@@ -30469,7 +30449,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@*, medusa-react@6.0.0, medusa-react@workspace:packages/medusa-react":
+"medusa-react@6.0.0, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:

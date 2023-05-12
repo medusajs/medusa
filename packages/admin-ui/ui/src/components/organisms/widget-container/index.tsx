@@ -1,5 +1,8 @@
 import { InjectionZone, LoadedWidget } from "@medusajs/types"
+import { useQueryClient } from "@tanstack/react-query"
+import { MedusaProvider } from "medusa-react"
 import React from "react"
+import { MEDUSA_BACKEND_URL } from "../../../constants/medusa-backend-url"
 import ExtensionErrorBoundary from "../../molecules/extension-error-boundary"
 import { EntityMap } from "./types"
 import { useWidgetContainerProps } from "./use-widget-container-props"
@@ -22,16 +25,26 @@ const WidgetContainer = <T extends InjectionZone>({
     entity,
   })
 
+  const queryClient = useQueryClient()
+
   return (
-    <ExtensionErrorBoundary
-      type="widget"
-      info={{
-        name,
-        origin,
+    <MedusaProvider
+      queryClientProviderProps={{
+        client: queryClient,
+        contextSharing: true,
       }}
+      baseUrl={MEDUSA_BACKEND_URL}
     >
-      {React.createElement(Component, props)}
-    </ExtensionErrorBoundary>
+      <ExtensionErrorBoundary
+        type="widget"
+        info={{
+          name,
+          origin,
+        }}
+      >
+        {React.createElement(Component, props)}
+      </ExtensionErrorBoundary>
+    </MedusaProvider>
   )
 }
 

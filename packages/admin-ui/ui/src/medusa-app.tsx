@@ -9,7 +9,6 @@ import {
 } from "@medusajs/types"
 import React from "react"
 import App from "./App"
-import { InjectionZoneProvider } from "./providers/injection-zone-provider"
 import { Providers } from "./providers/providers"
 
 type MedusaAppConfig = {
@@ -61,10 +60,8 @@ class MedusaApp implements Application {
   render() {
     return (
       <React.StrictMode>
-        <Providers>
-          <InjectionZoneProvider injectionZoneMap={this.injectionZones}>
-            <App />
-          </InjectionZoneProvider>
+        <Providers injectionZones={this.injectionZones}>
+          <App />
         </Providers>
       </React.StrictMode>
     )
