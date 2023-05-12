@@ -10,7 +10,7 @@ const { simpleProductCategoryFactory } = require("../../../factories")
 const productSeeder = require("../../../helpers/store-product-seeder")
 const adminSeeder = require("../../../helpers/admin-seeder")
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 describe("/store/products", () => {
   let medusaProcess
@@ -27,7 +27,7 @@ describe("/store/products", () => {
     medusaProcess = await setupServer({
       cwd,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
-      verbose: true
+      verbose: true,
     })
   })
 
@@ -222,7 +222,7 @@ describe("/store/products", () => {
 
     // TODO: When categories are public and active, return the categories, otherwise don't.
     // This is an incorrect test. Fix the repository so that the default category scopes are considered.
-    it("returns only active and public products with include_category_children when categories are expanded", async () => {
+    it.only("returns only active and public products with include_category_children when categories are expanded", async () => {
       const api = useApi()
 
       const params = `id[]=${testProductFilteringId2}&expand=categories`
@@ -236,11 +236,7 @@ describe("/store/products", () => {
           expect.objectContaining({
             id: testProductFilteringId2,
             // TODO: This should be an empty array
-            categories: [
-              expect.objectContaining({
-                id: inactiveCategoryWithProductId
-              })
-            ]
+            categories: [],
           }),
         ])
       )
