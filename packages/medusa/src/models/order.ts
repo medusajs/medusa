@@ -487,7 +487,7 @@ export class Order extends BaseEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   external_id:
  *     description: The ID of an external order.

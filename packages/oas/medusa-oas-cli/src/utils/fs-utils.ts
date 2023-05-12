@@ -1,5 +1,6 @@
 import { access, lstat, mkdtemp } from "fs/promises"
 import path from "path"
+import { sep } from "path"
 import { tmpdir } from "os"
 
 export async function isFile(filePath: string): Promise<boolean> {
@@ -25,5 +26,5 @@ export const getTmpDirectory = async () => {
    * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
    */
   const tmpDir = process.env["RUNNER_TEMP"] ?? tmpdir()
-  return await mkdtemp(tmpDir)
+  return await mkdtemp(`${tmpDir}${sep}`)
 }
