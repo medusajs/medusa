@@ -5,13 +5,13 @@ addHowToData: true
 
 # How to Customize Import Strategy
 
-In this document, you’ll learn how to create a custom product import strategy either by overwriting the default strategy or creating your own.
+In this document, you’ll learn how to create a custom product import strategy either by overriding the default strategy or creating your own.
 
 ## Overview
 
-Product Import Strategy is essentially a batch job strategy. Medusa provides the necessary mechanisms to overwrite or create your own strategy.
+Product Import Strategy is essentially a batch job strategy. Medusa provides the necessary mechanisms to override or create your own strategy.
 
-Although this documentation specifically targets import strategies, you can use the same steps to overwrite any batch job strategy in Medusa, including export strategies.
+Although this documentation specifically targets import strategies, you can use the same steps to override any batch job strategy in Medusa, including export strategies.
 
 ---
 
@@ -27,9 +27,9 @@ If you use SQLite during your development, it’s highly recommended that you us
 
 ---
 
-## Overwrite Batch Job Strategy
+## Override Batch Job Strategy
 
-The steps required for overwriting a batch job strategy are essentially the same steps required to create a batch job strategy with a minor difference. For that reason, this documentation does not cover the basics of a batch job strategy.
+The steps required for overriding a batch job strategy are essentially the same steps required to create a batch job strategy with a minor difference. For that reason, this documentation does not cover the basics of a batch job strategy.
 
 If you’re interested to learn more about batch job strategies and how they work, please check out the [Create Batch Job Strategy documentation](./create.mdx).
 
@@ -78,9 +78,9 @@ This is the base implementation of a batch job strategy. You can learn about all
 
 Every batch job strategy class must have the static property `batchType` defined. It determines the type of batch job this strategy handles.
 
-Since only one batch job strategy can handle a batch job type, you can overwrite Medusa’s default batch job strategies by using the same `batchType` value in your custom strategy.
+Since only one batch job strategy can handle a batch job type, you can override Medusa’s default batch job strategies by using the same `batchType` value in your custom strategy.
 
-So, for example, to overwrite the product import strategy set the `batchType` property in your strategy to `product-import`:
+So, for example, to override the product import strategy set the `batchType` property in your strategy to `product-import`:
 
 ```ts
 class MyImportStrategy extends AbstractBatchJobStrategy {
@@ -115,7 +115,7 @@ If you overwrote the import functionality, you can follow [these steps to learn 
 
 ## Create Custom Batch Job Strategy
 
-If you don’t want to overwrite Medusa’s batch job strategy, you can create a custom batch job strategy with a different `batchType` value. Then, use that type when you send a request to [Create a Batch Job](/api/admin/#tag/Batch-Job).
+If you don’t want to override Medusa’s batch job strategy, you can create a custom batch job strategy with a different `batchType` value. Then, use that type when you send a request to [Create a Batch Job](/api/admin/#tag/Batch-Job).
 
 For more details on creating custom batch job strategies, please check out the [Create Batch Job Strategy documentation](./create.mdx).
 

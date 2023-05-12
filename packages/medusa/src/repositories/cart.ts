@@ -1,3 +1,4 @@
+import { ExtendedFindConfig } from "@medusajs/types"
 import { objectToStringPath } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
 import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
@@ -52,6 +53,15 @@ export const CartRepository = dataSource.getRepository(Cart).extend({
       optionsWithoutRelations
     )
     return result[0]
+  },
+  async findOne(options: ExtendedFindConfig<Cart>) {
+    const [cart] = await this.find(options)
+
+    if (cart?.payment_sessions?.length) {
+      cart.payment_session = cart.payment_sessions.find((p) => p.is_selected)!
+    }
+
+    return cart
   },
 })
 export default CartRepository

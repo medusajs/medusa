@@ -18,9 +18,9 @@ import {
 } from "class-validator"
 
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
-import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -171,7 +171,9 @@ export default async (req, res) => {
 
                 await swapService
                   .withTransaction(manager)
-                  .createCart(swap.id, validated.custom_shipping_options)
+                  .createCart(swap.id, validated.custom_shipping_options, {
+                    sales_channel_id: validated.sales_channel_id,
+                  })
 
                 const returnOrder = await returnService
                   .withTransaction(manager)
@@ -348,6 +350,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @ValidateNested()
   @Type(() => ReturnShipping)
   return_shipping?: ReturnShipping
+
+  @IsOptional()
+  @IsString()
+  sales_channel_id?: string
 
   @IsArray()
   @IsOptional()
