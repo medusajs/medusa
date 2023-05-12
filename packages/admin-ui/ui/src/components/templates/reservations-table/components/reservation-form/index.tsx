@@ -11,7 +11,7 @@ import React from "react"
 
 export type GeneralFormType = {
   location: string
-  item: Partial<InventoryItemDTO> & {
+  item?: Partial<InventoryItemDTO> & {
     location_levels?: InventoryLevelDTO[] | undefined
     variants?: ProductVariant[] | undefined
   }
@@ -29,6 +29,7 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
     path,
     watch,
     control,
+    setValue,
     formState: { errors },
   } = form
 
@@ -125,7 +126,8 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
                 variant="ghost"
                 className="border"
                 size="small"
-                onClick={() => console.log("test")}
+                type="button"
+                onClick={() => setValue(path("item"), undefined)}
               >
                 Remove item
               </Button>

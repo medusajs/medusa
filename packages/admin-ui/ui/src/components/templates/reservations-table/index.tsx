@@ -126,7 +126,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
 
   const updateUrlFromFilter = (obj = {}) => {
     const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/inventory`, "", `${`?${stringified}`}`)
+    window.history.replaceState(`/a/reservations`, "", `${`?${stringified}`}`)
   }
 
   const refreshWithFilters = () => {
