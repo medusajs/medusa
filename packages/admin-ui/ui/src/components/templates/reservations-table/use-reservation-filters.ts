@@ -1,6 +1,7 @@
+import { useMemo, useReducer, useState } from "react"
+
 import { omit } from "lodash"
 import qs from "qs"
-import { useMemo, useReducer, useState } from "react"
 import { relativeDateFormatToTimestamp } from "../../../utils/time"
 
 type ReservationDateFilter = null | {
@@ -208,6 +209,8 @@ export const useReservationFilters = (
         toQuery[stateFilterMap[key]] = value
       }
     }
+
+    toQuery["expand"] = "line_item,inventory_item"
 
     return toQuery
   }

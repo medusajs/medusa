@@ -5,25 +5,25 @@ import {
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
-import { useLocation } from "react-router-dom"
 
 import Button from "../../fundamentals/button"
+import DeletePrompt from "../../organisms/delete-prompt"
+import EditAllocationDrawer from "../../../domain/orders/details/allocations/edit-allocation-modal"
+import EditIcon from "../../fundamentals/icons/edit-icon"
 import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
 import { NextSelect } from "../../molecules/select/next-select"
+import { ReservationItemDTO } from "@medusajs/types"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
+import TrashIcon from "../../fundamentals/icons/trash-icon"
 import { isEmpty } from "lodash"
 import qs from "qs"
+import { useAdminDeleteReservation } from "medusa-react"
+import { useLocation } from "react-router-dom"
 import { useReservationFilters } from "./use-reservation-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { ReservationItemDTO } from "@medusajs/types"
-import EditAllocationDrawer from "../../../domain/orders/details/allocations/edit-allocation-modal"
-import EditIcon from "../../fundamentals/icons/edit-icon"
-import DeletePrompt from "../../organisms/delete-prompt"
-import { useAdminDeleteReservation } from "medusa-react"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -112,6 +112,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   const { reservations, isLoading, count } = useAdminReservations(
     {
       ...queryObject,
+      expand: "line_item,inventory_item",
     },
     {
       enabled: !!store,

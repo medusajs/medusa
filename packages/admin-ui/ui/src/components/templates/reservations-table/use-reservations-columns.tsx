@@ -6,22 +6,17 @@ const useReservationsTableColumns = () => {
     () => [
       {
         Header: "SKU",
-        accessor: "sku",
+        accessor: "inventory_item.sku",
         Cell: ({ cell: { value } }) => value,
       },
       {
         Header: "Order ID",
-        accessor: "order_id",
+        accessor: "line_item.order.display_id",
         Cell: ({ cell: { value } }) => value ?? "-",
       },
       {
         Header: "Description",
         accessor: "description",
-        Cell: ({ cell: { value } }) => value,
-      },
-      {
-        Header: "Location",
-        accessor: "location",
         Cell: ({ cell: { value } }) => value,
       },
       {

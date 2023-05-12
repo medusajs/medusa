@@ -2,20 +2,23 @@ import {
   IInventoryService,
   InventoryItemDTO,
   ReservationItemDTO,
+  StockLocationDTO,
 } from "@medusajs/types"
-import { Type } from "class-transformer"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
-import { Request, Response } from "express"
 import {
-  extendedFindParamsMixin,
   NumericalComparisonOperator,
+  extendedFindParamsMixin,
 } from "../../../../types/common"
-import { IsType } from "../../../../utils/validators/is-type"
-import { joinInventoryItems } from "./utils/join-inventory-items"
+import { Request, Response } from "express"
+
 import { EntityManager } from "typeorm"
-import { joinLineItems } from "./utils/join-line-items"
-import { LineItemService } from "../../../../services"
+import { IsType } from "../../../../utils/validators/is-type"
 import { LineItem } from "../../../../models"
+import { LineItemService } from "../../../../services"
+import { Type } from "class-transformer"
+import { joinInventoryItems } from "./utils/join-inventory-items"
+import { joinLineItems } from "./utils/join-line-items"
+import { joinLocations } from "./utils/join-locations"
 
 /**
  * @oas [get] /admin/reservations
@@ -120,6 +123,7 @@ import { LineItem } from "../../../../models"
 export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const { filterableFields, listConfig } = req
 
@@ -147,13 +151,15 @@ export default async (req: Request, res: Response) => {
 
   const [reservations, count] = await inventoryService.listReservationItems(
     filterableFields,
-    listConfig
+    listConfig,
+    {
+      transactionManager: manager,
+    }
   )
 
   const promises: Promise<any>[] = []
 
   if (includeInventoryItems) {
-    const manager: EntityManager = req.scope.resolve("manager")
     promises.push(
       joinInventoryItems(reservations, {
         inventoryService,
