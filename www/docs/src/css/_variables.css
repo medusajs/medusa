@@ -210,11 +210,11 @@
   --ifm-announcement-bar-close-icon-color: var(--medusa-icon-placeholder);
 
   /* Cards */
-  --ifm-card-bg: var(--ifm-background-surface-color);
+  /* --ifm-card-bg: var(--ifm-background-surface-color);
   --ifm-card-bg-hover: var(--medusa-bg-subtle-hover);
   --ifm-card-border-color: var(--ifm-background-surface-color);
   --ifm-card-icon-size: 20px;
-  --ifm-card-highlighted-bg-image: url('/img/small-squares-bg-light.svg');
+  --ifm-card-highlighted-bg-image: url('/img/small-squares-bg-light.svg'); */
 
   /* Large Card */
   --large-card-bg: var(--ifm-background-surface-color);
@@ -259,8 +259,8 @@ html[data-theme="dark"] {
   --ifm-code-background-pressed: var(--medusa-bg-base-pressed);
 
   /* Cards */
-  --ifm-card-bg-hover: var(--medusa-bg-base-hover);
-  --ifm-card-highlighted-bg-image: url('/img/small-squares-bg.svg');
+  /* --ifm-card-bg-hover: var(--medusa-bg-base-hover);
+  --ifm-card-highlighted-bg-image: url('/img/small-squares-bg.svg'); */
 
   /* Announcement Bar */
   --ifm-announcement-bar-hover-bg: var(--medusa-bg-base-hover);

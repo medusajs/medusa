@@ -440,6 +440,8 @@ module.exports = {
         "button-focused": "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
         "button-focused-dark":
           "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+        navbar: "0px 1px 0px 0px #E6E8EB",
+        "navbar-dark": "0px 1px 0px 0px #2E2E32",
       },
       borderRadius: {
         DEFAULT: "8px",
@@ -453,11 +455,27 @@ module.exports = {
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
       },
       screens: {
+        xs: "576px",
         lg: "992px",
         xl: "1419px",
+        xxl: "1440px",
       },
       transitionTimingFunction: {
         ease: "ease",
+      },
+      width: {
+        sidebar: "320px",
+        "sidebar-hidden": "30px",
+        "main-content": "1140px",
+        "main-content-hidden-sidebar": "1440px",
+      },
+      height: {
+        navbar: "57px",
+      },
+      maxWidth: {
+        "main-content": "1140px",
+        "main-content-hidden-sidebar": "1440px",
+        xl: "1419px",
       },
     },
     fontFamily: {
@@ -582,7 +600,7 @@ module.exports = {
       1: "16px",
       1.5: "24px",
       2: "32px",
-      3: "48ps",
+      3: "48px",
       4: "64px",
       5: "80px",
       6: "96px",
@@ -599,6 +617,8 @@ module.exports = {
       "large-card-fade-hover": "linear-gradient(transparent, #1C1C1F)",
       "large-card-fade-hover-dark": "linear-gradient(transparent, #232326)",
       "announcement-bg": "url('/img/announcement-bg.svg')",
+      "card-highlighted": "url('/img/small-squares-bg-light.svg')",
+      "card-highlighted-dark": "url('/img/small-squares-bg.svg')",
     },
   },
   plugins: [],

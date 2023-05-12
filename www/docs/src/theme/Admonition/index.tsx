@@ -210,13 +210,11 @@ export default function Admonition(props: Props): JSX.Element {
         "tw-p-1 tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded",
         "tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark tw-shadow-none",
         "[&>a]:tw-no-underline [&>a]:tw-text-medusa-text-base dark:[&>a]:tw-text-medusa-text-base-dark hover:[&>a]:tw-text-medusa-text-subtle dark:hover:[&>a]:tw-text-medusa-text-subtle-dark",
-        "tw-mb-2"
+        "tw-mb-2 alert"
       )}
     >
       <div className={clsx("tw-flex")}>
-        <span
-          className={clsx("tw-inline-block tw-h-[24px] tw-w-[24px] tw-mr-1")}
-        >
+        <span className={clsx("tw-inline-block tw-h-1.5 tw-w-1.5 tw-mr-1")}>
           {icon}
         </span>
         <div

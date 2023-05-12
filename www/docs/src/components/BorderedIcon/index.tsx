@@ -13,6 +13,7 @@ type BorderedIconProp = {
   wrapperClassName?: string
   iconWrapperClassName?: string
   iconClassName?: string
+  iconColorClassName?: string
 } & React.HTMLAttributes<HTMLSpanElement>
 
 const BorderedIcon: React.FC<BorderedIconProp> = ({
@@ -21,6 +22,7 @@ const BorderedIcon: React.FC<BorderedIconProp> = ({
   wrapperClassName,
   iconWrapperClassName,
   iconClassName,
+  iconColorClassName = "",
 }) => {
   return (
     <Bordered wrapperClassName={wrapperClassName}>
@@ -40,7 +42,10 @@ const BorderedIcon: React.FC<BorderedIconProp> = ({
           />
         )}
         {IconComponent && (
-          <IconComponent className={clsx(iconClassName, "bordered-icon")} />
+          <IconComponent
+            className={clsx(iconClassName, "bordered-icon")}
+            iconColorClassName={iconColorClassName}
+          />
         )}
       </span>
     </Bordered>

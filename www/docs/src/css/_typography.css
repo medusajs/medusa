@@ -62,10 +62,6 @@ p {
   font-weight: var(--ifm-link-weight);
 }
 
-.markdown p + .card-wrapper {
-  margin-top: 24px;
-}
-
 .markdown {
   margin-bottom: 0;
 }

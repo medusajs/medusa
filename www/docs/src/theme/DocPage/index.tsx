@@ -51,8 +51,8 @@ export default function DocPage(props: Props): JSX.Element {
           // TODO: it should be removed from here
           ThemeClassNames.wrapper.docsPages,
           ThemeClassNames.page.docsDocPage,
-          props.versionMetadata.className,
-          sidebarName && "doc-has-sidebar"
+          props.versionMetadata.className
+          // sidebarName && "doc-has-sidebar"
         )}
       >
         <DocsVersionProvider version={versionMetadata}>

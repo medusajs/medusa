@@ -8,8 +8,8 @@ const IconExternalLink: React.FC<IconProps> = ({
 }) => {
   return (
     <svg
-      width={props.width}
-      height={props.height}
+      width={props.width || 20}
+      height={props.height || 20}
       viewBox="0 0 16 16"
       fill="none"
       className={styles.iconExternalLink}

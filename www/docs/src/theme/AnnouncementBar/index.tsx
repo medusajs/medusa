@@ -19,7 +19,7 @@ export default function AnnouncementBar(): JSX.Element | null {
     <div
       className={clsx(
         "tw-relative tw-flex tw-items-center tw-h-auto tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark tw-p-[12px]",
-        "tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded tw-mx-[24px] tw-mb-1",
+        "tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded tw-mx-1.5 tw-mb-1",
         "tw-transition-all tw-duration-200 tw-ease-ease",
         "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark",
         "print:tw-hidden"

@@ -102,7 +102,3 @@ html:not([data-theme="dark"]) .theme-doc-toc-desktop .table-of-contents::before 
 .table-of-contents ul .table-of-contents__link {
   padding-left: calc(var(--ifm-toc-padding-horizontal) + var(--ifm-toc-link-padding-left)) !important;
 }
-
-.col.toc-wrapper {
-  --ifm-col-width: var(--ifm-toc-width);
-}

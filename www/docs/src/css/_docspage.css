@@ -89,7 +89,7 @@ details summary {
   display: block !important;
 }
 
-.container:not(.footer-container) {
+.container {
   padding-top: 38px !important;
   max-width: 100% !important;
 }
@@ -114,54 +114,10 @@ kbd {
   height: 20px;
 }
 
-.markdown-doc-wrapper {
-  margin: 0 auto;
-  max-width: var(--ifm-container-width);
-  width: 100%;
-  margin-left: auto !important;
-}
-
-.markdown-doc-wrapper--fluid {
-  max-width: inherit;
-}
-
-.markdown-row {
-  margin: 0;
-}
-
 .theme-doc-footer {
   margin-top: 0 !important;
   border-top: 1px solid var(--ifm-doc-footer-border-color) !important;
   padding-top: var(--ifm-base-margin-vertical);
-}
-
-.theme-edit-this-page {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: var(--ifm-global-radius);
-  cursor: pointer;
-  background-color: var(--ifm-secondary-btn-background-color);
-  border: 1px solid var(--ifm-secondary-btn-border-color);
-  font-size: var(--medusa-label-small-plus-size);
-  line-height: var(--medusa-label-small-plus-line-height);
-  font-weight: var(--medusa-label-small-plus-font-weight);
-}
-
-.theme-edit-this-page:hover {
-  background-color: var(--ifm-secondary-btn-hover-background-color);
-  text-decoration: none;
-}
-
-.theme-edit-this-page,
-.theme-edit-this-page:hover {
-  color: var(--ifm-secondary-btn-color);
-}
-
-.theme-edit-this-page:focus {
-  box-shadow: var(--ifm-secondary-btn-focused-shadow);
 }
 
 .theme-last-updated {
@@ -200,6 +156,11 @@ details > div {
   padding-right: 0 !important;
 }
 
+.search-result-match {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+  @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark tw-py-[4px] tw-px-0;
+}
+
 @media screen and (min-width: 1419px) {
   .main-wrapper {
     min-width: var(--ifm-max-content-width);
@@ -209,17 +170,5 @@ details > div {
 @media screen and (max-width: 1418px) {
   .main-wrapper {
     width: 100%;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .markdown-doc-wrapper {
-    padding: 0 calc(var(--ifm-spacing-horizontal) * 4);
-  }
-}
-
-@media screen and (max-width: 991px) {
-  .markdown-doc-wrapper {
-    padding: 0 var(--ifm-spacing-horizontal);
   }
 }

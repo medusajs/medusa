@@ -7,8 +7,6 @@ import isInternalUrl from "@docusaurus/isInternalUrl"
 import IconExternalLink from "@theme/Icon/ExternalLink"
 import type { Props } from "@theme/DocSidebarItem/Link"
 import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
-
-import styles from "./styles.module.css"
 import Badge from "@site/src/components/Badge/index"
 import { ModifiedPropSidebarItemLink } from "@medusajs/docs"
 
@@ -44,13 +42,9 @@ export default function DocSidebarItemLink({
       key={label}
     >
       <Link
-        className={clsx(
-          "menu__link",
-          !isInternalLink && styles.menuExternalLink,
-          {
-            "menu__link--active": isActive,
-          }
-        )}
+        className={clsx("menu__link", !isInternalLink && "tw-items-center", {
+          "menu__link--active": isActive,
+        })}
         autoAddBaseUrl={autoAddBaseUrl}
         aria-current={isActive ? "page" : undefined}
         to={href}
@@ -63,6 +57,7 @@ export default function DocSidebarItemLink({
           <DocSidebarItemIcon
             icon={customProps.sidebar_icon}
             is_title={customProps.sidebar_is_title}
+            is_disabled={customProps?.sidebar_is_soon}
           />
         )}
         {label}

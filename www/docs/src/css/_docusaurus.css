@@ -1,4 +1,9 @@
 /** This CSS file includes tailwind styling definitions for classes defined by docusaurus **/
+html,
+body {
+  @apply tw-h-full;
+}
+
 .cards-grid {
   @apply tw-grid tw-gap-x-1 tw-auto-rows-fr;
 }
@@ -46,3 +51,34 @@ video {
 .theme-code-block {
   @apply tw-border tw-border-solid tw-border-medusa-code-block-border;
 }
+
+.markdown p + .card-wrapper {
+  @apply tw-mt-1.5;
+}
+
+.card + p {
+  @apply tw-mt-2;
+}
+
+.card-highlighted {
+  /* --bordered-inside-padding: 6px; */
+  @apply tw-relative tw-mb-4 tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-subtle-hover-dark;
+}
+
+.col.toc-wrapper {
+  --ifm-col-width: var(--ifm-toc-width);
+}
+
+.markdown-doc-wrapper--fluid {
+  @apply tw-max-w-[inherit];
+}
+
+:global(.docusaurus-mt-lg) {
+  @apply tw-mt-3;
+}
+
+:global(#__docusaurus) {
+  @apply tw-min-h-full tw-flex tw-flex-col;
+}
+
+@import url('./components/sidebar.css');

@@ -90,7 +90,7 @@ function CollapseButton({
         { label: categoryLabel }
       )}
       type="button"
-      className="clean-btn menu__caret"
+      className="tw-hidden"
       onClick={onClick}
     />
   )
@@ -150,9 +150,9 @@ export default function DocSidebarItemCategory({
         ThemeClassNames.docs.docSidebarItemCategory,
         ThemeClassNames.docs.docSidebarItemCategoryLevel(level),
         "menu__list-item",
-        {
-          "menu__list-item--collapsed": collapsed,
-        },
+        // {
+        //   "menu__list-item--collapsed": collapsed,
+        // },
         className,
         customProps?.sidebar_is_title && "sidebar-title",
         customProps?.sidebar_is_group_headline && "sidebar-group-headline",
@@ -198,6 +198,7 @@ export default function DocSidebarItemCategory({
             <DocSidebarItemIcon
               icon={customProps.sidebar_icon}
               is_title={customProps.sidebar_is_title}
+              is_disabled={customProps?.sidebar_is_soon}
             />
           )}
           {label}

@@ -341,9 +341,6 @@ span.DocSearch-Button-Key {
 }
 
 /* Search Page */
-.search-page-wrapper article[class*=searchResultItem] {
-  max-width: unset !important;
-}
 
 @media screen and (min-width: 992px) {
   [class*=searchBox] {
