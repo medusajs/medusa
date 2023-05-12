@@ -28,7 +28,6 @@ export const CartRepository = dataSource.getRepository(Cart).extend({
           where: { id: In(entitiesIds) },
           select: ["id"],
           relations: rels as string[],
-          relationLoadStrategy: "join",
         })
       })
     ).then(flatten)
