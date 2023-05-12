@@ -6,11 +6,11 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { FilterableProductProps } from "../../../../types/product"
 import { IInventoryService } from "@medusajs/types"
-import { PricedProduct } from "../../../../types/pricing"
-import { Product } from "../../../../models"
 import { Type } from "class-transformer"
+import { Product } from "../../../../models"
+import { PricedProduct } from "../../../../types/pricing"
+import { FilterableProductProps } from "../../../../types/product"
 
 /**
  * @oas [get] /admin/products
@@ -241,16 +241,21 @@ export default async (req, res) => {
 
       let products: (Product | PricedProduct)[] = rawProducts
 
-      const includesPricing = ["variants", "variants.prices"].every(
+      // We only set prices if variants.prices are requested
+      const shouldSetPricing = ["variants", "variants.prices"].every(
         (relation) => relations?.includes(relation)
       )
-      if (includesPricing) {
+
+      if (shouldSetPricing) {
         products = await pricingService
           .withTransaction(transactionManager)
           .setProductPrices(rawProducts)
       }
 
-      if (inventoryService) {
+      // We only set availability if variants are requested
+      const shouldSetAvailability = relations?.includes("variants")
+
+      if (inventoryService && shouldSetAvailability) {
         const [salesChannelsIds] = await salesChannelService
           .withTransaction(transactionManager)
           .listAndCount({}, { select: ["id"] })
