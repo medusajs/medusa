@@ -6151,13 +6151,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/admin-sdk@workspace:packages/admin-sdk":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/admin-sdk@workspace:packages/admin-sdk"
+  dependencies:
+    "@medusajs/medusa": "*"
+    "@medusajs/types": "*"
+    "@rollup/plugin-alias": ^5.0.0
+    "@rollup/plugin-commonjs": ^24.1.0
+    "@rollup/plugin-json": ^6.0.0
+    "@rollup/plugin-node-resolve": ^15.0.2
+    "@rollup/plugin-replace": ^5.0.2
+    "@rollup/plugin-terser": ^0.4.1
+    "@rollup/plugin-typescript": ^11.1.0
+    "@types/fs-extra": ^11.0.1
+    commander: ^10.0.1
+    esbuild: ^0.17.18
+    fs-extra: ^11.1.1
+    picocolors: ^1.0.0
+    rollup: ^3.20.7
+    rollup-plugin-esbuild: ^5.0.0
+    tslib: ^2.5.0
+    typescript: ^5.0.4
+  bin:
+    extension: ./bin/index.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/admin-ui@1.8.5, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
     "@hookform/error-message": ^2.0.1
-    "@medusajs/medusa": 1.10.1
-    "@medusajs/types": 1.8.5
+    "@medusajs/medusa": "*"
+    "@medusajs/types": "*"
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
     "@radix-ui/react-collapsible": ^1.0.1
@@ -6422,7 +6449,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@1.10.1, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@1.10.1, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6590,12 +6617,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@1.8.5, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@1.8.5, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    react-router-dom: 6.8.0
     typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
