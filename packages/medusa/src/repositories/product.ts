@@ -59,6 +59,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const categoryId = optionsWithoutRelations?.where?.category_id
     delete optionsWithoutRelations?.where?.category_id
 
+    const categoriesQuery = optionsWithoutRelations.where.categories || {}
+    delete optionsWithoutRelations?.where?.categories
+
     const categories = optionsWithoutRelations?.where?.categories
     delete optionsWithoutRelations?.where?.categories
 
@@ -149,11 +152,27 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       }
 
       if (categoryIds.length) {
+        const categoryAlias = "categories"
+        const joinScope = Object.assign(
+          { id: categoryIds },
+          categoriesQuery,
+        )
+
+        const joinWhere = Object.entries(joinScope)
+          .map((entry) => {
+            if (Array.isArray(entry[1])) {
+              return `${categoryAlias}.${entry[0]} IN (:...${entry[0]})`
+            } else {
+              return `${categoryAlias}.${entry[0]} = :${entry[0]}`
+            }
+          })
+          .join(" AND ")
+
         qb.innerJoin(
-          `${productAlias}.categories`,
-          "categories",
-          "categories.id IN (:...categoryIds)",
-          { categoryIds }
+          `${productAlias}.${categoryAlias}`,
+          categoryAlias,
+          joinWhere,
+          joinScope,
         )
       }
     }
