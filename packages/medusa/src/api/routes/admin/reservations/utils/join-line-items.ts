@@ -1,6 +1,6 @@
-import { ReservationItemDTO } from "@medusajs/types"
+import { ExtendedReservationItem } from ".."
 import { LineItemService } from "../../../../../services"
-import { ExtendedReservationItem } from "../list-reservations"
+import { ReservationItemDTO } from "@medusajs/types"
 
 export const joinLineItems = async (
   reservations: ExtendedReservationItem[],

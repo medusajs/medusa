@@ -1,9 +1,3 @@
-import {
-  IInventoryService,
-  InventoryItemDTO,
-  ReservationItemDTO,
-  StockLocationDTO,
-} from "@medusajs/types"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import {
   NumericalComparisonOperator,
@@ -12,13 +6,12 @@ import {
 import { Request, Response } from "express"
 
 import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
 import { IsType } from "../../../../utils/validators/is-type"
-import { LineItem } from "../../../../models"
 import { LineItemService } from "../../../../services"
 import { Type } from "class-transformer"
 import { joinInventoryItems } from "./utils/join-inventory-items"
 import { joinLineItems } from "./utils/join-line-items"
-import { joinLocations } from "./utils/join-locations"
 
 /**
  * @oas [get] /admin/reservations
@@ -180,11 +173,6 @@ export default async (req: Request, res: Response) => {
   const { limit, offset } = req.validatedQuery
 
   res.json({ reservations, count, limit, offset })
-}
-
-export type ExtendedReservationItem = ReservationItemDTO & {
-  line_item?: LineItem
-  inventory_item?: InventoryItemDTO
 }
 
 export class AdminGetReservationsParams extends extendedFindParamsMixin({

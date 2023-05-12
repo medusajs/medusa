@@ -320,6 +320,7 @@ export type { DiscountConditionProductType } from "./DiscountConditionProductTyp
 export type { DiscountRule } from "./DiscountRule"
 export type { DraftOrder } from "./DraftOrder"
 export type { Error } from "./Error"
+export type { ExtendedReservationItem } from "./ExtendedReservationItem"
 export type { ExtendedStoreDTO } from "./ExtendedStoreDTO"
 export type { FeatureFlagsResponse } from "./FeatureFlagsResponse"
 export type { Fulfillment } from "./Fulfillment"

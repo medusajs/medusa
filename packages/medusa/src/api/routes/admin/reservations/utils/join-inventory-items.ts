@@ -1,6 +1,7 @@
 import { IInventoryService, ReservationItemDTO } from "@medusajs/types"
+
 import { EntityManager } from "typeorm"
-import { ExtendedReservationItem } from "../list-reservations"
+import { ExtendedReservationItem } from ".."
 
 export const joinInventoryItems = async (
   reservations: ExtendedReservationItem[],
