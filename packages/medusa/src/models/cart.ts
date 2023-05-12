@@ -216,6 +216,7 @@
  */
 
 import {
+  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -389,6 +390,13 @@ export class Cart extends SoftDeletableEntity {
   refundable_amount?: number
   gift_card_total?: number
   gift_card_tax_total?: number
+
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.payment_sessions) {
+      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
+    }
+  }
 
   @BeforeInsert()
   private beforeInsert(): void {
