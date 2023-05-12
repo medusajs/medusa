@@ -62,9 +62,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const categoriesQuery = optionsWithoutRelations.where.categories || {}
     delete optionsWithoutRelations?.where?.categories
 
-    const categories = optionsWithoutRelations?.where?.categories
-    delete optionsWithoutRelations?.where?.categories
-
     const include_category_children =
       optionsWithoutRelations?.where?.include_category_children
     delete optionsWithoutRelations?.where?.include_category_children
@@ -155,6 +152,29 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           .join(" AND ")
 
         qb.innerJoin(
+          `${productAlias}.${categoryAlias}`,
+          categoryAlias,
+          joinWhere,
+          joinScope
+        )
+      }
+    } else {
+      const joinScope = categoriesQuery
+
+      if (joinScope) {
+        const categoryAlias = "categories"
+
+        const joinWhere = Object.entries(joinScope)
+          .map(([column, condition]) => {
+            if (Array.isArray(condition)) {
+              return `${categoryAlias}.${column} IN (:...${column})`
+            } else {
+              return `${categoryAlias}.${column} = :${column}`
+            }
+          })
+          .join(" AND ")
+
+        qb.leftJoin(
           `${productAlias}.${categoryAlias}`,
           categoryAlias,
           joinWhere,
@@ -518,6 +538,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const discount_condition_id = options.where.discount_condition_id
     delete options.where.discount_condition_id
 
+    const categoriesQuery = options.where.categories
+    delete options.where.categories
+
     const cleanedOptions = this._cleanOptions(options)
 
     let qb = this.createQueryBuilder(`${productAlias}`)
@@ -570,6 +593,27 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         "sales_channels",
         "sales_channels.id IN (:...sales_channels_ids)",
         { sales_channels_ids: sales_channels.value }
+      )
+    }
+
+    if (categoriesQuery) {
+      const categoryAlias = "categories"
+
+      const joinWhere = Object.entries(categoriesQuery)
+        .map(([column, condition]) => {
+          if (Array.isArray(condition)) {
+            return `${categoryAlias}.${column} IN (:...${column})`
+          } else {
+            return `${categoryAlias}.${column} = :${column}`
+          }
+        })
+        .join(" AND ")
+
+      qb.leftJoin(
+        `${productAlias}.${categoryAlias}`,
+        categoryAlias,
+        joinWhere,
+        categoriesQuery
       )
     }
 

@@ -252,7 +252,10 @@ export function applyOrdering<T extends ObjectLiteral>({
       }
 
       const key = `${alias}.${orderPath}`
-      toSelect.push(key)
+      // Prevent ambiguous column error when top level entity id is ordered
+      if (orderPath !== "id") {
+        toSelect.push(key)
+      }
       acc[key] = orderDirection
       return acc
     },
