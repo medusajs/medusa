@@ -39,6 +39,7 @@ class DigitalOceanService extends AbstractFileService {
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
+      ContentType: file.mimetype,
     }
 
     return new Promise((resolve, reject) => {
