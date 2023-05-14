@@ -16,6 +16,7 @@ import {
 } from "../types/product-collection"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import ImageRepository from "../repositories/image"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -136,12 +137,17 @@ class ProductCollectionService extends TransactionBaseService {
       const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
-      const imageRepo = manager.withRepository(
-        this.imageRepository_
-      )
-      
-      let productCollection = collectionRepo.create(collection)
-      productCollection = await collectionRepo.save(productCollection);
+      const imageRepo = manager.withRepository(this.imageRepository_)
+
+      const productCollectionToSave = {
+        title: collection.title,
+        handle: collection.handle,
+        description: collection.description,
+        thumbnail: collection.thumbnail,
+        metadata: collection.metadata,
+      }
+      let productCollection = collectionRepo.create(productCollectionToSave)
+      productCollection = await collectionRepo.save(productCollection)
 
       const { images, ...rest } = collection
       if (!rest.thumbnail && images && images.length) {
@@ -149,8 +155,8 @@ class ProductCollectionService extends TransactionBaseService {
       }
 
       if (images?.length) {
-	      productCollection.images = await imageRepo.upsertImages(images)
-	    }
+        productCollection.images = await imageRepo.upsertImages(images)
+      }
 
       await this.eventBus_
         .withTransaction(manager)
@@ -176,9 +182,7 @@ class ProductCollectionService extends TransactionBaseService {
       const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
-      const imageRepo = manager.withRepository(
-        this.imageRepository_
-      )
+      const imageRepo = manager.withRepository(this.imageRepository_)
 
       let productCollection = await this.retrieve(collectionId, {
         relations: ["images"],
@@ -186,12 +190,12 @@ class ProductCollectionService extends TransactionBaseService {
 
       const { metadata, images, ...rest } = update
 
-      if (!collection.thumbnail && !update.thumbnail && images?.length) {
-        collection.thumbnail = images[0]
+      if (!productCollection.thumbnail && !update.thumbnail && images?.length) {
+        productCollection.thumbnail = images[0]
       }
 
       if (images?.length) {
-        collection.images = await imageRepo.upsertImages(images)
+        productCollection.images = await imageRepo.upsertImages(images)
       }
 
       if (metadata) {
@@ -237,7 +241,7 @@ class ProductCollectionService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.DELETED, {
           id: productCollection.id,
-      })
+        })
 
       return Promise.resolve()
     })
@@ -262,7 +266,7 @@ class ProductCollectionService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.PRODUCTS_ADDED, {
           productCollection: productCollection,
-          productIds: productIds, 
+          productIds: productIds,
         })
 
       return productCollection
@@ -288,7 +292,7 @@ class ProductCollectionService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(ProductCollectionService.Events.PRODUCTS_REMOVED, {
           productCollection: productCollection,
-          productIds: productIds, 
+          productIds: productIds,
         })
 
       return Promise.resolve()

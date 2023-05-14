@@ -19,8 +19,8 @@ export default (app) => {
   )
   route.get("/:id", middlewares.wrap(require("./get-collection").default))
   route.get(
-      "/:id/products",
-      middlewares.wrap(require("./get-collection-products").default)
+    "/:id/products",
+    middlewares.wrap(require("./get-collection-products").default)
   )
 
   return app

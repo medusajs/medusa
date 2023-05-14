@@ -1,5 +1,5 @@
 import ProductCollectionService from "../../../../services/product-collection"
-import {defaultStoreCollectionRelations} from "./index";
+import { defaultStoreCollectionRelations } from "./index"
 /**
  * @oas [get] /store/collections/{id}
  * operationId: "GetCollectionsCollection"
