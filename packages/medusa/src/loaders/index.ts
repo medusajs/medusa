@@ -25,6 +25,7 @@ import subscribersLoader from "./subscribers"
 
 import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
 import { createMedusaContainer } from "medusa-core-utils"
+import eventEmitterLoader from "./event-emitter"
 
 type Options = {
   directory: string
@@ -133,6 +134,15 @@ export default async ({
     ;(req as any).scope = container.createScope()
     next()
   })
+
+  const eventEmitterActivity = Logger.activity(
+    `Initializing event emitter${EOL}`
+  )
+  track("EVENT_EMITTER_INIT_STARTED")
+  eventEmitterLoader({ container })
+  const eventEmitAct =
+    Logger.success(eventEmitterActivity, "Event emitter initialized") || {}
+  track("EVENT_EMITTER_INIT_COMPLETED", { duration: eventEmitAct.duration })
 
   const pluginsActivity = Logger.activity(`Initializing plugins${EOL}`)
   track("PLUGINS_INIT_STARTED")

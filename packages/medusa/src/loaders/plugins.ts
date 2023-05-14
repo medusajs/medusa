@@ -81,6 +81,7 @@ export default async ({
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
+      registerEntitySubscribers(pluginDetails, container)
     })
   )
 
@@ -510,6 +511,29 @@ function registerSubscribers(
         (cradle) => new loaded(cradle, pluginDetails.options)
       ).singleton()
     )
+  })
+}
+
+function registerEntitySubscribers(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): void {
+  const files = glob.sync(
+    `${pluginDetails.resolve}/entity-subscribers/*.js`,
+    {}
+  )
+  files.forEach((fn) => {
+    const loaded = require(fn).default
+    const name = formatRegistrationName(fn)
+
+    container.register({
+      [name]: asFunction(
+        (cradle) => new loaded(cradle, pluginDetails.options),
+        {
+          lifetime: Lifetime.SCOPED,
+        }
+      ),
+    })
   })
 }
 
