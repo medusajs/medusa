@@ -6,15 +6,19 @@ import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { CreateProductType, UpdateProductType } from "../types/product-type"
+import { formatException } from "../utils"
+import ImageRepository from "../repositories/image"
 
 class ProductTypeService extends TransactionBaseService {
   protected readonly typeRepository_: typeof ProductTypeRepository
+  protected readonly imageRepository_: typeof ImageRepository
 
-  constructor({ productTypeRepository }) {
+  constructor({ productTypeRepository, imageRepository }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.typeRepository_ = productTypeRepository
+    this.imageRepository_ = imageRepository
   }
 
   /**
@@ -51,8 +55,12 @@ class ProductTypeService extends TransactionBaseService {
    */
   async create(productType: CreateProductType): Promise<ProductType> {
     return await this.atomicPhase_(async (manager) => {
-      const typeRepository = manager.getCustomRepository(this.typeRepository_)
-      const imageRepo = manager.getCustomRepository(this.imageRepository_)
+      const typeRepository = this.activeManager_.withRepository(
+        this.typeRepository_
+      )
+      const imageRepo = this.activeManager_.withRepository(
+        this.imageRepository_
+      )
 
       const { images, ...rest } = productType
       if (!rest.thumbnail && images && images.length) {
@@ -143,7 +151,7 @@ class ProductTypeService extends TransactionBaseService {
    */
   async delete(productTypeId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+      const typeRepo = this.activeManager_.withRepository(this.typeRepository_)
       const productType = await this.retrieve(productTypeId)
 
       if (!productType) {
@@ -166,8 +174,10 @@ class ProductTypeService extends TransactionBaseService {
     update: UpdateProductType
   ): Promise<ProductType> {
     return await this.atomicPhase_(async (manager) => {
-      const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
-      const imageRepo = this.manager_.getCustomRepository(this.imageRepository_)
+      const typeRepo = this.activeManager_.withRepository(this.typeRepository_)
+      const imageRepo = this.activeManager_.withRepository(
+        this.imageRepository_
+      )
 
       const productType = await this.retrieve(productTypeId, {
         relations: ["images"],
