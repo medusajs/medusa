@@ -19,6 +19,7 @@ import ReturnReasonsResource from "./return-reasons"
 import ReturnsResource from "./returns"
 import ShippingOptionsResource from "./shipping-options"
 import SwapsResource from "./swaps"
+import ProductOptionsResource from "./product-options"
 
 export * from "./admin"
 export {
@@ -43,4 +44,5 @@ export {
   ReturnsResource,
   ShippingOptionsResource,
   SwapsResource,
+  ProductOptionsResource,
 }

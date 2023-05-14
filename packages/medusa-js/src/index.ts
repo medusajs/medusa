@@ -21,6 +21,7 @@ import {
   ReturnsResource,
   ShippingOptionsResource,
   SwapsResource,
+  ProductOptionsResource,
 } from "./resources"
 
 class Medusa {
@@ -46,6 +47,7 @@ class Medusa {
   public paymentCollections: PaymentCollectionsResource
   public productTags: ProductTagsResource
   public productCategories: ProductCategoriesResource
+  public productOptions: ProductOptionsResource
 
   constructor(config: Config) {
     this.client = new Client(config)
@@ -71,6 +73,7 @@ class Medusa {
     this.paymentCollections = new PaymentCollectionsResource(this.client)
     this.productTags = new ProductTagsResource(this.client)
     this.productCategories = new ProductCategoriesResource(this.client)
+    this.productOptions = new ProductOptionsResource(this.client)
   }
 
   /**
