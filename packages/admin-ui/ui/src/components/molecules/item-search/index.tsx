@@ -50,10 +50,15 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
   }
 
   const options = inventory_items?.map((inventoryItem) => ({
-    label: inventoryItem.title || undefined,
+    label:
+      inventoryItem.title ||
+      inventoryItem.variants[0].product.title ||
+      inventoryItem.sku,
     value: inventoryItem.id,
     inventoryItem,
   })) as ItemOption[]
+
+  const filterOptions = () => true
 
   return (
     <div>
@@ -69,16 +74,13 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
         onChange={onChange}
         value={null}
         isLoading={queryEnabled && isLoading}
+        filterOption={filterOptions} // TODO: Remove this when we can q for inventory item titles
       />
     </div>
   )
 }
 
-const ProductOption = ({
-  innerProps,
-  isDisabled,
-  data,
-}: OptionProps<ItemOption>) => {
+const ProductOption = ({ innerProps, data }: OptionProps<ItemOption>) => {
   const { available, inStock } = React.useMemo(() => {
     return (data.inventoryItem.location_levels || []).reduce(
       (acc, curr) => {
