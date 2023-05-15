@@ -2642,6 +2642,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.21.0":
+  version: 7.21.5
+  resolution: "@babel/runtime@npm:7.21.5"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: c704c36bf1c7f948b1d404e3ad3b00897f6dbaf8bb9455b0a78f96ed0e2f24599f89fd3950a277566be6694ab8814a47bec743e98dd7c7f57e9f0fedc6c6c32f
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.12.13, @babel/template@npm:^7.18.10, @babel/template@npm:^7.20.7":
   version: 7.20.7
   resolution: "@babel/template@npm:7.20.7"
@@ -6010,7 +6019,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6249,7 +6258,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6260,7 +6269,7 @@ __metadata:
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
@@ -6278,7 +6287,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
     typescript: ^4.4.4
     ulid: ^2.3.0
   languageName: unknown
@@ -17658,6 +17667,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^2.29.3":
+  version: 2.30.0
+  resolution: "date-fns@npm:2.30.0"
+  dependencies:
+    "@babel/runtime": ^7.21.0
+  checksum: e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:1.10.4":
   version: 1.10.4
   resolution: "dayjs@npm:1.10.4"
@@ -23717,7 +23735,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 
@@ -23738,7 +23756,7 @@ __metadata:
     medusa-fulfillment-webshipper: 1.3.9
     medusa-interfaces: 1.3.7
     medusa-plugin-sendgrid: 1.3.9
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 
@@ -23754,7 +23772,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: 1.3.7
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 
@@ -36229,7 +36247,7 @@ __metadata:
     typedoc-plugin-markdown: ^3.13.4
     typedoc-plugin-merge-modules: ^4.0.1
     typedoc-plugin-reference-excluder: ^1.0.0
-    typeorm: "npm:@medusajs/typeorm@0.3.16-next.0"
+    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 
@@ -39797,15 +39815,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:@medusajs/typeorm@0.3.16-next.0":
-  version: 0.3.16-next.0
-  resolution: "@medusajs/typeorm@npm:0.3.16-next.0"
+"typeorm@npm:^0.3.16":
+  version: 0.3.16
+  resolution: "typeorm@npm:0.3.16"
   dependencies:
     "@sqltools/formatter": ^1.2.5
     app-root-path: ^3.1.0
     buffer: ^6.0.3
     chalk: ^4.1.2
     cli-highlight: ^2.1.11
+    date-fns: ^2.29.3
     debug: ^4.3.4
     dotenv: ^16.0.3
     glob: ^8.1.0
@@ -39872,7 +39891,7 @@ __metadata:
     typeorm: cli.js
     typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
     typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: b81794a0bc5ca3195f6a57ad313bd85b2b8f6a0a8dcb00ac42c3594f908b89fcd51f9b10ea62c836504d7196e6330a4b67602b90ea6485bc956ed4dace665737
+  checksum: 60cfe1426ae5dd2ad80bbdaac84db500ff01054b363a268cdd31c220990114e4d8d91567147f4a75d92d19ea09579195d8df68f113183f9dc7762c61848c4bb3
   languageName: node
   linkType: hard
 
