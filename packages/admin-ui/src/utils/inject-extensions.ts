@@ -5,7 +5,7 @@ import { generateExtensionsEntrypoint } from "./generate-extensions-entrypoint"
 import { getExtensions } from "./get-extensions"
 
 export async function injectExtensions() {
-  const uiPath = resolve(__dirname, "..", "..", "..", "ui")
+  const uiPath = resolve(__dirname, "..", "..", "ui")
   const tmpExtensionsPath = resolve(uiPath, "src", "extensions.ts")
 
   const extensions = await getExtensions()
@@ -15,6 +15,34 @@ export async function injectExtensions() {
     tmpExtensionsPath
   )
 
+  console.warn(
+    colors.yellow(
+      `[@medusajs/admin-ui]: Creating extensions file at: ${colors.bold(
+        tmpExtensionsPath
+      )}`
+    )
+  )
+  console.warn(
+    colors.yellow(
+      `[@medusajs/admin-ui]: Creating extensions file at: ${colors.bold(
+        tmpExtensionsPath
+      )}`
+    )
+  )
+  console.warn(
+    colors.yellow(
+      `[@medusajs/admin-ui]: Creating extensions file at: ${colors.bold(
+        tmpExtensionsPath
+      )}`
+    )
+  )
+  console.warn(
+    colors.yellow(
+      `[@medusajs/admin-ui]: Creating extensions file at: ${colors.bold(
+        tmpExtensionsPath
+      )}`
+    )
+  )
   console.warn(
     colors.yellow(
       `[@medusajs/admin-ui]: Creating extensions file at: ${colors.bold(

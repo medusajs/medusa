@@ -1,3 +1,6 @@
 export * from "./format-base"
+export * from "./generate-extensions-entrypoint"
 export * from "./get-custom-vite-config"
 export * from "./get-custom-vite-dev-config"
+export * from "./get-extensions"
+export * from "./inject-extensions"
