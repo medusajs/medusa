@@ -5,16 +5,39 @@ import BaseResource from "../base"
 
 class AdminCustomResource extends BaseResource {
   /**
-   * @description Retrieves an entity
+   *
    * @param path path to the custom endpoint
-   * @param payload optional
+   * @param id id of the entity to retrieve
+   * @param customHeaders
+   * @returns
+   */
+  retrieve<TResponse = any>(
+    path: string,
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<TResponse> {
+    const formattedPath = createAdminPath(path, id)
+
+    return this.client.request(
+      "GET",
+      formattedPath,
+      undefined,
+      {},
+      customHeaders
+    )
+  }
+
+  /**
+   * @description Lists an entity
+   * @param path path to the custom endpoint
+   * @param query optional
    * @param customHeaders
    */
-  get<Params extends Record<string, unknown> = {}, Response = any>(
+  list<TQuery extends Record<string, unknown> = {}, TResponse = any>(
     path: string,
-    query?: Params,
+    query?: TQuery,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<Response> {
+  ): ResponsePromise<TResponse> {
     let formattedPath = createAdminPath(path)
 
     if (query) {
@@ -31,18 +54,35 @@ class AdminCustomResource extends BaseResource {
     )
   }
 
+  create<TPayload extends Record<string, unknown>, TResponse = any>(
+    path: string,
+    payload: TPayload,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<TResponse> {
+    const formattedPath = createAdminPath(path)
+
+    return this.client.request(
+      "POST",
+      formattedPath,
+      payload,
+      {},
+      customHeaders
+    )
+  }
+
   /**
    * @description Updates an entity
    * @param path path to the custom endpoint
    * @param payload update to apply to entity
    * @param customHeaders
    */
-  post<Payload extends Record<string, unknown>, Response = any>(
+  update<TPayload extends Record<string, unknown>, TResponse = any>(
     path: string,
-    payload: Payload,
+    id: string,
+    payload: TPayload,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<Response> {
-    const formattedPath = createAdminPath(path)
+  ): ResponsePromise<TResponse> {
+    const formattedPath = createAdminPath(path, id)
 
     return this.client.request(
       "POST",
@@ -58,12 +98,12 @@ class AdminCustomResource extends BaseResource {
    * @param identifier the id or identifier of choice of the entity to delete
    * @param customHeaders
    */
-  delete<Response = any>(
+  delete<TResponse = any>(
     path: string,
-    identifier: string,
+    id: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<Response> {
-    const formattedPath = `${createAdminPath(path)}/${identifier}`
+  ): ResponsePromise<TResponse> {
+    const formattedPath = createAdminPath(path, id)
 
     return this.client.request(
       "DELETE",
