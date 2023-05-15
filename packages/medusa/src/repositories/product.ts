@@ -470,7 +470,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     shouldCount: boolean
   }): Promise<[Product[], number]> {
     withDeleted = Array.isArray(idsOrOptionsWithoutRelations)
-      ? false
+      ? withDeleted
       : idsOrOptionsWithoutRelations.withDeleted ?? false
     const isOptionsArray = Array.isArray(idsOrOptionsWithoutRelations)
     const originalWhere = isOptionsArray
@@ -492,9 +492,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     if (isOptionsArray) {
       entities = await this.find({
         where: {
-          id: In(idsOrOptionsWithoutRelations),
+          id: In(clonedOptions as string[]),
         },
-        withDeleted: withDeleted ?? false,
+        withDeleted,
       })
       count = entities.length
     } else {
