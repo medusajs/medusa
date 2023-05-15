@@ -158,7 +158,7 @@ async function writeExtensionsEntry(
     
   `
 
-  await fse.writeFile(content, entrypoint)
+  await fse.writeFile(entrypoint, content)
 }
 
 export async function injectExtensions() {
