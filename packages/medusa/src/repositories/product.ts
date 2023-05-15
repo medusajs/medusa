@@ -544,7 +544,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     if (categoriesQuery) {
       this._applyCategoriesQuery(qb, {
-        alias: "products",
+        alias: productAlias,
         categoryAlias: "categories",
         where: categoriesQuery,
         joinName: "leftJoin",
