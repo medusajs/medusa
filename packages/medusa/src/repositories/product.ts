@@ -14,11 +14,10 @@ import {
 } from "../models"
 import { dataSource } from "../loaders/database"
 import { cloneDeep, groupBy, map, merge } from "lodash"
-import { ExtendedFindConfig, WithRequiredProperty } from "../types/common"
+import { ExtendedFindConfig } from "../types/common"
 import {
   applyOrdering,
   getGroupedRelations,
-  mergeEntitiesWithRelations,
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
@@ -71,11 +70,11 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       optionsWithoutRelations?.where?.discount_condition_id
     delete optionsWithoutRelations?.where?.discount_condition_id
 
-    return queryEntityWithoutRelations<Product>(
-      this,
+    return queryEntityWithoutRelations<Product>({
+      repository: this,
       optionsWithoutRelations,
       shouldCount,
-      [
+      customJoinBuilders: [
         async (qb, alias) => {
           if (tags) {
             qb.leftJoin(`${alias}.tags`, "tags").andWhere(
@@ -186,25 +185,32 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
           return
         },
-      ]
-    )
+      ],
+    })
   },
 
-  async queryProductsWithIds(
-    entityIds: string[],
-    groupedRelations: { [toplevel: string]: string[] },
+  async queryProductsWithIds({
+    entityIds,
+    groupedRelations,
     withDeleted = false,
-    select: (keyof Product)[] = [],
-    order: { [column: string]: "ASC" | "DESC" } = {},
-    where: FindOptionsWhere<Product> = {}
-  ): Promise<Product[]> {
-    return await queryEntityWithIds(
-      this,
+    select = [],
+    order = {},
+    where = {},
+  }: {
+    entityIds: string[]
+    groupedRelations: { [toplevel: string]: string[] }
+    withDeleted?: boolean
+    select?: (keyof Product)[]
+    order?: { [column: string]: "ASC" | "DESC" }
+    where?: FindOptionsWhere<Product>
+  }): Promise<Product[]> {
+    return await queryEntityWithIds({
+      repository: this,
       entityIds,
       groupedRelations,
       withDeleted,
       select,
-      [
+      customJoinBuilders: [
         (queryBuilder, alias, topLevel) => {
           if (topLevel === "variants") {
             queryBuilder.leftJoinAndSelect(
@@ -213,7 +219,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
               `${topLevel}.deleted_at IS NULL`
             )
 
-            if (!Object.keys(order).some((key) => key.startsWith("variants"))) {
+            if (
+              !Object.keys(order!).some((key) => key.startsWith("variants"))
+            ) {
               // variant_rank being select false, apply the filter here directly
               queryBuilder.addOrderBy(`${topLevel}.variant_rank`, "ASC")
             }
@@ -224,8 +232,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         },
         (queryBuilder, alias, topLevel) => {
           if (topLevel === "categories") {
-            const joinScope =
-              where.categories as FindOptionsWhere<ProductCategory>
+            const joinScope = where!
+              .categories as FindOptionsWhere<ProductCategory>
 
             this._applyCategoriesQuery(queryBuilder, {
               alias,
@@ -239,85 +247,20 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
           return true
         },
-      ]
-    )
+      ],
+    })
   },
 
   async findWithRelationsAndCount(
     relations: string[] = [],
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
-    const isOptionsArray = Array.isArray(idsOrOptionsWithoutRelations)
-    const originalWhere = isOptionsArray
-      ? undefined
-      : cloneDeep(idsOrOptionsWithoutRelations.where)
-    const originalOrder: any = isOptionsArray
-      ? undefined
-      : { ...idsOrOptionsWithoutRelations.order }
-    const clonedOptions = isOptionsArray
-      ? idsOrOptionsWithoutRelations
-      : cloneDeep(idsOrOptionsWithoutRelations)
-
-    let count: number
-    let entities: Product[]
-
-    if (isOptionsArray) {
-      entities = await this.find({
-        where: {
-          id: In(clonedOptions as unknown as string[]),
-        },
-        withDeleted: clonedOptions.withDeleted ?? false,
-      })
-      count = entities.length
-    } else {
-      const result = await this.queryProducts(clonedOptions, true)
-      entities = result[0]
-      count = result[1]
-    }
-    const entitiesIds = entities.map(({ id }) => id)
-
-    if (entitiesIds.length === 0) {
-      // no need to continue
-      return [[], count]
-    }
-
-    if (relations.length === 0) {
-      // Since we are finding by the ids that have been retrieved above and those ids are already
-      // applying skip/take. Remove those options to avoid getting no results
-      delete clonedOptions.skip
-      delete clonedOptions.take
-
-      const toReturn = await this.find({
-        ...(isOptionsArray
-          ? {}
-          : (clonedOptions as FindWithoutRelationsOptions)),
-        where: {
-          id: In(entitiesIds),
-          ...(isOptionsArray ? {} : clonedOptions.where),
-        },
-      })
-      return [toReturn, toReturn.length]
-    }
-
-    const groupedRelations = getGroupedRelations(relations)
-
-    const entitiesIdsWithRelations = await this.queryProductsWithIds(
-      entitiesIds,
-      groupedRelations,
-      idsOrOptionsWithoutRelations.withDeleted,
-      isOptionsArray
-        ? undefined
-        : objectToStringPath(idsOrOptionsWithoutRelations.select),
-      originalOrder,
-      originalWhere
-    )
-
-    const entitiesAndRelations = groupBy(entitiesIdsWithRelations, "id")
-    const entitiesToReturn = map(entitiesIds, (id) =>
-      merge({}, ...entitiesAndRelations[id])
-    )
-
-    return [entitiesToReturn, count]
+    return await this._findWithRelations({
+      relations,
+      idsOrOptionsWithoutRelations,
+      withDeleted: false,
+      shouldCount: true,
+    })
   },
 
   async findWithRelations(
@@ -327,66 +270,14 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     },
     withDeleted = false
   ): Promise<Product[]> {
-    const isOptionsArray = Array.isArray(idsOrOptionsWithoutRelations)
-    const originalWhere = isOptionsArray
-      ? undefined
-      : cloneDeep(idsOrOptionsWithoutRelations.where)
-    const originalOrder: any = isOptionsArray
-      ? undefined
-      : { ...idsOrOptionsWithoutRelations.order }
-    const clonedOptions = isOptionsArray
-      ? idsOrOptionsWithoutRelations
-      : cloneDeep(idsOrOptionsWithoutRelations)
-
-    let entities: Product[]
-    if (isOptionsArray) {
-      entities = await this.find({
-        where: { id: In(clonedOptions as string[]) },
-        withDeleted,
-      })
-    } else {
-      const result = await this.queryProducts(
-        clonedOptions as FindWithoutRelationsOptions,
-        false
-      )
-      entities = result[0]
-    }
-    const entitiesIds = entities.map(({ id }) => id)
-
-    if (entitiesIds.length === 0) {
-      // no need to continue
-      return []
-    }
-
-    if (relations.length === 0) {
-      return await this.find({
-        ...(isOptionsArray
-          ? {}
-          : (clonedOptions as FindWithoutRelationsOptions)),
-        where: {
-          id: In(entitiesIds),
-          ...(isOptionsArray
-            ? {}
-            : (clonedOptions as FindWithoutRelationsOptions).where),
-        },
-      })
-    }
-
-    const groupedRelations = getGroupedRelations(relations)
-    const entitiesIdsWithRelations = await this.queryProductsWithIds(
-      entitiesIds,
-      groupedRelations,
+    const [products] = await this._findWithRelations({
+      relations,
+      idsOrOptionsWithoutRelations,
       withDeleted,
-      isOptionsArray
-        ? undefined
-        : objectToStringPath(idsOrOptionsWithoutRelations.select),
-      originalOrder,
-      originalWhere
-    )
+      shouldCount: false,
+    })
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-
-    return mergeEntitiesWithRelations<Product>(entitiesAndRelations)
+    return products
   },
 
   async findOneWithRelations(
@@ -434,34 +325,42 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options: FindWithoutRelationsOptions = { where: {} },
     relations: string[] = []
   ): Promise<[Product[], number]> {
+    const option_ = cloneDeep(options)
+
     const productAlias = "product"
     const pricesAlias = "prices"
     const variantsAlias = "variants"
     const collectionAlias = "collection"
     const tagsAlias = "tags"
 
-    const tags = options.where.tags
-    delete options.where.tags
+    if ("description" in option_.where) {
+      delete option_.where.description
+    }
 
-    const price_lists = options.where.price_list_id
-    delete options.where.price_list_id
+    if ("title" in option_.where) {
+      delete option_.where.title
+    }
 
-    const sales_channels = options.where.sales_channel_id
-    delete options.where.sales_channel_id
+    const tags = option_.where.tags
+    delete option_.where.tags
 
-    const discount_condition_id = options.where.discount_condition_id
-    delete options.where.discount_condition_id
+    const price_lists = option_.where.price_list_id
+    delete option_.where.price_list_id
 
-    const categoriesQuery = options.where.categories
-    delete options.where.categories
+    const sales_channels = option_.where.sales_channel_id
+    delete option_.where.sales_channel_id
 
-    const cleanedOptions = this._cleanOptions(options)
+    const discount_condition_id = option_.where.discount_condition_id
+    delete option_.where.discount_condition_id
+
+    const categoriesQuery = option_.where.categories
+    delete option_.where.categories
 
     let qb = this.createQueryBuilder(`${productAlias}`)
       .leftJoinAndSelect(`${productAlias}.variants`, variantsAlias)
       .leftJoinAndSelect(`${productAlias}.collection`, `${collectionAlias}`)
       .select([`${productAlias}.id`])
-      .where(cleanedOptions.where)
+      .where(option_.where)
       .andWhere(
         new Brackets((qb) => {
           qb.where(`${productAlias}.description ILIKE :q`, { q: `%${q}%` })
@@ -471,8 +370,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
             .orWhere(`${collectionAlias}.title ILIKE :q`, { q: `%${q}%` })
         })
       )
-      .skip(cleanedOptions.skip)
-      .take(cleanedOptions.take)
+      .skip(option_.skip)
+      .take(option_.take)
 
     if (discount_condition_id) {
       qb.innerJoin(
@@ -532,7 +431,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         (relation !== tagsAlias || !joinedWithTags),
     })
 
-    if (cleanedOptions.withDeleted) {
+    if (option_.withDeleted) {
       qb = qb.withDeleted()
     }
 
@@ -544,7 +443,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const products = await this.findWithRelations(
       relations,
       [...orderedResultsSet],
-      cleanedOptions.withDeleted
+      option_.withDeleted
     )
     const productsMap = new Map(products.map((p) => [p.id, p]))
 
@@ -555,6 +454,101 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     })
 
     return [orderedProducts, count]
+  },
+
+  async _findWithRelations({
+    relations = [],
+    idsOrOptionsWithoutRelations = {
+      where: {},
+    },
+    withDeleted = false,
+    shouldCount = false,
+  }: {
+    relations: string[]
+    idsOrOptionsWithoutRelations: string[] | FindWithoutRelationsOptions
+    withDeleted: boolean
+    shouldCount: boolean
+  }): Promise<[Product[], number]> {
+    withDeleted = Array.isArray(idsOrOptionsWithoutRelations)
+      ? false
+      : idsOrOptionsWithoutRelations.withDeleted ?? false
+    const isOptionsArray = Array.isArray(idsOrOptionsWithoutRelations)
+    const originalWhere = isOptionsArray
+      ? undefined
+      : cloneDeep(idsOrOptionsWithoutRelations.where)
+    const originalOrder: any = isOptionsArray
+      ? undefined
+      : { ...idsOrOptionsWithoutRelations.order }
+    const originalSelect = isOptionsArray
+      ? undefined
+      : objectToStringPath(idsOrOptionsWithoutRelations.select)
+    const clonedOptions = isOptionsArray
+      ? idsOrOptionsWithoutRelations
+      : cloneDeep(idsOrOptionsWithoutRelations)
+
+    let count: number
+    let entities: Product[]
+
+    if (isOptionsArray) {
+      entities = await this.find({
+        where: {
+          id: In(idsOrOptionsWithoutRelations),
+        },
+        withDeleted: withDeleted ?? false,
+      })
+      count = entities.length
+    } else {
+      const result = await this.queryProducts(
+        clonedOptions as FindWithoutRelationsOptions,
+        shouldCount
+      )
+      entities = result[0]
+      count = result[1]
+    }
+    const entitiesIds = entities.map(({ id }) => id)
+
+    if (entitiesIds.length === 0) {
+      // no need to continue
+      return [[], count]
+    }
+
+    if (relations.length === 0) {
+      // Since we are finding by the ids that have been retrieved above and those ids are already
+      // applying skip/take. Remove those options to avoid getting no results
+      if (!Array.isArray(clonedOptions)) {
+        delete clonedOptions.skip
+        delete clonedOptions.take
+      }
+
+      const toReturn = await this.find({
+        ...(isOptionsArray
+          ? {}
+          : (clonedOptions as FindWithoutRelationsOptions)),
+        where: {
+          id: In(entitiesIds),
+          ...(Array.isArray(clonedOptions) ? {} : clonedOptions.where),
+        },
+      })
+      return [toReturn, toReturn.length]
+    }
+
+    const groupedRelations = getGroupedRelations(relations)
+
+    const entitiesIdsWithRelations = await this.queryProductsWithIds({
+      entityIds: entitiesIds,
+      groupedRelations,
+      select: originalSelect,
+      order: originalOrder,
+      where: originalWhere,
+      withDeleted,
+    })
+
+    const entitiesAndRelations = groupBy(entitiesIdsWithRelations, "id")
+    const entitiesToReturn = map(entitiesIds, (id) =>
+      merge({}, ...entitiesAndRelations[id])
+    )
+
+    return [entitiesToReturn, count]
   },
 
   async isProductInSalesChannels(
@@ -571,31 +565,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         )
         .getCount()) > 0
     )
-  },
-
-  _cleanOptions(
-    options: FindWithoutRelationsOptions
-  ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
-    const where = options.where ?? {}
-    if ("description" in where) {
-      delete where.description
-    }
-    if ("title" in where) {
-      delete where.title
-    }
-
-    if ("price_list_id" in where) {
-      delete where?.price_list_id
-    }
-
-    if ("discount_condition_id" in where) {
-      delete where?.discount_condition_id
-    }
-
-    return {
-      ...options,
-      where,
-    }
   },
 
   _applyCategoriesQuery(

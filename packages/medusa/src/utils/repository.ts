@@ -10,6 +10,7 @@ import { ExtendedFindConfig } from "../types/common"
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the relations for the specified entity ids
+ *
  * @param repository
  * @param entityIds
  * @param groupedRelations
@@ -17,18 +18,25 @@ import { ExtendedFindConfig } from "../types/common"
  * @param select
  * @param customJoinBuilders
  */
-export async function queryEntityWithIds<T extends ObjectLiteral>(
-  repository: Repository<T>,
-  entityIds: string[],
-  groupedRelations: { [toplevel: string]: string[] },
+export async function queryEntityWithIds<T extends ObjectLiteral>({
+  repository,
+  entityIds,
+  groupedRelations,
   withDeleted = false,
-  select: (keyof T)[] = [],
-  customJoinBuilders: ((
+  select = [],
+  customJoinBuilders = [],
+}: {
+  repository: Repository<T>
+  entityIds: string[]
+  groupedRelations: { [toplevel: string]: string[] }
+  withDeleted?: boolean
+  select?: (keyof T)[]
+  customJoinBuilders?: ((
     qb: SelectQueryBuilder<T>,
     alias: string,
     toplevel: string
-  ) => boolean)[] = []
-): Promise<T[]> {
+  ) => boolean)[]
+}): Promise<T[]> {
   const alias = repository.metadata.name.toLowerCase()
   return await Promise.all(
     Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
@@ -91,20 +99,26 @@ export async function queryEntityWithIds<T extends ObjectLiteral>(
  * Custom query entity without relations, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the entities without taking into account the relations. The relations will be queried separately
  * using the queryEntityWithIds util
+ *
  * @param repository
  * @param optionsWithoutRelations
  * @param shouldCount
  * @param customJoinBuilders
  */
-export async function queryEntityWithoutRelations<T extends ObjectLiteral>(
-  repository: Repository<T>,
-  optionsWithoutRelations: Omit<ExtendedFindConfig<T>, "relations">,
+export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
+  repository,
+  optionsWithoutRelations,
   shouldCount = false,
+  customJoinBuilders = [],
+}: {
+  repository: Repository<T>
+  optionsWithoutRelations: Omit<ExtendedFindConfig<T>, "relations">
+  shouldCount: boolean
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,
     alias: string
-  ) => Promise<{ relation: string; preventOrderJoin: boolean } | void>)[] = []
-): Promise<[T[], number]> {
+  ) => Promise<{ relation: string; preventOrderJoin: boolean } | void>)[]
+}): Promise<[T[], number]> {
   const alias = repository.metadata.name.toLowerCase()
 
   const qb = repository
