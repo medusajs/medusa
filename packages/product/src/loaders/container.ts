@@ -7,6 +7,7 @@ import {
   ProductVariantService,
 } from "@services"
 import {
+  ProductCollectionRepository,
   ProductRepository,
   ProductTagRepository,
   ProductVariantRepository,
@@ -21,5 +22,8 @@ export default async ({ container }: LoaderOptions): Promise<void> => {
     productRepository: asClass(ProductRepository).singleton(),
     productVariantRepository: asClass(ProductVariantRepository).singleton(),
     productTagRepository: asClass(ProductTagRepository).singleton(),
+    productCollectionRepository: asClass(
+      ProductCollectionRepository
+    ).singleton(),
   })
 }
