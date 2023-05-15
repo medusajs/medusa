@@ -91,7 +91,7 @@ Where `test` is the name of the database schema that should be used instead of `
 Remember to run migrations after you change your database type to `postgres` from another type:
 
 ```bash
-medusa migrations run
+npx @medusajs/medusa-cli migrations run
 ```
 
 ### Common Configuration
