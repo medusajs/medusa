@@ -6,8 +6,7 @@ module.exports = {
   content: [
     path.join(__dirname, "src/**/*.{js,ts,jsx,tsx}"),
     path.join(__dirname, "./index.html"),
-    ...extensions.content,
-  ],
+  ].concat(extensions.content.map((ext) => path.join(__dirname, ext))),
   theme: {
     screens: {},
     extend: {
