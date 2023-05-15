@@ -58,10 +58,11 @@ export async function queryEntityWithIds<T extends ObjectLiteral>(
         if (!rest) {
           continue
         }
-        // Regex matches all '.' except the rightmost
         querybuilder = querybuilder.leftJoinAndSelect(
+          // Regex matches all '.' except the rightmost
           rel.replace(/\.(?=[^.]*\.)/g, "__"),
-          rel.replace(".", "__")
+          // Replace all '.' with '__' to avoid typeorm's automatic aliasing
+          rel.replace(/\./g, "__")
         )
       }
 
