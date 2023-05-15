@@ -1,4 +1,10 @@
-import { Brackets, FindOperator, FindOptionsWhere, In } from "typeorm"
+import {
+  Brackets,
+  FindOperator,
+  FindOptionsWhere,
+  In,
+  SelectQueryBuilder,
+} from "typeorm"
 import {
   PriceList,
   Product,
@@ -9,7 +15,11 @@ import {
 import { dataSource } from "../loaders/database"
 import { cloneDeep, flatten, groupBy, map, merge } from "lodash"
 import { ExtendedFindConfig, WithRequiredProperty } from "../types/common"
-import { applyOrdering } from "../utils/repository"
+import {
+  applyOrdering,
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+} from "../utils/repository"
 import { objectToStringPath } from "@medusajs/utils"
 
 export type DefaultWithoutRelations = Omit<
@@ -32,15 +42,6 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
 }
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
-  mergeEntitiesWithRelations(
-    entitiesAndRelations: Array<Partial<Product>>
-  ): Product[] {
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
-    )
-  },
-
   async queryProducts(
     optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
@@ -105,8 +106,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       )
     }
 
+    let categoryIds: string[] = []
     if (categoryId) {
-      let categoryIds = categoryId?.value
+      categoryIds = categoryId?.value
 
       if (include_category_children) {
         const categoryRepository =
@@ -115,7 +117,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           where: { id: In(categoryIds) },
         })
 
-        categoryIds = []
         for (const category of categories) {
           const categoryChildren = await categoryRepository.findDescendantsTree(
             category
@@ -136,51 +137,25 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           )
         }
       }
+    }
+
+    if (categoryIds.length || categoriesQuery) {
+      const joinScope = {}
 
       if (categoryIds.length) {
-        const categoryAlias = "categories"
-        const joinScope = Object.assign({ id: categoryIds }, categoriesQuery)
-
-        const joinWhere = Object.entries(joinScope)
-          .map(([column, condition]) => {
-            if (Array.isArray(condition)) {
-              return `${categoryAlias}.${column} IN (:...${column})`
-            } else {
-              return `${categoryAlias}.${column} = :${column}`
-            }
-          })
-          .join(" AND ")
-
-        qb.innerJoin(
-          `${productAlias}.${categoryAlias}`,
-          categoryAlias,
-          joinWhere,
-          joinScope
-        )
+        Object.assign(joinScope, { id: categoryIds })
       }
-    } else {
-      const joinScope = categoriesQuery
 
-      if (joinScope) {
-        const categoryAlias = "categories"
-
-        const joinWhere = Object.entries(joinScope)
-          .map(([column, condition]) => {
-            if (Array.isArray(condition)) {
-              return `${categoryAlias}.${column} IN (:...${column})`
-            } else {
-              return `${categoryAlias}.${column} = :${column}`
-            }
-          })
-          .join(" AND ")
-
-        qb.leftJoin(
-          `${productAlias}.${categoryAlias}`,
-          categoryAlias,
-          joinWhere,
-          joinScope
-        )
+      if (categoriesQuery) {
+        Object.assign(joinScope, categoriesQuery)
       }
+
+      this._applyCategoriesQuery(qb, {
+        alias: productAlias,
+        categoryAlias: "categories",
+        where: joinScope,
+        joinName: "leftJoin",
+      })
     }
 
     if (discount_condition_id) {
@@ -218,22 +193,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     return [entities, count]
   },
 
-  getGroupedRelations(relations: string[]): {
-    [toplevel: string]: string[]
-  } {
-    const groupedRelations: { [toplevel: string]: string[] } = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
-
-    return groupedRelations
-  },
-
   async queryProductsWithIds(
     entityIds: string[],
     groupedRelations: { [toplevel: string]: string[] },
@@ -264,28 +223,13 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         } else if (toplevel === "categories") {
           const joinScope =
             where.categories as FindOptionsWhere<ProductCategory>
-          let joinWhere
 
-          if (joinScope) {
-            const categoryAlias = "categories"
-
-            joinWhere = Object.entries(joinScope)
-              .map(([column, condition]) => {
-                if (Array.isArray(condition)) {
-                  return `${categoryAlias}.${column} IN (:...${column})`
-                } else {
-                  return `${categoryAlias}.${column} = :${column}`
-                }
-              })
-              .join(" AND ")
-          }
-
-          querybuilder = querybuilder.leftJoinAndSelect(
-            `products.${toplevel}`,
-            toplevel,
-            joinWhere,
-            joinScope
-          )
+          querybuilder = this._applyCategoriesQuery(querybuilder, {
+            alias: "products",
+            categoryAlias: "categories",
+            where: joinScope,
+            joinName: "leftJoinAndSelect",
+          })
         } else {
           querybuilder = querybuilder.leftJoinAndSelect(
             `products.${toplevel}`,
@@ -383,7 +327,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       return [toReturn, toReturn.length]
     }
 
-    const groupedRelations = this.getGroupedRelations(relations)
+    const groupedRelations = getGroupedRelations(relations)
 
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
@@ -456,7 +400,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       })
     }
 
-    const groupedRelations = this.getGroupedRelations(relations)
+    const groupedRelations = getGroupedRelations(relations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
@@ -469,10 +413,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
-    return entitiesToReturn
+    return mergeEntitiesWithRelations<Product>(entitiesAndRelations)
   },
 
   async findOneWithRelations(
@@ -597,24 +539,12 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (categoriesQuery) {
-      const categoryAlias = "categories"
-
-      const joinWhere = Object.entries(categoriesQuery)
-        .map(([column, condition]) => {
-          if (Array.isArray(condition)) {
-            return `${categoryAlias}.${column} IN (:...${column})`
-          } else {
-            return `${categoryAlias}.${column} = :${column}`
-          }
-        })
-        .join(" AND ")
-
-      qb.leftJoin(
-        `${productAlias}.${categoryAlias}`,
-        categoryAlias,
-        joinWhere,
-        categoriesQuery
-      )
+      this._applyCategoriesQuery(qb, {
+        alias: "products",
+        categoryAlias: "categories",
+        where: categoriesQuery,
+        joinName: "leftJoin",
+      })
     }
 
     const joinedWithTags = !!tags
@@ -692,6 +622,25 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       ...options,
       where,
     }
+  },
+
+  _applyCategoriesQuery(
+    qb: SelectQueryBuilder<Product>,
+    { alias, categoryAlias, where, joinName }
+  ) {
+    const joinWhere = Object.entries(where ?? {})
+      .map(([column, condition]) => {
+        if (Array.isArray(condition)) {
+          return `${categoryAlias}.${column} IN (:...${column})`
+        } else {
+          return `${categoryAlias}.${column} = :${column}`
+        }
+      })
+      .join(" AND ")
+
+    qb[joinName](`${alias}.${categoryAlias}`, categoryAlias, joinWhere, where)
+
+    return qb
   },
 
   /* async findAndCount(
