@@ -128,7 +128,7 @@ This section explains how to deploy the admin using the Vercel website:
 1. Open the [Vercel dashboard](https://vercel.com/dashboard) after logging in.
 2. Click on the “Add New…” button next to the search bar.
 3. Choose Project from the dropdown.
-4. In the new page that opens, find the Git repository that holds your medusa backend and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
+4. In the new page that opens, find the Git repository that holds your Medusa backend and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
 5. In the Configure Project form:
     1. Set the Framework Preset to Vite.
     2. Open the Build and Output Settings collapsible, and set the Build Command to `yarn build:admin` and the Output Directory to `build`. If you’ve configured the admin to use a different output directory, then change it to that directory.
