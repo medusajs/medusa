@@ -3,8 +3,8 @@
 import react from "@vitejs/plugin-react"
 import dns from "dns"
 import fs from "fs"
+import colors from "picocolors"
 import { defineConfig } from "vite"
-import medusaAdminExtensions from "./src/plugins/extensions"
 
 // Resolve localhost for Node v16 and older.
 // @see https://vitejs.dev/config/server-options.html#server-host.
@@ -20,6 +20,10 @@ export default defineConfig(() => {
    * NOTE that the file is ignored by git.
    */
   if (!extFileExists) {
+    console.log(
+      colors.cyan("[@medusajs/admin-ui]: Creating empty extensions file")
+    )
+
     fs.writeFileSync(
       "./ui/src/extensions.ts",
       `const extensions = []\n\nexport default extensions\n`
@@ -27,7 +31,7 @@ export default defineConfig(() => {
   }
 
   return {
-    plugins: [react(), medusaAdminExtensions()],
+    plugins: [react()],
     test: {
       environment: "jsdom",
       globals: true,
