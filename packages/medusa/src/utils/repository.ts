@@ -81,6 +81,7 @@ export async function queryEntityWithIds<T extends ObjectLiteral>(
         )
       }
 
+      querybuilder.setFindOptions({ relationLoadStrategy: "query" })
       return querybuilder.getMany()
     })
   ).then(flatten)
@@ -102,7 +103,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>(
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,
     alias: string
-  ) => void)[] = []
+  ) => Promise<{ relation: string; preventOrderJoin: boolean } | void>)[] = []
 ): Promise<[T[], number]> {
   const alias = repository.metadata.name.toLowerCase()
 
@@ -111,29 +112,37 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>(
     .select([`${alias}.id`])
     .skip(optionsWithoutRelations.skip)
     .take(optionsWithoutRelations.take)
+    .setFindOptions({ relationLoadStrategy: "query" })
 
   if (optionsWithoutRelations.where) {
     qb.where(optionsWithoutRelations.where)
   }
 
-  if (optionsWithoutRelations.order) {
-    const toSelect: string[] = []
-    const parsed = Object.entries(optionsWithoutRelations.order).reduce(
-      (acc, [k, v]) => {
-        const key = `${alias}.${k}`
-        toSelect.push(key)
-        acc[key] = v
-        return acc
-      },
-      {}
-    )
-    qb.addSelect(toSelect)
-    qb.orderBy(parsed)
+  const shouldJoins: { relation: string; shouldJoin: boolean }[] = []
+  for (const customJoinBuilder of customJoinBuilders) {
+    const result = await customJoinBuilder(qb, alias)
+    if (result) {
+      shouldJoins.push({
+        relation: result.relation,
+        shouldJoin: !result.preventOrderJoin,
+      })
+    }
   }
 
-  for (const customJoinBuilder of customJoinBuilders) {
-    customJoinBuilder(qb, alias)
-  }
+  applyOrdering({
+    repository,
+    order: (optionsWithoutRelations.order as any) ?? {},
+    qb,
+    alias,
+    shouldJoin: (relationToJoin) => {
+      return (
+        !shouldJoins.every(({ relation }) => relation !== relationToJoin) ||
+        shouldJoins.some(({ relation, shouldJoin }) => {
+          return relation === relationToJoin && shouldJoin
+        })
+      )
+    },
+  })
 
   if (optionsWithoutRelations.withDeleted) {
     qb.withDeleted()

@@ -1,10 +1,4 @@
-import {
-  DeleteResult,
-  FindOperator,
-  FindOptionsRelations,
-  In,
-  SelectQueryBuilder,
-} from "typeorm"
+import { DeleteResult, FindOperator, FindOptionsRelations, In } from "typeorm"
 import { CustomerGroup } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import {
@@ -82,33 +76,27 @@ export const CustomerGroupRepository = dataSource
         })
         count = entities.length
       } else {
-        const customJoinsBuilders: ((
-          qb: SelectQueryBuilder<CustomerGroup>,
-          alias: string
-        ) => void)[] = []
-
-        if (idsOrOptionsWithoutRelations?.where?.discount_condition_id) {
-          const discountConditionId =
-            idsOrOptionsWithoutRelations?.where?.discount_condition_id
-          delete idsOrOptionsWithoutRelations?.where?.discount_condition_id
-
-          customJoinsBuilders.push(
-            (qb: SelectQueryBuilder<CustomerGroup>, alias: string) => {
-              qb.innerJoin(
-                "discount_condition_customer_group",
-                "dc_cg",
-                `dc_cg.customer_group_id = ${alias}.id AND dc_cg.condition_id = :dcId`,
-                { dcId: discountConditionId }
-              )
-            }
-          )
-        }
-
         const result = await queryEntityWithoutRelations(
           this,
           idsOrOptionsWithoutRelations,
           true,
-          customJoinsBuilders
+          [
+            async (qb, alias) => {
+              if (idsOrOptionsWithoutRelations?.where?.discount_condition_id) {
+                const discountConditionId =
+                  idsOrOptionsWithoutRelations?.where?.discount_condition_id
+                delete idsOrOptionsWithoutRelations?.where
+                  ?.discount_condition_id
+
+                qb.innerJoin(
+                  "discount_condition_customer_group",
+                  "dc_cg",
+                  `dc_cg.customer_group_id = ${alias}.id AND dc_cg.condition_id = :dcId`,
+                  { dcId: discountConditionId }
+                )
+              }
+            },
+          ]
         )
         entities = result[0]
         count = result[1]
