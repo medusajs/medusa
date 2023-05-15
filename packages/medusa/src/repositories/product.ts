@@ -435,8 +435,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       qb = qb.withDeleted()
     }
 
-    qb.setFindOptions({ relationLoadStrategy: "query" })
-
     const [results, count] = await qb.getManyAndCount()
     const orderedResultsSet = new Set(results.map((p) => p.id))
 

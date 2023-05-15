@@ -89,7 +89,6 @@ export async function queryEntityWithIds<T extends ObjectLiteral>({
         )
       }
 
-      querybuilder.setFindOptions({ relationLoadStrategy: "query" })
       return querybuilder.getMany()
     })
   ).then(flatten)
@@ -126,7 +125,6 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
     .select([`${alias}.id`])
     .skip(optionsWithoutRelations.skip)
     .take(optionsWithoutRelations.take)
-    .setFindOptions({ relationLoadStrategy: "query" })
 
   if (optionsWithoutRelations.where) {
     qb.where(optionsWithoutRelations.where)
