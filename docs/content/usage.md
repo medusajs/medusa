@@ -44,7 +44,7 @@ The following data is being collected on your backend:
 
 :::info
 
-💡 Data is only collected when the backend is run with the command `medusa start`.
+Data is only collected when the backend is run with the command `medusa start`.
 
 :::
 
@@ -59,7 +59,7 @@ MEDUSA_DISABLE_TELEMETRY=true
 Or, you can run the following command in the root of your Medusa backend project to disable it:
 
 ```bash
-medusa telemetry --disable
+npx @medusajs/medusa-cli telemetry --disable
 ```
 
 ---
