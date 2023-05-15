@@ -1,12 +1,13 @@
-import React, { cloneElement, useEffect, useRef } from "react"
+import React, { ReactElement, cloneElement, useEffect, useRef } from "react"
 import clsx from "clsx"
 import {
   useScrollPositionBlocker,
   useTabs,
+  type TabItemProps,
 } from "@docusaurus/theme-common/internal"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import type { Props as OldProps } from "@theme/Tabs"
-import styles from "./styles.module.css"
+// import styles from "./styles.module.css"
 
 type TabsCustomProps = {
   isCodeTabs?: boolean
@@ -96,26 +97,24 @@ function TabList({
   }, [codeTabSelectorRef, tabRefs])
 
   return (
-    <div className={`tablist-wrapper ${isCodeTabs ? "code-header" : ""}`}>
+    <div className={clsx(isCodeTabs && "code-header")}>
       <div
-        className={`tabs-ul-wrapper ${
-          isCodeTabs ? "code-tabs-ul-wrapper" : ""
-        }`}
+        className={clsx(isCodeTabs && "tw-relative tw-overflow-auto")}
         ref={codeTabsWrapperRef}
       >
         {isCodeTabs && (
-          <span className="code-tab-selector" ref={codeTabSelectorRef}></span>
+          <span
+            className={clsx(
+              isCodeTabs &&
+                "xs:tw-absolute xs:tw-border xs:tw-border-solid xs:tw-border-medusa-code-tab-border xs:tw-bg-medusa-code-tab-bg xs:tw-transition-all xs:tw-duration-200 xs:tw-ease-ease xs:tw-top-0 xs:tw-z-[1] xs:tw-rounded-full"
+            )}
+            ref={codeTabSelectorRef}
+          ></span>
         )}
         <ul
           role="tablist"
           aria-orientation="horizontal"
-          className={clsx(
-            "tabs",
-            {
-              "tabs--block": block,
-            },
-            className
-          )}
+          className={clsx("tabs", isCodeTabs && "no-scrollbar", className)}
         >
           {tabValues.map(({ value, label, attributes }) => (
             <li
@@ -129,12 +128,14 @@ function TabList({
               onClick={handleTabChange}
               {...attributes}
               className={clsx(
-                "tabs__item",
-                styles.tabItem,
+                isCodeTabs &&
+                  "tw-text-medusa-code-tab-text tw-text-label-small-plus tw-py-[4px] tw-px-[12px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
+                "tw-mt-0 hover:!tw-bg-medusa-code-tab-hover",
                 attributes?.className,
-                {
-                  "tabs__item--active": selectedValue === value,
-                }
+                isCodeTabs && "tw-z-[2]",
+                isCodeTabs &&
+                  selectedValue === value &&
+                  "tw-text-medusa-code-tab-text-active tw-border tw-border-solid tw-border-medusa-code-tab-border tw-bg-medusa-code-tab-bg xs:tw-border-none xs:tw-bg-transparent"
               )}
             >
               {label ?? value}
@@ -142,7 +143,15 @@ function TabList({
           ))}
         </ul>
       </div>
-      {isCodeTabs && <span className="code-title">{codeTitle}</span>}
+      {isCodeTabs && (
+        <span
+          className={clsx(
+            "tw-text-label-small-plus tw-text-medusa-code-tab-title tw-hidden xs:tw-block"
+          )}
+        >
+          {codeTitle}
+        </span>
+      )}
     </div>
   )
 }
@@ -152,10 +161,11 @@ function TabContent({
   children,
   selectedValue,
 }: OldProps & ReturnType<typeof useTabs>) {
-  // eslint-disable-next-line no-param-reassign
-  children = Array.isArray(children) ? children : [children]
+  const childTabs = (Array.isArray(children) ? children : [children]).filter(
+    Boolean
+  ) as ReactElement<TabItemProps>[]
   if (lazy) {
-    const selectedTabItem = children.find(
+    const selectedTabItem = childTabs.find(
       (tabItem) => tabItem.props.value === selectedValue
     )
     if (!selectedTabItem) {
@@ -165,8 +175,8 @@ function TabContent({
     return cloneElement(selectedTabItem)
   }
   return (
-    <div>
-      {children.map((tabItem, i) =>
+    <div className="tw-pt-2">
+      {childTabs.map((tabItem, i) =>
         cloneElement(tabItem, {
           key: i,
           hidden: tabItem.props.value !== selectedValue,
@@ -181,7 +191,7 @@ type TabsComponentProp = TabsCustomProps & OldProps
 function TabsComponent(props: TabsComponentProp): JSX.Element {
   const tabs = useTabs(props)
   return (
-    <div className={clsx("tabs-container", styles.tabList)}>
+    <div className={clsx("tw-mb-1.5")}>
       <TabList {...props} {...tabs} />
       <TabContent {...props} {...tabs} />
     </div>
@@ -190,6 +200,7 @@ function TabsComponent(props: TabsComponentProp): JSX.Element {
 
 type TabsProps = {
   wrapperClassName?: string
+  isCodeTabs?: boolean
 } & OldProps
 
 export default function Tabs(props: TabsProps): JSX.Element {
@@ -204,18 +215,17 @@ export default function Tabs(props: TabsProps): JSX.Element {
 
   return (
     <div
-      className={`tabs-wrapper ${props.wrapperClassName || ""} ${
-        props.groupId === "npm2yarn" ? "code-tabs" : ""
-      }`}
+      className={clsx(
+        "tabs-wrapper",
+        props.wrapperClassName,
+        (props.groupId === "npm2yarn" || props.isCodeTabs) && "code-tabs"
+      )}
     >
       <TabsComponent
         // Remount tabs after hydration
         // Temporary fix for https://github.com/facebook/docusaurus/issues/5653
         key={String(isBrowser)}
-        isCodeTabs={
-          props.wrapperClassName?.search("code-tabs") !== -1 ||
-          props.groupId === "npm2yarn"
-        }
+        isCodeTabs={props.isCodeTabs || props.groupId === "npm2yarn"}
         {...props}
       />
     </div>

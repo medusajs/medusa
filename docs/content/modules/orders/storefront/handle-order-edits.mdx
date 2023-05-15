@@ -72,7 +72,7 @@ You must have an existing order edit in the “request” state.
 
 You can retrieve a single order edit by its ID by sending a request to the [Get Order Edit](/api/store/#tag/OrderEdit/operation/GetOrderEditsOrderEdit) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -200,7 +200,7 @@ If `difference_due` is greater than 0, then additional payment from the customer
 1. Show the customer the available payment processors. These can be retrieved from the details of [the region of the order](/api/store/#tag/Region/operation/GetRegionsRegion).
 2. When the customer selects the payment processor, initialize the payment session of that provider in the payment collection. You can do that by sending a request to the [Manage Payment Sessions](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessions) endpoint, passing it the payment collection’s ID as a path parameter, and the payment processor's ID as a request body parameter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 <!-- eslint-disable max-len -->
@@ -269,7 +269,7 @@ fetch(
 1. Show the customer the payment details form based on the payment session’s provider. For example, if the provider ID of a payment session is `stripe`, you must show Stripe’s card component to enter the customer’s card details.
 2. Authorize the payment using the payment processor. The [Authorize Payment Session](/api/store/#tag/Payment/operation/PostPaymentCollectionsSessionsSessionAuthorize) endpoint accepts the payment collection’s ID and the ID of the payment session as path parameters:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -337,7 +337,7 @@ After performing the above steps, you can [complete the Order Edit](#complete-th
 
 To confirm and complete the order edit, send a request to the [Complete Order Edit](/api/store/#tag/OrderEdit/operation/PostOrderEditsOrderEditComplete) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -404,7 +404,7 @@ If the payment isn’t authorized first, the order edit completion will fail.
 
 If the customer wants to decline the Order Edit, you can do that by sending a request to the Decline Order Edit endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

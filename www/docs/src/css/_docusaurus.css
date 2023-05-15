@@ -41,13 +41,6 @@ video {
   @apply tw-mt-2;
 }
 
-.code-header {
-  @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg;
-  @apply tw-flex tw-justify-between tw-items-center;
-  @apply tw-rounded-tl tw-rounded-tr tw-rounded-br-none tw-rounded-bl-none tw-border-b-0;
-}
-
-.code-header,
 .theme-code-block {
   @apply tw-border tw-border-solid tw-border-medusa-code-block-border;
 }
@@ -81,4 +74,25 @@ video {
   @apply tw-min-h-full tw-flex tw-flex-col;
 }
 
-@import url('./components/sidebar.css');
+.code-tabs .theme-code-block {
+  @apply !tw-rounded-t-none !tw-rounded-b
+}
+
+[class*=codeLineNumber] {
+  @apply tw-text-medusa-text-placeholder !tw-pl-0;
+}
+
+.prism-code {
+  @apply xs:tw-max-w-[90%] xs:after:tw-content-[''] xs:after:tw-rounded xs:after:tw-absolute;
+  @apply xs:after:tw-right-0 xs:after:tw-top-0 xs:after:tw-width-[calc(10% + 24px)] xs:after:tw-h-full xs:after:tw-bg-code-fade;
+}
+
+.prism-code:not(:hover)::-webkit-scrollbar-thumb,
+.prism-code:not(:hover)::-webkit-scrollbar-track {
+  @apply xs:tw-invisible;
+}
+
+.prism-code:hover::-webkit-scrollbar-thumb,
+.prism-code:hover::-webkit-scrollbar-track {
+  @apply xs:tw-opacity-100
+}

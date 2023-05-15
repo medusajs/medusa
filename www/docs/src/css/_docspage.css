@@ -135,9 +135,9 @@ kbd {
   z-index: var(--ifm-z-index-overlay);
 }
 
-.tabs-wrapper:not(.code-tabs) > .tabs-container > div:not(.tablist-wrapper) {
+/* .tabs-wrapper:not(.code-tabs) > .tabs-container > div:not(.tablist-wrapper) {
   padding-top: var(--ifm-base-margin-vertical);
-}
+} */
 
 .medium-zoom-image--opened {
   z-index: var(--ifm-z-index-overlay);

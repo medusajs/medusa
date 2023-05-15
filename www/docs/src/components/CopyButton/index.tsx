@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react"
 // @ts-expect-error: wait until docusaurus uses type: module
 import copy from "copy-text-to-clipboard"
 import Tooltip from "@site/src/components/Tooltip"
+import clsx from "clsx"
 
 type CopyButtonProps = {
   text: string
@@ -33,7 +34,10 @@ const CopyButton: React.FC<CopyButtonProps> = ({
       text={isCopied ? `Copied!` : `Copy to Clipboard`}
       tooltipClassName={tooltipClassName}
     >
-      <span className={`copy-action ${buttonClassName}`} onClick={handleCopy}>
+      <span
+        className={clsx("tw-cursor-pointer", buttonClassName)}
+        onClick={handleCopy}
+      >
         {children}
       </span>
     </Tooltip>

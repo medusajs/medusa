@@ -115,19 +115,25 @@ export default function CodeBlockString({
                         }`
                       )}`}
                       target="_blank"
-                      className="report-code code-action img-url"
+                      className={clsx(
+                        "tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded",
+                        "hover:tw-bg-medusa-code-tab-hover [&:not(:first-child)]:tw-ml-0.5",
+                        "tw-inline-flex tw-justify-center tw-items-center tw-invisible xs:tw-visible"
+                      )}
                       rel="noreferrer"
                     >
-                      <IconAlert />
+                      <IconAlert iconColorClassName="tw-fill-medusa-code-block-action" />
                     </a>
                   </Tooltip>
                 )}
                 {!noCopy && (
                   <CopyButton
-                    buttonClassName="code-action code-action-copy"
+                    buttonClassName={clsx(
+                      "tw-flex tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded"
+                    )}
                     text={code}
                   >
-                    <IconCopy />
+                    <IconCopy iconColorClassName="tw-fill-medusa-code-block-action" />
                   </CopyButton>
                 )}
               </div>
