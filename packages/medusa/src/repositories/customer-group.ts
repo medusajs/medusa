@@ -76,6 +76,10 @@ export const CustomerGroupRepository = dataSource
         })
         count = entities.length
       } else {
+        const discountConditionId =
+          idsOrOptionsWithoutRelations?.where?.discount_condition_id
+        delete idsOrOptionsWithoutRelations?.where?.discount_condition_id
+
         const result = await queryEntityWithoutRelations(
           this,
           idsOrOptionsWithoutRelations,
@@ -83,11 +87,6 @@ export const CustomerGroupRepository = dataSource
           [
             async (qb, alias) => {
               if (idsOrOptionsWithoutRelations?.where?.discount_condition_id) {
-                const discountConditionId =
-                  idsOrOptionsWithoutRelations?.where?.discount_condition_id
-                delete idsOrOptionsWithoutRelations?.where
-                  ?.discount_condition_id
-
                 qb.innerJoin(
                   "discount_condition_customer_group",
                   "dc_cg",
