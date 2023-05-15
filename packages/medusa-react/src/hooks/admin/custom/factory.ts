@@ -36,7 +36,6 @@ export const createCustomAdminHooks = (
   ) => useAdminCustomEntity(path, id, customQueryKeys.detail(id), options)
 
   const useAdminEntities = <TQuery extends Record<string, unknown>, TResponse>(
-    path: string,
     query?: TQuery,
     options?: UseQueryOptionsWrapper<Response<TResponse>, Error, QueryKey>
   ) => useAdminCustomEntities(path, customQueryKeys.list(query), query, options)
