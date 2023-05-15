@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * Represents a reservation of an inventory item at a stock location
