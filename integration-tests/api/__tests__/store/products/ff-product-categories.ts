@@ -27,7 +27,6 @@ describe("/store/products", () => {
     medusaProcess = await setupServer({
       cwd,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
-      verbose: true,
     })
   })
 
@@ -224,7 +223,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       const params = `id[]=${testProductFilteringId2}&expand=categories`
-      const response = await api.get(`/store/products?${params}`)
+      let response = await api.get(`/store/products?${params}`)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(1)
@@ -234,6 +233,32 @@ describe("/store/products", () => {
           expect.objectContaining({
             id: testProductFilteringId2,
             categories: [],
+          }),
+        ])
+      )
+
+      const category = await simpleProductCategoryFactory(dbConnection, {
+        id: categoryWithProductId,
+        name: "category with Product 2",
+        products: [{ id: response.data.products[0].id }],
+        is_active: true,
+        is_internal: false,
+      })
+
+      response = await api.get(`/store/products?${params}`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: testProductFilteringId2,
+            categories: expect.arrayContaining([
+              expect.objectContaining({
+                id: category.id,
+              }),
+            ]),
           }),
         ])
       )
