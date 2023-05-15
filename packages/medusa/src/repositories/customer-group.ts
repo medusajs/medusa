@@ -86,14 +86,21 @@ export const CustomerGroupRepository = dataSource
           true,
           [
             async (qb, alias) => {
-              if (idsOrOptionsWithoutRelations?.where?.discount_condition_id) {
+              if (discountConditionId) {
                 qb.innerJoin(
                   "discount_condition_customer_group",
                   "dc_cg",
                   `dc_cg.customer_group_id = ${alias}.id AND dc_cg.condition_id = :dcId`,
                   { dcId: discountConditionId }
                 )
+
+                return {
+                  relation: "discount_condition",
+                  preventOrderJoin: true,
+                }
               }
+
+              return
             },
           ]
         )
