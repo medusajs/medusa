@@ -35,13 +35,13 @@ export const createCustomAdminHooks = (
     options?: UseQueryOptionsWrapper<Response<TResponse>, Error, QueryKey>
   ) => useAdminCustomEntity(path, id, customQueryKeys.detail(id), options)
 
-  const useAdminEntities = <TQuery extends Record<string, unknown>, TResponse>(
+  const useAdminEntities = <TQuery extends Record<string, any>, TResponse>(
     query?: TQuery,
     options?: UseQueryOptionsWrapper<Response<TResponse>, Error, QueryKey>
   ) => useAdminCustomEntities(path, customQueryKeys.list(query), query, options)
 
   const useAdminCreateMutation = <
-    TPayload extends Record<string, unknown>,
+    TPayload extends Record<string, any>,
     TResponse
   >(
     options?: UseMutationOptions<Response<TResponse>, Error, TPayload>
@@ -54,7 +54,7 @@ export const createCustomAdminHooks = (
     )
 
   const useAdminUpdateMutation = <
-    TPayload extends Record<string, unknown>,
+    TPayload extends Record<string, any>,
     TResponse
   >(
     id: string,

@@ -33,7 +33,7 @@ class AdminCustomResource extends BaseResource {
    * @param query optional
    * @param customHeaders
    */
-  list<TQuery extends Record<string, unknown> = {}, TResponse = any>(
+  list<TQuery extends Record<string, any> = {}, TResponse = any>(
     path: string,
     query?: TQuery,
     customHeaders: Record<string, any> = {}
@@ -54,7 +54,7 @@ class AdminCustomResource extends BaseResource {
     )
   }
 
-  create<TPayload extends Record<string, unknown>, TResponse = any>(
+  create<TPayload extends Record<string, any> = {}, TResponse = any>(
     path: string,
     payload: TPayload,
     customHeaders: Record<string, any> = {}
@@ -76,7 +76,7 @@ class AdminCustomResource extends BaseResource {
    * @param payload update to apply to entity
    * @param customHeaders
    */
-  update<TPayload extends Record<string, unknown>, TResponse = any>(
+  update<TPayload extends Record<string, any> = {}, TResponse = any>(
     path: string,
     id: string,
     payload: TPayload,

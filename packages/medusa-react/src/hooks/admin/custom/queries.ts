@@ -13,15 +13,15 @@ export const useAdminCustomEntity = <TRes>(
 
   const { data, ...rest } = useQuery(
     queryKey,
-    () => client.admin.custom.retrieve(path, id),
+    () => client.admin.custom.retrieve<TRes>(path, id),
     options
   )
 
-  return { ...data, ...rest } as const
+  return { data, ...rest } as const
 }
 
 export const useAdminCustomEntities = <
-  TQuery extends Record<string, unknown>,
+  TQuery extends Record<string, any>,
   TRes
 >(
   path: string,
@@ -33,9 +33,9 @@ export const useAdminCustomEntities = <
 
   const { data, ...rest } = useQuery(
     queryKey,
-    () => client.admin.custom.list(path, query),
+    () => client.admin.custom.list<TQuery, TRes>(path, query),
     options
   )
 
-  return { ...data, ...rest } as const
+  return { data, ...rest } as const
 }

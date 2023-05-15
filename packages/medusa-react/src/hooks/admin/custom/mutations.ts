@@ -94,7 +94,7 @@ export const buildCustomOptions = <
 }
 
 export const useAdminCreateCustomEntity = <
-  TPayload extends Record<string, unknown>,
+  TPayload extends Record<string, any>,
   TResponse
 >(
   path: string,
@@ -113,7 +113,7 @@ export const useAdminCreateCustomEntity = <
 }
 
 export const useAdminUpdateCustomEntity = <
-  TPayload extends Record<string, unknown>,
+  TPayload extends Record<string, any>,
   TResponse
 >(
   path: string,
