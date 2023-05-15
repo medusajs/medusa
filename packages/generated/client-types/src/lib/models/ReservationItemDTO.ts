@@ -1,4 +1,6 @@
 /* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
 
 /**
  * Represents a reservation of an inventory item at a stock location
