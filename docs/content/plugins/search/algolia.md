@@ -194,7 +194,7 @@ const plugins = [
 Run your Medusa backend with the following command:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
