@@ -155,7 +155,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         alias: productAlias,
         categoryAlias: "categories",
         where: joinScope,
-        joinName: "leftJoin",
+        joinName: categoryIds.length ? "innerJoin" : "leftJoin",
       })
     }
 
