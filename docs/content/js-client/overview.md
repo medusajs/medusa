@@ -32,7 +32,7 @@ const medusa = new Medusa()
 
 ## How to Use this Reference
 
-You'll find in the sidebar of this reference names of different resources. These resources are properties in the medusa instance you initialize and you can access them directly using the instance. Then, you'll be able to access the methods or nested resources within those resources.
+You'll find in the sidebar of this reference names of different resources. These resources are properties in the Medusa instance you initialize and you can access them directly using the instance. Then, you'll be able to access the methods or nested resources within those resources.
 
 For example, to create a new customer you can access the [create](/references/js-client/classes/CustomerResource#create) method under the [customers](/references/js-client/classes/CustomerResource) property of your client:
 
