@@ -242,17 +242,17 @@ class PricingService extends TransactionBaseService {
       pricingContext.price_selection.tax_rates = productRates.get(productId)
     }
 
-    return (
-      await this.getProductVariantPricing_(
-        [
-          {
-            variantId: variant.id,
-            quantity: pricingContext.price_selection.quantity,
-          },
-        ],
-        pricingContext
-      )
-    ).get(variant.id)!
+    const productVariantPricing = await this.getProductVariantPricing_(
+      [
+        {
+          variantId: variant.id,
+          quantity: pricingContext.price_selection.quantity,
+        },
+      ],
+      pricingContext
+    )
+
+    return productVariantPricing.get(variant.id)!
   }
 
   /**
@@ -282,20 +282,23 @@ class PricingService extends TransactionBaseService {
         .withTransaction(this.activeManager_)
         .retrieve(variantId, { select: ["id", "product_id"] })
 
-      productRates = (
-        await this.taxProviderService
-          .withTransaction(this.activeManager_)
-          .getRegionRatesForProduct([product_id], {
-            id: pricingContext.price_selection.region_id,
-            tax_rate: pricingContext.tax_rate,
-          })
-      ).get(product_id)!
+      const regionRatesForProduct = await this.taxProviderService
+        .withTransaction(this.activeManager_)
+        .getRegionRatesForProduct([product_id], {
+          id: pricingContext.price_selection.region_id,
+          tax_rate: pricingContext.tax_rate,
+        })
+
+      productRates = regionRatesForProduct.get(product_id)!
     }
 
     pricingContext.price_selection.tax_rates = productRates
-    return (
-      await this.getProductVariantPricing_([{ variantId }], pricingContext)
-    ).get(variantId)!
+    const productVariantPricing = await this.getProductVariantPricing_(
+      [{ variantId }],
+      pricingContext
+    )
+
+    return productVariantPricing.get(variantId)!
   }
 
   /**
@@ -418,12 +421,11 @@ class PricingService extends TransactionBaseService {
     context: PriceSelectionContext
   ): Promise<Record<string, ProductVariantPricing>> {
     const pricingContext = await this.collectPricingContext(context)
-    return (
-      await this.getProductPricing_(
-        [{ productId: product.id, variants: product.variants }],
-        pricingContext
-      )
-    ).get(product.id)!
+    const productPricing = await this.getProductPricing_(
+      [{ productId: product.id, variants: product.variants }],
+      pricingContext
+    )
+    return productPricing.get(product.id)!
   }
 
   /**
@@ -441,9 +443,11 @@ class PricingService extends TransactionBaseService {
       { product_id: productId },
       { select: ["id"] }
     )
-    return (
-      await this.getProductPricing_([{ productId, variants }], pricingContext)
-    ).get(productId)!
+    const productPricing = await this.getProductPricing_(
+      [{ productId, variants }],
+      pricingContext
+    )
+    return productPricing.get(productId)!
   }
 
   /**

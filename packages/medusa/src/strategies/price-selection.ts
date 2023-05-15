@@ -290,7 +290,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
 
   private getCacheKey(
     variantId: string,
-    context: PriceSelectionContext & { quantity?: number }
+    context: PriceSelectionContext
   ): string {
     const taxRate =
       context.tax_rates?.reduce(
