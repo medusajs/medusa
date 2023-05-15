@@ -1,7 +1,4 @@
 /* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface InventoryItemDTO {
   /**
@@ -20,6 +17,18 @@ export interface InventoryItemDTO {
    * The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
    */
   mid_code?: string
+  /**
+   * Title of the inventory item
+   */
+  title?: string
+  /**
+   * Description of the inventory item
+   */
+  description?: string
+  /**
+   * Thumbnail for the inventory item
+   */
+  thumbnail?: string
   /**
    * The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
    */

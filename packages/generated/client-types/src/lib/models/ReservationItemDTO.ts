@@ -1,7 +1,4 @@
 /* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
  * Represents a reservation of an inventory item at a stock location
@@ -19,6 +16,14 @@ export interface ReservationItemDTO {
    * The id of the inventory item the reservation relates to
    */
   inventory_item_id: string
+  /**
+   * Description of the reservation item
+   */
+  description?: string
+  /**
+   * UserId of user who created the reservation item
+   */
+  created_by?: string
   /**
    * The id of the reservation item
    */
