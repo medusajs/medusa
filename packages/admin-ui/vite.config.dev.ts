@@ -30,6 +30,26 @@ export default defineConfig(() => {
     )
   }
 
+  const tailwindContentExists = fs.existsSync("./ui/tailwind.content.js")
+
+  /**
+   * Create tailwind content file if it doesn't exist.
+   * This is needed to prevent Vite import:analysis from failing.
+   * NOTE that the file is ignored by git.
+   */
+  if (!tailwindContentExists) {
+    console.log(
+      colors.cyan("[@medusajs/admin-ui]: Creating empty tailwind content file")
+    )
+
+    fs.writeFileSync(
+      "./ui/tailwind.content.js",
+      `module.exports = {
+        content: []
+      }\n\n`
+    )
+  }
+
   return {
     plugins: [react()],
     test: {

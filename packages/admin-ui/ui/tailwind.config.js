@@ -1,10 +1,12 @@
 const path = require("path")
+const { config } = require("./tailwind.content")
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     path.join(__dirname, "src/**/*.{js,ts,jsx,tsx}"),
     path.join(__dirname, "./index.html"),
+    ...config,
   ],
   theme: {
     screens: {},
