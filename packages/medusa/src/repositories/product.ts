@@ -75,6 +75,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       .select([`${productAlias}.id`])
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
+      .setFindOptions({ relationLoadStrategy: "query" })
 
     if (optionsWithoutRelations.where) {
       qb.where(optionsWithoutRelations.where)
@@ -266,6 +267,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           )
         }
 
+        querybuilder.setFindOptions({ relationLoadStrategy: "query" })
         return querybuilder.getMany()
       })
     ).then(flatten)
@@ -565,6 +567,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     if (cleanedOptions.withDeleted) {
       qb = qb.withDeleted()
     }
+
+    qb.setFindOptions({ relationLoadStrategy: "query" })
 
     const [results, count] = await qb.getManyAndCount()
     const orderedResultsSet = new Set(results.map((p) => p.id))
