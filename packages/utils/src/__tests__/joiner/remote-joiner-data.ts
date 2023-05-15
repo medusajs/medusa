@@ -267,7 +267,7 @@ describe("RemoteJoiner", () => {
     ])
   })
 
-  it.only("Query a service expanding an inverse relation", async () => {
+  it("Query a service expanding an inverse relation", async () => {
     let query: RemoteJoinerQuery = {
       service: "Variant",
       fields: ["name"],
@@ -309,95 +309,156 @@ describe("RemoteJoiner", () => {
                 product {
                   name
                 }
+                variant {
+                  name
+                }
               }
             }
           }
         }
       }
     `)
-
-    console.log(JSON.stringify(query, null, 2))
-
     const data = await joiner.query(query)
-    console.log(JSON.stringify(data, null, 2))
-    //process.exit(0)
 
     expect(data).toEqual([
       {
-        number: "ORD-001",
-        date: "2023-04-01T12:00:00Z",
-        products: [
-          {
-            product_id: 101,
-            variant_id: 991,
-            quantity: 1,
-            product: {
-              name: "Product 1",
-              id: 101,
-            },
-          },
-          {
-            product_id: 101,
-            variant_id: 992,
-            quantity: 5,
-            product: {
-              name: "Product 1",
-              id: 101,
-            },
-          },
-        ],
-        user_id: 4,
-        user: {
-          fullname: "444 Doe full name",
-          email: "444444@example.com",
-          products: [
-            {
-              id: 4,
-              product_id: 103,
-              product: {
-                name: "Product 3",
-                id: 103,
+        id: 991,
+        name: "Product variant 1",
+        orders: {
+          order: {
+            number: "ORD-001",
+            products: [
+              {
+                product_id: 101,
+                variant_id: 991,
+                quantity: 1,
+                product: {
+                  name: "Product 1",
+                  id: 101,
+                },
+                variant: {
+                  name: "Product variant 1",
+                  id: 991,
+                  product_id: 101,
+                },
               },
-            },
-          ],
-          id: 4,
+              {
+                product_id: 101,
+                variant_id: 992,
+                quantity: 5,
+                product: {
+                  name: "Product 1",
+                  id: 101,
+                },
+                variant: {
+                  name: "Product variant 2",
+                  id: 992,
+                  product_id: 101,
+                },
+              },
+            ],
+            id: 201,
+          },
+          variant_id: 991,
+          order_id: 201,
         },
       },
       {
-        number: "ORD-202",
-        date: "2023-04-01T12:00:00Z",
-        products: [
+        id: 992,
+        name: "Product variant 2",
+        orders: [
           {
-            product_id: [101, 103],
-            variant_id: 993,
-            quantity: 4,
-            product: [
-              {
-                name: "Product 1",
-                id: 101,
-              },
-              {
-                name: "Product 3",
-                id: 103,
-              },
-            ],
+            order: {
+              number: "ORD-001",
+              products: [
+                {
+                  product_id: 101,
+                  variant_id: 991,
+                  quantity: 1,
+                  product: {
+                    name: "Product 1",
+                    id: 101,
+                  },
+                  variant: {
+                    name: "Product variant 1",
+                    id: 991,
+                    product_id: 101,
+                  },
+                },
+                {
+                  product_id: 101,
+                  variant_id: 992,
+                  quantity: 5,
+                  product: {
+                    name: "Product 1",
+                    id: 101,
+                  },
+                  variant: {
+                    name: "Product variant 2",
+                    id: 992,
+                    product_id: 101,
+                  },
+                },
+              ],
+              id: 201,
+            },
+            variant_id: 992,
+            order_id: 201,
+          },
+          {
+            order: {
+              number: "ORD-202",
+              products: [
+                {
+                  product_id: [101, 103],
+                  variant_id: 993,
+                  quantity: 4,
+                  product: [
+                    {
+                      name: "Product 1",
+                      id: 101,
+                    },
+                    {
+                      name: "Product 3",
+                      id: 103,
+                    },
+                  ],
+                },
+              ],
+              id: 205,
+            },
+            variant_id: 992,
+            order_id: 205,
           },
         ],
-        user_id: 1,
-        user: {
-          fullname: "John Doe full name",
-          email: "johndoe@example.com",
-          products: [
-            {
-              id: 1,
-              product_id: 102,
-              product: {
-                name: "Product 2",
-                id: 102,
+      },
+      {
+        id: 993,
+        name: "Product variant 33",
+        orders: {
+          order: {
+            number: "ORD-202",
+            products: [
+              {
+                product_id: [101, 103],
+                variant_id: 993,
+                quantity: 4,
+                product: [
+                  {
+                    name: "Product 1",
+                    id: 101,
+                  },
+                  {
+                    name: "Product 3",
+                    id: 103,
+                  },
+                ],
               },
-            },
-          ],
-          id: 1,
+            ],
+            id: 205,
+          },
+          variant_id: 993,
+          order_id: 205,
         },
       },
     ])

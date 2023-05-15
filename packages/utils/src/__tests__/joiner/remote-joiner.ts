@@ -177,7 +177,7 @@ describe("RemoteJoiner", () => {
         },
         {
           property: "products.product",
-          fields: ["name"],
+          fields: ["handler"],
         },
         {
           property: "user",
@@ -214,12 +214,12 @@ describe("RemoteJoiner", () => {
     expect(serviceMock.productService).toHaveBeenCalledTimes(2)
     expect(serviceMock.productService).toHaveBeenNthCalledWith(1, {
       fields: ["name", "id"],
-      options: { id: expect.arrayContaining([101, 103]) },
+      options: { id: expect.arrayContaining([103, 102]) },
     })
 
     expect(serviceMock.productService).toHaveBeenNthCalledWith(2, {
-      fields: ["name", "id"],
-      options: { id: expect.arrayContaining([103, 102]) },
+      fields: ["handler", "id"],
+      options: { id: expect.arrayContaining([101, 103]) },
     })
   })
 })
