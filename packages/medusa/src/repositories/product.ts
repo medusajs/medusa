@@ -210,7 +210,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
             queryBuilder.leftJoinAndSelect(
               `${alias}.${topLevel}`,
               topLevel,
-              "variants.deleted_at IS NULL"
+              `${topLevel}.deleted_at IS NULL`
             )
 
             if (!Object.keys(order).some((key) => key.startsWith("variants"))) {

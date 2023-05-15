@@ -135,11 +135,10 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>(
     qb,
     alias,
     shouldJoin: (relationToJoin) => {
-      return (
-        !shouldJoins.every(({ relation }) => relation !== relationToJoin) ||
-        shouldJoins.some(({ relation, shouldJoin }) => {
-          return relation === relationToJoin && shouldJoin
-        })
+      return shouldJoins.every(
+        ({ relation, shouldJoin }) =>
+          relation !== relationToJoin ||
+          (relation === relationToJoin && shouldJoin)
       )
     },
   })
