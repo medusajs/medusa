@@ -23,11 +23,11 @@
     "picocolors": "^1.0.0",
     "rollup": "^3.20.7",
     "rollup-plugin-esbuild": "^5.0.0",
-    "tslib": "^2.5.0"
+    "tslib": "^2.5.0",
+    "@medusajs/types": "*"
   },
   "devDependencies": {
     "@medusajs/medusa": "*",
-    "@medusajs/types": "*",
     "@types/fs-extra": "^11.0.1",
     "typescript": "^5.0.4"
   },
