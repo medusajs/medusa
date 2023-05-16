@@ -6,6 +6,7 @@ import {
   ProductTagService,
   ProductVariantService,
 } from "@services"
+import * as DefaultRepositories from "@repositories"
 import {
   ProductCollectionRepository,
   ProductRepository,
@@ -18,6 +19,7 @@ import {
   RepositoryService,
 } from "../types"
 import { Constructor } from "@medusajs/types"
+import { lowerCaseFirst } from "@medusajs/utils"
 
 export default async ({
   container,
@@ -26,9 +28,9 @@ export default async ({
   | ProductServiceInitializeOptions
   | ProductServiceInitializeCustomDataLayerOptions
 >): Promise<void> => {
-  const customDataLayer = (
+  const customRepositories = (
     options as ProductServiceInitializeCustomDataLayerOptions
-  )?.customDataLayer
+  )?.repositories
 
   container.register({
     productService: asClass(ProductService).singleton(),
@@ -36,8 +38,8 @@ export default async ({
     productTagService: asClass(ProductTagService).singleton(),
   })
 
-  if (customDataLayer) {
-    await loadCustomRepositories({ customDataLayer, container })
+  if (customRepositories) {
+    await loadCustomRepositories({ customRepositories, container })
   } else {
     await loadDefaultRepositories({ container })
   }
@@ -54,11 +56,29 @@ function loadDefaultRepositories({ container }) {
   })
 }
 
-function loadCustomRepositories({ customDataLayer, container }) {
-  Object.entries(customDataLayer.repositories).forEach(([key, Repository]) => {
+/**
+ * Load the repositories from the custom repositories object. If a repository is not
+ * present in the custom repositories object, the default repository will be used.
+ *
+ * @param customRepositories
+ * @param container
+ */
+function loadCustomRepositories({ customRepositories, container }) {
+  const customRepositoriesMap = new Map(Object.entries(customRepositories))
+
+  Object.entries(DefaultRepositories).forEach(([key, DefaultRepository]) => {
+    let finalRepository = customRepositoriesMap.get(key)
+
+    if (
+      !finalRepository ||
+      !(finalRepository as Constructor<RepositoryService<any>>).prototype.find
+    ) {
+      finalRepository = DefaultRepository
+    }
+
     container.register({
-      [key]: asClass(
-        Repository as Constructor<RepositoryService<any>>
+      [lowerCaseFirst(key)]: asClass(
+        finalRepository as Constructor<RepositoryService<any>>
       ).singleton(),
     })
   })

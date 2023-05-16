@@ -1,6 +1,6 @@
 import { FindOptions, RepositoryService } from "../../src"
 
-export class CustomRepository implements RepositoryService<any> {
+class CustomRepository implements RepositoryService<any> {
   constructor() {}
 
   find(options?: FindOptions<any>): Promise<any[]> {
@@ -16,3 +16,8 @@ CustomRepository.prototype.find = jest.fn().mockImplementation(async () => [])
 CustomRepository.prototype.findAndCount = jest
   .fn()
   .mockImplementation(async () => [])
+
+export class ProductRepository extends CustomRepository {}
+export class ProductTagRepository extends CustomRepository {}
+export class ProductCollectionRepository extends CustomRepository {}
+export class ProductVariantsRepository extends CustomRepository {}

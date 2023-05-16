@@ -34,16 +34,16 @@ export default async (
     return
   }
 
-  const customDataLayer = (
+  const customManager = (
     options as ProductServiceInitializeCustomDataLayerOptions
-  )?.customDataLayer
+  )?.manager
   const dbData = (options as ProductServiceInitializeOptions)?.database
 
-  if (!customDataLayer?.manager) {
+  if (!customManager) {
     await loadDefault({ database: dbData, container })
   } else {
     container.register({
-      manager: asValue(customDataLayer.manager),
+      manager: asValue(customManager),
     })
   }
 }

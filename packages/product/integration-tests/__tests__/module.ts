@@ -2,7 +2,8 @@ import { initialize } from "../../src"
 import { databaseOptions, TestDatabase } from "../utils"
 import { createProductAndTags } from "../__fixtures__/product"
 import { Product } from "@models"
-import { CustomRepository } from "../__fixtures__/module"
+import * as CustomRepositories from "../__fixtures__/module"
+import { ProductRepository } from "../__fixtures__/module"
 import { productsData } from "../__fixtures__/product/data"
 
 const beforeEach_ = async () => {
@@ -66,14 +67,7 @@ describe("Product module", function () {
             connection: { ssl: false },
           },
         },
-        customDataLayer: {
-          repositories: {
-            productRepository: CustomRepository,
-            productCollectionRepository: CustomRepository,
-            productTagRepository: CustomRepository,
-            productVariantRepository: CustomRepository,
-          },
-        },
+        repositories: CustomRepositories,
       })
     })
 
@@ -86,7 +80,7 @@ describe("Product module", function () {
     it("should return a list of product", async () => {
       const products = await module.list()
 
-      expect(CustomRepository.prototype.find).toHaveBeenCalled()
+      expect(ProductRepository.prototype.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
     })
   })
@@ -101,15 +95,8 @@ describe("Product module", function () {
       products = await createProductAndTags(testManager, productsData)
 
       module = await initialize({
-        customDataLayer: {
-          manager: testManager,
-          repositories: {
-            productRepository: CustomRepository,
-            productCollectionRepository: CustomRepository,
-            productTagRepository: CustomRepository,
-            productVariantRepository: CustomRepository,
-          },
-        },
+        manager: testManager,
+        repositories: CustomRepositories,
       })
     })
 
@@ -122,7 +109,7 @@ describe("Product module", function () {
     it("should return a list of product", async () => {
       const products = await module.list()
 
-      expect(CustomRepository.prototype.find).toHaveBeenCalled()
+      expect(ProductRepository.prototype.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
     })
   })
