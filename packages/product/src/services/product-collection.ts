@@ -2,12 +2,7 @@ import { ProductCollection } from "@models"
 import { FilterQuery } from "@mikro-orm/core"
 import { OptionsQuery } from "../types/dal/helpers"
 import { RepositoryService } from "../types"
-import {
-  FilterableProductCollectionProps,
-  FindConfig,
-  ProductCollectionDTO,
-  SharedContext,
-} from "@medusajs/types"
+import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 
 type InjectedDependencies = {
   productCollectionRepository: RepositoryService<ProductCollection>
@@ -21,8 +16,8 @@ export default class ProductCollectionService {
   }
 
   async list(
-    filters: FilterableProductCollectionProps = {},
-    config: FindConfig<ProductCollectionDTO> = {},
+    filters: ProductTypes.FilterableProductCollectionProps = {},
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: SharedContext
   ): Promise<ProductCollection[]> {
     const where: FilterQuery<ProductCollection> = {}

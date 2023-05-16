@@ -1,11 +1,6 @@
 import { ProductTag, ProductVariant } from "@models"
 import { RepositoryService } from "../types"
-import {
-  FilterableProductVariantProps,
-  FindConfig,
-  ProductVariantDTO,
-  SharedContext,
-} from "@medusajs/types"
+import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 import { FilterQuery } from "@mikro-orm/core"
 import { OptionsQuery } from "../types/dal/helpers"
 
@@ -21,8 +16,8 @@ export default class ProductVariantService {
   }
 
   async list(
-    filters: FilterableProductVariantProps = {},
-    config: FindConfig<ProductVariantDTO> = {},
+    filters: ProductTypes.FilterableProductVariantProps = {},
+    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: SharedContext
   ): Promise<ProductVariant[]> {
     const where: FilterQuery<ProductVariant> = {
