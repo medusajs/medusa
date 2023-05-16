@@ -7,7 +7,10 @@ import {
 import { ProductRepository } from "@repositories"
 import { Product, ProductCategory } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createProductAndTags, createCategories } from "../../../__fixtures__/product"
+import { Collection } from "@mikro-orm/core"
+import { ProductDTO } from "@medusajs/types"
+
+import { createProductAndTags, createCategories, assignCategoriesToProduct } from "../../../__fixtures__/product"
 import { productsData, categoriesData } from "../../../__fixtures__/product/data"
 
 const productVariantService = {
@@ -102,59 +105,85 @@ describe("Product Service", () => {
     })
 
     describe("relation: categories", () => {
+      let workingProduct: Product
+      let workingCategory: ProductCategory
+
       beforeEach(async () => {
         testManager = await TestDatabase.forkManager()
 
+        products = await createProductAndTags(testManager, productsData)
+        workingProduct = products.find((p) => p.id === 'test-1') as Product
+
         categories = await createCategories(testManager, categoriesData)
+        workingCategory = categories.find((c) => c.id === 'category-1') as ProductCategory
+
+        workingProduct = await assignCategoriesToProduct(testManager, workingProduct, categories)
       })
 
-      it("filter by id and including relations", async () => {
-        const productsResult = await service.list(
+      it("filter by categories relation and scope fields", async () => {
+        const products = await service.list(
           {
-            id: products[0].id,
+            id: workingProduct.id,
           },
           {
-            relations: ["tags"],
+            select: ['title', 'categories.name', 'categories.handle'] as unknown as (keyof ProductDTO)[],
+            relations: ["categories"],
           }
         )
 
-        productsResult.forEach((product, index) => {
-          const tags = product.tags.toArray()
+        const product = products.find((p) => p.id === workingProduct.id) as Product
 
-          expect(product).toEqual(
-            expect.objectContaining({
-              id: productsData[index].id,
-              title: productsData[index].title,
-            })
-          )
-
-          tags.forEach((tag, tagIndex) => {
-            expect(tag).toEqual(
-              expect.objectContaining({
-                ...productsData[index].tags[tagIndex],
-              })
-            )
+        expect(product).toEqual(
+          expect.objectContaining({
+            id: workingProduct.id,
+            title: workingProduct.title,
           })
-        })
+        )
+
+        expect(product.categories.toArray()).toEqual([
+          {
+            id: workingCategory.id,
+            name: workingCategory.name,
+            handle: workingCategory.name.split(' ').join('-'),
+          }
+        ])
       })
 
-      it("filter by id and without relations", async () => {
-        const productsResult = await service.list({
-          id: products[0].id,
-        })
+      it("filter by categories.parent_category and categories.category_children relation and scope fields", async () => {
+        const products = await service.list(
+          {
+            id: workingProduct.id,
+          },
+          {
+            select: ['categories.name', 'categories.category_children.name', 'categories.parent_category.name'] as unknown as (keyof ProductDTO)[],
+            relations: ["categories", "categories.category_children", "categories.parent_category"],
+          }
+        )
 
-        productsResult.forEach((product, index) => {
-          const tags = product.tags.getItems(false)
+        const product = products.find((p) => p.id === workingProduct.id) as Product
 
-          expect(product).toEqual(
-            expect.objectContaining({
-              id: productsData[index].id,
-              title: productsData[index].title,
-            })
-          )
+        expect(product).toEqual(
+          expect.objectContaining({
+            id: workingProduct.id,
+            categories: expect.any(Collection<ProductCategory>),
+          })
+        )
 
-          expect(tags.length).toBe(0)
-        })
+        expect(product.categories.toArray()).toEqual([
+          {
+            id: workingCategory.id,
+            name: workingCategory.name,
+            category_children: [{
+              id: workingCategory.category_children[0].id,
+              name: workingCategory.category_children[0].name,
+              parent_category: workingCategory.id
+            }],
+            parent_category: {
+              id: workingCategory.parent_category?.id,
+              name: workingCategory.parent_category?.name,
+            }
+          }
+        ])
       })
     })
   })

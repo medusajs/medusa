@@ -39,3 +39,15 @@ export async function createCategories(
 
   return categories
 }
+
+export async function assignCategoriesToProduct(
+  manager: SqlEntityManager,
+  product: Product,
+  categories: ProductCategory[]
+) {
+  product.categories.add(categories)
+
+  await manager.persistAndFlush(product)
+
+  return product
+}

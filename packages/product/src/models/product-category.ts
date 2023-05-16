@@ -22,7 +22,7 @@ class ProductCategory {
   name: string
 
   @Property({ columnType: "text", default: '', nullable: false })
-  description: string
+  description?: string
 
   @Index({
     name: "IDX_product_category_handle",
@@ -31,7 +31,7 @@ class ProductCategory {
       `CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle")`,
   })
   @Property({ columnType: "text", nullable: false })
-  handle: string
+  handle?: string
 
   @Index({
     name: "IDX_product_category_path",
@@ -39,24 +39,25 @@ class ProductCategory {
     expression:
       `CREATE INDEX "IDX_product_category_path" ON "product_category" ("mpath")`,
   })
-  @Property({ columnType: "text" })
-  mpath: string
+  // TODO: mpath shouldn't be nullable, remove this when mpath is processed before create
+  @Property({ columnType: "text", nullable: true })
+  mpath?: string
 
   @Property({ columnType: "boolean", default: false })
-  is_active: boolean
+  is_active?: boolean
 
   @Property({ columnType: "boolean", default: false })
-  is_internal: boolean
+  is_internal?: boolean
 
   @Property({ columnType: "numeric", nullable: false, default: 0 })
-  rank: number
+  rank?: number
 
-  @ManyToOne(() => ProductCategory)
-  parent_category = new Collection<ProductCategory>(this);
+  @ManyToOne(() => ProductCategory, { nullable: true })
+  parent_category?: ProductCategory
 
   @OneToMany({
     entity: () => ProductCategory,
-    mappedBy: productCategory => productCategory.parent_category
+    mappedBy: productCategory => productCategory.parent_category,
   })
   category_children = new Collection<ProductCategory>(this);
 
@@ -78,7 +79,7 @@ class ProductCategory {
     this.id = generateEntityId(this.id, "pcat")
 
     if (!this.handle) {
-      this.handle = this.name.split(' ').join('_').toLowerCase()
+      this.handle = this.name.split(' ').join('-').toLowerCase()
     }
   }
 }
