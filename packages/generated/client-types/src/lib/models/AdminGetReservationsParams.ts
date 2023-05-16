@@ -54,11 +54,11 @@ export interface AdminGetReservationsParams {
         /**
          * filter by reservation description starting with search string.
          */
-        startsWith?: number
+        starts_with?: number
         /**
          * filter by reservation description ending with search string.
          */
-        endsWith?: number
+        ends_with?: number
       }
   /**
    * Date comparison for when resulting reservations were created.

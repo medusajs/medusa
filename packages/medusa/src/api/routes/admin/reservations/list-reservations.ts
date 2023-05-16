@@ -77,10 +77,10 @@ import { Type } from "class-transformer"
  *             equals:
  *               type: number
  *               description: filter by reservation description equals search string.
- *             startsWith:
+ *             starts_with:
  *               type: number
  *               description: filter by reservation description starting with search string.
- *             endsWith:
+ *             ends_with:
  *               type: number
  *               description: filter by reservation description ending with search string.
  *   - in: query
