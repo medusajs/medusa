@@ -17,16 +17,7 @@ import { User } from "@medusajs/medusa"
 import CheckIcon from "../../../../fundamentals/icons/check-icon"
 import { InventoryItemDTO } from "@medusajs/types"
 import CrossIcon from "../../../../fundamentals/icons/cross-icon"
-
-const INVENTORY_ITEM_PAGE_SIZE = 10
-
-const dateFilters = [
-  "is in the last",
-  "is older than",
-  "is after",
-  "is before",
-  "is equal to",
-]
+import { removeNullish } from "../../../../../utils/remove-nullish"
 
 type PasswordlessUser = Omit<User, "password_hash">
 
@@ -38,40 +29,16 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
   }, [filters])
 
   const onSubmit = () => {
-    submitFilters(tempState)
+    const { additionalFilters, ...state } = tempState
+    submitFilters({
+      ...removeNullish(state),
+      additionalFilters: removeNullish(additionalFilters),
+    })
   }
 
   const onClear = () => {
     clearFilters()
   }
-
-  const setSingleFilter = (filterKey, filterVal) => {
-    setTempState((prevState) => ({
-      ...prevState,
-      [filterKey]: filterVal,
-    }))
-  }
-
-  const [inventoryPagination, setInventoryPagivation] = useState({
-    offset: 0,
-    limit: INVENTORY_ITEM_PAGE_SIZE,
-  })
-
-  const handlePaginateRegions = (direction) => {
-    if (direction > 0) {
-      setInventoryPagivation((prev) => ({
-        ...prev,
-        offset: prev.offset + prev.limit,
-      }))
-    } else if (direction < 0) {
-      setInventoryPagivation((prev) => ({
-        ...prev,
-        offset: Math.max(prev.offset - prev.limit, 0),
-      }))
-    }
-  }
-
-  console.log(tempState.additionalFilters)
 
   return (
     <div className="flex space-x-1">
@@ -172,7 +139,6 @@ const SearchableFilterInventoryItem = ({
   value: any
   setFilter: (newFilter: any) => void
 }) => {
-  const [isOpen, setIsOpen] = useState(!!value)
   const [selectedItems, setSelectedItems] = useState<Set<string>>(
     new Set(value)
   )
@@ -265,120 +231,6 @@ const SearchableFilterInventoryItem = ({
   )
 }
 
-// const SearchableFilterInventoryItem = ({
-//   title,
-//   setFilter,
-//   value,
-// }: {
-//   title: string
-//   value: any
-//   setFilter: (newFilter: any) => void
-// }) => {
-//   const [isOpen, setIsOpen] = useState(!!value)
-//   const [selectedItems, setSelectedItems] = useState<Set<string>>(
-//     new Set(value)
-//   )
-//   const [searchTerm, setSearchTerm] = useState<string>("")
-//   const [query, setQuery] = useState<string | undefined>()
-
-//   // Debounced search
-//   useEffect(() => {
-//     const delayDebounceFn = setTimeout(() => {
-//       setSearchTerm(query ?? "")
-//     }, 400)
-
-//     return () => clearTimeout(delayDebounceFn)
-//   }, [query])
-
-//   const { inventory_items, isLoading } = useAdminInventoryItems(
-//     {
-//       q: searchTerm,
-//       limit: 7,
-//     },
-//     {
-//       enabled: !!searchTerm,
-//     }
-//   )
-
-//   const toggleUser = (item: InventoryItemDTO) => {
-//     const newState = getNewSetState(selectedItems, item.id)
-
-//     setSelectedItems(newState)
-//     setFilter([...newState])
-//   }
-
-//   const reset = () => {
-//     setSelectedItems(new Set())
-//     setFilter(null)
-//   }
-
-//   return (
-//     <div className={clsx("w-full border-b")}>
-//       <RadixCollapsible.Root
-//         defaultOpen={!!value}
-//         onOpenChange={(open) => {
-//           setIsOpen(open)
-//           if (!open) {
-//             setFilter(null)
-//             setSelectedItems(new Set())
-//           }
-//         }}
-//         className="w-full"
-//       >
-//         <RadixCollapsible.Trigger
-//           className={clsx(
-//             "hover:bg-grey-5 text-grey-60 flex w-full cursor-pointer items-center justify-between rounded py-1.5 px-3"
-//           )}
-//         >
-//           <p>{title}</p>
-//           <Switch checked={isOpen} type="button" className="cursor-pointer" />
-//         </RadixCollapsible.Trigger>
-//         <RadixCollapsible.Content className="flex w-full flex-col gap-y-2 px-2">
-//           <div className="pb-2">
-//             <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
-//               <InputField
-//                 value={query}
-//                 className="pr-1"
-//                 prefix={
-//                   <div
-//                     onClick={reset}
-//                     className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-//                   >
-//                     <span className="text-grey-50">{selectedItems.size}</span>
-//                     <CrossIcon size={16} />
-//                   </div>
-//                 }
-//                 placeholder="Find items"
-//                 onChange={(e) => setQuery(e.target.value)}
-//               />
-//             </div>
-//             {!isLoading && searchTerm && (
-//               <div className="gap-y-1">
-//                 {inventory_items?.map((item: InventoryItemDTO, i: number) => (
-//                   <div
-//                     key={`item-${i}`}
-//                     onClick={() => toggleUser(item)}
-//                     className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
-//                   >
-//                     <div className="mr-2 flex h-[20px] w-[20px] items-center">
-//                       {selectedItems.has(item.id) && (
-//                         <CheckIcon size={16} color="#111827" />
-//                       )}
-//                     </div>
-//                     <div className="flex w-full items-center justify-between">
-//                       <p>{item.title}</p> <p>{item.sku}</p>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             )}
-//           </div>
-//         </RadixCollapsible.Content>
-//       </RadixCollapsible.Root>
-//     </div>
-//   )
-// }
-
 const CreatedByFilterItem = ({
   title,
   setFilter,
@@ -388,8 +240,6 @@ const CreatedByFilterItem = ({
   value: any
   setFilter: (newFilter: any) => void
 }) => {
-  console.log(value)
-  const [isOpen, setIsOpen] = useState(!!value)
   const [selectedUsers, setSelectedUsers] = useState<Set<string>>(
     new Set(value)
   )
@@ -438,63 +288,52 @@ const CreatedByFilterItem = ({
 
   return (
     <div className={clsx("w-full cursor-pointer")}>
-      <RadixCollapsible.Root
+      <CollapsibleWrapper
+        title={title}
         defaultOpen={!!value}
         onOpenChange={(open) => {
-          setIsOpen(open)
           if (!open) {
             reset()
           }
         }}
-        className="w-full"
       >
-        <RadixCollapsible.Trigger
-          className={clsx(
-            "hover:bg-grey-5 text-grey-60 flex w-full items-center justify-between rounded py-1.5 px-3"
-          )}
-        >
-          <p>{title}</p>
-          <Switch checked={isOpen} type="button" className="cursor-pointer" />
-        </RadixCollapsible.Trigger>
-        <RadixCollapsible.Content className="flex w-full flex-col gap-y-2 px-2">
-          <div className="pb-2">
-            <div className="gap-y-xsmall flex w-full flex-col pt-2">
-              <InputField
-                value={query}
-                placeholder="Find user"
-                onChange={(e) => setQuery(e.target.value)}
-                prefix={
-                  <div
-                    onClick={reset}
-                    className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                  >
-                    <span className="text-grey-50">{selectedUsers.size}</span>
-                    <CrossIcon size={16} />
-                  </div>
-                }
-              />
-            </div>
-            {!isLoading && searchTerm && (
-              <div className="gap-y-1">
-                {displayUsers?.map((u, i) => (
-                  <div
-                    key={`user-${i}`}
-                    onClick={() => toggleUser(u)}
-                    className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
-                  >
-                    <div className="mr-2 flex h-[20px] w-[20px] items-center">
-                      {selectedUsers.has(u.id) && (
-                        <CheckIcon size={16} color="#111827" />
-                      )}
-                    </div>
-                    <div>{`${u.first_name} ${u.last_name}`}</div>
-                  </div>
-                ))}
-              </div>
-            )}
+        <div className="pb-2">
+          <div className="gap-y-xsmall flex w-full flex-col pt-2">
+            <InputField
+              value={query}
+              placeholder="Find user"
+              onChange={(e) => setQuery(e.target.value)}
+              prefix={
+                <div
+                  onClick={reset}
+                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                >
+                  <span className="text-grey-50">{selectedUsers.size}</span>
+                  <CrossIcon size={16} />
+                </div>
+              }
+            />
           </div>
-        </RadixCollapsible.Content>
-      </RadixCollapsible.Root>
+          {!isLoading && searchTerm && (
+            <div className="gap-y-1">
+              {displayUsers?.map((u, i) => (
+                <div
+                  key={`user-${i}`}
+                  onClick={() => toggleUser(u)}
+                  className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
+                >
+                  <div className="mr-2 flex h-[20px] w-[20px] items-center">
+                    {selectedUsers.has(u.id) && (
+                      <CheckIcon size={16} color="#111827" />
+                    )}
+                  </div>
+                  <div>{`${u.first_name} ${u.last_name}`}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </CollapsibleWrapper>
     </div>
   )
 }
@@ -510,7 +349,6 @@ const TextFilterItem = ({
   options: { value: string; label: string }[]
   setFilter: (newFilter: any) => void
 }) => {
-  const [isOpen, setIsOpen] = useState(!!value)
   const [fieldValue, setFieldValue] = useState(value)
 
   const [filterType, setFilterType] = useState<{
@@ -531,40 +369,29 @@ const TextFilterItem = ({
   }
 
   return (
-    <div className={clsx("w-full cursor-pointer border-b")}>
-      <RadixCollapsible.Root
+    <div className={clsx("w-full border-b")}>
+      <CollapsibleWrapper
+        title={title}
         defaultOpen={!!value}
         onOpenChange={(open) => {
-          setIsOpen(open)
           if (!open) {
-            setFilter(null)
+            setFilter(undefined)
           }
         }}
-        className="w-full"
       >
-        <RadixCollapsible.Trigger
-          className={clsx(
-            "hover:bg-grey-5 text-grey-60 flex w-full items-center justify-between rounded py-1.5 px-3"
-          )}
-        >
-          <p>{title}</p>
-          <Switch checked={isOpen} type="button" className="cursor-pointer" />
-        </RadixCollapsible.Trigger>
-        <RadixCollapsible.Content className="flex w-full flex-col gap-y-2 px-2">
-          <div className="gap-y-xsmall flex w-full flex-col py-2">
-            <PopoverSelect
-              options={options}
-              value={filterType}
-              onChange={selectFilterType}
-            />
-            <InputField
-              value={fieldValue?.[filterType.value]}
-              placeholder="Write something"
-              onChange={(e) => updateFieldValue(e.target.value)}
-            />
-          </div>
-        </RadixCollapsible.Content>
-      </RadixCollapsible.Root>
+        <div className="gap-y-xsmall flex w-full flex-col py-2">
+          <PopoverSelect
+            options={options}
+            value={filterType}
+            onChange={selectFilterType}
+          />
+          <InputField
+            value={fieldValue?.[filterType.value]}
+            placeholder="Write something"
+            onChange={(e) => updateFieldValue(e.target.value)}
+          />
+        </div>
+      </CollapsibleWrapper>
     </div>
   )
 }
@@ -586,8 +413,6 @@ const NumberFilterItem = ({
     if (keyLength === 1) {
       return value
     } else if (keyLength === 2) {
-      console.log("returning")
-      console.log({ gt: value.gt })
       return { gt: value.gt }
     }
     return null
@@ -660,62 +485,49 @@ const NumberFilterItem = ({
     return fieldValue?.[filterType.value]
   }
 
-  const resetForm = () => {
-    setFilter(null)
+  const reset = () => {
+    setFilter(undefined)
     setFieldValue(null)
     setUpperBound(null)
   }
   return (
-    <div className={clsx("w-full cursor-pointer border-b")}>
-      <RadixCollapsible.Root
+    <div className={clsx("w-full border-b")}>
+      <CollapsibleWrapper
+        title={title}
         defaultOpen={!!value}
         onOpenChange={(open) => {
-          setIsOpen(open)
           if (!open) {
-            resetForm()
-            setFilter(null)
-            setUpperBoundValue(null)
+            reset()
           }
         }}
-        className="w-full"
       >
-        <RadixCollapsible.Trigger
-          className={clsx(
-            "hover:bg-grey-5 text-grey-60 flex w-full  items-center justify-between rounded py-1.5 px-3"
-          )}
-        >
-          <p>{title}</p>
-          <Switch checked={isOpen} type="button" className="cursor-pointer" />
-        </RadixCollapsible.Trigger>
-        <RadixCollapsible.Content className="flex w-full flex-col gap-y-2 px-2">
-          <div className="gap-y-xsmall flex w-full flex-col py-2">
-            <PopoverSelect
-              options={options}
-              value={filterType}
-              onChange={selectFilterType}
+        <div className="gap-y-xsmall flex w-full flex-col py-2">
+          <PopoverSelect
+            options={options}
+            value={filterType}
+            onChange={selectFilterType}
+          />
+          <div className="flex items-center gap-x-2">
+            <InputField
+              value={getLowerBoundValue()}
+              placeholder="0"
+              type="number"
+              onChange={(e) => updateFieldValue(e.target.value)}
             />
-            <div className="flex items-center gap-x-2">
-              <InputField
-                value={getLowerBoundValue()}
-                placeholder="0"
-                type="number"
-                onChange={(e) => updateFieldValue(e.target.value)}
-              />
-              {filterType.value === "between" && (
-                <>
-                  <span>-</span>
-                  <InputField
-                    value={upperBound ?? undefined}
-                    placeholder="0"
-                    type="number"
-                    onChange={(e) => setUpperBoundValue(e.target.value)}
-                  />
-                </>
-              )}
-            </div>
+            {filterType.value === "between" && (
+              <>
+                <span>-</span>
+                <InputField
+                  value={upperBound ?? undefined}
+                  placeholder="0"
+                  type="number"
+                  onChange={(e) => setUpperBoundValue(e.target.value)}
+                />
+              </>
+            )}
           </div>
-        </RadixCollapsible.Content>
-      </RadixCollapsible.Root>
+        </div>
+      </CollapsibleWrapper>
     </div>
   )
 }
@@ -814,51 +626,40 @@ const DateFilterItem = ({
   }
 
   return (
-    <div className={clsx("w-full cursor-pointer border-b")}>
-      <RadixCollapsible.Root
+    <div className={clsx("w-full border-b")}>
+      <CollapsibleWrapper
+        title={title}
         defaultOpen={!!value}
         onOpenChange={(open) => {
-          setIsOpen(open)
           if (!open) {
-            setFilter(null)
+            setFilter(undefined)
           }
         }}
-        className="w-full"
       >
-        <RadixCollapsible.Trigger
-          className={clsx(
-            "hover:bg-grey-5 text-grey-60  flex w-full items-center justify-between rounded py-1.5 px-3"
-          )}
-        >
-          <p>{title}</p>
-          <Switch checked={isOpen} type="button" className="cursor-pointer" />
-        </RadixCollapsible.Trigger>
-        <RadixCollapsible.Content className="flex w-full flex-col gap-y-2 px-2">
-          <div className="gap-y-xsmall flex w-full flex-col py-2">
-            <PopoverSelect
-              options={options}
-              value={filterType}
-              onChange={setFilterType}
-            />
+        <div className="gap-y-xsmall flex w-full flex-col py-2">
+          <PopoverSelect
+            options={options}
+            value={filterType}
+            onChange={setFilterType}
+          />
 
-            <div className="flex items-center gap-x-2">
-              <FilterDatePicker
-                date={date1}
-                setDate={(date) => setFilterDate({ date1: date, date2 })}
-              />
-              {filterType.value === "between" && (
-                <>
-                  <span>-</span>
-                  <FilterDatePicker
-                    date={date2}
-                    setDate={(date) => setFilterDate({ date1, date2: date })}
-                  />
-                </>
-              )}
-            </div>
+          <div className="flex items-center gap-x-2">
+            <FilterDatePicker
+              date={date1}
+              setDate={(date) => setFilterDate({ date1: date, date2 })}
+            />
+            {filterType.value === "between" && (
+              <>
+                <span>-</span>
+                <FilterDatePicker
+                  date={date2}
+                  setDate={(date) => setFilterDate({ date1, date2: date })}
+                />
+              </>
+            )}
           </div>
-        </RadixCollapsible.Content>
-      </RadixCollapsible.Root>
+        </div>
+      </CollapsibleWrapper>
     </div>
   )
 }
