@@ -14,7 +14,7 @@
   "author": "Sebastian Mateos Nicolajsen",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "1.10.1",
+    "@medusajs/medusa": "1.11.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-interfaces": "^1.3.7",
