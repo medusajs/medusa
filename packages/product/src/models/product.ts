@@ -7,6 +7,7 @@ import {
   Index,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -17,6 +18,7 @@ import { ProductTypes } from "@medusajs/types"
 import ProductTag from "./product-tag"
 import ProductCollection from "./product-collection"
 import ProductType from "./product-type"
+import ProductVariant from "./product-variant"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -63,7 +65,10 @@ class Product {
   thumbnail?: string | null
 
   // options: ProductOption[]
-  // variants: ProductVariant[]
+
+  @OneToMany(() => ProductVariant, (variant) => variant.product)
+  variants: ProductVariant[]
+
   // categories: ProductCategory[]
 
   @Property({ columnType: "text", nullable: true })

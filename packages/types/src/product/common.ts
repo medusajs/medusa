@@ -40,6 +40,32 @@ export interface ProductDTO {
   deleted_at?: string | Date
 }
 
+export interface ProductVariantDTO {
+  id: string
+  title: string
+  sku?: string | null
+  barcode?: string | null
+  ean?: string | null
+  upc?: string | null
+  inventory_quantity: number
+  allow_backorder?: boolean
+  manage_inventory?: boolean
+  hs_code?: string | null
+  origin_country?: string | null
+  mid_code?: string | null
+  material?: string | null
+  weight?: number | null
+  length?: number | null
+  height?: number | null
+  width?: number | null
+  metadata?: Record<string, unknown> | null
+  product: ProductDTO
+  variant_rank?: number | null
+  created_at: string | Date
+  updated_at: string | Date
+  deleted_at: string | Date
+}
+
 export interface ProductTagDTO {
   id: string
 }

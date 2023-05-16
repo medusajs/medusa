@@ -2,16 +2,21 @@ import {
   BeforeCreate,
   Entity,
   Index,
-  PrimaryKey,
-  Property,
   ManyToOne,
   OptionalProps,
+  PrimaryKey,
+  Property,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
 
 // type OptionalRelations = 'product'
-type OptionalFields = 'created_at' | 'updated_at' | 'deleted_at' | 'allow_backorder' | 'manage_inventory'
+type OptionalFields =
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
+  | "allow_backorder"
+  | "manage_inventory"
 
 @Entity({ tableName: "product_variant" })
 class ProductVariant {
