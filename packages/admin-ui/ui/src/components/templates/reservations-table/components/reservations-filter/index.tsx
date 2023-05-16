@@ -24,8 +24,6 @@ type PasswordlessUser = Omit<User, "password_hash">
 const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
   const [tempState, setTempState] = useState(filters)
 
-  console.log(tempState)
-
   useEffect(() => {
     setTempState(filters)
   }, [filters])
@@ -436,7 +434,6 @@ const NumberFilterItem = ({
     return options[0]
   }
 
-  const [isOpen, setIsOpen] = useState(!!value)
   const [fieldValue, setFieldValue] = useState(getInitialValue(value))
   const [upperBound, setUpperBound] = useState<null | string>(
     getInitialFilter(value).value === "between" ? value.lt : undefined

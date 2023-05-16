@@ -14,6 +14,7 @@ import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
 import { NextSelect } from "../../molecules/select/next-select"
 import { ReservationItemDTO } from "@medusajs/types"
+import ReservationsFilters from "./components/reservations-filter"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
@@ -98,6 +99,9 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
+    filters,
+    setFilters,
+    setDefaultFilters,
   } = useReservationFilters(location.search, defaultQuery)
 
   const offs = parseInt(queryObject.offset) || 0
@@ -228,6 +232,11 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
           searchValue={query}
           tableActions={
             <div className="flex gap-2">
+              <ReservationsFilters
+                submitFilters={setFilters}
+                clearFilters={setDefaultFilters}
+                filters={filters}
+              />
               <LocationDropdown
                 selectedLocation={
                   queryObject.location_id || store?.default_location_id
