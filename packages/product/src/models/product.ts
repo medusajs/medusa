@@ -19,6 +19,7 @@ import ProductTag from "./product-tag"
 import ProductCollection from "./product-collection"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
+import ProductOption from "./product-option"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -64,7 +65,8 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
 
-  // options: ProductOption[]
+  @OneToMany(() => ProductOption, (o) => o.product)
+  options: ProductOption[]
 
   @OneToMany(() => ProductVariant, (variant) => variant.product)
   variants = new Collection<ProductVariant>(this)
