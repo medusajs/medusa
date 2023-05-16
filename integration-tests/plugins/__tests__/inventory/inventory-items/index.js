@@ -362,7 +362,7 @@ describe("Inventory Items endpoints", () => {
       expect(variantInventoryRes.status).toEqual(200)
     })
 
-    it.only("lists location levels based on id param constraint", async () => {
+    it("lists location levels based on id param constraint", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
