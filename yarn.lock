@@ -6294,7 +6294,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@1.11.0, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@1.11.0, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6444,7 +6444,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@1.8.6, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@1.8.6, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
