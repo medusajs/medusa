@@ -6028,8 +6028,8 @@ __metadata:
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
     "@hookform/error-message": ^2.0.1
-    "@medusajs/medusa": 1.11.0
-    "@medusajs/types": 1.8.6
+    "@medusajs/medusa": "*"
+    "@medusajs/types": "*"
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
     "@radix-ui/react-collapsible": ^1.0.1
