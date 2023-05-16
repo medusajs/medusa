@@ -67,7 +67,7 @@ class Product {
   // options: ProductOption[]
 
   @OneToMany(() => ProductVariant, (variant) => variant.product)
-  variants: ProductVariant[]
+  variants = new Collection<ProductVariant>(this)
 
   // categories: ProductCategory[]
 

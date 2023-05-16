@@ -1,13 +1,13 @@
-import { moduleOptions } from "./config"
+import { databaseOptions } from "./config"
 import * as ProductModels from "@models"
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
 const ORMConfig: Options = {
   type: "postgresql",
-  dbName: moduleOptions.database.clientUrl,
+  dbName: databaseOptions!.clientUrl,
   entities: Object.values(ProductModels),
-  schema: moduleOptions.database.schema,
+  schema: databaseOptions!.schema,
   debug: false,
   migrations: {
     path: "../../src/migrations",
@@ -18,7 +18,7 @@ const ORMConfig: Options = {
     transactional: true,
     allOrNothing: true,
     safe: false,
-    generator: TSMigrationGenerator
+    generator: TSMigrationGenerator,
   },
 }
 

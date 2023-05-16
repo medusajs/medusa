@@ -25,7 +25,7 @@ export default async (
     return
   }
 
-  if (!options?.customDataLayer.manager) {
+  if (!options?.customDataLayer?.manager) {
     const dbData = options?.database
 
     if (!dbData) {

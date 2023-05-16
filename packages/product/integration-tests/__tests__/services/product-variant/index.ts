@@ -1,10 +1,10 @@
 import { TestDatabase } from "../../../utils"
 import { ProductVariantService } from "@services"
 import { ProductVariantRepository } from "@repositories"
-import { ProductVariant, Product, ProductTag } from "@models"
-import { ProductStatus } from "../../../../src/models/product"
+import { Product, ProductTag, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
+import { ProductTypes } from "@medusajs/types"
 
 describe("ProductVariant Service", () => {
   let service: ProductVariantService
@@ -36,21 +36,21 @@ describe("ProductVariant Service", () => {
       productOne = testManager.create(Product, {
         id: "product-1",
         title: "product 1",
-        status: ProductStatus.PUBLISHED,
+        status: ProductTypes.ProductStatus.PUBLISHED,
       })
 
       variantOne = testManager.create(ProductVariant, {
         id: "test-1",
         title: "variant 1",
         inventory_quantity: 10,
-        product: productOne
+        product: productOne,
       })
 
       variantTwo = testManager.create(ProductVariant, {
         id: "test-2",
         title: "variant",
         inventory_quantity: 10,
-        product: productOne
+        product: productOne,
       })
 
       await testManager.persistAndFlush([variantOne, variantTwo])
@@ -58,9 +58,7 @@ describe("ProductVariant Service", () => {
 
     it("selecting by properties, scopes out the results", async () => {
       const results = await service.list({
-        where: {
-          id: variantOne.id,
-        },
+        id: variantOne.id,
       })
 
       expect(results).toEqual([
@@ -73,11 +71,12 @@ describe("ProductVariant Service", () => {
     })
 
     it("passing a limit, scopes the result to the limit", async () => {
-      const results = await service.list({
-        options: {
-          limit: 1,
-        },
-      })
+      const results = await service.list(
+        {},
+        {
+          take: 1,
+        }
+      )
 
       expect(results).toEqual([
         expect.objectContaining({
@@ -87,15 +86,15 @@ describe("ProductVariant Service", () => {
     })
 
     it("passing populate, scopes the results of the response", async () => {
-      const results = await service.list({
-        where: {
+      const results = await service.list(
+        {
           id: "test-1",
         },
-        options: {
-          fields: ["id", "title", "product.title"],
-          populate: ["product"]
-        },
-      })
+        {
+          select: ["id", "title", "product.title"] as any,
+          relations: ["product"],
+        }
+      )
 
       expect(results).toEqual([
         {
@@ -104,8 +103,8 @@ describe("ProductVariant Service", () => {
           product: {
             id: "product-1",
             title: "product 1",
-            tags: expect.any(Collection<ProductTag>)
-          }
+            tags: expect.any(Collection<ProductTag>),
+          },
         },
       ])
 
@@ -116,7 +115,7 @@ describe("ProductVariant Service", () => {
           product: {
             id: "product-1",
             title: "product 1",
-          }
+          },
         },
       ])
     })
