@@ -108,7 +108,7 @@ async function writeTailwindConfigContent(
   const module = dedent`
     module.exports = {
       content: [
-        ${dirNames.map((d) => `${d}/**/*.{js,ts,jsx,tsx}",\n        "`)}
+        ${dirNames.map((d) => `"${d}/**/*.{js,ts,jsx,tsx}",\n        `)}
       ] 
     }
     
