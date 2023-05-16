@@ -26,6 +26,9 @@ export default class ProductTagService {
       populate: OptionsQuery<ProductTag, any>["populate"]
     } = {
       populate: config.relations ?? ([] as const),
+      fields: config.select,
+      limit: config.take,
+      offset: config.skip,
     }
 
     if (filters.value) {

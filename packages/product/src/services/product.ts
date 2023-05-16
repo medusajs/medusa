@@ -39,6 +39,9 @@ export default class ProductService implements ProductTypes.IProductService {
       populate: OptionsQuery<Product, any>["populate"]
     } = {
       populate: config.relations ?? ([] as const),
+      fields: config.select,
+      limit: config.take,
+      offset: config.skip,
     }
 
     if (filters.tags?.length) {

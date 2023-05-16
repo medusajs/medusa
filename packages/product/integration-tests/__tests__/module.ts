@@ -1,10 +1,19 @@
 import { initialize } from "../../src"
+import { databaseOptions, TestDatabase } from "../utils"
 
 describe("Product module", function () {
+  beforeEach(async () => {
+    await TestDatabase.setupDatabase()
+  })
+
+  afterEach(async () => {
+    await TestDatabase.clearDatabase()
+  })
+
   it("should initialize", async () => {
     const module = await initialize({
       database: {
-        clientUrl: "test",
+        clientUrl: databaseOptions!.clientUrl,
       },
     })
 

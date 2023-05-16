@@ -26,6 +26,9 @@ export default class ProductCollectionService {
       populate: OptionsQuery<ProductCollection, any>["populate"]
     } = {
       populate: config.relations ?? ([] as const),
+      fields: config.select,
+      limit: config.take,
+      offset: config.skip,
     }
 
     if (filters.title) {
