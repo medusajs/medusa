@@ -37,6 +37,7 @@ describe("ProductVariant Service", () => {
         id: "product-1",
         title: "product 1",
         status: ProductTypes.ProductStatus.PUBLISHED,
+        options: []
       })
 
       variantOne = testManager.create(ProductVariant, {

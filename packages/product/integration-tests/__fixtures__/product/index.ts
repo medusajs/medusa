@@ -1,4 +1,4 @@
-import { Product, ProductCollection } from "@models"
+import { Product, ProductCollection, ProductCategory } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export async function createProductAndTags(

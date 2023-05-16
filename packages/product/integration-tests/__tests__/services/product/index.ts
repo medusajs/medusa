@@ -7,6 +7,7 @@ import {
 import { ProductRepository } from "@repositories"
 import { Product } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { createProductAndTags } from "../../../__fixtures__/product"
 import { productsData } from "../../../__fixtures__/product/data"
 
 const productVariantService = {
@@ -42,52 +43,60 @@ describe("Product Service", () => {
   })
 
   describe("list", () => {
-    it("filter by id and including relations", async () => {
-      const productsResult = await service.list(
-        {
-          id: products[0].id,
-        },
-        {
-          relations: ["tags"],
-        }
-      )
+    describe("relation: tags", () => {
+      beforeEach(async () => {
+        testManager = await TestDatabase.forkManager()
 
-      productsResult.forEach((product, index) => {
-        const tags = product.tags.toArray()
+        products = await createProductAndTags(testManager, productsData)
+      })
 
-        expect(product).toEqual(
-          expect.objectContaining({
-            id: productsData[index].id,
-            title: productsData[index].title,
-          })
+      it("filter by id and including relations", async () => {
+        const productsResult = await service.list(
+          {
+            id: products[0].id,
+          },
+          {
+            relations: ["tags"],
+          }
         )
 
-        tags.forEach((tag, tagIndex) => {
-          expect(tag).toEqual(
+        productsResult.forEach((product, index) => {
+          const tags = product.tags.toArray()
+
+          expect(product).toEqual(
             expect.objectContaining({
-              ...productsData[index].tags[tagIndex],
+              id: productsData[index].id,
+              title: productsData[index].title,
             })
           )
+
+          tags.forEach((tag, tagIndex) => {
+            expect(tag).toEqual(
+              expect.objectContaining({
+                ...productsData[index].tags[tagIndex],
+              })
+            )
+          })
         })
       })
-    })
 
-    it("filter by id and without relations", async () => {
-      const productsResult = await service.list({
-        id: products[0].id,
-      })
+      it("filter by id and without relations", async () => {
+        const productsResult = await service.list({
+          id: products[0].id,
+        })
 
-      productsResult.forEach((product, index) => {
-        const tags = product.tags.getItems(false)
+        productsResult.forEach((product, index) => {
+          const tags = product.tags.getItems(false)
 
-        expect(product).toEqual(
-          expect.objectContaining({
-            id: productsData[index].id,
-            title: productsData[index].title,
-          })
-        )
+          expect(product).toEqual(
+            expect.objectContaining({
+              id: productsData[index].id,
+              title: productsData[index].title,
+            })
+          )
 
-        expect(tags.length).toBe(0)
+          expect(tags.length).toBe(0)
+        })
       })
     })
   })
