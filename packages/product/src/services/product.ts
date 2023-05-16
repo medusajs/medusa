@@ -47,6 +47,10 @@ export default class ProductService implements ProductTypes.IProductService {
     if (filters.tags?.length) {
       where["tags"] = { value: { $in: filters.tags } }
     }
+
+    if (filters.category_id?.length) {
+      where["categories"] = { id: { $in: filters.category_id } }
+    }
     /**
      * End of manipulation
      */

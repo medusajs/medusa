@@ -86,6 +86,7 @@ export interface ProductCollectionDTO {
 export interface FilterableProductProps {
   id?: string | string[]
   tags?: string[]
+  category_id?: string[]
 }
 
 export interface FilterableProductTagProps {

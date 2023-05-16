@@ -124,6 +124,7 @@ describe("Product Service", () => {
         const products = await service.list(
           {
             id: workingProduct.id,
+            category_id: [workingCategory.id]
           },
           {
             select: ['title', 'categories.name', 'categories.handle'] as unknown as (keyof ProductDTO)[],
@@ -147,6 +148,21 @@ describe("Product Service", () => {
             handle: workingCategory.name.split(' ').join('-'),
           }
         ])
+      })
+
+      it("returns empty array when querying for a category that doesnt exist", async () => {
+        const products = await service.list(
+          {
+            id: workingProduct.id,
+            category_id: ['category-doesnt-exist-id']
+          },
+          {
+            select: ['title', 'categories.name', 'categories.handle'] as unknown as (keyof ProductDTO)[],
+            relations: ["categories"],
+          }
+        )
+
+        expect(products).toEqual([])
       })
 
       it("filter by categories.parent_category and categories.category_children relation and scope fields", async () => {
