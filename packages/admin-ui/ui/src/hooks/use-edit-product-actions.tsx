@@ -14,7 +14,7 @@ import {
 } from "medusa-react"
 
 import { getErrorMessage } from "../utils/error-messages"
-import { removeNullish } from "../utils/remove-nullish"
+import { removeFalsy } from "../utils/remove-nullish"
 import useImperativeDialog from "./use-imperative-dialog"
 import { useNavigate } from "react-router-dom"
 import useNotification from "./use-notification"
@@ -74,7 +74,7 @@ const useEditProductActions = (productId: string) => {
     updateVariant.mutate(
       {
         variant_id: id,
-        ...removeNullish(payload),
+        ...removeFalsy(payload),
         manage_inventory: payload.manage_inventory,
         allow_backorder: payload.allow_backorder,
       },
