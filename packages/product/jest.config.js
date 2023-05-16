@@ -15,4 +15,5 @@ module.exports = {
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
+  modulePathIgnorePatterns: ["dist/"]
 }
