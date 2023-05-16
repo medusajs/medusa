@@ -22,13 +22,15 @@ export type HookPointKey = "details" | "list"
 
 export type PagePointKey = "before" | "after"
 
-type HookPoint = {
+export type HookPoint = {
   [key in HookPointKey]?: Widget[]
 }
 
-type PagePoint = {
+export type PagePoint = {
   [key in PagePointKey]?: Widget[]
 }
+
+export type WidgetConfigKey = DomainKey | StumbDomainKey | PageKey
 
 export type WidgetsConfig = {
   [key in DomainKey]?: HookPoint
