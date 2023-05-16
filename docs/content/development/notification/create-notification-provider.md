@@ -297,13 +297,19 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 Make sure you have an event bus module configured in your Medusa backend. You can learn more on how to do that in the [Configurations guide](../backend/configurations.md).
 
-Then, start by running your Medusa backend:
+Then, run the build command in the root directory of your Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npm run build
 ```
 
-Then, place an order either using the [REST APIs](/api/store) or using the storefront.
+Next, start your Medusa backend:
+
+```bash npm2yarn
+npx @medusajs/medusa-cli develop
+```
+
+Try now to place an order either using the [REST APIs](/api/store) or using the storefront.
 
 :::tip
 

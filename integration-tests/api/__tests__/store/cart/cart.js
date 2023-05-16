@@ -2152,6 +2152,33 @@ describe("/store/carts", () => {
     })
   })
 
+  it("complete cart throws if there is no customer on the cart", async () => {
+    const api = useApi()
+    const product = await simpleProductFactory(dbConnection)
+    const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+    const cart = await simpleCartFactory(dbConnection, {
+      region: region.id,
+      line_items: [
+        {
+          variant_id: product.variants[0].id,
+          quantity: 1,
+          unit_price: 1000,
+        },
+      ],
+    })
+
+    await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+    try {
+      await api.post(`/store/carts/${cart.id}/complete`)
+    } catch (err) {
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Cannot create an order from the cart without a customer"
+      )
+    }
+  })
+
   describe("POST /store/carts/:id/shipping-methods", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)

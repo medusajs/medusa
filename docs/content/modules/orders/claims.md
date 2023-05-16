@@ -36,13 +36,9 @@ You can create a claim either using the [Create Claim endpoint](/api/admin#tag/O
 
 ### Idempotency Key
 
-An Idempotency Key is a unique key associated with a claim. It is generated when the claim creation process is started by the admin using the Create Claim endpoint. The idempotency key is stored in the `ClaimOrder` entity in the attribute `idempotency_key`.
+An Idempotency Key is a unique key associated with a claim. It is generated when the claim creation process is started by the admin using the [Create Claim endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderClaims) and can be used to retry the claim creation safely if an error occurs. The idempotency key is stored in the `ClaimOrder` entity in the attribute `idempotency_key`.
 
-That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
-
-The backend wraps essential parts of the claim creation process in its own step and stores the current step (known as recovery point) of the process with its associated Idempotency Key.
-
-Then, if the request is interrupted for any reason or an error occurs, the client can retry creating the return using the Idempotency Key, and the flow will continue from the last stored step.
+You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
 ### Create Claim Endpoint Process
 

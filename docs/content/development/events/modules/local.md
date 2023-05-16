@@ -58,7 +58,7 @@ This registers the local events module as the main events service to use. This m
 To test the module, run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 If the module was installed successfully, you should see the following message in the logs:
