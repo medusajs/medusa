@@ -274,7 +274,7 @@ export function addOrderToSelect<TEntity>(
  * }
  * @param collection
  */
-function buildRelationsOrSelect<TEntity>(
+export function buildRelationsOrSelect<TEntity>(
   collection: string[]
 ): FindOptionsRelations<TEntity> | FindOptionsSelect<TEntity> {
   const output: FindOptionsRelations<TEntity> | FindOptionsSelect<TEntity> = {}
