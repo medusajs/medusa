@@ -7,8 +7,7 @@ import {
 import { ProductRepository } from "@repositories"
 import { Product } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createProductAndTags } from "../../../__fixtures__/product"
-import { ProductTypes } from "@medusajs/types"
+import { productsData } from "../../../__fixtures__/product/data"
 
 const productVariantService = {
   list: jest.fn(),
@@ -43,37 +42,6 @@ describe("Product Service", () => {
   })
 
   describe("list", () => {
-    const productsData = [
-      {
-        id: "test-1",
-        title: "product 1",
-        status: ProductTypes.ProductStatus.PUBLISHED,
-        tags: [
-          {
-            id: "tag-1",
-            value: "France",
-          },
-        ],
-      },
-      {
-        id: "test-2",
-        title: "product",
-        status: ProductTypes.ProductStatus.PUBLISHED,
-        tags: [
-          {
-            id: "tag-2",
-            value: "Germany",
-          },
-        ],
-      },
-    ]
-
-    beforeEach(async () => {
-      testManager = await TestDatabase.forkManager()
-
-      products = await createProductAndTags(testManager, productsData)
-    })
-
     it("filter by id and including relations", async () => {
       const productsResult = await service.list(
         {

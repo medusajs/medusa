@@ -2,12 +2,15 @@ import { RepositoryService } from "./dal/repository-service"
 import { Constructor } from "@medusajs/types"
 
 export type ProductServiceInitializeOptions = {
-  database?: {
+  database: {
     clientUrl: string
     schema?: string
     driverOptions?: Record<string, unknown>
   }
-  customDataLayer?: {
+}
+
+export type ProductServiceInitializeCustomDataLayerOptions = {
+  customDataLayer: {
     manager?: any
     repositories?: {
       productRepository: Constructor<RepositoryService<any>>

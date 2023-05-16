@@ -12,36 +12,54 @@ import {
   ProductTagRepository,
   ProductVariantRepository,
 } from "@repositories"
-import { ProductServiceInitializeOptions } from "../types"
+import {
+  ProductServiceInitializeCustomDataLayerOptions,
+  ProductServiceInitializeOptions,
+  RepositoryService,
+} from "../types"
+import { Constructor } from "@medusajs/types"
 
 export default async ({
   container,
   options,
-}: LoaderOptions<ProductServiceInitializeOptions>): Promise<void> => {
+}: LoaderOptions<
+  | ProductServiceInitializeOptions
+  | ProductServiceInitializeCustomDataLayerOptions
+>): Promise<void> => {
+  const customDataLayer = (
+    options as ProductServiceInitializeCustomDataLayerOptions
+  )?.customDataLayer
+
   container.register({
     productService: asClass(ProductService).singleton(),
     productVariantService: asClass(ProductVariantService).singleton(),
     productTagService: asClass(ProductTagService).singleton(),
   })
 
-  if (options?.customDataLayer) {
+  if (customDataLayer) {
+    await loadCustomRepositories({ customDataLayer, container })
+  } else {
+    await loadDefaultRepositories({ container })
+  }
+}
+
+function loadDefaultRepositories({ container }) {
+  container.register({
+    productRepository: asClass(ProductRepository).singleton(),
+    productVariantRepository: asClass(ProductVariantRepository).singleton(),
+    productTagRepository: asClass(ProductTagRepository).singleton(),
+    productCollectionRepository: asClass(
+      ProductCollectionRepository
+    ).singleton(),
+  })
+}
+
+function loadCustomRepositories({ customDataLayer, container }) {
+  Object.entries(customDataLayer.repositories).forEach(([key, Repository]) => {
     container.register({
-      productRepository: asClass(
-        options.customDataLayer.repositories?.productRepository ??
-          ProductRepository
-      ).singleton(),
-      productVariantRepository: asClass(
-        options.customDataLayer.repositories?.productVariantRepository ??
-          ProductVariantRepository
-      ).singleton(),
-      productTagRepository: asClass(
-        options.customDataLayer.repositories?.productTagRepository ??
-          ProductTagRepository
-      ).singleton(),
-      productCollectionRepository: asClass(
-        options.customDataLayer.repositories?.productCollectionRepository ??
-          ProductCollectionRepository
+      [key]: asClass(
+        Repository as Constructor<RepositoryService<any>>
       ).singleton(),
     })
-  }
+  })
 }

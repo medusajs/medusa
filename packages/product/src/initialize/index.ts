@@ -6,10 +6,16 @@ import {
 } from "@medusajs/modules-sdk"
 import { IEventBusService, IProductService } from "@medusajs/types"
 
-import { ProductServiceInitializeOptions } from "../types"
+import {
+  ProductServiceInitializeCustomDataLayerOptions,
+  ProductServiceInitializeOptions,
+} from "../types"
 
 export const initialize = async (
-  options: ProductServiceInitializeOptions | ExternalModuleDeclaration,
+  options:
+    | ProductServiceInitializeOptions
+    | ProductServiceInitializeCustomDataLayerOptions
+    | ExternalModuleDeclaration,
   injectedDependencies?: {
     eventBusService?: IEventBusService
   }
