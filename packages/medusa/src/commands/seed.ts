@@ -58,30 +58,32 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
-  const { coreMigrations } = getMigrations(directory, featureFlagRouter)
+  if (migrate) {
+    const { coreMigrations } = getMigrations(directory, featureFlagRouter)
 
-  const { migrations: moduleMigrations } = getModuleSharedResources(
-    configModule,
-    featureFlagRouter
-  )
+    const { migrations: moduleMigrations } = getModuleSharedResources(
+      configModule,
+      featureFlagRouter
+    )
 
-  const connectionOptions = {
-    type: "postgres",
-    database: configModule.projectConfig.database_database,
-    schema: configModule.projectConfig.database_schema,
-    url: configModule.projectConfig.database_url,
-    extra: configModule.projectConfig.database_extra || {},
-    migrations: coreMigrations.concat(moduleMigrations),
-    logging: true,
-  } as DataSourceOptions
+    const connectionOptions = {
+      type: "postgres",
+      database: configModule.projectConfig.database_database,
+      schema: configModule.projectConfig.database_schema,
+      url: configModule.projectConfig.database_url,
+      extra: configModule.projectConfig.database_extra || {},
+      migrations: coreMigrations.concat(moduleMigrations),
+      logging: true,
+    } as DataSourceOptions
 
-  const connection = new DataSource(connectionOptions)
+    const connection = new DataSource(connectionOptions)
 
-  await connection.initialize()
-  await connection.runMigrations()
-  await connection.destroy()
+    await connection.initialize()
+    await connection.runMigrations()
+    await connection.destroy()
 
-  Logger.info("Migrations completed.")
+    Logger.info("Migrations completed.")
+  }
 
   const app = express()
   const { container } = await loaders({
@@ -168,6 +170,33 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       await shippingOptionService.withTransaction(tx).create(so)
     }
 
+    const createProductCategory = async (
+      parameters,
+      parentCategoryId: string | null = null
+    ) => {
+      // default to the categories being visible and public
+      parameters.is_active = parameters.is_active || true
+      parameters.is_internal = parameters.is_internal || false
+      parameters.parent_category_id = parentCategoryId
+
+      const categoryChildren = parameters.category_children || []
+      delete parameters.category_children
+
+      const category = await productCategoryService
+        .withTransaction(tx)
+        .create(parameters as CreateProductCategoryInput)
+
+      if (categoryChildren.length) {
+        for (const categoryChild of categoryChildren) {
+          await createProductCategory(categoryChild, category.id)
+        }
+      }
+    }
+
+    for (const c of categories) {
+      await createProductCategory(c, null)
+    }
+
     for (const p of products) {
       const variants = p.variants
       delete p.variants
@@ -205,33 +234,6 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
             .create(newProd.id, variant)
         }
       }
-    }
-
-    const createProductCategory = async (
-      parameters,
-      parentCategoryId: string | null = null
-    ) => {
-      // default to the categories being visible and public
-      parameters.is_active = parameters.is_active || true
-      parameters.is_internal = parameters.is_internal || false
-      parameters.parent_category_id = parentCategoryId
-
-      const categoryChildren = parameters.category_children || []
-      delete parameters.category_children
-
-      const category = await productCategoryService
-        .withTransaction(tx)
-        .create(parameters as CreateProductCategoryInput)
-
-      if (categoryChildren.length) {
-        for (const categoryChild of categoryChildren) {
-          await createProductCategory(categoryChild, category.id)
-        }
-      }
-    }
-
-    for (const c of categories) {
-      await createProductCategory(c, null)
     }
   })
 

@@ -364,9 +364,7 @@ export const newStarter = async (args) => {
 
   const medusaConfig = getMedusaConfig(rootPath)
 
-  if (medusaConfig) {
-    if (seed) {
-      await attemptSeed(rootPath)
-    }
+  if (medusaConfig && seed) {
+    await attemptSeed(rootPath)
   }
 }
