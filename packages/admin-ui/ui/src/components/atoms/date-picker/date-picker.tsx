@@ -64,14 +64,16 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
           >
             <InputContainer className="shadown-none border-0 focus-within:shadow-none">
               <div className="text-grey-50 flex w-full justify-between pr-0.5">
-                <InputHeader
-                  {...{
-                    label,
-                    required,
-                    tooltipContent,
-                    tooltip,
-                  }}
-                />
+                {label && (
+                  <InputHeader
+                    {...{
+                      label,
+                      required,
+                      tooltipContent,
+                      tooltip,
+                    }}
+                  />
+                )}
                 <ArrowDownIcon size={16} />
               </div>
               <label className="w-full text-left">
