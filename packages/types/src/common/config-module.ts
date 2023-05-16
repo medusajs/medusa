@@ -1,3 +1,4 @@
+import { RedisOptions } from "ioredis"
 import { LoggerOptions } from "typeorm"
 import {
   ExternalModuleDeclaration,
@@ -22,6 +23,7 @@ export type HttpCompressionOptions = {
 
 export type ProjectConfigOptions = {
   redis_url?: string
+  redis_options?: RedisOptions
 
   session_options?: SessionOptions
 

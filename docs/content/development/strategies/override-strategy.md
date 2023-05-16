@@ -73,7 +73,7 @@ npm run build
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 You can test now whether your strategy is working by performing the actions that run your strategy.

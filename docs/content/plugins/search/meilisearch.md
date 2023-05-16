@@ -161,7 +161,7 @@ Make sure your MeiliSearch instance is running. If you’re unsure how to run it
 Then, run the Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.

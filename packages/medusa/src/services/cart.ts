@@ -231,13 +231,15 @@ class CartService extends TransactionBaseService {
     const cartRepo = this.activeManager_.withRepository(this.cartRepository_)
 
     const query = buildQuery({ id: cartId }, options)
-    query.relationLoadStrategy = "query"
 
     if ((options.select || []).length === 0) {
       query.select = undefined
     }
 
-    const raw = await cartRepo.findOne(query)
+    const queryRelations = { ...query.relations }
+    delete query.relations
+
+    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
       throw new MedusaError(
