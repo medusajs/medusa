@@ -76,10 +76,10 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
               { label: "Contains", value: "contains" },
             ]}
             setFilter={(val) => {
-              setTempState(({ additionalFilters, ...state }) => {
+              setTempState((state) => {
                 return {
                   ...state,
-                  additionalFilters: { ...additionalFilters, q: val },
+                  q: val,
                 }
               })
             }}

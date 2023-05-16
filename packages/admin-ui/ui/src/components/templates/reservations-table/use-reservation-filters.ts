@@ -26,17 +26,21 @@ interface ReservationFilterState {
   limit: number
   offset: number
   location: string
-  additionalFilters: ReservationDefaultFilters
+  additionalFilters: ReservationAdditionalFilters
+}
+
+type ReservationAdditionalFilters = {
+  quantity?: NumericalComparisonOperator
+  inventory_item_id?: string[]
+  created_at?: DateComparisonOperator
+  created_by?: string[]
+  location_id?: string
 }
 
 type ReservationDefaultFilters = {
   expand?: string
   fields?: string
   location_id?: string
-  quantity?: NumericalComparisonOperator
-  inventory_item_id?: string[]
-  created_at?: DateComparisonOperator
-  created_by?: string[]
 }
 
 const allowedFilters = [
@@ -57,6 +61,7 @@ const stateFilterMap = {
   date: "created_at",
   created_by: "created_by",
   description: "q",
+  query: "q",
   offset: "offset",
   limit: "limit",
 }
@@ -250,7 +255,7 @@ export const useReservationFilters = (
 
 const parseQueryString = (
   queryString?: string,
-  additionals: ReservationDefaultFilters = {}
+  additionals: ReservationAdditionalFilters = {}
 ): ReservationFilterState => {
   const defaultVal: ReservationFilterState = {
     location: additionals?.location_id ?? "",
