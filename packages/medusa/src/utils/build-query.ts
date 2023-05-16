@@ -1,4 +1,5 @@
 import {
+  And,
   FindManyOptions,
   FindOperator,
   FindOptionsRelations,
@@ -105,18 +106,19 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 
     if (typeof value === "object") {
       Object.entries(value).forEach(([objectKey, objectValue]) => {
+        where[key] = where[key] || []
         switch (objectKey) {
           case "lt":
-            where[key] = LessThan(objectValue)
+            where[key].push(LessThan(objectValue))
             break
           case "gt":
-            where[key] = MoreThan(objectValue)
+            where[key].push(MoreThan(objectValue))
             break
           case "lte":
-            where[key] = LessThanOrEqual(objectValue)
+            where[key].push(LessThanOrEqual(objectValue))
             break
           case "gte":
-            where[key] = MoreThanOrEqual(objectValue)
+            where[key].push(MoreThanOrEqual(objectValue))
             break
           default:
             if (objectValue != undefined && typeof objectValue === "object") {
@@ -127,6 +129,16 @@ function buildWhere<TWhereKeys extends object, TEntity>(
         }
         return
       })
+
+      if (!Array.isArray(where[key])) {
+        continue
+      }
+
+      if (where[key].length === 1) {
+        where[key] = where[key][0]
+      } else {
+        where[key] = And(...where[key])
+      }
 
       continue
     }

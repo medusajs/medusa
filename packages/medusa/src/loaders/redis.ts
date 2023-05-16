@@ -20,6 +20,7 @@ async function redisLoader({
     const redisClient = new Redis(configModule.projectConfig.redis_url, {
       // Lazy connect to properly handle connection errors
       lazyConnect: true,
+      ...(configModule.projectConfig.redis_options ?? {}),
     })
 
     try {

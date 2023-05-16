@@ -80,7 +80,7 @@ npm run build
 Then, start the backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 You should see the customizations you made in effect.
