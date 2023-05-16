@@ -9,8 +9,9 @@ import {
   ManyToOne,
   OneToMany,
 } from "@mikro-orm/core"
-
 import { generateEntityId } from "@medusajs/utils"
+import { kebabCase } from "lodash"
+
 import Product from "./product"
 
 @Entity({ tableName: "product_category" })
@@ -79,7 +80,7 @@ class ProductCategory {
     this.id = generateEntityId(this.id, "pcat")
 
     if (!this.handle) {
-      this.handle = this.name.split(' ').join('-').toLowerCase()
+      this.handle = kebabCase(this.name)
     }
   }
 }
