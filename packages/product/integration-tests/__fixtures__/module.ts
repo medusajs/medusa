@@ -20,4 +20,4 @@ CustomRepository.prototype.findAndCount = jest
 export class ProductRepository extends CustomRepository {}
 export class ProductTagRepository extends CustomRepository {}
 export class ProductCollectionRepository extends CustomRepository {}
-export class ProductVariantsRepository extends CustomRepository {}
+export class ProductVariantRepository extends CustomRepository {}
