@@ -95,6 +95,12 @@ const reducer = (
         query: action.payload,
       }
     }
+    case "setDefaults": {
+      return {
+        ...state,
+        additionalFilters: {},
+      }
+    }
     case "setLimit": {
       return {
         ...state,
