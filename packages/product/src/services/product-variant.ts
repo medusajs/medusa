@@ -1,5 +1,13 @@
-import { ProductVariant } from "@models"
+import { ProductTag, ProductVariant } from "@models"
 import { RepositoryService } from "../types"
+import {
+  FilterableProductVariantProps,
+  FindConfig,
+  ProductVariantDTO,
+  SharedContext,
+} from "@medusajs/types"
+import { FilterQuery } from "@mikro-orm/core"
+import { OptionsQuery } from "../types/dal/helpers"
 
 type InjectedDependencies = {
   productVariantRepository: RepositoryService<ProductVariant>
@@ -13,9 +21,23 @@ export default class ProductVariantService {
   }
 
   async list(
-    selector: Record<any, any> = {},
-    config: Record<any, any> = {}
+    filters: FilterableProductVariantProps = {},
+    config: FindConfig<ProductVariantDTO> = {},
+    sharedContext?: SharedContext
   ): Promise<ProductVariant[]> {
-    return await this.productVariantRepository_.find(selector)
+    const where: FilterQuery<ProductVariant> = {
+      ...filters,
+    }
+
+    const findOptions: OptionsQuery<ProductTag, any> & {
+      populate: OptionsQuery<ProductTag, any>["populate"]
+    } = {
+      populate: config.relations ?? ([] as const),
+    }
+
+    return await this.productVariantRepository_.find({
+      where,
+      options: findOptions,
+    })
   }
 }

@@ -1,3 +1,75 @@
+export enum ProductStatus {
+  DRAFT = "draft",
+  PROPOSED = "proposed",
+  PUBLISHED = "published",
+  REJECTED = "rejected",
+}
+
+/**
+ * DTO in and out of the module (module API)
+ */
+
 export interface ProductDTO {
   id: string
+  title: string
+  handle?: string | null
+  subtitle?: string | null
+  description?: string | null
+  is_giftcard: boolean
+  status: ProductStatus
+  thumbnail?: string | null
+  weight?: number | null
+  length?: number | null
+  height?: number | null
+  origin_country?: string | null
+  hs_code?: string | null
+  mid_code?: string | null
+  material?: string | null
+  // TODO
+  collection?: any
+  // TODO
+  type: any
+  // TODO
+  tags: any
+  // TODO
+  //variants: any
+  discountable?: boolean
+  external_id?: string | null
+  created_at?: string | Date
+  updated_at?: string | Date
+  deleted_at?: string | Date
+}
+
+export interface ProductTagDTO {
+  id: string
+}
+
+export interface ProductVariantDTO {
+  id: string
+}
+
+export interface ProductCollectionDTO {
+  id: string
+}
+
+/**
+ * Filters/Config (module API input filters and config)
+ */
+export interface FilterableProductProps {
+  id?: string | string[]
+  tags?: string[]
+}
+
+export interface FilterableProductTagProps {
+  id?: string | string[]
+  value?: string
+}
+
+export interface FilterableProductCollectionProps {
+  id?: string | string[]
+  title?: string
+}
+export interface FilterableProductVariantProps {
+  id?: string | string[]
+  sku?: string
 }

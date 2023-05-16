@@ -1,9 +1,18 @@
 import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
-import { FindOptions, RepositoryService } from "../types"
-import { ProductListFilter } from "../types/product"
+import { RepositoryService } from "../types"
 import { FilterQuery, OptionsQuery } from "../types/dal/helpers"
-import { IProductService } from "@medusajs/types"
+import {
+  FilterableProductProps,
+  FilterableProductTagProps,
+  FilterableProductVariantProps,
+  FindConfig,
+  IProductService,
+  ProductDTO,
+  ProductTagDTO,
+  ProductVariantDTO,
+  SharedContext,
+} from "@medusajs/types"
 
 type InjectedDependencies = {
   productRepository: RepositoryService<Product>
@@ -27,9 +36,10 @@ export default class ProductService implements IProductService {
   }
 
   async list(
-    filters: ProductListFilter = {},
-    config: { relations?: string[] } = {}
-  ): Promise<Product[]> {
+    filters: FilterableProductProps = {},
+    config: FindConfig<ProductDTO> = {},
+    sharedContext?: SharedContext
+  ): Promise<ProductDTO[]> {
     /**
      * Move the below manipulation in a new build query utils.
      * Needs more vision of what will be the end input shape of all api method
@@ -48,17 +58,29 @@ export default class ProductService implements IProductService {
      * End of manipulation
      */
 
-    return await this.productRepository_.find({
+    return (await this.productRepository_.find({
       where,
       options: findOptions,
-    } as FindOptions<Product>)
+    })) as ProductDTO[]
   }
 
-  async listVariants() {
+  async listVariants(
+    filters: FilterableProductVariantProps = {},
+    config: FindConfig<ProductVariantDTO> = {},
+    sharedContext?: SharedContext
+  ) {
     return await this.productVariantService.list()
   }
 
-  async listTags() {
+  async listTags(
+    filters: FilterableProductTagProps = {},
+    config: FindConfig<ProductTagDTO> = {},
+    sharedContext?: SharedContext
+  ) {
     return await this.productTagService.list()
+  }
+
+  async listCollections() {
+    return []
   }
 }

@@ -1,9 +1,13 @@
 import { ProductTag } from "@models"
 import { FilterQuery } from "@mikro-orm/core"
-
-import { ProductTagListFilter } from "../types/product"
 import { OptionsQuery } from "../types/dal/helpers"
 import { RepositoryService } from "../types"
+import {
+  FilterableProductTagProps,
+  FindConfig,
+  ProductTagDTO,
+  SharedContext,
+} from "@medusajs/types"
 
 type InjectedDependencies = {
   productTagRepository: RepositoryService<ProductTag>
@@ -17,8 +21,9 @@ export default class ProductTagService {
   }
 
   async list(
-    filters: ProductTagListFilter = {},
-    config: { relations?: string[] } = {}
+    filters: FilterableProductTagProps = {},
+    config: FindConfig<ProductTagDTO> = {},
+    sharedContext?: SharedContext
   ): Promise<ProductTag[]> {
     const where: FilterQuery<ProductTag> = {}
 

@@ -7,25 +7,24 @@ import {
   Index,
   ManyToMany,
   ManyToOne,
+  OptionalProps,
   PrimaryKey,
   Property,
-  OptionalProps,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
+import { ProductTypes } from "@medusajs/types"
 import ProductTag from "./product-tag"
-import ProductCollection from './product-collection'
-import ProductType from './product-type'
+import ProductCollection from "./product-collection"
+import ProductType from "./product-type"
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
-type OptionalRelations = 'collection' | 'type'
-type OptionalFields = 'is_giftcard' | 'discountable' | 'created_at' | 'updated_at' | 'deleted_at'
+type OptionalRelations = "collection" | "type"
+type OptionalFields =
+  | "is_giftcard"
+  | "discountable"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
 
 @Entity({ tableName: "product" })
 class Product {
@@ -55,8 +54,8 @@ class Product {
   @Property({ columnType: "boolean", default: false })
   is_giftcard!: boolean
 
-  @Enum(() => ProductStatus)
-  status!: ProductStatus
+  @Enum(() => ProductTypes.ProductStatus)
+  status!: ProductTypes.ProductStatus
 
   // images: Image[]
 
@@ -97,7 +96,7 @@ class Product {
   @ManyToOne(() => ProductType, { nullable: true })
   type!: ProductType
 
-  @ManyToMany(() => ProductTag, 'products', {
+  @ManyToMany(() => ProductTag, "products", {
     owner: true,
     pivotTable: "product_tags",
   })
