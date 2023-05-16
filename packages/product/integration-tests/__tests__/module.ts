@@ -101,9 +101,6 @@ describe("Product module", function () {
       products = await createProductAndTags(testManager, productsData)
 
       module = await initialize({
-        database: {
-          clientUrl: `postgres://postgres@localhost:5432/`,
-        },
         customDataLayer: {
           manager: testManager,
           repositories: {
