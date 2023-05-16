@@ -58,6 +58,29 @@ describe("Product service", function () {
         tags: { value: { $in: filters.tags } },
       },
       options: {
+        populate: [],
+      },
+    })
+  })
+
+  it("should list products with filters and relations", async function () {
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
+
+    const filters = {
+      tags: ["test"],
+    }
+    const config = {
+      relations: ["tags"],
+    }
+
+    await productService.list(filters, config)
+
+    expect(productRepository.find).toHaveBeenCalledWith({
+      where: {
+        tags: { value: { $in: filters.tags } },
+      },
+      options: {
         populate: ["tags"],
       },
     })
