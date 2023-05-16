@@ -3,6 +3,7 @@ import { Product } from "@models"
 import { FindOptions, RepositoryService } from "../types"
 import { ProductListFilter } from "../types/product"
 import { FilterQuery, OptionsQuery } from "../types/dal/helpers"
+import { IProductService } from "@medusajs/types"
 
 type InjectedDependencies = {
   productRepository: RepositoryService<Product>
@@ -10,7 +11,7 @@ type InjectedDependencies = {
   productTagService: ProductTagService
 }
 
-export default class ProductService {
+export default class ProductService implements IProductService {
   protected readonly productRepository_: RepositoryService<Product>
   protected readonly productVariantService: ProductVariantService
   protected readonly productTagService: ProductTagService
