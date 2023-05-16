@@ -6,6 +6,6 @@ export const removeNullish = (
   obj: Record<string, unknown>
 ): Record<string, unknown> =>
   Object.entries(obj).reduce(
-    (a, [k, v]) => (v == null ? ((a[k] = v), a) : a),
+    (a, [k, v]) => (v != null ? ((a[k] = v), a) : a),
     {}
   )
