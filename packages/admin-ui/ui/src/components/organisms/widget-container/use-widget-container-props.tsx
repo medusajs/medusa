@@ -49,11 +49,12 @@ export const useWidgetContainerProps = <T extends keyof EntityMap>({
    * add it to the props if it exists.
    */
   if (entity) {
-    const propKey = injectionZone.split(".")[0] as keyof PropKeyMap
+    const propKey = injectionZone.split(".")[0] as keyof typeof PropKeyMap
+    const entityKey = PropKeyMap[propKey]
 
     return {
       ...baseProps,
-      [propKey]: entity,
+      [entityKey]: entity,
     }
   }
 

@@ -22,8 +22,10 @@ import JSONView from "../../../components/molecules/json-view"
 import BodyCard from "../../../components/organisms/body-card"
 import ConfirmationPrompt from "../../../components/organisms/confirmation-prompt"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
+import WidgetContainer from "../../../components/organisms/widget-container"
 import { AddressType } from "../../../components/templates/address-form"
 import useNotification from "../../../hooks/use-notification"
+import { useInjectionZones } from "../../../providers/injection-zone-provider"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
@@ -118,6 +120,10 @@ const DraftOrderDetails = () => {
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
     })
   }
+
+  const { getWidgets } = useInjectionZones()
+
+  const widgets = getWidgets("draft_order.details")
 
   const { cart } = draft_order || {}
   const { region } = cart || {}
@@ -359,6 +365,20 @@ const DraftOrderDetails = () => {
                 </div>
               </div>
             </BodyCard>
+            {widgets?.length > 0 && (
+              <div className="mb-4 flex w-full flex-col gap-y-4">
+                {widgets.map((w, i) => {
+                  return (
+                    <WidgetContainer
+                      key={i}
+                      widget={w}
+                      injectionZone="draft_order.details"
+                      entity={draft_order}
+                    />
+                  )
+                })}
+              </div>
+            )}
             <BodyCard
               className={"mb-4 h-auto min-h-0 w-full pt-[15px]"}
               title="Raw Draft Order"

@@ -9,6 +9,8 @@ import ProductGeneralSection from "../../../components/organisms/product-general
 import ProductMediaSection from "../../../components/organisms/product-media-section"
 import ProductRawSection from "../../../components/organisms/product-raw-section"
 import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
+import WidgetContainer from "../../../components/organisms/widget-container"
+import { useInjectionZones } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 
 const Manage = () => {
@@ -24,6 +26,8 @@ const Manage = () => {
   )
 
   const giftCard = products?.[0] as Product | undefined
+
+  const { getWidgets } = useInjectionZones()
 
   if (!giftCard) {
     return (
@@ -60,6 +64,16 @@ const Manage = () => {
           <ProductGeneralSection product={giftCard} />
           <GiftCardDenominationsSection giftCard={giftCard} />
           <ProductAttributesSection product={giftCard} />
+          {getWidgets("gift_card.details").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                widget={w}
+                injectionZone={"gift_card.details"}
+                entity={giftCard}
+              />
+            )
+          })}
           <ProductRawSection product={giftCard} />
         </div>
         <div className="gap-y-xsmall col-span-4 flex flex-col">

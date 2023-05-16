@@ -3,16 +3,39 @@ import { FeatureFlagHelpers, Navigate, Notify } from "./helpers"
 
 export interface Widget extends IBaseExtension {}
 
-export type DomainKey = "product" | "product_collection" | "order" | "customer"
+export type DomainKey =
+  | "product"
+  | "product_collection"
+  | "order"
+  | "draft_order"
+  | "customer"
+  | "customer_group"
+  | "discount"
+  | "price_list"
+  | "gift_card"
 
-export type HookPointKey = "details"
+export type StumbDomainKey = "custom_gift_card"
+
+export type PageKey = "login"
+
+export type HookPointKey = "details" | "list"
+
+export type PagePointKey = "before" | "after"
 
 type HookPoint = {
   [key in HookPointKey]?: Widget[]
 }
 
+type PagePoint = {
+  [key in PagePointKey]?: Widget[]
+}
+
 export type WidgetsConfig = {
   [key in DomainKey]?: HookPoint
+} & {
+  [key in StumbDomainKey]?: Widget[]
+} & {
+  [key in PageKey]?: PagePoint
 }
 
 export interface LoadedWidget extends Widget, IBaseLoadedExtension {}

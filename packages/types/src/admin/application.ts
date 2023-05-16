@@ -1,6 +1,17 @@
-import { DomainKey, HookPointKey, LoadedWidget, WidgetsConfig } from "./widget"
+import {
+  DomainKey,
+  HookPointKey,
+  LoadedWidget,
+  PageKey,
+  PagePointKey,
+  StumbDomainKey,
+  WidgetsConfig,
+} from "./widget"
 
-export type InjectionZone = `${DomainKey}.${HookPointKey}`
+export type InjectionZone =
+  | `${DomainKey}.${HookPointKey}`
+  | `${PageKey}.${PagePointKey}`
+  | `${StumbDomainKey}`
 
 export type InjectionZones = Map<InjectionZone, LoadedWidget[]>
 

@@ -36,7 +36,6 @@ const Edit = () => {
   }
 
   if (status === "loading" || !product) {
-    // temp, perhaps use skeletons?
     return (
       <div className="flex h-[calc(100vh-64px)] w-full items-center justify-center">
         <Spinner variant="secondary" />
