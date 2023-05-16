@@ -1,14 +1,18 @@
 import {
   BeforeCreate,
+  Cascade,
+  Collection,
   Entity,
   Index,
   ManyToOne,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
+import ProductOptionValue from "./product-option-value"
 
 // type OptionalRelations = 'product'
 type OptionalFields =
@@ -130,10 +134,10 @@ class ProductVariant {
   // })
   // prices = new Collection<MoneyAmount>(this)
 
-  // @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
-  //   cascade: [ "persist", "remove" ],
-  // })
-  // options = new Collection<ProductOptionValue>(this)
+  @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
+    cascade: [Cascade.PERSIST, Cascade.REMOVE],
+  })
+  options = new Collection<ProductOptionValue>(this)
 
   // @OneToMany(
   //   () => ProductVariantInventoryItem,

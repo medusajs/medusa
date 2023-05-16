@@ -1,6 +1,7 @@
 import {
   BeforeCreate,
   Cascade,
+  Collection,
   Entity,
   ManyToOne,
   OneToMany,
@@ -26,7 +27,7 @@ class ProductOption {
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
     cascade: [Cascade.REMOVE],
   })
-  values: ProductOptionValue[]
+  values = new Collection<ProductOptionValue>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
