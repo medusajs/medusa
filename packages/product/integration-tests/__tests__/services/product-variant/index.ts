@@ -104,6 +104,7 @@ describe("ProductVariant Service", () => {
             id: "product-1",
             title: "product 1",
             tags: expect.any(Collection<ProductTag>),
+            variants: expect.any(Collection<ProductVariant>),
           },
         },
       ])

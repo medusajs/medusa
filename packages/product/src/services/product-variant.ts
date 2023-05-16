@@ -28,6 +28,9 @@ export default class ProductVariantService {
       populate: OptionsQuery<ProductTag, any>["populate"]
     } = {
       populate: config.relations ?? ([] as const),
+      fields: config.select,
+      limit: config.take,
+      offset: config.skip,
     }
 
     return await this.productVariantRepository_.find({
