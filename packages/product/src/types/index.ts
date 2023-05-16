@@ -1,3 +1,5 @@
+import { RepositoryService } from "./dal/repository-service"
+
 export type ProductServiceInitializeOptions = {
   database?: {
     clientUrl: string
@@ -7,10 +9,10 @@ export type ProductServiceInitializeOptions = {
   customDataLayer: {
     manager?: any
     repositories?: {
-      productRepository: any
-      productTagRepository: any
-      productCollectionRepository: any
-      productVariantRepository: any
+      productRepository: RepositoryService<any>
+      productTagRepository: RepositoryService<any>
+      productCollectionRepository: RepositoryService<any>
+      productVariantRepository: RepositoryService<any>
     }
   }
 }
