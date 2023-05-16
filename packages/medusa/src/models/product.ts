@@ -73,10 +73,10 @@ export class Product extends SoftDeletableEntity {
   @OneToMany(() => ProductOption, (productOption) => productOption.product)
   options: ProductOption[]
 
-  // @OneToMany(() => ProductVariant, (variant) => variant.product, {
-  //   // cascade: true,
-  // })
-  // variants: ProductVariant[]
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    cascade: true,
+  })
+  variants: ProductVariant[]
 
   @ManyToMany(() => ProductCategory, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
