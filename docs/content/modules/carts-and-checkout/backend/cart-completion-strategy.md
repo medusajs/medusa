@@ -117,7 +117,7 @@ npm run build
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, try out your strategy using the Complete Cart endpoint. You should see the logic you implemented used for completing the cart.

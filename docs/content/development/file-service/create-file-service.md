@@ -397,7 +397,7 @@ This section explains how to test out your implementation if the file service wa
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, try uploading a file, for example, using the [Upload File endpoint](/api/admin#tag/Uploads/operation/PostUploads). The file should be uploaded based on the logic you’ve implemented.

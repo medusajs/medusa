@@ -10,8 +10,8 @@ import {
 } from "typeorm"
 import {
   addOrderToSelect,
-  buildLegacyFieldsListFrom,
   buildQuery,
+  objectToStringPath,
 } from "../build-query"
 
 describe("buildQuery", () => {
@@ -157,9 +157,9 @@ describe("buildQuery", () => {
   })
 })
 
-describe("buildLegacyFieldsListFrom", () => {
+describe("objectToStringPath", () => {
   it("successfully build back select object shape to list", () => {
-    const q = buildLegacyFieldsListFrom({
+    const q = objectToStringPath({
       order: {
         items: true,
         swaps: {
@@ -205,7 +205,7 @@ describe("buildLegacyFieldsListFrom", () => {
   })
 
   it("successfully build back relation object shape to list", () => {
-    const q = buildLegacyFieldsListFrom({
+    const q = objectToStringPath({
       order: {
         items: true,
         swaps: {
@@ -263,7 +263,7 @@ describe("buildLegacyFieldsListFrom", () => {
   })
 
   it("successfully build back order object shape to list", () => {
-    const q = buildLegacyFieldsListFrom({
+    const q = objectToStringPath({
       id: "ASC",
       items: {
         id: "ASC",
