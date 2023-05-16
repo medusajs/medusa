@@ -24,6 +24,8 @@ type PasswordlessUser = Omit<User, "password_hash">
 const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
   const [tempState, setTempState] = useState(filters)
 
+  console.log(tempState)
+
   useEffect(() => {
     setTempState(filters)
   }, [filters])
@@ -38,6 +40,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
 
   const onClear = () => {
     clearFilters()
+    tempState({ ...tempState, additionalFilters: {} })
   }
 
   return (
@@ -193,15 +196,17 @@ const SearchableFilterInventoryItem = ({
               value={query}
               className="pr-1"
               prefix={
-                <div
-                  onClick={reset}
-                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                >
-                  <span className="text-grey-50">{selectedItems.size}</span>
-                  <CrossIcon size={16} />
-                </div>
+                selectedItems.size && (
+                  <div
+                    onClick={reset}
+                    className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                  >
+                    <span className="text-grey-50">{selectedItems.size}</span>
+                    <CrossIcon size={16} />
+                  </div>
+                )
               }
-              placeholder="Find items"
+              placeholder={selectedItems.size ? "Items selected" : "Find items"}
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
