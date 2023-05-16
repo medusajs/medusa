@@ -28,6 +28,8 @@ export interface ProductDTO {
   // TODO
   collection?: any
   // TODO
+  categories?: any
+  // TODO
   type: any
   // TODO
   tags: any

@@ -26,3 +26,16 @@ export async function createCollections(
 
   return collections
 }
+
+export async function createCategories(
+  manager: SqlEntityManager,
+  categoriesData: any[]
+) {
+  const categories: any[] = categoriesData.map((categoriesData) => {
+    return manager.create(ProductCategory, categoriesData)
+  })
+
+  await manager.persistAndFlush(categories)
+
+  return categories
+}

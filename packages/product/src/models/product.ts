@@ -20,6 +20,7 @@ import ProductCollection from "./product-collection"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductOption from "./product-option"
+import ProductCategory from "./product-category"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -71,8 +72,6 @@ class Product {
   @OneToMany(() => ProductVariant, (variant) => variant.product)
   variants = new Collection<ProductVariant>(this)
 
-  // categories: ProductCategory[]
-
   @Property({ columnType: "text", nullable: true })
   weight?: number | null
 
@@ -108,6 +107,12 @@ class Product {
     pivotTable: "product_tags",
   })
   tags = new Collection<ProductTag>(this)
+
+  @ManyToMany(() => ProductCategory, "products", {
+    owner: true,
+    pivotTable: "product_category_product",
+  })
+  categories = new Collection<ProductCategory>(this)
 
   @Property({ columnType: "boolean", default: true })
   discountable: boolean

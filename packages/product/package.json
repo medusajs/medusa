@@ -18,6 +18,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc --build --watch",
+    "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
     "test": "jest --runInBand --passWithNoTests --forceExit",
