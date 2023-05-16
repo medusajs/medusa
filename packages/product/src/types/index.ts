@@ -1,8 +1,17 @@
 export type ProductServiceInitializeOptions = {
-  database: {
+  database?: {
     clientUrl: string
     schema?: string
     driverOptions?: Record<string, unknown>
+  }
+  customDataLayer: {
+    manager?: any
+    repositories?: {
+      productRepository: any
+      productTagRepository: any
+      productCollectionRepository: any
+      productVariantRepository: any
+    }
   }
 }
 

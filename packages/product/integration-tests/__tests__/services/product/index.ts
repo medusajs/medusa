@@ -8,7 +8,7 @@ import { ProductRepository } from "@repositories"
 import { Product } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createProductAndTags } from "../../../__fixtures__/product"
-import { ProductStatus } from "../../../../src/models/product"
+import { ProductTypes } from "@medusajs/types"
 
 const productVariantService = {
   list: jest.fn(),
@@ -47,7 +47,7 @@ describe("Product Service", () => {
       {
         id: "test-1",
         title: "product 1",
-        status: ProductStatus.PUBLISHED,
+        status: ProductTypes.ProductStatus.PUBLISHED,
         tags: [
           {
             id: "tag-1",
@@ -58,7 +58,7 @@ describe("Product Service", () => {
       {
         id: "test-2",
         title: "product",
-        status: ProductStatus.PUBLISHED,
+        status: ProductTypes.ProductStatus.PUBLISHED,
         tags: [
           {
             id: "tag-2",

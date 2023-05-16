@@ -2,17 +2,7 @@ import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
 import { RepositoryService } from "../types"
 import { FilterQuery, OptionsQuery } from "../types/dal/helpers"
-import {
-  FilterableProductProps,
-  FilterableProductTagProps,
-  FilterableProductVariantProps,
-  FindConfig,
-  IProductService,
-  ProductDTO,
-  ProductTagDTO,
-  ProductVariantDTO,
-  SharedContext,
-} from "@medusajs/types"
+import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 
 type InjectedDependencies = {
   productRepository: RepositoryService<Product>
@@ -20,7 +10,7 @@ type InjectedDependencies = {
   productTagService: ProductTagService
 }
 
-export default class ProductService implements IProductService {
+export default class ProductService implements ProductTypes.IProductService {
   protected readonly productRepository_: RepositoryService<Product>
   protected readonly productVariantService: ProductVariantService
   protected readonly productTagService: ProductTagService
@@ -36,10 +26,10 @@ export default class ProductService implements IProductService {
   }
 
   async list(
-    filters: FilterableProductProps = {},
-    config: FindConfig<ProductDTO> = {},
+    filters: ProductTypes.FilterableProductProps = {},
+    config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<ProductDTO[]> {
+  ): Promise<ProductTypes.ProductDTO[]> {
     /**
      * Move the below manipulation in a new build query utils.
      * Needs more vision of what will be the end input shape of all api method
@@ -61,20 +51,20 @@ export default class ProductService implements IProductService {
     return (await this.productRepository_.find({
       where,
       options: findOptions,
-    })) as ProductDTO[]
+    })) as ProductTypes.ProductDTO[]
   }
 
   async listVariants(
-    filters: FilterableProductVariantProps = {},
-    config: FindConfig<ProductVariantDTO> = {},
+    filters: ProductTypes.FilterableProductVariantProps = {},
+    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: SharedContext
   ) {
     return await this.productVariantService.list()
   }
 
   async listTags(
-    filters: FilterableProductTagProps = {},
-    config: FindConfig<ProductTagDTO> = {},
+    filters: ProductTypes.FilterableProductTagProps = {},
+    config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: SharedContext
   ) {
     return await this.productTagService.list()

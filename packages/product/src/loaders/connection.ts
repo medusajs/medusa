@@ -25,32 +25,38 @@ export default async (
     return
   }
 
-  const dbData = options?.database
+  if (!options?.customDataLayer.manager) {
+    const dbData = options?.database
 
-  if (!dbData) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_ARGUMENT,
-      `Database config is not present at module config "options.database"`
-    )
+    if (!dbData) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `Database config is not present at module config "options.database"`
+      )
+    }
+
+    const entities = Object.values(ProductModels) as unknown as EntitySchema[]
+
+    const orm = await MikroORM.init<PostgreSqlDriver>({
+      entitiesTs: entities,
+      entities: entities,
+      debug: process.env.NODE_ENV === "development",
+      baseDir: process.cwd(),
+      clientUrl: dbData.clientUrl,
+      schema: dbData.schema,
+      driverOptions: dbData.driverOptions ?? {
+        connection: { ssl: true },
+      },
+      tsNode: process.env.APP_ENV === "development",
+      type: "postgresql",
+    })
+
+    container.register({
+      manager: asValue(orm.em.fork()),
+    })
+  } else {
+    container.register({
+      manager: asValue(options.customDataLayer.manager),
+    })
   }
-
-  const entities = Object.values(ProductModels) as unknown as EntitySchema[]
-
-  const orm = await MikroORM.init<PostgreSqlDriver>({
-    entitiesTs: entities,
-    entities: entities,
-    debug: process.env.NODE_ENV === "development",
-    baseDir: process.cwd(),
-    clientUrl: dbData.clientUrl,
-    schema: dbData.schema,
-    driverOptions: dbData.driverOptions ?? {
-      connection: { ssl: true },
-    },
-    tsNode: process.env.APP_ENV === "development",
-    type: "postgresql",
-  })
-
-  container.register({
-    manager: asValue(orm.em.fork()),
-  })
 }
