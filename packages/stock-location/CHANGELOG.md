@@ -1,5 +1,15 @@
 # @medusajs/stock-location
 
+## 1.8.6
+
+### Patch Changes
+
+- [#4072](https://github.com/medusajs/medusa/pull/4072) [`6511959e2`](https://github.com/medusajs/medusa/commit/6511959e23177f3b4831915db0e8e788bc9047fa) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Revert to official Typeorm package
+
+- Updated dependencies [[`cdbac2c84`](https://github.com/medusajs/medusa/commit/cdbac2c8403a3c15c0e11993f6b7dab268fa5c08), [`6511959e2`](https://github.com/medusajs/medusa/commit/6511959e23177f3b4831915db0e8e788bc9047fa)]:
+  - @medusajs/utils@1.8.5
+  - @medusajs/modules-sdk@1.8.6
+
 ## 1.8.5
 
 ### Patch Changes
