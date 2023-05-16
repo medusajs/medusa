@@ -47,4 +47,5 @@ export const PropKeyMap = {
   "customer_group.details": "customerGroup",
   "discount.details": "discount",
   "price_list.details": "priceList",
+  custom_gift_card: "giftCard",
 }
