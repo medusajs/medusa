@@ -18,6 +18,7 @@ import CheckIcon from "../../../../fundamentals/icons/check-icon"
 import { InventoryItemDTO } from "@medusajs/types"
 import CrossIcon from "../../../../fundamentals/icons/cross-icon"
 import { removeNullish } from "../../../../../utils/remove-nullish"
+import AdjustmentsIcon from "../../../../fundamentals/icons/adjustments-icon"
 
 type PasswordlessUser = Omit<User, "password_hash">
 
@@ -48,6 +49,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
         clearFilters={onClear}
         triggerElement={
           <Button variant="secondary" size="small">
+            <AdjustmentsIcon size={20} />
             View
           </Button>
         }
