@@ -1,20 +1,21 @@
 import {
   AbstractFileService,
-  DeleteFileType,
+  FileServiceGetUploadStreamResult,
   FileServiceUploadResult,
   IFileService,
-  UploadStreamDescriptorType
 } from "@medusajs/medusa"
 import fs from "fs"
 import { parse } from "path"
 
 class LocalService extends AbstractFileService implements IFileService {
   protected uploadDir_: string
+  protected backendUrl_: string
 
   constructor({}, options) {
     super({}, options)
 
-    this.uploadDir_ = options.upload_dir || "./uploads/images"
+    this.uploadDir_ = options.upload_dir || "uploads/images"
+    this.backendUrl_ = options.backend_url || "http://localhost:9000"
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
@@ -34,48 +35,34 @@ class LocalService extends AbstractFileService implements IFileService {
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     return new Promise((resolve, reject) => {
-      // using copyFile, destinations will be created or overwritten
-      fs.copyFile(file.path, `./${fileKey}`, (err) => {
+      fs.copyFile(file.path, `${this.uploadDir_}/${fileKey}`, (err) => {
         if (err) {
           throw err
         }
 
-        resolve({ url: `${this.uploadDir_}/${fileKey}` })
+        const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
+
+        resolve({ url: fileUrl })
       })
     })
   }
 
-  async delete(file: DeleteFileType): Promise<void> {}
-
-  async getUploadStreamDescriptor(fileData: UploadStreamDescriptorType) {
-    console.log("Not implemented")
+  async delete(file): Promise<void> {
+    throw Error("Not implemented")
   }
 
-  async getDownloadStream(
-    fileData: GetUploadedFileType
-  ): Promise<NodeJS.ReadableStream> {
-    const client = this.getClient()
-
-    const params = {
-      Bucket: this.bucket_,
-      Key: `${fileData.fileKey}`,
-    }
-
-    return await client.getObject(params).createReadStream()
+  async getUploadStreamDescriptor(
+    fileData
+  ): Promise<FileServiceGetUploadStreamResult> {
+    throw Error("Not implemented")
   }
 
-  async getPresignedDownloadUrl(
-    fileData: GetUploadedFileType
-  ): Promise<string> {
-    const client = this.getClient({ signatureVersion: "v4" })
+  async getDownloadStream(fileData): Promise<NodeJS.ReadableStream> {
+    throw Error("Not implemented")
+  }
 
-    const params = {
-      Bucket: this.bucket_,
-      Key: `${fileData.fileKey}`,
-      Expires: this.downloadFileDuration_,
-    }
-
-    return await client.getSignedUrlPromise("getObject", params)
+  async getPresignedDownloadUrl(fileData): Promise<string> {
+    throw Error("Not implemented")
   }
 }
 
