@@ -26,7 +26,6 @@
     "@medusajs/types": "1.8.3",
     "@medusajs/utils": "1.8.2",
     "awilix": "^8.0.0",
-    "glob": "7.1.6",
     "medusa-telemetry": "^0.0.16",
     "resolve-cwd": "^3.0.0"
   },
