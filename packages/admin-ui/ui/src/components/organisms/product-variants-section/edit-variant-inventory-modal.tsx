@@ -17,7 +17,7 @@ import Modal from "../../molecules/modal"
 import { Option } from "../../../types/shared"
 import { countries } from "../../../utils/countries"
 import { queryClient } from "../../../constants/query-client"
-import { removeNullish } from "../../../utils/remove-nullish"
+import { removeFalsy, removeNullish } from "../../../utils/remove-nullish"
 import { useContext } from "react"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useForm } from "react-hook-form"
@@ -59,7 +59,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     delete data.upc
     delete data.allow_backorder
 
-    return removeNullish({
+    return removeFalsy({
       ...updateDimensions,
       ...updateCustoms,
       ...data,
@@ -167,15 +167,17 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     // @ts-ignore
     onUpdateVariant(
       variant.id,
-      removeNullish({
-        ...dimensions,
-        ...customs,
-        ...stock,
-        ean,
-        barcode,
-        upc,
-        allow_backorder,
-      }),
+      {
+        ...removeNullish({
+          ...dimensions,
+          ...customs,
+          ...stock,
+          ean,
+          barcode,
+          upc,
+          allow_backorder,
+        }),
+      },
       () => {
         refetch()
         if (shouldInvalidateCache) {
@@ -287,7 +289,7 @@ export const getEditVariantDefaultValues = (
       upc: variant?.upc || null,
       inventory_quantity: null,
       manage_inventory: false,
-      allow_backorder: false,
+      allow_backorder: variant?.allow_backorder ?? false,
       location_levels: null,
       dimensions: {
         height: null,
@@ -325,7 +327,7 @@ export const getEditVariantDefaultValues = (
     upc: variant?.upc || null,
     inventory_quantity: inventoryItem.inventory_quantity,
     manage_inventory: !!inventoryItem,
-    allow_backorder: inventoryItem.allow_backorder,
+    allow_backorder: !!variant?.allow_backorder,
     location_levels: inventoryItem.location_levels,
     dimensions: {
       height: inventoryItem.height,
