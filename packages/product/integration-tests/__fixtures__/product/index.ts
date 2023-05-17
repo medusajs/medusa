@@ -5,6 +5,7 @@ import {
   ProductVariant,
 } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import ProductOption from "../../../src/models/product-option"
 
 export async function createProductAndTags(
   manager: SqlEntityManager,
@@ -56,6 +57,19 @@ export async function createCategories(
   await manager.persistAndFlush(categories)
 
   return categories
+}
+
+export async function createOptions(
+  manager: SqlEntityManager,
+  optionsData: any[]
+) {
+  const options: any[] = optionsData.map((o) => {
+    return manager.create(ProductOption, o)
+  })
+
+  await manager.persistAndFlush(options)
+
+  return options
 }
 
 export async function assignCategoriesToProduct(

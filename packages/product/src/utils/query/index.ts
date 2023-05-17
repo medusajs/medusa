@@ -6,9 +6,7 @@ import { FindConfig } from "@medusajs/types"
 import { isObject } from "@medusajs/utils"
 
 export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
-  Array.isArray(collection)
-    ? (collection = [...new Set(collection)])
-    : collection
+  return Array.isArray(collection) ? [...new Set(collection)] : collection
 }
 
 export function buildQuery<T = any, TDto = any>(

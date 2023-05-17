@@ -5,6 +5,13 @@ import { Product, ProductTag, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
 import { ProductTypes } from "@medusajs/types"
+import { ProductOption } from "@medusajs/client-types"
+import {
+  createOptions,
+  createProductAndTags,
+  createProductVariants,
+} from "../../../__fixtures__/product"
+import { productsData, variantsData } from "../../../__fixtures__/product/data"
 
 describe("ProductVariant Service", () => {
   let service: ProductVariantService
@@ -37,7 +44,6 @@ describe("ProductVariant Service", () => {
         id: "product-1",
         title: "product 1",
         status: ProductTypes.ProductStatus.PUBLISHED,
-        options: []
       })
 
       variantOne = testManager.create(ProductVariant, {
@@ -119,6 +125,59 @@ describe("ProductVariant Service", () => {
             title: "product 1",
           },
         },
+      ])
+    })
+  })
+
+  describe("relation: options", () => {
+    let products: Product[]
+    let variants: ProductVariant[]
+    let options: ProductOption[]
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      products = (await createProductAndTags(
+        testManager,
+        productsData
+      )) as Product[]
+      variants = (await createProductVariants(
+        testManager,
+        variantsData
+      )) as ProductVariant[]
+
+      options = await createOptions(testManager, [
+        {
+          id: "test-option-1",
+          title: "size",
+          product: products[0],
+          values: [
+            { id: "value-1", value: "XS", variant: products[0].variants[0] },
+            { id: "value-1", value: "XL", variant: products[0].variants[0] },
+          ],
+        },
+        {
+          id: "test-option-2",
+          title: "color",
+          product: products[0],
+          value: "blue",
+          variant: products[0].variants[0],
+        },
+      ])
+    })
+
+    it("filter by options relation", async () => {
+      const variants = await service.list(
+        { options: { id: ["value-1"] } },
+        { relations: ["options"] }
+      )
+
+      expect(JSON.parse(JSON.stringify(variants))).toEqual([
+        expect.objectContaining({
+          id: "test-1",
+          title: "variant title",
+          sku: "sku 1",
+        }),
       ])
     })
   })

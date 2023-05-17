@@ -669,6 +669,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "product_option",
@@ -859,15 +869,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "product_id": {
-          "name": "product_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "barcode": {
           "name": "barcode",
           "type": "text",
@@ -1043,20 +1044,20 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         }
       },
       "name": "product_variant",
       "schema": "public",
       "indexes": [
-        {
-          "columnNames": [
-            "product_id"
-          ],
-          "composite": false,
-          "keyName": "IDX_product_variant_product_id",
-          "primary": false,
-          "unique": false
-        },
         {
           "keyName": "IDX_product_variant_sku_unique",
           "columnNames": [
@@ -1116,7 +1117,7 @@
           ],
           "localTableName": "public.product_variant",
           "referencedColumnNames": [
-            "product_id"
+            "id"
           ],
           "referencedTableName": "public.product",
           "deleteRule": "cascade",
@@ -1170,6 +1171,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "product_option_value",

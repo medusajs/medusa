@@ -67,7 +67,7 @@ class Product {
   thumbnail?: string | null
 
   @OneToMany(() => ProductOption, (o) => o.product)
-  options: ProductOption[]
+  options = new Collection<ProductOption>(this)
 
   @OneToMany(() => ProductVariant, (variant) => variant.product)
   variants = new Collection<ProductVariant>(this)

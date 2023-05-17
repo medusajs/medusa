@@ -35,6 +35,7 @@ export interface ProductDTO {
   tags: any
   // TODO
   //variants: any
+  options: ProductOptionDTO[]
   discountable?: boolean
   external_id?: string | null
   created_at?: string | Date
@@ -60,6 +61,7 @@ export interface ProductVariantDTO {
   length?: number | null
   height?: number | null
   width?: number | null
+  options: ProductOptionValueDTO
   metadata?: Record<string, unknown> | null
   product: ProductDTO
   variant_rank?: number | null
@@ -78,6 +80,22 @@ export interface ProductVariantDTO {
 
 export interface ProductCollectionDTO {
   id: string
+}
+
+export interface ProductOptionDTO {
+  id: string
+  title: string
+  product: ProductDTO
+  values: ProductOptionValueDTO
+  metadata?: Record<string, unknown> | null
+}
+
+export interface ProductOptionValueDTO {
+  id: string
+  value: string
+  option: ProductOptionDTO
+  variant: ProductVariantDTO
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -101,4 +119,5 @@ export interface FilterableProductCollectionProps {
 export interface FilterableProductVariantProps {
   id?: string | string[]
   sku?: string
+  options?: { id?: string[] }
 }
