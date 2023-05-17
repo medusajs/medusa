@@ -1,7 +1,7 @@
 import { SearchUtils } from "@medusajs/utils"
 import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import bodyParser from "body-parser"
-import { Express, NextFunction } from "express"
+import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
@@ -321,26 +321,31 @@ type RouteFileExports = {
     path?: string
     bodyParser?: boolean
   }
-  default: (req: Request, res: Response, next: NextFunction) => void
+  default: any
 }
 
-function registerHandler(file, app: Express) {
-  const { config, default: handler }: RouteFileExports = require(file)
+function registerHandler(handler, app: Express, rootDirectory, pluginDetails) {
+  if (typeof handler !== "function") {
+    const {
+      config,
+      default: handlerFunction,
+    }: RouteFileExports = require(handler)
 
-  const parsed = parse(file)
-  const rawname = parsed.name
+    const parsed = parse(handlerFunction)
+    const rawname = parsed.name
 
-  const path = config.path ? config.path : `/${rawname}`
+    const path = config.path ? config.path : `/${rawname}`
 
-  console.log("Path: ", path)
+    const shouldEnableBodyParser = config.bodyParser !== false
 
-  const shouldEnableBodyParser = config.bodyParser !== false
+    if (shouldEnableBodyParser) {
+      app.use(bodyParser.json())
+    }
 
-  if (shouldEnableBodyParser) {
-    app.use(bodyParser.json())
+    app[config.method.toLowerCase()](path, handlerFunction)
+  } else {
+    app.use("/", handler(rootDirectory, pluginDetails))
   }
-
-  app[config.method.toLowerCase()](path, handler)
 }
 
 /**
@@ -360,7 +365,13 @@ function registerApi(
   )
   try {
     const files = glob.sync(`${pluginDetails.resolve}/api/[!__]*.js`, {})
-    files.map((file) => registerHandler(file, app))
+    const routes = require(`${pluginDetails.resolve}/api`).default
+
+    const allRoutes = [...files, ...routes]
+
+    allRoutes.map((file) =>
+      registerHandler(file, app, rootDirectory, pluginDetails)
+    )
     return app
   } catch (err) {
     if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
@@ -390,7 +401,6 @@ export async function registerServices(
   container: MedusaContainer
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {})
-  console.log("Services: ", files)
   await Promise.all(
     files.map(async (fn) => {
       const loaded = require(fn).default
