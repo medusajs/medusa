@@ -194,7 +194,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     }
 
     for (const c of categories) {
-      await createProductCategory(c, null)
+      await createProductCategory(c)
     }
 
     for (const p of products) {

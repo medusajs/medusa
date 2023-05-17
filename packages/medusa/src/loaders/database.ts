@@ -61,6 +61,8 @@ export default async ({
         `Specified database does not exist. Please create it and try again.\n${err.message}`
       )
     }
+
+    throw err
   }
 
   // If migrations are not included in the config, we assume you are attempting to start the server
@@ -74,6 +76,8 @@ export default async ({
           `Migrations missing. Please run 'medusa migrations run' and try again.`
         )
       }
+
+      throw err
     }
   }
 
