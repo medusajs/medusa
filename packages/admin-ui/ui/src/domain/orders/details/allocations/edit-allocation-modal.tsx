@@ -268,8 +268,8 @@ const EditAllocationDrawer = ({
                     <div>{inventory_item?.sku ?? "N/A"}</div>
                     <div>In stock</div>
                     <div>{inStockQuantity ?? "N/A"}</div>
-                    <div className="">Available</div>
-                    <div className="">{availableQuantity ?? "N/A"}</div>
+                    <div>Available</div>
+                    <div>{availableQuantity ?? "N/A"}</div>
                     <div className="rounded-bl-rounded">Allocate</div>
                     <div className="bg-grey-0 rounded-br-rounded text-grey-80 flex items-center">
                       <input
