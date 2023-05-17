@@ -1,4 +1,5 @@
 import { asValue } from "awilix"
+import fs from "fs"
 
 import {
   InternalModuleDeclaration,
@@ -48,6 +49,22 @@ export default async (
   }
 }
 
+async function getEntities(): Promise<any[]> {
+  if (process.env.WEBPACK) {
+    const modules = require.context('../models', true, /\.ts$/);
+
+    return modules
+      .keys()
+      .map(r => modules(r))
+      .flatMap(mod => Object.keys(mod).map(className => mod[className]));
+  }
+
+  const promises = fs.readdirSync('../models').map(file => import(`../models/${file}`));
+  const modules = await Promise.all(promises);
+
+  return modules.flatMap(mod => Object.keys(mod).map(className => mod[className]));
+}
+
 async function loadDefault({ database, container }) {
   if (!database) {
     throw new MedusaError(
@@ -59,8 +76,9 @@ async function loadDefault({ database, container }) {
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await MikroORM.init<PostgreSqlDriver>({
-    entitiesTs: entities,
-    entities: entities,
+    // entitiesTs: entities,
+    discovery: { disableDynamicFileAccess: true },
+    entities: await getEntities(),
     debug: process.env.NODE_ENV === "development",
     baseDir: process.cwd(),
     clientUrl: database.clientUrl,
