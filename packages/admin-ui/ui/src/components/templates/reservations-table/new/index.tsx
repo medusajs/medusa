@@ -75,7 +75,6 @@ const NewReservation = ({ onClose }: { onClose: () => void }) => {
                 size="small"
                 variant="primary"
                 type="submit"
-                // disabled={!isDirty}
               >
                 Save reservation
               </Button>
