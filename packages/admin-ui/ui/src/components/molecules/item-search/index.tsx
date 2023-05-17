@@ -52,7 +52,7 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
   const options = inventory_items?.map((inventoryItem) => ({
     label:
       inventoryItem.title ||
-      inventoryItem.variants[0].product.title ||
+      inventoryItem.variants?.[0]?.product?.title ||
       inventoryItem.sku,
     value: inventoryItem.id,
     inventoryItem,

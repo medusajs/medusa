@@ -68,14 +68,15 @@ const NewReservation = ({ onClose }: { onClose: () => void }) => {
               <CrossIcon size={20} />
             </Button>
             <div className="gap-x-small flex">
-              <Button size="small" variant="secondary" onClick={onClose}>
-                Cancel
-              </Button>
               <Button
                 size="small"
-                variant="primary"
-                type="submit"
+                variant="secondary"
+                type="button"
+                onClick={onClose}
               >
+                Cancel
+              </Button>
+              <Button size="small" variant="primary" type="submit">
                 Save reservation
               </Button>
             </div>
