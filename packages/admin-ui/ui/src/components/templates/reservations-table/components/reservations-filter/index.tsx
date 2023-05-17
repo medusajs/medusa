@@ -266,7 +266,6 @@ const CreatedByFilterItem = ({
 
   useEffect(() => {
     if (searchTerm && users?.length) {
-      console.log(searchTerm)
       setDisplayUsers(
         users
           .filter(
