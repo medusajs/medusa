@@ -1,5 +1,13 @@
 # @medusajs/types
 
+## 1.8.6
+
+### Patch Changes
+
+- [#4073](https://github.com/medusajs/medusa/pull/4073) [`a86f0e815`](https://github.com/medusajs/medusa/commit/a86f0e815a9e75d7d562fbe516c5bb7e0ab1f6ee) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa): Expose `ioredis` options
+
+- [#4072](https://github.com/medusajs/medusa/pull/4072) [`6511959e2`](https://github.com/medusajs/medusa/commit/6511959e23177f3b4831915db0e8e788bc9047fa) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Revert to official Typeorm package
+
 ## 1.8.5
 
 ### Patch Changes

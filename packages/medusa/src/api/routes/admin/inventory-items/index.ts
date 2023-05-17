@@ -1,24 +1,5 @@
-import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
-import { Router } from "express"
 import "reflect-metadata"
-import { ProductVariant } from "../../../../models"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, {
-  transformBody,
-  transformQuery,
-} from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import {
-  AdminPostInventoryItemsParams,
-  AdminPostInventoryItemsReq,
-} from "./create-inventory-item"
-import {
-  AdminPostInventoryItemsItemLocationLevelsParams,
-  AdminPostInventoryItemsItemLocationLevelsReq,
-} from "./create-location-level"
-import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
-import { AdminGetInventoryItemsParams } from "./list-inventory-items"
-import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
+
 import {
   AdminPostInventoryItemsInventoryItemParams,
   AdminPostInventoryItemsInventoryItemReq,
@@ -27,6 +8,27 @@ import {
   AdminPostInventoryItemsItemLocationLevelsLevelParams,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
 } from "./update-location-level"
+import {
+  AdminPostInventoryItemsItemLocationLevelsParams,
+  AdminPostInventoryItemsItemLocationLevelsReq,
+} from "./create-location-level"
+import {
+  AdminPostInventoryItemsParams,
+  AdminPostInventoryItemsReq,
+} from "./create-inventory-item"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+
+import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
+import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
+import { AdminGetInventoryItemsParams } from "./list-inventory-items"
+import { ProductVariant } from "../../../../models"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -91,8 +93,8 @@ export default (app) => {
   route.get(
     "/:id/location-levels",
     transformQuery(AdminGetInventoryItemsItemLocationLevelsParams, {
-      defaultFields: defaultAdminInventoryItemFields,
-      defaultRelations: defaultAdminInventoryItemRelations,
+      defaultFields: defaultAdminLocationLevelFields,
+      defaultRelations: [],
       isList: false,
     }),
     middlewares.wrap(require("./list-location-levels").default)
@@ -139,6 +141,18 @@ export const defaultAdminInventoryItemFields: (keyof InventoryItemDTO)[] = [
   "length",
   "height",
   "width",
+  "metadata",
+  "created_at",
+  "updated_at",
+]
+
+export const defaultAdminLocationLevelFields: (keyof InventoryLevelDTO)[] = [
+  "id",
+  "inventory_item_id",
+  "location_id",
+  "stocked_quantity",
+  "reserved_quantity",
+  "incoming_quantity",
   "metadata",
   "created_at",
   "updated_at",
