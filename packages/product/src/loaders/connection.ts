@@ -50,19 +50,27 @@ export default async (
 }
 
 async function getEntities(): Promise<any[]> {
-  if (process.env.WEBPACK) {
-    const modules = require.context('../models', true, /\.ts$/);
+  /*if (process.env.WEBPACK) {
+    const modules = require.context("../models", true, /\.ts$/)
 
     return modules
       .keys()
-      .map(r => modules(r))
-      .flatMap(mod => Object.keys(mod).map(className => mod[className]));
-  }
+      .map((r) => modules(r))
+      .flatMap((mod) => Object.keys(mod).map((className) => mod[className]))
+  }*/
 
-  const promises = fs.readdirSync('../models').map(file => import(`../models/${file}`));
-  const modules = await Promise.all(promises);
+  const ignoreFiles = ["index.js", "index.ts", "index.d.ts", "index.js.map"]
 
-  return modules.flatMap(mod => Object.keys(mod).map(className => mod[className]));
+  const promises = fs
+    .readdirSync(__dirname + "/../models")
+    .map((file) => !ignoreFiles.includes(file) && import(`../models/${file}`))
+    .filter((v) => v)
+
+  const modules = await Promise.all(promises)
+
+  return modules.flatMap((mod) =>
+    Object.keys(mod).map((className) => mod[className])
+  )
 }
 
 async function loadDefault({ database, container }) {
