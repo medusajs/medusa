@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        db: [sqlite, postgres]
+        db: [postgres]
 
     services:
       redis:

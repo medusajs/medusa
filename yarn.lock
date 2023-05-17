@@ -5781,25 +5781,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mapbox/node-pre-gyp@npm:^1.0.0":
-  version: 1.0.10
-  resolution: "@mapbox/node-pre-gyp@npm:1.0.10"
-  dependencies:
-    detect-libc: ^2.0.0
-    https-proxy-agent: ^5.0.0
-    make-dir: ^3.1.0
-    node-fetch: ^2.6.7
-    nopt: ^5.0.0
-    npmlog: ^5.0.1
-    rimraf: ^3.0.2
-    semver: ^7.3.5
-    tar: ^6.1.11
-  bin:
-    node-pre-gyp: bin/node-pre-gyp
-  checksum: 469f3bc00778c76e0a7ffaf40742482462e05fec31b53c55ad6d6a892894046c0db7bb8543ed49b2cf1926dfcd9af1289985c367c5d20076939f8a889f686e45
-  languageName: node
-  linkType: hard
-
 "@mdx-js/mdx@npm:^1.6.22":
   version: 1.6.22
   resolution: "@mdx-js/mdx@npm:1.6.22"
@@ -6057,7 +6038,6 @@ __metadata:
     regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
     semver: ^7.3.8
-    sqlite3: ^5.0.2
     stack-trace: ^0.0.10
     ulid: ^2.3.0
     url: ^0.11.0
@@ -13057,17 +13037,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"agentkeepalive@npm:^4.1.3":
-  version: 4.3.0
-  resolution: "agentkeepalive@npm:4.3.0"
-  dependencies:
-    debug: ^4.1.0
-    depd: ^2.0.0
-    humanize-ms: ^1.2.1
-  checksum: 61cbdab12d45e82e9ae515b0aa8d09617b66f72409e541a646dd7be4b7260d335d7f56a38079ad305bf0ffb8405592a459faf1294111289107f48352a20c2799
-  languageName: node
-  linkType: hard
-
 "agentkeepalive@npm:^4.2.1":
   version: 4.2.1
   resolution: "agentkeepalive@npm:4.2.1"
@@ -15474,7 +15443,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cacache@npm:^15.0.5, cacache@npm:^15.2.0":
+"cacache@npm:^15.0.5":
   version: 15.3.0
   resolution: "cacache@npm:15.3.0"
   dependencies:
@@ -17978,7 +17947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"depd@npm:2.0.0, depd@npm:^2.0.0, depd@npm:~2.0.0":
+"depd@npm:2.0.0, depd@npm:~2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: 58bd06ec20e19529b06f7ad07ddab60e504d9e0faca4bd23079fac2d279c3594334d736508dc350e06e510aba5e22e4594483b3a6562ce7c17dd797f4cc4ad2c
@@ -18666,7 +18635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"encoding@npm:^0.1.11, encoding@npm:^0.1.12, encoding@npm:^0.1.13":
+"encoding@npm:^0.1.11, encoding@npm:^0.1.13":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
   dependencies:
@@ -28797,30 +28766,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-fetch-happen@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "make-fetch-happen@npm:9.1.0"
-  dependencies:
-    agentkeepalive: ^4.1.3
-    cacache: ^15.2.0
-    http-cache-semantics: ^4.1.0
-    http-proxy-agent: ^4.0.1
-    https-proxy-agent: ^5.0.0
-    is-lambda: ^1.0.1
-    lru-cache: ^6.0.0
-    minipass: ^3.1.3
-    minipass-collect: ^1.0.2
-    minipass-fetch: ^1.3.2
-    minipass-flush: ^1.0.5
-    minipass-pipeline: ^1.2.4
-    negotiator: ^0.6.2
-    promise-retry: ^2.0.1
-    socks-proxy-agent: ^6.0.0
-    ssri: ^8.0.0
-  checksum: 2c737faf6a7f67077679da548b5bfeeef890595bf8c4323a1f76eae355d27ebb33dcf9cf1a673f944cf2f2a7cbf4e2b09f0a0a62931737728f210d902c6be966
-  languageName: node
-  linkType: hard
-
 "makeerror@npm:1.0.12":
   version: 1.0.12
   resolution: "makeerror@npm:1.0.12"
@@ -30300,21 +30245,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass-fetch@npm:^1.3.2":
-  version: 1.4.1
-  resolution: "minipass-fetch@npm:1.4.1"
-  dependencies:
-    encoding: ^0.1.12
-    minipass: ^3.1.0
-    minipass-sized: ^1.0.3
-    minizlib: ^2.0.0
-  dependenciesMeta:
-    encoding:
-      optional: true
-  checksum: a43da7401cd7c4f24b993887d41bd37d097356083b0bb836fd655916467463a1e6e9e553b2da4fcbe8745bf23d40c8b884eab20745562199663b3e9060cd8e7a
-  languageName: node
-  linkType: hard
-
 "minipass-fetch@npm:^2.0.3":
   version: 2.1.0
   resolution: "minipass-fetch@npm:2.1.0"
@@ -30376,15 +30306,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^3.1.0, minipass@npm:^3.1.3":
-  version: 3.3.6
-  resolution: "minipass@npm:3.3.6"
-  dependencies:
-    yallist: ^4.0.0
-  checksum: a114746943afa1dbbca8249e706d1d38b85ed1298b530f5808ce51f8e9e941962e2a5ad2e00eae7dd21d8a4aae6586a66d4216d1a259385e9d0358f0c1eba16c
-  languageName: node
-  linkType: hard
-
 "minizlib@npm:^1.3.3":
   version: 1.3.3
   resolution: "minizlib@npm:1.3.3"
@@ -30394,7 +30315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minizlib@npm:^2.0.0, minizlib@npm:^2.1.1, minizlib@npm:^2.1.2":
+"minizlib@npm:^2.1.1, minizlib@npm:^2.1.2":
   version: 2.1.2
   resolution: "minizlib@npm:2.1.2"
   dependencies:
@@ -30901,7 +30822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"negotiator@npm:0.6.3, negotiator@npm:^0.6.2, negotiator@npm:^0.6.3, negotiator@npm:~0.6.2":
+"negotiator@npm:0.6.3, negotiator@npm:^0.6.3, negotiator@npm:~0.6.2":
   version: 0.6.3
   resolution: "negotiator@npm:0.6.3"
   checksum: 3ec9fd413e7bf071c937ae60d572bc67155262068ed522cf4b3be5edbe6ddf67d095ec03a3a14ebf8fc8e95f8e1d61be4869db0dbb0de696f6b837358bd43fc2
@@ -30973,7 +30894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:^4.2.0, node-addon-api@npm:^4.3.0":
+"node-addon-api@npm:^4.3.0":
   version: 4.3.0
   resolution: "node-addon-api@npm:4.3.0"
   dependencies:
@@ -31123,26 +31044,6 @@ __metadata:
     node-gyp-build-optional: ./optional.js
     node-gyp-build-test: ./build-test.js
   checksum: 8c652daa855612c9ed8aa95dca5e7dc34d72f3849ef415412aef261e44956c0d73ba197401be5c605a709e47fbaa80c76bb31ce29c6bba4f829efbaf457b4698
-  languageName: node
-  linkType: hard
-
-"node-gyp@npm:8.x":
-  version: 8.4.1
-  resolution: "node-gyp@npm:8.4.1"
-  dependencies:
-    env-paths: ^2.2.0
-    glob: ^7.1.4
-    graceful-fs: ^4.2.6
-    make-fetch-happen: ^9.1.0
-    nopt: ^5.0.0
-    npmlog: ^6.0.0
-    rimraf: ^3.0.2
-    semver: ^7.3.5
-    tar: ^6.1.2
-    which: ^2.0.2
-  bin:
-    node-gyp: bin/node-gyp.js
-  checksum: 80ef333b3a882eb6a2695a8e08f31d618f4533eff192864e4a3a16b67ff0abc9d8c1d5fac0395550ec699326b9248c5e2b3be178492f7f4d1ccf97d2cf948021
   languageName: node
   linkType: hard
 
@@ -37206,17 +37107,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socks-proxy-agent@npm:^6.0.0":
-  version: 6.2.1
-  resolution: "socks-proxy-agent@npm:6.2.1"
-  dependencies:
-    agent-base: ^6.0.2
-    debug: ^4.3.3
-    socks: ^2.6.2
-  checksum: d75c1cf1fdd7f8309a43a77f84409b793fc0f540742ef915154e70ac09a08b0490576fe85d4f8d68bbf80e604a62957a17ab5ef50d312fe1442b0ab6f8f6e6f6
-  languageName: node
-  linkType: hard
-
 "socks-proxy-agent@npm:^7.0.0":
   version: 7.0.0
   resolution: "socks-proxy-agent@npm:7.0.0"
@@ -37456,26 +37346,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlite3@npm:^5.0.2":
-  version: 5.1.6
-  resolution: "sqlite3@npm:5.1.6"
-  dependencies:
-    "@mapbox/node-pre-gyp": ^1.0.0
-    node-addon-api: ^4.2.0
-    node-gyp: 8.x
-    tar: ^6.1.11
-  peerDependencies:
-    node-gyp: 8.x
-  dependenciesMeta:
-    node-gyp:
-      optional: true
-  peerDependenciesMeta:
-    node-gyp:
-      optional: true
-  checksum: 85f1dd1f4b9fa906578330e7badc1116c61ef4e7c64a09897268923f5c9ff4ae1e0a447dd4594c0f8c3b20a410fcc5d8d00d1056225a5186c57ea7f7c9b18974
-  languageName: node
-  linkType: hard
-
 "sshpk@npm:^1.7.0":
   version: 1.17.0
   resolution: "sshpk@npm:1.17.0"
@@ -37506,7 +37376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ssri@npm:^8.0.0, ssri@npm:^8.0.1":
+"ssri@npm:^8.0.1":
   version: 8.0.1
   resolution: "ssri@npm:8.0.1"
   dependencies:
