@@ -96,12 +96,12 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
               <div className="rounded-tr-rounded">
                 {selectedItem!.title ?? "N/A"}
               </div>
-              <div className="">SKU</div>
-              <div className="">{selectedItem.sku ?? "N/A"}</div>
-              <div className="">In stock</div>
-              <div className="">{locationLevel?.stocked_quantity}</div>
-              <div className="">Available</div>
-              <div className="">
+              <div>SKU</div>
+              <div>{selectedItem.sku ?? "N/A"}</div>
+              <div>In stock</div>
+              <div>{locationLevel?.stocked_quantity}</div>
+              <div>Available</div>
+              <div>
                 {locationLevel?.stocked_quantity -
                   locationLevel?.reserved_quantity}
               </div>
