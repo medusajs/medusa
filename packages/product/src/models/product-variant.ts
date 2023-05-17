@@ -21,6 +21,7 @@ type OptionalFields =
   | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
+  | "productss"
 
 @Entity({ tableName: "product_variant" })
 class ProductVariant {
@@ -40,6 +41,10 @@ class ProductVariant {
       "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_sku_unique ON product_variant (sku) WHERE deleted_at IS NULL",
   })
   sku?: string | null
+
+  /*  @Index({ name: "IDX_product_variant_product_id" })
+  @Property({ columnType: "text" })
+  product_id: string*/
 
   @Property({ columnType: "text", nullable: true })
   @Index({
@@ -126,7 +131,9 @@ class ProductVariant {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 
-  @ManyToOne(() => Product, { onDelete: "cascade" })
+  @ManyToOne(() => Product, {
+    onDelete: "cascade",
+  })
   product!: Product
 
   // @OneToMany(() => MoneyAmount, (ma) => ma.variant, {

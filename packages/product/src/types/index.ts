@@ -11,7 +11,7 @@ export type ProductServiceInitializeOptions = {
 
 export type ProductServiceInitializeCustomDataLayerOptions = {
   manager?: any
-  repositories?: { [key: string]: Constructor<RepositoryService<any>> }
+  repositories?: { [key: string]: Constructor<RepositoryService> }
 }
 
 export { RepositoryService, FindOptions } from "./dal/repository-service"

@@ -24,3 +24,20 @@ export const productsData = [
     ],
   },
 ]
+
+export const variantsData = [
+  {
+    id: "test-1",
+    title: "variant title",
+    sku: "sku 1",
+    product: { id: productsData[0].id },
+    inventory_quantity: 10,
+  },
+  {
+    id: "test-2",
+    title: "variant title",
+    sku: "sku 2",
+    product: { id: productsData[1].id },
+    inventory_quantity: 10,
+  },
+]

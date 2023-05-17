@@ -1,66 +1,74 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { FindOptions as MikroOptions, LoadStrategy } from "@mikro-orm/core"
-
 import { ProductCollection } from "@models"
-
+import {
+  FilterQuery as MikroFilterQuery,
+  FindOptions as MikroOptions,
+  LoadStrategy,
+} from "@mikro-orm/core"
 import { FindOptions, RepositoryService } from "../types"
 import { deduplicateIfNecessary } from "../utils"
 
-export class ProductCollectionRepository
-  implements RepositoryService<ProductCollection>
-{
+export class ProductCollectionRepository implements RepositoryService {
   protected readonly manager_: SqlEntityManager
   constructor({ manager }) {
     this.manager_ = manager.fork()
   }
 
-  async find(
-    findOptions: FindOptions<ProductCollection> = {},
+  async find<T = ProductCollection>(
+    findOptions: FindOptions<T> = { where: {} },
     context: { transaction?: any } = {}
-  ): Promise<ProductCollection[]> {
+  ): Promise<T[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
-    const { where = {}, options = {} } = { ...findOptions }
+    const findOptions_ = { ...findOptions }
 
-    options.limit ??= 15
-    options.populate = deduplicateIfNecessary(options.populate)
+    findOptions_.options ??= {}
+    findOptions_.options.limit ??= 15
 
-    if (context.transaction) {
-      Object.assign(options, { ctx: context.transaction })
+    if (findOptions_.options.populate) {
+      deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    Object.assign(options, {
+    if (context.transaction) {
+      Object.assign(findOptions_.options, { ctx: context.transaction })
+    }
+
+    Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.find(
+    return (await this.manager_.find(
       ProductCollection,
-      where,
-      options as MikroOptions<ProductCollection>
-    )
+      findOptions_.where as MikroFilterQuery<ProductCollection>,
+      findOptions_.options as MikroOptions<ProductCollection>
+    )) as unknown as T[]
   }
 
-  async findAndCount(
-    findOptions: FindOptions<ProductCollection> = {},
+  async findAndCount<T = ProductCollection>(
+    findOptions: FindOptions<T> = { where: {} },
     context: { transaction?: any } = {}
-  ): Promise<[ProductCollection[], number]> {
+  ): Promise<[T[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
-    const { where = {}, options = {} } = { ...findOptions }
+    const findOptions_ = { ...findOptions }
 
-    options.limit ??= 15
-    options.populate = deduplicateIfNecessary(options.populate)
+    findOptions_.options ??= {}
+    findOptions_.options.limit ??= 15
 
-    if (context.transaction) {
-      Object.assign(options, { ctx: context.transaction })
+    if (findOptions_.options.populate) {
+      deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    Object.assign(options, {
+    if (context.transaction) {
+      Object.assign(findOptions_.options, { ctx: context.transaction })
+    }
+
+    Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.findAndCount(
+    return (await this.manager_.find(
       ProductCollection,
-      where,
-      options as MikroOptions<ProductCollection>
-    )
+      findOptions_.where as MikroFilterQuery<ProductCollection>,
+      findOptions_.options as MikroOptions<ProductCollection>
+    )) as unknown as [T[], number]
   }
 }

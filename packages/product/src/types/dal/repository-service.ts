@@ -7,7 +7,7 @@ export { FindOptions, OptionsQuery, FilterQuery } from "./helpers"
  * This layer helps to separate the business logic (service layer) from accessing the
  * ORM directly and allows to switch to another ORM without changing the business logic.
  */
-export interface RepositoryService<T> {
-  find(options?: FindOptions<T>): Promise<T[]>
-  findAndCount(options?: FindOptions<T>): Promise<[T[], number]>
+export interface RepositoryService {
+  find<T>(options?: FindOptions<T>): Promise<T[]>
+  findAndCount<T>(options?: FindOptions<T>): Promise<[T[], number]>
 }

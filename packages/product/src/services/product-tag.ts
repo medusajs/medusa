@@ -1,48 +1,31 @@
 import { ProductTag } from "@models"
-import { FilterQuery } from "@mikro-orm/core"
-import { OptionsQuery } from "../types/dal/helpers"
 import { RepositoryService } from "../types"
 import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productTagRepository: RepositoryService<ProductTag>
+  productTagRepository: RepositoryService
 }
 
 export default class ProductTagService {
-  protected readonly productTagRepository_: RepositoryService<ProductTag>
+  protected readonly productTagRepository_: RepositoryService
 
   constructor({ productTagRepository }: InjectedDependencies) {
     this.productTagRepository_ = productTagRepository
   }
 
-  async list(
+  async list<T = ProductTag>(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<ProductTag[]> {
-    const where: FilterQuery<ProductTag> = {}
-
-    const findOptions: OptionsQuery<ProductTag, any> & {
-      populate: OptionsQuery<ProductTag, any>["populate"]
-    } = {
-      populate: config.relations ?? ([] as const),
-      fields: config.select,
-      limit: config.take,
-      offset: config.skip,
-    }
+  ): Promise<T[]> {
+    const queryOptions = buildQuery<T>(filters, config)
+    queryOptions.where ??= {}
 
     if (filters.value) {
-      where["value"] = { $ilike: filters.value }
+      queryOptions.where["value"] = { $ilike: filters.value }
     }
 
-    // TODO: remove
-    if (filters.id) {
-      where["id"] = filters.id
-    }
-
-    return await this.productTagRepository_.find({
-      where,
-      options: findOptions,
-    })
+    return await this.productTagRepository_.find<T>(queryOptions)
   }
 }

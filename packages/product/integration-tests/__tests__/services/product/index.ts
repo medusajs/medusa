@@ -5,13 +5,22 @@ import {
   ProductVariantService,
 } from "@services"
 import { ProductRepository } from "@repositories"
-import { Product, ProductCategory } from "@models"
+import { Product, ProductCategory, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
 import { ProductDTO } from "@medusajs/types"
 
-import { createProductAndTags, createCategories, assignCategoriesToProduct } from "../../../__fixtures__/product"
-import { productsData, categoriesData } from "../../../__fixtures__/product/data"
+import {
+  assignCategoriesToProduct,
+  createCategories,
+  createProductAndTags,
+  createProductVariants,
+} from "../../../__fixtures__/product"
+import {
+  categoriesData,
+  productsData,
+  variantsData,
+} from "../../../__fixtures__/product/data"
 
 const productVariantService = {
   list: jest.fn(),
@@ -25,6 +34,7 @@ describe("Product Service", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let products!: Product[]
+  let variants!: ProductVariant[]
   let categories!: ProductCategory[]
 
   beforeEach(async () => {
@@ -112,27 +122,39 @@ describe("Product Service", () => {
         testManager = await TestDatabase.forkManager()
 
         products = await createProductAndTags(testManager, productsData)
-        workingProduct = products.find((p) => p.id === 'test-1') as Product
+        workingProduct = products.find((p) => p.id === "test-1") as Product
 
         categories = await createCategories(testManager, categoriesData)
-        workingCategory = categories.find((c) => c.id === 'category-1') as ProductCategory
+        workingCategory = categories.find(
+          (c) => c.id === "category-1"
+        ) as ProductCategory
 
-        workingProduct = await assignCategoriesToProduct(testManager, workingProduct, categories)
+        workingProduct = await assignCategoriesToProduct(
+          testManager,
+          workingProduct,
+          categories
+        )
       })
 
       it("filter by categories relation and scope fields", async () => {
         const products = await service.list(
           {
             id: workingProduct.id,
-            category_id: [workingCategory.id]
+            categories: { id: [workingCategory.id] },
           },
           {
-            select: ['title', 'categories.name', 'categories.handle'] as unknown as (keyof ProductDTO)[],
+            select: [
+              "title",
+              "categories.name",
+              "categories.handle",
+            ] as (keyof ProductDTO)[],
             relations: ["categories"],
           }
         )
 
-        const product = products.find((p) => p.id === workingProduct.id) as Product
+        const product = products.find(
+          (p) => p.id === workingProduct.id
+        ) as unknown as Product
 
         expect(product).toEqual(
           expect.objectContaining({
@@ -145,8 +167,8 @@ describe("Product Service", () => {
           {
             id: workingCategory.id,
             name: workingCategory.name,
-            handle: workingCategory.name.split(' ').join('-'),
-          }
+            handle: workingCategory.name.split(" ").join("-"),
+          },
         ])
       })
 
@@ -154,10 +176,14 @@ describe("Product Service", () => {
         const products = await service.list(
           {
             id: workingProduct.id,
-            category_id: ['category-doesnt-exist-id']
+            categories: { id: ["category-doesnt-exist-id"] },
           },
           {
-            select: ['title', 'categories.name', 'categories.handle'] as unknown as (keyof ProductDTO)[],
+            select: [
+              "title",
+              "categories.name",
+              "categories.handle",
+            ] as (keyof ProductDTO)[],
             relations: ["categories"],
           }
         )
@@ -171,12 +197,22 @@ describe("Product Service", () => {
             id: workingProduct.id,
           },
           {
-            select: ['categories.name', 'categories.category_children.name', 'categories.parent_category.name'] as unknown as (keyof ProductDTO)[],
-            relations: ["categories", "categories.category_children", "categories.parent_category"],
+            select: [
+              "categories.name",
+              "categories.category_children.name",
+              "categories.parent_category.name",
+            ] as unknown as (keyof ProductDTO)[],
+            relations: [
+              "categories",
+              "categories.category_children",
+              "categories.parent_category",
+            ],
           }
         )
 
-        const product = products.find((p) => p.id === workingProduct.id) as Product
+        const product = products.find(
+          (p) => p.id === workingProduct.id
+        ) as unknown as Product
 
         expect(product).toEqual(
           expect.objectContaining({
@@ -189,17 +225,66 @@ describe("Product Service", () => {
           {
             id: workingCategory.id,
             name: workingCategory.name,
-            category_children: [{
-              id: workingCategory.category_children[0].id,
-              name: workingCategory.category_children[0].name,
-              parent_category: workingCategory.id
-            }],
+            category_children: [
+              {
+                id: workingCategory.category_children[0].id,
+                name: workingCategory.category_children[0].name,
+                parent_category: workingCategory.id,
+              },
+            ],
             parent_category: {
               id: workingCategory.parent_category?.id,
               name: workingCategory.parent_category?.name,
-            }
-          }
+            },
+          },
         ])
+      })
+    })
+
+    describe("relation: variants", () => {
+      beforeEach(async () => {
+        testManager = await TestDatabase.forkManager()
+
+        products = await createProductAndTags(testManager, productsData)
+        variants = await createProductVariants(testManager, variantsData)
+      })
+
+      it("filter by id and including relations", async () => {
+        const productsResult = await service.list(
+          {
+            id: products[0].id,
+          },
+          {
+            relations: ["variants"],
+          }
+        )
+
+        productsResult.forEach((product, index) => {
+          const variants = product.variants.toArray()
+
+          expect(product).toEqual(
+            expect.objectContaining({
+              id: productsData[index].id,
+              title: productsData[index].title,
+            })
+          )
+
+          variants.forEach((variant, variantIndex) => {
+            const expectedVariant = variantsData.filter(
+              (d) => d.product.id === product.id
+            )[variantIndex]
+
+            const variantProduct = variant.product
+
+            expect(variant).toEqual(
+              expect.objectContaining({
+                id: expectedVariant.id,
+                sku: expectedVariant.sku,
+                title: expectedVariant.title,
+              })
+            )
+          })
+        })
       })
     })
   })

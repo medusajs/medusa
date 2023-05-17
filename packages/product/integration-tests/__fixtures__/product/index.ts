@@ -1,4 +1,9 @@
-import { Product, ProductCollection, ProductCategory } from "@models"
+import {
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductVariant,
+} from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export async function createProductAndTags(
@@ -12,6 +17,19 @@ export async function createProductAndTags(
   await manager.persistAndFlush(products)
 
   return products
+}
+
+export async function createProductVariants(
+  manager: SqlEntityManager,
+  data: any[]
+) {
+  const variants: any[] = data.map((variantsData) => {
+    return manager.create(ProductVariant, variantsData)
+  })
+
+  await manager.persistAndFlush(variants)
+
+  return variants
 }
 
 export async function createCollections(

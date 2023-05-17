@@ -71,14 +71,14 @@ function loadCustomRepositories({ customRepositories, container }) {
 
     if (
       !finalRepository ||
-      !(finalRepository as Constructor<RepositoryService<any>>).prototype.find
+      !(finalRepository as Constructor<RepositoryService>).prototype.find
     ) {
       finalRepository = DefaultRepository
     }
 
     container.register({
       [lowerCaseFirst(key)]: asClass(
-        finalRepository as Constructor<RepositoryService<any>>
+        finalRepository as Constructor<RepositoryService>
       ).singleton(),
     })
   })

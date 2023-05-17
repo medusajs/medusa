@@ -1,48 +1,36 @@
 import { ProductCollection } from "@models"
-import { FilterQuery } from "@mikro-orm/core"
-import { OptionsQuery } from "../types/dal/helpers"
 import { RepositoryService } from "../types"
 import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productCollectionRepository: RepositoryService<ProductCollection>
+  productCollectionRepository: RepositoryService
 }
 
 export default class ProductCollectionService {
-  protected readonly productCollectionRepository_: RepositoryService<ProductCollection>
+  protected readonly productCollectionRepository_: RepositoryService
 
   constructor({ productCollectionRepository }: InjectedDependencies) {
     this.productCollectionRepository_ = productCollectionRepository
   }
 
-  async list(
+  async list<T = ProductCollection>(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<ProductCollection[]> {
-    const where: FilterQuery<ProductCollection> = {}
-
-    const findOptions: OptionsQuery<ProductCollection, any> & {
-      populate: OptionsQuery<ProductCollection, any>["populate"]
-    } = {
-      populate: config.relations ?? ([] as const),
-      fields: config.select,
-      limit: config.take,
-      offset: config.skip,
-    }
+  ): Promise<T[]> {
+    const queryOptions = buildQuery<T>(filters, config)
+    queryOptions.where ??= {}
 
     if (filters.title) {
-      where["title"] = { $like: filters.title }
+      queryOptions.where["title"] = { $like: filters.title }
     }
 
     // TODO: remove
     if (filters.id) {
-      where["id"] = filters.id
+      queryOptions.where["id"] = filters.id
     }
 
-    return await this.productCollectionRepository_.find({
-      where,
-      options: findOptions,
-    })
+    return await this.productCollectionRepository_.find<T>(queryOptions)
   }
 }

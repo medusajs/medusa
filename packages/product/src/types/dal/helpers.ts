@@ -4,17 +4,6 @@ type Dictionary<T = any> = {
   [k: string]: T
 }
 
-type Defined<T> = Exclude<T, null | undefined>
-
-type FieldsMap<T, P extends string = never> = {
-  [K in keyof T]?: EntityField<ExpandProperty<T[K]>>[]
-}
-type EntityField<T, P extends string = never> =
-  | keyof T
-  | "*"
-  | AutoPath<T, P, "*">
-  | FieldsMap<T, P>
-
 type Query<T> = T extends object
   ? T extends Scalar
     ? never
@@ -108,6 +97,7 @@ type ExpandObject<T> = T extends object
   : never
 
 type ObjectQuery<T> = ExpandObject<T> & OperatorMap<T>
+
 export type FilterQuery<T> =
   | ObjectQuery<T>
   | NonNullable<ExpandScalar<Primary<T>>>
@@ -129,41 +119,6 @@ type QueryOrderMap<T> = {
   >
 }
 
-type ExtractType<T> = T extends infer U ? U : T
-type StringKeys<T, E extends string = never> = T extends object
-  ? `${Exclude<keyof ExtractType<T> | E, symbol>}`
-  : never
-type GetStringKey<
-  T,
-  K extends StringKeys<T, string>,
-  E extends string
-> = K extends keyof T ? ExtractType<T[K]> : K extends E ? keyof T : never
-type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-type AutoPath<
-  O,
-  P extends string,
-  E extends string = never,
-  D extends Prev[number] = 5
-> = [D] extends [never]
-  ? string
-  : P extends any
-  ? (P & `${string}.` extends never ? P : P & `${string}.`) extends infer Q
-    ? Q extends `${infer A}.${infer B}`
-      ? A extends StringKeys<O, E>
-        ? `${A}.${AutoPath<Defined<GetStringKey<O, A, E>>, B, E, Prev[D]>}`
-        : never
-      : Q extends StringKeys<O, E>
-      ?
-          | (Defined<GetStringKey<O, Q, E>> extends unknown
-              ? Exclude<P, `${string}.`>
-              : never)
-          | (StringKeys<Defined<GetStringKey<O, Q, E>>, E> extends never
-              ? never
-              : `${Q}.`)
-      : StringKeys<O, E>
-    : never
-  : never
-
 type Order<T> = {
   [key in keyof T]?:
     | "ASC"
@@ -172,16 +127,16 @@ type Order<T> = {
 }
 
 export interface OptionsQuery<T, P extends string = never> {
-  populate?: readonly AutoPath<T, P>[] | boolean
+  populate?: string[]
   orderBy?: Order<T> | Order<T>[]
   limit?: number
   offset?: number
-  fields?: readonly EntityField<T, P>[]
+  fields?: string[]
   groupBy?: string | string[]
   filters?: Dictionary<boolean | Dictionary> | string[] | boolean
 }
 
 export type FindOptions<T> = {
-  where?: FilterQuery<T>
+  where: FilterQuery<T>
   options?: OptionsQuery<T, any>
 }

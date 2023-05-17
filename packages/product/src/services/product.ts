@@ -1,17 +1,17 @@
 import { ProductTagService, ProductVariantService } from "@services"
-import { Product } from "@models"
+import { Product, ProductTag, ProductVariant } from "@models"
 import { RepositoryService } from "../types"
-import { FilterQuery, OptionsQuery } from "../types/dal/helpers"
 import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productRepository: RepositoryService<Product>
+  productRepository: RepositoryService
   productVariantService: ProductVariantService
   productTagService: ProductTagService
 }
 
 export default class ProductService implements ProductTypes.IProductService {
-  protected readonly productRepository_: RepositoryService<Product>
+  protected readonly productRepository_: RepositoryService
   protected readonly productVariantService: ProductVariantService
   protected readonly productTagService: ProductTagService
 
@@ -25,55 +25,28 @@ export default class ProductService implements ProductTypes.IProductService {
     this.productTagService = productTagService
   }
 
-  async list(
+  async list<T = Product>(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<ProductTypes.ProductDTO[]> {
-    /**
-     * Move the below manipulation in a new build query utils.
-     * Needs more vision of what will be the end input shape of all api method
-     */
-    const where: FilterQuery<Product> = {}
-    const findOptions: OptionsQuery<Product, any> & {
-      populate: OptionsQuery<Product, any>["populate"]
-    } = {
-      populate: config.relations ?? ([] as const),
-      fields: config.select,
-      limit: config.take,
-      offset: config.skip,
-    }
-
-    if (filters.tags?.length) {
-      where["tags"] = { value: { $in: filters.tags } }
-    }
-
-    if (filters.category_id?.length) {
-      where["categories"] = { id: { $in: filters.category_id } }
-    }
-    /**
-     * End of manipulation
-     */
-
-    return (await this.productRepository_.find({
-      where,
-      options: findOptions,
-    })) as ProductTypes.ProductDTO[]
+  ): Promise<T[]> {
+    const queryOptions = buildQuery<T>(filters, config)
+    return await this.productRepository_.find<T>(queryOptions)
   }
 
-  async listVariants(
+  async listVariants<T = ProductVariant>(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: SharedContext
-  ) {
+  ): Promise<T[]> {
     return await this.productVariantService.list()
   }
 
-  async listTags(
+  async listTags<T = ProductTag>(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: SharedContext
-  ) {
+  ): Promise<T[]> {
     return await this.productTagService.list()
   }
 
