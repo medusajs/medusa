@@ -247,6 +247,7 @@ const EditAllocationDrawer = ({
                   <div
                     className={`
                   bg-grey-5 text-grey-50 border-grey-20 
+                  inter-base-regular
                   mt-6
                   grid border-collapse grid-cols-2 grid-rows-3 
                   [&>*]:border-r [&>*]:border-b [&>*]:py-2 
