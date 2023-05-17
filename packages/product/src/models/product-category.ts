@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
-import { kebabCase } from "lodash"
+import kebabCase from "lodash/kebabCase"
 
 import Product from "./product"
 
@@ -19,17 +19,16 @@ class ProductCategory {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", nullable: false})
+  @Property({ columnType: "text", nullable: false })
   name: string
 
-  @Property({ columnType: "text", default: '', nullable: false })
+  @Property({ columnType: "text", default: "", nullable: false })
   description?: string
 
   @Index({
     name: "IDX_product_category_handle",
     properties: ["handle"],
-    expression:
-      `CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle")`,
+    expression: `CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle")`,
   })
   @Property({ columnType: "text", nullable: false })
   handle?: string
@@ -37,8 +36,7 @@ class ProductCategory {
   @Index({
     name: "IDX_product_category_path",
     properties: ["mpath"],
-    expression:
-      `CREATE INDEX "IDX_product_category_path" ON "product_category" ("mpath")`,
+    expression: `CREATE INDEX "IDX_product_category_path" ON "product_category" ("mpath")`,
   })
   // TODO: mpath shouldn't be nullable, remove this when mpath is processed before create
   @Property({ columnType: "text", nullable: true })
@@ -58,9 +56,9 @@ class ProductCategory {
 
   @OneToMany({
     entity: () => ProductCategory,
-    mappedBy: productCategory => productCategory.parent_category,
+    mappedBy: (productCategory) => productCategory.parent_category,
   })
-  category_children = new Collection<ProductCategory>(this);
+  category_children = new Collection<ProductCategory>(this)
 
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
   created_at: Date

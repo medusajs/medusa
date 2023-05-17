@@ -1,4 +1,3 @@
-import _ from "lodash"
 import {
   BeforeCreate,
   Collection,
@@ -12,6 +11,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import kebabCase from "lodash/kebabCase"
 
 import { generateEntityId } from "@medusajs/utils"
 import { ProductTypes } from "@medusajs/types"
@@ -143,7 +143,7 @@ class Product {
   beforeCreate() {
     this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {
-      this.handle = _.kebabCase(this.title)
+      this.handle = kebabCase(this.title)
     }
   }
 }
