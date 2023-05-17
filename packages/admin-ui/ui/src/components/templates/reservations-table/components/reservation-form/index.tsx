@@ -1,20 +1,15 @@
-import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
-
 import Button from "../../../../fundamentals/button"
 import { Controller } from "react-hook-form"
 import InputField from "../../../../molecules/input"
 import ItemSearch from "../../../../molecules/item-search"
 import LocationDropdown from "../../../../molecules/location-dropdown"
 import { NestedForm } from "../../../../../utils/nested-form"
-import { ProductVariant } from "@medusajs/medusa"
+import { DecoratedInventoryItemDTO } from "@medusajs/medusa"
 import React from "react"
 
 export type GeneralFormType = {
   location: string
-  item?: Partial<InventoryItemDTO> & {
-    location_levels?: InventoryLevelDTO[] | undefined
-    variants?: ProductVariant[] | undefined
-  }
+  items: Partial<DecoratedInventoryItemDTO>
   description: string
   quantity: number
 }
@@ -24,14 +19,7 @@ type Props = {
 }
 
 const ReservationForm: React.FC<Props> = ({ form }) => {
-  const {
-    register,
-    path,
-    watch,
-    control,
-    setValue,
-    formState: { errors },
-  } = form
+  const { register, path, watch, control, setValue } = form
 
   const selectedItem = watch(path("item"))
   const selectedLocation = watch(path("location"))
