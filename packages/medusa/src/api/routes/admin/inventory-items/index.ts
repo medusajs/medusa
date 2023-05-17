@@ -223,6 +223,27 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
 }
 
 /**
+ * @schema DecoratedInventoryItemDTO
+ * type: object
+ * allOf:
+ *   - $ref: "#/components/schemas/InventoryItemDTO"
+ *   - type: object
+ *     properties:
+ *       location_levels:
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/InventoryLevelDTO"
+ *       variants:
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/ProductVariant"
+ */
+export type DecoratedInventoryItemDTO = InventoryItemDTO & {
+  location_levels?: InventoryLevelDTO[]
+  variants?: ProductVariant[]
+}
+
+/**
  * @schema AdminInventoryItemsListWithVariantsAndLocationLevelsRes
  * type: object
  * required:
@@ -234,20 +255,7 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
  *   inventory_items:
  *     type: array
  *     items:
- *       allOf:
- *         - $ref: "#/components/schemas/InventoryItemDTO"
- *         - type: object
- *           properties:
- *             location_levels:
- *               type: array
- *               items:
- *                 allOf:
- *                   - $ref: "#/components/schemas/InventoryLevelDTO"
- *             variants:
- *               type: array
- *               items:
- *                 allOf:
- *                   - $ref: "#/components/schemas/ProductVariant"
+ *       $ref: "#/components/schemas/DecoratedInventoryItemDTO"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -260,11 +268,9 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
  */
 export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
   PaginatedResponse & {
-    inventory_items: (Partial<InventoryItemDTO> & {
-      location_levels?: InventoryLevelDTO[]
-      variants?: ProductVariant[]
-    })[]
+    inventory_items: DecoratedInventoryItemDTO[]
   }
+
 /**
  * @schema AdminInventoryItemsLocationLevelsRes
  * type: object
