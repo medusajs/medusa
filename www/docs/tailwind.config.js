@@ -453,8 +453,7 @@ module.exports = {
       backgroundImage: {
         "primary-gradient":
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
-        "code-fade":
-          "linear-gradient(90deg, var(#1C1C1F00), var(#1C1C1F) 24px)",
+        "code-fade": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
       },
       screens: {
         xs: "576px",
@@ -478,6 +477,95 @@ module.exports = {
         "main-content": "1140px",
         "main-content-hidden-sidebar": "1440px",
         xl: "1419px",
+      },
+      minWidth: {
+        xl: "1419px",
+      },
+      fontSize: {
+        "body-regular-plus": [
+          "14px",
+          {
+            lineHeight: "24px",
+            fontWeight: "500",
+          },
+        ],
+        "body-regular": [
+          "14px",
+          {
+            lineHeight: "24px",
+            fontWeight: "400",
+          },
+        ],
+        h1: [
+          "32px",
+          {
+            lineHeight: "44px",
+            fontWeight: "500",
+          },
+        ],
+        h2: [
+          "24px",
+          {
+            lineHeight: "32px",
+            fontWeight: "500",
+          },
+        ],
+        h3: [
+          "18px",
+          {
+            lineHeight: "28px",
+            fontWeight: "500",
+          },
+        ],
+        "label-large-plus": [
+          "16px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "label-regular-plus": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "label-regular": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "label-small-plus": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "label-small": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "label-x-small": [
+          "12px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "label-x-small-plus": [
+          "12px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
       },
     },
     fontFamily: {
@@ -508,92 +596,6 @@ module.exports = {
         "monospace",
       ],
     },
-    fontSize: {
-      "body-regular-plus": [
-        "14px",
-        {
-          lineHeight: "24px",
-          fontWeight: "500",
-        },
-      ],
-      "body-regular": [
-        "14px",
-        {
-          lineHeight: "24px",
-          fontWeight: "400",
-        },
-      ],
-      h1: [
-        "32px",
-        {
-          lineHeight: "44px",
-          fontWeight: "500",
-        },
-      ],
-      h2: [
-        "24px",
-        {
-          lineHeight: "32px",
-          fontWeight: "500",
-        },
-      ],
-      h3: [
-        "18px",
-        {
-          lineHeight: "28px",
-          fontWeight: "500",
-        },
-      ],
-      "label-large-plus": [
-        "16px",
-        {
-          lineHeight: "20px",
-          fontWeight: "500",
-        },
-      ],
-      "label-regular-plus": [
-        "14px",
-        {
-          lineHeight: "20px",
-          fontWeight: "500",
-        },
-      ],
-      "label-regular": [
-        "14px",
-        {
-          lineHeight: "20px",
-          fontWeight: "400",
-        },
-      ],
-      "label-small-plus": [
-        "13px",
-        {
-          lineHeight: "20px",
-          fontWeight: "500",
-        },
-      ],
-      "label-small": [
-        "13px",
-        {
-          lineHeight: "20px",
-          fontWeight: "400",
-        },
-      ],
-      "label-x-small": [
-        "12px",
-        {
-          lineHeight: "20px",
-          fontWeight: "400",
-        },
-      ],
-      "label-x-small-plus": [
-        "12px",
-        {
-          lineHeight: "20px",
-          fontWeight: "500",
-        },
-      ],
-    },
     spacing: {
       px: "1px",
       0: "0px",
@@ -621,6 +623,15 @@ module.exports = {
       "announcement-bg": "url('/img/announcement-bg.svg')",
       "card-highlighted": "url('/img/small-squares-bg-light.svg')",
       "card-highlighted-dark": "url('/img/small-squares-bg.svg')",
+      "search-hit": "url('/img/search-hit-light.svg')",
+      "search-hit-dark": "url('/img/search-hit.svg')",
+      "search-arrow": "url('/img/search-hit-arrow-light.svg')",
+      "search-arrow-dark": "url('/img/search-hit-arrow.svg')",
+      "search-no-result": "url('/img/search-no-result-light.svg')",
+      "search-no-result-dark": "url('/img/search-no-result.svg')",
+      "magnifying-glass": "url('/static/img/magnifying-glass.svg')",
+      toc: "url('/img/side-menu-light.svg')",
+      "toc-dark": "url('/img/side-menu.svg')",
     },
   },
   plugins: [],

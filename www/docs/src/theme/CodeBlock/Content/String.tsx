@@ -79,7 +79,9 @@ export default function CodeBlockString({
                 <code
                   className={clsx(
                     "tw-font-[inherit] tw-float-left tw-min-w-full print:tw-whitespace-pre-wrap",
-                    showLineNumbers && tokens.length > 1 && "tw-table tw-p-1",
+                    showLineNumbers &&
+                      tokens.length > 1 &&
+                      "tw-table tw-p-1 code-block-numbering",
                     title && "tw-p-1",
                     !title && tokens.length > 1 && "tw-p-1",
                     !title &&

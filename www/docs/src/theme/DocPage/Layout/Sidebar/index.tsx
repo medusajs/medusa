@@ -64,8 +64,8 @@ export default function DocPageLayoutSidebar({
           key={name}
           nodeRef={sidebarRef}
           classNames={{
-            enter: "animate__animated animate__fadeInLeft",
-            exit: "animate__animated animate__fadeOutLeft",
+            enter: "animate__animated animate__fadeInLeft animate__fastest",
+            exit: "animate__animated animate__fadeOutLeft animate__fastest",
           }}
           timeout={200}
         >

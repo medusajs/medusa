@@ -54,7 +54,7 @@ video {
 }
 
 .card-highlighted {
-  /* --bordered-inside-padding: 6px; */
+ 
   @apply tw-relative tw-mb-4 tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-subtle-hover-dark;
 }
 
@@ -84,7 +84,7 @@ video {
 
 .prism-code {
   @apply xs:tw-max-w-[90%] xs:after:tw-content-[''] xs:after:tw-rounded xs:after:tw-absolute;
-  @apply xs:after:tw-right-0 xs:after:tw-top-0 xs:after:tw-width-[calc(10% + 24px)] xs:after:tw-h-full xs:after:tw-bg-code-fade;
+  @apply xs:after:tw-right-0 xs:after:tw-top-0 xs:after:tw-w-[calc(10%+24px)] xs:after:tw-h-full xs:after:tw-bg-code-fade;
 }
 
 .prism-code:not(:hover)::-webkit-scrollbar-thumb,
@@ -95,4 +95,182 @@ video {
 .prism-code:hover::-webkit-scrollbar-thumb,
 .prism-code:hover::-webkit-scrollbar-track {
   @apply xs:tw-opacity-100
+}
+
+.prism-code {
+  @apply tw-bg-transparent tw-break-words !tw-outline-none;
+}
+
+.prism-code div {
+  @apply !tw-outline-none focus:!tw-outline-none active:!tw-outline-none;
+}
+
+.code-tabs {
+  @apply tw-relative;
+}
+
+.sidebar-desktop nav {
+  --ifm-scrollbar-track-background-color: transparent !important;
+  --ifm-scrollbar-thumb-background-color: transparent !important;
+  --ifm-scrollbar-thumb-hover-background-color: transparent !important;
+}
+
+.main-wrapper {
+  @apply tw-max-w-xl tw-mx-auto xl:tw-min-w-xl tw-w-full;
+}
+
+.theme-doc-breadcrumbs {
+  @apply tw-hidden;
+}
+
+article {
+  @apply tw-max-w-[960px];
+}
+
+.padding-top--md {
+  @apply !tw-pt-3;
+}
+
+.margin-bottom--lg {
+  @apply !tw-mb-1;
+}
+
+details summary {
+  @apply tw-cursor-pointer;
+}
+
+.reference-table {
+  @apply !tw-table tw-table-fixed tw-w-full;
+}
+
+.reference-table p {
+  --ifm-paragraph-margin-bottom: 0;
+}
+
+.reference-table.table-col-4 th,
+.reference-table.table-col-4 td {
+  @apply [&:nth-child(1)]:!tw-w-1/5 [&:nth-child(2)]:!tw-w-1/5 [&:nth-child(3)]:!tw-w-2/5 [&:nth-child(4)]:!tw-w-1/5;
+}
+
+.reference-table th:nth-child(1),
+.reference-table td:nth-child(1) {
+  @apply [&:nth-child(1)]:!tw-w-[30%] [&:nth-child(2)]:!tw-w-[30%] [&:nth-child(3)]:!tw-w-2/5;
+}
+
+.reference-table .tooltip-container code {
+  @apply tw-whitespace-nowrap;
+}
+
+.reference-table .theme-code-block span {
+  @apply !tw-max-w-full !tw-break-words !tw-whitespace-break-spaces;
+}
+
+.reference-table .code-block-numbering {
+  @apply !tw-block;
+}
+
+.container {
+  @apply !tw-pt-[38px] !tw-max-w-full;
+}
+
+.pagination-nav {
+  @apply tw-hidden;
+}
+
+.markdown kbd {
+  @apply !tw-font-monospace !tw-bg-medusa-bg-component dark:!tw-bg-medusa-bg-component-dark !tw-text-medusa-text-subtle dark:!tw-text-medusa-text-subtle-dark;
+  @apply !tw-rounded-md !tw-border-medusa-border-strong dark:!tw-border-medusa-border-strong-dark !tw-shadow-none;
+}
+
+.theme-doc-footer {
+  @apply !tw-mt-0 tw-border-0 !tw-border-t tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+  @apply tw-pt-2;
+}
+
+.theme-last-updated {
+  @apply tw-font-normal tw-text-label-small-plus;
+}
+
+.theme-last-updated,
+.theme-last-updated b {
+  @apply !tw-font-normal;
+}
+
+.medium-zoom-overlay {
+  @apply tw-z-[400];
+}
+
+.medium-zoom-image--opened {
+  @apply tw-z-[400];
+}
+
+details > div {
+  --docusaurus-details-decoration-color: transparent !important;
+}
+
+.row--justify-end {
+  @apply tw-justify-end;
+}
+
+.docs-page-container {
+  @apply !tw-px-0;
+}
+
+.search-result-match {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+  @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark tw-py-[4px] tw-px-0;
+}
+
+.navbar {
+  @apply tw-z-[399] tw-p-0;
+}
+
+html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
+  @apply supports-[backdrop-filter]:tw-bg-transparent supports-[backdrop-filter]:tw-backdrop-blur-md;
+}
+
+.navbar__link {
+  @apply tw-text-label-small-plus;
+}
+
+.navbar__brand {
+  @apply tw-mr-2;
+}
+
+.navbar__logo {
+  @apply tw-w-[83px] tw-h-[20px] tw-flex tw-justify-center tw-items-center !tw-mr-0;
+}
+
+h1 {
+  @apply !tw-text-h1;
+}
+
+h2 {
+  @apply !tw-text-h2;
+}
+
+h3 {
+  @apply !tw-text-h3;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+}
+
+.markdown > h1:first-child,
+.markdown > h2,
+.markdown > h3 {
+  @apply tw-mb-0.5;
+}
+
+.markdown > p {
+  @apply tw-mb-0.5;
+}
+
+.markdown > p img {
+  @apply tw-mt-0.5;
+}
+
+.markdown {
+  @apply tw-mb-0;
 }

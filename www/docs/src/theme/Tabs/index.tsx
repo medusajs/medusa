@@ -105,8 +105,7 @@ function TabList({
         {isCodeTabs && (
           <span
             className={clsx(
-              isCodeTabs &&
-                "xs:tw-absolute xs:tw-border xs:tw-border-solid xs:tw-border-medusa-code-tab-border xs:tw-bg-medusa-code-tab-bg xs:tw-transition-all xs:tw-duration-200 xs:tw-ease-ease xs:tw-top-0 xs:tw-z-[1] xs:tw-rounded-full"
+              "xs:tw-absolute xs:tw-border xs:tw-border-solid xs:tw-border-medusa-code-tab-border xs:tw-bg-medusa-code-tab-bg xs:tw-transition-all xs:tw-duration-200 xs:tw-ease-ease xs:tw-top-0 xs:tw-z-[1] xs:tw-rounded-full"
             )}
             ref={codeTabSelectorRef}
           ></span>
@@ -114,7 +113,12 @@ function TabList({
         <ul
           role="tablist"
           aria-orientation="horizontal"
-          className={clsx("tabs", isCodeTabs && "no-scrollbar", className)}
+          className={clsx(
+            "tabs",
+            isCodeTabs && "no-scrollbar",
+            "tw-list-none",
+            className
+          )}
         >
           {tabValues.map(({ value, label, attributes }) => (
             <li
@@ -130,7 +134,7 @@ function TabList({
               className={clsx(
                 isCodeTabs &&
                   "tw-text-medusa-code-tab-text tw-text-label-small-plus tw-py-[4px] tw-px-[12px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
-                "tw-mt-0 hover:!tw-bg-medusa-code-tab-hover",
+                "!tw-mt-0 hover:!tw-bg-medusa-code-tab-hover tw-cursor-pointer",
                 attributes?.className,
                 isCodeTabs && "tw-z-[2]",
                 isCodeTabs &&
@@ -175,7 +179,7 @@ function TabContent({
     return cloneElement(selectedTabItem)
   }
   return (
-    <div className="tw-pt-2">
+    <div>
       {childTabs.map((tabItem, i) =>
         cloneElement(tabItem, {
           key: i,
