@@ -9,7 +9,6 @@ export const getCustomViteDevConfig = ({
   port = 7001,
 }: AdminDevConfig): InlineConfig => {
   const uiPath = resolve(__dirname, "..", "..", "ui")
-  const resolvedPath = require.resolve("@medusajs/admin-ui/ui")
 
   return {
     plugins: [
@@ -18,7 +17,7 @@ export const getCustomViteDevConfig = ({
       }),
       commonjs({
         filter(id) {
-          if (id.includes("node_modules/xxx")) {
+          if (id.includes("node_modules/use-sync-external-store")) {
             return true
           }
         },
@@ -28,25 +27,27 @@ export const getCustomViteDevConfig = ({
       __BASE__: JSON.stringify("/"),
       __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
     },
-    root: resolvedPath,
+    root: uiPath,
     server: {
       port,
     },
-    // optimizeDeps: {
-    //   esbuildOptions: {
-    //     plugins: [
-    //       esbuildCommonjs([
-    //         "react-dom",
-    //         "invariant",
-    //         "react-fast-compare",
-    //         "shallowequal",
-    //         "prop-types",
-    //         "axios",
-    //         "qs",
-    //         "react",
-    //       ]),
-    //     ],
-    //   },
+    // resolve: {
+    //     alias: {
+    //         "@tanstack/react-query": resolve(require.resolve("@tanstack/react-query"))
+    //     }
     // },
+    optimizeDeps: {
+      force: true,
+      include: [
+        "react",
+        "invariant",
+        "react-fast-compare",
+        "shallowequal",
+        "prop-types",
+        "axios",
+        "qs",
+        "react-dom",
+      ],
+    },
   }
 }
