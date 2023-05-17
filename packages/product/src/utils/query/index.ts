@@ -29,7 +29,7 @@ export function buildQuery<T = any, TDto = any>(
 function buildWhere(filters: Record<string, any> = {}, where = {}) {
   for (let [prop, value] of Object.entries(filters)) {
     if (Array.isArray(value)) {
-      value = deduplicateIfNecessary(value)
+      deduplicateIfNecessary(value)
       where[prop] = { $in: value }
       continue
     }
