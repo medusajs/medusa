@@ -29,8 +29,6 @@ const DEFAULT_PAGE_SIZE = 15
 
 type ReservationsTableProps = {}
 
-const defaultQueryProps = {}
-
 const LocationDropdown = ({
   selectedLocation,
   onChange,
@@ -87,11 +85,10 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
   const defaultQuery = useMemo(() => {
     if (store) {
       return {
-        ...defaultQueryProps,
         location_id: store.default_location_id,
       }
     }
-    return defaultQueryProps
+    return {}
   }, [store])
 
   const {

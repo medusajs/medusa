@@ -5,7 +5,7 @@ import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
 import Control from "../select/next-select/components/control"
 import { NextSelect } from "../select/next-select"
 import React from "react"
-// TODO: Fix this
+
 import SearchIcon from "../../fundamentals/icons/search-icon"
 import { useAdminInventoryItems } from "medusa-react"
 import { useDebounce } from "../../../hooks/use-debounce"
