@@ -1,6 +1,7 @@
 import { SearchUtils } from "@medusajs/utils"
 import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
-import { Express } from "express"
+import bodyParser from "body-parser"
+import { Express, NextFunction } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
@@ -12,7 +13,7 @@ import {
   OauthService,
 } from "medusa-interfaces"
 import { trackInstallation } from "medusa-telemetry"
-import path from "path"
+import path, { parse } from "path"
 import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
@@ -314,6 +315,34 @@ function registerCoreRouters(
   })
 }
 
+type RouteFileExports = {
+  config: {
+    method: string
+    path?: string
+    bodyParser?: boolean
+  }
+  default: (req: Request, res: Response, next: NextFunction) => void
+}
+
+function registerHandler(file, app: Express) {
+  const { config, default: handler }: RouteFileExports = require(file)
+
+  const parsed = parse(file)
+  const rawname = parsed.name
+
+  const path = config.path ? config.path : `/${rawname}`
+
+  console.log("Path: ", path)
+
+  const shouldEnableBodyParser = config.bodyParser !== false
+
+  if (shouldEnableBodyParser) {
+    app.use(bodyParser.json())
+  }
+
+  app[config.method.toLowerCase()](path, handler)
+}
+
 /**
  * Registers the plugin's api routes.
  */
@@ -330,10 +359,8 @@ function registerApi(
     `Registering custom endpoints for ${pluginDetails.name}`
   )
   try {
-    const routes = require(`${pluginDetails.resolve}/api`).default
-    if (routes) {
-      app.use("/", routes(rootDirectory, pluginDetails.options))
-    }
+    const files = glob.sync(`${pluginDetails.resolve}/api/[!__]*.js`, {})
+    files.map((file) => registerHandler(file, app))
     return app
   } catch (err) {
     if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
@@ -363,6 +390,7 @@ export async function registerServices(
   container: MedusaContainer
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {})
+  console.log("Services: ", files)
   await Promise.all(
     files.map(async (fn) => {
       const loaded = require(fn).default
