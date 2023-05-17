@@ -111,7 +111,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -120,7 +120,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -653,10 +653,19 @@ class BrightpearlService extends BaseService {
       return
     }
 
-    const [reservationItems] =
-      await this.inventoryService_.listReservationItems({
+    const [reservations] = await this.inventoryService_.listReservationItems(
+      {
         id: ids,
-      })
+      },
+      {},
+      {
+        transactionManager: this.activeManager_,
+      }
+    )
+
+    const reservationItems = reservations.filter(
+      (reservation) => !reservation.metadata?.bpRow
+    )
 
     const client = await this.getClient()
 
@@ -664,7 +673,11 @@ class BrightpearlService extends BaseService {
       reservationItems
     )
 
-    if (!order?.metadata?.brightpearl_sales_order_id || !lineItems?.length) {
+    if (
+      !order?.metadata?.brightpearl_sales_order_id ||
+      !lineItems?.length ||
+      !reservationItems.length
+    ) {
       return this.attemptRetryEvent(
         "reservation-items.bulk-created",
         eventData,
@@ -695,7 +708,7 @@ class BrightpearlService extends BaseService {
         const bpProduct = await this.retrieveProductBySKU(variant.sku)
 
         if (!lineItem || !variant || !bpProduct) {
-          return null
+          return { ...item, bpRow: null }
         }
 
         const bpOrderRow = bpOrder.rows.find(
@@ -703,14 +716,17 @@ class BrightpearlService extends BaseService {
         )
 
         return {
-          productId: bpProduct.productId,
-          id: bpOrderRow.id,
-          quantity: item.quantity,
+          ...item,
+          bpRow: {
+            productId: bpProduct.productId,
+            id: bpOrderRow.id,
+            quantity: item.quantity,
+          },
         }
       })
     )
 
-    order.rows = rows.filter((row) => !!row)
+    order.rows = rows.map((r) => r?.bpRow).filter((row) => !!row)
 
     const reservation = await client.warehouses
       .retrieveReservation(order.metadata.brightpearl_sales_order_id)
@@ -722,11 +738,14 @@ class BrightpearlService extends BaseService {
           { ...order, id: order.metadata.brightpearl_sales_order_id },
           warehouse
         )
-        .catch(() => true)
+        .catch((err) => {
+          console.log(err)
+          return true
+        })
 
       // if we succeed in creating the reservation return early
       if (!reservationFailed) {
-        return
+        return await this.setReservationBpRows(rows)
       }
     }
 
@@ -754,9 +773,34 @@ class BrightpearlService extends BaseService {
       ],
     }
 
-    return await client.warehouses.updateReservation(
+    const result = await client.warehouses.updateReservation(
       order.metadata.brightpearl_sales_order_id,
       updatePayload
+    )
+
+    await this.setReservationBpRows(rows)
+
+    return result
+  }
+
+  async setReservationBpRows(reservationsWithBpRow) {
+    return await Promise.all(
+      reservationsWithBpRow.map(async (reservation) => {
+        if (!reservation?.bpRow) {
+          return null
+        }
+
+        return await this.inventoryService_.updateReservationItem(
+          reservation.id,
+          {
+            metadata: {
+              ...reservation.metadata,
+              bpRow: reservation.bpRow,
+            },
+          },
+          { transactionManager: this.activeManager_ }
+        )
+      })
     )
   }
 
@@ -768,9 +812,19 @@ class BrightpearlService extends BaseService {
     }
 
     const [[reservationItem]] =
-      await this.inventoryService_.listReservationItems({
-        id,
-      })
+      await this.inventoryService_.listReservationItems(
+        {
+          id,
+        },
+        {},
+        {
+          transactionManager: this.activeManager_,
+        }
+      )
+
+    if (reservationItem.metadata?.bpRow) {
+      return
+    }
 
     const client = await this.getClient()
 
@@ -803,13 +857,13 @@ class BrightpearlService extends BaseService {
       (row) => row.externalRef === lineItems[0].id
     )
 
-    order.rows = [
-      {
-        productId: bpProduct.productId,
-        id: bpOrderRow.id,
-        quantity: reservationItem.quantity,
-      },
-    ]
+    reservationItem.bpRow = {
+      productId: bpProduct.productId,
+      id: bpOrderRow.id,
+      quantity: reservationItem.quantity,
+    }
+
+    order.rows = [reservationItem.bpRow]
 
     const reservation = await client.warehouses
       .retrieveReservation(order.metadata.brightpearl_sales_order_id)
@@ -831,7 +885,7 @@ class BrightpearlService extends BaseService {
 
     if (!reservation) {
       return this.attemptRetryEvent(
-        "product_variant_inventory.reservation_created",
+        "reservation-item.created",
         eventData,
         "Could not create reservation for order with id: " +
           order.metadata.brightpearl_sales_order_id
@@ -853,10 +907,14 @@ class BrightpearlService extends BaseService {
       ],
     }
 
-    return await client.warehouses.updateReservation(
+    const result = await client.warehouses.updateReservation(
       order.metadata.brightpearl_sales_order_id,
       updatePayload
     )
+
+    await this.setReservationBpRows([reservationItem])
+
+    return result
   }
 
   attemptRetryEvent(eventName, eventData, errorMessage) {
