@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "module": "commonjs",
+    "target": "es2021",
+    "module": "Node16",
+    "moduleResolution": "node16",
     "outDir": "./dist",
-    "isolatedModules": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "sourceMap": true
+    "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": ["./src/**/*"],
 }

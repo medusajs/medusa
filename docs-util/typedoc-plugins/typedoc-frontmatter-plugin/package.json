@@ -2,29 +2,33 @@
   "name": "typedoc-frontmatter-plugin",
   "version": "1.0.0",
   "description": "Plugin to add frontmatter key-values at the top of pages",
-  "main": "./dist/index.js",
+  "type": "module",
   "exports": "./dist/index.js",
-  "files": [
-    "dist"
-  ],
   "author": "Shahed Nasser",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc --build"
   },
   "peerDependencies": {
-    "typedoc": "0.23.x"
+    "typedoc": "0.24.x"
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
+    "eslint": "^8.40.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
     "typedoc": "^0.24.7",
-    "typescript": "4.5.2"
+    "typescript": "^5.0.4"
   },
   "keywords": [
     "typedocplugin",
-    "packages",
-    "monorepo",
-    "lerna",
     "typedoc"
-  ]
+  ],
+  "engines": {
+    "node": ">=14.16"
+  }
 }
