@@ -11,7 +11,7 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { DbAwareColumn, resolveDbGenerationStrategy, resolveDbType, } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { FeatureFlagColumn, FeatureFlagDecorators, } from "../utils/feature-flag-decorators"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
@@ -86,7 +86,7 @@ export class Order extends BaseEntity {
 
   @Index()
   @Column()
-  @Generated(resolveDbGenerationStrategy("increment"))
+  @Generated("increment")
   display_id: number
 
   @Index()

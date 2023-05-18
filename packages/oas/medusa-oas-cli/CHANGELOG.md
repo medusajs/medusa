@@ -1,5 +1,14 @@
 # @medusajs/oas-cli
 
+## 0.2.6
+
+### Patch Changes
+
+- [#3924](https://github.com/medusajs/medusa/pull/3924) [`cfcd2d54f`](https://github.com/medusajs/medusa/commit/cfcd2d54fd281fd98de881fc6dfbcc6b1b47c855) Thanks [@pevey](https://github.com/pevey)! - Add separator after tmpdir base
+
+- Updated dependencies [[`a66646233`](https://github.com/medusajs/medusa/commit/a666462333d20821a3e50e3fbc65bc8a511c726f), [`9518efcca`](https://github.com/medusajs/medusa/commit/9518efccae1961d9b3cd1e85148e293a3744eedb), [`a86f0e815`](https://github.com/medusajs/medusa/commit/a86f0e815a9e75d7d562fbe516c5bb7e0ab1f6ee), [`cdbac2c84`](https://github.com/medusajs/medusa/commit/cdbac2c8403a3c15c0e11993f6b7dab268fa5c08), [`26963acc0`](https://github.com/medusajs/medusa/commit/26963acc0a5caa1bca97cfe4cbcee113a8d75b84)]:
+  - @medusajs/medusa@1.11.0
+
 ## 0.2.5
 
 ### Patch Changes
