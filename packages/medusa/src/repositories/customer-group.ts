@@ -1,10 +1,4 @@
-import {
-  DeleteResult,
-  FindOperator,
-  FindOptionsRelations,
-  In,
-  SelectQueryBuilder,
-} from "typeorm"
+import { DeleteResult, FindOperator, FindOptionsRelations, In } from "typeorm"
 import { CustomerGroup } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import {
@@ -15,6 +9,7 @@ import {
 } from "../utils/repository"
 import { objectToStringPath } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
+import { cloneDeep } from "lodash"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<CustomerGroup>,
@@ -71,45 +66,66 @@ export const CustomerGroupRepository = dataSource
 
     async findWithRelationsAndCount(
       relations: FindOptionsRelations<CustomerGroup> = {},
-      idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
+      idsOrOptionsWithoutRelations: string[] | FindWithoutRelationsOptions = {
+        where: {},
+      }
     ): Promise<[CustomerGroup[], number]> {
+      const withDeleted = Array.isArray(idsOrOptionsWithoutRelations)
+        ? false
+        : idsOrOptionsWithoutRelations.withDeleted ?? false
+      const isOptionsArray = Array.isArray(idsOrOptionsWithoutRelations)
+      const originalWhere = isOptionsArray
+        ? undefined
+        : cloneDeep(idsOrOptionsWithoutRelations.where)
+      const originalOrder: any = isOptionsArray
+        ? undefined
+        : { ...idsOrOptionsWithoutRelations.order }
+      const originalSelect = isOptionsArray
+        ? undefined
+        : objectToStringPath(idsOrOptionsWithoutRelations.select)
+      const clonedOptions = isOptionsArray
+        ? idsOrOptionsWithoutRelations
+        : cloneDeep(idsOrOptionsWithoutRelations)
+
       let count: number
       let entities: CustomerGroup[]
       if (Array.isArray(idsOrOptionsWithoutRelations)) {
         entities = await this.find({
           where: { id: In(idsOrOptionsWithoutRelations) },
-          withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
+          withDeleted,
         })
         count = entities.length
       } else {
-        const customJoinsBuilders: ((
-          qb: SelectQueryBuilder<CustomerGroup>,
-          alias: string
-        ) => void)[] = []
+        const discountConditionId = (
+          clonedOptions as FindWithoutRelationsOptions
+        )?.where?.discount_condition_id
+        delete (clonedOptions as FindWithoutRelationsOptions)?.where
+          ?.discount_condition_id
 
-        if (idsOrOptionsWithoutRelations?.where?.discount_condition_id) {
-          const discountConditionId =
-            idsOrOptionsWithoutRelations?.where?.discount_condition_id
-          delete idsOrOptionsWithoutRelations?.where?.discount_condition_id
+        const result = await queryEntityWithoutRelations({
+          repository: this,
+          optionsWithoutRelations: clonedOptions as FindWithoutRelationsOptions,
+          shouldCount: true,
+          customJoinBuilders: [
+            async (qb, alias) => {
+              if (discountConditionId) {
+                qb.innerJoin(
+                  "discount_condition_customer_group",
+                  "dc_cg",
+                  `dc_cg.customer_group_id = ${alias}.id AND dc_cg.condition_id = :dcId`,
+                  { dcId: discountConditionId }
+                )
 
-          customJoinsBuilders.push(
-            (qb: SelectQueryBuilder<CustomerGroup>, alias: string) => {
-              qb.innerJoin(
-                "discount_condition_customer_group",
-                "dc_cg",
-                `dc_cg.customer_group_id = ${alias}.id AND dc_cg.condition_id = :dcId`,
-                { dcId: discountConditionId }
-              )
-            }
-          )
-        }
+                return {
+                  relation: "discount_condition",
+                  preventOrderJoin: true,
+                }
+              }
 
-        const result = await queryEntityWithoutRelations(
-          this,
-          idsOrOptionsWithoutRelations,
-          true,
-          customJoinsBuilders
-        )
+              return
+            },
+          ],
+        })
         entities = result[0]
         count = result[1]
       }
@@ -121,16 +137,21 @@ export const CustomerGroupRepository = dataSource
       }
 
       if (Object.keys(relations).length === 0) {
-        const options = { ...idsOrOptionsWithoutRelations }
-
         // Since we are finding by the ids that have been retrieved above and those ids are already
         // applying skip/take. Remove those options to avoid getting no results
-        delete options.skip
-        delete options.take
+        if (!Array.isArray(clonedOptions)) {
+          delete clonedOptions.skip
+          delete clonedOptions.take
+        }
 
         const toReturn = await this.find({
-          ...options,
-          where: { id: In(entitiesIds) },
+          ...(isOptionsArray
+            ? {}
+            : (clonedOptions as FindWithoutRelationsOptions)),
+          where: {
+            id: In(entitiesIds),
+            ...(Array.isArray(clonedOptions) ? {} : clonedOptions.where),
+          },
         })
         return [toReturn, toReturn.length]
       }
@@ -138,16 +159,13 @@ export const CustomerGroupRepository = dataSource
       const legacyRelations = objectToStringPath(relations)
       const groupedRelations = getGroupedRelations(legacyRelations)
 
-      const legacySelect = objectToStringPath(
-        idsOrOptionsWithoutRelations.select
-      )
-      const entitiesIdsWithRelations = await queryEntityWithIds(
-        this,
-        entitiesIds,
+      const entitiesIdsWithRelations = await queryEntityWithIds({
+        repository: this,
+        entityIds: entitiesIds,
         groupedRelations,
-        idsOrOptionsWithoutRelations.withDeleted,
-        legacySelect
-      )
+        select: originalSelect,
+        withDeleted,
+      })
 
       const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
       const entitiesToReturn =

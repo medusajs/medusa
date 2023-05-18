@@ -110,8 +110,8 @@ If you disabled the `serve` option, you need to run the admin dashboard separate
 
 You can test the admin dashboard by running the following command in the directory of the Medusa backend:
 
-```bash npm2yarn
-npm run start
+```bash
+npx @medusajs/medusa-cli develop
 ```
 
 This starts the Medusa Backend and the admin dashboard. By default, the admin will be available on the URL `localhost:9000/app`. If you set the `path` option, then the admin will be available on `localhost:9000/<PATH>` with `<PATH>` being the value of the `path` option.
@@ -208,7 +208,7 @@ Passwords in Medusa are hashed using the [scrypt-kdf](https://www.npmjs.com/pack
 To create a new admin user from the command line, run the following command in the directory holding your Medusa backend:
 
 ```bash
-medusa user -e some@email.com -p some-password
+npx @medusajs/medusa-cli user -e some@email.com -p some-password
 ```
 
 This will create a new user that you can use to log into your admin panel.

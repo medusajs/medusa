@@ -13,24 +13,33 @@ import {
   SalesChannel,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
-import { ProductRepository } from "../repositories/product"
+import {
+  FindWithoutRelationsOptions,
+  ProductRepository,
+} from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
+import { Selector } from "../types/common"
 import {
   CreateProductInput,
+  FilterableProductProps,
   FindProductConfig,
-  ProductFilterOptions,
   ProductOptionInput,
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isString, setMetadata } from "../utils"
+import {
+  buildQuery,
+  buildRelationsOrSelect,
+  isString,
+  setMetadata,
+} from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
+import { objectToStringPath } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -138,7 +147,7 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<[Product[], number]> {
-    const productRepo = this.activeManager_.withRepository(
+    /* const productRepo = this.activeManager_.withRepository(
       this.productRepository_
     )
 
@@ -147,7 +156,26 @@ class ProductService extends TransactionBaseService {
       Product & ProductFilterOptions
     >
 
-    return await productRepo.findAndCount(query, q)
+    return await productRepo.findAndCount(query, q)*/
+
+    /**
+     * TODO: The below code is a temporary fix for the issue with the typeorm idle transaction in query strategy mode
+     */
+
+    const manager = this.activeManager_
+    const productRepo = manager.withRepository(this.productRepository_)
+
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
+
+    if (q) {
+      return await productRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
+      )
+    }
+
+    return await productRepo.findWithRelationsAndCount(relations, query)
   }
 
   /**
@@ -243,11 +271,37 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false, // TODO: this seams to be unused from the repository
     }
   ): Promise<Product> {
-    const productRepo = this.activeManager_.withRepository(
+    /* const productRepo = this.activeManager_.withRepository(
       this.productRepository_
     )
     const query = buildQuery(selector, config as FindConfig<Product>)
     const product = await productRepo.findOne(query)
+
+    if (!product) {
+      const selectorConstraints = Object.entries(selector)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(", ")
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with ${selectorConstraints} was not found`
+      )
+    }
+
+    return product*/
+
+    /**
+     * TODO: The below code is a temporary fix for the issue with the typeorm idle transaction in query strategy mode
+     */
+    const manager = this.activeManager_
+    const productRepo = manager.withRepository(this.productRepository_)
+
+    const { relations, ...query } = buildQuery(selector, config)
+
+    const product = await productRepo.findOneWithRelations(
+      objectToStringPath(relations),
+      query as FindWithoutRelationsOptions
+    )
 
     if (!product) {
       const selectorConstraints = Object.entries(selector)
@@ -887,6 +941,47 @@ class ProductService extends TransactionBaseService {
 
       return products
     })
+  }
+
+  /**
+   * Temporary method to be used in place we need custom query strategy to prevent typeorm bug
+   * @param selector
+   * @param config
+   * @protected
+   */
+  protected prepareListQuery_(
+    selector: FilterableProductProps | Selector<Product>,
+    config: FindProductConfig
+  ): {
+    q: string
+    relations: (keyof Product)[]
+    query: FindWithoutRelationsOptions
+  } {
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+    query.order = config.order
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = buildRelationsOrSelect(config.relations)
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = buildRelationsOrSelect(config.select)
+    }
+
+    const rels = objectToStringPath(query.relations)
+    delete query.relations
+
+    return {
+      query: query as FindWithoutRelationsOptions,
+      relations: rels as (keyof Product)[],
+      q,
+    }
   }
 }
 

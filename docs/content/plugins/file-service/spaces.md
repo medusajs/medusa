@@ -137,7 +137,7 @@ If you have multiple storage plugins configured, the last plugin declared in the
 Run your Medusa backend with the following command:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, you can either test the plugin using the [REST APIs](/api/store) or using the [Medusa Admin](../../admin/quickstart.mdx).
