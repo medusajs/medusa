@@ -156,13 +156,16 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const pricedVariants = await pricingService.setVariantPrices(rawVariants, {
-    cart_id: validated.cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: customer_id,
-    include_discount_prices: true,
-  })
+  const pricedVariants = await pricingService.setVariantPrices(
+    rawVariants.map((v) => ({ variant: v })),
+    {
+      cart_id: validated.cart_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      customer_id: customer_id,
+      include_discount_prices: true,
+    }
+  )
 
   const variants = await productVariantInventoryService.setVariantAvailability(
     pricedVariants,

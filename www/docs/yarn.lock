@@ -2749,7 +2749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/trace-mapping@npm:^0.3.14, @jridgewell/trace-mapping@npm:^0.3.9":
+"@jridgewell/trace-mapping@npm:^0.3.11, @jridgewell/trace-mapping@npm:^0.3.9":
   version: 0.3.16
   resolution: "@jridgewell/trace-mapping@npm:0.3.16"
   dependencies:
@@ -11430,7 +11430,7 @@ __metadata:
   version: 5.3.6
   resolution: "terser-webpack-plugin@npm:5.3.6"
   dependencies:
-    "@jridgewell/trace-mapping": ^0.3.14
+    "@jridgewell/trace-mapping": ^0.3.11
     jest-worker: ^27.4.5
     schema-utils: ^3.1.1
     serialize-javascript: ^6.0.0
