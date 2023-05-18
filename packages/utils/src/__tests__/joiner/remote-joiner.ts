@@ -108,7 +108,7 @@ describe("RemoteJoiner", () => {
       expands: {
         products: {
           args: undefined,
-          fields: ["product", "product_id"],
+          fields: ["product_id"],
         },
       },
       options: { id: ["1"] },
@@ -167,7 +167,7 @@ describe("RemoteJoiner", () => {
       expands: {
         products: {
           args: undefined,
-          fields: ["product", "product_id"],
+          fields: ["product_id"],
         },
       },
       options: { id: ["1"] },
@@ -229,7 +229,7 @@ describe("RemoteJoiner", () => {
       expands: {
         products: {
           args: undefined,
-          fields: ["product", "product_id"],
+          fields: ["product_id"],
         },
       },
       options: { id: ["3"] },
@@ -242,7 +242,7 @@ describe("RemoteJoiner", () => {
       expands: {
         products: {
           args: undefined,
-          fields: ["product", "product_id"],
+          fields: ["product_id"],
         },
       },
       options: { id: [4, 1] },

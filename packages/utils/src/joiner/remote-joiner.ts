@@ -412,9 +412,10 @@ export class RemoteJoiner {
                 ? relationship.primaryKey
                 : relationship.foreignKey.split(".").pop()!
 
-              parentExpand.fields = parentExpand.fields.concat(
-                relField.split(",")
-              )
+              parentExpand.fields = parentExpand.fields
+                .concat(relField.split(","))
+                .filter((field) => field !== relationship.alias)
+
               parentExpand.fields = [...new Set(parentExpand.fields)]
             }
 
