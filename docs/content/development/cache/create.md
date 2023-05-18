@@ -253,7 +253,7 @@ You can also add any necessary options to the module. The options added in the e
 Then, to test the module, run the Medusa backend which also runs your module:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 ---

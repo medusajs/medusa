@@ -12,6 +12,8 @@ class ContentfulService extends BaseService {
       cacheService,
       productVariantService,
       eventBusService,
+      productVariantInventoryService,
+      featureFlagRouter,
     },
     options
   ) {
@@ -32,6 +34,10 @@ class ContentfulService extends BaseService {
     })
 
     this.cacheService_ = cacheService
+
+    this.productVariantInventoryService_ = productVariantInventoryService
+
+    this.featureFlagRouter_ = featureFlagRouter
 
     this.capab_ = {}
   }
@@ -234,6 +240,17 @@ class ContentfulService extends BaseService {
       relations: ["prices", "options"],
     })
 
+    let sku = v.sku
+    if (this.featureFlagRouter_.isFeatureEnabled("inventoryService")) {
+      const [inventoryItem] =
+        await this.productVariantInventoryService_.listInventoryItemsByVariant(
+          v.id
+        )
+      if (inventoryItem) {
+        sku = inventoryItem.sku
+      }
+    }
+
     const environment = await this.getContentfulEnvironment_()
     const result = await environment.createEntryWithId("productVariant", v.id, {
       fields: {
@@ -241,7 +258,7 @@ class ContentfulService extends BaseService {
           "en-US": v.title,
         },
         [this.getCustomField("sku", "variant")]: {
-          "en-US": v.sku,
+          "en-US": sku,
         },
         [this.getCustomField("prices", "variant")]: {
           "en-US": this.transformMedusaIds(v.prices),
@@ -698,13 +715,24 @@ class ContentfulService extends BaseService {
       relations: ["prices", "options"],
     })
 
+    let sku = v.sku
+    if (this.featureFlagRouter_.isFeatureEnabled("inventoryService")) {
+      const [inventoryItem] =
+        await this.productVariantInventoryService_.listInventoryItemsByVariant(
+          v.id
+        )
+      if (inventoryItem) {
+        sku = inventoryItem.sku
+      }
+    }
+
     const variantEntryFields = {
       ...variantEntry.fields,
       [this.getCustomField("title", "variant")]: {
         "en-US": v.title,
       },
       [this.getCustomField("sku", "variant")]: {
-        "en-US": v.sku,
+        "en-US": sku,
       },
       [this.getCustomField("options", "variant")]: {
         "en-US": this.transformMedusaIds(v.options),
