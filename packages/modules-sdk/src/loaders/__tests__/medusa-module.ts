@@ -23,7 +23,7 @@ describe("Medusa Module", () => {
     jest.clearAllMocks()
   })
 
-  it.only("MedusaModule bootstrap - Singleton instances", async () => {
+  it("MedusaModule bootstrap - Singleton instances", async () => {
     await MedusaModule.bootstrap(
       "moduleKey",
       "@path",
