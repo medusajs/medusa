@@ -56,7 +56,7 @@
     "typedoc-plugin-markdown": "^3.13.4",
     "typedoc-plugin-merge-modules": "^4.0.1",
     "typedoc-plugin-reference-excluder": "^1.0.0",
-    "typeorm": "npm:@medusajs/typeorm@0.3.16-next.0"
+    "typeorm": "^0.3.16"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "yarn run lint",
