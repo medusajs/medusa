@@ -1237,7 +1237,7 @@ describe("CartService", () => {
 
   describe("setRegion", () => {
     const lineItemService = {
-      update: jest.fn((r) => r),
+      update: jest.fn((id) => ({ id })),
       delete: jest.fn(),
       retrieve: jest.fn().mockImplementation((lineItemId) => {
         if (lineItemId === IdMap.getId("existing")) {
@@ -1247,6 +1247,11 @@ describe("CartService", () => {
         }
         return Promise.resolve({
           id: lineItemId,
+        })
+      }),
+      list: jest.fn().mockImplementation(async (selector) => {
+        return selector.id.map((id) => {
+          return { id }
         })
       }),
       withTransaction: function () {
@@ -1331,14 +1336,14 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      calculateVariantPrice: async (variantId, context) => {
+      calculateVariantPrice: async ([{ variantId }], context) => {
         if (variantId === IdMap.getId("fail")) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
             `Money amount for variant with id ${variantId} in region ${context.region_id} does not exist`
           )
         } else {
-          return { calculatedPrice: 100 }
+          return new Map([[variantId, { calculatedPrice: 100 }]])
         }
       },
     }
