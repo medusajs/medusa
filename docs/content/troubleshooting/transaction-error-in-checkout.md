@@ -41,7 +41,7 @@ database_database: "./medusa-db.sql",
 Then, migrate the database schema to the new PostgreSQL database:
 
 ```bash
-medusa migrations run
+npx @medusajs/medusa-cli migrations run
 ```
 
 :::tip

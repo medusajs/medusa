@@ -202,7 +202,7 @@ npm run build
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Before you can test out your tax provider, you must enable it in a region. You can do that either using the [Medusa Admin dashboard](../../../user-guide/taxes/manage.md#change-tax-provider) or using the [Update Region admin endpoint](../admin/manage-tax-settings.mdx#change-tax-provider-of-a-region).
