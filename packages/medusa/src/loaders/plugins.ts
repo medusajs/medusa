@@ -423,7 +423,15 @@ function registerApi(
 
       const [, p] = route.split("api")
       const parsedPath = parse(p)
-      const rawPath = parsedPath.name
+      let rawPath = parsedPath.name
+
+      const dynamicRouteRegex = new RegExp(/\[(.*?)\]/)
+      const dynamicRouteTest = dynamicRouteRegex.exec(rawPath)
+
+      if (dynamicRouteTest) {
+        const [, dynamicRoute] = dynamicRouteTest
+        rawPath = `:${dynamicRoute}`
+      }
 
       let path = config.path
 
@@ -444,6 +452,8 @@ function registerApi(
       if (shouldEnableBodyParser) {
         app.use(bodyParser.json())
       }
+
+      console.log(path)
 
       app[config.method.toLowerCase()](path, handlerFunction)
     }
