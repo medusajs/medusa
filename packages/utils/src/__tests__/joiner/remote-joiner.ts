@@ -79,15 +79,19 @@ describe("RemoteJoiner", () => {
 
   it("Query of a service, expanding a property and restricting the fields expanded", async () => {
     const query = {
-      service: "User",
+      service: "user",
+      fields: ["username", "email", "products"],
       args: [
         {
           name: "id",
           value: "1",
         },
       ],
-      fields: ["username", "email", "products"],
       expands: [
+        {
+          property: "products",
+          fields: ["product"],
+        },
         {
           property: "products.product",
           fields: ["name"],
@@ -95,9 +99,7 @@ describe("RemoteJoiner", () => {
       ],
     }
 
-    const a = await joiner.query(query)
-
-    console.log(JSON.stringify(a, null, 2))
+    await joiner.query(query)
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
@@ -106,7 +108,7 @@ describe("RemoteJoiner", () => {
       expands: {
         products: {
           args: undefined,
-          fields: undefined,
+          fields: ["product", "product_id"],
         },
       },
       options: { id: ["1"] },
@@ -135,6 +137,10 @@ describe("RemoteJoiner", () => {
       fields: ["username", "email", "products"],
       expands: [
         {
+          property: "products",
+          fields: ["product"],
+        },
+        {
           property: "products.product",
           fields: ["name"],
           args: [
@@ -158,6 +164,12 @@ describe("RemoteJoiner", () => {
         },
       ],
       fields: ["username", "email", "products"],
+      expands: {
+        products: {
+          args: undefined,
+          fields: ["product", "product_id"],
+        },
+      },
       options: { id: ["1"] },
     })
 
@@ -181,7 +193,7 @@ describe("RemoteJoiner", () => {
       expands: [
         {
           property: "products",
-          fields: ["product", "user"],
+          fields: ["product"],
         },
         {
           property: "products.product",
@@ -190,6 +202,10 @@ describe("RemoteJoiner", () => {
         {
           property: "user",
           fields: ["fullname", "email", "products"],
+        },
+        {
+          property: "user.products",
+          fields: ["product"],
         },
         {
           property: "user.products.product",
@@ -210,12 +226,25 @@ describe("RemoteJoiner", () => {
     expect(serviceMock.orderService).toHaveBeenCalledWith({
       args: [],
       fields: ["number", "date", "products", "user_id"],
+      expands: {
+        products: {
+          args: undefined,
+          fields: ["product", "product_id"],
+        },
+      },
       options: { id: ["3"] },
     })
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
       fields: ["fullname", "email", "products", "id"],
+      args: undefined,
+      expands: {
+        products: {
+          args: undefined,
+          fields: ["product", "product_id"],
+        },
+      },
       options: { id: [4, 1] },
     })
 

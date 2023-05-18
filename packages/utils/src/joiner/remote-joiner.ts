@@ -5,7 +5,8 @@ import {
   MedusaContainer,
   RemoteJoinerQuery,
 } from "@medusajs/types"
-import { isDefined } from "../common"
+import { isDefined, toPascalCase } from "../common"
+
 import GraphQLParser from "./graphq-ast"
 
 interface NestedExpands {
@@ -28,6 +29,83 @@ const BASE_PATH = "_root"
 export class RemoteJoiner {
   private serviceConfigs: JoinerServiceConfig[]
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
+
+  private static filterFields(
+    name: string,
+    data: any,
+    fields: string[],
+    expands?: NestedExpands
+  ): Record<string, unknown> {
+    if (!fields) {
+      return data
+    }
+
+    const filteredData = fields.reduce((acc: any, field: string) => {
+      acc[field] = data?.[field]
+      return acc
+    }, {})
+
+    if (expands) {
+      for (const key in expands) {
+        const expand = expands[key]
+        if (expand) {
+          if (Array.isArray(data[key])) {
+            filteredData[key] = data[key].map((item: any) =>
+              RemoteJoiner.filterFields(
+                name,
+                item,
+                expand.fields,
+                expand.expands
+              )
+            )
+          } else {
+            filteredData[key] = RemoteJoiner.filterFields(
+              name,
+              data[key],
+              expand.fields,
+              expand.expands
+            )
+          }
+        }
+      }
+    }
+
+    return filteredData
+  }
+
+  private static getNestedItems(items: any[], property: string): any[] {
+    return items
+      .flatMap((item) => item[property])
+      .filter((item) => item !== undefined)
+  }
+
+  private static createRelatedDataMap(
+    relatedDataArray: any[],
+    joinFields: string[]
+  ): Map<string, any> {
+    return relatedDataArray.reduce((acc, data) => {
+      const joinValues = joinFields.map((field) => data[field])
+      const key = joinValues.length === 1 ? joinValues[0] : joinValues.join(",")
+
+      let isArray = Array.isArray(acc[key])
+      if (isDefined(acc[key]) && !isArray) {
+        acc[key] = [acc[key]]
+        isArray = true
+      }
+
+      if (isArray) {
+        acc[key].push(data)
+      } else {
+        acc[key] = data
+      }
+      return acc
+    }, {})
+  }
+
+  static parseQuery(graphqlQuery: string, variables?: any): RemoteJoinerQuery {
+    const parser = new GraphQLParser(graphqlQuery, variables)
+    return parser.parseQuery()
+  }
 
   constructor(
     private container: MedusaContainer,
@@ -60,49 +138,6 @@ export class RemoteJoiner {
       this.serviceConfigCache.set(serviceName, config!)
     }
     return this.serviceConfigCache.get(serviceName)
-  }
-
-  private static filterFields(
-    name: string,
-    data: any,
-    fields: string[],
-    expands?: NestedExpands
-  ): Record<string, unknown> {
-    if (!fields) {
-      return data
-    }
-
-    const filteredData = fields.reduce((acc: any, field: string) => {
-      acc[field] = data[field]
-      return acc
-    }, {})
-
-    if (expands) {
-      for (const key in expands) {
-        const expand = expands[key]
-        if (expand) {
-          if (Array.isArray(data[key])) {
-            filteredData[key] = data[key].map((item: any) =>
-              RemoteJoiner.filterFields(
-                name,
-                item,
-                expand.fields,
-                expand.expands
-              )
-            )
-          } else {
-            filteredData[key] = RemoteJoiner.filterFields(
-              name,
-              data[key],
-              expand.fields,
-              expand.expands
-            )
-          }
-        }
-      }
-    }
-
-    return filteredData
   }
 
   private async fetchData(
@@ -142,7 +177,7 @@ export class RemoteJoiner {
     }
 
     const methodName = relationship?.inverse
-      ? `getBy${this.toPascalCase(pkField)}`
+      ? `getBy${toPascalCase(pkField)}`
       : "list"
 
     const response = await service[methodName]({
@@ -164,12 +199,6 @@ export class RemoteJoiner {
     )
 
     return filteredDataArray
-  }
-
-  private getNestedItems(items: any[], property: string): any[] {
-    return items
-      .flatMap((item) => item[property])
-      .filter((item) => item !== undefined)
   }
 
   private async handleExpands(
@@ -218,7 +247,7 @@ export class RemoteJoiner {
           (relation) => relation.alias === property
         )
 
-        const nestedItems = this.getNestedItems(currentItems, property)
+        const nestedItems = RemoteJoiner.getNestedItems(currentItems, property)
 
         if (nestedItems.length > 0) {
           const nextProp = relationship
@@ -256,29 +285,6 @@ export class RemoteJoiner {
     if (relationship) {
       await this.expandRelationshipProperty(items, expand, relationship)
     }
-  }
-
-  private createRelatedDataMap(
-    relatedDataArray: any[],
-    joinFields: string[]
-  ): Record<string, any> {
-    return relatedDataArray.reduce((acc, data) => {
-      const joinValues = joinFields.map((field) => data[field])
-      const key = joinValues.length === 1 ? joinValues[0] : joinValues.join(",")
-
-      let isArray = Array.isArray(acc[key])
-      if (isDefined(acc[key]) && !isArray) {
-        acc[key] = [acc[key]]
-        isArray = true
-      }
-
-      if (isArray) {
-        acc[key].push(data)
-      } else {
-        acc[key] = data
-      }
-      return acc
-    }, {})
   }
 
   private async expandRelationshipProperty(
@@ -329,7 +335,7 @@ export class RemoteJoiner {
       ? relationship.foreignKey.split(",")
       : relationship.primaryKey.split(",")
 
-    const relatedDataMap = this.createRelatedDataMap(
+    const relatedDataMap = RemoteJoiner.createRelatedDataMap(
       relatedDataArray,
       joinFields
     )
@@ -502,19 +508,8 @@ export class RemoteJoiner {
     return mergedExpands
   }
 
-  static parseQuery(graphqlQuery: string, variables?: any): RemoteJoinerQuery {
-    const parser = new GraphQLParser(graphqlQuery, variables)
-    return parser.parseQuery()
-  }
-
-  private toPascalCase(s: string): string {
-    return s.replace(/(^\w|_\w)/g, (match) =>
-      match.replace(/_/g, "").toUpperCase()
-    )
-  }
-
   async query(queryObj: RemoteJoinerQuery): Promise<any> {
-    queryObj.service = this.toPascalCase(queryObj.service)
+    queryObj.service = toPascalCase(queryObj.service)
     const serviceConfig = this.findServiceConfig(queryObj.service)
 
     if (!serviceConfig) {

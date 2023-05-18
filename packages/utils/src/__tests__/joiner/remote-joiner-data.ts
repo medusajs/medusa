@@ -1,11 +1,8 @@
 import { MedusaContainer } from "@medusajs/types"
+import { remoteJoinerData } from "../../__fixtures__/joiner/data"
 import { RemoteJoiner } from "../../joiner"
 
-import {
-  mock,
-  serviceConfigs,
-  serviceMock,
-} from "../../__mocks__/joiner/mock_data"
+import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
 
 const container = {
   resolve: (serviceName) => {
@@ -18,12 +15,16 @@ const container = {
           return
         }
 
-        let orderVar = JSON.parse(JSON.stringify(mock.order_variant))
+        let orderVar = JSON.parse(
+          JSON.stringify(remoteJoinerData.order_variant)
+        )
 
         if (options.expands?.order) {
           orderVar = orderVar.map((item) => {
             item.order = JSON.parse(
-              JSON.stringify(mock.order.find((o) => o.id === item.order_id))
+              JSON.stringify(
+                remoteJoinerData.order.find((o) => o.id === item.order_id)
+              )
             )
             return item
           })
