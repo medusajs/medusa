@@ -10,6 +10,7 @@ import { ExtendedFindConfig } from "../types/common"
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the relations for the specified entity ids
+ *
  * @param repository
  * @param entityIds
  * @param groupedRelations
@@ -17,18 +18,25 @@ import { ExtendedFindConfig } from "../types/common"
  * @param select
  * @param customJoinBuilders
  */
-export async function queryEntityWithIds<T extends ObjectLiteral>(
-  repository: Repository<T>,
-  entityIds: string[],
-  groupedRelations: { [toplevel: string]: string[] },
+export async function queryEntityWithIds<T extends ObjectLiteral>({
+  repository,
+  entityIds,
+  groupedRelations,
   withDeleted = false,
-  select: (keyof T)[] = [],
-  customJoinBuilders: ((
+  select = [],
+  customJoinBuilders = [],
+}: {
+  repository: Repository<T>
+  entityIds: string[]
+  groupedRelations: { [toplevel: string]: string[] }
+  withDeleted?: boolean
+  select?: (keyof T)[]
+  customJoinBuilders?: ((
     qb: SelectQueryBuilder<T>,
     alias: string,
     toplevel: string
-  ) => boolean)[] = []
-): Promise<T[]> {
+  ) => boolean)[]
+}): Promise<T[]> {
   const alias = repository.metadata.name.toLowerCase()
   return await Promise.all(
     Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
@@ -58,10 +66,11 @@ export async function queryEntityWithIds<T extends ObjectLiteral>(
         if (!rest) {
           continue
         }
-        // Regex matches all '.' except the rightmost
         querybuilder = querybuilder.leftJoinAndSelect(
+          // Regex matches all '.' except the rightmost
           rel.replace(/\.(?=[^.]*\.)/g, "__"),
-          rel.replace(".", "__")
+          // Replace all '.' with '__' to avoid typeorm's automatic aliasing
+          rel.replace(/\./g, "__")
         )
       }
 
@@ -89,20 +98,26 @@ export async function queryEntityWithIds<T extends ObjectLiteral>(
  * Custom query entity without relations, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the entities without taking into account the relations. The relations will be queried separately
  * using the queryEntityWithIds util
+ *
  * @param repository
  * @param optionsWithoutRelations
  * @param shouldCount
  * @param customJoinBuilders
  */
-export async function queryEntityWithoutRelations<T extends ObjectLiteral>(
-  repository: Repository<T>,
-  optionsWithoutRelations: Omit<ExtendedFindConfig<T>, "relations">,
+export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
+  repository,
+  optionsWithoutRelations,
   shouldCount = false,
+  customJoinBuilders = [],
+}: {
+  repository: Repository<T>
+  optionsWithoutRelations: Omit<ExtendedFindConfig<T>, "relations">
+  shouldCount: boolean
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,
     alias: string
-  ) => void)[] = []
-): Promise<[T[], number]> {
+  ) => Promise<{ relation: string; preventOrderJoin: boolean } | void>)[]
+}): Promise<[T[], number]> {
   const alias = repository.metadata.name.toLowerCase()
 
   const qb = repository
@@ -115,24 +130,30 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>(
     qb.where(optionsWithoutRelations.where)
   }
 
-  if (optionsWithoutRelations.order) {
-    const toSelect: string[] = []
-    const parsed = Object.entries(optionsWithoutRelations.order).reduce(
-      (acc, [k, v]) => {
-        const key = `${alias}.${k}`
-        toSelect.push(key)
-        acc[key] = v
-        return acc
-      },
-      {}
-    )
-    qb.addSelect(toSelect)
-    qb.orderBy(parsed)
+  const shouldJoins: { relation: string; shouldJoin: boolean }[] = []
+  for (const customJoinBuilder of customJoinBuilders) {
+    const result = await customJoinBuilder(qb, alias)
+    if (result) {
+      shouldJoins.push({
+        relation: result.relation,
+        shouldJoin: !result.preventOrderJoin,
+      })
+    }
   }
 
-  for (const customJoinBuilder of customJoinBuilders) {
-    customJoinBuilder(qb, alias)
-  }
+  applyOrdering({
+    repository,
+    order: (optionsWithoutRelations.order as any) ?? {},
+    qb,
+    alias,
+    shouldJoin: (relationToJoin) => {
+      return shouldJoins.every(
+        ({ relation, shouldJoin }) =>
+          relation !== relationToJoin ||
+          (relation === relationToJoin && shouldJoin)
+      )
+    },
+  })
 
   if (optionsWithoutRelations.withDeleted) {
     qb.withDeleted()
@@ -252,7 +273,10 @@ export function applyOrdering<T extends ObjectLiteral>({
       }
 
       const key = `${alias}.${orderPath}`
-      toSelect.push(key)
+      // Prevent ambiguous column error when top level entity id is ordered
+      if (orderPath !== "id") {
+        toSelect.push(key)
+      }
       acc[key] = orderDirection
       return acc
     },

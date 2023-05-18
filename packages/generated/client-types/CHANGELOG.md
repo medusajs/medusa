@@ -1,5 +1,11 @@
 # @medusajs/client-types
 
+## 0.2.2
+
+### Patch Changes
+
+- [#3924](https://github.com/medusajs/medusa/pull/3924) [`cfcd2d54f`](https://github.com/medusajs/medusa/commit/cfcd2d54fd281fd98de881fc6dfbcc6b1b47c855) Thanks [@pevey](https://github.com/pevey)! - Add separator after tmpdir base
+
 ## 0.2.1
 
 ### Patch Changes
