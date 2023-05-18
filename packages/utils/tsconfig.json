@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["es5", "es6", "es2019"],
-    "target": "es6",
+    "target": "es5",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -15,7 +15,8 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true
   },
   "include": ["src"],
   "exclude": [
