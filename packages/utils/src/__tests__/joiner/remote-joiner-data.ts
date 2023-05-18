@@ -1,4 +1,4 @@
-import { MedusaContainer, RemoteJoinerQuery } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/types"
 import { RemoteJoiner } from "../../joiner"
 
 import {
@@ -161,7 +161,7 @@ describe("RemoteJoiner", () => {
       expands: [
         {
           property: "products",
-          fields: ["product", "user"],
+          fields: ["product"],
         },
         {
           property: "products.product",
@@ -193,8 +193,6 @@ describe("RemoteJoiner", () => {
         products: [
           {
             product_id: 101,
-            variant_id: 991,
-            quantity: 1,
             product: {
               name: "Product 1",
               id: 101,
@@ -202,8 +200,6 @@ describe("RemoteJoiner", () => {
           },
           {
             product_id: 101,
-            variant_id: 992,
-            quantity: 5,
             product: {
               name: "Product 1",
               id: 101,
@@ -233,8 +229,6 @@ describe("RemoteJoiner", () => {
         products: [
           {
             product_id: [101, 103],
-            variant_id: 993,
-            quantity: 4,
             product: [
               {
                 name: "Product 1",
@@ -268,36 +262,7 @@ describe("RemoteJoiner", () => {
   })
 
   it("Query a service expanding an inverse relation", async () => {
-    let query: RemoteJoinerQuery = {
-      service: "Variant",
-      fields: ["name"],
-      expands: [
-        {
-          property: "orders",
-          fields: ["order"],
-        },
-        {
-          property: "orders.order",
-          fields: ["id", "number"],
-          args: [
-            {
-              name: "limit",
-              value: "5",
-            },
-          ],
-        },
-        {
-          property: "orders.order.products.product",
-          fields: ["name"],
-        },
-        {
-          property: "orders.variant",
-          fields: ["name"],
-        },
-      ],
-    }
-
-    query = RemoteJoiner.parseQuery(`
+    const query = RemoteJoiner.parseQuery(`
       query {
         variant {
           id
@@ -306,6 +271,7 @@ describe("RemoteJoiner", () => {
             order {
               number
               products {
+                quantity
                 product {
                   name
                 }

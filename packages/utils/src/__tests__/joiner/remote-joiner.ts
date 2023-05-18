@@ -95,12 +95,20 @@ describe("RemoteJoiner", () => {
       ],
     }
 
-    await joiner.query(query)
+    const a = await joiner.query(query)
+
+    console.log(JSON.stringify(a, null, 2))
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
       args: [],
       fields: ["username", "email", "products"],
+      expands: {
+        products: {
+          args: undefined,
+          fields: undefined,
+        },
+      },
       options: { id: ["1"] },
     })
 

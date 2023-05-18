@@ -5,6 +5,7 @@ import {
   MedusaContainer,
   RemoteJoinerQuery,
 } from "@medusajs/types"
+import { isDefined } from "../common"
 import GraphQLParser from "./graphq-ast"
 
 interface NestedExpands {
@@ -61,6 +62,49 @@ export class RemoteJoiner {
     return this.serviceConfigCache.get(serviceName)
   }
 
+  private static filterFields(
+    name: string,
+    data: any,
+    fields: string[],
+    expands?: NestedExpands
+  ): Record<string, unknown> {
+    if (!fields) {
+      return data
+    }
+
+    const filteredData = fields.reduce((acc: any, field: string) => {
+      acc[field] = data[field]
+      return acc
+    }, {})
+
+    if (expands) {
+      for (const key in expands) {
+        const expand = expands[key]
+        if (expand) {
+          if (Array.isArray(data[key])) {
+            filteredData[key] = data[key].map((item: any) =>
+              RemoteJoiner.filterFields(
+                name,
+                item,
+                expand.fields,
+                expand.expands
+              )
+            )
+          } else {
+            filteredData[key] = RemoteJoiner.filterFields(
+              name,
+              data[key],
+              expand.fields,
+              expand.expands
+            )
+          }
+        }
+      }
+    }
+
+    return filteredData
+  }
+
   private async fetchData(
     expand: ParsedExpand,
     pkField: string,
@@ -110,32 +154,13 @@ export class RemoteJoiner {
       },
     })
 
-    const filterFields = (
-      data: any,
-      fields: string[],
-      expands?: NestedExpands
-    ): any => {
-      const filteredData = fields.reduce((acc: any, field: string) => {
-        acc[field] = data[field]
-        return acc
-      }, {})
-
-      if (expands) {
-        for (const key in expands) {
-          const expand = expands[key]
-          filteredData[key] = filterFields(
-            data[key],
-            expand.fields,
-            expand.expands
-          )
-        }
-      }
-
-      return filteredData
-    }
-
     const filteredDataArray = response.map((data: any) =>
-      filterFields(data, expand.fields, expand.expands)
+      RemoteJoiner.filterFields(
+        moduleRegistryName,
+        data,
+        expand.fields,
+        expand.expands
+      )
     )
 
     return filteredDataArray
@@ -242,7 +267,7 @@ export class RemoteJoiner {
       const key = joinValues.length === 1 ? joinValues[0] : joinValues.join(",")
 
       let isArray = Array.isArray(acc[key])
-      if (typeof acc[key] !== "undefined" && !isArray) {
+      if (isDefined(acc[key]) && !isArray) {
         acc[key] = [acc[key]]
         isArray = true
       }
@@ -434,6 +459,8 @@ export class RemoteJoiner {
     const mergedExpands = new Map<string, ParsedExpand>(sortedParsedExpands)
     const mergedPaths = new Map<string, string>()
 
+    let lastServiceName = ""
+
     for (const [path, expand] of sortedParsedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
 
@@ -444,31 +471,34 @@ export class RemoteJoiner {
         parentPath = mergedPaths.get(parentPath)!
       }
 
-      const canMerge = expand.fields?.every((field: string) => {
-        const nestedPath = [path, field].join(".")
-        const nestedExpand = parsedExpands.get(nestedPath)
-        return (
-          !nestedExpand ||
-          nestedExpand.serviceConfig.serviceName === currentServiceName
-        )
-      })
+      const canMerge = currentServiceName === lastServiceName
 
       if (mergedExpands.has(parentPath) && canMerge) {
         const parentExpand = mergedExpands.get(parentPath)!
 
         if (parentExpand.serviceConfig.serviceName === currentServiceName) {
-          if (!parentExpand.expands) {
-            parentExpand.expands = {}
+          const nestedKeys = path.split(".").slice(parentPath.split(".").length)
+          let targetExpand: any = parentExpand
+
+          for (let key of nestedKeys) {
+            if (!targetExpand.expands) {
+              targetExpand.expands = {}
+            }
+            if (!targetExpand.expands[key]) {
+              targetExpand.expands[key] = {} as any
+            }
+            targetExpand = targetExpand.expands[key]
           }
 
-          parentExpand.expands[expand.property] = {
-            fields: expand.fields,
-            args: expand.args,
-          }
+          targetExpand.fields = expand.fields
+          targetExpand.args = expand.args
           mergedPaths.set(path, parentPath)
         }
+      } else {
+        lastServiceName = currentServiceName
       }
     }
+
     return mergedExpands
   }
 

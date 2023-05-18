@@ -10,7 +10,6 @@ import {
 
 interface Argument {
   name: string
-  //type: string;
   value?: any
 }
 
@@ -55,7 +54,6 @@ class GraphQLParser {
 
       return {
         name: arg.name.value,
-        // type: value.kind, // TODO: use it to validate the type of the argument
         value: value,
       }
     })
