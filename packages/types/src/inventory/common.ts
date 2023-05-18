@@ -21,6 +21,15 @@ import {
  *   mid_code:
  *     description: The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
  *     type: string
+ *   title:
+ *     description: "Title of the inventory item"
+ *     type: string
+ *   description:
+ *     description: "Description of the inventory item"
+ *     type: string
+ *   thumbnail:
+ *     description: "Thumbnail for the inventory item"
+ *     type: string
  *   material:
  *     description: The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
  *     type: string
@@ -68,6 +77,9 @@ export type InventoryItemDTO = {
   length?: number | null
   height?: number | null
   width?: number | null
+  title?: string | null
+  description?: string | null
+  thumbnail?: string | null
   metadata?: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
@@ -93,6 +105,12 @@ export type InventoryItemDTO = {
  *     type: string
  *   inventory_item_id:
  *     description: "The id of the inventory item the reservation relates to"
+ *     type: string
+ *   description:
+ *     description: "Description of the reservation item"
+ *     type: string
+ *   created_by:
+ *     description: "UserId of user who created the reservation item"
  *     type: string
  *   quantity:
  *     description: "The id of the reservation item"
@@ -120,6 +138,8 @@ export type ReservationItemDTO = {
   inventory_item_id: string
   quantity: number
   line_item_id?: string | null
+  description?: string | null
+  created_by?: string | null
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
@@ -184,6 +204,8 @@ export type FilterableReservationItemProps = {
   line_item_id?: string | string[]
   inventory_item_id?: string | string[]
   location_id?: string | string[]
+  description?: string
+  created_by?: string | string[]
   quantity?: number | NumericalComparisonOperator
 }
 
@@ -206,6 +228,9 @@ export type CreateInventoryItemInput = {
   length?: number
   height?: number
   width?: number
+  title?: string
+  description?: string
+  thumbnail?: string
   metadata?: Record<string, unknown> | null
   hs_code?: string
   requires_shipping?: boolean
@@ -216,8 +241,10 @@ export type CreateReservationItemInput = {
   inventory_item_id: string
   location_id: string
   quantity: number
-  metadata?: Record<string, unknown> | null
+  description?: string
+  created_by?: string 
   external_id?: string
+  metadata?: Record<string, unknown> | null
 }
 
 export type FilterableInventoryLevelProps = {
@@ -244,6 +271,7 @@ export type UpdateInventoryLevelInput = {
 export type UpdateReservationItemInput = {
   quantity?: number
   location_id?: string
+  description?: string
   metadata?: Record<string, unknown> | null
 }
 

@@ -222,8 +222,7 @@ describe("/store/carts", () => {
       expect(getRes.response.status).toEqual(400)
       expect(getRes.response.data).toEqual({
         type: "invalid_data",
-        message:
-          "Can't insert null value in field customer_id on insert in table order",
+        message: "Cannot create an order from the cart without a customer",
       })
 
       const inventoryService = appContainer.resolve("inventoryService")
@@ -232,6 +231,7 @@ describe("/store/carts", () => {
       })
       expect(count).toEqual(0)
     })
+
     it("fails to add a item on the cart if the inventory isn't enough", async () => {
       const api = useApi()
 

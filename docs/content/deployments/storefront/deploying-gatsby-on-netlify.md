@@ -152,7 +152,7 @@ If you haven’t added any products to your Medusa backend, the build process mi
 Alternatively, you can seed the backend with demo data by running this command in the root directory of the backend:
 
 ```bash noReport
-medusa seed -f data/seed.json
+npx @medusajs/medusa-cli seed -f data/seed.json
 ```
 
 :::
@@ -285,7 +285,7 @@ If you haven’t added any products to your Medusa backend, the build process mi
 Alternatively, you can seed the backend with demo data by running this command in the root directory of the backend:
 
 ```bash noReport
-medusa seed -f data/seed.json
+npx @medusajs/medusa-cli seed -f data/seed.json
 ```
 
 :::

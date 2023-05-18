@@ -1,5 +1,83 @@
 # Change Log
 
+## 1.11.0
+
+### Minor Changes
+
+- [`26963acc0`](https://github.com/medusajs/medusa/commit/26963acc0a5caa1bca97cfe4cbcee113a8d75b84) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump @medusajs/medusa
+
+### Patch Changes
+
+- [#4083](https://github.com/medusajs/medusa/pull/4083) [`a66646233`](https://github.com/medusajs/medusa/commit/a666462333d20821a3e50e3fbc65bc8a511c726f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Cart custom query strategy
+
+- [#4084](https://github.com/medusajs/medusa/pull/4084) [`9518efcca`](https://github.com/medusajs/medusa/commit/9518efccae1961d9b3cd1e85148e293a3744eedb) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Revert product repo to prevent typeorm issues + cleanup and improvements
+
+- [#4073](https://github.com/medusajs/medusa/pull/4073) [`a86f0e815`](https://github.com/medusajs/medusa/commit/a86f0e815a9e75d7d562fbe516c5bb7e0ab1f6ee) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa): Expose `ioredis` options
+
+- [#4046](https://github.com/medusajs/medusa/pull/4046) [`cdbac2c84`](https://github.com/medusajs/medusa/commit/cdbac2c8403a3c15c0e11993f6b7dab268fa5c08) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, medusa-utils): Add support for multiple where condition on the same column
+
+- Updated dependencies [[`a86f0e815`](https://github.com/medusajs/medusa/commit/a86f0e815a9e75d7d562fbe516c5bb7e0ab1f6ee), [`cdbac2c84`](https://github.com/medusajs/medusa/commit/cdbac2c8403a3c15c0e11993f6b7dab268fa5c08), [`6511959e2`](https://github.com/medusajs/medusa/commit/6511959e23177f3b4831915db0e8e788bc9047fa)]:
+  - @medusajs/types@1.8.6
+  - @medusajs/utils@1.8.5
+  - @medusajs/modules-sdk@1.8.6
+  - @medusajs/medusa-cli@1.3.14
+
+## 1.10.1
+
+### Patch Changes
+
+- [#4018](https://github.com/medusajs/medusa/pull/4018) [`3d6bcaaf6`](https://github.com/medusajs/medusa/commit/3d6bcaaf65b3a43dfb251460d73e448870b5105f) Thanks [@patpich](https://github.com/patpich)! - fix(medusa): ShippingOptionService.list method param type
+
+- [#3971](https://github.com/medusajs/medusa/pull/3971) [`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(client-types, inventory, medusa, types): add `title`, `thumbnail` and `description to inventory item and `description` to reservation item.
+
+- [#4023](https://github.com/medusajs/medusa/pull/4023) [`bd53adb23`](https://github.com/medusajs/medusa/commit/bd53adb238a64640533698fbccb98a39a0346590) Thanks [@dwene](https://github.com/dwene)! - fix(variant-update): hasChanges function incorrectly calculates if there are changes
+
+- [#4032](https://github.com/medusajs/medusa/pull/4032) [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b) Thanks [@pevey](https://github.com/pevey)! - update class-validator to 0.14.0 in utils package
+
+- [#3967](https://github.com/medusajs/medusa/pull/3967) [`0c58ead6d`](https://github.com/medusajs/medusa/commit/0c58ead6d869f5605cbd2b8aca129984b7493bcf) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa): validate `customer_id` when completing a cart
+
+- [#4025](https://github.com/medusajs/medusa/pull/4025) [`cff54d732`](https://github.com/medusajs/medusa/commit/cff54d73253a4c2d16a174a28f0f5d31c94bcebd) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): Catch on idempotency key retrieve if not found
+
+- [#3842](https://github.com/medusajs/medusa/pull/3842) [`a8e73942e`](https://github.com/medusajs/medusa/commit/a8e73942e69662ca673ccc4300e270ff6ab523d1) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa): handle product categories in import/export strategies
+
+- [#4008](https://github.com/medusajs/medusa/pull/4008) [`ff37cd190`](https://github.com/medusajs/medusa/commit/ff37cd190fa455f4ba4f76cfb4d641b1611cc32e) Thanks [@patpich](https://github.com/patpich)! - fix(search): add missing default product relations
+
+- Updated dependencies [[`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab), [`1ea57c3a6`](https://github.com/medusajs/medusa/commit/1ea57c3a69a5377a8dd0821df819743ded4a222b)]:
+  - @medusajs/types@1.8.5
+  - @medusajs/utils@1.8.4
+  - @medusajs/modules-sdk@1.8.5
+  - @medusajs/medusa-cli@1.3.13
+
+## 1.10.0
+
+### Minor Changes
+
+- [`8b93bae8f`](https://github.com/medusajs/medusa/commit/8b93bae8f8ad1f6eb43931a7ba03bfa691475eca) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa): Minor bump
+
+### Patch Changes
+
+- [#4002](https://github.com/medusajs/medusa/pull/4002) [`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, event-bus-redis, event-bus-local): Revert retrieveSubscribers as the wildcard prevent us from filtering
+
+- [#3098](https://github.com/medusajs/medusa/pull/3098) [`538c9874b`](https://github.com/medusajs/medusa/commit/538c9874ba18c1352284089a789d4a90652bc795) Thanks [@rajshrimohanks](https://github.com/rajshrimohanks)! - fix(medusa): Fix broken migration in the case of fresh installations
+
+- [#3981](https://github.com/medusajs/medusa/pull/3981) [`d539c6fee`](https://github.com/medusajs/medusa/commit/d539c6feeba8ee431f9a655b6cd4e9102cba2b25) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump Typeorm to Medusa fork
+
+- [#3984](https://github.com/medusajs/medusa/pull/3984) [`b7a782639`](https://github.com/medusajs/medusa/commit/b7a7826394ecd621ca80e6d4ce445ea1c26804ac) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Use query relation load strategy on Carts
+
+- [#3921](https://github.com/medusajs/medusa/pull/3921) [`983872319`](https://github.com/medusajs/medusa/commit/98387231927e9872f54c9e72597576f3273de506) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): update query performance for getting product and variant avaiability
+
+- [#4010](https://github.com/medusajs/medusa/pull/4010) [`284f1eed9`](https://github.com/medusajs/medusa/commit/284f1eed9a9fc7272df3fccdb162ea93750999de) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Only set product availability if variants are requested
+
+- [#3926](https://github.com/medusajs/medusa/pull/3926) [`4e8045a0a`](https://github.com/medusajs/medusa/commit/4e8045a0ac44b1541ee3cd846079f55d3e0dc957) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa): products retrieve uses query strategy for performance
+
+- [#3998](https://github.com/medusajs/medusa/pull/3998) [`d2443d83e`](https://github.com/medusajs/medusa/commit/d2443d83e60fee3c3f28b762d66378c3f07f1b5f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(medusa): Add sales_channel_id to create-swap
+
+- Updated dependencies [[`0e488e71b`](https://github.com/medusajs/medusa/commit/0e488e71b186f7d08b18c4c6ba409ef3cadb8152), [`d539c6fee`](https://github.com/medusajs/medusa/commit/d539c6feeba8ee431f9a655b6cd4e9102cba2b25)]:
+  - @medusajs/types@1.8.4
+  - @medusajs/utils@1.8.3
+  - @medusajs/modules-sdk@1.8.4
+  - @medusajs/medusa-cli@1.3.12
+
 ## 1.9.0
 
 ### Minor Changes

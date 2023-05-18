@@ -1,27 +1,14 @@
 const path = require("path")
 const { ProductCategory } = require("@medusajs/medusa")
-const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
-const { IdMap } = require("medusa-test-utils")
-const {
-  ProductVariant,
-  ProductOptionValue,
-  MoneyAmount,
-  DiscountConditionType,
-  DiscountConditionOperator,
-} = require("@medusajs/medusa")
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
 const { initDb, useDb } = require("../../../../helpers/use-db")
 const adminSeeder = require("../../../helpers/admin-seeder")
 const productSeeder = require("../../../helpers/product-seeder")
-const priceListSeeder = require("../../../helpers/price-list-seeder")
 const {
-  simpleProductFactory,
-  simpleDiscountFactory,
   simpleProductCategoryFactory,
   simpleSalesChannelFactory,
-  simpleRegionFactory,
 } = require("../../../factories")
 
 const testProductId = "test-product"
@@ -124,10 +111,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
     it("returns a list of products in product category without category children", async () => {
       const api = useApi()
       const params = `category_id[]=${categoryWithProductId}`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(1)
@@ -141,10 +125,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
     it("returns a list of products in product category without category children explicitly set to false", async () => {
       const api = useApi()
       const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(1)
@@ -159,10 +140,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       const api = useApi()
 
       const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(3)
@@ -185,10 +163,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       const api = useApi()
 
       const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(0)
