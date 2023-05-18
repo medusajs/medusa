@@ -60,7 +60,7 @@ describe("RemoteJoiner.parseQuery", () => {
         },
         {
           name: "another_arg",
-          value: "987",
+          value: 987,
         },
         {
           name: "complexArg",
@@ -69,7 +69,7 @@ describe("RemoteJoiner.parseQuery", () => {
             name: "test",
             nestedArg: {
               nest_id: "abc",
-              num: "123",
+              num: 123,
             },
           },
         },
@@ -147,7 +147,7 @@ describe("RemoteJoiner.parseQuery", () => {
           args: [
             {
               name: "limit",
-              value: "10",
+              value: 10,
             },
           ],
         },
@@ -162,7 +162,7 @@ describe("RemoteJoiner.parseQuery", () => {
                 name: "test",
                 nestedArg: {
                   nest_id: "abc",
-                  num: "123",
+                  num: 123,
                 },
               },
             },

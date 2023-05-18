@@ -3,14 +3,16 @@ import {
   ArgumentNode,
   DocumentNode,
   FieldNode,
+  Kind,
   OperationDefinitionNode,
   SelectionSetNode,
+  ValueNode,
   parse,
 } from "graphql"
 
 interface Argument {
   name: string
-  value?: any
+  value?: unknown
 }
 
 interface Entity {
@@ -22,24 +24,38 @@ interface Entity {
 class GraphQLParser {
   private ast: DocumentNode
 
-  constructor(input: string, private variables?: { [key: string]: any }) {
+  constructor(input: string, private variables?: { [key: string]: unknown }) {
     this.ast = parse(input)
     this.variables = variables || {}
   }
 
-  private parseValueNode(valueNode: any): any {
-    if (valueNode.kind === "Variable") {
-      const variableName = valueNode.name.value
-      return this.variables ? this.variables[variableName] : undefined
-    } else if (valueNode.kind === "ObjectValue") {
-      let obj = {}
-      for (const field of valueNode.fields) {
-        obj[field.name.value] = this.parseValueNode(field.value)
-      }
-      return obj
+  private parseValueNode(valueNode: ValueNode): unknown {
+    switch (valueNode.kind) {
+      case Kind.VARIABLE:
+        const variableName = valueNode.name.value
+        return this.variables ? this.variables[variableName] : undefined
+      case Kind.INT:
+        return parseInt(valueNode.value, 10)
+      case Kind.FLOAT:
+        return parseFloat(valueNode.value)
+      case Kind.BOOLEAN:
+        return Boolean(valueNode.value)
+      case Kind.STRING:
+      case Kind.ENUM:
+        return valueNode.value
+      case Kind.NULL:
+        return null
+      case Kind.LIST:
+        return valueNode.values.map((v) => this.parseValueNode(v))
+      case Kind.OBJECT:
+        let obj = {}
+        for (const field of valueNode.fields) {
+          obj[field.name.value] = this.parseValueNode(field.value)
+        }
+        return obj
+      default:
+        return undefined
     }
-
-    return valueNode.value
   }
 
   private parseArguments(
@@ -50,7 +66,7 @@ class GraphQLParser {
     }
 
     return args.map((arg) => {
-      const value = this.parseValueNode(arg.value as any)
+      const value = this.parseValueNode(arg.value)
 
       return {
         name: arg.name.value,
