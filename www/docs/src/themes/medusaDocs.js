@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const palenightTheme = require("prism-react-renderer/themes/palenight")
 
 const theme = {

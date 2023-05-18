@@ -1,5 +1,4 @@
 declare module "@theme/CodeBlock" {
-  import type { ReactNode } from "react"
   import type { Props as DocusaurusProps } from "@theme/CodeBlock"
 
   export interface Props extends DocusaurusProps {
