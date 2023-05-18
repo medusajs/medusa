@@ -1,9 +1,9 @@
 import express from "express"
 
-export default () => {
+export default (rootDirectory, pluginOptions) => {
   const app = express.Router()
 
-  const uploadDir = process.env.UPLOAD_DIR ?? "uploads/images"
+  const uploadDir = pluginOptions.upload_dir ?? "uploads/images"
 
   app.use(`/${uploadDir}`, express.static(uploadDir))
 
