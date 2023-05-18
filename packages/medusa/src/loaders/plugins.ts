@@ -325,6 +325,8 @@ type RouteFileExports = {
 }
 
 function registerHandler(handler, app: Express, rootDirectory, pluginDetails) {
+  const test = require(handler)
+  console.log("Test ", test)
   if (typeof handler !== "function") {
     const {
       config,
@@ -348,6 +350,43 @@ function registerHandler(handler, app: Express, rootDirectory, pluginDetails) {
   }
 }
 
+// function formatEndpointPath(path: string): string {
+//   const parsed = parse(path)
+//   const parsedDir = parse(parsed.dir)
+
+//   const rawname = parsed.name
+//   let namespace = parsedDir.name
+//   if (namespace.startsWith("__")) {
+//     const parsedCoreDir = parse(parsedDir.dir)
+//     namespace = parsedCoreDir.name
+//   }
+
+//   switch (namespace) {
+//     // We strip the last character when adding the type of registration
+//     // this is a trick for plural "ies"
+//     case "repositories":
+//       namespace = "repositorys"
+//       break
+//     case "strategies":
+//       namespace = "strategys"
+//       break
+//     default:
+//       break
+//   }
+
+//   const upperNamespace =
+//     namespace.charAt(0).toUpperCase() + namespace.slice(1, -1)
+
+//   const parts = rawname.split("-").map((n, index) => {
+//     if (index !== 0) {
+//       return n.charAt(0).toUpperCase() + n.slice(1)
+//     }
+//     return n
+//   })
+
+//   return parts.join("") + upperNamespace
+// }
+
 /**
  * Registers the plugin's api routes.
  */
@@ -364,14 +403,51 @@ function registerApi(
     `Registering custom endpoints for ${pluginDetails.name}`
   )
   try {
-    const files = glob.sync(`${pluginDetails.resolve}/api/[!__]*.js`, {})
-    const routes = require(`${pluginDetails.resolve}/api`).default
+    const routes = glob.sync(`${pluginDetails.resolve}/api/**/[!__]*.js`, {})
+    const legacyRoutes = require(`${pluginDetails.resolve}/api`)
 
-    const allRoutes = [...files, ...routes]
+    // compatibility with old api
+    if ("default" in legacyRoutes) {
+      const routes = legacyRoutes.default
+      app.use("/", routes(rootDirectory, pluginDetails))
+    }
 
-    allRoutes.map((file) =>
-      registerHandler(file, app, rootDirectory, pluginDetails)
-    )
+    for (const route of routes) {
+      const handler = require(route)
+
+      if (!("default" in handler) || !("config" in handler)) {
+        continue
+      }
+
+      const { config, default: handlerFunction }: RouteFileExports = handler
+
+      const [, p] = route.split("api")
+      const parsedPath = parse(p)
+      const rawPath = parsedPath.name
+
+      let path = config.path
+
+      if (!path) {
+        if (rawPath === "index") {
+          path = `${parsedPath.dir}`
+        } else {
+          if (parsedPath.dir === "/") {
+            path = `/${rawPath}`
+          } else {
+            path = `${parsedPath.dir}/${rawPath}`
+          }
+        }
+      }
+
+      const shouldEnableBodyParser = config.bodyParser !== false
+
+      if (shouldEnableBodyParser) {
+        app.use(bodyParser.json())
+      }
+
+      app[config.method.toLowerCase()](path, handlerFunction)
+    }
+
     return app
   } catch (err) {
     if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
