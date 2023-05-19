@@ -40,12 +40,12 @@ const EditAllocationDrawer = ({
   close,
   reservation,
   item,
-  totalReservedQuantity,
+  totalReservedQuantity = 0,
 }: {
   close: () => void
   reservation: ReservationItemDTO
   item?: LineItem
-  totalReservedQuantity: number
+  totalReservedQuantity?: number
 }) => {
   const form = useForm<EditAllocationLineItemForm>({
     defaultValues: {
@@ -193,6 +193,11 @@ const EditAllocationDrawer = ({
     )
   }, [availableQuantity, item, reservation?.quantity, totalReservedQuantity])
 
+  const closeModal = (e) => {
+    e.preventDefault()
+    close()
+  }
+
   return (
     <SideModal isVisible close={close}>
       <form
@@ -202,7 +207,12 @@ const EditAllocationDrawer = ({
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
             <h1 className="inter-large-semibold ">Edit allocation</h1>
-            <Button variant="ghost" className="p-1.5" onClick={close}>
+            <Button
+              variant="ghost"
+              className="p-1.5"
+              type="button"
+              onClick={closeModal}
+            >
               <CrossIcon />
             </Button>
           </div>
@@ -237,6 +247,7 @@ const EditAllocationDrawer = ({
                   <div
                     className={`
                   bg-grey-5 text-grey-50 border-grey-20 
+                  inter-base-regular
                   mt-6
                   grid border-collapse grid-cols-2 grid-rows-3 
                   [&>*]:border-r [&>*]:border-b [&>*]:py-2 
@@ -258,8 +269,8 @@ const EditAllocationDrawer = ({
                     <div>{inventory_item?.sku ?? "N/A"}</div>
                     <div>In stock</div>
                     <div>{inStockQuantity ?? "N/A"}</div>
-                    <div className="">Available</div>
-                    <div className="">{availableQuantity ?? "N/A"}</div>
+                    <div>Available</div>
+                    <div>{availableQuantity ?? "N/A"}</div>
                     <div className="rounded-bl-rounded">Allocate</div>
                     <div className="bg-grey-0 rounded-br-rounded text-grey-80 flex items-center">
                       <input
@@ -279,7 +290,7 @@ const EditAllocationDrawer = ({
                     </div>
                   </div>
                 </div>
-                <div className="border-grey-20 border-t pt-6">
+                <div className="border-grey-20 inter-base-regular border-t pt-6">
                   <p className="inter-base-semibold">Description</p>
                   <p className="text-grey-50 mb-6">
                     What type of reservation is this?
