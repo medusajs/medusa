@@ -172,7 +172,7 @@ npm run develop
 Then, in the directory of your Medusa backend, run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Once you start your Medusa backend, if you ran the `--seed` command when you created your Medusa backend, you’ll see that `product.created` events have been triggered along with similar events. This will update Strapi with the products you seeded.
