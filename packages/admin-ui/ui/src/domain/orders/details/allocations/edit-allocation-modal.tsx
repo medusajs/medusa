@@ -290,7 +290,7 @@ const EditAllocationDrawer = ({
                     </div>
                   </div>
                 </div>
-                <div className="border-grey-20 border-t pt-6">
+                <div className="border-grey-20 inter-base-regular border-t pt-6">
                   <p className="inter-base-semibold">Description</p>
                   <p className="text-grey-50 mb-6">
                     What type of reservation is this?

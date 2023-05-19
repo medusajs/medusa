@@ -281,7 +281,10 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
         </Table>
       </TableContainer>
       <Fade isVisible={createReservationState} isFullScreen={true}>
-        <NewReservation onClose={closeReservationCreate} />
+        <NewReservation
+          locationId={queryObject.location_id}
+          onClose={closeReservationCreate}
+        />
       </Fade>
     </>
   )
@@ -347,7 +350,7 @@ const ReservationRow = ({
           text={"Are you sure you want to remove this reservation?"}
           heading={"Remove reservation"}
           successText={"Reservation has been removed"}
-          onDelete={deleteReservation}
+          onDelete={async () => await deleteReservation(undefined)}
           handleClose={() => setShowDeleteReservation(false)}
         />
       )}

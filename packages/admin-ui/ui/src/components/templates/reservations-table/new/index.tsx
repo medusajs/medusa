@@ -21,12 +21,18 @@ type NewReservationFormType = {
   metadata: MetadataFormType
 }
 
-const NewReservation = ({ onClose }: { onClose: () => void }) => {
+const NewReservation = ({
+  onClose,
+  locationId,
+}: {
+  onClose: () => void
+  locationId?: string
+}) => {
   const { mutateAsync: createReservation } = useAdminCreateReservation()
   const form = useForm<NewReservationFormType>({
     defaultValues: {
       general: {
-        location: undefined,
+        location: locationId,
         item: undefined,
         description: undefined,
         quantity: 0,
