@@ -2,3 +2,4 @@
 **/.docusaurus/*
 **/build/*
 .eslintrc.js
+babel.config.js

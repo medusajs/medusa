@@ -43,7 +43,7 @@
     "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0",
     "redocusaurus": "^1.4.0",
-    "tailwindcss": "^3.3.1",
+    "tailwindcss": "^3.3.2",
     "url-loader": "^4.1.1"
   },
   "browserslist": {
@@ -60,8 +60,8 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.3",
-    "@docusaurus/eslint-plugin": "^2.3.1",
-    "@docusaurus/module-type-aliases": "^2.3.1",
+    "@docusaurus/eslint-plugin": "latest",
+    "@docusaurus/module-type-aliases": "latest",
     "@tsconfig/docusaurus": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",

@@ -1,5 +1,4 @@
 declare module "@theme/CodeBlock" {
-  import type { ReactNode } from "react"
   import type { Props as DocusaurusProps } from "@theme/CodeBlock"
 
   export interface Props extends DocusaurusProps {
@@ -48,6 +47,11 @@ declare module "@medusajs/docs" {
       html?: string
       sidebar_icon?: string
       sidebar_is_title?: boolean
+      sidebar_is_soon?: boolean
+      sidebar_is_group_headline?: boolean
+      sidebar_is_group_divider?: boolean
+      sidebar_is_divider_line?: boolean
+      sidebar_is_back_link?: boolean
     }
   }
 

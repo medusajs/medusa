@@ -3,8 +3,6 @@ import clsx from "clsx"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
 import type { Props } from "@theme/DocPage/Layout/Main"
 
-import styles from "./styles.module.css"
-
 export default function DocPageLayoutMain({
   hiddenSidebarContainer,
   children,
@@ -13,15 +11,14 @@ export default function DocPageLayoutMain({
   return (
     <main
       className={clsx(
-        styles.docMainContainer,
-        (hiddenSidebarContainer || !sidebar) && styles.docMainContainerEnhanced
+        "tw-flex tw-flex-col tw-w-full lg:tw-flex-grow lg:tw-max-w-[calc(100%-320px)]",
+        (hiddenSidebarContainer || !sidebar) && "lg:tw-max-w-[calc(100%-30px)]"
       )}
     >
       <div
         className={clsx(
-          "container padding-top--md docs-page-container",
-          styles.docItemWrapper,
-          hiddenSidebarContainer && styles.docItemWrapperEnhanced
+          "container padding-top--md tw-px-0",
+          hiddenSidebarContainer && "lg:tw-max-w-main-content-hidden-sidebar"
         )}
       >
         {children}

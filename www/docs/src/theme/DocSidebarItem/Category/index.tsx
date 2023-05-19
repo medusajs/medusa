@@ -90,7 +90,7 @@ function CollapseButton({
         { label: categoryLabel }
       )}
       type="button"
-      className="clean-btn menu__caret"
+      className="tw-hidden"
       onClick={onClick}
     />
   )
@@ -150,9 +150,9 @@ export default function DocSidebarItemCategory({
         ThemeClassNames.docs.docSidebarItemCategory,
         ThemeClassNames.docs.docSidebarItemCategoryLevel(level),
         "menu__list-item",
-        {
-          "menu__list-item--collapsed": collapsed,
-        },
+        // {
+        //   "menu__list-item--collapsed": collapsed,
+        // },
         className,
         customProps?.sidebar_is_title && "sidebar-title",
         customProps?.sidebar_is_group_headline && "sidebar-group-headline",
@@ -160,7 +160,12 @@ export default function DocSidebarItemCategory({
         customProps?.sidebar_is_divider_line && "sidebar-divider-line",
         customProps?.sidebar_is_back_link && "sidebar-back-link",
         customProps?.sidebar_is_soon &&
-          "sidebar-soon-link sidebar-badge-wrapper"
+          "sidebar-soon-link sidebar-badge-wrapper",
+        !customProps?.sidebar_is_title &&
+          "[&_.sidebar-item-icon]:tw-w-[20px] [&_.sidebar-item-icon]:tw-h-[20px]",
+        !customProps?.sidebar_is_title &&
+          !customProps?.sidebar_is_back_link &&
+          "[&_.sidebar-item-icon]:tw-mr-1"
       )}
     >
       <div
@@ -198,6 +203,7 @@ export default function DocSidebarItemCategory({
             <DocSidebarItemIcon
               icon={customProps.sidebar_icon}
               is_title={customProps.sidebar_is_title}
+              is_disabled={customProps?.sidebar_is_soon}
             />
           )}
           {label}

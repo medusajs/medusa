@@ -1,27 +1,25 @@
+import React, { useEffect, useReducer, useRef, useState } from "react"
+import clsx from "clsx"
+
+import algoliaSearchHelper from "algoliasearch-helper"
+import algoliaSearch from "algoliasearch/lite"
+
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment"
+import Head from "@docusaurus/Head"
+import Link from "@docusaurus/Link"
+import { useAllDocsData } from "@docusaurus/plugin-content-docs/client"
 import {
   HtmlClassNameProvider,
   useEvent,
   usePluralForm,
+  useSearchQueryString,
 } from "@docusaurus/theme-common"
-import React, { useEffect, useReducer, useRef, useState } from "react"
+import { useTitleFormatter } from "@docusaurus/theme-common/internal"
 import Translate, { translate } from "@docusaurus/Translate"
-import {
-  useSearchPage,
-  useTitleFormatter,
-} from "@docusaurus/theme-common/internal"
-
-import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment"
-import Head from "@docusaurus/Head"
-import Layout from "@theme/Layout"
-import Link from "@docusaurus/Link"
-import algoliaSearch from "algoliasearch/lite"
-import algoliaSearchHelper from "algoliasearch-helper"
-import clsx from "clsx"
-import styles from "./styles.module.css"
-import { useAllDocsData } from "@docusaurus/plugin-content-docs/client"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
-import { ThemeConfig } from "@medusajs/docs"
 import { useSearchResultUrlProcessor } from "@docusaurus/theme-search-algolia/client"
+import Layout from "@theme/Layout"
+import { ThemeConfig } from "@medusajs/docs"
 
 // Very simple pluralization: probably good enough for now
 function useDocumentsFoundPlural() {
@@ -90,8 +88,9 @@ function SearchVersionSelectList({
       className={clsx(
         "col",
         "col--3",
-        "padding-left--none",
-        styles.searchVersionColumn
+        "tw-pl-0",
+        "lg:!tw-max-w-[unset] xs:!tw-max-w-[40%] !tw-max-w-full",
+        "xs:tw-pl-0 tw-pl-1"
       )}
     >
       {versionedPluginEntries.map(([pluginId, docsData]) => {
@@ -107,7 +106,7 @@ function SearchVersionSelectList({
               )
             }
             defaultValue={docsSearchVersionsHelpers.searchVersions[pluginId]}
-            className={styles.searchVersionInput}
+            className={clsx("search-page-input")}
           >
             {docsData.versions.map((version, i) => (
               <option
@@ -147,16 +146,15 @@ type ResultDispatcher =
 function SearchPageContent(): JSX.Element {
   const {
     siteConfig: { themeConfig },
-    i18n: { currentLocale },
   } = useDocusaurusContext()
   const {
-    algolia: { appId, apiKey, indexName, externalUrlRegex },
+    algolia: { appId, apiKey, indexName },
   } = themeConfig as ThemeConfig
   const processSearchResultUrl = useSearchResultUrlProcessor()
   const documentsFoundPlural = useDocumentsFoundPlural()
 
   const docsSearchVersionsHelpers = useDocsSearchVersionsHelpers()
-  const { searchQuery, setSearchQuery } = useSearchPage()
+  const [searchQuery, setSearchQuery] = useSearchQueryString()
   const initialSearchResultState: ResultDispatcherState = {
     items: [],
     query: null,
@@ -305,9 +303,6 @@ function SearchPageContent(): JSX.Element {
   }
 
   const makeSearch = useEvent((page?: number) => {
-    if (!page) {
-      page = 0
-    }
     // These commented out line are from algolia's implementation
     // we might need them in the future
     // algoliaHelper.addDisjunctiveFacetRefinement("docusaurus_tag", "default")
@@ -322,7 +317,10 @@ function SearchPageContent(): JSX.Element {
     //   }
     // )
 
-    algoliaHelper.setQuery(searchQuery).setPage(page).search()
+    algoliaHelper
+      .setQuery(searchQuery)
+      .setPage(page || 0)
+      .search()
   })
 
   useEffect(() => {
@@ -368,20 +366,27 @@ function SearchPageContent(): JSX.Element {
         <meta property="robots" content="noindex, follow" />
       </Head>
 
-      <div className="container margin-vert--lg">
+      <div className={clsx("container", "tw-mt-2")}>
         <h1>{getTitle()}</h1>
 
         <form className="row" onSubmit={(e) => e.preventDefault()}>
           <div
-            className={clsx("col", styles.searchQueryColumn, {
-              "col--9": docsSearchVersionsHelpers.versioningEnabled,
-              "col--12": !docsSearchVersionsHelpers.versioningEnabled,
-            })}
+            className={clsx(
+              "col",
+              "lg:tw-max-w-[unset] xs:tw-max-w-[60%] tw-max-w-full",
+              {
+                "col--9": docsSearchVersionsHelpers.versioningEnabled,
+                "col--12": !docsSearchVersionsHelpers.versioningEnabled,
+              }
+            )}
           >
             <input
               type="search"
               name="q"
-              className={styles.searchQueryInput}
+              className={clsx(
+                "search-page-input",
+                "placeholder:tw-text-medusa-text-subtle dark:placeholder:tw-text-medusa-text-subtle-dark"
+              )}
               placeholder={translate({
                 id: "theme.SearchPage.inputPlaceholder",
                 message: "Type your search here",
@@ -407,7 +412,7 @@ function SearchPageContent(): JSX.Element {
         </form>
 
         <div className="row">
-          <div className={clsx("col", "col--8", styles.searchResultsColumn)}>
+          <div className={clsx("col", "col--8", "!tw-text-label-small-plus")}>
             {!!searchResultState.totalResults &&
               documentsFoundPlural(searchResultState.totalResults)}
           </div>
@@ -417,11 +422,21 @@ function SearchPageContent(): JSX.Element {
           <main>
             {searchResultState.items.map(
               ({ title, url, summary, breadcrumbs }, i) => (
-                <article key={i} className={styles.searchResultItem}>
-                  <h2 className={styles.searchResultItemHeading}>
+                <article
+                  key={i}
+                  className={clsx(
+                    "tw-py-1 tw-px-0 tw-border-b tw-border-t-0 tw-border-x-0 tw-border-solid",
+                    "tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark",
+                    "!tw-max-w-[unset]"
+                  )}
+                >
+                  <h2 className={clsx("tw-font-normal tw-mb-0.5")}>
                     <Link
                       to={url}
                       dangerouslySetInnerHTML={{ __html: title }}
+                      className={clsx(
+                        "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark"
+                      )}
                     />
                   </h2>
 
@@ -429,8 +444,8 @@ function SearchPageContent(): JSX.Element {
                     <nav aria-label="breadcrumbs">
                       <ul
                         className={clsx(
-                          "breadcrumbs",
-                          styles.searchResultItemPath
+                          "tw-mb-0 tw-pl-0",
+                          "!tw-text-label-x-small-plus tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark"
                         )}
                       >
                         {breadcrumbs.map((html, index) => (
@@ -448,7 +463,7 @@ function SearchPageContent(): JSX.Element {
 
                   {summary && (
                     <p
-                      className={styles.searchResultItemSummary}
+                      className={clsx("tw-mt-0.5 tw-mb-0 tw-mx-0")}
                       // Developer provided the HTML, so assume it's safe.
                       // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{ __html: summary }}
@@ -471,13 +486,19 @@ function SearchPageContent(): JSX.Element {
               </p>
             ),
             !!searchResultState.loading && (
-              <div key="spinner" className={styles.loadingSpinner} />
+              <div
+                key="spinner"
+                className={clsx(
+                  "tw-w-3 tw-h-3 tw-border-0.4 tw-border-solid tw-border-[#eee] tw-border-t-medusa-text-base dark:tw-border-t-medusa-text-base-dark",
+                  "tw-rounded-[50%] tw-animate-spin tw-my-0 tw-mx-auto"
+                )}
+              />
             ),
           ]
         )}
 
         {searchResultState.hasMore && (
-          <div className={styles.loader} ref={setLoaderRef}>
+          <div className={clsx("tw-mt-2")} ref={setLoaderRef}>
             <Translate
               id="theme.SearchPage.fetchingNewResults"
               description="The paragraph for fetching new search results"
@@ -493,7 +514,7 @@ function SearchPageContent(): JSX.Element {
 
 export default function SearchPage(): JSX.Element {
   return (
-    <HtmlClassNameProvider className="search-page-wrapper">
+    <HtmlClassNameProvider className="">
       <SearchPageContent />
     </HtmlClassNameProvider>
   )

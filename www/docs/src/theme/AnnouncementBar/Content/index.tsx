@@ -2,7 +2,6 @@ import React from "react"
 import clsx from "clsx"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import type { Props } from "@theme/AnnouncementBar/Content"
-import styles from "./styles.module.css"
 
 export default function AnnouncementBarContent(
   props: Props
@@ -10,15 +9,23 @@ export default function AnnouncementBarContent(
   const { announcementBar } = useThemeConfig()
   const { content } = announcementBar!
   return (
-    <div className={clsx(styles.contentWrapper, props.className)}>
+    <div
+      className={clsx(
+        "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
+        "tw-text-label-x-small-plus",
+        props.className
+      )}
+    >
       <div
         {...props}
-        className={clsx(styles.contentTitle)}
+        className={clsx(
+          "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark"
+        )}
         // Developer provided the HTML, so assume it's safe.
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: content }}
       />
-      <span className={styles.moreText}>Read more</span>
+      <span>Read more</span>
     </div>
   )
 }
