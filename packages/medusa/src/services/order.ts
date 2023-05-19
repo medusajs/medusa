@@ -637,6 +637,13 @@ class OrderService extends TransactionBaseService {
         )
       }
 
+      if (!cart.customer_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot create an order from the cart without a customer"
+        )
+      }
+
       const { payment, region, total } = cart
 
       // Would be the case if a discount code is applied that covers the item
@@ -667,7 +674,7 @@ class OrderService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       const shippingMethods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
 
@@ -775,7 +782,7 @@ class OrderService extends TransactionBaseService {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
-            (method.tax_lines as any) = undefined
+            ;(method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
               order_id: order.id,
             })

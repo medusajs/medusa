@@ -362,6 +362,41 @@ describe("Inventory Items endpoints", () => {
       expect(variantInventoryRes.status).toEqual(200)
     })
 
+    it("lists location levels based on id param constraint", async () => {
+      const api = useApi()
+      const inventoryItemId = inventoryItems[0].id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/location-levels`,
+        {
+          location_id: location2Id,
+          stocked_quantity: 10,
+        },
+        adminHeaders
+      )
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/location-levels`,
+        {
+          location_id: location3Id,
+          stocked_quantity: 5,
+        },
+        adminHeaders
+      )
+
+      const result = await api.get(
+        `/admin/inventory-items/${inventoryItemId}/location-levels?location_id[]=${location2Id}`,
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.inventory_item.location_levels).toHaveLength(1)
+      expect(result.data.inventory_item.location_levels[0]).toEqual(
+        expect.objectContaining({
+          stocked_quantity: 10,
+        })
+      )
+    })
     describe("List inventory items", () => {
       it("Lists inventory items with location", async () => {
         const api = useApi()

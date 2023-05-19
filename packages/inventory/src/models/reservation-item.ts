@@ -1,5 +1,5 @@
-import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
+import { SoftDeletableEntity, generateEntityId } from "@medusajs/utils"
 
 @Entity()
 export class ReservationItem extends SoftDeletableEntity {
@@ -20,6 +20,12 @@ export class ReservationItem extends SoftDeletableEntity {
 
   @Column({ type: "text", nullable: true })
   external_id: string | null
+
+  @Column({ type: "text", nullable: true })
+  description: string | null
+
+  @Column({ type: "text", nullable: true })
+  created_by: string | null
 
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

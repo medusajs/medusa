@@ -389,9 +389,11 @@ If you don’t pass the `handle` body parameter, the handle of the product will 
 
 ### Product Variant Prices
 
-It’s recommended to set the prices of product variants as the actual amount multiplied by a hundred. This behavior is implemented within the Medusa admin, and the Next.js storefront divides all prices by a hundred before displaying the price.
+For currencies that are not zero-decimal, you must set the prices of product variants as the actual amount multiplied by a hundred.
 
 So, in the example above, if the `amount` is set to `1000`, it means the price is actually `10`.
+
+You can learn more about pricing and zero-decimal currencies [here](../products.md#storing-the-product-variants-price).
 
 ---
 

@@ -67,13 +67,9 @@ You can initiate the cart completion process by sending a request to the [Comple
 
 ### Idempotency Key
 
-An Idempotency Key is a unique key associated with a cart. It is generated when the cart completion process is started. The idempotency key is stored in the Cart entity under the attribute `idempotency_key`.
+An Idempotency Key is a unique key associated with a cart. It is generated when the cart completion process is started and can be used to retry cart completion safely if an error occurs. The idempotency key is stored in the Cart entity under the attribute `idempotency_key`.
 
-That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
-
-The backend wraps essential parts of the checkout completion in its own step and stores the current step (known as recovery point) of checkout with its associated Idempotency Key.
-
-Then, if the request is interrupted for any reason or an error occurs, the client can retry completing the checkout using the Idempotency Key, and the flow will continue from the last stored step.
+You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
 ### Cart Completion Process
 
