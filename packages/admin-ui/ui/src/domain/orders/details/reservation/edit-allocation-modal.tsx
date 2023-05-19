@@ -17,11 +17,11 @@ import {
 } from "medusa-react"
 import { useEffect, useMemo } from "react"
 
-import { AllocationLineItemForm } from "./allocate-items-modal"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../../components/molecules/input"
 import { LineItem } from "@medusajs/medusa"
+import { ReserveLineItemForm } from "./reserve-items-modal"
 import Select from "../../../../components/molecules/select/next-select/select"
 import SideModal from "../../../../components/molecules/modal/side-modal"
 import Thumbnail from "../../../../components/atoms/thumbnail"
@@ -32,7 +32,7 @@ import useToggleState from "../../../../hooks/use-toggle-state"
 
 type EditAllocationLineItemForm = {
   location: { label: string; value: string }
-  item: AllocationLineItemForm
+  item: ReserveLineItemForm
   metadata: MetadataFormType
 }
 
@@ -139,8 +139,10 @@ const EditAllocationDrawer = ({
       {
         quantity: data.item.quantity,
         location_id: data.location.value,
-        description: data.item.description,
-        metadata: hasMetadata ? getSubmittableMetadata(data.metadata) : null,
+        description: data.item.description || undefined,
+        metadata: hasMetadata
+          ? getSubmittableMetadata(data.metadata)
+          : undefined,
       },
       {
         onSuccess: () => {
