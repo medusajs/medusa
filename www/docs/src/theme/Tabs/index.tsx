@@ -206,6 +206,10 @@ type TabsProps = {
   isCodeTabs?: boolean
 } & OldProps
 
+function checkCodeTabs(props: TabsProps): boolean {
+  return props.groupId === "npm2yarn" || props.isCodeTabs
+}
+
 export default function Tabs(props: TabsProps): JSX.Element {
   const isBrowser = useIsBrowser()
 
@@ -216,19 +220,21 @@ export default function Tabs(props: TabsProps): JSX.Element {
     }
   }, [])
 
+  const isCodeTabs = checkCodeTabs(props)
+
   return (
     <div
       className={clsx(
         "tabs-wrapper",
         props.wrapperClassName,
-        (props.groupId === "npm2yarn" || props.isCodeTabs) && "code-tabs"
+        isCodeTabs && "code-tabs"
       )}
     >
       <TabsComponent
         // Remount tabs after hydration
         // Temporary fix for https://github.com/facebook/docusaurus/issues/5653
         key={String(isBrowser)}
-        isCodeTabs={props.isCodeTabs || props.groupId === "npm2yarn"}
+        isCodeTabs={isCodeTabs}
         {...props}
       />
     </div>
