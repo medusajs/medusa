@@ -1,4 +1,3 @@
-
 .DocSearch-Modal {
   @apply tw-border tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
   @apply !tw-rounded !tw-relative;
@@ -157,9 +156,10 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 .DocSearch-Button {
   @apply tw-w-full !tw-h-full !tw-rounded lg:!tw-border lg:!tw-border-solid lg:!tw-border-medusa-border-base lg:dark:!tw-border-medusa-border-base-dark tw-border-0;
-  @apply lg:tw-bg-medusa-bg-field lg:dark:tw-bg-medusa-bg-field-dark tw-bg-transparent;
+  @apply lg:tw-bg-medusa-bg-field lg:dark:tw-bg-medusa-bg-field-dark !tw-bg-transparent;
+  @apply lg:hover:tw-bg-medusa-bg-field-hover lg:dark:hover:tw-bg-medusa-bg-field-hover-dark;
   @apply !tw-py-[6px] !tw-pl-0.5 tw-relative;
-  @apply hover:!tw-border-medusa-border-base hover:dark:!tw-border-medusa-border-base-dark ;
+  @apply hover:!tw-border-medusa-border-base hover:dark:!tw-border-medusa-border-base-dark;
   @apply active:!tw-border-medusa-border-base active:dark:!tw-border-medusa-border-base-dark;
   @apply focus:!tw-border-medusa-border-base focus:dark:!tw-border-medusa-border-base-dark;
 }

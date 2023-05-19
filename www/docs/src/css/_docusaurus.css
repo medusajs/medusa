@@ -188,7 +188,7 @@ details summary {
 }
 
 .theme-last-updated {
-  @apply tw-font-normal tw-text-label-small-plus;
+  @apply tw-font-normal tw-not-italic tw-text-label-small-plus;
 }
 
 .theme-last-updated,
