@@ -18,7 +18,6 @@ type TabListProps = TabsCustomProps & OldProps & ReturnType<typeof useTabs>
 
 function TabList({
   className,
-  block,
   selectedValue,
   selectValue,
   tabValues,

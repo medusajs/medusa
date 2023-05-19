@@ -30,7 +30,7 @@ const config = {
       },
     ],
     require.resolve("docusaurus-plugin-image-zoom"),
-    async function tailwindPlugin(context, options) {
+    async function tailwindPlugin() {
       return {
         name: "docusaurus-tailwindcss",
         configurePostCss(postcssOptions) {

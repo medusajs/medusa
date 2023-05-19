@@ -5,6 +5,7 @@ module.exports = {
     requireConfigFile: false,
     ecmaFeatures: {
       experimentalDecorators: true,
+      jsx: true
     },
   },
   plugins: [
@@ -87,12 +88,14 @@ module.exports = {
     jest: true,
     browser: true,
   },
-  ignorePatterns: [],
+  ignorePatterns: [
+    "babel.config.js"
+  ],
   overrides: [
     {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
       plugins: ["@typescript-eslint/eslint-plugin"],
-      extends: ["plugin:@typescript-eslint/recommended"],
+      extends: ["plugin:@typescript-eslint/recommended", "plugin:react/recommended"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",

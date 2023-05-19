@@ -1,9 +1,10 @@
 import React from "react"
+import { IconProps } from ".."
 
-export default function IconBuildingStorefront({
+const IconBuildingStorefront: React.FC<IconProps> = ({
   iconColorClassName,
   ...props
-}) {
+}) => {
   return (
     <svg
       width={20}
@@ -26,3 +27,5 @@ export default function IconBuildingStorefront({
     </svg>
   )
 }
+
+export default IconBuildingStorefront
