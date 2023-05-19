@@ -1,7 +1,10 @@
 import React from "react"
 import { IconProps } from ".."
 
-const IconComponentSolid: React.FC<IconProps> = (props) => {
+const IconComponentSolid: React.FC<IconProps> = ({
+  iconColorClassName,
+  ...props
+}) => {
   return (
     <svg
       width={props.width || 20}
@@ -13,32 +16,40 @@ const IconComponentSolid: React.FC<IconProps> = (props) => {
     >
       <path
         d="M5.125 7.37509L7.75 10.0001L5.125 12.6251L2.5 10.0001L5.125 7.37509Z"
-        fill="var(--ifm-icon-color)"
-        stroke="var(--ifm-icon-color)"
+        className={
+          iconColorClassName ||
+          "tw-fill-medusa-icon-secondary dark:tw-fill-medusa-icon-secondary-dark tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+        }
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M9.99969 2.5L12.6247 5.125L9.99969 7.75L7.37469 5.125L9.99969 2.5Z"
-        fill="var(--ifm-icon-color)"
-        stroke="var(--ifm-icon-color)"
+        className={
+          iconColorClassName ||
+          "tw-fill-medusa-icon-secondary dark:tw-fill-medusa-icon-secondary-dark tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+        }
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M14.8752 7.37509L17.5002 10.0001L14.8752 12.6251L12.2502 10.0001L14.8752 7.37509Z"
-        fill="var(--ifm-icon-color)"
-        stroke="var(--ifm-icon-color)"
+        className={
+          iconColorClassName ||
+          "tw-fill-medusa-icon-secondary dark:tw-fill-medusa-icon-secondary-dark tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+        }
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M9.99969 12.25L12.6247 14.875L9.99969 17.5L7.37469 14.875L9.99969 12.25Z"
-        fill="var(--ifm-icon-color)"
-        stroke="var(--ifm-icon-color)"
+        className={
+          iconColorClassName ||
+          "tw-fill-medusa-icon-secondary dark:tw-fill-medusa-icon-secondary-dark tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+        }
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

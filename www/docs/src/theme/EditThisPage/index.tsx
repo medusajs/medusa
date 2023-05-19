@@ -2,6 +2,7 @@ import React from "react"
 import Translate from "@docusaurus/Translate"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import type { Props } from "@theme/EditThisPage"
+import clsx from "clsx"
 
 export default function EditThisPage({ editUrl }: Props): JSX.Element {
   return (
@@ -9,7 +10,7 @@ export default function EditThisPage({ editUrl }: Props): JSX.Element {
       href={editUrl}
       target="_blank"
       rel="noreferrer noopener"
-      className={ThemeClassNames.common.editThisPage}
+      className={clsx(ThemeClassNames.common.editThisPage, "btn-primary")}
     >
       <Translate
         id="theme.common.editThisPage"

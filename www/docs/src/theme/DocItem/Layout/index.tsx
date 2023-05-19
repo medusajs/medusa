@@ -13,8 +13,6 @@ import DocBreadcrumbs from "@theme/DocBreadcrumbs"
 import type { Props } from "@theme/DocItem/Layout"
 import Footer from "@theme/Footer"
 
-import styles from "./styles.module.css"
-
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -42,17 +40,17 @@ function useDocTOC() {
 export default function DocItemLayout({ children }: Props): JSX.Element {
   const docTOC = useDocTOC()
   return (
-    <div className="row markdown-row">
+    <div className="row tw-m-0">
       <div
         className={clsx(
           "col",
-          "markdown-doc-wrapper",
-          !docTOC.hidden && styles.docItemCol
+          "tw-my-0 tw-mx-auto tw-max-w-main-content tw-w-full tw-ml-auto lg:tw-py-0 lg:tw-px-4 tw-py-0 tw-px-1",
+          !docTOC.hidden && "xxl:tw-w-10/12 tw-w-9/12"
         )}
       >
         <DocVersionBanner />
-        <div className={styles.docItemContainer}>
-          <article>
+        <div>
+          <article className={clsx("[&>*:first-child]:tw-mt-0")}>
             <DocBreadcrumbs />
             <DocVersionBadge />
             {docTOC.mobile}

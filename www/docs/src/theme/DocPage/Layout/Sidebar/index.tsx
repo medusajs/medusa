@@ -8,8 +8,6 @@ import ExpandButton from "@theme/DocPage/Layout/Sidebar/ExpandButton"
 import type { Props } from "@theme/DocPage/Layout/Sidebar"
 import { SwitchTransition, CSSTransition } from "react-transition-group"
 
-import styles from "./styles.module.css"
-
 // Reset sidebar state when sidebar changes
 // Use React key to unmount/remount the children
 // See https://github.com/facebook/docusaurus/issues/3414
@@ -44,11 +42,15 @@ export default function DocPageLayoutSidebar({
     <aside
       className={clsx(
         ThemeClassNames.docs.docSidebarContainer,
-        styles.docSidebarContainer,
-        hiddenSidebarContainer && styles.docSidebarContainerHidden
+        "lg:tw-block lg:tw-w-sidebar lg:tw-will-change-[width] lg:tw-transition-[width] lg:tw-ease-ease tw-clip tw-hidden tw-duration-200",
+        hiddenSidebarContainer && "lg:tw-w-sidebar-hidden lg:tw-cursor-pointer"
       )}
       onTransitionEnd={(e) => {
-        if (!e.currentTarget.classList.contains(styles.docSidebarContainer!)) {
+        if (
+          !e.currentTarget.classList.contains(
+            ThemeClassNames.docs.docSidebarContainer
+          )
+        ) {
           return
         }
 
@@ -62,19 +64,19 @@ export default function DocPageLayoutSidebar({
           key={name}
           nodeRef={sidebarRef}
           classNames={{
-            enter: "animate__animated animate__fadeInLeft",
-            exit: "animate__animated animate__fadeOutLeft",
+            enter: "animate__animated animate__fadeInLeft animate__fastest",
+            exit: "animate__animated animate__fadeOutLeft animate__fastest",
           }}
           timeout={200}
         >
-          <div className={styles.sidebarViewportWrapper} ref={sidebarRef}>
+          <div
+            className={clsx(
+              "lg:tw-top-[57px] lg:tw-sticky lg:tw-max-h-screen lg:[&>div]:tw-max-h-screen"
+            )}
+            ref={sidebarRef}
+          >
             <ResetOnSidebarChange>
-              <div
-                className={clsx(
-                  styles.sidebarViewport,
-                  hiddenSidebar && styles.sidebarViewportHidden
-                )}
-              >
+              <div>
                 <DocSidebar
                   sidebar={sidebar}
                   path={pathname}

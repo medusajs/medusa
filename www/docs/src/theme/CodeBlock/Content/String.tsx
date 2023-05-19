@@ -13,7 +13,6 @@ import Line from "@theme/CodeBlock/Line"
 import Container from "@theme/CodeBlock/Container"
 import type { Props } from "@theme/CodeBlock/Content/String"
 import CopyButton from "@site/src/components//CopyButton"
-import styles from "./styles.module.css"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { ThemeConfig } from "@medusajs/docs"
 import Tooltip from "@site/src/components/Tooltip"
@@ -62,8 +61,8 @@ export default function CodeBlockString({
           `language-${language}`
       )}
     >
-      {title && <div className={styles.codeBlockTitle}>{title}</div>}
-      <div className={styles.codeBlockContent}>
+      {title && <div>{title}</div>}
+      <div className={clsx("tw-relative tw-rounded-[inherit]")}>
         <Highlight
           {...defaultProps}
           theme={prismTheme}
@@ -71,65 +70,78 @@ export default function CodeBlockString({
           language={(language ?? "text") as Language}
         >
           {({ className, tokens, getLineProps, getTokenProps }) => (
-            <pre
-              tabIndex={0}
-              ref={wordWrap.codeBlockRef}
-              className={clsx(
-                className,
-                styles.codeBlock,
-                "thin-scrollbar",
-                tokens.length === 1 ? styles.thinCodeWrapper : ""
-              )}
-            >
-              <code
+            <>
+              <pre
+                tabIndex={0}
+                ref={wordWrap.codeBlockRef}
+                className={clsx("tw-m-0 tw-p-0", "thin-scrollbar", className)}
+              >
+                <code
+                  className={clsx(
+                    "tw-font-[inherit] tw-float-left tw-min-w-full print:tw-whitespace-pre-wrap",
+                    showLineNumbers &&
+                      tokens.length > 1 &&
+                      "tw-table tw-p-1 code-block-numbering",
+                    title && "tw-p-1",
+                    !title && tokens.length > 1 && "tw-p-1",
+                    !title &&
+                      tokens.length === 1 &&
+                      "tw-py-0.5 tw-pr-0.5 tw-pl-1"
+                  )}
+                >
+                  {tokens.map((line, i) => (
+                    <Line
+                      key={i}
+                      line={line}
+                      getLineProps={getLineProps}
+                      getTokenProps={getTokenProps}
+                      classNames={lineClassNames[i]}
+                      showLineNumbers={showLineNumbers && tokens.length > 1}
+                    />
+                  ))}
+                </code>
+              </pre>
+              <div
                 className={clsx(
-                  styles.codeBlockLines,
-                  showLineNumbers &&
-                    tokens.length > 1 &&
-                    styles.codeBlockLinesWithNumbering,
-                  tokens.length === 1 ? "thin-code" : ""
+                  "tw-flex tw-gap-x-[2px] tw-absolute tw-right-1",
+                  tokens.length === 1 && "tw-top-[4px]",
+                  tokens.length > 1 && "tw-top-1"
                 )}
               >
-                {tokens.map((line, i) => (
-                  <Line
-                    key={i}
-                    line={line}
-                    getLineProps={getLineProps}
-                    getTokenProps={getTokenProps}
-                    classNames={lineClassNames[i]}
-                    showLineNumbers={showLineNumbers && tokens.length > 1}
-                  />
-                ))}
-              </code>
-            </pre>
+                {!noReport && (
+                  <Tooltip text="Report Incorrect Code">
+                    <a
+                      href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(
+                        `Docs(Code Issue): Code Issue in ${
+                          isBrowser ? location.pathname : ""
+                        }`
+                      )}`}
+                      target="_blank"
+                      className={clsx(
+                        "tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded",
+                        "hover:tw-bg-medusa-code-tab-hover [&:not(:first-child)]:tw-ml-0.5",
+                        "tw-inline-flex tw-justify-center tw-items-center tw-invisible xs:tw-visible"
+                      )}
+                      rel="noreferrer"
+                    >
+                      <IconAlert iconColorClassName="tw-fill-medusa-code-block-action" />
+                    </a>
+                  </Tooltip>
+                )}
+                {!noCopy && (
+                  <CopyButton
+                    buttonClassName={clsx(
+                      "tw-flex tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded"
+                    )}
+                    text={code}
+                  >
+                    <IconCopy iconColorClassName="tw-fill-medusa-code-block-action" />
+                  </CopyButton>
+                )}
+              </div>
+            </>
           )}
         </Highlight>
-        <div className={styles.buttonGroup}>
-          {!noReport && (
-            <Tooltip text="Report Incorrect Code">
-              <a
-                href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(
-                  `Docs(Code Issue): Code Issue in ${
-                    isBrowser ? location.pathname : ""
-                  }`
-                )}`}
-                target="_blank"
-                className="report-code code-action img-url"
-                rel="noreferrer"
-              >
-                <IconAlert />
-              </a>
-            </Tooltip>
-          )}
-          {!noCopy && (
-            <CopyButton
-              buttonClassName="code-action code-action-copy"
-              text={code}
-            >
-              <IconCopy />
-            </CopyButton>
-          )}
-        </div>
       </div>
     </Container>
   )

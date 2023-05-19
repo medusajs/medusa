@@ -16,7 +16,6 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import "animate.css"
 import StructuredDataSearchbox from "@site/src/components/StructuredData/Searchbox"
-import styles from "./styles.module.css"
 
 export default function Layout(props: Props): JSX.Element {
   const {
@@ -67,7 +66,7 @@ export default function Layout(props: Props): JSX.Element {
         id={SkipToContentFallbackId}
         className={clsx(
           ThemeClassNames.wrapper.main,
-          styles.mainWrapper,
+          "tw-flex-auto tw-flex-grow tw-flex-shrink-0",
           wrapperClassName
         )}
       >

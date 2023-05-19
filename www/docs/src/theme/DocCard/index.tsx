@@ -7,8 +7,6 @@ import {
 } from "@docusaurus/theme-common/internal"
 import isInternalUrl from "@docusaurus/isInternalUrl"
 import { translate } from "@docusaurus/Translate"
-
-import styles from "./styles.module.css"
 import BorderedIcon from "@site/src/components/BorderedIcon"
 import Badge, { BadgeProps } from "@site/src/components/Badge"
 import Icons from "@site/src/theme/Icon"
@@ -35,7 +33,14 @@ function CardContainer({
     <article className={`card-wrapper margin-bottom--lg`}>
       <Link
         href={href}
-        className={clsx("card", styles.cardContainer, className)}
+        className={clsx(
+          "card",
+          "tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark",
+          "tw-rounded tw-border tw-border-solid tw-border-medusa-bg-subtle-hover dark:tw-border-medusa-bg-base-hover-dark",
+          "tw-shadow-none tw-transition-all tw-duration-200 tw-ease-ease",
+          "tw-flex tw-p-1 tw-h-full",
+          className
+        )}
       >
         {children}
       </Link>
@@ -62,28 +67,62 @@ function CardLayout({
   isSoon?: boolean
   badge?: BadgeProps
 }): JSX.Element {
+  const isHighlighted = containerClassName?.includes("card-highlighted")
   return (
     <CardContainer
       href={href}
-      className={clsx(containerClassName, isSoon && styles.cardSoon)}
+      className={clsx(
+        containerClassName,
+        !isSoon &&
+          "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark",
+        isSoon && "tw-pointer-events-none",
+        isHighlighted &&
+          "md:before:tw-content-[''] md:before:tw-absolute md:before:tw-top-0 before:tw-right-0 md:before:tw-w-1/2 md:before:tw-h-full md:before:tw-bg-no-repeat md:before:tw-bg-cover md:before:tw-bg-card-highlighted dark:md:before:tw-bg-card-highlighted-dark"
+      )}
     >
-      <div className={clsx(styles.cardIconContainer)}>
+      <div
+        className={clsx("tw-mb-1 tw-flex tw-justify-between tw-items-center")}
+      >
         {icon}
         {isSoon && <Badge variant={"purple"}>Guide coming soon</Badge>}
         {badge && <Badge {...badge} />}
       </div>
-      <div className={clsx(styles.contentContainer)}>
-        <span className={clsx(styles.cardTitle)} title={title}>
+      <div className={clsx("tw-w-[calc(100%-20px)] [&>*:last-child]:tw-mb-0")}>
+        <span
+          className={clsx(
+            "tw-text-label-regular-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark",
+            "tw-mb-0.5 tw-block",
+            "tw-transition-all tw-duration-200 tw-ease-ease",
+            isSoon &&
+              "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark"
+          )}
+          title={title}
+        >
           {title}
         </span>
         {description && (
-          <p className={clsx(styles.cardDescription)} title={description}>
+          <p
+            className={clsx(
+              "tw-text-label-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
+              "tw-transition-all tw-duration-200 tw-ease-ease",
+              isSoon &&
+                "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
+              isHighlighted && "md:tw-w-1/2"
+            )}
+            title={description}
+          >
             {description}
           </p>
         )}
         {html && (
           <p
-            className={clsx(styles.cardDescription)}
+            className={clsx(
+              "tw-text-label-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
+              "tw-transition-all tw-duration-200 tw-ease-ease",
+              isSoon &&
+                "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
+              isHighlighted && "md:tw-w-1/2"
+            )}
             dangerouslySetInnerHTML={{
               __html: html,
             }}
@@ -102,8 +141,15 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
           light: item.customProps.themedImage.light,
           dark: item.customProps.themedImage.dark,
         }}
-        wrapperClassName="card-icon-wrapper"
-        iconClassName={"card-icon"}
+        wrapperClassName={
+          clsx()
+          // "card-icon-wrapper",
+        }
+        iconWrapperClassName={clsx(
+          item.customProps?.className?.includes("card-highlighted") &&
+            "tw-p-[6px]"
+        )}
+        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
   } else if (item.customProps?.image) {
@@ -112,16 +158,30 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
         icon={{
           light: item.customProps.image,
         }}
-        wrapperClassName="card-icon-wrapper"
-        iconClassName={"card-icon"}
+        wrapperClassName={
+          clsx()
+          // "card-icon-wrapper",
+        }
+        iconWrapperClassName={clsx(
+          item.customProps?.className?.includes("card-highlighted") &&
+            "tw-p-[6px]"
+        )}
+        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
   } else if (item.customProps?.icon) {
     return (
       <BorderedIcon
         IconComponent={item.customProps.icon}
-        wrapperClassName="card-icon-wrapper"
-        iconClassName={"card-icon"}
+        wrapperClassName={
+          clsx()
+          // "card-icon-wrapper",
+        }
+        iconWrapperClassName={clsx(
+          item.customProps?.className?.includes("card-highlighted") &&
+            "tw-p-[6px]"
+        )}
+        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
   } else if (
@@ -131,13 +191,25 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
     return (
       <BorderedIcon
         IconComponent={Icons[item.customProps?.iconName]}
-        wrapperClassName="card-icon-wrapper"
-        iconClassName={"card-icon"}
+        wrapperClassName={
+          clsx()
+          // "card-icon-wrapper",
+        }
+        iconWrapperClassName={clsx(
+          item.customProps?.className?.includes("card-highlighted") &&
+            "tw-p-[6px]"
+        )}
+        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
   } else {
     return (
-      <div className={clsx("card-icon-wrapper", "no-zoom-img")}>
+      <div
+        className={clsx(
+          // "card-icon-wrapper",
+          "no-zoom-img"
+        )}
+      >
         {isInternalUrl(
           "href" in item ? item.href : "value" in item ? item.value : "#"
         )

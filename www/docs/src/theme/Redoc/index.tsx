@@ -39,7 +39,7 @@ export default function RedocWrapper(props: Props): JSX.Element {
 
         let offset = navbar.clientHeight
         // @ts-expect-error: error for entries
-        for (const [_, className] of navbar.classList.entries()) {
+        for (const [, className] of navbar.classList.entries()) {
           if (className.indexOf("navbarHidden") !== -1) {
             offset = 0
             break

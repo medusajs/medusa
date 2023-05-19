@@ -49,7 +49,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You can list product categories by sending a request to the [List Product Categories endpoint](/api/store#tag/Product-Category/operation/GetProductCategories):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -132,7 +132,7 @@ By default, the categories are not retrieved along with their nested children. T
 
 You can retrieve a single product category by its ID using the [Get a Product Category endpoint](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -200,7 +200,7 @@ On the storefront, you may use the handle of a category as its page’s path. Fo
 
 You can retrieve the details of a category by its handle by sending a request to the List Categories endpoint, passing the `handle` as a filter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

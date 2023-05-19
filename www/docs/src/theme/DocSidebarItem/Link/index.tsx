@@ -7,8 +7,6 @@ import isInternalUrl from "@docusaurus/isInternalUrl"
 import IconExternalLink from "@theme/Icon/ExternalLink"
 import type { Props } from "@theme/DocSidebarItem/Link"
 import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
-
-import styles from "./styles.module.css"
 import Badge from "@site/src/components/Badge/index"
 import { ModifiedPropSidebarItemLink } from "@medusajs/docs"
 
@@ -39,18 +37,19 @@ export default function DocSidebarItemLink({
         customProps?.sidebar_is_divider_line && "sidebar-divider-line",
         customProps?.sidebar_is_back_link && "sidebar-back-link",
         customProps?.sidebar_is_soon &&
-          "sidebar-soon-link sidebar-badge-wrapper"
+          "sidebar-soon-link sidebar-badge-wrapper",
+        !customProps?.sidebar_is_title &&
+          "[&_.sidebar-item-icon]:tw-w-[20px] [&_.sidebar-item-icon]:tw-h-[20px]",
+        !customProps?.sidebar_is_title &&
+          !customProps?.sidebar_is_back_link &&
+          "[&_.sidebar-item-icon]:tw-mr-1"
       )}
       key={label}
     >
       <Link
-        className={clsx(
-          "menu__link",
-          !isInternalLink && styles.menuExternalLink,
-          {
-            "menu__link--active": isActive,
-          }
-        )}
+        className={clsx("menu__link", !isInternalLink && "tw-items-center", {
+          "menu__link--active": isActive,
+        })}
         autoAddBaseUrl={autoAddBaseUrl}
         aria-current={isActive ? "page" : undefined}
         to={href}
@@ -63,6 +62,7 @@ export default function DocSidebarItemLink({
           <DocSidebarItemIcon
             icon={customProps.sidebar_icon}
             is_title={customProps.sidebar_is_title}
+            is_disabled={customProps?.sidebar_is_soon}
           />
         )}
         {label}

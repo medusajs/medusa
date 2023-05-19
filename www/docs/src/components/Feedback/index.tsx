@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from "react"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
-import "./index.css"
+// import "./index.css"
 
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import uuid from "react-uuid"
 import Solutions from "./Solutions/index"
+import Button from "../Button"
 
 type FeedbackProps = {
   event?: string
@@ -17,6 +18,7 @@ type FeedbackProps = {
   submitBtn?: string
   submitMessage?: string
   showPossibleSolutions?: boolean
+  className?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Feedback: React.FC<FeedbackProps> = ({
@@ -29,6 +31,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   submitBtn = "Submit",
   submitMessage = "Thank you for helping improve our documentation!",
   showPossibleSolutions = true,
+  className = "",
 }) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
@@ -104,7 +107,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   }, [id])
 
   return (
-    <div className="feedback-container">
+    <div className={`tw-py-2 ${className}`}>
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={showForm}
@@ -114,50 +117,59 @@ const Feedback: React.FC<FeedbackProps> = ({
             nodeRef.current.addEventListener("transitionend", done, false)
           }}
           classNames={{
-            enter: "fade-in",
-            exit: "fade-out",
+            enter: "animate__animated animate__fadeIn",
+            exit: "animate__animated animate__fadeOut",
           }}
         >
           <>
             {!showForm && !submittedFeedback && (
-              <div className="inline-feedback" ref={inlineFeedbackRef}>
-                <span>{question}</span>
-                <button
-                  className="positive feedback-btn"
+              <div
+                className="tw-flex tw-flex-row tw-items-center"
+                ref={inlineFeedbackRef}
+              >
+                <span className="tw-mr-1.5 tw-text-body-regular">
+                  {question}
+                </span>
+                <Button
                   onClick={handleFeedback}
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
                 >
                   {positiveBtn}
-                </button>
-                <button
-                  className="negative feedback-btn"
+                </Button>
+                <Button
                   onClick={handleFeedback}
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
                 >
                   {negativeBtn}
-                </button>
+                </Button>
               </div>
             )}
             {showForm && !submittedFeedback && (
-              <div className="inline-question" ref={inlineQuestionRef}>
-                <span>
+              <div className="tw-flex tw-flex-col" ref={inlineQuestionRef}>
+                <span className="tw-mb-1">
                   {positiveFeedback ? positiveQuestion : negativeQuestion}
                 </span>
                 <textarea
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  className="tw-rounded-sm tw-bg-transparent tw-border tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-p-1 tw-font-base"
                 ></textarea>
-                <button
-                  className="feedback-btn"
+                <Button
                   onClick={submitFeedback}
                   disabled={loading}
+                  className="tw-mt-1 tw-w-fit"
                 >
                   {submitBtn}
-                </button>
+                </Button>
               </div>
             )}
             {submittedFeedback && (
-              <div className="feedback-message-wrapper">
-                <div className="feedback-message" ref={inlineMessageRef}>
+              <div>
+                <div
+                  className="tw-flex tw-flex-col tw-text-label-large-plus"
+                  ref={inlineMessageRef}
+                >
                   <span>{submitMessage}</span>
                   {showPossibleSolutions && (
                     <Solutions message={message} feedback={positiveFeedback} />

@@ -1,6 +1,5 @@
 import React from "react"
 import clsx from "clsx"
-import styles from "./styles.module.css"
 
 type BorderedProps = {
   wrapperClassName?: string
@@ -9,7 +8,11 @@ type BorderedProps = {
 const Bordered: React.FC<BorderedProps> = ({ wrapperClassName, children }) => {
   return (
     <span
-      className={clsx(styles.elementWrapper, "no-zoom-img", wrapperClassName)}
+      className={clsx(
+        "tw-inline-flex tw-justify-center tw-items-center tw-rounded tw-p-[3px] tw-border tw-border-solid tw-border-medusa-border-strong dark:tw-border-medusa-border-strong-dark tw-mr-1 tw-w-fit tw-bg-docs-bg dark:tw-bg-docs-bg-dark",
+        "no-zoom-img",
+        wrapperClassName
+      )}
     >
       {children}
     </span>

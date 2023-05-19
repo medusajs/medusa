@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
 const path = require("path")
 const fs = require("fs")
@@ -29,7 +30,7 @@ const config = {
       },
     ],
     require.resolve("docusaurus-plugin-image-zoom"),
-    async function tailwindPlugin(context, options) {
+    async function tailwindPlugin() {
       return {
         name: "docusaurus-tailwindcss",
         configurePostCss(postcssOptions) {
@@ -211,7 +212,6 @@ const config = {
             disableSearch: true,
             nativeScrollbars: true,
             sortTagsAlphabetically: true,
-            hideDownloadButton: true,
             expandResponses: "200,204",
             generatedPayloadSamplesMaxDepth: 4,
             showObjectSchemaExamples: true,
