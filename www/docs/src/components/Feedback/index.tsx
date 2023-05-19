@@ -130,10 +130,16 @@ const Feedback: React.FC<FeedbackProps> = ({
                 <span className="tw-mr-1.5 tw-text-body-regular">
                   {question}
                 </span>
-                <Button onClick={handleFeedback} className="tw-w-fit">
+                <Button
+                  onClick={handleFeedback}
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
+                >
                   {positiveBtn}
                 </Button>
-                <Button onClick={handleFeedback} className="tw-w-fit">
+                <Button
+                  onClick={handleFeedback}
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
+                >
                   {negativeBtn}
                 </Button>
               </div>
