@@ -96,7 +96,12 @@ function TabList({
   }, [codeTabSelectorRef, tabRefs])
 
   return (
-    <div className={clsx(isCodeTabs && "code-header")}>
+    <div
+      className={clsx(
+        isCodeTabs && "code-header",
+        !isCodeTabs && "[&+*]:tw-pt-2"
+      )}
+    >
       <div
         className={clsx(isCodeTabs && "tw-relative tw-overflow-auto")}
         ref={codeTabsWrapperRef}
@@ -138,7 +143,12 @@ function TabList({
                 isCodeTabs && "tw-z-[2]",
                 isCodeTabs &&
                   selectedValue === value &&
-                  "tw-text-medusa-code-tab-text-active tw-border tw-border-solid tw-border-medusa-code-tab-border tw-bg-medusa-code-tab-bg xs:tw-border-none xs:tw-bg-transparent"
+                  "tw-text-medusa-code-tab-text-active tw-border tw-border-solid tw-border-medusa-code-tab-border tw-bg-medusa-code-tab-bg xs:tw-border-none xs:tw-bg-transparent",
+                !isCodeTabs &&
+                  "tw-border-0 tw-border-b-[3px] tw-rounded tw-inline-flex tw-p-1 tw-transition-[background-color] tw-duration-200 tw-ease-ease",
+                !isCodeTabs &&
+                  selectedValue === value &&
+                  "tw-border-solid tw-border-medusa-text-base dark:tw-border-medusa-text-base-dark tw-rounded-b-none"
               )}
             >
               {label ?? value}

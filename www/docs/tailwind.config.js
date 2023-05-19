@@ -4,7 +4,7 @@ module.exports = {
   corePlugins: {
     preflight: false, // disable Tailwind's reset
   },
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "../../docs/content/*.{mdx,md}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "../../docs/content/**/*.{mdx,md}"],
   darkMode: ["class", `[data-theme="dark"]`], // hooks into docusaurus' dark mode settigns
   theme: {
     extend: {

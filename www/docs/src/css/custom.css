@@ -111,6 +111,16 @@
   .animate__fastest {
     --animate-duration: 0.2s;
   }
+
+  .os-tabs {
+    @apply tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark;
+    @apply tw-p-1 tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+    @apply tw-rounded;
+  }
+
+  .os-tabs li {
+    @apply [&:not([aria-selected=true])]:tw-text-medusa-text-subtle dark:[&:not([aria-selected=true])]:tw-text-medusa-text-subtle-dark
+  }
 }
 
 @import url('./_variables.css');
