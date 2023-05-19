@@ -148,7 +148,10 @@ function TabList({
                   "tw-border-0 tw-border-b-[3px] tw-rounded tw-inline-flex tw-p-1 tw-transition-[background-color] tw-duration-200 tw-ease-ease",
                 !isCodeTabs &&
                   selectedValue === value &&
-                  "tw-border-solid tw-border-medusa-text-base dark:tw-border-medusa-text-base-dark tw-rounded-b-none"
+                  "tw-border-solid tw-border-medusa-text-base dark:tw-border-medusa-text-base-dark tw-rounded-b-none",
+                !isCodeTabs &&
+                  selectedValue !== value &&
+                  "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark"
               )}
             >
               {label ?? value}
@@ -237,7 +240,9 @@ export default function Tabs(props: TabsProps): JSX.Element {
       className={clsx(
         "tabs-wrapper",
         props.wrapperClassName,
-        isCodeTabs && "code-tabs"
+        isCodeTabs && "code-tabs",
+        !isCodeTabs &&
+          "tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark tw-p-1 tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded"
       )}
     >
       <TabsComponent
