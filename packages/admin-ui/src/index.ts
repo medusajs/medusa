@@ -4,8 +4,11 @@ import { resolve } from "path"
 import vite from "vite"
 import { AdminBuildConfig } from "./types"
 import { AdminDevConfig } from "./types/dev"
-import { getCustomViteConfig, getCustomViteDevConfig } from "./utils"
-import { injectExtensions } from "./utils/extensions/inject-extensions"
+import {
+  getCustomViteConfig,
+  getCustomViteDevConfig,
+  injectExtensions,
+} from "./utils"
 
 async function build(options?: AdminBuildConfig) {
   const config = getCustomViteConfig(options)

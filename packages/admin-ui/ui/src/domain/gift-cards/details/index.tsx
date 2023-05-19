@@ -8,8 +8,10 @@ import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import StatusSelector from "../../../components/molecules/status-selector"
 import BodyCard from "../../../components/organisms/body-card"
 import RawJSON from "../../../components/organisms/raw-json"
+import WidgetContainer from "../../../components/organisms/widget-container"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { useInjectionZones } from "../../../providers/injection-zone-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import EditGiftCardModal from "./edit-gift-card-modal"
@@ -23,6 +25,8 @@ const GiftCardDetails = () => {
   })
 
   const updateGiftCard = useAdminUpdateGiftCard(giftCard?.id!)
+
+  const { getWidgets } = useInjectionZones()
 
   const notification = useNotification()
 
@@ -147,6 +151,16 @@ const GiftCardDetails = () => {
                 </div>
               </div>
             </BodyCard>
+            {getWidgets("custom_gift_card").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  widget={w}
+                  entity={giftCard}
+                  injectionZone="custom_gift_card"
+                />
+              )
+            })}
             <RawJSON data={giftCard} title="Raw gift card" />
           </div>
 

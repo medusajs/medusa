@@ -1,10 +1,10 @@
 import {
   Application,
-  DomainKey,
   Extension,
-  HookPointKey,
   InjectionZone,
   InjectionZones,
+  PagePointKey,
+  Widget,
   WidgetsConfig,
 } from "@medusajs/types"
 import React from "react"
@@ -13,6 +13,15 @@ import { Providers } from "./providers/providers"
 
 type MedusaAppConfig = {
   extensions?: Extension[]
+}
+
+interface Result {
+  injectionZone: InjectionZone
+  widgets: Widget[]
+}
+
+type PagePoint = {
+  [key in PagePointKey]?: Widget[]
 }
 
 class MedusaApp implements Application {
@@ -24,31 +33,46 @@ class MedusaApp implements Application {
     this.customizations = config.extensions || []
   }
 
-  registerWidgets(identifier: string, config: WidgetsConfig): void {
-    for (const [key, value] of Object.entries(config)) {
-      const domainKey = key as DomainKey
+  private findArraysInWidgets_(
+    widgets: WidgetsConfig,
+    path: string = ""
+  ): Result[] {
+    const results: Result[] = []
 
-      for (const [zone, widgets] of Object.entries(value)) {
-        if (!widgets) {
-          continue
-        }
-
-        const zoneKey = zone as HookPointKey
-
-        const injectionZone = `${domainKey}.${zoneKey}` as InjectionZone
-
-        if (!this.injectionZones.has(injectionZone)) {
-          this.injectionZones.set(injectionZone, [])
-        }
-
-        const currentWidgets = this.injectionZones.get(injectionZone) || []
-
-        this.injectionZones.set(injectionZone, [
-          ...currentWidgets,
-          ...widgets.map((w) => ({ ...w, origin: identifier })),
-        ])
+    Object.entries(widgets).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        results.push({
+          injectionZone: (path ? `${path}.${key}` : key) as InjectionZone,
+          widgets: value,
+        })
+      } else {
+        results.push(
+          ...this.findArraysInWidgets_(
+            value as WidgetsConfig,
+            path ? `${path}.${key}` : key
+          )
+        )
       }
-    }
+    })
+
+    return results
+  }
+
+  registerWidgets(identifier: string, config: WidgetsConfig): void {
+    const results = this.findArraysInWidgets_(config)
+
+    results.forEach(({ injectionZone, widgets }) => {
+      if (!this.injectionZones.has(injectionZone)) {
+        this.injectionZones.set(injectionZone, [])
+      }
+
+      const currentWidgets = this.injectionZones.get(injectionZone) || []
+
+      this.injectionZones.set(injectionZone, [
+        ...currentWidgets,
+        ...widgets.map((w) => ({ ...w, origin: identifier })),
+      ])
+    })
   }
 
   initialize(): void {

@@ -1,0 +1,1 @@
+export { createCustomAdminHooks } from "./factory"

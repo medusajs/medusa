@@ -18,6 +18,8 @@ const SHARED_DEPENDENCIES = [
   "@tanstack/react-query",
   "@tanstack/react-table",
   "@medusajs/medusa-js",
+  "medusa-react",
+  "react",
 ]
 
 type BuildOptions = {
