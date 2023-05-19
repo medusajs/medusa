@@ -122,7 +122,7 @@ npm run build
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, try out your strategy using any of the [Products](/api/store/#tag/Product) or [Carts](/api/store/#tag/Cart) endpoints which include retrieving product variants and line items respectively. You should then see the prices in the response based on your implemented strategy.
