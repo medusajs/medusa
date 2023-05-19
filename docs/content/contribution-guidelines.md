@@ -302,7 +302,7 @@ If you are adding images to a documentation page, you can host the image on [Img
 
 To use Tabs with Code Blocks, you have to use [Docusaurus's `Tabs` and `TabItem` components](https://docusaurus.io/docs/markdown-features/code-blocks#multi-language-support-code-blocks).
 
-You must also pass to the `Tabs` component the prop `wrapperClassName="code-tabs"` to ensure correct styling.
+You must also pass to the `Tabs` component the prop `isCodeTabs={true}` to ensure correct styling.
 
 For example:
 
@@ -344,7 +344,7 @@ For example:
 ```md
 <Tabs 
   groupId="request-type"
-  wrapperClassName="code-tabs"
+  isCodeTabs={true}
   codeTitle="/src/services/hello.ts">
 ```
 
