@@ -1,4 +1,4 @@
-import GraphQLParser from "../../joiner/graphq-ast"
+import GraphQLParser from "../../joiner/graphql-ast"
 
 describe("RemoteJoiner.parseQuery", () => {
   beforeEach(() => {

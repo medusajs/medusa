@@ -7,7 +7,7 @@ import {
 } from "@medusajs/types"
 import { isDefined, toPascalCase } from "../common"
 
-import GraphQLParser from "./graphq-ast"
+import GraphQLParser from "./graphql-ast"
 
 interface NestedExpands {
   [key: string]: {
