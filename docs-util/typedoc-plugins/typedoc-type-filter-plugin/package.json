@@ -1,14 +1,15 @@
 {
-  "name": "typedoc-reference-type-plugin",
+  "name": "typedoc-type-filter-plugin",
   "version": "1.0.0",
-  "description": "Plugin to specify the type of reference to extract",
+  "description": "Plugin to filter the exported documentation",
   "type": "module",
   "exports": "./dist/index.js",
   "author": "Shahed Nasser",
   "license": "MIT",
   "scripts": {
     "build": "tsc --build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ./src"
   },
   "peerDependencies": {
     "typedoc": "0.24.x"

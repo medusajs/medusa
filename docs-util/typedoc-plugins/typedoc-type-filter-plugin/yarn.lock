@@ -1274,9 +1274,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-reference-type-plugin@workspace:.":
+"typedoc-type-filter-plugin@workspace:.":
   version: 0.0.0-use.local
-  resolution: "typedoc-reference-type-plugin@workspace:."
+  resolution: "typedoc-type-filter-plugin@workspace:."
   dependencies:
     "@types/node": ^16.11.10
     "@typescript-eslint/eslint-plugin": ^5.59.6

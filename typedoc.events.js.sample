@@ -1,3 +1,4 @@
+const { ReflectionKind } = require("typedoc")
 const globalTypedocOptions = require("./typedoc")
 
 /** @type {import('typedoc').TypeDocOptions} */
@@ -8,15 +9,12 @@ module.exports = {
   tsconfig: "packages/medusa/tsconfig.json",
   plugin: [
     ...globalTypedocOptions.plugin,
-    "typedoc-reference-type-plugin"
+    "typedoc-type-filter-plugin"
   ],
-  referenceType: [
+  referenceTypes: [
     "event"
   ],
-  inlineTags: [
-    `@referenceType`
+  reflectionKinds: [
+    ReflectionKind.Constructor
   ],
-  blockTags: [
-    `@myEventProperty`
-  ]
 }

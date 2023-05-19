@@ -7,6 +7,21 @@ module.exports = {
     node: true,
     jest: true,
   },
+  rules: {
+    "max-len": [
+      "error",
+      {
+        code: 80,
+        ignoreStrings: true,
+        ignoreRegExpLiterals: true,
+        ignoreComments: true,
+        ignoreTrailingComments: true,
+        ignoreUrls: true,
+        ignoreTemplateLiterals: true,
+      },
+    ],
+    semi: ["error", "never"],
+  },
   overrides: [
     {
       files: ["*.ts"],
