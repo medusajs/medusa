@@ -18,6 +18,7 @@ import ProductOptionValue from "./product-option-value"
 type OptionalFields =
   | "created_at"
   | "updated_at"
+  | "updated_at"
   | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
