@@ -88,9 +88,7 @@ module.exports = {
     jest: true,
     browser: true,
   },
-  ignorePatterns: [
-    "babel.config.js"
-  ],
+  ignorePatterns: [],
   overrides: [
     {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
