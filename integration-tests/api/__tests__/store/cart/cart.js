@@ -33,7 +33,7 @@ const {
   simpleCustomerGroupFactory,
 } = require("../../../factories/simple-customer-group-factory")
 
-jest.setTimeout(3000000)
+jest.setTimeout(30000)
 
 describe("/store/carts", () => {
   let medusaProcess
