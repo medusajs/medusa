@@ -82,7 +82,7 @@ Before you can start making changes to an order, you have to create a new order 
 
 To do that, send a request to the [Create an OrderEdit](/api/admin/#tag/OrderEdit/operation/PostOrderEdits) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -176,7 +176,7 @@ You can only make changes to items that have not been fulfilled yet in the order
 
 To add a new item to the original order, send a request to the [Add Line Item](/api/admin/#tag/OrderEdit/operation/PostOrderEditsEditLineItems) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -261,7 +261,7 @@ You can edit an item’s quantity in the original order.
 
 To update an item, send a request to the [Update Line Item](/api/admin/#tag/OrderEdit/operation/PostOrderEditsEditLineItemsLineItem) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -344,7 +344,7 @@ This request returns the Order Edit object. You can access returned item changes
 
 You can remove an item from the original order by sending a request to the [Remove Line Item](/api/admin/#tag/OrderEdit/operation/DeleteOrderEditsOrderEditLineItemsLineItem) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -415,7 +415,7 @@ A merchant might make a mistake while making a change to the original order’s 
 
 To revert an item change, send a request to the [Delete Item Change](/api/admin/#tag/OrderEdit/operation/DeleteOrderEditsOrderEditItemChange) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -493,7 +493,7 @@ After an Order Edit is created and all the item changes are added, it must be mo
 
 To move an Order Edit into the request state, send a request to the [Request Confirmation](/api/admin/#tag/OrderEdit/operation/PostOrderEditsOrderEditRequest) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -589,7 +589,7 @@ This section covers how the Admin API can be used to force-confirm the Order Edi
 
 To confirm an Order Edit, send a request to the [Confirm Order Edit](/api/admin/#tag/OrderEdit/operation/PostOrderEditsOrderEditConfirm) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -672,7 +672,7 @@ You can learn how to allow customers to authorize payment on the storefront in [
 
 If the payment is authorized by the customer, it can be captured by sending a request to the [Capture Payment](/api/admin/#tag/Payment/operation/PostPaymentsPaymentCapture) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -738,7 +738,7 @@ When the total after the order edit is less than the original order total, the m
 
 To refund the difference to the customer, send a request to the [Refund Payment](/api/admin/#tag/Payment/operation/PostPaymentsPaymentRefunds) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

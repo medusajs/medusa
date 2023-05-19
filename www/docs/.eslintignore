@@ -1,0 +1,5 @@
+**/node_modules/*
+**/.docusaurus/*
+**/build/*
+.eslintrc.js
+babel.config.js

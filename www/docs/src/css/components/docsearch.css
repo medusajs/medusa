@@ -1,0 +1,197 @@
+.DocSearch-Modal {
+  @apply tw-border tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+  @apply !tw-rounded !tw-relative;
+  @apply md:!tw-m-[unset] md:tw-w-[560px];
+}
+
+.DocSearch-SearchBar {
+  @apply !tw-p-0;
+}
+
+.DocSearch-Form {
+  --docsearch-spacing: theme(margin[1.5]);
+  --docsearch-searchbox-height: 56px;
+  --docsearch-searchbox-focus-background: var(--docsearch-modal-background) !important;
+
+  @apply !tw-rounded-t !tw-rounded-b-none tw-border-0 tw-border-b tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+}
+
+.DocSearch-LoadingIndicator svg, .DocSearch-MagnifierLabel svg {
+  @apply !tw-w-[20px] !tw-h-[20px];
+}
+
+.DocSearch-Input {
+  @apply !tw-text-body-regular !tw-pl-1;
+  @apply placeholder:tw-text-medusa-text-placeholder dark:placeholder:tw-text-medusa-text-placeholder-dark;
+}
+
+.DocSearch-Dropdown {
+  @apply !tw-pt-0 !tw-pb-[40px] !tw-px-0;
+  @apply !tw-max-h-[416px];
+}
+
+.DocSearch-Hit-source {
+  @apply !tw-m-0 !tw-text-label-small-plus tw-uppercase tw-text-medusa-text-placeholder dark:tw-text-medusa-text-placeholder-dark;
+  @apply tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+  @apply !tw-py-[10px] !tw-px-1.5;
+}
+
+.DocSearch-Footer {
+  @apply !tw-hidden;
+}
+
+.DocSearch-Hit {
+  @apply !tw-p-0;
+}
+
+.DocSearch-Hit:not(.DocSearch-Hit--Child) .DocSearch-Hit-icon {
+  @apply !tw-w-[40px] !tw-h-[40px] tw-p-[2px] tw-border tw-border-solid tw-border-medusa-border-strong dark:tw-border-medusa-border-strong-dark;
+  @apply tw-rounded tw-flex tw-justify-center tw-items-center;
+  @apply before:tw-content-[''] before:tw-w-2 before:tw-h-2 before:tw-bg-no-repeat before:tw-bg-center before:tw-bg-contain before:tw-bg-search-hit dark:before:tw-bg-search-hit-dark;
+}
+
+.DocSearch-Hit-icon svg {
+  @apply tw-hidden;
+}
+
+.DocSearch-Hit--Child .DocSearch-Hit-icon {
+  @apply tw-hidden;
+}
+
+.DocSearch-Hit a {
+  @apply !tw-py-[12px] !tw-px-1.5 !tw-shadow-none !tw-rounded-none;
+}
+
+.DocSearch-Hit:not(:last-of-type) a {
+  @apply tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+}
+
+.DocSearch-Hit-content-wrapper {
+  @apply !tw-mt-0 !tw-mx-1;
+}
+
+.DocSearch-Hit-title,
+.DocSearch-Hit-title mark {
+  @apply !tw-text-medusa-text-base dark:!tw-text-medusa-text-base-dark;
+  @apply !tw-text-label-small-plus;
+}
+
+.DocSearch-Hit-path {
+  @apply !tw-text-medusa-text-subtle dark:!tw-text-medusa-text-subtle-dark !tw-text-label-small;
+}
+
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
+  --docsearch-hit-active-color: theme(colors.medusa.text.subtle.DEFAULT);
+}
+
+html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
+  --docsearch-hit-active-color: theme(colors.medusa.text.subtle.dark);
+}
+
+.DocSearch-Hit[aria-selected=true] a {
+  @apply !tw-bg-medusa-bg-base-hover dark:!tw-bg-medusa-bg-base-hover-dark;
+}
+
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-content-wrapper + .DocSearch-Hit-action:last-child {
+  @apply tw-h-1.5 tw-w-1.5 tw-border tw-border-solid tw-border-medusa-border-strong dark:tw-border-medusa-border-strong-dark;
+  @apply tw-rounded tw-bg-medusa-bg-base dark:tw-bg-medusa-bg-base-dark tw-p-[2px] tw-flex tw-justify-center tw-items-center;
+  @apply before:tw-content-[''] before:tw-w-[20px] before:tw-h-[20px] before:tw-bg-search-arrow dark:before:tw-bg-search-arrow-dark before:tw-bg-no-repeat before:tw-bg-center;
+}
+
+.DocSearch-Hit-content-wrapper + .DocSearch-Hit-action:last-child svg,
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-content-wrapper + .DocSearch-Hit-action:last-child svg {
+  @apply tw-hidden;
+}
+
+.DocSearch-Hit[aria-selected=true] mark {
+  @apply !tw-no-underline;
+}
+
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-Tree {
+  @apply tw-text-medusa-border-strong dark:tw-text-medusa-border-strong-dark;
+}
+
+.DocSearch-Hit-Tree {
+  @apply tw-text-medusa-border-base dark:tw-text-medusa-border-base-dark;
+}
+
+.DocSearch-HitsFooter {
+  @apply tw-z-[100] tw-absolute tw-bottom-0 tw-left-0 tw-w-full tw-h-[40px] !tw-bg-medusa-bg-base dark:!tw-bg-medusa-bg-base-dark;
+  @apply tw-border-0 tw-border-t tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+}
+
+.DocSearch-HitsFooter a {
+  @apply !tw-border-b-0;
+}
+
+.DocSearch-Reset {
+  @apply !tw-rounded tw-transition-all tw-duration-200 tw-ease-ease;
+  @apply hover:tw-bg-medusa-bg-base-hover dark:hover:tw-bg-medusa-bg-base-hover-dark;
+}
+
+.DocSearch-NoResults .DocSearch-Screen-Icon {
+  @apply tw-w-[20px] tw-h-[20px] !tw-p-0 tw-flex tw-justify-center tw-items-center tw-mt-0 tw-mb-1 tw-mx-auto;
+  @apply before:tw-content-[''] before:tw-w-full before:tw-h-full before:tw-bg-no-repeat before:tw-bg-center before:tw-bg-contain;
+  @apply before:tw-bg-search-no-result dark:before:tw-bg-search-no-result-dark;
+}
+
+.DocSearch-NoResults .DocSearch-Screen-Icon svg {
+  @apply tw-hidden;
+}
+
+.DocSearch-NoResults .DocSearch-Title {
+  @apply !tw-text-label-small !tw-pl-1;
+}
+
+.DocSearch-NoResults-Prefill-List {
+  @apply tw-text-center !tw-text-label-small-plus !tw-pl-1;
+}
+
+.DocSearch-NoResults-Prefill-List li::marker {
+  @apply tw-content-[''];
+}
+
+.DocSearch-NoResults-Prefill-List li button {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+}
+.DocSearch-Button {
+  @apply tw-w-full !tw-h-full !tw-rounded lg:!tw-border lg:!tw-border-solid lg:!tw-border-medusa-border-base lg:dark:!tw-border-medusa-border-base-dark tw-border-0;
+  @apply lg:!tw-bg-medusa-bg-field lg:dark:!tw-bg-medusa-bg-field-dark !tw-bg-transparent;
+  @apply lg:hover:!tw-bg-medusa-bg-field-hover lg:dark:hover:!tw-bg-medusa-bg-field-hover-dark;
+  @apply !tw-py-[6px] !tw-pl-0.5 tw-relative;
+  @apply hover:!tw-border-medusa-border-base hover:dark:!tw-border-medusa-border-base-dark;
+  @apply active:!tw-border-medusa-border-base active:dark:!tw-border-medusa-border-base-dark;
+  @apply focus:!tw-border-medusa-border-base focus:dark:!tw-border-medusa-border-base-dark;
+}
+
+.DocSearch-Container {
+  @apply !tw-z-[1001] md:tw-flex md:tw-justify-center md:tw-items-center;
+}
+
+.DocSearch-Button .DocSearch-Search-Icon {
+  @apply tw-invisible;
+}
+
+.DocSearch-Button-Container {
+  @apply before:tw-content-[''] before:tw-h-[20px] before:tw-w-[20px] before:tw-absolute before:tw-left-0.5 before:tw-top-[5px];
+  @apply before:tw-bg-magnifying-glass before:tw-bg-no-repeat;
+}
+
+.DocSearch-Button-Placeholder {
+  @apply tw-text-medusa-text-placeholder dark:tw-text-medusa-text-placeholder-dark;
+  @apply !tw-pl-0.5 !tw-text-label-small lg:!tw-block !tw-hidden;
+}
+
+.DocSearch-Button-Keys {
+  @apply tw-w-fit !tw-min-w-[unset] lg:!tw-flex !tw-hidden;
+}
+
+.DocSearch-Button-Key {
+  @apply !tw-shadow-none !tw-rounded-md !tw-text-label-x-small-plus !tw-font-base tw-align-middle !tw-p-[2px];
+  @apply !tw-border !tw-border-solid !tw-border-medusa-border-strong dark:!tw-border-medusa-border-strong-dark;
+  @apply [&span]:tw-hidden [&:not(:last-child)]:!tw-mr-[4px] last:!tw-mr-0;
+}
+
+[class*=searchBox] {
+  @apply lg:tw-w-[280px] lg:tw-max-w-[280px] lg:!tw-h-2 lg:!tw-p-0;
+}
