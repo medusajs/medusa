@@ -13,7 +13,7 @@ import {
 } from "@mikro-orm/core"
 import kebabCase from "lodash/kebabCase"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "../utils"
 import { ProductTypes } from "@medusajs/types"
 import ProductTag from "./product-tag"
 import ProductCollection from "./product-collection"

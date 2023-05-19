@@ -1,13 +1,4 @@
 import { asValue } from "awilix"
-import fs from "fs"
-
-import {
-  InternalModuleDeclaration,
-  LoaderOptions,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/modules-sdk"
-import { MedusaError } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
@@ -17,20 +8,15 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
+import { MedusaError } from "../utils"
 
 export default async (
-  {
-    options,
-    container,
-  }: LoaderOptions<
-    | ProductServiceInitializeOptions
-    | ProductServiceInitializeCustomDataLayerOptions
-  >,
-  moduleDeclaration?: InternalModuleDeclaration
+  { options, container },
+  moduleDeclaration?: any
 ): Promise<void> => {
   if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    moduleDeclaration?.scope === `internal` &&
+    moduleDeclaration.resources === `shared`
   ) {
     return
   }
@@ -49,17 +35,16 @@ export default async (
   }
 }
 
-async function getEntities(): Promise<any[]> {
-  /*if (process.env.WEBPACK) {
+/*async function getEntities(): Promise<any[]> {
+  /!*if (process.env.WEBPACK) {
     const modules = require.context("../models", true, /\.ts$/)
 
     return modules
       .keys()
       .map((r) => modules(r))
       .flatMap((mod) => Object.keys(mod).map((className) => mod[className]))
-  }*/
-
-  const ignoreFiles = ["index.js", "index.ts", "index.d.ts", "index.js.map"]
+  }*!/
+  /!*const ignoreFiles = ["index.js", "index.ts", "index.d.ts", "index.js.map"]
 
   const promises = fs
     .readdirSync(__dirname + "/../models")
@@ -70,8 +55,8 @@ async function getEntities(): Promise<any[]> {
 
   return modules.flatMap((mod) =>
     Object.keys(mod).map((className) => mod[className])
-  )
-}
+  )*!/
+}*/
 
 async function loadDefault({ database, container }) {
   if (!database) {
@@ -84,9 +69,9 @@ async function loadDefault({ database, container }) {
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await MikroORM.init<PostgreSqlDriver>({
-    // entitiesTs: entities,
+    entities: entities,
     discovery: { disableDynamicFileAccess: true },
-    entities: await getEntities(),
+    /*entities: await getEntities(),*/
     debug: process.env.NODE_ENV === "development",
     baseDir: process.cwd(),
     clientUrl: database.clientUrl,

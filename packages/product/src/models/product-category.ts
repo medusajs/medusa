@@ -2,14 +2,14 @@ import {
   BeforeCreate,
   Collection,
   Entity,
-  ManyToMany,
-  PrimaryKey,
-  Property,
   Index,
+  ManyToMany,
   ManyToOne,
   OneToMany,
+  PrimaryKey,
+  Property,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "../utils"
 import kebabCase from "lodash/kebabCase"
 
 import Product from "./product"

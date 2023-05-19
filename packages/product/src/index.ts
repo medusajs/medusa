@@ -6,13 +6,11 @@ import loadContainer from "./loaders/container"
 import * as ProductModels from "@models"
 import ProductService from "./services/product"
 
-import { ModuleExports } from "@medusajs/modules-sdk"
-
 const service = ProductService
 const loaders = [loadContainer, loadConnection] as any
 const models = Object.values(ProductModels)
 
-const moduleDefinition: ModuleExports = {
+const moduleDefinition = {
   service,
   // migrations,
   loaders,

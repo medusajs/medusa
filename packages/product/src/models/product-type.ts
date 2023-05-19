@@ -1,6 +1,6 @@
 import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "../utils"
 
 @Entity({ tableName: "product_type" })
 class ProductType {

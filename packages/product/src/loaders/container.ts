@@ -1,6 +1,4 @@
-import { LoaderOptions } from "@medusajs/modules-sdk"
-
-import { asClass } from "awilix"
+import { asClass, asValue } from "awilix"
 import {
   ProductService,
   ProductTagService,
@@ -15,19 +13,21 @@ import {
 } from "@repositories"
 import {
   ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
   RepositoryService,
 } from "../types"
 import { Constructor } from "@medusajs/types"
-import { lowerCaseFirst } from "@medusajs/utils"
+import { lowerCaseFirst } from "../utils"
 
-export default async ({
-  container,
-  options,
-}: LoaderOptions<
-  | ProductServiceInitializeOptions
-  | ProductServiceInitializeCustomDataLayerOptions
->): Promise<void> => {
+export default async ({ container, options }): Promise<void> => {
+  if (options.injectedDependencies) {
+    for (const service in options.injectedDependencies) {
+      container.register(
+        service,
+        asValue(options.injectedDependencies[service])
+      )
+    }
+  }
+
   const customRepositories = (
     options as ProductServiceInitializeCustomDataLayerOptions
   )?.repositories

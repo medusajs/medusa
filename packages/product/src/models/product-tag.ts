@@ -7,7 +7,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "../utils"
 import Product from "./product"
 
 @Entity({ tableName: "product_tag" })

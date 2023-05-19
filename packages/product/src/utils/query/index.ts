@@ -3,7 +3,7 @@
  */
 import { FilterQuery, FindOptions, OptionsQuery } from "../../types/dal/helpers"
 import { FindConfig } from "@medusajs/types"
-import { isObject } from "@medusajs/utils"
+import { isObject } from "../"
 
 export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
   return Array.isArray(collection) ? [...new Set(collection)] : collection

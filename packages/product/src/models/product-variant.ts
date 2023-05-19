@@ -10,7 +10,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "../utils"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
 
