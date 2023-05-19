@@ -1,0 +1,36 @@
+{
+  "name": "typedoc-type-filter-plugin",
+  "version": "1.0.0",
+  "description": "Plugin to filter the exported documentation",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "author": "Shahed Nasser",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --watch",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ./src"
+  },
+  "peerDependencies": {
+    "typedoc": "0.24.x"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
+    "eslint": "^8.40.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "typedoc": "^0.24.7",
+    "typescript": "^5.0.4"
+  },
+  "keywords": [
+    "typedocplugin",
+    "typedoc"
+  ],
+  "engines": {
+    "node": ">=14.16"
+  }
+}
