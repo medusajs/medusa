@@ -30,7 +30,7 @@ function buildWhere(filters: Record<string, any> = {}, where = {}) {
   for (let [prop, value] of Object.entries(filters)) {
     if (Array.isArray(value)) {
       value = deduplicateIfNecessary(value)
-      where[prop] = { $in: value }
+      where[prop] = ["$in", "$nin"].includes(prop) ? value : { $in: value }
       continue
     }
 
@@ -39,5 +39,7 @@ function buildWhere(filters: Record<string, any> = {}, where = {}) {
       buildWhere(value, where[prop])
       continue
     }
+
+    where[prop] = value
   }
 }
