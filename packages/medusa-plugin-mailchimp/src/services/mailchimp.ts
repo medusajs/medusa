@@ -50,7 +50,7 @@ class MailchimpService extends TransactionBaseService {
   async subscribeNewsletterUpdate(
     email: string,
     data: any,
-    status_if_new?: string,
+    statusIfNew?: string,
     status?: string
   ) {
     const lowercase = email.toLowerCase()
@@ -60,7 +60,7 @@ class MailchimpService extends TransactionBaseService {
       `/lists/${this.options_.newsletter_list_id}/members/${hash}`,
       {
         email_address: email,
-        status_if_new: status_if_new || "subscribed",
+        status_if_new: statusIfNew || "subscribed",
         status: status || "subscribed",
         ...data,
       }
