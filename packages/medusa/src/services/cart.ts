@@ -1,9 +1,9 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -26,8 +26,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -46,9 +46,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -1124,15 +1124,14 @@ class CartService extends TransactionBaseService {
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+          this.featureFlagRouter_.isFeatureEnabled(
+            SalesChannelFeatureFlag.key
+          ) &&
+          isDefined(data.sales_channel_id) &&
+          data.sales_channel_id != cart.sales_channel_id
         ) {
-          if (
-            isDefined(data.sales_channel_id) &&
-            data.sales_channel_id != cart.sales_channel_id
-          ) {
-            await this.onSalesChannelChange(cart, data.sales_channel_id)
-            cart.sales_channel_id = data.sales_channel_id
-          }
+          await this.onSalesChannelChange(cart, data.sales_channel_id)
+          cart.sales_channel_id = data.sales_channel_id
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {
@@ -2223,59 +2222,71 @@ class CartService extends TransactionBaseService {
     regionId?: string,
     customer_id?: string
   ): Promise<void> {
+    if (!cart.items?.length) {
+      return
+    }
+
     // If the cart contains items, we update the price of the items
     // to match the updated region or customer id (keeping the old
     // value if it exists)
-    if (cart.items?.length) {
-      const region = await this.regionService_
-        .withTransaction(this.activeManager_)
-        .retrieve(regionId || cart.region_id, {
-          relations: ["countries"],
+
+    const region = await this.regionService_
+      .withTransaction(this.activeManager_)
+      .retrieve(regionId || cart.region_id, {
+        relations: ["countries"],
+      })
+
+    const lineItemServiceTx = this.lineItemService_.withTransaction(
+      this.activeManager_
+    )
+
+    const calculateVariantPriceData = cart.items
+      .filter((i) => i.variant_id)
+      .map((item) => {
+        return { variantId: item.variant_id!, quantity: item.quantity }
+      })
+
+    const availablePriceMap = await this.priceSelectionStrategy_
+      .withTransaction(this.activeManager_)
+      .calculateVariantPrice(calculateVariantPriceData, {
+        region_id: region.id,
+        currency_code: region.currency_code,
+        customer_id: customer_id || cart.customer_id,
+        include_discount_prices: true,
+      })
+
+    cart.items = (
+      await Promise.all(
+        cart.items.map(async (item) => {
+          if (!item.variant_id) {
+            return item
+          }
+
+          const availablePrice = availablePriceMap.get(item.variant_id)!
+
+          if (
+            availablePrice !== undefined &&
+            availablePrice.calculatedPrice !== null
+          ) {
+            return await lineItemServiceTx.update(item.id, {
+              has_shipping: false,
+              unit_price: availablePrice.calculatedPrice,
+            })
+          }
+
+          return await lineItemServiceTx.delete(item.id)
         })
-
-      const lineItemServiceTx = this.lineItemService_.withTransaction(
-        this.activeManager_
       )
+    )
+      .flat()
+      .filter((item): item is LineItem => !!item)
 
-      cart.items = (
-        await Promise.all(
-          cart.items.map(async (item) => {
-            if (!item.variant_id) {
-              return item
-            }
-
-            const availablePrice = await this.priceSelectionStrategy_
-              .withTransaction(this.activeManager_)
-              .calculateVariantPrice(item.variant_id, {
-                region_id: region.id,
-                currency_code: region.currency_code,
-                quantity: item.quantity,
-                customer_id: customer_id || cart.customer_id,
-                include_discount_prices: true,
-              })
-              .catch(() => undefined)
-
-            if (
-              availablePrice !== undefined &&
-              availablePrice.calculatedPrice !== null
-            ) {
-              await lineItemServiceTx.update(item.id, {
-                has_shipping: false,
-                unit_price: availablePrice.calculatedPrice,
-              })
-
-              return await lineItemServiceTx.retrieve(item.id, {
-                relations: ["variant", "variant.product"],
-              })
-            }
-
-            return await lineItemServiceTx.delete(item.id)
-          })
-        )
-      )
-        .flat()
-        .filter((item): item is LineItem => !!item)
-    }
+    cart.items = await lineItemServiceTx.list(
+      { id: cart.items.map((i) => i.id) },
+      {
+        relations: ["variant", "variant.product"],
+      }
+    )
   }
 
   /**
