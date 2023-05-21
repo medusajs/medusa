@@ -1,0 +1,152 @@
+.redocusaurus .expanded + tr > td > div {
+  @apply !tw-bg-medusa-bg-subtle dark:!tw-bg-medusa-bg-base-dark;
+}
+
+.redocusaurus table tbody tr table,
+.redocusaurus table tbody tr table tbody tr {
+  @apply !tw-bg-transparent;
+}
+
+.redocusaurus a {
+  @apply !tw-text-medusa-text-base dark:!tw-text-medusa-text-base-dark;
+}
+
+.redocusaurus pre {
+  @apply !tw-p-1;
+}
+
+.redocusaurus .react-tabs__tab-panel > div > pre {
+  @apply !tw-p-0;
+}
+
+.redocusaurus pre,
+.redocusaurus .react-tabs__tab-panel--selected,
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button,
+.redocusaurus div[id^='tag'] > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) {
+  @apply !tw-bg-medusa-code-block-bg;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button {
+  @apply dark:!tw-border-medusa-border-strong-dark;
+}
+
+.redocusaurus div[id^='tag'] > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(2) > div {
+  @apply !tw-border-medusa-border-strong;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button {
+  @apply !tw-rounded-t !tw-rounded-b-none;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) > div > button + div > div > div > div {
+  @apply !tw-text-medusa-text-base dark:!tw-text-medusa-text-base-dark;
+}
+
+
+
+.redocusaurus h5 + svg {
+  @apply tw-fill-medusa-icon-secondary dark:tw-fill-medusa-icon-secondary-dark;
+}
+
+.redocusaurus h2 + div + div > div + div {
+  @apply tw-p-1 tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark;
+}
+
+.redocusaurus h2 + div + div {
+  @apply tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+}
+
+.redocusaurus .menu-content,
+.redocusaurus .menu-content label {
+  @apply !tw-bg-medusa-bg-base dark:!tw-bg-medusa-bg-subtle-dark;
+}
+
+.redoc-json code {
+  @apply !tw-border-0;
+}
+
+.redocusaurus p {
+  @apply tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark;
+}
+
+.redocusaurus h2, .redocusaurus h3, .redocusaurus h4 {
+  @apply !tw-text-medusa-text-base dark:!tw-text-medusa-text-base-dark;
+}
+
+.redocusaurus [data-section-id] [data-section-id] > div:nth-child(2) h2, .redocusaurus [data-section-id] [data-section-id] > div:nth-child(2) h3, .redocusaurus [data-section-id] [data-section-id] > div:nth-child(2) h4 {
+  @apply !tw-text-medusa-text-on-color dark:!tw-text-medusa-text-on-color-dark;
+}
+
+.redocusaurus [data-section-id] {
+  @apply after:!tw-border-transparent;
+}
+
+.redocusaurus .property-name + div {
+  @apply !tw-text-medusa-icon-error dark:!tw-text-medusa-icon-error-dark;
+}
+
+.redocusaurus .react-tabs__tab:not(.react-tabs__tab--selected) {
+  @apply !tw-bg-medusa-button-secondary dark:!tw-bg-medusa-button-secondary-dark;
+  @apply !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+  @apply !tw-text-medusa-text-base dark:!tw-text-medusa-text-base-dark;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected[aria-selected="true"]:not(.tab-error):not(.tab-success) {
+  @apply !tw-bg-medusa-button-primary dark:!tw-bg-medusa-button-primary-dark;
+  @apply !tw-border-medusa-button-primary dark:!tw-border-medusa-button-primary-dark;
+  @apply !tw-text-medusa-text-on-color dark:!tw-text-medusa-text-on-color-dark;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected.tab-success {
+  @apply !tw-bg-medusa-button-success dark:!tw-bg-medusa-button-success-dark;
+  @apply !tw-border-medusa-button-success dark:!tw-border-medusa-button-success-dark;
+  @apply !tw-text-medusa-text-on-color dark:!tw-text-medusa-text-on-color-dark;
+}
+
+.redocusaurus ul > li.react-tabs__tab--selected.tab-error {
+  @apply !tw-bg-medusa-button-danger dark:!tw-bg-medusa-button-danger-dark;
+  @apply !tw-border-medusa-button-danger dark:!tw-border-medusa-button-danger-dark;
+  @apply !tw-text-medusa-text-on-color dark:!tw-text-medusa-text-on-color-dark;
+  @apply hover:!tw-bg-medusa-button-danger-hover dark:hover:!tw-bg-medusa-button-danger-hover-dark;
+  @apply hover:!tw-border-medusa-button-danger-hover dark:hover:!tw-border-medusa-button-danger-hover-dark;
+}
+
+.redocusaurus .tab-error:not(.react-tabs__tab--selected) {
+  @apply !tw-bg-medusa-button-secondary dark:!tw-bg-medusa-button-secondary-dark;
+  @apply !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+  @apply !tw-text-medusa-support-error dark:!tw-text-medusa-support-error-dark;
+}
+
+.redocusaurus .tab-success:not(.react-tabs__tab--selected) {
+  @apply !tw-bg-medusa-button-secondary dark:!tw-bg-medusa-button-secondary-dark;
+  @apply !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+  @apply !tw-text-medusa-support-success dark:!tw-text-medusa-support-success-dark;
+}
+
+.redocusaurus [type=get] {
+  @apply !tw-bg-medusa-support-success dark:!tw-bg-medusa-support-success-dark;
+}
+
+.redocusaurus [type=delete] {
+  @apply !tw-bg-medusa-support-error dark:!tw-bg-medusa-support-error-dark;
+}
+
+.redocusaurus table th,
+.redocusaurus table td {
+  @apply !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+}
+
+.redocusaurus [download] {
+  @apply !tw-inline-flex tw-flex-row tw-justify-center tw-items-center;
+  @apply !tw-py-[6px] !tw-px-[12px] !tw-rounded !tw-cursor-pointer;
+  @apply !tw-bg-medusa-button-secondary dark:!tw-bg-medusa-button-secondary-dark;
+  @apply hover:!tw-bg-medusa-button-secondary-hover dark:hover:!tw-bg-medusa-button-secondary-hover-dark hover:tw-no-underline;
+  @apply !tw-border !tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
+  @apply !tw-text-label-small-plus !tw-text-medusa-text-base dark:!tw-text-medusa-text-base-dark;
+  @apply hover:!tw-text-medusa-text-base dark:hover:!tw-text-medusa-text-base-dark;
+  @apply focus:!tw-shadow-button-focused dark:focus:!tw-shadow-button-focused-dark;
+}
+
+.redocusaurus [role=menuitem] {
+  @apply hover:!tw-text-medusa-text-subtle dark:hover:!tw-text-medusa-text-subtle-dark;
+}

@@ -51,7 +51,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You can list available products using the [List Products endpoint](/api/store#tag/Products/operation/GetProducts):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -122,7 +122,7 @@ The List Products endpoint accepts different query parameters that allow you to 
 
 For example, you can filter products by a category ID:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -193,7 +193,7 @@ This will retrieve only products that belong to that category.
 
 To expand the categories of each product, you can pass `categories` to the `expand` query parameter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -272,7 +272,7 @@ It’s recommended to always include the cart and region’s IDs when you’re l
 
 For example:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -391,7 +391,7 @@ Medusa React provides utility methods such as `formatVariantPrice` that handles 
 
 Here’s an example of how you can calculate the price with and without Medusa React:
 
-<Tabs groupId="client-preference" wrapperClassName="code-tabs">
+<Tabs groupId="client-preference" isCodeTabs={true}>
 <TabItem value="client" label="Without Medusa Client" default>
 
 ```tsx
@@ -505,7 +505,7 @@ The Search functionality requires either installing a [search plugin](../../../p
 
 You can search products using the [Search Products endpoint](/api/store#tag/Products/operation/PostProductsSearch):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -551,7 +551,7 @@ The request returns a `hits` array holding the result items. The structure of th
 
 You can retrieve the details of a single product by its ID using the [Get a Product endpoint](/api/store#tag/Products/operation/GetProductsProduct):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -618,7 +618,7 @@ On the storefront, you may use the handle of a product as its page’s path. For
 
 You can retrieve the details of a product by its handle by sending a request to the List Products endpoint, passing the `handle` as a filter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
