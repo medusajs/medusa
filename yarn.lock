@@ -5849,6 +5849,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusa-commerce/product@workspace:packages/product":
+  version: 0.0.0-use.local
+  resolution: "@medusa-commerce/product@workspace:packages/product"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.8.3
+    "@medusajs/types": "workspace:^"
+    "@medusajs/utils": ^1.8.2
+    "@mikro-orm/cli": ^5.7.4
+    "@mikro-orm/core": ^5.7.4
+    "@mikro-orm/migrations": ^5.7.4
+    "@mikro-orm/postgresql": ^5.7.4
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.0
+    ts-jest: ^25.5.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/admin-ui@1.8.6, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
@@ -6248,29 +6271,6 @@ __metadata:
     ts-jest: ^25.5.1
     tslib: 2.3.1
     typescript: 4.9.5
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/product@workspace:packages/product":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/product@workspace:packages/product"
-  dependencies:
-    "@medusajs/modules-sdk": ^1.8.3
-    "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.8.2
-    "@mikro-orm/cli": ^5.7.4
-    "@mikro-orm/core": ^5.7.4
-    "@mikro-orm/migrations": ^5.7.4
-    "@mikro-orm/postgresql": ^5.7.4
-    awilix: ^8.0.0
-    cross-env: ^5.2.1
-    jest: ^25.5.4
-    medusa-test-utils: ^1.1.40
-    rimraf: ^5.0.0
-    ts-jest: ^25.5.1
-    ts-node: ^10.9.1
-    tsc-alias: ^1.8.6
-    typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
