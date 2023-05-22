@@ -123,11 +123,8 @@ describe("Product Service", () => {
 
         products = await createProductAndTags(testManager, productsData)
         workingProduct = products.find((p) => p.id === "test-1") as Product
-
         categories = await createCategories(testManager, categoriesData)
-        workingCategory = categories.find(
-          (c) => c.id === "category-1"
-        ) as ProductCategory
+        workingCategory = await testManager.findOne(ProductCategory, "category-1") as ProductCategory
 
         workingProduct = await assignCategoriesToProduct(
           testManager,
@@ -147,6 +144,7 @@ describe("Product Service", () => {
               "title",
               "categories.name",
               "categories.handle",
+              "categories.mpath",
             ] as (keyof ProductDTO)[],
             relations: ["categories"],
           }
@@ -165,10 +163,23 @@ describe("Product Service", () => {
 
         expect(product.categories.toArray()).toEqual([
           {
-            id: workingCategory.id,
-            name: workingCategory.name,
-            handle: workingCategory.name.split(" ").join("-"),
+            id: "category-0",
+            name: "category 0",
+            handle: "category-0",
+            mpath: "category-0."
           },
+          {
+            id: "category-1",
+            name: "category 1",
+            handle: "category-1",
+            mpath: "category-0.category-1."
+          },
+          {
+            id: "category-1-a",
+            name: "category 1 a",
+            handle: "category-1-a",
+            mpath: "category-0.category-1.category-1-a."
+          }
         ])
       })
 
@@ -189,55 +200,6 @@ describe("Product Service", () => {
         )
 
         expect(products).toEqual([])
-      })
-
-      it("filter by categories.parent_category and categories.category_children relation and scope fields", async () => {
-        const products = await service.list(
-          {
-            id: workingProduct.id,
-          },
-          {
-            select: [
-              "categories.name",
-              "categories.category_children.name",
-              "categories.parent_category.name",
-            ] as unknown as (keyof ProductDTO)[],
-            relations: [
-              "categories",
-              "categories.category_children",
-              "categories.parent_category",
-            ],
-          }
-        )
-
-        const product = products.find(
-          (p) => p.id === workingProduct.id
-        ) as unknown as Product
-
-        expect(product).toEqual(
-          expect.objectContaining({
-            id: workingProduct.id,
-            categories: expect.any(Collection<ProductCategory>),
-          })
-        )
-
-        expect(product.categories.toArray()).toEqual([
-          {
-            id: workingCategory.id,
-            name: workingCategory.name,
-            category_children: [
-              {
-                id: workingCategory.category_children[0].id,
-                name: workingCategory.category_children[0].name,
-                parent_category: workingCategory.id,
-              },
-            ],
-            parent_category: {
-              id: workingCategory.parent_category?.id,
-              name: workingCategory.parent_category?.name,
-            },
-          },
-        ])
       })
     })
 

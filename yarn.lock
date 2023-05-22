@@ -6189,7 +6189,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@1.8.6, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@1.8.6, @medusajs/modules-sdk@^1.8.3, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
@@ -6204,20 +6204,6 @@ __metadata:
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
-
-"@medusajs/modules-sdk@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@medusajs/modules-sdk@npm:1.8.3"
-  dependencies:
-    "@medusajs/types": 1.8.3
-    "@medusajs/utils": 1.8.2
-    awilix: ^8.0.0
-    glob: 7.1.6
-    medusa-telemetry: ^0.0.16
-    resolve-cwd: ^3.0.0
-  checksum: d44c61d7e9fc31bafe2712b688807a9f4750970d440e4e7d07943ddc3c85f4d89fb0068de19979ca453e77d37a5d32652a25a100c31ef13a8d4085dfc77bbb42
-  languageName: node
-  linkType: hard
 
 "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci":
   version: 0.0.0-use.local
@@ -6269,9 +6255,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
-    "@medusajs/modules-sdk": 1.8.3
+    "@medusajs/modules-sdk": ^1.8.3
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": 1.8.2
+    "@medusajs/utils": ^1.8.2
     "@mikro-orm/cli": ^5.7.4
     "@mikro-orm/core": ^5.7.4
     "@mikro-orm/migrations": ^5.7.4
@@ -6316,14 +6302,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@npm:1.8.3":
-  version: 1.8.3
-  resolution: "@medusajs/types@npm:1.8.3"
-  checksum: 98371654afc31bad5b3c4a77b4c0a2bd2240d41aeea2cb9671a98b2d4532e5dd9a2a689621171293efe1b7984802451491fab1c819b36b7495782c3d16a530bc
-  languageName: node
-  linkType: hard
-
-"@medusajs/utils@1.8.5, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@1.8.5, @medusajs/utils@^1.8.2, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -6340,19 +6319,6 @@ __metadata:
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
-
-"@medusajs/utils@npm:1.8.2":
-  version: 1.8.2
-  resolution: "@medusajs/utils@npm:1.8.2"
-  dependencies:
-    awilix: ^8.0.0
-    class-transformer: ^0.5.1
-    class-validator: ^0.13.2
-    typeorm: ^0.3.14
-    ulid: ^2.3.0
-  checksum: 6464128f8e4f41c26cadb36cb5dccb42b5f6fd56664575163a26d09507aaddf94896bb6fd4bd2a942705553efd83beca984bd299f3183b737f9b63214d172bcd
-  languageName: node
-  linkType: hard
 
 "@microsoft/fetch-event-source@npm:2.0.1":
   version: 2.0.1
@@ -16292,16 +16258,6 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: d44f4afc7a3e48dba4c2d3fada5f781a1adeeff371b875c3b578bc33815c6c29d5d06483c2abfd43a32d35b104b27b67bfa39c2e8a422fa858068bd756cfbd42
-  languageName: node
-  linkType: hard
-
-"class-validator@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "class-validator@npm:0.13.2"
-  dependencies:
-    libphonenumber-js: ^1.9.43
-    validator: ^13.7.0
-  checksum: e7a1a318967229582b25da9c3b81e316627b014640968824b00bf001f4d79101017b91c59cb3f2c8c0922c4446b5a1114c27ba91aae1c1f109e0ad4d504dfcd5
   languageName: node
   linkType: hard
 
@@ -28357,13 +28313,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.9.43":
-  version: 1.10.30
-  resolution: "libphonenumber-js@npm:1.10.30"
-  checksum: 9aa86196ad1db6cdbe792e963edf38518d731945f590b65125aff5f0d84d4cef9a1258f9d0b3ffa7698a30f4e67fc557b4e375b74e34e85d98bfb4740b8f342e
-  languageName: node
-  linkType: hard
-
 "lilconfig@npm:^2.0.3, lilconfig@npm:^2.0.5, lilconfig@npm:^2.0.6":
   version: 2.0.6
   resolution: "lilconfig@npm:2.0.6"
@@ -40325,7 +40274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.14, typeorm@npm:^0.3.16":
+"typeorm@npm:^0.3.16":
   version: 0.3.16
   resolution: "typeorm@npm:0.3.16"
   dependencies:

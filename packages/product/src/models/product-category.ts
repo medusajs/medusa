@@ -8,6 +8,8 @@ import {
   Index,
   ManyToOne,
   OneToMany,
+  AfterCreate,
+  EventArgs,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
 import kebabCase from "lodash/kebabCase"
@@ -52,7 +54,7 @@ class ProductCategory {
   rank?: number
 
   @ManyToOne(() => ProductCategory, { nullable: true })
-  parent_category?: ProductCategory
+  parent_category: ProductCategory
 
   @OneToMany({
     entity: () => ProductCategory,
@@ -74,11 +76,25 @@ class ProductCategory {
   products = new Collection<Product>(this)
 
   @BeforeCreate()
-  onCreate() {
+  async onCreate(args: EventArgs<ProductCategory>) {
     this.id = generateEntityId(this.id, "pcat")
 
     if (!this.handle) {
       this.handle = kebabCase(this.name)
+    }
+
+    const { em } = args
+    const parentCategoryId = args.changeSet?.entity?.parent_category?.id
+    let parentCategory: ProductCategory | null = null
+
+    if (parentCategoryId) {
+      parentCategory = await em.findOne(ProductCategory, parentCategoryId)
+    }
+
+    if (parentCategory) {
+      this.mpath = `${parentCategory?.mpath}${this.id}.`
+    } else {
+      this.mpath = `${this.id}.`
     }
   }
 }

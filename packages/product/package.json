@@ -42,8 +42,8 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "1.8.3",
-    "@medusajs/utils": "1.8.2",
+    "@medusajs/modules-sdk": "^1.8.3",
+    "@medusajs/utils": "^1.8.2",
     "@mikro-orm/core": "^5.7.4",
     "@mikro-orm/migrations": "^5.7.4",
     "@mikro-orm/postgresql": "^5.7.4",

@@ -49,10 +49,26 @@ export async function createCollections(
 export async function createCategories(
   manager: SqlEntityManager,
   categoriesData: any[]
-) {
-  const categories: any[] = categoriesData.map((categoriesData) => {
-    return manager.create(ProductCategory, categoriesData)
-  })
+): Promise<ProductCategory[]> {
+  const categories: ProductCategory[] = []
+
+  for (let categoryData of categoriesData) {
+    let categoryDataClone = { ...categoryData }
+    let parentCategory: ProductCategory | null = null
+    const parentCategoryId = categoryDataClone.parent_category_id as string
+    delete categoryDataClone.parent_category_id
+
+    if (parentCategoryId) {
+      parentCategory = await manager.findOne(ProductCategory, parentCategoryId)
+    }
+
+    const category = await manager.create(ProductCategory, {
+      ...categoryDataClone,
+      parent_category: parentCategory
+    })
+
+    categories.push(category)
+  }
 
   await manager.persistAndFlush(categories)
 
