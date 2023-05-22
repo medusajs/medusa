@@ -457,7 +457,7 @@ class PricingService extends TransactionBaseService {
    * @return A list of products with variants decorated with prices
    */
   async setVariantPrices(
-    variantsData: ProductVariant[],
+    variants: ProductVariant[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
