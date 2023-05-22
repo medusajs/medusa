@@ -17,7 +17,7 @@ import { isObject } from "./is-object"
  * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
  * @param input
  */
-export function objectToStringPath<TEntity>(input: object = {}): string[] {
+export function objectToStringPath(input: object = {}): string[] {
   if (!isObject(input) || !Object.keys(input).length) {
     return []
   }
