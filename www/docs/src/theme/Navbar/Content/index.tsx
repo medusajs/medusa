@@ -115,12 +115,12 @@ export default function NavbarContent(): JSX.Element {
                       "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none"
                     )}">I</kbd></span>`,
                   events: {
-                    onClick: sidebarContext.onCollapse,
+                    onClick: sidebarContext?.onCollapse,
                     onMouseEnter: () => {
                       if (!sidebarContext?.hiddenSidebarContainer) {
-                        sidebarContext.setFloatingSidebar(false)
+                        sidebarContext?.setFloatingSidebar(false)
                       } else {
-                        sidebarContext.setFloatingSidebar(true)
+                        sidebarContext?.setFloatingSidebar(true)
                       }
                     },
                     onMouseLeave: () => {
@@ -130,7 +130,7 @@ export default function NavbarContent(): JSX.Element {
                             ".theme-doc-sidebar-container:hover"
                           )
                         ) {
-                          sidebarContext.setFloatingSidebar(false)
+                          sidebarContext?.setFloatingSidebar(false)
                         }
                       }, 100)
                     },

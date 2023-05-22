@@ -38,7 +38,7 @@ export default function DocPageLayoutSidebar({
         hiddenSidebarContainer &&
           "lg:tw-fixed lg:tw-left-[-100%] lg:tw-rounded lg:tw-border-0 lg:tw-border-medusa-border-strong lg:dark:tw-border-medusa-border-strong-dark",
         hiddenSidebarContainer &&
-          sidebarContext.floatingSidebar &&
+          sidebarContext?.floatingSidebar &&
           "lg:!tw-left-0.5 lg:tw-top-[65px] lg:tw-z-20 lg:tw-bg-docs-bg lg:dark:tw-bg-docs-bg-dark lg:tw-shadow-flyout lg:dark:tw-shadow-flyout-dark"
       )}
       onTransitionEnd={(e) => {
@@ -51,13 +51,13 @@ export default function DocPageLayoutSidebar({
         }
 
         if (hiddenSidebarContainer) {
-          sidebarContext.setHiddenSidebar(true)
+          sidebarContext?.setHiddenSidebar(true)
         }
       }}
       onMouseLeave={() => {
         setTimeout(() => {
           if (!document.querySelector(".sidebar-toggler:hover")) {
-            sidebarContext.setFloatingSidebar(false)
+            sidebarContext?.setFloatingSidebar(false)
           }
         }, 100)
       }}
@@ -68,7 +68,7 @@ export default function DocPageLayoutSidebar({
           target.classList.contains("menu__list-item") ||
           target.parentElement.classList.contains("menu__list-item")
         ) {
-          sidebarContext.setFloatingSidebar(false)
+          sidebarContext?.setFloatingSidebar(false)
         }
       }}
     >
@@ -93,8 +93,8 @@ export default function DocPageLayoutSidebar({
                 <DocSidebar
                   sidebar={sidebar}
                   path={pathname}
-                  onCollapse={sidebarContext.onCollapse}
-                  isHidden={sidebarContext.hiddenSidebar}
+                  onCollapse={sidebarContext?.onCollapse}
+                  isHidden={sidebarContext?.hiddenSidebar}
                 />
               </div>
             </ResetOnSidebarChange>
