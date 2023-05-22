@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "awilix": "^8.0.0",
-    "typeorm": "^0.3.16",
     "ulid": "^2.3.0"
   },
   "scripts": {
