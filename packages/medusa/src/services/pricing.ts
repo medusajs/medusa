@@ -452,25 +452,25 @@ class PricingService extends TransactionBaseService {
 
   /**
    * Set additional prices on a list of product variants.
-   * @param variantsData
+   * @param variants
    * @param context - the price selection context to use
    * @return A list of products with variants decorated with prices
    */
   async setVariantPrices(
-    variantsData: ProductVariant[],
+    variants: ProductVariant[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
 
     const variantsPricingMap = await this.getProductVariantsPricing(
-      variantsData.map((v) => ({
+      variants.map((v) => ({
         variantId: v.id,
         quantity: context.quantity,
       })),
       pricingContext
     )
 
-    return variantsData.map((variant) => {
+    return variants.map((variant) => {
       const variantPricing = variantsPricingMap[variant.id]
       Object.assign(variant, variantPricing)
       return variant as unknown as PricedVariant
