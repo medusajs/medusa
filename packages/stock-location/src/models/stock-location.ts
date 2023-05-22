@@ -1,4 +1,4 @@
-import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeInsert,
   Column,
@@ -8,6 +8,7 @@ import {
   ManyToOne,
 } from "typeorm"
 import { StockLocationAddress } from "./stock-location-address"
+import { SoftDeletableEntity } from "../utils/models"
 
 @Entity()
 export class StockLocation extends SoftDeletableEntity {

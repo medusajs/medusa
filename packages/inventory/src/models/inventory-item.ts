@@ -1,5 +1,7 @@
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
-import { SoftDeletableEntity, generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils"
+
+import { SoftDeletableEntity } from "../utils/models"
 
 @Entity()
 export class InventoryItem extends SoftDeletableEntity {

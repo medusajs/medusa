@@ -1,5 +1,7 @@
-import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils"
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
+
+import { SoftDeletableEntity } from "../utils/models"
 
 @Entity()
 @Index(["inventory_item_id", "location_id"], { unique: true })
