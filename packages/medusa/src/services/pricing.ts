@@ -451,61 +451,26 @@ class PricingService extends TransactionBaseService {
   }
 
   /**
-   * @deprecated
+   * Set additional prices on a list of product variants.
    * @param variants
-   * @param context
+   * @param context - the price selection context to use
+   * @return A list of products with variants decorated with prices
    */
   async setVariantPrices(
     variants: ProductVariant[],
-    context?: PriceSelectionContext
-  ): Promise<PricedVariant[]>
-
-  /**
-   * Set additional prices on a list of product variants.
-   * @param variantsData
-   * @param context - the price selection context to use
-   * @return A list of products with variants decorated with prices
-   */
-  async setVariantPrices(
-    variantsData: { variant: ProductVariant; quantity?: number }[],
-    context?: PriceSelectionContext
-  ): Promise<PricedVariant[]>
-
-  /**
-   * Set additional prices on a list of product variants.
-   * @param variantsData
-   * @param context - the price selection context to use
-   * @return A list of products with variants decorated with prices
-   */
-  async setVariantPrices(
-    variantsData:
-      | ProductVariant[]
-      | { variant: ProductVariant; quantity?: number }[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
     const pricingContext = await this.collectPricingContext(context)
 
-    let data = variantsData as {
-      variant: ProductVariant
-      quantity?: number
-    }[]
-
-    if ("id" in variantsData) {
-      data = (variantsData as ProductVariant[]).map((v) => ({
-        variant: v,
-        quantity: pricingContext.price_selection.quantity,
-      }))
-    }
-
     const variantsPricingMap = await this.getProductVariantsPricing(
-      data.map((v) => ({
-        variantId: v.variant.id,
-        quantity: v.quantity,
+      variants.map((v) => ({
+        variantId: v.id,
+        quantity: context.quantity,
       })),
       pricingContext
     )
 
-    return data.map(({ variant }) => {
+    return variants.map((variant) => {
       const variantPricing = variantsPricingMap[variant.id]
       Object.assign(variant, variantPricing)
       return variant as unknown as PricedVariant
