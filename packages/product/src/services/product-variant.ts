@@ -1,14 +1,13 @@
 import { ProductVariant } from "@models"
-import { RepositoryService } from "../types"
-import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productVariantRepository: RepositoryService<ProductVariant>
+  productVariantRepository: DAL.RepositoryService<ProductVariant>
 }
 
 export default class ProductVariantService {
-  protected readonly productVariantRepository_: RepositoryService<ProductVariant>
+  protected readonly productVariantRepository_: DAL.RepositoryService<ProductVariant>
 
   constructor({ productVariantRepository }: InjectedDependencies) {
     this.productVariantRepository_ = productVariantRepository

@@ -1,14 +1,13 @@
 import { ProductTag } from "@models"
-import { RepositoryService } from "../types"
-import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productTagRepository: RepositoryService
+  productTagRepository: DAL.RepositoryService
 }
 
 export default class ProductTagService {
-  protected readonly productTagRepository_: RepositoryService
+  protected readonly productTagRepository_: DAL.RepositoryService
 
   constructor({ productTagRepository }: InjectedDependencies) {
     this.productTagRepository_ = productTagRepository

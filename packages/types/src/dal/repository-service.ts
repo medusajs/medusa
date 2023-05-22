@@ -1,6 +1,4 @@
-import { FindOptions } from "./helpers"
-
-export { FindOptions, OptionsQuery, FilterQuery } from "./helpers"
+import { FindOptions } from "./index"
 
 /**
  * Data access layer (DAL) interface to implements for any repository service.

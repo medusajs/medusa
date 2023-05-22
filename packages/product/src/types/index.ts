@@ -1,5 +1,4 @@
-import { RepositoryService } from "./dal/repository-service"
-import { Constructor } from "@medusajs/types"
+import { Constructor, DAL } from "@medusajs/types"
 
 export type ProductServiceInitializeOptions = {
   database: {
@@ -11,7 +10,5 @@ export type ProductServiceInitializeOptions = {
 
 export type ProductServiceInitializeCustomDataLayerOptions = {
   manager?: any
-  repositories?: { [key: string]: Constructor<RepositoryService> }
+  repositories?: { [key: string]: Constructor<DAL.RepositoryService> }
 }
-
-export { RepositoryService, FindOptions } from "./dal/repository-service"

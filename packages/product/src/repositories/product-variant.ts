@@ -4,18 +4,18 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { FindOptions, RepositoryService } from "../types"
 import { deduplicateIfNecessary } from "../utils"
 import { ProductVariant } from "@models"
+import { DAL } from "@medusajs/types"
 
-export class ProductVariantRepository implements RepositoryService {
+export class ProductVariantRepository implements DAL.RepositoryService {
   protected readonly manager_: SqlEntityManager
   constructor({ manager }) {
     this.manager_ = manager.fork()
   }
 
   async find<T = ProductVariant>(
-    findOptions: FindOptions<T> = { where: {} },
+    findOptions: DAL.FindOptions<T> = { where: {} },
     context: { transaction?: any } = {}
   ): Promise<T[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
@@ -44,7 +44,7 @@ export class ProductVariantRepository implements RepositoryService {
   }
 
   async findAndCount<T = ProductVariant>(
-    findOptions: FindOptions<T> = { where: {} },
+    findOptions: DAL.FindOptions<T> = { where: {} },
     context: { transaction?: any } = {}
   ): Promise<[T[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
@@ -65,7 +65,7 @@ export class ProductVariantRepository implements RepositoryService {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.find(
+    return (await this.manager_.findAndCount(
       ProductVariant,
       findOptions_.where as MikroFilterQuery<ProductVariant>,
       findOptions_.options as MikroOptions<ProductVariant>

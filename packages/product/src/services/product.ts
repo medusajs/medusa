@@ -1,17 +1,16 @@
 import { ProductTagService, ProductVariantService } from "@services"
 import { Product, ProductTag, ProductVariant } from "@models"
-import { RepositoryService } from "../types"
-import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productRepository: RepositoryService
+  productRepository: DAL.RepositoryService
   productVariantService: ProductVariantService
   productTagService: ProductTagService
 }
 
 export default class ProductService implements ProductTypes.IProductService {
-  protected readonly productRepository_: RepositoryService
+  protected readonly productRepository_: DAL.RepositoryService
   protected readonly productVariantService: ProductVariantService
   protected readonly productTagService: ProductTagService
 
@@ -32,6 +31,15 @@ export default class ProductService implements ProductTypes.IProductService {
   ): Promise<T[]> {
     const queryOptions = buildQuery<T>(filters, config)
     return await this.productRepository_.find<T>(queryOptions)
+  }
+
+  async listAndCount<T = Product>(
+    filters: ProductTypes.FilterableProductProps = {},
+    config: FindConfig<ProductTypes.ProductDTO> = {},
+    sharedContext?: SharedContext
+  ): Promise<[T[], number]> {
+    const queryOptions = buildQuery<T>(filters, config)
+    return await this.productRepository_.findAndCount<T>(queryOptions)
   }
 
   async listVariants<T = ProductVariant>(

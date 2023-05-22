@@ -1,3 +1,5 @@
+import { OperatorMap } from "../dal"
+
 export enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
@@ -104,7 +106,9 @@ export interface ProductOptionValueDTO {
 export interface FilterableProductProps {
   id?: string | string[]
   tags?: { value?: string[] }
-  categories?: { id?: string[] }
+  categories?: {
+    id?: { [Operator in keyof OperatorMap<any>]: string[] } | string[]
+  }
 }
 
 export interface FilterableProductTagProps {

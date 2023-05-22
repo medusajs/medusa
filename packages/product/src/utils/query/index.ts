@@ -1,8 +1,7 @@
 /**
  * Move to a new build query utils
  */
-import { FilterQuery, FindOptions, OptionsQuery } from "../../types/dal/helpers"
-import { FindConfig } from "@medusajs/types"
+import { DAL, FindConfig } from "@medusajs/types"
 import { isObject } from "@medusajs/utils"
 
 export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
@@ -12,11 +11,11 @@ export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
 export function buildQuery<T = any, TDto = any>(
   filters: Record<string, any> = {},
   config: FindConfig<TDto> = {}
-): FindOptions<T> {
-  const where: FilterQuery<T> = {}
+): DAL.FindOptions<T> {
+  const where: DAL.FilterQuery<T> = {}
   buildWhere(filters, where)
 
-  const findOptions: OptionsQuery<T, any> = {
+  const findOptions: DAL.OptionsQuery<T, any> = {
     populate: config.relations ?? [],
     fields: config.select,
     limit: config.take,

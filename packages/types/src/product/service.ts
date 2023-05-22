@@ -18,6 +18,12 @@ export interface IProductService {
     context?: SharedContext
   ): Promise<T[]>
 
+  listAndCount<T = unknown>(
+    filter: FilterableProductProps,
+    config?: FindConfig<ProductDTO>,
+    context?: SharedContext
+  ): Promise<[T[], number]>
+
   listTags<T = unknown>(
     filter: FilterableProductTagProps,
     config?: FindConfig<ProductVariantDTO>,

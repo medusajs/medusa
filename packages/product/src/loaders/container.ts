@@ -16,9 +16,8 @@ import {
 import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
-  RepositoryService,
 } from "../types"
-import { Constructor } from "@medusajs/types"
+import { Constructor, DAL } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
 
 export default async ({
@@ -71,14 +70,14 @@ function loadCustomRepositories({ customRepositories, container }) {
 
     if (
       !finalRepository ||
-      !(finalRepository as Constructor<RepositoryService>).prototype.find
+      !(finalRepository as Constructor<DAL.RepositoryService>).prototype.find
     ) {
       finalRepository = DefaultRepository
     }
 
     container.register({
       [lowerCaseFirst(key)]: asClass(
-        finalRepository as Constructor<RepositoryService>
+        finalRepository as Constructor<DAL.RepositoryService>
       ).singleton(),
     })
   })

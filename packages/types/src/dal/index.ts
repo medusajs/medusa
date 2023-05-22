@@ -56,7 +56,7 @@ type Primary<T> = T extends {
   ? ReadonlyPrimary<PK>
   : never
 
-type OperatorMap<T> = {
+export type OperatorMap<T> = {
   $and?: Query<T>[]
   $or?: Query<T>[]
   $eq?: ExpandScalar<T> | ExpandScalar<T>[]
@@ -140,3 +140,5 @@ export type FindOptions<T> = {
   where: FilterQuery<T>
   options?: OptionsQuery<T, any>
 }
+
+export * from "./repository-service"
