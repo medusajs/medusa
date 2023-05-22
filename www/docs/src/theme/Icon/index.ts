@@ -3,6 +3,7 @@ import IconAdjustments from "./Adjustments"
 import IconAlert from "./Alert"
 import IconArrowDownTray from "./ArrowDownTray"
 import IconBackArrow from "./BackArrow"
+import IconBarsThree from "./BarsThree"
 import IconBell from "./Bell"
 import IconBellAlertSolid from "./BellAlertSolid"
 import IconBolt from "./Bolt"
@@ -18,6 +19,7 @@ import IconCashSolid from "./CashSolid"
 import IconChannels from "./Channels"
 import IconChannelsSolid from "./ChannelsSolid"
 import IconCheckCircleSolid from "./CheckCircleSolid"
+import IconChevronDoubleLeftMiniSolid from "./ChevronDoubleLeftMiniSolid"
 import IconCircleStack from "./CircleStack"
 import IconCircleStackSolid from "./CircleStackSolid"
 import IconClockSolidMini from "./ClockSolidMini"
@@ -95,6 +97,7 @@ export default {
   alert: IconAlert,
   "arrow-down-tray": IconArrowDownTray,
   "back-arrow": IconBackArrow,
+  "bars-three": IconBarsThree,
   bell: IconBell,
   "bell-alert-solid": IconBellAlertSolid,
   bolt: IconBolt,
@@ -110,6 +113,7 @@ export default {
   "channels-solid": IconChannelsSolid,
   channels: IconChannels,
   "check-circle-solid": IconCheckCircleSolid,
+  "chevron-double-left-mini-solid": IconChevronDoubleLeftMiniSolid,
   "circle-stack": IconCircleStack,
   "circle-stack-solid": IconCircleStackSolid,
   "clock-solid-mini": IconClockSolidMini,

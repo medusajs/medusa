@@ -179,6 +179,10 @@ module.exports = {
               DEFAULT: "#6E56CF",
               dark: "#6E56CF",
             },
+            "neutral-buttons": {
+              DEFAULT: "#11181C1A",
+              dark: "#FFFFFF1F",
+            },
           },
           text: {
             base: {
@@ -255,6 +259,20 @@ module.exports = {
               DEFAULT: "#30A46C",
               dark: "#30A46C",
             },
+            neutral: {
+              hover: {
+                DEFAULT: "#F8F9FA",
+                dark: "#2E2E32",
+              },
+              pressed: {
+                DEFAULT: "#F1F3F5",
+                dark: "#34343A",
+              },
+            },
+            disabled: {
+              DEFAULT: "#ECEEF0",
+              dark: "#28282C",
+            },
           },
           icon: {
             primary: {
@@ -288,6 +306,10 @@ module.exports = {
             error: {
               DEFAULT: "#E5484D",
               dark: "#E5484D",
+            },
+            subtle: {
+              DEFAULT: "#687076",
+              dark: "#7E7D86",
             },
           },
           support: {
@@ -418,6 +440,28 @@ module.exports = {
                 dark: "#0D3868",
               },
             },
+            neutral: {
+              bg: {
+                DEFAULT: "#F1F3F5",
+                dark: "#28282C",
+                hover: {
+                  DEFAULT: "#ECEEF0",
+                  dark: "#2E2E32",
+                },
+              },
+              text: {
+                DEFAULT: "#687076",
+                dark: "#A09FA6",
+              },
+              icon: {
+                DEFAULT: "#889096",
+                dark: "#706F78",
+              },
+              border: {
+                DEFAULT: "#DFE3E6",
+                dark: "#3E3E44",
+              },
+            },
           },
         },
         /* docs defaults */
@@ -442,6 +486,22 @@ module.exports = {
           "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
         navbar: "0px 1px 0px 0px #E6E8EB",
         "navbar-dark": "0px 1px 0px 0px #2E2E32",
+        flyout:
+          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 8px 16px rgba(17, 24, 28, 0.08)",
+        "flyout-dark":
+          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 8px 16px rgba(0, 0, 0, 0.32)",
+        "neutral-button-focused":
+          "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
+        "neutral-button-focused-dark":
+          "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+        "card-rest":
+          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 4px rgba(17, 24, 28, 0.04)",
+        "card-rest-dark":
+          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 1px 2px -1px rgba(255, 255, 255, 0.16), 0px 2px 4px rgba(0, 0, 0, 0.32)",
+        "card-hover":
+          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 8px rgba(17, 24, 28, 0.1)",
+        "card-hover-dark":
+          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 1px 2px -1px rgba(255, 255, 255, 0.16), 0px 2px 8px rgba(0, 0, 0, 0.32)",
       },
       borderRadius: {
         DEFAULT: "8px",
@@ -454,6 +514,11 @@ module.exports = {
         "primary-gradient":
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
         "code-fade": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
+        "button-neutral":
+          "linear-gradient(180deg, #FFFFFF 30.1%, #F8F9FA 100%)",
+        "button-neutral-dark":
+          "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
+        "no-image": "none",
       },
       screens: {
         xs: "576px",
@@ -465,8 +530,8 @@ module.exports = {
         ease: "ease",
       },
       width: {
-        sidebar: "320px",
-        "sidebar-hidden": "30px",
+        sidebar: "321px",
+        "sidebar-hidden": "0px",
         "main-content": "1140px",
         "main-content-hidden-sidebar": "1440px",
       },
