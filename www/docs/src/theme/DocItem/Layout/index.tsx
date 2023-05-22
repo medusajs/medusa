@@ -48,7 +48,7 @@ export default function DocItemLayout({ children }: Props): JSX.Element {
           "col",
           "tw-my-0 tw-mx-auto tw-max-w-main-content tw-w-full tw-ml-auto lg:tw-py-0 tw-py-0 tw-px-1",
           !docTOC.hidden && "tw-w-9/12",
-          !sidebarContext.hiddenSidebarContainer && "!tw-max-w-[720px]"
+          !sidebarContext?.hiddenSidebarContainer && "!tw-max-w-[720px]"
         )}
       >
         <DocVersionBanner />

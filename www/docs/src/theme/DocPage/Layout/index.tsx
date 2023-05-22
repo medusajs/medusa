@@ -18,12 +18,12 @@ export default function DocPageLayout({ children }: Props): JSX.Element {
         {sidebar && (
           <DocPageLayoutSidebar
             sidebar={sidebar.items}
-            hiddenSidebarContainer={sidebarContext.hiddenSidebarContainer}
+            hiddenSidebarContainer={sidebarContext?.hiddenSidebarContainer}
             setHiddenSidebarContainer={sidebarContext.setHiddenSidebarContainer}
           />
         )}
         <DocPageLayoutMain
-          hiddenSidebarContainer={sidebarContext.hiddenSidebarContainer}
+          hiddenSidebarContainer={sidebarContext?.hiddenSidebarContainer}
         >
           {children}
         </DocPageLayoutMain>

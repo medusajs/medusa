@@ -89,7 +89,7 @@ export default function NavbarContent(): JSX.Element {
               items={[
                 {
                   type: "button",
-                  html: !sidebarContext.hiddenSidebarContainer
+                  html: !sidebarContext?.hiddenSidebarContainer
                     ? `<span class="tw-text-label-x-small-plus">Close sidebar <kbd class="${clsx(
                         "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
                         "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
@@ -117,7 +117,7 @@ export default function NavbarContent(): JSX.Element {
                   events: {
                     onClick: sidebarContext.onCollapse,
                     onMouseEnter: () => {
-                      if (!sidebarContext.hiddenSidebarContainer) {
+                      if (!sidebarContext?.hiddenSidebarContainer) {
                         sidebarContext.setFloatingSidebar(false)
                       } else {
                         sidebarContext.setFloatingSidebar(true)
@@ -135,7 +135,7 @@ export default function NavbarContent(): JSX.Element {
                       }, 100)
                     },
                   },
-                  icon: !sidebarContext.hiddenSidebarContainer
+                  icon: !sidebarContext?.hiddenSidebarContainer
                     ? "bars-three"
                     : "chevron-double-left-mini-solid",
                 },
