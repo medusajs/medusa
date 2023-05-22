@@ -60,7 +60,7 @@ Customers should be able to view gift cards before they make the purchase. Gift 
 
 You can retrieve the gift card product using the [List Products](/api/store/#tag/Product/operation/GetProducts) endpoint, but passing it the `is_giftcard` query parameter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -149,7 +149,7 @@ After the customer purchases the gift card, they’ll receive a code to redeem t
 
 You can retrieve the details of a gift card by sending a request to the [Get Gift Card by Code](/api/store/#tag/Gift-Card/operation/GetGiftCardsCode) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -224,7 +224,7 @@ A customer can redeem more than one gift card during checkout. The cart’s tota
 
 You can redeem a gift card during checkout by sending a request to the [Update Cart](/api/store/#tag/Cart/operation/PostCartsCart) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

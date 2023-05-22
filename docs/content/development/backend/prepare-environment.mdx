@@ -2,7 +2,6 @@
 description: 'Learn how to prepare your development environment while using Medusa. This guide includes how to install Node.js, Git, Medusa CLI tool, and PostgreSQL.'
 ---
 
-import styles from './development.module.css';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -28,7 +27,7 @@ node -v
 
 :::
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<Tabs groupId="operating-systems">
 <TabItem value="windows" label="Windows" default>
 
 You can install the executable directly from [the Node.js website](https://nodejs.org/en/#home-downloadhead).
@@ -53,7 +52,7 @@ For other Linux distributions, you can check out [Node.js’s guide](https://nod
 
 You can use the following commands to install Node.js on macOS:
 
-<Tabs groupId="homebrew" wrapperClassName='code-tabs'>
+<Tabs groupId="homebrew" isCodeTabs={true}>
 <TabItem value="homebrew" label="Homebrew">
 
 ```bash
@@ -89,7 +88,7 @@ Make sure that you have Xcode command line tools installed; if not,  run the fol
 
 Medusa uses Git behind the scenes when you create a new project so you'll have to install it on your computer to get started.
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<Tabs groupId="operating-systems">
 <TabItem value="windows" label="Windows" default>
 
 To install Git on Windows, you need to [download the installable package](https://git-scm.com/download/win).
@@ -165,7 +164,7 @@ After installing PostgreSQL, check out the [Configure your Backend documentation
 
 :::
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<Tabs groupId="operating-systems">
 <TabItem value="windows" label="Windows">
 
 You can [download the PostgreSQL Windows installer](https://www.postgresql.org/download/windows/) from their website.
