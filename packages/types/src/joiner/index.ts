@@ -29,3 +29,19 @@ export interface RemoteJoinerQuery {
   fields: string[]
   args?: JoinerArgument[]
 }
+
+export interface RemoteNestedExpands {
+  [key: string]: {
+    fields: string[]
+    args?: JoinerArgument[]
+    expands?: RemoteNestedExpands
+  }
+}
+
+export interface RemoteExpandProperty {
+  property: string
+  serviceConfig: JoinerServiceConfig
+  fields: string[]
+  args?: JoinerArgument[]
+  expands?: RemoteNestedExpands
+}

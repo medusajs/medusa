@@ -1,7 +1,8 @@
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer, RemoteExpandProperty } from "@medusajs/types"
 import { RemoteJoiner } from "./../../joiner"
 
 import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
+import { toPascalCase } from "../../common"
 
 const container = {
   resolve: (serviceName) => {
@@ -13,10 +14,37 @@ const container = {
   },
 } as MedusaContainer
 
+const fetchServiceDataCallback = async (
+  expand: RemoteExpandProperty,
+  pkField: string,
+  ids?: (unknown | unknown[])[],
+  relationship?: any
+) => {
+  const serviceConfig = expand.serviceConfig
+  const moduleRegistryName =
+    serviceConfig.serviceName[0].toLowerCase() +
+    serviceConfig.serviceName.slice(1) +
+    "Service"
+
+  const service = container.resolve(moduleRegistryName)
+  const methodName = relationship?.inverse
+    ? `getBy${toPascalCase(pkField)}`
+    : "list"
+
+  return await service[methodName]({
+    fields: expand.fields,
+    args: expand.args,
+    expands: expand.expands,
+    options: {
+      [pkField]: ids,
+    },
+  })
+}
+
 describe("RemoteJoiner", () => {
   let joiner: RemoteJoiner
   beforeAll(() => {
-    joiner = new RemoteJoiner(container, serviceConfigs)
+    joiner = new RemoteJoiner(serviceConfigs, fetchServiceDataCallback)
   })
   beforeEach(() => {
     jest.clearAllMocks()
