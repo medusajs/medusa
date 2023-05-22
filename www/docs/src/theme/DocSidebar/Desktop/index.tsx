@@ -1,19 +1,15 @@
 import React, { useEffect, useRef } from "react"
 import clsx from "clsx"
 import { useThemeConfig } from "@docusaurus/theme-common"
-import CollapseButton from "@theme/DocSidebar/Desktop/CollapseButton"
 import Content from "@theme/DocSidebar/Desktop/Content"
 import type { Props } from "@theme/DocSidebar/Desktop"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import AnnouncementBar from "../../AnnouncementBar/index"
 
-function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
+function DocSidebarDesktop({ path, sidebar, isHidden }: Props) {
   const {
     navbar: { hideOnScroll },
-    docs: {
-      sidebar: { hideable },
-    },
   } = useThemeConfig()
   const isBrowser = useIsBrowser()
   const sidebarRef = useRef(null)
@@ -82,9 +78,7 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
       className={clsx(
         "lg:tw-flex lg:tw-flex-col lg:tw-max-h-screen lg:tw-h-full lg:tw-sticky lg:tw-top-0 lg:tw-transition-opacity lg:tw-duration-[50ms] lg:tw-ease-ease lg:tw-pt-1.5",
         "sidebar-desktop",
-        hideOnScroll && "lg:tw-pt-0",
-        isHidden &&
-          "lg:tw-opacity-0 lg:tw-h-0 lg:tw-overflow-hidden lg:tw-invisible"
+        hideOnScroll && "lg:tw-pt-0"
       )}
       ref={sidebarRef}
     >
@@ -97,7 +91,6 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
           "!tw-mt-0 !tw-pt-0 !tw-px-1.5 !tw-pb-4"
         )}
       />
-      {hideable && <CollapseButton onClick={onCollapse} />}
     </div>
   )
 }

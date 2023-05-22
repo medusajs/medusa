@@ -30,6 +30,7 @@ declare module "@medusajs/docs" {
   import { BadgeProps } from "../components/Badge/index"
   import { IconProps } from "../theme/Icon/index"
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
+  import { ReactNode } from "react"
 
   type ItemCustomProps = {
     customProps?: {
@@ -69,19 +70,63 @@ declare module "@medusajs/docs" {
     | ModifiedPropSidebarItemLink
     | ModifiedPropSidebarItemHtml
 
+  export declare type ModifiedDocCardBase = {
+    type: string
+    href: string
+    icon: ReactNode | string
+    title: string
+    description?: string
+    html?: string
+    containerClassName?: string
+    isSoon?: boolean
+    badge?: BadgeProps
+    children?: React.ReactNode
+  }
+
+  export declare type ModifiedDocCardItemLink = {
+    type: "link"
+  } & ModifiedDocCardBase &
+    ModifiedPropSidebarItemLink
+
+  export declare type ModifiedDocCardItemCategory = {
+    type: "category"
+  } & ModifiedDocCardBase &
+    ModifiedPropSidebarItemCategory
+
+  export declare type ModifiedDocCard =
+    | ModifiedDocCardItemLink
+    | ModifiedDocCardItemCategory
+
   export declare type SocialLink = {
     href: string
     type: string
   }
 
-  export declare type NavbarAction = {
-    type: "link"
-    href: string
+  export declare type NavbarActionBase = {
+    type: string
     title?: string
     icon?: string
     className?: string
     label?: string
+    html?: string
   }
+
+  export declare type NavbarActionLink = NavbarActionBase & {
+    type: "link"
+    href: string
+  }
+
+  export declare type NavbarActionButton = NavbarActionBase & {
+    type: "button"
+    events?: {
+      onClick?: (e: any) => any
+      onMouseEnter?: (e: any) => any
+      onMouseLeave?: (e: any) => any
+      onMouseOver?: (e: any) => any
+    }
+  }
+
+  export declare type NavbarAction = NavbarActionLink | NavbarActionButton
 
   export declare type ThemeConfig = {
     reportCodeLinkPrefix?: string

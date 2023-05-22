@@ -1,7 +1,5 @@
 .theme-doc-sidebar-container {
   --animate-duration: 0.2s;
-
-  clip-path: inset(0);
 }
 
 .sidebar-desktop nav {

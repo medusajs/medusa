@@ -5,15 +5,17 @@ import uuid from "react-uuid"
 import "react-tooltip/dist/react-tooltip.css"
 
 type TooltipProps = {
-  text: string
+  text?: string
   tooltipClassName?: string
+  html?: string
 } & React.HTMLAttributes<HTMLSpanElement> &
   ITooltip
 
 const Tooltip: React.FC<TooltipProps> = ({
-  text,
+  text = "",
   tooltipClassName = "",
   children,
+  html = "",
 }) => {
   const [elementId, setElementId] = useState(null)
 
@@ -25,7 +27,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <>
-      <span id={elementId} data-tooltip-content={text}>
+      <span id={elementId} data-tooltip-content={text} data-tooltip-html={html}>
         {children}
       </span>
       <ReactTooltip
