@@ -1,52 +1,12 @@
-import path from "path"
 import { Column, ColumnOptions, ColumnType } from "typeorm"
-import getConfigFile from "./get-config-file"
 
-const pgSqliteTypeMapping: { [key: string]: ColumnType } = {
-  increment: "rowid",
-  timestamptz: "datetime",
-  jsonb: "simple-json",
-  enum: "text",
-}
-
-const pgSqliteGenerationMapping: {
-  [key: string]: "increment" | "uuid" | "rowid"
-} = {
-  increment: "rowid",
-}
-
-let dbType: string
 export function resolveDbType(pgSqlType: ColumnType): ColumnType {
-  if (!dbType) {
-    const { configModule } = getConfigFile(
-      path.resolve("."),
-      `medusa-config`
-    ) as any
-
-    dbType = configModule?.projectConfig?.database_type || "postgres"
-  }
-
-  if (dbType === "sqlite" && (pgSqlType as string) in pgSqliteTypeMapping) {
-    return pgSqliteTypeMapping[pgSqlType.toString()]
-  }
   return pgSqlType
 }
 
 export function resolveDbGenerationStrategy(
   pgSqlType: "increment" | "uuid" | "rowid"
 ): "increment" | "uuid" | "rowid" {
-  if (!dbType) {
-    const { configModule } = getConfigFile(
-      path.resolve("."),
-      `medusa-config`
-    ) as any
-
-    dbType = configModule?.projectConfig?.database_type || "postgres"
-  }
-
-  if (dbType === "sqlite" && pgSqlType in pgSqliteTypeMapping) {
-    return pgSqliteGenerationMapping[pgSqlType]
-  }
   return pgSqlType
 }
 

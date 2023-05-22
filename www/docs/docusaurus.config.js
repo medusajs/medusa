@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
 const path = require("path")
 const fs = require("fs")
@@ -10,7 +11,7 @@ const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
+/** @type {import('@medusajs/docs').MedusaDocusaurusConfig} */
 const config = {
   title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
@@ -29,6 +30,17 @@ const config = {
       },
     ],
     require.resolve("docusaurus-plugin-image-zoom"),
+    async function tailwindPlugin() {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"))
+          postcssOptions.plugins.push(require("autoprefixer"))
+          return postcssOptions
+        },
+      }
+    },
   ],
   themeConfig: {
     image: "img/docs-banner.jpg",
@@ -200,7 +212,6 @@ const config = {
             disableSearch: true,
             nativeScrollbars: true,
             sortTagsAlphabetically: true,
-            hideDownloadButton: true,
             expandResponses: "200,204",
             generatedPayloadSamplesMaxDepth: 4,
             showObjectSchemaExamples: true,

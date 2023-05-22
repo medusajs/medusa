@@ -1,17 +1,10 @@
-import { EntityManager } from "typeorm"
 import { MoneyAmount } from "../models"
 import { PriceListType } from "../types/price-list"
 import { TaxServiceRate } from "../types/tax-service"
+import { ITransactionBaseService } from "@medusajs/types"
+import { TransactionBaseService } from "./transaction-base-service"
 
-export interface IPriceSelectionStrategy {
-  /**
-   * Instantiate a new price selection strategy with the active transaction in
-   * order to ensure reads are accurate.
-   * @param manager EntityManager with the query runner of the active transaction
-   * @returns a new price selection strategy
-   */
-  withTransaction(manager: EntityManager): IPriceSelectionStrategy
-
+export interface IPriceSelectionStrategy extends ITransactionBaseService {
   /**
    * Calculate the original and discount price for a given variant in a set of
    * circumstances described in the context.
@@ -21,9 +14,12 @@ export interface IPriceSelectionStrategy {
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
-    variantId: string,
+    data: {
+      variantId: string
+      quantity?: number
+    }[],
     context: PriceSelectionContext
-  ): Promise<PriceSelectionResult>
+  ): Promise<Map<string, PriceSelectionResult>>
 
   /**
    * Notify price selection strategy that variants prices have been updated.
@@ -33,16 +29,17 @@ export interface IPriceSelectionStrategy {
 }
 
 export abstract class AbstractPriceSelectionStrategy
+  extends TransactionBaseService
   implements IPriceSelectionStrategy
 {
-  public abstract withTransaction(
-    manager: EntityManager
-  ): IPriceSelectionStrategy
-
   public abstract calculateVariantPrice(
-    variantId: string,
+    data: {
+      variantId: string
+      taxRates: TaxServiceRate[]
+      quantity?: number
+    }[],
     context: PriceSelectionContext
-  ): Promise<PriceSelectionResult>
+  ): Promise<Map<string, PriceSelectionResult>>
 
   public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
     return void 0
@@ -62,8 +59,8 @@ export function isPriceSelectionStrategy(
 export type PriceSelectionContext = {
   cart_id?: string
   customer_id?: string
-  quantity?: number
   region_id?: string
+  quantity?: number
   currency_code?: string
   include_discount_prices?: boolean
   tax_rates?: TaxServiceRate[]
