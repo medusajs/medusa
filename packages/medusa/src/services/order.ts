@@ -1,5 +1,5 @@
 import { IInventoryService } from "@medusajs/types"
-import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -45,6 +45,7 @@ import {
   Swap,
   TrackingLink,
 } from "../models"
+import { TransactionBaseService } from "../interfaces"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
