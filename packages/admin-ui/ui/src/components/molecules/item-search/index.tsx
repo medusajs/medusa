@@ -1,11 +1,11 @@
-import { AdminGetInventoryItemsParams, ProductVariant } from "@medusajs/medusa"
+import {
+  AdminGetInventoryItemsParams,
+  DecoratedInventoryItemDTO,
+} from "@medusajs/medusa"
 import { ControlProps, OptionProps, SingleValue } from "react-select"
-import { InventoryItemDTO, InventoryLevelDTO } from "@medusajs/types"
 
 import Control from "../select/next-select/components/control"
 import { NextSelect } from "../select/next-select"
-import React from "react"
-
 import SearchIcon from "../../fundamentals/icons/search-icon"
 import { useAdminInventoryItems } from "medusa-react"
 import { useDebounce } from "../../../hooks/use-debounce"
@@ -17,15 +17,10 @@ type Props = {
   filters?: AdminGetInventoryItemsParams
 }
 
-type itemType = Partial<InventoryItemDTO> & {
-  location_levels?: InventoryLevelDTO[]
-  variants?: ProductVariant[]
-}
-
 type ItemOption = {
   label: string | undefined
   value: string | undefined
-  inventoryItem: itemType
+  inventoryItem: DecoratedInventoryItemDTO
 }
 
 const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
@@ -81,19 +76,6 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
 }
 
 const ProductOption = ({ innerProps, data }: OptionProps<ItemOption>) => {
-  const { available, inStock } = React.useMemo(() => {
-    return (data.inventoryItem.location_levels || []).reduce(
-      (acc, curr) => {
-        return {
-          available:
-            acc.available + (curr.stocked_quantity - curr.reserved_quantity),
-          inStock: acc.inStock + curr.stocked_quantity,
-        }
-      },
-      { available: 0, inStock: 0 }
-    )
-  }, [data.inventoryItem.location_levels])
-
   return (
     <div
       {...innerProps}
@@ -104,8 +86,11 @@ const ProductOption = ({ innerProps, data }: OptionProps<ItemOption>) => {
         <p className="text-grey-50">{data.inventoryItem.sku}</p>
       </div>
       <div className="text-right">
-        <p className="text-grey-50">{`${inStock} stock`}</p>
-        <p className="text-grey-50">{`${available} available`}</p>
+        <p className="text-grey-50">{`${data.inventoryItem.stocked_quantity} stock`}</p>
+        <p className="text-grey-50">{`${
+          data.inventoryItem.stocked_quantity -
+          data.inventoryItem.reserved_quantity
+        } available`}</p>
       </div>
     </div>
   )

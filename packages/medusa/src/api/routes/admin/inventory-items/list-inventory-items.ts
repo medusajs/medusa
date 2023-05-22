@@ -136,13 +136,11 @@ export default async (req: Request, res: Response) => {
       const itemAvailability = levels.reduce(
         (acc, curr) => {
           return {
-            available_quantity:
-              acc.available_quantity +
-              (curr.stocked_quantity - curr.reserved_quantity),
+            reserved_quantity: acc.reserved_quantity + curr.reserved_quantity,
             stocked_quantity: acc.stocked_quantity + curr.stocked_quantity,
           }
         },
-        { available_quantity: 0, stocked_quantity: 0 }
+        { reserved_quantity: 0, stocked_quantity: 0 }
       )
       return {
         ...inventoryItem,

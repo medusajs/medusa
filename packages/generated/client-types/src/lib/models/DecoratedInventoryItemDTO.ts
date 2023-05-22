@@ -13,9 +13,9 @@ export type DecoratedInventoryItemDTO = InventoryItemDTO & {
   /**
    * The total quantity of the item in stock across levels
    */
-  stocked_quantity?: number
+  stocked_quantity: number
   /**
    * The total quantity of the item available across levels
    */
-  available_quantity?: number
+  reserved_quantity: number
 }
