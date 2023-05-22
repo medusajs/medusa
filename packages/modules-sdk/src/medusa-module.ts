@@ -17,6 +17,7 @@ const logger: any = {
 }
 
 export class MedusaModule {
+  private static instances_: Map<string, any> = new Map()
   public static async bootstrap(
     moduleKey: string,
     defaultPath: string,
@@ -25,6 +26,10 @@ export class MedusaModule {
   ): Promise<{
     [key: string]: any
   }> {
+    if (MedusaModule.instances_.has(moduleKey)) {
+      return MedusaModule.instances_.get(moduleKey)
+    }
+
     let modDeclaration = declaration
     if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
       modDeclaration = {
@@ -55,6 +60,8 @@ export class MedusaModule {
 
       services[keyName] = container.resolve(registrationName)
     }
+
+    MedusaModule.instances_.set(moduleKey, services)
 
     return services
   }

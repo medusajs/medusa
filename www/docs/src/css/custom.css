@@ -1,15 +1,134 @@
-@import url('./_medusa.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .sidebar-title {
+    @apply !tw-m-0 !tw-py-1 !tw-px-0;
+    @apply lg:first:tw-top-0 lg:[&:not(:first-child)]:tw-top-[20px];
+  }
+
+  .sidebar-title .menu__link {
+    @apply !tw-px-0;
+  }
+  
+  .sidebar-title .menu__link,
+  .sidebar-title span {
+    @apply !tw-text-label-regular-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+  }
+  
+  .sidebar-title .menu__link--active,
+  .sidebar-title .menu__link:hover {
+    @apply !tw-bg-transparent;
+  }
+
+  .sidebar-group-headline {
+    @apply tw-mt-1 tw-py-[6px] tw-px-0;
+  }
+  
+  .sidebar-group-headline:not(.theme-doc-sidebar-item-category-level-1) {
+    @apply tw-mb-[6px];
+  }
+  
+  .sidebar-group-headline > .menu__list-item-collapsible > .menu__link {
+    @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark !tw-p-0;
+  }
+  
+  .sidebar-group-headline > .menu__list-item-collapsible > .menu__link:not([href]) {
+    @apply tw-cursor-default
+  }
+  
+  .sidebar-group-headline > .menu__list-item-collapsible > .menu__link:hover,
+  .sidebar-group-headline .menu__list-item-collapsible:hover {
+    @apply !tw-bg-transparent;
+  }
+  
+  .sidebar-group-headline > .menu__link,
+  .sidebar-group-headline > .menu__list-item-collapsible > .menu__link {
+    @apply tw-font-semibold;
+  }
+
+  .sidebar-group-divider {
+    @apply tw-pb-[6px] tw-uppercase tw-text-medusa-text-placeholder dark:tw-text-medusa-text-placeholder-dark tw-text-label-x-small-plus;
+    @apply first:tw-pt-[6px] [&:not(:first-child)]:!tw-pt-1;
+  }
+  
+  .sidebar-divider-line {
+    @apply tw-h-[1px] tw-w-full tw-bg-medusa-border-base dark:tw-bg-medusa-border-base-dark tw-my-1 tw-mx-0;
+  }
+
+  .sidebar-back-link {
+    @apply tw-cursor-pointer lg:tw-top-0;
+  }
+
+  .sidebar-back-link,
+  .sidebar-title {
+    @apply lg:tw-sticky lg:tw-bg-medusa-bg-base dark:lg:tw-bg-medusa-bg-subtle-dark lg:tw-z-[100];
+  }
+
+  .sidebar-back-link .menu__link {
+    @apply !tw-p-0 hover:!tw-bg-transparent hover:tw-text-medusa-text-base dark:hover:tw-text-medusa-text-base-dark;
+  }
+
+  .sidebar-back-link .menu__link,
+  .sidebar-back-link span {
+    @apply tw-text-label-small-plus;
+  }
+
+  .sidebar-back-link .sidebar-item-icon {
+    @apply tw-mr-0.5;
+  }
+
+  .sidebar-soon-link {
+    @apply tw-pointer-events-none [&_*]:tw-text-medusa-text-disabled dark:[&_*]:tw-text-medusa-text-disabled-dark;
+  }
+
+
+  .sidebar-badge-wrapper {
+    @apply tw-flex tw-justify-between tw-items-center;
+  }
+
+  .search-page-input {
+    @apply tw-rounded tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+    @apply tw-font-base tw-text-body-regular tw-p-[12px] tw-w-full tw-bg-medusa-bg-field dark:tw-bg-medusa-bg-field-dark;
+    @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark tw-mb-1;
+    @apply tw-transition-[border] tw-duration-200 tw-ease-ease;
+    @apply focus:tw-border-medusa-border-base dark:focus:tw-border-medusa-border-base-dark;
+    @apply focus:tw-outline-none !tw-shadow-none;
+  }
+
+  .code-header {
+    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg;
+    @apply tw-flex tw-justify-between tw-items-center;
+    @apply tw-rounded-tl tw-rounded-tr tw-rounded-br-none tw-rounded-bl-none tw-border-b-0;
+    @apply tw-border tw-border-solid tw-border-medusa-code-block-border tw-border-b-0;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    @apply tw-hidden;
+  }
+
+  .animate__fastest {
+    --animate-duration: 0.2s;
+  }
+
+  .btn-primary {
+    @apply tw-inline-flex tw-flex-row tw-justify-center tw-items-center;
+    @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
+    @apply tw-bg-medusa-button-secondary dark:tw-bg-medusa-button-secondary-dark;
+    @apply hover:tw-bg-medusa-button-secondary-hover dark:hover:tw-bg-medusa-button-secondary-hover-dark hover:tw-no-underline;
+    @apply tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+    @apply tw-text-label-small-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+    @apply hover:tw-text-medusa-text-base dark:hover:tw-text-medusa-text-base-dark;
+    @apply focus:tw-shadow-button-focused dark:focus:tw-shadow-button-focused-dark;
+  }
+}
+
 @import url('./_variables.css');
 
-@import url('./_card.css');
-@import url('./_code.css');
-@import url('./_docsearch.css');
-@import url('./_docspage.css');
-@import url('./_footer.css');
-@import url('./_navbar.css');
-@import url('./_note.css');
-@import url('./_redocly.css');
-@import url('./_sidebar.css');
-@import url('./_toc.css');
-@import url('./_tooltip.css');
-@import url('./_typography.css');
+@import url('./_docusaurus.css');
+@import url('./components/docsearch.css');
+@import url('./components/redocly.css');
+@import url('./components/sidebar.css');
+@import url('./components/toc.css');
+@import url('./components/tooltip.css');
