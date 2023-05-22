@@ -36,7 +36,7 @@ export default function DocSidebarItemHtml({
           "[&_.sidebar-item-icon]:tw-w-[20px] [&_.sidebar-item-icon]:tw-h-[20px]",
         !customProps?.sidebar_is_title &&
           !customProps?.sidebar_is_back_link &&
-          "[&_.sidebar-item-icon]:tw-mr-1"
+          "[&_.sidebar-item-icon]:tw-mr-[12px]"
       )}
       key={index}
     >

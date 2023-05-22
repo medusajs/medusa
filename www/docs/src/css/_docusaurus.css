@@ -170,7 +170,7 @@ details summary {
 }
 
 .container {
-  @apply !tw-pt-[38px] !tw-max-w-full;
+  @apply !tw-pt-3 !tw-max-w-full;
 }
 
 .pagination-nav {
@@ -234,7 +234,7 @@ html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
 }
 
 .navbar__brand {
-  @apply tw-mr-2;
+  @apply tw-mr-1.5;
 }
 
 .navbar__logo {

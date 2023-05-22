@@ -19,7 +19,7 @@ export default function AnnouncementBar(): JSX.Element | null {
     <div
       className={clsx(
         "tw-relative tw-flex tw-items-center tw-h-auto tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark tw-p-[12px]",
-        "tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded tw-mx-1.5 tw-mb-1",
+        "tw-rounded tw-mx-1.5 tw-mb-1 tw-shadow-card-rest dark:tw-shadow-card-rest-dark",
         "tw-transition-all tw-duration-200 tw-ease-ease",
         "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark",
         "print:tw-hidden"
@@ -29,10 +29,10 @@ export default function AnnouncementBar(): JSX.Element | null {
         <div
           className={clsx(
             "tw-p-[6px] tw-flex tw-justify-center tw-items-center",
-            "tw-bg-announcement-bg tw-bg-cover tw-rounded-sm"
+            "tw-rounded-sm tw-bg-medusa-bg-component dark:tw-bg-medusa-bg-component-dark"
           )}
         >
-          <IconBell iconColorClassName="tw-fill-medusa-icon-on-color dark:tw-fill-medusa-icon-on-color-dark" />
+          <IconBell iconColorClassName="tw-fill-medusa-icon-subtle dark:tw-fill-medusa-icon-subtle-dark" />
         </div>
       </Bordered>
       <AnnouncementBarContent className={clsx("tw-flex-1")} />

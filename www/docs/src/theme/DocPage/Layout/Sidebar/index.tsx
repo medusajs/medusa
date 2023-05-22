@@ -1,12 +1,12 @@
-import React, { type ReactNode, useState, useCallback, useRef } from "react"
+import React, { type ReactNode, useRef, useContext } from "react"
 import clsx from "clsx"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
 import { useLocation } from "@docusaurus/router"
 import DocSidebar from "@theme/DocSidebar"
-import ExpandButton from "@theme/DocPage/Layout/Sidebar/ExpandButton"
 import type { Props } from "@theme/DocPage/Layout/Sidebar"
 import { SwitchTransition, CSSTransition } from "react-transition-group"
+import { SidebarContext } from "@site/src/context/sidebar"
 
 // Reset sidebar state when sidebar changes
 // Use React key to unmount/remount the children
@@ -23,18 +23,9 @@ function ResetOnSidebarChange({ children }: { children: ReactNode }) {
 export default function DocPageLayoutSidebar({
   sidebar,
   hiddenSidebarContainer,
-  setHiddenSidebarContainer,
 }: Props): JSX.Element {
   const { pathname } = useLocation()
-
-  const [hiddenSidebar, setHiddenSidebar] = useState(false)
-  const toggleSidebar = useCallback(() => {
-    if (hiddenSidebar) {
-      setHiddenSidebar(false)
-    }
-    setHiddenSidebarContainer((value) => !value)
-  }, [setHiddenSidebarContainer, hiddenSidebar])
-
+  const sidebarContext = useContext(SidebarContext)
   const { name } = useDocsSidebar()
   const sidebarRef = useRef(null)
 
@@ -42,8 +33,13 @@ export default function DocPageLayoutSidebar({
     <aside
       className={clsx(
         ThemeClassNames.docs.docSidebarContainer,
-        "lg:tw-block lg:tw-w-sidebar lg:tw-will-change-[width] lg:tw-transition-[width] lg:tw-ease-ease tw-clip tw-hidden tw-duration-200",
-        hiddenSidebarContainer && "lg:tw-w-sidebar-hidden lg:tw-cursor-pointer"
+        "lg:tw-block lg:tw-w-sidebar lg:tw-transition-[left] lg:tw-ease-ease lg:tw-duration-200 lg:tw-left-0 tw-hidden",
+        !hiddenSidebarContainer && "clip",
+        hiddenSidebarContainer &&
+          "lg:tw-fixed lg:tw-left-[-100%] lg:tw-rounded lg:tw-border-0 lg:tw-border-medusa-border-strong lg:dark:tw-border-medusa-border-strong-dark",
+        hiddenSidebarContainer &&
+          sidebarContext?.floatingSidebar &&
+          "lg:!tw-left-0.5 lg:tw-top-[65px] lg:tw-z-20 lg:tw-bg-docs-bg lg:dark:tw-bg-docs-bg-dark lg:tw-shadow-flyout lg:dark:tw-shadow-flyout-dark"
       )}
       onTransitionEnd={(e) => {
         if (
@@ -55,7 +51,24 @@ export default function DocPageLayoutSidebar({
         }
 
         if (hiddenSidebarContainer) {
-          setHiddenSidebar(true)
+          sidebarContext?.setHiddenSidebar(true)
+        }
+      }}
+      onMouseLeave={() => {
+        setTimeout(() => {
+          if (!document.querySelector(".sidebar-toggler:hover")) {
+            sidebarContext?.setFloatingSidebar(false)
+          }
+        }, 100)
+      }}
+      onMouseUp={(e) => {
+        const target = e.target as Element
+        console.log("here", target.classList)
+        if (
+          target.classList.contains("menu__list-item") ||
+          target.parentElement.classList.contains("menu__list-item")
+        ) {
+          sidebarContext?.setFloatingSidebar(false)
         }
       }}
     >
@@ -80,12 +93,9 @@ export default function DocPageLayoutSidebar({
                 <DocSidebar
                   sidebar={sidebar}
                   path={pathname}
-                  onCollapse={toggleSidebar}
-                  isHidden={hiddenSidebar}
+                  onCollapse={sidebarContext?.onCollapse}
+                  isHidden={sidebarContext?.hiddenSidebar}
                 />
-                {hiddenSidebar && (
-                  <ExpandButton toggleSidebar={toggleSidebar} />
-                )}
               </div>
             </ResetOnSidebarChange>
           </div>
