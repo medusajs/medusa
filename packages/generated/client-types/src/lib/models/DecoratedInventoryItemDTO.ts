@@ -10,4 +10,12 @@ import type { ProductVariant } from "./ProductVariant"
 export type DecoratedInventoryItemDTO = InventoryItemDTO & {
   location_levels?: Array<InventoryLevelDTO>
   variants?: Array<ProductVariant>
+  /**
+   * The total quantity of the item in stock across levels
+   */
+  stocked_quantity?: number
+  /**
+   * The total quantity of the item available across levels
+   */
+  available_quantity?: number
 }

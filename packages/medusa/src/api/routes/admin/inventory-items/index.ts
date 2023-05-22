@@ -237,10 +237,18 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
  *         type: array
  *         items:
  *           $ref: "#/components/schemas/ProductVariant"
+ *       stocked_quantity:
+ *         type: number
+ *         description: The total quantity of the item in stock across levels
+ *       available_quantity:
+ *         type: number
+ *         description: The total quantity of the item available across levels
  */
 export type DecoratedInventoryItemDTO = InventoryItemDTO & {
   location_levels?: InventoryLevelDTO[]
   variants?: ProductVariant[]
+  stocked_quantity?: number
+  available_quantity?: number
 }
 
 /**

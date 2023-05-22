@@ -1,17 +1,18 @@
-import { IInventoryService } from "@medusajs/types"
-import { Transform } from "class-transformer"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
-import { Request, Response } from "express"
+import {
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import {
-  extendedFindParamsMixin,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-} from "../../../../types/common"
+import { Request, Response } from "express"
+
+import { IInventoryService } from "@medusajs/types"
 import { IsType } from "../../../../utils/validators/is-type"
+import { Transform } from "class-transformer"
 import { getLevelsByInventoryItemId } from "./utils/join-levels"
 import { getVariantsByInventoryItemId } from "./utils/join-variants"
 
@@ -131,10 +132,23 @@ export default async (req: Request, res: Response) => {
 
   const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
     (inventoryItem) => {
+      const levels = levelsByItemId[inventoryItem.id] ?? []
+      const itemAvailability = levels.reduce(
+        (acc, curr) => {
+          return {
+            available_quantity:
+              acc.available_quantity +
+              (curr.stocked_quantity - curr.reserved_quantity),
+            stocked_quantity: acc.stocked_quantity + curr.stocked_quantity,
+          }
+        },
+        { available_quantity: 0, stocked_quantity: 0 }
+      )
       return {
         ...inventoryItem,
+        ...itemAvailability,
         variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
-        location_levels: levelsByItemId[inventoryItem.id] ?? [],
+        location_levels: levels,
       }
     }
   )
