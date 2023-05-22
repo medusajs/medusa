@@ -122,13 +122,17 @@ function buildWhere<TWhereKeys extends object, TEntity>(
             break
           default:
             if (objectValue != undefined && typeof objectValue === "object") {
-              where[key].push(buildWhere<any, TEntity>(objectValue))
+              where[key] = buildWhere<any, TEntity>(objectValue)
               return
             }
-            where[key].push(value)
+            where[key] = value
         }
         return
       })
+
+      if (!Array.isArray(where[key])) {
+        continue
+      }
 
       if (where[key].length === 1) {
         where[key] = where[key][0]
