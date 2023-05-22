@@ -18,8 +18,8 @@ type Props = {
 }
 
 type itemType = Partial<InventoryItemDTO> & {
-  location_levels?: InventoryLevelDTO[] | undefined
-  variants?: ProductVariant[] | undefined
+  location_levels?: InventoryLevelDTO[]
+  variants?: ProductVariant[]
 }
 
 type ItemOption = {
