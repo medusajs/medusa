@@ -120,26 +120,13 @@ export default async (req: Request, res: Response) => {
 
   const { filterableFields, listConfig } = req
 
-  const relationsPredicates: ((string) => boolean)[] = []
+  const relations = new Set(listConfig.relations ?? [])
 
-  // join item
-  const includeItems = !!listConfig.relations?.includes("line_item")
+  const includeItems = relations.delete("line_item")
+  const includeInventoryItems = relations.delete("inventory_item")
 
-  if (includeItems) {
-    relationsPredicates.push((r) => r !== "line_item")
-  }
-
-  const includeInventoryItems =
-    !!listConfig.relations?.includes("inventory_item")
-
-  if (includeInventoryItems) {
-    relationsPredicates.push((r) => r !== "inventory_item")
-  }
-
-  if (relationsPredicates.length) {
-    listConfig.relations = listConfig.relations?.filter((r) =>
-      relationsPredicates.every((p) => p(r))
-    )
+  if (listConfig.relations?.length) {
+    listConfig.relations = [...relations]
   }
 
   const [reservations, count] = await inventoryService.listReservationItems(

@@ -1,7 +1,6 @@
-import { IInventoryService, ReservationItemDTO } from "@medusajs/types"
-
 import { EntityManager } from "typeorm"
 import { ExtendedReservationItem } from ".."
+import { IInventoryService } from "@medusajs/types"
 
 export const joinInventoryItems = async (
   reservations: ExtendedReservationItem[],
@@ -23,13 +22,11 @@ export const joinInventoryItems = async (
 
   const inventoryItemMap = new Map(inventoryItems.map((i) => [i.id, i]))
 
-  return await Promise.all(
-    reservations.map(async (reservation) => {
-      reservation.inventory_item = inventoryItemMap.get(
-        reservation.inventory_item_id
-      )
+  return reservations.map((reservation) => {
+    reservation.inventory_item = inventoryItemMap.get(
+      reservation.inventory_item_id
+    )
 
-      return reservation
-    })
-  )
+    return reservation
+  })
 }

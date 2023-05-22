@@ -1,6 +1,5 @@
 import { ExtendedReservationItem } from ".."
 import { LineItemService } from "../../../../../services"
-import { ReservationItemDTO } from "@medusajs/types"
 
 export const joinLineItems = async (
   reservations: ExtendedReservationItem[],
@@ -19,15 +18,13 @@ export const joinLineItems = async (
 
   const lineItemMap = new Map(lineItems.map((i) => [i.id, i]))
 
-  return await Promise.all(
-    reservations.map(async (reservation) => {
-      if (!reservation.line_item_id) {
-        return reservation
-      }
-
-      reservation.line_item = lineItemMap.get(reservation.line_item_id)
-
+  return reservations.map((reservation) => {
+    if (!reservation.line_item_id) {
       return reservation
-    })
-  )
+    }
+
+    reservation.line_item = lineItemMap.get(reservation.line_item_id)
+
+    return reservation
+  })
 }
