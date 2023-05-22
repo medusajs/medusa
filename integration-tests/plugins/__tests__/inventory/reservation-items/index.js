@@ -369,45 +369,44 @@ describe("Inventory Items endpoints", () => {
           expect(reservationsRes.data.reservations.length).toBe(0)
         })
 
-        it("filters by description using startsWith", async () => {
+        it("filters by description using starts_with", async () => {
           const api = useApi()
 
-          const reservationsRes = await api.get(
-            `/admin/reservations?q[startsWith]=test`,
-            adminHeaders
-          )
+          const reservationsRes = await api
+            .get(`/admin/reservations?q[starts_with]=test`, adminHeaders)
+            .catch(console.log)
 
           expect(reservationsRes.data.reservations.length).toBe(1)
           expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
         })
 
-        it("filters by description using startsWith removes results", async () => {
+        it("filters by description using starts_with removes results", async () => {
           const api = useApi()
 
           const reservationsRes = await api.get(
-            `/admin/reservations?q[startsWith]=description`,
+            `/admin/reservations?q[starts_with]=description`,
             adminHeaders
           )
 
           expect(reservationsRes.data.reservations.length).toBe(0)
         })
 
-        it("filters by description using endsWith", async () => {
+        it("filters by description using ends_with", async () => {
           const api = useApi()
 
           const reservationsRes = await api.get(
-            `/admin/reservations?q[endsWith]=test`,
+            `/admin/reservations?q[ends_with]=test`,
             adminHeaders
           )
 
           expect(reservationsRes.data.reservations.length).toBe(0)
         })
 
-        it("filters by description using endsWith removes results", async () => {
+        it("filters by description using ends_with removes results", async () => {
           const api = useApi()
 
           const reservationsRes = await api.get(
-            `/admin/reservations?q[endsWith]=description`,
+            `/admin/reservations?q[ends_with]=description`,
             adminHeaders
           )
 
@@ -458,7 +457,7 @@ describe("Inventory Items endpoints", () => {
 
           const errorRes = await api
             .get(
-              `/admin/reservations?q[endsWith]=test&q[startsWith]=test`,
+              `/admin/reservations?q[ends_with]=test&q[starts_with]=test`,
               adminHeaders
             )
             .catch((err) => err)
@@ -470,10 +469,10 @@ describe("Inventory Items endpoints", () => {
                 "String validation failed: [object Object] is not a string",
               ],
               StringSearchOperator: [
-                "Only one of startsWith",
-                " endsWith is allowed",
-                " Only one of endsWith",
-                " startsWith is allowed",
+                "Only one of starts_with",
+                " ends_with is allowed",
+                " Only one of ends_with",
+                " starts_with is allowed",
               ],
             },
           })

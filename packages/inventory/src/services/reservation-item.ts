@@ -14,14 +14,10 @@ import {
   buildQuery,
   isDefined,
 } from "@medusajs/utils"
-import {
-  EntityManager,
-  FindManyOptions,
-  FindOptionsWhere,
-  ILike,
-} from "typeorm"
+import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
+import { prepareSearchQuery } from "../utils/query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -76,7 +72,7 @@ export default class ReservationItemService {
     if (q) {
       query.where = {
         ...query.where,
-        ...this.prepareSearchQuery(q),
+        ...prepareSearchQuery(q),
       }
     }
 
@@ -109,7 +105,7 @@ export default class ReservationItemService {
     if (q) {
       query.where = {
         ...query.where,
-        ...this.prepareSearchQuery(q),
+        ...prepareSearchQuery(q),
       }
     }
 
@@ -354,36 +350,5 @@ export default class ReservationItemService {
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       id: reservationItemId,
     })
-  }
-
-  private prepareSearchQuery(
-    q: string | StringSearchOperator
-  ): FindOptionsWhere<ReservationItem> {
-    const searchQuery = {}
-
-    if (typeof q === "object") {
-      Object.entries(q).forEach(([objectKey, objectValue]) => {
-        switch (objectKey) {
-          case "equals":
-            searchQuery["description"] = objectValue
-            break
-          case "startsWith":
-            searchQuery["description"] = ILike(`${objectValue}%`)
-            break
-          case "endsWith":
-            searchQuery["description"] = ILike(`%${objectValue}`)
-            break
-          case "contains":
-            searchQuery["description"] = ILike(`%${objectValue}%`)
-            break
-          default:
-            break
-        }
-      })
-    } else {
-      searchQuery["description"] = ILike(`%${q}%`)
-    }
-
-    return searchQuery
   }
 }

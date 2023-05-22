@@ -151,8 +151,8 @@ export interface NumericalComparisonOperator {
 export interface StringSearchOperator {
   contains?: string
   equals?: string
-  startsWith?: string
-  endsWith?: string
+  starts_with?: string
+  ends_with?: string
 }
 
 export interface AddressPayload {

@@ -72,16 +72,16 @@ import { Type } from "class-transformer"
  *         - type: object
  *           properties:
  *             contains:
- *               type: number
+ *               type: string
  *               description: filter by reservation description containing search string.
  *             equals:
- *               type: number
+ *               type: string
  *               description: filter by reservation description equals search string.
  *             starts_with:
- *               type: number
+ *               type: string
  *               description: filter by reservation description starting with search string.
  *             ends_with:
- *               type: number
+ *               type: string
  *               description: filter by reservation description ending with search string.
  *   - in: query
  *     name: created_at
