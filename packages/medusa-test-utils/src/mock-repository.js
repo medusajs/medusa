@@ -8,6 +8,7 @@ class MockRepo {
     findDescendantsTree,
     findOne,
     findOneWithRelations,
+    findWithRelations,
     findOneOrFail,
     save,
     findAndCount,
@@ -28,6 +29,7 @@ class MockRepo {
     this.save_ = save
     this.findAndCount_ = findAndCount
     this.findOneWithRelations_ = findOneWithRelations
+    this.findWithRelations_ = findWithRelations
     this.insertBulk_ = insertBulk
 
     this.metadata = metadata ?? {
@@ -76,6 +78,11 @@ class MockRepo {
   findOneWithRelations = jest.fn().mockImplementation((...args) => {
     if (this.findOneWithRelations_) {
       return this.findOneWithRelations_(...args)
+    }
+  })
+  findWithRelations = jest.fn().mockImplementation((...args) => {
+    if (this.findWithRelations_) {
+      return this.findWithRelations_(...args)
     }
   })
   findOne = jest.fn().mockImplementation((...args) => {

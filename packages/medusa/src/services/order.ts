@@ -302,6 +302,7 @@ class OrderService extends TransactionBaseService {
 
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
+
     const orders = await Promise.all(
       raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
@@ -534,42 +535,25 @@ class OrderService extends TransactionBaseService {
    */
   async retrieveByExternalId(
     externalId: string,
-    config: FindConfig<Order> = {}
+    options: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    const selector = {
-      where: { external_id: externalId },
+    if (!isDefined(externalId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"externalId" must be defined`
+      )
     }
 
-    let queryRelations
-    if (relations && relations.length > 0) {
-      queryRelations = relations
-    }
-    queryRelations = this.getTotalsRelations({ relations: queryRelations })
+    const [order] = await this.list({ external_id: externalId }, options)
 
-    const querySelect = select?.length ? select : undefined
-
-    const query = buildQuery(selector, {
-      select: querySelect,
-      relations: queryRelations,
-    } as FindConfig<Order>)
-
-    const rels = { ...query.relations }
-    delete query.relations
-
-    const raw = await orderRepo.findOneWithRelations(rels, query)
-    if (!raw) {
+    if (!order) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Order with external id ${externalId} was not found`
       )
     }
 
-    return await this.decorateTotals(raw, totalsToSelect)
+    return order
   }
 
   /**

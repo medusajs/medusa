@@ -550,6 +550,39 @@ describe("OrderService", () => {
     })
   })
 
+  describe("retrieveByExternalIdWithTotals", () => {
+    const orderRepo = MockRepository({
+      findWithRelations: (q) => {
+        return Promise.resolve([{}])
+      },
+    })
+
+    const orderService = new OrderService({
+      totalsService,
+      newTotalsService: newTotalsServiceMock,
+      manager: MockManager,
+      orderRepository: orderRepo,
+    })
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls order model functions", async () => {
+      await orderService.retrieveByExternalId("some-external-id", {
+        select: ["id", "external_id"],
+      })
+
+      expect(orderRepo.findWithRelations).toHaveBeenCalledTimes(1)
+      expect(orderRepo.findWithRelations).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.objectContaining({
+          where: { external_id: "some-external-id" },
+        })
+      )
+    })
+  })
+
   describe("update", () => {
     const orderRepo = MockRepository({
       findOneWithRelations: (rel, q) => {
