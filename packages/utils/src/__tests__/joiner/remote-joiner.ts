@@ -2,7 +2,7 @@ import { MedusaContainer, RemoteExpandProperty } from "@medusajs/types"
 import { RemoteJoiner } from "./../../joiner"
 
 import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
-import { toPascalCase } from "../../common"
+import { lowerCaseFirst, toPascalCase } from "../../common"
 
 const container = {
   resolve: (serviceName) => {
@@ -22,9 +22,7 @@ const fetchServiceDataCallback = async (
 ) => {
   const serviceConfig = expand.serviceConfig
   const moduleRegistryName =
-    serviceConfig.serviceName[0].toLowerCase() +
-    serviceConfig.serviceName.slice(1) +
-    "Service"
+    lowerCaseFirst(serviceConfig.serviceName) + "Service"
 
   const service = container.resolve(moduleRegistryName)
   const methodName = relationship?.inverse
