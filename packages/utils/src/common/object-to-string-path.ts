@@ -1,12 +1,7 @@
-import {
-  FindOptionsRelations,
-  FindOptionsSelect,
-  FindOptionsWhere,
-} from "typeorm"
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { isObject } from "./is-object"
 
 /**
- * Converts a typeorms structure of find options to an
+ * Converts a structure of find options to an
  * array of string paths
  * @example
  * input: {
@@ -22,14 +17,8 @@ import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
  * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
  * @param input
  */
-export function objectToStringPath<TEntity>(
-  input:
-    | FindOptionsWhere<TEntity>
-    | FindOptionsSelect<TEntity>
-    | FindOptionsOrder<TEntity>
-    | FindOptionsRelations<TEntity> = {}
-): (keyof TEntity)[] {
-  if (!Object.keys(input).length) {
+export function objectToStringPath<TEntity>(input: object = {}): string[] {
+  if (!isObject(input) && !Object.keys(input).length) {
     return []
   }
 
@@ -51,5 +40,5 @@ export function objectToStringPath<TEntity>(
     output.add(key)
   }
 
-  return Array.from(output) as (keyof TEntity)[]
+  return Array.from(output)
 }

@@ -3,8 +3,8 @@ import {
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/types"
-import { EntityManager, FindOptionsWhere, Brackets } from "typeorm"
 import { objectToStringPath } from "@medusajs/utils"
+import { EntityManager, FindOptionsWhere, Brackets } from "typeorm"
 
 import { InventoryItem } from "../models"
 import { buildQuery } from "./build-query"
