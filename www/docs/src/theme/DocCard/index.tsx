@@ -8,16 +8,17 @@ import {
 import isInternalUrl from "@docusaurus/isInternalUrl"
 import { translate } from "@docusaurus/Translate"
 import BorderedIcon from "@site/src/components/BorderedIcon"
-import Badge, { BadgeProps } from "@site/src/components/Badge"
+import Badge from "@site/src/components/Badge"
 import Icons from "@site/src/theme/Icon"
 import {
-  ModifiedPropSidebarItemCategory,
-  ModifiedPropSidebarItemLink,
+  ModifiedDocCard,
+  ModifiedDocCardItemCategory,
+  ModifiedDocCardItemLink,
   ModifiedSidebarItem,
 } from "@medusajs/docs"
 
 type ModifiedProps = {
-  item: ModifiedSidebarItem
+  item: ModifiedDocCard
 }
 
 function CardContainer({
@@ -36,9 +37,9 @@ function CardContainer({
         className={clsx(
           "card",
           "tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark",
-          "tw-rounded tw-border tw-border-solid tw-border-medusa-bg-subtle-hover dark:tw-border-medusa-bg-base-hover-dark",
-          "tw-shadow-none tw-transition-all tw-duration-200 tw-ease-ease",
-          "tw-flex tw-p-1 tw-h-full",
+          "tw-rounded tw-shadow-card-rest dark:tw-shadow-card-rest-dark",
+          "tw-transition-all tw-duration-200 tw-ease-ease",
+          "tw-flex tw-p-1 !tw-pb-1.5 tw-h-full",
           className
         )}
       >
@@ -57,16 +58,7 @@ function CardLayout({
   containerClassName,
   isSoon = false,
   badge,
-}: {
-  href: string
-  icon: ReactNode
-  title: string
-  description?: string
-  html?: string
-  containerClassName?: string
-  isSoon?: boolean
-  badge?: BadgeProps
-}): JSX.Element {
+}: ModifiedDocCard): JSX.Element {
   const isHighlighted = containerClassName?.includes("card-highlighted")
   return (
     <CardContainer
@@ -77,7 +69,9 @@ function CardLayout({
           "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark",
         isSoon && "tw-pointer-events-none",
         isHighlighted &&
-          "md:before:tw-content-[''] md:before:tw-absolute md:before:tw-top-0 before:tw-right-0 md:before:tw-w-1/2 md:before:tw-h-full md:before:tw-bg-no-repeat md:before:tw-bg-cover md:before:tw-bg-card-highlighted dark:md:before:tw-bg-card-highlighted-dark"
+          "md:before:tw-content-[''] md:before:tw-absolute md:before:tw-top-0 before:tw-right-0 md:before:tw-w-1/2 md:before:tw-h-full md:before:tw-bg-no-repeat md:before:tw-bg-cover md:before:tw-bg-card-highlighted dark:md:before:tw-bg-card-highlighted-dark",
+        !isSoon &&
+          "hover:tw-shadow-card-hover dark:hover:tw-shadow-card-hover-dark"
       )}
     >
       <div
@@ -91,7 +85,7 @@ function CardLayout({
         <span
           className={clsx(
             "tw-text-label-regular-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark",
-            "tw-mb-0.5 tw-block",
+            "tw-mb-[4px] tw-block",
             "tw-transition-all tw-duration-200 tw-ease-ease",
             isSoon &&
               "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark"
@@ -103,7 +97,7 @@ function CardLayout({
         {description && (
           <p
             className={clsx(
-              "tw-text-label-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
+              "tw-text-body-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
               "tw-transition-all tw-duration-200 tw-ease-ease",
               isSoon &&
                 "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
@@ -141,14 +135,7 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
           light: item.customProps.themedImage.light,
           dark: item.customProps.themedImage.dark,
         }}
-        wrapperClassName={
-          clsx()
-          // "card-icon-wrapper",
-        }
-        iconWrapperClassName={clsx(
-          item.customProps?.className?.includes("card-highlighted") &&
-            "tw-p-[6px]"
-        )}
+        iconWrapperClassName={clsx("tw-p-[6px]")}
         iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
@@ -158,14 +145,7 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
         icon={{
           light: item.customProps.image,
         }}
-        wrapperClassName={
-          clsx()
-          // "card-icon-wrapper",
-        }
-        iconWrapperClassName={clsx(
-          item.customProps?.className?.includes("card-highlighted") &&
-            "tw-p-[6px]"
-        )}
+        iconWrapperClassName={clsx("tw-p-[6px]")}
         iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
@@ -173,14 +153,7 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
     return (
       <BorderedIcon
         IconComponent={item.customProps.icon}
-        wrapperClassName={
-          clsx()
-          // "card-icon-wrapper",
-        }
-        iconWrapperClassName={clsx(
-          item.customProps?.className?.includes("card-highlighted") &&
-            "tw-p-[6px]"
-        )}
+        iconWrapperClassName={clsx("tw-p-[6px]")}
         iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
@@ -191,14 +164,7 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
     return (
       <BorderedIcon
         IconComponent={Icons[item.customProps?.iconName]}
-        wrapperClassName={
-          clsx()
-          // "card-icon-wrapper",
-        }
-        iconWrapperClassName={clsx(
-          item.customProps?.className?.includes("card-highlighted") &&
-            "tw-p-[6px]"
-        )}
+        iconWrapperClassName={clsx("tw-p-[6px]")}
         iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
       />
     )
@@ -223,7 +189,7 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
 function CardCategory({
   item,
 }: {
-  item: ModifiedPropSidebarItemCategory
+  item: ModifiedDocCardItemCategory
 }): JSX.Element | null {
   const href = findFirstCategoryLink(item)
   const icon = getCardIcon(item)
@@ -233,6 +199,7 @@ function CardCategory({
   }
   return (
     <CardLayout
+      {...item}
       href={href}
       icon={icon}
       title={item.label}
@@ -253,17 +220,13 @@ function CardCategory({
   )
 }
 
-function CardLink({
-  item,
-}: {
-  item: ModifiedPropSidebarItemLink
-}): JSX.Element {
+function CardLink({ item }: { item: ModifiedDocCardItemLink }): JSX.Element {
   const icon = getCardIcon(item)
   const doc = useDocById(item.docId ?? undefined)
 
   return (
     <CardLayout
-      href={item.href}
+      {...item}
       icon={icon}
       title={item.label}
       description={item.customProps?.description || doc?.description}

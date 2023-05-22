@@ -115,12 +115,28 @@
   .btn-primary {
     @apply tw-inline-flex tw-flex-row tw-justify-center tw-items-center;
     @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
-    @apply tw-bg-medusa-button-secondary dark:tw-bg-medusa-button-secondary-dark;
-    @apply hover:tw-bg-medusa-button-secondary-hover dark:hover:tw-bg-medusa-button-secondary-hover-dark hover:tw-no-underline;
-    @apply tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
+    @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark;
+    @apply hover:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark hover:tw-no-underline;
+    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed;
+    @apply focus:tw-shadow-neutral-button-focused dark:focus:tw-shadow-neutral-button-focused-dark;
+    @apply disabled:!tw-bg-no-image disabled:tw-bg-medusa-button-disabled dark:disabled:tw-bg-medusa-button-disabled-dark;
+    @apply tw-border tw-border-solid tw-border-medusa-border-neutral-buttons dark:tw-border-medusa-border-neutral-buttons-dark;
     @apply tw-text-label-small-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
     @apply hover:tw-text-medusa-text-base dark:hover:tw-text-medusa-text-base-dark;
-    @apply focus:tw-shadow-button-focused dark:focus:tw-shadow-button-focused-dark;
+  }
+
+  .navbar-action-icon-item {
+    @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark hover:!tw-bg-no-image active:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark;
+    @apply active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed-dark;
+    @apply focus:tw-shadow-neutral-button-focused dark:focus:tw-shadow-neutral-button-focused-dark;
+    @apply tw-border tw-border-solid tw-border-medusa-border-neutral-buttons dark:tw-border-medusa-border-neutral-buttons-dark tw-rounded;
+    @apply tw-w-2 tw-h-2 tw-flex tw-justify-center tw-items-center tw-cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .clip {
+    clip-path: inset(0);
   }
 }
 
