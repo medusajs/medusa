@@ -1,9 +1,9 @@
-import { Brackets, EntityManager, FindOptionsWhere } from "typeorm"
 import {
   ExtendedFindConfig,
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/types"
+import { EntityManager, FindOptionsWhere, Brackets } from "typeorm"
 import { objectToStringPath } from "@medusajs/utils"
 
 import { InventoryItem } from "../models"
