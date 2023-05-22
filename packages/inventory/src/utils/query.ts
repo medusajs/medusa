@@ -4,9 +4,10 @@ import {
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/types"
-import { buildQuery, objectToStringPath } from "@medusajs/utils"
+import { objectToStringPath } from "@medusajs/utils"
 
 import { InventoryItem } from "../models"
+import { buildQuery } from "./build-query"
 
 export function getListQuery(
   manager: EntityManager,
