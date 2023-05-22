@@ -18,7 +18,7 @@ import { isObject } from "./is-object"
  * @param input
  */
 export function objectToStringPath<TEntity>(input: object = {}): string[] {
-  if (!isObject(input) && !Object.keys(input).length) {
+  if (!isObject(input) || !Object.keys(input).length) {
     return []
   }
 
