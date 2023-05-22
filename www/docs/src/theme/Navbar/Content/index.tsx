@@ -11,7 +11,7 @@ import NavbarLogo from "@theme/Navbar/Logo"
 import NavbarActions from "@site/src/components/Navbar/Actions"
 import Tooltip from "@site/src/components/Tooltip"
 import { ThemeConfig } from "@medusajs/docs"
-import CollapseButton from "@theme/DocSidebar/Desktop/CollapseButton"
+import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
 import { SidebarContext } from "@site/src/context/sidebar"
 
@@ -71,8 +71,11 @@ export default function NavbarContent(): JSX.Element {
     },
   } = useThemeConfig() as ThemeConfig
   const sidebarContext = useContext(SidebarContext)
+  const isBrowser = useIsBrowser()
 
-  const isApple = navigator.userAgent.toLowerCase().indexOf("mac") !== 0
+  const isApple = isBrowser
+    ? navigator.userAgent.toLowerCase().indexOf("mac") !== 0
+    : true
 
   return (
     <NavbarContentLayout
