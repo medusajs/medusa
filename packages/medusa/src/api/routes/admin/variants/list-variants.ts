@@ -147,17 +147,14 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  let variants = await pricingService.setVariantPrices(
-    rawVariants.map((v) => ({ variant: v })),
-    {
-      cart_id: req.validatedQuery.cart_id,
-      region_id: regionId,
-      currency_code: currencyCode,
-      customer_id: req.validatedQuery.customer_id,
-      include_discount_prices: true,
-      ignore_cache: true,
-    }
-  )
+  let variants = await pricingService.setVariantPrices(rawVariants, {
+    cart_id: req.validatedQuery.cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    customer_id: req.validatedQuery.customer_id,
+    include_discount_prices: true,
+    ignore_cache: true,
+  })
 
   const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
