@@ -9,12 +9,15 @@ import {
   ProductVariantService,
 } from "../../../../services"
 import { Request, Response } from "express"
+import { getLevelsByInventoryItemId, joinLevels } from "./utils/join-levels"
+import {
+  getVariantsByInventoryItemId,
+  joinVariants,
+} from "./utils/join-variants"
 
 import { IInventoryService } from "@medusajs/types"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Transform } from "class-transformer"
-import { getLevelsByInventoryItemId } from "./utils/join-levels"
-import { getVariantsByInventoryItemId } from "./utils/join-variants"
 
 /**
  * @oas [get] /admin/inventory-items
@@ -118,41 +121,16 @@ export default async (req: Request, res: Response) => {
     listConfig
   )
 
-  const levelsByItemId = await getLevelsByInventoryItemId(
-    inventoryItems,
-    locationIds,
-    inventoryService
-  )
-
-  const variantsByInventoryItemId = await getVariantsByInventoryItemId(
+  const inventory_items = await joinVariants(
     inventoryItems,
     productVariantInventoryService,
     productVariantService
-  )
-
-  const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
-    (inventoryItem) => {
-      const levels = levelsByItemId[inventoryItem.id] ?? []
-      const itemAvailability = levels.reduce(
-        (acc, curr) => {
-          return {
-            reserved_quantity: acc.reserved_quantity + curr.reserved_quantity,
-            stocked_quantity: acc.stocked_quantity + curr.stocked_quantity,
-          }
-        },
-        { reserved_quantity: 0, stocked_quantity: 0 }
-      )
-      return {
-        ...inventoryItem,
-        ...itemAvailability,
-        variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
-        location_levels: levels,
-      }
-    }
-  )
+  ).then(async (res) => {
+    return await joinLevels(res, locationIds, inventoryService)
+  })
 
   res.status(200).json({
-    inventory_items: inventoryItemsWithVariantsAndLocationLevels,
+    inventory_items,
     count,
     offset: skip,
     limit: take,
