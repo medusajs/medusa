@@ -52,6 +52,11 @@ module.exports = {
           id: "roadmaps/marketplace",
           label: "Marketplace",
         },
+        {
+          type: "doc",
+          id: "roadmaps/subscriptions",
+          label: "Subscriptions",
+        },
       ],
     },
     {

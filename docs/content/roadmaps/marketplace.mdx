@@ -4,7 +4,7 @@ import Icons from '@theme/Icon';
 
 # Build a Marketplace
 
-This document will guide you through the different documentation resources that will help you build a marketplace with Medusa.
+This document guides you through the different documentation resources that will help you build a marketplace with Medusa.
 
 ## Overview
 
@@ -24,30 +24,15 @@ By default, entities like users, products, or orders aren't associated with a st
 
 To associate these entities with the `Store` entity, you need to extend and customize entities created in the Medusa core package `@medusajs/medusa`, such as the `User` entity, to add a relation to the `Store` entity.
 
-You'll also need to create migrations to reflect the changes on these entities in your database.
-
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '/development/entities/extend-entity',
-    label: 'Step 1: Extend an Entity',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      html: 'Learn how to extend an entity in Medusa.',
-    }
-  },
-  {
-    type: 'link',
-    href: '/development/entities/extend-entity',
-    label: 'Step 2: Create Migrations',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      html: 'Learn how to create a migrations for your entities.',
-    }
-  },
-]} />
-
-
+<DocCard item={{
+  type: 'link',
+  href: '/development/entities/extend-entity',
+  label: 'Extend an Entity',
+  customProps: {
+    icon: Icons['academic-cap-solid'],
+    description: 'Learn how to extend an entity in Medusa.',
+  }
+}} />
 
 <details>
   <summary>Example: Associate User with Store</summary>
@@ -146,7 +131,7 @@ Throughout your development, you'll likely need access to the logged-in user. Fo
   label: 'Access Logged-in User',
   customProps: {
     icon: Icons['academic-cap-solid'],
-    html: 'Learn how to access the logged-in user throughout your project using a Middleware.',
+    description: 'Learn how to access the logged-in user throughout your project using a Middleware.',
   }
 }} />
 
@@ -170,7 +155,7 @@ This process applies to the services of other entities that you associated with 
   label: 'Extend a Service',
   customProps: {
     icon: Icons['academic-cap-solid'],
-    html: 'Learn how to extend a service in Medusa',
+    description: 'Learn how to extend a service in Medusa',
   }
 }} />
 
@@ -248,7 +233,7 @@ To listen to events, you need to create Subscribers that subscribe a handler met
   label: 'Create a Subscriber',
   customProps: {
     icon: Icons['academic-cap-solid'],
-    html: 'Learn how to create a subscriber in Medusa.',
+    description: 'Learn how to create a subscriber in Medusa.',
   }
 }} />
 
@@ -302,7 +287,7 @@ Payment and fulfillment providers are associated with regions, which are not ass
     label: 'Create a Payment Processor',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      html: 'Learn how to create a payment processor.',
+      description: 'Learn how to create a payment processor.',
     }
   },
   {
@@ -311,7 +296,7 @@ Payment and fulfillment providers are associated with regions, which are not ass
     label: 'Create a Fulfillment Provider',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      html: 'Learn how to create a fulfillment provider.',
+      description: 'Learn how to create a fulfillment provider.',
     }
   },
 ]} />
@@ -325,7 +310,7 @@ Payment and fulfillment providers are associated with regions, which are not ass
     label: 'Install an Official Medusa Plugin',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      html: 'Check out available Medusa plugins to install.',
+      description: 'Check out available Medusa plugins to install.',
     }
   },
   {
@@ -334,7 +319,7 @@ Payment and fulfillment providers are associated with regions, which are not ass
     label: 'Install a Community Plugin',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      html: 'Check out available community plugins to install.',
+      description: 'Check out available community plugins to install.',
     }
   },
 ]} />
@@ -352,16 +337,16 @@ Medusa provides a Next.js starter storefront that you can use with Medusa. Since
     label: 'Option 1: Use Next.js Storefront',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      html: 'Install the Next.js Storefront to customize it.',
+      description: 'Install the Next.js Storefront to customize it.',
     }
   },
   {
     type: 'link',
     href: '/storefront/roadmap',
-    label: 'Option 2: Build Storefront Roadmap',
+    label: 'Option 2: Build Custom Storefront',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      html: 'Find useful resources to build your own storefront.',
+      description: 'Find useful resources to build your own storefront.',
     }
   },
 ]} />
@@ -378,7 +363,7 @@ Our documentation includes deployment guides for a basic Medusa backend. You sho
   label: 'Deploy Backend',
   customProps: {
     icon: Icons['academic-cap-solid'],
-    html: 'Learn how to deploy your marketplace backend to different hosting providers.',
+    description: 'Learn how to deploy your marketplace backend to different hosting providers.',
   }
 }} />
 
