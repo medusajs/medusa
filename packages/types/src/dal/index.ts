@@ -82,7 +82,7 @@ type FilterValue<T> =
   | FilterValue2<T>[]
   | null
 
-export type FilterQuery<T extends { [key: string]: any }> = {
+export type FilterQuery<T = any> = {
   [Key in keyof T]?: T[Key] extends
     | boolean
     | number
@@ -132,7 +132,7 @@ export interface OptionsQuery<T, P extends string = never> {
   filters?: Dictionary<boolean | Dictionary> | string[] | boolean
 }
 
-export type FindOptions<T extends { [key: string]: any }> = {
+export type FindOptions<T = any> = {
   where: FilterQuery<T>
   options?: OptionsQuery<T, any>
 }

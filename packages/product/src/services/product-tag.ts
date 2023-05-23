@@ -6,25 +6,24 @@ type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
 }
 
-export default class ProductTagService {
-  protected readonly productTagRepository_: DAL.RepositoryService
+export default class ProductTagService<TEntity = ProductTag> {
+  protected readonly productTagRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ productTagRepository }: InjectedDependencies) {
     this.productTagRepository_ = productTagRepository
   }
 
-  async list<T = ProductTag>(
+  async list(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<T[]> {
-    const queryOptions = buildQuery<T>(filters, config)
-    queryOptions.where ??= {}
+  ): Promise<TEntity[]> {
+    const queryOptions = buildQuery<TEntity>(filters, config)
 
     if (filters.value) {
       queryOptions.where["value"] = { $ilike: filters.value }
     }
 
-    return await this.productTagRepository_.find<T>(queryOptions)
+    return await this.productTagRepository_.find(queryOptions)
   }
 }

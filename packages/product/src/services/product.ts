@@ -1,5 +1,5 @@
 import { ProductTagService, ProductVariantService } from "@services"
-import { Product, ProductTag, ProductVariant } from "@models"
+import { Product } from "@models"
 import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
@@ -9,26 +9,18 @@ type InjectedDependencies = {
   productTagService: ProductTagService
 }
 
-export default class ProductService implements ProductTypes.IProductService {
-  protected readonly productRepository_: DAL.RepositoryService
-  protected readonly productVariantService: ProductVariantService
-  protected readonly productTagService: ProductTagService
+export default class ProductService<TEntity = Product> {
+  protected readonly productRepository_: DAL.RepositoryService<TEntity>
 
-  constructor({
-    productRepository,
-    productVariantService,
-    productTagService,
-  }: InjectedDependencies) {
+  constructor({ productRepository }: InjectedDependencies) {
     this.productRepository_ = productRepository
-    this.productVariantService = productVariantService
-    this.productTagService = productTagService
   }
 
-  async list<T = Product>(
+  async list(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<T[]> {
+  ): Promise<TEntity[]> {
     if (filters.category_ids) {
       if (Array.isArray(filters.category_ids)) {
         filters.categories = {
@@ -41,16 +33,15 @@ export default class ProductService implements ProductTypes.IProductService {
       }
     }
 
-    const queryOptions = buildQuery<T>(filters, config)
-
-    return await this.productRepository_.find<T>(queryOptions)
+    const queryOptions = buildQuery<TEntity>(filters, config)
+    return await this.productRepository_.find(queryOptions)
   }
 
-  async listAndCount<T = Product>(
+  async listAndCount(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<[T[], number]> {
+  ): Promise<[TEntity[], number]> {
     if (filters.category_ids) {
       if (Array.isArray(filters.category_ids)) {
         filters.categories = {
@@ -63,27 +54,7 @@ export default class ProductService implements ProductTypes.IProductService {
       }
     }
 
-    const queryOptions = buildQuery<T>(filters, config)
-    return await this.productRepository_.findAndCount<T>(queryOptions)
-  }
-
-  async listVariants<T = ProductVariant>(
-    filters: ProductTypes.FilterableProductVariantProps = {},
-    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: SharedContext
-  ): Promise<T[]> {
-    return await this.productVariantService.list()
-  }
-
-  async listTags<T = ProductTag>(
-    filters: ProductTypes.FilterableProductTagProps = {},
-    config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: SharedContext
-  ): Promise<T[]> {
-    return await this.productTagService.list()
-  }
-
-  async listCollections() {
-    return []
+    const queryOptions = buildQuery<TEntity>(filters, config)
+    return await this.productRepository_.findAndCount(queryOptions)
   }
 }

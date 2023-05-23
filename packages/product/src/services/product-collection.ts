@@ -6,19 +6,19 @@ type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
 }
 
-export default class ProductCollectionService {
-  protected readonly productCollectionRepository_: DAL.RepositoryService
+export default class ProductCollectionService<TEntity = ProductCollection> {
+  protected readonly productCollectionRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ productCollectionRepository }: InjectedDependencies) {
     this.productCollectionRepository_ = productCollectionRepository
   }
 
-  async list<T = ProductCollection>(
+  async list(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<T[]> {
-    const queryOptions = buildQuery<T>(filters, config)
+  ): Promise<TEntity[]> {
+    const queryOptions = buildQuery<TEntity>(filters, config)
     queryOptions.where ??= {}
 
     if (filters.title) {
@@ -30,6 +30,6 @@ export default class ProductCollectionService {
       queryOptions.where["id"] = filters.id
     }
 
-    return await this.productCollectionRepository_.find<T>(queryOptions)
+    return await this.productCollectionRepository_.find(queryOptions)
   }
 }

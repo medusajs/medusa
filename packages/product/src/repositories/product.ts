@@ -8,17 +8,17 @@ import {
 import { deduplicateIfNecessary } from "../utils"
 import { DAL } from "@medusajs/types"
 
-export class ProductRepository implements DAL.RepositoryService {
+export class ProductRepository implements DAL.RepositoryService<Product> {
   protected readonly manager_: SqlEntityManager
   constructor({ manager }) {
     this.manager_ = manager.fork()
   }
 
-  async find<T = Product>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
+  async find(
+    findOptions: DAL.FindOptions<Product> = { where: {} },
     context: { transaction?: any } = {}
-  ): Promise<T[]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
+  ): Promise<Product[]> {
+    // Spread is used to cssopy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
     findOptions_.options ??= {}
@@ -36,17 +36,17 @@ export class ProductRepository implements DAL.RepositoryService {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.find(
+    return await this.manager_.find(
       Product,
       findOptions_.where as MikroFilterQuery<Product>,
       findOptions_.options as MikroOptions<Product>
-    )) as unknown as T[]
+    )
   }
 
-  async findAndCount<T = Product>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
+  async findAndCount(
+    findOptions: DAL.FindOptions<Product> = { where: {} },
     context: { transaction?: any } = {}
-  ): Promise<[T[], number]> {
+  ): Promise<[Product[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -65,10 +65,10 @@ export class ProductRepository implements DAL.RepositoryService {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.findAndCount(
+    return await this.manager_.findAndCount(
       Product,
       findOptions_.where as MikroFilterQuery<Product>,
       findOptions_.options as MikroOptions<Product>
-    )) as unknown as [T[], number]
+    )
   }
 }

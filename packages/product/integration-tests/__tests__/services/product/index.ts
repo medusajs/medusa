@@ -7,7 +7,6 @@ import {
 import { ProductRepository } from "@repositories"
 import { Product, ProductCategory, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Collection } from "@mikro-orm/core"
 import { ProductDTO } from "@medusajs/types"
 
 import {
@@ -124,7 +123,10 @@ describe("Product Service", () => {
         products = await createProductAndTags(testManager, productsData)
         workingProduct = products.find((p) => p.id === "test-1") as Product
         categories = await createCategories(testManager, categoriesData)
-        workingCategory = await testManager.findOne(ProductCategory, "category-1") as ProductCategory
+        workingCategory = (await testManager.findOne(
+          ProductCategory,
+          "category-1"
+        )) as ProductCategory
 
         workingProduct = await assignCategoriesToProduct(
           testManager,
@@ -166,20 +168,20 @@ describe("Product Service", () => {
             id: "category-0",
             name: "category 0",
             handle: "category-0",
-            mpath: "category-0."
+            mpath: "category-0.",
           },
           {
             id: "category-1",
             name: "category 1",
             handle: "category-1",
-            mpath: "category-0.category-1."
+            mpath: "category-0.category-1.",
           },
           {
             id: "category-1-a",
             name: "category 1 a",
             handle: "category-1-a",
-            mpath: "category-0.category-1.category-1-a."
-          }
+            mpath: "category-0.category-1.category-1-a.",
+          },
         ])
       })
 

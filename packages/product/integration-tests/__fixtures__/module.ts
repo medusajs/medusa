@@ -1,13 +1,15 @@
-import { FindOptions, RepositoryService } from "../../src"
+import { FindOptions, RepositoryService } from "@medusajs/types"
 
-class CustomRepository implements RepositoryService<any> {
-  constructor() {}
+class CustomRepository implements RepositoryService {
+  constructor() {
+    console.log("test")
+  }
 
-  find(options?: FindOptions<any>): Promise<any[]> {
+  find(options?: FindOptions): Promise<any[]> {
     throw new Error("Method not implemented.")
   }
 
-  findAndCount(options?: FindOptions<any>): Promise<[any[], number]> {
+  findAndCount(options?: FindOptions): Promise<[any[], number]> {
     throw new Error("Method not implemented.")
   }
 }

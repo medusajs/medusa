@@ -11,34 +11,39 @@ import {
 import { FindConfig } from "../common"
 import { SharedContext } from "../shared-context"
 
-export interface IProductService {
-  list<T = unknown>(
+export interface IProductService<
+  TProduct = any,
+  TProductVariant = any,
+  TProductTag = any,
+  TProductCollection = any
+> {
+  list(
     filter: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
     context?: SharedContext
-  ): Promise<T[]>
+  ): Promise<ProductDTO[]>
 
-  listAndCount<T = unknown>(
+  listAndCount(
     filter: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
     context?: SharedContext
-  ): Promise<[T[], number]>
+  ): Promise<[ProductDTO[], number]>
 
-  listTags<T = unknown>(
+  listTags(
     filter: FilterableProductTagProps,
     config?: FindConfig<ProductVariantDTO>,
     context?: SharedContext
-  ): Promise<T[]>
+  ): Promise<ProductTagDTO[]>
 
-  listVariants<T = unknown>(
+  listVariants(
     filter: FilterableProductVariantProps,
     config?: FindConfig<ProductTagDTO>,
     context?: SharedContext
-  ): Promise<T[]>
+  ): Promise<ProductVariantDTO[]>
 
-  listCollections<T = unknown>(
+  listCollections(
     filter: FilterableProductCollectionProps,
     config?: FindConfig<ProductCollectionDTO>,
     context?: SharedContext
-  ): Promise<T[]>
+  ): Promise<ProductCollectionDTO[]>
 }

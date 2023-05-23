@@ -3,22 +3,22 @@ import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productVariantRepository: DAL.RepositoryService<ProductVariant>
+  productVariantRepository: DAL.RepositoryService
 }
 
-export default class ProductVariantService {
-  protected readonly productVariantRepository_: DAL.RepositoryService<ProductVariant>
+export default class ProductVariantService<TEntity = ProductVariant> {
+  protected readonly productVariantRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ productVariantRepository }: InjectedDependencies) {
     this.productVariantRepository_ = productVariantRepository
   }
 
-  async list<T = ProductVariant>(
+  async list(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: SharedContext
-  ): Promise<T[]> {
-    const queryOptions = buildQuery<T>(filters, config)
-    return await this.productVariantRepository_.find<T>(queryOptions)
+  ): Promise<TEntity[]> {
+    const queryOptions = buildQuery<TEntity>(filters, config)
+    return await this.productVariantRepository_.find(queryOptions)
   }
 }
