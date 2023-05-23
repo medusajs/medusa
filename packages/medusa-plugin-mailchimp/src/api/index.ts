@@ -1,7 +1,7 @@
 import { Router } from "express"
 import routes from "./routes"
 
-export default (rootDirectory) => {
+export default function (rootDirectory: string): Router | Router[] {
   const app = Router()
 
   routes(app, rootDirectory)
