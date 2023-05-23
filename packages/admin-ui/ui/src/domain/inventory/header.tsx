@@ -2,7 +2,7 @@ import TableViewHeader from "../../components/organisms/custom-table-header"
 import { useNavigate } from "react-router-dom"
 
 type P = {
-  activeView: "inventory" | "locations"
+  activeView: "inventory" | "locations" | "reservations"
 }
 
 /*
@@ -17,10 +17,10 @@ function InventoryPageTableHeader(props: P) {
         if (v === "inventory") {
           navigate(`/a/inventory`)
         } else {
-          navigate(`/a/inventory/locations`)
+          navigate(`/a/inventory/${v}`)
         }
       }}
-      views={["inventory", "locations"]}
+      views={["inventory", "locations", "reservations"]}
       activeView={props.activeView}
     />
   )

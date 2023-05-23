@@ -12,7 +12,16 @@ const LargeCardList: React.FC<LargeCardListProps> = ({
   children,
 }) => {
   return (
-    <section className={clsx("cards-grid", `grid-${colSize}`, className)}>
+    <section
+      className={clsx(
+        "cards-grid",
+        `grid-${colSize}`,
+        "tw-gap-1",
+        "[&+*:not(.large-card)]:tw-mt-2",
+        "[&+.large-card]:tw-mt-1",
+        className
+      )}
+    >
       {children}
     </section>
   )
