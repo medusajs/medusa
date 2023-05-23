@@ -31,6 +31,7 @@ export default class ProductService<TEntity = Product> {
           id: filters.category_ids,
         }
       }
+      delete filters.category_ids
     }
 
     const queryOptions = buildQuery<TEntity>(filters, config)
@@ -52,6 +53,7 @@ export default class ProductService<TEntity = Product> {
           id: filters.category_ids,
         }
       }
+      delete filters.category_ids
     }
 
     const queryOptions = buildQuery<TEntity>(filters, config)
