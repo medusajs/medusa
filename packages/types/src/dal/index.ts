@@ -9,9 +9,6 @@ type Query<T> = T extends object
     ? never
     : FilterQuery<T>
   : FilterValue<T>
-type EntityProps<T> = {
-  -readonly [K in keyof T as ExcludeFunctions<T, K>]?: T[K]
-}
 
 type ExpandScalar<T> =
   | null
@@ -85,24 +82,23 @@ type FilterValue<T> =
   | FilterValue2<T>[]
   | null
 
-type ExpandObject<T> = T extends object
-  ? T extends Scalar
-    ? never
-    : {
-        -readonly [K in keyof T as ExcludeFunctions<T, K>]?:
-          | Query<any>
-          | FilterValue<any>
-          | null
-      }
-  : never
-
-type ObjectQuery<T> = ExpandObject<T> & OperatorMap<T>
-
-export type FilterQuery<T> =
-  | ObjectQuery<T>
-  | NonNullable<ExpandScalar<Primary<T>>>
-  | NonNullable<EntityProps<T> & OperatorMap<T>>
-  | FilterQuery<T>[]
+export type FilterQuery<T extends { [key: string]: any }> = {
+  [Key in keyof T]?: T[Key] extends
+    | boolean
+    | number
+    | string
+    | bigint
+    | symbol
+    | Date
+    ? T[Key]
+    : T[Key] extends infer U
+    ? U extends { [x: number]: infer V }
+      ? V extends object
+        ? V
+        : never
+      : never
+    : never
+}
 
 declare enum QueryOrder {
   ASC = "ASC",
@@ -136,7 +132,7 @@ export interface OptionsQuery<T, P extends string = never> {
   filters?: Dictionary<boolean | Dictionary> | string[] | boolean
 }
 
-export type FindOptions<T> = {
+export type FindOptions<T extends { [key: string]: any }> = {
   where: FilterQuery<T>
   options?: OptionsQuery<T, any>
 }

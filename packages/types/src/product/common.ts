@@ -109,6 +109,7 @@ export interface FilterableProductProps {
   categories?: {
     id?: { [Operator in keyof OperatorMap<any>]: string[] } | string[]
   }
+  category_ids?: { [Operator in keyof OperatorMap<any>]: string[] } | string[]
 }
 
 export interface FilterableProductTagProps {

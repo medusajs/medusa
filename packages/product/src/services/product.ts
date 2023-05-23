@@ -29,7 +29,20 @@ export default class ProductService implements ProductTypes.IProductService {
     config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: SharedContext
   ): Promise<T[]> {
+    if (filters.category_ids) {
+      if (Array.isArray(filters.category_ids)) {
+        filters.categories = {
+          id: { $in: filters.category_ids },
+        }
+      } else {
+        filters.categories = {
+          id: filters.category_ids,
+        }
+      }
+    }
+
     const queryOptions = buildQuery<T>(filters, config)
+
     return await this.productRepository_.find<T>(queryOptions)
   }
 
@@ -38,6 +51,18 @@ export default class ProductService implements ProductTypes.IProductService {
     config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: SharedContext
   ): Promise<[T[], number]> {
+    if (filters.category_ids) {
+      if (Array.isArray(filters.category_ids)) {
+        filters.categories = {
+          id: { $in: filters.category_ids },
+        }
+      } else {
+        filters.categories = {
+          id: filters.category_ids,
+        }
+      }
+    }
+
     const queryOptions = buildQuery<T>(filters, config)
     return await this.productRepository_.findAndCount<T>(queryOptions)
   }
