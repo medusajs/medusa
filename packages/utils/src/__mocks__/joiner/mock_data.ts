@@ -98,7 +98,10 @@ export const mockServiceList = (serviceName) => {
       })
     }
 
-    return resultset
+    return {
+      data: resultset,
+      path: serviceName === "productService" ? "rows" : undefined,
+    }
   })
 }
 

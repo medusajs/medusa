@@ -86,26 +86,30 @@ export const remoteJoinerData = {
       },
     },
   ],
-  product: [
-    {
-      id: 101,
-      name: "Product 1",
-      handler: "product-1-handler",
-      user_id: 2,
-    },
-    {
-      id: 102,
-      name: "Product 2",
-      handler: "product-2-handler",
-      user_id: 1,
-    },
-    {
-      id: 103,
-      name: "Product 3",
-      handler: "product-3-handler",
-      user_id: 3,
-    },
-  ],
+  product: {
+    rows: [
+      {
+        id: 101,
+        name: "Product 1",
+        handler: "product-1-handler",
+        user_id: 2,
+      },
+      {
+        id: 102,
+        name: "Product 2",
+        handler: "product-2-handler",
+        user_id: 1,
+      },
+      {
+        id: 103,
+        name: "Product 3",
+        handler: "product-3-handler",
+        user_id: 3,
+      },
+    ],
+    limit: 3,
+    skip: 0,
+  },
   variant: [
     {
       id: 991,

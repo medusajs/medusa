@@ -31,7 +31,9 @@ const container = {
           })
         }
 
-        return orderVar
+        return {
+          data: orderVar,
+        }
       },
     }
   },
@@ -107,6 +109,37 @@ describe("RemoteJoiner", () => {
         email: "444444@example.com",
       },
     ])
+  })
+
+  it("Simple query of a service where the returned data contains multiple properties", async () => {
+    const query = RemoteJoiner.parseQuery(`
+      query {
+        product {
+          id
+          name
+        }
+      }
+    `)
+    const data = await joiner.query(query)
+
+    expect(data).toEqual({
+      rows: [
+        {
+          id: 101,
+          name: "Product 1",
+        },
+        {
+          id: 102,
+          name: "Product 2",
+        },
+        {
+          id: 103,
+          name: "Product 3",
+        },
+      ],
+      limit: 3,
+      skip: 0,
+    })
   })
 
   it("Query of a service, expanding a property and restricting the fields expanded", async () => {

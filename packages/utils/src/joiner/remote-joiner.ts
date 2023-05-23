@@ -104,7 +104,10 @@ export class RemoteJoiner {
       pkField: string,
       ids?: (unknown | unknown[])[],
       relationship?: any
-    ) => Promise<unknown[]>
+    ) => Promise<{
+      data: unknown[] | { [path: string]: unknown[] }
+      path?: string
+    }>
   ) {
     this.serviceConfigs = RemoteJoiner.createSelfReferences(serviceConfigs)
   }
@@ -126,7 +129,10 @@ export class RemoteJoiner {
     pkField: string,
     ids?: (unknown | unknown[])[],
     relationship?: any
-  ): Promise<any> {
+  ): Promise<{
+    data: unknown[] | { [path: string]: unknown[] }
+    path?: string
+  }> {
     let uniqueIds = Array.isArray(ids) ? ids : ids ? [ids] : undefined
 
     if (uniqueIds) {
@@ -156,12 +162,20 @@ export class RemoteJoiner {
       uniqueIds,
       relationship
     )
+    const isObj = isDefined(response.path)
+    const resData = isObj ? response.data[response.path!] : response.data
 
-    const filteredDataArray = response.map((data: any) =>
+    const filteredDataArray = resData.map((data: any) =>
       RemoteJoiner.filterFields(data, expand.fields, expand.expands)
     )
 
-    return filteredDataArray
+    if (isObj) {
+      response.data[response.path!] = filteredDataArray
+    } else {
+      response.data = filteredDataArray
+    }
+
+    return response
   }
 
   private async handleExpands(
@@ -298,8 +312,12 @@ export class RemoteJoiner {
       ? relationship.foreignKey.split(",")
       : relationship.primaryKey.split(",")
 
+    const relData = relatedDataArray.path
+      ? relatedDataArray.data[relatedDataArray.path!]
+      : relatedDataArray.data
+
     const relatedDataMap = RemoteJoiner.createRelatedDataMap(
-      relatedDataArray,
+      relData,
       joinFields
     )
 
@@ -508,12 +526,14 @@ export class RemoteJoiner {
 
     const root = parsedExpands.get(BASE_PATH)!
 
-    const data = await this.fetchData(
+    const response = await this.fetchData(
       root,
       pkName,
       primaryKeyArg?.value,
       undefined
     )
+
+    const data = response.path ? response.data[response.path!] : response.data
 
     await this.handleExpands(
       Array.isArray(data) ? data : [data],
@@ -521,6 +541,6 @@ export class RemoteJoiner {
       parsedExpands
     )
 
-    return data
+    return response.data
   }
 }
