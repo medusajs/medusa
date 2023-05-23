@@ -84,7 +84,7 @@ export default function NavbarContent(): JSX.Element {
         <>
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
-          {hideable && (
+          {hideable && sidebarContext?.hasSidebar && (
             <NavbarActions
               items={[
                 {
