@@ -5856,6 +5856,7 @@ __metadata:
     "@radix-ui/react-dialog": ^1.0.2
     "@radix-ui/react-dropdown-menu": ^2.0.2
     "@radix-ui/react-popover": ^1.0.3
+    "@radix-ui/react-portal": ^1.0.2
     "@radix-ui/react-radio-group": ^1.1.1
     "@radix-ui/react-select": ^1.2.0
     "@radix-ui/react-switch": ^1.0.1
@@ -7726,6 +7727,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-portal@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@radix-ui/react-portal@npm:1.0.2"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-primitive": 1.0.2
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 2397b9a3fe5e1f7b4982e0995fb088f77221754e42ebf5aa52374794ed7d35048ec530cc486927e65b1975fdb5f5caa1d8d2f87e8aa15004dfa011511fe8c606
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-presence@npm:1.0.0":
   version: 1.0.0
   resolution: "@radix-ui/react-presence@npm:1.0.0"
@@ -7750,6 +7764,19 @@ __metadata:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
   checksum: b0fbf329849b3db03cf87f04c8ad44b927264bba6c3ea943a694662c4f0a2dc29a637c6e1e3b91fdfe0f95d743d3eca92ce99a23333b2c993b9013ec45ad8680
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-primitive@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@radix-ui/react-primitive@npm:1.0.2"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-slot": 1.0.1
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: bc9dc28568a9d4e0343363e62428fc13685667e470a663a69413a23145264f7a114de9d45c1ce33e6ccdeb7ae5bbfdbc198ee4b2505cd71da8f8d470c4f88d68
   languageName: node
   linkType: hard
 

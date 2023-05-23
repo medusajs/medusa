@@ -1,11 +1,17 @@
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
-import { Request, Response } from "express"
 import {
-  extendedFindParamsMixin,
   NumericalComparisonOperator,
+  extendedFindParamsMixin,
 } from "../../../../types/common"
+import { Request, Response } from "express"
+
+import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
+import { IsType } from "../../../../utils/validators/is-type"
+import { LineItemService } from "../../../../services"
+import { Type } from "class-transformer"
+import { joinInventoryItems } from "./utils/join-inventory-items"
+import { joinLineItems } from "./utils/join-line-items"
 
 /**
  * @oas [get] /admin/reservations
@@ -110,11 +116,46 @@ import {
 export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
+
+  const { filterableFields, listConfig } = req
+
+  const relations = new Set(listConfig.relations ?? [])
+
+  const includeItems = relations.delete("line_item")
+  const includeInventoryItems = relations.delete("inventory_item")
+
+  if (listConfig.relations?.length) {
+    listConfig.relations = [...relations]
+  }
 
   const [reservations, count] = await inventoryService.listReservationItems(
-    req.filterableFields,
-    req.listConfig
+    filterableFields,
+    listConfig,
+    {
+      transactionManager: manager,
+    }
   )
+
+  const promises: Promise<any>[] = []
+
+  if (includeInventoryItems) {
+    promises.push(
+      joinInventoryItems(reservations, {
+        inventoryService,
+        manager,
+      })
+    )
+  }
+
+  if (includeItems) {
+    const lineItemService: LineItemService =
+      req.scope.resolve("lineItemService")
+
+    promises.push(joinLineItems(reservations, lineItemService))
+  }
+
+  await Promise.all(promises)
 
   const { limit, offset } = req.validatedQuery
 
@@ -125,10 +166,9 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
-  @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  location_id?: string[]
+  @IsType([String, [String]])
+  location_id?: string | string[]
 
   @IsArray()
   @IsString({ each: true })
