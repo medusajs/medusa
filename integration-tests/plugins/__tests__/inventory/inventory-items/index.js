@@ -533,6 +533,8 @@ describe("Inventory Items endpoints", () => {
                 available_quantity: 5,
               }),
             ]),
+            reserved_quantity: 0,
+            stocked_quantity: 15,
           })
         )
       })

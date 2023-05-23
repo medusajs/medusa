@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import clsx from "clsx"
 import { useWindowSize } from "@docusaurus/theme-common"
 import { useDoc } from "@docusaurus/theme-common/internal"
@@ -12,6 +12,7 @@ import DocItemContent from "@theme/DocItem/Content"
 import DocBreadcrumbs from "@theme/DocBreadcrumbs"
 import type { Props } from "@theme/DocItem/Layout"
 import Footer from "@theme/Footer"
+import { SidebarContext } from "@site/src/context/sidebar"
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -39,13 +40,15 @@ function useDocTOC() {
 
 export default function DocItemLayout({ children }: Props): JSX.Element {
   const docTOC = useDocTOC()
+  const sidebarContext = useContext(SidebarContext)
   return (
     <div className="row tw-m-0">
       <div
         className={clsx(
           "col",
-          "tw-my-0 tw-mx-auto tw-max-w-main-content tw-w-full tw-ml-auto lg:tw-py-0 lg:tw-px-4 tw-py-0 tw-px-1",
-          !docTOC.hidden && "xxl:tw-w-10/12 tw-w-9/12"
+          "tw-my-0 tw-mx-auto tw-max-w-main-content tw-w-full tw-ml-auto lg:tw-py-0 tw-py-0 tw-px-1",
+          !docTOC.hidden && "tw-w-9/12",
+          !sidebarContext?.hiddenSidebarContainer && "!tw-max-w-[720px]"
         )}
       >
         <DocVersionBanner />

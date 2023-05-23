@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react"
+import React, { useContext, type ReactNode } from "react"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import {
   splitNavbarItems,
@@ -11,7 +11,9 @@ import NavbarLogo from "@theme/Navbar/Logo"
 import NavbarActions from "@site/src/components/Navbar/Actions"
 import Tooltip from "@site/src/components/Tooltip"
 import { ThemeConfig } from "@medusajs/docs"
+import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
+import { SidebarContext } from "@site/src/context/sidebar"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -62,7 +64,18 @@ export default function NavbarContent(): JSX.Element {
 
   const items = useNavbarItems()
   const [leftItems, rightItems] = splitNavbarItems(items)
-  const { navbarActions } = useThemeConfig() as ThemeConfig
+  const {
+    navbarActions,
+    docs: {
+      sidebar: { hideable },
+    },
+  } = useThemeConfig() as ThemeConfig
+  const sidebarContext = useContext(SidebarContext)
+  const isBrowser = useIsBrowser()
+
+  const isApple = isBrowser
+    ? navigator.userAgent.toLowerCase().indexOf("mac") !== 0
+    : true
 
   return (
     <NavbarContentLayout
@@ -71,6 +84,65 @@ export default function NavbarContent(): JSX.Element {
         <>
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
+          {hideable && (
+            <NavbarActions
+              items={[
+                {
+                  type: "button",
+                  html: !sidebarContext?.hiddenSidebarContainer
+                    ? `<span class="tw-text-label-x-small-plus">Close sidebar <kbd class="${clsx(
+                        "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
+                        "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
+                        "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
+                        "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none tw-ml-0.5"
+                      )}">${isApple ? "⌘" : "Ctrl"}</kbd>
+                      <kbd class="${clsx(
+                        "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
+                        "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
+                        "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
+                        "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none"
+                      )}">I</kbd></span>`
+                    : `<span class="tw-text-label-x-small-plus">Lock sidebar open <kbd class="${clsx(
+                        "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
+                        "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
+                        "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
+                        "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none tw-ml-0.5"
+                      )}">${isApple ? "⌘" : "Ctrl"}</kbd>
+                    <kbd class="${clsx(
+                      "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
+                      "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
+                      "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
+                      "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none"
+                    )}">I</kbd></span>`,
+                  events: {
+                    onClick: sidebarContext?.onCollapse,
+                    onMouseEnter: () => {
+                      if (!sidebarContext?.hiddenSidebarContainer) {
+                        sidebarContext?.setFloatingSidebar(false)
+                      } else {
+                        sidebarContext?.setFloatingSidebar(true)
+                      }
+                    },
+                    onMouseLeave: () => {
+                      setTimeout(() => {
+                        if (
+                          !document.querySelector(
+                            ".theme-doc-sidebar-container:hover"
+                          )
+                        ) {
+                          sidebarContext?.setFloatingSidebar(false)
+                        }
+                      }, 100)
+                    },
+                  },
+                  icon: !sidebarContext?.hiddenSidebarContainer
+                    ? "bars-three"
+                    : "chevron-double-left-mini-solid",
+                },
+              ]}
+              className="tw-mr-0.5 sidebar-toggler"
+            />
+          )}
           <NavbarItems items={leftItems} />
         </>
       }
@@ -88,9 +160,7 @@ export default function NavbarContent(): JSX.Element {
             <NavbarColorModeToggle
               className={clsx(
                 "lg:tw-block tw-hidden",
-                "tw-bg-medusa-button-secondary dark:tw-bg-medusa-button-secondary-dark",
-                "tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark",
-                "tw-rounded !tw-w-2 !tw-h-2 tw-ml-1 tw-mr-[12px] [&>button]:!tw-rounded"
+                "navbar-action-icon-item !tw-w-2 !tw-h-2 tw-ml-1 tw-mr-[12px] [&>button]:!tw-rounded"
               )}
             />
           </Tooltip>

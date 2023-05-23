@@ -3,17 +3,10 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { InventoryItemDTO } from "./InventoryItemDTO"
-import type { InventoryLevelDTO } from "./InventoryLevelDTO"
-import type { ProductVariant } from "./ProductVariant"
+import type { DecoratedInventoryItemDTO } from "./DecoratedInventoryItemDTO"
 
 export interface AdminInventoryItemsListWithVariantsAndLocationLevelsRes {
-  inventory_items: Array<
-    InventoryItemDTO & {
-      location_levels?: Array<InventoryLevelDTO>
-      variants?: Array<ProductVariant>
-    }
-  >
+  inventory_items: Array<DecoratedInventoryItemDTO>
   /**
    * The total number of items available
    */

@@ -203,5 +203,27 @@ describe("Inventory Items endpoints", () => {
           "The reservation quantity cannot be greater than the unfulfilled line item quantity",
       })
     })
+
+    it("lists reservations with inventory_items and line items", async () => {
+      const api = useApi()
+
+      const res = await api.get(
+        `/admin/reservations?expand=line_item,inventory_item`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.reservations.length).toEqual(1)
+      expect(res.data.reservations).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            inventory_item: expect.objectContaining({}),
+            line_item: expect.objectContaining({
+              order: expect.objectContaining({}),
+            }),
+          }),
+        ])
+      )
+    })
   })
 })
