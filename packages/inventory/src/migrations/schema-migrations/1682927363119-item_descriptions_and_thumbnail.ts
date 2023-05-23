@@ -19,7 +19,7 @@ export class itemDescriptionsAndThumbnail1682927363119
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        ALTER TABLE reservation_item 
+        ALTER TABLE inventory_item 
           DROP COLUMN "title", 
           DROP COLUMN "description", 
           DROP COLUMN "thumbnail";
