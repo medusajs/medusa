@@ -3,7 +3,6 @@ import {
   ExtendedFindConfig,
   FilterableInventoryItemProps,
   FindConfig,
-  StringSearchOperator,
 } from "@medusajs/types"
 import { InventoryItem, ReservationItem } from "../models"
 import { buildQuery, objectToStringPath } from "@medusajs/utils"
@@ -80,35 +79,4 @@ export function getListQuery(
   }
 
   return queryBuilder
-}
-
-export function prepareSearchQuery(
-  q: string | StringSearchOperator
-): FindOptionsWhere<ReservationItem> {
-  const searchQuery = {}
-
-  if (typeof q === "object") {
-    Object.entries(q).forEach(([objectKey, objectValue]) => {
-      switch (objectKey) {
-        case "equals":
-          searchQuery["description"] = objectValue
-          break
-        case "starts_with":
-          searchQuery["description"] = ILike(`${objectValue}%`)
-          break
-        case "ends_with":
-          searchQuery["description"] = ILike(`%${objectValue}`)
-          break
-        case "contains":
-          searchQuery["description"] = ILike(`%${objectValue}%`)
-          break
-        default:
-          break
-      }
-    })
-  } else {
-    searchQuery["description"] = ILike(`%${q}%`)
-  }
-
-  return searchQuery
 }

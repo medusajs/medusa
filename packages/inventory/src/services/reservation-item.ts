@@ -4,7 +4,6 @@ import {
   FindConfig,
   IEventBusService,
   SharedContext,
-  StringSearchOperator,
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
@@ -17,7 +16,6 @@ import {
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
-import { prepareSearchQuery } from "../utils/query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -61,20 +59,7 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    let q: string | StringSearchOperator | undefined
-    if (selector.q) {
-      q = selector.q
-      delete selector.q
-    }
-
     const query = buildQuery(selector, config) as FindManyOptions
-
-    if (q) {
-      query.where = {
-        ...query.where,
-        ...prepareSearchQuery(q),
-      }
-    }
 
     return await itemRepository.find(query)
   }
@@ -94,20 +79,7 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    let q: string | StringSearchOperator | undefined
-    if (selector.q) {
-      q = selector.q
-      delete selector.q
-    }
-
     const query = buildQuery(selector, config) as FindManyOptions
-
-    if (q) {
-      query.where = {
-        ...query.where,
-        ...prepareSearchQuery(q),
-      }
-    }
 
     return await itemRepository.findAndCount(query)
   }

@@ -38,9 +38,9 @@ export interface AdminGetReservationsParams {
     gte?: number
   }
   /**
-   * A query string to search reservation descriptions
+   * A param for search reservation descriptions
    */
-  q?:
+  description?:
     | string
     | {
         /**

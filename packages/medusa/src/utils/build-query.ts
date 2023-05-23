@@ -5,6 +5,7 @@ import {
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
+  ILike,
   In,
   IsNull,
   LessThan,
@@ -12,8 +13,9 @@ import {
   MoreThan,
   MoreThanOrEqual,
 } from "typeorm"
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { ExtendedFindConfig, FindConfig } from "../types/common"
+
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { isObject } from "./is-object"
 
 /**
@@ -35,11 +37,11 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    ;(query as FindManyOptions<TEntity>).skip = config.skip
+    (query as FindManyOptions<TEntity>).skip = config.skip
   }
 
   if ("take" in config) {
-    ;(query as FindManyOptions<TEntity>).take = config.take
+    (query as FindManyOptions<TEntity>).take = config.take
   }
 
   if (config.relations) {
@@ -119,6 +121,9 @@ function buildWhere<TWhereKeys extends object, TEntity>(
             break
           case "gte":
             where[key].push(MoreThanOrEqual(objectValue))
+            break
+          case "contains":
+            where[key].push(ILike(`%${objectValue}%`))
             break
           default:
             if (objectValue != undefined && typeof objectValue === "object") {

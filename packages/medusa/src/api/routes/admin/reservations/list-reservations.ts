@@ -1,7 +1,7 @@
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
-  StringSearchOperator,
+  StringComparisonOperator,
   extendedFindParamsMixin,
 } from "../../../../types/common"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
@@ -68,8 +68,8 @@ import { joinLineItems } from "./utils/join-line-items"
  *           type: number
  *           description: filter by reservation quantity greater than or equal to this number
  *   - in: query
- *     name: q
- *     description: A query string to search reservation descriptions
+ *     name: description
+ *     description: A param for search reservation descriptions
  *     schema:
  *       oneOf:
  *         - type: string
@@ -235,6 +235,6 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   created_at?: DateComparisonOperator
 
   @IsOptional()
-  @IsType([StringSearchOperator, String])
-  q?: string | StringSearchOperator
+  @IsType([StringComparisonOperator, String])
+  description?: string | StringComparisonOperator
 }

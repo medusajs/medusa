@@ -349,7 +349,7 @@ describe("Inventory Items endpoints", () => {
 
           const reservationsRes = await api
             .get(
-              `/admin/reservations?q[equals]=test%20description`,
+              `/admin/reservations?description=test%20description`,
               adminHeaders
             )
             .catch(console.log)
@@ -362,120 +362,23 @@ describe("Inventory Items endpoints", () => {
           const api = useApi()
 
           const reservationsRes = await api.get(
-            `/admin/reservations?q[equals]=description`,
+            `/admin/reservations?description=description`,
             adminHeaders
           )
 
           expect(reservationsRes.data.reservations.length).toBe(0)
         })
 
-        it("filters by description using starts_with", async () => {
-          const api = useApi()
-
-          const reservationsRes = await api
-            .get(`/admin/reservations?q[starts_with]=test`, adminHeaders)
-            .catch(console.log)
-
-          expect(reservationsRes.data.reservations.length).toBe(1)
-          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
-        })
-
-        it("filters by description using starts_with removes results", async () => {
+        it("filters by description using contains", async () => {
           const api = useApi()
 
           const reservationsRes = await api.get(
-            `/admin/reservations?q[starts_with]=description`,
-            adminHeaders
-          )
-
-          expect(reservationsRes.data.reservations.length).toBe(0)
-        })
-
-        it("filters by description using ends_with", async () => {
-          const api = useApi()
-
-          const reservationsRes = await api.get(
-            `/admin/reservations?q[ends_with]=test`,
-            adminHeaders
-          )
-
-          expect(reservationsRes.data.reservations.length).toBe(0)
-        })
-
-        it("filters by description using ends_with removes results", async () => {
-          const api = useApi()
-
-          const reservationsRes = await api.get(
-            `/admin/reservations?q[ends_with]=description`,
+            `/admin/reservations?description[contains]=descri`,
             adminHeaders
           )
 
           expect(reservationsRes.data.reservations.length).toBe(1)
           expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
-        })
-
-        it("filters by description using q and contains", async () => {
-          const api = useApi()
-
-          const reservationsRes = await api.get(
-            `/admin/reservations?q[contains]=descri`,
-            adminHeaders
-          )
-
-          const reservationsQueryRes = await api.get(
-            `/admin/reservations?q=descri`,
-            adminHeaders
-          )
-
-          expect(reservationsRes.data.reservations.length).toBe(1)
-          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
-
-          expect(reservationsQueryRes.data.reservations).toEqual(
-            reservationsRes.data.reservations
-          )
-        })
-
-        it("filters by description using q and contains removes results", async () => {
-          const api = useApi()
-
-          const reservationsRes = await api.get(
-            `/admin/reservations?q[contains]=descon`,
-            adminHeaders
-          )
-
-          const reservationsQueryRes = await api.get(
-            `/admin/reservations?q=descon`,
-            adminHeaders
-          )
-
-          expect(reservationsRes.data.reservations.length).toBe(0)
-          expect(reservationsQueryRes.data.reservations.length).toBe(0)
-        })
-
-        it("fails when multiple filters are passed", async () => {
-          const api = useApi()
-
-          const errorRes = await api
-            .get(
-              `/admin/reservations?q[ends_with]=test&q[starts_with]=test`,
-              adminHeaders
-            )
-            .catch((err) => err)
-
-          expect(JSON.parse(errorRes.response.data.message)).toEqual({
-            message: "q must be one of: StringSearchOperator,String",
-            details: {
-              String: [
-                "String validation failed: [object Object] is not a string",
-              ],
-              StringSearchOperator: [
-                "Only one of starts_with",
-                " ends_with is allowed",
-                " Only one of ends_with",
-                " starts_with is allowed",
-              ],
-            },
-          })
         })
       })
     })

@@ -139,6 +139,7 @@ export interface StringComparisonOperator {
   gt?: string
   gte?: string
   lte?: string
+  contains?: string
 }
 
 export interface NumericalComparisonOperator {
@@ -146,13 +147,6 @@ export interface NumericalComparisonOperator {
   gt?: number
   gte?: number
   lte?: number
-}
-
-export interface StringSearchOperator {
-  contains?: string
-  equals?: string
-  starts_with?: string
-  ends_with?: string
 }
 
 export interface AddressPayload {

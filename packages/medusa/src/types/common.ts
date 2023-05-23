@@ -166,28 +166,10 @@ export class StringComparisonOperator {
   @IsString()
   @IsOptional()
   lte?: string
-}
 
-export class StringSearchOperator {
   @IsString()
   @IsOptional()
-  @Validate(ExactlyOne, ["equals", "starts_with", "ends_with"])
   contains?: string
-
-  @IsString()
-  @IsOptional()
-  @Validate(ExactlyOne, ["contains", "starts_with", "ends_with"])
-  equals?: string
-
-  @IsString()
-  @IsOptional()
-  @Validate(ExactlyOne, ["contains", "equals", "ends_with"])
-  starts_with?: string
-
-  @IsString()
-  @IsOptional()
-  @Validate(ExactlyOne, ["contains", "equals", "starts_with"])
-  ends_with?: string
 }
 
 export class NumericalComparisonOperator {
