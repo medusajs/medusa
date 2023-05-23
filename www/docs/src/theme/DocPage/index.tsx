@@ -91,6 +91,8 @@ export default function DocPage(props: Props): JSX.Element {
     }
   })
 
+  console.log(sidebarName)
+
   return (
     <>
       <DocPageMetadata {...props} />
@@ -107,6 +109,7 @@ export default function DocPage(props: Props): JSX.Element {
           <DocsSidebarProvider name={sidebarName} items={sidebarItems}>
             <SidebarContext.Provider
               value={{
+                hasSidebar: sidebarName !== undefined,
                 hiddenSidebar,
                 setHiddenSidebar,
                 hiddenSidebarContainer,
