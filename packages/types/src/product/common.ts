@@ -72,6 +72,10 @@ export interface ProductVariantDTO {
   deleted_at: string | Date
 }
 
+export interface ProductCategoryDTO {
+  id: string
+}
+
 export interface ProductTagDTO {
   id: string
 }
@@ -121,8 +125,18 @@ export interface FilterableProductCollectionProps {
   id?: string | string[]
   title?: string
 }
+
 export interface FilterableProductVariantProps {
   id?: string | string[]
   sku?: string
   options?: { id?: string[] }
+}
+
+export interface FilterableProductCategoryProps {
+  id?: string | string[]
+  parent_category_id?:  string | string[] | null
+  handle?:  string | string[]
+  is_active?: boolean
+  is_internal?: boolean
+  include_descendants_tree?: boolean
 }

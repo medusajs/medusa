@@ -23,3 +23,4 @@ export class ProductRepository extends CustomRepository {}
 export class ProductTagRepository extends CustomRepository {}
 export class ProductCollectionRepository extends CustomRepository {}
 export class ProductVariantRepository extends CustomRepository {}
+export class ProductCategoryRepository extends CustomRepository {}

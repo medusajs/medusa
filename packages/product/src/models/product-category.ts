@@ -53,6 +53,9 @@ class ProductCategory {
   @Property({ columnType: "numeric", nullable: false, default: 0 })
   rank?: number
 
+  @Property({ columnType: "text", nullable: true })
+  parent_category_id?: string
+
   @ManyToOne(() => ProductCategory, { nullable: true })
   parent_category: ProductCategory
 

@@ -12,6 +12,7 @@ import {
   ProductCollectionRepository,
   ProductRepository,
   ProductTagRepository,
+  ProductCategoryRepository,
   ProductVariantRepository,
 } from "@repositories"
 import {
@@ -51,6 +52,7 @@ function loadDefaultRepositories({ container }) {
     productRepository: asClass(ProductRepository).singleton(),
     productVariantRepository: asClass(ProductVariantRepository).singleton(),
     productTagRepository: asClass(ProductTagRepository).singleton(),
+    productCategoryRepository: asClass(ProductCategoryRepository).singleton(),
     productCollectionRepository: asClass(
       ProductCollectionRepository
     ).singleton(),
