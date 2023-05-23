@@ -36,6 +36,25 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "category",
+      label: "Roadmaps",
+      link: {
+        type: "doc",
+        id: "roadmaps/index",
+      },
+      customProps: {
+        sidebar_icon: "map",
+      },
+      className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          id: "roadmaps/marketplace",
+          label: "Marketplace",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "Browse Docs",
       customProps: {

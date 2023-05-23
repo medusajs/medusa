@@ -56,6 +56,7 @@ import IconLightBulb from "./LightBulb"
 import IconLightBulbSolid from "./LightBulbSolid"
 import IconLightMode from "./LightMode"
 import IconLinkedIn from "./LinkedIn"
+import IconMap from "./Map"
 import IconNextjs from "./Nextjs"
 import IconPencilSquareSolid from "./PencilSquareSolid"
 import IconPuzzle from "./Puzzle"
@@ -150,6 +151,7 @@ export default {
   "light-bulb-solid": IconLightBulbSolid,
   "light-mode": IconLightMode,
   linkedin: IconLinkedIn,
+  map: IconMap,
   nextjs: IconNextjs,
   "pencil-square-solid": IconPencilSquareSolid,
   puzzle: IconPuzzle,
