@@ -108,6 +108,7 @@ export interface ProductOptionValueDTO {
  * Filters/Config (module API input filters and config)
  */
 export interface FilterableProductProps {
+  // Todo add top level operators
   id?: string | string[]
   tags?: { value?: string[] }
   categories?: {
@@ -134,8 +135,8 @@ export interface FilterableProductVariantProps {
 
 export interface FilterableProductCategoryProps {
   id?: string | string[]
-  parent_category_id?:  string | string[] | null
-  handle?:  string | string[]
+  parent_category_id?: string | string[] | null
+  handle?: string | string[]
   is_active?: boolean
   is_internal?: boolean
   include_descendants_tree?: boolean
