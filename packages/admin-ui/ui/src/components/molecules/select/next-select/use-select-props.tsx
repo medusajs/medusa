@@ -1,7 +1,7 @@
 import isEqual from "lodash/isEqual"
 import { useEffect, useState } from "react"
 import { ActionMeta, GroupBase, OnChangeValue, Props } from "react-select"
-import Components from "./components"
+import BaseComponents from "./components"
 import { formatOptionLabel, hasLabel } from "./utils"
 
 export const useSelectProps = <
@@ -64,7 +64,7 @@ export const useSelectProps = <
 
   return {
     label,
-    components: Components,
+    components: { ...BaseComponents, ...components },
     styles: {
       menuPortal: (base) => ({ ...base, zIndex: 60 }),
       ...styles,
