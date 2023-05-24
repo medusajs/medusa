@@ -1,4 +1,4 @@
-import React, { type ReactNode, useRef, useContext } from "react"
+import React, { type ReactNode, useRef } from "react"
 import clsx from "clsx"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
@@ -6,7 +6,7 @@ import { useLocation } from "@docusaurus/router"
 import DocSidebar from "@theme/DocSidebar"
 import type { Props } from "@theme/DocPage/Layout/Sidebar"
 import { SwitchTransition, CSSTransition } from "react-transition-group"
-import { SidebarContext } from "@site/src/context/sidebar"
+import { useSidebar } from "@site/src/providers/Sidebar"
 
 // Reset sidebar state when sidebar changes
 // Use React key to unmount/remount the children
@@ -25,7 +25,7 @@ export default function DocPageLayoutSidebar({
   hiddenSidebarContainer,
 }: Props): JSX.Element {
   const { pathname } = useLocation()
-  const sidebarContext = useContext(SidebarContext)
+  const sidebarContext = useSidebar()
   const { name } = useDocsSidebar()
   const sidebarRef = useRef(null)
 

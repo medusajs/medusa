@@ -1,12 +1,12 @@
-import React, { useContext } from "react"
+import React from "react"
 import clsx from "clsx"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
 import type { Props } from "@theme/DocPage/Layout/Main"
-import { SidebarContext } from "@site/src/context/sidebar"
+import { useSidebar } from "@site/src/providers/Sidebar"
 
 export default function DocPageLayoutMain({ children }: Props): JSX.Element {
   const sidebar = useDocsSidebar()
-  const sidebarContext = useContext(SidebarContext)
+  const sidebarContext = useSidebar()
   return (
     <main
       className={clsx(
