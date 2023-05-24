@@ -11,19 +11,21 @@ import type {
   WarningHandlerWithDefault,
 } from "rollup"
 import esbuild from "rollup-plugin-esbuild"
-import { DIST, ENV, SHARED_DEPENDENCIES, SRC } from "../constants"
+import { DIST, ENV, SHARED_DEPENDENCIES, SRC } from "./constants"
 import {
+  createLogger,
   createVirtualEntry,
   findExtensions,
   getExternalDependencies,
   getIdentifier,
-  log,
-} from "../utils"
+} from "./utils"
 
 type BuildOptions = {
   watch?: boolean
   minify?: boolean
 }
+
+const logger = createLogger()
 
 /**
  * Ignores circular dependencies that are part of node_modules
@@ -104,39 +106,99 @@ export async function build({ watch, minify = true }: BuildOptions) {
   if (watch) {
     const { watch: chokidar } = await import("chokidar")
 
-    const watcher = chokidar(SRC)
+    const currentWorkingDirectory = process.cwd()
+    const getRelativePath = (path: string) =>
+      path.replace(currentWorkingDirectory, ".")
 
+    /**
+     * We need to re-run creating the input options on every change
+     * to make sure that we add any new extensions that might have been added,
+     * and remove any extensions that might have been removed.
+     */
     const rebuild = async () => {
       const inputOptions = await createInputOptions(minify)
 
-      const bundle = await rollup(inputOptions)
+      try {
+        const bundle = await rollup(inputOptions)
 
-      await bundle.write(outputOptions)
+        await bundle.write(outputOptions)
 
-      await bundle.close()
+        await bundle.close()
+      } catch (error) {
+        logger.error(
+          `Failed to build extension bundle: ${error}. Waiting for changes before retrying...`,
+          {
+            clearScreen: true,
+            error: error,
+          }
+        )
+      }
     }
+
+    // Build the initial bundle
+    await rebuild()
+
+    const watcher = chokidar(SRC, {
+      ignoreInitial: true,
+    })
+
+    logger.info("watching for file changes...", {
+      clearScreen: true,
+    })
 
     watcher
       .on("change", async (file) => {
-        log.info(`File ${file} changed. Rebuilding extension bundle...`)
+        logger.info(
+          `File "${getRelativePath(
+            file
+          )}" was changed. Rebuilding extension bundle...`,
+          {
+            clearScreen: true,
+          }
+        )
 
         await rebuild()
       })
       .on("unlink", async (file) => {
-        log.info(`File ${file} removed. Rebuilding extension bundle...`)
+        logger.info(
+          `File "${getRelativePath(
+            file
+          )}" was removed. Rebuilding extension bundle...`,
+          {
+            clearScreen: true,
+          }
+        )
 
         await rebuild()
       })
       .on("add", async (file) => {
-        log.info(`File ${file} added. Rebuilding extension bundle...`)
+        logger.info(
+          `File "${getRelativePath(
+            file
+          )}" was added. Rebuilding extension bundle...`,
+          {
+            clearScreen: true,
+          }
+        )
 
         await rebuild()
       })
-      .on("error", (error) => {
-        log.error(
-          `Watcher error: ${error}. Waiting for changes before retrying...`
-        )
+
+    const handleQuit = async () => {
+      logger.info("Shutting down watcher...", {
+        clearScreen: true,
       })
+      watcher.close()
+      process.exit(0)
+    }
+
+    process.on("SIGINT", async () => {
+      await handleQuit()
+    })
+
+    process.on("SIGTERM", async () => {
+      await handleQuit()
+    })
   } else {
     let buildFailed = false
 
@@ -149,9 +211,11 @@ export async function build({ watch, minify = true }: BuildOptions) {
 
       await bundle.close()
 
-      log.info("Successfully built extension bundle.")
+      logger.info("Successfully built extension bundle.")
     } catch (error) {
-      log.error(`Failed to build extension bundle: ${error}`)
+      logger.error(`Failed to build extension bundle: ${error}`, {
+        error: error,
+      })
       buildFailed = true
     }
 

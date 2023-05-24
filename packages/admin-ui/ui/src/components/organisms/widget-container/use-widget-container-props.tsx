@@ -1,7 +1,6 @@
-import { WidgetProps } from "@medusajs/types"
+import type { ExtensionProps } from "@medusajs/admin-shared"
 import { useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { EntityMap, PropKeyMap } from "./types"
 
 type UseWidgetContainerProps<T extends keyof EntityMap> = {
@@ -14,7 +13,7 @@ export const useWidgetContainerProps = <T extends keyof EntityMap>({
   entity,
 }: UseWidgetContainerProps<T>) => {
   /** Feature Flags */
-  const featureFlags = useFeatureFlag()
+  // const featureFlags = useFeatureFlag()
 
   /** Navigation */
   const navigate = useNavigate()
@@ -38,9 +37,8 @@ export const useWidgetContainerProps = <T extends keyof EntityMap>({
   }
 
   /** Base props that are always passed to a widget */
-  const baseProps: WidgetProps = {
+  const baseProps: ExtensionProps = {
     notify,
-    featureFlags,
     navigate,
   }
 

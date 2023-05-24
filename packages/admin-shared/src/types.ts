@@ -1,4 +1,5 @@
 import type { ComponentType } from "react"
+import type { NavigateFunction } from "react-router-dom"
 import { extensionTypes, injectionZones } from "./constants"
 
 export type InjectionZone = typeof injectionZones[number]
@@ -15,6 +16,8 @@ export type PageConfig = {
   path: string
   title: string
 }
+
+export type ExtensionConfig = WidgetConfig | PageConfig
 
 export type WidgetExtension = {
   Component: React.ComponentType<any>
@@ -45,3 +48,15 @@ export type Route = {
 }
 
 export type Link = Pick<PageConfig, "path" | "title">
+
+type Notify = {
+  success: (title: string, message: string) => void
+  error: (title: string, message: string) => void
+  info: (title: string, message: string) => void
+  warning: (title: string, message: string) => void
+}
+
+export interface ExtensionProps {
+  navigate: NavigateFunction
+  notify: Notify
+}

@@ -33,7 +33,7 @@ export type EntityMap = {
   "gift_card.list": undefined
   // Stub
   custom_gift_card: GiftCard
-  // Pages
+  // Login
   "login.before": undefined
   "login.after": undefined
 }

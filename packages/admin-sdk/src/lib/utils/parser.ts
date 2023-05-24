@@ -9,7 +9,9 @@ import {
 } from "@medusajs/admin-shared"
 import fse from "fs-extra"
 import path from "path"
-import { log } from "./logger"
+import { createLogger } from "./logger"
+
+const logger = createLogger()
 
 /**
  * Finds all `js`, `ts`, `jsx`, and `tsx` files in the given directory
@@ -249,8 +251,8 @@ export async function findExtensions(directory: string) {
       })
 
       if (hasConfigExport && !hasComponentExport) {
-        log.warn(
-          `File "${file}" has a config export but no component export. If this is a extension make sure that the default export is a React component. Skipping...`
+        logger.warn(
+          `File "${file}" has a config export but no default component export. If this is an extension, make sure that the default export is a React component. Skipping...`
         )
       }
 

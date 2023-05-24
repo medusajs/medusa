@@ -1,3 +1,4 @@
+import { ExtensionProps } from "@medusajs/admin-shared"
 import type {
   Customer,
   CustomerGroup,
@@ -9,7 +10,6 @@ import type {
   Product,
   ProductCollection,
 } from "@medusajs/medusa"
-import { ExtensionProps } from "./extension"
 
 export interface OrderWidgetProps extends ExtensionProps {
   order: Order
