@@ -17,6 +17,10 @@ export class Migration20230517101848 extends Migration {
     )
 
     this.addSql(
+      'CREATE INDEX "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;'
+    )
+
+    this.addSql(
       'create table "product_category_product" ("product_id" text not null, "product_category_id" text not null, constraint "product_category_product_pkey" primary key ("product_id", "product_category_id"));'
     )
 
