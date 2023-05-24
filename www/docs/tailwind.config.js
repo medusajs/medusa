@@ -311,6 +311,10 @@ module.exports = {
               DEFAULT: "#687076",
               dark: "#7E7D86",
             },
+            muted: {
+              DEFAULT: "#889096",
+              dark: "#706F78",
+            },
           },
           support: {
             error: {
@@ -460,6 +464,28 @@ module.exports = {
               border: {
                 DEFAULT: "#DFE3E6",
                 dark: "#3E3E44",
+              },
+            },
+            red: {
+              bg: {
+                DEFAULT: "#FFE5E5",
+                dark: "#481A1D",
+                hover: {
+                  DEFAULT: "#FDD8D8",
+                  dark: "#541B1F",
+                },
+              },
+              text: {
+                DEFAULT: "#CD2B31",
+                dark: "#FF6369",
+              },
+              icon: {
+                DEFAULT: "#E5484D",
+                dark: "#E5484D",
+              },
+              border: {
+                DEFAULT: "#F9C6C6",
+                dark: "#671E22",
               },
             },
           },

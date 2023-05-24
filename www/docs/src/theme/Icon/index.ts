@@ -40,6 +40,7 @@ import IconCurrencyDollarSolid from "./CurrencyDollarSolid"
 import IconDarkMode from "./DarkMode"
 import IconDiscord from "./Discord"
 import IconDocumentText from "./DocumentText"
+import IconExclamationCircleSolid from "./ExclamationCircleSolid"
 import IconExternalLink from "./ExternalLink"
 import IconFlyingBox from "./FlyingBox"
 import IconFolder from "./Folder"
@@ -49,6 +50,7 @@ import IconGiftSolid from "./GiftSolid"
 import IconGitHub from "./GitHub"
 import IconGlobeEurope from "./GlobeEurope"
 import IconGlobeEuropeSolid from "./GlobeEuropeSolid"
+import IconInformationCircleSolid from "./InformationCircleSolid"
 import IconJavaScript from "./JavaScript"
 import IconKey from "./Key"
 import IconKeySolid from "./KeySolid"
@@ -76,6 +78,7 @@ import IconSparklesSolid from "./SparklesSolid"
 import IconSquaresPlus from "./SquaresPlus"
 import IconSquaresPlusSolid from "./SquaresPlusSolid"
 import IconStar from "./Star"
+import IconStarSolid from "./StarSolid"
 import IconStripe from "./Stripe"
 import IconSwatchSolid from "./SwatchSolid"
 import IconTagSolid from "./TagSolid"
@@ -84,6 +87,7 @@ import IconToolsSolid from "./ToolsSolid"
 import IconTwitter from "./Twitter"
 import IconUser from "./User"
 import IconUsersSolid from "./UsersSolid"
+import IconXCircleSolid from "./XCircleSolid"
 
 export type IconProps = {
   width?: number
@@ -135,6 +139,7 @@ export default {
   "dark-mode": IconDarkMode,
   discord: IconDiscord,
   "document-text": IconDocumentText,
+  "exclamation-circle-solid": IconExclamationCircleSolid,
   "external-link": IconExternalLink,
   "flying-box": IconFlyingBox,
   folder: IconFolder,
@@ -144,6 +149,7 @@ export default {
   github: IconGitHub,
   "globe-europe": IconGlobeEurope,
   "globe-europe-solid": IconGlobeEuropeSolid,
+  "information-circle-solid": IconInformationCircleSolid,
   javascript: IconJavaScript,
   key: IconKey,
   "key-solid": IconKeySolid,
@@ -171,6 +177,7 @@ export default {
   "squares-plus": IconSquaresPlus,
   "squares-plus-solid": IconSquaresPlusSolid,
   star: IconStar,
+  "star-solid": IconStarSolid,
   stripe: IconStripe,
   "swatch-solid": IconSwatchSolid,
   "tag-solid": IconTagSolid,
@@ -179,4 +186,5 @@ export default {
   twitter: IconTwitter,
   user: IconUser,
   "users-solid": IconUsersSolid,
+  "x-circle-solid": IconXCircleSolid,
 }

@@ -6,6 +6,8 @@ addHowToData: true
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
 
 # Install Medusa with create-medusa-app
 
@@ -166,8 +168,16 @@ If you chose a backend starter that installs the admin plugin by default, such a
 
 ---
 
-## What’s Next
+## Choose your Roadmap
 
-- [Check out Medusa's features](./modules/overview.mdx)
-- [Learn about backend configurations](./development/backend/configurations.md)
-- [Prepare environment for advanced development](./development/backend/prepare-environment.mdx)
+Based on what you're building, you can find a roadmap that can guide you during your development.
+
+<DocCard item={{
+  type: 'link',
+  href: '/roadmaps',
+  label: 'Roadmaps',
+  customProps: {
+    icon: Icons['map'],
+    description: "Find learning paths based on what you're building"
+  }
+}} />

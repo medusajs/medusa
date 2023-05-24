@@ -1,10 +1,17 @@
 import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import Feedback from '@site/src/components/Feedback';
 
 # Medusa Roadmaps
 
 This document guides you through your Medusa development based on your use case.
+
+:::note
+
+These roadmaps assume you already have a Medusa backend setup. If not, you can follow this guide to [get started](../create-medusa-app.mdx).
+
+:::
 
 ## Start Selling in 4 Steps
 
@@ -13,17 +20,8 @@ Looking to set up an ecommerce store and start selling hassle-free? This section
 <DocCardList colSize={6} items={[
   {
     type: 'link',
-    href: '/create-medusa-app',
-    label: 'Step 1: Create Ecommerce Backend',
-    customProps: {
-      icon: Icons['bolt-solid'],
-      description: 'Setup your ecommerce backend and admin dashboard.'
-    }
-  },
-  {
-    type: 'link',
     href: '/starters/nextjs-medusa-starter',
-    label: 'Step 2: Setup Next.js Storefront',
+    label: 'Step 1: Setup Next.js Storefront',
     customProps: {
       icon: Icons['nextjs'],
       description: 'Create a Next.js storefront and connect it to your Medusa backend.'
@@ -32,22 +30,23 @@ Looking to set up an ecommerce store and start selling hassle-free? This section
   {
     type: 'link',
     href: '/deployments/server',
-    label: 'Step 3: Deploy Backend',
+    label: 'Step 2: Deploy Backend',
     customProps: {
       icon: Icons['cloud-arrow-up'],
       description: 'Deploy your backend to your preferred hosting.'
     }
   },
-  {
-    type: 'link',
-    href: '/deployments/storefront',
-    label: 'Step 4: Deploy Storefront',
-    customProps: {
-      icon: Icons['cloud-arrow-up'],
-      description: 'Deploy your storefront to your preferred hosting.'
-    }
-  }
 ]} />
+
+<DocCard item={{
+  type: 'link',
+  href: '/deployments/storefront',
+  label: 'Step 3: Deploy Storefront',
+  customProps: {
+    icon: Icons['cloud-arrow-up'],
+    description: 'Deploy your storefront to your preferred hosting.'
+  }
+}} />
 
 ## Build a Custom Commerce Application
 
