@@ -40,7 +40,13 @@ To associate these entities with the `Store` entity, you need to extend and cust
   For example, to associate the `User` entity with the `Store` entity, create the file `src/models/user.ts` with the following content:
 
   ```ts title=src/models/user.ts
-  import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+  import { 
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+  } from "typeorm"
   import {
     User as MedusaUser,
   } from "@medusajs/medusa"
@@ -92,17 +98,26 @@ To associate these entities with the `Store` entity, you need to extend and cust
   ```ts title=src/migrations/<TIMESTAMP>_add-user-store-id.ts
   // ...
 
-  export class AddUserStoreId1681287255173 implements MigrationInterface {
+  export class AddUserStoreId1681287255173 
+    implements MigrationInterface {
       // ...
 
       public async up(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(`ALTER TABLE "user" ADD "store_id" character varying`)
-          await queryRunner.query(`CREATE INDEX "UserStoreId" ON "user" ("store_id") `)
+          await queryRunner.query(
+            `ALTER TABLE "user" ADD "store_id" character varying`
+          )
+          await queryRunner.query(
+            `CREATE INDEX "UserStoreId" ON "user" ("store_id")`
+          )
       }
 
       public async down(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(`DROP INDEX "public"."UserStoreId"`)
-          await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "store_id"`)
+          await queryRunner.query(
+            `DROP INDEX "public"."UserStoreId"`
+          )
+          await queryRunner.query(
+            `ALTER TABLE "user" DROP COLUMN "store_id"`
+          )
       }
 
   }
@@ -164,11 +179,17 @@ You can also extend services if you need to customize a functionality implemente
 
   To extend the user service, create the file `src/services/user.ts` with the following content:
 
+<!-- eslint-disable prefer-rest-params -->
+
   ```ts
   import { Lifetime } from "awilix"
-  import { UserService as MedusaUserService } from "@medusajs/medusa"
+  import { 
+    UserService as MedusaUserService,
+  } from "@medusajs/medusa"
   import { User } from "../models/user"
-  import { CreateUserInput as MedusaCreateUserInput } from "@medusajs/medusa/dist/types/user"
+  import { 
+    CreateUserInput as MedusaCreateUserInput,
+  } from "@medusajs/medusa/dist/types/user"
   import StoreRepository from "../repositories/store"
 
   type CreateUserInput = {
@@ -181,7 +202,6 @@ You can also extend services if you need to customize a functionality implemente
     protected readonly storeRepository_: typeof StoreRepository
   
     constructor(container, options) {
-      // @ts-expect-error prefer-rest-params
       super(...arguments)
       this.storeRepository_ = container.storeRepository
 
@@ -192,9 +212,14 @@ You can also extend services if you need to customize a functionality implemente
       }
     }
 
-    async create(user: CreateUserInput, password: string): Promise<User> {
+    async create(
+      user: CreateUserInput,
+      password: string
+    ): Promise<User> {
       if (!user.store_id) {
-        const storeRepo = this.manager_.withRepository(this.storeRepository_)
+        const storeRepo = this.manager_.withRepository(
+          this.storeRepository_
+        )
         let newStore = storeRepo.create()
         newStore = await storeRepo.save(newStore)
         user.store_id = newStore.id
