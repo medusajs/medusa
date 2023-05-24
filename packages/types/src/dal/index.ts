@@ -82,23 +82,27 @@ type FilterValue<T> =
   | FilterValue2<T>[]
   | null
 
-export type FilterQuery<T = any> = {
-  [Key in keyof T]?: T[Key] extends
-    | boolean
-    | number
-    | string
-    | bigint
-    | symbol
-    | Date
-    ? T[Key]
-    : T[Key] extends infer U
-    ? U extends { [x: number]: infer V }
-      ? V extends object
-        ? V
+type PrevLimit = [never, 1, 2, 3]
+
+export type FilterQuery<T = any, Prev extends number = 3> = Prev extends never
+  ? never
+  : {
+      [Key in keyof T]?: T[Key] extends
+        | boolean
+        | number
+        | string
+        | bigint
+        | symbol
+        | Date
+        ? T[Key] | OperatorMap<T[Key]>
+        : T[Key] extends infer U
+        ? U extends { [x: number]: infer V }
+          ? V extends object
+            ? FilterQuery<Partial<V>, PrevLimit[Prev]>
+            : never
+          : never
         : never
-      : never
-    : never
-}
+    }
 
 declare enum QueryOrder {
   ASC = "ASC",
