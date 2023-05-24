@@ -31,7 +31,13 @@ npm install medusa-file-local
 ```js
 const plugins = [
   // ...
-  `medusa-file-local`
+  {
+    resolve: `medusa-file-local`,
+    options: {
+      upload_dir: 'uploads/images', // optional
+      backend_url: 'http://localhost:9000' // optional
+    }
+  },
 ]
 ```
 
