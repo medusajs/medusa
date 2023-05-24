@@ -1,5 +1,5 @@
 {
-  "name": "@medusa/product",
+  "name": "@medusajs/product",
   "version": "0.0.1",
   "description": "Medusa Product module",
   "main": "dist/index.js",
