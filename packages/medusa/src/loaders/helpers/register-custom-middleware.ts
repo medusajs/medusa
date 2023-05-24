@@ -18,14 +18,13 @@ type CustomMiddlewareExports = {
 export function registerMiddleware(
   pluginDetails: PluginDetails,
   app: Express,
-  rootDirectory = "",
   container: MedusaContainer,
   activityId: string
 ): Express {
   const logger = container.resolve<Logger>("logger")
   logger.progress(
     activityId,
-    `Registering custom endpoints for ${pluginDetails.name}`
+    `Registering custom middleware for ${pluginDetails.name}`
   )
   try {
     const middlewares = glob.sync(
@@ -33,13 +32,13 @@ export function registerMiddleware(
       {}
     )
 
-    const isMiddleware = (middleware: CustomMiddlewareExports) =>
+    const isCustomMiddleware = (middleware: CustomMiddlewareExports) =>
       "default" in middleware && "config" in middleware
 
     for (const middlewareFile of middlewares) {
       const middleware = require(middlewareFile)
 
-      if (!isMiddleware(middleware)) {
+      if (!isCustomMiddleware(middleware)) {
         continue
       }
 
@@ -51,10 +50,12 @@ export function registerMiddleware(
 
     return app
   } catch (err) {
-    if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
+    if (
+      err.message !== `Cannot find module '${pluginDetails.resolve}/middlewares'`
+    ) {
       logger.progress(
         activityId,
-        `No customer endpoints registered for ${pluginDetails.name}`
+        `Failed to register custom middleware for ${pluginDetails.name}`
       )
     }
 

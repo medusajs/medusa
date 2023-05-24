@@ -107,7 +107,7 @@ export function registerApi(
     if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
       logger.progress(
         activityId,
-        `No customer endpoints registered for ${pluginDetails.name}`
+        `Failed to register custom endpoints for ${pluginDetails.name}`
       )
     }
 

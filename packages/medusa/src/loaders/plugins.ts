@@ -36,6 +36,7 @@ import {
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
 import { registerApi } from "./helpers/register-custom-api"
+import { registerMiddleware } from "./helpers/register-custom-middleware"
 import logger from "./logger"
 
 type Options = {
@@ -79,13 +80,8 @@ export default async ({
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       await registerMedusaApi(pluginDetails, container)
-      await registerApi(
-        pluginDetails,
-        app,
-        rootDirectory,
-        container,
-        activityId
-      )
+      registerMiddleware(pluginDetails, app, container, activityId)
+      registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
     })
