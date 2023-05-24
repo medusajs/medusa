@@ -561,20 +561,25 @@ describe("Inventory Items endpoints", () => {
           adminHeaders
         )
 
-        expect(response.data.inventory_items).toHaveLength(3)
-        expect(response.data.inventory_items).toEqual(
+        expect(response.data.inventory_items).not.toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              sku: "Test Sku",
-            }),
-            expect.objectContaining({
-              description: "Test Desc",
-            }),
-            expect.objectContaining({
-              title: "Test Item",
+              sku: "MY_SKU",
             }),
           ])
         )
+        expect(response.data.inventory_items).toHaveLength(3)
+        expect(response.data.inventory_items).toEqual([
+          expect.objectContaining({
+            sku: "Test Sku",
+          }),
+          expect.objectContaining({
+            description: "Test Desc",
+          }),
+          expect.objectContaining({
+            title: "Test Item",
+          }),
+        ])
       })
     })
 
