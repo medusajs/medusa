@@ -1,21 +1,22 @@
-import { InjectionZones } from "@medusajs/types"
+import { PageRegistry, WidgetRegistry } from "@medusajs/admin-shared"
 import { PropsWithChildren } from "react"
 import { HelmetProvider } from "react-helmet-async"
 import { LayeredModalProvider } from "../components/molecules/modal/layered-modal"
 import { SteppedProvider } from "../components/molecules/modal/stepped-modal"
 import { FeatureFlagProvider } from "./feature-flag-provider"
-import { InjectionZoneProvider } from "./injection-zone-provider"
+import { WidgetProvider } from "./injection-zone-provider"
 import { MedusaProvider } from "./medusa-provider"
 import { PollingProvider } from "./polling-provider"
 
 type Props = PropsWithChildren<{
-  injectionZones: InjectionZones
+  widgetRegistry: WidgetRegistry
+  pageRegistry: PageRegistry
 }>
 
 /**
  * This component wraps all providers into a single component.
  */
-export const Providers = ({ injectionZones, children }: Props) => {
+export const Providers = ({ widgetRegistry, children }: Props) => {
   return (
     <HelmetProvider>
       <MedusaProvider>
@@ -23,9 +24,9 @@ export const Providers = ({ injectionZones, children }: Props) => {
           <PollingProvider>
             <SteppedProvider>
               <LayeredModalProvider>
-                <InjectionZoneProvider injectionZoneMap={injectionZones}>
+                <WidgetProvider registry={widgetRegistry}>
                   {children}
-                </InjectionZoneProvider>
+                </WidgetProvider>
               </LayeredModalProvider>
             </SteppedProvider>
           </PollingProvider>

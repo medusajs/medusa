@@ -1,0 +1,16 @@
+{
+  "name": "@medusajs/admin-shared",
+  "version": "0.0.1",
+  "author": "Kasper Kristensen <kasper@medusajs.com>",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "react": "18.2.0",
+    "typescript": "5.0.4"
+  },
+  "packageManager": "yarn@3.2.1"
+}

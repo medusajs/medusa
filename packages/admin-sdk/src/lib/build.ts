@@ -4,31 +4,33 @@ import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
 import terser from "@rollup/plugin-terser"
-import fse from "fs-extra"
-import path from "path"
-import colors from "picocolors"
+import virtual from "@rollup/plugin-virtual"
 import type {
-  InputPluginOption,
-  RollupOptions,
+  InputOptions,
+  OutputOptions,
   WarningHandlerWithDefault,
 } from "rollup"
 import esbuild from "rollup-plugin-esbuild"
-
-const SHARED_DEPENDENCIES = [
-  "@tanstack/react-query",
-  "@tanstack/react-table",
-  "@medusajs/medusa-js",
-  "medusa-react",
-  "react",
-]
+import { DIST, ENV, SHARED_DEPENDENCIES, SRC } from "../constants"
+import {
+  createVirtualEntry,
+  findExtensions,
+  getExternalDependencies,
+  getIdentifier,
+  log,
+} from "../utils"
 
 type BuildOptions = {
   watch?: boolean
   minify?: boolean
 }
 
-const env = process.env.NODE_ENV
-
+/**
+ * Ignores circular dependencies that are part of node_modules
+ * @param warning - warning object
+ * @param warn - warn function
+ * @returns void
+ */
 const onwarn: WarningHandlerWithDefault = (warning, warn) => {
   if (
     warning.code === "CIRCULAR_DEPENDENCY" &&
@@ -40,86 +42,119 @@ const onwarn: WarningHandlerWithDefault = (warning, warn) => {
   warn(warning)
 }
 
-export async function build({ watch, minify = true }: BuildOptions) {
-  const indexFilePath = path.join(process.cwd(), "src", "admin", "index")
+const outputOptions: OutputOptions = {
+  dir: DIST,
+  chunkFileNames: "[name].js",
+  format: "esm",
+  exports: "named",
+  preserveModules: true,
+}
 
-  let language: "ts" | "js" = "js"
+/**
+ * Creates the input options for Rollup.
+ */
+async function createInputOptions(minify?: boolean): Promise<InputOptions> {
+  const extensions = await findExtensions(SRC)
 
-  if (fse.existsSync(`${indexFilePath}.ts`)) {
-    language = "ts"
+  if (!extensions?.length) {
+    return null
   }
 
-  const entry = `${indexFilePath}.${language}`
+  const identifier = await getIdentifier()
 
-  const plugins: InputPluginOption = [
-    esbuild({ include: /\.tsx?$/, sourceMap: true }),
-    nodeResolve({ preferBuiltins: true, browser: true }),
-    commonjs({
-      extensions: [".mjs", ".js", ".json", ".node", ".jsx", ".ts", ".tsx"],
-    }),
-    json(),
-    replace({
-      values: {
-        "process.env.NODE_ENV": JSON.stringify(env),
-      },
-      preventAssignment: true,
-    }),
-    alias({
-      entries: SHARED_DEPENDENCIES.reduce((acc, dep) => {
-        acc[dep] = require.resolve(dep)
+  const virtualEntry = await createVirtualEntry(extensions, identifier)
 
-        return acc
-      }, {} as { [key: string]: string }),
-    }),
-  ]
+  const external = await getExternalDependencies()
 
-  if (minify) {
-    plugins.push(terser())
-  }
+  return {
+    input: [...extensions, "entry"],
+    plugins: [
+      esbuild({ include: /\.tsx?$/, sourceMap: true }),
+      nodeResolve({ preferBuiltins: true, browser: true }),
+      commonjs({
+        extensions: [".mjs", ".js", ".json", ".node", ".jsx", ".ts", ".tsx"],
+      }),
+      json(),
+      replace({
+        values: {
+          "process.env.NODE_ENV": JSON.stringify(ENV),
+        },
+        preventAssignment: true,
+      }),
+      alias({
+        entries: SHARED_DEPENDENCIES.reduce((acc, dep) => {
+          acc[dep] = require.resolve(dep)
 
-  const dist = path.resolve(process.cwd(), "dist", "admin")
-
-  const rollupOptions: RollupOptions = {
-    input: entry,
-    output: {
-      dir: dist,
-      chunkFileNames: "[name].js",
-      format: "esm",
-      exports: "named",
-    },
-    plugins,
+          return acc
+        }, {} as { [key: string]: string }),
+      }),
+      virtual({
+        entry: virtualEntry,
+      }),
+      minify && terser(),
+    ],
     onwarn,
-    external: SHARED_DEPENDENCIES,
+    external,
   }
+}
+
+export async function build({ watch, minify = true }: BuildOptions) {
+  const { rollup } = await import("rollup")
 
   if (watch) {
-    const { watch: rollupWatch } = await import("rollup")
+    const { watch: chokidar } = await import("chokidar")
 
-    const watcher = rollupWatch({
-      ...rollupOptions,
-      watch: {
-        clearScreen: true,
-      },
-    })
+    const watcher = chokidar(SRC)
 
-    process.on("SIGTERM", () => {
-      watcher.close()
-    })
+    const rebuild = async () => {
+      const inputOptions = await createInputOptions(minify)
 
-    watcher.on("event", (event) => {
-      if (event.code === "BUNDLE_END") {
-        console.log(
-          colors.green("[@medusajs/admin-sdk]: Extension bundle updated")
+      const bundle = await rollup(inputOptions)
+
+      await bundle.write(outputOptions)
+
+      await bundle.close()
+    }
+
+    watcher
+      .on("change", async (file) => {
+        log.info(`File ${file} changed. Rebuilding extension bundle...`)
+
+        await rebuild()
+      })
+      .on("unlink", async (file) => {
+        log.info(`File ${file} removed. Rebuilding extension bundle...`)
+
+        await rebuild()
+      })
+      .on("add", async (file) => {
+        log.info(`File ${file} added. Rebuilding extension bundle...`)
+
+        await rebuild()
+      })
+      .on("error", (error) => {
+        log.error(
+          `Watcher error: ${error}. Waiting for changes before retrying...`
         )
-      }
-    })
+      })
   } else {
-    const { rollup } = await import("rollup")
+    let buildFailed = false
 
-    const bundle = await rollup(rollupOptions)
+    try {
+      const rollupOptions = await createInputOptions(minify)
 
-    await bundle.write({
-      dir: dist,
-    })
+      const bundle = await rollup(rollupOptions)
+
+      await bundle.write(outputOptions)
+
+      await bundle.close()
+
+      log.info("Successfully built extension bundle.")
+    } catch (error) {
+      log.error(`Failed to build extension bundle: ${error}`)
+      buildFailed = true
+    }
+
+    process.exit(buildFailed ? 1 : 0)
   }
 }

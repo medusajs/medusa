@@ -56,7 +56,7 @@ import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
@@ -199,7 +199,7 @@ const OrderDetails = () => {
   useHotkeys("esc", () => navigate("/a/orders"))
   useHotkeys("command+i", handleCopy)
 
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   const handleDeleteOrder = async () => {
     const shouldDelete = await dialog({

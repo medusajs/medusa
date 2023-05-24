@@ -1,9 +1,11 @@
 import fse from "fs-extra"
-import { dirname, relative, resolve } from "path"
+import { dirname, join, relative, resolve } from "path"
 import dedent from "ts-dedent"
 
+const pathToEntry = join("dist", "admin", "_virtual", "_virtual_entry.js")
+
 async function getLocalExtensions() {
-  const entry = resolve(process.cwd(), "dist", "admin", "index.js")
+  const entry = resolve(process.cwd(), pathToEntry)
 
   const hasLocalEntry = await fse.pathExists(entry)
 
@@ -45,7 +47,7 @@ async function getPluginExtensions(): Promise<string[] | undefined> {
 
   const pluginExtensions = await Promise.all(
     pluginPathsResolved.map(async (p) => {
-      const entry = resolve(p, "dist", "admin", "index.js")
+      const entry = resolve(p, pathToEntry)
 
       const hasEntry = await fse.pathExists(entry)
 
@@ -87,8 +89,10 @@ async function writeTailwindConfigContent(
   // In case there are no extensions, we write an empty module
   if (!extensionPaths || extensionPaths.length === 0) {
     const empty = dedent`module.exports = {
-      content: []
-    }`
+      content: [],
+    }
+    
+    `
 
     await fse.writeFile(content, empty)
     return
@@ -101,15 +105,19 @@ async function writeTailwindConfigContent(
    */
   const relativePaths = getRelativePaths(extensionPaths, config)
 
-  const dirNames = relativePaths.map((p) => {
-    return dirname(p)
-  })
+  const dirNames = relativePaths
+    .map((p) => {
+      return dirname(p)
+    })
+    .map((p) => {
+      return p.replace(/_virtual$/, "")
+    })
 
   const module = dedent`
     module.exports = {
       content: [
-        ${dirNames.map((d) => `"${d}/**/*.{js,ts,jsx,tsx}",\n        `)}
-      ] 
+        ${dirNames.map((d) => `"${d}/**/*.{js,ts,jsx,tsx}",`).join(`\n`)}
+      ],
     }
     
   `

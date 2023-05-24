@@ -23,7 +23,7 @@ import CustomersListTable from "../../../components/templates/customer-group-tab
 import EditCustomersTable from "../../../components/templates/customer-group-table/edit-customers-table"
 import useQueryFilters from "../../../hooks/use-query-filters"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import CustomerGroupModal from "./customer-group-modal"
 
@@ -236,7 +236,7 @@ function CustomerGroupDetails() {
   const navigate = useNavigate()
 
   const { customer_group, isLoading, error } = useAdminCustomerGroup(id!)
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   if (error) {
     const errorStatus = getErrorStatus(error)
