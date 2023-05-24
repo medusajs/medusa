@@ -44,7 +44,7 @@ const plugins = [
     resolve: `medusa-file-local`,
     options: {
       // optional
-    }
+    },
   },
 ]
 ```
