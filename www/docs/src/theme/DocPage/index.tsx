@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React from "react"
 import clsx from "clsx"
 import {
   HtmlClassNameProvider,
   ThemeClassNames,
   PageMetadata,
-  prefersReducedMotion,
 } from "@docusaurus/theme-common"
 import {
   docVersionSearchTag,
@@ -16,7 +15,6 @@ import DocPageLayout from "@theme/DocPage/Layout"
 import NotFound from "@theme/NotFound"
 import SearchMetadata from "@theme/SearchMetadata"
 import type { Props } from "@theme/DocPage"
-import { SidebarContext } from "@site/src/context/sidebar"
 import SidebarProvider from "@site/src/providers/Sidebar"
 
 function DocPageMetadata(props: Props): JSX.Element {

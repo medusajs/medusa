@@ -63,7 +63,6 @@ export default function DocPageLayoutSidebar({
       }}
       onMouseUp={(e) => {
         const target = e.target as Element
-        console.log("here", target.classList)
         if (
           target.classList.contains("menu__list-item") ||
           target.parentElement.classList.contains("menu__list-item")
