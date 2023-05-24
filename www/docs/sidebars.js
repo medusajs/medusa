@@ -37,10 +37,10 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Roadmaps",
+      label: "Recipes",
       link: {
         type: "doc",
-        id: "roadmaps/index",
+        id: "recipes/index",
       },
       customProps: {
         sidebar_icon: "map",
@@ -49,12 +49,12 @@ module.exports = {
       items: [
         {
           type: "doc",
-          id: "roadmaps/marketplace",
+          id: "recipes/marketplace",
           label: "Marketplace",
         },
         {
           type: "doc",
-          id: "roadmaps/subscriptions",
+          id: "recipes/subscriptions",
           label: "Subscriptions",
         },
       ],
