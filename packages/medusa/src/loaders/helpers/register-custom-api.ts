@@ -1,5 +1,5 @@
 import { Logger, MedusaContainer } from "@medusajs/types"
-import { Express } from "express"
+import { Express, NextFunction } from "express"
 import glob from "glob"
 import { parse } from "path"
 import { PluginDetails } from "../plugins"
@@ -7,12 +7,16 @@ import { PluginDetails } from "../plugins"
 type CustomEndpointConfig = {
   method: string
   path?: string
-  middlewares?: (req, res, next) => Promise<void>[]
+  middlewares?: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => Promise<void>[]
 }
 
 type CustomEndpointExports = {
   config: CustomEndpointConfig
-  default: any
+  default: (req: Request, res: Response) => Promise<void>
 }
 
 function formatEndpointPath(
@@ -75,16 +79,19 @@ export function registerApi(
     const routes = glob.sync(`${pluginDetails.resolve}/api/**/[!__]*.js`, {})
     const legacyRoutes = require(`${pluginDetails.resolve}/api`)
 
-    // compatibility with old api
+    // Compatibility with old API
     if ("default" in legacyRoutes) {
       const routes = legacyRoutes.default
       app.use("/", routes(rootDirectory, pluginDetails))
     }
 
+    const isCustomEndpoint = (endpoint: CustomEndpointExports) =>
+      "default" in endpoint && "config" in endpoint
+
     for (const route of routes) {
       const customEndpoint = require(route)
 
-      if (!("default" in customEndpoint) || !("config" in customEndpoint)) {
+      if (!isCustomEndpoint(customEndpoint)) {
         continue
       }
 
@@ -92,11 +99,7 @@ export function registerApi(
 
       const path = formatEndpointPath(route, config)
 
-      if (config.middlewares?.length) {
-        app.use(path, config.middlewares)
-      }
-
-      app[config.method.toLowerCase()](path, handler)
+      app[config.method.toLowerCase()](path, config.middlewares ?? [], handler)
     }
 
     return app

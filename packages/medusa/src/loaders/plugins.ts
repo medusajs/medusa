@@ -79,7 +79,13 @@ export default async ({
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       await registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory, container, activityId)
+      await registerApi(
+        pluginDetails,
+        app,
+        rootDirectory,
+        container,
+        activityId
+      )
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
     })
