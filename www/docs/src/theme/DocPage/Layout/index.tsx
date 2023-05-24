@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import {
   useDocsSidebar,
   useQueryStringValue,
@@ -8,16 +8,16 @@ import BackToTopButton from "@theme/BackToTopButton"
 import DocPageLayoutSidebar from "@theme/DocPage/Layout/Sidebar"
 import DocPageLayoutMain from "@theme/DocPage/Layout/Main"
 import type { Props } from "@theme/DocPage/Layout"
-import { SidebarContext } from "@site/src/context/sidebar"
 import clsx from "clsx"
-import Notification from "@site/src/components/Notification"
 import Rating from "@site/src/components/Rating"
 import { useLearningPath } from "@site/src/providers/LearningPath"
 import LearningStep from "@site/src/components/LearningPath/LearningStep"
+import { useSidebar } from "@site/src/providers/Sidebar"
+import Notification from "@site/src/components/Notification"
 
 export default function DocPageLayout({ children }: Props): JSX.Element {
   const sidebar = useDocsSidebar()
-  const sidebarContext = useContext(SidebarContext)
+  const sidebarContext = useSidebar()
   const isOnboarding = useQueryStringValue("ref") === "onboarding"
   const [showNotification, setShowNotification] = useState(isOnboarding)
   const { path } = useLearningPath()
