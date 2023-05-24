@@ -44,17 +44,17 @@ To associate these entities with the `Store` entity, you need to extend and cust
   import {
     User as MedusaUser,
   } from "@medusajs/medusa"
-  import { Store } from "./store";
-
+  import { Store } from "./store"
+  
   @Entity()
   export class User extends MedusaUser {
     @Index("UserStoreId")
     @Column({ nullable: true })
-    store_id?: string;
-
+    store_id?: string
+  
     @ManyToOne(() => Store, (store) => store.members)
-    @JoinColumn({ name: 'store_id', referencedColumnName: 'id' })
-    store?: Store;
+    @JoinColumn({ name: "store_id", referencedColumnName: "id" })
+    store?: Store
   }
   ```
 
@@ -90,19 +90,19 @@ To associate these entities with the `Store` entity, you need to extend and cust
   This creates a file in the `src/migrations` directory of the format `<TIMESTAMP>_add-user-store-id.ts`. Replace the `up` and `down` methods in that file with the methods here:
 
   ```ts title=src/migrations/<TIMESTAMP>_add-user-store-id.ts
-  //...
+  // ...
 
   export class AddUserStoreId1681287255173 implements MigrationInterface {
-      //...
+      // ...
 
       public async up(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(`ALTER TABLE "user" ADD "store_id" character varying`);
-          await queryRunner.query(`CREATE INDEX "UserStoreId" ON "user" ("store_id") `);
+          await queryRunner.query(`ALTER TABLE "user" ADD "store_id" character varying`)
+          await queryRunner.query(`CREATE INDEX "UserStoreId" ON "user" ("store_id") `)
       }
 
       public async down(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(`DROP INDEX "public"."UserStoreId"`);
-          await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "store_id"`);
+          await queryRunner.query(`DROP INDEX "public"."UserStoreId"`)
+          await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "store_id"`)
       }
 
   }
@@ -178,8 +178,8 @@ You can also extend services if you need to customize a functionality implemente
   class UserService extends MedusaUserService {
     static LIFE_TIME = Lifetime.SCOPED
     protected readonly loggedInUser_: User | null
-    protected readonly storeRepository_: typeof StoreRepository;
-
+    protected readonly storeRepository_: typeof StoreRepository
+  
     constructor(container, options) {
       // @ts-expect-error prefer-rest-params
       super(...arguments)
