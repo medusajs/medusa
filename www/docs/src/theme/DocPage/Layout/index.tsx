@@ -25,7 +25,7 @@ export default function DocPageLayout({ children }: Props): JSX.Element {
   const handleRating = () => {
     setTimeout(() => {
       setShowNotification(false)
-    }, 3000)
+    }, 1500)
   }
 
   return (

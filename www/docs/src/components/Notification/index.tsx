@@ -46,7 +46,7 @@ const Notification: React.FC<NotificationProps> = ({
         placement === "top" && "tw-top-1",
         "tw-px-[10px] tw-pt-[10px] tw-pb-1",
         "tw-opacity-100 tw-transition-opacity tw-duration-200 tw-ease-ease",
-        !show && "tw-opacity-0",
+        !show && "!tw-opacity-0",
         className
       )}
     >
