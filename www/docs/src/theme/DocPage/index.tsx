@@ -17,6 +17,7 @@ import NotFound from "@theme/NotFound"
 import SearchMetadata from "@theme/SearchMetadata"
 import type { Props } from "@theme/DocPage"
 import { SidebarContext } from "@site/src/context/sidebar"
+import LearningPathProvider from "@site/src/providers/LearningPath"
 
 function DocPageMetadata(props: Props): JSX.Element {
   const { versionMetadata } = props
@@ -107,20 +108,22 @@ export default function DocPage(props: Props): JSX.Element {
       >
         <DocsVersionProvider version={versionMetadata}>
           <DocsSidebarProvider name={sidebarName} items={sidebarItems}>
-            <SidebarContext.Provider
-              value={{
-                hasSidebar: sidebarName !== undefined,
-                hiddenSidebar,
-                setHiddenSidebar,
-                hiddenSidebarContainer,
-                setHiddenSidebarContainer,
-                floatingSidebar,
-                setFloatingSidebar,
-                onCollapse: toggleSidebar,
-              }}
-            >
-              <DocPageLayout>{docElement}</DocPageLayout>
-            </SidebarContext.Provider>
+            <LearningPathProvider>
+              <SidebarContext.Provider
+                value={{
+                  hasSidebar: sidebarName !== undefined,
+                  hiddenSidebar,
+                  setHiddenSidebar,
+                  hiddenSidebarContainer,
+                  setHiddenSidebarContainer,
+                  floatingSidebar,
+                  setFloatingSidebar,
+                  onCollapse: toggleSidebar,
+                }}
+              >
+                <DocPageLayout>{docElement}</DocPageLayout>
+              </SidebarContext.Provider>
+            </LearningPathProvider>
           </DocsSidebarProvider>
         </DocsVersionProvider>
       </HtmlClassNameProvider>

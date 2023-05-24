@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
-// import "./index.css"
 
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"

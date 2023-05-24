@@ -6,7 +6,7 @@ import IconXCircleSolid from "@site/src/theme/Icon/XCircleSolid"
 import clsx from "clsx"
 import React from "react"
 
-type NotificationProps = {
+export type NotificationProps = {
   type?: "info" | "error" | "warning" | "success"
   title: string
   text?: string
@@ -16,6 +16,7 @@ type NotificationProps = {
   placement?: "top" | "bottom"
   show?: boolean
   setShow?: (value: boolean) => any
+  onClose?: () => any
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Notification: React.FC<NotificationProps> = ({
@@ -28,9 +29,11 @@ const Notification: React.FC<NotificationProps> = ({
   placement = "bottom",
   show = true,
   setShow,
+  onClose,
 }) => {
   const handleClose = () => {
     setShow?.(false)
+    onClose?.()
   }
 
   return (

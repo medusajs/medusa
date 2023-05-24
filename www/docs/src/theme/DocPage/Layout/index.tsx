@@ -12,12 +12,15 @@ import { SidebarContext } from "@site/src/context/sidebar"
 import clsx from "clsx"
 import Notification from "@site/src/components/Notification"
 import Rating from "@site/src/components/Rating"
+import { useLearningPath } from "@site/src/providers/LearningPath"
+import LearningStep from "@site/src/components/LearningPath/LearningStep"
 
 export default function DocPageLayout({ children }: Props): JSX.Element {
   const sidebar = useDocsSidebar()
   const sidebarContext = useContext(SidebarContext)
   const isOnboarding = useQueryStringValue("ref") === "onboarding"
   const [showNotification, setShowNotification] = useState(isOnboarding)
+  const { path } = useLearningPath()
 
   const handleRating = () => {
     setTimeout(() => {
@@ -42,7 +45,7 @@ export default function DocPageLayout({ children }: Props): JSX.Element {
           hiddenSidebarContainer={sidebarContext?.hiddenSidebarContainer}
         >
           {children}
-          {isOnboarding && (
+          {isOnboarding && !path && (
             <Notification
               title="Thank you for installing Medusa!"
               text="Please rate your onboarding experience"
@@ -53,6 +56,7 @@ export default function DocPageLayout({ children }: Props): JSX.Element {
               <Rating event="rating_onboarding" onRating={handleRating} />
             </Notification>
           )}
+          {path && <LearningStep />}
         </DocPageLayoutMain>
       </div>
     </Layout>

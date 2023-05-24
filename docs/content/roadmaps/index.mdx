@@ -2,10 +2,13 @@ import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import Feedback from '@site/src/components/Feedback';
+import LearningPath from '@site/src/components/LearningPath';
+import LargeCard from '@site/src/components/LargeCard';
+import Button from '@site/src/components/Button';
 
 # Medusa Roadmaps
 
-This document guides you through your Medusa development based on your use case.
+This document provides you resources for different paths based on what you're building with Medusa.
 
 :::note
 
@@ -13,9 +16,28 @@ These roadmaps assume you already have a Medusa backend setup. If not, you can f
 
 :::
 
-## Start Selling in 4 Steps
+## Path 1: Start Selling in 3 Steps
 
 Looking to set up an ecommerce store and start selling hassle-free? This section provides you with the steps to get you up and running!
+
+<!--
+
+<LearningPath pathName="simple-quickstart" className="tw-mb-1">
+  <LargeCard
+    Icon={Icons['rocket-launch']}
+    title='Start Selling in 3 Steps'
+  >
+
+  1. Create a Next.js storefront
+  2. Deploy your backend to your preferred hosting.
+  3. Deploy your frontend to your preferred hosting.
+
+
+  <Button>Start Path</Button>
+  </LargeCard>
+</LearningPath>
+
+-->
 
 <DocCardList colSize={6} items={[
   {
@@ -48,7 +70,9 @@ Looking to set up an ecommerce store and start selling hassle-free? This section
   }
 }} />
 
-## Build a Custom Commerce Application
+---
+
+## Path 2: Build a Custom Commerce Application
 
 Are you building a custom commerce application? The guides in this section give you an overview of how you can implement common use cases.
 
@@ -65,7 +89,7 @@ Are you building a custom commerce application? The guides in this section give 
   {
     type: 'link',
     href: '/roadmaps/subscriptions',
-    label: 'Build Subscription-based Purchases',
+    label: 'Build Subscription Purchases',
     customProps: {
       icon: Icons['credit-card-solid'],
       description: 'Learn how you can implement subscription-based purchase in Medusa.'
@@ -80,9 +104,11 @@ Are you building a custom commerce application? The guides in this section give 
    negativeQuestion="What was your use case?"
 />
 
+---
+
 <!-- vale docs.HeadingPunctuation = NO -->
 
-## Can't find your use case?
+## Can't find your path?
 
 <!-- vale docs.HeadingPunctuation = YES -->
 
@@ -103,7 +129,7 @@ Medusa is a customizable commerce solution that can be used to build any custom 
     href: '#',
     label: 'Medusa Development',
     customProps: {
-      icon: Icons['credit-card-solid'],
+      icon: Icons['server-stack-solid'],
       description: "Learn how about Medusa's architecture and how to customize it."
     }
   },

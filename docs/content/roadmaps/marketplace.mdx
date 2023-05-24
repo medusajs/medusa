@@ -141,13 +141,11 @@ Throughout your development, you'll likely need access to the logged-in user. Fo
 
 After associating entities with stores, you'll need to customize how certain data management functionalities are implemented in the Medusa core package.
 
-For example, when a new user is added, you need to ensure that it's associated either with a new store or with the store of the logged-in user. Another example is associating a new product with the logged-in user's store.
+For example, when a new user is created, you need to ensure that it's associated either with a new store or with the store of the logged-in user. Another example is associating a new product with the logged-in user's store.
 
-Functionalities related to each entity are created in Services. Services are classes that contain helper methods, such as retrieve or update methods. Each service is focused on a single entity. For example, the `UserService` class contains helper methods for the `User` entity.
+You can customize these functionalities by extending services. Services are classes that contain helper methods specific to an entity. For example, the `UserService` is used to manage functionalities related to the `User` entity, such as creating a user.
 
-When a new user is added using the backend's REST APIs, the endpoint uses the `UserService` to add the new user. So, to ensure that a store is associated with that user, you need to extend the `UserService` to change how the `create` method is implemented.
-
-This process applies to the services of other entities that you associated with the `Store` entity, as well. You can also extend services if you need to customize a functionality implemented in a service for other reasons.
+You can also extend services if you need to customize a functionality implemented in a service for other reasons.
 
 <DocCard item={{
   type: 'link',
