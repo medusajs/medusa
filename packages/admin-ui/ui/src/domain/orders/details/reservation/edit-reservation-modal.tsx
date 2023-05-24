@@ -30,13 +30,13 @@ import { nestedForm } from "../../../../utils/nested-form"
 import useNotification from "../../../../hooks/use-notification"
 import useToggleState from "../../../../hooks/use-toggle-state"
 
-type EditAllocationLineItemForm = {
+type EditReservationLineItemForm = {
   location: { label: string; value: string }
   item: ReserveLineItemForm
   metadata: MetadataFormType
 }
 
-const EditAllocationDrawer = ({
+const EditReservationDrawer = ({
   close,
   reservation,
   item,
@@ -47,7 +47,7 @@ const EditAllocationDrawer = ({
   item?: LineItem
   totalReservedQuantity?: number
 }) => {
-  const form = useForm<EditAllocationLineItemForm>({
+  const form = useForm<EditReservationLineItemForm>({
     defaultValues: {
       item: {
         description: reservation.description,
@@ -92,14 +92,14 @@ const EditAllocationDrawer = ({
     deleteReservation(undefined, {
       onSuccess: () => {
         notification(
-          "Allocation was deleted",
+          "Reservation was deleted",
           "The allocated items have been released.",
           "success"
         )
         close()
       },
       onError: () => {
-        notification("Error", "Failed to delete the allocation ", "error")
+        notification("Error", "Failed to delete the reservation ", "error")
       },
     })
   }
@@ -130,7 +130,7 @@ const EditAllocationDrawer = ({
     }
   }, [reservation, setValue])
 
-  const submit = (data: EditAllocationLineItemForm) => {
+  const submit = (data: EditReservationLineItemForm) => {
     if (!data.item.quantity) {
       return handleDelete()
     }
@@ -147,14 +147,14 @@ const EditAllocationDrawer = ({
       {
         onSuccess: () => {
           notification(
-            "Allocation was updated",
-            "The allocation change was saved.",
+            "Reservation was updated",
+            "The reservation change was saved.",
             "success"
           )
           close()
         },
         onError: () => {
-          notification("Errors", "Failed to update allocation", "error")
+          notification("Errors", "Failed to update reservation", "error")
         },
       }
     )
@@ -208,7 +208,7 @@ const EditAllocationDrawer = ({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
-            <h1 className="inter-large-semibold ">Edit allocation</h1>
+            <h1 className="inter-large-semibold ">Edit Reservation</h1>
             <Button
               variant="ghost"
               className="p-1.5"
@@ -328,7 +328,7 @@ const EditAllocationDrawer = ({
                 onClick={handleDelete}
                 type="button"
               >
-                Delete allocation
+                Delete reservation
               </Button>
             </div>
           </div>
@@ -351,4 +351,4 @@ const EditAllocationDrawer = ({
   )
 }
 
-export default EditAllocationDrawer
+export default EditReservationDrawer

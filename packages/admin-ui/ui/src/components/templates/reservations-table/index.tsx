@@ -8,8 +8,8 @@ import {
 
 import Button from "../../fundamentals/button"
 import DeletePrompt from "../../organisms/delete-prompt"
-import EditAllocationDrawer from "../../../domain/orders/details/allocations/edit-allocation-modal"
 import EditIcon from "../../fundamentals/icons/edit-icon"
+import EditReservationDrawer from "../../../domain/orders/details/reservation/edit-reservation-modal"
 import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
 import { NextSelect } from "../../molecules/select/next-select"
@@ -340,7 +340,7 @@ const ReservationRow = ({
         })}
       </Table.Row>
       {showEditReservation && (
-        <EditAllocationDrawer
+        <EditReservationDrawer
           close={() => setShowEditReservation(null)}
           reservation={row.original}
         />

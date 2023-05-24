@@ -3,7 +3,7 @@ import { useAdminStockLocations, useAdminVariantsInventory } from "medusa-react"
 import Button from "../../../../components/fundamentals/button"
 import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
 import CircleQuarterSolid from "../../../../components/fundamentals/icons/circle-quarter-solid"
-import EditAllocationDrawer from "../../details/reservation/edit-allocation-modal"
+import EditReservationDrawer from "../../details/reservation/edit-reservation-modal"
 import { LineItem } from "@medusajs/medusa"
 import React from "react"
 import { ReservationItemDTO } from "@medusajs/types"
@@ -93,7 +93,7 @@ const ReservationIndicator = ({
       </Tooltip>
 
       {reservation && (
-        <EditAllocationDrawer
+        <EditReservationDrawer
           totalReservedQuantity={reservationsSum}
           close={() => setReservation(null)}
           reservation={reservation}
