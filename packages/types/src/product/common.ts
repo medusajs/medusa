@@ -27,16 +27,11 @@ export interface ProductDTO {
   hs_code?: string | null
   mid_code?: string | null
   material?: string | null
-  // TODO
-  collection?: any
-  // TODO
-  categories?: any
-  // TODO
-  type: any
-  // TODO
-  tags: any
-  // TODO
-  //variants: any
+  collection: ProductCollectionDTO
+  categories?: ProductCategoryDTO[] | null
+  type: ProductTypeDTO[]
+  tags: ProductTagDTO[]
+  variants: ProductVariantDTO[]
   options: ProductOptionDTO[]
   discountable?: boolean
   external_id?: string | null
@@ -74,26 +69,47 @@ export interface ProductVariantDTO {
 
 export interface ProductCategoryDTO {
   id: string
+  name: string
+  description?: string
+  handle?: string
+  is_active?: boolean
+  is_internal?: boolean
+  rank?: number
+  parent_category?: ProductCategoryDTO
+  category_children: ProductCategoryDTO[]
+  created_at: string | Date
+  updated_at: string | Date
 }
 
 export interface ProductTagDTO {
   id: string
-}
-
-export interface ProductVariantDTO {
-  id: string
+  value: string
+  metadata?: Record<string, unknown> | null
+  products: ProductDTO[]
 }
 
 export interface ProductCollectionDTO {
   id: string
+  title: string
+  handle: string
+  metadata?: Record<string, unknown> | null
+  deleted_at?: string | Date
+}
+
+export interface ProductTypeDTO {
+  id: string
+  value: string
+  metadata?: Record<string, unknown> | null
+  deleted_at?: string | Date
 }
 
 export interface ProductOptionDTO {
   id: string
   title: string
   product: ProductDTO
-  values: ProductOptionValueDTO
+  values: ProductOptionValueDTO[]
   metadata?: Record<string, unknown> | null
+  deleted_at?: string | Date
 }
 
 export interface ProductOptionValueDTO {
@@ -102,6 +118,7 @@ export interface ProductOptionValueDTO {
   option: ProductOptionDTO
   variant: ProductVariantDTO
   metadata?: Record<string, unknown> | null
+  deleted_at?: string | Date
 }
 
 /**
