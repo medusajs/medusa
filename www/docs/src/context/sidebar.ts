@@ -1,6 +1,7 @@
 import { createContext } from "react"
 
 type SidebarContextType = {
+  hasSidebar: boolean
   hiddenSidebar: boolean
   setHiddenSidebar: (value: boolean) => void
   hiddenSidebarContainer: boolean

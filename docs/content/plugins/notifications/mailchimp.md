@@ -80,11 +80,11 @@ const plugins = [
 
 ## Test it Out
 
-This plugin adds a new `POST` endpoint at `/mailchimp/subscribe`. This endpoint requires in the body of the request an `email` field. You can also optionally include a `data` object that holds any additional data you want to send to Mailchimp. You can check out [Mailchimp’s subscription documentation](https://mailchimp.com/developer/marketing/api/list-members/add-member-to-list/) for more details on the data you can send.
+This plugin adds new `POST` and `PUT` endpoints at `/mailchimp/subscribe`. These endpoints require in the body of the request an `email` field. You can also optionally include a `data` object that holds any additional data you want to send to Mailchimp. You can check out [Mailchimp’s subscription documentation](https://mailchimp.com/developer/marketing/api/list-merges/) for more details on the data you can send.
 
 ### Without Additional Data
 
-Try sending a `POST` request to `/mailchimp/subscribe` with the following JSON body:
+Try sending a `POST` or `PUT` request to `/mailchimp/subscribe` with the following JSON body:
 
 ```json noReport
 {
@@ -92,7 +92,7 @@ Try sending a `POST` request to `/mailchimp/subscribe` with the following JSON b
 }
 ```
 
-If the subscription is successful, a `200` response code will be returned with `OK` message.
+If the subscription is successful, a `200` response code will be returned with `OK` message. If the same email address is used again in the `POST`, a `400` response will be returned with an error page. If this can occur in your usecase, use the `PUT` endpoint to prevent this.
 
 ![Postman](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000185/Medusa%20Docs/Mailchimp/tpr7uCF_g4rymn.png)
 

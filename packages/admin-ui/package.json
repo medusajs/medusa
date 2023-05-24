@@ -34,6 +34,7 @@
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-dropdown-menu": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.3",
+    "@radix-ui/react-portal": "^1.0.2",
     "@radix-ui/react-radio-group": "^1.1.1",
     "@radix-ui/react-select": "^1.2.0",
     "@radix-ui/react-switch": "^1.0.1",

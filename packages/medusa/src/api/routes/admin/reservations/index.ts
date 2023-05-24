@@ -1,4 +1,5 @@
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { InventoryItemDTO, ReservationItemDTO } from "@medusajs/types"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -7,7 +8,7 @@ import middlewares, {
 import { AdminGetReservationsParams } from "./list-reservations"
 import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminPostReservationsReservationReq } from "./update-reservation"
-import { ReservationItemDTO } from "@medusajs/types"
+import { LineItem } from "../../../../models"
 import { Router } from "express"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
@@ -69,6 +70,25 @@ export type AdminReservationsRes = {
 }
 
 /**
+ * @schema ExtendedReservationItem
+ * type: object
+ * allOf:
+ *   - $ref: "#/components/schemas/ReservationItemDTO"
+ *   - type: object
+ *     properties:
+ *       line_item:
+ *         description: optional line item
+ *         $ref: "#/components/schemas/LineItem"
+ *       inventory_item:
+ *         description: inventory item from inventory module
+ *         $ref: "#/components/schemas/InventoryItemDTO"
+ */
+export type ExtendedReservationItem = ReservationItemDTO & {
+  line_item?: LineItem
+  inventory_item?: InventoryItemDTO
+}
+
+/**
  * @schema AdminReservationsListRes
  * type: object
  * required:
@@ -80,7 +100,7 @@ export type AdminReservationsRes = {
  *   reservations:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/ReservationItemDTO"
+ *       $ref: "#/components/schemas/ExtendedReservationItem"
  *   count:
  *     type: integer
  *     description: The total number of items available
