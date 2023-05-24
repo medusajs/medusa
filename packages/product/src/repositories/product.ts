@@ -102,6 +102,10 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
       if (productIds.length) {
         findOptions.where.id = { $nin: productIds }
         delete findOptions.where.categories?.id
+
+        if (Object.keys(findOptions.where.categories).length === 0) {
+          delete findOptions.where.categories
+        }
       }
     }
   }
