@@ -81,6 +81,15 @@ module.exports = {
     ],
     "space-infix-ops": "error",
     "eol-last": ["error", "always"],
+    "no-console": [
+      "error",
+      {
+        allow: [
+          "error",
+          "warn"
+        ]
+      }
+    ]
   },
   env: {
     es6: true,
