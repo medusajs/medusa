@@ -60,6 +60,7 @@ export default class ReservationItemService {
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.find(query)
   }
 
@@ -79,6 +80,7 @@ export default class ReservationItemService {
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.findAndCount(query)
   }
 

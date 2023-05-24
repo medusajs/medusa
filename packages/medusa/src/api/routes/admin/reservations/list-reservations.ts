@@ -1,8 +1,10 @@
-import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import {
+  DateComparisonOperator,
   NumericalComparisonOperator,
+  StringComparisonOperator,
   extendedFindParamsMixin,
 } from "../../../../types/common"
+import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
 
 import { EntityManager } from "typeorm"
@@ -65,6 +67,45 @@ import { joinLineItems } from "./utils/join-line-items"
  *         gte:
  *           type: number
  *           description: filter by reservation quantity greater than or equal to this number
+ *   - in: query
+ *     name: description
+ *     description: A param for search reservation descriptions
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *         - type: object
+ *           properties:
+ *             contains:
+ *               type: string
+ *               description: filter by reservation description containing search string.
+ *             starts_with:
+ *               type: string
+ *               description: filter by reservation description starting with search string.
+ *             ends_with:
+ *               type: string
+ *               description: filter by reservation description ending with search string.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting reservations were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - (query) offset=0 {integer} How many Reservations to skip in the result.
  *   - (query) limit=20 {integer} Limit the number of Reservations returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
@@ -184,4 +225,13 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   @ValidateNested()
   @Type(() => NumericalComparisonOperator)
   quantity?: NumericalComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @IsType([StringComparisonOperator, String])
+  description?: string | StringComparisonOperator
 }
