@@ -6093,6 +6093,7 @@ __metadata:
     esbuild: 0.17.18
     fs-extra: 11.1.1
     picocolors: 1.0.0
+    react-router-dom: 6.8.0
     rollup: 3.20.7
     rollup-plugin-esbuild: 5.0.0
     tslib: 2.5.0

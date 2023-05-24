@@ -1,1 +1,0 @@
-export { extend } from "./extend"

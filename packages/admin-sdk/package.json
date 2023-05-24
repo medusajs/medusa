@@ -34,6 +34,7 @@
     "@babel/types": "7.21.5",
     "@medusajs/medusa": "*",
     "@types/fs-extra": "11.0.1",
+    "react-router-dom": "6.8.0",
     "typescript": "5.0.4"
   },
   "packageManager": "yarn@3.2.1"
