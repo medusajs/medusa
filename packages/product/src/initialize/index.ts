@@ -24,7 +24,7 @@ export const initialize = async (
 
   const loaded = await MedusaModule.bootstrap(
     serviceKey,
-    "@medusa-commerce/product",
+    "@medusajs/product",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
     injectedDependencies
   )
