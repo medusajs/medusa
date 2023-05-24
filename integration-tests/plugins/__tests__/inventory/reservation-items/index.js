@@ -380,6 +380,54 @@ describe("Inventory Items endpoints", () => {
           expect(reservationsRes.data.reservations.length).toBe(1)
           expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
         })
+
+        it("filters by description using starts_with", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api
+            .get(
+              `/admin/reservations?description[starts_with]=test`,
+              adminHeaders
+            )
+            .catch(console.log)
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
+
+        it("filters by description using starts_with removes results", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[starts_with]=description`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(0)
+        })
+
+        it("filters by description using ends_with", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[ends_with]=test`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(0)
+        })
+
+        it("filters by description using ends_with removes results", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[ends_with]=description`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
       })
     })
 

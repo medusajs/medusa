@@ -140,6 +140,8 @@ export interface StringComparisonOperator {
   gte?: string
   lte?: string
   contains?: string
+  starts_with?: string
+  ends_with?: string
 }
 
 export interface NumericalComparisonOperator {

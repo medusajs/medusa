@@ -48,10 +48,6 @@ export interface AdminGetReservationsParams {
          */
         contains?: string
         /**
-         * filter by reservation description equals search string.
-         */
-        equals?: string
-        /**
          * filter by reservation description starting with search string.
          */
         starts_with?: string

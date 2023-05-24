@@ -170,6 +170,14 @@ export class StringComparisonOperator {
   @IsString()
   @IsOptional()
   contains?: string
+
+  @IsString()
+  @IsOptional()
+  starts_with?: string
+
+  @IsString()
+  @IsOptional()
+  ends_with?: string
 }
 
 export class NumericalComparisonOperator {

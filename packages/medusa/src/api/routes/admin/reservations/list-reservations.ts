@@ -78,9 +78,6 @@ import { joinLineItems } from "./utils/join-line-items"
  *             contains:
  *               type: string
  *               description: filter by reservation description containing search string.
- *             equals:
- *               type: string
- *               description: filter by reservation description equals search string.
  *             starts_with:
  *               type: string
  *               description: filter by reservation description starting with search string.

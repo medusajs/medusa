@@ -37,11 +37,11 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    (query as FindManyOptions<TEntity>).skip = config.skip
+    ;(query as FindManyOptions<TEntity>).skip = config.skip
   }
 
   if ("take" in config) {
-    (query as FindManyOptions<TEntity>).take = config.take
+    ;(query as FindManyOptions<TEntity>).take = config.take
   }
 
   if (config.relations) {
@@ -124,6 +124,12 @@ function buildWhere<TWhereKeys extends object, TEntity>(
             break
           case "contains":
             where[key].push(ILike(`%${objectValue}%`))
+            break
+          case "starts_with":
+            where[key].push(ILike(`${objectValue}%`))
+            break
+          case "ends_with":
+            where[key].push(ILike(`%${objectValue}`))
             break
           default:
             if (objectValue != undefined && typeof objectValue === "object") {

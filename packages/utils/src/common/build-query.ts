@@ -125,6 +125,12 @@ function buildWhere<TWhereKeys extends object, TEntity>(
           case "contains":
             where[key].push(ILike(`%${objectValue}%`))
             break
+          case "starts_with":
+            where[key].push(ILike(`${objectValue}%`))
+            break
+          case "ends_with":
+            where[key].push(ILike(`%${objectValue}`))
+            break
           default:
             if (objectValue != undefined && typeof objectValue === "object") {
               where[key] = buildWhere<any, TEntity>(objectValue)
