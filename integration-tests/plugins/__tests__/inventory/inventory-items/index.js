@@ -538,6 +538,49 @@ describe("Inventory Items endpoints", () => {
           })
         )
       })
+
+      it("Lists inventory items searching by title, description and sku", async () => {
+        const api = useApi()
+
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        await Promise.all([
+          inventoryService.createInventoryItem({
+            title: "Test Item",
+          }),
+          inventoryService.createInventoryItem({
+            description: "Test Desc",
+          }),
+          inventoryService.createInventoryItem({
+            sku: "Test Sku",
+          }),
+        ])
+
+        const response = await api.get(
+          `/admin/inventory-items?q=test`,
+          adminHeaders
+        )
+
+        expect(response.data.inventory_items).not.toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              sku: "MY_SKU",
+            }),
+          ])
+        )
+        expect(response.data.inventory_items).toHaveLength(3)
+        expect(response.data.inventory_items).toEqual([
+          expect.objectContaining({
+            sku: "Test Sku",
+          }),
+          expect.objectContaining({
+            description: "Test Desc",
+          }),
+          expect.objectContaining({
+            title: "Test Item",
+          }),
+        ])
+      })
     })
 
     it("When deleting an inventory item it removes associated levels and reservations", async () => {
