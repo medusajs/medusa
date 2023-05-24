@@ -204,6 +204,233 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
+    describe("List reservation items", () => {
+      let item2
+      let location2
+      let reservation2
+
+      beforeEach(async () => {
+        const api = useApi()
+        const stockRes = await api.post(
+          `/admin/stock-locations`,
+          {
+            name: "Fake Warehouse 1",
+          },
+          adminHeaders
+        )
+
+        location2 = stockRes.data.stock_location.id
+
+        await salesChannelLocationService.associateLocation(
+          "test-channel",
+          location2
+        )
+
+        const inventoryItem1 = await inventoryService.createInventoryItem({
+          sku: "12345",
+        })
+        item2 = inventoryItem1.id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: item2,
+          location_id: location2,
+          stocked_quantity: 100,
+        })
+
+        order = await simpleOrderFactory(dbConnection, {
+          sales_channel: "test-channel",
+          line_items: [
+            {
+              variant_id: variantId,
+              quantity: 2,
+              id: "line-item-id-2",
+            },
+          ],
+          shipping_methods: [
+            {
+              shipping_option: {
+                region_id: regionId,
+              },
+            },
+          ],
+        })
+
+        const orderRes = await api.get(
+          `/admin/orders/${order.id}`,
+          adminHeaders
+        )
+
+        reservation2 = await inventoryService.createReservationItem({
+          line_item_id: "line-item-id-2",
+          inventory_item_id: item2,
+          location_id: location2,
+          description: "test description",
+          quantity: 1,
+        })
+      })
+
+      it("lists reservation items", async () => {
+        const api = useApi()
+
+        const reservationsRes = await api.get(
+          `/admin/reservations`,
+          adminHeaders
+        )
+        expect(reservationsRes.data.reservations.length).toBe(2)
+        expect(reservationsRes.data.reservations).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: reservationItem.id,
+            }),
+            expect.objectContaining({
+              id: reservation2.id,
+            }),
+          ])
+        )
+      })
+
+      describe("Filters reservation items", () => {
+        it("filters by location", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?location_id[]=${locationId}`,
+            adminHeaders
+          )
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].location_id).toBe(
+            locationId
+          )
+        })
+
+        it("filters by itemID", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?inventory_item_id[]=${item2}`,
+            adminHeaders
+          )
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].inventory_item_id).toBe(
+            item2
+          )
+        })
+
+        it("filters by quantity", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?quantity[gt]=1`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(
+            reservationItem.id
+          )
+        })
+
+        it("filters by date", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?created_at[gte]=${new Date(
+              reservation2.created_at
+            ).toISOString()}`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
+
+        it("filters by description using equals", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api
+            .get(
+              `/admin/reservations?description=test%20description`,
+              adminHeaders
+            )
+            .catch(console.log)
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
+
+        it("filters by description using equals removes results", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description=description`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(0)
+        })
+
+        it("filters by description using contains", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[contains]=descri`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
+
+        it("filters by description using starts_with", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api
+            .get(
+              `/admin/reservations?description[starts_with]=test`,
+              adminHeaders
+            )
+            .catch(console.log)
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
+
+        it("filters by description using starts_with removes results", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[starts_with]=description`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(0)
+        })
+
+        it("filters by description using ends_with", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[ends_with]=test`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(0)
+        })
+
+        it("filters by description using ends_with removes results", async () => {
+          const api = useApi()
+
+          const reservationsRes = await api.get(
+            `/admin/reservations?description[ends_with]=description`,
+            adminHeaders
+          )
+
+          expect(reservationsRes.data.reservations.length).toBe(1)
+          expect(reservationsRes.data.reservations[0].id).toBe(reservation2.id)
+        })
+      })
+    })
+
     it("lists reservations with inventory_items and line items", async () => {
       const api = useApi()
 
