@@ -10,7 +10,7 @@ import ProductMediaSection from "../../../components/organisms/product-media-sec
 import ProductRawSection from "../../../components/organisms/product-raw-section"
 import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
 import WidgetContainer from "../../../components/organisms/widget-container"
-import { useWidgets } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 
 const Manage = () => {

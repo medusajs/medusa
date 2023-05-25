@@ -5,15 +5,13 @@ type WidgetContextType = {
   getWidgets: (injectionZone: InjectionZone) => Widget[]
 }
 
-const InjectionContext = React.createContext<WidgetContextType | null>(null)
+const WidgetContext = React.createContext<WidgetContextType | null>(null)
 
 export const useWidgets = () => {
-  const context = React.useContext(InjectionContext)
+  const context = React.useContext(WidgetContext)
 
   if (!context) {
-    throw new Error(
-      "useInjectionContext must be used within a InjectionProvider"
-    )
+    throw new Error("useWidgets must be used within a WidgetContext")
   }
 
   return context
@@ -34,8 +32,6 @@ export const WidgetProvider = ({ registry, children }: WidgetProviderProps) => {
   const values = useMemo(() => ({ getWidgets }), [getWidgets])
 
   return (
-    <InjectionContext.Provider value={values}>
-      {children}
-    </InjectionContext.Provider>
+    <WidgetContext.Provider value={values}>{children}</WidgetContext.Provider>
   )
 }

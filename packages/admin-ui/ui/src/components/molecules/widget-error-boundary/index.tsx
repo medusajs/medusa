@@ -4,12 +4,7 @@ import RefreshIcon from "../../fundamentals/icons/refresh-icon"
 import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
 
-type ExtensionInfo = {
-  origin: string
-}
-
 type Props = {
-  type: "widget" | "page"
   children: React.ReactNode
   origin: string
 }
@@ -19,7 +14,7 @@ type State = {
   hidden?: boolean
 }
 
-class ExtensionErrorBoundary extends React.Component<Props, State> {
+class WidgetErrorBoundary extends React.Component<Props, State> {
   public state: State = {
     hasError: false,
   }
@@ -31,7 +26,7 @@ class ExtensionErrorBoundary extends React.Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (process.env.NODE_ENV !== "production") {
       console.group(
-        `%cAn error occurred in a ${this.props.type} from ${this.props.origin}:`,
+        `%cAn error occurred in a widget from ${this.props.origin}:`,
         "color: red; font-weight: bold, background-color: #fff;"
       )
       console.error(error)
@@ -54,18 +49,13 @@ class ExtensionErrorBoundary extends React.Component<Props, State> {
 
   public renderFallback() {
     if (process.env.NODE_ENV !== "production" && !this.state.hidden) {
-      switch (this.props.type) {
-        case "page":
-          return <FallbackPage origin={this.props.origin} />
-        case "widget":
-          return (
-            <FallbackWidget
-              origin={this.props.origin}
-              reset={this.handleResetError.bind(this)}
-              hide={this.hideError.bind(this)}
-            />
-          )
-      }
+      return (
+        <FallbackWidget
+          origin={this.props.origin}
+          reset={this.handleResetError.bind(this)}
+          hide={this.hideError.bind(this)}
+        />
+      )
     }
 
     // Don't render anything in production
@@ -143,8 +133,4 @@ const FallbackWidget = ({
   )
 }
 
-const FallbackPage = ({ origin }: { origin: string }) => {
-  return <div>Not implemented</div>
-}
-
-export default ExtensionErrorBoundary
+export default WidgetErrorBoundary

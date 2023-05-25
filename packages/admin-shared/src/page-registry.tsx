@@ -5,8 +5,8 @@ class PageRegistry {
   routes: Route[] = []
 
   public registerPage(origin: string, page: PageExtension) {
-    const { path, title } = page.config
-    this.links.push({ path, title })
+    const { path, title, icon } = page.config
+    this.links.push({ path, title, icon })
     this.routes.push({ origin, path, Page: page.Component })
   }
 

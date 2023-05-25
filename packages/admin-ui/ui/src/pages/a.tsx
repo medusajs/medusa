@@ -2,6 +2,7 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Route, Routes, useNavigate } from "react-router-dom"
+import PageErrorElement from "../components/molecules/page-error-element"
 import PrivateRoute from "../components/private-route"
 import SEO from "../components/seo"
 import Layout from "../components/templates/layout"
@@ -15,12 +16,13 @@ import Oauth from "../domain/oauth"
 import Orders from "../domain/orders"
 import DraftOrders from "../domain/orders/draft-orders"
 import Pricing from "../domain/pricing"
+import ProductCategories from "../domain/product-categories"
 import ProductsRoute from "../domain/products"
 import PublishableApiKeys from "../domain/publishable-api-keys"
 import SalesChannels from "../domain/sales-channels"
 import Settings from "../domain/settings"
 import { AnalyticsProvider } from "../providers/analytics-provider"
-import ProductCategories from "../domain/product-categories"
+import { usePages } from "../providers/page-provider"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -35,6 +37,10 @@ const IndexPage = () => {
 }
 
 const DashboardRoutes = () => {
+  const { getRoutes } = usePages()
+
+  const injectedRoutes = getRoutes() || []
+
   return (
     <AnalyticsProvider writeKey={WRITE_KEY}>
       <DndProvider backend={HTML5Backend}>
@@ -61,6 +67,18 @@ const DashboardRoutes = () => {
               element={<PublishableApiKeys />}
             />
             <Route path="inventory/*" element={<Inventory />} />
+            {injectedRoutes.map(({ path, origin, Page }, index) => {
+              const cleanPath = path.replace("/a/", "")
+
+              return (
+                <Route
+                  key={index}
+                  path={cleanPath}
+                  element={<Page />}
+                  errorElement={<PageErrorElement origin={origin} />}
+                />
+              )
+            })}
           </Routes>
         </Layout>
       </DndProvider>

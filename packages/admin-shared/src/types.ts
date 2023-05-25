@@ -15,6 +15,7 @@ export type PageConfig = {
   type: "page"
   path: string
   title: string
+  icon?: ComponentType
 }
 
 export type ExtensionConfig = WidgetConfig | PageConfig
@@ -47,7 +48,7 @@ export type Route = {
   Page: ComponentType<any>
 }
 
-export type Link = Pick<PageConfig, "path" | "title">
+export type Link = Pick<PageConfig, "path" | "title" | "icon">
 
 type Notify = {
   success: (title: string, message: string) => void
