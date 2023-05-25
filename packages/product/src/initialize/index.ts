@@ -12,7 +12,7 @@ import {
 } from "../types"
 
 export const initialize = async (
-  options:
+  options?:
     | ProductServiceInitializeOptions
     | ProductServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration,
