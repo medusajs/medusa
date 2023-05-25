@@ -46,7 +46,7 @@ yarn add -D @medusajs/admin-sdk
 The SDK comes with a CLI that can be used to build admin extensions.
 
 ```sh
-admin-sdk build [options]
+medusa-admin-sdk build [options]
 ```
 
 ### Options
