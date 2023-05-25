@@ -2,6 +2,7 @@ import { Customer } from "@medusajs/medusa"
 import { useAdminUpdateCustomer } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import MetadataForm, {
   getMetadataFormValues,
   getSubmittableMetadata,
@@ -33,6 +34,8 @@ const EditCustomerModal = ({
   handleClose,
   customer,
 }: EditCustomerModalProps) => {
+  const { t } = useTranslation()
+
   const form = useForm<EditCustomerFormType>({
     defaultValues: getDefaultValues(customer),
   })
@@ -61,11 +64,15 @@ const EditCustomerModal = ({
       {
         onSuccess: () => {
           handleClose()
-          notification("Success", "Successfully updated customer", "success")
+          notification(
+            t("Success"),
+            t("Successfully updated customer"),
+            "success"
+          )
         },
         onError: (err) => {
           handleClose()
-          notification("Error", getErrorMessage(err), "error")
+          notification(t("Error"), getErrorMessage(err), "error")
         },
       }
     )
@@ -79,22 +86,24 @@ const EditCustomerModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">Customer Details</span>
+          <span className="inter-xlarge-semibold">{t("Customer Details")}</span>
         </Modal.Header>
         <Modal.Content>
           <div className="gap-y-xlarge flex flex-col">
             <div>
-              <h2 className="inter-base-semibold text-grey-90 mb-4">General</h2>
+              <h2 className="inter-base-semibold text-grey-90 mb-4">
+                {t("General")}
+              </h2>
               <div className="flex w-full space-x-2">
                 <InputField
-                  label="First Name"
+                  label={t("First Name")}
                   {...register("first_name")}
-                  placeholder="Lebron"
+                  placeholder={t("Lebron")}
                 />
                 <InputField
-                  label="Last Name"
+                  label={t("Last Name")}
                   {...register("last_name")}
-                  placeholder="James"
+                  placeholder={t("James")}
                 />
               </div>
             </div>
@@ -102,7 +111,7 @@ const EditCustomerModal = ({
               <h2 className="inter-base-semibold text-grey-90 mb-4">Contact</h2>
               <div className="flex space-x-2">
                 <InputField
-                  label="Email"
+                  label={t("Email")}
                   {...register("email", {
                     validate: (value) => !!validateEmail(value),
                     disabled: customer.has_account,
@@ -115,14 +124,14 @@ const EditCustomerModal = ({
                   disabled={customer.has_account}
                 />
                 <InputField
-                  label="Phone number"
+                  label={t("Phone number")}
                   {...register("phone")}
                   placeholder="+45 42 42 42 42"
                 />
               </div>
             </div>
             <div>
-              <h2 className="inter-base-semibold mb-base">Metadata</h2>
+              <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </div>
@@ -136,7 +145,7 @@ const EditCustomerModal = ({
               className="mr-2"
               type="button"
             >
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button
               loading={updateCustomer.isLoading}
@@ -145,7 +154,7 @@ const EditCustomerModal = ({
               size="small"
               onClick={onSubmit}
             >
-              Save and close
+              {t("Save and close")}
             </Button>
           </div>
         </Modal.Footer>

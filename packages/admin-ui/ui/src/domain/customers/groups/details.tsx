@@ -8,6 +8,7 @@ import {
   useAdminRemoveCustomersFromCustomerGroup,
 } from "medusa-react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
@@ -36,10 +37,12 @@ const defaultQueryProps = {
  * Placeholder for the customer groups list.
  */
 function CustomersListPlaceholder() {
+  const { t } = useTranslation()
+
   return (
     <div className="center flex h-full min-h-[756px] items-center justify-center">
       <span className="text-xs text-gray-400">
-        No customers in this group yet
+        {t("No customers in this group yet")}
       </span>
     </div>
   )
@@ -125,7 +128,7 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
 
   return (
     <BodyCard
-      title="Customers"
+      title={t("Customers")}
       actionables={actions}
       className="my-4 min-h-[756px] w-full"
     >
@@ -166,6 +169,7 @@ type CustomerGroupDetailsHeaderProps = {
 function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const { mutate: deleteGroup } = useAdminDeleteCustomerGroup(
@@ -176,12 +180,12 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
 
   const actions: ActionType[] = [
     {
-      label: "Edit",
+      label: t("Edit"),
       onClick: open,
       icon: <EditIcon size={20} />,
     },
     {
-      label: "Delete",
+      label: t("Delete"),
       onClick: () => {
         setShowDeleteConfirmation(true)
       },
@@ -209,10 +213,10 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
         <DeletePrompt
           onDelete={onDeleteConfirmed}
           handleClose={handleConfirmDialogClose}
-          confirmText="Yes, delete"
-          heading="Delete the group"
-          successText="Group deleted"
-          text="Are you sure you want to delete this customer group?"
+          confirmText={t("Yes, delete")}
+          heading={t("Delete the group")}
+          successText={t("Group deleted")}
+          text={t("Are you sure you want to delete this customer group?")}
         />
       )}
       <CustomerGroupModal
@@ -240,7 +244,7 @@ function CustomerGroupDetails() {
     <div className="-mt-4 pb-4">
       <BackButton
         path="/a/customers/groups"
-        label="Back to customer groups"
+        label={t("Back to customer groups")}
         className="mb-4"
       />
       <CustomerGroupDetailsHeader customerGroup={customer_group} />
