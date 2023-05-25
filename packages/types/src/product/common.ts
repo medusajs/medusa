@@ -1,4 +1,4 @@
-import { OperatorMap } from "../dal"
+import { BaseFilterable, OperatorMap } from "../dal"
 
 export enum ProductStatus {
   DRAFT = "draft",
@@ -124,8 +124,9 @@ export interface ProductOptionValueDTO {
 /**
  * Filters/Config (module API input filters and config)
  */
-export interface FilterableProductProps {
-  // Todo add top level operators
+export interface FilterableProductProps
+  extends BaseFilterable<FilterableProductProps> {
+  handle?: string | string[]
   id?: string | string[]
   tags?: { value?: string[] }
   categories?: {
@@ -134,23 +135,27 @@ export interface FilterableProductProps {
   category_ids?: string | string[] | OperatorMap<string>
 }
 
-export interface FilterableProductTagProps {
+export interface FilterableProductTagProps
+  extends BaseFilterable<FilterableProductTagProps> {
   id?: string | string[]
   value?: string
 }
 
-export interface FilterableProductCollectionProps {
+export interface FilterableProductCollectionProps
+  extends BaseFilterable<FilterableProductCollectionProps> {
   id?: string | string[]
   title?: string
 }
 
-export interface FilterableProductVariantProps {
+export interface FilterableProductVariantProps
+  extends BaseFilterable<FilterableProductVariantProps> {
   id?: string | string[]
   sku?: string
   options?: { id?: string[] }
 }
 
-export interface FilterableProductCategoryProps {
+export interface FilterableProductCategoryProps
+  extends BaseFilterable<FilterableProductCategoryProps> {
   id?: string | string[]
   parent_category_id?: string | string[] | null
   handle?: string | string[]
