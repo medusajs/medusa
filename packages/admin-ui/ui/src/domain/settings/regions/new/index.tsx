@@ -3,6 +3,7 @@ import { useAdminCreateRegion } from "medusa-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
@@ -28,6 +29,7 @@ type NewRegionFormType = {
 }
 
 const NewRegion = ({ onClose }: Props) => {
+  const { t } = useTranslation()
   const [sections, setSections] = useState(["details"])
   const form = useForm<NewRegionFormType>({
     defaultValues: getDefaultValues(),
@@ -71,12 +73,12 @@ const NewRegion = ({ onClose }: Props) => {
 
       mutate(payload, {
         onSuccess: ({ region }) => {
-          notification("Success", "Region created", "success")
+          notification(t("Success"), t("Region created"), "success")
           navigate(`/a/settings/regions/${region.id}`)
           closeAndReset()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       })
     },
@@ -108,7 +110,7 @@ const NewRegion = ({ onClose }: Props) => {
                 disabled={!isDirty || isLoading}
                 type="submit"
               >
-                Create region
+                {t("Create region")}
               </Button>
             </div>
           </div>
@@ -121,13 +123,13 @@ const NewRegion = ({ onClose }: Props) => {
               type="multiple"
             >
               <Accordion.Item
-                title="Details"
+                title={t("Details")}
                 value="details"
                 forceMountContent
                 required
               >
                 <p className="inter-base-regular mb-xlarge text-grey-50">
-                  Add the region details.
+                  {t("Add the region details.")}
                 </p>
                 <RegionDetailsForm
                   form={nestedForm(form, "details")}
@@ -135,14 +137,15 @@ const NewRegion = ({ onClose }: Props) => {
                 />
               </Accordion.Item>
               <Accordion.Item
-                title="Providers"
+                title={t("Providers")}
                 value="providers"
                 forceMountContent
                 required
               >
                 <p className="inter-base-regular mb-xlarge text-grey-50">
-                  Add which fulfillment and payment providers should be
-                  available in this region.
+                  {t(
+                    "Add which fulfillment and payment providers should be available in this region."
+                  )}
                 </p>
                 <RegionProvidersForm form={nestedForm(form, "providers")} />
               </Accordion.Item>

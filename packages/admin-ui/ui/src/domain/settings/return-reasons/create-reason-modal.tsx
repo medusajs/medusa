@@ -1,6 +1,7 @@
 import { ReturnReason } from "@medusajs/medusa"
 import { useAdminCreateReturnReason } from "medusa-react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../components/fundamentals/button"
 import Input from "../../../components/molecules/input"
 import Modal from "../../../components/molecules/modal"
@@ -37,6 +38,7 @@ const CreateReturnReasonModal = ({
   })
   const notification = useNotification()
   const { mutateAsync, isLoading } = useAdminCreateReturnReason()
+  const { t } = useTranslation()
 
   const onCreate = async (data: CreateReturnReasonFormData) => {
     try {
@@ -44,11 +46,11 @@ const CreateReturnReasonModal = ({
         ...data,
         description: data.description || undefined,
       })
-      notification("Success", "Created a new return reason", "success")
+      notification(t("Success"), t("Created a new return reason"), t("success"))
     } catch {
       notification(
-        "Error",
-        "Cannot create a return reason with an existing value",
+        t("Error"),
+        t("Cannot create a return reason with an existing value"),
         "error"
       )
     }
@@ -59,29 +61,29 @@ const CreateReturnReasonModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">Add Reason</span>
+          <span className="inter-xlarge-semibold">{t("Add Reason")}</span>
         </Modal.Header>
         <form onSubmit={handleSubmit(onCreate)}>
           <Modal.Content>
             <div className="gap-large mb-large grid grid-cols-2">
               <Input
                 {...register("value", {
-                  required: "Value is required",
+                  required: t("Value is required"),
                   pattern: FormValidator.whiteSpaceRule("Value"),
                   minLength: FormValidator.minOneCharRule("Value"),
                 })}
-                label="Value"
+                label={t("Value")}
                 required
                 placeholder="wrong_size"
                 errors={errors}
               />
               <Input
                 {...register("label", {
-                  required: "Label is required",
+                  required: t("Label is required"),
                   pattern: FormValidator.whiteSpaceRule("Label"),
                   minLength: FormValidator.minOneCharRule("Label"),
                 })}
-                label="Label"
+                label={t("Label")}
                 required
                 placeholder="Wrong size"
                 errors={errors}
@@ -91,8 +93,8 @@ const CreateReturnReasonModal = ({
               className="mt-large"
               rows={3}
               {...register("description")}
-              label="Description"
-              placeholder="Customer received the wrong size"
+              label={t("Description")}
+              placeholder={t("Customer received the wrong size")}
               errors={errors}
             />
           </Modal.Content>
@@ -105,7 +107,7 @@ const CreateReturnReasonModal = ({
                 onClick={handleClose}
                 type="button"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 loading={isLoading}
@@ -114,7 +116,7 @@ const CreateReturnReasonModal = ({
                 className="text-small w-32 justify-center"
                 variant="primary"
               >
-                Create
+                {t("Create")}
               </Button>
             </div>
           </Modal.Footer>

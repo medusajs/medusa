@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import DuplicateIcon from "../../../components/fundamentals/icons/duplicate-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Input from "../../../components/molecules/input"
@@ -38,6 +39,7 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
   const { register, reset, handleSubmit } =
     useForm<ReturnReasonDetailsFormData>()
   const notification = useNotification()
+  const { t } = useTranslation()
   const { mutate: deleteRR } = useAdminDeleteReturnReason(reason?.id)
   const { mutate: update } = useAdminUpdateReturnReason(reason?.id)
 
@@ -54,13 +56,13 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       {
         onSuccess: () => {
           notification(
-            "Success",
-            "Successfully updated return reason",
+            t("Success"),
+            t("Successfully updated return reason"),
             "success"
           )
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -87,12 +89,12 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       <BodyCard
         actionables={[
           {
-            label: "Duplicate reason",
+            label: t("Duplicate reason"),
             icon: <DuplicateIcon size={20} />,
             onClick: () => handleOpenDuplicateModal(),
           },
           {
-            label: "Delete reason",
+            label: t("Delete reason"),
             variant: "danger",
             icon: <TrashIcon size={20} />,
             onClick: () => handleOpenPrompt(),
@@ -100,24 +102,24 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
         ]}
         events={[
           {
-            label: "Save",
+            label: t("Save"),
             onClick: handleSubmit(onSave),
           },
           {
-            label: "Cancel",
+            label: t("Cancel"),
             onClick: handleCancel,
           },
         ]}
-        title="Details"
+        title={t("Details")}
         subtitle={reason?.value}
       >
         <form onSubmit={handleSubmit(onSave)}>
-          <Input {...register("label")} label="Label" />
+          <Input {...register("label")} label={t("Label")} />
           <Input
             {...register("description")}
-            label="Description"
+            label={t("Description")}
             className="mt-base"
-            placeholder="Customer received the wrong size"
+            placeholder={t("Customer received the wrong size")}
           />
         </form>
       </BodyCard>
@@ -129,8 +131,8 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       )}
       {showDanger && (
         <DeletePrompt
-          heading="Delete Return Reason"
-          text="Are you sure you want to delete this return reason?"
+          heading={t("Delete Return Reason")}
+          text={t("Are you sure you want to delete this return reason?")}
           handleClose={handleClosePrompt}
           onDelete={handleDeletion}
         />

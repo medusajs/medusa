@@ -9,6 +9,7 @@ import {
 import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Avatar from "../../../components/atoms/avatar"
 import BackButton from "../../../components/atoms/back-button"
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
@@ -42,6 +43,7 @@ type DeletePromptData = {
 
 const DraftOrderDetails = () => {
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const initDeleteState: DeletePromptData = {
     resource: "",
@@ -82,9 +84,9 @@ const DraftOrderDetails = () => {
   const OrderStatusComponent = () => {
     switch (draft_order?.status) {
       case "completed":
-        return <StatusDot title="Completed" variant="success" />
+        return <StatusDot title={t("Completed")} variant="success" />
       case "open":
-        return <StatusDot title="Open" variant="default" />
+        return <StatusDot title={t("Open")} variant="default" />
       default:
         return null
     }
@@ -92,7 +94,7 @@ const DraftOrderDetails = () => {
 
   const PaymentActionables = () => {
     // Default label and action
-    const label = "Mark as paid"
+    const label = t("Mark as paid")
     const action = () => setShowAsPaidConfirmation(true)
 
     return (
@@ -105,9 +107,9 @@ const DraftOrderDetails = () => {
   const onMarkAsPaidConfirm = async () => {
     try {
       await markPaid.mutateAsync()
-      notification("Success", "Successfully mark as paid", "success")
+      notification(t("Success"), t("Successfully mark as paid"), "success")
     } catch (err) {
-      notification("Error", getErrorMessage(err), "error")
+      notification(t("Error"), getErrorMessage(err), "error")
     } finally {
       setShowAsPaidConfirmation(false)
     }
@@ -116,8 +118,8 @@ const DraftOrderDetails = () => {
   const handleDeleteOrder = async () => {
     return cancelOrder.mutate(void {}, {
       onSuccess: () =>
-        notification("Success", "Successfully canceled order", "success"),
-      onError: (err) => notification("Error", getErrorMessage(err), "error"),
+        notification(t("Success"), t("Successfully canceled order"), "success"),
+      onError: (err) => notification(t("Error"), getErrorMessage(err), "error"),
     })
   }
 
@@ -133,7 +135,7 @@ const DraftOrderDetails = () => {
     <div>
       <BackButton
         path="/a/draft-orders"
-        label="Back to Draft Orders"
+        label={t("Back to Draft Orders")}
         className="mb-xsmall"
       />
       {isLoading || !draft_order ? (
@@ -160,7 +162,9 @@ const DraftOrderDetails = () => {
 
             <BodyCard
               className={"mb-4 min-h-[200px] w-full"}
-              title={`Order #${draft_order.display_id}`}
+              title={t("Order #{display_id}", {
+                display_id: draft_order.display_id,
+              })}
               subtitle={moment(draft_order.created_at).format(
                 "D MMMM YYYY hh:mm a"
               )}
@@ -174,7 +178,7 @@ const DraftOrderDetails = () => {
                       navigate(`/a/orders/${draft_order.order_id}`)
                     }
                   >
-                    Go to Order
+                    {t("Go to Order")}
                   </Button>
                 )
               }
@@ -183,20 +187,20 @@ const DraftOrderDetails = () => {
                 draft_order?.status === "completed"
                   ? [
                       {
-                        label: "Go to Order",
+                        label: t("Go to Order"),
                         icon: null,
                         onClick: () => console.log("Should not be here"),
                       },
                     ]
                   : [
                       {
-                        label: "Cancel Draft Order",
+                        label: t("Cancel Draft Order"),
                         icon: null,
                         // icon: <CancelIcon size={"20"} />,
                         variant: "danger",
                         onClick: () =>
                           setDeletePromptData({
-                            resource: "Draft Order",
+                            resource: t("Draft Order"),
                             onDelete: () => handleDeleteOrder(),
                             show: true,
                           }),
@@ -207,19 +211,21 @@ const DraftOrderDetails = () => {
               <div className="mt-6 flex space-x-6 divide-x">
                 <div className="flex flex-col">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
-                    Email
+                    {t("Email")}
                   </div>
                   <div>{cart?.email}</div>
                 </div>
                 <div className="flex flex-col pl-6">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
-                    Phone
+                    {t("Phone")}
                   </div>
                   <div>{cart?.shipping_address?.phone || "N/A"}</div>
                 </div>
                 <div className="flex flex-col pl-6">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
-                    Amount ({region?.currency_code.toUpperCase()})
+                    {t("Amount {currency_code}", {
+                      currency_code: region?.currency_code.toUpperCase(),
+                    })}
                   </div>
                   <div>
                     {cart?.total && region?.currency_code
@@ -235,7 +241,7 @@ const DraftOrderDetails = () => {
             <DraftSummaryCard order={draft_order} />
             <BodyCard
               className={"mb-4 h-auto min-h-0 w-full"}
-              title="Payment"
+              title={t("Payment")}
               customActionable={
                 draft_order?.status !== "completed" && <PaymentActionables />
               }
@@ -244,27 +250,27 @@ const DraftOrderDetails = () => {
                 <DisplayTotal
                   currency={region?.currency_code}
                   totalAmount={cart?.subtotal}
-                  totalTitle={"Subtotal"}
+                  totalTitle={t("Subtotal")}
                 />
                 <DisplayTotal
                   currency={region?.currency_code}
                   totalAmount={cart?.shipping_total}
-                  totalTitle={"Shipping"}
+                  totalTitle={t("Shipping")}
                 />
                 <DisplayTotal
                   currency={region?.currency_code}
                   totalAmount={cart?.tax_total}
-                  totalTitle={"Tax"}
+                  totalTitle={t("Tax")}
                 />
                 <DisplayTotal
                   variant="bold"
                   currency={region?.currency_code}
                   totalAmount={cart?.total}
-                  totalTitle={"Total to pay"}
+                  totalTitle={t("Total to pay")}
                 />
                 {draft_order?.status !== "completed" && (
                   <div className="text-grey-50 inter-small-regular mt-5 flex w-full items-center">
-                    <span className="mr-2.5">Payment link:</span>
+                    <span className="mr-2.5">{t("Payment link:")}</span>
                     {store?.payment_link_template ? (
                       <CopyToClipboard
                         value={paymentLink}
@@ -272,27 +278,30 @@ const DraftOrderDetails = () => {
                         successDuration={1000}
                       />
                     ) : (
-                      "Configure payment link in store settings"
+                      t("Configure payment link in store settings")
                     )}
                   </div>
                 )}
               </div>
             </BodyCard>
-            <BodyCard className={"mb-4 h-auto min-h-0 w-full"} title="Shipping">
+            <BodyCard
+              className={"mb-4 h-auto min-h-0 w-full"}
+              title={t("Shipping")}
+            >
               <div className="mt-6">
                 {cart?.shipping_methods.map((method) => (
                   <div className="flex flex-col" key={method.id}>
                     <span className="inter-small-regular text-grey-50">
-                      Shipping Method
+                      {t("Shipping Method")}
                     </span>
                     <span className="inter-small-regular text-grey-90 mt-2">
                       {method?.shipping_option.name || ""}
                     </span>
                     <div className="bg-grey-5 mt-8 flex h-full min-h-[100px] flex-col px-3 py-2">
                       <span className="inter-base-semibold">
-                        Data{" "}
+                        {t("Data")}{" "}
                         <span className="text-grey-50 inter-base-regular">
-                          (1 item)
+                          {t("(1 item)")}
                         </span>
                       </span>
                       <div className="mt-4 flex flex-grow items-center">
@@ -305,10 +314,10 @@ const DraftOrderDetails = () => {
             </BodyCard>
             <BodyCard
               className={"mb-4 h-auto min-h-0 w-full"}
-              title="Customer"
+              title={t("Customer")}
               actionables={[
                 {
-                  label: "Edit Shipping Address",
+                  label: t("Edit Shipping Address"),
                   icon: <TruckIcon size={"20"} />,
                   onClick: () =>
                     setAddressModal({
@@ -317,7 +326,7 @@ const DraftOrderDetails = () => {
                     }),
                 },
                 {
-                  label: "Edit Billing Address",
+                  label: t("Edit Billing Address"),
                   icon: <DollarSignIcon size={"20"} />,
                   onClick: () => {
                     if (cart?.billing_address) {
@@ -329,7 +338,7 @@ const DraftOrderDetails = () => {
                   },
                 },
                 {
-                  label: "Go to Customer",
+                  label: t("Go to Customer"),
                   icon: <DetailsIcon size={"20"} />, // TODO: Change to Contact icon
                   onClick: () => navigate(`/a/customers/${cart?.customer.id}`),
                 },
@@ -363,7 +372,7 @@ const DraftOrderDetails = () => {
                 <div className="mt-6 flex space-x-6 divide-x">
                   <div className="flex flex-col">
                     <div className="inter-small-regular text-grey-50 mb-1">
-                      Contact
+                      {t("Contact")}
                     </div>
                     <div className="inter-small-regular flex flex-col">
                       <span>{cart?.email}</span>
@@ -371,11 +380,11 @@ const DraftOrderDetails = () => {
                     </div>
                   </div>
                   <FormattedAddress
-                    title={"Shipping"}
+                    title={t("Shipping")}
                     addr={cart?.shipping_address || undefined}
                   />
                   <FormattedAddress
-                    title={"Billing"}
+                    title={t("Billing")}
                     addr={cart?.billing_address || undefined}
                   />
                 </div>
@@ -397,7 +406,7 @@ const DraftOrderDetails = () => {
             )}
             <BodyCard
               className={"mb-4 h-auto min-h-0 w-full pt-[15px]"}
-              title="Raw Draft Order"
+              title={t("Raw Draft Order")}
             >
               <JSONView data={draft_order!} />
             </BodyCard>
@@ -417,11 +426,13 @@ const DraftOrderDetails = () => {
       state variables for showing different prompts */}
       {deletePromptData.show && (
         <DeletePrompt
-          text={"Are you sure?"}
-          heading={`Remove ${deletePromptData?.resource}`}
-          successText={`${
-            deletePromptData?.resource || "Resource"
-          } has been removed`}
+          text={t("Are you sure?")}
+          heading={t("Remove {resource}", {
+            resource: deletePromptData?.resource,
+          })}
+          successText={t("{resource} has been removed", {
+            resource: deletePromptData?.resource || "Resource",
+          })}
           onDelete={() => deletePromptData.onDelete()}
           handleClose={() => setDeletePromptData(initDeleteState)}
         />
@@ -429,10 +440,12 @@ const DraftOrderDetails = () => {
 
       {showMarkAsPaidConfirmation && (
         <ConfirmationPrompt
-          heading="Mark as paid"
-          text="This will create an order. Mark this as paid if you received the payment."
-          confirmText="Mark paid"
-          cancelText="Cancel"
+          heading={t("Mark as paid")}
+          text={t(
+            "This will create an order. Mark this as paid if you received the payment."
+          )}
+          confirmText={t("Mark paid")}
+          cancelText={t("Cancel")}
           handleClose={() => setShowAsPaidConfirmation(false)}
           onConfirm={onMarkAsPaidConfirm}
         />

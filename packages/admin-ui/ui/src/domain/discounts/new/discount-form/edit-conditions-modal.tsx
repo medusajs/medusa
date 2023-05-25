@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../components/molecules/modal"
 import { DiscountConditionType } from "../../types"
 import { getTitle } from "../../utils"
@@ -17,10 +18,13 @@ const EditConditionsModal: React.FC<EditConditionsModalProps> = ({
   onClose,
   view,
 }) => {
+  const { t } = useTranslation()
   return (
     <Modal open handleClose={onClose}>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">Edit {getTitle(view)}</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t("Edit {title}", { title: getTitle(view, t) })}
+        </h1>
       </Modal.Header>
       <Modal.Body>
         <Content view={view} onClose={onClose} />

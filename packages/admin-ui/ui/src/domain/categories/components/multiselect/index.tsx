@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import React, { useEffect, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 import { sum } from "lodash"
 import Tooltip from "../../../../components/atoms/tooltip"
@@ -57,6 +58,7 @@ function Input(props: InputProps) {
     disabled,
   } = props
   const selectedCount = Object.keys(selected).length
+  const { t } = useTranslation()
 
   const selectedOption = useMemo(() => {
     const ret: string[] = []
@@ -100,7 +102,7 @@ function Input(props: InputProps) {
         )}
         {selectedCount === 0 ? (
           <span className="text-grey-50">
-            {placeholder ? placeholder : "Choose categories"}
+            {placeholder ? placeholder : t("Choose categories")}
           </span>
         ) : null}
       </div>
@@ -157,6 +159,7 @@ function PopupItem(props: PopupItemProps) {
     selectedSubcategoriesCount,
   } = props
 
+  const { t } = useTranslation()
   const hasChildren = !!option.children?.length
 
   const onClick = (e) => {
@@ -190,7 +193,7 @@ function PopupItem(props: PopupItemProps) {
         <div className="flex items-center gap-2">
           {!!selectedSubcategoriesCount && (
             <span className="text-small text-gray-400">
-              {selectedSubcategoriesCount} selected
+              {t("selectedWithCounts", { count: selectedSubcategoriesCount })}
             </span>
           )}
           <ChevronRightIcon size={16} />

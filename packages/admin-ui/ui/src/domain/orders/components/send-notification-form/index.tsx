@@ -1,4 +1,5 @@
 import { Controller } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -13,12 +14,13 @@ type Props = {
 }
 
 const SendNotificationForm = ({ form, type }: Props) => {
+  const { t } = useTranslation()
   const { control, path } = form
 
   const subject = {
-    return: "return",
-    swap: "exchange",
-    claim: "claim",
+    return: t("return"),
+    swap: t("exchange"),
+    claim: t("claim"),
   }[type]
 
   return (
@@ -31,10 +33,15 @@ const SendNotificationForm = ({ form, type }: Props) => {
             <div className="mr-xsmall">
               <IndeterminateCheckbox checked={value} onChange={onChange} />
             </div>
-            <p className="inter-small-semibold mr-1.5">Send notifications</p>
+            <p className="inter-small-semibold mr-1.5">
+              {t("Send notifications")}
+            </p>
             <IconTooltip
               type="info"
-              content={`If unchecked the customer will not receive communication about this ${subject}.`}
+              content={t(
+                `If unchecked the customer will not receive communication about this {subject}.`,
+                { subject }
+              )}
             />
           </div>
         )

@@ -6,16 +6,18 @@ import { InventoryLevelDTO } from "@medusajs/types"
 import Tooltip from "../../atoms/tooltip"
 import { useMemo } from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 const useInventoryTableColumn = ({
   location_id,
 }: {
   location_id: string
 }): [Column<DecoratedInventoryItemDTO>[]] => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       {
-        Header: "Item",
+        Header: t("Item"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -36,18 +38,18 @@ const useInventoryTableColumn = ({
         },
       },
       {
-        Header: "Variant",
+        Header: t("Variant"),
         Cell: ({ row: { original } }) => {
           return <div>{original?.variants[0]?.title || "-"}</div>
         },
       },
       {
-        Header: "SKU",
+        Header: t("SKU"),
         accessor: "sku",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: "Reserved",
+        Header: t("Reserved"),
         accessor: "reserved_quantity",
         Cell: ({ row: { original } }) => {
           const navigate = useNavigate()
@@ -85,7 +87,7 @@ const useInventoryTableColumn = ({
         },
       },
       {
-        Header: "In stock",
+        Header: t("In stock"),
         accessor: "stocked_quantity",
         Cell: ({ row: { original } }) => {
           return (

@@ -1,5 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { useCallback, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import Thumbnail from "../../../../components/atoms/thumbnail"
 import Tooltip from "../../../../components/atoms/tooltip"
@@ -23,6 +24,7 @@ export const useAdditionalItemsColumns = ({
   orderCurrency,
   removeItem,
 }: AdditionalItemsColumnProps) => {
+  const { t } = useTranslation()
   const { control, setValue, getValues, path } = form
 
   const updateQuantity = useCallback(
@@ -39,7 +41,7 @@ export const useAdditionalItemsColumns = ({
     return [
       columnHelper.display({
         id: "product_display",
-        header: "Product",
+        header: t("Product"),
         cell: ({
           row: {
             original: { thumbnail, product_title, variant_title, sku },
@@ -71,7 +73,7 @@ export const useAdditionalItemsColumns = ({
       }),
       columnHelper.display({
         id: "quantity",
-        header: () => <p className="text-right">Quantity</p>,
+        header: () => <p className="text-right">{t("Quantity")}</p>,
         maxSize: 50,
         cell: ({
           row: {
@@ -96,7 +98,7 @@ export const useAdditionalItemsColumns = ({
       }),
       columnHelper.accessor("price", {
         maxSize: 50,
-        header: () => <p className="text-right">Price</p>,
+        header: () => <p className="text-right">{t("Price")}</p>,
         cell: ({
           getValue,
           row: {
@@ -109,7 +111,9 @@ export const useAdditionalItemsColumns = ({
             <div className="text-right">
               {original_price !== price && (
                 <Tooltip
-                  content="The price has been overridden in a price list, that is applicable to this order."
+                  content={t(
+                    "The price has been overridden in a price list, that is applicable to this order."
+                  )}
                   side="top"
                 >
                   <p className="text-grey-40 cursor-default line-through">

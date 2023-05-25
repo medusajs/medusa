@@ -1,7 +1,9 @@
 import moment from "moment"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 const useReservationsTableColumns = () => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       {
@@ -10,22 +12,22 @@ const useReservationsTableColumns = () => {
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: "Order ID",
+        Header: t("Order ID"),
         accessor: "line_item.order.display_id",
         Cell: ({ cell: { value } }) => value ?? "-",
       },
       {
-        Header: "Description",
+        Header: t("Description"),
         accessor: "description",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: "Created",
+        Header: t("Created"),
         accessor: "created_at",
         Cell: ({ cell: { value } }) => moment(value).format("MMM Do YYYY"),
       },
       {
-        Header: () => <div className="pr-2 text-right">Quantity</div>,
+        Header: () => <div className="pr-2 text-right">{t("Quantity")}</div>,
         accessor: "quantity",
         Cell: ({ cell: { value } }) => (
           <div className="w-full pr-2 text-right">{value}</div>

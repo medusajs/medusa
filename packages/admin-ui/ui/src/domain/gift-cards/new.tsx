@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import FileUploadField from "../../components/atoms/file-upload-field"
 import Button from "../../components/fundamentals/button"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
@@ -43,6 +44,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
   const { mutate, isLoading } = useAdminCreateProduct()
   const navigate = useNavigate()
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const { register, setValue, handleSubmit, control } =
     useForm<NewGiftCardFormData>({
@@ -75,13 +77,21 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
     const trimmedName = data.title.trim()
 
     if (!trimmedName) {
-      notification("Error", "Please enter a name for the Gift Card", "error")
+      notification(
+        t("Error"),
+        t("Please enter a name for the Gift Card"),
+        "error"
+      )
       focusByName("name")
       return
     }
 
     if (!data.denominations?.length) {
-      notification("Error", "Please add at least one denomination", "error")
+      notification(
+        t("Error"),
+        t("Please add at least one denomination"),
+        "error"
+      )
       focusByName("add-denomination")
       return
     }
@@ -105,7 +115,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         title: data.title,
         description: data.description,
         discountable: false,
-        options: [{ title: "Denominations" }],
+        options: [{ title: t("Denominations") }],
         variants: data.denominations.map((d, i) => ({
           title: `${i + 1}`,
           inventory_quantity: 0,
@@ -121,12 +131,16 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully created Gift Card", "success")
+          notification(
+            t("Success"),
+            t("Successfully created Gift Card"),
+            "success"
+          )
           refetch()
           navigate("/a/gift-cards/manage")
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification(t("Error"), getErrorMessage(err), "error")
         },
       }
     )
@@ -138,28 +152,28 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <div>
-              <h1 className="inter-xlarge-semibold">Create Gift Card</h1>
+              <h1 className="inter-xlarge-semibold">{t("Create Gift Card")}</h1>
             </div>
           </Modal.Header>
           <Modal.Content>
             <div className="mb-base">
-              <h3 className="inter-base-semibold">Gift Card Details</h3>
+              <h3 className="inter-base-semibold">{t("Gift Card Details")}</h3>
             </div>
             <div className="gap-y-base flex flex-col">
               <InputField
-                label={"Name"}
+                label={t("Name")}
                 required
-                placeholder="The best Gift Card"
+                placeholder={t("The best Gift Card")}
                 {...register("title", { required: true })}
               />
               <TextArea
-                label="Description"
-                placeholder="The best Gift Card of all time"
+                label={t("Description")}
+                placeholder={t("The best Gift Card of all time")}
                 {...register("description")}
               />
             </div>
             <div className="mt-xlarge">
-              <h3 className="inter-base-semibold">Thumbnail</h3>
+              <h3 className="inter-base-semibold">{t("Thumbnail")}</h3>
               <div className="mt-base h-[80px]">
                 {thumbnail ? (
                   <div className="flex items-center gap-x-6">
@@ -178,7 +192,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                           type="button"
                           onClick={() => setValue("thumbnail", null)}
                         >
-                          Delete
+                          {t("Delete")}
                         </button>
                       </div>
                     </div>
@@ -192,14 +206,17 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                       "image/webp",
                     ]}
                     onFileChosen={handleFileUpload}
-                    placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
+                    placeholder={t(
+                      "1200 x 1600 (3:4) recommended, up to 10MB each"
+                    )}
                   />
                 )}
               </div>
             </div>
             <div className="mt-xlarge">
               <h3 className="inter-base-semibold mb-base">
-                Denominations<span className="text-rose-50">*</span>
+                {t("Denominations")}
+                <span className="text-rose-50">*</span>
               </h3>
               <div className="gap-y-xsmall flex flex-col">
                 {fields.map((denomination, index) => {
@@ -223,7 +240,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                           render={({ field: { value, onChange, ref } }) => {
                             return (
                               <CurrencyInput.Amount
-                                label="Amount"
+                                label={t("Amount")}
                                 amount={value || undefined}
                                 onChange={onChange}
                                 ref={ref}
@@ -257,7 +274,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 type="button"
               >
                 <PlusIcon size={20} />
-                Add Denomination
+                {t("Add Denomination")}
               </Button>
             </div>
           </Modal.Content>
@@ -270,7 +287,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 className="w-eventButton"
                 onClick={onClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 type="submit"
@@ -280,7 +297,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                Create & Publish
+                {t("Create & Publish")}
               </Button>
             </div>
           </Modal.Footer>

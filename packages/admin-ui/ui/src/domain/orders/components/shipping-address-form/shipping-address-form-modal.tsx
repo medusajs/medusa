@@ -2,6 +2,7 @@ import { Order } from "@medusajs/medusa"
 import { useAdminRegion } from "medusa-react"
 import { useMemo } from "react"
 import { useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
 import { useLayeredModal } from "../../../../components/molecules/modal/layered-modal"
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const ShippingAddressFormScreen = ({ form, order }: Props) => {
+  const { t } = useTranslation()
   const {
     resetField,
     path,
@@ -82,7 +84,7 @@ const ShippingAddressFormScreen = ({ form, order }: Props) => {
             type="button"
             onClick={cancelAndPop}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -91,7 +93,7 @@ const ShippingAddressFormScreen = ({ form, order }: Props) => {
             type="button"
             onClick={pop}
           >
-            Save and go back
+            {t("Save and go back")}
           </Button>
         </div>
       </Modal.Footer>
@@ -101,10 +103,11 @@ const ShippingAddressFormScreen = ({ form, order }: Props) => {
 
 export const useShippingAddressFormScreen = () => {
   const { pop, push } = useLayeredModal()
+  const { t } = useTranslation()
 
   const pushScreen = (props: Props) => {
     push({
-      title: "Shipping Information",
+      title: t("Shipping Information"),
       onBack: () => pop(),
       view: <ShippingAddressFormScreen {...props} />,
     })

@@ -1,5 +1,6 @@
 import { Region } from "@medusajs/medusa"
 import { Controller, UseFormReturn } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import IncludesTaxTooltip from "../../../../../components/atoms/includes-tax-tooltip"
 import Switch from "../../../../../components/atoms/switch"
 import MetadataForm, {
@@ -47,6 +48,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
     formState: { errors },
   } = form
 
+  const { t } = useTranslation()
   const { shippingProfileOptions, fulfillmentOptions } =
     useShippingOptionFormData(region.id)
 
@@ -55,7 +57,9 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
       <div>
         <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
-            <h3 className="inter-base-semibold mb-2xsmall">Visible in store</h3>
+            <h3 className="inter-base-semibold mb-2xsmall">
+              {t("Visible in store")}
+            </h3>
             <Controller
               control={control}
               name={"store_option"}
@@ -65,19 +69,19 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
             />
           </div>
           <p className="inter-base-regular text-grey-50">
-            Enable or disable the shipping option visiblity in store.
+            {t("Enable or disable the shipping option visiblity in store.")}
           </p>
         </div>
       </div>
       <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
-        <h3 className="inter-base-semibold mb-base">Details</h3>
+        <h3 className="inter-base-semibold mb-base">{t("Details")}</h3>
         <div className="gap-large grid grid-cols-2">
           <InputField
-            label="Title"
+            label={t("Title")}
             required
             {...register("name", {
-              required: "Title is required",
+              required: t("Title is required"),
               pattern: FormValidator.whiteSpaceRule("Title"),
               minLength: FormValidator.minOneCharRule("Title"),
             })}
@@ -90,22 +94,22 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               render={({ field: { onChange, value, onBlur } }) => {
                 return (
                   <NextSelect
-                    label="Price Type"
+                    label={t("Price Type")}
                     required
                     value={value}
                     onChange={onChange}
                     onBlur={onBlur}
                     options={[
                       {
-                        label: "Flat Rate",
+                        label: t("Flat Rate"),
                         value: "flat_rate",
                       },
                       {
-                        label: "Calculated",
+                        label: t("Calculated"),
                         value: "calculated",
                       },
                     ]}
-                    placeholder="Choose a price type"
+                    placeholder={t("Choose a price type")}
                     errors={errors}
                   />
                 )
@@ -123,7 +127,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                   return (
                     <div>
                       <InputHeader
-                        label="Price"
+                        label={t("Price")}
                         className="mb-2xsmall"
                         tooltip={
                           <IncludesTaxTooltip
@@ -153,10 +157,10 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                 render={({ field }) => {
                   return (
                     <NextSelect
-                      label="Shipping Profile"
+                      label={t("Shipping Profile")}
                       required
                       options={shippingProfileOptions}
-                      placeholder="Choose a shipping profile"
+                      placeholder={t("Choose a shipping profile")}
                       {...field}
                       errors={errors}
                     />
@@ -169,9 +173,9 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                 render={({ field }) => {
                   return (
                     <NextSelect
-                      label="Fulfillment Method"
+                      label={t("Fulfillment Method")}
                       required
-                      placeholder="Choose a fulfillment method"
+                      placeholder={t("Choose a fulfillment method")}
                       options={fulfillmentOptions}
                       {...field}
                       errors={errors}
@@ -185,7 +189,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
       </div>
       <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
-        <h3 className="inter-base-semibold mb-base">Requirements</h3>
+        <h3 className="inter-base-semibold mb-base">{t("Requirements")}</h3>
         <div className="gap-large grid grid-cols-2">
           <Controller
             control={control}
@@ -205,7 +209,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                   "requirements.max_subtotal.amount"
                 )
                 if (maxSubtotal && value > maxSubtotal) {
-                  return "Min. subtotal must be less than max. subtotal"
+                  return t("Min. subtotal must be less than max. subtotal")
                 }
                 return true
               },
@@ -214,7 +218,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               return (
                 <div>
                   <InputHeader
-                    label="Min. subtotal"
+                    label={t("Min. subtotal")}
                     className="mb-xsmall"
                     tooltip={
                       <IncludesTaxTooltip includesTax={region.includes_tax} />
@@ -258,7 +262,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               return (
                 <div ref={ref}>
                   <InputHeader
-                    label="Max. subtotal"
+                    label={t("Max. subtotal")}
                     className="mb-xsmall"
                     tooltip={
                       <IncludesTaxTooltip includesTax={region.includes_tax} />
@@ -279,7 +283,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
       </div>
       <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
-        <h3 className="inter-base-semibold mb-base">Metadata</h3>
+        <h3 className="inter-base-semibold mb-base">{t("Metadata")}</h3>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </div>
     </div>

@@ -1,10 +1,12 @@
 import clsx from "clsx"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container"
 import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item"
 import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-field"
 import TabFilter from "../../../components/molecules/filter-tab"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
+import { TFunction } from "i18next"
 
 const statusFilters = [
   "completed",
@@ -34,12 +36,12 @@ const fulfillmentFilters = [
   "canceled",
 ]
 
-const dateFilters = [
-  "is in the last",
-  "is older than",
-  "is after",
-  "is before",
-  "is equal to",
+const dateFilters = (t: TFunction) => [
+  t("is in the last"),
+  t("is older than"),
+  t("is after"),
+  t("is before"),
+  t("is equal to"),
 ]
 
 const OrderFilters = ({
@@ -52,6 +54,7 @@ const OrderFilters = ({
   submitFilters,
   clearFilters,
 }) => {
+  const { t } = useTranslation()
   const [tempState, setTempState] = useState(filters)
   const [name, setName] = useState("")
 
@@ -114,7 +117,7 @@ const OrderFilters = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              Filters
+              {t("Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
@@ -128,29 +131,29 @@ const OrderFilters = ({
         }
       >
         <FilterDropdownItem
-          filterTitle="Status"
+          filterTitle={t("Status")}
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
           setFilter={(val) => setSingleFilter("status", val)}
         />
         <FilterDropdownItem
-          filterTitle="Payment Status"
+          filterTitle={t("Payment Status")}
           options={paymentFilters}
           filters={tempState.payment.filter}
           open={tempState.payment.open}
           setFilter={(val) => setSingleFilter("payment", val)}
         />
         <FilterDropdownItem
-          filterTitle="Fulfillment Status"
+          filterTitle={t("Fulfillment Status")}
           options={fulfillmentFilters}
           filters={tempState.fulfillment.filter}
           open={tempState.fulfillment.open}
           setFilter={(val) => setSingleFilter("fulfillment", val)}
         />
         <FilterDropdownItem
-          filterTitle="Date"
-          options={dateFilters}
+          filterTitle={t("Date")}
+          options={dateFilters(t)}
           filters={tempState.date.filter}
           open={tempState.date.open}
           setFilter={(val) => setSingleFilter("date", val)}

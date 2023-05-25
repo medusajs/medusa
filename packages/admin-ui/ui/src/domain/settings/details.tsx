@@ -2,6 +2,7 @@ import { Store } from "@medusajs/medusa"
 import { useAdminStore, useAdminUpdateStore } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../components/atoms/back-button"
 import Input from "../../components/molecules/input"
 import BodyCard from "../../components/organisms/body-card"
@@ -20,6 +21,7 @@ const AccountDetails = () => {
   const { store } = useAdminStore()
   const { mutate } = useAdminUpdateStore()
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const handleCancel = () => {
     if (store) {
@@ -37,26 +39,26 @@ const AccountDetails = () => {
     const validateInviteLinkTemplate = validateUrl(data.invite_link_template)
 
     if (!validateSwapLinkTemplate) {
-      notification("Error", "Malformed swap url", "error")
+      notification(t("Error"), t("Malformed swap url"), "error")
       return
     }
 
     if (!validatePaymentLinkTemplate) {
-      notification("Error", "Malformed payment url", "error")
+      notification(t("Error"), t("Malformed payment url"), "error")
       return
     }
 
     if (!validateInviteLinkTemplate) {
-      notification("Error", "Malformed invite url", "error")
+      notification(t("Error"), t("Malformed invite url"), "error")
       return
     }
 
     mutate(data, {
       onSuccess: () => {
-        notification("Success", "Successfully updated store", "success")
+        notification(t("Success"), t("Successfully updated store"), "success")
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -66,46 +68,48 @@ const AccountDetails = () => {
       <div className="max-w-[632px]">
         <BackButton
           path="/a/settings/"
-          label="Back to settings"
+          label={t("Back to settings")}
           className="mb-xsmall"
         />
         <BodyCard
           events={[
             {
-              label: "Save",
+              label: t("Save"),
               type: "button",
               onClick: handleSubmit(onSubmit),
             },
-            { label: "Cancel", type: "button", onClick: handleCancel },
+            { label: t("Cancel"), type: "button", onClick: handleCancel },
           ]}
-          title="Store Details"
-          subtitle="Manage your business details"
+          title={t("Store Details")}
+          subtitle={t("Manage your business details")}
         >
           <div className="gap-y-xlarge mb-large flex flex-col">
             <div>
-              <h2 className="inter-base-semibold mb-base">General</h2>
+              <h2 className="inter-base-semibold mb-base">{t("General")}</h2>
               <Input
-                label="Store name"
+                label={t("Store name")}
                 {...register("name")}
-                placeholder="Medusa Store"
+                placeholder={t("Medusa Store")}
               />
             </div>
             <div>
-              <h2 className="inter-base-semibold mb-base">Advanced settings</h2>
+              <h2 className="inter-base-semibold mb-base">
+                {t("Advanced settings")}
+              </h2>
               <Input
-                label="Swap link template"
+                label={t("Swap link template")}
                 {...register("swap_link_template")}
                 placeholder="https://acme.inc/swap={swap_id}"
               />
               <Input
                 className="mt-base"
-                label="Draft order link template"
+                label={t("Draft order link template")}
                 {...register("payment_link_template")}
                 placeholder="https://acme.inc/payment={payment_id}"
               />
               <Input
                 className="mt-base"
-                label="Invite link template"
+                label={t("Invite link template")}
                 {...register("invite_link_template")}
                 placeholder="https://acme-admin.inc/invite?token={invite_token}"
               />

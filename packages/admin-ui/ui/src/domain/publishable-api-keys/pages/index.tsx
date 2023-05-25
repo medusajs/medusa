@@ -5,6 +5,7 @@ import {
   useAdminAddPublishableKeySalesChannelsBatch,
   useAdminCreatePublishableApiKey,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import BackButton from "../../../components/atoms/back-button"
 import Fade from "../../../components/atoms/fade-wrapper"
@@ -34,6 +35,7 @@ type AddSalesChannelsSectionProps = {
 function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
   const { setSelectedChannels, selectedChannels } = props
 
+  const { t } = useTranslation()
   const [isModalVisible, showModal, hideModal] = useToggleState(false)
 
   const hasSelectedChannels = !!Object.keys(selectedChannels).length
@@ -43,10 +45,10 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
       <div className="flex items-center justify-between">
         <div>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
-            Sales channels
+            {t("Sales channels")}
           </h5>
           <p className="text-grey-50">
-            Connect as many sales channels to your API key as you need.
+            {t("Connect as many sales channels to your API key as you need.")}
           </p>
         </div>
         {!hasSelectedChannels && (
@@ -56,7 +58,7 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
             className="h-[40px]"
             onClick={showModal}
           >
-            Add sales channels
+            {t("Add sales channels")}
           </Button>
         )}
       </div>
@@ -79,7 +81,7 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
             className="h-[40px]"
             onClick={showModal}
           >
-            Edit sales channels
+            {t("Edit sales channels")}
           </Button>
         </div>
       )}
@@ -104,6 +106,7 @@ type CreatePublishableKeyProps = {
 function CreatePublishableKey(props: CreatePublishableKeyProps) {
   const { closeModal } = props
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const [name, setName] = useState("")
   const [keyId, setKeyId] = useState("")
@@ -119,9 +122,9 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
     try {
       const res = await createPublishableApiKey({ title: name })
       setKeyId(res.publishable_api_key.id)
-      notification("Success", "Created a new API key", "success")
+      notification(t("Success"), t("Created a new API key"), "success")
     } catch (e) {
-      notification("Error", "Failed to create a new API key", "error")
+      notification(t("Error"), t("Failed to create a new API key"), "error")
     }
   }
 
@@ -132,15 +135,17 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       })
         .then(() => {
           notification(
-            "Success",
-            "Sales channels added to the scope",
+            t("Success"),
+            t("Sales channels added to the scope"),
             "success"
           )
         })
         .catch(() => {
           notification(
-            "Error",
-            "Error occurred while adding sales channels to the scope of the key",
+            t("Error"),
+            t(
+              "Error occurred while adding sales channels to the scope of the key"
+            ),
             "success"
           )
         })
@@ -163,7 +168,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
               disabled={!name}
               className="rounded-rounded"
             >
-              Publish API key
+              {t("Publish API key")}
             </Button>
           </div>
         </div>
@@ -172,14 +177,15 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       <FocusModal.Main className="no-scrollbar flex w-full justify-center">
         <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-8">
-            Create API Key
+            {t("Create API Key")}
           </h1>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
             General Information
           </h5>
           <p className="text-grey-50 pb-8">
-            Create and manage API keys. Right now this is only related to sales
-            channels.
+            {t(
+              "Create and manage API keys. Right now this is only related to sales channels."
+            )}
           </p>
           <InputField
             label="Title"
@@ -207,6 +213,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
  * Index page container for the "Publishable API keys" page
  */
 function Index() {
+  const { t } = useTranslation()
   const [selectedKey, setSelectedKey] = useState<PublishableApiKey>()
   const [editKey, setEditKey] = useState<PublishableApiKey>()
 
@@ -215,7 +222,7 @@ function Index() {
 
   const actions = [
     {
-      label: "Create API key",
+      label: t("Create API key"),
       onClick: openCreateModal,
     },
   ]
@@ -231,13 +238,15 @@ function Index() {
   return (
     <div>
       <BackButton
-        label="Back to settings"
+        label={t("Back to settings")}
         path="/a/settings"
         className="mb-xsmall"
       />
       <BodyCard
-        title="Publishable API keys"
-        subtitle="These publishable keys will allow you to authenticate API requests."
+        title={t("Publishable API keys")}
+        subtitle={t(
+          "These publishable keys will allow you to authenticate API requests."
+        )}
         actionables={actions}
       >
         <PublishableApiKeysTable

@@ -2,6 +2,7 @@ import { AdminPostRegionsRegionReq, Region } from "@medusajs/medusa"
 import { useAdminUpdateRegion } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import MetadataForm, {
   getMetadataFormValues,
   getSubmittableMetadata,
@@ -36,6 +37,7 @@ type RegionEditFormType = {
 }
 
 const EditRegionModal = ({ region, onClose, open }: Props) => {
+  const { t } = useTranslation()
   const form = useForm<RegionEditFormType>({
     defaultValues: getDefaultValues(region),
   })
@@ -77,11 +79,15 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
 
     mutate(payload, {
       onSuccess: () => {
-        notifcation("Success", "Region was successfully updated", "success")
+        notifcation(
+          t("Success"),
+          t("Region was successfully updated"),
+          "success"
+        )
         closeAndReset()
       },
       onError: (err) => {
-        notifcation("Error", getErrorMessage(err), "error")
+        notifcation(t("Error"), getErrorMessage(err), "error")
       },
     })
   })
@@ -90,22 +96,22 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
     <Modal handleClose={closeAndReset} open={open}>
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
-          <h1 className="inter-xlarge-semibold">Edit Region Details</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit Region Details")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <h3 className="inter-base-semibold mb-base">Details</h3>
+              <h3 className="inter-base-semibold mb-base">{t("Details")}</h3>
               <RegionDetailsForm form={nestedForm(form, "details")} />
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
             <div>
-              <h3 className="inter-base-semibold mb-base">Providers</h3>
+              <h3 className="inter-base-semibold mb-base">{t("Providers")}</h3>
               <RegionProvidersForm form={nestedForm(form, "providers")} />
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
             <div>
-              <h3 className="inter-base-semibold mb-base">Metadata</h3>
+              <h3 className="inter-base-semibold mb-base">{t("Metadata")}</h3>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </Modal.Content>
@@ -117,7 +123,7 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
                 type="button"
                 onClick={closeAndReset}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -126,7 +132,7 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

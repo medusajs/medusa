@@ -1,14 +1,16 @@
 import { useMemo } from "react"
 import { Column } from "react-table"
+import { useTranslation } from "react-i18next"
 import Badge from "../../../components/fundamentals/badge"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
 import { TaxRateTableEntries } from "./details"
 
 const useTaxRateColumns = () => {
+  const { t } = useTranslation()
   const columns: Column<TaxRateTableEntries>[] = useMemo(
     () => [
       {
-        Header: <div className="pl-2">Name</div>,
+        Header: <div className="pl-2">{t("Name")}</div>,
         accessor: "name",
         Cell: ({ row, cell: { value } }) => {
           return (
@@ -25,7 +27,7 @@ const useTaxRateColumns = () => {
         },
       },
       {
-        Header: "Code",
+        Header: t("Code"),
         accessor: "code",
         Cell: ({ cell: { value } }) => (
           <div>
@@ -34,7 +36,7 @@ const useTaxRateColumns = () => {
         ),
       },
       {
-        Header: "Tax Rate",
+        Header: t("Tax Rate"),
         accessor: "rate",
         Cell: ({ cell: { value } }) => <div>{value} %</div>,
       },

@@ -1,4 +1,5 @@
 import { Product } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import useToggleState from "../../../hooks/use-toggle-state"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
 import Section from "../section"
@@ -12,6 +13,7 @@ type GiftCardDenominationsSectionProps = {
 const GiftCardDenominationsSection = ({
   giftCard,
 }: GiftCardDenominationsSectionProps) => {
+  const { t } = useTranslation()
   const {
     state: addDenomination,
     close: closeAddDenomination,
@@ -21,11 +23,11 @@ const GiftCardDenominationsSection = ({
   return (
     <>
       <Section
-        title="Denominations"
+        title={t("Denominations")}
         forceDropdown
         actions={[
           {
-            label: "Add Denomination",
+            label: t("Add Denomination"),
             onClick: openAddDenomination,
             icon: <PlusIcon size={20} />,
           },

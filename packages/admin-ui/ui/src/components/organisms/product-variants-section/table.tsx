@@ -2,6 +2,7 @@ import { Column, useTable } from "react-table"
 
 import { ProductVariant } from "@medusajs/medusa"
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import DuplicateIcon from "../../fundamentals/icons/duplicate-icon"
@@ -22,6 +23,7 @@ type Props = {
 }
 
 export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
+  const { t } = useTranslation()
   const columns = useMemo<Column<ProductVariant>[]>(() => {
     const quantityColumns = []
     if (!inventoryIsEnabled) {
@@ -29,7 +31,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
         Header: () => {
           return (
             <div className="text-right">
-              <span>Inventory</span>
+              <span>{t("Inventory")}</span>
             </div>
           )
         },
@@ -47,12 +49,12 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
     }
     return [
       {
-        Header: "Title",
+        Header: t("Title"),
         id: "title",
         accessor: "title",
       },
       {
-        Header: "SKU",
+        Header: t("SKU"),
         id: "sku",
         accessor: "sku",
         maxWidth: 264,
@@ -65,7 +67,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
         },
       },
       {
-        Header: "EAN",
+        Header: t("EAN"),
         id: "ean",
         accessor: "ean",
         maxWidth: 264,
@@ -85,6 +87,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
 }
 
 const VariantsTable = ({ variants, actions }: Props) => {
+  const { t } = useTranslation()
   const { isFeatureEnabled } = useFeatureFlag()
   const hasInventoryService = isFeatureEnabled("inventoryService")
   const columns = useVariantsTableColumns(hasInventoryService)
@@ -112,20 +115,20 @@ const VariantsTable = ({ variants, actions }: Props) => {
     const inventoryManagementActions = []
     if (hasInventoryService) {
       inventoryManagementActions.push({
-        label: "Manage inventory",
+        label: t("Manage inventory"),
         icon: <BuildingsIcon size="20" />,
         onClick: () => updateVariantInventory(variant),
       })
     }
     return [
       {
-        label: "Edit Variant",
+        label: t("Edit Variant"),
         icon: <EditIcon size="20" />,
         onClick: () => updateVariant(variant),
       },
       ...inventoryManagementActions,
       {
-        label: "Duplicate Variant",
+        label: t("Duplicate Variant"),
         onClick: () =>
           // @ts-ignore
           duplicateVariant({
@@ -135,7 +138,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
         icon: <DuplicateIcon size="20" />,
       },
       {
-        label: "Delete Variant",
+        label: t("Delete Variant"),
         onClick: () => setVariantToRemove(variant),
         icon: <TrashIcon size="20" />,
         variant: "danger",
@@ -185,11 +188,15 @@ const VariantsTable = ({ variants, actions }: Props) => {
                     <DeletePrompt
                       onDelete={async () => deleteVariant(variantToRemove.id)}
                       handleClose={() => setVariantToRemove(null)}
-                      confirmText="Yes, delete"
-                      heading="Delete variant"
-                      text={`Are you sure you want to delete this variant? ${
+                      confirmText={t("Yes, delete")}
+                      heading={t("Delete variant")}
+                      text={`${t(
+                        "Are you sure you want to delete this variant? "
+                      )}${
                         isFeatureEnabled("inventoryService")
-                          ? " Note: Deleting the variant will also remove inventory items and levels"
+                          ? t(
+                              " Note: Deleting the variant will also remove inventory items and levels"
+                            )
                           : ""
                       }`}
                       successText={false}

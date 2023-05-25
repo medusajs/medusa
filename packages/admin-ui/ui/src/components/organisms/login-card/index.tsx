@@ -2,6 +2,7 @@ import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { useWidgets } from "../../../providers/widget-provider"
+import { useTranslation } from "react-i18next"
 import InputError from "../../atoms/input-error"
 import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
@@ -25,6 +26,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   } = useForm<FormValues>()
   const navigate = useNavigate()
   const { mutate, isLoading } = useAdminLogin()
+  const { t } = useTranslation()
 
   const { getWidgets } = useWidgets()
 
@@ -38,7 +40,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
           "password",
           {
             type: "manual",
-            message: "These credentials do not match our records.",
+            message: t("These credentials do not match our records."),
           },
           {
             shouldFocus: true,
@@ -62,17 +64,17 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center">
           <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-            Log in to Medusa
+            {t("Log in to Medusa")}
           </h1>
           <div>
             <SigninInput
-              placeholder="Email"
+              placeholder={t("Email")}
               {...register("email", { required: true })}
               autoComplete="email"
               className="mb-small"
             />
             <SigninInput
-              placeholder="Password"
+              placeholder={t("Password")}
               type={"password"}
               {...register("password", { required: true })}
               autoComplete="current-password"
@@ -93,7 +95,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
             className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
             onClick={toResetPassword}
           >
-            Forgot your password?
+            {t("Forgot your password?")}
           </span>
         </div>
       </form>

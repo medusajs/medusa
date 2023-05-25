@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+
 import BackButton from "../../../components/atoms/back-button"
 import Spacer from "../../../components/atoms/spacer"
 import Spinner from "../../../components/atoms/spinner"
@@ -25,11 +26,13 @@ import { useWidgets } from "../../../providers/widget-provider"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { getErrorStatus } from "../../../utils/get-error-status"
+import { useTranslation } from "react-i18next"
 
 const CollectionDetails = () => {
   const { id } = useParams()
 
   const { collection, isLoading, error, refetch } = useAdminCollection(id!)
+  const { t } = useTranslation()
   const deleteCollection = useAdminDeleteCollection(id!)
   const updateCollection = useAdminUpdateCollection(id!)
   const [showEdit, setShowEdit] = useState(false)
@@ -97,10 +100,10 @@ const CollectionDetails = () => {
       }
 
       setShowAddProducts(false)
-      notification("Success", "Updated products in collection", "success")
+      notification(t("Success"), t("Updated products in collection"), "success")
       refetch()
     } catch (error) {
-      notification("Error", getErrorMessage(error), "error")
+      notification(t("Error"), getErrorMessage(error), "error")
     }
   }
 
@@ -142,7 +145,7 @@ const CollectionDetails = () => {
         <BackButton
           className="mb-xsmall"
           path="/a/products?view=collections"
-          label="Back to Collections"
+          label={t("Back to Collections")}
         />
         <div className="gap-y-xsmall flex flex-col">
           {getWidgets("product_collection.details.before").map((w, i) => {
@@ -167,12 +170,12 @@ const CollectionDetails = () => {
                     forceDropdown
                     actions={[
                       {
-                        label: "Edit Collection",
+                        label: t("Edit Collection"),
                         onClick: () => setShowEdit(true),
                         icon: <EditIcon size="20" />,
                       },
                       {
-                        label: "Delete",
+                        label: t("Delete"),
                         onClick: () => setShowDelete(!showDelete),
                         variant: "danger",
                         icon: <TrashIcon size="20" />,
@@ -186,7 +189,7 @@ const CollectionDetails = () => {
               </div>
               {collection.metadata && (
                 <div className="mt-large gap-y-base flex flex-col">
-                  <h3 className="inter-base-semibold">Metadata</h3>
+                  <h3 className="inter-base-semibold">{t("Metadata")}</h3>
                   <div>
                     <JSONView data={collection.metadata} />
                   </div>
@@ -199,14 +202,14 @@ const CollectionDetails = () => {
             title="Products"
             actions={[
               {
-                label: "Edit Products",
+                label: t("Edit Products"),
                 icon: <EditIcon size="20" />,
                 onClick: () => setShowAddProducts(!showAddProducts),
               },
             ]}
           >
             <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
-              Products in this collection
+              {t("Products in this collection")}
             </p>
             {collection && (
               <ViewProductsTable
@@ -228,7 +231,7 @@ const CollectionDetails = () => {
             )
           })}
 
-          <RawJSON data={collection} title="Raw collection" />
+          <RawJSON data={collection} title={t("Raw collection")} />
         </div>
         <Spacer />
       </div>
@@ -243,10 +246,10 @@ const CollectionDetails = () => {
       {showDelete && (
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
-          heading="Delete collection"
-          successText="Successfully deleted collection"
+          heading={t("Delete collection")}
+          successText={t("Successfully deleted collection")}
           onDelete={async () => handleDelete()}
-          confirmText="Yes, delete"
+          confirmText={t("Yes, delete")}
         />
       )}
       {showAddProducts && (

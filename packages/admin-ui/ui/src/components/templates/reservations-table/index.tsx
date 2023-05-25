@@ -9,6 +9,7 @@ import {
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import Button from "../../fundamentals/button"
@@ -137,6 +138,7 @@ const LocationDropdown = ({
 }
 
 const ReservationsTable: React.FC<ReservationsTableProps> = () => {
+  const { t } = useTranslation()
   const { store } = useAdminStore()
   const {
     state: createReservationState,
@@ -277,7 +279,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
           count: count || 0,
           offset: offs,
           pageSize: offs + rows.length,
-          title: "Reservations",
+          title: t("Reservations"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -367,6 +369,7 @@ const ReservationRow = ({
 } & TableRowProps) => {
   const inventory = row.original
 
+  const { t } = useTranslation()
   const { mutate: deleteReservation } = useAdminDeleteReservation(inventory.id)
 
   const [showEditReservation, setShowEditReservation] =
@@ -376,12 +379,12 @@ const ReservationRow = ({
   const getRowActionables = () => {
     const actions = [
       {
-        label: "Edit",
+        label: t("Edit"),
         onClick: () => setShowEditReservation(row.original),
         icon: <EditIcon size={20} />,
       },
       {
-        label: "Delete",
+        label: t("Delete"),
         variant: "danger",
         icon: <TrashIcon size={20} />,
         onClick: () => setShowDeleteReservation(true),
@@ -416,9 +419,9 @@ const ReservationRow = ({
       )}
       {showDeleteReservation && (
         <DeletePrompt
-          text={"Are you sure you want to remove this reservation?"}
-          heading={"Remove reservation"}
-          successText={"Reservation has been removed"}
+          text={t("Are you sure you want to remove this reservation?")}
+          heading={t("Remove reservation")}
+          successText={t("Reservation has been removed")}
           onDelete={async () => await deleteReservation(undefined)}
           handleClose={() => setShowDeleteReservation(false)}
         />
