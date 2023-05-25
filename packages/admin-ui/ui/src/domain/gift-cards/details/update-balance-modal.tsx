@@ -2,6 +2,7 @@ import { GiftCard } from "@medusajs/medusa"
 import { useAdminUpdateGiftCard } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import GiftCardBalanceForm, {
   GiftCardBalanceFormType,
 } from "../../../components/forms/gift-card/gift-card-balance-form"
@@ -26,6 +27,7 @@ const UpdateBalanceModal = ({
   onClose,
   giftCard,
 }: UpdateBalanceModalProps) => {
+  const { t } = useTranslation()
   const form = useForm<UpdateBalanceModalFormData>({
     defaultValues: getDefaultValues(giftCard),
   })
@@ -48,8 +50,8 @@ const UpdateBalanceModal = ({
       {
         onSuccess: () => {
           notification(
-            "Balance updated",
-            "Gift card balance was updated",
+            t("Balance updated"),
+            t("Gift card balance was updated"),
             "success"
           )
 
@@ -57,7 +59,7 @@ const UpdateBalanceModal = ({
         },
         onError: (err) => {
           notification(
-            "Failed to update balance",
+            t("Failed to update balance"),
             getErrorMessage(err),
             "error"
           )
@@ -76,7 +78,7 @@ const UpdateBalanceModal = ({
     <Modal open={open} handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">Update Balance</h1>
+          <h1 className="inter-xlarge-semibold">{t("Update Balance")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -94,7 +96,7 @@ const UpdateBalanceModal = ({
                 onClick={onClose}
                 type="button"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -103,7 +105,7 @@ const UpdateBalanceModal = ({
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

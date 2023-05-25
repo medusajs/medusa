@@ -14,9 +14,11 @@ import { getErrorMessage } from "../../../utils/error-messages"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import EditGiftCardModal from "./edit-gift-card-modal"
 import UpdateBalanceModal from "./update-balance-modal"
+import { useTranslation } from "react-i18next"
 
 const GiftCardDetails = () => {
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const { gift_card: giftCard, isLoading } = useAdminGiftCard(id!, {
     enabled: !!id,
@@ -40,12 +42,12 @@ const GiftCardDetails = () => {
 
   const actions = [
     {
-      label: "Edit details",
+      label: t("Edit details"),
       onClick: openEdit,
       icon: <EditIcon size={20} />,
     },
     {
-      label: "Update balance",
+      label: t("Update balance"),
       onClick: openBalance,
       icon: <DollarSignIcon size={20} />,
     },
@@ -57,12 +59,13 @@ const GiftCardDetails = () => {
       {
         onSuccess: () => {
           notification(
-            "Updated status",
-            "Succesfully updated the status of the Gift Card",
+            t("Updated status"),
+            t("Succesfully updated the status of the Gift Card"),
             "success"
           )
         },
-        onError: (err) => notification("Error", getErrorMessage(err), "error"),
+        onError: (err) =>
+          notification(t("Error"), getErrorMessage(err), "error"),
       }
     )
   }
@@ -70,7 +73,7 @@ const GiftCardDetails = () => {
   return (
     <div>
       <BackButton
-        label="Back to Gift Cards"
+        label={t("Back to Gift Cards")}
         path="/a/gift-cards"
         className="mb-xsmall"
       />
@@ -100,7 +103,7 @@ const GiftCardDetails = () => {
                 <div className="flex space-x-6 divide-x">
                   <div className="flex flex-col">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
-                      Original amount
+                      {t("Original amount")}
                     </div>
                     <div>
                       {formatAmountWithSymbol({
@@ -111,7 +114,7 @@ const GiftCardDetails = () => {
                   </div>
                   <div className="flex flex-col pl-6">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
-                      Balance
+                      {t("Balance")}
                     </div>
                     <div>
                       {formatAmountWithSymbol({
@@ -122,14 +125,14 @@ const GiftCardDetails = () => {
                   </div>
                   <div className="flex flex-col pl-6">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
-                      Region
+                      {t("Region")}
                     </div>
                     <div>{giftCard.region.name}</div>
                   </div>
                   {giftCard.ends_at && (
                     <div className="flex flex-col pl-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
-                        Expires on
+                        {t("Expires on")}
                       </div>
                       <div>
                         {moment(giftCard.ends_at).format("DD MMM YYYY")}
@@ -138,7 +141,7 @@ const GiftCardDetails = () => {
                   )}
                   <div className="flex flex-col pl-6">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
-                      Created
+                      {t("Created")}
                     </div>
                     <div>
                       {moment(giftCard.created_at).format("DD MMM YYYY")}
@@ -147,7 +150,7 @@ const GiftCardDetails = () => {
                 </div>
               </div>
             </BodyCard>
-            <RawJSON data={giftCard} title="Raw gift card" />
+            <RawJSON data={giftCard} title={t("Raw gift card")} />
           </div>
 
           <UpdateBalanceModal

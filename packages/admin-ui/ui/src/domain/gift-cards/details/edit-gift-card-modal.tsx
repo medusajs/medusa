@@ -2,6 +2,7 @@ import { GiftCard } from "@medusajs/medusa"
 import { useAdminUpdateGiftCard } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import GiftCardEndsAtForm, {
   GiftCardEndsAtFormType,
 } from "../../../components/forms/gift-card/gift-card-ends-at-form"
@@ -30,6 +31,7 @@ const EditGiftCardModal = ({
   onClose,
   giftCard,
 }: EditGiftCardModalProps) => {
+  const { t } = useTranslation()
   const form = useForm<EditGiftCardFormType>({
     defaultValues: getDefaultValues(giftCard),
   })
@@ -52,8 +54,8 @@ const EditGiftCardModal = ({
       {
         onSuccess: () => {
           notification(
-            "Updated Gift card",
-            "Gift card was succesfully updated",
+            t("Updated Gift card"),
+            t("Gift card was succesfully updated"),
             "success"
           )
 
@@ -61,7 +63,7 @@ const EditGiftCardModal = ({
         },
         onError: (err) => {
           notification(
-            "Failed to update Gift card",
+            t("Failed to update Gift card"),
             getErrorMessage(err),
             "error"
           )
@@ -80,13 +82,13 @@ const EditGiftCardModal = ({
     <Modal open={open} handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">Edit Gift Card</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit Gift Card")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
+                <h2 className="inter-base-semibold mb-base">{t("Details")}</h2>
                 <GiftCardRegionForm form={nestedForm(form, "region")} />
               </div>
               <GiftCardEndsAtForm form={nestedForm(form, "ends_at")} />
@@ -100,7 +102,7 @@ const EditGiftCardModal = ({
                 onClick={onClose}
                 type="button"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -109,7 +111,7 @@ const EditGiftCardModal = ({
                 disabled={isLoading || !isDirty}
                 loading={isLoading}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>
