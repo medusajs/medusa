@@ -1,5 +1,6 @@
 import { useLearningPath } from "@site/src/providers/LearningPath"
-import { getLearningPath } from "@site/src/utils/learningPaths"
+import { useNotifications } from "@site/src/providers/NotificationProvider"
+import { getLearningPath } from "@site/src/utils/learning-paths"
 import clsx from "clsx"
 import React from "react"
 
@@ -18,9 +19,13 @@ const LearningPath: React.FC<LearningPathProps> = ({
   if (!path) {
     throw new Error("Learning path does not exist.")
   }
-  const { startPath } = useLearningPath()
+  const { startPath, path: currentPath } = useLearningPath()
+  const notificationContext = useNotifications()
 
   const handleClick = () => {
+    if (notificationContext && currentPath?.notificationId) {
+      notificationContext.removeNotification(currentPath.notificationId)
+    }
     startPath(path)
   }
 

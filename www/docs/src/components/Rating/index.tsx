@@ -30,13 +30,18 @@ const Rating: React.FC<RatingProps> = ({
     for (let i = 0; i < selectedRating; i++) {
       starElms.current[i].classList.add("animate__animated", "animate__tada")
     }
-    onRating?.()
     if (isBrowser) {
       if (window.analytics) {
-        window.analytics.track(event, {
-          rating: selectedRating,
-        })
+        window.analytics
+          .track(event, {
+            rating: selectedRating,
+          })
+          .finally(() => onRating?.())
+      } else {
+        onRating?.()
       }
+    } else {
+      onRating?.()
     }
   }
 

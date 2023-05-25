@@ -1,31 +1,38 @@
 import useIsBrowser from "@docusaurus/useIsBrowser"
-import { getLearningPath } from "@site/src/utils/learningPaths"
+import { getLearningPath } from "@site/src/utils/learning-paths"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useHistory } from "@docusaurus/router"
+import { LearningPathFinishType } from "@site/src/components/LearningPath/Finish"
 
-export type LearningPath = {
+export type LearningPathType = {
   name: string
   label: string
   steps: LearningPathStepType[]
+  finish?: LearningPathFinishType
+  notificationId?: string
 }
 
 export type LearningPathStepType = {
   title?: string
-  description: string
+  description?: string
+  descriptionJSX?: JSX.Element
   path?: string
 }
 
 export type LearningPathContextType = {
-  path: LearningPath
-  setPath: (value: LearningPath) => void
+  path?: LearningPathType
+  setPath: (value: LearningPathType) => void
   currentStep: number
   setCurrentStep: (value: number) => void
-  startPath: (path: LearningPath) => void
+  startPath: (path: LearningPathType) => void
+  updatePath: (data: Pick<LearningPathType, "notificationId">) => void
   endPath: () => void
   nextStep: () => void
   hasNextStep: () => boolean
   previousStep: () => void
   hasPreviousStep: () => boolean
+  isCurrentPath: () => boolean
+  goToCurrentPath: () => void
 }
 
 type LearningPathProviderProps = {
@@ -37,19 +44,20 @@ const LearningPathContext = createContext<LearningPathContextType | null>(null)
 const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
   children,
 }) => {
-  const [path, setPath] = useState<LearningPath | null>(null)
+  const [path, setPath] = useState<LearningPathType | null>(null)
   const [currentStep, setCurrentStep] = useState(-1)
   const isBrowser = useIsBrowser()
   const history = useHistory()
 
-  const startPath = (path: LearningPath) => {
+  const startPath = (path: LearningPathType) => {
     setPath(path)
+    setCurrentStep(-1)
     if (isBrowser) {
       localStorage.setItem(
         "learning-path",
         JSON.stringify({
           pathName: path.name,
-          currentStep,
+          currentStep: -1,
         })
       )
     }
@@ -102,7 +110,6 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
     const previousStepIndex = currentStep - 1
     setCurrentStep(previousStepIndex)
     const newPath = path.steps[previousStepIndex].path
-    console.log(newPath, history.location.pathname)
     if (isBrowser) {
       localStorage.setItem(
         "learning-path",
@@ -117,13 +124,35 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
     }
   }
 
+  const isCurrentPath = () => {
+    if (!path || currentStep === -1) {
+      return false
+    }
+
+    return history.location.pathname === path.steps[currentStep].path
+  }
+
+  const goToCurrentPath = () => {
+    if (!path || currentStep === -1) {
+      return
+    }
+
+    history.push(path.steps[currentStep].path)
+  }
+
+  const updatePath = (data: Pick<LearningPathType, "notificationId">) => {
+    setPath({
+      ...path,
+      ...data,
+    })
+  }
+
   const initPath = () => {
     if (isBrowser) {
       const storedPath = localStorage.getItem("learning-path")
       if (storedPath) {
         const storedPathParsed = JSON.parse(storedPath)
         const currentPath = getLearningPath(storedPathParsed?.pathName)
-        console.log(storedPathParsed)
         if (currentPath) {
           setPath(currentPath)
           setCurrentStep(storedPathParsed?.currentStep || 0)
@@ -144,11 +173,14 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
         currentStep,
         setCurrentStep,
         startPath,
+        updatePath,
         endPath,
         nextStep,
         hasNextStep,
         previousStep,
         hasPreviousStep,
+        isCurrentPath,
+        goToCurrentPath,
       }}
     >
       {children}

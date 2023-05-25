@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React from "react"
 import clsx from "clsx"
 import {
   HtmlClassNameProvider,
   ThemeClassNames,
   PageMetadata,
-  prefersReducedMotion,
 } from "@docusaurus/theme-common"
 import {
   docVersionSearchTag,
@@ -16,9 +15,9 @@ import DocPageLayout from "@theme/DocPage/Layout"
 import NotFound from "@theme/NotFound"
 import SearchMetadata from "@theme/SearchMetadata"
 import type { Props } from "@theme/DocPage"
-import { SidebarContext } from "@site/src/context/sidebar"
 import LearningPathProvider from "@site/src/providers/LearningPath"
 import SidebarProvider from "@site/src/providers/Sidebar"
+import NotificationProvider from "@site/src/providers/NotificationProvider"
 
 function DocPageMetadata(props: Props): JSX.Element {
   const { versionMetadata } = props
@@ -64,7 +63,9 @@ export default function DocPage(props: Props): JSX.Element {
           <DocsSidebarProvider name={sidebarName} items={sidebarItems}>
             <LearningPathProvider>
               <SidebarProvider sidebarName={sidebarName}>
-                <DocPageLayout>{docElement}</DocPageLayout>
+                <NotificationProvider>
+                  <DocPageLayout>{docElement}</DocPageLayout>
+                </NotificationProvider>
               </SidebarProvider>
             </LearningPathProvider>
           </DocsSidebarProvider>

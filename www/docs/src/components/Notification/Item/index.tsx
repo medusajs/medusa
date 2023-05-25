@@ -4,10 +4,10 @@ import IconExclamationCircleSolid from "@site/src/theme/Icon/ExclamationCircleSo
 import IconInformationCircleSolid from "@site/src/theme/Icon/InformationCircleSolid"
 import IconXCircleSolid from "@site/src/theme/Icon/XCircleSolid"
 import clsx from "clsx"
-import React from "react"
+import React, { Ref, forwardRef } from "react"
 
-export type NotificationProps = {
-  type?: "info" | "error" | "warning" | "success"
+export type NotificationItemProps = {
+  type?: "info" | "error" | "warning" | "success" | "numbered"
   title: string
   text?: string
   className?: string
@@ -17,9 +17,10 @@ export type NotificationProps = {
   show?: boolean
   setShow?: (value: boolean) => any
   onClose?: () => any
+  stepNumber?: number
 } & React.HTMLAttributes<HTMLDivElement>
 
-const Notification: React.FC<NotificationProps> = ({
+const Notification = ({
   type = "info",
   title,
   text = "",
@@ -30,11 +31,14 @@ const Notification: React.FC<NotificationProps> = ({
   show = true,
   setShow,
   onClose,
-}) => {
+  stepNumber = 1,
+}: NotificationItemProps) => {
   const handleClose = () => {
     setShow?.(false)
     onClose?.()
   }
+
+  console.log("show-notif", show)
 
   return (
     <div
@@ -63,6 +67,16 @@ const Notification: React.FC<NotificationProps> = ({
           )}
           {type === "success" && (
             <IconCheckCircleSolid iconColorClassName="tw-fill-medusa-tag-green-icon dark:tw-fill-medusa-tag-green-icon-dark" />
+          )}
+          {type === "numbered" && (
+            <span
+              className={clsx(
+                "tw-bg-medusa-support-info dark:tw-bg-medusa-support-info-dark tw-text-label-x-small-plus tw-text-medusa-text-on-color dark:tw-text-medusa-text-on-color-dark",
+                "tw-inline-flex tw-w-[20px] tw-h-[20px] tw-justify-center tw-items-center tw-rounded-full"
+              )}
+            >
+              {stepNumber}
+            </span>
           )}
         </div>
         <div
